@@ -308,7 +308,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             `Changes saved for "${bussinesName}"`,
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -330,10 +329,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             `"${bussinesName}" deleted`,
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(
@@ -375,7 +370,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             `"${bussinesName}" added`,
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(

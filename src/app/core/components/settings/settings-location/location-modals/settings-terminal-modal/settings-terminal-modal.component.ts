@@ -442,7 +442,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             'Successfuly updated company terminal',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -497,7 +496,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             'Successfuly added company terminal',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -518,10 +516,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             'Successfuly deleted company terminal.',
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(

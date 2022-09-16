@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TruckResponse, TruckMinimalResponse } from 'appcoretruckassist';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -12,6 +12,7 @@ import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/
 import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TrucksDetailsListQuery } from '../state/truck-details-list-state/truck-details-list.query';
 import { TrucksMinimalListQuery } from '../state/truck-details-minima-list-state/truck-details-minimal.query';
 import { TrucksMinimalListStore } from '../state/truck-details-minima-list-state/truck-details-minimal.store';
 import { TruckDetailsQuery } from '../state/truck-details-state/truck.details.query';
@@ -45,7 +46,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private router: Router,
     private cdRef: ChangeDetectorRef,
-    private truckDetailQuery: TruckDetailsQuery,
+    private truckDetailListQuery: TrucksDetailsListQuery,
     private tableService: TruckassistTableService,
     private dropService: DropDownService,
     private confirmationService: ConfirmationService,
@@ -94,30 +95,33 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     this.detailsPageDriverSer.pageDetailChangeId$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
-        this.truckTService
-          .getTruckById(id)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: (res: TruckResponse) => {
-              this.currentIndex = this.truckList.findIndex(
-                (truck) => truck.id === res.id
-              );
-              this.truckConf(res);
-              // this.initTableOptions(res);
-              if (this.router.url.includes('details')) {
-                this.router.navigate([`/truck/${res.id}/details`]);
-              }
+        let query;
+        if (this.truckDetailListQuery.hasEntity(id)) {
+          query = this.truckDetailListQuery.selectEntity(id).pipe(take(1));
+        } else {
+          query = this.truckTService.getTruckById(id);
+        }
+        query.pipe(takeUntil(this.destroy$)).subscribe({
+          next: (res: TruckResponse) => {
+            this.currentIndex = this.truckList.findIndex(
+              (truck) => truck.id === res.id
+            );
+            this.truckConf(res);
+            this.initTableOptions(res);
+            if (this.router.url.includes('details')) {
+              this.router.navigate([`/truck/${res.id}/details`]);
+            }
 
-              this.notificationService.success(
-                'Truck successfully changed',
-                'Success:'
-              );
-              this.cdRef.detectChanges();
-            },
-            error: () => {
-              this.notificationService.error("Truck can't be loaded", 'Error:');
-            },
-          });
+            this.notificationService.success(
+              'Truck successfully changed',
+              'Success:'
+            );
+            this.cdRef.detectChanges();
+          },
+          error: () => {
+            this.notificationService.error("Truck can't be loaded", 'Error:');
+          },
+        });
       });
     this.truckConf(this.activated_route.snapshot.data.truck);
   }
@@ -133,8 +137,10 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
   public deleteTruckById(id: number) {
     let status = this.truckObject.status == 0 ? 'inactive' : 'active';
 
-    let last = this.truckList.at(-1);
-    if (last.id === this.truckMinimalStore.getValue().ids[this.currentIndex]) {
+    let last = this.truckList?.at(-1);
+    if (
+      last?.id === this.truckMinimalStore.getValue()?.ids[this.currentIndex]
+    ) {
       this.currentIndex = --this.currentIndex;
     } else {
       this.currentIndex = ++this.currentIndex;
@@ -144,7 +150,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          if (this.truckMinimalStore.getValue().ids.length >= 1) {
+          if (this.truckMinimalStore.getValue()?.ids?.length >= 1) {
             this.router.navigate([
               `/truck/${this.truckList[this.currentIndex].id}/details`,
             ]);
@@ -188,7 +194,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     );
   }
   /**Function for dots in cards */
-  public initTableOptions(data: TruckMinimalResponse): void {
+  public initTableOptions(data: TruckResponse): void {
     this.currentIndex = this.truckList.findIndex(
       (truck) => truck.id === data.id
     );

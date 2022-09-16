@@ -124,10 +124,6 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
             'Inspection successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: null,
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(
@@ -155,10 +151,6 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
             'Inspection successfully added.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: null,
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(

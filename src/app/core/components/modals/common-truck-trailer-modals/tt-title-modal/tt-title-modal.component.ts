@@ -148,10 +148,6 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
             'Title successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: null,
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error("Title can't be updated.", 'Error:');

@@ -8,7 +8,7 @@
       <img
         *ngIf="data.companyUser?.avatar"
         class="ta-user-image"
-        [src]="data.companyUser.avatar"
+        [src]="imageBase64Service.sanitizer(data.companyUser.avatar)"
         [alt]="data.companyUser.fullName.substring(0, 1)"
       />
 
@@ -75,17 +75,15 @@
     <div *ngIf="!data.isEditMode" class="message">
       {{ data.commentContent }}
     </div>
-    <textarea
-      [class.show]="data.isEditMode"
+
+    <input
       #reviewMessage
-      appTextareaAutosize
-      [rows]="1"
-      [minRows]="1"
-      [maxRows]="5"
+      type="text"
       class="review-textarea"
-      (input)="transformText($event.target.value, ind)"
-    >
-    </textarea>
+      [class.show]="data.isEditMode"
+      (input)="transformText($event, ind)"
+      (keyup)="keyUp($event, data, !data.isNewReview ? 'update' : 'add', ind)"
+    />
 
     <!-- Edit Mode Review Actions -->
     <div *ngIf="data.isEditMode" class="ta-review-message-actions">

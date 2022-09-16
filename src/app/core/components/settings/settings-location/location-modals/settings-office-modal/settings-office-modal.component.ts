@@ -302,7 +302,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             'Successfuly updated company office',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -355,7 +354,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             'Successfuly created company office',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -376,10 +374,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             'Successfuly delete company office',
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(

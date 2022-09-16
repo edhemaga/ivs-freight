@@ -41,6 +41,7 @@ import { FormService } from '../../../services/form/form.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
 import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
+import moment from 'moment';
 
 @Component({
   selector: 'app-truck-modal',
@@ -63,9 +64,40 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public colorType: any[] = [];
   public ownerType: any[] = [];
   public grossWeight: any[] = [];
-  public engineType: any[] = [];
   public tireSize: any[] = [];
   public shifters: any[] = [];
+  public engineModels: any[] = [];
+  public engineOilTypes: any[] = [];
+  public apUnits: any[] = [];
+  public gearRatios: any[] = [];
+  public tollTransponders: any[] = [
+    {
+      groupName: 'Grupa 1',
+      items: [
+        {
+          id: 1,
+          name: 'Item 1',
+        },
+        {
+          id: 2,
+          name: 'Item 2',
+        },
+      ],
+    },
+    {
+      groupName: 'Grupa 2',
+      items: [
+        {
+          id: 1,
+          name: 'Item 2',
+        },
+        {
+          id: 2,
+          name: 'Item 2',
+        },
+      ],
+    },
+  ];
 
   public selectedShifter: any = null;
   public selectedTruckType: any = null;
@@ -73,8 +105,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public selectedColor: any = null;
   public selectedOwner: any = null;
   public selectedTruckGrossWeight: any = null;
-  public selectedEngineType: any = null;
+
   public selectedTireSize: any = null;
+  public selectedEngineModel: any = null;
+  public selectedEngineOilType: any = null;
+  public selectedAPUnit: any = null;
+  public selectedGearRatio: any = null;
+  public selectedTollTransponders: any = null;
 
   public selectedTab: number = 1;
   public tabs: any[] = [
@@ -133,6 +170,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.truckForm = this.formBuilder.group({
+      // Basic Tab
       truckNumber: [
         null,
         [
@@ -151,18 +189,29 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       ownerId: [null],
       commission: [14.5],
       note: [null],
-      purchaseDate: [null],
-      purchasePrice: [null],
-      shifter: [null],
-      fhwaexp: [12, Validators.required],
+      // Additional Tab
       truckGrossWeightId: [null],
+      engineModel: [null],
       emptyWeight: [null, emptyWeightValidation],
-      truckEngineTypeId: [null],
+      engineOilType: [null],
+      apUnit: [null],
       tireSizeId: [null],
       axles: [null, axlesValidation],
-      insurancePolicy: [null, insurancePolicyValidation],
+      gearRatio: [null],
+      shifter: [null],
+      doubleBank: [false],
+      refrigerator: [false],
+      dcInverter: [false],
+      blower: [false],
+      pto: [false],
+      tollTransponder: [null],
+      deviceNo: [null],
       mileage: [null, mileageValidation],
-      ipasEzpass: [null, Validators.maxLength(14)],
+      insurancePolicy: [null, insurancePolicyValidation],
+      fhwaexp: [12, Validators.required],
+
+      purchaseDate: [null],
+      purchasePrice: [null],
     });
 
     // this.formService.checkFormChange(this.truckForm);
@@ -303,14 +352,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
               ? res.truckGrossWeight.name
               : null,
             emptyWeight: res.emptyWeight,
-            truckEngineTypeId: res.truckEngineType
-              ? res.truckEngineType.name
-              : null,
+            engineModel: res.truckEngineType ? res.truckEngineType.name : null,
             tireSizeId: res.tireSize ? res.tireSize.name : null,
             axles: res.axles,
             insurancePolicy: res.insurancePolicy,
             mileage: res.mileage,
-            ipasEzpass: res.ipasEzpass,
           });
           this.truckForm.get('vin').patchValue(res.vin, { emitEvent: false });
 
@@ -322,7 +368,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           this.selectedTruckGrossWeight = res.truckGrossWeight
             ? res.truckGrossWeight
             : null;
-          this.selectedEngineType = res.truckEngineType
+          this.selectedEngineModel = res.truckEngineType
             ? res.truckEngineType
             : null;
           this.selectedTireSize = res.tireSize ? res.tireSize : null;
@@ -354,12 +400,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         note: res.note,
         truckGrossWeightId: res.truckGrossWeightId,
         emptyWeight: res.emptyWeight,
-        truckEngineTypeId: res.truckEngineTypeId,
+        engineModel: res.engineModel,
         tireSizeId: res.tireSizeId,
         axles: res.axles,
         insurancePolicy: res.insurancePolicy,
         mileage: res.mileage,
-        ipasEzpass: res.ipasEzpass,
       });
       if (res.id) {
         this.editData = { ...this.editData, id: res.id };
@@ -371,7 +416,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       this.selectedOwner = res.selectedOwner;
 
       this.selectedTruckGrossWeight = res.selectedTruckGrossWeight;
-      this.selectedEngineType = res.selectedEngineType;
+      this.selectedEngineModel = res.selectedEngineModel;
       this.selectedTireSize = res.selectedTireSize;
       this.truckStatus = res.truckStatus;
 
@@ -413,7 +458,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 selectedColor: this.selectedColor,
                 selectedOwner: this.selectedOwner,
                 selectedTruckGrossWeight: this.selectedTruckGrossWeight,
-                selectedEngineType: this.selectedEngineType,
+                selectedEngineModel: this.selectedEngineModel,
                 selectedTireSize: this.selectedTireSize,
                 truckStatus: this.truckStatus,
                 id: this.editData?.id,
@@ -431,16 +476,32 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         this.selectedTruckGrossWeight = event;
         break;
       }
-      case 'engine-type': {
-        this.selectedEngineType = event;
-        break;
-      }
       case 'tire-size': {
         this.selectedTireSize = event;
         break;
       }
       case 'shifter': {
         this.selectedShifter = event;
+        break;
+      }
+      case 'engine-model': {
+        this.selectedEngineModel = event;
+        break;
+      }
+      case 'engine-oil-type': {
+        this.selectedEngineOilType = event;
+        break;
+      }
+      case 'ap-unit': {
+        this.selectedAPUnit = event;
+        break;
+      }
+      case 'gear-ratio': {
+        this.selectedGearRatio = event;
+        break;
+      }
+      case 'toll-transponder': {
+        this.selectedTollTransponders = event;
         break;
       }
       default: {
@@ -469,13 +530,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                   model: res?.model ? res.model : null,
                   year: res?.year ? res.year : null,
                   truckMakeId: res.truckMake?.name ? ' ' : null,
-                  truckEngineTypeId: res.engineType?.name
+                  engineModel: res.engineType?.name
                     ? res.engineType.name
                     : null,
                 });
                 this.loadingVinDecoder = false;
                 this.selectedTruckMake = res.truckMake;
-                this.selectedEngineType = res.engineType;
+                this.selectedEngineModel = res.engineType;
               },
               error: (error: any) => {
                 this.notificationService.error(
@@ -512,7 +573,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           });
           this.ownerType = res.owners;
           this.grossWeight = res.truckGrossWeights;
-          this.engineType = res.truckEngineTypes;
+          this.engineModels = res.truckEngineTypes;
           this.tireSize = res.tireSizes;
           this.shifters = res.shifters;
         },
@@ -535,8 +596,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       truckGrossWeightId: this.selectedTruckGrossWeight
         ? this.selectedTruckGrossWeight.id
         : null,
-      truckEngineTypeId: this.selectedEngineType
-        ? this.selectedEngineType.id
+      engineModel: this.selectedEngineModel
+        ? this.selectedEngineModel.id
         : null,
       tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
       mileage: this.truckForm.get('mileage').value
@@ -576,7 +637,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             'Truck successfully created.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
           this.notificationService.error("Truck can't be created.", 'Error:'),
@@ -600,9 +660,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           ? this.selectedTruckGrossWeight.id
           : null
         : null,
-      truckEngineTypeId: this.selectedEngineType
-        ? this.selectedEngineType.id != 0
-          ? this.selectedEngineType.id
+      engineModel: this.selectedEngineModel
+        ? this.selectedEngineModel.id != 0
+          ? this.selectedEngineModel.id
           : null
         : null,
       tireSizeId: this.selectedTireSize
@@ -646,7 +706,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             'Truck successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
           this.notificationService.error("Truck can't be updated.", 'Error:'),
@@ -663,10 +722,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             'Truck successfully deleted.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () =>
           this.notificationService.error("Truck can't be deleted.", 'Error:'),

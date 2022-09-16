@@ -373,10 +373,11 @@
             <app-ta-input
               formControlName="volume"
               [inputConfig]="{
-                name: 'Volume',
+                name: 'trailer-volume',
                 type: 'text',
                 label: 'Volume',
-                maxLength: 6,
+                minLength: 5,
+                maxLength: 7,
                 placeholderText: !trailerForm.get('volume').value ? '' : 'gal',
                 thousandSeparator: true
               }"

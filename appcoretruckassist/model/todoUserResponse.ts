@@ -16,6 +16,7 @@ export interface TodoUserResponse {
     companyUserId?: number;
     firstName?: string | null;
     lastName?: string | null;
+    avatar?: string | null;
     todoId?: number;
 }
 

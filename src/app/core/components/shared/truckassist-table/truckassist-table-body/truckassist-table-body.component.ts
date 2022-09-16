@@ -67,7 +67,7 @@ export class TruckassistTableBodyComponent
   dropDownActive: number = -1;
   progressData: any[] = [];
   checkForScrollTimeout: any;
-  viewDataEmpty: number;
+  viewDataEmpty: boolean;
   viewDataTimeOut: any;
   rowData: any;
   activeDescriptionDropdown: number = -1;
@@ -90,11 +90,10 @@ export class TruckassistTableBodyComponent
 
   // --------------------------------NgOnInit---------------------------------
   ngOnInit(): void {
-    this.viewDataEmpty = this.viewData.length;
+    this.viewDataEmpty = this.viewData.length ? false : true;
 
-    if (this.viewDataEmpty) {
-      this.getTableSections();
-    }
+    // Get Table Sections(Pined, Not Pined, Actions)
+    this.getTableSections();
 
     // Get Selected Tab Data
     this.getSelectedTabTableData();
@@ -170,7 +169,9 @@ export class TruckassistTableBodyComponent
     if (!changes?.viewData?.firstChange && changes?.viewData) {
       clearTimeout(this.viewDataTimeOut);
 
-      this.viewData = changes.viewData.currentValue;
+      this.viewData = [...changes.viewData.currentValue];
+
+      this.viewDataEmpty = this.viewData.length ? false : true;
 
       if (!this.viewDataEmpty && changes.viewData.currentValue) {
         this.viewDataTimeOut = setTimeout(() => {
@@ -178,8 +179,6 @@ export class TruckassistTableBodyComponent
           this.getSelectedTabTableData();
         }, 10);
       }
-
-      this.viewDataEmpty = this.viewData.length;
     }
 
     if (!changes?.tableData?.firstChange && changes?.tableData) {
@@ -214,6 +213,7 @@ export class TruckassistTableBodyComponent
         changes?.selectedTab?.previousValue &&
       changes?.selectedTab
     ) {
+
       this.selectedTab = changes.selectedTab.currentValue;
 
       this.getSelectedTabTableData();

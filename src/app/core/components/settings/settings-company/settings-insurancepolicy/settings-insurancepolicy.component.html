@@ -24,7 +24,7 @@
       class="settings-insuarnce"
       *ngFor="
         let insurance of insurancePolicyData?.insurancePolicies;
-        let i=index;
+        let i = index;
         trackBy: identity
       "
     >
@@ -89,7 +89,7 @@
                   insuranceAdditional?.insurerName
                 }}</span>
                 <div *ngIf="insuranceAdditional?.rating?.name" class="rating">
-                  <div  class="rating-value">
+                  <div class="rating-value">
                     {{ insuranceAdditional?.rating?.name }}
                   </div>
                 </div>
@@ -126,18 +126,24 @@
               "
               class="payroll-template-data"
             >
-              <div class="payroll-template-item">
+              <div
+                class="payroll-template-item"
+                *ngIf="insuranceAdditional?.eachOccurrence"
+              >
                 <p class="payroll-name">Each Occurrence</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.eachOccurrence">
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.eachOccurrence | taThousandSeparator
                   }}
                 </p>
               </div>
 
-              <div class="payroll-template-item">
+              <div
+                class="payroll-template-item"
+                *ngIf="insuranceAdditional?.damageToRentedPremises"
+              >
                 <p class="payroll-name">Dmg. to Rented Pr.</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.damageToRentedPremises">
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.damageToRentedPremises
                       | taThousandSeparator
@@ -145,34 +151,46 @@
                 </p>
               </div>
 
-              <div class="payroll-template-item">
+              <div
+                class="payroll-template-item"
+                *ngIf="insuranceAdditional?.medicalExpanses"
+              >
                 <p class="payroll-name">Medical Expanses</p>
-                <p class="payroll-value"  *ngIf="insuranceAdditional?.medicalExpanses">
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.medicalExpanses | taThousandSeparator
                   }}
                 </p>
               </div>
-              <div class="payroll-template-item">
+              <div class="payroll-template-item" *ngIf="insuranceAdditional?.personalAndAdvertisingInjury">
                 <p class="payroll-name">Pers. and Adv. Injury</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.personalAndAdvertisingInjury">
+                <p
+                  class="payroll-value"
+                  
+                >
                   ${{
                     insuranceAdditional?.personalAndAdvertisingInjury
                       | taThousandSeparator
                   }}
                 </p>
               </div>
-              <div class="payroll-template-item">
+              <div class="payroll-template-item"  *ngIf="insuranceAdditional?.generalAggregate">
                 <p class="payroll-name">General Aggregate</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.generalAggregate">
+                <p
+                  class="payroll-value"
+                 
+                >
                   ${{
                     insuranceAdditional?.generalAggregate | taThousandSeparator
                   }}
                 </p>
               </div>
-              <div class="payroll-template-item">
+              <div class="payroll-template-item"  *ngIf="insuranceAdditional?.productsCompOperAggregate">
                 <p class="payroll-name">Products - Comp / OP</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.productsCompOperAggregate">
+                <p
+                  class="payroll-value"
+                 
+                >
                   ${{
                     insuranceAdditional?.productsCompOperAggregate
                       | taThousandSeparator
@@ -188,35 +206,47 @@
               "
               class="payroll-template-data"
             >
-              <div class="payroll-template-item">
+              <div class="payroll-template-item" *ngIf="insuranceAdditional?.combinedSingleLimit">
                 <p class="payroll-name">Combined Single</p>
-                <p class="payroll-value"  *ngIf="insuranceAdditional?.combinedSingleLimit">
+                <p
+                  class="payroll-value"
+                  
+                >
                   ${{
                     insuranceAdditional?.combinedSingleLimit
                       | taThousandSeparator
                   }}
                 </p>
               </div>
-              <div class="payroll-template-item">
+              <div class="payroll-template-item"  *ngIf="insuranceAdditional?.propertyDamage">
                 <p class="payroll-name">Property Damage</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.propertyDamage">
+                <p
+                  class="payroll-value"
+                 
+                >
                   ${{
                     insuranceAdditional?.propertyDamage | taThousandSeparator
                   }}
                 </p>
               </div>
-              <div class="payroll-template-item">
+              <div class="payroll-template-item" *ngIf="insuranceAdditional?.bodilyInjuryPerson">
                 <p class="payroll-name">Boldly Injury(Person)</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.bodilyInjuryPerson">
+                <p
+                  class="payroll-value"
+                  
+                >
                   ${{
                     insuranceAdditional?.bodilyInjuryPerson
                       | taThousandSeparator
                   }}
                 </p>
               </div>
-              <div class="payroll-template-item">
+              <div class="payroll-template-item" *ngIf="insuranceAdditional?.bodilyInjuryAccident">
                 <p class="payroll-name">Boldly Injury(Accident)</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.bodilyInjuryAccident">
+                <p
+                  class="payroll-value"
+                  
+                >
                   ${{
                     insuranceAdditional?.bodilyInjuryAccident
                       | taThousandSeparator
@@ -232,15 +262,23 @@
               "
               class="payroll-template-data"
             >
-              <div class="payroll-template-item">
+              <div class="payroll-template-item" *ngIf="insuranceAdditional?.singleConveyance">
                 <p class="payroll-name">Single Conveyance</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.singleConveyance">
-                  ${{ insuranceAdditional?.singleConveyance }}
+                <p
+                  class="payroll-value"
+                  
+                >
+                  ${{
+                    insuranceAdditional?.singleConveyance | taThousandSeparator
+                  }}
                 </p>
               </div>
-              <div class="payroll-template-item">
+              <div class="payroll-template-item" *ngIf="insuranceAdditional?.deductable">
                 <p class="payroll-name">Deductable</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.deductable">
+                <p
+                  class="payroll-value"
+                  
+                >
                   ${{ insuranceAdditional?.deductable | taThousandSeparator }}
                 </p>
               </div>
@@ -253,18 +291,24 @@
               "
               class="payroll-template-data"
             >
-              <div class="payroll-template-item">
+              <div class="payroll-template-item"  *ngIf="insuranceAdditional?.comprehensiveAndCollision">
                 <p class="payroll-name">Comprehen. & Collision</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.comprehensiveAndCollision">
+                <p
+                  class="payroll-value"
+                 
+                >
                   ${{
                     insuranceAdditional?.comprehensiveAndCollision
                       | taThousandSeparator
                   }}
                 </p>
               </div>
-              <div class="payroll-template-item">
+              <div class="payroll-template-item"  *ngIf="insuranceAdditional?.deductable">
                 <p class="payroll-name">Deductable</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.deductable">
+                <p
+                  class="payroll-value"
+                 
+                >
                   ${{ insuranceAdditional?.deductable | taThousandSeparator }}
                 </p>
               </div>
@@ -277,9 +321,9 @@
               "
               class="payroll-template-data"
             >
-              <div class="payroll-template-item">
+              <div class="payroll-template-item"  *ngIf="insuranceAdditional?.value">
                 <p class="payroll-name">Value</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.value">
+                <p class="payroll-value">
                   ${{ insuranceAdditional?.value | taThousandSeparator }}
                 </p>
               </div>
@@ -294,7 +338,10 @@
             [expiresSettings]="'settings-insurance-policy'"
           ></app-truckassist-progress-expiration>
         </div>
-        <div [ngClass]="{'body-show':toggler[i]}" [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+        <div
+          [ngClass]="{ 'body-show': toggler[i] }"
+          [@showHideCardBody]="toggler[i] ? 'true' : 'false'"
+        >
           <div class="divider"></div>
           <div class="details-document-container">
             <div class="icon-counter-wrapper">
