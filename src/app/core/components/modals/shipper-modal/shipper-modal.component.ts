@@ -26,7 +26,10 @@ import {
   UpdateShipperCommand,
 } from 'appcoretruckassist';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  phoneFaxRegex,
+  fullNameValidation,
+} from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { HttpResponseBase } from '@angular/common/http';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
@@ -283,7 +286,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     email: any;
   }): FormGroup {
     return this.formBuilder.group({
-      fullName: [data?.fullName ? data.fullName : null, Validators.required],
+      fullName: [
+        data?.fullName ? data.fullName : null,
+        [Validators.required, ...fullNameValidation],
+      ],
       departmentId: [
         data?.departmentId ? data.departmentId : null,
         [Validators.required, ...departmentValidation],

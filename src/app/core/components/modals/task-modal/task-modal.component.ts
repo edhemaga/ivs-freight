@@ -21,6 +21,8 @@ import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.c
 import {
   departmentValidation,
   descriptionValidation,
+  titleValidation,
+  urlValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
@@ -86,9 +88,9 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.taskForm = this.formBuilder.group({
-      title: [null, Validators.required],
+      title: [null, [Validators.required, ...titleValidation]],
       description: [null, descriptionValidation],
-      url: [null],
+      url: [null, urlValidation],
       deadline: [null],
       departmentIds: [null, [...departmentValidation]],
       companyUserIds: [null],

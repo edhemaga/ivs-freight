@@ -43,7 +43,7 @@
                 label: 'Company Name',
                 isRequired: editData.type === 'new-division' ? true : false,
                 isDisabled: editData.type === 'edit-company',
-                textTransform: 'capitalize',
+                textTransform: 'uppercase',
                 autoFocus: editData?.type !== 'edit-company' ? true : false
               }"
             ></app-ta-input>
@@ -59,7 +59,9 @@
                 label: 'USDOT',
                 isRequired:
                   this.editData.type === 'new-division' ? false : true,
-                textTransform: 'capitalize'
+                textTransform: 'capitalize',
+                minLength: 6,
+                maxLength: 8
               }"
             ></app-ta-input>
           </div>
@@ -185,7 +187,8 @@
               name: 'IRP',
               type: 'text',
               label: 'IRP',
-              textTransform: 'capitalize'
+              minLength: 5,
+              maxLength: 5
             }"
           ></app-ta-input>
           <app-ta-input
@@ -194,7 +197,9 @@
               name: 'IFTA',
               type: 'text',
               label: 'IFTA',
-              textTransform: 'capitalize'
+              textTransform: 'uppercase',
+              minLength: 13,
+              maxLength: 13
             }"
           ></app-ta-input>
           <app-ta-input
@@ -203,7 +208,8 @@
               name: 'TOLL',
               type: 'text',
               label: 'TOLL',
-              textTransform: 'capitalize'
+              minLength: 8,
+              maxLength: 8
             }"
           ></app-ta-input>
           <app-ta-input
@@ -212,7 +218,9 @@
               name: 'SCAC',
               type: 'text',
               label: 'SCAC',
-              textTransform: 'capitalize'
+              textTransform: 'uppercase',
+              minLength: 2,
+              maxLength: 4
             }"
           ></app-ta-input>
         </div>
@@ -382,7 +390,6 @@
                     type: 'text',
                     minLength: 1,
                     maxLength: 8,
-                    placeholderIcon: 'phone-extension',
                     hideErrorMessage: true,
                     blackInput: true,
                     hideRequiredCheck: true
@@ -547,10 +554,11 @@
                     id: 'Nickname' + ind,
                     name: 'Nickname',
                     type: 'text',
-                    textTransform: 'capitalize',
                     hideErrorMessage: true,
-                    thousandSeparator: true,
-                    hideRequiredCheck: true
+                    blackInput: true,
+                    hideRequiredCheck: true,
+                    minLength: 2,
+                    maxLength: 128
                   }"
                 ></app-ta-input>
                 <app-ta-input
@@ -563,7 +571,7 @@
                     maxLength: 16,
                     minLength: 16,
                     hideErrorMessage: true,
-                    thousandSeparator: true,
+                    blackInput: true,
                     hideRequiredCheck: true
                   }"
                 ></app-ta-input>
@@ -574,10 +582,10 @@
                     name: 'CVC',
                     type: 'password',
                     placeholderIcon: 'password',
-                    maxLength: 3,
+                    maxLength: 4,
                     minLength: 3,
                     hideErrorMessage: true,
-                    thousandSeparator: true,
+                    blackInput: true,
                     hideRequiredCheck: true
                   }"
                 ></app-ta-input>
@@ -619,7 +627,9 @@
                     name: 'Prefix',
                     type: 'text',
                     label: 'Prefix',
-                    textTransform: 'capitalize'
+                    textTransform: 'uppercase',
+                    minLength: 1,
+                    maxLength: 4
                   }"
                 ></app-ta-input>
               </div>
@@ -631,18 +641,21 @@
                     type: 'text',
                     label: 'Starting No',
                     isRequired: true,
-                    textTransform: 'capitalize'
+                    minLength: 1,
+                    maxLength: 6
                   }"
                 ></app-ta-input>
               </div>
               <div class="col-4 no-p-left">
                 <app-ta-input
-                  formControlName="sufix"
+                  formControlName="suffix"
                   [inputConfig]="{
-                    name: 'Sufix',
+                    name: 'Suffix',
                     type: 'text',
-                    label: 'Sufix',
-                    textTransform: 'capitalize'
+                    label: 'Suffix',
+                    textTransform: 'uppercase',
+                    minLength: 1,
+                    maxLength: 4
                   }"
                 ></app-ta-input>
               </div>
@@ -675,7 +688,9 @@
                     name: 'Customer Pay Term',
                     type: 'text',
                     label: 'Customer Pay Term',
-                    placeholderText: 'days'
+                    placeholderText: 'days',
+                    minLength: 1,
+                    maxLength: 3
                   }"
                 ></app-ta-input>
               </div>
@@ -683,12 +698,14 @@
                 <app-ta-input
                   formControlName="customerCredit"
                   [inputConfig]="{
-                    name: 'Dollar',
+                    name: 'Customer Credit',
                     type: 'text',
                     label: 'Customer Credit',
                     placeholderIcon: 'dollar',
                     customClass: 'dollar-placeholderIcon',
-                    thousandSeparator: true
+                    thousandSeparator: true,
+                    minLength: 4,
+                    maxLength: 11
                   }"
                 ></app-ta-input>
               </div>
@@ -719,12 +736,23 @@
                 <app-ta-input
                   formControlName="mvrMonths"
                   [inputConfig]="{
-                    id: 'MVR MONTHS',
                     name: 'months',
                     type: 'text',
+                    placeholderText: 'months',
                     label: 'MVR',
                     isRequired: true,
-                    placeholderText: 'months'
+                    commands: {
+                      active: true,
+                      type: 'months',
+                      firstCommand: {
+                        name: 'minus',
+                        svg: 'assets/svg/common/ic_pm_decrement.svg'
+                      },
+                      secondCommand: {
+                        name: 'plus',
+                        svg: 'assets/svg/common/ic_pm_increment.svg'
+                      }
+                    }
                   }"
                 ></app-ta-input>
               </div>
@@ -735,9 +763,21 @@
                     id: 'Truck Inspection MONTHS',
                     name: 'months',
                     type: 'text',
+                    placeholderText: 'months',
                     label: 'Truck Inspection',
                     isRequired: true,
-                    placeholderText: 'months'
+                    commands: {
+                      active: true,
+                      type: 'months',
+                      firstCommand: {
+                        name: 'minus',
+                        svg: 'assets/svg/common/ic_pm_decrement.svg'
+                      },
+                      secondCommand: {
+                        name: 'plus',
+                        svg: 'assets/svg/common/ic_pm_increment.svg'
+                      }
+                    }
                   }"
                 ></app-ta-input>
               </div>
@@ -748,9 +788,21 @@
                     id: 'Trailer Inspection MONTHS',
                     name: 'months',
                     type: 'text',
+                    placeholderText: 'months',
                     label: 'Trailer Inspection',
                     isRequired: true,
-                    placeholderText: 'months'
+                    commands: {
+                      active: true,
+                      type: 'months',
+                      firstCommand: {
+                        name: 'minus',
+                        svg: 'assets/svg/common/ic_pm_decrement.svg'
+                      },
+                      secondCommand: {
+                        name: 'plus',
+                        svg: 'assets/svg/common/ic_pm_increment.svg'
+                      }
+                    }
                   }"
                 ></app-ta-input>
               </div>
@@ -1082,12 +1134,14 @@
                 formControlName="accountingDefaultBase"
                 [inputConfig]="{
                   id: 'Default Base Accounting',
-                  name: 'Dollar',
+                  name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>
@@ -1138,12 +1192,14 @@
                 formControlName="companyOwnerDefaultBase"
                 [inputConfig]="{
                   id: 'Default Base Company Owner',
-                  name: 'Dollar',
+                  name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>
@@ -1192,12 +1248,14 @@
                 formControlName="dispatchDefaultBase"
                 [inputConfig]="{
                   id: 'Default Base Dispatch',
-                  name: 'Dollar',
+                  name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>
@@ -1261,12 +1319,14 @@
                 formControlName="managerDefaultBase"
                 [inputConfig]="{
                   id: 'Default Base Manager',
-                  name: 'Dollar',
+                  name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>
@@ -1332,12 +1392,14 @@
                 formControlName="recruitingDefaultBase"
                 [inputConfig]="{
                   id: 'Default Base Recruiting',
-                  name: 'Dollar',
+                  name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>
@@ -1384,12 +1446,14 @@
                 formControlName="repairDefaultBase"
                 [inputConfig]="{
                   id: 'Default Base Repair',
-                  name: 'Dollar',
+                  name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>
@@ -1436,12 +1500,14 @@
                 formControlName="safetyDefaultBase"
                 [inputConfig]="{
                   id: 'Default Base Safety',
-                  name: 'Dollar',
+                  name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>
@@ -1488,12 +1554,14 @@
                 formControlName="otherDefaultBase"
                 [inputConfig]="{
                   id: 'Default Base Other',
-                  name: 'Dollar',
+                  name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>

@@ -151,7 +151,9 @@
                     label: 'Password',
                     placeholderIcon: 'password',
                     isRequired: true,
-                    maxLength: 20,
+                    autocomplete: 'off',
+                    minLength: 8,
+                    maxLength: 64,
                     loadingSpinner: {
                       size: 'small',
                       color: 'white',
@@ -183,7 +185,9 @@
                       label: 'New Password',
                       placeholderIcon: 'password',
                       isRequired: true,
-                      maxLength: 20
+                      autocomplete: 'off',
+                      minLength: 8,
+                      maxLength: 64
                     }"
                   ></app-ta-input>
                 </div>
@@ -196,7 +200,9 @@
                       label: 'Confirm Password',
                       placeholderIcon: 'password',
                       isRequired: true,
-                      maxLength: 20
+                      autocomplete: 'off',
+                      minLength: 8,
+                      maxLength: 64
                     }"
                   ></app-ta-input>
                 </div>

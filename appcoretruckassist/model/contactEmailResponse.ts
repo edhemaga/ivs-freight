@@ -9,15 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
-export interface CreateTodoCommand { 
-    departmentIds?: Array<number> | null;
-    title?: string | null;
-    description?: string | null;
-    url?: string | null;
-    deadline?: string | null;
-    companyUserIds?: Array<number> | null;
-    note?: string | null;
+export interface ContactEmailResponse { 
+    id?: number;
+    email?: string | null;
+    contactEmailType?: EnumValue;
 }
 

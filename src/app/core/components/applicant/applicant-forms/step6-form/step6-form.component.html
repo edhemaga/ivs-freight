@@ -4,11 +4,13 @@
       <app-ta-input
         formControlName="name"
         [inputConfig]="{
-          name: 'Name',
+          name: 'Emergency Name',
           type: 'text',
           label: 'Name',
           isRequired: true,
           textTransform: 'capitalize',
+          minLength: 2,
+          maxLength: 24,
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"
@@ -39,6 +41,8 @@
           type: 'text',
           label: 'Relationship',
           textTransform: 'capitalize',
+          minLength: 2,
+          maxLength: 24,
           isRequired: true,
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"

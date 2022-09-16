@@ -9,15 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ContactEmailType } from './contactEmailType';
 
 
-export interface CreateTodoCommand { 
-    departmentIds?: Array<number> | null;
-    title?: string | null;
-    description?: string | null;
-    url?: string | null;
-    deadline?: string | null;
-    companyUserIds?: Array<number> | null;
-    note?: string | null;
+export interface UpdateContactEmailCommand { 
+    id?: number;
+    email?: string | null;
+    contactEmailType?: ContactEmailType;
 }
 

@@ -11,13 +11,11 @@
  */
 
 
-export interface CreateTodoCommand { 
-    departmentIds?: Array<number> | null;
-    title?: string | null;
-    description?: string | null;
-    url?: string | null;
-    deadline?: string | null;
-    companyUserIds?: Array<number> | null;
-    note?: string | null;
-}
+export type ContactEmailType = 'Primary' | 'Work' | 'Personal';
+
+export const ContactEmailType = {
+    Primary: 'Primary' as ContactEmailType,
+    Work: 'Work' as ContactEmailType,
+    Personal: 'Personal' as ContactEmailType
+};
 

@@ -9,6 +9,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ContactEmailResponse } from './contactEmailResponse';
+import { ContactPhoneResponse } from './contactPhoneResponse';
 import { AddressEntity } from './addressEntity';
 import { CompanyContactLabelResponse } from './companyContactLabelResponse';
 
@@ -23,6 +25,8 @@ export interface CompanyContactResponse {
     shared?: boolean;
     avatar?: string | null;
     companyContactLabel?: CompanyContactLabelResponse;
+    contactPhones?: Array<ContactPhoneResponse> | null;
+    contactEmails?: Array<ContactEmailResponse> | null;
     createdAt?: string;
     updatedAt?: string;
 }
