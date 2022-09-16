@@ -106,7 +106,7 @@ export class PmTruckTrailerComponent implements OnInit {
 
     const td = this.tableData.find((t) => t.field === this.selectedTab);
 
-    this.setRepairData(td);
+    this.setPmData(td);
   }
 
   getGridColumns(stateName: string, resetColumns: boolean) {
@@ -125,14 +125,19 @@ export class PmTruckTrailerComponent implements OnInit {
     }
   }
 
-  setRepairData(td: any) {
-    this.viewData = td.data;
+  setPmData(td: any) {
     this.columns = td.gridColumns;
 
-    this.viewData = this.viewData.map((data) => {
-      data.isSelected = false;
-      return data;
-    });
+    if (td.data.length) {
+      this.viewData = td.data;
+
+      this.viewData = this.viewData.map((data) => {
+        data.isSelected = false;
+        return data;
+      });
+    } else {
+      this.viewData = [];
+    }
   }
 
   getDumyData(numberOfCopy: number, dataType: string) {

@@ -533,168 +533,224 @@
 // Table Body Description Popover
 .table-description-popover {
   .popover-body {
-    .description-dropdown {
+    .description-dropdown-container{
       position: absolute;
-      min-width: 554px;
-      margin-top: 9px;
+      margin-top: -23px;
       height: fit-content;
-      overflow: hidden;
-      padding: 2px;
-      background: #ffffff;
-      border-radius: 3px;
-      box-shadow: 0 0 4px 0 rgb(0 0 0 / 15%);
-      animation: descriptionDropdownAnimation 0.2s ease-in-out;
 
-      .description-item {
+      .description-titles{
         width: 100%;
-        height: 24px;
+        height: 28px;
+        background: #919191;
         border-radius: 2px;
+        margin-bottom: 2px;
+        padding: 2px;
         display: flex;
-        align-self: center;
+        align-items: center;
 
-        &:hover {
-          background: #00000010;
-        }
-
-        .item-index,
-        .item-title {
+        .number-title, .item-title, .qty-title, .price-title, .price-total-title{
           display: flex;
           align-items: center;
+          color: #FFFFFF;
           font-size: 14px;
+          font-weight: 600;
         }
 
-        .item-index {
-          min-width: 20px;
+        .number-title{
+          justify-content: center;
           width: 20px;
           height: 20px;
           margin: 2px 12px 2px 3px;
-          justify-content: center;
-          color: #919191;
-          font-weight: 600;
-
-          &::selection {
-            color: #919191;
-            background: #91919120;
-          }
         }
 
-        .pm-item {
-          width: 20px;
+        .item-title{
+          width: 253px;
+          margin-right: 12px;
+          justify-content: flex-start;
+        }
+
+        .qty-title{
+          width: 76px;
+          justify-content: flex-end;
+        }
+
+        .price-title{
+          justify-content: flex-end;
+          width: 98px;
+          margin: 0 12px 0 0;
+        }
+
+        .price-total-title{
+          width: 76px;
+          justify-content: flex-end;
+          margin-right: 18px;
+        }
+      }
+
+      .description-items {
+        position: relative;
+        min-width: 554px;
+        height: fit-content;
+        overflow: hidden;
+        padding: 2px;
+        background: #ffffff;
+        border-radius: 3px;
+        box-shadow: 0 0 4px 0 rgb(0 0 0 / 15%);
+        max-height: 400px;
+        animation: descriptionDropdownAnimation 0.3s ease-in-out;
+  
+        .description-item {
+          width: 100%;
+          height: 24px;
+          border-radius: 2px;
           display: flex;
-          justify-content: center;
           align-self: center;
-          margin-right: 6px;
-          svg-icon {
+  
+          &:hover {
+            background: #00000010;
+          }
+  
+          .item-index,
+          .item-title {
             display: flex;
-            path {
-              fill: #6d82c7;
+            align-items: center;
+            font-size: 14px;
+          }
+  
+          .item-index {
+            min-width: 20px;
+            width: 20px;
+            height: 20px;
+            margin: 2px 12px 2px 3px;
+            justify-content: center;
+            color: #919191;
+            font-weight: 600;
+  
+            &::selection {
+              color: #919191;
+              background: #91919120;
+            }
+          }
+  
+          .pm-item {
+            width: 20px;
+            display: flex;
+            justify-content: center;
+            align-self: center;
+            margin-right: 6px;
+            svg-icon {
+              display: flex;
+              path {
+                fill: #6d82c7;
+              }
+            }
+          }
+  
+          .pm-style {
+            color: #536bc2 !important;
+  
+            &::selection {
+              color: #536bc2 !important;
+              background: #536bc220 !important;
+            }
+          }
+  
+          .item-title {
+            color: #6c6c6c;
+            font-weight: 400;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            margin-right: 12px;
+  
+            &::selection {
+              color: #6c6c6c;
+              background: #6c6c6c20;
+            }
+          }
+  
+          .item-cost {
+            min-width: 76px;
+            width: 76px;
+            display: flex;
+            justify-content: flex-end;
+            align-self: center;
+            color: #6c6c6c;
+            font-size: 14px;
+            font-weight: 400;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+  
+            &::selection {
+              color: #6c6c6c;
+              background: #6c6c6c20;
+            }
+          }
+  
+          .number-of-items {
+            width: 98px;
+            min-width: 98px;
+            display: flex;
+            align-self: center;
+            justify-content: flex-end;
+            font-size: 16px;
+            font-weight: 400;
+            color: #6c6c6c;
+            margin: 0 12px 0 0;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+  
+            &::selection {
+              color: #6c6c6c;
+              background: #6c6c6c20;
+            }
+          }
+  
+          .item-total-cost {
+            width: 76px;
+            min-width: 76px;
+            display: flex;
+            justify-content: flex-end;
+            align-self: center;
+            margin-right: 18px;
+            color: #6c6c6c;
+            font-size: 14px;
+            font-weight: 600;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+  
+            &::selection {
+              color: #6c6c6c;
+              background: #6c6c6c20;
             }
           }
         }
-
-        .pm-style {
-          color: #536bc2 !important;
-
-          &::selection {
-            color: #536bc2 !important;
-            background: #536bc220 !important;
-          }
+  
+        .description-item-margin {
+          margin-top: 2px;
         }
-
-        .item-title {
-          color: #6c6c6c;
-          font-weight: 400;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          margin-right: 12px;
-
-          &::selection {
-            color: #6c6c6c;
-            background: #6c6c6c20;
-          }
+  
+        .right-background {
+          position: absolute;
+          width: 96px;
+          height: 100%;
+          top: 0;
+          right: 0;
+          background: #00000010;
         }
-
-        .item-cost {
-          min-width: 90px;
-          width: 90px;
-          display: flex;
-          justify-content: flex-end;
-          align-self: center;
-          color: #6c6c6c;
-          font-size: 14px;
-          font-weight: 400;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-
-          &::selection {
-            color: #6c6c6c;
-            background: #6c6c6c20;
-          }
-        }
-
-        .number-of-items {
-          width: 30px;
-          min-width: 30px;
-          display: flex;
-          align-self: center;
-          justify-content: center;
-          font-size: 16px;
-          font-weight: 400;
-          color: #6c6c6c;
-          margin: 0px 18px;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-
-          &::selection {
-            color: #6c6c6c;
-            background: #6c6c6c20;
-          }
-        }
-
-        .item-total-cost {
-          width: 81px;
-          min-width: 81px;
-          display: flex;
-          justify-content: flex-end;
-          align-self: center;
-          margin: 0px 10px 0px 3px;
-          color: #6c6c6c;
-          font-size: 14px;
-          font-weight: 600;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-
-          &::selection {
-            color: #6c6c6c;
-            background: #6c6c6c20;
-          }
-        }
-      }
-
-      .description-item-margin {
-        margin-top: 2px;
-      }
-
-      .right-background {
-        position: absolute;
-        width: 96px;
-        height: 100%;
-        top: 0;
-        right: 0;
-        background: #00000010;
       }
     }
+    
 
     @keyframes descriptionDropdownAnimation {
       from {
-        margin-top: -10px;
+        max-height: 0px;
       }
       to {
-        margin-top: 9px;
+        max-height: 400px;
       }
     }
   }

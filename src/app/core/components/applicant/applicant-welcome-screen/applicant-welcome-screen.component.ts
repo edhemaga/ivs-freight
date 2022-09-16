@@ -2,11 +2,17 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import moment from 'moment';
+import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
+
 import { Subject, takeUntil } from 'rxjs';
 
-/* import { AcceptApplicationCommand } from 'appcoretruckassist';
- */
 import { ApplicantActionsService } from './../state/services/applicant-actions.service';
+
+import {
+  AcceptApplicationCommand,
+  ApplicantCompanyInfoResponse,
+  VerifyApplicantCommand,
+} from 'appcoretruckassist';
 
 @Component({
   selector: 'app-applicant-welcome-screen',
@@ -16,24 +22,14 @@ import { ApplicantActionsService } from './../state/services/applicant-actions.s
 export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public currentDate: string;
+  private verifyData: VerifyApplicantCommand;
+
+  public dateOfApplication: string;
   public copyrightYear: string;
 
-  /*  private verifyData: AcceptApplicationCommand;
-   */
-  private applicantId: number;
+  public companyInfo: ApplicantCompanyInfoResponse;
 
-  public company: any = {
-    name: 'JD FREIGHT INC',
-    usdot: 245326,
-    phoneContact: '(621) 321-2232',
-    location: {
-      street: '4747 Research Forest Dr # 185',
-      city: 'The Woodlands',
-      postalCode: 'TX 77381',
-      country: 'USA 1',
-    },
-  };
+  private applicantId: AcceptApplicationCommand;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,27 +38,51 @@ export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.currentDate = moment().format('MM/DD/YY');
     this.copyrightYear = moment().format('YYYY');
 
-    this.route.queryParams.subscribe((params) => {
-      /*  this.verifyData = {
-        inviteCode: params['InviteCode'].split(' ').join('+'),
-      }; */
-    });
+    this.route.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((params) => {
+        this.verifyData = {
+          inviteCode: params['InviteCode'].split(' ').join('+'),
+        };
+      });
+
+    this.applicantActionsService
+      .verifyApplicant(this.verifyData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          this.applicantActionsService.getApplicantInfo(res);
+
+          this.dateOfApplication = convertDateFromBackend(
+            res.inviteDate
+          ).replace(/-/g, '/');
+
+          this.companyInfo = res.companyInfo;
+
+          this.applicantId = { id: res.personalInfo.applicantId };
+
+          console.log(this.companyInfo);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   public onStartApplication(): void {
-    /*  this.applicantActionsService
-      .acceptApplicant(this.verifyData)
+    this.applicantActionsService
+      .acceptApplicant(this.applicantId)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res: any) => {
-        this.applicantActionsService.getApplicantInfo(res);
-
-        this.applicantId = res.personalInfo.applicantId;
-
-        this.router.navigate([`/applicant/${this.applicantId}/1`]);
-      }); */
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/1`]);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   ngOnDestroy(): void {

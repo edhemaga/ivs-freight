@@ -47,6 +47,7 @@
       color: #ef5350;
     }
   }
+
   .ta-logo-saved-image {
     width: 100%;
     border-radius: 2px;
@@ -55,9 +56,17 @@
     .ta-logo-image {
       -o-object-fit: fill;
       object-fit: fill;
-      width: 162px;
       height: 194px;
       user-select: none;
+
+      @keyframes slideInImage {
+        from {
+          transform: translateX(200px);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
 
       &-circle {
         width: 162px;
@@ -143,6 +152,14 @@
 
     .cr-slider-wrap {
       display: none !important;
+    }
+  }
+
+  &-rectangle {
+    ::ng-deep.croppie-container {
+      .cr-viewport {
+        border: 4px dashed #e5e5e5 !important;
+      }
     }
   }
 

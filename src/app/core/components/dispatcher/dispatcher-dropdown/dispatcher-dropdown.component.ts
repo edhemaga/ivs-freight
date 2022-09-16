@@ -16,8 +16,10 @@ import {
 export class DispatcherDropdownComponent implements OnInit {
   __items: any[];
 
-  selectValue: any = {};
+  selectValue: any = {id: -1};
   @Input() set items(value: any[]) {
+    console.log("ITEMS INSIDE DROPDOWN");
+    console.log(value);
     this.__items = JSON.parse(JSON.stringify(value));
     const savedDispatcher = parseInt(
       localStorage.getItem('dispatchUserSelect')

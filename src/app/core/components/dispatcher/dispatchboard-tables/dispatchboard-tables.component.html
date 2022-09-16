@@ -3,6 +3,11 @@
   cdkDropList
   (cdkDropListDropped)="dropList($event)"
 >
+<div
+    *ngIf="__change_in_proggress"
+    @iconAnimation
+    class="loadingItem goTop"
+  ></div>
   <div class="inside-holder dispatch-new-main-holder">
     <table
       class="inside-table"
@@ -10,25 +15,25 @@
     >
       <thead [class.hideVisibility]="dDataIndx > 0">
         <tr>
-          <th class="theads truck-field abs">Truck</th>
-          <th class="theads trailer-field abs">Trailer</th>
-          <th class="theads driver-field">Driver</th>
-          <th class="theads phoneemail-field">Phone or Email</th>
-          <th class="theads location-field">Location</th>
-          <th class="theads status-field">Status</th>
-          <th class="theads pick-del-field">
+          <th class="theads-dispatch truck-field abs">Truck</th>
+          <th class="theads-dispatch trailer-field abs">Trailer</th>
+          <th class="theads-dispatch driver-field">Driver</th>
+          <th class="theads-dispatch phoneemail-field">Phone or Email</th>
+          <th class="theads-dispatch location-field">Location</th>
+          <th class="theads-dispatch status-field">Status</th>
+          <th class="theads-dispatch pick-del-field">
             <div class="two-table-heads">
               <div>Pickup</div>
               <div>Delivery</div>
             </div>
           </th>
-          <th class="theads empty-field"></th>
-          <th class="theads empty-field"></th>
-          <th class="theads empty-field"></th>
-          <th class="theads note-field">Note</th>
-          <th class="theads empty-field abs-right"></th>
-          <th class="theads empty-field abs-right"></th>
-          <th class="theads empty-field abs-right"></th>
+          <th class="theads-dispatch empty-field"></th>
+          <th class="theads-dispatch empty-field"></th>
+          <th class="theads-dispatch empty-field"></th>
+          <th class="theads-dispatch note-field">Note</th>
+          <th class="theads-dispatch empty-field abs-right"></th>
+          <th class="theads-dispatch empty-field abs-right"></th>
+          <th class="theads-dispatch empty-field abs-right"></th>
         </tr>
       </thead>
       <tbody>
@@ -604,10 +609,8 @@
               <span
                 [class.statusOpened]="statusOpenedIndex > -1"
                 class="full_location_name"
+                *ngIf="item.location.address !== null && !item.enterNewAddress"
                 ><span
-                  *ngIf="
-                    item.location.address !== null && !item.enterNewAddress
-                  "
                   [innerHtml]="
                     item.location.city + ', ' + item.location.stateShortName
                       | taHighlight: highlightingWords
@@ -811,12 +814,12 @@
           <td class="empty-field">
             <div
               class="initials_wrapper_main_hold"
-              [class.empty-box-field]="!item.driver"
+              [class.empty-box-field]="!item.activeLoad || !item.dispatcher"
             >
               <app-profile-images
-                *ngIf="item.driver"
+                *ngIf="item.activeLoad && item.dispatcher"
                 [indx]="index"
-                [name]="item.driver.firstName + ' ' + item.driver.lastName"
+                [name]="item.dispatcher.fullName"
                 [size]="'small'"
                 [type]="'user'"
               >

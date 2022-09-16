@@ -145,7 +145,6 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
             } factoring company`,
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -166,10 +165,6 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
             'Successfully delete factoring company',
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(

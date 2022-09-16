@@ -263,7 +263,10 @@ export class DriverDetailsItemComponent
       this.dataMvr,
       this.dataMedical,
       this.dataTest,
-      this.drivers[0].data.id
+      this.drivers[0].data.id,
+      null,
+      null,
+      this.drivers[0].data
     );
   }
 

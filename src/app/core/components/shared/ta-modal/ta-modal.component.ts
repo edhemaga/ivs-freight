@@ -170,7 +170,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
               const timeout = setTimeout(() => {
                 this.onAction('close');
                 clearTimeout(timeout);
-              }, 1200);
+              }, 1000);
             }
           }
         }
@@ -278,6 +278,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'multiple delete': {
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'cdl-void': {
         this.confirmationAction.emit(this.confirmationData);
         break;
       }

@@ -129,12 +129,18 @@ export class TaInputDropdownComponent
         changes.preloadMultiselectItems?.previousValue?.length &&
       this.inputConfig.multiselectDropdown
     ) {
-      const timeout = setTimeout(() => {
-        this.preloadMultiselectItems.forEach((item) => {
-          this.onMultiselectSelect(item, this.template);
-        });
-        clearTimeout(timeout);
-      }, 50);
+      if (changes.preloadMultiselectItems?.currentValue?.length) {
+        const timeout = setTimeout(() => {
+          this.preloadMultiselectItems.forEach((item) => {
+            this.onMultiselectSelect(item, this.template);
+          });
+          clearTimeout(timeout);
+        }, 50);
+      } else {
+        this.deleteAllMultiSelectItems(
+          changes.inputConfig?.currentValue?.label
+        );
+      }
     }
 
     // Details Pages
@@ -761,7 +767,7 @@ export class TaInputDropdownComponent
     };
   }
 
-  public removeMultiSelectItem(index: number) {
+  public removeMultiSelectItem(index: number, action: string) {
     this.options = this.originalOptions.map((item) => {
       if (item.id === this.multiselectItems[index].id) {
         return {
@@ -785,21 +791,36 @@ export class TaInputDropdownComponent
       this.inputConfig.label = this.multiSelectLabel;
     }
 
-    this.selectedItems.emit(
-      this.multiselectItems.map((item) => {
-        const { id, name } = item;
-        return {
-          id,
-          name,
-        };
-      })
-    );
+    if (action === 'multiselect') {
+      this.selectedItems.emit(
+        this.multiselectItems.map((item) => {
+          const { id, name } = item;
+          return {
+            id,
+            name,
+          };
+        })
+      );
+    } else {
+      this.selectedItems.emit(
+        this.multiselectItems.map((item) => {
+          const { id, code, description } = item;
+          return {
+            id,
+            code,
+            description,
+          };
+        })
+      );
+    }
   }
 
-  public delteAllMultiSelectItems(event: any) {
+  public deleteAllMultiSelectItems(currentLabel: string) {
     this.multiselectItems = [];
     this.inputConfig.multiSelectDropdownActive = null;
-    this.inputConfig.label = this.multiSelectLabel;
+    this.inputConfig.label = currentLabel
+      ? currentLabel
+      : this.multiSelectLabel;
     this.options = this.options.map((item) => {
       return {
         ...item,

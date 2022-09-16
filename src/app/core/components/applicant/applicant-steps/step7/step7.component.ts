@@ -1,16 +1,25 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
+
+import { addressValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
+import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { Applicant } from '../../state/model/applicant.model';
-import { Address } from '../../state/model/address.model';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
-import { SevenDaysHos } from '../../state/model/seven-days-hos.model';
-import { addressValidation } from '../../../shared/ta-input/ta-input.regex-validations';
-import { Subject, takeUntil } from 'rxjs';
+import {
+  AddressEntity,
+  CreateSevenDaysHosCommand,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step7',
@@ -20,11 +29,13 @@ import { Subject, takeUntil } from 'rxjs';
 export class Step7Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public sevenDaysHosForm: FormGroup;
 
-  public selectedAddress: Address = null;
+  public applicantId: number;
+
+  public selectedAddress: AddressEntity = null;
 
   public sevenDaysHosDaysData: string[] = [
     'Day',
@@ -113,16 +124,23 @@ export class Step7Component implements OnInit, OnDestroy {
     },
   ];
 
-  /* public applicant: Applicant | undefined; */
-
-  /* public sevenDaysHosInfo: SevenDaysHos | undefined; */
-
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private router: Router,
+    private applicantActionsService: ApplicantActionsService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
 
     this.createSevenDaysHos();
+
+    this.applicantActionsService.getApplicantInfo$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res.personalInfo.applicantId;
+      });
   }
 
   public get hosArray(): FormArray {
@@ -189,10 +207,11 @@ export class Step7Component implements OnInit, OnDestroy {
         const selectedFormControlName =
           this.questions[selectedCheckbox.index].formControlName;
 
-        this.sevenDaysHosForm
-          .get(selectedFormControlName)
-          .patchValue(selectedCheckbox.label);
-
+        if (selectedCheckbox.label === 'YES') {
+          this.sevenDaysHosForm.get(selectedFormControlName).patchValue(true);
+        } else {
+          this.sevenDaysHosForm.get(selectedFormControlName).patchValue(false);
+        }
         break;
 
       default:
@@ -288,96 +307,65 @@ export class Step7Component implements OnInit, OnDestroy {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
+      this.onSubmit();
     }
 
     if (event.action === 'back-step') {
+      this.router.navigate([`/application/${this.applicantId}/6`]);
     }
   }
 
-  /* private formFilling(): void {
-    if (this.sevenDaysHosInfo?.hosData?.length) {
-      this.sevenDaysHosForm.patchValue({
-        isValidHos: this.sevenDaysHosInfo?.isValidHos,
-        startDate: this.sevenDaysHosInfo.startDate,
-        address: this.sevenDaysHosInfo?.address,
-        anotherEmployer: this.sevenDaysHosInfo?.anotherEmployer,
-        intendToWorkAnotherEmployer:
-          this.sevenDaysHosInfo?.intendToWorkAnotherEmployer,
-        isValidAnotherEmployer: this.sevenDaysHosInfo?.isValidAnotherEmployer,
-      });
-
-      this.hosArray.clear();
-
-       this.sevenDaysHosInfo?.hosData.forEach(s => {
-          this.hosArray.push(this.createHos(s?.value, s.id))
-        });
-
-        this.countTotal();
+  public onSubmit(): void {
+    if (this.sevenDaysHosForm.invalid) {
+      this.inputService.markInvalid(this.sevenDaysHosForm);
+      return;
     }
-  } */
 
-  /* public onSubmitForm(): void {
-     this.shared.clearNotifications();
+    const {
+      hosArray,
+      isValidHos,
+      startDate,
+      address,
+      anotherEmployer,
+      intendToWorkAnotherEmployer,
+      isValidAnotherEmployer,
+      firstRowReview,
+      ...sevenDaysHosForm
+    } = this.sevenDaysHosForm.value;
 
-        let isValid = true;
+    const filteredHosArray: { hours: number; date: string }[] = hosArray.map(
+      (item: { hos: string | number }, index: number) => {
+        return {
+          hours: +item.hos,
+          date: convertDateToBackend(this.sevenDaysHosDateData[index + 1]),
+        };
+      }
+    );
 
-        if (this.isQuestionOne === undefined) {
-            this.notification.warning(
-                'Please answer are you working for another employer',
-                'Warning:'
-            );
-            isValid = false;
-        }
+    const saveData: CreateSevenDaysHosCommand = {
+      ...sevenDaysHosForm,
+      applicantId: this.applicantId,
+      hos: [...filteredHosArray],
+      releasedFromWork: isValidHos,
+      releasedDate: convertDateToBackend(startDate),
+      location: address,
+      workingForAnotherEmployer: anotherEmployer,
+      intendToWorkForAnotherEmployer: intendToWorkAnotherEmployer,
+      certifyInfomation: isValidAnotherEmployer,
+    };
 
-        if (this.isQuestionTwo === undefined) {
-            this.notification.warning(
-                'Please answer are you intending to work for another employer',
-                'Warning:'
-            );
-            isValid = false;
-        }
-
-        if (!isValid) {
-            return false;
-        }
-
-    const sevenDaysHosForm = this.sevenDaysHosForm.value;
-    const sevenDaysHos = new SevenDaysHos(this.sevenDaysHosInfo);
-
-    sevenDaysHos.applicantId = this.applicant?.id;
-
-    sevenDaysHos.isValidHos = sevenDaysHosForm.isValidHos;
-    sevenDaysHos.startDate = sevenDaysHosForm.startDate;
-    sevenDaysHos.address = sevenDaysHosForm.address;
-    sevenDaysHos.anotherEmployer = sevenDaysHosForm.anotherEmployer;
-    sevenDaysHos.intendToWorkAnotherEmployer =
-      sevenDaysHosForm.intendToWorkAnotherEmployer;
-    sevenDaysHos.isValidAnotherEmployer =
-      sevenDaysHosForm.isValidAnotherEmployer;
-    sevenDaysHos.hosData = [];
-
-     this.hosArray.controls.forEach(
-            (control: AbstractControl, key: number) => {
-                sevendayshos.hosData.push({
-                    id: control.value?.id ? control.value.id : undefined,
-                    name: (key + 1).toString(),
-                    value: control.value.hos,
-                    isCompleted: true,
-                });
-            }
-        );
-
-    this.apppEntityServices.SevenDaysHosService.upsert(
-            sevendayshos
-        ).subscribe(
-            () => {
-                this.notification.success('7 Days Hos is updated');
-            },
-            (error: any) => {
-                this.shared.handleError(error);
-            }
-        ); 
-  } */
+    this.applicantActionsService
+      .createSevenDaysHos(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/8`]);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
 
   /* public onSubmitReview(data: any): void {} */
 

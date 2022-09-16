@@ -198,7 +198,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             'Company Account successfully created.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
           this.notificationService.error(
@@ -227,7 +226,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             'Company Account successfully edit..',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
           this.notificationService.error(
@@ -247,10 +245,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             'Company Account successfully deleted.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () =>
           this.notificationService.error(

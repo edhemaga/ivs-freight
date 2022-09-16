@@ -386,18 +386,6 @@
 
       //------------------------ Custom width dependent on 'col' bootstrap ------------------------
 
-      &.w-col-70 {
-        width: 70px;
-      }
-
-      &.w-col-92{
-        width: 92px;
-      }
-
-      &.w-col-142{
-        width: 142px;
-      }
-
       &.w-col-686 {
         width: 686px;
       }
@@ -442,7 +430,7 @@
         width: 402px;
       }
 
-      &.w-col-details-366 {
+      &.w-col-366 {
         width: 366px;
       }
 
@@ -486,8 +474,24 @@
         width: 251px;
       }
 
+      &.w-col-248 {
+        width: 248px;
+      }
+
+      &.w-col-246 {
+        width: 246px;
+      }
+
       &.w-col-245 {
         width: 245px;
+      }
+
+      &.w-col-234 {
+        width: 234px;
+      }
+
+      &.w-col-231 {
+        width: 231px;
       }
 
       &.w-col-229 {
@@ -506,8 +510,20 @@
         width: 216px;
       }
 
+      &.w-col-211 {
+        width: 211px;
+      }
+
       &.w-col-201 {
         width: 201px;
+      }
+
+      &.w-col-196 {
+        width: 196px;
+      }
+
+      &.w-col-192 {
+        width: 192px;
       }
 
       &.w-col-189 {
@@ -536,6 +552,10 @@
 
       &.w-col-176 {
         width: 176px;
+      }
+
+      &.w-col-174 {
+        width: 174px;
       }
 
       &.w-col-168 {
@@ -572,6 +592,10 @@
         width: 145px;
       }
 
+      &.w-col-142 {
+        width: 142px;
+      }
+
       &.w-col-140 {
         width: 140px;
       }
@@ -584,8 +608,16 @@
         width: 136px;
       }
 
+      &.w-col-130 {
+        width: 130px;
+      }
+
       &.w-col-129 {
         width: 129px;
+      }
+
+      &.w-col-128 {
+        width: 128px;
       }
 
       &.w-col-126 {
@@ -624,44 +656,24 @@
         width: 100px;
       }
 
+      &.w-col-92 {
+        width: 92px;
+      }
+
       &.w-col-88 {
         width: 88px;
       }
 
+      &.w-col-78 {
+        width: 78px;
+      }
+
+      &.w-col-70 {
+        width: 70px;
+      }
+
       &.w-col-66 {
         width: 66px;
-      }
-
-      &.w-col-251 {
-        width: 251px;
-      }
-
-      &.w-col-211 {
-        width: 211px;
-      }
-
-      &.w-col-130 {
-        width: 130px;
-      }
-
-      &.w-col-234 {
-        width: 234px;
-      }
-
-      &.w-col-246 {
-        width: 246px;
-      }
-
-      &.w-col-174 {
-        width: 174px;
-      }
-
-      &.w-col-231 {
-        width: 231px;
-      }
-
-      &.w-col-192 {
-        width: 192px;
       }
 
       // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------
@@ -671,25 +683,41 @@
         .dropdown-groups {
           display: flex;
           flex-direction: column;
+          padding: 0px 4px;
+          padding-top: 8px;
 
           p {
             margin: 0;
           }
 
+          &.last-group {
+            padding-bottom: 8px;
+          }
+
           .dropdown-group-header {
-            font-size: 10px;
-            color: #dadada;
+            font-size: 11px;
+            color: #cccccc;
             font-weight: 700;
             text-transform: uppercase;
-            line-height: 13px;
-            padding: 4px;
-            padding-bottom: 3px;
+            line-height: 14px;
+            padding: 0 6px;
+            margin-bottom: 8px;
+
+            &::selection {
+              background-color: rgb(204, 204, 204, 0.2);
+              color: #cccccc;
+            }
+
+            &::-moz-selection {
+              background-color: rgb(204, 204, 204, 0.2);
+              color: #cccccc;
+            }
           }
 
           .dropdown-subgroup-options {
             display: flex;
             align-items: center;
-            padding: 4px;
+            padding: 4px 6px;
             height: 26px;
 
             &:hover {
@@ -699,8 +727,20 @@
               transition: all 0.3s ease-in-out;
 
               .dropdown-subgroup-text {
+                font-size: 14px;
+                font-weight: 400;
                 color: #3c3c3c;
                 transition: all 0.3s ease-in-out;
+
+                &::selection {
+                  background-color: rgb(60, 60, 60, 0.2);
+                  color: #3c3c3c;
+                }
+
+                &::-moz-selection {
+                  background-color: rgb(60, 60, 60, 0.2);
+                  color: #3c3c3c;
+                }
 
                 &.active {
                   // Higlight text

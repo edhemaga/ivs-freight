@@ -7,7 +7,7 @@
     align-items: center;
     justify-content: space-between;
     margin: 4px 0px;
-    padding-right: 5px;
+    padding-right: 4px;
     height: 26px;
     cursor: pointer;
 
@@ -247,6 +247,24 @@
           &::selection {
             color: #919191;
             background: rgb(145, 145, 145, 0.2);
+          }
+        }
+      }
+
+      // EDIT & DELETE ACTIONS
+      .edit-delete-actions {
+        .edit-icon,
+        .delete-icon {
+          cursor: pointer;
+
+          svg {
+            path {
+              fill: #b7b7b7;
+            }
+          }
+
+          &.delete-icon {
+            margin-left: 12px;
           }
         }
       }
