@@ -8,14 +8,24 @@ import {
   addressUnitValidation,
   addressValidation,
   bankValidation,
+  customerCreditValidation,
+  customerPayTermValidation,
   daysValidRegex,
   departmentValidation,
+  iftaValidation,
+  irpValidation,
   mcFFValidation,
   mileValidation,
   monthsValidRegex,
   perStopValidation,
   phoneExtension,
+  prefixValidation,
   routingBankValidation,
+  scacValidation,
+  suffixValidation,
+  tollValidation,
+  urlValidation,
+  usdotValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -42,6 +52,7 @@ import {
   phoneFaxRegex,
 } from '../../../../shared/ta-input/ta-input.regex-validations';
 import { convertNumberInThousandSep } from '../../../../../utils/methods.calculations';
+import { startingValidation } from '../../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-settings-basic-modal',
@@ -281,19 +292,19 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     this.companyForm = this.formBuilder.group({
       //----------------- Basic Tab
       name: [null, Validators.required],
-      usDot: [null, Validators.required],
+      usDot: [null, [Validators.required, ...usdotValidation]],
       ein: [null, einNumberRegex],
       mc: [null, [...mcFFValidation]],
       phone: [null, phoneFaxRegex],
       email: [null],
       fax: [null, phoneFaxRegex],
-      webUrl: [null],
+      webUrl: [null, urlValidation],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
-      irp: [null],
-      ifta: [null],
-      toll: [null],
-      scac: [null],
+      irp: [null, irpValidation],
+      ifta: [null, iftaValidation],
+      toll: [null, tollValidation],
+      scac: [null, scacValidation],
       timeZone: [null, Validators.required],
       currency: [null, Validators.required],
       companyType: [null],
@@ -303,15 +314,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       departmentContacts: this.formBuilder.array([]),
       bankAccounts: this.formBuilder.array([]),
       bankCards: this.formBuilder.array([]),
-      prefix: [null],
-      starting: [null, Validators.required],
-      sufix: [null],
+      prefix: [null, prefixValidation],
+      starting: [null, [Validators.required, ...startingValidation]],
+      suffix: [null, suffixValidation],
       autoInvoicing: [false],
       fleetType: ['Solo'],
       preferredLoadType: ['FTL'],
       factorByDefault: [false],
-      customerPayTerm: [null, daysValidRegex],
-      customerCredit: [null],
+      customerPayTerm: [null, [daysValidRegex, ...customerPayTermValidation]],
+      customerCredit: [null, customerCreditValidation],
       mvrMonths: [12, [Validators.required, monthsValidRegex]],
       truckInspectionMonths: [12, [Validators.required, monthsValidRegex]],
       trailerInspectionMonths: [12, [Validators.required, monthsValidRegex]],
@@ -926,7 +937,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       dateOfIncorporation,
       prefix,
       starting,
-      sufix,
+      suffix,
       customerPayTerm,
       customerCredit,
       mvrMonths,
@@ -1141,7 +1152,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       dateOfIncorporation,
       prefix,
       starting,
-      sufix,
+      suffix,
       customerPayTerm,
       customerCredit,
       mvrMonths,
@@ -1302,6 +1313,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       driverSoloDefaultCommission,
       driverTeamDefaultCommission,
       ownerDefaultCommission,
+      suffix,
       // Accounting
       accountingPayPeriod,
       accountingEndingIn,
@@ -1341,6 +1353,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     let newData: UpdateCompanyCommand = {
       ...form,
+      sufix: suffix,
       timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
       currency: this.selectedCurrency ? this.selectedCurrency.id : null,
       address: {
@@ -1356,6 +1369,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       preferredLoadType:
         this.companyForm.get('preferredLoadType').value === 'FTL' ? 1 : 2,
     };
+
+    console.log('form', form);
 
     for (let index = 0; index < departmentContacts.length; index++) {
       departmentContacts[index].departmentId =
@@ -1590,7 +1605,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       bankCards: [],
       prefix: this.editData.company.additionalInfo.prefix,
       starting: this.editData.company.additionalInfo.starting,
-      sufix: this.editData.company.additionalInfo.sufix,
+      suffix: this.editData.company.additionalInfo.sufix,
       autoInvoicing: this.editData.company.additionalInfo.autoInvoicing,
       preferredLoadType: this.editData.company.additionalInfo.preferredLoadType,
       factorByDefault: this.editData.company.additionalInfo.factorByDefault,

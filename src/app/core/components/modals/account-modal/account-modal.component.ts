@@ -22,6 +22,7 @@ import { Subject, takeUntil } from 'rxjs';
 import {
   labelValidation,
   passwordValidation,
+  urlValidation,
   usernameValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { NotificationService } from '../../../services/notification/notification.service';
@@ -78,7 +79,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       name: [null, [Validators.required, ...labelValidation]],
       username: [null, [Validators.required, ...usernameValidation]],
       password: [null, [Validators.required, ...passwordValidation]],
-      url: [null],
+      url: [null, urlValidation],
       companyAccountLabelId: [null],
       note: [null],
     });

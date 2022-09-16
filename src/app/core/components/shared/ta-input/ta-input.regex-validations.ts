@@ -253,6 +253,75 @@ export const fullNameValidation = [
   Validators.maxLength(32),
 ];
 
+//---------------- Title --------------------------------
+export const titleValidation = [
+  Validators.minLength(2),
+  Validators.maxLength(64),
+];
+
+//---------------- Url --------------------------------
+export const urlValidation = [
+  Validators.minLength(4),
+  Validators.maxLength(255),
+];
+
+//---------------- USDOT --------------------------------
+export const usdotValidation = [
+  Validators.minLength(6),
+  Validators.maxLength(8),
+];
+
+//---------------- IRP --------------------------------
+export const irpValidation = [Validators.minLength(5), Validators.maxLength(5)];
+
+//---------------- IFTA --------------------------------
+export const iftaValidation = [
+  Validators.minLength(13),
+  Validators.maxLength(13),
+];
+
+//---------------- Toll --------------------------------
+export const tollValidation = [
+  Validators.minLength(8),
+  Validators.maxLength(8),
+];
+
+//---------------- Toll --------------------------------
+export const scacValidation = [
+  Validators.minLength(2),
+  Validators.maxLength(4),
+];
+
+//---------------- Prefix --------------------------------
+export const prefixValidation = [
+  Validators.minLength(1),
+  Validators.maxLength(4),
+];
+
+//---------------- Starting --------------------------------
+export const startingValidation = [
+  Validators.minLength(1),
+  Validators.maxLength(6),
+];
+
+//---------------- Suffix --------------------------------
+export const suffixValidation = [
+  Validators.minLength(1),
+  Validators.maxLength(4),
+];
+
+//---------------- Customer Pay Term --------------------------------
+export const customerPayTermValidation = [
+  Validators.minLength(1),
+  Validators.maxLength(3),
+];
+
+//---------------- Customer Credit --------------------------------
+export const customerCreditValidation = [
+  Validators.minLength(4),
+  Validators.maxLength(13),
+];
+
 //---------------- Mile, PerStop -------------------
 export const mileValidation = [Validators.min(0), Validators.max(10)];
 

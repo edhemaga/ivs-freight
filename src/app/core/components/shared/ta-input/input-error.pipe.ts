@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class InputErrorPipe implements PipeTransform {
   transform(value: any, inputName?: string): string {
     let errorMessageValue: string = '';
-    console.log(value);
+
     if (value !== null) {
       if (value['required']) {
         errorMessageValue = 'Required';

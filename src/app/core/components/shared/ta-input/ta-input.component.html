@@ -259,6 +259,13 @@
     >
       <svg-icon
         class="ta-input-command-svg-first"
+        [ngClass]="{
+          'invalid-focus-in':
+            getSuperControl.value &&
+            getSuperControl.invalid &&
+            isVisibleCommands &&
+            !inputConfig.blackInput
+        }"
         [src]="inputConfig.commands.firstCommand.svg"
         (click)="
           onCommands(
@@ -281,6 +288,13 @@
     >
       <svg-icon
         class="ta-input-command-svg-second"
+        [ngClass]="{
+          'invalid-focus-in':
+            getSuperControl.value &&
+            getSuperControl.invalid &&
+            focusInput &&
+            !inputConfig.blackInput
+        }"
         [src]="inputConfig.commands.secondCommand.svg"
         (click)="
           onCommands(

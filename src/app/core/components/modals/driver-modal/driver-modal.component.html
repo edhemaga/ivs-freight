@@ -722,19 +722,28 @@
                 ></app-ta-input>
               </div>
               <div>
-                <app-ta-input-arrows
+                <app-ta-input
                   formControlName="mvrExpiration"
                   [inputConfig]="{
                     name: 'months',
                     type: 'text',
-                    placeholderText: 'months'
+                    placeholderText: 'months',
+                    label: 'MVR Exp.',
+                    isRequired: true,
+                    commands: {
+                      active: true,
+                      type: 'months',
+                      firstCommand: {
+                        name: 'minus',
+                        svg: 'assets/svg/common/ic_pm_decrement.svg'
+                      },
+                      secondCommand: {
+                        name: 'plus',
+                        svg: 'assets/svg/common/ic_pm_increment.svg'
+                      }
+                    }
                   }"
-                  [elementOrder]="1"
-                  [name]="'MVR Exp.'"
-                  [type]="'driver-modal'"
-                  [required]="true"
-                >
-                </app-ta-input-arrows>
+                ></app-ta-input>
               </div>
             </div>
           </app-ta-custom-card>
