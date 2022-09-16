@@ -1965,6 +1965,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   public onDeleteLogoAction(event: any) {
     if (event) {
       this.displayUploadZone = false;
+
+      this.companyForm.get('logo').patchValue(null);
+      this.companyForm.get('logo').setErrors(null);
     }
   }
 

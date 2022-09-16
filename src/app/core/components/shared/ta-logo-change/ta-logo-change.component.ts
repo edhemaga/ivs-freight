@@ -133,6 +133,12 @@ export class TaLogoChangeComponent
           this.onUploadImage(data);
         }
       });
+
+    if (this.imageUrl) {
+      this.showUploadZone = false;
+
+      this.saveLogoEvent.emit(true);
+    }
   }
 
   public ngAfterViewInit() {
