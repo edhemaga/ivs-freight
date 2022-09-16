@@ -339,7 +339,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             'Successfuly updated company parking',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -401,7 +400,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             'Successfuly added company parking',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -422,10 +420,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             'Successfuly delete company parking',
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(

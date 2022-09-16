@@ -1,5 +1,11 @@
 <app-ta-modal
-  [modalTitle]="editData?.type !== 'edit-licence' ? 'Add CDL' : 'Edit CDL'"
+  [modalTitle]="
+    editData?.type !== 'edit-licence'
+      ? this.editData.type === 'renew-licence'
+        ? 'Renew CDL'
+        : 'Add CDL'
+      : 'Edit CDL'
+  "
   [editData]="editData"
   [editName]="modalName"
   [isModalValid]="cdlForm.valid"
@@ -12,12 +18,15 @@
         <app-ta-input
           formControlName="cdlNumber"
           [inputConfig]="{
-            name: 'CDL Number',
+            name: 'cdl-number',
             type: 'text',
             label: 'CDL No.',
             isRequired: true,
             textTransform: 'capitalize',
-            autoFocus: editData?.type !== 'edit-licence' ? true : false
+            autoFocus: editData?.type !== 'edit-licence' ? true : false,
+            minLength: selectedCountryType === 'US' ? 1 : 5,
+            maxLength: selectedCountryType === 'US' ? 19 : 15,
+            isDisabled: this.editData.type === 'renew-licence'
           }"
         ></app-ta-input>
       </div>
@@ -30,7 +39,8 @@
             label: 'Class',
             isRequired: true,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-109'
+            dropdownWidthClass: 'w-col-109',
+            isDisabled: this.editData.type === 'renew-licence'
           }"
           [options]="classTypes"
           [activeItem]="selectedClassType"
@@ -46,7 +56,8 @@
             label: 'State',
             isRequired: true,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-109'
+            dropdownWidthClass: 'w-col-109',
+            isDisabled: this.editData.type === 'renew-licence'
           }"
           [options]="stateTypes"
           [activeItem]="selectedStateType"

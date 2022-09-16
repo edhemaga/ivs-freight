@@ -15,18 +15,27 @@ import { configFactory } from 'src/app/app.config';
 export class DispatcherResolverService implements Resolve<any> {
   constructor(
     private dispatcherStoreService: DispatcherStoreService,
-    private dashboardQuery: DispatcherQuery,
+    private dispatcherQuery: DispatcherQuery,
     private usServicer:UserLoggedService
   ) {}
   resolve(route: ActivatedRouteSnapshot): Observable<any> {
-    if (this.dashboardQuery.modalList?.dispatchers?.length) {
-      return this.dashboardQuery.modalList;
+    if (this.dispatcherQuery.modalList?.drivers?.length) {
+      return this.dispatcherQuery.modalList;
     } else {
-      const dispatchList = this.dispatcherStoreService.getDispatchboardList();
+      const dispatcherId = localStorage.getItem('dispatchUserSelect') ? parseInt(localStorage.getItem('dispatchUserSelect')) : -1;
+
+      const dispatchList = dispatcherId == -1 ? this.dispatcherStoreService.getDispatchboardList() : this.dispatcherStoreService.getDispatchBoardByDispatcherList(dispatcherId);
       const modalList = this.dispatcherStoreService.getDispatcherList();
 
       let join = forkJoin([modalList, dispatchList]).pipe(
-        map((list) => {
+        map((list: any) => {
+
+          list[1] = dispatcherId == -1 ? list[1] : {
+            pagination: {
+              data: [list[1]]
+            }
+          };
+
           this.dispatcherStoreService.dispatcherData = list;
 
           return list;

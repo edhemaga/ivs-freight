@@ -93,6 +93,9 @@ p {
   align-items: center;
   justify-content: space-between;
   background-color: #ffffff;
+  .no-factoring-data {
+    justify-content: flex-end !important;
+  }
   .settings-name {
     height: 100%;
     flex: 1;

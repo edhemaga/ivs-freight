@@ -8,7 +8,7 @@ import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-traile
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TrailerTService } from '../state/trailer.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -17,6 +17,7 @@ import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/
 import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
+import { TrailersDetailsListQuery } from '../state/trailer-details-list-state/trailer-details-list.query';
 
 @Component({
   selector: 'app-trailer-details',
@@ -41,7 +42,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private detailsPageDriverSer: DetailsPageService,
     private tableService: TruckassistTableService,
-    private trailerDetailsQuery: TrailerDetailsQuery,
+    private trailerDetailListQuery: TrailersDetailsListQuery,
     private dropService: DropDownService,
     private confirmationService: ConfirmationService,
     private trailerItemStore: TrailerItemStore,
@@ -89,31 +90,31 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     this.detailsPageDriverSer.pageDetailChangeId$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
-        this.trailerService
-          .getTrailerById(id)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: (res: TrailerResponse) => {
-              this.currentIndex = this.trailerList.findIndex(
-                (trailer) => trailer.id === res.id
-              );
+        let query;
+        if (this.trailerDetailListQuery.hasEntity(id)) {
+          query = this.trailerDetailListQuery.selectEntity(id).pipe(take(1));
+        } else {
+          query = this.trailerService.getTrailerById(id);
+        }
+        query.pipe(takeUntil(this.destroy$)).subscribe({
+          next: (res: TrailerResponse) => {
+            this.currentIndex = this.trailerList.findIndex(
+              (trailer) => trailer.id === res.id
+            );
 
-              this.trailerConf(res);
-              this.initTableOptions(res);
-              this.router.navigate([`/trailer/${res.id}/details`]);
-              this.notificationService.success(
-                'Trailer successfully changed',
-                'Success:'
-              );
-              this.cdRef.detectChanges();
-            },
-            error: () => {
-              this.notificationService.error(
-                "Trailer can't be loaded",
-                'Error:'
-              );
-            },
-          });
+            this.trailerConf(res);
+            this.initTableOptions(res);
+            this.router.navigate([`/trailer/${res.id}/details`]);
+            this.notificationService.success(
+              'Trailer successfully changed',
+              'Success:'
+            );
+            this.cdRef.detectChanges();
+          },
+          error: () => {
+            this.notificationService.error("Trailer can't be loaded", 'Error:');
+          },
+        });
       });
     this.trailerConf(this.activated_route.snapshot.data.trailer);
   }

@@ -15,7 +15,7 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
           color: #fff !important;
 
           .dispatcher-close{
-            display: block !important;
+            display: block !important; 
           }
         }
       }
@@ -168,6 +168,15 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
         &.truck_#{$truck_col} {
           .select_span {
             color: unquote('#' + $truck_col) !important;
+            &::-moz-selection {
+              color: unquote("#" + $truck_col) !important;
+              background: unquote("#" + $truck_col + "22") !important;
+            }
+        
+            &::selection {
+              color: unquote("#" + $truck_col) !important;
+              background: unquote("#" + $truck_col + "22") !important;
+            }
           }
         }
       }
@@ -176,6 +185,15 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
         &.trailer_#{$trailer_col} {
           .select_span {
             color: unquote('#' + $trailer_col) !important;
+            &::-moz-selection {
+              color: unquote("#" + $trailer_col) !important;
+              background: unquote("#" + $trailer_col + "22") !important;
+            }
+        
+            &::selection {
+              color: unquote("#" + $trailer_col) !important;
+              background: unquote("#" + $trailer_col+ "22") !important;
+            }
           }
         }
       }
@@ -1126,12 +1144,15 @@ kendo-grid .toolbar-container {
 }
 
 .customTabsDispatchHold {
+  position: relative;
+  display: flex;
+  align-items: center;
   background-color: #fff;
   padding: 2px;
   height: 32px;
 
   &.left {
-    border-radius: 3px 0 0 3px;
+    border-radius: 3px;
     margin-right: 0;
     padding-right: 0;
   }
@@ -1141,6 +1162,10 @@ kendo-grid .toolbar-container {
     margin-left: 0;
     border-radius: 0 3px 3px 0;
     padding-left: 0;
+  }
+
+  .left, .right{
+    flex: 1;
   }
 }
 
@@ -1170,7 +1195,7 @@ kendo-grid .toolbar-container {
   }
 }
 
-.pickup-col {
+.pick-del-field {
   position: relative;
 
   span.cursor-pointer {
@@ -1191,16 +1216,25 @@ kendo-grid .toolbar-container {
       div {
         font-size: 10px;
         font-weight: 700;
-        color: #b7b7b7;
+        color: #919191;
+
+        &::-moz-selection {
+          color: #919191 !important;
+          background: #91919122 !important;
+        }
+    
+        &::selection {
+          color: #6c6c6c !important;
+          background: #91919122 !important;
+        }
       }
     }
   }
 }
 
-.destination-data {
-  span.cursor-pointer {
+.destination-data, .pickup-data {
+  span {
     color: rgba(145, 145, 145, 1);
-
     .select_span {
       line-height: 14px;
       min-width: 100px;
@@ -1213,7 +1247,17 @@ kendo-grid .toolbar-container {
         div {
           font-size: 10px;
           font-weight: 700;
-          color: #b7b7b7;
+          color: #919191;
+  
+          &::-moz-selection {
+            color: #919191 !important;
+            background: #91919122 !important;
+          }
+      
+          &::selection {
+            color: #6c6c6c !important;
+            background: #91919122 !important;
+          }
         }
       }
     }
@@ -3054,5 +3098,15 @@ kendo-grid .toolbar-container {
   color: #919191;
   font-weight: 900;
   line-height: 32px;
+
+  &::-moz-selection {
+    color: #919191 !important;
+    background: #91919122 !important;
+  }
+
+  &::selection {
+    color: #6c6c6c !important;
+    background: #91919122 !important;
+  }
 }
 

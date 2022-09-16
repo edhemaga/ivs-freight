@@ -90,7 +90,7 @@
             type: 'text',
             label: 'Address, City, State Zip',
             placeholderIcon: 'address',
-            minLength: 12,
+            minLength: 6,
             maxLength: 256,
             textTransform: 'capitalize'
           }"
@@ -144,46 +144,40 @@
         <div
           *ngIf="insurancePolicyForm.get('commericalGeneralLiability').value"
         >
-          <div class="row">
-            <div class="col-4">
-              <app-ta-input
-                formControlName="commericalPolicy"
-                [inputConfig]="{
-                  name: 'Policy',
-                  type: 'text',
-                  label: 'Policy #',
-                  isRequired: true,
-                  textTransform: 'capitalize'
-                }"
-              ></app-ta-input>
-            </div>
-            <div class="col-5">
-              <app-ta-input
-                formControlName="commericalInsurerName"
-                [inputConfig]="{
-                  name: 'Insurer Name',
-                  type: 'text',
-                  label: 'Insurer Name',
-                  isRequired: true,
-                  textTransform: 'capitalize'
-                }"
-              ></app-ta-input>
-            </div>
-            <div class="col-3 no-p-left">
-              <app-ta-input-dropdown
-                formControlName="commericalRating"
-                [inputConfig]="{
-                  name: 'Input Dropdown',
-                  type: 'text',
-                  label: 'Rating',
-                  isDropdown: true,
-                  dropdownWidthClass: 'w-col-3'
-                }"
-                [options]="ratings"
-                [activeItem]="selectedCommericalRating"
-                (selectedItem)="onSelectDropdown($event, 'commercial')"
-              ></app-ta-input-dropdown>
-            </div>
+          <div class="insurance-policy-rating">
+            <app-ta-input
+              formControlName="commericalPolicy"
+              [inputConfig]="{
+                name: 'Policy',
+                type: 'text',
+                label: 'Policy #',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="commericalInsurerName"
+              [inputConfig]="{
+                name: 'Insurer Name',
+                type: 'text',
+                label: 'Insurer Name',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input-dropdown
+              formControlName="commericalRating"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Rating',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-78'
+              }"
+              [options]="ratings"
+              [activeItem]="selectedCommericalRating"
+              (selectedItem)="onSelectDropdown($event, 'commercial')"
+            ></app-ta-input-dropdown>
           </div>
           <div class="row">
             <div class="col-6">
@@ -301,46 +295,40 @@
         }"
       >
         <div *ngIf="insurancePolicyForm.get('automobileLiability').value">
-          <div class="row">
-            <div class="col-4">
-              <app-ta-input
-                formControlName="automobilePolicy"
-                [inputConfig]="{
-                  name: 'Policy',
-                  type: 'text',
-                  label: 'Policy #',
-                  isRequired: true,
-                  textTransform: 'capitalize'
-                }"
-              ></app-ta-input>
-            </div>
-            <div class="col-5">
-              <app-ta-input
-                formControlName="automobileInsurerName"
-                [inputConfig]="{
-                  name: 'Insurer Name',
-                  type: 'text',
-                  label: 'Insurer Name',
-                  isRequired: true,
-                  textTransform: 'capitalize'
-                }"
-              ></app-ta-input>
-            </div>
-            <div class="col-3 no-p-left">
-              <app-ta-input-dropdown
-                formControlName="automobileRating"
-                [inputConfig]="{
-                  name: 'Input Dropdown',
-                  type: 'text',
-                  label: 'Rating',
-                  isDropdown: true,
-                  dropdownWidthClass: 'w-col-3'
-                }"
-                [options]="ratings"
-                [activeItem]="selectedAutomobileRating"
-                (selectedItem)="onSelectDropdown($event, 'automobile')"
-              ></app-ta-input-dropdown>
-            </div>
+          <div class="insurance-policy-rating">
+            <app-ta-input
+              formControlName="automobilePolicy"
+              [inputConfig]="{
+                name: 'Policy',
+                type: 'text',
+                label: 'Policy #',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="automobileInsurerName"
+              [inputConfig]="{
+                name: 'Insurer Name',
+                type: 'text',
+                label: 'Insurer Name',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input-dropdown
+              formControlName="automobileRating"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Rating',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-78'
+              }"
+              [options]="ratings"
+              [activeItem]="selectedAutomobileRating"
+              (selectedItem)="onSelectDropdown($event, 'automobile')"
+            ></app-ta-input-dropdown>
           </div>
           <div class="row">
             <div class="col-6">
@@ -439,46 +427,40 @@
         }"
       >
         <div *ngIf="insurancePolicyForm.get('motorTruckCargo').value">
-          <div class="row">
-            <div class="col-4">
-              <app-ta-input
-                formControlName="motorPolicy"
-                [inputConfig]="{
-                  name: 'Policy',
-                  type: 'text',
-                  label: 'Policy #',
-                  isRequired: true,
-                  textTransform: 'capitalize'
-                }"
-              ></app-ta-input>
-            </div>
-            <div class="col-5">
-              <app-ta-input
-                formControlName="motorInsurerName"
-                [inputConfig]="{
-                  name: 'Insurer Name',
-                  type: 'text',
-                  label: 'Insurer Name',
-                  isRequired: true,
-                  textTransform: 'capitalize'
-                }"
-              ></app-ta-input>
-            </div>
-            <div class="col-3 no-p-left">
-              <app-ta-input-dropdown
-                formControlName="motorRating"
-                [inputConfig]="{
-                  name: 'Input Dropdown',
-                  type: 'text',
-                  label: 'Rating',
-                  isDropdown: true,
-                  dropdownWidthClass: 'w-col-3'
-                }"
-                [options]="ratings"
-                [activeItem]="selectedMotorRating"
-                (selectedItem)="onSelectDropdown($event, 'motor')"
-              ></app-ta-input-dropdown>
-            </div>
+          <div class="insurance-policy-rating">
+            <app-ta-input
+              formControlName="motorPolicy"
+              [inputConfig]="{
+                name: 'Policy',
+                type: 'text',
+                label: 'Policy #',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="motorInsurerName"
+              [inputConfig]="{
+                name: 'Insurer Name',
+                type: 'text',
+                label: 'Insurer Name',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input-dropdown
+              formControlName="motorRating"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Rating',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-78'
+              }"
+              [options]="ratings"
+              [activeItem]="selectedMotorRating"
+              (selectedItem)="onSelectDropdown($event, 'motor')"
+            ></app-ta-input-dropdown>
           </div>
           <div class="row last-row">
             <div class="col-6">
@@ -541,46 +523,40 @@
         }"
       >
         <div *ngIf="insurancePolicyForm.get('physicalDamage').value">
-          <div class="row">
-            <div class="col-4">
-              <app-ta-input
-                formControlName="physicalPolicy"
-                [inputConfig]="{
-                  name: 'Policy',
-                  type: 'text',
-                  label: 'Policy #',
-                  isRequired: true,
-                  textTransform: 'capitalize'
-                }"
-              ></app-ta-input>
-            </div>
-            <div class="col-5">
-              <app-ta-input
-                formControlName="physicalInsurerName"
-                [inputConfig]="{
-                  name: 'Insurer Name',
-                  type: 'text',
-                  label: 'Insurer Name',
-                  isRequired: true,
-                  textTransform: 'capitalize'
-                }"
-              ></app-ta-input>
-            </div>
-            <div class="col-3 no-p-left">
-              <app-ta-input-dropdown
-                formControlName="physicalRating"
-                [inputConfig]="{
-                  name: 'Input Dropdown',
-                  type: 'text',
-                  label: 'Rating',
-                  isDropdown: true,
-                  dropdownWidthClass: 'w-col-3'
-                }"
-                [options]="ratings"
-                [activeItem]="selectedPhysicalDamageRating"
-                (selectedItem)="onSelectDropdown($event, 'physical damage')"
-              ></app-ta-input-dropdown>
-            </div>
+          <div class="insurance-policy-rating">
+            <app-ta-input
+              formControlName="physicalPolicy"
+              [inputConfig]="{
+                name: 'Policy',
+                type: 'text',
+                label: 'Policy #',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="physicalInsurerName"
+              [inputConfig]="{
+                name: 'Insurer Name',
+                type: 'text',
+                label: 'Insurer Name',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input-dropdown
+              formControlName="physicalRating"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Rating',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-78'
+              }"
+              [options]="ratings"
+              [activeItem]="selectedPhysicalDamageRating"
+              (selectedItem)="onSelectDropdown($event, 'physical damage')"
+            ></app-ta-input-dropdown>
           </div>
           <div class="row last-row">
             <div class="col-6">
@@ -643,46 +619,40 @@
         }"
       >
         <div *ngIf="insurancePolicyForm.get('trailerInterchange').value">
-          <div class="row">
-            <div class="col-4">
-              <app-ta-input
-                formControlName="trailerPolicy"
-                [inputConfig]="{
-                  name: 'Policy',
-                  type: 'text',
-                  label: 'Policy #',
-                  isRequired: true,
-                  textTransform: 'capitalize'
-                }"
-              ></app-ta-input>
-            </div>
-            <div class="col-5">
-              <app-ta-input
-                formControlName="trailerInsurerName"
-                [inputConfig]="{
-                  name: 'Insurer Name',
-                  type: 'text',
-                  label: 'Insurer Name',
-                  isRequired: true,
-                  textTransform: 'capitalize'
-                }"
-              ></app-ta-input>
-            </div>
-            <div class="col-3 no-p-left">
-              <app-ta-input-dropdown
-                formControlName="trailerRating"
-                [inputConfig]="{
-                  name: 'Input Dropdown',
-                  type: 'text',
-                  label: 'Rating',
-                  isDropdown: true,
-                  dropdownWidthClass: 'w-col-3'
-                }"
-                [options]="ratings"
-                [activeItem]="selectedTrailerRating"
-                (selectedItem)="onSelectDropdown($event, 'trailer interchange')"
-              ></app-ta-input-dropdown>
-            </div>
+          <div class="insurance-policy-rating">
+            <app-ta-input
+              formControlName="trailerPolicy"
+              [inputConfig]="{
+                name: 'Policy',
+                type: 'text',
+                label: 'Policy #',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="trailerInsurerName"
+              [inputConfig]="{
+                name: 'Insurer Name',
+                type: 'text',
+                label: 'Insurer Name',
+                isRequired: true,
+                textTransform: 'capitalize'
+              }"
+            ></app-ta-input>
+            <app-ta-input-dropdown
+              formControlName="trailerRating"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Rating',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-78'
+              }"
+              [options]="ratings"
+              [activeItem]="selectedTrailerRating"
+              (selectedItem)="onSelectDropdown($event, 'trailer interchange')"
+            ></app-ta-input-dropdown>
           </div>
           <div class="row last-row">
             <div class="col-12">

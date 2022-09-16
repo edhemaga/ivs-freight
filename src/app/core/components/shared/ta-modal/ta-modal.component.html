@@ -175,9 +175,16 @@
     </div>
 
     <!-- Modal Footer Confirmation Modal -->
-    <div *ngIf="confirmationData" class="modal-footer mutliple-buttons">
+    <div
+      *ngIf="confirmationData"
+      class="modal-footer"
+      [ngClass]="{
+        'mutliple-buttons': confirmationData.subType !== 'cdl void'
+      }"
+    >
       <!-- Cancel -->
       <button
+        *ngIf="confirmationData.subType !== 'cdl void'"
         (click)="onAction('close')"
         class="modal-cancel-btn"
         type="button"
@@ -239,6 +246,15 @@
             ? "Remove from archive"
             : "Archive" + " " + confirmationData?.template
         }}
+      </button>
+      <!-- Void CDL -->
+      <button
+        *ngIf="confirmationData?.subType === 'cdl void'"
+        (click)="onAction('cdl-void')"
+        class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+        type="button"
+      >
+        Void Current CDL
       </button>
       <!-- DNU -->
       <button

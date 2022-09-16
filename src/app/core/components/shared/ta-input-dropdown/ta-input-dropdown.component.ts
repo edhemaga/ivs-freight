@@ -83,6 +83,9 @@ export class TaInputDropdownComponent
   // Dropdown navigation with keyboard
   private dropdownPosition: number = -1;
 
+  // For Dispatchboard hover options
+  private hoveredOption: number = -1;
+
   constructor(
     @Self() public superControl: NgControl,
     private inputService: TaInputService,

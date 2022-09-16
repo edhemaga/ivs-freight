@@ -49,8 +49,10 @@
                       type: 'text',
                       label: 'Shop Name',
                       isRequired: true,
-                      textTransform: 'capitalize',
-                      autoFocus: editData?.type !== 'edit' ? true : false
+                      textTransform: 'uppercase',
+                      autoFocus: editData?.type !== 'edit' ? true : false,
+                      minLength: 2,
+                      maxLength: 64
                     }"
                   ></app-ta-input>
                 </div>
@@ -65,7 +67,7 @@
                       label: 'Address, City, State Zip',
                       isRequired: true,
                       placeholderIcon: 'address',
-                      minLength: 12,
+                      minLength: 6,
                       maxLength: 256,
                       textTransform: 'capitalize'
                     }"
