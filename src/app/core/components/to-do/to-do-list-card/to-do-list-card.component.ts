@@ -1,5 +1,5 @@
 import { TodoListResponse } from './../../../../../../appcoretruckassist/model/todoListResponse';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TodoTService } from '../state/todo.service';
 import { TodoStatus, UpdateTodoStatusCommand } from 'appcoretruckassist';
@@ -7,19 +7,17 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaskModalComponent } from '../../modals/task-modal/task-modal.component';
 import { DropResult } from 'ngx-smooth-dnd';
 
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { SharedService } from '../../../services/shared/shared.service';
 import { CommentsService } from '../../../services/comments/comments.service';
 import { applyDrag } from '../../../utils/methods.globals';
 
-@UntilDestroy()
 @Component({
   selector: 'app-to-do-list-card',
   templateUrl: './to-do-list-card.component.html',
   styleUrls: ['./to-do-list-card.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ToDoListCardComponent implements OnInit {
+export class ToDoListCardComponent implements OnInit, OnDestroy {
   public updatedStatusData: UpdateTodoStatusCommand;
   startChangingStatus = false;
   public dragStarted = false;
@@ -416,5 +414,10 @@ export class ToDoListCardComponent implements OnInit {
           },
         });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
