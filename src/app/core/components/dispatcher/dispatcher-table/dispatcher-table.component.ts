@@ -82,7 +82,9 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
   selectedDispatchers: any[] = [];
   savedMainGridData: any;
   private destroy$ = new Subject<void>();
-
+  public searchDashboardOptions = {
+    gridNameTitle: 'Dispatcher',
+  };
 
   dispatchTableList: Observable<number[]>;
   dispatchBoardSmallList: Observable<any>
@@ -109,17 +111,24 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
       this.dispatchBoardSmallList = this.dispatcherQuery.dispatchboardShortList$;
       console.log(this.dispatchTableList);
 
-      this.dispatcherQuery.dispatchBoardListData$.subscribe(result => {
+      this.dispatcherQuery.dispatchBoardListData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(result => {
         console.log("WHAT IS RESULT------");
         console.log(result);
       });
 
-      this.dispatcherQuery.dispatchboardShortList$.subscribe(result => {
+      this.dispatcherQuery.dispatchboardShortList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(result => {
         console.log("WHAT IS RESULT OF LISTTTTT------");
         console.log(result);
       })
   }
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
   openAddLoad(id: any) {}
 
   addLoad() {
@@ -137,10 +146,19 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
 
   truckTrailer() {}
 
-  changeDisparcher(event: any) {}
+  changeDisparcher(id: number) {
+    const dispatcherId = id;
+    if(dispatcherId > -1){
+      this.dispatcherStoreService.getDispatchBoardByDispatcherListAndUpdate(dispatcherId);
+    }else{
+      this.dispatcherStoreService.getDispatchboardAllListAndUpdate();
+    }
+
+    localStorage.setItem('dispatchUserSelect', id.toString());
+  }
 
   getDispatcherData(result?) {
-    this.dispatcherItems = [...result];
+    this.dispatcherItems = JSON.parse(JSON.stringify(result));
 
     let fullDispatchCount = 0;
     this.dispatcherItems.map(item => {
@@ -160,12 +178,12 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     const user = JSON.parse(localStorage.getItem('currentUser'));
     this.dispatcherItems.unshift({
       dispatchCount: fullDispatchCount,
-      id: 0,
+      id: -1,
       selected: true,
       dispatcher: {
         avatar: null,
         fullName: 'All Boards',
-        id: 0
+        id: -1
       }
     });
 

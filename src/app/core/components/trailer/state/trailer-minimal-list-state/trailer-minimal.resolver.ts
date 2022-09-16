@@ -28,10 +28,10 @@ export class TrailerMinimalResolver
       .getTrailersMinimalList(this.pageIndex, this.pageSize, this.count)
       .pipe(
         catchError((error) => {
-          return of('No drivers data for...');
+          return of('No trailer data for...');
         }),
         tap((trailerMinimal: TrailerMinimalListResponse) => {
-          // this.trailerMinimalListStore.set(trailerMinimal.pagination.data);
+          this.trailerMinimalListStore.set(trailerMinimal.pagination.data);
         })
       );
   }

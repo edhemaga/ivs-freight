@@ -13,6 +13,7 @@ import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { UntilDestroy } from '@ngneat/until-destroy';
+import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,8 @@ export class MvrTService implements OnDestroy {
     private driverService: DriverTService,
     private driverStore: DriversActiveStore,
     private tableService: TruckassistTableService,
-    private driverItemStore: DriversItemStore
+    private driverItemStore: DriversItemStore,
+    private dlStore: DriversDetailsListStore
   ) {}
 
   public deleteMvrById(id: number): Observable<any> {
@@ -45,7 +47,7 @@ export class MvrTService implements OnDestroy {
               };
 
               this.driverStore.add(driver);
-
+              this.dlStore.update(driver.id, { mvrs: driver.mvrs });
               this.tableService.sendActionAnimation({
                 animation: 'delete',
                 data: driver,
@@ -80,7 +82,7 @@ export class MvrTService implements OnDestroy {
               };
 
               this.driverStore.add(driver);
-
+              this.dlStore.update(driver.id, { mvrs: driver.mvrs });
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 data: driver,
@@ -111,7 +113,7 @@ export class MvrTService implements OnDestroy {
               };
 
               this.driverStore.add(driver);
-
+              this.dlStore.update(driver.id, { mvrs: driver.mvrs });
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 data: driver,

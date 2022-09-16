@@ -22,6 +22,18 @@ export function dropActionNameDriver(any: any, action: string) {
         dropAction = 'edit-parking';
         break;
       }
+      case 'office': {
+        dropAction = 'edit-office';
+        break;
+      }
+      case 'terminal': {
+        dropAction = 'edit-terminal';
+        break;
+      }
+      case 'repair-shop': {
+        dropAction = 'edit-repair-shop';
+        break;
+      }
     }
   }
   if (any.type === 'delete-item') {
@@ -44,6 +56,18 @@ export function dropActionNameDriver(any: any, action: string) {
       }
       case 'parking': {
         dropAction = 'delete-parking';
+        break;
+      }
+      case 'office': {
+        dropAction = 'delete-office';
+        break;
+      }
+      case 'terminal': {
+        dropAction = 'delete-terminal';
+        break;
+      }
+      case 'repair-shop': {
+        dropAction = 'delete-repair-shop';
         break;
       }
     }

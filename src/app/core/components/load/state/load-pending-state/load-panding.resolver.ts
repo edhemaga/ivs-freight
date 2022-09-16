@@ -42,7 +42,7 @@ export class LoadPandingResolver implements Resolve<LoadPandingState> {
               pendingCount: loadPagination.pendingCount,
               activeCount: loadPagination.activeCount,
               closedCount: loadPagination.closedCount,
-              templateCount: /* loadPagination.templateCount */ 0,
+              templateCount: loadPagination.templateCount,
             })
           );
 
