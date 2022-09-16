@@ -285,7 +285,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     const newData: UpdateTodoCommand = {
       id: id,
       ...form,
-      deadline: convertDateToBackend(deadline),
+      deadline: deadline ? convertDateToBackend(deadline) : null,
       departmentIds: this.selectedDepartments
         ? this.selectedDepartments.map((item) => item.id)
         : [],
@@ -304,7 +304,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
     const newData: CreateTodoCommand = {
       ...form,
-      deadline: convertDateToBackend(deadline),
+      deadline: deadline ? convertDateToBackend(deadline) : null,
       departmentIds: this.selectedDepartments
         ? this.selectedDepartments.map((item) => item.id)
         : [],
@@ -347,7 +347,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             title: res.title,
             description: res.description,
             url: res.url,
-            deadline: convertDateFromBackend(res.deadline),
+            deadline: res.deadline ? convertDateFromBackend(res.deadline) : null,
             departmentIds: null,
             companyUserIds: null,
             note: res.note,
