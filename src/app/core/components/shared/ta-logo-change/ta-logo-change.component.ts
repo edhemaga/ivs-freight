@@ -57,7 +57,6 @@ export class TaLogoChangeComponent
     globalDropZone: false,
   };
   @Input() displayUploadZone?: boolean;
-  @Input() isEditingLogo?: boolean;
 
   @Output() validationEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
     false
@@ -69,10 +68,6 @@ export class TaLogoChangeComponent
   );
 
   @Output() deleteLogoEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
-    false
-  );
-
-  @Output() editLogoEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
     false
   );
 
@@ -112,16 +107,6 @@ export class TaLogoChangeComponent
       this.imageUrl = null;
 
       this.deleteLogoEvent.emit(true);
-    }
-
-    if (this.isEditingLogo) {
-      this.imageUrl = null;
-
-      this.showUploadZone = false;
-
-      this.isImageValid = true;
-
-      this.editLogoEvent.emit(true);
     }
   }
 
