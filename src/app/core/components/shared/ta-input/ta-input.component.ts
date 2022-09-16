@@ -903,14 +903,6 @@ export class TaInputComponent
       return false;
     }
 
-    if (['password'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9]$/.test(String.fromCharCode(event.charCode))) {
-        return true;
-      }
-      event.preventDefault();
-      return false;
-    }
-
     if (['axles'].includes(this.inputConfig.name.toLowerCase())) {
       if (/\b([1-9]|1[0-7])\b/g.test(String.fromCharCode(event.charCode))) {
         return true;
@@ -1070,7 +1062,7 @@ export class TaInputComponent
 
     // All Simbols
     if (
-      ['username', 'nickname', 'terminal name'].includes(
+      ['username', 'nickname', 'terminal name', 'password'].includes(
         this.inputConfig.name.toLowerCase()
       )
     ) {

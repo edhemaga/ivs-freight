@@ -77,6 +77,11 @@
         getSuperControl.value &&
         inputConfig.type === 'password' &&
         isVisiblePasswordEye,
+      'visible-focus-password-invalid':
+        getSuperControl.invalid &&
+        getSuperControl.value &&
+        inputConfig.type === 'password' &&
+        isVisiblePasswordEye,
       'incorrect-input': inputConfig.incorrectInput && getSuperControl.value,
       'incorrect-input-enabled':
         inputConfig.incorrectInput && getSuperControl.value && incorrectValue,
