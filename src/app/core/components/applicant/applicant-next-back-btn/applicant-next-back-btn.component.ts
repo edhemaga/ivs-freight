@@ -14,12 +14,12 @@ export class ApplicantNextBackBtnComponent implements OnInit {
   @Input() lastStep: boolean;
   @Input() lastPage: boolean;
   @Input() lastSphFormPage: boolean;
+  @Input() filledCorrectly: boolean = false;
 
   @Output() stepEvent: EventEmitter<{ action: string }> = new EventEmitter();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
-  public filledCorrectly: boolean = false;
   public reviewFilledCorrectly: boolean = true;
 
   constructor() {}

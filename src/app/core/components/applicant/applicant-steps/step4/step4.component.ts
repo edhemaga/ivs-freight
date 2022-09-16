@@ -1,15 +1,22 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
+import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
+import { ApplicantListsService } from '../../state/services/applicant-lists.service';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { Applicant } from '../../state/model/applicant.model';
+import { AccidentModel } from '../../state/model/accident.model';
 import {
-  Accident,
-  AccidentInfo,
-  AccidentModel,
-} from '../../state/model/accident.model';
+  CreateAccidentRecordCommand,
+  TruckTypeResponse,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step4',
@@ -17,95 +24,24 @@ import {
   styleUrls: ['./step4.component.scss'],
 })
 export class Step4Component implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   public selectedMode: string = SelectedMode.APPLICANT;
 
   public accidentForm: FormGroup;
 
-  public accidentArray: AccidentModel[] = [
-    {
-      accidentDate: '01/09/12',
-      accidentLocation: {
-        address: 'Chicago, IL, USA',
-        city: 'Chicago',
-        country: 'US',
-        state: 'IL',
-        stateShortName: 'IL',
-        street: '',
-        streetNumber: '',
-        zipCode: '',
-      },
-      accidentState: 'AL',
-      fatalities: 1,
-      injuries: 1,
-      hazmatSpill: 'YES',
-      truckType: 'Truck',
-      accidentDescription: 'Lorem Ipsum Dolor Sir Ametiblablabla',
-      isEditingAccident: false,
-    },
-    {
-      accidentDate: '01/09/12',
-      accidentLocation: {
-        address: 'Chicago, IL, USA',
-        city: 'Chicago',
-        country: 'US',
-        state: 'IL',
-        stateShortName: 'IL',
-        street: '',
-        streetNumber: '',
-        zipCode: '',
-      },
-      accidentState: 'AL',
-      fatalities: 1,
-      injuries: 1,
-      hazmatSpill: 'YES',
-      truckType: 'Truck',
-      accidentDescription: 'Lorem Ipsum Dolor Sir Ametiblablabla',
-      isEditingAccident: false,
-    },
-    {
-      accidentDate: '01/09/12',
-      accidentLocation: {
-        address: 'Chicago, IL, USA',
-        city: 'Chicago',
-        country: 'US',
-        state: 'IL',
-        stateShortName: 'IL',
-        street: '',
-        streetNumber: '',
-        zipCode: '',
-      },
-      accidentState: 'AL',
-      fatalities: 1,
-      injuries: 1,
-      hazmatSpill: 'YES',
-      truckType: 'Truck',
-      accidentDescription: 'Lorem Ipsum Dolor Sir Ametiblablabla',
-      isEditingAccident: false,
-    },
-    {
-      accidentDate: '01/09/12',
-      accidentLocation: {
-        address: 'Chicago, IL, USA',
-        city: 'Chicago',
-        country: 'US',
-        state: 'IL',
-        stateShortName: 'IL',
-        street: '',
-        streetNumber: '',
-        zipCode: '',
-      },
-      accidentState: 'AL',
-      fatalities: 1,
-      injuries: 1,
-      hazmatSpill: 'YES',
-      truckType: 'Truck',
-      accidentDescription: 'Lorem Ipsum Dolor Sir Ametiblablabla',
-      isEditingAccident: false,
-    },
-  ];
+  public formStatus: string = 'INVALID';
+  public markFormInvalid: boolean;
+
+  public accidentArray: AccidentModel[] = [];
+
+  public lastAccidentCard: any;
+
+  public vehicleType: TruckTypeResponse[] = [];
+
+  public applicantId: number;
 
   public selectedAccidentIndex: number;
-
   public helperIndex: number = 2;
 
   public isEditing: boolean = false;
@@ -150,18 +86,25 @@ export class Step4Component implements OnInit, OnDestroy {
     {},
   ];
 
-  /* public applicant: Applicant | undefined; */
-
-  /* public accidentArray: Accident[] = []; */
-
-  /* public accidentInfo: AccidentInfo | undefined; */
-
-  /* public editAccident: number = -1; */
-
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private applicantActionsService: ApplicantActionsService,
+    private applicantListsService: ApplicantListsService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
+
+    this.getDropdownLists();
+
+    this.hasNoAccidents();
+
+    this.applicantActionsService.getApplicantInfo$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res.personalInfo.applicantId;
+      });
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -181,6 +124,30 @@ export class Step4Component implements OnInit, OnDestroy {
       cardReview9: [null],
       cardReview10: [null],
     });
+  }
+
+  private hasNoAccidents(): void {
+    this.accidentForm
+      .get('hasPastAccident')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        if (value) {
+          this.formStatus = 'VALID';
+
+          this.formValuesToPatch = {
+            date: null,
+            fatalities: null,
+            injuries: null,
+            hazmatSpill: null,
+            vehicleType: null,
+            description: null,
+          };
+
+          this.accidentArray = [];
+        } else {
+          this.formStatus = 'INVALID';
+        }
+      });
   }
 
   public onDeleteAccident(index: number): void {
@@ -246,6 +213,20 @@ export class Step4Component implements OnInit, OnDestroy {
     this.selectedAccidentIndex = -1;
   }
 
+  public onGetFormStatus(status: string): void {
+    this.formStatus = status;
+  }
+
+  public onMarkInvalidEmit(event: any): void {
+    if (!event) {
+      this.markFormInvalid = false;
+    }
+  }
+
+  public onGetLastFormValues(event: any): void {
+    this.lastAccidentCard = event;
+  }
+
   public incorrectInput(
     event: any,
     inputIndex: number,
@@ -304,72 +285,89 @@ export class Step4Component implements OnInit, OnDestroy {
     }
   }
 
+  public getDropdownLists(): void {
+    this.applicantListsService
+      .getDropdownLists()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.vehicleType = data.truckTypes;
+      });
+  }
+
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
+      this.onSubmit();
     }
 
     if (event.action === 'back-step') {
+      this.router.navigate([`/application/${this.applicantId}/3`]);
     }
   }
 
-  /* private formFilling(): void {
-      this.accidentForm.patchValue({
-      hasPastAccident: [
-        this.accidentInfo?.hasPastAccident,
-        Validators.required,
-      ],
+  public onSubmit(): void {
+    if (this.formStatus === 'INVALID') {
+      this.markFormInvalid = true;
+      return;
+    }
+
+    const { hasPastAccident } = this.accidentForm.value;
+
+    const filteredAccidentArray = this.accidentArray.map((item) => {
+      return {
+        location: item.location.address,
+        date: convertDateToBackend(item.date),
+        fatalities: item.fatalities,
+        injuries: item.injuries,
+        hazmatSpill: item.hazmatSpill,
+        vehicleTypeId: this.vehicleType.find(
+          (vehicleItem) => vehicleItem.name === item.vehicleType
+        ).id,
+        description: item.description,
+      };
     });
 
-    this.accidentArray = this.accidentInfo?.accidents
-      ? this.accidentInfo?.accidents
-      : [];
-  } */
+    let filteredLastAccidentCard: any;
 
-  /* public onSubmitForm(): void {
-    this.shared.clearNotifications();
+    if (!hasPastAccident) {
+      filteredLastAccidentCard = {
+        location: this.lastAccidentCard.location,
+        date: convertDateToBackend(this.lastAccidentCard.date),
+        fatalities: this.lastAccidentCard.fatalities,
+        injuries: this.lastAccidentCard.injuries,
+        hazmatSpill: this.lastAccidentCard.hazmatSpill,
+        vehicleTypeId: this.vehicleType.find(
+          (vehicleItem) =>
+            vehicleItem.name === this.lastAccidentCard.vehicleType
+        ).id,
+        description: this.lastAccidentCard.description,
+      };
+    }
 
-        let isValid = true;
+    const saveData: CreateAccidentRecordCommand = {
+      applicantId: 1,
+      noAccidentInThreeYears: hasPastAccident,
+      accidents: hasPastAccident
+        ? []
+        : [...filteredAccidentArray, filteredLastAccidentCard],
+    };
 
-        if (!this.accidentForm.get('hasPastAccident').value) {
-            if (this.editAccident !== -1) {
-                this.onAddAccident();
-            }
-
-            if (!this.accidentArray?.length) {
-                if (this.accidentForm.get('hazmatSpill').value === undefined) {
-                    this.notification.warning(
-                        'Please answer hazmat spill.',
-                        'Warning:'
-                    );
-                    isValid = false;
-                }
-            }
-            if (!isValid) {
-                return false;
-            }
-        }
-      const accidentInfoData = new AccidentInfo(this.accidentInfo);
-
-    accidentInfoData.accidents = this.accidentArray;
-    accidentInfoData.applicantId = this.applicant?.id;
-    accidentInfoData.hasPastAccident = this.accidentForm.value.hasPastAccident;
-    accidentInfoData.isCompleted = true;
-    accidentInfoData.isDeleted = false;
-
-    // REDUX
-        this.apppEntityServices.AccidentService.upsert(
-          accidentInfoData
-        ).subscribe(
-          (response) => {
-            this.notification.success('Accident Info is updated');
-          },
-          (error) => {
-            this.shared.handleError(error);
-          }
-        );
-  } */
+    this.applicantActionsService
+      .createAccidentRecord(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/5`]);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
 
   /* public onSubmitReview(data: any): void {} */
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -8,10 +8,8 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { ITaInput } from '../ta-input/ta-input.config';
 
-@UntilDestroy()
 @Component({
   selector: 'app-ta-input-dropdown-label',
   templateUrl: './ta-input-dropdown-label.component.html',

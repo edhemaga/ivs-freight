@@ -1,10 +1,13 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -16,34 +19,45 @@ import {
   isFormValueEqual,
 } from '../../state/utils/utils';
 
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { VehicleType } from '../../state/model/vehicle-type.model';
-import { Address } from '../../state/model/address.model';
-import { ViolationModel } from '../../state/model/violations.model';
 import {
   addressValidation,
   descriptionValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
+
+import { FormService } from './../../../../services/form/form.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ApplicantListsService } from '../../state/services/applicant-lists.service';
+
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import { ViolationModel } from '../../state/model/violations.model';
+import {
+  AddressEntity,
+  TruckTypeResponse,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step5-form',
   templateUrl: './step5-form.component.html',
   styleUrls: ['./step5-form.component.scss'],
 })
-export class Step5FormComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+export class Step5FormComponent
+  implements OnInit, OnDestroy, OnChanges, AfterViewInit
+{
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
+  @Input() markFormInvalid?: boolean;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
+  @Output() formStatusEmitter = new EventEmitter<any>();
+  @Output() markInvalidEmitter = new EventEmitter<any>();
+  @Output() lastFormValuesEmitter = new EventEmitter<any>();
 
-  public selectedMode = SelectedMode.FEEDBACK;
+  private destroy$ = new Subject<void>();
+
+  public selectedMode = SelectedMode.APPLICANT;
 
   private subscription: Subscription;
 
@@ -54,9 +68,9 @@ export class Step5FormComponent implements OnInit, OnDestroy {
   public editingCardAddress: any;
 
   public selectedVehicleType: any = null;
-  public selectedAddress: Address = null;
+  public selectedAddress: AddressEntity = null;
 
-  public vehicleType: VehicleType[] = [];
+  public vehicleType: TruckTypeResponse[] = [];
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -91,16 +105,14 @@ export class Step5FormComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private inputResetService: TaInputResetService
+    private formService: FormService,
+    private applicantListsService: ApplicantListsService
   ) {}
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
   ngOnInit(): void {
     this.createForm();
+
+    this.getDropdownLists();
 
     if (this.formValuesToPatch) {
       this.patchForm();
@@ -108,15 +120,12 @@ export class Step5FormComponent implements OnInit, OnDestroy {
       this.subscription = this.violationsForm.valueChanges
         .pipe(takeUntil(this.destroy$))
         .subscribe((updatedFormValues) => {
-          const {
-            violationLocation,
-            isEditingViolation,
-            ...previousFormValues
-          } = this.formValuesToPatch;
+          const { id, location, isEditingViolation, ...previousFormValues } =
+            this.formValuesToPatch;
 
-          previousFormValues.violationLocation = violationLocation.address;
+          previousFormValues.location = location.address;
 
-          this.editingCardAddress = violationLocation;
+          this.editingCardAddress = location;
 
           const { firstRowReview, secondRowReview, ...newFormValues } =
             updatedFormValues;
@@ -130,15 +139,34 @@ export class Step5FormComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewInit(): void {
+    this.violationsForm.statusChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.formStatusEmitter.emit(res);
+      });
+
+    this.violationsForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.lastFormValuesEmitter.emit(res);
+      });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.markFormInvalid?.currentValue) {
+      this.inputService.markInvalid(this.violationsForm);
+
+      this.markInvalidEmitter.emit(false);
+    }
+  }
+
   public createForm(): void {
     this.violationsForm = this.formBuilder.group({
-      violationDate: [null, Validators.required],
-      truckType: [null, Validators.required],
-      violationLocation: [null, [Validators.required, ...addressValidation]],
-      violationDescription: [
-        null,
-        [Validators.required, ...descriptionValidation],
-      ],
+      date: [null, Validators.required],
+      vehicleType: [null, Validators.required],
+      location: [null, [Validators.required, ...addressValidation]],
+      description: [null, [Validators.required, ...descriptionValidation]],
 
       firstRowReview: [null],
       secondRowReview: [null],
@@ -147,11 +175,17 @@ export class Step5FormComponent implements OnInit, OnDestroy {
 
   public patchForm(): void {
     this.violationsForm.patchValue({
-      violationDate: this.formValuesToPatch.violationDate,
+      date: this.formValuesToPatch.date,
       vehicleType: this.formValuesToPatch.vehicleType,
-      violationLocation: this.formValuesToPatch.violationLocation.address,
-      violationDescription: this.formValuesToPatch.violationDescription,
+      location: this.formValuesToPatch.location.address,
+      description: this.formValuesToPatch.description,
     });
+
+    setTimeout(() => {
+      this.selectedVehicleType = this.vehicleType.find(
+        (item) => item.name === this.formValuesToPatch.vehicleType
+      );
+    }, 150);
   }
 
   public handleInputSelect(event: any, action: string): void {
@@ -164,9 +198,7 @@ export class Step5FormComponent implements OnInit, OnDestroy {
         this.selectedAddress = event.address;
 
         if (!event.valid) {
-          this.violationsForm
-            .get('violationLocation')
-            .setErrors({ invalid: true });
+          this.violationsForm.get('location').setErrors({ invalid: true });
         }
 
         break;
@@ -181,20 +213,22 @@ export class Step5FormComponent implements OnInit, OnDestroy {
       return;
     }
 
-    /*  const {violationLocation, firstRowReview,
-      secondRowReview,...violationsForm} = this.violationsForm.value;
+    const { location, firstRowReview, secondRowReview, ...violationsForm } =
+      this.violationsForm.value;
 
-   const saveData: ViolationModel = {
+    const saveData: ViolationModel = {
       ...violationsForm,
-      violationLocation: this.selectedAddress,
       isEditingViolation: false,
+      location: this.selectedAddress,
     };
 
-    this.formValuesEmitter.emit(saveData); */
+    this.formValuesEmitter.emit(saveData);
+
+    this.selectedVehicleType = null;
 
     this.violationsForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
+    this.formService.resetForm(this.violationsForm);
   }
 
   public onSaveEditedViolation(): void {
@@ -212,7 +246,7 @@ export class Step5FormComponent implements OnInit, OnDestroy {
 
     const saveData: ViolationModel = {
       ...violationsForm,
-      violationLocation: this.selectedAddress
+      location: this.selectedAddress
         ? this.selectedAddress
         : this.editingCardAddress,
       isEditingViolation: false,
@@ -224,8 +258,6 @@ export class Step5FormComponent implements OnInit, OnDestroy {
 
     this.violationsForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
-
     this.subscription.unsubscribe();
   }
 
@@ -235,8 +267,6 @@ export class Step5FormComponent implements OnInit, OnDestroy {
     this.isViolationEdited = false;
 
     this.violationsForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
   }
@@ -297,5 +327,52 @@ export class Step5FormComponent implements OnInit, OnDestroy {
       this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
         false;
     }
+  }
+
+  public getDropdownLists(): void {
+    this.applicantListsService
+      .getDropdownLists()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.vehicleType = data.truckTypes.map((item) => {
+          if (item.id === 3) {
+            return {
+              ...item,
+              name: 'Tow Truck',
+              folder: 'common',
+              subFolder: 'trucks',
+            };
+          }
+
+          if (item.id === 4) {
+            return {
+              ...item,
+              name: 'Car Hauler',
+              folder: 'common',
+              subFolder: 'trucks',
+            };
+          }
+
+          if (item.id === 6) {
+            return {
+              ...item,
+              name: 'Semi w/Sleeper',
+              folder: 'common',
+              subFolder: 'trucks',
+            };
+          }
+
+          return {
+            ...item,
+            folder: 'common',
+            subFolder: 'trucks',
+          };
+        });
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
