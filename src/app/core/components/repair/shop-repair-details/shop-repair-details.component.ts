@@ -9,11 +9,12 @@ import {
 import { RepairShopResponse } from 'appcoretruckassist';
 import { RepairTService } from '../state/repair.service';
 import { ShopDetailsQuery } from '../state/shop-details-state/shop-details.query';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { ShopDetailsListQuery } from '../state/shop-details-state/shop-details-list-state/shop-details-list.query';
 
 @Component({
   selector: 'app-shop-repair-details',
@@ -35,7 +36,8 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
     private shopDetailsQuery: ShopDetailsQuery,
-    private sumArr: SumArraysPipe
+    private sumArr: SumArraysPipe,
+    private sdlq: ShopDetailsListQuery
   ) {}
 
   ngOnInit(): void {
@@ -54,30 +56,28 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
         let query;
-        if (!this.shopDetailsQuery.hasEntity(id)) {
-          query = this.shopService.getRepairShopById(id);
+        if (this.sdlq.hasEntity(id)) {
+          query = this.sdlq.selectEntity(id).pipe(take(1));
         } else {
-          query = this.shopDetailsQuery.selectEntity(id);
+          query = this.shopService.getRepairShopById(id);
         }
-        this.shopService
-          .getRepairShopById(id)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: (res: RepairShopResponse) => {
-              this.shopConf(res);
-              if (this.router.url.includes('shop-details')) {
-                this.router.navigate([`/repair/${res.id}/shop-details`]);
-              }
-              this.notificationService.success(
-                'Shop successfully changed',
-                'Success:'
-              );
-              this.cdRef.detectChanges();
-            },
-            error: () => {
-              this.notificationService.error("Shop can't be loaded", 'Error:');
-            },
-          });
+
+        query.pipe(takeUntil(this.destroy$)).subscribe({
+          next: (res: RepairShopResponse) => {
+            this.shopConf(res);
+            if (this.router.url.includes('shop-details')) {
+              this.router.navigate([`/repair/${res.id}/shop-details`]);
+            }
+            this.notificationService.success(
+              'Shop successfully changed',
+              'Success:'
+            );
+            this.cdRef.detectChanges();
+          },
+          error: () => {
+            this.notificationService.error("Shop can't be loaded", 'Error:');
+          },
+        });
       });
   }
 

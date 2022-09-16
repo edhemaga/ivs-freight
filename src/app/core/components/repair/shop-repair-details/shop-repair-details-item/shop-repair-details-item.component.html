@@ -2,12 +2,12 @@
   <div [ngSwitch]="shopData.template">
     <!---------------------------- GENERAL TEMPLATE ----------------------------->
     <div *ngSwitchCase="'general'">
-      <app-shop-repair-card-view [shopResponse]="shopData.data">
+      <app-shop-repair-card-view [shopResponse]="shopData?.data">
 
       </app-shop-repair-card-view>
     </div>
     <div *ngSwitchCase="'repair'">
-      <div class="repair-container" *ngIf="shopData.data.repairs.length">
+      <div class="repair-container" *ngIf="shopData?.data?.repairs?.length">
         <div class="repair-header">
           <span class="repaier-headers">UNIT</span>
           <span class="repaier-headers">DATE</span>
@@ -18,7 +18,8 @@
         <div class="divider"></div>
         <div class="repair-items-wrapper">
           <span
-            *ngFor="let repairs of shopData.data.repairs; let i = index"
+            *ngFor="let repairs of shopData?.data?.repairs; let i = index"
+            class="item-shop-wrapper"
             [ngClass]="{ 'finish-order-cont': !repairs.invoice && !repairs.total }"
           >
             <div class="repair-items">
@@ -40,7 +41,7 @@
                 </div>
                 <div
                   class="dots-vertical"
-                
+                  [ngClass]="{'order-activate':!repairs.invoice && !repairs.total}"
                 >
                 <!-- [ngClass]="{ 'dots-top': dummy.finishOrder == false }" -->
                   <app-details-page-dropdown
@@ -51,8 +52,8 @@
                 </div>
               </div>
 
-              <div class="divider"></div>
             </div>
+            <div class="divider"></div>
           </span>
         </div>
       </div>
@@ -73,8 +74,8 @@
           <div class="items-vehicle">
             <span class="unit">{{ vehicle.unitNumber }}</span>
 
-            <svg-icon class="vehicle-icon" *ngIf="vehicle.unitType==='Trailer'" src="assets/svg/common/trailers/{{ vehicle.logoName }} "></svg-icon>
-            <svg-icon class="vehicle-icon" *ngIf="vehicle.unitType==='Truck'" src="assets/svg/common/trucks/{{ vehicle.logoName }} "></svg-icon>
+            <svg-icon class="vehicle-icon " *ngIf="vehicle.unitType==='Trailer'" src="assets/svg/common/trailers/trailer-details/{{ vehicle.logoName }} "></svg-icon>
+            <svg-icon class="vehicle-icon truck-icon" *ngIf="vehicle.unitType==='Truck'" src="assets/svg/common/trucks/trucks-details/{{ vehicle.logoName }} "></svg-icon>
             <span class="date">{{ vehicle.totalOrder }}</span>
             <span class="cost">{{ vehicle.totalCost  | formatCurrency}}</span>
           </div>

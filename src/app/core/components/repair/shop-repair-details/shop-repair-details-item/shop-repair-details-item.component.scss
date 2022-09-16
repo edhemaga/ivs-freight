@@ -138,10 +138,11 @@ app-shop-repair-details-item {
   .button-wrapper-shop {
     position: relative;
     display: flex;
-    left: 14px;
+    left: -91px;
     background-color: #6d82c7;
     color: #ffffff;
     cursor: pointer;
+    white-space: nowrap;
     margin: auto;
     font-size: 12px;
     font-weight: 700;
@@ -194,6 +195,8 @@ app-shop-repair-details-item {
   .no-invoice {
     display: flex;
     align-items: center;
+    position: relative;
+    right: 86px;
     .no-inv {
       svg {
         display: flex;
@@ -204,6 +207,17 @@ app-shop-repair-details-item {
       font-weight: 400;
       color: #6c6c6c;
       margin-left: 4px;
+    }
+  }
+}
+.order-activate {
+  position: relative;
+  right: 78px;
+}
+.item-shop-wrapper {
+  &:last-child {
+    .divider {
+      display: none;
     }
   }
 }

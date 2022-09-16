@@ -3,9 +3,16 @@ import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { ShipperResponse } from 'appcoretruckassist';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
 import { ShipperDetailsQuery } from '../state/shipper-state/shipper-details-state/shipper.details.query';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { ShipperMinimalListQuery } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
+import { ShipperMinimalListStore } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.store';
+import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ShipperDetailsListQuery } from '../state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.query';
 
 @Component({
   selector: 'app-shipper-details',
@@ -17,6 +24,10 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   public shipperConfig: any[] = [];
   public shipperDrop: any;
+  public shipperId: number;
+  public shipperObject: any;
+  public currentIndex: number = 0;
+  public shipperList: any = this.shipperMinimalQuery.getAll();
   constructor(
     private activated_route: ActivatedRoute,
     private router: Router,
@@ -24,20 +35,54 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
     private detailsPageService: DetailsPageService,
-    private shipperQuery: ShipperDetailsQuery
+    private shipperMinimalStore: ShipperMinimalListStore,
+    private dropDownService: DropDownService,
+    private tableService: TruckassistTableService,
+    private shipperMinimalQuery: ShipperMinimalListQuery,
+    private confirmationService: ConfirmationService,
+    private slq: ShipperDetailsListQuery
   ) {}
 
   ngOnInit(): void {
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: Confirmation) => {
+          switch (res.type) {
+            case 'delete': {
+              if (res.template === 'shipper') {
+                this.deleteShipperById(res.id);
+              }
+              break;
+            }
+
+            default: {
+              break;
+            }
+          }
+        },
+      });
     this.initTableOptions();
+    this.tableService.currentActionAnimation
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (res.animation) {
+          this.shipperConf(res.data);
+          this.initTableOptions();
+          this.cdRef.detectChanges();
+        }
+      });
     this.detailsPageService.pageDetailChangeId$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
         let query;
-        if (this.shipperQuery.hasEntity(id)) {
-          query = this.shipperQuery.selectEntity(id);
+        if (this.slq.hasEntity(id)) {
+          query = this.slq.selectEntity(id).pipe(take(1));
         } else {
           query = this.shipperService.getShipperById(id);
         }
+
         query.pipe(takeUntil(this.destroy$)).subscribe({
           next: (res: ShipperResponse) => {
             this.shipperConf(res);
@@ -57,6 +102,9 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
   }
 
   public shipperConf(data: ShipperResponse) {
+    this.currentIndex = this.shipperList.findIndex(
+      (shipper) => shipper.id === data.id
+    );
     this.shipperConfig = [
       {
         id: 0,
@@ -122,8 +170,55 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         hasArrow: false,
       },
     ];
+    this.shipperId = data?.id ? data.id : null;
   }
-
+  public deleteShipperById(id: number) {
+    let last = this.shipperList.at(-1);
+    if (
+      last.id === this.shipperMinimalStore.getValue().ids[this.currentIndex]
+    ) {
+      this.currentIndex = --this.currentIndex;
+    } else {
+      this.currentIndex = ++this.currentIndex;
+    }
+    this.shipperService
+      .deleteShipperByIdDetails(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          if (this.shipperMinimalStore.getValue().ids.length >= 1) {
+            this.router.navigate([
+              `/customer/${
+                this.shipperList[this.currentIndex].id
+              }/shipper-details`,
+            ]);
+          }
+          this.notificationService.success(
+            'Shipper successfully deleted',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.router.navigate(['/customer']);
+        },
+      });
+  }
+  public getShipperById(id: number) {
+    this.shipperService
+      .getShipperById(id, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.shipperObject = item));
+  }
+  public onDropActions(event: any) {
+    this.getShipperById(event.id);
+    setTimeout(() => {
+      this.dropDownService.dropActionsHeaderShipperBroker(
+        event,
+        this.shipperObject,
+        'shipper'
+      );
+    }, 100);
+  }
   /**Function for dots in cards */
   public initTableOptions(): void {
     this.shipperDrop = {
@@ -161,8 +256,6 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         {
           title: 'Delete',
           name: 'delete-item',
-          type: 'truck',
-          text: 'Are you sure you want to delete truck(s)?',
           svg: 'assets/svg/common/ic_trash_updated.svg',
           danger: true,
           show: true,
@@ -178,5 +271,6 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.tableService.sendActionAnimation({});
   }
 }
