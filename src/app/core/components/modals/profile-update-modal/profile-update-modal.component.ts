@@ -106,7 +106,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       createNewPassword: [false],
-      checkingOldPassword: [null],
+      checkingOldPassword: [null, passwordValidation],
       oldPassword: [null, passwordValidation],
       newPassword: [null, passwordValidation],
       password: [null, passwordValidation],

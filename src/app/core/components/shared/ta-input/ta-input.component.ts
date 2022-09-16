@@ -27,8 +27,6 @@ import {
 } from '../../../utils/methods.calculations';
 import { pasteCheck } from '../../../../../assets/utils/methods-global';
 import { FormService } from 'src/app/core/services/form/form.service';
-import validator from 'validator';
-
 @Component({
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
@@ -551,6 +549,21 @@ export class TaInputComponent
         this.getSuperControl.setErrors(null);
       }
     }
+
+    if (['axles'].includes(this.inputConfig.name.toLowerCase())) {
+      if (
+        parseInt(this.getSuperControl.value) < 1 ||
+        parseInt(this.getSuperControl.value) > 17
+      ) {
+        if (parseInt(this.getSuperControl.value) < 1) {
+          this.getSuperControl.setErrors({ min: 1 });
+        } else if (parseInt(this.getSuperControl.value) > 17) {
+          this.getSuperControl.setErrors({ max: 17 });
+        }
+      } else {
+        this.getSuperControl.setErrors(null);
+      }
+    }
   }
 
   public onEditInput(event: Event) {
@@ -774,6 +787,10 @@ export class TaInputComponent
         'trailer-value-insurance-policy',
         'rent',
         'salary',
+        'mileage',
+        'months',
+        'empty weight',
+        'qty',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/g.test(String.fromCharCode(event.charCode))) {
@@ -1078,11 +1095,16 @@ export class TaInputComponent
       }
     }
     if (['full name'].includes(this.inputConfig.name.toLowerCase())) {
+      let space = this.input.nativeElement.value.split(' ').length;
       if (
         /^[A-Za-z0-9.,/!@#$%^&**()_+={}"':>?<;\s-]*$/.test(
           String.fromCharCode(event.charCode)
         )
       ) {
+        if (space === 3) {
+          this.input.nativeElement.value =
+            this.input.nativeElement.value.trim();
+        }
         this.disableConsecutivelySpaces(event);
         return true;
       } else {

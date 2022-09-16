@@ -74,8 +74,8 @@
                 type: 'number',
                 label: 'MC/FF #',
                 textTransform: 'capitalize',
-                maxLength: 6,
-                minLength: 5
+                minLength: 5,
+                maxLength: 6
               }"
             ></app-ta-input>
           </div>
@@ -431,13 +431,15 @@
                 <app-ta-input
                   formControlName="contactName"
                   [inputConfig]="{
-                    id: 'Contact Name' + ind,
-                    name: 'Contact Name',
+                    id: 'Full Name' + ind,
+                    name: 'Full Name',
                     type: 'text',
-                    textTransform: 'capitalize',
                     hideRequiredCheck: true,
                     blackInput: true,
-                    hideErrorMessage: true
+                    hideErrorMessage: true,
+                    minLength: 2,
+                    maxLength: 32,
+                    textTransform: 'capitalize'
                   }"
                 ></app-ta-input>
                 <app-ta-input-dropdown
@@ -494,7 +496,10 @@
                     type: 'text',
                     hideRequiredCheck: true,
                     blackInput: true,
-                    hideErrorMessage: true
+                    hideErrorMessage: true,
+                    minLength: 5,
+                    maxLength: 64,
+                    textTransform: 'lowercase'
                   }"
                 ></app-ta-input>
                 <div

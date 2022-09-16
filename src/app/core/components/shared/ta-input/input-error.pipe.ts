@@ -24,20 +24,12 @@ export class InputErrorPipe implements PipeTransform {
         errorMessageValue = `${value['maxlength'].requiredLength} Characters Maximum`;
       }
 
-      if (value['oneuppercase']) {
-        errorMessageValue = `At Least One Upper Case Character`;
+      if (value['min']) {
+        errorMessageValue = `${value['min']} Is Minimum Value`;
       }
 
-      if (value['onelowercase']) {
-        errorMessageValue = `At Least One Lower Case Character`;
-      }
-
-      if (value['onedigit']) {
-        errorMessageValue = `At Least One Digit`;
-      }
-
-      if (value['onesymbol']) {
-        errorMessageValue = `At Least One Symbol/Special Character @$!%*#?&^_-`;
+      if (value['max']) {
+        errorMessageValue = `${value['max']} Is Maximum Value`;
       }
 
       if (value['pattern']?.requiredPattern) {
