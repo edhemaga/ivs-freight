@@ -37,7 +37,8 @@ export class AutoclosePopoverComponent implements OnInit {
       event.target.closest('.popover') ||
       event.target.closest('.selected-name-text') ||
       event.target.closest('.icon-delete') ||
-      event.target.closest('.clear-money-form') 
+      event.target.closest('.clear-money-form') ||
+      event.target.closest('.user-frame')
       
     ) {
     } else {

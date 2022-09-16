@@ -986,6 +986,7 @@ export class FilterComponent implements OnInit {
   multiFormSecondToActive: any = 0;
   multiFormThirdFromActive: any = 0;
   multiFormThirdToActive: any = 0;
+  locationRange: any = 50;
 
   public sliderData: Options = {
     floor: 0,
@@ -996,8 +997,8 @@ export class FilterComponent implements OnInit {
   };
 
   public locationSliderData: Options = {
-    floor: 0,
-    ceil: 10000,
+    floor: 50,
+    ceil: 350,
     step: 0,
     showSelectionBar: true,
     hideLimitLabels: true,
@@ -1067,7 +1068,6 @@ export class FilterComponent implements OnInit {
     this.locationForm.valueChanges.subscribe((changes) => {
       if (changes.address == null) {
         this.locationState = '';
-        this.rangeValue = 0;
       }
     });
 
@@ -1351,7 +1351,6 @@ export class FilterComponent implements OnInit {
         this.searchInputValue = '';
       }
     });
-
   }
 
   addToSelectedUser(item, indx, subType?) {
@@ -1616,10 +1615,11 @@ export class FilterComponent implements OnInit {
       ) {
         this.rangeValue = 0;
       } else if (this.type == 'locationFilter') {
-        this.rangeValue = 0;
         this.locationForm.setValue({
           address: '',
         });
+        this.locationRange = 50;
+        this.locationState = '';
       } else if (this.type == 'moneyFilter') {
         if (this.subType != 'all') {
           this.clearForm('singleForm');
@@ -1679,13 +1679,16 @@ export class FilterComponent implements OnInit {
   }
 
   setRangeValue(mod) {
-    this.rangeValue = mod;
+    if (this.type != 'locationFilter') {
+      this.rangeValue = mod;
+    } else {
+      this.locationRange = mod;
+    }
   }
 
   handleInputSelect(e) {
     if (e?.address?.address) {
       this.locationState = e.address.address;
-      this.rangeValue = 3000;
     }
   }
 
@@ -1861,10 +1864,10 @@ export class FilterComponent implements OnInit {
     if (
       (parseInt(this.multiFormSecondFromActive) !=
         parseInt(data.multiFormSecondFrom) &&
-        data.multiFormSecondFrom != '' ) ||
+        data.multiFormSecondFrom != '') ||
       (parseInt(this.multiFormSecondToActive) !=
         parseInt(data.multiFormSecondTo) &&
-        data.multiFormSecondTo != '' )
+        data.multiFormSecondTo != '')
     ) {
       secondFormChanged = 'true';
     }
@@ -1880,26 +1883,41 @@ export class FilterComponent implements OnInit {
       thirdFormChanged = 'true';
     }
 
-    if ( data.multiFromFirstFrom && !data.multiFromFirstTo || !data.multiFromFirstFrom && data.multiFromFirstTo ) {
+    if (
+      (data.multiFromFirstFrom && !data.multiFromFirstTo) ||
+      (!data.multiFromFirstFrom && data.multiFromFirstTo)
+    ) {
       firstFormChanged = 'error';
     }
 
-    if ( data.multiFormSecondFrom && !data.multiFormSecondTo || !data.multiFormSecondFrom && data.multiFormSecondTo ) {
+    if (
+      (data.multiFormSecondFrom && !data.multiFormSecondTo) ||
+      (!data.multiFormSecondFrom && data.multiFormSecondTo)
+    ) {
       secondFormChanged = 'error';
     }
 
-    if ( data.multiFormThirdFrom && !data.multiFormThirdTo || !data.multiFormThirdFrom && data.multiFormThirdTo ) {
+    if (
+      (data.multiFormThirdFrom && !data.multiFormThirdTo) ||
+      (!data.multiFormThirdFrom && data.multiFormThirdTo)
+    ) {
       thirdFormChanged = 'error';
     }
 
-    
-    if ( ( firstFormChanged == 'true' && secondFormChanged != 'error' && thirdFormChanged != 'error' ) || 
-    ( secondFormChanged == 'true' && firstFormChanged != 'error' && thirdFormChanged != 'error' ) || 
-    ( thirdFormChanged == 'true' && firstFormChanged != 'error' && secondFormChanged != 'error' ) ) {
+    if (
+      (firstFormChanged == 'true' &&
+        secondFormChanged != 'error' &&
+        thirdFormChanged != 'error') ||
+      (secondFormChanged == 'true' &&
+        firstFormChanged != 'error' &&
+        thirdFormChanged != 'error') ||
+      (thirdFormChanged == 'true' &&
+        firstFormChanged != 'error' &&
+        secondFormChanged != 'error')
+    ) {
       this.setButtonAvailable = true;
     } else {
       this.setButtonAvailable = false;
     }
-
   }
 }
