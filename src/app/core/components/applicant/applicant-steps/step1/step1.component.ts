@@ -425,7 +425,7 @@ export class Step1Component implements OnInit, OnDestroy {
 
     return this.formBuilder.group({
       address: [null, Validators.required],
-      addressUnit: [null, Validators.maxLength(6)],
+      addressUnit: [null, addressUnitValidation],
       [`cardReview${this.cardReviewIndex}`]: [null],
     });
   }

@@ -11,6 +11,7 @@ import { DrugAndAlcohol } from '../../state/model/drug-and-alchocol.model';
 import {
   addressUnitValidation,
   addressValidation,
+  phoneFaxRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
@@ -98,11 +99,11 @@ export class Step8Component implements OnInit, OnDestroy {
 
     this.drugAlcoholStatementForm = this.formBuilder.group({
       motorCarrier: [null, Validators.required],
-      phone: [null, Validators.required],
+      phone: [null, [Validators.required, phoneFaxRegex]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       sapName: [null, Validators.required],
-      sapPhone: [null, Validators.required],
+      sapPhone: [null, [Validators.required, phoneFaxRegex]],
       sapAddress: [null, [Validators.required, ...addressValidation]],
       sapAddressUnit: [null, [...addressUnitValidation]],
       isAgreement: [null, Validators.requiredTrue],

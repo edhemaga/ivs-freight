@@ -43,7 +43,7 @@
                 label: 'Company Name',
                 isRequired: editData.type === 'new-division' ? true : false,
                 isDisabled: editData.type === 'edit-company',
-                textTransform: 'capitalize',
+                textTransform: 'uppercase',
                 autoFocus: editData?.type !== 'edit-company' ? true : false
               }"
             ></app-ta-input>
@@ -378,7 +378,6 @@
                     type: 'text',
                     minLength: 1,
                     maxLength: 8,
-                    placeholderIcon: 'phone-extension',
                     hideErrorMessage: true,
                     blackInput: true,
                     hideRequiredCheck: true

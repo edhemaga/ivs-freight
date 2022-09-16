@@ -19,6 +19,7 @@ import {
 
 import {
   addressValidation,
+  descriptionValidation,
   phoneFaxRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
@@ -36,6 +37,7 @@ import {
   WorkHistoryModel,
 } from '../../state/model/work-history.model';
 import { AddressEntity } from './../../../../../../../appcoretruckassist/model/addressEntity';
+import { addressUnitValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-step2-form',
@@ -377,14 +379,14 @@ export class Step2FormComponent implements OnInit, OnDestroy {
   private createForm(): void {
     this.workExperienceForm = this.formBuilder.group({
       employer: [null, Validators.required],
-      jobDescription: [null, Validators.required],
+      jobDescription: [null, [Validators.required, ...descriptionValidation]],
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
       employerPhone: [null, [Validators.required, phoneFaxRegex]],
       employerEmail: [null, [Validators.required]],
       employerFax: [null, phoneFaxRegex],
       employerAddress: [null, [Validators.required, ...addressValidation]],
-      employerAddressUnit: [null, Validators.maxLength(6)],
+      employerAddressUnit: [null, addressUnitValidation],
       isDrivingPosition: [false],
       classOfEquipmentCards: this.formBuilder.group({
         cardReview1: [null],
@@ -419,7 +421,7 @@ export class Step2FormComponent implements OnInit, OnDestroy {
     });
 
     this.inputService.customInputValidator(
-      this.workExperienceForm.get('email'),
+      this.workExperienceForm.get('employerEmail'),
       'email',
       this.destroy$
     );

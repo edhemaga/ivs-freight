@@ -106,8 +106,8 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       createNewPassword: [false],
-      checkingOldPassword: [null, passwordValidation],
       oldPassword: [null, passwordValidation],
+      // New password And password (confirmation)
       newPassword: [null, passwordValidation],
       password: [null, passwordValidation],
       avatar: [null],
@@ -138,7 +138,9 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(
-            this.profileUserForm.get('oldPassword')
+            this.profileUserForm.get('oldPassword'),
+            true,
+            [...passwordValidation]
           );
         } else {
           this.inputService.changeValidators(
@@ -155,10 +157,6 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
           );
           this.setNewPassword = false;
           this.correctPassword = false;
-          this.inputService.changeValidators(
-            this.profileUserForm.get('checkingOldPassword'),
-            false
-          );
         }
       });
 
@@ -168,11 +166,8 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
   public confirmationOldPassword() {
     this.profileUserForm
       .get('oldPassword')
-      .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
-        this.inputService.changeValidators(
-          this.profileUserForm.get('checkingOldPassword')
-        );
         if (value) {
           this.loadingOldPassword = true;
           this.userService
@@ -222,13 +217,15 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     if (this.correctPassword) {
       this.setNewPassword = true;
       this.inputService.changeValidators(
-        this.profileUserForm.get('checkingOldPassword'),
-        false
+        this.profileUserForm.get('newPassword'),
+        true,
+        [...passwordValidation]
       );
       this.inputService.changeValidators(
-        this.profileUserForm.get('newPassword')
+        this.profileUserForm.get('password'),
+        true,
+        [...passwordValidation]
       );
-      this.inputService.changeValidators(this.profileUserForm.get('password'));
     }
   }
 
@@ -286,7 +283,6 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       address,
       addressUnit,
       createNewPassword,
-      checkingOldPassword,
       oldPassword,
       newPassword,
       ...form
