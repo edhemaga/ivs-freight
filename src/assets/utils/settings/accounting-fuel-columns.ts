@@ -172,9 +172,9 @@ export function getAccountingFuelColumnDefinition() {
       resizable: true,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'description',
       title: 'Item',
-      field: 'items',
+      field: 'fuelTableItem',
       name: 'Item',
       sortName: '',
       hidden: false,
