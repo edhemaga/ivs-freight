@@ -3,6 +3,7 @@ import {
   addressValidation,
   firstNameValidation,
   lastNameValidation,
+  passwordValidation,
 } from './../../shared/ta-input/ta-input.regex-validations';
 import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
@@ -106,9 +107,9 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       addressUnit: [null, [...addressUnitValidation]],
       createNewPassword: [false],
       checkingOldPassword: [null],
-      oldPassword: [null],
-      newPassword: [null],
-      password: [null],
+      oldPassword: [null, passwordValidation],
+      newPassword: [null, passwordValidation],
+      password: [null, passwordValidation],
       avatar: [null],
     });
 

@@ -118,7 +118,7 @@
             <app-ta-input
               formControlName="driverName"
               [inputConfig]="{
-                name: 'Full Name',
+                name: 'Driver Name',
                 type: 'text',
                 label: 'Driver',
                 isDisabled: true,
@@ -163,7 +163,7 @@
             <app-ta-input
               formControlName="coDriverName"
               [inputConfig]="{
-                name: 'Full Name',
+                name: 'Driver Name',
                 type: 'text',
                 label: 'Driver',
                 isDisabled: true,
@@ -441,11 +441,11 @@
               formControlName="policeDepartment"
               [inputConfig]="{
                 name: 'Department',
-                minLength: 2,
-                maxLength: 36,
-                type: 'text',
                 label: 'Police Department',
-                textTransform: 'capitalize'
+                type: 'text',
+                textTransform: 'capitalize',
+                minLength: 2,
+                maxLength: 36
               }"
             ></app-ta-input>
             <app-ta-input

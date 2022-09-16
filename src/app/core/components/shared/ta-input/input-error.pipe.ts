@@ -6,6 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class InputErrorPipe implements PipeTransform {
   transform(value: any, inputName?: string): string {
     let errorMessageValue: string = '';
+    console.log(value);
     if (value !== null) {
       if (value['required']) {
         errorMessageValue = 'Required';
@@ -18,23 +19,38 @@ export class InputErrorPipe implements PipeTransform {
       if (value['minlength']) {
         errorMessageValue = `${value['minlength'].requiredLength} Characters Minimum`;
       }
+
       if (value['maxlength']) {
         errorMessageValue = `${value['maxlength'].requiredLength} Characters Maximum`;
       }
+
+      if (value['oneuppercase']) {
+        errorMessageValue = `At Least One Upper Case Character`;
+      }
+
+      if (value['onelowercase']) {
+        errorMessageValue = `At Least One Lower Case Character`;
+      }
+
+      if (value['onedigit']) {
+        errorMessageValue = `At Least One Digit`;
+      }
+
+      if (value['onesymbol']) {
+        errorMessageValue = `At Least One Symbol/Special Character @$!%*#?&^_-`;
+      }
+
       if (value['pattern']?.requiredPattern) {
         switch (inputName.toLowerCase()) {
           case 'phone': {
-            // errorMessageValue = `Phone as (XXX) XXX-XXXX`
             errorMessageValue = 'Invalid';
             break;
           }
           case 'ssn': {
-            // errorMessageValue = `SSN as XXX-XX-XXXX`
             errorMessageValue = 'Invalid';
             break;
           }
           case 'ein': {
-            // errorMessageValue = `EIN as XX-XXXXXXX`
             errorMessageValue = 'Invalid';
             break;
           }

@@ -27,6 +27,7 @@ import {
 } from '../../../utils/methods.calculations';
 import { pasteCheck } from '../../../../../assets/utils/methods-global';
 import { FormService } from 'src/app/core/services/form/form.service';
+import validator from 'validator';
 
 @Component({
   selector: 'app-ta-input',
@@ -530,13 +531,38 @@ export class TaInputComponent
       );
     }
 
-    // Custom Validation Year = must be in this way (double check)
+    // Custom Validation Year = must be here (double check validation)
     if (['year'].includes(this.inputConfig.name.toLowerCase())) {
       if (
         parseInt(this.getSuperControl.value) >
         parseInt(moment().add(1, 'year').format('YYYY'))
       ) {
         this.getSuperControl.setErrors({ invalid: true });
+      }
+    }
+
+    // Password multiple validation conditions
+    if (['password'].includes(this.inputConfig.name.toLowerCase())) {
+      if (
+        !validator.isStrongPassword(this.getSuperControl.value, {
+          minLength: 8,
+          minLowercase: 1,
+          minUppercase: 1,
+          minNumbers: 1,
+          minSymbols: 1,
+        })
+      ) {
+        if (!this.getSuperControl.value.match(/[A-Z]/g)) {
+          this.getSuperControl.setErrors({ oneuppercase: true });
+        } else if (!this.getSuperControl.value.match(/[a-z]/g)) {
+          this.getSuperControl.setErrors({ onelowercase: true });
+        } else if (!this.getSuperControl.value.match(/[0-9]/g)) {
+          this.getSuperControl.setErrors({ onedigit: true });
+        } else if (!this.getSuperControl.value.match(/[@$!%*#?&^_-]/g)) {
+          this.getSuperControl.setErrors({ onesymbol: true });
+        }
+      } else {
+        this.getSuperControl.setErrors(null);
       }
     }
   }
@@ -782,7 +808,9 @@ export class TaInputComponent
       return false;
     }
 
-    if (['first name'].includes(this.inputConfig.name.toLowerCase())) {
+    if (
+      ['first name', 'full name'].includes(this.inputConfig.name.toLowerCase())
+    ) {
       let space = this.input.nativeElement.value.split(' ').length;
       if (/^[A-Za-z',\s.-]*$/.test(String.fromCharCode(event.charCode))) {
         if (space === 3) {
@@ -1027,18 +1055,22 @@ export class TaInputComponent
       }
     }
 
+    if (['username'].includes(this.inputConfig.name.toLowerCase())) {
+      if (
+        /^[A-Za-z0-9.,_!#^~[?/<`@$%*+=}{|:";>&'()-]*$/.test(
+          String.fromCharCode(event.charCode)
+        )
+      ) {
+        this.disableConsecutivelySpaces(event);
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
     // if (['account name'].includes(this.inputConfig.name.toLowerCase())) {
     //   if (/^[A-Za-z .,&'()-]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (['username'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[A-Za-z0-9.,&'()-]*$/.test(String.fromCharCode(event.charCode))) {
     //     this.disableConsecutivelySpaces(event);
     //     return true;
     //   } else {

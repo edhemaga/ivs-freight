@@ -12,6 +12,7 @@ import {
   addressValidation,
   firstNameValidation,
   lastNameValidation,
+  passwordValidation,
   phoneFaxRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 
@@ -61,8 +62,8 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
       addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneFaxRegex]],
       email: [null, [Validators.required]],
-      password: [null, Validators.required],
-      confirmPassword: [null, Validators.required],
+      password: [null, [Validators.required, ...passwordValidation]],
+      confirmPassword: [null, [Validators.required, ...passwordValidation]],
     });
 
     this.inputService.customInputValidator(

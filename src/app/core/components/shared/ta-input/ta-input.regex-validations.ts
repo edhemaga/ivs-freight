@@ -235,6 +235,24 @@ export const cdlCANADAValidation = [
   Validators.maxLength(15),
 ];
 
+//---------------- Username --------------------------------
+export const usernameValidation = [
+  Validators.minLength(6),
+  Validators.maxLength(30),
+];
+
+//---------------- Password --------------------------------
+export const passwordValidation = [
+  Validators.minLength(8),
+  Validators.maxLength(64),
+];
+
+//---------------- Full Name --------------------------------
+export const fullNameValidation = [
+  Validators.minLength(2),
+  Validators.maxLength(32),
+];
+
 //---------------- Mile, PerStop -------------------
 export const mileValidation = [Validators.min(0), Validators.max(10)];
 

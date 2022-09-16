@@ -14,6 +14,7 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import moment from 'moment';
 
 import { Subject, takeUntil } from 'rxjs';
+import { passwordValidation } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-login',
@@ -49,7 +50,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   private createForm(): void {
     this.loginForm = this.formBuilder.group({
       email: [null, [Validators.required]],
-      password: [null, [Validators.required]],
+      password: [null, [Validators.required, ...passwordValidation]],
       staySignedIn: [false],
     });
 
