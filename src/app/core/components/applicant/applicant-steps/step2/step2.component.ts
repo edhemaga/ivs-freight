@@ -9,10 +9,17 @@ import { anyInputInLineIncorrect } from '../../state/utils/utils';
 import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
 
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
+import { ApplicantListsService } from '../../state/services/applicant-lists.service';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { WorkHistoryModel } from '../../state/model/work-history.model';
-import { CreateWorkExperienceCommand } from 'appcoretruckassist/model/models';
+import {
+  CreateWorkExperienceCommand,
+  EnumValue,
+  TrailerLengthResponse,
+  TrailerTypeResponse,
+  TruckTypeResponse,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step2',
@@ -43,6 +50,12 @@ export class Step2Component implements OnInit, OnDestroy {
   public isEditing: boolean = false;
 
   public formValuesToPatch: any;
+
+  public vehicleType: TruckTypeResponse[] = [];
+  public trailerType: TrailerTypeResponse[] = [];
+  public trailerLengthType: TrailerLengthResponse[] = [];
+
+  public reasonsForLeaving: EnumValue[] = [];
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -85,13 +98,16 @@ export class Step2Component implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private applicantActionsService: ApplicantActionsService
+    private applicantActionsService: ApplicantActionsService,
+    private applicantListsService: ApplicantListsService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
 
     this.hasNoWorkExperience();
+
+    this.getDropdownLists();
 
     this.applicantActionsService.getApplicantInfo$
       .pipe(takeUntil(this.destroy$))
@@ -285,6 +301,21 @@ export class Step2Component implements OnInit, OnDestroy {
     }
   }
 
+  public getDropdownLists(): void {
+    this.applicantListsService
+      .getDropdownLists()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.vehicleType = data.truckTypes;
+
+        this.trailerType = data.trailerTypes;
+
+        this.trailerLengthType = data.trailerLenghts;
+
+        this.reasonsForLeaving = data.reasonsForLeave;
+      });
+  }
+
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
       this.onSubmit();
@@ -306,6 +337,45 @@ export class Step2Component implements OnInit, OnDestroy {
       return;
     }
 
+    const filteredWorkExperienceArray = this.workExperienceArray.map((item) => {
+      return {
+        employer: item.employer,
+        jobDescription: item.jobDescription,
+        from: convertDateToBackend(item.fromDate),
+        to: convertDateToBackend(item.toDate),
+        phone: item.employerPhone,
+        email: item.employerEmail,
+        fax: item.employerFax,
+        address: item.employerAddress,
+        isDrivingPosition: item.isDrivingPosition,
+        cfrPart: item.cfrPart,
+        fmcsa: item.fmCSA,
+        reasonForLeaving: this.reasonsForLeaving.find(
+          (reasonItem) => reasonItem.name === item.reasonForLeaving
+        ).id,
+        accountForPeriodBetween: item.accountForPeriod,
+        classesOfEquipment: item.classesOfEquipment[0]?.vehicleType
+          ? item.classesOfEquipment.map((classTtem, index) => {
+              return {
+                vehicleTypeId: this.vehicleType.find(
+                  (findItem) =>
+                    findItem.name === item.classesOfEquipment[index].vehicleType
+                )?.id,
+                trailerTypeId: this.trailerType.find(
+                  (findItem) =>
+                    findItem.name === item.classesOfEquipment[index].trailerType
+                )?.id,
+                trailerLengthId: this.trailerLengthType.find(
+                  (findItem) =>
+                    findItem.name ===
+                    item.classesOfEquipment[index].trailerLength
+                )?.id,
+              };
+            })
+          : [],
+      };
+    });
+
     const { noWorkExperience } = this.workExperienceForm.value;
 
     let filteredLastWorkExperienceCard: any;
@@ -317,18 +387,77 @@ export class Step2Component implements OnInit, OnDestroy {
         from: convertDateToBackend(this.lastWorkExperienceCard.fromDate),
         to: convertDateToBackend(this.lastWorkExperienceCard.toDate),
         phone: this.lastWorkExperienceCard.employerPhone,
+        email: this.lastWorkExperienceCard.employerEmail,
+        fax: this.lastWorkExperienceCard.employerFax,
+        address: this.lastWorkExperienceCard.employerAddress,
+        isDrivingPosition: this.lastWorkExperienceCard.isDrivingPosition,
+        cfrPart: this.lastWorkExperienceCard.cfrPart,
+        fmcsa: this.lastWorkExperienceCard.fmCSA,
+        reasonForLeaving: this.reasonsForLeaving.find(
+          (item) => item.name === this.lastWorkExperienceCard.reasonForLeaving
+        ).id,
+        accountForPeriodBetween: this.lastWorkExperienceCard.accountForPeriod,
+        classesOfEquipment: this.lastWorkExperienceCard.classesOfEquipment[0]
+          .vehicleType
+          ? this.lastWorkExperienceCard.classesOfEquipment.map(
+              (item, index) => {
+                return {
+                  vehicleTypeId: this.vehicleType.find(
+                    (item) =>
+                      item.name ===
+                      this.lastWorkExperienceCard.classesOfEquipment[index]
+                        .vehicleType
+                  )?.id,
+                  trailerTypeId: this.trailerType.find(
+                    (item) =>
+                      item.name ===
+                      this.lastWorkExperienceCard.classesOfEquipment[index]
+                        .trailerType
+                  )?.id,
+                  trailerLengthId: this.trailerLengthType.find(
+                    (item) =>
+                      item.name ===
+                      this.lastWorkExperienceCard.classesOfEquipment[index]
+                        .trailerLength
+                  )?.id,
+                };
+              }
+            )
+          : [],
       };
     }
 
     const saveData: CreateWorkExperienceCommand = {
-      applicantId: this.applicantId,
+      applicantId: 1,
       haveWorkExperience: noWorkExperience,
       workExperienceItems: noWorkExperience
         ? []
-        : [filteredLastWorkExperienceCard],
+        : [...filteredWorkExperienceArray, filteredLastWorkExperienceCard],
     };
 
-    console.log(saveData);
+    /*  console.log('lastCard', this.lastWorkExperienceCard.fromDate);
+    console.log('array', this.workExperienceArray[0].fromDate);
+
+    console.log(
+      'backlastCard',
+      convertDateToBackend(this.lastWorkExperienceCard.fromDate)
+    );
+    console.log(
+      'backarray',
+      convertDateToBackend(this.workExperienceArray[0].fromDate)
+    );
+ */
+    this.applicantActionsService
+      .createWorkExperience(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/3`]);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   /* public onSubmitReview(data: any): void {} */
