@@ -39,26 +39,21 @@
     *ngIf="tableOptions.toolbarActions.viewModeActive == 'Map'"
   >
     <app-map-list
-      [sortTypes]="sortTypes"
+      [type]="'repairShop'"
       [columns]="columns"
-      [activeSortType]="activeSortType"
       [mapListContent]="viewData"
-      (changeSortCategory)="changeSortCategory($event)"
-      (changeSortDirection)="changeSortDirection($event)"
-      (searchData)="searchShops($event)"
+      (headActions)="onTableHeadActions($event)"
     >
       <app-map-list-card
         *ngFor="let latlong of viewData; let i = index"
+        #listCard
         [title]="latlong?.name"
         [isSelected]="latlong?.isSelected"
         [status]="latlong?.status"
         [item]="latlong"
         [index]="i"
         [address]="latlong.address"
-        [rating]="{
-          up: latlong?.upRatingCount,
-          down: latlong?.downRatingCount
-        }"
+        [rating]="latlong?.shopRaiting"
         [type]="'repairShop'"
         [sortCategory]="activeSortType"
         [locationFilterOn]="locationFilterOn"

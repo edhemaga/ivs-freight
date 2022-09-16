@@ -15,6 +15,7 @@ export class MapMarkerDropdownComponent implements OnInit {
   @Input() sortCategory: any = {};
   @Input() locationFilterOn: boolean = false;
   @Input() dropdownActions: any[] = [];
+  @Input() rating: any = {};
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
 
   public copiedPhone: boolean = false;
@@ -91,5 +92,28 @@ export class MapMarkerDropdownComponent implements OnInit {
   
   callBodyAction(action) {
     this.bodyActions.emit(action);
+  }
+
+  // RAITING
+  onLike(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.bodyActions.emit({
+      data: this.item,
+      type: 'raiting',
+      subType: 'like',
+    });
+  }
+
+  onDislike(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.bodyActions.emit({
+      data: this.item,
+      type: 'raiting',
+      subType: 'dislike',
+    });
   }
 }

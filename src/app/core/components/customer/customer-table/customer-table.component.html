@@ -43,23 +43,20 @@
   >
     <app-map-list
       [type]="'shipper'"
-      [sortTypes]="sortTypes"
       [columns]="columns"
-      [activeSortType]="activeSortType"
       [mapListContent]="viewData"
+      (headActions)="onTableHeadActions($event)"
     >
       <app-map-list-card
         *ngFor="let latlong of viewData; let i = index"
+        #listCard
         [title]="latlong?.businessName"
         [isSelected]="latlong?.isSelected"
         [status]="latlong?.status"
         [item]="latlong"
         [index]="i"
         [address]="latlong.address"
-        [rating]="{
-          up: latlong?.upRatingCount,
-          down: latlong?.downRatingCount
-        }"
+        [rating]="latlong?.raiting"
         [type]="'shipper'"
         [dropdownActions]="tableOptions.actions"
         (bodyActions)="onTableBodyActions($event)"

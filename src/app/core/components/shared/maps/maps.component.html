@@ -125,6 +125,7 @@
                                      ''"
                             [item]="latlong"
                             [type]="mapType"
+                            [rating]="mapType == 'shipper' ? latlong?.raiting : mapType == 'repairShop' ? latlong?.shopRaiting : {}"
                             [sortCategory]="activeSortType"
                             [locationFilterOn]="locationFilterOn"
                             [dropdownActions]="dropdownActions"

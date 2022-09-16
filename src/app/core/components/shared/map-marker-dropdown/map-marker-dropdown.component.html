@@ -7,13 +7,20 @@
           class="show-more" 
           (click)="showMoreOptions($event)" 
           [ngClass]="item?.isSelected ? 'table-dropdown-container' : 'table-dropdown-container'">
-          <app-details-page-dropdown
+          <!-- <app-details-page-dropdown
             [options]="dropdownActions"
             [placement]="'bottom-left'"
             [id]="item?.id"
             (dropDownActions)="callBodyAction($event)"
           >
-          </app-details-page-dropdown>
+          </app-details-page-dropdown> -->
+          <app-details-page-dropdown
+            [options]="dropdownActions"
+            [placement]="'right'"
+            [id]="item?.id"
+            [customClassDropDown]="'map-list-card-dropdown marker-dropdown-popover'"
+            (dropDownActions)="callBodyAction($event)"
+          ></app-details-page-dropdown>
         </div>
       </div>
       <div class="marker-accident-container" *ngIf="type == 'accident'">
@@ -102,16 +109,24 @@
               class="marker-rating-svg"
               src="assets/svg/common/ic_like.svg"
               [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+              [ngClass]="{
+                'has-liked-icon': rating?.hasLiked
+              }"
+              (click)="onLike($event)"
           ></svg-icon>
-          <span class="marker-like-text marker-bold-text">{{ item?.upRatingCount }}</span>
+          <span class="marker-like-text marker-bold-text">{{ rating?.likeCount }}</span>
         </span>
         <span class="marker-rating">
           <svg-icon
               class="marker-rating-svg"
               src="assets/svg/common/ic_dislike.svg"
               [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+              [ngClass]="{
+                'has-disliked-icon': rating?.hasDislike
+              }"
+              (click)="onDislike($event)"
           ></svg-icon>
-          <span class="marker-like-text marker-bold-text">{{ item?.downRatingCount }}</span>
+          <span class="marker-like-text marker-bold-text">{{ rating?.dislikeCount }}</span>
         </span>
       </div>
     </div>

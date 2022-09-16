@@ -26,9 +26,11 @@ export class MapsComponent implements OnInit {
 
     this.viewData.map((data) => {
       if ( data.actionAnimation == 'update' || data.actionAnimation == 'add' ) {
-        this.markerAnimations[data.id] = false;
-        this.showMarkerWindow[data.id] = false;
-        updatedData = true;
+        console.log('viewData updated', data);
+
+        //this.markerAnimations[data.id] = false;
+        //this.showMarkerWindow[data.id] = false;
+        //updatedData = true;
       }
     });
 

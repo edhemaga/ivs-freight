@@ -26,6 +26,7 @@
     
   <div class="customer-map-container" *ngIf="tableOptions.toolbarActions.viewModeActive == 'Map'">
     <app-map-list 
+      [type]="'fuelStop'"
       [sortTypes]="sortTypes" 
       [columns]="columns" 
       [activeSortType]="activeSortType"

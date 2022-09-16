@@ -40,16 +40,24 @@
                 class="marker-rating-svg"
                 src="assets/svg/common/ic_like.svg"
                 [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                [ngClass]="{
+                  'has-liked-icon': rating?.hasLiked
+                }"
+                (click)="onLike($event)"
             ></svg-icon>
-            <span class="marker-like-text marker-bold-text">{{ rating.up }}</span>
+            <span class="marker-like-text marker-bold-text">{{ rating?.likeCount }}</span>
             </span>
             <span class="marker-rating">
             <svg-icon
                 class="marker-rating-svg"
                 src="assets/svg/common/ic_dislike.svg"
                 [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                [ngClass]="{
+                  'has-disliked-icon': rating?.hasDislike
+                }"
+                (click)="onDislike($event)"
             ></svg-icon>
-            <span class="marker-like-text marker-bold-text">{{ rating.down }}</span>
+            <span class="marker-like-text marker-bold-text">{{ rating?.dislikeCount }}</span>
             </span>
         </div>
         <div *ngIf="type == 'fuelStop' && (sortCategory.name == 'Business Name' || sortCategory.name == 'Favorites' || sortCategory.name == 'Fuel Price')">

@@ -1,19 +1,36 @@
 import { Injectable } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { OnDestroy } from '@angular/core';
 
 declare var google: any;
 
 @Injectable({
   providedIn: 'root'
 })
-export class MapsService {
-  
+export class MapsService implements OnDestroy {
+  private destroy$ = new Subject<void>();
+
   public mapCircle: any = {
     lat: 41.860119,
     lng: -87.660156,
     radius: 160934.4 // 100 miles
   };
 
-  constructor() { }
+  sortCategory: any = {};
+  sortCategoryChange: Subject<any> = new Subject<any>();
+
+  constructor() { 
+    this.sortCategoryChange
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((category) => {
+        this.sortCategory = category
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   getMeters(miles) {
     return miles*1609.344;
