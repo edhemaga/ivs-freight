@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { map, takeUntil, takeWhile } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,7 +7,8 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, interval, merge, combineLatest } from 'rxjs';
+
 import { DashboardService } from '../../../services/dashboard/dashboard.service';
 import { SharedService } from '../../../services/shared/shared.service';
 import { DashboardStats } from '../state/dashboard.model';
@@ -189,6 +191,38 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // });
 
     //this.getStats();
+
+    this.startStream();
+  }
+
+  streamOutput$: Observable<number[]>;
+  outputStreamData = [];
+  isComponentActiveAlive: boolean = true;
+
+  startStream(){
+    const streamSource = interval(1000);
+    const secondStreamSource = interval(2000);
+    const fasterStreamSource = interval(3000);
+
+    // this.streamOutput$ = merge(
+    //   streamSource,
+    //   secondStreamSource,
+    //   fasterStreamSource
+    // ).pipe( takeWhile( () => !!this.isComponentActiveAlive ),
+    //   map(output => {
+    //     console.log(output);
+    //     this.outputStreamData = [...this.outputStreamData, output]
+    //     return this.outputStreamData;
+    //   })
+    // )
+
+    // combineLatest([
+    //   streamSource,
+    //   secondStreamSource,
+    //   fasterStreamSource
+    // ]).subscribe((value) => {
+    //   console.log(value);
+    // });
   }
 
   getStats() {
