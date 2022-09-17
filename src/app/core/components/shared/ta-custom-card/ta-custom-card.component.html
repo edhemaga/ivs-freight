@@ -135,16 +135,7 @@
       </div>
 
       <!-- Edit & Delete Actions -->
-      <div *ngIf="hasEditAndDeleteActions" class="edit-delete-actions">
-        <svg-icon
-          class="edit-icon"
-          src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-          [svgStyle]="{
-            'width.px': 18,
-            'height.px': 18
-          }"
-          (click)="onAction($event, 'edit')"
-        ></svg-icon>
+      <div *ngIf="hasDeleteAction" class="edit-delete-actions">
         <svg-icon
           class="delete-icon"
           src="assets/svg/truckassist-table/dropdown/content/delete.svg"
