@@ -52,8 +52,6 @@ export class CdlTService implements OnDestroy {
                     );
                   },
                 });
-              console.log(driver);
-
               driver = {
                 ...driver,
                 fullName: driver.firstName + ' ' + driver.lastName,

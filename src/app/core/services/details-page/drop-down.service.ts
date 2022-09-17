@@ -277,7 +277,11 @@ export class DropDownService {
           ConfirmationModalComponent,
           { size: 'small' },
           {
-            data: { ...dataCdl, state: dataCdl.state.stateShortName, data },
+            data: {
+              ...dataCdl[0],
+              state: dataCdl[0].state.stateShortName,
+              data,
+            },
             template: 'cdl',
             type: 'info',
             subType: 'cdl void',
@@ -288,18 +292,38 @@ export class DropDownService {
         break;
       }
       case 'activate-item': {
-        this.modalService.openModal(
-          ConfirmationModalComponent,
-          { size: 'small' },
-          {
-            data: { ...dataCdl, state: dataCdl.state.stateShortName, data },
-            template: 'cdl',
-            type: 'info',
-            subType: 'cdl void',
-            cdlStatus: 'Activate',
-            modalHeader: true,
-          }
-        );
+        if (dataCdl[0]?.status == 1) {
+          this.modalService.openModal(
+            ConfirmationModalComponent,
+            { size: 'small' },
+            {
+              data: {
+                ...dataCdl[0],
+                state: dataCdl[0].state.stateShortName,
+                data,
+              },
+              template: 'cdl',
+              type: 'info',
+              subType: 'cdl void',
+              cdlStatus: 'New',
+              modalHeader: true,
+            }
+          );
+        } else {
+          this.modalService.openModal(
+            ConfirmationModalComponent,
+            { size: 'small' },
+            {
+              data: { ...dataCdl, state: dataCdl.state.stateShortName, data },
+              template: 'cdl',
+              type: 'info',
+              subType: 'cdl void',
+              cdlStatus: 'Activate',
+              modalHeader: true,
+            }
+          );
+        }
+
         break;
       }
       default: {

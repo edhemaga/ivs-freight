@@ -459,7 +459,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
     switch (action) {
       case 'CDL': {
-        if (!this.isActiveCdl) {
+        if (!this.arrayActiveCdl.includes(true)) {
           this.modalService.openModal(
             DriverCdlModalComponent,
             { size: 'small' },

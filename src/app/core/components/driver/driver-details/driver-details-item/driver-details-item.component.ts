@@ -12,7 +12,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { DriverResponse } from 'appcoretruckassist';
 import moment from 'moment';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, filter, take } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -31,6 +31,7 @@ import { MedicalTService } from '../../state/medical.service';
 import { MvrTService } from '../../state/mvr.service';
 import { TestTService } from '../../state/test.service';
 import { DriverCdlModalComponent } from '../driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+import { DriversDetailsListQuery } from '../../state/driver-details-list-state/driver-details-list.query';
 
 @Component({
   selector: 'app-driver-details-item',
@@ -65,6 +66,7 @@ export class DriverDetailsItemComponent
   public activateShow: any[] = [];
   public expiredCard: any[] = [];
   public currentIndex: number;
+  public activeCdl: any;
   constructor(
     private driverService: DriverTService,
     private cdlService: CdlTService,
@@ -75,19 +77,27 @@ export class DriverDetailsItemComponent
     private notificationService: NotificationService,
     private tableService: TruckassistTableService,
     private dropDownService: DropDownService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private driverList: DriversDetailsListQuery
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes.drivers.firstChange && changes.drivers.currentValue) {
       this.drivers = changes.drivers.currentValue;
       this.getExpireDate();
+
+      this.activeCdl = changes.drivers.currentValue[0].data.cdls.filter(
+        (item) => item.status === 1
+      );
     }
     this.initTableOptions(changes.drivers.currentValue[0].data);
   }
 
   ngOnInit(): void {
     this.getExpireDate();
+    this.activeCdl = this.drivers[0].data.cdls.filter(
+      (item) => item.status === 1
+    );
 
     // Confirmation Subscribe
     this.confirmationService.confirmationData$
@@ -266,20 +276,29 @@ export class DriverDetailsItemComponent
   }
   public optionsEvent(any: any, action: string) {
     const name = dropActionNameDriver(any, action);
-    this.dropDownService.dropActions(
-      any,
-      name,
-      this.dataCdl,
-      this.dataMvr,
-      this.dataMedical,
-      this.dataTest,
-      this.drivers[0].data.id,
-      null,
-      null,
-      this.drivers[0].data
-    );
+    let dataForCdl;
+    if (this.activeCdl.length) {
+      dataForCdl = this.activeCdl;
+    } else {
+      dataForCdl = this.dataCdl;
+    }
+
+    setTimeout(() => {
+      this.dropDownService.dropActions(
+        any,
+        name,
+        dataForCdl,
+        this.dataMvr,
+        this.dataMedical,
+        this.dataTest,
+        this.drivers[0].data.id,
+        null,
+        null,
+        this.drivers[0].data
+      );
+    }, 100);
   }
-  public openCommand(cdl: any, modal: string) {
+  public openCommand(cdl?: any, modal?: string) {
     if (modal === 'renew-licence') {
       this.modalService.openModal(
         DriverCdlModalComponent,
@@ -289,6 +308,25 @@ export class DriverDetailsItemComponent
           file_id: cdl.id,
           type: 'renew-licence',
           renewData: cdl,
+        }
+      );
+    }
+    if (this.activeCdl.length) {
+      let data = this.drivers;
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          data: {
+            ...this.activeCdl[0],
+            state: this.activeCdl[0].state.stateShortName,
+            data,
+          },
+          template: 'cdl',
+          type: 'info',
+          subType: 'cdl void',
+          cdlStatus: 'New',
+          modalHeader: true,
         }
       );
     } else {

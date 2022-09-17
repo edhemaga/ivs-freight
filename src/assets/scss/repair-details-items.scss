@@ -39,6 +39,7 @@ $transition: all 0.3s ease-in-out;
     column-gap: 12px;
     row-gap: 12px;
 }
+
 .repair-component {
     display: grid;
     grid-auto-flow: column;
@@ -176,6 +177,8 @@ $transition: all 0.3s ease-in-out;
             .dots-vertical {
                 height: 20px !important;
                 display: flex;
+                width: 18px;
+                margin-left: 13px;
                 justify-content: flex-end;
                 align-items: center;
             }
@@ -188,18 +191,21 @@ $transition: all 0.3s ease-in-out;
                 border-radius: 2px;
             }
         }
-        .date {
+        .date-description {
             font-size: $font-size14;
             font-weight: 400;
             color: $color-gray-dark;
             overflow: hidden;
-            white-space: nowrap;
             text-overflow: ellipsis;
+        }
+        .date {
+            font-size: $font-size14;
+            font-weight: 400;
+            color: $color-gray-dark;
+            white-space: nowrap;
             display: flex;
             align-items: center;
-            align-items: center;
             line-height: 17px;
-            width: 294px;
             &::-moz-selection {
                 color: $color-gray-dark;
                 background: rgb(183, 183, 183, 0.2);
@@ -224,7 +230,7 @@ $transition: all 0.3s ease-in-out;
             font-weight: $font-semibold;
             color: $color-gray-dark;
             text-align: right;
-            line-height: 21px;
+            line-height: 17px;
             display: flex;
             justify-content: flex-end;
             align-items: end;

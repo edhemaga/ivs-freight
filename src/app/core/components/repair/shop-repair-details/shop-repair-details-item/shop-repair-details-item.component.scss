@@ -116,7 +116,37 @@ app-shop-repair-details-item {
       }
     }
   }
-
+  .item-desc {
+    white-space: nowrap;
+    display: inline;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &::-moz-selection {
+      color: $color-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+      color: $color-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    &:last-child {
+      .full-stop-shop {
+        visibility: hidden;
+      }
+    }
+  }
+  .full-stop-shop {
+    margin: 0 2px;
+    &::-moz-selection {
+      color: $color-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+      color: $color-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
   .border-vertical {
     margin: 0;
     width: 2px;
@@ -212,7 +242,7 @@ app-shop-repair-details-item {
 }
 .order-activate {
   position: relative;
-  right: 78px;
+  right: 93px;
 }
 .item-shop-wrapper {
   &:last-child {
