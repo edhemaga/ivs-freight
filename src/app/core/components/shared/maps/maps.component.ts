@@ -5,6 +5,7 @@ import {
   Output,
   EventEmitter,
   ChangeDetectorRef,
+  ViewEncapsulation
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
@@ -16,6 +17,7 @@ import { UpdatedData } from '../model/shared/enums';
   selector: 'app-maps',
   templateUrl: './maps.component.html',
   styleUrls: ['./maps.component.scss', '../../../../../assets/scss/maps.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class MapsComponent implements OnInit {
   viewData = [];
