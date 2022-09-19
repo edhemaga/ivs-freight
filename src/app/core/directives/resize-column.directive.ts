@@ -87,7 +87,6 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
 
       const maxWidth = this.tableColumn.minWidth * 2;
 
-      /* TODO: ukloni kada se doda na sve tabele i kolone minWidth */
       if (!this.tableColumn.minWidth) {
         this.resizeing.emit({
           isResizeing: true,
@@ -95,6 +94,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
           index: this.index,
           section: this.tableSection,
         });
+
         return;
       }
 
@@ -110,6 +110,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
           section: this.tableSection,
         });
       }
+
       // If It Has Reached Min Or Max Width, Show Animation
       else {
         this.resizeing.emit({
@@ -118,16 +119,6 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
           isResizeing: false,
           isPined: this.tableColumn.isPined,
         });
-        
-        /* this.resizeing.emit({
-          beyondTheLimits: true,
-          index: this.index,
-          isResizeing: false,
-          isPined: this.tableColumn.isPined,
-        }); */
-
-        /* this.pressed = false;
-        window.getSelection().removeAllRanges(); */
       }
     }
   };

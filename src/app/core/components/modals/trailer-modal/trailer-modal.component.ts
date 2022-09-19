@@ -228,7 +228,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             this.modalService.setModalSpinner({
               action: null,
               status: true,
-              clearTimeout: this.editData?.canOpenModal ? true : false,
+              clearTimeout: !!this.editData?.canOpenModal,
             });
           }
         }
@@ -546,7 +546,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           this.selectedTireSize = res.tireSize ? res.tireSize : null;
           this.selectedDoorType = res.doorType ? res.doorType : null;
           this.selectedReeferType = res.reeferUnit ? res.reeferUnit : null;
-          this.trailerStatus = res.status === 1 ? false : true;
+          this.trailerStatus = res.status !== 1;
 
           console.log('Trailer make: ', this.selectedColor);
 
@@ -555,7 +555,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             status: this.trailerStatus,
           });
         },
-        error: (err) => {
+        error: () => {
           this.notificationService.error("Cant't get trailer.", 'Error:');
         },
       });
@@ -655,7 +655,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 this.loadingVinDecoder = false;
                 this.selectedTrailerMake = res.trailerMake;
               },
-              error: (error: any) => {
+              error: () => {
                 this.notificationService.error(
                   `Can't get data for that ${value} VIN.`,
                   'Error:'

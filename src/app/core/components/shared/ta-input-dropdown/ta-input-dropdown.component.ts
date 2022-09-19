@@ -84,7 +84,7 @@ export class TaInputDropdownComponent
   private dropdownPosition: number = -1;
 
   // For Dispatchboard hover options
-  private hoveredOption: number = -1;
+  public hoveredOption: number = -1;
 
   constructor(
     @Self() public superControl: NgControl,
@@ -205,7 +205,7 @@ export class TaInputDropdownComponent
     // Reset Input
     this.inputResetService.resetInputSubject
       .pipe(debounceTime(50), takeUntil(this.destroy$))
-      .subscribe((action) => {
+      .subscribe(() => {
         this.inputRef.touchedInput = false;
       });
 
@@ -815,7 +815,7 @@ export class TaInputDropdownComponent
     }
   }
 
-  public deleteAllMultiSelectItems(currentLabel: string) {
+  public deleteAllMultiSelectItems(currentLabel?: string) {
     this.multiselectItems = [];
     this.inputConfig.multiSelectDropdownActive = null;
     this.inputConfig.label = currentLabel
@@ -832,7 +832,7 @@ export class TaInputDropdownComponent
     this.lastActiveMultiselectItem = null;
   }
 
-  public toggleMultiselectDropdown(event: any) {
+  public toggleMultiselectDropdown() {
     this.isMultiSelectInputFocus = !this.isMultiSelectInputFocus;
 
     if (this.isMultiSelectInputFocus) {

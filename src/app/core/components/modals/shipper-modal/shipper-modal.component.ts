@@ -4,8 +4,8 @@ import {
   businessNameValidation,
   departmentValidation,
   phoneExtension,
-} from './../../shared/ta-input/ta-input.regex-validations';
-import { ShipperModalResponse } from './../../../../../../appcoretruckassist/model/shipperModalResponse';
+} from '../../shared/ta-input/ta-input.regex-validations';
+import { ShipperModalResponse } from '../../../../../../appcoretruckassist';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -39,7 +39,6 @@ import {
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
 import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../services/form/form.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 
@@ -49,7 +48,7 @@ import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRa
   styleUrls: ['./shipper-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, TaLikeDislikeService, FormService],
+  providers: [ModalService, TaLikeDislikeService],
 })
 export class ShipperModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -107,7 +106,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private taLikeDislikeService: TaLikeDislikeService,
     private reviewRatingService: ReviewsRatingService,
-    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -322,11 +320,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   }
 
   public onScrollingShipperContacts(event: any) {
-    if (event.target.scrollLeft > 1) {
-      this.isContactCardsScrolling = true;
-    } else {
-      this.isContactCardsScrolling = false;
-    }
+    this.isContactCardsScrolling = event.target.scrollLeft > 1;
   }
 
   public onHandleAddress(event: { address: AddressEntity; valid: boolean }) {
@@ -357,7 +351,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public createReview(event: { check: boolean; action: string }) {
+  public createReview() {
     if (
       this.reviews.some((item) => item.isNewReview) ||
       this.disableOneMoreReview
@@ -416,7 +410,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
           .addRating(rating)
           .pipe(takeUntil(this.destroy$))
           .subscribe({
-            next: (res: any) => {
+            next: () => {
               this.editShipperById(this.editData.id);
               this.notificationService.success(
                 'Rating successfully updated.',
@@ -506,22 +500,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
           this.notificationService.error("Review can't be updated.", 'Error:');
         },
       });
-  }
-
-  public addNewReview(event: any) {
-    this.reviews.unshift({
-      id: Math.random() * 100,
-      companyUser: {
-        id: Math.random() * 100,
-        fullName: 'Angela Martin',
-        image: 'https://picsum.photos/id/237/200/300',
-        reaction: '',
-      },
-      comment: '',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      isNewReview: true,
-    });
   }
 
   private addShipper() {
@@ -666,7 +644,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
           });
 
           this.selectedAddress = reasponse.address;
-          this.isPhoneExtExist = reasponse.phoneExt ? true : false;
+          this.isPhoneExtExist = !!reasponse.phoneExt;
 
           if (reasponse.phoneExt) {
             this.isPhoneExtExist = true;

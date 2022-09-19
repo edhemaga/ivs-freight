@@ -2,7 +2,7 @@ export interface ITaInput {
   id?: any; // only for form array to indefier element
   name: string;
   type: string;
-  label: string;
+  label?: string;
   placeholder?: string; // only for dropdown, otherwise placeholder is label !!!
   placeholderIcon?: string;
   placeholderText?: string;

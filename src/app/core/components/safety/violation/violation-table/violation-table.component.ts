@@ -1,33 +1,220 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { ViolationModalComponent } from '../violation-modal/violation-modal.component';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { getViolationsColums } from '../../../../../../assets/utils/settings/safety-columns';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-violation-table',
   templateUrl: './violation-table.component.html',
   styleUrls: ['./violation-table.component.scss'],
 })
-export class ViolationTableComponent implements OnInit, OnDestroy {
+export class ViolationTableComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
+  private destroy$ = new Subject<void>();
+
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
   public columns: any[] = [];
   public selectedTab = 'active';
   resetColumns: boolean;
+  tableContainerWidth: number = 0;
+  resizeObserver: ResizeObserver;
 
   constructor(
     private tableService: TruckassistTableService,
     private modalService: ModalService
   ) {}
 
+  // -------------------------------NgOnInit-------------------------------
   ngOnInit(): void {
-    this.initTableOptions();
+    this.sendViolationData();
 
-    this.getViolationData();
+    // Reset Columns
+    this.tableService.currentResetColumns
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.resetColumns = response;
+
+          this.sendViolationData();
+        }
+      });
+
+    // Resize
+    this.tableService.currentColumnWidth
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response?.event?.width) {
+          this.columns = this.columns.map((c) => {
+            if (c.title === response.columns[response.event.index].title) {
+              c.width = response.event.width;
+            }
+
+            return c;
+          });
+        }
+      });
+
+    // Toaggle Columns
+    this.tableService.currentToaggleColumn
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response?.column) {
+          this.columns = this.columns.map((c) => {
+            if (c.field === response.column.field) {
+              c.hidden = response.column.hidden;
+            }
+
+            return c;
+          });
+        }
+      });
+
+    // Search
+    this.tableService.currentSearchTableData
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+       /*  if (res) {
+          this.mapingIndex = 0;
+
+          this.backFilterQuery.pageIndex = 1;
+
+          const searchEvent = tableSearch(res, this.backFilterQuery);
+
+          if (searchEvent) {
+            if (searchEvent.action === 'api') {
+              this.contactBackFilter(searchEvent.query, true);
+            } else if (searchEvent.action === 'store') {
+              this.sendViolationData();
+            }
+          }
+        } */
+      });
+
+    // Contact Actions
+    this.tableService.currentActionAnimation
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        // Add Roadside Insection
+        if (res.animation === 'add') {
+          /* this.viewData.push(this.mapContactData(res.data));
+
+          this.viewData = this.viewData.map((contact: any) => {
+            if (contact.id === res.id) {
+              contact.actionAnimation = 'add';
+            }
+
+            return contact;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+
+          this.updateDataCount(); */
+        }
+        // Update Roadside Insection
+        else if (res.animation === 'update') {
+          /* const updatedContact = this.mapContactData(res.data, true);
+
+          this.viewData = this.viewData.map((contact: any) => {
+            if (contact.id === res.id) {
+              contact = updatedContact;
+              contact.actionAnimation = 'update';
+            }
+
+            return contact;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000); */
+        }
+        // Delete Roadside Insection
+        else if (res.animation === 'delete') {
+          /* let contactIndex: number;
+
+          this.viewData = this.viewData.map((contact: any, index: number) => {
+            if (contact.id === res.id) {
+              contact.actionAnimation = 'delete';
+              contact = index;
+            }
+
+            return contact;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(contactIndex, 1);
+            clearInterval(inetval);
+          }, 1000);
+
+          this.updateDataCount(); */
+        }
+      });
+
+    // Delete Selected Rows
+    this.tableService.currentDeleteSelectedRows
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any[]) => {
+       /*  if (response.length) {
+          this.contactService
+            .deleteAccountList(response)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+              this.viewData = this.viewData.map((contact: any) => {
+                response.map((r: any) => {
+                  if (contact.id === r.id) {
+                    contact.actionAnimation = 'delete';
+                  }
+                });
+
+                return contact;
+              });
+
+              this.updateDataCount();
+
+              const inetval = setInterval(() => {
+                this.viewData = closeAnimationAction(true, this.viewData);
+
+                clearInterval(inetval);
+              }, 1000);
+
+              this.tableService.sendRowsSelected([]);
+              this.tableService.sendResetSelectedColumns(true);
+            });
+        } */
+      });
   }
 
+  // -------------------------------NgAfterViewInit-------------------------------
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.observTableContainer();
+    }, 10);
+  }
+
+  // Responsive Observer
+  observTableContainer() {
+    this.resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        this.tableContainerWidth = entry.contentRect.width;
+      });
+    });
+
+    this.resizeObserver.observe(document.querySelector('.table-container'));
+  }
+
+  // Table Options
   initTableOptions(): void {
     this.tableOptions = {
       disabledMutedStyle: null,
@@ -63,11 +250,10 @@ export class ViolationTableComponent implements OnInit, OnDestroy {
     };
   }
 
-  getViolationData() {
-    this.sendViolationData();
-  }
-
+  // Send Roadside Inspection
   sendViolationData() {
+    this.initTableOptions();
+
     this.tableData = [
       {
         title: 'Active',
@@ -103,6 +289,7 @@ export class ViolationTableComponent implements OnInit, OnDestroy {
     this.setViolationData(td);
   }
 
+  // Get Roadside Inspection Table Columns Configurations
   getGridColumns(stateName: string, resetColumns: boolean) {
     const userState: any = JSON.parse(
       localStorage.getItem(stateName + '_user_columns_state')
@@ -115,14 +302,20 @@ export class ViolationTableComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Set Roadside Inspection Table Data
   setViolationData(td: any) {
-    this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    this.viewData = this.viewData.map((data) => {
-      data.isSelected = false;
-      return data;
-    });
+    if (td.data.length) {
+      this.viewData = td.data;
+
+      this.viewData = this.viewData.map((data) => {
+        data.isSelected = false;
+        return data;
+      });
+    } else {
+      this.viewData = [];
+    }
   }
 
   getDumyData(numberOfCopy: number) {
@@ -517,6 +710,7 @@ export class ViolationTableComponent implements OnInit, OnDestroy {
     return data;
   }
 
+  // On Toolbar Actions
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
       alert('Treba da se odradi modal!');
@@ -526,7 +720,25 @@ export class ViolationTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onTableBodyActions(event: any) {
+  // On Head Actions
+  onTableHeadActions(event: any) {
+    if (event.action === 'sort') {
+      if (event.direction) {
+        /*  this.mapingIndex = 0;
+
+        this.backFilterQuery.sort = event.direction;
+
+        this.backFilterQuery.pageIndex = 1;
+
+        this.contactBackFilter(this.backFilterQuery); */
+      } else {
+        this.sendViolationData();
+      }
+    }
+  }
+
+  // On Body Actions
+  onTableBodyActions(event: any) {
     switch (event.type) {
       case 'edit-violation': {
         this.modalService.openModal(
@@ -538,5 +750,14 @@ export class ViolationTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  // -------------------------------NgOnDestroy-------------------------------
+  ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
+
+    this.resizeObserver.unobserve(document.querySelector('.table-container'));
+    this.resizeObserver.disconnect();
+
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

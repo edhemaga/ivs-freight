@@ -13,7 +13,6 @@ import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { licensePlateValidation } from '../../../shared/ta-input/ta-input.regex-validations';
-import { FormService } from '../../../../services/form/form.service';
 import { NotificationService } from '../../../../services/notification/notification.service';
 import {
   convertDateToBackend,
@@ -24,7 +23,7 @@ import {
   selector: 'app-tt-registration-modal',
   templateUrl: './tt-registration-modal.component.html',
   styleUrls: ['./tt-registration-modal.component.scss'],
-  providers: [ModalService, FormService],
+  providers: [ModalService],
 })
 export class TtRegistrationModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -44,8 +43,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     private commonTruckTrailerService: CommonTruckTrailerService,
     private notificationService: NotificationService,
     private inputService: TaInputService,
-    private modalService: ModalService,
-    private formService: FormService
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -64,14 +62,6 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
       expDate: [null, Validators.required],
       note: [null],
     });
-
-    // this.formService.checkFormChange(this.registrationForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

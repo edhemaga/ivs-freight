@@ -4,7 +4,6 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { SignInResponse } from 'appcoretruckassist';
 import { NavigationService } from '../services/navigation.service';
 
 @Component({

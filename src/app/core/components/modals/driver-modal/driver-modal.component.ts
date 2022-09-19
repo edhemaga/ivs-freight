@@ -103,17 +103,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public loadingOwnerEin: boolean = false;
 
-  public logoOptions: Options = {
-    floor: 0.1,
-    ceil: 1.5,
-    step: 0.1,
-    animate: false,
-    showSelectionBar: true,
-    hideLimitLabels: true,
-  };
-
-  public slideInit = 0.5;
-
   public tabs: any[] = [
     {
       id: 1,
@@ -326,13 +315,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
-    // this.formService.checkFormChange(this.driverForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public get offDutyLocations(): FormArray {
@@ -430,7 +412,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           };
           this.labelsBank = [...this.labelsBank, this.selectedBank];
         },
-        error: (err) => {
+        error: () => {
           this.notificationService.error("Can't add new bank", 'Error');
         },
       });
@@ -998,16 +980,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
           this.handlingPayrollFleetType(this.fleetType, true);
         },
-        error: (err) => {
-          let retryStatus = false;
-          if ( err.status == 500 )
-            {
-              retryStatus = true;
-            }
+        error: () => {
           this.notificationService.error(
             "Driver's dropdowns can't be loaded.",
-            'Error:',
-            retryStatus,
+            'Error:'
           );
         },
       });
@@ -1588,7 +1564,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             commissionTeam: res.commissionTeam,
             ownerId: res.owner ? res.owner.id : null,
             useTruckAssistAch: res.useTruckAssistAch,
-            isOwner: res.owner ? true : false,
+            isOwner: !!res.owner,
             ownerType: res.owner
               ? res.owner?.ownerType?.name
                 ? res.owner?.ownerType?.name.includes('Proprietor')
@@ -1660,15 +1636,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
           this.onHandleAddress({
             address: res.address,
-            valid: res.address ? true : false,
+            valid: !!res.address,
           });
 
           this.modalService.changeModalStatus({
             name: 'deactivate',
-            status: res.status === 1 ? false : true,
+            status: res.status !== 1,
           });
 
-          this.driverStatus = res.status === 1 ? false : true;
+          this.driverStatus = res.status !== 1;
 
           this.fleetType = res.fleetType.name;
 

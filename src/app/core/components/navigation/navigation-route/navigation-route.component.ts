@@ -1,4 +1,4 @@
-import { NavigationSubRoutes } from './../model/navigation.model';
+import { NavigationSubRoutes } from '../model/navigation.model';
 import { Router } from '@angular/router';
 import { Navigation } from '../model/navigation.model';
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
@@ -72,11 +72,7 @@ export class NavigationRouteComponent implements OnInit {
 
   public onNavItemHover(type: boolean) {
     if (type) {
-      if ([3, 4, 5, 6].includes(this.route.id) && this.route.isRouteActive) {
-        this.isNavItemHovered = false;
-      } else {
-        this.isNavItemHovered = true;
-      }
+      this.isNavItemHovered = !([3, 4, 5, 6].includes(this.route.id) && this.route.isRouteActive);
     } else {
       this.isNavItemHovered = false;
     }

@@ -1,4 +1,4 @@
-import { convertDateToBackend } from './../../../utils/methods.calculations';
+import { convertDateToBackend } from '../../../utils/methods.calculations';
 import { Options } from '@angular-slider/ngx-slider';
 import { HttpResponseBase } from '@angular/common/http';
 import {
@@ -41,7 +41,6 @@ import { FormService } from '../../../services/form/form.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
 import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
-import moment from 'moment';
 
 @Component({
   selector: 'app-truck-modal',
@@ -279,7 +278,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             this.modalService.setModalSpinner({
               action: null,
               status: true,
-              clearTimeout: this.editData?.canOpenModal ? true : false,
+              clearTimeout: !!this.editData?.canOpenModal,
             });
           }
         }
@@ -372,7 +371,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             ? res.truckEngineType
             : null;
           this.selectedTireSize = res.tireSize ? res.tireSize : null;
-          this.truckStatus = res.status === 1 ? false : true;
+          this.truckStatus = res.status !== 1;
 
           this.modalService.changeModalStatus({
             name: 'deactivate',
@@ -538,7 +537,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 this.selectedTruckMake = res.truckMake;
                 this.selectedEngineModel = res.engineType;
               },
-              error: (error: any) => {
+              error: () => {
                 this.notificationService.error(
                   `Can't get data for that ${value} VIN.`,
                   'Error:'
@@ -577,7 +576,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           this.tireSize = res.tireSizes;
           this.shifters = res.shifters;
         },
-        error: (err) => {
+        error: () => {
           this.notificationService.error(
             "Cant't get truck dropdown items.",
             'Error:'
