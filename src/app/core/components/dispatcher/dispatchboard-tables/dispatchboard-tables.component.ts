@@ -389,7 +389,7 @@ export class DispatchboardTablesComponent implements OnInit {
 
     const dataId = oldData.id;
     let oldUpdateData: CreateDispatchCommand | UpdateDispatchCommand = {
-      status: oldData.status ? (oldData.status?.name as DispatchStatus) : 'Off',
+      status: oldData.status ? (oldData.status?.statusValue.name as DispatchStatus) : 'Off',
       order: oldData.order,
       truckId: oldData.truck ? oldData.truck?.id : null,
       trailerId: oldData.trailer ? oldData.trailer?.id : null,

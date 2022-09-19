@@ -31,7 +31,7 @@ import { ChangeDetectorRef } from '@angular/core';
   ],
 })
 export class TaStatusSwitchComponent implements OnInit {
-  @Input() status: { id: number, name: string };
+  @Input() status: { statusValue: { id: number, name: string }, statusString: string } ;
   @Input() dispatchboardId: number;
   @Input() statusDate: Date = new Date();
   private destroy$ = new Subject<void>();
@@ -82,6 +82,8 @@ export class TaStatusSwitchComponent implements OnInit {
 
   ngOnInit(): void {
 
+    console.log("WHAT IS STATUS");
+    console.log(this.status);
     let mytimezoneOffset = moment(new Date()).utcOffset();
     let status_time = moment(new Date(this.statusDate).getTime()).format(
       'YYYY-MM-DD HH:mm'
@@ -91,7 +93,7 @@ export class TaStatusSwitchComponent implements OnInit {
     this.statusAgo = this.timeSince(new Date(status_time));
 
 
-    this.changeIndex = this.status.id;
+    this.changeIndex = this.status.statusValue.id;
     this.changedStatusLoadCount = this.statusLoadCount;
    // this.updateStatusFilter();
 
