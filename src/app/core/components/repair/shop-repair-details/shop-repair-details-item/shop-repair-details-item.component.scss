@@ -197,6 +197,10 @@ app-shop-repair-details-item {
         padding: 6px 4px;
         padding-left: 10px;
         border-radius: 2px;
+        grid-template-columns: 82px 86px 86px 0 415px !important;
+        &:hover {
+          background-color: #ffecd1 !important;
+        }
       }
     }
     .unit {
@@ -249,5 +253,128 @@ app-shop-repair-details-item {
     .divider {
       display: none;
     }
+  }
+}
+.open-items-body {
+  background-color: #e5e5e5 !important;
+  margin-bottom: 2px !important;
+  margin-top: 2px !important;
+  padding: 6px 4px !important;
+  padding-left: 10px !important;
+  border-radius: 2px;
+  .unit {
+    color: #3c3c3c !important;
+  }
+  .date {
+    color: #3c3c3c !important;
+  }
+  .item-desc {
+    color: #3c3c3c !important;
+  }
+  .cost {
+    color: #3c3c3c !important;
+  }
+}
+.open-items-body-no-invoice {
+  background-color: #ffe0b2 !important;
+  margin-bottom: 2px !important;
+  margin-top: 2px !important;
+  padding: 6px 4px !important;
+  padding-left: 10px !important;
+  border-radius: 2px;
+  .unit {
+    color: #3c3c3c !important;
+  }
+  .date {
+    color: #3c3c3c !important;
+  }
+  .item-desc {
+    color: #3c3c3c !important;
+  }
+  .cost {
+    color: #3c3c3c !important;
+  }
+}
+.repair-items-body-wrapper {
+  height: fit-content;
+  width: 100%;
+  background-color: #f9f9f9;
+  height: fit-content;
+  border-radius: 0 0 2px 2px;
+  .repair-items-body-header {
+    display: grid;
+    grid-template-columns: 33px 418px 80px 98px 58px;
+    align-items: center;
+    align-content: center;
+    padding: 0 10px;
+    .item-header {
+      font-size: 12px;
+      font-weight: $font-bold;
+      color: #919191;
+    }
+  }
+  .repair-items-body {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 31px 340px 118px 60px;
+    grid-auto-flow: column;
+    width: 690px;
+    padding: 0 10px;
+    .description-item-counter {
+      font-size: 14px;
+      font-weight: $font-semibold;
+      color: #919191;
+      line-height: 10px;
+    }
+    .description-item {
+      font-size: 16px;
+      font-weight: 400;
+      color: #6c6c6c;
+    }
+    .description-item-qty {
+      font-size: 14px;
+      font-weight: 400;
+      display: flex;
+      justify-content: flex-end;
+      color: #6c6c6c;
+    }
+
+    .description-item-total {
+      font-size: 14px;
+      font-weight: 600;
+      color: #6c6c6c;
+      text-align: right;
+    }
+    &:hover {
+      .description-item-counter {
+        color: #6c6c6c;
+      }
+      .description-item {
+        color: #3c3c3c;
+      }
+      .description-item-qty {
+        color: #3c3c3c;
+      }
+
+      .description-item-total {
+        color: #3c3c3c;
+      }
+    }
+  }
+}
+.no-repairs-inovice {
+  .repair-items-body-header {
+    grid-template-columns: 33px 612px 80px !important;
+  }
+  .repair-items-body {
+    grid-template-columns: 31px 516px 118px !important;
+    width: 100% !important;
+  }
+}
+.repair-body-container {
+  &:hover {
+    background-color: #f3f3f3 !important;
+    border-radius: 2px;
+    width: 100%;
   }
 }

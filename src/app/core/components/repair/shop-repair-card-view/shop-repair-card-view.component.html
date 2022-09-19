@@ -3,8 +3,8 @@
     [cardDetailsDate]="shopResponse?.createdAt | formatDateP"
     [tooltipNext]="'Next Repair'"
     [tooltipPrevious]="'Previous Repair'"
-    [searchInputName]="'Search Repair'"
-    [searchName]="'Pinned Shop'"
+    [searchInputName]="'Search Repair Shop'"
+    [searchName]="'Listed to Favourites'"
     [options]="shopsDropdowns"
     (selectValue)="onSelectedShop($event)"
     (changeEvent)="onChangeShop($event)"
@@ -16,23 +16,25 @@
           class="repair-icon"
           src="assets/svg/common/ic_phone.svg"
         ></svg-icon>
-        <p class="repair-value">
-          {{ shopResponse?.phone | formatPhoneP }}
-        </p>
+       
+          <app-ta-copy [copyValue]="shopResponse?.phone"></app-ta-copy>
+         
+      
       </div>
-      <div class="repair-information-item">
+      <div class="repair-information-item" *ngIf="shopResponse?.email">
         <svg-icon
           class="repair-icon"
           src="assets/svg/common/ic_email.svg"
         ></svg-icon>
-        <p class="repair-value">{{ shopResponse?.email }}</p>
+       <app-ta-copy [copyValue]="shopResponse?.email"></app-ta-copy>
       </div>
       <div class="repair-information-item">
         <svg-icon
           class="repair-icon"
           src="assets/svg/common/ic_address.svg"
         ></svg-icon>
-        <p class="repair-value">{{ shopResponse?.address?.address }}</p>
+      
+        <app-ta-copy [copyValue]=" shopResponse?.address?.address"></app-ta-copy>
       </div>
     </div>
   </app-ta-details-header-card>
@@ -97,7 +99,7 @@
         <div class="service-container">
           <div
             *ngFor="
-              let service of shopResponse.serviceTypes;
+              let service of shopResponse?.serviceTypes;
               let i = index;
               trackBy: identity
             "

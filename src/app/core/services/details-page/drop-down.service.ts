@@ -10,6 +10,7 @@ import { TtRegistrationModalComponent } from '../../components/modals/common-tru
 import { TtTitleModalComponent } from '../../components/modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 import { ConfirmationModalComponent } from '../../components/modals/confirmation-modal/confirmation-modal.component';
 import { DriverModalComponent } from '../../components/modals/driver-modal/driver-modal.component';
+import { RepairShopModalComponent } from '../../components/modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { ShipperModalComponent } from '../../components/modals/shipper-modal/shipper-modal.component';
 import { TrailerModalComponent } from '../../components/modals/trailer-modal/trailer-modal.component';
 import { TruckModalComponent } from '../../components/modals/truck-modal/truck-modal.component';
@@ -663,6 +664,54 @@ export class DropDownService {
           break;
         }
       }
+    }
+  }
+  public dropActionsHeaderRepair(
+    event: any,
+    dataObject?: any,
+    dataId?: number
+  ) {
+    const mappedEvent = {
+      ...dataObject,
+      data: {
+        ...dataObject,
+      },
+    };
+    if (event.type === 'edit') {
+      this.modalService.openModal(
+        RepairShopModalComponent,
+        { size: 'small' },
+        {
+          ...event,
+          disableButton: true,
+          id: event.id,
+        }
+      );
+    } else if (
+      event.type === 'add-favourites' ||
+      event.type === 'remove-favourites'
+    ) {
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          ...mappedEvent,
+          template: 'repair shop',
+          type: 'activate',
+          image: false,
+        }
+      );
+    } else if (event.type === 'delete-item') {
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          ...mappedEvent,
+          template: 'repair shop',
+          type: 'delete',
+          image: false,
+        }
+      );
     }
   }
 }

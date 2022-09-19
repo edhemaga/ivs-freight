@@ -18,13 +18,24 @@
         <div class="repair-items-wrapper">
           <span
             *ngFor="let repairs of shopData?.data?.repairs; let i = index"
+            (click)="showRepairItems[i] = !showRepairItems[i]"
             class="item-shop-wrapper"
             [ngClass]="{
-              'finish-order-cont': !repairs.invoice && !repairs.total
+              'finish-order-cont': !repairs.invoice,
+              'open-items-body': showRepairItems[i] && repairs.invoice,
+              'open-items-body-no-invoice':
+                showRepairItems[i] && !repairs.invoice
             }"
           >
             <div class="repair-items">
-              <div class="items-header">
+              <div
+                class="items-header"
+                [ngClass]="{
+                  'open-items-body': showRepairItems[i] && repairs.invoice,
+                  'open-items-body-no-invoice':
+                    showRepairItems[i] && !repairs.invoice
+                }"
+              >
                 <span class="unit">{{
                   repairs?.trailer?.trailerNumber
                     ? repairs.trailer.trailerNumber
@@ -36,10 +47,7 @@
                     repairs.invoice
                   }}</span></span
                 >
-                <div
-                  *ngIf="!repairs.invoice && !repairs.total"
-                  class="no-invoice"
-                >
+                <div *ngIf="!repairs.invoice" class="no-invoice">
                   <svg-icon
                     class="no-inv"
                     src="assets/svg/common/ic_note_order.svg"
@@ -47,19 +55,22 @@
                   <span class="date-order">Order</span>
                 </div>
                 <span class="date-description">
-                  <span class="item-desc" *ngFor="let desc of repairs.items"
+                  <span
+                    class="item-desc"
+                    *ngFor="let desc of repairs?.items; trackBy: identity"
                     >{{ desc.description }}
-                    <span class="full-stop-shop" *ngIf="repairs.items.length > 1">●</span></span
+                    <span
+                      class="full-stop-shop"
+                      *ngIf="repairs.items.length > 1"
+                      >●</span
+                    ></span
                   >
                 </span>
 
-                <span *ngIf="repairs.invoice || repairs.total" class="cost">{{
+                <span *ngIf="repairs.total" class="cost">{{
                   repairs.total | formatCurrency
                 }}</span>
-                <div
-                  *ngIf="!repairs.invoice && !repairs.total"
-                  class="button-wrapper-shop"
-                >
+                <div *ngIf="!repairs.invoice" class="button-wrapper-shop">
                   Finish Order
                 </div>
                 <div
@@ -74,7 +85,45 @@
                 </div>
               </div>
             </div>
-            <div class="divider"></div>
+            <div
+              *ngIf="repairs?.items?.length"
+              [@showHideCardBody]="showRepairItems[i] ? 'true' : 'false'"
+              [ngClass]="{
+                'no-repairs-inovice': !repairs.invoice
+              }"
+              class="repair-items-body-wrapper"
+            >
+              <div class="repair-items-body-header">
+                <div class="item-header">#</div>
+                <div class="item-header">ITEM</div>
+                <div *ngIf="repairs.invoice" class="item-header">PRICE</div>
+                <div class="item-header">QTY</div>
+                <div *ngIf="repairs.invoice" class="item-header">TOTAL</div>
+              </div>
+              <div
+                *ngFor="
+                  let desc of repairs?.items;
+                  let i = index;
+                  trackBy: identity
+                "
+                class="repair-body-container"
+              >
+                <div class="repair-items-body">
+                  <span class="description-item-counter">{{ i + 1 }}</span>
+                  <span class="description-item">{{ desc?.description }}</span>
+                  <span
+                    *ngIf="desc.price"
+                    class="description-item-qty qty-price"
+                    >{{ desc?.price | formatCurrency }}</span
+                  >
+                  <span class="description-item-qty">{{ desc?.quantity }}</span>
+                  <span *ngIf="desc.subtotal" class="description-item-total">{{
+                    desc?.subtotal | formatCurrency
+                  }}</span>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!showRepairItems[i]" class="divider"></div>
           </span>
         </div>
       </div>

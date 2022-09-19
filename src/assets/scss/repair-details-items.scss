@@ -152,7 +152,7 @@ $transition: all 0.3s ease-in-out;
             font-size: $font-size14;
             font-weight: $font-bold;
             color: $color-gray-dark;
-            line-height: 21px;
+            line-height: 17px;
             display: flex;
             align-items: center;
             &::-moz-selection {
@@ -169,7 +169,7 @@ $transition: all 0.3s ease-in-out;
             padding-left: 10px;
             display: grid;
             grid-template-columns: 82px 86px 86px 307px 108px;
-
+            cursor: pointer;
             align-content: center;
             grid-auto-flow: column;
             margin-top: 8px;
@@ -196,6 +196,7 @@ $transition: all 0.3s ease-in-out;
             font-weight: 400;
             color: $color-gray-dark;
             overflow: hidden;
+            line-height: 19px;
             text-overflow: ellipsis;
         }
         .date {
@@ -230,7 +231,7 @@ $transition: all 0.3s ease-in-out;
             font-weight: $font-semibold;
             color: $color-gray-dark;
             text-align: right;
-            line-height: 17px;
+            line-height: 18px;
             display: flex;
             justify-content: flex-end;
             align-items: end;
