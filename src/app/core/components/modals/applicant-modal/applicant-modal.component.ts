@@ -1,7 +1,7 @@
 import {
   firstNameValidation,
   lastNameValidation,
-} from './../../shared/ta-input/ta-input.regex-validations';
+} from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';

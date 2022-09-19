@@ -83,25 +83,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onPanelEvent(panel: { type: boolean; name: string }): void {
-    switch (panel.name) {
-      case 'Modal Panel': {
-        this.isModalPanelOpen = panel.type;
-        break;
-      }
-      case 'User Panel': {
-        this.isUserPanelOpen = panel.type;
-        break;
-      }
-      case 'User Company Details': {
-        this.isUserCompanyDetailsOpen = panel.type;
-        break;
-      }
-      default:
-        break;
-    }
-  }
-
   public onRouteEvent(subroute: NavigationSubRoutes): void {
     const index = this.navigation.findIndex(
       (item) => item.id === subroute.routeId

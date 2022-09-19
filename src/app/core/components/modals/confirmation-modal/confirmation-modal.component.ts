@@ -1,4 +1,4 @@
-import { ImageBase64Service } from './../../../utils/base64.image';
+import { ImageBase64Service } from '../../../utils/base64.image';
 import { Component, Input } from '@angular/core';
 import { ConfirmationService } from './confirmation.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';

@@ -1,4 +1,4 @@
-import { ImageBase64Service } from './../../../utils/base64.image';
+import { ImageBase64Service } from '../../../utils/base64.image';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -29,7 +29,6 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
 
   public userNavigationData: NavigationUserPanel[] = userNavigationData;
   public currentUserStatus: string = 'online';
-  public isItemHovered: boolean = false;
 
   public loggedUser: any = null;
 

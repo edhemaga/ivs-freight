@@ -9,7 +9,7 @@ import {
   phoneExtension,
   routingBankValidation,
   salaryValidation,
-} from './../../shared/ta-input/ta-input.regex-validations';
+} from '../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -277,7 +277,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
           };
           this.labelsBank = [...this.labelsBank, this.selectedBank];
         },
-        error: (err) => {
+        error: () => {
           this.notificationService.error("Can't add new bank", 'Error');
         },
       });
@@ -290,8 +290,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
   private deleteUserById(id: number) {}
 
   private editUserById(id: number) {}
-
-  private getUserDropdowns() {}
 
   ngOnDestroy(): void {
     this.destroy$.next();

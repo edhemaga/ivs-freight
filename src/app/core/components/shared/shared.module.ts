@@ -1,5 +1,5 @@
-import { RepairOrderModalComponent } from './../modals/repair-modals/repair-order-modal/repair-order-modal.component';
-import { AccidentModalComponent } from './../safety/accident/accident-modal/accident-modal.component';
+import { RepairOrderModalComponent } from '../modals/repair-modals/repair-order-modal/repair-order-modal.component';
+import { AccidentModalComponent } from '../safety/accident/accident-modal/accident-modal.component';
 import { RouterModule } from '@angular/router';
 import { TaModalComponent } from './ta-modal/ta-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
@@ -33,7 +33,7 @@ import { TaLogoChangeComponent } from './ta-logo-change/ta-logo-change.component
 
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
-import { TaInputComponent } from '../../components/shared/ta-input/ta-input.component';
+import { TaInputComponent } from './ta-input/ta-input.component';
 import { AccountModalComponent } from '../modals/account-modal/account-modal.component';
 import { TaInputNoteComponent } from './ta-input-note/ta-input-note.component';
 import { TaInputDropdownComponent } from './ta-input-dropdown/ta-input-dropdown.component';
@@ -196,7 +196,7 @@ export function playerFactory() {
     TaUploadFilesComponent,
     TaCopyComponent,
     MapToolbarComponent,
-    AutoclosePopoverComponent,
+    AutoclosePopoverComponent
   ],
   imports: [
     CommonModule,

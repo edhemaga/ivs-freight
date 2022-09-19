@@ -38,8 +38,6 @@
           dropdownWidthClass: 'w-col-129',
           autoFocus:
             !editData?.type?.includes('edit') && !editData?.storageData?.unit
-              ? true
-              : false
         }"
         [canAddNew]="true"
         [canOpenModal]="true"
@@ -156,13 +154,13 @@
     <!-- Fake Table Card -->
     <div [ngClass]="{ 'repair-order': selectedHeaderTab !== 1 }">
       <app-ta-custom-card
-        [hasCounter]="items.length ? items.length : '0'"
+        [hasCounter]="items.length ? items.length : 0"
         [cardName]="'Item'"
         [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
         [hasArrow]="false"
         [isCommentData]="true"
-        [isCardOpen]="items.length"
-        [hasBodyData]="items.length"
+        [isCardOpen]="items.length > 0"
+        [hasBodyData]="items.length > 0"
         [hasScrollBody]="items.length > 10"
         (onActionEvent)="addItems($event)"
       >
@@ -194,7 +192,7 @@
               }"
             >
               <p>
-                {{ item.controls.id.value }}
+                {{ item.get('id').value }}
               </p>
               <div class="desc-pm-container">
                 <app-ta-input
@@ -306,7 +304,7 @@
                 position="top"
                 tooltipBackground="#EF5350"
                 class="common-fake-table-delete"
-                (click)="removeItems(ind, item.controls)"
+                (click)="removeItems(ind)"
               >
                 <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
               </div>
@@ -323,7 +321,7 @@
     </div>
 
     <app-ta-custom-card
-      [hasCounter]="pickedServices() ? pickedServices() : '0'"
+      [hasCounter]="pickedServices() ? pickedServices() : 0"
       [cardName]="'Service'"
       [isCardOpen]="true"
     >
@@ -341,9 +339,9 @@
     </app-ta-custom-card>
     <div *ngIf="selectedHeaderTab === 1" class="ta-card-body-overflow-none">
       <app-ta-custom-card
-        [hasCounter]="documents.length ? documents.length : '0'"
+        [hasCounter]="documents.length ? documents.length : 0"
         [cardName]="'Documents'"
-        [isCardOpen]="documents.length"
+        [isCardOpen]="documents.length > 0"
       >
         <app-ta-upload-files
           [files]="documents"

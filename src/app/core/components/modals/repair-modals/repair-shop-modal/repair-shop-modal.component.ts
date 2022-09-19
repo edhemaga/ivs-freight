@@ -1,4 +1,4 @@
-import { RepairOrderModalComponent } from './../repair-order-modal/repair-order-modal.component';
+import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-modal.component';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -139,7 +139,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
           this.modalService.setModalSpinner({
             action: null,
             status: true,
-            clearTimeout: this.editData?.canOpenModal ? true : false,
+            clearTimeout: !!this.editData?.canOpenModal,
           });
         }
         break;
@@ -230,10 +230,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public removeOpenHour(id: number) {
-    this.openHours.removeAt(id);
-  }
-
   public pickedServices() {
     return this.services.filter((item) => item.active).length;
   }
@@ -289,7 +285,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
           };
           this.labelsBank = [...this.labelsBank, this.selectedBank];
         },
-        error: (err) => {
+        error: () => {
           this.notificationService.error("Can't add new bank", 'Error');
         },
       });
@@ -332,7 +328,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
           this.selectedAddress = res.address;
           this.selectedBank = res.bank;
-          this.isPhoneExtExist = res.phoneExt ? true : false;
+          this.isPhoneExtExist = !!res.phoneExt;
           this.isRepairShopFavourite = res.pinned;
 
           this.services = res.serviceTypes.map((item) => {

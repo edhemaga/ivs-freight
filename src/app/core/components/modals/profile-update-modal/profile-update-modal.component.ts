@@ -4,7 +4,7 @@ import {
   firstNameValidation,
   lastNameValidation,
   passwordValidation,
-} from './../../shared/ta-input/ta-input.regex-validations';
+} from '../../shared/ta-input/ta-input.regex-validations';
 import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -17,11 +17,11 @@ import {
   UpdateUserCommand,
   UserResponse,
 } from 'appcoretruckassist';
-import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { TaUserService } from '../../../services/user/user.service';
-import { ImageBase64Service } from '../../../utils/base64.image';
+import Croppie from "croppie";
 
 @Component({
   selector: 'app-profile-update-modal',
@@ -72,8 +72,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private userService: TaUserService,
     private notificationService: NotificationService,
-    private modalService: ModalService,
-    private imageBase64Service: ImageBase64Service
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -175,11 +174,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
               next: (res: any) => {
-                if (res.correctPassword) {
-                  this.correctPassword = true;
-                } else {
-                  this.correctPassword = false;
-                }
+                this.correctPassword = !!res.correctPassword;
                 this.loadingOldPassword = false;
               },
               error: () => {
