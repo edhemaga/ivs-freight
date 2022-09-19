@@ -41,7 +41,6 @@ import {
     './repair-table.component.scss',
     '../../../../../assets/scss/maps.scss',
   ],
-  encapsulation: ViewEncapsulation.None,
   providers: [TaThousandSeparatorPipe],
 })
 export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {

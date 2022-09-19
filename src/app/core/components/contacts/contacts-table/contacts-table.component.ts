@@ -536,8 +536,10 @@ export class ContactsTableComponent
 
   ngOnDestroy(): void {
     this.tableService.sendActionAnimation({});
+    
     this.resizeObserver.unobserve(document.querySelector('.table-container'));
     this.resizeObserver.disconnect();
+
     this.destroy$.next();
     this.destroy$.complete();
   }

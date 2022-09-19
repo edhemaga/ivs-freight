@@ -38,7 +38,6 @@ import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRa
     './customer-table.component.scss',
     '../../../../../assets/scss/maps.scss',
   ],
-  encapsulation: ViewEncapsulation.None,
   providers: [TaThousandSeparatorPipe],
 })
 export class CustomerTableComponent
