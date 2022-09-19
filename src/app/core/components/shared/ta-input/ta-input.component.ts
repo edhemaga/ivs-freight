@@ -497,11 +497,7 @@ export class TaInputComponent
       }
     }
 
-    if (event.getModifierState('CapsLock')) {
-      this.capsLockOn = true;
-    } else {
-      this.capsLockOn = false;
-    }
+    this.capsLockOn = !!event.getModifierState('CapsLock');
   }
 
   public transformText(event: any) {
@@ -726,7 +722,7 @@ export class TaInputComponent
     // Disable first character to be space
     if (
       !this.input.nativeElement.value &&
-      /^[ ]*$/.test(String.fromCharCode(event.charCode))
+      /^\s*$/.test(String.fromCharCode(event.charCode))
     ) {
       event.preventDefault();
       return false;
@@ -881,10 +877,8 @@ export class TaInputComponent
       )
     ) {
       if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
-        if (/^[IiOQ]*$/.test(String.fromCharCode(event.charCode))) {
-          return false;
-        }
-        return true;
+        return !/^[IiOQ]*$/.test(String.fromCharCode(event.charCode));
+
       }
       event.preventDefault();
       return false;
@@ -1035,14 +1029,9 @@ export class TaInputComponent
 
     if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
-        if (
-          this.getSuperControl.value * 10 + event.charCode - 48 >
-          this.inputConfig.max
-        ) {
-          return false;
-        }
+        return this.getSuperControl.value * 10 + event.charCode - 48 <= this.inputConfig.max;
 
-        return true;
+
       } else {
         event.preventDefault();
         return false;
@@ -1097,7 +1086,7 @@ export class TaInputComponent
     if (['full name'].includes(this.inputConfig.name.toLowerCase())) {
       let space = this.input.nativeElement.value.split(' ').length;
       if (
-        /^[A-Za-z0-9.,/!@#$%^&**()_+={}"':>?<;\s-]*$/.test(
+        /^[A-Za-z0-9.,/!@#$%^&*()_+={}"':>?<;\s-]*$/.test(
           String.fromCharCode(event.charCode)
         )
       ) {
@@ -1235,17 +1224,6 @@ export class TaInputComponent
     this.destroy$.next();
     this.destroy$.complete();
   }
-
-  // OVAJ DEO OVDE JE ZA CUSTOM DATEPICKERS
-
-  scrollTypes: any = {
-    pmAmScroll: 0,
-    minutesScroll: 0,
-    hourScroll: 8,
-    monthScroll: 0,
-    dayScroll: 0,
-    yearScroll: 0,
-  };
 
   selectionInput: number = -1;
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+// @ts-ignore
 import AppImages from "../../../../../assets/img/images.json";
 
 @Component({

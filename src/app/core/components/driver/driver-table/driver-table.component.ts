@@ -52,6 +52,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   loadingPage: boolean = true;
   backFilterQuery = {
     active: 1,
+    long: undefined,
+    lat: undefined,
+    distance: undefined,
     pageIndex: 1,
     pageSize: 25,
     companyId: undefined,
@@ -771,6 +774,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   driverBackFilter(
     filter: {
       active: number;
+      long?: number;
+      lat?: number;
+      distance?: number;
       pageIndex: number;
       pageSize: number;
       companyId: number | undefined;
@@ -785,6 +791,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.driverTService
       .getDrivers(
         filter.active,
+        filter.long,
+        filter.lat,
+        filter.distance,
         filter.pageIndex,
         filter.pageSize,
         filter.companyId,

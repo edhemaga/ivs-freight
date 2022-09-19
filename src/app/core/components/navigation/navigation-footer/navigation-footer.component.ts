@@ -122,6 +122,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
           localStorage.removeItem('subroute_active');
           this.onActivateFooterRoutes.emit(true);
         }
+        break;
       }
       default: {
         return;

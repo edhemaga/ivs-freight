@@ -1,9 +1,9 @@
 import {
   convertDateFromBackend,
   convertThousanSepInNumber,
-} from './../../../../utils/methods.calculations';
-import { SumArraysPipe } from './../../../../pipes/sum-arrays.pipe';
-import { NotificationService } from './../../../../services/notification/notification.service';
+} from '../../../../utils/methods.calculations';
+import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
+import { NotificationService } from '../../../../services/notification/notification.service';
 import {
   ChangeDetectorRef,
   Component,
@@ -29,7 +29,6 @@ import { TruckModalComponent } from '../../truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '../../trailer-modal/trailer-modal.component';
 import { RepairShopModalComponent } from '../repair-shop-modal/repair-shop-modal.component';
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../../services/form/form.service';
 import {
   convertDateToBackend,
   convertNumberInThousandSep,
@@ -46,7 +45,7 @@ import {
   selector: 'app-repair-order-modal',
   templateUrl: './repair-order-modal.component.html',
   styleUrls: ['./repair-order-modal.component.scss'],
-  providers: [SumArraysPipe, ModalService, FormService],
+  providers: [SumArraysPipe, ModalService],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -117,7 +116,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     private ngbActiveModal: NgbActiveModal,
     private sumArrayPipe: SumArraysPipe,
     private cdRef: ChangeDetectorRef,
-    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -161,14 +159,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       items: this.formBuilder.array([]),
       note: [null],
     });
-
-    // this.formService.checkFormChange(this.repairOrderForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

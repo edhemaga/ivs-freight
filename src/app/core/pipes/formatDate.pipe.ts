@@ -5,7 +5,7 @@ import moment from 'moment';
   name: 'formatDateP',
 })
 export class formatDatePipe implements PipeTransform {
-  transform(date: string,template:string):any {
+  transform(date: string,template?:string):any {
     switch(template){
       case 'short-format':{
         return moment(date).format('MM/YY')
@@ -14,6 +14,6 @@ export class formatDatePipe implements PipeTransform {
         return moment(date).format('MM/DD/YY');
       }
     }
-   
+
   }
 }

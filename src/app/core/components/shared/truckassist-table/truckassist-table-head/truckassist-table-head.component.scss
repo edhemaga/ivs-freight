@@ -248,6 +248,12 @@ table {
 .actions-columns-container {
   padding: 2px 2px 2px 1px;
   justify-content: flex-end;
+
+  th{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 // Drag Preview

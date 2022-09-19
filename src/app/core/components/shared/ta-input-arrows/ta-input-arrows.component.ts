@@ -39,7 +39,7 @@ export class TaInputArrowsComponent
   }
 
   private buttonAction(element: any, action: string) {
-    element.addEventListener('mousedown', (e: any) => {
+    element.addEventListener('mousedown', () => {
       this.changeValue(action);
 
       this.interval = setInterval(() => {
@@ -47,7 +47,7 @@ export class TaInputArrowsComponent
       }, 200);
     });
 
-    element.addEventListener('mouseup', (e: any) => {
+    element.addEventListener('mouseup', () => {
       clearInterval(this.interval);
     });
   }
@@ -86,6 +86,6 @@ export class TaInputArrowsComponent
 
   public writeValue(obj: any): void {}
   public registerOnChange(fn: any): void {}
-  public onChange(event: any): void {}
+  public onChange(): void {}
   public registerOnTouched(fn: any): void {}
 }
