@@ -50,10 +50,12 @@
       <app-ta-input
         formControlName="jobDescription"
         [inputConfig]="{
-          name: 'Job Description',
+          name: 'Description',
           type: 'text',
           label: 'Job description',
           isRequired: true,
+          minLength: 2,
+          maxLength: 160,
           textTransform: 'capitalize',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"

@@ -12,22 +12,23 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { TruckTService } from '../../truck/state/truck.service';
+import { TruckListResponse } from 'appcoretruckassist';
+import { card_component_animation } from '../../shared/animations/card-component.animations';
 
 @Component({
   selector: 'app-map-toolbar',
   templateUrl: './map-toolbar.component.html',
-  styleUrls: [
-    './map-toolbar.component.scss',
-    '../truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component.scss',
-  ],
+  styleUrls: ['./map-toolbar.component.scss'],
+  animations: [card_component_animation('showHideCardBody')],
 })
 export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   private destroy$ = new Subject<void>();
   @ViewChild('op') mapSettingsPopup: any;
   @ViewChild('op2') addRoutePopup: any;
   @ViewChild('op3') layersPopup: any;
+  @ViewChild('op4') keyboardPopup: any;
 
   @Output() toolBarAction: EventEmitter<any> = new EventEmitter();
   @Input() tableData: any[];
@@ -44,6 +45,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   mapSettingsPopupOpen: boolean = false;
   addRoutePopupOpen: boolean = false;
   layersPopupOpen: boolean = false;
+  keyboardPopupOpen: boolean = false;
   tableLocked: boolean = true;
   optionsPopupContent: any[] = [
     {
@@ -195,10 +197,15 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     { color: '#A851FF', text: '-08:00 Alaska Daylight Time' },
   ];
 
+  hideFuelCost: boolean = false;
+  hideDuration: boolean = false;
+  truckList: any[] = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private ref: ChangeDetectorRef,
-    private inputService: TaInputService
+    private inputService: TaInputService,
+    private truckService: TruckTService
   ) {}
 
   ngOnInit(): void {
@@ -207,6 +214,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     this.onIncludeDuration();
     this.onIncludeFuelCost();
+    this.getTrucks();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -226,6 +234,23 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
       const td = this.tableData.find((t) => t.field === this.selectedTab);
 
       this.listName = td.gridNameTitle;
+      this.getSelectedTabTableData();
+
+      if (
+        changes.selectedTab.previousValue &&
+        changes.selectedTab.currentValue != changes.selectedTab.previousValue
+      ) {
+        this.routeToEdit = {};
+
+        this.resetRouteForm();
+        this.resetMapForm();
+
+        this.addRoutePopup?.close();
+        this.mapSettingsPopup?.close();
+
+        this.layersPopup?.close();
+        this.layersPopupOpen = false;
+      }
     }
   }
 
@@ -292,6 +317,53 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
       fuelPrice: null,
       routeType: 'Practical',
     });
+
+    this.routeForm.valueChanges
+      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((formChanges) => {
+        var originalValues = {
+          routeName: 'Route 0' + (this.activeTableData.length + 1),
+          truckId: '',
+          duration: false,
+          durationTime: null,
+          fuelCost: false,
+          fuelMpg: null,
+          fuelPrice: null,
+          routeType: 'Practical',
+        };
+
+        if (this.routeToEdit.id) {
+          originalValues = {
+            routeName: this.routeToEdit.name,
+            truckId: this.routeToEdit.truckId ? this.routeToEdit.truckId : '',
+            duration: this.routeToEdit.stopTime ? true : false,
+            durationTime: this.routeToEdit.stopTime
+              ? this.routeToEdit.stopTime
+              : null,
+            fuelCost: this.routeToEdit.fuelPrice ? true : false,
+            fuelMpg: this.routeToEdit.mpg ? this.routeToEdit.mpg : null,
+            fuelPrice: this.routeToEdit.fuelPrice
+              ? this.routeToEdit.fuelPrice
+              : null,
+            routeType: this.routeToEdit.routeType,
+          };
+        }
+
+        if (
+          formChanges.routeName != originalValues.routeName ||
+          formChanges.truckId != originalValues.truckId ||
+          formChanges.duration != originalValues.duration ||
+          formChanges.durationTime != originalValues.durationTime ||
+          formChanges.fuelCost != originalValues.fuelCost ||
+          formChanges.fuelMpg != originalValues.fuelMpg ||
+          formChanges.fuelPrice != originalValues.fuelPrice ||
+          formChanges.routeType != originalValues.routeType
+        ) {
+          this.routeFormChanged = true;
+        } else {
+          this.routeFormChanged = false;
+        }
+      });
   }
 
   getSelectedTabTableData() {
@@ -331,12 +403,12 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
       data: dataToSend,
     });
 
+    this.routeToEdit = {};
+
     this.addRoutePopup?.close();
     this.mapSettingsPopup?.close();
     this.resetRouteForm();
     this.resetMapForm();
-
-    this.routeToEdit = {};
 
     this.layersPopup?.close();
     this.layersPopupOpen = false;
@@ -404,6 +476,23 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     this.layersPopupOpen = layersPopup.isOpen();
   }
 
+  onShowKeyboardShortcutsPopover(keyboardPopup: any) {
+    this.keyboardPopup = keyboardPopup;
+
+    if (keyboardPopup.isOpen()) {
+      keyboardPopup.close();
+    } else {
+      keyboardPopup.open({});
+    }
+
+    if (this.addRoutePopup && this.addRoutePopup.isOpen()) {
+      this.addRoutePopup.close();
+      this.routeToEdit = {};
+    }
+
+    this.keyboardPopupOpen = keyboardPopup.isOpen();
+  }
+
   public onTabChange(event: any, type: string): void {
     if (type == 'Distance-tab') {
       var distanceUnit = event.name == 'Miles' ? 'mi' : 'km';
@@ -423,7 +512,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public onSelectDropdown(event: any, action: string, index?: number) {
-    console.log('onSelectDropdown', event, action);
+    this.selectedTruckType = event;
   }
 
   onIncludeDuration() {
@@ -437,11 +526,13 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             true,
             [Validators.required]
           );
+          this.hideDuration = false;
         } else {
           this.inputService.changeValidators(
             this.routeForm.get('durationTime'),
             false
           );
+          this.hideDuration = true;
         }
       });
   }
@@ -463,6 +554,8 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             true,
             [Validators.required]
           );
+
+          this.hideFuelCost = false;
         } else {
           this.inputService.changeValidators(
             this.routeForm.get('fuelMpg'),
@@ -473,6 +566,8 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             this.routeForm.get('fuelPrice'),
             false
           );
+
+          this.hideFuelCost = true;
         }
       });
   }
@@ -558,15 +653,27 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
 
-    this.routeTabs.map((item) => {
-      if (this.routeToEdit && item.name == this.routeToEdit.routeType) {
-        item.checked = true;
-      } else {
-        item.checked = false;
-      }
-    });
+    this.routeTabs = [
+      {
+        id: 1,
+        name: 'Practical',
+        checked: this.routeToEdit.routeType == 'Practical',
+      },
+      {
+        id: 2,
+        name: 'Shortest',
+        checked: this.routeToEdit.routeType == 'Shortest',
+      },
+      {
+        id: 3,
+        name: 'Cheapest',
+        checked: this.routeToEdit.routeType == 'Cheapest',
+      },
+    ];
 
     this.routeFormChanged = false;
+
+    this.ref.detectChanges();
   }
 
   editRoute(route) {
@@ -591,10 +698,34 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
       }
     });
 
+    this.ref.detectChanges();
+
     this.addRoutePopup.open();
   }
 
   toggleStopPicker() {
     this.stopPickerActive = !this.stopPickerActive;
+  }
+
+  getTrucks() {
+    this.truckService
+      .getTruckList(1, 1, 25)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((trucks: TruckListResponse) => {
+        this.truckList = trucks.pagination.data;
+        this.truckType = [];
+
+        this.truckList.map((truck) => {
+          this.truckType.push({
+            id: truck.id,
+            name: truck.truckNumber,
+            class: truck.truckType.name,
+            folder: 'common',
+            logoName: 'assets/svg/common/trucks/' + truck.truckType.logoName,
+            subFolder: 'trucks',
+            color: truck.color.code,
+          });
+        });
+      });
   }
 }

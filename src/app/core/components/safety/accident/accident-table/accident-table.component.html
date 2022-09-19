@@ -26,6 +26,7 @@
 
   <div class="customer-map-container" *ngIf="tableOptions.toolbarActions.viewModeActive == 'Map'">
     <app-map-list 
+      [type]="'accident'"
       [sortTypes]="sortTypes" 
       [columns]="columns" 
       [activeSortType]="activeSortType"
@@ -57,7 +58,7 @@
 
     <app-maps
       #mapsComponent
-      [viewData]="viewData"
+      [_viewData]="viewData"
       [dropdownActions]="tableOptions.actions"
       [mapType]="'accident'"
       (callDropDownAction)="onTableBodyActions($event)"

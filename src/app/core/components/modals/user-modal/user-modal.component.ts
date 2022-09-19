@@ -8,6 +8,7 @@ import {
   lastNameValidation,
   phoneExtension,
   routingBankValidation,
+  salaryValidation,
 } from './../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -139,7 +140,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
       employePhoneExt: [null, [...phoneExtension]],
       employeEmail: [null, [Validators.required]],
       isIncludePayroll: [false],
-      salary: [null],
+      salary: [null, salaryValidation],
       startDate: [null],
       payrollType: [null],
       bankId: [null, [...bankValidation]],

@@ -13,12 +13,14 @@
         <app-ta-input
           formControlName="producerName"
           [inputConfig]="{
-            name: 'Full Name',
+            name: 'Producer Name',
             type: 'text',
             label: 'Producer Name',
             isRequired: true,
-            textTransform: 'capitalize',
-            autoFocus: editData?.type !== 'edit' ? true : false
+            textTransform: 'uppercase',
+            autoFocus: editData?.type !== 'edit' ? true : false,
+            minLength: 2,
+            maxLength: 64
           }"
         ></app-ta-input>
       </div>
@@ -162,7 +164,9 @@
                 type: 'text',
                 label: 'Insurer Name',
                 isRequired: true,
-                textTransform: 'capitalize'
+                textTransform: 'uppercase',
+                minLength: 2,
+                maxLength: 64
               }"
             ></app-ta-input>
             <app-ta-input-dropdown
@@ -184,12 +188,14 @@
               <app-ta-input
                 formControlName="commericalOccurrence"
                 [inputConfig]="{
-                  name: 'Dollar',
+                  name: 'Each Occurrence',
                   type: 'text',
                   label: 'Each Occurrence',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 11
                 }"
               ></app-ta-input>
             </div>
@@ -197,12 +203,14 @@
               <app-ta-input
                 formControlName="commericalDamage"
                 [inputConfig]="{
-                  name: 'Dollar',
+                  name: 'Damage',
                   type: 'text',
                   label: 'Damage To Rented Prem.',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 11
                 }"
               ></app-ta-input>
             </div>
@@ -212,12 +220,14 @@
               <app-ta-input
                 formControlName="commericalInj"
                 [inputConfig]="{
-                  name: 'Dollar',
+                  name: 'personal-adver-inj',
                   type: 'text',
                   label: 'Personal & Adver. Inj.',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 11
                 }"
               ></app-ta-input>
             </div>
@@ -225,12 +235,14 @@
               <app-ta-input
                 formControlName="commericalMedical"
                 [inputConfig]="{
-                  name: 'Dollar',
+                  name: 'Medical Expenses',
                   type: 'text',
-                  label: 'Medical Expanses',
+                  label: 'Medical Expenses',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 11
                 }"
               ></app-ta-input>
             </div>
@@ -240,12 +252,14 @@
               <app-ta-input
                 formControlName="commericalGeneralAggregate"
                 [inputConfig]="{
-                  name: 'Dollar',
+                  name: 'General Aggregate',
                   type: 'text',
                   label: 'General Aggregate',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 11
                 }"
               ></app-ta-input>
             </div>
@@ -253,12 +267,14 @@
               <app-ta-input
                 formControlName="commericalProducts"
                 [inputConfig]="{
-                  name: 'Dollar',
+                  name: 'products-comp-op-agg',
                   type: 'text',
                   label: 'Products Comp/OP Agg.',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 11
                 }"
               ></app-ta-input>
             </div>
@@ -313,7 +329,9 @@
                 type: 'text',
                 label: 'Insurer Name',
                 isRequired: true,
-                textTransform: 'capitalize'
+                textTransform: 'uppercase',
+                minLength: 2,
+                maxLength: 64
               }"
             ></app-ta-input>
             <app-ta-input-dropdown
@@ -335,12 +353,14 @@
               <app-ta-input
                 formControlName="automobileAccident"
                 [inputConfig]="{
-                  name: 'Dollar',
+                  name: 'Bodily Injury',
                   type: 'text',
                   label: 'Bodily Injury (Accident)',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 11
                 }"
               ></app-ta-input>
             </div>
@@ -348,12 +368,14 @@
               <app-ta-input
                 formControlName="automobileInjuryPerson"
                 [inputConfig]="{
-                  name: 'Dollar',
+                  name: 'Bodily Injury',
                   type: 'text',
                   label: 'Bodily Injury (Person)',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 11
                 }"
               ></app-ta-input>
             </div>
@@ -363,12 +385,14 @@
               <app-ta-input
                 formControlName="automobileLimit"
                 [inputConfig]="{
-                  name: 'Dollar',
+                  name: 'combined-single-limit',
                   type: 'text',
                   label: 'Combined Single Limit',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 11
                 }"
               ></app-ta-input>
             </div>
@@ -376,12 +400,14 @@
               <app-ta-input
                 formControlName="automobileDamage"
                 [inputConfig]="{
-                  name: 'Dollar',
+                  name: 'Damage',
                   type: 'text',
                   label: 'Property Damage',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 11
                 }"
               ></app-ta-input>
             </div>
@@ -445,7 +471,9 @@
                 type: 'text',
                 label: 'Insurer Name',
                 isRequired: true,
-                textTransform: 'capitalize'
+                textTransform: 'uppercase',
+                minLength: 2,
+                maxLength: 64
               }"
             ></app-ta-input>
             <app-ta-input-dropdown
@@ -467,12 +495,14 @@
               <app-ta-input
                 formControlName="motorConveyance"
                 [inputConfig]="{
-                  name: 'Dollar',
+                  name: 'single-conveyance',
                   type: 'text',
                   label: 'Single Conveyance',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 11
                 }"
               ></app-ta-input>
             </div>
@@ -480,12 +510,14 @@
               <app-ta-input
                 formControlName="motorDeductable"
                 [inputConfig]="{
-                  name: 'Dollar',
+                  name: 'Deductable',
                   type: 'text',
                   label: 'Deductable',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>
@@ -541,7 +573,9 @@
                 type: 'text',
                 label: 'Insurer Name',
                 isRequired: true,
-                textTransform: 'capitalize'
+                textTransform: 'uppercase',
+                minLength: 2,
+                maxLength: 64
               }"
             ></app-ta-input>
             <app-ta-input-dropdown
@@ -563,12 +597,14 @@
               <app-ta-input
                 formControlName="physicalCollision"
                 [inputConfig]="{
-                  name: 'Dollar',
+                  name: 'compreh-collision',
                   type: 'text',
                   label: 'Comprehen. & Collision',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 11
                 }"
               ></app-ta-input>
             </div>
@@ -576,12 +612,14 @@
               <app-ta-input
                 formControlName="physicalDeductable"
                 [inputConfig]="{
-                  name: 'Dollar',
+                  name: 'Deductable',
                   type: 'text',
                   label: 'Deductable',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>
@@ -637,7 +675,9 @@
                 type: 'text',
                 label: 'Insurer Name',
                 isRequired: true,
-                textTransform: 'capitalize'
+                textTransform: 'uppercase',
+                minLength: 2,
+                maxLength: 64
               }"
             ></app-ta-input>
             <app-ta-input-dropdown
@@ -659,12 +699,14 @@
               <app-ta-input
                 formControlName="trailerValue"
                 [inputConfig]="{
-                  name: 'Dollar',
+                  name: 'trailer-value-insurance-policy',
                   type: 'text',
                   label: 'Value',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 11
                 }"
               ></app-ta-input>
             </div>

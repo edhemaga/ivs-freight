@@ -291,10 +291,12 @@
                     id: 'Full Name' + ind,
                     name: 'Full Name',
                     type: 'text',
-                    textTransform: 'capitalize',
                     hideErrorMessage: true,
                     blackInput: true,
-                    hideRequiredCheck: true
+                    hideRequiredCheck: true,
+                    textTransform: 'capitalize',
+                    minLength: 2,
+                    maxLength: 32
                   }"
                 ></app-ta-input>
                 <app-ta-input-dropdown

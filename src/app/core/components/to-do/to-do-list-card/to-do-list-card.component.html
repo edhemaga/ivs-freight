@@ -1,11 +1,11 @@
 <div class="todo-list-holder">
   <div class="todo-tollbar">
     <div class="toolbar">
-      <div class="toolbar-title">To-Do</div>
+      <div class="toolbar-title">
+        To-Do ({{ scene.children[0].children?.length }})
+      </div>
       <div class="toolbar-menu-holder">
         <div class="toolbar-icons-frame">
-          <div class="count-box">{{ toDoTasks.length }}</div>
-          <div class="border-right"></div>
           <div
             class="box-icons search-icon"
             ngbTooltip
@@ -65,13 +65,13 @@
           <div class="border-right"></div>
           <div
             class="plus-box"
+            (click)="openModalTodo()"
             ngbTooltip
             mainTooltip="Add New"
             position="bottom"
             tooltipBackground="#6C6C6C"
           >
             <svg-icon
-              (click)="openModalTodo()"
               src="assets/svg/truckassist-table/dropdown/content/add.svg"
             >
             </svg-icon>
@@ -80,11 +80,11 @@
       </div>
     </div>
     <div class="toolbar">
-      <div class="toolbar-title">Ongoing</div>
+      <div class="toolbar-title">
+        Ongoing ({{ scene.children[1].children?.length }})
+      </div>
       <div class="toolbar-menu-holder">
         <div class="toolbar-icons-frame">
-          <div class="count-box">{{ inProgressTasks.length }}</div>
-          <div class="border-right"></div>
           <div
             class="box-icons search-icon"
             ngbTooltip
@@ -143,11 +143,11 @@
       </div>
     </div>
     <div class="toolbar">
-      <div class="toolbar-title">Done</div>
+      <div class="toolbar-title">
+        Done ({{ scene.children[2].children?.length }})
+      </div>
       <div class="toolbar-menu-holder">
         <div class="toolbar-icons-frame">
-          <div class="count-box">{{ doneTasks.length }}</div>
-          <div class="border-right"></div>
           <div
             class="box-icons search-icon"
             ngbTooltip
@@ -223,9 +223,10 @@
             [getChildPayload]="getCardPayload(column.id)"
             [dragClass]="'card-ghost'"
             [dropClass]="'card-ghost-drop'"
-            (dragStart)="log('drag start', $event)"
+            (dragStart)="dragStart($event)"
             (dragEnd)="log('drag end', $event)"
             [dragBeginDelay]="0"
+            [animationDuration]="100"
             [dropPlaceholder]="{
               className: 'dropShadowClass, showOnTop: true'
             }"
@@ -239,15 +240,29 @@
                     <div class="list-title">{{ item.title }}</div>
                     <div class="icons-frame">
                       <div
-                        (mousedown)="toggleLinkShow($event, i, j)"
+                        (mousedown)="
+                          item.url ? toggleLinkShow($event, i, j) : ''
+                        "
                         ngbTooltip
-                        mainTooltip="Hyperlink"
+                        [mainTooltip]="item.url ? 'Hyperlink' : 'No Hyperlink'"
                         position="bottom"
                         tooltipBackground="#6C6C6C"
                         class="icon-box"
+                        [class.lighter-icon]="!item.url"
                         [class.blue-icons]="item.linkActive"
                       >
                         <svg-icon src="assets/svg/common/ic_web.svg"></svg-icon>
+                      </div>
+                      <div
+                        class="icon-box lighter-icon"
+                        ngbTooltip
+                        mainTooltip="Documents"
+                        position="bottom"
+                        tooltipBackground="#6C6C6C"
+                      >
+                        <svg-icon
+                          src="assets/svg/common/ic_attachment.svg"
+                        ></svg-icon>
                       </div>
                       <div
                         class="icon-box"
@@ -258,29 +273,52 @@
                         (mousedown)="toggleComment($event, i, j)"
                         [class.blue-icons]="item.commentActive"
                       >
-                        <svg-icon
-                          src="assets/svg/detail-cards/comment - count.svg"
-                        ></svg-icon>
-                        <div class="number-comments">
-                          {{ item.commentsCount }}
-                        </div>
-                      </div>
-                      <div
-                        class="icon-box"
-                        ngbTooltip
-                        mainTooltip="Documents"
-                        position="bottom"
-                        tooltipBackground="#6C6C6C"
-                      >
-                        <svg-icon
-                          src="assets/svg/common/ic_attachment.svg"
-                        ></svg-icon>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="18"
+                          height="18"
+                          viewBox="0 0 19 19"
+                        >
+                          <g
+                            id="Comment_-_Count"
+                            data-name="Comment - Count"
+                            transform="translate(0.5 2.5)"
+                          >
+                            <path
+                              id="Path_10563"
+                              data-name="Path 10563"
+                              d="M963.974,510.676H950.584a2.274,2.274,0,0,0-2.305,2.237v10.5a2.274,2.274,0,0,0,2.305,2.237h.82l1.574,2.645a.792.792,0,0,0,1.351,0l1.574-2.645h8.07a2.275,2.275,0,0,0,2.305-2.237v-10.5a2.274,2.274,0,0,0-2.305-2.237"
+                              transform="translate(-948.279 -512.676)"
+                              fill="#aaa"
+                              stroke="rgba(0,0,0,0)"
+                              stroke-width="1"
+                            />
+                          </g>
+                          <text
+                            x="50%"
+                            y="48.5%"
+                            dominant-baseline="middle"
+                            text-anchor="middle"
+                            id="_1"
+                            data-name="1"
+                            fill="#fff"
+                            font-size="11"
+                            font-family="Montserrat-Bold, Montserrat"
+                            font-weight="700"
+                          >
+                            <tspan class="number-comments">
+                              {{ item.comments.length }}
+                            </tspan>
+                          </text>
+                        </svg>
                       </div>
                       <div class="icon-box dots">
                         <app-details-page-dropdown
                           [options]="dropdownOptions.actions"
                           [id]="item.id"
+                          [data]="item"
                           [placement]="'bottom-right'"
+                          [hasVericalDots]="true"
                           (dropDownActions)="dropAct($event)"
                           [customClassDropDown]="'drop-down-details-single'"
                         >
@@ -288,7 +326,10 @@
                       </div>
                     </div>
                   </div>
-                  <div class="options-frame">
+                  <div
+                    class="options-frame"
+                    *ngIf="item.departments?.length && !item.todoUsers?.length"
+                  >
                     <div
                       class="dispatch-box"
                       *ngFor="let dep of item.departments"
@@ -296,29 +337,106 @@
                       {{ dep.name }}
                     </div>
                   </div>
-                  <div class="list-text">{{ item.description }}</div>
-                  <div class="link" *ngIf="item.linkActive">{{ item.url }}</div>
-                </div>
-                <div
-                  class="comment-holder"
-                  *ngIf="item.comments.length && item.commentActive"
-                >
-                  <app-ta-user-review
-                    (changeReviewsEvent)="changeReviewsEvent($event)"
-                    [reviewData]="item.comments"
+                  <div
+                    class="options-frame"
+                    *ngIf="!item.departments?.length && !item.todoUsers?.length"
                   >
-                  </app-ta-user-review>
-                </div>
-                <div class="list-items-frame">
-                  <div class="list-time">Deadline in 2 days</div>
-                  <div class="icons-frame">
-                    <div class="list-time time">12:00 AM</div>
-                    <div class="list-time">07/31/21</div>
+                    <div class="dispatch-box everybody">Everybody</div>
+                  </div>
+                  <div
+                    class="assigned_user_hold"
+                    *ngIf="item.todoUsers?.length"
+                  >
+                    <div
+                      class="assigned_user_hold_inner"
+                      *ngFor="let user of item.todoUsers; let indx = index"
+                    >
+                      <img
+                        *ngIf="user?.avatar"
+                        class="user_avatar"
+                        [src]="imageBase64Service.sanitizer(user?.avatar)"
+                      />
+                      <div class="user_profile_image" *ngIf="!user.avatar">
+                        <app-profile-images
+                          [indx]="indx"
+                          [name]="user.firstName + ' ' + user.lastName"
+                          [size]="'medium'"
+                          [type]="'user'"
+                        >
+                        </app-profile-images>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="list-text" *ngIf="item.description">
+                    {{ item.description }}
+                  </div>
+                  <div class="link" [class.closed]="!item.linkActive">
+                    {{ item.url }}
                   </div>
                 </div>
-                <div class="line-holder">
-                  <div class="line-left orange-line"></div>
-                  <div class="line-right dark-orange-line"></div>
+                <div
+                  class="comment_main_holder"
+                  [class.closed]="!item.commentActive"
+                >
+                  <div class="comment-holder">
+                    <div
+                      class="todo_list_holder"
+                      [class.expand]="newComment || item.comments?.length"
+                    >
+                      <div class="todo_list_info_holder">
+                        <div class="todo_list_info_number_hold">
+                          <div class="todo_list_info_number">
+                            {{ item.comments.length }}
+                          </div>
+                        </div>
+                        <div class="todo_list_info_text">Comment</div>
+                      </div>
+                      <div
+                        class="todo_list_add_comment_hold"
+                        *ngIf="
+                          !newComment ||
+                          (i != currentHoldIndex && j != currentChildIndex)
+                        "
+                        (click)="addNewComment(i, j)"
+                      >
+                        <div class="todo_list_add_comment_text">
+                          ADD COMMENT
+                        </div>
+                      </div>
+                    </div>
+                    <app-ta-user-review
+                      (changeReviewsEvent)="changeReviewsEvent($event)"
+                      [reviewData]="item.comments"
+                      *ngIf="item.comments.length"
+                    >
+                    </app-ta-user-review>
+                    <div
+                      class="add_comment_holder"
+                      [class.shrink_hold]="!newComment"
+                      [class.move_comment_hold]="item.comments.length"
+                    >
+                      <app-ta-user-review
+                        (changeReviewsEvent)="commentEvent($event)"
+                        [reviewData]="comments"
+                        [isNewReview]="true"
+                        *ngIf="
+                          newComment &&
+                          comments.length &&
+                          i == currentHoldIndex &&
+                          j == currentChildIndex
+                        "
+                      >
+                      </app-ta-user-review>
+                    </div>
+                  </div>
+                </div>
+                <div class="todo_deadline_hold" *ngIf="item.deadline">
+                  <app-truckassist-progress-expiration
+                    [expireDate]="item.deadline | formatDateP"
+                    [startDate]="item.createdAt | formatDateP"
+                    [expiresSettings]="'todo-list'"
+                  >
+                  </app-truckassist-progress-expiration>
                 </div>
               </div>
             </smooth-dnd-draggable>

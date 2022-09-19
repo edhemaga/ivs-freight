@@ -36,7 +36,7 @@ export class TaCustomCardComponent {
   @Input() hasWeeklyStatus: string = null;
   @Input() hasDownload: string = null;
   @Input() customTextAction: string = null;
-  @Input() hasEditAndDeleteActions: boolean;
+  @Input() hasDeleteAction: boolean;
 
   @Input() controlName: FormControl;
 
@@ -89,10 +89,6 @@ export class TaCustomCardComponent {
       }
       case 'custom': {
         this.onActionEvent.emit({ check: true, action: customTextAction });
-        break;
-      }
-      case 'edit': {
-        this.onActionEvent.emit({ check: true, action: 'edit' });
         break;
       }
       case 'delete': {
