@@ -1,6 +1,6 @@
 import {
   firstNameValidation,
-  lastNameValidation,
+  lastNameValidation, phoneFaxRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -17,10 +17,7 @@ import { NotificationService } from '../../../services/notification/notification
 export class ApplicantModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  @Input() editData: any = {
-    type: 'edit',
-    id: 1,
-  };
+  @Input() editData: any;
 
   public applicantForm: FormGroup;
 
@@ -39,8 +36,8 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
     this.applicantForm = this.formBuilder.group({
       firstName: [null, [Validators.required, ...firstNameValidation]],
       lastName: [null, [Validators.required, ...lastNameValidation]],
-      phone: [null, Validators.required],
-      email: [null, [Validators.required]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
+      email: [null, Validators.required],
       note: [null],
     });
 
@@ -65,6 +62,11 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
     }
     // Add New
     else if (data.action === 'save and add new') {
+      if (this.applicantForm.invalid) {
+        this.inputService.markInvalid(this.applicantForm);
+        return;
+      }
+
       this.addApplicant();
       this.modalService.setModalSpinner({
         action: 'save and add new',
