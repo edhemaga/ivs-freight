@@ -12,7 +12,10 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { FormService } from '../../../../services/form/form.service';
 import { NotificationService } from '../../../../services/notification/notification.service';
-import { priceValidation } from '../../../shared/ta-input/ta-input.regex-validations';
+import {
+  priceValidation,
+  fullNameValidation,
+} from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-fuel-purchase-modal',
@@ -71,7 +74,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.fuelForm = this.formBuilder.group({
       truckTypeId: [null, Validators.required],
-      fullName: [null],
+      fullName: [null, fullNameValidation],
       date: [null, Validators.required],
       time: [null, Validators.required],
       fuelStopId: [null, Validators.required],

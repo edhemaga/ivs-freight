@@ -34,7 +34,9 @@
             type: 'text',
             label: 'Driver',
             isDisabled: true,
-            textTransform: 'capitalize'
+            textTransform: 'capitalize',
+            minLength: 2,
+            maxLength: 32
           }"
         ></app-ta-input>
       </div>
@@ -178,7 +180,7 @@
                 name: 'Price',
                 type: 'text',
                 minLength: 4,
-                maxLength: 13,
+                maxLength: 11,
                 blackInput: true,
                 hideErrorMessage: true,
                 thousandSeparator: true,

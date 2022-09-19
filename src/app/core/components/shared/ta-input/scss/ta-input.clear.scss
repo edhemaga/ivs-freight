@@ -135,6 +135,27 @@
     }
   }
 
+  &.visible-focus-password-invalid {
+    display: inline-block;
+    .input-clear-x {
+      svg {
+        path {
+          fill: #ef5350 !important;
+        }
+        rect {
+          fill: #ffcdd2 !important;
+        }
+      }
+      &:hover {
+        svg {
+          rect {
+            fill: #fffafa !important;
+          }
+        }
+      }
+    }
+  }
+
   //------------------------- Custom class -------------------------
   &.input-32 {
     top: 3.5px;

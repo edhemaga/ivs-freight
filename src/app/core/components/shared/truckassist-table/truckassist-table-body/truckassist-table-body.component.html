@@ -376,7 +376,8 @@
                     class="user-avatar-no-img"
                     *ngIf="!row[column.field].avatar"
                     [ngStyle]="{
-                      'background-color': row[column.field].avatarColor?.background
+                      'background-color': row[column.field].avatarColor
+                        ?.background
                         ? row[column.field].avatarColor.background
                         : 'unset',
                       color: row[column.field].avatarColor?.color
@@ -387,9 +388,11 @@
                     {{ row[column.field].textShortName }}
                   </div>
                 </div>
-                <span class="table-avatar-name" *ngIf="row[column.field]?.name">{{
-                  row[column.field].name
-                }}</span>
+                <span
+                  class="table-avatar-name"
+                  *ngIf="row[column.field]?.name"
+                  >{{ row[column.field].name }}</span
+                >
               </div>
 
               <!-- USER STATUS COLUMN -->
@@ -562,10 +565,6 @@
                   *ngIf="row[column.field]"
                   [ngStyle]="{
                     width: column.width - 5 + 'px'
-                  }"
-                  [ngClass]="{
-                    'active-description':
-                      activeDescriptionDropdown === row.id && t1.isOpen()
                   }"
                   class="description-container"
                   [innerHtml]="row[column.field]"
@@ -1651,10 +1650,6 @@
                   [ngStyle]="{
                     width: column.width - 5 + 'px'
                   }"
-                  [ngClass]="{
-                    'active-description':
-                      activeDescriptionDropdown === row.id && t1.isOpen()
-                  }"
                   class="description-container"
                   [innerHtml]="row[column.field]"
                   #t1="ngbPopover"
@@ -2542,49 +2537,58 @@
 
 <!-- DESCRIPTION -->
 <ng-template #descriptionPopover let-data="data">
-  <div class="description-dropdown">
-    <div
-      class="description-item"
-      [ngClass]="{ 'description-item-margin': i !== 0 }"
-      *ngFor="let item of data.descriptionItems; let i = index"
-    >
-      <div class="item-index">{{ i + 1 }}</div>
-      <div class="pm-item" *ngIf="item.pmDescription">
-        <svg-icon
-          [src]="
-            '../../../../../../assets/svg/common/repair-pm/' +
-            item.pmDescription.logoName
-          "
-          [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
-        ></svg-icon>
-      </div>
-      <div
-        class="item-title"
-        [ngClass]="{ 'pm-style': item.pmDescription }"
-        [ngStyle]="{
-          'min-width.px': item.pmDescription ? 229 : 253,
-          'width.px': item.pmDescription ? 229 : 253
-        }"
-      >
-        {{ item.description }}
-      </div>
-      <div class="item-cost" [ngClass]="{ 'pm-style': item.pmDescription }">
-        {{ item.descriptionPrice }}
-      </div>
-      <div
-        class="number-of-items"
-        [ngClass]="{ 'pm-style': item.pmDescription }"
-      >
-        {{ item.quantity }}
-      </div>
-      <div
-        class="item-total-cost"
-        [ngClass]="{ 'pm-style': item.pmDescription }"
-      >
-        {{ item.descriptionTotalPrice }}
-      </div>
+  <div class="description-dropdown-container">
+    <div class="description-titles">
+      <div class="number-title">#</div>
+      <div class="item-title">Item</div>
+      <div class="qty-title">Qty</div>
+      <div class="price-title">Price</div>
+      <div class="price-total-title">$4,866.23</div>
     </div>
-    <div class="right-background"></div>
+    <div class="description-items">
+      <div
+        class="description-item"
+        [ngClass]="{ 'description-item-margin': i !== 0 }"
+        *ngFor="let item of data.descriptionItems; let i = index"
+      >
+        <div class="item-index">{{ i + 1 }}</div>
+        <div class="pm-item" *ngIf="item.pmDescription">
+          <svg-icon
+            [src]="
+              '../../../../../../assets/svg/common/repair-pm/' +
+              item.pmDescription.logoName
+            "
+            [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
+          ></svg-icon>
+        </div>
+        <div
+          class="item-title"
+          [ngClass]="{ 'pm-style': item.pmDescription }"
+          [ngStyle]="{
+            'min-width.px': item.pmDescription ? 229 : 253,
+            'width.px': item.pmDescription ? 229 : 253
+          }"
+        >
+          {{ item.description }}
+        </div>
+        <div class="item-cost" [ngClass]="{ 'pm-style': item.pmDescription }">
+          {{ item.descriptionPrice }}
+        </div>
+        <div
+          class="number-of-items"
+          [ngClass]="{ 'pm-style': item.pmDescription }"
+        >
+          {{ item.quantity }}
+        </div>
+        <div
+          class="item-total-cost"
+          [ngClass]="{ 'pm-style': item.pmDescription }"
+        >
+          {{ item.descriptionTotalPrice }}
+        </div>
+      </div>
+      <div class="right-background"></div>
+    </div>
   </div>
 </ng-template>
 

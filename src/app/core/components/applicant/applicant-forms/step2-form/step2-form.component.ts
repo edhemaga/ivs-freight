@@ -37,6 +37,7 @@ import {
   WorkHistoryModel,
 } from '../../state/model/work-history.model';
 import { AddressEntity } from './../../../../../../../appcoretruckassist/model/addressEntity';
+import { addressUnitValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 import {
   EnumValue,
   TrailerLengthResponse,
@@ -368,7 +369,7 @@ export class Step2FormComponent
             ...this.classOfEquipmentArray,
             lastClassOfEquipmentCard,
           ]);
-          /* 
+          /*
           console.log('prev', previousFormValues);
           console.log('new', newFormValues);
  */
@@ -467,7 +468,7 @@ export class Step2FormComponent
       employerEmail: [null, [Validators.required]],
       employerFax: [null, phoneFaxRegex],
       employerAddress: [null, [Validators.required, ...addressValidation]],
-      employerAddressUnit: [null, Validators.maxLength(6)],
+      employerAddressUnit: [null, addressUnitValidation],
       isDrivingPosition: [false],
       vehicleType: [null],
       trailerType: [null],

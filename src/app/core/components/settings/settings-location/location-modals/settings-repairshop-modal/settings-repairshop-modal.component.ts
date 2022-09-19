@@ -22,7 +22,10 @@ import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
 import { RepairTService } from '../../../../repair/state/repair.service';
-import { repairShopValidation } from '../../../../shared/ta-input/ta-input.regex-validations';
+import {
+  repairShopValidation,
+  rentValidation,
+} from '../../../../shared/ta-input/ta-input.regex-validations';
 import {
   convertThousanSepInNumber,
   convertNumberInThousandSep,
@@ -102,7 +105,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
       phone: [null, [Validators.required, phoneFaxRegex]],
       phoneExt: [null, [...phoneExtension]],
       email: [null],
-      rent: [null],
+      rent: [null, rentValidation],
       payPeriod: [null],
       weeklyDay: [null],
       monthlyDay: [null],

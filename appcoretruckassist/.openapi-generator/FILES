@@ -147,6 +147,10 @@ model/companyUserResponse.ts
 model/companyUserResponsePagination.ts
 model/companyUserShortResponse.ts
 model/contactColorResponse.ts
+model/contactEmailResponse.ts
+model/contactEmailType.ts
+model/contactPhoneResponse.ts
+model/contactPhoneType.ts
 model/countryType.ts
 model/createAccidentCommand.ts
 model/createAccidentRecordCommand.ts
@@ -166,6 +170,8 @@ model/createCompanyContactCommand.ts
 model/createCompanyContactLabelCommand.ts
 model/createCompanyOfficeCommand.ts
 model/createCompanyUserCommand.ts
+model/createContactEmailCommand.ts
+model/createContactPhoneCommand.ts
 model/createDisclosureReleaseCommand.ts
 model/createDisclosureReleaseReviewCommand.ts
 model/createDispatchCommand.ts
@@ -524,6 +530,8 @@ model/updateCompanyContactLabelCommand.ts
 model/updateCompanyOfficeCommand.ts
 model/updateCompanyPayrollCommand.ts
 model/updateCompanyUserCommand.ts
+model/updateContactEmailCommand.ts
+model/updateContactPhoneCommand.ts
 model/updateDepartmentContactCommand.ts
 model/updateDisclosureReleaseCommand.ts
 model/updateDispatchCommand.ts

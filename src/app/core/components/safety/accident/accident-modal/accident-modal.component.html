@@ -30,7 +30,6 @@
               type: 'text',
               label: 'Report',
               isDisabled: editData?.type === 'edit',
-              textTransform: 'capitalize',
               autoFocus: editData?.type === 'edit' ? false : true
             }"
           ></app-ta-input>
@@ -40,8 +39,7 @@
               name: 'Federally Recordable',
               type: 'text',
               isDisabled: editData?.type === 'edit',
-              label: 'Federally Recordable',
-              textTransform: 'capitalize'
+              label: 'Federally Recordable'
             }"
           ></app-ta-input>
           <app-ta-input
@@ -50,8 +48,7 @@
               name: 'State Recordable',
               type: 'text',
               isDisabled: editData?.type === 'edit',
-              label: 'State Recordable',
-              textTransform: 'capitalize'
+              label: 'State Recordable'
             }"
           ></app-ta-input>
         </div>
@@ -159,11 +156,10 @@
             <app-ta-input
               formControlName="driverName"
               [inputConfig]="{
-                name: 'Full Name',
+                name: 'Driver Name',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Driver',
-                textTransform: 'capitalize'
+                label: 'Driver'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -181,8 +177,7 @@
                 name: 'State',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'State',
-                textTransform: 'capitalize'
+                label: 'State'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -207,8 +202,7 @@
                 name: 'Truck Number',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Unit',
-                textTransform: 'capitalize'
+                label: 'Unit'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -217,8 +211,7 @@
                 name: 'Truck Type',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Type',
-                textTransform: 'capitalize'
+                label: 'Type'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -227,8 +220,7 @@
                 name: 'Truck Make',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Make',
-                textTransform: 'capitalize'
+                label: 'Make'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -237,8 +229,7 @@
                 name: 'Truck Plate Make',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Plate No.',
-                textTransform: 'capitalize'
+                label: 'Plate No.'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -247,8 +238,7 @@
                 name: 'Truck State',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'State',
-                textTransform: 'capitalize'
+                label: 'State'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -285,9 +275,7 @@
                 name: 'Trailer Type',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Type',
-                isDisabled: editData?.type === 'edit',
-                textTransform: 'capitalize'
+                label: 'Type'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -296,20 +284,16 @@
                 name: 'Trailer Make',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Make',
-                isDisabled: editData?.type === 'edit',
-                textTransform: 'capitalize'
+                label: 'Make'
               }"
             ></app-ta-input>
             <app-ta-input
               formControlName="trailerPlateNumber"
               [inputConfig]="{
-                name: 'Trailer Plate Make',
+                name: 'Trailer Plate Number',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Plate No.',
-                isDisabled: editData?.type === 'edit',
-                textTransform: 'capitalize'
+                label: 'Plate No.'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -318,9 +302,7 @@
                 name: 'Trailer State',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'State',
-                isDisabled: editData?.type === 'edit',
-                textTransform: 'capitalize'
+                label: 'State'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -549,8 +531,7 @@
                 [inputConfig]="{
                   name: 'Roadway Trafficway',
                   type: 'text',
-                  label: 'Roadway Trafficway',
-                  textTransform: 'capitalize'
+                  label: 'Roadway Trafficway'
                 }"
               ></app-ta-input>
             </div>
@@ -560,8 +541,7 @@
                 [inputConfig]="{
                   name: 'Weather Condition',
                   type: 'text',
-                  label: 'Weather Condition',
-                  textTransform: 'capitalize'
+                  label: 'Weather Condition'
                 }"
               ></app-ta-input>
             </div>
@@ -573,8 +553,7 @@
                 [inputConfig]="{
                   name: 'Road Access Control',
                   type: 'text',
-                  label: 'Road Access Control',
-                  textTransform: 'capitalize'
+                  label: 'Road Access Control'
                 }"
               ></app-ta-input>
             </div>
@@ -584,8 +563,7 @@
                 [inputConfig]="{
                   name: 'Road Surface Condition',
                   type: 'text',
-                  label: 'Road Surface Condition',
-                  textTransform: 'capitalize'
+                  label: 'Road Surface Condition'
                 }"
               ></app-ta-input>
             </div>
@@ -595,8 +573,7 @@
                 [inputConfig]="{
                   name: 'Light Condition',
                   type: 'text',
-                  label: 'Light Condition',
-                  textTransform: 'capitalize'
+                  label: 'Light Condition'
                 }"
               ></app-ta-input>
             </div>
@@ -615,8 +592,7 @@
                 name: 'Reporting Agency',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Reporting Agency',
-                textTransform: 'capitalize'
+                label: 'Reporting Agency'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -624,8 +600,7 @@
               [inputConfig]="{
                 name: 'Police Officer',
                 type: 'text',
-                label: 'Police Officer',
-                textTransform: 'capitalize'
+                label: 'Police Officer'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -634,8 +609,7 @@
                 name: 'Badge Number',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Badge Number',
-                textTransform: 'capitalize'
+                label: 'Badge Number'
               }"
             ></app-ta-input>
           </div>
@@ -734,8 +708,7 @@
               [inputConfig]="{
                 name: 'BoL',
                 type: 'text',
-                label: 'BoL',
-                textTransform: 'capitalize'
+                label: 'BoL'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -743,8 +716,7 @@
               [inputConfig]="{
                 name: 'Cargo',
                 type: 'text',
-                label: 'Cargo',
-                textTransform: 'capitalize'
+                label: 'Cargo'
               }"
             ></app-ta-input>
           </div>
