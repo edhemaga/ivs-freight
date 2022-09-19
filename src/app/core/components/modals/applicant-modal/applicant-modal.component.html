@@ -1,7 +1,7 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Applicant' : 'Edit Applicant'"
   [editData]="editData"
-  [editName]="editData?.id"
+  [editName]="applicantFullName"
   [saveAndAddNew]="editData?.type !== 'edit'"
   [resendEmail]="editData?.type === 'edit'"
   [isModalValid]="applicantForm.valid"

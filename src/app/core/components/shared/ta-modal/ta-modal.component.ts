@@ -163,7 +163,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
             }
           }
 
-          if (!['save and add new', 'resend email'].includes(data.action)) {
+          if (!['save and add new'].includes(data.action)) {
             if (data.clearTimeout) {
               this.onAction('close');
             } else {
