@@ -1269,13 +1269,13 @@
       <div
         class="money-main-holder payPadding"
         *ngIf="type == 'payFilter' || type == 'milesFilter'"
-        [formGroup]="moneyForm"
+        [formGroup]="milesForm"
       >
         <div class="money-value-holder">
           <app-ta-input
-            formControlName="singleFrom"
+            formControlName="milesFrom"
             [inputConfig]="{
-              name: 'singleFrom',
+              name: 'milesFrom',
               type: 'number',
               label: 'From',
               placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
@@ -1285,9 +1285,9 @@
         </div>
         <div class="money-value-holder" [class.errorForm]="singleFormError">
           <app-ta-input
-            formControlName="singleTo"
+            formControlName="milesTo"
             [inputConfig]="{
-              name: 'singleTo',
+              name: 'milesTo',
               type: 'number',
               label: 'To',
               placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',

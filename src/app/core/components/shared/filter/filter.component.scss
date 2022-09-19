@@ -1210,6 +1210,9 @@
     }
 
     &.slider-two-holder {
+
+      padding-top: 22px;
+
       .ta-ngx-slider,
       .custom-slider-commission {
         .ngx-slider-pointer {
@@ -1225,7 +1228,16 @@
             content: "";
           }
         }
+
+        .ngx-slider-pointer-min{
+          background-color: #fff !important;
+        }
+        
+        .ngx-slider-pointer-max{
+          background-color: #fff !important;
+        }
       }
+      
     }
   }
 
@@ -1238,6 +1250,13 @@
 
     &.payPadding {
       padding-top: 18px;
+
+      .input-control{
+      
+        &::after{
+          content: " mi" !important;
+        }
+      }
     }
 
     .money-value-holder {

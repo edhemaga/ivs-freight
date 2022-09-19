@@ -963,10 +963,7 @@ export class FilterComponent implements OnInit {
   public locationForm!: FormGroup;
   public payForm!: FormGroup;
   public sliderForm!: FormGroup;
-
-  rangeSliderForm: FormGroup = new FormGroup({
-    sliderControl: new FormControl([0, 5000])
-  });
+  public milesForm!: FormGroup;
 
   rangeValue: any = 0;
   usaSelectedStates: any[] = [];
@@ -1043,6 +1040,12 @@ export class FilterComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
+
+    this.milesForm = this.formBuilder.group({
+      milesFrom: 1,
+      milesTo: 5000,
+    })
+
     this.searchForm = this.formBuilder.group({
       search: '',
     });
