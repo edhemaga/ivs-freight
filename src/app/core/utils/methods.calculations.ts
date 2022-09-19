@@ -82,7 +82,7 @@ export const calculateParkingSlot = (
 
 //------------------------------- DATE TO BACKEND -------------------------------
 export const convertDateToBackend = (date: string) => {
-  return moment(new Date(date)).toISOString();
+  return moment(new Date(date)).toISOString(true);
 };
 
 //------------------------------- DATE FROM BACKEND -------------------------------

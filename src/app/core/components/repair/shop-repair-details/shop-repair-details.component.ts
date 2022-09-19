@@ -14,6 +14,7 @@ import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 @Component({
   selector: 'app-shop-repair-details',
@@ -35,7 +36,8 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
     private shopDetailsQuery: ShopDetailsQuery,
-    private sumArr: SumArraysPipe
+    private sumArr: SumArraysPipe,
+    private DetailsDataService: DetailsDataService,
   ) {}
 
   ngOnInit(): void {
@@ -141,6 +143,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
   /**Function for header names and array of icons */
   shopConf(data: RepairShopResponse) {
     let total;
+    this.DetailsDataService.setNewData(data);
     if (data?.repairs?.length) {
       total = this.sumArr.transform(
         data.repairs.map((item) => {

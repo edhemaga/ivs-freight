@@ -2,13 +2,15 @@
   <div class="d-flex line-container">
     <div class="group name-group">
       <app-ta-input
-        formControlName="contactName"
+        formControlName="name"
         [inputConfig]="{
-          name: 'Name',
+          name: 'Emergency Name',
           type: 'text',
           label: 'Name',
           isRequired: true,
           textTransform: 'capitalize',
+          minLength: 2,
+          maxLength: 24,
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"
@@ -17,7 +19,7 @@
     </div>
     <div class="group phone-group">
       <app-ta-input
-        formControlName="contactPhone"
+        formControlName="phone"
         [inputConfig]="{
           name: 'Phone',
           type: 'text',
@@ -33,12 +35,14 @@
     </div>
     <div class="group relationship-group">
       <app-ta-input
-        formControlName="contactRelationship"
+        formControlName="relationship"
         [inputConfig]="{
           name: 'Relationship',
           type: 'text',
           label: 'Relationship',
           textTransform: 'capitalize',
+          minLength: 2,
+          maxLength: 24,
           isRequired: true,
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"

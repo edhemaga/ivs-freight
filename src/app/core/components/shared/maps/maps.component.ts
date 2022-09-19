@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
 import * as AppConst from 'src/app/const';
 import { MapsService } from '../../../services/shared/maps.service';
+import { UpdatedData } from '../model/shared/enums';
 
 @Component({
   selector: 'app-maps',
@@ -17,7 +18,33 @@ import { MapsService } from '../../../services/shared/maps.service';
   styleUrls: ['./maps.component.scss', '../../../../../assets/scss/maps.scss'],
 })
 export class MapsComponent implements OnInit {
-  @Input() viewData: any[] = [];
+  viewData = [];
+  @Input() set _viewData(value) {
+    var previousData = JSON.parse(JSON.stringify(this.viewData));
+    var updatedData = false;
+
+    this.viewData = value;
+
+    this.viewData.map((data, index) => {
+      var doAnimation = false;
+      if (previousData[index]?.latitude != data.latitude) doAnimation = true;
+
+      if (
+        (data.actionAnimation == 'update' && doAnimation) ||
+        data.actionAnimation == 'add'
+      ) {
+        this.markerAnimations[data.id] = false;
+        this.showMarkerWindow[data.id] = false;
+        updatedData = true;
+      }
+    });
+
+    if (updatedData) {
+      setTimeout(() => {
+        this.markersDropAnimation();
+      }, 1000);
+    }
+  }
   @Input() mapType: string = 'shipper';
   @Input() dropdownActions: any[] = [];
   @Output() callDropDownAction: EventEmitter<any> = new EventEmitter();
@@ -83,7 +110,6 @@ export class MapsComponent implements OnInit {
 
   public getMapInstance(map) {
     this.agmMap = map;
-    console.log('getMapInstance', this.agmMap);
   }
 
   clickedMarker(id) {
@@ -99,8 +125,17 @@ export class MapsComponent implements OnInit {
 
         if (data.isSelected) {
           this.markerSelected = true;
-          this.mapLatitude = data.latitude;
-          this.mapLongitude = data.longitude;
+
+          if (
+            this.mapLatitude == data.latitude &&
+            this.mapLongitude == data.longitude
+          ) {
+            this.mapLatitude = data.latitude + 0.000001;
+            this.mapLongitude = data.longitude + 0.000001;
+          } else {
+            this.mapLatitude = data.latitude;
+            this.mapLongitude = data.longitude;
+          }
         } else {
           this.markerSelected = false;
         }
@@ -119,63 +154,15 @@ export class MapsComponent implements OnInit {
           });
       }
     });
-
-    // this.mapMarkers.map((data: any, index) => {
-    //   if (data.isExpanded) {
-    //     data.isExpanded = false;
-    //   }
-
-    //   if (data.isSelected && data.id != id) {
-    //     data.isSelected = false;
-    //   }
-    //   else if ( data.id == id ) {
-    //     data.isSelected = !data.isSelected;
-
-    //     if ( data.isSelected ) {
-    //       this.markerSelected = true;
-    //       this.mapLatitude = data.latitude;
-    //       this.mapLongitude = data.longitude;
-    //     }
-    //     else {
-    //       this.markerSelected = false;
-    //     }
-
-    //     document.querySelectorAll('.si-float-wrapper').forEach((parentElement: HTMLElement) => {
-    //         parentElement.style.zIndex = '998';
-
-    //         var shadowElement = parentElement.querySelectorAll<HTMLElement>(".si-content")[0];
-    //         shadowElement.classList.remove("marker-tooltip-shadow");
-
-    //         setTimeout(() => {
-    //           var childElements = parentElement.querySelectorAll('.show-marker-dropdown');
-    //           if ( childElements.length ) {
-
-    //             setTimeout(() => {
-    //               shadowElement.classList.add("marker-tooltip-shadow");
-    //             }, 150);
-
-    //             parentElement.style.zIndex = '999';
-    //           }
-    //         }, 1);
-    //     });
-
-    //     data.markerAnimation = 'BOUNCE';
-
-    //     setTimeout(function() {
-    //       data.markerAnimation = 'none';
-    //     }, 500);
-    //   }
-    // });
   }
 
   mapClick(event) {
     this.viewData.map((data: any, index) => {
       if (data.isSelected) {
         data.isSelected = false;
+        data.isExpanded = false;
       }
     });
-
-    console.log('mapClick event', event);
 
     var shadowElements = document.getElementsByClassName(
       'marker-tooltip-shadow'
@@ -213,11 +200,16 @@ export class MapsComponent implements OnInit {
       // The user scrolled up.
       this.zoomChange(this.mapZoom + 1);
 
-      this.mapLatitude = item.latitude;
-      this.mapLongitude = item.longitude;
-      console.log('markerZoom item', item);
-      console.log('markerZoom mapLatitude', this.mapLatitude);
-      console.log('markerZoom mapLongitude', this.mapLongitude);
+      if (
+        this.mapLatitude == item.latitude &&
+        this.mapLongitude == item.longitude
+      ) {
+        this.mapLatitude = item.latitude + 0.000001;
+        this.mapLongitude = item.longitude + 0.000001;
+      } else {
+        this.mapLatitude = item.latitude;
+        this.mapLongitude = item.longitude;
+      }
     } else {
       // The user scrolled down.
       this.zoomChange(this.mapZoom - 1);
@@ -274,13 +266,11 @@ export class MapsComponent implements OnInit {
 
   setLocationFilter() {
     this.setLocationRange(this.locationRange);
-    //this.closePopover();
   }
 
   clearLocationFilter() {
     this.locationRange = 100;
     this.clearLocationRange();
-    //this.closePopover();
   }
 
   zoomMap(zoom) {

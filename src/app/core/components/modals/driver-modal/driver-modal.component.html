@@ -108,7 +108,7 @@
                 label: 'Address, City, State Zip',
                 isRequired: true,
                 placeholderIcon: 'address',
-                minLength: 12,
+                minLength: 6,
                 maxLength: 256,
                 textTransform: 'capitalize'
               }"
@@ -567,9 +567,11 @@
                     id: 'NICKNAME' + ind,
                     name: 'NICKNAME',
                     type: 'text',
-                    textTransform: 'capitalize',
                     hideRequiredCheck: true,
-                    blackInput: true
+                    blackInput: true,
+                    hideErrorMessage: true,
+                    minLength: 2,
+                    maxLength: 128
                   }"
                 ></app-ta-input>
                 <app-ta-input-address
@@ -579,9 +581,11 @@
                     name: 'Address',
                     type: 'text',
                     textTransform: 'capitalize',
-                    minLength: 12,
+                    minLength: 6,
                     maxLength: 256,
-                    blackInput: true
+                    hideRequiredCheck: true,
+                    blackInput: true,
+                    hideErrorMessage: true
                   }"
                   [activeAddress]="selectedAddress"
                   (selectedAddress)="onHandleAddressFormArray($event, ind)"
@@ -625,11 +629,13 @@
             <app-ta-input
               formControlName="emergencyContactName"
               [inputConfig]="{
-                name: 'Name',
+                name: 'Emergency Name',
                 type: 'text',
                 label: 'Name',
                 isRequired: true,
-                textTransform: 'capitalize'
+                textTransform: 'capitalize',
+                minLength: 2,
+                maxLength: 24
               }"
             ></app-ta-input>
             <app-ta-input
@@ -649,7 +655,9 @@
                 name: 'Relationship',
                 type: 'text',
                 label: 'Relationship',
-                textTransform: 'capitalize'
+                textTransform: 'capitalize',
+                minLength: 2,
+                maxLength: 24
               }"
             ></app-ta-input>
           </div>
@@ -715,19 +723,28 @@
                 ></app-ta-input>
               </div>
               <div>
-                <app-ta-input-arrows
+                <app-ta-input
                   formControlName="mvrExpiration"
                   [inputConfig]="{
                     name: 'months',
                     type: 'text',
-                    placeholderText: 'months'
+                    placeholderText: 'months',
+                    label: 'MVR Exp.',
+                    isRequired: true,
+                    commands: {
+                      active: true,
+                      type: 'months',
+                      firstCommand: {
+                        name: 'minus',
+                        svg: 'assets/svg/common/ic_pm_decrement.svg'
+                      },
+                      secondCommand: {
+                        name: 'plus',
+                        svg: 'assets/svg/common/ic_pm_increment.svg'
+                      }
+                    }
                   }"
-                  [elementOrder]="1"
-                  [name]="'MVR Exp.'"
-                  [type]="'driver-modal'"
-                  [required]="true"
-                >
-                </app-ta-input-arrows>
+                ></app-ta-input>
               </div>
             </div>
           </app-ta-custom-card>

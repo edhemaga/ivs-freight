@@ -1,18 +1,32 @@
 import {
   Component,
   OnInit,
+  OnDestroy,
   ViewEncapsulation,
   ViewChild,
   ChangeDetectorRef,
   HostListener,
+  ElementRef,
 } from '@angular/core';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+  CdkDragMove,
+} from '@angular/cdk/drag-drop';
 import * as AppConst from '../../../../const';
 import { MapsService } from '../../../services/shared/maps.service';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { AddressEntity } from 'appcoretruckassist';
 import { addressValidation } from '../../shared/ta-input/ta-input.regex-validations';
-import { imageMapType } from '../../../../../assets/utils/methods-global';
+import { imageMapType } from 'src/assets/utils/methods-global';
+import {
+  Confirmation,
+  ConfirmationModalComponent,
+} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ModalService } from './../../shared/ta-modal/modal.service';
+import { distinctUntilChanged, Subject, takeUntil, filter } from 'rxjs';
 
 declare var google: any;
 declare const geoXML3: any;
@@ -26,7 +40,8 @@ declare const geoXML3: any;
   ],
   encapsulation: ViewEncapsulation.None,
 })
-export class RoutingMapComponent implements OnInit {
+export class RoutingMapComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @ViewChild('mapToolbar') mapToolbar: any;
   @ViewChild('t2') t2: any;
 
@@ -40,6 +55,71 @@ export class RoutingMapComponent implements OnInit {
         stopPickerCursor.style.left = event.pageX + 10 + 'px';
       }
     }
+  }
+
+  dontUseTab: boolean = false;
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: any) {
+    const key = event.keyCode;
+
+    if (key === 9) {
+      /* Tab switch routes */
+      event.preventDefault();
+      this.switchRouteFocus(event.shiftKey);
+    } else if (key === 27) {
+      if (this.focusedRouteIndex != null) {
+        /* Remove focus from all routes */
+        this.focusRoute(this.focusedRouteIndex);
+      }
+    } else if (key === 46) {
+      if (this.focusedRouteIndex != null) {
+        /* Delete focused route */
+        this.dropDownActive =
+          this.tableData[this.selectedMapIndex].routes[
+            this.focusedRouteIndex
+          ].id;
+        this.callDropDownAction(event, this.dropdownActions[6]);
+      }
+    } else if (key === 40 || key === 38) {
+      /* Up and Down arrow */
+      event.preventDefault();
+      if (this.focusedRouteIndex != null) {
+        this.onUpAndDownArrow(event);
+      }
+    } else if (key === 119) {
+      if (this.focusedRouteIndex != null) {
+        var currentlyFocusedStop = this.findFocusedStop(this.focusedRouteIndex);
+
+        if (currentlyFocusedStop > -1) {
+          this.deleteRouteStop(
+            event,
+            this.tableData[this.selectedMapIndex].routes[
+              this.focusedRouteIndex
+            ],
+            currentlyFocusedStop
+          );
+        }
+      }
+    } else if (key === 107) {
+      var addRoutePopover = this.mapToolbar.addRoutePopup;
+      if (!addRoutePopover.isOpen()) {
+        /* Open Add Route popover on Plus key press */
+        this.mapToolbar.onShowRoutePopover(addRoutePopover);
+      }
+    } else if (key === 13) {
+      var addRoutePopover = this.mapToolbar.addRoutePopup;
+      if (addRoutePopover.isOpen()) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.mapToolbar.onToolBarAction(
+          this.mapToolbar.routeToEdit?.id ? 'edit-route' : 'add-route'
+        );
+      }
+    }
+
+    this.dontUseTab = false;
   }
 
   mapHover: boolean = false;
@@ -169,6 +249,7 @@ export class RoutingMapComponent implements OnInit {
   ];
 
   focusedRouteIndex: number = null;
+  focusedStopIndex: number = null;
   stopPickerActive: boolean = false;
   stopPickerLocation: any = {};
   stopJustAdded: boolean = false;
@@ -289,10 +370,33 @@ export class RoutingMapComponent implements OnInit {
   isDopplerOn: boolean;
   dopplerInterval: any;
 
+  actionDisabledTooltip: boolean = false;
+  actionDisabledTooltipFinished: boolean = false;
+
+  freeRangeRoutesArray: any[] = [];
+  _pointerPosition;
+  off: any;
+  scaleX = 100 / 200; //relation aspect between items.width in dropZone and items.width in List
+  scaleY = 1; //relation aspect between items.height in dropZone and items.height in List
+  posInside: { source: any; x: number; y: number } = {
+    source: null,
+    x: 0,
+    y: 0,
+  };
+
+  @ViewChild('routeFreeDrag', { read: ElementRef, static: true })
+  dropZone: ElementRef;
+
+  filtercond1 = true;
+  filtercond2 = false;
+  changedFreeMoveTime: any;
+
   constructor(
     private mapsService: MapsService,
     private formBuilder: FormBuilder,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private modalService: ModalService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
@@ -304,35 +408,217 @@ export class RoutingMapComponent implements OnInit {
 
     this.initAddressFields();
 
-    this.routes.map((item, index) => {
+    this.tableData[this.selectedMapIndex].routes.map((item, index) => {
       this.calculateDistanceBetweenStops(index);
       this.calculateRouteWidth(item);
     });
+
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: Confirmation) => {
+          switch (res.type) {
+            case 'delete': {
+              if (res.template === 'route') {
+                this.deleteRoute(res.id);
+              }
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   initAddressFields() {
-    new Array(this.routes.length).fill(1).map((item, index) => {
-      this.addressInputs.push(
-        this.formBuilder.group({
-          address: [],
-        })
-      );
-    });
+    new Array(this.tableData[this.selectedMapIndex].routes.length)
+      .fill(1)
+      .map((item, index) => {
+        this.addressInputs.push(
+          this.formBuilder.group({
+            address: [],
+          })
+        );
+      });
   }
 
   get addressFields() {
     return this.addressInputs;
   }
 
-  dropRoutes(event: CdkDragDrop<string[]>, dropArray) {
-    moveItemInArray(dropArray, event.previousIndex, event.currentIndex);
+  dropRoutes(event: CdkDragDrop<string[]>) {
+    if (
+      event.previousContainer === event.container &&
+      event.previousIndex !== event.currentIndex &&
+      event.container.id == 'cdk-drop-list-0'
+    ) {
+      var orderPosition = this.findReorderPosition(
+        event.previousIndex,
+        event.currentIndex
+      );
+      const previousIndex = orderPosition[0];
+      const nextIndex = orderPosition[1];
+      moveItemInArray(event.container.data, previousIndex, nextIndex);
+    } else if (event.previousContainer !== event.container) {
+      var currentTime = new Date().getTime();
+
+      if (
+        !this.changedFreeMoveTime ||
+        currentTime - this.changedFreeMoveTime > 100
+      ) {
+        event.item.data.freeMove = !event.item.data.freeMove;
+
+        if (event.container.id == 'cdk-drop-list-0') {
+          var orderPosition = this.findReorderPositionById(
+            event.item.data.id,
+            event.currentIndex
+          );
+          const previousIndex = orderPosition[0];
+          const nextIndex = orderPosition[1];
+
+          moveItemInArray(event.container.data, previousIndex, nextIndex);
+        }
+      }
+
+      const rectZone = this.dropZone.nativeElement.getBoundingClientRect();
+      const rectElement =
+        event.item.element.nativeElement.getBoundingClientRect();
+
+      event.item.data.y =
+        this._pointerPosition.y - this.off.y * this.scaleY - rectZone.top;
+      event.item.data.x =
+        this._pointerPosition.x - this.off.x * this.scaleX - rectZone.left;
+
+      const out =
+        event.item.data.y < 0 ||
+        event.item.data.x < 0 ||
+        event.item.data.y > rectZone.height - rectElement.height ||
+        event.item.data.x > rectZone.width - rectElement.width;
+
+      var overlap = this.checkOverlap(
+        event.item.data,
+        event.item.data.x,
+        event.item.data.y,
+        event.item.data.x + rectElement.width,
+        event.item.data.y + rectElement.height
+      );
+
+      if (event.container.id == 'cdk-drop-list-1' && (overlap || out)) {
+        event.item.data.freeMove = false;
+      }
+    }
+
+    this.posInside = { source: null, x: 0, y: 0 };
+  }
+
+  checkOverlap(movedCard, left, top, right, bottom) {
+    var overlap = false;
+
+    document
+      .querySelectorAll('.route-info-card')
+      .forEach((cardElement: HTMLElement, i) => {
+        var cardId = parseInt(cardElement.getAttribute('data-id'));
+        var cardData = this.tableData[this.selectedMapIndex].routes.filter(
+          (item) => item.id === cardId
+        )[0];
+
+        var rect = cardElement.getBoundingClientRect();
+
+        var cardLeft = cardElement.offsetLeft;
+        var cardTop = cardElement.offsetTop;
+        var cardRight = cardElement.offsetLeft + rect.width;
+        var cardBottom = cardElement.offsetTop + rect.height;
+
+        if (cardId != movedCard.id && cardData.freeMove) {
+          var overlapCurrent = !(
+            right < cardLeft ||
+            left > cardRight ||
+            bottom < cardTop ||
+            top > cardBottom
+          );
+
+          if (overlapCurrent) overlap = true;
+        }
+      });
+
+    return overlap;
+  }
+
+  moved(event: CdkDragMove) {
+    this._pointerPosition = event.pointerPosition;
+  }
+
+  changePosition(event: CdkDragDrop<any>, field) {
+    const rectZone = this.dropZone.nativeElement.getBoundingClientRect();
+    const rectElement =
+      event.item.element.nativeElement.getBoundingClientRect();
+
+    let y = +field.y + event.distance.y;
+    let x = +field.x + event.distance.x;
+    const out =
+      y < 0 ||
+      x < 0 ||
+      y > rectZone.height - rectElement.height ||
+      x > rectZone.width - rectElement.width;
+
+    var overlap = this.checkOverlap(
+      field,
+      x,
+      y,
+      x + rectElement.width,
+      y + rectElement.height
+    );
+
+    if (!out && !overlap) {
+      field.y = y;
+      field.x = x;
+    } else if (!overlap) {
+      if (event.previousContainer === event.container) {
+        field.freeMove = false;
+        this.changedFreeMoveTime = new Date().getTime();
+
+        var orderPosition = this.findReorderPositionById(
+          event.item.data.id,
+          event.currentIndex
+        );
+        const previousIndex = orderPosition[0];
+        const nextIndex = orderPosition[1];
+
+        moveItemInArray(
+          event.container.data,
+          previousIndex,
+          event.container.data.length - 1
+        );
+      }
+    }
+
+    if (overlap) {
+      field.y = field.y + 0.0001;
+      field.x = field.x + 0.0001;
+    }
+  }
+
+  changeZIndex(item: any) {
+    this.tableData[this.selectedMapIndex].routes.forEach(
+      (x) => (x['z-index'] = x == item ? 100 : 0)
+    );
   }
 
   dropStops(event: CdkDragDrop<string[]>, dropArray, index) {
     moveItemInArray(dropArray, event.previousIndex, event.currentIndex);
 
     this.calculateDistanceBetweenStops(index);
-    this.calculateRouteWidth(this.routes[index]);
+    this.calculateRouteWidth(
+      this.tableData[this.selectedMapIndex].routes[index]
+    );
   }
 
   showHideRoute(event, route) {
@@ -343,6 +629,11 @@ export class RoutingMapComponent implements OnInit {
     if (route.isFocused) {
       route.isFocused = false;
       this.focusedRouteIndex = null;
+      this.focusedStopIndex = null;
+    }
+    if (route.expanded) {
+      route.expanded = false;
+      route.expandFinished = false;
     }
   }
 
@@ -353,6 +644,37 @@ export class RoutingMapComponent implements OnInit {
     route.expanded = !route.expanded;
     this.calculateRouteWidth(route);
     setTimeout(() => {
+      if (route.freeMove && route.expanded) {
+        const rectZone = this.dropZone.nativeElement.getBoundingClientRect();
+        const routeElement: HTMLElement = document.querySelector(
+          '[data-id="' + route.id + '"]'
+        );
+        const rectElement = routeElement.getBoundingClientRect();
+
+        const out =
+          route.y < 0 ||
+          route.x < 0 ||
+          route.y > rectZone.height - rectElement.height ||
+          route.x > rectZone.width - rectElement.width;
+
+        if (rectElement.right > rectZone.right - 20) {
+          route.x -= rectElement.right - rectZone.right + 20;
+
+          routeElement.style.transition = 'all 0.2s';
+          setTimeout(() => {
+            routeElement.style.transition = '';
+          }, 100);
+        }
+        if (rectElement.bottom > rectZone.bottom - 10) {
+          route.y -= rectElement.bottom - rectZone.bottom + 10;
+
+          routeElement.style.transition = 'all 0.2s';
+          setTimeout(() => {
+            routeElement.style.transition = '';
+          }, 100);
+        }
+      }
+
       route.expandFinished = !route.expandFinished;
       this.ref.detectChanges();
     }, 150);
@@ -370,10 +692,6 @@ export class RoutingMapComponent implements OnInit {
     this.calculateRouteWidth(route);
 
     this.ref.detectChanges();
-  }
-
-  mapClick(event) {
-    console.log('mapClick', event);
   }
 
   zoomChange(event) {
@@ -428,8 +746,6 @@ export class RoutingMapComponent implements OnInit {
               var result = sortedResults[0];
 
               if (result) {
-                //console.log('geocoder result', result);
-
                 var address = {
                   address: '',
                   city: '',
@@ -488,17 +804,6 @@ export class RoutingMapComponent implements OnInit {
     });
   }
 
-  mapPlacesSearch(results, status) {
-    this.placesService.getDetails(
-      {
-        placeId: results[0].place_id,
-      },
-      function (result, status) {
-        console.log(result);
-      }
-    );
-  }
-
   public onHandleAddress(event: any, route, index) {
     this.addressInputs.at(index).reset();
     if (event.action == 'confirm' && event.address) {
@@ -541,36 +846,55 @@ export class RoutingMapComponent implements OnInit {
 
   calculateDistanceBetweenStops(i: number) {
     /* Set all distance and totalDistance to 0 km or miles */
-    for (let j = 0; j < this.routes[i].stops.length; j++) {
-      this.routes[i].stops[j].leg = 0;
-      this.routes[i].stops[j].total = 0;
+    for (
+      let j = 0;
+      j < this.tableData[this.selectedMapIndex].routes[i].stops.length;
+      j++
+    ) {
+      this.tableData[this.selectedMapIndex].routes[i].stops[j].leg = 0;
+      this.tableData[this.selectedMapIndex].routes[i].stops[j].total = 0;
 
-      this.routes[i].stops[j].emptyDistance = 0;
-      this.routes[i].stops[j].loadedDistance = 0;
+      this.tableData[this.selectedMapIndex].routes[i].stops[
+        j
+      ].emptyDistance = 0;
+      this.tableData[this.selectedMapIndex].routes[i].stops[
+        j
+      ].loadedDistance = 0;
 
-      this.routes[i].hasEmptyMiles = false;
+      this.tableData[this.selectedMapIndex].routes[i].hasEmptyMiles = false;
 
-      if (this.routes[i].fuelPrice && this.routes[i].mpg) {
-        this.routes[i].stops[j].legPrice = 0;
-        this.routes[i].stops[j].totalPrice = 0;
+      if (
+        this.tableData[this.selectedMapIndex].routes[i].fuelPrice &&
+        this.tableData[this.selectedMapIndex].routes[i].mpg
+      ) {
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].legPrice = 0;
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].totalPrice = 0;
       } else {
-        this.routes[i].stops[j].legPrice = null;
-        this.routes[i].stops[j].totalPrice = null;
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].legPrice =
+          null;
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].totalPrice =
+          null;
       }
     }
     /* For  Calculate Distance*/
-    for (let j = 1; j < this.routes[i].stops.length; j++) {
+    for (
+      let j = 1;
+      j < this.tableData[this.selectedMapIndex].routes[i].stops.length;
+      j++
+    ) {
       if (
-        this.routes[i].stops[j].lat !== undefined &&
-        this.routes[i].stops[j].long !== undefined
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].lat !==
+          undefined &&
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].long !==
+          undefined
       ) {
         const firstAddress = new google.maps.LatLng(
-          this.routes[i].stops[j - 1].lat,
-          this.routes[i].stops[j - 1].long
+          this.tableData[this.selectedMapIndex].routes[i].stops[j - 1].lat,
+          this.tableData[this.selectedMapIndex].routes[i].stops[j - 1].long
         );
         const secondAddress = new google.maps.LatLng(
-          this.routes[i].stops[j].lat,
-          this.routes[i].stops[j].long
+          this.tableData[this.selectedMapIndex].routes[i].stops[j].lat,
+          this.tableData[this.selectedMapIndex].routes[i].stops[j].long
         );
 
         let distance: number;
@@ -589,58 +913,114 @@ export class RoutingMapComponent implements OnInit {
             ) / 1000.0;
         }
 
-        this.routes[i].stops[j].leg = distance;
-        this.routes[i].stops[j].total =
-          parseFloat(this.routes[i].stops[j - 1].total) +
-          parseFloat(this.routes[i].stops[j].leg);
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].leg = distance;
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].total =
+          parseFloat(
+            this.tableData[this.selectedMapIndex].routes[i].stops[j - 1].total
+          ) +
+          parseFloat(
+            this.tableData[this.selectedMapIndex].routes[i].stops[j].leg
+          );
 
-        this.routes[i].stops[j].emptyDistance =
-          parseFloat(this.routes[i].stops[j - 1].emptyDistance) +
-          (this.routes[i].stops[j].empty ? distance : 0);
-        this.routes[i].stops[j].loadedDistance =
-          parseFloat(this.routes[i].stops[j - 1].loadedDistance) +
-          (!this.routes[i].stops[j].empty ? distance : 0);
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].emptyDistance =
+          parseFloat(
+            this.tableData[this.selectedMapIndex].routes[i].stops[j - 1]
+              .emptyDistance
+          ) +
+          (this.tableData[this.selectedMapIndex].routes[i].stops[j].empty
+            ? distance
+            : 0);
+        this.tableData[this.selectedMapIndex].routes[i].stops[
+          j
+        ].loadedDistance =
+          parseFloat(
+            this.tableData[this.selectedMapIndex].routes[i].stops[j - 1]
+              .loadedDistance
+          ) +
+          (!this.tableData[this.selectedMapIndex].routes[i].stops[j].empty
+            ? distance
+            : 0);
 
-        if (this.routes[i].fuelPrice && this.routes[i].mpg) {
+        if (
+          this.tableData[this.selectedMapIndex].routes[i].fuelPrice &&
+          this.tableData[this.selectedMapIndex].routes[i].mpg
+        ) {
           let distanceInMiles =
             this.tableData[this.selectedMapIndex].distanceUnit == 'mi'
               ? distance
               : distance / 1.609344;
 
-          let fuel = distanceInMiles / this.routes[i].mpg;
-          let tripCost = fuel * this.routes[i].fuelPrice;
+          let fuel =
+            distanceInMiles /
+            this.tableData[this.selectedMapIndex].routes[i].mpg;
+          let tripCost =
+            fuel * this.tableData[this.selectedMapIndex].routes[i].fuelPrice;
 
           let fuelShort = fuel.toFixed(1);
           let tripCostShort = tripCost.toFixed(1);
 
-          this.routes[i].stops[j].legPrice = tripCostShort;
-          this.routes[i].stops[j].totalPrice =
-            parseFloat(this.routes[i].stops[j - 1].legPrice) +
-            parseFloat(this.routes[i].stops[j].legPrice);
+          this.tableData[this.selectedMapIndex].routes[i].stops[j].legPrice =
+            tripCostShort;
+          this.tableData[this.selectedMapIndex].routes[i].stops[j].totalPrice =
+            parseFloat(
+              this.tableData[this.selectedMapIndex].routes[i].stops[j - 1]
+                .legPrice
+            ) +
+            parseFloat(
+              this.tableData[this.selectedMapIndex].routes[i].stops[j].legPrice
+            );
         }
       }
     }
-    for (let j = 1; j < this.routes[i].stops.length; j++) {
-      var stopLeg = parseFloat(this.routes[i].stops[j].leg);
-      var stopTotal = parseFloat(this.routes[i].stops[j].total);
-      this.routes[i].stops[j].leg = stopLeg.toFixed(1);
-      this.routes[i].stops[j].total = stopTotal.toFixed(1);
+    for (
+      let j = 1;
+      j < this.tableData[this.selectedMapIndex].routes[i].stops.length;
+      j++
+    ) {
+      var stopLeg = parseFloat(
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].leg
+      );
+      var stopTotal = parseFloat(
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].total
+      );
+      this.tableData[this.selectedMapIndex].routes[i].stops[j].leg =
+        stopLeg.toFixed(1);
+      this.tableData[this.selectedMapIndex].routes[i].stops[j].total =
+        stopTotal.toFixed(1);
 
-      var emptyLeg = parseFloat(this.routes[i].stops[j].emptyDistance);
-      var loadedLeg = parseFloat(this.routes[i].stops[j].loadedDistance);
-      this.routes[i].stops[j].emptyDistance = emptyLeg.toFixed(1);
-      this.routes[i].stops[j].loadedDistance = loadedLeg.toFixed(1);
+      var emptyLeg = parseFloat(
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].emptyDistance
+      );
+      var loadedLeg = parseFloat(
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].loadedDistance
+      );
+      this.tableData[this.selectedMapIndex].routes[i].stops[j].emptyDistance =
+        emptyLeg.toFixed(1);
+      this.tableData[this.selectedMapIndex].routes[i].stops[j].loadedDistance =
+        loadedLeg.toFixed(1);
 
-      if (this.routes[i].stops[j].emptyDistance > 0) {
-        this.routes[i].hasEmptyMiles = true;
+      if (
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].emptyDistance >
+        0
+      ) {
+        this.tableData[this.selectedMapIndex].routes[i].hasEmptyMiles = true;
       }
 
-      if (this.routes[i].fuelPrice && this.routes[i].mpg) {
-        var legCost = parseFloat(this.routes[i].stops[j].legPrice);
-        var totalCost = parseFloat(this.routes[i].stops[j].totalPrice);
+      if (
+        this.tableData[this.selectedMapIndex].routes[i].fuelPrice &&
+        this.tableData[this.selectedMapIndex].routes[i].mpg
+      ) {
+        var legCost = parseFloat(
+          this.tableData[this.selectedMapIndex].routes[i].stops[j].legPrice
+        );
+        var totalCost = parseFloat(
+          this.tableData[this.selectedMapIndex].routes[i].stops[j].totalPrice
+        );
 
-        this.routes[i].stops[j].legPrice = legCost.toFixed(1);
-        this.routes[i].stops[j].totalPrice = totalCost.toFixed(1);
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].legPrice =
+          legCost.toFixed(1);
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].totalPrice =
+          totalCost.toFixed(1);
       }
     }
   }
@@ -657,7 +1037,20 @@ export class RoutingMapComponent implements OnInit {
     } else if (action.name === 'clear-route-stops') {
       this.clearRouteStops(this.dropDownActive);
     } else if (action.name === 'delete') {
-      this.deleteRoute(this.dropDownActive);
+      var routeObj = {
+        id: this.dropDownActive,
+        type: 'delete-item',
+      };
+
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          ...routeObj,
+          template: 'route',
+          type: 'delete',
+        }
+      );
     } else if (action.name === 'open-settings') {
       let route = this.getRouteById(this.dropDownActive);
       this.mapToolbar.editRoute(route);
@@ -681,7 +1074,9 @@ export class RoutingMapComponent implements OnInit {
         })
       );
 
-      const lastId = Math.max(...this.routes.map((item) => item.id));
+      const lastId = Math.max(
+        ...this.tableData[this.selectedMapIndex].routes.map((item) => item.id)
+      );
 
       const newRoute = JSON.parse(JSON.stringify(route));
       newRoute.id = lastId + 1;
@@ -693,14 +1088,26 @@ export class RoutingMapComponent implements OnInit {
       newRoute.stops.map((stop) => {
         stop.isSelected = false;
       });
-      //newRoute.width = '312px';
 
-      this.routes.push(newRoute);
+      newRoute.color = this.findRouteColor();
 
-      this.tableData[this.selectedMapIndex].length = this.routes.length;
+      if (this.tableData[this.selectedMapIndex].routes.length < 8) {
+        this.tableData[this.selectedMapIndex].routes.push(newRoute);
+      }
 
-      this.calculateDistanceBetweenStops(this.routes.length - 1);
-      this.calculateRouteWidth(this.routes[this.routes.length - 1]);
+      this.showHideDuplicate();
+
+      this.tableData[this.selectedMapIndex].length =
+        this.tableData[this.selectedMapIndex].routes.length;
+
+      this.calculateDistanceBetweenStops(
+        this.tableData[this.selectedMapIndex].routes.length - 1
+      );
+      this.calculateRouteWidth(
+        this.tableData[this.selectedMapIndex].routes[
+          this.tableData[this.selectedMapIndex].routes.length - 1
+        ]
+      );
     }
   }
 
@@ -730,22 +1137,28 @@ export class RoutingMapComponent implements OnInit {
     const routeIndex = this.getRouteIndexById(id);
 
     if (routeIndex > -1) {
-      this.routes.splice(routeIndex, 1);
+      this.tableData[this.selectedMapIndex].routes.splice(routeIndex, 1);
     }
 
-    this.tableData[this.selectedMapIndex].length = this.routes.length;
+    this.tableData[this.selectedMapIndex].length =
+      this.tableData[this.selectedMapIndex].routes.length;
+    this.showHideDuplicate();
   }
 
   getRouteById(id) {
-    let route = this.routes.filter((item) => item.id === id)[0];
+    let route = this.tableData[this.selectedMapIndex].routes.filter(
+      (item) => item.id === id
+    )[0];
 
     return route ? route : false;
   }
 
   getRouteIndexById(id) {
-    const routeIndex = this.routes.findIndex((route) => {
-      return route.id === id;
-    });
+    const routeIndex = this.tableData[this.selectedMapIndex].routes.findIndex(
+      (route) => {
+        return route.id === id;
+      }
+    );
 
     return routeIndex;
   }
@@ -753,7 +1166,7 @@ export class RoutingMapComponent implements OnInit {
   focusRoute(i) {
     this.stopPickerLocation = {};
 
-    this.routes.map((route, index) => {
+    this.tableData[this.selectedMapIndex].routes.map((route, index) => {
       if (index == i) {
         if (!route.hidden) {
           route.isFocused = !route.isFocused;
@@ -762,6 +1175,13 @@ export class RoutingMapComponent implements OnInit {
             this.focusedRouteIndex = i;
           } else {
             this.focusedRouteIndex = null;
+
+            route.stops.map((stop) => {
+              if (stop.isSelected) {
+                stop.isSelected = false;
+                this.focusedStopIndex = null;
+              }
+            });
           }
         }
       } else {
@@ -778,7 +1198,9 @@ export class RoutingMapComponent implements OnInit {
     if (event.action == 'add-route') {
       var routeForm = event.data;
 
-      let lastId = Math.max(...this.routes.map((item) => item.id));
+      let lastId = Math.max(
+        ...this.tableData[this.selectedMapIndex].routes.map((item) => item.id)
+      );
       if (!lastId || lastId < 1) {
         lastId = 1;
       }
@@ -808,12 +1230,23 @@ export class RoutingMapComponent implements OnInit {
           ? routeForm.get('fuelPrice').value
           : '',
         stops: [],
+        color: this.findRouteColor(),
       };
 
-      this.routes.push(newRoute);
-      this.calculateRouteWidth(this.routes[this.routes.length - 1]);
+      if (this.tableData[this.selectedMapIndex].routes.length < 8) {
+        this.tableData[this.selectedMapIndex].routes.push(newRoute);
+      }
 
-      this.tableData[this.selectedMapIndex].length = this.routes.length;
+      this.showHideDuplicate();
+
+      this.calculateRouteWidth(
+        this.tableData[this.selectedMapIndex].routes[
+          this.tableData[this.selectedMapIndex].routes.length - 1
+        ]
+      );
+
+      this.tableData[this.selectedMapIndex].length =
+        this.tableData[this.selectedMapIndex].routes.length;
     } else if (event.action == 'edit-route') {
       var routeForm = event.data.form;
       let route = this.getRouteById(event.data.editId);
@@ -861,7 +1294,7 @@ export class RoutingMapComponent implements OnInit {
         mapForm.get('borderType').value;
 
       if (infoTypeChanged) {
-        this.routes.map((item, index) => {
+        this.tableData[this.selectedMapIndex].routes.map((item, index) => {
           this.calculateDistanceBetweenStops(index);
           this.calculateRouteWidth(item);
         });
@@ -871,6 +1304,7 @@ export class RoutingMapComponent implements OnInit {
       this.stopPickerLocation = {};
       if (this.stopPickerActive) {
         this.agmMap.setOptions({ draggableCursor: 'pointer' });
+        this.findNextStopIndex();
       } else {
         this.agmMap.setOptions({ draggableCursor: '' });
       }
@@ -890,6 +1324,33 @@ export class RoutingMapComponent implements OnInit {
       this.toggleRadar();
     } else if (event.action == 'toggle-traffic') {
       this.toggleTraffic();
+    } else if (event.action === 'tab-selected') {
+      this.selectedTab = event.tabData.field;
+
+      this.tableData[this.selectedMapIndex].routes.map((route, routeIndex) => {
+        if (route.isFocused) {
+          this.focusRoute(routeIndex);
+        }
+
+        route.stops.map((stop) => {
+          if (stop.isSelected) {
+            stop.isSelected = false;
+          }
+        });
+      });
+
+      this.selectedMapIndex =
+        event.tabData.field == 'map1'
+          ? 0
+          : event.tabData.field == 'map2'
+          ? 1
+          : event.tabData.field == 'map3'
+          ? 2
+          : 3;
+
+      this.focusedStopIndex = null;
+      this.focusedRouteIndex = null;
+      this.stopPickerLocation = {};
     }
   }
 
@@ -914,30 +1375,43 @@ export class RoutingMapComponent implements OnInit {
       {
         title: 'Map 1',
         field: 'map1',
-        length: this.routes.length,
+        length: 0,
         gridNameTitle: 'Routing',
         distanceUnit: 'mi', // mi or km
         borderType: 'open', // open or closed
-        addressType: 'city', // city or address
+        addressType: 'city', // city or address,
+        routes: [],
       },
-      // {
-      //   title: 'Map 2',
-      //   field: 'map2',
-      //   length: 0,
-      //   gridNameTitle: 'Routing'
-      // },
-      // {
-      //   title: 'Map 3',
-      //   field: 'map3',
-      //   length: 0,
-      //   gridNameTitle: 'Routing'
-      // },
-      // {
-      //   title: 'Map 4',
-      //   field: 'map4',
-      //   length: 0,
-      //   gridNameTitle: 'Routing'
-      // },
+      {
+        title: 'Map 2',
+        field: 'map2',
+        length: 0,
+        gridNameTitle: 'Routing',
+        distanceUnit: 'mi', // mi or km
+        borderType: 'open', // open or closed
+        addressType: 'city', // city or address,
+        routes: [],
+      },
+      {
+        title: 'Map 3',
+        field: 'map3',
+        length: 0,
+        gridNameTitle: 'Routing',
+        distanceUnit: 'mi', // mi or km
+        borderType: 'open', // open or closed
+        addressType: 'city', // city or address,
+        routes: [],
+      },
+      {
+        title: 'Map 4',
+        field: 'map4',
+        length: 0,
+        gridNameTitle: 'Routing',
+        distanceUnit: 'mi', // mi or km
+        borderType: 'open', // open or closed
+        addressType: 'city', // city or address,
+        routes: [],
+      },
     ];
   }
 
@@ -949,15 +1423,25 @@ export class RoutingMapComponent implements OnInit {
     }
   }
 
-  addNewStop(loadType) {
+  addNewStop(event, loadType) {
     this.stopPickerLocation.empty = loadType == 'empty' ? true : false;
+    this.addressFlag = loadType == 'empty' ? 'Empty' : 'Loaded';
 
     if (this.stopPickerLocation.editIndex != null) {
-      this.routes[this.focusedRouteIndex].stops[
-        this.stopPickerLocation.editIndex
-      ].empty = this.stopPickerLocation.empty;
+      this.tableData[this.selectedMapIndex].routes[
+        this.focusedRouteIndex
+      ].stops[this.stopPickerLocation.editIndex].empty =
+        this.stopPickerLocation.empty;
     } else {
-      this.routes[this.focusedRouteIndex].stops.push({
+      var insertIndex =
+        this.focusedStopIndex != null
+          ? this.focusedStopIndex + 1
+          : this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex]
+              .stops.length;
+
+      this.tableData[this.selectedMapIndex].routes[
+        this.focusedRouteIndex
+      ].stops.splice(insertIndex, 0, {
         address: this.stopPickerLocation.address,
         cityAddress: this.stopPickerLocation.cityAddress,
         leg: '0',
@@ -969,8 +1453,17 @@ export class RoutingMapComponent implements OnInit {
         long: this.stopPickerLocation.long,
       });
 
+      this.focusStop(
+        event,
+        this.focusedRouteIndex,
+        this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex]
+          .stops.length - 1
+      );
+
       this.calculateDistanceBetweenStops(this.focusedRouteIndex);
-      this.calculateRouteWidth(this.routes[this.focusedRouteIndex]);
+      this.calculateRouteWidth(
+        this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex]
+      );
     }
 
     this.stopPickerLocation = {};
@@ -980,12 +1473,13 @@ export class RoutingMapComponent implements OnInit {
   }
 
   stopMarkerClick(event, routeIndex, stopIndex) {
-    if (this.focusedRouteIndex != null && this.stopPickerActive) {
-      this.stopPickerLocation = this.routes[routeIndex].stops[stopIndex];
-      this.stopPickerLocation.editIndex = stopIndex;
-    } else {
-      this.focusStop(event, routeIndex, stopIndex);
+    if (this.focusedRouteIndex != routeIndex) {
+      this.focusRoute(routeIndex);
     }
+
+    this.stopPickerLocation =
+      this.tableData[this.selectedMapIndex].routes[routeIndex].stops[stopIndex];
+    this.stopPickerLocation.editIndex = stopIndex;
 
     this.ref.detectChanges();
   }
@@ -994,7 +1488,7 @@ export class RoutingMapComponent implements OnInit {
     event.stopPropagation();
     event.preventDefault();
 
-    var route = this.routes[routeIndex];
+    var route = this.tableData[this.selectedMapIndex].routes[routeIndex];
 
     if (!route.isFocused) {
       this.focusRoute(routeIndex);
@@ -1003,6 +1497,12 @@ export class RoutingMapComponent implements OnInit {
     route.stops.map((item, index) => {
       if (index == stopIndex) {
         item.isSelected = !item.isSelected;
+
+        if (item.isSelected) {
+          this.focusedStopIndex = index;
+        } else {
+          this.focusedStopIndex = null;
+        }
       } else {
         item.isSelected = false;
       }
@@ -1018,6 +1518,24 @@ export class RoutingMapComponent implements OnInit {
   toggleDropdown(event, tooltip: any, route: any) {
     event.stopPropagation();
     event.preventDefault();
+
+    this.dropdownActions.map((action, index) => {
+      if (
+        [
+          'open-report',
+          'print-route',
+          'duplicate-route',
+          'reverse-route-stops',
+          'clear-route-stops',
+        ].includes(action.name)
+      ) {
+        if (route.stops.length) {
+          action.disabled = false;
+        } else {
+          action.disabled = true;
+        }
+      }
+    });
 
     this.tooltip = tooltip;
     if (tooltip.isOpen()) {
@@ -1198,10 +1716,8 @@ export class RoutingMapComponent implements OnInit {
     const interval = setInterval(() => {
       if (this.trafficLayerShow) {
         this.trafficLayer.setMap(this.agmMap);
-        //localStorage.setItem('routingTraffic', JSON.stringify({show: true}));
       } else {
         this.trafficLayer.setMap(null);
-        //localStorage.setItem('routingTraffic', JSON.stringify({show: false}));
       }
       clearInterval(interval);
     }, 200);
@@ -1239,7 +1755,6 @@ export class RoutingMapComponent implements OnInit {
 
       const interval = setInterval(() => {
         this.trafficLayer.setMap(null);
-        //localStorage.setItem('routingTraffic', JSON.stringify({show: false}));
         clearInterval(interval);
       }, 200);
     }
@@ -1250,14 +1765,220 @@ export class RoutingMapComponent implements OnInit {
     event.preventDefault();
 
     if (this.stopPickerLocation.editIndex != null) {
-      this.routes[this.focusedRouteIndex].stops.splice(
-        this.stopPickerLocation.editIndex,
-        1
-      );
+      this.tableData[this.selectedMapIndex].routes[
+        this.focusedRouteIndex
+      ].stops.splice(this.stopPickerLocation.editIndex, 1);
     }
 
     this.stopPickerLocation = {};
 
     this.ref.detectChanges();
+  }
+
+  findRouteColor() {
+    var allColors = this.routeFocusColors;
+    var takenColors = [];
+    var freeColors = [];
+
+    this.tableData[this.selectedMapIndex].routes.map((route) => {
+      takenColors.push(route.color);
+    });
+
+    allColors.map((color) => {
+      var colorTaken = takenColors.indexOf(color);
+
+      if (colorTaken == -1) {
+        freeColors.push(color);
+      }
+    });
+
+    return freeColors[0];
+  }
+
+  showHideDuplicate() {
+    if (this.tableData[this.selectedMapIndex].routes.length < 8) {
+      this.dropdownActions[3].disabled = false;
+      this.dropdownActions[3].disabledTooltip = '';
+    } else {
+      this.dropdownActions[3].disabled = true;
+      this.dropdownActions[3].disabledTooltip = '8 Route Limit';
+    }
+  }
+
+  findNextStopIndex() {
+    if (this.focusedRouteIndex != null) {
+      this.focusedStopIndex = this.tableData[this.selectedMapIndex].routes[
+        this.focusedRouteIndex
+      ].stops.findIndex((stop) => stop.isSelected);
+
+      if (this.focusedStopIndex == -1) this.focusedStopIndex = null;
+    }
+  }
+
+  markerZoom(e, item) {
+    if (e.wheelDeltaY > 0) {
+      // The user scrolled up.
+      this.zoomChange(this.mapZoom + 1);
+
+      if (this.mapLatitude == item.lat && this.mapLongitude == item.long) {
+        this.mapLatitude = item.lat + 0.000001;
+        this.mapLongitude = item.long + 0.000001;
+      } else {
+        this.mapLatitude = item.lat;
+        this.mapLongitude = item.long;
+      }
+    } else {
+      // The user scrolled down.
+      this.zoomChange(this.mapZoom - 1);
+    }
+  }
+
+  stopDropdownClick(event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  switchRouteFocus(previousRoute?) {
+    if (this.tableData[this.selectedMapIndex].routes.length) {
+      if (this.focusedRouteIndex != null) {
+        var nextRoute =
+          this.focusedRouteIndex + 1 <
+          this.tableData[this.selectedMapIndex].routes.length
+            ? this.focusedRouteIndex + 1
+            : 0;
+
+        if (previousRoute) {
+          nextRoute =
+            this.focusedRouteIndex - 1 >= 0
+              ? this.focusedRouteIndex - 1
+              : this.tableData[this.selectedMapIndex].routes.length - 1;
+        }
+
+        this.focusRoute(nextRoute);
+      } else {
+        var focusIndex = previousRoute
+          ? this.tableData[this.selectedMapIndex].routes.length - 1
+          : 0;
+
+        this.focusRoute(focusIndex);
+      }
+    }
+  }
+
+  /* Up And Down Arrow Method */
+  onUpAndDownArrow(event) {
+    var key = event.keyCode;
+
+    var currentlyFocusedStop = this.findFocusedStop(this.focusedRouteIndex);
+    var nextFocusedStop = -1;
+
+    if (key === 38) {
+      /* Up Arrow */
+      if (currentlyFocusedStop === -1) {
+        nextFocusedStop =
+          this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex]
+            .stops.length - 1;
+      } else {
+        nextFocusedStop =
+          currentlyFocusedStop - 1 >= 0
+            ? currentlyFocusedStop - 1
+            : this.tableData[this.selectedMapIndex].routes[
+                this.focusedRouteIndex
+              ].stops.length - 1;
+      }
+    } else if (key === 40) {
+      /* Down Arrow */
+      if (currentlyFocusedStop === -1) {
+        nextFocusedStop = 0;
+      } else {
+        nextFocusedStop =
+          currentlyFocusedStop + 1 <
+          this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex]
+            .stops.length
+            ? currentlyFocusedStop + 1
+            : 0;
+      }
+    }
+
+    this.focusStop(event, this.focusedRouteIndex, nextFocusedStop);
+  }
+
+  findFocusedStop(routeIndex) {
+    const stopIndex = this.tableData[this.selectedMapIndex].routes[
+      routeIndex
+    ].stops.findIndex((stop) => {
+      return stop.isSelected;
+    });
+
+    return stopIndex;
+  }
+
+  hoverDropdownAction(mod) {
+    this.actionDisabledTooltip = mod;
+
+    setTimeout(() => {
+      this.actionDisabledTooltipFinished = mod;
+    }, 250);
+
+    this.ref.detectChanges();
+  }
+
+  findReorderPosition(previousElementIndex, nextElementIndex) {
+    var cardElements = document.querySelectorAll(
+      '.route-card-scroll .route-info-card'
+    );
+
+    var previousId = parseInt(
+      cardElements[previousElementIndex].getAttribute('data-id')
+    );
+    var nextId = parseInt(
+      cardElements[nextElementIndex].getAttribute('data-id')
+    );
+
+    const previousIndex = this.tableData[
+      this.selectedMapIndex
+    ].routes.findIndex((route) => {
+      return route.id === previousId;
+    });
+
+    const nextIndex = this.tableData[this.selectedMapIndex].routes.findIndex(
+      (route) => {
+        return route.id === nextId;
+      }
+    );
+
+    return [previousIndex, nextIndex];
+  }
+
+  findReorderPositionById(cardId, elementIndex) {
+    var cardElements = document.querySelectorAll(
+      '.route-card-scroll .route-info-card'
+    );
+
+    const previousIndex = this.tableData[
+      this.selectedMapIndex
+    ].routes.findIndex((route) => {
+      return route.id === cardId;
+    });
+
+    var nextId = 0;
+    var nextIndex = elementIndex;
+
+    if (elementIndex > cardElements.length - 1) {
+      nextIndex = this.tableData[this.selectedMapIndex].routes.length;
+    } else {
+      nextId = parseInt(cardElements[elementIndex].getAttribute('data-id'));
+
+      nextIndex = this.tableData[this.selectedMapIndex].routes.findIndex(
+        (route) => {
+          return route.id === nextId;
+        }
+      );
+    }
+
+    if (previousIndex > nextIndex) nextIndex++;
+    if (nextIndex < 1) nextIndex = 1;
+
+    return [previousIndex, nextIndex - 1];
   }
 }

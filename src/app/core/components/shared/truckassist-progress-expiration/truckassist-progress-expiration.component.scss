@@ -24,37 +24,39 @@
     }
 
     &.bg-progress-short {
-      background: #FFE1E4;
-    
+      background: #ffe1e4;
+
       .table-progress-bar {
-        background: #E57373;
+        background: #e57373;
       }
     }
-    
+
     &.bg-progress-medium {
-      background: #FFECD1;
-    
+      background: #ffecd1;
+
       .table-progress-bar {
-        background: #FFB74D;
+        background: #ffb74d;
       }
     }
-    
+
     &.bg-progress-long {
-      background: #DADADA;
-    
+      background: #dadada;
+
       .table-progress-bar {
-        background: #AAAAAA;
+        background: #aaaaaa;
       }
     }
   }
 
   .table-progress-panel {
+    max-height: 18px;
+    margin-bottom: 2px;
     .progress-text {
-      margin: 2px 0 0 4px;
       font-size: 14px;
       font-weight: 400;
       color: #6c6c6c;
       display: flex;
+      align-items: center;
 
       span {
         &::selection {
@@ -77,7 +79,7 @@
 
     .progress-days-to-go {
       color: #6c6c6c;
-     
+
       span {
         &::selection {
           color: #6c6c6c;
@@ -87,10 +89,10 @@
     }
 
     .progress-days {
+      display: flex;
+      align-items: center;
       font-size: 14px;
       color: #6c6c6c;
-      position: relative;
-      top: 2px;
       .progress-days-bold {
         font-size: 14px !important;
         font-weight: 600 !important;
@@ -111,22 +113,22 @@
 
   &.big-progress-bar {
     flex-direction: column !important;
-  
+
     .table-progress {
       order: 1 !important;
       width: 100% !important;
       height: 8px !important;
       border-radius: 2px;
     }
-  
+
     .table-progress-panel {
       order: -1 !important;
       display: flex !important;
       justify-content: space-between !important;
       color: #6c6c6c !important;
-  
+
       .progress-text {
-        margin: 2px 0px !important;
+        align-items: center;
       }
     }
   }
@@ -137,11 +139,11 @@
     }
 
     .progress-text {
-      font-weight: 500!important;
+      font-weight: 500 !important;
     }
-  
+
     .progress-days {
-      font-weight: 500!important;
+      font-weight: 500 !important;
     }
   }
 }
@@ -206,10 +208,6 @@
       display: flex !important;
       justify-content: space-between !important;
       color: #ffb74d !important;
-
-      .progress-text {
-        margin: 2px 0px !important;
-      }
     }
   }
 }

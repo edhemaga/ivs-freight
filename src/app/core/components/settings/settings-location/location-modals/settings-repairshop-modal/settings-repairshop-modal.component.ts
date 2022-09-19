@@ -23,6 +23,10 @@ import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
 import { RepairTService } from '../../../../repair/state/repair.service';
 import {
+  repairShopValidation,
+  rentValidation,
+} from '../../../../shared/ta-input/ta-input.regex-validations';
+import {
   convertThousanSepInNumber,
   convertNumberInThousandSep,
 } from '../../../../../utils/methods.calculations';
@@ -95,13 +99,13 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.repairShopForm = this.formBuilder.group({
       companyOwned: [false],
-      name: [null, Validators.required],
+      name: [null, [Validators.required, ...repairShopValidation]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneFaxRegex]],
       phoneExt: [null, [...phoneExtension]],
       email: [null],
-      rent: [null],
+      rent: [null, rentValidation],
       payPeriod: [null],
       weeklyDay: [null],
       monthlyDay: [null],

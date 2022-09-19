@@ -158,7 +158,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
   }
 
   getDispatcherData(result?) {
-    this.dispatcherItems = [...result];
+    this.dispatcherItems = JSON.parse(JSON.stringify(result));
 
     let fullDispatchCount = 0;
     this.dispatcherItems.map(item => {

@@ -16,7 +16,10 @@ import {
   CreateResponse,
   UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
-import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  phoneFaxRegex,
+  fullNameValidation,
+} from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
@@ -99,7 +102,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.contactForm = this.formBuilder.group({
-      name: [null, [Validators.required, ...labelValidation]],
+      name: [null, [Validators.required, ...fullNameValidation]],
       companyContactLabelId: [null],
       phone: [null, [phoneFaxRegex, Validators.required]],
       email: [null, [Validators.required]],
@@ -254,7 +257,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             'Company Contact successfully created.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -293,7 +295,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             'Company Contact successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -402,7 +403,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
           .subscribe({
             next: () => {
               this.notificationService.success(
-                'Successfuly update label',
+                'Successfuly updated label',
                 'Success'
               );
 

@@ -16,7 +16,9 @@
             label: 'Title',
             isRequired: true,
             textTransform: 'capitalize',
-            autoFocus: editData?.type !== 'edit' ? true : false
+            autoFocus: editData?.type !== 'edit' ? true : false,
+            minLength: 2,
+            maxLength: 64
           }"
         ></app-ta-input>
       </div>
@@ -29,7 +31,7 @@
             name: 'Description',
             type: 'text',
             label: 'Description',
-            minLength: 20,
+            minLength: 2,
             maxLength: 160,
             textTransform: 'capitalize'
           }"
@@ -129,6 +131,7 @@
         [hasCounter]="documents.length ? documents.length : '0'"
         [cardName]="'Documents'"
         [isCardOpen]="documents.length"
+        [animationsDisabled]="false"
       >
         <app-ta-upload-files
           [files]="documents"

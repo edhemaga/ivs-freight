@@ -13,7 +13,7 @@ import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-
 
 import { DriversInactiveState } from '../state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
-import { DriverListResponse } from 'appcoretruckassist';
+import { DriverListResponse, TableConfigResponse } from 'appcoretruckassist';
 
 import {
   Confirmation,
@@ -448,18 +448,29 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getGridColumns(stateName: string, resetColumns: boolean) {
-    const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
-    );
+    /* this.tableService
+      .getTableConfig('DRIVER')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((configResponse: TableConfigResponse) => {
+        const config = JSON.parse(configResponse.config);
+        console.log('Driver Table Config');
+        console.log(JSON.parse(configResponse.config));
 
-    if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
+        if(config){
+          return config;
+        }else{
+          if (stateName === 'applicants') {
+            return getApplicantColumnsDefinition();
+          } else {
+            return getDriverColumnsDefinition();
+          }
+        }
+      }); */
+
+    if (stateName === 'applicants') {
+      return getApplicantColumnsDefinition();
     } else {
-      if (stateName === 'applicants') {
-        return getApplicantColumnsDefinition();
-      } else {
-        return getDriverColumnsDefinition();
-      }
+      return getDriverColumnsDefinition();
     }
   }
 
@@ -823,6 +834,16 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.backFilterQuery.pageIndex = 1;
 
+      /* this.tableService
+        .sendTableConfig({
+          tableType: 'DRIVER',
+          config: JSON.stringify(this.columns),
+        })
+        .subscribe((res: any) => {
+          console.log('sendTableConfig');
+          console.log(res);
+        }); */
+
       this.sendDriverData();
     } else if (event.action === 'view-mode') {
       this.mapingIndex = 0;
@@ -1008,6 +1029,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    /*  this.tableService.sendTableConfig({
+      tableType: 'DRIVER',
+      config: JSON.stringify(this.columns),
+    }); */
+
     this.destroy$.next();
     this.destroy$.complete();
     this.tableService.sendActionAnimation({});

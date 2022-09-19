@@ -203,8 +203,13 @@
     justify-content: flex-start;
     align-items: center;
 
+    &.pointer {
+      cursor: pointer;
+    }
+
     .date-svg {
       position: relative;
+      display: flex;
       margin-right: 6px;
     }
 

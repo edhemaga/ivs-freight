@@ -11,15 +11,17 @@ export interface Confirmation {
     | 'hire'
     | 'activate'
     | 'deactivate'
-    | 'info'; // if type is info => subtype must be: archive | ban list | dnu;
+    | 'info'; // if type is info => subtype must be: archive | ban list | dnu | void;
   id?: number;
   data?: any;
   array?: any[];
-  subType?: 'archive' | 'ban list' | 'dnu'; // if subType set, must set and subTypeStatus
-  subTypeStatus?: 'move' | 'remove'; // example: move -> 'Move to Ban List', remove -> 'Remove from Ban List'
+  subType?: 'archive' | 'ban list' | 'dnu' | 'cdl void'; // if subType set, must set and subTypeStatus (except when subType: cdl void)
+  subTypeStatus?: 'move' | 'remove'; // example: move -> 'Move to Ban List', remove -> 'Remove from Ban List', void -> void
+  cdlStatus?: 'New' | 'Renew' | 'Activate';
   image?: boolean; // has image or not
   svg?: boolean; // has svg or not
   rating?: boolean; // has rating or not
+  modalHeader?: boolean;
 }
 @Component({
   selector: 'app-confirmation-modal',
@@ -34,10 +36,6 @@ export class ConfirmationModalComponent {
     private ngbActiveModal: NgbActiveModal,
     private confirmationDataSubject: ConfirmationService
   ) {}
-
-  ngOnInit() {
-    console.log(this.editData);
-  }
 
   public onModalAction(data: any) {
     // Multiple Delete

@@ -26,7 +26,10 @@ import {
   UpdateShipperCommand,
 } from 'appcoretruckassist';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  phoneFaxRegex,
+  fullNameValidation,
+} from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { HttpResponseBase } from '@angular/common/http';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
@@ -283,7 +286,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     email: any;
   }): FormGroup {
     return this.formBuilder.group({
-      fullName: [data?.fullName ? data.fullName : null, Validators.required],
+      fullName: [
+        data?.fullName ? data.fullName : null,
+        [Validators.required, ...fullNameValidation],
+      ],
       departmentId: [
         data?.departmentId ? data.departmentId : null,
         [Validators.required, ...departmentValidation],
@@ -557,7 +563,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             `Shipper "${shipperBuisnisName}" added`,
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -609,7 +614,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             'Shipper successfully updated.',
             'Error:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Shipper can't be updated.", 'Error:');
@@ -627,10 +631,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             'Shipper successfully deleted.',
             'Error:'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error("Shipper can't be deleted.", 'Error:');

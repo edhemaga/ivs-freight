@@ -50,10 +50,12 @@
       <app-ta-input
         formControlName="jobDescription"
         [inputConfig]="{
-          name: 'Job Description',
+          name: 'Description',
           type: 'text',
           label: 'Job description',
           isRequired: true,
+          minLength: 2,
+          maxLength: 160,
           textTransform: 'capitalize',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
@@ -283,9 +285,9 @@
     <!-- CREATED ANOTHER CLASS OF EQUIPMENT DATA -->
 
     <div
-      class="d-flex flex-column justify-content-center equipment-container"
       *ngIf="classOfEquipmentArray?.length"
       formGroupName="classOfEquipmentCards"
+      class="d-flex flex-column justify-content-center equipment-container"
     >
       <div
         class="d-flex flex-column"
@@ -298,11 +300,12 @@
         <div
           class="d-flex align-items-center title-container"
           *ngIf="
-            (classOfEquipmentArray.length > 1 &&
-              helperIndex !== 0 &&
+            (classOfEquipmentArray.length > 0 &&
+              classOfEquipmentHelperIndex !== 0 &&
               i === 0) ||
-            (helperIndex === 0 && i === 1) ||
-            (i === helperIndex + 1 && selectedClassOfEquipmentIndex > -1)
+            (classOfEquipmentHelperIndex === 0 && i === 1) ||
+            (i === classOfEquipmentHelperIndex + 1 &&
+              selectedClassOfEquipmentIndex > -1)
           "
         >
           <div class="d-flex align-items-center vehicle-title-box">
@@ -324,7 +327,10 @@
             <div class="d-flex align-items-center vehicle-box">
               <svg-icon
                 class="icon"
-                [src]="classOfEquipment.vehicleIconSrc"
+                [src]="
+                  'assets/svg/common/trucks/' +
+                  classOfEquipment.vehicleTypeImageLocation
+                "
               ></svg-icon>
 
               <p class="m-0 ta-font-regular">
@@ -334,7 +340,10 @@
             <div class="d-flex align-items-center trailer-box">
               <svg-icon
                 class="icon"
-                [src]="classOfEquipment.trailerIconSrc"
+                [src]="
+                  'assets/svg/common/trailers/' +
+                  classOfEquipment.trailerTypeImageLocation
+                "
               ></svg-icon>
 
               <p class="m-0 ta-font-regular">
@@ -348,7 +357,7 @@
               }"
             >
               <p class="m-0 ta-font-regular">
-                {{ classOfEquipment.trailerLength }} ft
+                {{ classOfEquipment.trailerLength }}
               </p>
             </div>
 
@@ -479,11 +488,22 @@
             isRequired: true,
             isDropdown: true,
             dropdownWidthClass: 'w-col-251',
+            dropdownImageInput: {
+              withText: true,
+              url: selectedVehicleType?.logoName,
+              template: 'truck',
+              class: selectedVehicleType?.name
+                ?.trim()
+                .replace(' ', '')
+                .toLowerCase()
+            },
+            customClass: 'truck-trailer-dropdown',
             incorrectInput: selectedMode === 'REVIEW_MODE'
           }"
+          [options]="vehicleType"
+          [activeItem]="selectedVehicleType"
           [incorrectValue]="false"
           (incorrectEvent)="incorrectInput($event, 0, 24)"
-          [options]="vehicleType"
           (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
         ></app-ta-input-dropdown>
       </div>
@@ -499,11 +519,29 @@
             isRequired: isTruckSelected,
             isDropdown: true,
             dropdownWidthClass: 'w-col-211',
+            customClass: 'truck-trailer-dropdown',
+            dropdownImageInput: {
+              withText: true,
+              url: selectedTrailerType?.logoName,
+              template: 'trailer',
+              class: selectedTrailerType?.name?.toLowerCase().includes('liquid')
+                ? 'tanker-liquid'
+                : selectedTrailerType?.name?.toLowerCase().includes('rgn')
+                ? 'low-boy-rgn'
+                : selectedTrailerType?.name?.toLowerCase().includes('dry-bulk')
+                ? 'tanker-dry-bulk'
+                : selectedTrailerType?.name
+                    ?.trim()
+                    .replace(' ', '')
+                    .toLowerCase()
+            },
+
             incorrectInput: selectedMode === 'REVIEW_MODE'
           }"
+          [activeItem]="selectedTrailerType"
+          [options]="trailerType"
           [incorrectValue]="false"
           (incorrectEvent)="incorrectInput($event, 1, 24)"
-          [options]="trailerType"
           (selectedItem)="handleInputSelect($event, 'TRAILER-TYPE')"
         ></app-ta-input-dropdown>
       </div>
@@ -520,9 +558,10 @@
             dropdownWidthClass: 'w-col-130',
             incorrectInput: selectedMode === 'REVIEW_MODE'
           }"
+          [options]="trailerLengthType"
+          [activeItem]="selectedTrailerLength"
           [incorrectValue]="false"
           (incorrectEvent)="incorrectInput($event, 2, 24)"
-          [options]="trailerLengthType"
           (selectedItem)="handleInputSelect($event, 'TRAILER-LENGTH')"
         ></app-ta-input-dropdown>
       </div>
@@ -595,7 +634,7 @@
           type="button"
           class="d-flex justify-content-center align-items-center ta-font-bold add-btn save-btn"
           [ngClass]="{
-            disabled: !isWorkExperienceEdited
+            disabled: !isClassOfEquipmentEdited
           }"
           (click)="onSaveEditedClassOfEquipment()"
         >
@@ -656,10 +695,10 @@
           dropdownWidthClass: 'w-col-616',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 25)"
         [options]="reasonsForLeaving"
         [activeItem]="selectedReasonForLeaving"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 25)"
         (selectedItem)="handleInputSelect($event, 'REASON-FOR-LEAVING')"
       ></app-ta-input-dropdown>
     </div>
@@ -737,7 +776,7 @@
       type="button"
       class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
       [ngClass]="{
-        disabled: workExperienceForm.invalid
+        disabled: classOfEquipmentForm.invalid || workExperienceForm.invalid
       }"
       (click)="onAddSecondOrLastEmployer()"
       *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"

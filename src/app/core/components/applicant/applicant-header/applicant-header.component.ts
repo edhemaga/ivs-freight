@@ -8,7 +8,7 @@ import { INavigation } from '../state/model/navigation.model';
   styleUrls: ['./applicant-header.component.scss'],
 })
 export class ApplicantHeaderComponent implements OnInit {
-  public selectedMode = SelectedMode.FEEDBACK;
+  public selectedMode = SelectedMode.APPLICANT;
 
   public menuItems: INavigation[] = [
     {

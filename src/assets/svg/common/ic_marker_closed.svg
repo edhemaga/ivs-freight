@@ -3,24 +3,20 @@
     <filter id="Path_33651" x="0" y="0" width="34" height="37" filterUnits="userSpaceOnUse">
       <feOffset input="SourceAlpha"/>
       <feGaussianBlur stdDeviation="2" result="blur"/>
-      <feFlood flood-opacity="0.4"/>
+      <feFlood flood-opacity="0.149"/>
       <feComposite operator="in" in2="blur"/>
       <feComposite in="SourceGraphic"/>
     </filter>
-    <filter id="f2" x="0" y="0">
-      <feOffset input="SourceAlpha"/>
-      <feGaussianBlur stdDeviation="1" result="blur"/>
-      <feFlood flood-opacity="0.4"/>
-      <feComposite operator="in" in2="blur"/>
-    </filter>
   </defs>
-  <ellipse id="Ellipse_6007" data-name="Ellipse 6007" cx="6" cy="1.5" rx="6" ry="1.5" transform="translate(11 30)" fill="#6c6c6c" filter="url(#f2)"/>
-  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Path_33651)">
-    <path id="Path_33651-2" data-name="Path 33651" d="M22,10.974a10.97,10.97,0,0,1-4.852,9.1c-.024.018-.379.237-.519.329-3.367,2.14-4.718,3.585-5.262,4.4a.441.441,0,0,1-.609.124.457.457,0,0,1-.124-.124c-.544-.811-1.9-2.256-5.262-4.4-.153-.095-.494-.311-.519-.329A10.983,10.983,0,1,1,22,10.974" transform="translate(6 6)" fill="#fff"/>
-  </g>
-  <circle id="Ellipse_6005" data-name="Ellipse 6005" cx="9" cy="9" r="9" transform="translate(8 8)" fill="#ef5350"/>
-  <g id="Cancel" transform="translate(-6288 -12063)">
-    <rect id="Rectangle_62292" data-name="Rectangle 62292" width="12" height="12" transform="translate(6299 12074)" fill="#fff" opacity="0"/>
-    <path id="times" d="M5.689,84.125,8.034,81.78a.737.737,0,0,0,0-1.042l-.521-.521a.737.737,0,0,0-1.043,0L4.125,82.561,1.78,80.216a.737.737,0,0,0-1.043,0l-.521.521a.737.737,0,0,0,0,1.042l2.345,2.345L.216,86.47a.737.737,0,0,0,0,1.042l.521.521a.737.737,0,0,0,1.043,0l2.345-2.345L6.47,88.034a.737.737,0,0,0,1.043,0l.521-.521a.737.737,0,0,0,0-1.042Z" transform="translate(6300.875 11995.875)" fill="#fff"/>
+  <g id="Group_94125" data-name="Group 94125" transform="translate(-630 -2283.999)">
+    <ellipse id="Ellipse_6007" data-name="Ellipse 6007" cx="6" cy="1.5" rx="6" ry="1.5" transform="translate(641 2314)" fill="#6c6c6c" filter="blur(1px)" />
+    <g transform="matrix(1, 0, 0, 1, 630, 2284)" filter="url(#Path_33651)">
+      <path id="Path_33651-2" data-name="Path 33651" d="M22,10.974a10.97,10.97,0,0,1-4.852,9.1c-.024.018-.379.237-.519.329-3.367,2.14-4.718,3.585-5.262,4.4a.441.441,0,0,1-.609.124.457.457,0,0,1-.124-.124c-.544-.811-1.9-2.256-5.262-4.4-.153-.095-.494-.311-.519-.329A10.983,10.983,0,1,1,22,10.974" transform="translate(6 6)" fill="#fff"/>
+    </g>
+    <circle id="Ellipse_6005" data-name="Ellipse 6005" cx="9" cy="9" r="9" transform="translate(638 2292)" fill="#ef5350"/>
+    <g id="Cancel" transform="translate(-5658 -9779)">
+      <rect id="Rectangle_62292" data-name="Rectangle 62292" width="12" height="12" transform="translate(6299 12074)" fill="#fff" opacity="0"/>
+      <path id="times" d="M5.689,84.125,8.034,81.78a.737.737,0,0,0,0-1.042l-.521-.521a.737.737,0,0,0-1.043,0L4.125,82.561,1.78,80.216a.737.737,0,0,0-1.043,0l-.521.521a.737.737,0,0,0,0,1.042l2.345,2.345L.216,86.47a.737.737,0,0,0,0,1.042l.521.521a.737.737,0,0,0,1.043,0l2.345-2.345L6.47,88.034a.737.737,0,0,0,1.043,0l.521-.521a.737.737,0,0,0,0-1.042Z" transform="translate(6300.875 11995.875)" fill="#fff"/>
+    </g>
   </g>
 </svg>

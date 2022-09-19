@@ -2,7 +2,7 @@
   <div class="d-flex line-container">
     <div class="group location-group">
       <app-ta-input-address
-        formControlName="accidentLocation"
+        formControlName="location"
         [inputConfig]="{
           name: 'Address',
           type: 'text',
@@ -23,7 +23,7 @@
     </div>
     <div class="group date-group">
       <app-ta-input
-        formControlName="accidentDate"
+        formControlName="date"
         [inputConfig]="{
           name: 'datepicker',
           type: 'text',
@@ -80,6 +80,7 @@
           }"
           [name]="'Fatalities #'"
           [elementOrder]="1"
+          [minimum]="0"
           [type]="'applicant'"
           [selectedMode]="selectedMode"
         ></app-ta-input-arrows>
@@ -97,8 +98,9 @@
             hideErrorMessage: true,
             textAlign: 'center'
           }"
-          [name]="'Inj. #'"
+          [name]="'Injuries #'"
           [elementOrder]="2"
+          [minimum]="0"
           [type]="'applicant'"
           [selectedMode]="selectedMode"
         ></app-ta-input-arrows>
@@ -148,22 +150,33 @@
           isRequired: true,
           isDropdown: true,
           dropdownWidthClass: 'w-col-applicant-t-type',
+          dropdownImageInput: {
+            withText: true,
+            url: selectedVehicleType?.logoName,
+            template: 'truck',
+            class: selectedVehicleType?.name
+              ?.trim()
+              .replace(' ', '')
+              .toLowerCase()
+          },
+          customClass: 'truck-trailer-dropdown',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [activeItem]="selectedVehicleType"
+        [options]="vehicleType"
         [incorrectValue]="false"
         (incorrectEvent)="incorrectInput($event, 0, 11)"
-        [options]="vehicleType"
         (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
       ></app-ta-input-dropdown>
     </div>
     <div class="group description-group">
       <app-ta-input
-        formControlName="accidentDescription"
+        formControlName="description"
         [inputConfig]="{
           name: 'Description',
           type: 'text',
           label: 'Description',
-          minLength: 20,
+          minLength: 2,
           maxLength: 160,
           textTransform: 'capitalize',
           isRequired: true,
