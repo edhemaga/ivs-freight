@@ -187,14 +187,13 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     private DetailsDataService: DetailsDataService,
   ) {
     super(toastrService, toastPackage);
-    this.httpRequest = this.toastPackage.config.payload.httpRequest;
-    this.next = this.toastPackage.config.payload.next;
+    this.httpRequest = this.toastPackage.config.payload ? this.toastPackage.config.payload?.httpRequest : '';
+    this.next =  this.toastPackage.config.payload ? this.toastPackage.config.payload.next : '';
     this.toastrType = this.toastPackage.toastType;
   }
 
   ngOnInit(): void {
     this.createTitleBasedOnHttpRequest();
-
 
     this.DetailsDataService.leftSideMenuChanges
       .pipe(takeUntil(this.destroy$))
