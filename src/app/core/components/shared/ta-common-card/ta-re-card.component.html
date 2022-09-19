@@ -6,7 +6,7 @@
     [tooltipBackground]="isCardOpen ? 'rgba(0,0,0,0)' : '#6C6C6C'"
     class="tooltipClose"
   >
-    <div class="name-dots disable-selection"  
+    <div class="name-dots disable-selection"
     [ngStyle]="{'padding':paddingDots}"
     >
       <div class="text-icon-common" (click)="toggleCard($event)" [ngClass]="{ copied: copiedCommon }">
@@ -17,7 +17,7 @@
             position="top"
             tooltipBackground="#6C6C6C"
             class="tooltipShortName"
-           
+
           >
             <div
               *ngIf="shortName"
@@ -52,8 +52,8 @@
               [ngClass]="{ 'card-close-title': !isCardOpen }"
               class="open-name"
               *ngIf="!isCardOpen && expDateClose || testDate"
-              ><span *ngIf="!isDeactivated && !testDate">Expired on {{ expDateClose }}</span> <span *ngIf="isDeactivated && !testDate">Voided on {{ voidedDate }}</span> 
-              <span *ngIf="testDate && !isCardOpen">{{testDate}}</span> 
+              ><span *ngIf="!isDeactivated && !testDate">Expired on {{ expDateClose }}</span> <span *ngIf="isDeactivated && !testDate">Voided on {{ voidedDate }}</span>
+              <span *ngIf="testDate && !isCardOpen">{{testDate}}</span>
             </span>
             <span *ngIf="cardSecondName" class="second-name"> {{cardSecondName}}</span>
           </span>
@@ -128,7 +128,7 @@
       </p>
     </div>
     <div
-      (click)="resizePageFun($event)"
+      (click)="resizePageFun()"
       [ngClass]="{ 'rotate-common': resPage }"
       class="resize-icon"
     >

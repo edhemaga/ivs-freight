@@ -26,14 +26,13 @@ import {
   usernameValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { NotificationService } from '../../../services/notification/notification.service';
-import { FormService } from '../../../services/form/form.service';
 
 @Component({
   selector: 'app-account-modal',
   templateUrl: './account-modal.component.html',
   styleUrls: ['./account-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, FormService],
+  providers: [ModalService],
 })
 export class AccountModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -54,8 +53,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private notificationService: NotificationService,
     private modalService: ModalService,
-    private accountService: AccountTService,
-    private formService: FormService
+    private accountService: AccountTService
   ) {}
 
   ngOnInit() {
@@ -89,14 +87,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       'url',
       this.destroy$
     );
-
-    // this.formService.checkFormChange(this.accountForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -179,7 +169,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
           });
           this.selectedAccountLabel = res.companyAccountLabel;
         },
-        error: (err) => {
+        error: () => {
           this.notificationService.error("Can't get account.", 'Error:');
         },
       });

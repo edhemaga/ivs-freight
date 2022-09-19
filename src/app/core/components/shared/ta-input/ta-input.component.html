@@ -387,7 +387,7 @@
       [fill]="
         inputConfig.dropdownLabel || selectedDropdownLabelColor
           ? selectedDropdownLabelColor?.code
-            ? selectedDropdownLabelColor.code
+            ? selectedDropdownLabelColor.code.toString()
             : '#b7b7b7'
           : null
       "
@@ -566,7 +566,7 @@
       #span1
       class="main"
       tabindex="0"
-      (focus)="onFocus($event)"
+      (focus)="onFocus()"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur($event)"
@@ -581,7 +581,7 @@
       #span2
       class="main"
       tabindex="1"
-      (focus)="onFocus($event)"
+      (focus)="onFocus()"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur($event)"
@@ -596,7 +596,7 @@
       #span3
       class="main"
       tabindex="2"
-      (focus)="onFocus($event)"
+      (focus)="onFocus()"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur($event)"

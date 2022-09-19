@@ -1,4 +1,4 @@
-import { CreateTodoCommand } from './../../../../../../appcoretruckassist/model/createTodoCommand';
+import { CreateTodoCommand } from '../../../../../../appcoretruckassist';
 import { Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -16,7 +16,6 @@ import {
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
 import { TodoTService } from '../../to-do/state/todo.service';
-import { AuthQuery } from '../../authentication/state/auth.query';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
 import {
   departmentValidation,
@@ -25,7 +24,6 @@ import {
   urlValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../services/form/form.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { CommentsService } from '../../../services/comments/comments.service';
 import {
@@ -37,7 +35,7 @@ import {
   selector: 'app-task-modal',
   templateUrl: './task-modal.component.html',
   styleUrls: ['./task-modal.component.scss'],
-  providers: [ModalService, FormService],
+  providers: [ModalService],
 })
 export class TaskModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -69,8 +67,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     private todoService: TodoTService,
     private commentsService: CommentsService,
     private notificationService: NotificationService,
-    private authQuery: AuthQuery,
-    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -103,14 +99,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       'url',
       this.destroy$
     );
-
-    // this.formService.checkFormChange(this.taskForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -164,7 +152,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public createComment(event: { check: boolean; action: string }) {
+  public createComment() {
     if (this.comments.some((item) => item.isNewReview)) {
       return;
     }

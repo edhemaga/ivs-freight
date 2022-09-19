@@ -1,9 +1,9 @@
 <app-ta-input-dropdown
-  [formControl]="getSuperControl"
+  [formControl]="getSuperControl | formControl"
   [inputConfig]="inputConfig"
   [template]="'labels'"
   [options]="switchMode === 'Label' ? options : colors"
-  [canAddNew]="switchMode === 'Label' ? true : false"
+  [canAddNew]="switchMode === 'Label'"
   [activeItem]="selectedLabel"
   [activeItemColor]="selectedLabelColor"
   [labelMode]="switchMode"

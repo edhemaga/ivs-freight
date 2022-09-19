@@ -10,15 +10,13 @@ import { DriversActiveState, DriversActiveStore } from './driver-active.store';
   providedIn: 'root',
 })
 export class DriverActiveResolver implements Resolve<DriversActiveState> {
-  pageIndex: number = 1;
-  pageSize: number = 25;
-
   constructor(
     private driverService: DriverTService,
     private driversStore: DriversActiveStore
   ) {}
   resolve(): Observable<DriversActiveState | boolean> {
-    return this.driverService.getDrivers(1, this.pageIndex, this.pageSize).pipe(
+    console.log('Poziva se DriverActiveResolver ')
+    return this.driverService.getDrivers(1, undefined, undefined, undefined, 1, 25).pipe(
       catchError(() => {
         return of('No drivers data...');
       }),
@@ -30,6 +28,8 @@ export class DriverActiveResolver implements Resolve<DriversActiveState> {
             inactive: driverPagination.inactiveCount,
           })
         );
+
+        console.log(driverPagination)
 
         this.driversStore.set(driverPagination.pagination.data);
       })

@@ -20,7 +20,6 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
     './fuel-table.component.scss',
     '../../../../../assets/scss/maps.scss',
   ],
-  encapsulation: ViewEncapsulation.None,
   providers: [TaThousandSeparatorPipe],
 })
 export class FuelTableComponent implements OnInit, OnDestroy {

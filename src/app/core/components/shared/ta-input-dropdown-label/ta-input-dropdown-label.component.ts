@@ -31,7 +31,7 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
   @Output() saveLabel: EventEmitter<{ data: any; action: string }> =
     new EventEmitter<{ data: string; action: string }>();
 
-  public switchMode: string = 'Label';
+  public switchMode: 'Label' | 'Color' = 'Label';
 
   constructor(@Self() public superControl: NgControl) {
     this.superControl.valueAccessor = this;
@@ -61,7 +61,7 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
   /**
    * Select label mode
    */
-  public onSelectLabelMode(event: string) {
+  public onSelectLabelMode(event: 'Label' | 'Color') {
     this.switchMode = event;
   }
 
