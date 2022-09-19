@@ -370,13 +370,16 @@
                   <div class="list-text" *ngIf="item.description">
                     {{ item.description }}
                   </div>
-                  <div class="link" [class.closed]="!item.linkActive">
+                  <div
+                    class="link"
+                    [@showHideCardBody]="item.linkActive ? 'true' : 'false'"
+                  >
                     {{ item.url }}
                   </div>
                 </div>
                 <div
                   class="comment_main_holder"
-                  [class.closed]="!item.commentActive"
+                  [@showHideCardBody]="item.commentActive ? 'true' : 'false'"
                 >
                   <div class="comment-holder">
                     <div

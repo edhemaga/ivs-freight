@@ -509,17 +509,6 @@
         padding: 0px 4px;
         box-sizing: border-box;
 
-        transition: all 0.3s ease-in-out;
-        opacity: 1;
-        max-height: 30px;
-
-        &.closed {
-          max-height: 0px;
-          overflow: hidden;
-          opacity: 0;
-          margin: 0;
-        }
-
         &:hover {
           cursor: pointer;
           color: #3551b7;
@@ -527,17 +516,8 @@
       }
 
       .comment_main_holder {
-        transition: all 0.3s ease-in-out;
-        opacity: 1;
-        max-height: 1000px;
         width: 100%;
         cursor: default;
-
-        &.closed {
-          max-height: 0px;
-          overflow: hidden;
-          opacity: 0;
-        }
         .comment-holder {
           width: 100%;
           flex: 1;

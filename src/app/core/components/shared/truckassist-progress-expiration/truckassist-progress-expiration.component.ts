@@ -115,9 +115,7 @@ export class TruckassistProgressExpirationComponent implements OnInit {
     this.progressbarColor = this.setProgressbarColor();
     this.calculatedProgress = this.calculateProgress();
 
-    if ( this.expiresSettings == 'todo-list' ) {
-      this.progressBarLength = this.setProgressbarColorToDo();
-    }
+    this.progressBarLength = this.setProgressbarColorToDo();
 
     this.progresDay = new Intl.NumberFormat('en-us', {minimumFractionDigits: 0}).format(this.expire);
   }
@@ -135,7 +133,6 @@ export class TruckassistProgressExpirationComponent implements OnInit {
           var daysProgress = this.totalDays !== undefined
           ? (1 / this.totalDays) * 100
           : (1 / 365) * 100;
-          console.log('daysProgress', daysProgress);
 
           return daysProgress / (24 / this.timeDifference);
         } else {
