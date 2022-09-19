@@ -22,6 +22,7 @@ import {
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 @Component({
   selector: 'app-to-do-list-card',
@@ -170,7 +171,8 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     private todoQuery: TodoQuery,
     private notificationService: NotificationService,
     private confirmationService: ConfirmationService,
-    private imageBase64Service: ImageBase64Service
+    private imageBase64Service: ImageBase64Service,
+    private DetailsDataService: DetailsDataService,
   ) {}
 
   ngOnInit(): void {
@@ -373,7 +375,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
   toggleComment(e: Event, mainIndx: number, indx: number) {
     e.preventDefault();
     e.stopPropagation();
-
+    this.DetailsDataService.setNewData(this.scene.children[mainIndx].children[indx]);
     this.scene.children[mainIndx].children[indx]['commentActive'] =
       !this.scene.children[mainIndx].children[indx]['commentActive'];
   }
