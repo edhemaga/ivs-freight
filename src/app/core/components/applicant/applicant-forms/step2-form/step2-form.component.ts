@@ -23,6 +23,7 @@ import {
 import {
   addressValidation,
   phoneFaxRegex,
+  addressUnitValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -37,7 +38,6 @@ import {
   WorkHistoryModel,
 } from '../../state/model/work-history.model';
 import { AddressEntity } from './../../../../../../../appcoretruckassist/model/addressEntity';
-import { addressUnitValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 import {
   EnumValue,
   TrailerLengthResponse,
