@@ -220,6 +220,15 @@
                     line-height: 18px;
                     color: $bw5;
                     padding-left: 4px;
+
+                    &.search-results-text {
+                        color: #536BC2;
+                        font-weight: 400;
+                    }
+
+                    div {
+                        display: inline-block;
+                    }
                 }
 
                 .map-list-sort {

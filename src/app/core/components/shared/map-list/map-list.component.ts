@@ -8,11 +8,16 @@ import {
   OnChanges,
   SimpleChanges,
   OnDestroy,
+  ElementRef,
+  ContentChildren,
+  QueryList,
+  SecurityContext
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MapsService } from '../../../services/shared/maps.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { Subject, takeUntil } from 'rxjs';
+import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-map-list',
@@ -30,6 +35,7 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
   @Output() changeSortDirection: EventEmitter<any> = new EventEmitter<any>();
   @Output() searchData: EventEmitter<any> = new EventEmitter<any>();
   @Output() headActions: EventEmitter<any> = new EventEmitter();
+  @ContentChildren('listCard') listCards!: QueryList<any>;
   public mapListExpanded: boolean = true;
   public searchForm!: FormGroup;
   public sortDirection: string = 'asc';
@@ -47,12 +53,21 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
     private formBuilder: FormBuilder,
     private ref: ChangeDetectorRef,
     private mapsService: MapsService,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private sanitizer: DomSanitizer,
+    private elementRef: ElementRef
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.mapListContent) {
       this.checkResizeButton();
+
+      //console.log('changes.mapListContent');
+      // if ( this.searchForm?.get('search').value ) {
+      //   setTimeout(() => {
+      //     this.highlightSearchedText();
+      //   }, 100);
+      // }
     }
   }
 
@@ -264,7 +279,7 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onSearch() {
-    if (this.searchText.length >= 3) {
+    if (this.searchText?.length >= 3) {
       this.searchIsActive = true;
 
       this.tableService.sendCurrentSearchTableData({
@@ -272,6 +287,10 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
         search: this.searchText,
         searchType: 'tabel',
       });
+
+      setTimeout(() => {
+        this.highlightSearchedText();
+      }, 100);
     } else if (this.searchIsActive && this.searchText.length < 3) {
       this.searchIsActive = false;
 
@@ -282,6 +301,30 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
         searchType: 'tabel',
       });
     }
+  }
+
+  highlightSearchedText() {
+    document.querySelectorAll<HTMLElement>('.map-list-card-container .title-text')
+      .forEach((title: HTMLElement, i) => {
+        var text = title.textContent;
+        console.log('title textContent', title.textContent);
+
+        const regex = new RegExp(
+          this.searchText,
+          "gi"
+        );
+        const newText = text.replace(regex, (match: string) => {
+          return `<mark class='highlighted-text'>${match}</mark>`;
+        });
+        const sanitzed = this.sanitizer.sanitize(
+          SecurityContext.HTML,
+          newText
+        );
+
+        console.log('sanitzed text', sanitzed);
+
+        title.innerHTML = sanitzed;
+      });
   }
 
   ngOnDestroy(): void {

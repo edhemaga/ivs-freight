@@ -13,7 +13,10 @@
         }"
       ></app-ta-input>
       <div class="map-list-sort-container">
-        <div class="map-list-sort-text">Sort by</div>
+
+        <div class="map-list-sort-text" *ngIf="searchForm?.get('search').value?.length < 3">Sort by</div>
+        <div class="map-list-sort-text search-results-text" *ngIf="searchForm?.get('search').value?.length >= 3"><div class="marker-bold-text">{{ mapListContent.length }}</div> results</div>
+
         <div class="map-list-sort">
           <div
             class="map-list-sort-category-container"
