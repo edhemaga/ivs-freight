@@ -1,5 +1,5 @@
-import { RepairOrderModalComponent } from './../modals/repair-modals/repair-order-modal/repair-order-modal.component';
-import { AccidentModalComponent } from './../safety/accident/accident-modal/accident-modal.component';
+import { RepairOrderModalComponent } from '../modals/repair-modals/repair-order-modal/repair-order-modal.component';
+import { AccidentModalComponent } from '../safety/accident/accident-modal/accident-modal.component';
 import { RouterModule } from '@angular/router';
 import { TaModalComponent } from './ta-modal/ta-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
@@ -33,7 +33,7 @@ import { TaLogoChangeComponent } from './ta-logo-change/ta-logo-change.component
 
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
-import { TaInputComponent } from '../../components/shared/ta-input/ta-input.component';
+import { TaInputComponent } from './ta-input/ta-input.component';
 import { AccountModalComponent } from '../modals/account-modal/account-modal.component';
 import { TaInputNoteComponent } from './ta-input-note/ta-input-note.component';
 import { TaInputDropdownComponent } from './ta-input-dropdown/ta-input-dropdown.component';
@@ -106,6 +106,7 @@ import { AutoclosePopoverComponent } from './autoclose-popover/autoclose-popover
 import { ApplicantModalComponent } from '../modals/applicant-modal/applicant-modal.component';
 import { TtTitleModalComponent } from '../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 import { ConfirmationModalComponent } from '../modals/confirmation-modal/confirmation-modal.component';
+import { CustomToastMessagesComponent } from './custom-toast-messages/custom-toast-messages.component'; 
 import { SvgDefinitionsComponent } from '../../../svg-definitions/svg-definitions.component';
 
 export function playerFactory() {
@@ -195,8 +196,10 @@ export function playerFactory() {
     ProgressInvoicesComponent,
     TaUploadFilesComponent,
     TaCopyComponent,
-    MapToolbarComponent,
     AutoclosePopoverComponent,
+    CustomToastMessagesComponent,
+    MapToolbarComponent,
+    AutoclosePopoverComponent
   ],
   imports: [
     CommonModule,

@@ -16,9 +16,10 @@
             type: 'text',
             label: 'Full Name',
             isRequired: true,
-            maxLength: 23,
+            minLength: 2,
+            maxLength: 32,
             textTransform: 'capitalize',
-            autoFocus: editData?.type !== 'edit' ? true : false
+            autoFocus: editData?.type !== 'edit'
           }"
         ></app-ta-input>
       </div>

@@ -11,6 +11,7 @@ import { NotificationService } from '../../../services/notification/notification
 
 import { SetNewPasswordCommand } from 'appcoretruckassist/model/setNewPasswordCommand';
 import { Subject, takeUntil } from 'rxjs';
+import { passwordValidation } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-create-new-password-page',
@@ -42,8 +43,8 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.createNewPasswordForm = this.formBuilder.group({
-      newPassword: [null, Validators.required],
-      confirmNewPassword: [null, Validators.required],
+      newPassword: [null, [Validators.required, ...passwordValidation]],
+      confirmNewPassword: [null, [Validators.required, ...passwordValidation]],
     });
   }
 

@@ -242,7 +242,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     this.documents = event.files;
   }
 
-  public createComment(event: { check: boolean; action: string }) {
+  public createComment() {
     if (this.comments.some((item) => item.isNewReview)) {
       return;
     }

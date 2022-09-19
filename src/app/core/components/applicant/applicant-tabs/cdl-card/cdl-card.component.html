@@ -197,5 +197,7 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [lastPage]="true"
+    [filledCorrectly]="cdlCardForm.valid"
+    (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

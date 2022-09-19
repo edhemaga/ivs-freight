@@ -9,6 +9,7 @@ import {
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 @Component({
   selector: 'app-details-page-dropdown',
@@ -29,7 +30,9 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
   tooltip: any;
   dropDownActive: number = -1;
 
-  constructor() {}
+  constructor(
+    private DetailsDataService: DetailsDataService,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.options?.currentValue) {
@@ -50,6 +53,9 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
       tooltip.close();
     } else {
       tooltip.open({ data: this.dropContent });
+      if ( this.data ){
+        this.DetailsDataService.setNewData(this.data);
+      }
     }
 
     this.dropDownActive = tooltip.isOpen() ? this.id : -1;

@@ -1,6 +1,5 @@
 import {
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -122,8 +121,7 @@ export class Step3FormComponent
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private formService: FormService,
-    private applicantListsService: ApplicantListsService,
-    private cdref: ChangeDetectorRef
+    private applicantListsService: ApplicantListsService
   ) {}
 
   ngOnInit(): void {
@@ -137,11 +135,14 @@ export class Step3FormComponent
       this.subscription = this.licenseForm.valueChanges
         .pipe(takeUntil(this.destroy$))
         .subscribe((updatedFormValues) => {
-          const { endorsments, isEditingLicense, ...previousFormValues } =
+          const { isEditingLicense, ...previousFormValues } =
             this.formValuesToPatch;
 
           const {
-            endorsments: asd,
+            restrictions,
+            endorsments,
+            restrictionsSubscription,
+            endorsmentsSubscription,
             firstRowReview,
             secondRowReview,
             thirdRowReview,
@@ -152,25 +153,21 @@ export class Step3FormComponent
           previousFormValues.licenseNumber =
             previousFormValues.licenseNumber.toUpperCase();
 
-          if (newFormValues.licenseNumber) {
-            newFormValues.licenseNumber =
-              newFormValues.licenseNumber.toUpperCase();
-          }
+          newFormValues.licenseNumber =
+            newFormValues.licenseNumber?.toUpperCase();
 
           previousFormValues.restrictions = JSON.stringify(
             previousFormValues.restrictions.map((item) => item.id)
           );
           newFormValues.restrictions = JSON.stringify(
-            this.selectedRestrictions.map((item) => item.id)
+            restrictionsSubscription?.map((item) => item.id)
           );
 
-          /* newFormValues.endorsments = this.selectedEndorsments; */
-
-          console.log('prev', previousFormValues);
-          console.log('new', newFormValues);
-          console.log(
-            'restrictions',
-            this.licenseForm.get('restrictions').value
+          previousFormValues.endorsments = JSON.stringify(
+            previousFormValues.endorsments.map((item) => item.id)
+          );
+          newFormValues.endorsments = JSON.stringify(
+            endorsmentsSubscription?.map((item) => item.id)
           );
 
           if (isFormValueEqual(previousFormValues, newFormValues)) {
@@ -216,6 +213,8 @@ export class Step3FormComponent
       expDate: [null, Validators.required],
       restrictions: [null],
       endorsments: [null],
+      restrictionsSubscription: [null],
+      endorsmentsSubscription: [null],
 
       firstRowReview: [null],
       secondRowReview: [null],
@@ -298,19 +297,15 @@ export class Step3FormComponent
         this.selectedRestrictions = event;
 
         this.licenseForm
-          .get('restrictions')
+          .get('restrictionsSubscription')
           .patchValue(this.selectedRestrictions);
-
-        /*    this.cdref.detectChanges(); */
-
-        console.log('inputchangerestrictions', this.selectedRestrictions);
 
         break;
       case InputSwitchActions.ENDORSMENTS:
         this.selectedEndorsments = event;
 
         this.licenseForm
-          .get('endorsments')
+          .get('endorsmentsSubscription')
           .patchValue(this.selectedEndorsments);
 
         break;
@@ -329,6 +324,8 @@ export class Step3FormComponent
     const {
       restrictions,
       endorsments,
+      restrictionsSubscription,
+      endorsmentsSubscription,
       firstRowReview,
       secondRowReview,
       thirdRowReview,
@@ -379,6 +376,8 @@ export class Step3FormComponent
     const {
       restrictions,
       endorsments,
+      restrictionsSubscription,
+      endorsmentsSubscription,
       firstRowReview,
       secondRowReview,
       thirdRowReview,

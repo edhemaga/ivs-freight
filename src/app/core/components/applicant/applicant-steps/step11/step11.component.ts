@@ -9,7 +9,7 @@ import { ApplicantActionsService } from '../../state/services/applicant-actions.
 
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { UpdateAuthorizationCommand } from 'appcoretruckassist/model/models';
+import { CreateAuthorizationCommand } from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step11',
@@ -121,7 +121,7 @@ export class Step11Component implements OnInit, OnDestroy {
 
     const authorizationForm = this.authorizationForm.value;
 
-    const saveData: UpdateAuthorizationCommand = {
+    const saveData: CreateAuthorizationCommand = {
       ...authorizationForm,
       applicantId: this.applicantId,
       signature: this.signature,

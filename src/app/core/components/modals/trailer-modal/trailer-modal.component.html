@@ -28,7 +28,7 @@
                 textTransform: 'uppercase',
                 minLength: 1,
                 maxLength: 8,
-                autoFocus: editData?.type !== 'edit' ? true : false
+                autoFocus: editData?.type !== 'edit'
               }"
             ></app-ta-input>
           </div>
@@ -341,7 +341,7 @@
               }"
               [options]="tireSize"
               [activeItem]="selectedTireSize"
-              (selectedItem)="onSelectTireSize($event)"
+              (selectedItem)="onSelectDropdown($event, 'tire-size')"
             ></app-ta-input-dropdown>
           </div>
           <div
@@ -363,7 +363,7 @@
               }"
               [options]="doorType"
               [activeItem]="selectedDoorType"
-              (selectedItem)="onSelectDoorType($event)"
+              (selectedItem)="onSelectDropdown($event, 'door-type')"
             ></app-ta-input-dropdown>
           </div>
           <div

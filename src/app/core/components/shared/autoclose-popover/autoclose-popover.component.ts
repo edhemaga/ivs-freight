@@ -34,7 +34,12 @@ export class AutoclosePopoverComponent implements OnInit {
     if (
       this.eRef.nativeElement.contains(event.target) ||
       event.target.closest('.datetime-dropdown-holder') ||
-      event.target.closest('.popover')
+      event.target.closest('.popover') ||
+      event.target.closest('.selected-name-text') ||
+      event.target.closest('.icon-delete') ||
+      event.target.closest('.clear-money-form') ||
+      event.target.closest('.user-frame')
+      
     ) {
     } else {
       this.tooltip && this.tooltip.close();

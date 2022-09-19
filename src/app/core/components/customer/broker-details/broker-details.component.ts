@@ -6,6 +6,7 @@ import { Subject, takeUntil, take } from 'rxjs';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
@@ -41,7 +42,8 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     private tableService: TruckassistTableService,
     private confirmationService: ConfirmationService,
     private brokerMinimalStore: BrokerMinimalListStore,
-    private bdlq: BrokerDetailsListQuery
+    private bdlq: BrokerDetailsListQuery,
+    private DetailsDataService: DetailsDataService
   ) {}
 
   ngOnInit(): void {
@@ -146,7 +148,8 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     this.initTableOptions(data);
     this.getBrokerById(data.id);
     let totalCost;
-    if (data?.loads?.length) {
+    this.DetailsDataService.setNewData(data);
+    if (data.loads.length) {
       totalCost = this.sumArr.transform(
         data?.loads.map((item) => {
           return {

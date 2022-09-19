@@ -9,18 +9,20 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UpdateContactEmailCommand } from './updateContactEmailCommand';
+import { UpdateContactPhoneCommand } from './updateContactPhoneCommand';
 import { AddressEntity } from './addressEntity';
 
 
 export interface UpdateCompanyContactCommand { 
     id?: number;
     name?: string | null;
-    phone?: string | null;
-    email?: string | null;
     address?: AddressEntity;
     note?: string | null;
     shared?: boolean;
     avatar?: string | null;
     companyContactLabelId?: number | null;
+    contactPhones?: Array<UpdateContactPhoneCommand> | null;
+    contactEmails?: Array<UpdateContactEmailCommand> | null;
 }
 

@@ -17,6 +17,7 @@ import {
   einNumberRegex,
   firstNameValidation,
   lastNameValidation,
+  passwordValidation,
   phoneFaxRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
@@ -60,8 +61,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
       addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneFaxRegex]],
       email: [null, [Validators.required]],
-      password: [null, Validators.required],
-      confirmPassword: [null, Validators.required],
+      password: [null, [Validators.required, ...passwordValidation]],
+      confirmPassword: [null, [Validators.required, ...passwordValidation]],
     });
 
     this.inputService.customInputValidator(

@@ -30,6 +30,7 @@ import {
   routingBankValidation,
   fuelCardValidation,
   name2_24Validation,
+  nicknameValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
@@ -101,17 +102,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public payrollCompany: any;
 
   public loadingOwnerEin: boolean = false;
-
-  public logoOptions: Options = {
-    floor: 0.1,
-    ceil: 1.5,
-    step: 0.1,
-    animate: false,
-    showSelectionBar: true,
-    hideLimitLabels: true,
-  };
-
-  public slideInit = 0.5;
 
   public tabs: any[] = [
     {
@@ -325,13 +315,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
-    // this.formService.checkFormChange(this.driverForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public get offDutyLocations(): FormArray {
@@ -353,7 +336,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }): FormGroup {
     return this.formBuilder.group({
       id: [data?.id ? data.id : 0],
-      nickname: [data?.nickname ? data.nickname : null],
+      nickname: [data?.nickname ? data.nickname : null, nicknameValidation],
       address: [data?.address ? data.address : null, [...addressValidation]],
       city: [data?.city ? data.city : null],
       state: [data?.state ? data.state : null],
@@ -429,7 +412,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           };
           this.labelsBank = [...this.labelsBank, this.selectedBank];
         },
-        error: (err) => {
+        error: () => {
           this.notificationService.error("Can't add new bank", 'Error');
         },
       });
@@ -997,7 +980,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
           this.handlingPayrollFleetType(this.fleetType, true);
         },
-        error: (err) => {
+        error: () => {
           this.notificationService.error(
             "Driver's dropdowns can't be loaded.",
             'Error:'
@@ -1581,7 +1564,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             commissionTeam: res.commissionTeam,
             ownerId: res.owner ? res.owner.id : null,
             useTruckAssistAch: res.useTruckAssistAch,
-            isOwner: res.owner ? true : false,
+            isOwner: !!res.owner,
             ownerType: res.owner
               ? res.owner?.ownerType?.name
                 ? res.owner?.ownerType?.name.includes('Proprietor')
@@ -1653,15 +1636,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
           this.onHandleAddress({
             address: res.address,
-            valid: res.address ? true : false,
+            valid: !!res.address,
           });
 
           this.modalService.changeModalStatus({
             name: 'deactivate',
-            status: res.status === 1 ? false : true,
+            status: res.status !== 1,
           });
 
-          this.driverStatus = res.status === 1 ? false : true;
+          this.driverStatus = res.status !== 1;
 
           this.fleetType = res.fleetType.name;
 

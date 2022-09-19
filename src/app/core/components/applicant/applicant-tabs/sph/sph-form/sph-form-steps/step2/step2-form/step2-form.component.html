@@ -44,7 +44,7 @@
           name: 'Description',
           type: 'text',
           label: 'Description',
-          minLength: 20,
+          minLength: 2,
           maxLength: 160,
           textTransform: 'capitalize',
           isRequired: true
@@ -86,8 +86,10 @@
             hideErrorMessage: true,
             textAlign: 'center'
           }"
-          [name]="'Inj. #'"
+          [name]="'Injuries #'"
           [type]="'applicant'"
+          [elementOrder]="0"
+          [minimum]="0"
         ></app-ta-input-arrows>
       </div>
       <div class="d-flex align-items-center fatalities-group">
@@ -104,6 +106,8 @@
           }"
           [name]="'Fatalities #'"
           [type]="'applicant'"
+          [elementOrder]="1"
+          [minimum]="0"
         ></app-ta-input-arrows>
       </div>
     </div>

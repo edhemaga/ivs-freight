@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   Component,
+  OnDestroy,
   OnInit,
   QueryList,
   ViewChildren,
@@ -8,38 +9,44 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { Subject, takeUntil } from 'rxjs';
+
+import { ApplicantListsService } from 'src/app/core/components/applicant/state/services/applicant-lists.service';
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
+
 import { ApplicantQuestion } from 'src/app/core/components/applicant/state/model/applicant-question.model';
-import { TrailerType } from 'src/app/core/components/applicant/state/model/trailer-type.model';
-import { VehicleType } from 'src/app/core/components/applicant/state/model/vehicle-type.model';
 import { InputSwitchActions } from 'src/app/core/components/applicant/state/enum/input-switch-actions.enum';
-import { ReasonForLeaving } from 'src/app/core/components/applicant/state/model/reason-for-leaving.model';
 import { SphFormAccidentModel } from './../../../../../state/model/accident.model';
+import {
+  EnumValue,
+  TrailerTypeResponse,
+  TruckTypeResponse,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step2',
   templateUrl: './step2.component.html',
   styleUrls: ['./step2.component.scss'],
 })
-export class Step2Component implements OnInit, AfterViewInit {
+export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
   @ViewChildren('cmp') components: QueryList<any>;
+
+  private destroy$ = new Subject<void>();
 
   public accidentHistoryForm: FormGroup;
 
-  public accidentArray: SphFormAccidentModel[] = [
-    {
-      accidentDate: '01/01/01',
-      accidentLocation: 'Chicago, IL, USA',
-      accidentState: 'IL',
-      accidentDescription: 'ASD',
-      hazmatSpill: 'YES',
-      fatalities: 1,
-      injuries: 2,
-      isEditingAccident: false,
-    },
-  ];
+  public formStatus: string = 'INVALID';
+  public markFormInvalid: boolean;
 
-  public vehicleType: VehicleType[] = [];
-  public trailerType: TrailerType[] = [];
+  public accidentArray: SphFormAccidentModel[] = [];
+
+  public lastAccidentCard: any;
+
+  public vehicleType: TruckTypeResponse[] = [];
+  public trailerType: TrailerTypeResponse[] = [];
+
+  public reasonsForLeaving: EnumValue[] = [];
 
   public selectedVehicleType: any = null;
   public selectedTrailerType: any = null;
@@ -127,19 +134,18 @@ export class Step2Component implements OnInit, AfterViewInit {
     },
   ];
 
-  public reasonsForLeaving: ReasonForLeaving[] = [
-    { id: 1, name: 'Better opportunity' },
-    { id: 2, name: 'Illness' },
-    { id: 3, name: 'Company went out of business' },
-    { id: 4, name: 'Fired or terminated' },
-    { id: 5, name: 'Family obligations' },
-    { id: 6, name: 'Other' },
-  ];
-
-  constructor(private formBuilder: FormBuilder, private router: Router) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private inputService: TaInputService,
+    private applicantListsService: ApplicantListsService,
+    private applicantActionsService: ApplicantActionsService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
+
+    this.getDropdownLists();
   }
 
   ngAfterViewInit(): void {
@@ -153,11 +159,13 @@ export class Step2Component implements OnInit, AfterViewInit {
   private createForm(): void {
     this.accidentHistoryForm = this.formBuilder.group({
       applicantWorkForCompany: [null, Validators.required],
-      applicantWorkForCompanyBeforeExplain: [null, Validators.required],
-      applicantWorkForCompanyToExplain: [null, Validators.required],
+      applicantWorkForCompanyExplain: [null],
+      applicantWorkForCompanyBeforeExplain: [null],
+      applicantWorkForCompanyToExplain: [null],
       motorVehicleForCompany: [null, Validators.required],
-      vehicleType: [null, Validators.required],
-      trailerType: [null, Validators.required],
+      motorVehicleForCompanyExplain: [null],
+      vehicleType: [null],
+      trailerType: [null],
       reasonForLeaving: [null, Validators.required],
       consideredForEmploymentAgain: [null, Validators.required],
       noSafetyPerformance: [false],
@@ -183,10 +191,74 @@ export class Step2Component implements OnInit, AfterViewInit {
         const selectedFormControlName =
           this.questions[selectedCheckbox.index].formControlName;
 
-        this.accidentHistoryForm
-          .get(selectedFormControlName)
-          .patchValue(selectedCheckbox.label);
+        const selectedExplainFormControlName =
+          this.questions[selectedCheckbox.index].formControlNameExplain;
 
+        if (selectedCheckbox.label === 'YES') {
+          this.accidentHistoryForm
+            .get(selectedFormControlName)
+            .patchValue(true);
+
+          if (selectedCheckbox.index === 0) {
+            this.accidentHistoryForm
+              .get(selectedExplainFormControlName)
+              .patchValue(selectedCheckbox.label);
+
+            this.inputService.changeValidators(
+              this.accidentHistoryForm.get(
+                'applicantWorkForCompanyBeforeExplain'
+              )
+            );
+
+            this.inputService.changeValidators(
+              this.accidentHistoryForm.get('applicantWorkForCompanyToExplain')
+            );
+          }
+
+          if (selectedCheckbox.index === 1) {
+            this.inputService.changeValidators(
+              this.accidentHistoryForm.get('vehicleType')
+            );
+
+            this.inputService.changeValidators(
+              this.accidentHistoryForm.get('trailerType')
+            );
+          }
+        } else {
+          this.accidentHistoryForm
+            .get(selectedFormControlName)
+            .patchValue(false);
+
+          if (selectedCheckbox.index === 0) {
+            this.accidentHistoryForm
+              .get(selectedExplainFormControlName)
+              .patchValue(selectedCheckbox.label);
+
+            this.inputService.changeValidators(
+              this.accidentHistoryForm.get(
+                'applicantWorkForCompanyBeforeExplain'
+              ),
+              false
+            );
+
+            this.inputService.changeValidators(
+              this.accidentHistoryForm.get('applicantWorkForCompanyToExplain'),
+              false
+            );
+          }
+
+          if (selectedCheckbox.index === 1) {
+            this.inputService.changeValidators(
+              this.accidentHistoryForm.get('vehicleType'),
+              false
+            );
+
+            this.inputService.changeValidators(
+              this.accidentHistoryForm.get('trailerType'),
+              false
+            );
+          }
+        }
         break;
       case InputSwitchActions.REASON_FOR_LEAVING:
         this.selectedReasonForLeaving = event;
@@ -223,14 +295,27 @@ export class Step2Component implements OnInit, AfterViewInit {
   }
 
   public onCloseWarningBox(): void {
-    this.accidentHistoryForm.get('applicantWorkForCompany').patchValue(null);
+    this.accidentHistoryForm
+      .get('applicantWorkForCompanyExplain')
+      .patchValue(null);
 
     this.workForCompanyRadios[0].checked = false;
     this.workForCompanyRadios[1].checked = false;
   }
 
   public onSelectNoWarningBox(): void {
-    this.accidentHistoryForm.get('applicantWorkForCompany').patchValue('YES');
+    this.accidentHistoryForm.get('applicantWorkForCompany').patchValue(true);
+    this.accidentHistoryForm
+      .get('applicantWorkForCompanyExplain')
+      .patchValue('YES');
+
+    this.inputService.changeValidators(
+      this.accidentHistoryForm.get('applicantWorkForCompanyBeforeExplain')
+    );
+
+    this.inputService.changeValidators(
+      this.accidentHistoryForm.get('applicantWorkForCompanyToExplain')
+    );
 
     this.workForCompanyRadios[0].checked = true;
     this.workForCompanyRadios[1].checked = false;
@@ -264,11 +349,69 @@ export class Step2Component implements OnInit, AfterViewInit {
     this.selectedAccidentIndex = -1;
   }
 
+  public onGetFormStatus(status: string): void {
+    this.formStatus = status;
+  }
+
+  public onMarkInvalidEmit(event: any): void {
+    if (!event) {
+      this.markFormInvalid = false;
+    }
+  }
+
+  public onGetLastFormValues(event: any): void {
+    this.lastAccidentCard = event;
+  }
+
+  public getDropdownLists(): void {
+    this.applicantListsService
+      .getDropdownLists()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.vehicleType = data.truckTypes.map((item) => {
+          return {
+            ...item,
+            folder: 'common',
+            subFolder: 'trucks',
+          };
+        });
+
+        this.trailerType = data.trailerTypes.map((item) => {
+          return {
+            ...item,
+            folder: 'common',
+            subFolder: 'trailers',
+          };
+        });
+
+        this.reasonsForLeaving = data.reasonsForLeave;
+      });
+  }
+
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
+      this.onSubmit();
     }
 
     if (event.action === 'back-step') {
+      this.router.navigate(['/sph-form/1']);
     }
+  }
+
+  public onSubmit(): void {
+    if (this.accidentHistoryForm.invalid) {
+      this.inputService.markInvalid(this.accidentHistoryForm);
+      return;
+    }
+
+    if (this.formStatus === 'INVALID') {
+      this.markFormInvalid = true;
+      return;
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

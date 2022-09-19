@@ -21,7 +21,7 @@
             placeholderIcon: 'date',
             isRequired: true,
             customClass: 'datetimeclass',
-            autoFocus: editData?.type !== 'edit-medical' ? true : false
+            autoFocus: editData?.type !== 'edit-medical'
           }"
         ></app-ta-input>
       </div>
@@ -42,9 +42,9 @@
     </div>
     <div class="ta-card-body-overflow-none">
       <app-ta-custom-card
-        [hasCounter]="documents.length ? documents.length : '0'"
+        [hasCounter]="documents.length ? documents.length : 0"
         [cardName]="'Documents'"
-        [isCardOpen]="documents.length"
+        [isCardOpen]="documents.length > 0"
       >
         <app-ta-upload-files
           [files]="documents"

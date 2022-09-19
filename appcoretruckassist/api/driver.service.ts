@@ -259,6 +259,9 @@ export class DriverService {
 
     /**
      * @param active 
+     * @param _long 
+     * @param lat 
+     * @param distance 
      * @param pageIndex 
      * @param pageSize 
      * @param companyId 
@@ -269,15 +272,27 @@ export class DriverService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDriverListGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<DriverListResponse>;
-    public apiDriverListGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<DriverListResponse>>;
-    public apiDriverListGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<DriverListResponse>>;
-    public apiDriverListGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiDriverListGet(active?: number, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<DriverListResponse>;
+    public apiDriverListGet(active?: number, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<DriverListResponse>>;
+    public apiDriverListGet(active?: number, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<DriverListResponse>>;
+    public apiDriverListGet(active?: number, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (active !== undefined && active !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>active, 'Active');
+        }
+        if (_long !== undefined && _long !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>_long, 'Long');
+        }
+        if (lat !== undefined && lat !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>lat, 'Lat');
+        }
+        if (distance !== undefined && distance !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>distance, 'Distance');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
           queryParameters = this.addToHttpParams(queryParameters,

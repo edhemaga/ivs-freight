@@ -23,7 +23,7 @@
             label: 'CDL No.',
             isRequired: true,
             textTransform: 'capitalize',
-            autoFocus: editData?.type !== 'edit-licence' ? true : false,
+            autoFocus: editData?.type !== 'edit-licence',
             minLength: selectedCountryType === 'US' ? 1 : 5,
             maxLength: selectedCountryType === 'US' ? 19 : 15,
             isDisabled: this.editData.type === 'renew-licence'
@@ -135,9 +135,9 @@
     </div>
     <div class="ta-card-body-overflow-none">
       <app-ta-custom-card
-        [hasCounter]="documents.length ? documents.length : '0'"
+        [hasCounter]="documents.length ? documents.length : 0"
         [cardName]="'Documents'"
-        [isCardOpen]="documents.length"
+        [isCardOpen]="documents.length > 0"
       >
         <app-ta-upload-files
           [files]="documents"

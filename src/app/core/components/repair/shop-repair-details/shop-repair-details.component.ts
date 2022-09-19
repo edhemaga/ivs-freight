@@ -20,6 +20,7 @@ import { ConfirmationService } from '../../modals/confirmation-modal/confirmatio
 import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { RepairShopMinimalListStore } from '../state/shop-details-state/shop-minimal-list-state/shop-minimal.store';
 import { RepairShopMinimalListQuery } from '../state/shop-details-state/shop-minimal-list-state/shop-minimal.query';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 @Component({
   selector: 'app-shop-repair-details',
@@ -47,6 +48,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     private cdRef: ChangeDetectorRef,
     private shopDetailsMinimalQuery: RepairShopMinimalListQuery,
     private sumArr: SumArraysPipe,
+    private DetailsDataService: DetailsDataService,
     private sdlq: ShopDetailsListQuery,
     private dropDownService: DropDownService,
     private rsmlist: RepairShopMinimalListStore
@@ -209,6 +211,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
   shopConf(data: RepairShopResponse) {
     this.getRepairById(data.id);
     let total;
+    this.DetailsDataService.setNewData(data);
     if (data?.repairs?.length) {
       total = this.sumArr.transform(
         data.repairs.map((item) => {

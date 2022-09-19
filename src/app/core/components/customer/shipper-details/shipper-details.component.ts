@@ -6,6 +6,7 @@ import { ShipperDetailsQuery } from '../state/shipper-state/shipper-details-stat
 import { Subject, take, takeUntil } from 'rxjs';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ShipperMinimalListQuery } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
@@ -40,7 +41,8 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     private tableService: TruckassistTableService,
     private shipperMinimalQuery: ShipperMinimalListQuery,
     private confirmationService: ConfirmationService,
-    private slq: ShipperDetailsListQuery
+    private slq: ShipperDetailsListQuery,
+    private DetailsDataService: DetailsDataService
   ) {}
 
   ngOnInit(): void {
@@ -102,6 +104,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
   }
 
   public shipperConf(data: ShipperResponse) {
+    this.DetailsDataService.setNewData(data);
     this.currentIndex = this.shipperList.findIndex(
       (shipper) => shipper.id === data.id
     );

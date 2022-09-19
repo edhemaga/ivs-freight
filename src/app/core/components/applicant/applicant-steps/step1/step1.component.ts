@@ -470,6 +470,11 @@ export class Step1Component implements OnInit, OnDestroy {
             id: res.id,
             name: this.selectedBank.name,
           };
+
+          this.banksDropdownList = [
+            ...this.banksDropdownList,
+            this.selectedBank,
+          ];
         },
         error: (err) => {
           this.notificationService.error("Can't add new bank", 'Error');
@@ -774,11 +779,11 @@ export class Step1Component implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    /* if (this.personalInfoForm.invalid) {
+    if (this.personalInfoForm.invalid) {
       this.inputService.markInvalid(this.personalInfoForm);
       return;
     }
- */
+
     const {
       firstRowReview,
       secondRowReview,

@@ -8,7 +8,8 @@ import {
   lastNameValidation,
   phoneExtension,
   routingBankValidation,
-} from './../../shared/ta-input/ta-input.regex-validations';
+  salaryValidation,
+} from '../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -139,7 +140,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
       employePhoneExt: [null, [...phoneExtension]],
       employeEmail: [null, [Validators.required]],
       isIncludePayroll: [false],
-      salary: [null],
+      salary: [null, salaryValidation],
       startDate: [null],
       payrollType: [null],
       bankId: [null, [...bankValidation]],
@@ -276,7 +277,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
           };
           this.labelsBank = [...this.labelsBank, this.selectedBank];
         },
-        error: (err) => {
+        error: () => {
           this.notificationService.error("Can't add new bank", 'Error');
         },
       });
@@ -289,8 +290,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
   private deleteUserById(id: number) {}
 
   private editUserById(id: number) {}
-
-  private getUserDropdowns() {}
 
   ngOnDestroy(): void {
     this.destroy$.next();
