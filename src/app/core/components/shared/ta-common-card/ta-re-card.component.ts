@@ -4,11 +4,6 @@ import {
   Input,
   OnInit,
   Output,
-  OnChanges,
-  SimpleChanges,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  AfterViewInit,
 } from '@angular/core';
 import moment from 'moment';
 import { card_component_animation } from '../animations/card-component.animations';
@@ -55,9 +50,7 @@ export class TaReCardComponent implements OnInit {
   public data: any;
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
-  public toggleDropDown: boolean;
-  public showHideText: boolean;
-  constructor(private clipboard: Clipboard, private cdr: ChangeDetectorRef) {}
+  constructor(private clipboard: Clipboard) {}
 
   ngOnInit(): void {
     this.CloseCard();
@@ -88,7 +81,7 @@ export class TaReCardComponent implements OnInit {
     }
   }
 
-  public resizePageFun(val: any) {
+  public resizePageFun() {
     this.resPage = !this.resPage;
     this.resizePage.emit(this.resPage);
   }

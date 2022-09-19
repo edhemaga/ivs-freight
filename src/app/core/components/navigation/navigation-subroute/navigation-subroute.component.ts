@@ -2,7 +2,7 @@ import {
   Navigation,
   NavigationSubRoute,
   NavigationSubRoutes,
-} from './../model/navigation.model';
+} from '../model/navigation.model';
 import {
   Component,
   Input,
@@ -45,10 +45,6 @@ export class NavigationSubrouteComponent {
       this.isMagicLineActive = true;
     }
     return this.router.url.includes(route);
-  }
-
-  public onHoverSubroteContainer(type: boolean) {
-    this.isMagicLineActive = type;
   }
 
   public identity(index: number, item: NavigationSubRoute): string {

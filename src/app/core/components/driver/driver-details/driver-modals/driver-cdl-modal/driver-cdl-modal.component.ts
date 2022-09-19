@@ -13,7 +13,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
-import { FormService } from '../../../../../services/form/form.service';
 import {
   convertDateFromBackend,
   convertDateToBackend,
@@ -61,7 +60,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -91,14 +89,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       endorsements: [null],
       note: [null],
     });
-
-    // this.formService.checkFormChange(this.cdlForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

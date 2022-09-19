@@ -1,5 +1,5 @@
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
-import { ImageBase64Service } from './../../../utils/base64.image';
+import { ImageBase64Service } from '../../../utils/base64.image';
 import {
   AfterViewInit,
   Component,
@@ -18,7 +18,6 @@ import { Options } from '@angular-slider/ngx-slider';
 import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
 import {
   DropZoneConfig,
-  TaUploadDropzoneComponent,
 } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -154,7 +153,7 @@ export class TaLogoChangeComponent
     this.validationEvent.emit(this.isImageValid);
   }
 
-  public handleCroppieUpdate(event) {
+  public handleCroppieUpdate() {
     this.ngxSliderPosition = 0.9;
   }
 
@@ -169,7 +168,7 @@ export class TaLogoChangeComponent
         this.imageBase64Service.getStringFromBase64(base64)
       );
       this.imageUrl = base64;
-      this.showUploadZone = this.croppieShape === 'rectangle' ? false : true;
+      this.showUploadZone = this.croppieShape !== 'rectangle';
     });
     this.isImageValid = true;
     this.validationEvent.emit(this.isImageValid);

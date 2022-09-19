@@ -1,4 +1,4 @@
-import { PmTService } from './../../../pm-truck-trailer/state/pm.service';
+import { PmTService } from '../../../pm-truck-trailer/state/pm.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
@@ -15,7 +15,6 @@ import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-modal.component';
 import { descriptionValidation } from '../../../shared/ta-input/ta-input.regex-validations';
-import { FormService } from '../../../../services/form/form.service';
 import { NotificationService } from '../../../../services/notification/notification.service';
 import {
   convertNumberInThousandSep,
@@ -26,7 +25,7 @@ import {
   selector: 'app-repair-pm-modal',
   templateUrl: './repair-pm-modal.component.html',
   styleUrls: ['./repair-pm-modal.component.scss'],
-  providers: [ModalService, FormService],
+  providers: [ModalService],
 })
 export class RepairPmModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -43,7 +42,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -63,14 +61,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
       defaultPMs: this.formBuilder.array([]),
       newPMs: this.formBuilder.array([]),
     });
-
-    // this.formService.checkFormChange(this.PMform);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public get defaultPMs(): FormArray {
@@ -177,7 +167,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
       if (item.get('isChecked').value) {
         return (accumulator = accumulator + 1);
       } else {
-        return (accumulator = accumulator + 0);
+        return (accumulator = accumulator);
       }
     }, 0);
   }
@@ -234,7 +224,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                   action: null,
                   status: true,
-                  clearTimeout: this.editData?.canOpenModal ? true : false,
+                  clearTimeout: !!this.editData?.canOpenModal,
                 });
                 break;
               }
@@ -243,7 +233,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                   action: null,
                   status: true,
-                  clearTimeout: this.editData?.canOpenModal ? true : false,
+                  clearTimeout: !!this.editData?.canOpenModal,
                 });
                 break;
               }
@@ -705,6 +695,10 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
           );
         },
       });
+  }
+
+  public identity(index: number, item: any): number {
+    return item.id;
   }
 
   ngOnDestroy(): void {

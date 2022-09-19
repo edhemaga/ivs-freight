@@ -248,7 +248,7 @@
                 name: 'datepicker',
                 type: 'text',
                 isDropdown: true,
-                label: dateRange ? 'Date From' : 'Date',
+                label: isDateRange ? 'Date From' : 'Date',
                 placeholderIcon: 'date',
                 isRequired: true,
                 customClass: 'datetimeclass'
@@ -318,7 +318,7 @@
         </div>
       </app-ta-custom-card>
 
-      <app-ta-custom-card [cardName]="'Stops'" [hasCounter]="'0'">
+      <app-ta-custom-card [cardName]="'Stops'" [hasCounter]="0">
       </app-ta-custom-card>
 
       <app-ta-custom-card [cardName]="'Billing & Payment'" [isCardOpen]="true">
@@ -413,16 +413,16 @@
         </div>
       </app-ta-custom-card>
       <app-ta-custom-card
-        [hasCounter]="comments.length ? comments.length : '0'"
+        [hasCounter]="comments.length ? comments.length : 0"
         [cardName]="'Comments'"
         [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
         [hasArrow]="false"
         [hasLikeDislike]="true"
         [isCardOpen]="false"
         [isCommentData]="true"
-        [hasBodyData]="comments.length"
+        [hasBodyData]="comments.length > 0"
         [hasScrollBody]="comments.length > 6"
-        (onActionEvent)="createComment($event)"
+        (onActionEvent)="createComment()"
       >
         <div class="no-review-broker" *ngIf="!comments.length">
           <svg-icon
@@ -438,9 +438,9 @@
         ></app-ta-user-review>
       </app-ta-custom-card>
       <app-ta-custom-card
-        [hasCounter]="documents.length ? documents.length : '0'"
+        [hasCounter]="documents.length ? documents.length : 0"
         [cardName]="'Documents'"
-        [isCardOpen]="documents.length"
+        [isCardOpen]="documents.length > 0"
       >
         <app-ta-upload-files
           [files]="documents"
