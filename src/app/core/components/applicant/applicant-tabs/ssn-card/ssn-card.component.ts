@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
+
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
@@ -11,7 +14,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
   styleUrls: ['./ssn-card.component.scss'],
 })
 export class SsnCardComponent implements OnInit {
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public ssnCardForm: FormGroup;
 
@@ -31,7 +34,11 @@ export class SsnCardComponent implements OnInit {
     },
   ];
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private applicantActionsService: ApplicantActionsService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -92,8 +99,11 @@ export class SsnCardComponent implements OnInit {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
+      this.onSubmit();
     }
   }
+
+  public onSubmit(): void {}
 
   public onSubmitReview(data: any): void {}
 }

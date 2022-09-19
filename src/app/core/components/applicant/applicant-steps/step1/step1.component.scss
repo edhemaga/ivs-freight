@@ -109,15 +109,15 @@
       }
 
       .first-name-group {
-        width: 222px;
+        width: 215px;
       }
 
       .last-name-group {
-        width: 222px;
+        width: 227px;
       }
 
       .date-group {
-        width: 148px;
+        width: 150px;
         margin-right: 0 !important;
       }
 
@@ -256,6 +256,7 @@
 
                 p {
                   text-transform: uppercase;
+                  line-height: 18px;
                   font-size: 14px;
                   color: $bw6-2;
                   transition: color 0.2s ease-in-out;

@@ -477,6 +477,13 @@
                     [ngClass]="{
                       active: selectedMode === 'REVIEW_MODE'
                     }"
+                    [ngStyle]="{
+                      'margin-left':
+                        selectedMode === 'APPLICANT_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                          ? '26px'
+                          : '5px'
+                    }"
                     *ngIf="!isEditingArray[i]?.isEditing"
                   >
                     <div
