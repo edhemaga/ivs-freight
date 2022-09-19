@@ -11,13 +11,13 @@ import {
   ElementRef,
   ContentChildren,
   QueryList,
-  SecurityContext
+  SecurityContext,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MapsService } from '../../../services/shared/maps.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { Subject, takeUntil } from 'rxjs';
-import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-map-list',
@@ -90,6 +90,12 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
     setTimeout(() => {
       this.checkResizeButton();
     }, 100);
+  }
+
+  ngAfterContentInit() {
+    this.listCards.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.highlightSearchedText();
+    });
   }
 
   resizeMapList() {
@@ -196,6 +202,11 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
 
   sortData() {
     var sortType = this.sortTypes.find((b) => b.isActive === true);
+    if (!sortType) {
+      this.sortTypes[0].isActive = true;
+      this.activeSortType = this.sortTypes[0];
+      sortType = this.sortTypes[0];
+    }
 
     const directionSort = this.sortDirection
       ? sortType.sortName +
@@ -287,12 +298,10 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
         search: this.searchText,
         searchType: 'tabel',
       });
-
-      setTimeout(() => {
-        this.highlightSearchedText();
-      }, 100);
     } else if (this.searchIsActive && this.searchText.length < 3) {
       this.searchIsActive = false;
+
+      this.highlightSearchedText();
 
       this.tableService.sendCurrentSearchTableData({
         chip: 'searchOne',
@@ -304,27 +313,26 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   highlightSearchedText() {
-    document.querySelectorAll<HTMLElement>('.map-list-card-container .title-text')
-      .forEach((title: HTMLElement, i) => {
-        var text = title.textContent;
-        console.log('title textContent', title.textContent);
+    if (this.searchText?.length >= 3) {
+      document
+        .querySelectorAll<HTMLElement>(
+          '.map-list-card-container .title-text, .map-list-card-container .address-text'
+        )
+        .forEach((title: HTMLElement, i) => {
+          var text = title.textContent;
 
-        const regex = new RegExp(
-          this.searchText,
-          "gi"
-        );
-        const newText = text.replace(regex, (match: string) => {
-          return `<mark class='highlighted-text'>${match}</mark>`;
+          const regex = new RegExp(this.searchText, 'gi');
+          const newText = text.replace(regex, (match: string) => {
+            return `<mark class='highlighted-text'>${match}</mark>`;
+          });
+          const sanitzed = this.sanitizer.sanitize(
+            SecurityContext.HTML,
+            newText
+          );
+
+          title.innerHTML = sanitzed;
         });
-        const sanitzed = this.sanitizer.sanitize(
-          SecurityContext.HTML,
-          newText
-        );
-
-        console.log('sanitzed text', sanitzed);
-
-        title.innerHTML = sanitzed;
-      });
+    }
   }
 
   ngOnDestroy(): void {

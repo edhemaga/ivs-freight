@@ -23,10 +23,6 @@
         [cdkDropListData]="tableData[selectedMapIndex].routes"
         [cdkDropListConnectedTo]="[routeFreeDrag]"
         (cdkDropListDropped)="dropRoutes($event)"
-        [ngStyle]="{
-          'padding-right': tooltip?.isOpen() ? '126px' : '13px',
-          'padding-bottom': tooltip?.isOpen() ? '120px' : '13px'
-        }"
       >
         <ng-container
           *ngFor="
@@ -245,6 +241,7 @@
                 [ngClass]="{
                   'active-drop': dropDownActive === route.id && t2.isOpen()
                 }"
+                [container]="'body'"
                 popoverClass="table-dropdown-popover drop-down-route"
                 triggers="manual"
               >
@@ -724,6 +721,7 @@
                 [ngClass]="{
                   'active-drop': dropDownActive === route.id && t2.isOpen()
                 }"
+                [container]="'body'"
                 popoverClass="table-dropdown-popover drop-down-route"
                 triggers="manual"
               >

@@ -179,7 +179,8 @@
     position: absolute;
     left: 0;
     top: 0;
-    height: 100vh;
+    height: fit-content;
+    max-height: 100vh;
 
     padding: 62px 0px 18px 74px;
 

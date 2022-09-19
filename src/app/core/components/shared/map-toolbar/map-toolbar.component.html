@@ -242,6 +242,7 @@
     [placement]="'bottom-right'"
     [autoClose]="false"
     popoverClass="map-settings-popover add-route-popover"
+    [container]="'body'"
     [ngClass]="{
       'active-options-maps': addRoutePopupOpen,
       disabled: tableData[0].length == 8

@@ -391,13 +391,6 @@
             color: $bw6-2;
             background: #6c6c6c33;
         }
-
-        .highlighted-text {
-            font-weight: 900;
-            background: none;
-            color: $bw6-2;
-            padding: 0;
-        }
     }
 }
 
@@ -936,4 +929,11 @@
             }
         }
     }
+}
+
+.highlighted-text {
+    font-weight: 900;
+    background: none;
+    padding: 0;
+    color: inherit;
 }
