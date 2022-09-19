@@ -245,9 +245,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   };
 
   // Logo Actions
-  public displayEditAndDeleteActions: boolean = false;
+  public displayDeleteAction: boolean = false;
   public displayUploadZone: boolean = false;
-  public isEditingLogo: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -1955,21 +1954,17 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public handleEditOrDeleteClick(event: any) {
-    if (event.action === 'edit') {
-      this.isEditingLogo = true;
-    }
-
+  public handleDeleteClick(event: any) {
     if (event.action === 'delete') {
       this.displayUploadZone = true;
     }
 
-    this.displayEditAndDeleteActions = false;
+    this.displayDeleteAction = false;
   }
 
   public onSaveLogoAction(event: any) {
     if (event) {
-      this.displayEditAndDeleteActions = true;
+      this.displayDeleteAction = true;
     }
   }
 
@@ -1979,12 +1974,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
       this.companyForm.get('logo').patchValue(null);
       this.companyForm.get('logo').setErrors(null);
-    }
-  }
-
-  public onEditLogoAction(event: any) {
-    if (event) {
-      this.isEditingLogo = false;
     }
   }
 

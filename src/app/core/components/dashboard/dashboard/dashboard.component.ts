@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { map, takeUntil, takeWhile } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,7 +7,8 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, interval, merge, combineLatest } from 'rxjs';
+
 import { DashboardService } from '../../../services/dashboard/dashboard.service';
 import { SharedService } from '../../../services/shared/shared.service';
 import { DashboardStats } from '../state/dashboard.model';

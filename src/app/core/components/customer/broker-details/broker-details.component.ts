@@ -7,6 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 @Component({
   selector: 'app-broker-details',
@@ -26,7 +27,8 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     private brokerQuery: BrokerDetailsQuery,
     private brokerService: BrokerTService,
     private detailsPageService: DetailsPageService,
-    private sumArr: SumArraysPipe
+    private sumArr: SumArraysPipe,
+    private DetailsDataService: DetailsDataService,
   ) {}
 
   ngOnInit(): void {
@@ -59,6 +61,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
 
   public brokerInitConfig(data: BrokerResponse) {
     let totalCost;
+    this.DetailsDataService.setNewData(data);
     if (data.loads.length) {
       totalCost = this.sumArr.transform(
         data.loads.map((item) => {

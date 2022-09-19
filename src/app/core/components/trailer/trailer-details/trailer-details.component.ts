@@ -18,6 +18,7 @@ import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
 import { TrailersDetailsListQuery } from '../state/trailer-details-list-state/trailer-details-list.query';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 @Component({
   selector: 'app-trailer-details',
@@ -47,11 +48,13 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private trailerItemStore: TrailerItemStore,
     private trailerMinimalQuery: TrailersMinimalListQuery,
-    private trailerMinimalStore: TrailersMinimalListStore
+    private trailerMinimalStore: TrailersMinimalListStore,
+    private DetailsDataService: DetailsDataService,
   ) {}
 
   ngOnInit(): void {
     this.initTableOptions(this.activated_route.snapshot.data.trailer);
+    this.DetailsDataService.setNewData(this.activated_route.snapshot.data.trailer); 
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
@@ -101,7 +104,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             this.currentIndex = this.trailerList.findIndex(
               (trailer) => trailer.id === res.id
             );
-
+            this.DetailsDataService.setNewData(res);
             this.trailerConf(res);
             this.initTableOptions(res);
             this.router.navigate([`/trailer/${res.id}/details`]);

@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { NavigationService } from './services/navigation.service';
 import { navigation_magic_line } from './navigation.animation';
+import { DetailsDataService } from '../../services/details-data/details-data.service';
 
 @Component({
   selector: 'app-navigation',
@@ -39,7 +40,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    private DetailsDataService: DetailsDataService,
   ) {}
 
   ngOnInit(): void {
@@ -175,7 +177,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
   public onHoveredNavigation(type: boolean): void {
     if (type) {
       this.isNavigationHovered = true;
-
+      this.DetailsDataService.updateLeftMenuStatus(true);
       const index = this.navigation.findIndex(
         (item) => item.isRouteActive || item.isSubrouteActive
       );
@@ -185,6 +187,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     } else {
       this.isNavigationHovered = false;
       this.isActiveMagicLine = false;
+      this.DetailsDataService.updateLeftMenuStatus(false);
     }
   }
 

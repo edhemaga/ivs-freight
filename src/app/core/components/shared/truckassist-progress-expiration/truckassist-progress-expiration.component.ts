@@ -84,7 +84,7 @@ export class TruckassistProgressExpirationComponent implements OnInit {
 
     const currentDate = moment();
     const endDate = moment(this.expireDate);
-    this.endingDate = endDate.format('MM/DD/YYYY');
+    this.endingDate = endDate.format('MM/DD/YY');
     const diffDays = endDate.diff(currentDate, 'd');
     this.diffD = diffDays;
     if (diffDays < 0) {

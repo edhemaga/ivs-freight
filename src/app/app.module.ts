@@ -26,8 +26,14 @@ import { NavigationUserCompanyComponent } from './core/components/navigation/nav
 import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
+import { CustomToastMessagesComponent } from './core/components/shared/custom-toast-messages/custom-toast-messages.component';
+import { AppInterceptor } from './app.inteceptor';
+
+import { EncryptionDecryptionService } from './core/services/encryption-decryption/EncryptionDecryption.service';
+
 import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
 import { configFactory } from './app.config';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,6 +60,7 @@ import { configFactory } from './app.config';
       preventDuplicates: true,
       enableHtml: true,
       timeOut: 5000,
+      toastComponent: CustomToastMessagesComponent, // added custom toast! 
     }),
     NgIdleModule.forRoot(),
     ApiModule,
@@ -71,6 +78,8 @@ import { configFactory } from './app.config';
       deps: [UserLoggedService],
       multi: false,
     },
+    { provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true },
+    EncryptionDecryptionService,
     GoogleMapsAPIWrapper,
   ],
   exports: [],
