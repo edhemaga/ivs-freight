@@ -39,7 +39,7 @@ const routeSpecify = {
       transition(
         'inactive => active',
         animate(
-          '150ms ease-in',
+          '150ms ease-in-out',
           keyframes([
             style({
               top: '100px',
@@ -169,6 +169,14 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     {
       'api' : 'RatingReview',
       'value' : 'REVIEW'
+    },
+    {
+      'api' : 'todo',
+      'value' : 'TO-DO'
+    },
+    {
+      'api' : 'Comment',
+      'value' : 'COMMENT'
     }
     
   ]
@@ -214,7 +222,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
     console.log('---item--', item);
     console.log('---actionType--', this.actionType);
-    if (this.actionType == 'LOGIN') {
+    if (this.actionType == 'LOGIN' || this.actionType == 'COMPANY') {
       this.leftSideMove = false;
     }
   
@@ -516,6 +524,20 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         let testName = this.DetailsDataService.mainData.fullName;
         this.message = testName;   
       break;
+      case 'TO-DO':
+        let toDoName = this.httpRequest.body?.title ? this.httpRequest.body?.title : '';
+        if (!toDoName){
+          toDoName = this.DetailsDataService.mainData?.title;
+        }
+
+        if ( this.httpRequest.method == 'PUT' ){
+          this.actionTitle = this.toastrType == 'toast-error' ? 'UPDATE' : 'UPDATED';
+        }
+        this.message = toDoName;  
+      break;
+      case 'COMMENT' : 
+        this.message = this.DetailsDataService.mainData?.title;    
+      break;
     }
 
     if (this.actionType == 'DRIVER' && !this.message ) {
@@ -530,7 +552,12 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
   }
 
   closeToast(): void {
-    this.toastPackage.toastRef.close();
+    let mainToastElement = document.querySelectorAll('.main-toast-holder')[0];
+    mainToastElement?.classList.add('closeToastAction');
+    setTimeout(()=>{
+      this.toastPackage.toastRef.close();
+    },150)
+    
   }
 
   clickOnRetry() {

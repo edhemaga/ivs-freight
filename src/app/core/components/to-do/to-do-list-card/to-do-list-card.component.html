@@ -316,6 +316,7 @@
                         <app-details-page-dropdown
                           [options]="dropdownOptions.actions"
                           [id]="item.id"
+                          [data]="item"
                           [placement]="'bottom-right'"
                           [hasVericalDots]="true"
                           (dropDownActions)="dropAct($event)"
