@@ -108,6 +108,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     this.currentIndex = this.shipperList.findIndex(
       (shipper) => shipper.id === data.id
     );
+    this.getShipperById(data.id);
     this.shipperConfig = [
       {
         id: 0,
