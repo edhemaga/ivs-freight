@@ -428,25 +428,13 @@ export class Step2Component implements OnInit, OnDestroy {
     }
 
     const saveData: CreateWorkExperienceCommand = {
-      applicantId: 1,
+      applicantId: this.applicantId,
       haveWorkExperience: noWorkExperience,
       workExperienceItems: noWorkExperience
         ? []
         : [...filteredWorkExperienceArray, filteredLastWorkExperienceCard],
     };
 
-    /*  console.log('lastCard', this.lastWorkExperienceCard.fromDate);
-    console.log('array', this.workExperienceArray[0].fromDate);
-
-    console.log(
-      'backlastCard',
-      convertDateToBackend(this.lastWorkExperienceCard.fromDate)
-    );
-    console.log(
-      'backarray',
-      convertDateToBackend(this.workExperienceArray[0].fromDate)
-    );
- */
     this.applicantActionsService
       .createWorkExperience(saveData)
       .pipe(takeUntil(this.destroy$))
