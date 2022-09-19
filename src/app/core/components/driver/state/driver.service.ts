@@ -70,16 +70,17 @@ export class DriverTService implements OnDestroy {
     search1?: string,
     search2?: string
   ): Observable<DriverListResponse> {
-    return this.driverService.apiDriverListGet(
-      active,
-      pageIndex,
-      pageSize,
-      companyId,
-      sort,
-      search,
-      search1,
-      search2
-    );
+    // return this.driverService.apiDriverListGet(
+    //   active,
+    //   pageIndex,
+    //   pageSize,
+    //   companyId,
+    //   sort,
+    //   search,
+    //   search1,
+    //   search2
+    // );
+    return of();
   }
 
   /* Observable<CreateDriverResponse> */

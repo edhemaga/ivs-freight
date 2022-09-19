@@ -23,6 +23,8 @@ import { TableStrategy } from './table_strategy';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { SharedService } from '../../../../services/shared/shared.service';
+import { DetailsDataService } from '../../../../services/details-data/details-data.service';
+
 
 @Component({
   selector: 'app-truckassist-table-body',
@@ -85,7 +87,8 @@ export class TruckassistTableBodyComponent
     private router: Router,
     private tableService: TruckassistTableService,
     private changeDetectorRef: ChangeDetectorRef,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private DetailsDataService: DetailsDataService,
   ) {}
 
   // --------------------------------NgOnInit---------------------------------
@@ -179,6 +182,11 @@ export class TruckassistTableBodyComponent
           this.getSelectedTabTableData();
         }, 10);
       }
+      
+      if (changes.viewData.currentValue[0]){
+        this.DetailsDataService.setNewData(changes.viewData.currentValue[0]);
+      }
+      
     }
 
     if (!changes?.tableData?.firstChange && changes?.tableData) {
@@ -332,7 +340,7 @@ export class TruckassistTableBodyComponent
   goToDetails(route: any, row: any) {
     const link =
       route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
-
+    this.DetailsDataService.setNewData(row);
     this.router.navigate([link]);
   }
 
@@ -429,6 +437,7 @@ export class TruckassistTableBodyComponent
 
     this.dropDownActive = tooltip.isOpen() ? row.id : -1;
     this.rowData = row;
+    this.DetailsDataService.setNewData(row);
   }
 
   // Toggle Status Dropdown

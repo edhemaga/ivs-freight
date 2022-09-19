@@ -4,10 +4,18 @@ import { TodoResponse } from 'appcoretruckassist';
 
 export interface TodoState extends EntityState<TodoResponse[], number> {}
 
-@Injectable({ providedIn: 'root' })
+export function createInitialState(): TodoState {
+  return {
+    todoList: [],
+  };
+}
+
+@Injectable({
+  providedIn: 'root',
+})
 @StoreConfig({ name: 'todo' })
 export class TodoStore extends EntityStore<TodoState> {
   constructor() {
-    super();
+    super(createInitialState());
   }
 }

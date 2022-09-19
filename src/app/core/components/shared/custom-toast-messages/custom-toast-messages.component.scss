@@ -1,0 +1,126 @@
+.main-toast-holder{
+    position: relative;
+    width: 280px;
+    height: 48px;
+    padding: 8px;
+    border-radius: 3px;
+    pointer-events: all;
+    font-family: 'Montserrat', sans-serif !important;
+    margin-bottom: 10px;
+    margin-left: 0px;
+    user-select: none;
+    transition: all 0.3s ease-in-out;
+    
+    &.wide-toast-message{
+        width: 340px;
+    }
+
+    &.movedLeft{
+        margin-left: 142px;
+    }
+
+    .toast-title{
+        font-size: 11px;
+        font-weight: bold;
+        line-height: 14px;
+        color: #FFF;
+        opacity: 0.7;
+    }
+
+    .toast-message{
+        width: 90%;
+        font-size: 14px; 
+        color: #FFFFFF;
+        line-height: 18px;
+        opacity: 0.7;
+        font-weight: 600;
+
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .errorMessage{
+        width: 75%;
+    }
+
+    .closeToastrBtn{
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 32px;
+        width: 32px;
+        opacity: 0.7;
+        border-radius: 2px;
+        cursor: pointer;
+        svg {
+            path {
+              fill: #FFFFFF;
+              opacity: 0.7;
+            }
+          }
+
+
+       
+        &:hover{
+          opacity: 1;
+
+          svg {
+            path {
+                opacity: 1;
+            }
+          }
+        }
+     }
+
+    .retryButton{
+       // display: none;
+        right: 41px;
+
+        svg {
+            height: 16.2px;
+            width: 13.69;
+        }
+    } 
+
+    .animation-holder{
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 32px;
+        width: 32px;
+    }
+
+    &:hover{
+        .toast-title{
+            opacity: 1;
+        }
+
+        .toast-message{
+            opacity: 1;
+        }
+    }
+}
+
+.retryClass{
+    
+    background-color: #424242 !important;
+  
+    .closeToastrBtn{
+        &:hover{
+            background-color: #2E2E2E;
+          }
+        }
+  
+    .toast-title{
+        color: #6F9EE0;
+        opacity: 1;
+    }
+}
+

@@ -1,20 +1,27 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { input_dropdown_animation } from '../ta-input-dropdown/ta-input-dropdown.animation';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectorRef,
+} from '@angular/core';
+import { card_component_animation } from '../../shared/animations/card-component.animations';
 
 @Component({
   selector: 'app-map-marker-dropdown',
   templateUrl: './map-marker-dropdown.component.html',
   styleUrls: ['./map-marker-dropdown.component.scss'],
-  animations: [input_dropdown_animation('showHideDrop')]
+  animations: [card_component_animation('showHideCardBody')],
 })
 export class MapMarkerDropdownComponent implements OnInit {
-  
   @Input() title: string = '';
   @Input() item: any = {};
   @Input() type: string = '';
   @Input() sortCategory: any = {};
   @Input() locationFilterOn: boolean = false;
   @Input() dropdownActions: any[] = [];
+  @Input() rating: any = {};
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
 
   public copiedPhone: boolean = false;
@@ -28,15 +35,12 @@ export class MapMarkerDropdownComponent implements OnInit {
     '#FEC107',
     '#FF9800',
     '#EF5350',
-    '#919191'
+    '#919191',
   ];
-  
-  constructor(
-    private ref: ChangeDetectorRef
-  ) { }
 
-  ngOnInit(): void {
-  }
+  constructor(private ref: ChangeDetectorRef) {}
+
+  ngOnInit(): void {}
 
   expandInfo() {
     this.item.isExpanded = !this.item.isExpanded;
@@ -51,20 +55,20 @@ export class MapMarkerDropdownComponent implements OnInit {
           this.copiedPhone = false;
         }, 2100);
         break;
-        
+
       case 'email':
         this.copiedEmail = true;
         setTimeout(() => {
           this.copiedEmail = false;
         }, 2100);
         break;
-        
-        case 'address':
-          this.copiedAddress = true;
-          setTimeout(() => {
-            this.copiedAddress = false;
-          }, 2100);
-          break;
+
+      case 'address':
+        this.copiedAddress = true;
+        setTimeout(() => {
+          this.copiedAddress = false;
+        }, 2100);
+        break;
     }
 
     let selBox = document.createElement('textarea');
@@ -88,8 +92,31 @@ export class MapMarkerDropdownComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
   }
-  
+
   callBodyAction(action) {
     this.bodyActions.emit(action);
+  }
+
+  // RAITING
+  onLike(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.bodyActions.emit({
+      data: this.item,
+      type: 'raiting',
+      subType: 'like',
+    });
+  }
+
+  onDislike(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.bodyActions.emit({
+      data: this.item,
+      type: 'raiting',
+      subType: 'dislike',
+    });
   }
 }

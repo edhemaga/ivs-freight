@@ -77,6 +77,11 @@
         getSuperControl.value &&
         inputConfig.type === 'password' &&
         isVisiblePasswordEye,
+      'visible-focus-password-invalid':
+        getSuperControl.invalid &&
+        getSuperControl.value &&
+        inputConfig.type === 'password' &&
+        isVisiblePasswordEye,
       'incorrect-input': inputConfig.incorrectInput && getSuperControl.value,
       'incorrect-input-enabled':
         inputConfig.incorrectInput && getSuperControl.value && incorrectValue,
@@ -259,6 +264,13 @@
     >
       <svg-icon
         class="ta-input-command-svg-first"
+        [ngClass]="{
+          'invalid-focus-in':
+            getSuperControl.value &&
+            getSuperControl.invalid &&
+            focusInput &&
+            !inputConfig.blackInput
+        }"
         [src]="inputConfig.commands.firstCommand.svg"
         (click)="
           onCommands(
@@ -281,6 +293,13 @@
     >
       <svg-icon
         class="ta-input-command-svg-second"
+        [ngClass]="{
+          'invalid-focus-in':
+            getSuperControl.value &&
+            getSuperControl.invalid &&
+            focusInput &&
+            !inputConfig.blackInput
+        }"
         [src]="inputConfig.commands.secondCommand.svg"
         (click)="
           onCommands(

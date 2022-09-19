@@ -6,6 +6,7 @@ import { ShipperDetailsQuery } from '../state/shipper-state/shipper-details-stat
 import { Subject, takeUntil } from 'rxjs';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 @Component({
   selector: 'app-shipper-details',
@@ -24,7 +25,8 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
     private detailsPageService: DetailsPageService,
-    private shipperQuery: ShipperDetailsQuery
+    private shipperQuery: ShipperDetailsQuery,
+    private DetailsDataService: DetailsDataService,
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +59,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
   }
 
   public shipperConf(data: ShipperResponse) {
+    this.DetailsDataService.setNewData(data);
     this.shipperConfig = [
       {
         id: 0,

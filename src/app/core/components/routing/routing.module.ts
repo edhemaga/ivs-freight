@@ -6,11 +6,13 @@ import { RoutingMapComponent } from './routing-map/routing-map.component';
 
 import { SharedModule } from '../shared/shared.module';
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
+import { FilterRoutesPipe } from './filter-routes.pipe';
 
 
 @NgModule({
   declarations: [
-    RoutingMapComponent
+    RoutingMapComponent,
+    FilterRoutesPipe
   ],
   imports: [
     CommonModule,

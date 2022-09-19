@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MapsService } from '../../../services/shared/maps.service';
 
 @Component({
   selector: 'app-map-list-card',
   templateUrl: './map-list-card.component.html',
-  styleUrls: ['./map-list-card.component.scss']
+  styleUrls: ['./map-list-card.component.scss'],
 })
 export class MapListCardComponent implements OnInit {
-
   @Input() isSelected: boolean = false;
   @Input() status: any = 1;
   @Input() title: string = '';
@@ -15,18 +15,20 @@ export class MapListCardComponent implements OnInit {
   @Input() item: any = {};
   @Input() index: any = {};
   @Input() type: string = '';
-  @Input() sortCategory: any = {};
   @Input() dropdownActions: any[] = [];
   @Output() clickedMarker: EventEmitter<string> = new EventEmitter<string>();
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
   public locationFilterOn: boolean = false;
+  sortCategory: any = {};
 
-  constructor() { }
+  constructor(private mapsService: MapsService) {}
 
   ngOnInit(): void {
-    if ( !this.sortCategory?.name ) {
-      this.sortCategory = {name: 'Business Name', id: 1, sortName: 'name'};
+    if (!this.sortCategory?.name) {
+      this.sortCategory = { name: 'Business Name', id: 1, sortName: 'name' };
     }
+
+    this.sortCategory = this.mapsService.sortCategory;
   }
 
   selectCard() {
@@ -42,4 +44,31 @@ export class MapListCardComponent implements OnInit {
     this.bodyActions.emit(action);
   }
 
+  // RAITING
+  onLike(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.bodyActions.emit({
+      data: this.item,
+      type: 'raiting',
+      subType: 'like',
+    });
+  }
+
+  onDislike(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.bodyActions.emit({
+      data: this.item,
+      type: 'raiting',
+      subType: 'dislike',
+    });
+  }
+
+  setSortCategory(category) {
+    this.sortCategory = category;
+    console.log('setSortCategory this', this);
+  }
 }
