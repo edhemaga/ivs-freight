@@ -7,7 +7,7 @@ import {
   ViewEncapsulation,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
 import { addressValidation } from '../ta-input/ta-input.regex-validations';
 import { card_component_animation } from '../animations/card-component.animations';
@@ -963,6 +963,11 @@ export class FilterComponent implements OnInit {
   public locationForm!: FormGroup;
   public payForm!: FormGroup;
   public sliderForm!: FormGroup;
+
+  rangeSliderForm: FormGroup = new FormGroup({
+    sliderControl: new FormControl([0, 5000])
+  });
+
   rangeValue: any = 0;
   usaSelectedStates: any[] = [];
   canadaSelectedStates: any[] = [];
@@ -1014,10 +1019,11 @@ export class FilterComponent implements OnInit {
 
   public milesSliderData: Options = {
     floor: 0,
-    ceil: 3000,
-    step: 0,
+    ceil: 5000,
+    step: 5,
     showSelectionBar: true,
-    hideLimitLabels: false,
+    hideLimitLabels: true,
+    noSwitching: true
   };
 
   @Input() type: string = 'userFilter';

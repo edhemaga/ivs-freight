@@ -1298,7 +1298,7 @@
       </div>
       <div
         class="filter-middle-holder slider-two-holder"
-        [formGroup]="payForm"
+        [formGroup]="rangeSliderForm"
         *ngIf="type == 'payFilter' || type == 'milesFilter'"
       >
         <app-ta-ngx-slider
@@ -1308,7 +1308,10 @@
           [startedValue]="rangeValue"
           [customClass]="'custom-slider-filter'"
           (onUserValueChange)="setRangeValue($event)"
+          [sliderTemplate]="'range-slider'"
+          [customFormControlName]="sliderControl"
         ></app-ta-ngx-slider>
+        
       </div>
       <div class="border-filter bottom-border-margin"></div>
       <div class="buttons-holder" *ngIf="type != 'locationFilter'">

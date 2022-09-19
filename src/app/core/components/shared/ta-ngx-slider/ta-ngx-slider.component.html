@@ -25,4 +25,9 @@
       (userChangeEnd)="userChangeEnd($event)"
     ></ngx-slider>
   </div>
+  <div *ngSwitchCase="'range-slider'"  [formGroup]="rangeSliderForm" class="range-slider-holder">
+    <div class=" ta-ngx-slider custom-slider-commission {{ customClass }}">
+      <ngx-slider [options]="sliderOptions" formControlName="sliderControl"></ngx-slider>
+    </div>
+  </div>
 </div>
