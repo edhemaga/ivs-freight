@@ -1250,6 +1250,7 @@ export class TaInputComponent
   selectionInput: number = -1;
 
   setSelection(e) {
+    console.log("CLICK ON SET SELECTION");
     e.preventDefault();
     e.stopPropagation();
 
@@ -1284,6 +1285,7 @@ export class TaInputComponent
   }
 
   showDateTimePlaceholder() {
+    console.log("CLICK ON showdateTime");
     this.showDateInput = true;
     this.focusInput = true;
     this.selectionInput = -1;
@@ -1293,6 +1295,7 @@ export class TaInputComponent
   }
 
   changeSelection(e, noPreventDefault = false): void {
+    console.log("KEYDOWN PRESS");
     if (!noPreventDefault) {
       e.preventDefault();
       e.stopPropagation();

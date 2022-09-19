@@ -266,7 +266,7 @@ export class DispatchboardTablesComponent implements OnInit {
     if (e) {
       this.updateOrAddDispatchBoardAndSend(
         'status',
-        e.name,
+        e.statusValue.name,
         this.statusOpenedIndex
       );
     }
