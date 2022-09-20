@@ -17,10 +17,10 @@
     >
       <div
         [class.withAgo]="withStatusAgo"
-        [ngStyle]="{ color: (status.statusValue.id | statusPipe) }"
+        [ngStyle]="{ color: (status.statusValue.id | statusPipe : 'color') }"
         class="switch_statuses"
       >
-        {{status.statusValue.name}}
+        {{status.statusString}}
         <span *ngIf="withStatusAgo" class="time_ago">{{ statusAgo }}</span>
       </div>
     </div>
@@ -71,11 +71,11 @@
         [class.active]="
           data.id == changeIndex && openedStatus == statusMainIndex
         "
-        [ngStyle]="{ color: (item.statusValue.id | statusPipe) }"
+        [ngStyle]="{ color: (item.statusValue.id | statusPipe : 'color') }"
         class="switch_statuses"
       >
         <div *ngIf="item.load_repear" class="load-repear-item">L</div>
-        {{ item.statusValue.name }}
+        {{ item.statusString }}
 
         <div
           *ngIf="item.load_count"
