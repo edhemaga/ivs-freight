@@ -47,7 +47,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 export class Step1Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public applicantId: number;
 
@@ -319,6 +319,15 @@ export class Step1Component implements OnInit, OnDestroy {
 
         this.applicantId = res.personalInfo.applicantId;
       });
+
+    if (this.selectedMode === 'REVIEW_MODE') {
+      this.applicantActionsService
+        .getApplicantById(1)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          console.log(res);
+        });
+    }
   }
 
   public get previousAddresses(): FormArray {

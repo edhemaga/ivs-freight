@@ -277,6 +277,7 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [filledCorrectly]="formStatus === 'VALID'"
+    [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

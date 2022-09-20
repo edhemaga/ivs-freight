@@ -608,6 +608,7 @@
     [filledCorrectly]="
       educationForm.valid && selectedGrade > -1 && formStatus === 'VALID'
     "
+    [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

@@ -119,4 +119,10 @@ export class ApplicantActionsService {
   ): Observable<object> {
     return this.applicantService.apiApplicantDriverrightsPut(data);
   }
+
+  /* BACKEND GET ACTION FUNCTIONS */
+
+  public getApplicantById(id: number): Observable<ApplicantResponse> {
+    return this.applicantService.apiApplicantIdGet(id);
+  }
 }

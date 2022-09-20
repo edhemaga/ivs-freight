@@ -870,7 +870,11 @@
 >
   <app-applicant-next-back-btn
     [nextStep]="true"
-    [filledCorrectly]="personalInfoForm.valid"
+    [mode]="selectedMode"
+    [filledCorrectly]="
+      selectedMode === 'APPLICANT_MODE' && personalInfoForm.valid
+    "
+    [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && false"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

@@ -380,6 +380,7 @@
     [nextStep]="true"
     [lastStep]="true"
     [filledCorrectly]="mvrAuthorizationForm.valid && signature"
+    [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

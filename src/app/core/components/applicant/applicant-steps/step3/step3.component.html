@@ -322,6 +322,7 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [filledCorrectly]="permitForm.valid && formStatus === 'VALID'"
+    [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

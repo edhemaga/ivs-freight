@@ -6,7 +6,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { ApplicantRoutingModule } from './applicant-routing.module';
 
-import { ReviewFeedbackService } from './state/services/review-feedback.service';
+import { ApplicantActionsService } from './state/services/applicant-actions.service';
+import { ApplicantListsService } from './state/services/applicant-lists.service';
 
 import { ApplicantComponent } from './applicant/applicant.component';
 import { ApplicantHeaderComponent } from './applicant-header/applicant-header.component';
@@ -84,6 +85,6 @@ import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
     ApplicantSignaturePadComponent,
     ApplicantReviewFeedbackComponent,
   ],
-  providers: [ReviewFeedbackService],
+  providers: [ApplicantActionsService, ApplicantListsService],
 })
 export class ApplicantModule {}

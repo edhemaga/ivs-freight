@@ -262,6 +262,7 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [filledCorrectly]="disclosureReleaseForm.valid"
+    [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>
