@@ -28,7 +28,10 @@ export class TrailerDetailsCardComponent
   @Input() trailer: TrailerResponse | any;
   @Input() templateCard: boolean = false;
   public note: FormControl = new FormControl();
-  public toggler: boolean = false;
+  public titleNote: FormControl = new FormControl();
+  public registrationNote: FormControl = new FormControl();
+  public inspectionNote: FormControl = new FormControl();
+  public toggler: boolean[] = [];
   public dataEdit: any;
   public toggleOwner: boolean = true;
   public trailerDropDowns: any[] = [];
@@ -61,8 +64,9 @@ export class TrailerDetailsCardComponent
       .subscribe((item) => item);
   }
   /**Function for toggle page in cards */
-  public toggleResizePage(value: boolean) {
-    this.toggler = value;
+  /**Function for toggle page in cards */
+  public toggleResizePage(value: number, indexName: string) {
+    this.toggler[value + indexName] = !this.toggler[value + indexName];
   }
   /**Function for dots in cards */
   public initTableOptions(): void {

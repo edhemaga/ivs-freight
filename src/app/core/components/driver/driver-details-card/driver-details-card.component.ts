@@ -88,6 +88,7 @@ export class DriverDetailsCardComponent
   public dataTestCard: any;
   public driverObject: any;
   private destroy$ = new Subject<void>();
+  public showMoreEmployment: boolean;
   barChartConfig: any = {
     dataProperties: [
       {
