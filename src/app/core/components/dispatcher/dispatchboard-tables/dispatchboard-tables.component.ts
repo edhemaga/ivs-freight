@@ -112,7 +112,7 @@ export class DispatchboardTablesComponent implements OnInit {
   checkForEmpty: string = '';
 
   @Input() set _dData(value) {
-    console.log("GET DATA INSIDE LIST");
+    console.log('GET DATA INSIDE LIST');
     console.log(value);
     // value.dispatches = value.dispatches.map((item) => {
     //   if( !item.hoursOfService ){
@@ -123,7 +123,7 @@ export class DispatchboardTablesComponent implements OnInit {
 
     //   return item;
     // });
-    this.dData = JSON.parse(JSON.stringify(value))
+    this.dData = JSON.parse(JSON.stringify(value));
   }
 
   @Input() dDataIndx: number;
@@ -135,19 +135,18 @@ export class DispatchboardTablesComponent implements OnInit {
   driverList: any[];
   __change_in_proggress: boolean = false;
 
-
   @Input() set smallList(value) {
     const newTruckList = JSON.parse(JSON.stringify(value.trucks));
     this.truckList = newTruckList.map((item) => {
       item.name = item.truckNumber;
-      item.colorD = this.colorPipe.transform("truck", item.truckType.id);
+      item.colorD = this.colorPipe.transform('truck', item.truckType.id);
       return item;
     });
 
     const newTrailerList = JSON.parse(JSON.stringify(value.trailers));
     this.trailerList = newTrailerList.map((item) => {
       item.name = item.trailerNumber;
-      item.colorD = this.colorPipe.transform("trailer", item.trailerType.id);
+      item.colorD = this.colorPipe.transform('trailer', item.trailerType.id);
       return item;
     });
 
@@ -263,18 +262,23 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
   addStatus(e) {
+    console.log(e);
+
     if (e) {
-      this.updateOrAddDispatchBoardAndSend(
-        'status',
-        e.statusValue.name,
-        this.statusOpenedIndex
-      );
+      if ([7, 8, 9, 4, 10, 6].includes(e.statusValue.id)) {
+        this.dData.dispatches[this.statusOpenedIndex].status = e;
+        this.showAddAddressField = this.statusOpenedIndex;
+      } else {
+        this.updateOrAddDispatchBoardAndSend(
+          'status',
+          e.statusValue.name,
+          this.statusOpenedIndex
+        );
+      }
     }
 
     this.statusOpenedIndex = -1;
   }
-
-
 
   openIndex(indx: number) {
     this.statusOpenedIndex = indx;
@@ -389,7 +393,9 @@ export class DispatchboardTablesComponent implements OnInit {
 
     const dataId = oldData.id;
     let oldUpdateData: CreateDispatchCommand | UpdateDispatchCommand = {
-      status: oldData.status ? (oldData.status?.statusValue.name as DispatchStatus) : 'Off',
+      status: oldData.status
+        ? (oldData.status?.statusValue.name as DispatchStatus)
+        : 'Off',
       order: oldData.order,
       truckId: oldData.truck ? oldData.truck?.id : null,
       trailerId: oldData.trailer ? oldData.trailer?.id : null,

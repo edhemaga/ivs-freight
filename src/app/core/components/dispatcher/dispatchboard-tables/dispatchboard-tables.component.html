@@ -3,7 +3,7 @@
   cdkDropList
   (cdkDropListDropped)="dropList($event)"
 >
-<div
+  <div
     *ngIf="__change_in_proggress"
     @iconAnimation
     class="loadingItem goTop"
@@ -638,6 +638,8 @@
                   [statusMainIndex]="rowIndex"
                   [statusTypes]="'dispatch'"
                   [withStatusAgo]="true"
+                  [nextStopType]="item.nextStopType"
+                  [currentStopType]="item.currentStopType"
                 ></app-ta-status-switch>
               </div>
             </div>

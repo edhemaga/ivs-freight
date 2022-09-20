@@ -17,7 +17,7 @@
     >
       <div
         [class.withAgo]="withStatusAgo"
-        [ngStyle]="{ color: (status.statusValue.id | statusPipe : 'color') }"
+        [ngStyle]="{ color: (status.statusValue.id | statusPipe : currentStopType) }"
         class="switch_statuses"
       >
         {{status.statusString}}
@@ -71,7 +71,7 @@
         [class.active]="
           data.id == changeIndex && openedStatus == statusMainIndex
         "
-        [ngStyle]="{ color: (item.statusValue.id | statusPipe : 'color') }"
+        [ngStyle]="{ color: (item.statusValue.id | statusPipe : nextStopType) }"
         class="switch_statuses"
       >
         <div *ngIf="item.load_repear" class="load-repear-item">L</div>

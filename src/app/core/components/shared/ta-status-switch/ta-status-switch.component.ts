@@ -14,6 +14,11 @@ import { StatusPipePipe } from '../../../pipes/status-pipe.pipe';
 import { DispatcherStoreService } from '../../dispatcher/state/dispatcher.service';
 import { ChangeDetectorRef } from '@angular/core';
 
+export interface IDispatchModel {
+  id: number;
+  name: string;
+}
+
 @Component({
   selector: 'app-ta-status-switch',
   templateUrl: './ta-status-switch.component.html',
@@ -31,7 +36,12 @@ import { ChangeDetectorRef } from '@angular/core';
   ],
 })
 export class TaStatusSwitchComponent implements OnInit {
-  @Input() status: { statusValue: { id: number, name: string }, statusString: string } ;
+  @Input() status: {
+    statusValue: IDispatchModel;
+    statusString: string;
+  };
+  @Input() nextStopType: IDispatchModel;
+  @Input() currentStopType: IDispatchModel;
   @Input() dispatchboardId: number;
   @Input() statusDate: Date = new Date();
   private destroy$ = new Subject<void>();
@@ -54,13 +64,12 @@ export class TaStatusSwitchComponent implements OnInit {
   constructor(
     private statusPipe: StatusPipePipe,
     private cdr: ChangeDetectorRef,
-    private dss: DispatcherStoreService,
+    private dss: DispatcherStoreService
   ) {}
 
   ngOnInit(): void {
-
-    console.log("WHAT IS STATUS");
-    console.log(this.status);
+    console.log('WHAT IS STATUS');
+    console.log(this.nextStopType);
     let status_time = moment(new Date(this.statusDate).getTime()).format(
       'YYYY-MM-DD HH:mm'
     );
@@ -71,27 +80,23 @@ export class TaStatusSwitchComponent implements OnInit {
     this.changedStatusLoadCount = this.statusLoadCount;
   }
 
-
-
   public openMainIndex(): void {
-   this.openIndex.emit(this.statusMainIndex);
+    this.openIndex.emit(this.statusMainIndex);
   }
 
-  onClose(){
+  onClose() {
     this.openIndex.emit(-1);
   }
 
   public setStatus(status, indx): void {
-
-    console.log("STATUS", status, indx);
+    console.log('STATUS', status, indx);
     this.changeStatus.emit(status);
   }
 
-  public updateStatusFilter() {
-  }
+  public updateStatusFilter() {}
 
-  public openPopover(t2){
-    t2.open({data: this.possibleNextStatuses});
+  public openPopover(t2) {
+    t2.open({ data: this.possibleNextStatuses });
     this.openMainIndex();
   }
 
