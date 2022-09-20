@@ -78,6 +78,9 @@ export function dropActionNameDriver(any: any, action: string) {
   if (any.type === 'activate-item') {
     dropAction = 'activate-item';
   }
+  if (any.type === 'deactivate-item') {
+    dropAction = 'deactivate-item';
+  }
   return dropAction;
 }
 export function dropActionNameTrailerTruck(any: any, action: string) {

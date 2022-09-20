@@ -303,9 +303,7 @@
             (classOfEquipmentArray.length > 0 &&
               classOfEquipmentHelperIndex !== 0 &&
               i === 0) ||
-            (classOfEquipmentHelperIndex === 0 && i === 1) ||
-            (i === classOfEquipmentHelperIndex + 1 &&
-              selectedClassOfEquipmentIndex > -1)
+            (classOfEquipmentHelperIndex === 0 && i === 1)
           "
         >
           <div class="d-flex align-items-center vehicle-title-box">
@@ -339,6 +337,7 @@
             </div>
             <div class="d-flex align-items-center trailer-box">
               <svg-icon
+                *ngIf="classOfEquipment.trailerTypeImageLocation"
                 class="icon"
                 [src]="
                   'assets/svg/common/trailers/' +

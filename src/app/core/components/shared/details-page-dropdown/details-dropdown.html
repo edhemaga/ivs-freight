@@ -8,6 +8,7 @@
   [ngClass]="{ 'active-drop': dropDownActive === id }"
   popoverClass="details-dropdown-popover {{customClassDropDown}}"
   triggers="manual"
+  [container]="'body'"
   (hidden)="dropDownActive = -1"
   container="body"
 >

@@ -10,7 +10,7 @@
     (changeEvent)="onChangeShipper($event)"
   >
     <div class="repair-information-wrapper">
-      <div class="repair-information-item">
+      <div class="repair-information-item" *ngIf="shipper?.phone">
         <span
         tooltipBackground="#6c6c6c"
         ngbTooltip
@@ -26,7 +26,7 @@
         <app-ta-copy [copyValue]="shipper?.phone"></app-ta-copy>
 
       </div>
-      <div class="repair-information-item">
+      <div class="repair-information-item" *ngIf="shipper?.email">
         <span
         tooltipBackground="#6c6c6c"
         ngbTooltip

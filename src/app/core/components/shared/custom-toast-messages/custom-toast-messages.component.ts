@@ -187,14 +187,13 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     private DetailsDataService: DetailsDataService,
   ) {
     super(toastrService, toastPackage);
-    this.httpRequest = this.toastPackage.config.payload.httpRequest;
-    this.next = this.toastPackage.config.payload.next;
+    this.httpRequest = this.toastPackage.config.payload ? this.toastPackage.config.payload?.httpRequest : '';
+    this.next =  this.toastPackage.config.payload ? this.toastPackage.config.payload.next : '';
     this.toastrType = this.toastPackage.toastType;
   }
 
   ngOnInit(): void {
     this.createTitleBasedOnHttpRequest();
-
 
     this.DetailsDataService.leftSideMenuChanges
       .pipe(takeUntil(this.destroy$))
@@ -234,7 +233,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         this.actionTitle = this.toastrType == 'toast-error' ? 'LOAD' : 'LOADED';
       break;
       case 'PUT':
-        this.actionTitle = this.toastrType == 'toast-error' ? 'REMOVE' : 'REMOVED';
+        //this.actionTitle = this.toastrType == 'toast-error' ? 'REMOVE' : 'REMOVED';
+        this.actionTitle = this.toastrType == 'toast-error' ? 'UPDATE' : 'UPDATED';
       break;
       case 'DELETE':
         this.actionTitle = this.toastrType == 'toast-error' ? 'DELETE' : 'DELETED';
@@ -244,9 +244,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
     switch (this.actionType) {
       case 'ACCOUNT':
-        if ( this.httpRequest.method == 'PUT' ) {
-          this.actionTitle = this.toastrType == 'toast-error' ? 'UPDATE' : 'UPDATED';
-        }
         let accName = this.httpRequest.body?.name ? this.httpRequest.body.name : '';
         if (!accName){
           accName = this.DetailsDataService.mainData?.name;
@@ -263,8 +260,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         }
 
       if ( this.httpRequest.method == 'PUT' ){
-        this.actionTitle = this.toastrType == 'toast-error' ? 'UPDATE' : 'UPDATED';
-
         if ( apiEndPoint.indexOf('status') > -1 ) {
 
           if ( active == 1 ) {
@@ -530,9 +525,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
           toDoName = this.DetailsDataService.mainData?.title;
         }
 
-        if ( this.httpRequest.method == 'PUT' ){
-          this.actionTitle = this.toastrType == 'toast-error' ? 'UPDATE' : 'UPDATED';
-        }
         this.message = toDoName;  
       break;
       case 'COMMENT' : 

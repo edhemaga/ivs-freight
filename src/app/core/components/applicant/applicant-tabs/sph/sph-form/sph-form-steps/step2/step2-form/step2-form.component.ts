@@ -6,7 +6,9 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
+  OnChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -34,17 +36,23 @@ import { AddressEntity } from 'appcoretruckassist';
   templateUrl: './step2-form.component.html',
   styleUrls: ['./step2-form.component.scss'],
 })
-export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SphStep2FormComponent
+  implements OnInit, AfterViewInit, OnDestroy, OnChanges
+{
   private destroy$ = new Subject<void>();
   @ViewChild(TaInputRadiobuttonsComponent)
   component: TaInputRadiobuttonsComponent;
 
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
+  @Input() markFormInvalid?: boolean;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
+  @Output() formStatusEmitter = new EventEmitter<any>();
+  @Output() markInvalidEmitter = new EventEmitter<any>();
+  @Output() lastFormValuesEmitter = new EventEmitter<any>();
 
   public accidentForm: FormGroup;
 
@@ -83,11 +91,6 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
     private formService: FormService
   ) {}
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   ngOnInit(): void {
     this.createForm();
 
@@ -119,6 +122,26 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.hazmatSpillRadios = this.component.buttons;
+
+    this.accidentForm.statusChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.formStatusEmitter.emit(res);
+      });
+
+    this.accidentForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.lastFormValuesEmitter.emit(res);
+      });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.markFormInvalid?.currentValue) {
+      this.inputService.markInvalid(this.accidentForm);
+
+      this.markInvalidEmitter.emit(false);
+    }
   }
 
   private createForm(): void {
@@ -207,6 +230,11 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.accidentForm.reset();
 
     this.formService.resetForm(this.accidentForm);
+
+    this.accidentForm.patchValue({
+      fatalities: 0,
+      injuries: 0,
+    });
   }
 
   public onSaveEditedAccident(): void {
@@ -255,5 +283,10 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.accidentForm.reset();
 
     this.subscription.unsubscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
