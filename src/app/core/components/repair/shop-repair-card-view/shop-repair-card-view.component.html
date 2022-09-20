@@ -3,8 +3,8 @@
     [cardDetailsDate]="shopResponse?.createdAt | formatDateP"
     [tooltipNext]="'Next Repair'"
     [tooltipPrevious]="'Previous Repair'"
-    [searchInputName]="'Search Repair'"
-    [searchName]="'Pinned Shop'"
+    [searchInputName]="'Search Repair Shop'"
+    [searchName]="'Listed to Favourites'"
     [options]="shopsDropdowns"
     (selectValue)="onSelectedShop($event)"
     (changeEvent)="onChangeShop($event)"
@@ -16,23 +16,25 @@
           class="repair-icon"
           src="assets/svg/common/ic_phone.svg"
         ></svg-icon>
-        <p class="repair-value">
-          {{ shopResponse?.phone | formatPhoneP }}
-        </p>
+       
+          <app-ta-copy [copyValue]="shopResponse?.phone"></app-ta-copy>
+         
+      
       </div>
-      <div class="repair-information-item">
+      <div class="repair-information-item" *ngIf="shopResponse?.email">
         <svg-icon
           class="repair-icon"
           src="assets/svg/common/ic_email.svg"
         ></svg-icon>
-        <p class="repair-value">{{ shopResponse?.email }}</p>
+       <app-ta-copy [copyValue]="shopResponse?.email"></app-ta-copy>
       </div>
       <div class="repair-information-item">
         <svg-icon
           class="repair-icon"
           src="assets/svg/common/ic_address.svg"
         ></svg-icon>
-        <p class="repair-value">{{ shopResponse?.address?.address }}</p>
+      
+        <app-ta-copy [copyValue]=" shopResponse?.address?.address"></app-ta-copy>
       </div>
     </div>
   </app-ta-details-header-card>
@@ -46,7 +48,7 @@
         [isCardOpen]="true"
       >
         <div class="working-hours-container" *ngIf="shopResponse?.openHours">
-          <div class="open-now-wrapper">
+          <div class="open-now-wrapper" *ngIf="shopResponse?.openHoursToday">
             <div class="open-now-icon-text">
               <div class="open-header">Open Now</div>
               <svg-icon
@@ -54,23 +56,23 @@
                 src="assets/svg/common/ic_pulse_circle.svg"
               ></svg-icon>
             </div>
-            <div *ngIf="shopResponse?.openHoursToday" class="open-time">
+            <div  class="open-time">
               {{ shopResponse?.openHoursToday }}
             </div>
           </div>
           <div class="open-hours-wrapper">
-            <div class="working-days">
+            <div class="working-days" *ngIf="shopResponse?.openHours[1]?.startTime">
               <div class="open-header">Monday - Friday</div>
               <div class="open-working-days-value">
-                {{ shopResponse.openHours[1].startTime }} AM -
-                {{ shopResponse.openHours[1].endTime }} PM
+                {{ shopResponse?.openHours[1]?.startTime }} AM -
+                {{ shopResponse?.openHours[1]?.endTime }} PM
               </div>
             </div>
-            <div class="working-days">
+            <div class="working-days" *ngIf="shopResponse?.openHours[5]?.startTime ">
               <div class="open-header">Saturday</div>
               <div class="open-working-days-value">
-                {{ shopResponse?.openHours[5].startTime }} AM -
-                {{ shopResponse.openHours[5].endTime }} PM
+                {{ shopResponse?.openHours[5]?.startTime }} AM -
+                {{ shopResponse?.openHours[5]?.endTime }} PM
               </div>
             </div>
           </div>
@@ -78,8 +80,8 @@
             <div class="open-header">Sunday</div>
             <div class="open-working-days-value">
               {{
-                shopResponse.openHours[0].startTime
-                  ? shopResponse.openHours[0].startTime
+                shopResponse?.openHours[0]?.startTime
+                  ? shopResponse?.openHours[0]?.startTime
                   : "Closed"
               }}
             </div>
@@ -97,7 +99,7 @@
         <div class="service-container">
           <div
             *ngFor="
-              let service of shopResponse.serviceTypes;
+              let service of shopResponse?.serviceTypes;
               let i = index;
               trackBy: identity
             "

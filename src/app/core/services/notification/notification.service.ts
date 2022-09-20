@@ -31,11 +31,13 @@ export class NotificationService {
   }
 
   public success(message: string, title?: string) {
-    this.toastr.success(message, title, notificationOptions);
+    console.log('--old success toast message')
+    //this.toastr.success(message, title, notificationOptions);
   }
 
   public error(message: string, title?: string, retryStatus?: boolean) {
-    this.toastr.error(message, title, notificationOptions);
+    console.log('--old error toast message')
+    //this.toastr.error(message, title, notificationOptions);
   }
 
   public warning(message: string, title?: string) {
