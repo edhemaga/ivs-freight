@@ -13,10 +13,10 @@ import { TruckMinimalResponse } from './truckMinimalResponse';
 import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { EnumValue } from './enumValue';
 import { DriverMinimalResponse } from './driverMinimalResponse';
-import { LoadStopShortResponse } from './loadStopShortResponse';
 import { LoadShortResponse } from './loadShortResponse';
 import { AddressEntity } from './addressEntity';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
+import { DispatchStatusResponse } from './dispatchStatusResponse';
 
 
 export interface DispatchResponse { 
@@ -31,11 +31,11 @@ export interface DispatchResponse {
     phone?: string | null;
     email?: string | null;
     location?: AddressEntity;
-    status?: EnumValue;
+    status?: DispatchStatusResponse;
     lastStatusDateTime?: string;
-    possibleNextStatuses?: Array<EnumValue> | null;
-    pickup?: LoadStopShortResponse;
-    delivery?: LoadStopShortResponse;
+    currentStopType?: EnumValue;
+    nextStopType?: EnumValue;
+    possibleNextStatuses?: Array<DispatchStatusResponse> | null;
     hoursOfService?: number | null;
     note?: string | null;
     activeLoad?: LoadShortResponse;

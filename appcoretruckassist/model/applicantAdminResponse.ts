@@ -11,14 +11,12 @@
  */
 
 
-export interface LoadRequirementsCommand { 
-    id?: number | null;
-    truckTypeId?: number | null;
-    trailerTypeId?: number | null;
-    doorType?: number | null;
-    suspension?: number | null;
-    trailerLengthId?: number | null;
-    year?: number | null;
-    liftgate?: boolean;
+export interface ApplicantAdminResponse { 
+    id?: number;
+    firstName?: string | null;
+    lastName?: string | null;
+    phone?: string | null;
+    email?: string | null;
+    note?: string | null;
 }
 

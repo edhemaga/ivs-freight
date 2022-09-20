@@ -15,6 +15,7 @@ import { TimeType } from './timeType';
 
 
 export interface LoadStopCommand { 
+    id?: number | null;
     stopType?: LoadStopType;
     stopOrder?: number;
     shipperId?: number;
@@ -23,8 +24,14 @@ export interface LoadStopCommand {
     timeType?: TimeType;
     timeFrom?: string | null;
     timeTo?: string | null;
+    arrive?: string | null;
+    depart?: string | null;
     legMiles?: number | null;
+    legHours?: number | null;
+    legMinutes?: number | null;
     totalLegMiles?: number | null;
+    totalLegHours?: number | null;
+    totalLegMinutes?: number | null;
     items?: Array<LoadStopItemCommand> | null;
 }
 

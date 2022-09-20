@@ -54,6 +54,10 @@ export interface BrokerResponse {
     invoiceAgeingGroupTwo?: InvoiceAgeingResponse;
     invoiceAgeingGroupThree?: InvoiceAgeingResponse;
     invoiceAgeingGroupFour?: InvoiceAgeingResponse;
+    daysToPay?: number | null;
+    miles?: number | null;
+    pricePerMile?: number | null;
+    revenue?: number | null;
     createdAt?: string;
     updatedAt?: string;
     loads?: Array<LoadResponse> | null;
