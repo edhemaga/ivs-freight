@@ -17,10 +17,9 @@
       />
     </div>
     <div
-      class="d-flex justify-content-between"
-      [ngStyle]="{ padding: '0px 6px' }"
+      class="slider-container"
     >
-      <div class="d-flex align-items-center">
+
         <app-ta-ngx-slider
           *ngIf="!showUploadZone"
           [sliderTemplate]="'logo-change'"
@@ -30,10 +29,7 @@
           (onUserValueChange)="zooming($event)"
         ></app-ta-ngx-slider>
 
-        <p class="required-message">Required</p>
-      </div>
-
-      <div class="d-flex buttons-container">
+      <div class="buttons-container">
         <div
           (click)="saveImage()"
           class="save-check"
@@ -42,7 +38,7 @@
           tooltipBackground="#536bc2"
           position="top"
         >
-          <svg-icon src="assets/svg/common/ic_save-logo.svg"></svg-icon>
+          <p>CROP</p>
         </div>
         <div
           (click)="onCancel()"
@@ -52,7 +48,7 @@
           tooltipBackground="#6c6c6c"
           position="top"
         >
-          <svg-icon src="assets/svg/common/ic_cancel.svg"></svg-icon>
+          <p>CANCEL</p>
         </div>
       </div>
     </div>
