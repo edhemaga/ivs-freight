@@ -8,9 +8,11 @@ table {
 
     tr {
       width: fit-content;
-      height: 32px;
+      height: fit-content;
+      min-height: 32px;
       background: white;
       display: flex;
+      flex-direction: column;
       border-radius: 3px;
       padding: 2px;
       transition: margin-bottom 0.25s;
@@ -75,8 +77,8 @@ table {
           }
 
           .pickup-delivery-location-container {
-            .date-time-container{
-              .time{
+            .date-time-container {
+              .time {
                 visibility: visible !important;
               }
             }
@@ -558,7 +560,7 @@ table {
                 border-radius: 50px;
               }
 
-              .user-avatar-no-img{
+              .user-avatar-no-img {
                 width: 18px;
                 height: 18px;
                 border-radius: 50%;
@@ -589,9 +591,9 @@ table {
               }
             }
 
-            .user-invited{
-              background: #FFA72610 !important;
-              color: #FFA726 !important;
+            .user-invited {
+              background: #ffa72610 !important;
+              color: #ffa726 !important;
             }
 
             // NAME LINK
@@ -1175,10 +1177,10 @@ table {
               font-weight: bold;
             }
 
-            .special-count{
+            .special-count {
               font-size: 17px !important;
               font-weight: bold !important;
-              background: #EFC725;
+              background: #efc725;
             }
 
             .pickup-count {
@@ -1206,14 +1208,15 @@ table {
                 }
               }
 
-              .date-time-container{
+              .date-time-container {
                 display: flex;
                 align-items: center;
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
 
-                .date, .time{
+                .date,
+                .time {
                   font-size: 10px;
                   font-weight: bold;
                   color: #919191;
@@ -1226,7 +1229,7 @@ table {
                   }
                 }
 
-                .time{
+                .time {
                   visibility: hidden;
                   margin-left: auto;
                 }
@@ -1234,10 +1237,11 @@ table {
             }
 
             // STATUS COLUMN
-            .status-container{
+            .status-container {
               cursor: pointer;
 
-              .status, .status-time{
+              .status,
+              .status-time {
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -1247,22 +1251,22 @@ table {
                 width: 100%;
               }
 
-              .status{
+              .status {
                 user-select: none;
                 height: 14px;
                 line-height: 14px;
                 font-size: 11px;
                 font-weight: 900;
-                color: #508F91;
+                color: #508f91;
               }
 
-              .status-time{
+              .status-time {
                 font-size: 10px;
                 font-weight: bold;
                 color: #919191;
                 height: 12px;
                 line-height: 12px;
-                
+
                 &::selection {
                   color: #919191;
                   background: #91919120;
@@ -1756,6 +1760,41 @@ table {
             }
           }
         }
+      }
+
+      // Roadside Inspection Row Dropdown
+      .roadside-inspection-row-dropdown {
+        width: 100%;
+        height: fit-content;
+        max-height: 0px;
+        overflow: hidden;
+        transition: 0.25s ease-in-out;
+
+        .roadside-inspection-border-container{
+          height: 2px;
+          width: 100%;
+          padding: 0 10px;
+
+          .roadside-inspection-border{
+            width: 100%;
+            height: 100%;
+            border-radius: 1px;
+            background: #F3F3F3;
+          }
+        }
+        
+
+        .roadside-inspection-content{
+          width: 100%;
+          height: 240px;
+          padding: 6px;
+          transition: height 0.25s ease-in-out;
+        }
+      }
+
+      .roadside-inspection-active{
+        max-height: 1000px;
+        transition: 0.25s ease-in-out;
       }
     }
 

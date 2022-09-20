@@ -8,6 +8,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { RepairShopResponse } from 'appcoretruckassist';
+import { card_component_animation } from '../../../shared/animations/card-component.animations';
 
 @Component({
   selector: 'app-shop-repair-details-item',
@@ -15,6 +16,7 @@ import { RepairShopResponse } from 'appcoretruckassist';
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./shop-repair-details-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [card_component_animation('showHideCardBody', '0px', '0px')],
 })
 export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
   @Input() shopData: RepairShopResponse | any = null;
@@ -22,6 +24,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
   public reviewsRepair: any = [];
   public repairShopLikes: number;
   public repairShopDislike: number;
+  public showRepairItems: boolean[] = [];
   constructor() {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.shopData?.currentValue != changes.shopData?.previousValue) {
@@ -85,6 +88,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
       };
     });
   }
+
   public changeReviewsEvent(reviews: { data: any[]; action: string }) {
     this.reviewsRepair = [...reviews.data];
     // TODO: API CREATE OR DELETE

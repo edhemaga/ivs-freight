@@ -21,6 +21,10 @@ const routes: Routes = [
           ),
         resolve: {
           company: companySettingsResolver,
+          parking: ParkingResolver,
+          office: cOfficeResolver,
+          terminal: TerminalResolver,
+          companyrepairshop: companyRepairShopResolver,
         },
         data: { title: 'Company' },
       },

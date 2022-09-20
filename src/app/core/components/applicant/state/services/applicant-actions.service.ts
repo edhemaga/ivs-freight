@@ -44,14 +44,16 @@ export class ApplicantActionsService {
 
   public verifyApplicant(
     data: VerifyApplicantCommand
-  ): Observable<ApplicantResponse> {
-    return this.applicantService.apiApplicantVerifyPost(data);
+  ): Observable<any> {
+    /* return this.applicantService.apiApplicantVerifyPost(data); */
+    return;
   }
 
   public acceptApplicant(
     data: AcceptApplicationCommand
   ): Observable<ApplicantResponse> {
-    return this.applicantService.apiApplicantAcceptPost(data);
+    /* return this.applicantService.apiApplicantAcceptPost(data); */
+    return;
   }
 
   public createWorkExperience(
