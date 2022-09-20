@@ -18,7 +18,9 @@ export class DriverInactiveResolver implements Resolve<DriversInactiveState> {
     private driversStore: DriversInactiveStore
   ) {}
   resolve(): Observable<DriversInactiveState | boolean> {
-    return this.driverService.getDrivers(0, 1, 25).pipe(
+    console.log('Poziva se DriverActiveResolver ')
+
+    return this.driverService.getDrivers(0, undefined, undefined, undefined, 1, 25).pipe(
       catchError(() => {
         return of('No drivers data...');
       }),

@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
+
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
@@ -11,7 +15,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
   styleUrls: ['./medical-certificate.component.scss'],
 })
 export class MedicalCertificateComponent implements OnInit {
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public medicalCertificateForm: FormGroup;
 
@@ -37,7 +41,12 @@ export class MedicalCertificateComponent implements OnInit {
     },
   ];
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private router: Router,
+    private applicantActionsService: ApplicantActionsService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -102,6 +111,14 @@ export class MedicalCertificateComponent implements OnInit {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
+      this.onSubmit();
+    }
+  }
+
+  public onSubmit(): void {
+    if (this.medicalCertificateForm.invalid) {
+      this.inputService.markInvalid(this.medicalCertificateForm);
+      return;
     }
   }
 

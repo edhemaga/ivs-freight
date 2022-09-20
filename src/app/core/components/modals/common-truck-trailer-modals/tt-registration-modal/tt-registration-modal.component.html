@@ -26,7 +26,7 @@
             minLength: 5,
             maxLength: 7,
             isRequired: true,
-            autoFocus: editData?.type !== 'edit-registration' ? true : false,
+            autoFocus: editData?.type !== 'edit-registration',
             textTransform: 'uppercase'
           }"
         ></app-ta-input>
@@ -80,9 +80,9 @@
     </div>
     <div class="ta-card-body-overflow-none">
       <app-ta-custom-card
-        [hasCounter]="documents.length ? documents.length : '0'"
+        [hasCounter]="documents.length ? documents.length : 0"
         [cardName]="'Documents'"
-        [isCardOpen]="documents.length"
+        [isCardOpen]="documents.length > 0"
       >
         <app-ta-upload-files
           [files]="documents"

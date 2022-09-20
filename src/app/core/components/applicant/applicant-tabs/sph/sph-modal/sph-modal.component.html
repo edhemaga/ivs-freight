@@ -445,7 +445,7 @@
               <div class="d-flex align-items-center fatalities-injuries-group">
                 <div class="d-flex align-items-center injuries-group">
                   <app-ta-input-arrows
-                    [formControl]="injuriesControl"
+                    formControlName="injuries"
                     [inputConfig]="{
                       name: 'FatalInjuries',
                       type: 'text',
@@ -457,11 +457,13 @@
                     }"
                     [name]="'Injuries #'"
                     [type]="'applicant'"
+                    [elementOrder]="1"
+                    [minimum]="0"
                   ></app-ta-input-arrows>
                 </div>
                 <div class="d-flex align-items-center fatalities-group">
                   <app-ta-input-arrows
-                    [formControl]="fatalitiesControl"
+                    formControlName="fatalities"
                     [inputConfig]="{
                       name: 'FatalInjuries',
                       type: 'text',
@@ -473,6 +475,8 @@
                     }"
                     [name]="'Fatalities #'"
                     [type]="'applicant'"
+                    [elementOrder]="2"
+                    [minimum]="0"
                   ></app-ta-input-arrows>
                 </div>
               </div>

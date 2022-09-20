@@ -18,7 +18,7 @@
             label: 'Shop Name',
             isRequired: true,
             textTransform: 'uppercase',
-            autoFocus: editData?.type !== 'edit' ? true : false,
+            autoFocus: editData?.type !== 'edit',
             minLength: 2,
             maxLength: 64
           }"
@@ -135,7 +135,7 @@
     </div>
     <!-- Repair Shop Servies -->
     <app-ta-custom-card
-      [hasCounter]="pickedServices() ? pickedServices() : '0'"
+      [hasCounter]="pickedServices() ? pickedServices() : 0"
       [cardName]="'Service'"
       [isCardOpen]="true"
     >

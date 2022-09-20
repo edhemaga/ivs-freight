@@ -16,7 +16,7 @@
       valid: !isMultiSelectInputFocus && multiselectItems.length > 0
     }"
     src="assets/svg/common/ic_arrow_down_updated.svg"
-    (click)="toggleMultiselectDropdown($event)"
+    (click)="toggleMultiselectDropdown()"
   ></svg-icon>
   <!-- Multiselect clear all -->
   <div
@@ -97,7 +97,7 @@
   <app-ta-input
     #t2="ngbPopover"
     popoverClass="ta-input-dropdown"
-    [formControl]="getSuperControl"
+    [formControl]="getSuperControl | formControl"
     [inputConfig]="inputConfig"
     [ngbPopover]="taInputDropdownPopover"
     [placement]="['bottom-left']"
@@ -334,7 +334,7 @@
               class="labels-template-logo"
               src="assets/svg/common/ic_dynamic_label.svg"
               appHoverSvg
-              [fill]="option?.code ? option.code : '#b7b7b7'"
+              [fill]="option?.code ? option.code.toString() : '#b7b7b7'"
               [fillHover]="option?.hoverCode ? option.hoverCode : null"
             ></svg-icon>
             <div class="labels-template-vertical-divider"></div>

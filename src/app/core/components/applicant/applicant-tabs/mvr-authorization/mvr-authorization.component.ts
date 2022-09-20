@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
+
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
@@ -12,7 +16,7 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
   styleUrls: ['./mvr-authorization.component.scss'],
 })
 export class MvrAuthorizationComponent implements OnInit {
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public mvrAuthorizationForm: FormGroup;
   public dontHaveMvrForm: FormGroup;
@@ -35,7 +39,12 @@ export class MvrAuthorizationComponent implements OnInit {
     },
   ];
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private router: Router,
+    private applicantActionsService: ApplicantActionsService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -43,10 +52,10 @@ export class MvrAuthorizationComponent implements OnInit {
 
   private createForm(): void {
     this.mvrAuthorizationForm = this.formBuilder.group({
-      isConsentRelease: [false, Validators.required],
-      isPeriodicallyObtained: [false, Validators.required],
-      isInformationCorrect: [false, Validators.required],
-      licenseCheck: [false, Validators.required],
+      isConsentRelease: [false, Validators.requiredTrue],
+      isPeriodicallyObtained: [false, Validators.requiredTrue],
+      isInformationCorrect: [false, Validators.requiredTrue],
+      licenseCheck: [false, Validators.requiredTrue],
 
       firstRowReview: [null],
     });
@@ -143,6 +152,14 @@ export class MvrAuthorizationComponent implements OnInit {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
+      this.onSubmit();
+    }
+  }
+
+  public onSubmit(): void {
+    if (this.mvrAuthorizationForm.invalid) {
+      this.inputService.markInvalid(this.mvrAuthorizationForm);
+      return;
     }
   }
 

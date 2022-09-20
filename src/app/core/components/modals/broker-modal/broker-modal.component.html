@@ -34,7 +34,7 @@
                 label: 'Business Name',
                 isRequired: true,
                 textTransform: 'uppercase',
-                autoFocus: editData?.type !== 'edit' ? true : false,
+                autoFocus: editData?.type !== 'edit',
                 minLength: 2,
                 maxLength: 64
               }"
@@ -399,12 +399,12 @@
       <!-------------------------------- Contact Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
         <app-ta-custom-card
-          [hasCounter]="brokerContacts.length ? brokerContacts.length : '0'"
+          [hasCounter]="brokerContacts.length ? brokerContacts.length : 0"
           [cardName]="'Contact'"
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [hasArrow]="false"
           [isCommentData]="true"
-          [isCardOpen]="brokerContacts.length"
+          [isCardOpen]="brokerContacts.length > 0"
           [hasScrollBody]="brokerContacts.length > 10"
           (onActionEvent)="addBrokerContacts($event)"
         >
@@ -440,7 +440,7 @@
                     minLength: 2,
                     maxLength: 32,
                     textTransform: 'capitalize'
-                  }"
+                    }"
                 ></app-ta-input>
                 <app-ta-input-dropdown
                   formControlName="departmentId"
@@ -530,17 +530,17 @@
       <!-------------------------------- Review Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 3 && editData">
         <app-ta-custom-card
-          [hasCounter]="reviews.length ? reviews.length : '0'"
+          [hasCounter]="reviews.length ? reviews.length : 0"
           [cardName]="'Review'"
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [hasArrow]="false"
           [hasLikeDislike]="true"
           [isCardOpen]="true"
           [isCommentData]="true"
-          [hasBodyData]="reviews.length"
+          [hasBodyData]="reviews.length > 0"
           [hasScrollBody]="reviews.length > 6"
           [disableMultipleReviews]="disableOneMoreReview"
-          (onActionEvent)="createReview($event)"
+          (onActionEvent)="createReview()"
         >
           <div class="no-review-broker" *ngIf="!reviews.length">
             <svg-icon

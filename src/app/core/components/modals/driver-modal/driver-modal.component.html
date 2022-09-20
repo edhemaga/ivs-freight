@@ -34,7 +34,7 @@
               minLength: 2,
               maxLength: 26,
               textTransform: 'capitalize',
-              autoFocus: editData?.type !== 'edit' ? true : false
+              autoFocus: editData?.type !== 'edit'
             }"
           ></app-ta-input>
           <app-ta-input
@@ -517,9 +517,9 @@
                       name: 'Bussines Name',
                       type: 'text',
                       label: 'Bussines Name',
-                      isRequired: owner,
+                      isRequired: !!owner,
                       textTransform: 'capitalize',
-                      isDisabled: !driverForm.get('ein').value || owner
+                      isDisabled: !!(!driverForm.get('ein').value || owner)
                     }"
                   ></app-ta-input>
                 </div>
@@ -529,19 +529,16 @@
         </div>
         <!-- Off duty Location -->
         <app-ta-custom-card
-          [hasCounter]="offDutyLocations.length ? offDutyLocations.length : '0'"
+          [hasCounter]="offDutyLocations.length ? offDutyLocations.length : 0"
           [cardName]="'Off duty Location'"
           [headerSvgEnabled]="true"
           [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
           [tooltipName]="
-            'Location where driver can go
-          off duty and disable GPS tracking.
-          Company parking will be off duty
-          location automatically.'
+            'Location where driver can go off duty and disable GPS tracking. Company parking will be off duty location automatically.'
           "
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-          [isCardOpen]="offDutyLocations.length"
-          [hasBodyData]="offDutyLocations.length"
+          [isCardOpen]="offDutyLocations.length > 0"
+          [hasBodyData]="offDutyLocations.length > 0"
           (onActionEvent)="addOffDutyLocation($event)"
           [animationsDisabled]="false"
         >
@@ -577,7 +574,7 @@
                 <app-ta-input-address
                   formControlName="address"
                   [inputConfig]="{
-                    id: 'Address' + ind,
+                    id: 'NICKNAME' + ind,
                     name: 'Address',
                     type: 'text',
                     textTransform: 'capitalize',
@@ -607,9 +604,9 @@
         <!-- Documents -->
         <div class="ta-card-body-overflow-none">
           <app-ta-custom-card
-            [hasCounter]="documents.length ? documents.length : '0'"
+            [hasCounter]="documents.length ? documents.length : 0"
             [cardName]="'Document'"
-            [isCardOpen]="documents.length"
+            [isCardOpen]="documents.length > 0"
             [animationsDisabled]="false"
           >
             <app-ta-upload-files
@@ -673,7 +670,6 @@
         <app-ta-custom-card
           [cardName]="'Profile Picture'"
           [isCardOpen]="true"
-          [zoneTriger]="true"
         >
           <app-ta-logo-change
             [imageUrl]="this.driverForm.get('avatar').value"
@@ -776,11 +772,10 @@
             <p>PAYROLL</p>
             <app-ta-checkbox
               formControlName="mailNotificationPayroll"
-              [customClass]="'medium'"
+              [customClass]="'medium disabled-valid'"
               [name]="'Email Payroll'"
               [label]="'Email'"
               [disabled]="true"
-              [customClass]="'disabled-valid'"
             ></app-ta-checkbox>
             <app-ta-checkbox
               formControlName="pushNotificationPayroll"
