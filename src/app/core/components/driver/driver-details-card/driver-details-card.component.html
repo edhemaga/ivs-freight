@@ -680,18 +680,18 @@
                         <p
                           class="restriction-item-value"
                           *ngFor="
-                            let endors of cdl.cdlEndorsements;
+                            let endors of cdl?.cdlEndorsements;
                             trackBy: identity
                           "
                         >
-                          <span class="span-value" *ngIf="endors">
+                          <span class="span-value" *ngIf="endors?.length">
                             <span class="value-name">{{ endors?.code }}</span>
-                            <span *ngIf="toggler[i]" class="desc"
+                            <span *ngIf="toggler[i+'description']" class="desc"
                               >- {{ endors?.description }}</span
                             >
                           </span>
                         </p>
-                        <span class="no-driver" *ngIf="endors == ''">None</span>
+                        <span class="no-driver" *ngIf="!endors?.length">None</span>
                       </div>
                     </div>
                   </div>

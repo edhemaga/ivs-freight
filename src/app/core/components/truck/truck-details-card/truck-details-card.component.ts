@@ -28,10 +28,14 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('stackedBarChart', { static: false }) public stackedBarChart: any;
   @ViewChild('payrollChart', { static: false }) public payrollChart: any;
   public noteControl: FormControl = new FormControl();
+  public fhwaNote: FormControl = new FormControl();
+  public registrationNote: FormControl = new FormControl();
+  public titleNote: FormControl = new FormControl();
   public buttonsArrayPerfomance: any;
   public buttonsArrayFuel: any;
   public buttonsArrayRevenue: any;
   public toggler: boolean[] = [];
+  public togglerOwner: boolean;
   public truckDropDowns: any[] = [];
   public dataEdit: any;
   private destroy$ = new Subject<void>();
