@@ -12,6 +12,8 @@
 
 
 export interface LoadPaymentPayResponse { 
+    id?: number;
     pay?: number;
+    payDate?: string;
 }
 
