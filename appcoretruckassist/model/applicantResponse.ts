@@ -34,6 +34,7 @@ export interface ApplicantResponse {
     inviteCodeExpiration?: string | null;
     hired?: boolean;
     favourite?: boolean;
+    note?: string | null;
     personalInfo?: PersonalInfoFeedbackResponse;
     workExperience?: WorkExperienceFeedbackResponse;
     cdlInformation?: CdlFeedbackResponse;
