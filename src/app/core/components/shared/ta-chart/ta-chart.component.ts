@@ -102,7 +102,7 @@ export class TaChartComponent implements OnInit {
 
   setChartOptions() {
     this.lineChartOptions = {
-      responsive: true,
+      responsive: this.chartConfig['dontUseResponsive'] ? false : true,
       maintainAspectRatio: false,
       cutoutPercentage: 90,
       animation: {

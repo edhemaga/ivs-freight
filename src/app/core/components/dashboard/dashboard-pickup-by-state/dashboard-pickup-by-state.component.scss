@@ -209,7 +209,8 @@ $top_state_color: "6278C7", "7A8DCB", "7A8DCB", "A0AFDE", "A0AFDE", "C2CEEC",
     align-items: center;
     margin-bottom: 18px;
 
-    .row {
+    .pickup_main_holder {
+      display: flex;
       width: 100%;
 
       .dashboard_state_map_holder {
