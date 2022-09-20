@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { ApplicantService } from './../../../../../../../appcoretruckassist/api/applicant.service';
+import { ApplicantService } from '../../../../../../../appcoretruckassist';
 
 import {
   VerifyApplicantCommand,
@@ -45,13 +45,13 @@ export class ApplicantActionsService {
   public verifyApplicant(
     data: VerifyApplicantCommand
   ): Observable<ApplicantResponse> {
-    return this.applicantService.apiApplicantVerifyPost(data);
+    return this.applicantService.apiApplicantAdminVerifyPost(data);
   }
 
   public acceptApplicant(
     data: AcceptApplicationCommand
   ): Observable<ApplicantResponse> {
-    return this.applicantService.apiApplicantAcceptPost(data);
+    return this.applicantService.apiApplicantAdminAcceptPost(data);
   }
 
   public createWorkExperience(

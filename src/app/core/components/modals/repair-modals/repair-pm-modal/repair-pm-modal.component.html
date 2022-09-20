@@ -10,7 +10,7 @@
   [isModalValid]="PMform.valid"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="PMform" class="form-container">
+  <form [formGroup]="PMform" class="form-container form-container-without-mb">
     <app-ta-custom-card
       [hasCounter]="activePMs()"
       [hasDivider]="false"

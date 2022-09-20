@@ -9,7 +9,7 @@
   (onTabHeaderChange)="onModalHeaderTabChange($event)"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="loadForm" class="form-container">
+  <form [formGroup]="loadForm" class="form-container form-container-without-mb">
     <div *ngIf="selectedTab === 1" class="m-tab">
       <div class="load-ftl-first-row">
         <div class="ftl-load-status">UNASSIGNED</div>

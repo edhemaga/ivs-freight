@@ -148,7 +148,7 @@
             "
             class="invoice-agein-unlimited"
           >
-          
+
           Avg. <span class="avg-days-invoice">42 Days</span>
         </div>
         </div>
@@ -165,7 +165,7 @@
 
         <app-progress-invoices
           *ngIf="
-            
+
             broker.payTerm.name !== 'Unlimited'
           "
           [invoiceDays]="broker?.invoiceAgeingGroupTwo?.periodOfDays"
@@ -176,7 +176,7 @@
         </app-progress-invoices>
         <app-progress-invoices
           *ngIf="
-           
+
             broker.payTerm.name !== 'Unlimited'
           "
           [invoiceDays]="broker?.invoiceAgeingGroupThree?.periodOfDays"
@@ -187,7 +187,7 @@
         </app-progress-invoices>
         <app-progress-invoices
           *ngIf="
-           
+
             broker.payTerm.name !== 'Unlimited'
           "
           [invoiceDays]="broker?.invoiceAgeingGroupFour?.periodOfDays"
@@ -262,7 +262,6 @@
       <div class="note-cards">
         <app-ta-input-note
           [formControl]="note"
-          [isVisibleSecondDivider]="false"
           [isVisibleArrow]="true"
           [minRows]="1"
           [isVisibleDivider]="false"

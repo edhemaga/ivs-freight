@@ -11,19 +11,18 @@ import {
   phoneFaxRegex,
   vinNumberValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../../services/form/form.service';
-import { NotificationService } from '../../../../services/notification/notification.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-violation-modal',
   templateUrl: './violation-modal.component.html',
   styleUrls: ['./violation-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [FormService, ModalService],
+  providers: [ModalService],
 })
 export class ViolationModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
+
   @Input() editData: any;
 
   public violationForm: FormGroup;
@@ -92,6 +91,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       active: false,
     },
   ];
+  public isSpecialChecksOpen: boolean = true;
 
   public animationObject = {
     value: this.selectedTab,
@@ -112,9 +112,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private modalService: ModalService,
-    private notificationService: NotificationService,
-    private formService: FormService
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -185,14 +183,6 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       bol: [null],
       cargo: [null],
     });
-
-    // this.formService.checkFormChange(this.violationForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public tabChange(event: any): void {

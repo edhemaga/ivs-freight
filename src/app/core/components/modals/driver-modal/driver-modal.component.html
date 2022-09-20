@@ -18,7 +18,11 @@
   <form
     [formGroup]="driverForm"
     class="form-container"
-    [ngClass]="{ 'tab-2': selectedTab === 2 }"
+    [ngClass]="{
+    'tab-2': selectedTab === 2,
+    'form-container-with-note': selectedTab === 1,
+    'form-container-without-mb': selectedTab === 2
+    }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->

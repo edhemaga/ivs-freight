@@ -8,8 +8,8 @@
     align-items: center;
     line-height: 18px;
     padding: 0 6px;
-    margin-top: 6px;
-    margin-bottom: 3px;
+    margin: 4px 0px;
+    height: 26px;
     cursor: pointer;
 
     .note-label {
@@ -40,7 +40,6 @@
       user-select: none;
       position: relative;
       left: 2px;
-      list-style: 15px;
     }
     .rotate {
       transform: rotate(180deg);
@@ -55,7 +54,6 @@
     }
 
     &.active {
-      margin-top: 2.4px;
       .note-label {
         color: #6c6c6c;
       }

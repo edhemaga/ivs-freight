@@ -16,12 +16,13 @@
 
   <form
     [formGroup]="repairShopForm"
-    class="form-container"
-    [ngClass]="
-      selectedTab === 1
-        ? 'form-container-mt-12'
-        : 'row-settings-location-additional'
-    "
+    class="form-container form-container-with-inputs"
+    [ngClass]=" {
+    'form-container-mt-12': selectedTab === 1,
+    'row-settings-location-additional': selectedTab === 2,
+    'form-container-without-mb': selectedTab === 1 && !isServiceCardOpen,
+    'form-container-with-card': selectedTab === 1 && isServiceCardOpen
+    }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
@@ -50,7 +51,7 @@
                       label: 'Shop Name',
                       isRequired: true,
                       textTransform: 'uppercase',
-                      autoFocus: editData?.type !== 'edit' ? true : false,
+                      autoFocus: editData?.type !== 'edit',
                       minLength: 2,
                       maxLength: 64
                     }"
@@ -151,9 +152,10 @@
         </div>
         <!-- Repair Shop Servies -->
         <app-ta-custom-card
-          [hasCounter]="pickedServices() ? pickedServices() : '0'"
+          [hasCounter]="pickedServices() ? pickedServices() : 0"
           [cardName]="'Service'"
           [isCardOpen]="true"
+          (onOpenCard)="isServiceCardOpen = $event"
         >
           <div class="repair-shop-services">
             <div

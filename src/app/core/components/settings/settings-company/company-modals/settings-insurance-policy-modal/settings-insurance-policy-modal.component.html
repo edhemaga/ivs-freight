@@ -7,7 +7,7 @@
   [isModalValid]="insurancePolicyForm.valid"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="insurancePolicyForm" class="form-container">
+  <form [formGroup]="insurancePolicyForm" class="form-container form-container-without-mb">
     <div class="row">
       <div class="col-12">
         <app-ta-input
@@ -18,7 +18,7 @@
             label: 'Producer Name',
             isRequired: true,
             textTransform: 'uppercase',
-            autoFocus: editData?.type !== 'edit' ? true : false,
+            autoFocus: editData?.type !== 'edit',
             minLength: 2,
             maxLength: 64
           }"
@@ -716,9 +716,9 @@
     </div>
     <div class="ta-card-body-overflow-none">
       <app-ta-custom-card
-        [hasCounter]="documents.length ? documents.length : '0'"
+        [hasCounter]="documents.length ? documents.length : 0"
         [cardName]="'Documents'"
-        [isCardOpen]="documents.length"
+        [isCardOpen]="documents.length > 0"
       >
         <app-ta-upload-files
           [files]="documents"

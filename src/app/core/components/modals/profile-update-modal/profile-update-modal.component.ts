@@ -62,7 +62,6 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
   };
 
   public selectedAddress: AddressEntity = null;
-
   public correctPassword: boolean = false;
   public setNewPassword: boolean = false;
   public loadingOldPassword: boolean = false;
@@ -167,7 +166,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       .get('oldPassword')
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
-        if (value) {
+        if (value && value.length >= 8) {
           this.loadingOldPassword = true;
           this.userService
             .validateUserPassword({ password: value })

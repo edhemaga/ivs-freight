@@ -113,6 +113,9 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
   public parkingName: string = null;
 
+  public isFinanceCardOpen: boolean = true;
+  public isParkingCardOpen: boolean = true;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,

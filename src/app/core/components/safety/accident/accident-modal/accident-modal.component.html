@@ -17,7 +17,11 @@
   <form
     [formGroup]="accidentForm"
     class="form-container"
-    [ngClass]="{ 'tab-2': selectedTab !== 1 }"
+    [ngClass]="{
+    'tab-2': selectedTab !== 1,
+    'form-container-without-mb': selectedTab === 1 || !isLocationAndShippingOpen,
+    'form-container-with-card': selectedTab === 2 && isLocationAndShippingOpen
+    }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
@@ -30,7 +34,7 @@
               type: 'text',
               label: 'Report',
               isDisabled: editData?.type === 'edit',
-              autoFocus: editData?.type === 'edit' ? false : true
+              autoFocus: editData?.type!=='edit'
             }"
           ></app-ta-input>
           <app-ta-input
@@ -322,7 +326,7 @@
         <div class="violation-card">
           <app-ta-custom-card
             [cardName]="'Violation'"
-            [isCardOpen]="violations.length"
+            [isCardOpen]="violations.length > 0"
             [hasScrollBody]="violations.length > 10"
           >
             <div
@@ -345,9 +349,9 @@
                       class="violation-category-svg"
                       src="assets/svg/common/ic_crash_indicator.svg"
                     ></svg-icon>
-                    <span lass="violation-category-text">{{
+                    <span class="violation-category-text">{{
                       violation.get("categoryId").value
-                    }}</span>
+                      }}</span>
                   </p>
                   <p class="violation-sw">{{ violation.get("sw").value }}</p>
                   <svg-icon
@@ -380,12 +384,12 @@
 
         <div class="insurance-card">
           <app-ta-custom-card
-            [hasCounter]="insurances.length ? insurances.length : '0'"
+            [hasCounter]="insurances.length ? insurances.length : 0"
             [cardName]="'Insurance'"
             [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
             [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-            [isCardOpen]="insurances.length"
-            [hasBodyData]="insurances.length"
+            [isCardOpen]="insurances.length > 0"
+            [hasBodyData]="insurances.length > 0"
             (onActionEvent)="addInsurance($event)"
           >
             <div
@@ -488,27 +492,25 @@
         </div>
 
         <app-ta-custom-card
-          [hasCounter]="documents.length ? documents.length : '0'"
+          [hasCounter]="documents.length ? documents.length : 0"
           [cardName]="'Documents'"
-          [isCardOpen]="documents.length"
+          [isCardOpen]="documents.length > 0"
         >
           <app-ta-upload-files
             [files]="documents"
             [size]="'large'"
-            [dropZoneConfig]="dropZoneConfigFile"
             (onFileEvent)="onFilesEvent($event)"
           ></app-ta-upload-files>
         </app-ta-custom-card>
 
         <app-ta-custom-card
-          [hasCounter]="media.length ? media.length : '0'"
+          [hasCounter]="media.length ? media.length : 0"
           [cardName]="'Media'"
-          [isCardOpen]="media.length"
+          [isCardOpen]="media.length > 0"
         >
           <app-ta-upload-files
             [files]="media"
             [size]="'large'"
-            [dropZoneConfig]="dropZoneConfigMedia"
             (onFileEvent)="onFilesEvent($event)"
           ></app-ta-upload-files>
         </app-ta-custom-card>
@@ -652,7 +654,8 @@
         </app-ta-custom-card>
         <app-ta-custom-card
           [cardName]="'Location & Shipping info'"
-          [isCardOpen]="true"
+          [isCardOpen]="isLocationAndShippingOpen"
+          (onOpenCard)="isLocationAndShippingOpen = $event"
         >
           <div class="row">
             <div class="col-6">
@@ -690,7 +693,7 @@
               ></app-ta-input-address>
             </div>
           </div>
-          <div class="violation-modal-location-shipping-row-3">
+          <div class="violation-modal-location-shipping-row-3 row-no-mb">
             <app-ta-input-dropdown
               formControlName="shippingCustomer"
               [inputConfig]="{

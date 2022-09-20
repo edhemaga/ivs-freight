@@ -5,7 +5,7 @@ import {
   parkingSlotValidation,
   phoneExtension,
   terminalNameValidation,
-} from './../../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
@@ -113,7 +113,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   public isOfficePhoneExtExist: boolean = false;
   public isParkingPhoneExtExist: boolean = false;
   public isWarehousePhoneExtExist: boolean = false;
-  public isFuelStationPhoneExtExist: boolean = false;
 
   public isDirty: boolean;
 

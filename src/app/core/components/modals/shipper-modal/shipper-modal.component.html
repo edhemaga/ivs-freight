@@ -15,8 +15,10 @@
 
   <form
     [formGroup]="shipperForm"
-    class="form-container"
-    [ngClass]="{ 'tab-2': selectedTab !== 1 }"
+    class="form-container form-container-without-mb"
+    [ngClass]="{
+    'tab-2': selectedTab !== 1
+    }"
   >
     <div
       class="{{ editData ? 'animation-three-tabs' : 'animation-two-tabs' }}"

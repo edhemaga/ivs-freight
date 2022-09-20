@@ -12,7 +12,13 @@
   >
   </app-ta-tab-switch>
 
-  <form [formGroup]="parkingForm" class="form-container form-container-mt-12">
+  <form
+    [formGroup]="parkingForm"
+    class="form-container form-container-mt-12"
+    [ngClass]="{
+    'form-container-without-mb': (selectedTab === 2 && !isFinanceCardOpen) || (selectedTab === 1 && !isParkingCardOpen),
+    'form-container-with-card': (selectedTab === 2 && isFinanceCardOpen) || (selectedTab === 1 && isParkingCardOpen)
+  }">
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 1">
@@ -38,7 +44,7 @@
                     type: 'text',
                     label: 'Parking Name',
                     isRequired: true,
-                    autoFocus: editData?.type !== 'edit' ? true : false,
+                    autoFocus: editData?.type !== 'edit',
                     textTransform: 'capitalize',
                     minLength: 1,
                     maxLength: 64
@@ -139,13 +145,14 @@
         <!-- Parking Slot -->
         <app-ta-custom-card
           [hasCounter]="
-            (parkingSlots | sumArrays) === 0 ? '0' : (parkingSlots | sumArrays)
+            (parkingSlots | sumArrays) === 0 ? 0 : (parkingSlots | sumArrays)
           "
           [cardName]="'Parking Slot'"
           [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
           [isCardOpen]="true"
+          (onOpenCard)="isParkingCardOpen = $event"
         >
-          <div class="row row-mt-20">
+          <div class="row">
             <div class="col-12">
               <app-ta-input
                 formControlName="parkingSlot"
@@ -203,7 +210,7 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Finance'" [isCardOpen]="true">
+        <app-ta-custom-card [cardName]="'Finance'" [isCardOpen]="true" (onOpenCard)="isFinanceCardOpen = $event">
           <div class="row row-mb-10">
             <div class="col-4">
               <app-ta-input

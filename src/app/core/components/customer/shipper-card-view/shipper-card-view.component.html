@@ -24,7 +24,7 @@
         ></svg-icon>
         </span>
         <app-ta-copy [copyValue]="shipper?.phone"></app-ta-copy>
-       
+
       </div>
       <div class="repair-information-item">
         <span
@@ -40,7 +40,7 @@
         ></svg-icon>
         </span>
         <app-ta-copy [copyValue]="shipper?.email"></app-ta-copy>
-      
+
       </div>
       <div class="repair-information-item">
         <svg-icon
@@ -109,7 +109,7 @@
         [tooltipName]="'View in Modal'"
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
         [isCardOpen]="true"
-      > 
+      >
       <div class="charts-template perfomance">
         <app-ta-tab-switch
           [tabs]="shipperTabs"
@@ -123,7 +123,6 @@
       <div class="note-cards">
         <app-ta-input-note
           [formControl]="note"
-          [isVisibleSecondDivider]="false"
           [isVisibleArrow]="true"
           [minRows]="1"
           [isVisibleDivider]="false"

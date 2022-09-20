@@ -3,7 +3,7 @@ import {
   phoneExtension,
   addressValidation,
   addressUnitValidation,
-} from './../../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../../shared/ta-input/ta-input.regex-validations';
 import { Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -77,6 +77,8 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   public isDirty: boolean;
 
   public repairShopName: string = null;
+
+  public isServiceCardOpen: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -173,9 +175,14 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         this.repairShopForm.get('weeklyDay').patchValue(null);
         this.repairShopForm.get('monthlyDay').patchValue(null);
         this.selectedDay = null;
+        break;
       }
       case 'day': {
         this.selectedDay = event;
+        break;
+      }
+      default: {
+        break;
       }
     }
   }

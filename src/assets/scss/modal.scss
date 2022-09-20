@@ -24,8 +24,6 @@ ngb-modal-window[aria-hidden="true"] {
   }
 
   .modal-dialog {
-    max-width: -webkit-max-content !important;
-    max-width: -moz-max-content !important;
     max-width: max-content !important;
 
     &.modal-large-xl {
@@ -37,8 +35,6 @@ ngb-modal-window[aria-hidden="true"] {
     }
 
     @media (min-width: 576px) {
-      max-width: -webkit-max-content !important;
-      max-width: -moz-max-content !important;
       max-width: max-content !important;
       margin: 0.5rem auto !important;
     }
@@ -78,11 +74,9 @@ ngb-modal-window[aria-hidden="true"] {
 
       &.cdk-drag-dragging {
         .modal-header {
-          cursor: -webkit-grabbing;
           cursor: grabbing;
 
           .modal-title {
-            cursor: -webkit-grabbing;
             cursor: grabbing;
           }
         }
@@ -91,10 +85,8 @@ ngb-modal-window[aria-hidden="true"] {
       .modal-header {
         display: flex;
         align-items: center;
-        padding: 12px;
-        padding-bottom: 6px;
+        padding: 12px 12px 6px;
         border: none;
-        cursor: -webkit-grab;
         cursor: grab;
 
         .modal-header-leftside {
@@ -113,7 +105,6 @@ ngb-modal-window[aria-hidden="true"] {
         }
 
         .modal-title {
-          cursor: -webkit-grab;
           cursor: grab;
           font-size: 18px;
           font-weight: 800;
@@ -243,7 +234,6 @@ ngb-modal-window[aria-hidden="true"] {
           outline: none;
           border: none;
           margin: 0;
-          padding: 0;
           border-radius: 2px;
           -webkit-user-select: none;
           -moz-user-select: none;

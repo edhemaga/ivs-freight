@@ -15,8 +15,10 @@
 
   <form
     [formGroup]="brokerForm"
-    class="form-container"
-    [ngClass]="{ 'tab-2': selectedTab !== 1 }"
+    class="form-container form-container-without-mb"
+    [ngClass]="{
+    'tab-2': selectedTab !== 1
+    }"
   >
     <div
       class="{{ editData ? 'animation-three-tabs' : 'animation-two-tabs' }}"
@@ -322,7 +324,7 @@
         </div>
         <app-ta-custom-card [cardName]="'Billing'" [isCardOpen]="true">
           <div
-            class="broker-billing row-mt-20 last-row"
+            class="broker-billing last-row"
             [ngClass]="{
               'row-gap':
                 this.brokerForm.get('creditType').value === 'Enable' &&

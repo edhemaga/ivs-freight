@@ -91,6 +91,7 @@
           width: 16px;
           margin-right: 7px;
           position: relative;
+          bottom: 0.5px;
 
           &.new-position {
             margin-right: 0px;
@@ -125,10 +126,10 @@
 
           background-color: #f3f3f3;
           border-radius: 2px;
-          transition: all 0.3 ease-in-out;
+          transition: all 0.3s ease-in-out;
           cursor: pointer;
           position: relative;
-          left: 6px;
+          left: 3px;
 
           .header-action-text {
             margin: 0;
@@ -150,7 +151,7 @@
           }
 
           &:hover {
-            transition: all 0.3 ease-in-out;
+            transition: all 0.3s ease-in-out;
             background-color: #536bc2;
 
             .header-action-text {
@@ -179,7 +180,7 @@
 
         background-color: #f3f3f3;
         border-radius: 2px;
-        transition: all 0.3 ease-in-out;
+        transition: all 0.3s ease-in-out;
         cursor: pointer;
         position: relative;
 
@@ -196,7 +197,7 @@
         }
 
         &:hover {
-          transition: all 0.3 ease-in-out;
+          transition: all 0.3s ease-in-out;
           background-color: #536bc2;
 
           .header-action-text {

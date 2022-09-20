@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="details-header-data">
-      
+
         <div class="details-header-data-item second">
           <div *ngIf="trailer.color" class="light-green">
             <svg
@@ -64,7 +64,7 @@
           </span>
           <svg-icon src="assets/svg/common/year-truck.svg"></svg-icon>
           <p class="vin-text date">{{ trailer.year }}</p>
-         
+
           <div class="light-green">
             <svg-icon
               class="resize"
@@ -321,7 +321,6 @@
           [isVisibleNote]="true"
           [isVisibleArrow]="true"
           [minRows]="1"
-          [isVisibleSecondDivider]="false"
           [placeholder]="'Write something.'"
           [customClass]="'note-small'"
         ></app-ta-input-note>
@@ -389,7 +388,6 @@
                     <app-ta-input-note
                       [formControl]="registrationNote"
                       [isVisibleDivider]="false"
-                      [isVisibleSecondDivider]="false"
                       [placeholder]="'Write something.'"
                       [customClass]="'note-small'"
                       [isVisibleArrow]="false"
@@ -451,7 +449,6 @@
                     <app-ta-input-note
                       [formControl]="registrationNote"
                       [isVisibleDivider]="false"
-                      [isVisibleSecondDivider]="false"
                       [placeholder]="'Write something.'"
                       [customClass]="'note-small'"
                       [isVisibleArrow]="false"
@@ -530,7 +527,6 @@
                       [placeholder]="'Write something.'"
                       [customClass]="'note-small'"
                       [isVisibleArrow]="false"
-                      [isVisibleSecondDivider]="false"
                       [minRows]="1"
                       [isVisibleDivider]="false"
                       [isVisibleNote]="true"

@@ -12,7 +12,10 @@
   >
   </app-ta-tab-switch>
 
-  <form [formGroup]="truckForm" class="form-container">
+  <form [formGroup]="truckForm" class="form-container" [ngClass]="{
+    'form-container-without-mb': selectedTab === 1,
+    'form-container-with-inputs': selectedTab === 2
+    }">
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 1">
@@ -28,7 +31,7 @@
                 textTransform: 'uppercase',
                 minLength: 1,
                 maxLength: 8,
-                autoFocus: editData?.type !== 'edit' ? true : false
+                autoFocus: editData?.type !== 'edit'
               }"
             ></app-ta-input>
           </div>
@@ -418,7 +421,7 @@
               name: 'Device No',
               type: 'number',
               label: 'Device No.',
-              disabled: true
+              isDisabled: true
             }"
           ></app-ta-input>
         </div>
@@ -426,7 +429,7 @@
         <!-- Seventh Row -->
         <div
           class="truck-additional-three-columns"
-          [ngClass]="{ 'row-mb-12': !truckForm.get('companyOwned').value }"
+          [ngClass]="{ 'row-no-mb': !truckForm.get('companyOwned').value }"
         >
           <app-ta-input
             formControlName="mileage"
@@ -480,7 +483,7 @@
         <!-- Eight Row -->
         <div
           *ngIf="truckForm.get('companyOwned').value"
-          class="truck-additional-two-columns row-mb-12"
+          class="truck-additional-two-columns row-no-mb"
         >
           <app-ta-input
             formControlName="purchaseDate"

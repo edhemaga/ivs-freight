@@ -12,6 +12,7 @@
 
 
 export interface LoadRequirementsCommand { 
+    id?: number | null;
     truckTypeId?: number | null;
     trailerTypeId?: number | null;
     doorType?: number | null;

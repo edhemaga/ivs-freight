@@ -16,7 +16,7 @@
   (onTabHeaderChange)="onModalHeaderTabChange($event)"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="repairOrderForm" class="form-container">
+  <form [formGroup]="repairOrderForm" class="form-container form-container-without-mb">
     <div class="repair-modal-bill-first-row">
       <app-ta-tab-switch
         [tabs]="typeOfRepair"

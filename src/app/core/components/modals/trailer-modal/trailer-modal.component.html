@@ -12,7 +12,13 @@
   >
   </app-ta-tab-switch>
 
-  <form [formGroup]="trailerForm" class="form-container">
+  <form
+    [formGroup]="trailerForm"
+    class="form-container"
+    [ngClass]="{
+    'form-container-without-mb': selectedTab === 1,
+    'form-container-with-inputs': selectedTab === 2
+    }">
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 1">
@@ -434,7 +440,7 @@
           </div>
         </div>
         <!-------------------------------- THIRD ROW -------------------------------->
-        <div class="row last-modal-row">
+        <div class="row row-no-mb">
           <div class="col-12">
             <app-ta-input
               formControlName="insurancePolicy"

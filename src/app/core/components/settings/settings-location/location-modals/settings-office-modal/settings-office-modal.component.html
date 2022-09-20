@@ -14,12 +14,13 @@
 
   <form
     [formGroup]="officeForm"
-    class="form-container"
-    [ngClass]="
-      selectedTab === 1
-        ? 'form-container-mt-12'
-        : 'row-settings-location-additional'
-    "
+    class="form-container form-container-with-inputs"
+    [ngClass]=" {
+    'form-container-mt-12': selectedTab === 1,
+    'form-container-without-mb': selectedTab === 1 && !isDepartmentContactCardOpen,
+    'form-container-with-card': selectedTab === 1 && isDepartmentContactCardOpen,
+    'row-settings-location-additional': selectedTab === 2
+    }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
@@ -47,7 +48,7 @@
                     label: 'Office Name',
                     isRequired: true,
                     textTransform: 'capitalize',
-                    autoFocus: editData?.type !== 'edit' ? true : false,
+                    autoFocus: editData?.type !== 'edit',
                     minLength: 2,
                     maxLength: 64
                   }"
@@ -148,14 +149,15 @@
         <!-- Department Contacts -->
         <app-ta-custom-card
           [hasCounter]="
-            departmentContacts.length ? departmentContacts.length : '0'
+            departmentContacts.length ? departmentContacts.length : 0
           "
           [cardName]="'Department Contact'"
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [hasArrow]="true"
-          [hasBodyData]="departmentContacts.length"
-          [isCardOpen]="departmentContacts.length"
+          [hasBodyData]="departmentContacts.length > 0"
+          [isCardOpen]="departmentContacts.length > 0"
           [hasScrollBody]="departmentContacts.length > 10"
+          (onOpenCard)="isDepartmentContactCardOpen = $event"
           (onActionEvent)="addDepartmentContacts($event)"
         >
           <div

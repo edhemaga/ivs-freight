@@ -15,11 +15,11 @@
   <form
     [formGroup]="terminalForm"
     class="form-container"
-    [ngClass]="
-      selectedTab === 1
-        ? 'form-container-mt-12'
-        : 'row-settings-location-additional'
-    "
+    [ngClass]="{
+    'form-container-mt-12': selectedTab === 1,
+    'row-settings-location-additional': selectedTab === 2,
+    'form-container-with-inputs': selectedTab === 2
+    }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
@@ -47,7 +47,7 @@
                     label: 'Terminal Name',
                     isRequired: true,
                     textTransform: 'capitalize',
-                    autoFocus: editData?.type !== 'edit' ? true : false,
+                    autoFocus: editData?.type !== 'edit',
                     minLength: 1,
                     maxLength: 64
                   }"

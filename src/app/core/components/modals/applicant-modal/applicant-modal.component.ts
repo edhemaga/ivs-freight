@@ -10,7 +10,7 @@ import {Subject, takeUntil} from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
 import {ApplicantTService} from "../../driver/state/applicant.service";
 import {FormService} from "../../../services/form/form.service";
-import {ApplicantResponse} from "../../../../../../appcoretruckassist";
+import {ApplicantAdminResponse, ApplicantResponse} from "../../../../../../appcoretruckassist";
 
 @Component({
   selector: 'app-applicant-modal',
@@ -40,7 +40,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
 
-    if(this.editData.type === 'edit') {
+    if(this.editData?.type === 'edit') {
       this.editApplicant(this.editData.id);
     }
   }
@@ -110,7 +110,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
   }
 
   private resendApplicationEmail(id: number) {
-    this.applicantService.resendApplicantInvite({id}).pipe(takeUntil(this.destroy$)).subscribe({
+    this.applicantService.resendApplicantInviteAdmin({id}).pipe(takeUntil(this.destroy$)).subscribe({
       next: () => {
         this.notificationService.success("Successfully resend email to applicant.", 'Success')
       },
@@ -121,7 +121,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
   }
 
   private updateApplicant(id: number) {
-    this.applicantService.updateApplicant({
+    this.applicantService.updateApplicantAdmin({
       ...this.applicantForm.value,
       id
     }).pipe(takeUntil(this.destroy$)).subscribe({
@@ -135,7 +135,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
   }
 
   private addApplicant() {
-    this.applicantService.addApplicant(this.applicantForm.value).pipe(takeUntil(this.destroy$)).subscribe({
+    this.applicantService.addApplicantAdmin(this.applicantForm.value).pipe(takeUntil(this.destroy$)).subscribe({
       next: () => {
         if(this.addNewApplicant) {
           this.modalService.setModalSpinner({
@@ -159,17 +159,17 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
   }
 
   private editApplicant(id: number) {
-    this.applicantService.getApplicantById(id).pipe(takeUntil(this.destroy$)).subscribe({
-      next:(res: ApplicantResponse) => {
+    this.applicantService.getApplicantByIdAdmin(id).pipe(takeUntil(this.destroy$)).subscribe({
+      next:(res: ApplicantAdminResponse) => {
         this.applicantForm.patchValue({
-          firstName: res.personalInfo.firstName,
-          lastName: res.personalInfo.lastName,
-          phone: res.personalInfo.phone,
-          email: res.personalInfo.email,
-          note: null,
+          firstName: res.firstName,
+          lastName: res.lastName,
+          phone: res.phone,
+          email: res.email,
+          note: res.note,
         })
 
-        this.applicantFullName = res.personalInfo.firstName.concat(' ', res.personalInfo.lastName)
+        this.applicantFullName = res.firstName.concat(' ', res.lastName)
       },
       error: () => {
         this.notificationService.error("Can't load applicant.", 'Error')

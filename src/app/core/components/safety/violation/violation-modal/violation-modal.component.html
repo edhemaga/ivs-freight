@@ -7,14 +7,22 @@
   [disableDelete]="true"
   (action)="onModalAction($event)"
 >
-  <app-tab-switcher
-    (switchClicked)="tabChange($event)"
+
+  <app-ta-tab-switch
     [tabs]="tabs"
-  ></app-tab-switcher>
+    (switchClicked)="tabChange($event)"
+    [type]="'type1-modal-popup'"
+  >
+  </app-ta-tab-switch>
+
   <form
     [formGroup]="violationForm"
     class="form-container"
-    [ngClass]="{ 'tab-2': selectedTab !== 1 }"
+    [ngClass]="{
+    'tab-2': selectedTab !== 1,
+    'form-container-without-mb': selectedTab === 1 || !isSpecialChecksOpen,
+    'form-container-with-card': selectedTab === 2 && isSpecialChecksOpen
+    }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
@@ -320,9 +328,9 @@
         </app-ta-custom-card>
         <div class="violation-card">
           <app-ta-custom-card
-            [hasCounter]="violations.length ? violations.length : '0'"
+            [hasCounter]="violations.length ? violations.length : 0"
             [cardName]="'Violation'"
-            [isCardOpen]="violations.length"
+            [isCardOpen]="violations.length > 0"
             [hasScrollBody]="violations.length > 10"
           >
             <div
@@ -351,9 +359,9 @@
                       class="violation-category-svg"
                       src="assets/svg/common/ic_vehicle_maintenance.svg"
                     ></svg-icon>
-                    <span lass="violation-category-text">{{
+                    <span class="violation-category-text">{{
                       violation.get("categoryId").value
-                    }}</span>
+                      }}</span>
                   </p>
                   <p class="violation-unit">
                     {{ violation.get("unit").value }}
@@ -396,9 +404,9 @@
         </div>
 
         <app-ta-custom-card
-          [hasCounter]="documents.length ? documents.length : '0'"
+          [hasCounter]="documents.length ? documents.length : 0"
           [cardName]="'Documents'"
-          [isCardOpen]="documents.length"
+          [isCardOpen]="documents.length > 0"
         >
           <app-ta-upload-files
             [files]="documents"
@@ -588,9 +596,10 @@
           </div>
         </app-ta-custom-card>
         <app-ta-custom-card
-          [hasCounter]="pickedSpecialChecks() ? pickedSpecialChecks() : '0'"
+          [hasCounter]="pickedSpecialChecks() ? pickedSpecialChecks() : 0"
           [cardName]="'Special Checks'"
-          [isCardOpen]="true"
+          [isCardOpen]="isSpecialChecksOpen"
+          (onOpenCard)="isSpecialChecksOpen = $event"
         >
           <div class="violation-special-checks">
             <div

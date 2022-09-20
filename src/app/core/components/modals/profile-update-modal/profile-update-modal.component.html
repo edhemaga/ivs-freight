@@ -1,7 +1,6 @@
 <app-ta-modal
   [modalTitle]="'Profile Update'"
   [isModalValid]="profileUserForm.valid"
-  [customClass]="'modal-container-M'"
   (action)="onModalAction($event)"
 >
   <app-ta-tab-switch
@@ -13,7 +12,7 @@
 
   <form
     [formGroup]="profileUserForm"
-    class="form-container"
+    class="form-container form-container-without-mb"
     [ngClass]="{ 'tab-2': selectedTab === 2 }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
@@ -138,11 +137,8 @@
               active: profileUserForm.get('createNewPassword').value
             }"
           >
+<!--Before you set new password please confirm current.-->
             <div *ngIf="!setNewPassword" class="profile-update-oldpassword-row">
-              <p class="old-password-text">
-                Before you set new password please confirm current.
-              </p>
-              <div class="old-password-content">
                 <app-ta-input
                   formControlName="oldPassword"
                   [inputConfig]="{
@@ -167,12 +163,8 @@
                     valid: correctPassword
                   }"
                 >
-                  <svg-icon
-                    (click)="onSetNewPassword()"
-                    src="assets/svg/common/ic_confirm.svg"
-                  ></svg-icon>
+                  <p (click)="onSetNewPassword()">Confirm</p>
                 </div>
-              </div>
             </div>
             <div *ngIf="setNewPassword">
               <div class="row row-mb-10">

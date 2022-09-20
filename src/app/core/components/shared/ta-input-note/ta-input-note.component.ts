@@ -5,13 +5,11 @@ import {
   Input,
   OnInit,
   Output,
-  Renderer2,
   Self,
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { card_component_animation } from '../animations/card-component.animations';
-import { input_note_animation } from './ta-input-note.animation';
 import { SharedService } from '../../../services/shared/shared.service';
 
 @Component({
@@ -30,7 +28,6 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   isFocused: any = false;
   saveIntervalStarted: boolean = false;
   @Input() isVisibleDivider: boolean = true;
-  @Input() isVisibleSecondDivider: boolean = true;
   @Input() public animationsDisabled = false;
 
   @Input('isVisibleNote') set isVisibleNote(value: any) {
