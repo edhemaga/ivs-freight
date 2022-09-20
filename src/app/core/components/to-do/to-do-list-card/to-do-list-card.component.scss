@@ -499,6 +499,7 @@
             opacity: 0;
             overflow: hidden;
             transition: all 0.2s ease-in-out;
+            pointer-events: none;
             z-index: 2;
             .user_tooltip_name {
               padding: 0px 2px;
@@ -686,6 +687,14 @@
                 &::selection {
                   color: $bw6-2;
                   background: rgb(108, 108, 108, 0.2);
+                }
+              }
+
+              &:hover{
+                background-color: #3074d3;
+
+                .todo_list_add_comment_text {
+                  color: #fff;
                 }
               }
             }
