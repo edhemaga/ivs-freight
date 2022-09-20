@@ -172,6 +172,14 @@
           box-shadow: 0 0 4px rgb(112 112 112 / 50%);
           border-radius: 4px;
           cursor: grabbing !important;
+
+          .list-top-holder {
+            .assigned_user_hold {
+              .assigned_user_hold_inner {
+                position: static;
+              }
+            }
+          }
         }
       }
 
@@ -469,6 +477,8 @@
         user-select: none;
         .assigned_user_hold_inner {
           display: flex;
+          position: relative;
+          align-items: center;
           margin-right: 4px;
           cursor: pointer;
 
@@ -477,6 +487,39 @@
             height: 28px;
             background-size: contain;
             border-radius: 100%;
+          }
+
+          .user_tooltip_name_hold {
+            position: absolute;
+            left: 32px;
+
+            height: 18px;
+            width: 0px;
+
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.2s ease-in-out;
+            z-index: 2;
+            .user_tooltip_name {
+              padding: 0px 2px;
+              width: max-content;
+
+              font-size: 11px;
+              line-height: 18px;
+              font-weight: 700;
+              color: #fff;
+              text-align: center;
+
+              border-radius: 2px;
+              background-color: #616161;
+            }
+          }
+
+          &:hover {
+            .user_tooltip_name_hold {
+              width: 100px;
+              opacity: 1;
+            }
           }
         }
       }

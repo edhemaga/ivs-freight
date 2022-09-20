@@ -245,15 +245,6 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getTodoList() {
-    this.todoTService
-      .getTodoList()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((resp: TodoListResponse) => {
-        this.updateTodosList(resp.pagination.data);
-      });
-  }
-
   public openModalTodo() {
     this.modalService.openModal(TaskModalComponent, { size: 'small' });
   }
@@ -541,6 +532,8 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
           this.currentChildIndex
         ].id
       );
+      this.newComment = false;
+    } else if (ev['action'] == 'cancel') {
       this.newComment = false;
     }
   }
