@@ -1023,6 +1023,9 @@ export class FilterComponent implements OnInit {
     noSwitching: true
   };
 
+  minValueRange: number = 0;
+  maxValueRange: number = 5000;
+
   @Input() type: string = 'userFilter';
   @Input() icon: string = 'user';
   @Input() subType: string = 'pendingStatus';
@@ -1688,6 +1691,7 @@ export class FilterComponent implements OnInit {
   }
 
   setRangeValue(mod) {
+    console.log(mod);
     if (this.type != 'locationFilter') {
       this.rangeValue = mod;
     } else {

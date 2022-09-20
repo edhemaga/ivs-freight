@@ -25,9 +25,11 @@
       (userChangeEnd)="userChangeEnd($event)"
     ></ngx-slider>
   </div>
-  <div *ngSwitchCase="'range-slider'"  [formGroup]="rangeSliderForm" class="range-slider-holder">
+  <div *ngSwitchCase="'range-slider'"   class="range-slider-holder">
     <div class=" ta-ngx-slider custom-slider-commission {{ customClass }}">
-      <ngx-slider [options]="sliderOptions" formControlName="sliderControl"></ngx-slider>
+      <p>Min value: <input type="number" [(ngModel)]="minValue"></p>
+      <p>Max value: <input type="number" [(ngModel)]="maxValue"></p>
+      <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="sliderOptions"></ngx-slider>
     </div>
   </div>
 </div>
