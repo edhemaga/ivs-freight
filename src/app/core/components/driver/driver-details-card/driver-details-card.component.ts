@@ -35,6 +35,7 @@ import { TruckassistTableService } from '../../../services/truckassist-table/tru
 import { ImageBase64Service } from '../../../utils/base64.image';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 
 @Component({
   selector: 'app-driver-details-card',
@@ -776,7 +777,9 @@ export class DriverDetailsCardComponent
       }
     }
   }
-
+  public onFileAction(action: string) {
+    onFileActionMethods(action);
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

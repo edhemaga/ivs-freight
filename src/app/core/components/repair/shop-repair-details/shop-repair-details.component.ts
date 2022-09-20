@@ -9,11 +9,17 @@ import {
 import { RepairShopResponse } from 'appcoretruckassist';
 import { RepairTService } from '../state/repair.service';
 import { ShopDetailsQuery } from '../state/shop-details-state/shop-details.query';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { ShopDetailsListQuery } from '../state/shop-details-state/shop-details-list-state/shop-details-list.query';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { RepairShopMinimalListStore } from '../state/shop-details-state/shop-minimal-list-state/shop-minimal.store';
+import { RepairShopMinimalListQuery } from '../state/shop-details-state/shop-minimal-list-state/shop-minimal.query';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 @Component({
@@ -27,20 +33,31 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   public shopRepairConfig: any[] = [];
   public repairDrop: any;
+  public repairShopId: number;
+  public repairList: any = this.shopDetailsMinimalQuery.getAll();
+  public currentIndex: number = 0;
+  public repairObject: any;
   constructor(
     private act_route: ActivatedRoute,
     private detailsPageDriverService: DetailsPageService,
     private shopService: RepairTService,
     private router: Router,
     private tableService: TruckassistTableService,
+    private confirmationService: ConfirmationService,
     private notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
-    private shopDetailsQuery: ShopDetailsQuery,
+    private shopDetailsMinimalQuery: RepairShopMinimalListQuery,
     private sumArr: SumArraysPipe,
     private DetailsDataService: DetailsDataService,
+    private sdlq: ShopDetailsListQuery,
+    private dropDownService: DropDownService,
+    private rsmlist: RepairShopMinimalListStore
   ) {}
 
   ngOnInit(): void {
+    this.currentIndex = this.repairList.findIndex(
+      (shop) => shop.id === this.act_route.snapshot.data.shop.id
+    );
     this.initTableOptions();
     this.shopConf(this.act_route.snapshot.data.shop);
     this.tableService.currentActionAnimation
@@ -51,35 +68,51 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
           this.cdRef.detectChanges();
         }
       });
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: Confirmation) => {
+          switch (res.type) {
+            case 'delete': {
+              if (res.template === 'repair-shop') {
+                this.deleteRepairShopById(res.id);
+              }
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        },
+      });
 
     this.detailsPageDriverService.pageDetailChangeId$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
         let query;
-        if (!this.shopDetailsQuery.hasEntity(id)) {
-          query = this.shopService.getRepairShopById(id);
+        if (this.sdlq.hasEntity(id)) {
+          query = this.sdlq.selectEntity(id).pipe(take(1));
         } else {
-          query = this.shopDetailsQuery.selectEntity(id);
+          query = this.shopService.getRepairShopById(id);
         }
-        this.shopService
-          .getRepairShopById(id)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: (res: RepairShopResponse) => {
-              this.shopConf(res);
-              if (this.router.url.includes('shop-details')) {
-                this.router.navigate([`/repair/${res.id}/shop-details`]);
-              }
-              this.notificationService.success(
-                'Shop successfully changed',
-                'Success:'
-              );
-              this.cdRef.detectChanges();
-            },
-            error: () => {
-              this.notificationService.error("Shop can't be loaded", 'Error:');
-            },
-          });
+
+        query.pipe(takeUntil(this.destroy$)).subscribe({
+          next: (res: RepairShopResponse) => {
+            this.shopConf(res);
+            if (this.router.url.includes('shop-details')) {
+              this.router.navigate([`/repair/${res.id}/shop-details`]);
+            }
+            this.notificationService.success(
+              'Shop successfully changed',
+              'Success:'
+            );
+            this.cdRef.detectChanges();
+          },
+          error: () => {
+            this.notificationService.error("Shop can't be loaded", 'Error:');
+          },
+        });
       });
   }
 
@@ -97,31 +130,26 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         minWidth: 60,
       },
       actions: [
-        // {
-        //   title: 'Send Message',
-        //   name: 'dm',
-        //   class: 'regular-text',
-        //   contentType: 'dm',
-        // },
-        // {
-        //   title: 'Print',
-        //   name: 'print',
-        //   class: 'regular-text',
-        //   contentType: 'print',
-        // },
-        // {
-        //   title: 'Deactivate',
-        //   name: 'deactivate',
-        //   class: 'regular-text',
-        //   contentType: 'deactivate',
-        // },
+        {
+          title: 'Print',
+          name: 'print',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: true,
+        },
+
         {
           title: 'Edit',
           name: 'edit',
           svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
           show: true,
         },
-
+        {
+          title: 'Add to favourites',
+          name: 'add-favourites',
+          svg: 'assets/svg/common/ic_star.svg',
+          activate: true,
+          show: true,
+        },
         {
           title: 'Delete',
           name: 'delete-item',
@@ -135,13 +163,53 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
       export: true,
     };
   }
-
+  public dropActionRepair(event: any) {
+    this.dropDownService.dropActionsHeaderRepair(
+      event,
+      this.repairObject,
+      event.id
+    );
+  }
   /**Function return id */
   public identity(index: number, item: any): number {
     return item.id;
   }
+  public deleteRepairShopById(id: number) {
+    let last = this.repairList.at(-1);
+    if (last.id === this.rsmlist.getValue().ids[this.currentIndex]) {
+      this.currentIndex = --this.currentIndex;
+    } else {
+      this.currentIndex = ++this.currentIndex;
+    }
+    this.shopService
+      .deleteRepairShopByIdDetails(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          if (this.rsmlist.getValue().ids.length >= 1) {
+            this.router.navigate([
+              `/repair/${this.repairList[this.currentIndex].id}/shop-details`,
+            ]);
+          }
+          this.notificationService.success(
+            'Repair Shop successfully deleted',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.router.navigate(['/repair']);
+        },
+      });
+  }
+  public getRepairById(id: number) {
+    this.shopService
+      .getRepairShopById(id, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.repairObject = item));
+  }
   /**Function for header names and array of icons */
   shopConf(data: RepairShopResponse) {
+    this.getRepairById(data.id);
     let total;
     this.DetailsDataService.setNewData(data);
     if (data?.repairs?.length) {
@@ -217,6 +285,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         data: data,
       },
     ];
+    this.repairShopId = data?.id ? data.id : null;
   }
   ngOnDestroy(): void {
     this.destroy$.next();

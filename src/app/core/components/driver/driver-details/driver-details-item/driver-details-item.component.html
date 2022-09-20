@@ -132,17 +132,15 @@
                   </app-truckassist-progress-expiration>
                 </div>
                 <div
-                  *ngIf="
-                    cdl.dateDeactivated && cdl.showButton && cdl.status == 0
-                  "
-                  (click)="optionsEvent('activate-item', 'activate-item')"
+                  *ngIf="cdl.dateDeactivated"
+                  (click)="openCommand(cdl, 'activate-licence')"
                   class="activate-button"
                 >
                   Activate
                 </div>
                 <div
-                  (click)="optionsEvent('renew', 'renew')"
-                  *ngIf="!cdl.showButton"
+                  (click)="openCommand(cdl, 'renew-licence')"
+                  *ngIf="!cdl.showButton && !cdl.dateDeactivated"
                   class="activate-button"
                 >
                   Renew
@@ -237,24 +235,24 @@
           [stateTooltipName]="test.testType.name + ' Test'"
           (dropActions)="optionsEvent($event, 'test')"
         >
-        <div class="cards-container">
-          <div class="card-body-cdl">
-          <div class="card-restriction-endorsment card-restriction-class">
-            <div class="card-restriction">
-              <div class="restriction-name">Type</div>
-              <div class="restriction-item-value">
-                {{ test.testType.name + ' Test' }}
-              </div>
-            </div>
-            <div class="card-restriction">
-              <div class="restriction-name">Reason</div>
-              <div class="restriction-item-value">
-                {{ test?.testReason.name }}
+          <div class="cards-container">
+            <div class="card-body-cdl">
+              <div class="card-restriction-endorsment card-restriction-class">
+                <div class="card-restriction">
+                  <div class="restriction-name">Type</div>
+                  <div class="restriction-item-value">
+                    {{ test.testType.name + " Test" }}
+                  </div>
+                </div>
+                <div class="card-restriction">
+                  <div class="restriction-name">Reason</div>
+                  <div class="restriction-item-value">
+                    {{ test?.testReason.name }}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        </div>
           <div [ngClass]="{ 'second-progress': toggler[i + 'test'] }"></div>
           <div class="cards-container">
             <div [@showHideCardBody]="toggler[i + 'test'] ? 'true' : 'false'">
