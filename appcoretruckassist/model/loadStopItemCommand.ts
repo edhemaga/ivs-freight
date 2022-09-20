@@ -9,11 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Secure } from './secure';
 import { LoadItemUnit } from './loadItemUnit';
-import { BoxingType } from './boxingType';
 
 
 export interface LoadStopItemCommand { 
+    id?: number | null;
     bolNumber?: string | null;
     appointmentNumber?: string | null;
     pickupNumber?: string | null;
@@ -27,7 +28,7 @@ export interface LoadStopItemCommand {
     code?: string | null;
     quantity?: number | null;
     units?: LoadItemUnit;
-    boxingType?: BoxingType;
+    secure?: Secure;
     tarp?: number | null;
     stackable?: boolean | null;
     driverAssist?: boolean | null;
