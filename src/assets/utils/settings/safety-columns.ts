@@ -384,7 +384,7 @@ export function getViolationsColums() {
       resizable: false,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'nameLink',
       title: 'Report',
       field: 'tableReport',
       name: 'Report',
@@ -403,8 +403,8 @@ export function getViolationsColums() {
       disabled: false,
       export: true,
       resizable: true,
-      linkField: {
-        routerLinkStart: '/safety/violation/edit/',
+      link: {
+        routerLinkStart: '/safety/violation/',
         routerLinkEnd: '/details',
       },
     },
@@ -426,13 +426,6 @@ export function getViolationsColums() {
       hoverTemplate: null,
       filterable: true,
       disabled: false,
-      avatar: {
-        src: 'additionalData.avatar.src',
-      },
-      link: {
-        routerLinkStart: '/drivers/edit/',
-        routerLinkEnd: '/basic',
-      },
       export: true,
       resizable: true,
       class: 'overflow-unset',
@@ -543,9 +536,9 @@ export function getViolationsColums() {
       resizable: true,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'text',
       title: 'LVL',
-      field: 'lvl',
+      field: 'tableLvl',
       name: 'LVL',
       hidden: false,
       width: 76,
@@ -564,9 +557,9 @@ export function getViolationsColums() {
       resizable: true,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'textState',
       title: 'ST',
-      field: 'stateText',
+      field: 'tableState',
       name: 'ST',
       hidden: false,
       width: 70,

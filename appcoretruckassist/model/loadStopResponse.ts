@@ -15,6 +15,7 @@ import { ShipperShortResponse } from './shipperShortResponse';
 
 
 export interface LoadStopResponse { 
+    id?: number;
     stopType?: EnumValue;
     stopOrder?: number;
     shipper?: ShipperShortResponse;
@@ -23,8 +24,14 @@ export interface LoadStopResponse {
     timeType?: EnumValue;
     timeFrom?: string | null;
     timeTo?: string | null;
+    arrive?: string | null;
+    depart?: string | null;
     items?: Array<LoadStopItemResponse> | null;
     legMiles?: number | null;
+    legHours?: number | null;
+    legMinutes?: number | null;
     totalLegMiles?: number | null;
+    totalLegHours?: number | null;
+    totalLegMinutes?: number | null;
 }
 

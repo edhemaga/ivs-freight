@@ -59,7 +59,7 @@
         </div>
       </div>
       <app-ta-custom-card
-        [hasCounter]="calculateParkingSlots(item)"
+        [hasCounter]="item.parkingSlotCount + item.fullParkingSlotCount"
         [cardName]="'Parking Slot'"
         [isCardOpen]="true"
         [bodyTemplate]="'card'"

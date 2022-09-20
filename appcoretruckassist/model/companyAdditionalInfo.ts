@@ -15,7 +15,7 @@ import { PreferredLoadType } from './preferredLoadType';
 
 export interface CompanyAdditionalInfo { 
     prefix?: string | null;
-    starting?: string | null;
+    starting?: number | null;
     sufix?: string | null;
     autoInvoicing?: boolean | null;
     preferredLoadType?: PreferredLoadType;

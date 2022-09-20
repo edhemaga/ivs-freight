@@ -41,7 +41,7 @@ export interface LoadModalResponse {
     additionalBillingTypes?: Array<EnumValue> | null;
     generalCommodities?: Array<EnumValue> | null;
     timeTypes?: Array<EnumValue> | null;
-    boxingTypes?: Array<EnumValue> | null;
+    secures?: Array<EnumValue> | null;
     tarps?: Array<EnumValue> | null;
     hazardousMaterials?: Array<HazardousMaterialResponse> | null;
     loadPossibleNextStatuses?: Array<EnumValue> | null;

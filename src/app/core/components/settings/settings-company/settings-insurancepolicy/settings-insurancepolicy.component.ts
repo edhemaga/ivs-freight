@@ -19,6 +19,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
 import { FormControl } from '@angular/forms';
 import { OnDestroy } from '@angular/core';
+import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 @Component({
   selector: 'app-settings-insurancepolicy',
   templateUrl: './settings-insurancepolicy.component.html',
@@ -174,28 +175,7 @@ export class SettingsInsurancepolicyComponent implements OnChanges, OnDestroy {
     }
   }
   public onFileAction(action: string) {
-    switch (action) {
-      case 'download': {
-        this.downloadFile(
-          'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-          'truckassist0'
-        );
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-  }
-  public downloadFile(url: string, filename: string) {
-    fetch(url).then((t) => {
-      return t.blob().then((b) => {
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(b);
-        a.setAttribute('download', filename);
-        a.click();
-      });
-    });
+    onFileActionMethods(action);
   }
   ngOnDestroy() {
     this.destroy$.next();

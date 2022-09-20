@@ -13,6 +13,8 @@
       [arrayIcons]="item.icons"
       [hasDateArrow]="true"
       [totalCost]="item.total"
+      [optionsId]="repairShopId"
+      (dropActions)="dropActionRepair($event)"
     >
     </app-ta-details-header>
   </div>

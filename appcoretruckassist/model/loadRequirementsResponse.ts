@@ -16,6 +16,7 @@ import { TruckTypeResponse } from './truckTypeResponse';
 
 
 export interface LoadRequirementsResponse { 
+    id?: number;
     truckType?: TruckTypeResponse;
     trailerType?: TrailerTypeResponse;
     doorType?: EnumValue;
