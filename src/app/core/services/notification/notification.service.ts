@@ -23,10 +23,20 @@ export class NotificationService {
   } 
 
   public errorToastr(httpRequest: HttpRequest<any>, next: HttpHandler){
+    
+    if ( httpRequest.url.indexOf('application') > -1 ) {
+      return false;
+    }
+
     this.toastr.error("", "", {...notificationOptions, payload: { httpRequest, next }});
   }
 
   public successToastr(httpRequest: HttpRequest<any>, next: HttpHandler){
+    
+    if ( httpRequest.url.indexOf('application') > -1 ) {
+      return false;
+    }
+
     this.toastr.success("", "", {...notificationOptions, payload: { httpRequest, next }});
   }
 
@@ -41,6 +51,7 @@ export class NotificationService {
   }
 
   public warning(message: string, title?: string) {
-    this.toastr.warning(message, title, notificationOptions);
+    console.log('--old warning toast message')
+    //this.toastr.warning(message, title, notificationOptions);
   }
 }

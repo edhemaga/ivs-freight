@@ -198,7 +198,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     this.DetailsDataService.leftSideMenuChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
-        if ( this.actionType != 'LOGIN' ){
+        if ( this.actionType != 'LOGIN' && this.actionType != 'LOGGED IN' ){
           this.leftSideMove = response;
         }
       });
@@ -371,11 +371,11 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
           {
             let moveAction = '';
             if ( this.DetailsDataService.mainData?.dnu ){
-              moveAction = 'FROM';
-              
-            } else {
               moveAction = 'TO';
               this.actionTitle = this.toastrType == 'toast-error' ? 'MOVE' : 'MOVED';
+            } else {
+              moveAction = 'FROM';
+              this.actionTitle = this.toastrType == 'toast-error' ? 'REMOVE' : 'REMOVED';
             }
             
             if (this.toastrType != 'toast-error'){
@@ -391,11 +391,11 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
           {
             let moveAction = '';
             if ( this.DetailsDataService.mainData?.ban ){
-              moveAction = 'FROM';
-              
-            } else {
               moveAction = 'TO';
               this.actionTitle = this.toastrType == 'toast-error' ? 'MOVE' : 'MOVED';
+            } else {
+              moveAction = 'FROM';
+              this.actionTitle = this.toastrType == 'toast-error' ? 'REMOVE' : 'REMOVED';
             }
 
             if (this.toastrType != 'toast-error'){
@@ -407,14 +407,12 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             this.wideMessage = true;
           } 
           
-        if ( this.httpRequest.method == 'PUT' && apiEndPoint.indexOf('ban') == -1 && apiEndPoint.indexOf('dnu') == -1 ) {
-          this.actionTitle = this.toastrType == 'toast-error' ? 'UPDATE' : 'UPDATED';
-        }  
-        
         this.message = messageValue;
       break;
       case 'LOGIN':
+        this.actionType = this.toastrType == 'toast-error' ? 'LOGIN' : 'LOGGED IN';
         this.message = this.httpRequest.body?.email ? this.httpRequest.body.email : '';
+        this.leftSideMove = false;
       break;
       case 'TRAILER':
         let trailerNum = this.httpRequest.body?.trailerNumber ? this.httpRequest.body.trailerNumber : '';
