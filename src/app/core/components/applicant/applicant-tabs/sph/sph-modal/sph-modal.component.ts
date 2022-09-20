@@ -1,18 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
-import {
-  AnswerChoices,
-  ApplicantQuestion,
-} from '../../../state/model/applicant-question.model';
-import { ReasonForLeaving } from '../../../state/model/reason-for-leaving.model';
-import { TrailerType } from '../../../state/model/trailer-type.model';
-import { VehicleType } from '../../../state/model/vehicle-type.model';
+import { Subject, takeUntil } from 'rxjs';
+
 import {
   phoneFaxRegex,
   addressValidation,
@@ -20,12 +10,24 @@ import {
   descriptionValidation,
 } from '../../../../shared/ta-input/ta-input.regex-validations';
 
+import { ApplicantListsService } from '../../../state/services/applicant-lists.service';
+
+import {
+  AnswerChoices,
+  ApplicantQuestion,
+} from '../../../state/model/applicant-question.model';
+import { EnumValue } from 'appcoretruckassist/model/models';
+import { TrailerType } from '../../../state/model/trailer-type.model';
+import { VehicleType } from '../../../state/model/vehicle-type.model';
+
 @Component({
   selector: 'app-sph-modal',
   templateUrl: './sph-modal.component.html',
   styleUrls: ['./sph-modal.component.scss'],
 })
-export class SphModalComponent implements OnInit {
+export class SphModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   public prospectiveEmployerForm: FormGroup;
   public accidentHistoryForm: FormGroup;
   public drugAndAlcoholTestingHistoryForm: FormGroup;
@@ -33,8 +35,7 @@ export class SphModalComponent implements OnInit {
   public vehicleType: VehicleType[] = [];
   public trailerType: TrailerType[] = [];
 
-  public fatalitiesControl: FormControl = new FormControl(0);
-  public injuriesControl: FormControl = new FormControl(0);
+  public reasonsForLeaving: EnumValue[] = [];
 
   public questions: ApplicantQuestion[] = [
     {
@@ -249,15 +250,6 @@ export class SphModalComponent implements OnInit {
     },
   ];
 
-  public reasonsForLeaving: ReasonForLeaving[] = [
-    { id: 1, name: 'Better opportunity' },
-    { id: 2, name: 'Illness' },
-    { id: 3, name: 'Company went out of business' },
-    { id: 4, name: 'Fired or terminated' },
-    { id: 5, name: 'Family obligations' },
-    { id: 6, name: 'Other' },
-  ];
-
   public hazmatAnswerChoices: AnswerChoices[] = [
     {
       id: 7,
@@ -275,10 +267,15 @@ export class SphModalComponent implements OnInit {
     },
   ];
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private applicantListsService: ApplicantListsService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
+
+    this.getDropdownLists();
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -307,6 +304,8 @@ export class SphModalComponent implements OnInit {
       accidentLocation: [null, [...addressValidation]],
       accidentDescription: [null, descriptionValidation],
       hazmatSpill: [null],
+      fatalities: [0],
+      injuries: [0],
     });
 
     this.drugAndAlcoholTestingHistoryForm = this.formBuilder.group({
@@ -345,5 +344,19 @@ export class SphModalComponent implements OnInit {
         'applicantNotSubject'
       ).value,
     });
+  }
+
+  public getDropdownLists(): void {
+    this.applicantListsService
+      .getDropdownLists()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.reasonsForLeaving = data.reasonsForLeave;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

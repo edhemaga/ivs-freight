@@ -1,4 +1,4 @@
-import { fuelStopValidation } from './../../../shared/ta-input/ta-input.regex-validations';
+import { fuelStopValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -9,16 +9,14 @@ import {
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../../services/form/form.service';
-import { NotificationService } from '../../../../services/notification/notification.service';
+import { Subject } from 'rxjs';
 import { fuelStoreValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-fuel-stop-modal',
   templateUrl: './fuel-stop-modal.component.html',
   styleUrls: ['./fuel-stop-modal.component.scss'],
-  providers: [ModalService, FormService],
+  providers: [ModalService],
 })
 export class FuelStopModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -29,7 +27,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
   public fuelStops: any[] = [];
 
   public selectedFuelStop: any = null;
-  public selectedAddress: AddressEntity | AddressEntity;
+  public selectedAddress: AddressEntity;
 
   public isFavouriteFuelStop: boolean = false;
 
@@ -38,9 +36,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private modalService: ModalService,
-    private notificationService: NotificationService,
-    private formService: FormService
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -67,14 +63,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
       addressUnit: [null, [...addressUnitValidation]],
       note: [null],
     });
-
-    // this.formService.checkFormChange(this.fuelStopForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

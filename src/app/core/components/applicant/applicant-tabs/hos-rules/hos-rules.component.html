@@ -142,5 +142,7 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [lastStep]="true"
+    [filledCorrectly]="hosRulesForm.valid"
+    (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

@@ -132,5 +132,7 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [lastStep]="true"
+    [filledCorrectly]="true"
+    (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

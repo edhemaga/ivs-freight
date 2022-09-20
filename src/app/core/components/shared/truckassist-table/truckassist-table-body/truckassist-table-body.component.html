@@ -2353,12 +2353,12 @@
             <td class="action-td" *ngFor="let column of actionsColumns">
               <!-- ATTACHMENTS COLUMN -->
               <div
+                class="td-content set-center"
                 *ngIf="column.ngTemplate === 'attachments'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
                 }"
-                class="td-content"
               >
                 <div
                   (click)="onShowAttachments(attachmentsNgbPopover, row)"

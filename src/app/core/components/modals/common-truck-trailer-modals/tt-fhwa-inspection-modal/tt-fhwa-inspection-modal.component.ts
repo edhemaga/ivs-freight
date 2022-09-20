@@ -11,7 +11,6 @@ import {
 
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../../services/form/form.service';
 import { NotificationService } from '../../../../services/notification/notification.service';
 import {
   convertDateFromBackend,
@@ -22,7 +21,7 @@ import {
   selector: 'app-tt-fhwa-inspection-modal',
   templateUrl: './tt-fhwa-inspection-modal.component.html',
   styleUrls: ['./tt-fhwa-inspection-modal.component.scss'],
-  providers: [ModalService, FormService],
+  providers: [ModalService],
 })
 export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -39,8 +38,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private commonTruckTrailerService: CommonTruckTrailerService,
     private inputService: TaInputService,
-    private modalService: ModalService,
-    private formService: FormService
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -56,14 +54,6 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
       issueDate: [null, Validators.required],
       note: [null],
     });
-
-    // this.formService.checkFormChange(this.fhwaInspectionForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

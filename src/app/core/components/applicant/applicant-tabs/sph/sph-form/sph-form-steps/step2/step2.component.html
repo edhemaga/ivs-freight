@@ -28,7 +28,8 @@
         <div
           class="d-flex flex-column justify-content-center warning-container"
           *ngIf="
-            accidentHistoryForm.get('applicantWorkForCompany').value === 'NO'
+            accidentHistoryForm.get('applicantWorkForCompanyExplain').value ===
+            'NO'
           "
         >
           <div
@@ -122,19 +123,14 @@
               class="d-flex"
               *ngIf="i === 0"
               [ngStyle]="{
-                margin:
-                  accidentHistoryForm.get('applicantWorkForCompany').value ===
-                  'YES'
-                    ? '22px auto 10px auto'
-                    : '0 auto'
+                margin: accidentHistoryForm.get('applicantWorkForCompany').value
+                  ? '22px auto 10px auto'
+                  : '0 auto'
               }"
             >
               <div
                 class="d-flex"
-                *ngIf="
-                  accidentHistoryForm.get('applicantWorkForCompany').value ===
-                  'YES'
-                "
+                *ngIf="accidentHistoryForm.get('applicantWorkForCompany').value"
               >
                 <div class="date-group">
                   <app-ta-input
@@ -171,26 +167,21 @@
               class="d-flex"
               *ngIf="i === 1"
               [ngStyle]="{
-                margin:
-                  accidentHistoryForm.get(question.formControlName).value ===
-                  'YES'
-                    ? '22px auto 10px auto'
-                    : '0 auto 32px auto'
+                margin: accidentHistoryForm.get(question.formControlName).value
+                  ? '22px auto 10px auto'
+                  : '0 auto 32px auto'
               }"
             >
               <div
                 class="d-flex"
-                *ngIf="
-                  accidentHistoryForm.get(question.formControlName).value ===
-                  'YES'
-                "
+                *ngIf="accidentHistoryForm.get(question.formControlName).value"
               >
                 <div class="d-flex align-items-center explain-container">
                   <!-- VEHICLE TYPE -->
 
                   <div class="group">
                     <app-ta-input-dropdown
-                      formControlName="truckType"
+                      formControlName="vehicleType"
                       [template]="'svgtext-template'"
                       [inputConfig]="{
                         name: 'Input Dropdown',
@@ -198,9 +189,20 @@
                         label: 'Vehicle type',
                         isRequired: true,
                         isDropdown: true,
-                        dropdownWidthClass: 'w-col-applicant-t-type'
+                        dropdownWidthClass: 'w-col-302',
+                        dropdownImageInput: {
+                          withText: true,
+                          url: selectedVehicleType?.logoName,
+                          template: 'truck',
+                          class: selectedVehicleType?.name
+                            ?.trim()
+                            .replace(' ', '')
+                            .toLowerCase()
+                        },
+                        customClass: 'truck-trailer-dropdown'
                       }"
                       [options]="vehicleType"
+                      [activeItem]="selectedVehicleType"
                       (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
                     ></app-ta-input-dropdown>
                   </div>
@@ -217,8 +219,31 @@
                         label: 'Trailer type',
                         isRequired: true,
                         isDropdown: true,
-                        dropdownWidthClass: 'w-col-applicant-t-type'
+                        dropdownWidthClass: 'w-col-302',
+                        dropdownImageInput: {
+                          withText: true,
+                          url: selectedTrailerType?.logoName,
+                          template: 'trailer',
+                          class: selectedTrailerType?.name
+                            ?.toLowerCase()
+                            .includes('liquid')
+                            ? 'tanker-liquid'
+                            : selectedTrailerType?.name
+                                ?.toLowerCase()
+                                .includes('rgn')
+                            ? 'low-boy-rgn'
+                            : selectedTrailerType?.name
+                                ?.toLowerCase()
+                                .includes('dry-bulk')
+                            ? 'tanker-dry-bulk'
+                            : selectedTrailerType?.name
+                                ?.trim()
+                                .replace(' ', '')
+                                .toLowerCase()
+                        },
+                        customClass: 'truck-trailer-dropdown'
                       }"
+                      [activeItem]="selectedTrailerType"
                       [options]="trailerType"
                       (selectedItem)="handleInputSelect($event, 'TRAILER-TYPE')"
                     ></app-ta-input-dropdown>
@@ -439,7 +464,11 @@
       <form *ngIf="!isEditing">
         <app-sph-step2-form
           [isEditing]="isEditing"
+          [markFormInvalid]="markFormInvalid"
           (formValuesEmitter)="getAccidentFormValues($event)"
+          (formStatusEmitter)="onGetFormStatus($event)"
+          (markInvalidEmitter)="onMarkInvalidEmit($event)"
+          (lastFormValuesEmitter)="onGetLastFormValues($event)"
         ></app-sph-step2-form>
       </form>
     </div>
@@ -451,7 +480,11 @@
 <div
   class="d-flex justify-content-center align-items-center next-btn-container"
 >
-  <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
+  <app-applicant-next-back-btn
+    [nextStep]="true"
+    [filledCorrectly]="accidentHistoryForm.valid && formStatus === 'VALID'"
+    (stepEvent)="onStepAction($event)"
+  ></app-applicant-next-back-btn>
 </div>
 
 <!-- BACK BTN -->
@@ -459,5 +492,8 @@
 <div
   class="d-flex justify-content-center align-items-center back-btn-container"
 >
-  <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
+  <app-applicant-next-back-btn
+    [backStep]="true"
+    (stepEvent)="onStepAction($event)"
+  ></app-applicant-next-back-btn>
 </div>

@@ -18,7 +18,6 @@ import { getAccidentColumns } from '../../../../../../assets/utils/settings/safe
     './accident-table.component.scss',
     '../../../../../../assets/scss/maps.scss',
   ],
-  encapsulation: ViewEncapsulation.None,
 })
 export class AccidentTableComponent implements OnInit, OnDestroy {
   @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;

@@ -1,23 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  QueryList,
+  ViewChildren,
+  AfterViewInit,
+} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Address } from '../../../../../../shared/model/address';
-import { ApplicantQuestion } from '../../../../../state/model/applicant-question.model';
+import { Router } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
+
 import {
   phoneFaxRegex,
   addressValidation,
   addressUnitValidation,
 } from '../../../../../../shared/ta-input/ta-input.regex-validations';
+
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
+
+import { ApplicantQuestion } from '../../../../../state/model/applicant-question.model';
 import { InputSwitchActions } from '../../../../../state/enum/input-switch-actions.enum';
+import { AddressEntity } from './../../../../../../../../../../appcoretruckassist/model/addressEntity';
 
 @Component({
   selector: 'app-step3',
   templateUrl: './step3.component.html',
   styleUrls: ['./step3.component.scss'],
 })
-export class Step3Component implements OnInit {
+export class Step3Component implements OnInit, AfterViewInit {
+  @ViewChildren('cmp') components: QueryList<any>;
+
+  private destroy$ = new Subject<void>();
+
+  public radioButtonsArray: any;
+
   public drugAndAlcoholTestingHistoryForm: FormGroup;
 
-  public selectedAddress: Address = null;
+  public selectedAddress: AddressEntity = null;
 
   public questions: ApplicantQuestion[] = [
     {
@@ -159,10 +179,21 @@ export class Step3Component implements OnInit {
     },
   ];
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private inputService: TaInputService,
+    private applicantActionsService: ApplicantActionsService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
+
+    this.isNotSubjectToTesting();
+  }
+
+  ngAfterViewInit(): void {
+    this.radioButtonsArray = this.components.toArray();
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -183,6 +214,118 @@ export class Step3Component implements OnInit {
       addressUnit: [null, [...addressUnitValidation]],
       aspRehabilitation: [null, Validators.required],
     });
+  }
+
+  private isNotSubjectToTesting(): void {
+    this.drugAndAlcoholTestingHistoryForm
+      .get('applicantNotSubject')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        if (value) {
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('employmentFromDate'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('employmentToDate'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('alcoholTest'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('controledSubstances'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('refusedToSubmit'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('otherViolations'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get(
+              'drugAndAlcoholRegulation'
+            ),
+            false
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('sapName'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('phone'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('address'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('aspRehabilitation'),
+            false
+          );
+
+          this.drugAndAlcoholTestingHistoryForm.patchValue({
+            employmentFromDate: null,
+            employmentToDate: null,
+            alcoholTest: null,
+            controledSubstances: null,
+            refusedToSubmit: null,
+            otherViolations: null,
+            drugAndAlcoholRegulation: null,
+            sapName: null,
+            phone: null,
+            address: null,
+            addressUnit: null,
+            aspRehabilitation: null,
+          });
+
+          this.radioButtonsArray.forEach((item) => {
+            item.buttons[0].checked = false;
+            item.buttons[1].checked = false;
+          });
+        } else {
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('employmentFromDate')
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('employmentToDate')
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('alcoholTest')
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('controledSubstances')
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('refusedToSubmit')
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('otherViolations')
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get(
+              'drugAndAlcoholRegulation'
+            )
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('sapName')
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('phone')
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('address')
+          );
+          this.inputService.changeValidators(
+            this.drugAndAlcoholTestingHistoryForm.get('aspRehabilitation')
+          );
+        }
+      });
   }
 
   public handleCheckboxParagraphClick(): void {
@@ -232,9 +375,23 @@ export class Step3Component implements OnInit {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
+      this.onSubmit();
     }
 
     if (event.action === 'back-step') {
+      this.router.navigate(['/sph-form/2']);
     }
+  }
+
+  public onSubmit(): void {
+    if (this.drugAndAlcoholTestingHistoryForm.invalid) {
+      this.inputService.markInvalid(this.drugAndAlcoholTestingHistoryForm);
+      return;
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
