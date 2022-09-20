@@ -68,6 +68,7 @@ model/addressEntity.ts
 model/addressListResponse.ts
 model/addressResponse.ts
 model/apiCategory.ts
+model/applicantAdminResponse.ts
 model/applicantCompanyInfoResponse.ts
 model/applicantModalResponse.ts
 model/applicantPersonalInfoReviewResponse.ts
@@ -89,7 +90,6 @@ model/bankCardResponse.ts
 model/bankListResponse.ts
 model/bankResponse.ts
 model/bankResponsePagination.ts
-model/boxingType.ts
 model/brokerContactCommand.ts
 model/brokerContactResponse.ts
 model/brokerMinimalListResponse.ts
@@ -237,6 +237,7 @@ model/dispatchResponse.ts
 model/dispatchResponsePagination.ts
 model/dispatchShortResponse.ts
 model/dispatchStatus.ts
+model/dispatchStatusResponse.ts
 model/driverAccidentResponse.ts
 model/driverForgotPasswordCommand.ts
 model/driverListResponse.ts
@@ -307,6 +308,9 @@ model/loadBillingAdditionalCommand.ts
 model/loadBillingAdditionalResponse.ts
 model/loadItemUnit.ts
 model/loadListResponse.ts
+model/loadMinimalListResponse.ts
+model/loadMinimalResponse.ts
+model/loadMinimalResponsePagination.ts
 model/loadModalResponse.ts
 model/loadPaymentPayCommand.ts
 model/loadPaymentPayResponse.ts
@@ -321,6 +325,7 @@ model/loadStopCommand.ts
 model/loadStopItemAutocompleteDescriptionResponse.ts
 model/loadStopItemCommand.ts
 model/loadStopItemResponse.ts
+model/loadStopProgressBarResponse.ts
 model/loadStopResponse.ts
 model/loadStopShipperResponse.ts
 model/loadStopShortResponse.ts
@@ -430,6 +435,7 @@ model/roadsideInspectionResponsePagination.ts
 model/routeResponse.ts
 model/routeResponsePagination.ts
 model/routingResponse.ts
+model/secure.ts
 model/selectCompanyCommand.ts
 model/selectCompanyResponse.ts
 model/serviceType.ts

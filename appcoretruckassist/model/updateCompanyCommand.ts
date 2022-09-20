@@ -34,7 +34,7 @@ export interface UpdateCompanyCommand {
     dateOfIncorporation?: string | null;
     address?: AddressEntity;
     prefix?: string | null;
-    starting?: string | null;
+    starting?: number;
     sufix?: string | null;
     autoInvoicing?: boolean | null;
     preferredLoadType?: PreferredLoadType;

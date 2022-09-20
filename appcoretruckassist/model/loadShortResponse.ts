@@ -9,13 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 import { BrokerShortResponse } from './brokerShortResponse';
 import { LoadStopShortResponse } from './loadStopShortResponse';
 
 
 export interface LoadShortResponse { 
     id?: number;
+    loadNumber?: string | null;
     referenceNumber?: string | null;
+    statusType?: EnumValue;
     broker?: BrokerShortResponse;
     pickup?: LoadStopShortResponse;
     delivery?: LoadStopShortResponse;

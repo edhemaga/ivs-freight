@@ -9,16 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { LoadMinimalResponsePagination } from './loadMinimalResponsePagination';
 
 
-export interface LoadRequirementsCommand { 
-    id?: number | null;
-    truckTypeId?: number | null;
-    trailerTypeId?: number | null;
-    doorType?: number | null;
-    suspension?: number | null;
-    trailerLengthId?: number | null;
-    year?: number | null;
-    liftgate?: boolean;
+export interface LoadMinimalListResponse { 
+    pagination?: LoadMinimalResponsePagination;
 }
 

@@ -82,13 +82,14 @@ export class TruckassistTableBodyComponent
   statusTooltip: any;
   statusDropdownActive: number = -1;
   statusDropdownData: any;
+  showRowDropdown: number = -1;
 
   constructor(
     private router: Router,
     private tableService: TruckassistTableService,
     private changeDetectorRef: ChangeDetectorRef,
     private sharedService: SharedService,
-    private DetailsDataService: DetailsDataService,
+    private detailsDataService: DetailsDataService,
   ) {}
 
   // --------------------------------NgOnInit---------------------------------
@@ -184,7 +185,7 @@ export class TruckassistTableBodyComponent
       }
       
       if (changes.viewData.currentValue[0]){
-        this.DetailsDataService.setNewData(changes.viewData.currentValue[0]);
+        this.detailsDataService.setNewData(changes.viewData.currentValue[0]);
       }
       
     }
@@ -227,6 +228,7 @@ export class TruckassistTableBodyComponent
       this.getSelectedTabTableData();
     }
   }
+
   // --------------------------------NgAfterViewInit---------------------------------
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -336,11 +338,20 @@ export class TruckassistTableBodyComponent
     }
   }
 
+  // Show Row Dropdown
+  onShowRowDropdown(index: number){
+    if(this.showRowDropdown === index){
+      this.showRowDropdown = -1;
+    }else{
+      this.showRowDropdown = index;
+    }
+  }
+
   // Go To Details Page
   goToDetails(route: any, row: any) {
     const link =
       route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
-    this.DetailsDataService.setNewData(row);
+    this.detailsDataService.setNewData(row);
     this.router.navigate([link]);
   }
 
@@ -437,7 +448,7 @@ export class TruckassistTableBodyComponent
 
     this.dropDownActive = tooltip.isOpen() ? row.id : -1;
     this.rowData = row;
-    this.DetailsDataService.setNewData(row);
+    this.detailsDataService.setNewData(row);
   }
 
   // Toggle Status Dropdown

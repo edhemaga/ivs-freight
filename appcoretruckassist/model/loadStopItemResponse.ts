@@ -14,6 +14,7 @@ import { HazardousMaterialResponse } from './hazardousMaterialResponse';
 
 
 export interface LoadStopItemResponse { 
+    id?: number;
     bolNumber?: string | null;
     appointmentNumber?: string | null;
     pickupNumber?: string | null;
@@ -27,7 +28,7 @@ export interface LoadStopItemResponse {
     code?: string | null;
     quantity?: number | null;
     units?: EnumValue;
-    boxingType?: EnumValue;
+    secure?: EnumValue;
     tarp?: EnumValue;
     stackable?: boolean | null;
     driverAssist?: boolean | null;

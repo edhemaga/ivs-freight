@@ -32,6 +32,7 @@ import {
 } from '../../../utils/methods.globals';
 import { getApplicantColumnsDefinition } from '../../../../../assets/utils/settings/applicant-columns';
 import { getDriverColumnsDefinition } from '../../../../../assets/utils/settings/driver-columns';
+import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
 
 @Component({
   selector: 'app-driver-table',
@@ -834,9 +835,15 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      this.modalService.openModal(DriverModalComponent, {
-        size: 'medium',
-      });
+      if (this.selectedTab === 'applicants') {
+        this.modalService.openModal(ApplicantModalComponent, {
+          size: 'small',
+        });
+      } else {
+        this.modalService.openModal(DriverModalComponent, {
+          size: 'medium',
+        });
+      }
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.mapingIndex = 0;
@@ -888,14 +895,27 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.backFilterQuery.pageIndex++;
       this.driverBackFilter(this.backFilterQuery, false, true);
     } else if (event.type === 'edit') {
-      this.modalService.openModal(
-        DriverModalComponent,
-        { size: 'medium' },
-        {
-          ...event,
-          disableButton: true,
-        }
-      );
+      if (this.selectedTab === 'applicants') {
+        this.modalService.openModal(
+          ApplicantModalComponent,
+          {
+            size: 'small',
+          },
+          {
+            id: 1,
+            type: 'edit',
+          }
+        );
+      } else {
+        this.modalService.openModal(
+          DriverModalComponent,
+          { size: 'medium' },
+          {
+            ...event,
+            disableButton: true,
+          }
+        );
+      }
     } else if (event.type === 'new-licence') {
       this.modalService.openModal(
         DriverCdlModalComponent,

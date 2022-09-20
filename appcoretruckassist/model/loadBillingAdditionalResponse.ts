@@ -13,6 +13,7 @@ import { EnumValue } from './enumValue';
 
 
 export interface LoadBillingAdditionalResponse { 
+    id?: number;
     additionalBillingType?: EnumValue;
     rate?: number;
 }

@@ -11,14 +11,10 @@
  */
 
 
-export interface LoadRequirementsCommand { 
-    id?: number | null;
-    truckTypeId?: number | null;
-    trailerTypeId?: number | null;
-    doorType?: number | null;
-    suspension?: number | null;
-    trailerLengthId?: number | null;
-    year?: number | null;
-    liftgate?: boolean;
-}
+export type Secure = 'Chain' | 'Strap';
+
+export const Secure = {
+    Chain: 'Chain' as Secure,
+    Strap: 'Strap' as Secure
+};
 
