@@ -379,5 +379,7 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [lastStep]="true"
+    [filledCorrectly]="mvrAuthorizationForm.valid && signature"
+    (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

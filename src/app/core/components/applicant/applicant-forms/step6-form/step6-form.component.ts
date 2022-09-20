@@ -183,9 +183,9 @@ export class Step6FormComponent
 
   private createForm(): void {
     this.contactForm = this.formBuilder.group({
-      contactName: [null, [Validators.required, ...name2_24Validation]],
-      contactPhone: [null, [Validators.required, phoneFaxRegex]],
-      contactRelationship: [null, [Validators.required, ...name2_24Validation]],
+      name: [null, [Validators.required, ...name2_24Validation]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
+      relationship: [null, [Validators.required, ...name2_24Validation]],
 
       firstRowReview: [null],
     });

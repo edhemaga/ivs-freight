@@ -4,6 +4,7 @@
       <div
         *ngIf="!selectedDropdown"
         class="current-active-item"
+      
         [ngClass]="{ 'single-data': options.length == 1 }"
         (click)="onPickItem()"
         ngbTooltip
@@ -17,7 +18,7 @@
         <span
           ngbTooltip
           [mainTooltip]="searchName"
-          position="top"
+          position="bottom"
           [tooltipBackground]="searchName ? '#6C6C6C' : ''"
           class="owner-tooltip"
         >

@@ -163,5 +163,7 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [lastStep]="true"
+    [filledCorrectly]="medicalCertificateForm.valid"
+    (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

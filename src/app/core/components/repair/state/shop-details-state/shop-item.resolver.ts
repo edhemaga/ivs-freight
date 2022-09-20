@@ -11,6 +11,8 @@ import { catchError, tap, take } from 'rxjs/operators';
 import { RepairTService } from '../repair.service';
 import { ShopDetailsQuery } from './shop-details.query';
 import { ShopItemState, ShopItemStore } from './shop-detail.store';
+import { ShopDetailsListQuery } from './shop-details-list-state/shop-details-list.query';
+import { ShopDetailsListStore } from './shop-details-list-state/shop-details-list.store';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +22,9 @@ export class ShopRepairItemResolver implements Resolve<ShopItemState> {
     private shopService: RepairTService,
     private shopDetailQuery: ShopDetailsQuery,
     private shopDetailStore: ShopItemStore,
-    private router: Router
+    private router: Router,
+    private sdls: ShopDetailsListStore,
+    private sdlq: ShopDetailsListQuery
   ) {}
   resolve(
     route: ActivatedRouteSnapshot,
@@ -28,15 +32,24 @@ export class ShopRepairItemResolver implements Resolve<ShopItemState> {
   ): Observable<ShopItemState> | Observable<any> {
     const shop_id = route.paramMap.get('id');
     let id = parseInt(shop_id);
-
-    return this.shopService.getRepairShopById(id).pipe(
-      catchError(() => {
-        this.router.navigate(['/repair']);
-        return of('No shop data for...' + id);
-      }),
-      tap((shopRespon: RepairShopResponse) => {
-        this.shopDetailStore.set({ ids: shopRespon });
-      })
-    );
+    if (this.sdlq.hasEntity(id)) {
+      return this.sdlq.selectEntity(id).pipe(
+        tap((shopResponse: RepairShopResponse) => {
+          this.shopDetailStore.set([shopResponse]);
+        }),
+        take(1)
+      );
+    } else {
+      return this.shopService.getRepairShopById(id).pipe(
+        catchError(() => {
+          this.router.navigate(['/repair']);
+          return of('No shop data for...' + id);
+        }),
+        tap((shopRespon: RepairShopResponse) => {
+          this.sdls.add(shopRespon);
+          this.shopDetailStore.set([shopRespon]);
+        })
+      );
+    }
   }
 }

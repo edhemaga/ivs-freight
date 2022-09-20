@@ -23,6 +23,7 @@ import {
 import {
   addressValidation,
   phoneFaxRegex,
+  addressUnitValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -37,7 +38,6 @@ import {
   WorkHistoryModel,
 } from '../../state/model/work-history.model';
 import { AddressEntity } from './../../../../../../../appcoretruckassist/model/addressEntity';
-import { addressUnitValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 import {
   EnumValue,
   TrailerLengthResponse,
@@ -369,10 +369,7 @@ export class Step2FormComponent
             ...this.classOfEquipmentArray,
             lastClassOfEquipmentCard,
           ]);
-          /*
-          console.log('prev', previousFormValues);
-          console.log('new', newFormValues);
- */
+
           if (isFormValueEqual(previousFormValues, newFormValues)) {
             this.isWorkExperienceEdited = false;
           } else {
@@ -856,11 +853,15 @@ export class Step2FormComponent
 
     this.selectedReasonForLeaving = null;
 
-    this.cfrPartRadios[0].checked = false;
-    this.cfrPartRadios[1].checked = false;
+    if (this.cfrPartRadios) {
+      this.cfrPartRadios[0].checked = false;
+      this.cfrPartRadios[1].checked = false;
+    }
 
-    this.fmcsaRadios[0].checked = false;
-    this.fmcsaRadios[1].checked = false;
+    if (this.fmcsaRadios) {
+      this.fmcsaRadios[0].checked = false;
+      this.fmcsaRadios[1].checked = false;
+    }
 
     this.workExperienceForm.reset();
 
@@ -870,6 +871,11 @@ export class Step2FormComponent
   public onSaveEditedWorkExperience(): void {
     if (this.workExperienceForm.invalid) {
       this.inputService.markInvalid(this.workExperienceForm);
+      return;
+    }
+
+    if (this.classOfEquipmentForm.invalid) {
+      this.inputService.markInvalid(this.classOfEquipmentForm);
       return;
     }
 
@@ -903,7 +909,6 @@ export class Step2FormComponent
       trailerLength,
       employerAddress,
       employerAddressUnit,
-      isDrivingPosition,
       classOfEquipmentCards,
       firstRowReview,
       secondRowReview,
@@ -915,34 +920,6 @@ export class Step2FormComponent
       ...workExperienceForm
     } = this.workExperienceForm.value;
 
-    let lastClassOfEquipmentCard: any;
-
-    if (isDrivingPosition) {
-      const { vehicleType, trailerType, ...classOfEquipmentForm } =
-        this.classOfEquipmentForm.value;
-
-      const vehicleTypeImageLocation = this.vehicleType.find(
-        (item) => item.name === vehicleType
-      ).logoName;
-
-      let trailerTypeImageLocation: any;
-
-      if (trailerType) {
-        trailerTypeImageLocation = this.trailerType.find(
-          (item) => item.name === trailerType
-        ).logoName;
-      }
-
-      lastClassOfEquipmentCard = {
-        ...classOfEquipmentForm,
-        vehicleType,
-        vehicleTypeImageLocation,
-        trailerType,
-        trailerTypeImageLocation,
-        isEditingClassOfEquipment: false,
-      };
-    }
-
     this.selectedAddress.addressUnit = employerAddressUnit;
 
     const saveData: WorkHistoryModel = {
@@ -951,14 +928,9 @@ export class Step2FormComponent
         ? this.selectedAddress
         : this.editingCardAddress,
       employerAddressUnit,
-      isDrivingPosition,
-      classesOfEquipment: this.isEditing
-        ? [...this.helperClassOfEquipmentArray]
-        : [...this.classOfEquipmentArray],
+      classesOfEquipment: [...this.helperClassOfEquipmentArray],
       isEditingWorkHistory: false,
     };
-
-    console.log(saveData);
 
     this.saveFormEditingEmitter.emit(saveData);
 
@@ -1065,12 +1037,19 @@ export class Step2FormComponent
     const { vehicleType, trailerType, ...classOfEquipmentForm } =
       this.classOfEquipmentForm.value;
 
-    const vehicleTypeImageLocation = this.vehicleType.find(
+    const filteredVehicleType = this.vehicleType.find(
       (item) => item.name === vehicleType
-    ).logoName;
-    const trailerTypeImageLocation = this.trailerType.find(
+    );
+    const filteredTrailerType = this.trailerType.find(
       (item) => item.name === trailerType
-    ).logoName;
+    );
+
+    const vehicleTypeImageLocation = filteredVehicleType
+      ? filteredVehicleType.logoName
+      : null;
+    const trailerTypeImageLocation = filteredTrailerType
+      ? filteredTrailerType.logoName
+      : null;
 
     const saveData: AnotherClassOfEquipmentModel = {
       ...classOfEquipmentForm,
@@ -1084,7 +1063,10 @@ export class Step2FormComponent
     if (this.isEditing) {
       this.classOfEquipmentArray = [...this.classOfEquipmentArray, saveData];
 
-      this.helperClassOfEquipmentArray = this.classOfEquipmentArray;
+      this.helperClassOfEquipmentArray = [
+        ...this.classOfEquipmentArray,
+        saveData,
+      ];
     } else {
       this.classOfEquipmentArray = [...this.classOfEquipmentArray, saveData];
     }
@@ -1109,7 +1091,13 @@ export class Step2FormComponent
       return;
     }
 
-    this.classOfEquipmentArray.splice(index, 1);
+    if (this.isEditing) {
+      this.classOfEquipmentArray.splice(index, 1);
+
+      this.helperClassOfEquipmentArray.splice(index, 1);
+    } else {
+      this.classOfEquipmentArray.splice(index, 1);
+    }
   }
 
   public onEditClassOfEquipment(index: number): void {

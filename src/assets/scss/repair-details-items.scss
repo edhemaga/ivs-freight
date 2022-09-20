@@ -39,6 +39,7 @@ $transition: all 0.3s ease-in-out;
     column-gap: 12px;
     row-gap: 12px;
 }
+
 .repair-component {
     display: grid;
     grid-auto-flow: column;
@@ -91,7 +92,8 @@ $transition: all 0.3s ease-in-out;
 }
 
 .repair-container {
-    padding: 8px 6px;
+    padding: 8px 6px 2px 6px;
+
     width: 732px;
     background-color: $color-white;
     border-radius: 3px;
@@ -150,7 +152,7 @@ $transition: all 0.3s ease-in-out;
             font-size: $font-size14;
             font-weight: $font-bold;
             color: $color-gray-dark;
-            line-height: 21px;
+            line-height: 17px;
             display: flex;
             align-items: center;
             &::-moz-selection {
@@ -167,7 +169,7 @@ $transition: all 0.3s ease-in-out;
             padding-left: 10px;
             display: grid;
             grid-template-columns: 82px 86px 86px 307px 108px;
-
+            cursor: pointer;
             align-content: center;
             grid-auto-flow: column;
             margin-top: 8px;
@@ -175,6 +177,8 @@ $transition: all 0.3s ease-in-out;
             .dots-vertical {
                 height: 20px !important;
                 display: flex;
+                width: 18px;
+                margin-left: 13px;
                 justify-content: flex-end;
                 align-items: center;
             }
@@ -187,18 +191,22 @@ $transition: all 0.3s ease-in-out;
                 border-radius: 2px;
             }
         }
-        .date {
+        .date-description {
             font-size: $font-size14;
             font-weight: 400;
             color: $color-gray-dark;
             overflow: hidden;
-            white-space: nowrap;
+            line-height: 19px;
             text-overflow: ellipsis;
+        }
+        .date {
+            font-size: $font-size14;
+            font-weight: 400;
+            color: $color-gray-dark;
+            white-space: nowrap;
             display: flex;
             align-items: center;
-            align-items: center;
             line-height: 17px;
-            width: 294px;
             &::-moz-selection {
                 color: $color-gray-dark;
                 background: rgb(183, 183, 183, 0.2);
@@ -223,7 +231,7 @@ $transition: all 0.3s ease-in-out;
             font-weight: $font-semibold;
             color: $color-gray-dark;
             text-align: right;
-            line-height: 21px;
+            line-height: 18px;
             display: flex;
             justify-content: flex-end;
             align-items: end;
@@ -277,9 +285,12 @@ $transition: all 0.3s ease-in-out;
             margin-top: 8px;
             margin-bottom: 8px;
             align-content: center;
-            .vehicle-icon {
+            .truck-icon {
                 position: relative;
-
+                bottom: 2px;
+            }
+            .vehicle-icon {
+                display: flex;
                 svg {
                     width: 55px;
 
