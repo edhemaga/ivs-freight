@@ -375,7 +375,7 @@
                   </div>
                   <div
                     class="link"
-                    [@showHideCardBody]="item.linkActive ? 'true' : 'false'"
+                    [class.closed]="!item.linkActive"
                   >
                     {{ item.url }}
                   </div>
