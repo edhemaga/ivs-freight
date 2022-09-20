@@ -3,6 +3,7 @@
   [isModalValid]="profileUserForm.valid"
   (action)="onModalAction($event)"
 >
+
   <app-ta-tab-switch
     [tabs]="tabs"
     (switchClicked)="tabChange($event)"
@@ -13,7 +14,9 @@
   <form
     [formGroup]="profileUserForm"
     class="form-container form-container-without-mb"
-    [ngClass]="{ 'tab-2': selectedTab === 2 }"
+    [ngClass]="{
+    'tab-2': selectedTab === 2
+    }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
@@ -167,7 +170,7 @@
                 </div>
             </div>
             <div *ngIf="setNewPassword">
-              <div class="row row-mb-10">
+              <div class="row row-mb-22">
                 <div class="col-6">
                   <app-ta-input
                     formControlName="newPassword"
@@ -211,7 +214,6 @@
         >
           <app-ta-logo-change
             [imageUrl]="this.profileUserForm.get('avatar').value"
-            [customClass]="'modal-container-M'"
             [croppieOptions]="croppieOptions"
             (validationEvent)="onImageValidation($event)"
             (base64ImageEvent)="onUploadImage($event)"
