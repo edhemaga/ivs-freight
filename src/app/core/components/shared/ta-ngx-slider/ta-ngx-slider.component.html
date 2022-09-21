@@ -25,17 +25,14 @@
       (userChangeEnd)="userChangeEnd($event)"
     ></ngx-slider>
   </div>
-  <div *ngSwitchCase="'range-slider'"   class="range-slider-holder">
+  <div *ngSwitchCase="'range-slider'" class="range-slider-holder">
     <div class=" ta-ngx-slider custom-slider-commission {{ customClass }}">
-      <div class="input-values-holder">
-        <div class="milesInputHolder">
-          <input class="milesInput" type="number" [(ngModel)]="minValue">
-        </div>
-        <div class="milesInputHolder">
-          <input class="milesInput" type="number" [(ngModel)]="maxValue">
-        </div>
-      </div>
-      <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="sliderOptions" (userChangeEnd)="userChangeEnd($event)"></ngx-slider>
+      <ngx-slider
+        [(value)]="minValue"
+        [(highValue)]="maxValue"
+        [options]="sliderOptions"
+        (userChangeEnd)="userChangeEnd($event)"
+      ></ngx-slider>
     </div>
   </div>
 </div>

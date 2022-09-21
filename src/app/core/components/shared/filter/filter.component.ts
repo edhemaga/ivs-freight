@@ -1045,7 +1045,7 @@ export class FilterComponent implements OnInit {
   ngOnInit(): void {
 
     this.milesForm = this.formBuilder.group({
-      milesFrom: 1,
+      milesFrom: 0,
       milesTo: 5000,
     })
 
@@ -1082,6 +1082,22 @@ export class FilterComponent implements OnInit {
         this.locationState = '';
       }
     });
+
+    this.milesForm.valueChanges.subscribe((changes) => {
+      if (changes){
+        //console.log('--changes--', changes);
+
+        if ( changes.milesTo == null || changes.milesTo > 5000 ){
+          this.milesForm?.get('milesTo')?.setValue(5000);
+        }
+
+        if (changes.milesFrom > 4999){
+          this.milesForm?.get('milesFrom')?.setValue(4999);
+        } else if ( changes.milesFrom == null ) {
+          //this.milesForm?.get('milesFrom')?.setValue(0);
+        }
+      }
+    })
 
     this.moneyForm.valueChanges.subscribe((changes) => {
       if (changes.singleFrom || changes.singleTo) {
@@ -1935,7 +1951,11 @@ export class FilterComponent implements OnInit {
   }
 
   setRangeSliderValue(mod){
-    this.minValueRange = mod.value;
-    this.maxValueRange = mod.highValue;
+    this.milesForm?.get('milesFrom')?.setValue(mod.value);
+    this.milesForm?.get('milesTo')?.setValue(mod.highValue);
+  }
+
+  onBlurInput(mod){
+    console.log('--here----')
   }
 }

@@ -1143,7 +1143,7 @@
   width: 300px;
 
   .bottom-border-margin {
-    margin: 12px 0px;
+    margin: 10px 0px;
   }
 
   .buttons-holder {
@@ -1211,7 +1211,7 @@
 
     &.slider-two-holder {
 
-      padding-top: 4px;
+      padding-top: 22px;
  
       .ta-ngx-slider,
       .custom-slider-commission {
@@ -1241,6 +1241,10 @@
     }
   }
 
+  .mainMilesHolder{
+    width: 100%;
+  }
+  
   .money-main-holder {
     display: flex;
     justify-content: space-between;
@@ -1249,7 +1253,7 @@
     padding-top: 22px;
 
     &.payPadding {
-      padding-top: 18px;
+      padding-top: 15px;
 
       .milesInputHolder{
         width: 141px;

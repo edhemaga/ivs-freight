@@ -1266,74 +1266,49 @@
           (onUserValueChange)="setRangeValue($event)"
         ></app-ta-ngx-slider>
       </div>
-    <!--
-      <div
-        class="money-main-holder payPadding"
-        *ngIf="type == 'payFilter' || type == 'milesFilter'"
-        [formGroup]="milesForm"
-      >
-        <div class="money-value-holder">
-          <app-ta-input
-            formControlName="milesFrom"
-            [inputConfig]="{
-              name: 'milesFrom',
-              type: 'number',
-              label: 'From',
-              placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
-              customClass: 'line-input-26'
-            }"
-          ></app-ta-input>
-        </div>
-        <div class="money-value-holder" [class.errorForm]="singleFormError">
-          <app-ta-input
-            formControlName="milesTo"
-            [inputConfig]="{
-              name: 'milesTo',
-              type: 'number',
-              label: 'To',
-              placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
-              customClass: 'line-input-26'
-            }"
-          ></app-ta-input>
-        </div>
-      </div>
-    -->
-    <!--
-      <div
-        class="money-main-holder payPadding"
-        *ngIf="type == 'payFilter' || type == 'milesFilter'"
-      >
-        <div class="money-value-holder">
-          <div class="milesInputHolder">
-            <input class="milesInput" type="number" [(ngModel)]="minValueRange">
+      <div class="mainMilesHolder" *ngIf="type == 'payFilter' || type == 'milesFilter'" [formGroup]="milesForm">
+        <div class="money-main-holder payPadding">
+          <div class="money-value-holder">
+            <app-ta-input
+              formControlName="milesFrom"
+              [inputConfig]="{
+                name: 'milesFrom',
+                type: 'number',
+                label: 'From',
+                placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
+                customClass: 'line-input-26'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="money-value-holder" [class.errorForm]="singleFormError">
+            <app-ta-input
+              formControlName="milesTo"
+              [inputConfig]="{
+                name: 'milesTo',
+                type: 'number',
+                label: 'To',
+                placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
+                customClass: 'line-input-26'
+              }"
+              (onfocusout)="onBlurInput('milesTo')"
+            ></app-ta-input>
           </div>
         </div>
-        <div class="money-value-holder">
-          <div class="milesInputHolder">
-            <input class="milesInput" type="number" [(ngModel)]="maxValueRange">
-          </div>
+        <div class="filter-middle-holder slider-two-holder">
+          <app-ta-ngx-slider
+            [sliderOptions]="
+              type == 'payFilter' ? paySliderData : milesSliderData
+            "
+            [startedValue]="rangeValue"
+            [customClass]="'custom-slider-filter'"
+            (onUserValueChange)="setRangeSliderValue($event)"
+            [sliderTemplate]="'range-slider'"
+            [customFormControlName]="sliderControl"
+            [minValue]="milesForm.get('milesFrom').value"
+            [maxValue]="milesForm.get('milesTo').value"
+          ></app-ta-ngx-slider>
+          
         </div>
-      </div>
-    -->
-      
-      <div
-        class="filter-middle-holder slider-two-holder"
-        *ngIf="type == 'payFilter' || type == 'milesFilter'"
-      >
-      
-        <app-ta-ngx-slider
-          [sliderOptions]="
-            type == 'payFilter' ? paySliderData : milesSliderData
-          "
-          [startedValue]="rangeValue"
-          [customClass]="'custom-slider-filter'"
-          (onUserValueChange)="setRangeSliderValue($event)"
-          [sliderTemplate]="'range-slider'"
-          [customFormControlName]="sliderControl"
-          [minValue]="minValueRange"
-          [maxValue]="maxValueRange"
-        ></app-ta-ngx-slider>
-        
       </div>
       <div class="border-filter bottom-border-margin"></div>
       <div class="buttons-holder" *ngIf="type != 'locationFilter'">
