@@ -209,14 +209,16 @@ $top_state_color: "6278C7", "7A8DCB", "7A8DCB", "A0AFDE", "A0AFDE", "C2CEEC",
     align-items: center;
     margin-bottom: 18px;
 
-    .row {
+    .pickup_main_holder {
+      display: flex;
       width: 100%;
 
       .dashboard_state_map_holder {
         width: auto;
-        max-width: 547px;
-        padding: 13px 0px 11px 0px;
+        max-width: 656px;
+        padding: 22px 0px 11px 0px;
         .state_all_holder {
+          position: relative;
           padding: 0 12px;
 
           border: 2px solid #f3f3f3;
@@ -225,6 +227,9 @@ $top_state_color: "6278C7", "7A8DCB", "7A8DCB", "A0AFDE", "A0AFDE", "C2CEEC",
           border-radius: 1px;
           .state_hold_main {
             display: flex;
+            position: absolute;
+            bottom: 0;
+            left: 23px;
             justify-content: flex-end;
 
             .state_data_hold {

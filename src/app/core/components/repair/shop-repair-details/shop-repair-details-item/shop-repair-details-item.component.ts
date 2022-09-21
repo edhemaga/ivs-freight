@@ -74,7 +74,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
     };
   }
   public getReviews(reviewsData: RepairShopResponse) {
-    this.reviewsRepair = reviewsData?.reviews.map((item) => {
+    this.reviewsRepair = reviewsData?.reviews?.map((item) => {
       return {
         ...item,
         companyUser: {
