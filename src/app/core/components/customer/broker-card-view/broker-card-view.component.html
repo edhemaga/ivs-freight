@@ -143,19 +143,14 @@
             }}</span>
           </div>
           <div
-            *ngIf="
-              broker.payTerm.name === 'Unlimited'
-            "
+            *ngIf="broker.payTerm.name === 'Unlimited'"
             class="invoice-agein-unlimited"
           >
-          
-          Avg. <span class="avg-days-invoice">42 Days</span>
-        </div>
+            Avg. <span class="avg-days-invoice">42 Days</span>
+          </div>
         </div>
         <app-progress-invoices
-          *ngIf="
-            broker.payTerm.name !== 'Unlimited'
-          "
+          *ngIf="broker.payTerm.name !== 'Unlimited' && broker?.invoiceAgeingGroupOne"
           [invoiceDays]="broker?.invoiceAgeingGroupOne?.periodOfDays"
           [invoiceCounter]="broker?.invoiceAgeingGroupOne?.countInvoice"
           [invoiceTotal]="broker?.invoiceAgeingGroupOne?.totalSum"
@@ -164,10 +159,7 @@
         </app-progress-invoices>
 
         <app-progress-invoices
-          *ngIf="
-            
-            broker.payTerm.name !== 'Unlimited'
-          "
+          *ngIf="broker.payTerm.name !== 'Unlimited' && broker?.invoiceAgeingGroupTwo"
           [invoiceDays]="broker?.invoiceAgeingGroupTwo?.periodOfDays"
           [invoiceCounter]="broker?.invoiceAgeingGroupTwo?.countInvoice"
           [invoiceTotal]="broker?.invoiceAgeingGroupTwo?.totalSum"
@@ -175,10 +167,7 @@
         >
         </app-progress-invoices>
         <app-progress-invoices
-          *ngIf="
-           
-            broker.payTerm.name !== 'Unlimited'
-          "
+          *ngIf="broker.payTerm.name !== 'Unlimited' && broker?.invoiceAgeingGroupThree"
           [invoiceDays]="broker?.invoiceAgeingGroupThree?.periodOfDays"
           [invoiceCounter]="broker?.invoiceAgeingGroupThree?.countInvoice"
           [invoiceTotal]="broker?.invoiceAgeingGroupThree?.totalSum"
@@ -186,10 +175,7 @@
         >
         </app-progress-invoices>
         <app-progress-invoices
-          *ngIf="
-           
-            broker.payTerm.name !== 'Unlimited'
-          "
+          *ngIf="broker.payTerm.name !== 'Unlimited' && broker?.invoiceAgeingGroupFour"
           [invoiceDays]="broker?.invoiceAgeingGroupFour?.periodOfDays"
           [invoiceCounter]="broker?.invoiceAgeingGroupFour?.countInvoice"
           [invoiceTotal]="broker?.invoiceAgeingGroupFour?.totalSum"
@@ -205,24 +191,18 @@
         [cardName]="'Terms and Credit'"
         [isCardOpen]="true"
       >
-        <div
-          class="invoice-ageing-template"
-          *ngIf="broker.creditType.name !== 'Unlimited'"
-        >
+        <div class="invoice-ageing-template" *ngIf="broker?.availableCredit">
           <div class="invoice-ageing-template-item">
             <span class="header-name">Available Credit</span>
             <div class="credit-perctange">
-            <span *ngIf="broker?.availableCredit" class="value-ageing">{{
-              broker?.availableCredit | formatCurrency
-            }}</span>
-            <div class="percntage-broker">{{getPercntageOfPaid}}%</div>
-          </div>
+              <span  class="value-ageing">{{
+                broker?.availableCredit | formatCurrency
+              }}</span>
+              <div class="percntage-broker">{{ getPercntageOfPaid }}%</div>
+            </div>
           </div>
         </div>
-        <div
-          class="progress-container"
-          *ngIf="broker.creditType.name !== 'Unlimited'"
-        >
+        <div class="progress-container" *ngIf="broker.availableCredit">
           <app-ta-currency-progress-bar
             [template]="'broker-credit'"
             [totalAmount]="broker.creditLimit"

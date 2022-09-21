@@ -26,8 +26,9 @@ export class DashboardStateUsaComponent implements OnInit {
   }
 
   removePopoverData(){
-    this.currentCountry = '';
     this.hoveredItem = null
+    return false;
+    this.currentCountry = '';
     this.hoveredContry = '';
     this.hoveredContryLetter = '';
   }

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 import { card_component_animation } from '../../../../shared/animations/card-component.animations';
 
@@ -12,6 +13,7 @@ import { card_component_animation } from '../../../../shared/animations/card-com
 export class ViolationDetailsSingleComponent implements OnInit {
   @Input() violationData: any;
   public toggler: boolean[] = [];
+  public note: FormControl = new FormControl();
   constructor() {}
 
   ngOnInit(): void {}
