@@ -115,9 +115,16 @@
       <!-- Route Stop Picker -->
       <div
         class="action-div"
-        [ngClass]="{ 'action-active': stopPickerActive }"
         (click)="onToolBarAction('open-stop-picker')"
+        [ngClass]="{
+          'action-active': stopPickerActive,
+          disabled: activeTableData?.length < 1
+        }"
       >
+        <div
+          *ngIf="activeTableData?.length < 1"
+          class="tooltip-hold"
+        ></div>
         <svg-icon
           [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
           [src]="'assets/svg/common/routing/ic_route_stop_picker.svg'"
@@ -126,7 +133,17 @@
       </div>
 
       <!-- Route Compare -->
-      <div class="action-div" (click)="onToolBarAction('open-route-compare')">
+      <div 
+        class="action-div" 
+        (click)="onToolBarAction('open-route-compare')"
+        [ngClass]="{
+          disabled: activeTableData?.length < 2
+        }"
+      >
+        <div
+          *ngIf="activeTableData?.length < 2"
+          class="tooltip-hold"
+        ></div>
         <svg-icon
           [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
           [src]="'assets/svg/common/routing/ic_route_compare.svg'"
@@ -222,7 +239,7 @@
       <div
         class="border-container"
         [ngStyle]="{ width: '2px' }"
-        *ngIf="tableData[0].length == 8"
+        *ngIf="activeTableData?.length == 8"
       >
         <div class="border-line"></div>
       </div>
@@ -238,20 +255,20 @@
     #op2="ngbPopover"
     (click)="onShowRoutePopover(op2)"
     [ngbPopover]="addRoutePopover"
-    [disablePopover]="tableData[0].length < 8 || routeToEdit?.id ? false : true"
+    [disablePopover]="activeTableData?.length < 8 || routeToEdit?.id ? false : true"
     [placement]="'bottom-right'"
     [autoClose]="false"
     popoverClass="map-settings-popover add-route-popover"
     [container]="'body'"
     [ngClass]="{
       'active-options-maps': addRoutePopupOpen,
-      disabled: tableData[0].length == 8
+      disabled: activeTableData?.length == 8
     }"
     triggers="manual"
     (hidden)="addRoutePopupOpen = false"
   >
     <div
-      *ngIf="tableData[0].length == 8"
+      *ngIf="activeTableData?.length == 8"
       class="tooltip-hold"
       [tooltipBackground]="'#424242'"
       ngbTooltip
@@ -385,7 +402,11 @@
     <div class="map-settings-divider"></div>
 
     <div class="map-settings-content buttons-container">
-      <div class="map-settings-button reset-button" (click)="resetMapForm()">
+      <div 
+        class="map-settings-button" 
+        [ngClass]="{ 'reset-button': mapFormChanged }"
+        (click)="resetMapForm()"
+      >
         <div class="map-settings-button-text">Reset</div>
       </div>
       <div
@@ -403,7 +424,7 @@
   <div class="map-settings-container" [formGroup]="routeForm">
     <div class="map-settings-header">
       <div class="map-settings-title">
-        {{ routeToEdit?.id ? "Route Settings" : "Add New Route" }}
+        {{ routeToEdit?.id ? "Route Settings" : "Create New Route" }}
       </div>
       <svg-icon
         class="close-svg"
@@ -424,7 +445,8 @@
             label: 'Name',
             isRequired: true,
             blackInput: true,
-            customClass: 'line-input-26'
+            customClass: 'line-input-26',
+            maxLength: 16
           }"
         ></app-ta-input>
       </div>

@@ -162,6 +162,7 @@
       align-items: center;
 
       .action-div {
+        position: relative;
         cursor: pointer;
         width: 34px;
         height: 34px;
@@ -211,6 +212,41 @@
           svg {
             path {
               fill: #6c6c6c !important;
+            }
+          }
+        }
+
+        .tooltip-hold {
+          position: absolute;
+          top: 0;
+          left: 0;
+    
+          width: 100%;
+          height: 100%;
+        }
+
+        &.disabled {
+          top: 0px;
+    
+          width: 34px;
+          height: 34px;
+          background: #fff;
+          cursor: default;
+    
+          svg-icon {
+            border-radius: 2px;
+            
+            svg {
+              path {
+                fill: #DADADA !important;
+              }
+            }
+          }
+
+          &:hover {
+            svg-icon {
+              background: #EEEEEE;
+              transition: 0.25s;
             }
           }
         }

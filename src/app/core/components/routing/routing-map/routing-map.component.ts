@@ -492,10 +492,15 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       const rectElement =
         event.item.element.nativeElement.getBoundingClientRect();
 
+      var dropX = this._pointerPosition.x - this.off.x * this.scaleX - rectZone.left;
+      var dropY = this._pointerPosition.y - this.off.y * this.scaleY - rectZone.top;
+
+      var routePosition = this.calculateRouteGridPosition(dropX, dropY);
+
       event.item.data.y =
-        this._pointerPosition.y - this.off.y * this.scaleY - rectZone.top;
+        routePosition.y;
       event.item.data.x =
-        this._pointerPosition.x - this.off.x * this.scaleX - rectZone.left;
+        routePosition.x;
 
       const out =
         event.item.data.y < 0 ||
@@ -512,7 +517,25 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       );
 
       if (event.container.id == 'cdk-drop-list-1' && (overlap || out)) {
-        event.item.data.freeMove = false;
+        if ( out && event.item.data.x > rectZone.width - rectElement.width ) {
+          var routePosition = this.calculateRouteGridPosition(rectZone.width - rectElement.width, event.item.data.y);
+          console.log('routePosition', routePosition);
+
+          var fieldY = routePosition.y;
+          var fieldX = routePosition.x;
+
+          if ( event.item.data.y == routePosition.y ) {
+            fieldY = routePosition.y + 0.0001;
+          }
+          if ( event.item.data.x == routePosition.x ) {
+            fieldX = routePosition.x + 0.0001;
+          }
+
+          event.item.data.y = fieldY;
+          event.item.data.x = fieldX;
+        } else {
+          event.item.data.freeMove = false;
+        }
       }
     }
 
@@ -578,25 +601,56 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     );
 
     if (!out && !overlap) {
-      field.y = y;
-      field.x = x;
+      var routePosition = this.calculateRouteGridPosition(x, y);
+      console.log('routePosition', routePosition);
+
+      var fieldY = routePosition.y;
+      var fieldX = routePosition.x;
+
+      if ( field.y == routePosition.y ) {
+        fieldY = routePosition.y + 0.0001;
+      }
+      if ( field.x == routePosition.x ) {
+        fieldX = routePosition.x + 0.0001;
+      }
+
+      field.y = fieldY;
+      field.x = fieldX;
     } else if (!overlap) {
       if (event.previousContainer === event.container) {
-        field.freeMove = false;
-        this.changedFreeMoveTime = new Date().getTime();
+        if ( x > rectZone.width - rectElement.width ) {
+          var routePosition = this.calculateRouteGridPosition(rectZone.width - rectElement.width, y);
+          console.log('routePosition', routePosition);
 
-        var orderPosition = this.findReorderPositionById(
-          event.item.data.id,
-          event.currentIndex
-        );
-        const previousIndex = orderPosition[0];
-        const nextIndex = orderPosition[1];
+          var fieldY = routePosition.y;
+          var fieldX = routePosition.x;
 
-        moveItemInArray(
-          event.container.data,
-          previousIndex,
-          event.container.data.length - 1
-        );
+          if ( field.y == routePosition.y ) {
+            fieldY = routePosition.y + 0.0001;
+          }
+          if ( field.x == routePosition.x ) {
+            fieldX = routePosition.x + 0.0001;
+          }
+
+          field.y = fieldY;
+          field.x = fieldX;
+        } else {
+          field.freeMove = false;
+          this.changedFreeMoveTime = new Date().getTime();
+
+          var orderPosition = this.findReorderPositionById(
+            event.item.data.id,
+            event.currentIndex
+          );
+          const previousIndex = orderPosition[0];
+          const nextIndex = orderPosition[1];
+
+          moveItemInArray(
+            event.container.data,
+            previousIndex,
+            event.container.data.length - 1
+          );
+        }
       }
     }
 
@@ -626,14 +680,24 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     event.preventDefault();
 
     route.hidden = !route.hidden;
-    if (route.isFocused) {
-      route.isFocused = false;
-      this.focusedRouteIndex = null;
-      this.focusedStopIndex = null;
-    }
-    if (route.expanded) {
-      route.expanded = false;
-      route.expandFinished = false;
+    if ( route.hidden ) {
+      if (route.isFocused) {
+        route.isFocused = false;
+        this.focusedRouteIndex = null;
+        this.focusedStopIndex = null;
+      }
+      if (route.expanded) {
+        route.expanded = false;
+        route.expandFinished = false;
+      }
+    } else {
+      const routeIndex = this.tableData[this.selectedMapIndex].routes.findIndex(
+        (item) => {
+          return item.id === route.id;
+        }
+      );
+      
+      this.focusRoute(routeIndex);
     }
   }
 
@@ -728,6 +792,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       if (mainthis.stopJustAdded) {
         mainthis.stopJustAdded = false;
         return false;
+      }
+
+      if ( mainthis.stopPickerLocation.editIndex != null ) {
+        mainthis.stopPickerLocation = {};
+        mainthis.ref.detectChanges();
       }
 
       if (mainthis.focusedRouteIndex != null && mainthis.stopPickerActive) {
@@ -1299,7 +1368,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
           this.calculateRouteWidth(item);
         });
       }
-    } else if (event.action == 'open-stop-picker') {
+    } else if (event.action == 'open-stop-picker' && this.tableData[this.selectedMapIndex].routes.length) {
       this.stopPickerActive = !this.stopPickerActive;
       this.stopPickerLocation = {};
       if (this.stopPickerActive) {
@@ -1308,7 +1377,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       } else {
         this.agmMap.setOptions({ draggableCursor: '' });
       }
-    } else if (event.action == 'open-route-compare') {
+    } else if (event.action == 'open-route-compare' && this.tableData[this.selectedMapIndex].routes.length > 1) {
       console.log('onToolbarAction open-route-compare');
     } else if (event.action == 'open-keyboard-controls') {
       console.log('onToolbarAction open-keyboard-controls');
@@ -1467,7 +1536,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     }
 
     this.stopPickerLocation = {};
-    this.stopJustAdded = true;
+    //this.stopJustAdded = true;
 
     this.ref.detectChanges();
   }
@@ -1476,6 +1545,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     if (this.focusedRouteIndex != routeIndex) {
       this.focusRoute(routeIndex);
     }
+
+    this.focusStop(event, routeIndex, stopIndex);
 
     this.stopPickerLocation =
       this.tableData[this.selectedMapIndex].routes[routeIndex].stops[stopIndex];
@@ -1980,5 +2051,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     if (nextIndex < 1) nextIndex = 1;
 
     return [previousIndex, nextIndex - 1];
+  }
+
+  calculateRouteGridPosition(x, y) {
+    console.log('calculateRouteGridPosition x, y', x, y);
+    return {x: Math.floor(x / 12) * 12, y: y}; // will render the element every 12 pixels horizontally
   }
 }

@@ -123,21 +123,6 @@
                   (mouseleave)="route.nameHover = false"
                 >
                   {{ route.name }}
-
-                  <div
-                    class="route-name-tooltip"
-                    [ngStyle]="{
-                      width: !route.nameHover
-                        ? '0px'
-                        : route.hidden
-                        ? '82px'
-                        : '77px',
-                      'margin-left': route.nameHover ? '12px' : '0px',
-                      opacity: route.nameHover ? '1' : '0'
-                    }"
-                  >
-                    {{ route.hidden ? "Show Route" : "Hide Route" }}
-                  </div>
                 </div>
                 <div class="header-properties-container">
                   <div
@@ -603,21 +588,6 @@
                   (mouseleave)="route.nameHover = false"
                 >
                   {{ route.name }}
-
-                  <div
-                    class="route-name-tooltip"
-                    [ngStyle]="{
-                      width: !route.nameHover
-                        ? '0px'
-                        : route.hidden
-                        ? '82px'
-                        : '77px',
-                      'margin-left': route.nameHover ? '12px' : '0px',
-                      opacity: route.nameHover ? '1' : '0'
-                    }"
-                  >
-                    {{ route.hidden ? "Show Route" : "Hide Route" }}
-                  </div>
                 </div>
                 <div class="header-properties-container">
                   <div
@@ -1394,10 +1364,10 @@
                       >
                         <tspan y="-5">
                           {{
-                            focusedStopIndex != null
-                              ? focusedStopIndex + 2
-                              : stopPickerLocation.editIndex != null
+                            stopPickerLocation.editIndex != null
                               ? stopPickerLocation.editIndex + 1
+                              : focusedStopIndex != null
+                              ? focusedStopIndex + 2
                               : tableData[selectedMapIndex].routes[
                                   focusedRouteIndex
                                 ].stops.length + 1
