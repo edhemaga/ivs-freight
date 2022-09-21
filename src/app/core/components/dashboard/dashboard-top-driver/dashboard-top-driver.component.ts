@@ -81,6 +81,7 @@ export class DashboardTopDriverComponent implements OnInit, OnDestroy {
     hasPercentage: true,
     allowAnimation: true,
     offset: true,
+    tooltipOffset: {min: 105, max: 279},
     dataLabels: [
       'MAR',
       '',
