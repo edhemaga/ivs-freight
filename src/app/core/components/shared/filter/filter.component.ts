@@ -1933,4 +1933,9 @@ export class FilterComponent implements OnInit {
       this.setButtonAvailable = false;
     }
   }
+
+  setRangeSliderValue(mod){
+    this.minValueRange = mod.value;
+    this.maxValueRange = mod.highValue;
+  }
 }

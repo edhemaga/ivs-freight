@@ -1211,8 +1211,8 @@
 
     &.slider-two-holder {
 
-      padding-top: 22px;
-
+      padding-top: 4px;
+ 
       .ta-ngx-slider,
       .custom-slider-commission {
         .ngx-slider-pointer {
@@ -1251,12 +1251,16 @@
     &.payPadding {
       padding-top: 18px;
 
-      .input-control{
-      
-        &::after{
-          content: " mi" !important;
+      .milesInputHolder{
+        width: 141px;
+        height: 41px;
+        
+        .milesInput{
+          width: 90px;
+          outline: none;
         }
       }
+      
     }
 
     .money-value-holder {

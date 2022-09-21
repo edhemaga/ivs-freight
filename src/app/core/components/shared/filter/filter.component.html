@@ -1266,6 +1266,7 @@
           (onUserValueChange)="setRangeValue($event)"
         ></app-ta-ngx-slider>
       </div>
+    <!--
       <div
         class="money-main-holder payPadding"
         *ngIf="type == 'payFilter' || type == 'milesFilter'"
@@ -1296,17 +1297,37 @@
           ></app-ta-input>
         </div>
       </div>
+    -->
+    <!--
+      <div
+        class="money-main-holder payPadding"
+        *ngIf="type == 'payFilter' || type == 'milesFilter'"
+      >
+        <div class="money-value-holder">
+          <div class="milesInputHolder">
+            <input class="milesInput" type="number" [(ngModel)]="minValueRange">
+          </div>
+        </div>
+        <div class="money-value-holder">
+          <div class="milesInputHolder">
+            <input class="milesInput" type="number" [(ngModel)]="maxValueRange">
+          </div>
+        </div>
+      </div>
+    -->
+      
       <div
         class="filter-middle-holder slider-two-holder"
         *ngIf="type == 'payFilter' || type == 'milesFilter'"
       >
+      
         <app-ta-ngx-slider
           [sliderOptions]="
             type == 'payFilter' ? paySliderData : milesSliderData
           "
           [startedValue]="rangeValue"
           [customClass]="'custom-slider-filter'"
-          (onUserValueChange)="setRangeValue($event)"
+          (onUserValueChange)="setRangeSliderValue($event)"
           [sliderTemplate]="'range-slider'"
           [customFormControlName]="sliderControl"
           [minValue]="minValueRange"
