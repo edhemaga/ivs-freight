@@ -24,7 +24,7 @@ export class NotificationService {
 
   public errorToastr(httpRequest: HttpRequest<any>, next: HttpHandler){
     
-    if ( httpRequest.url.indexOf('application') > -1 ) {
+    if ( httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 ) {
       return false;
     }
 
@@ -33,7 +33,7 @@ export class NotificationService {
 
   public successToastr(httpRequest: HttpRequest<any>, next: HttpHandler){
     
-    if ( httpRequest.url.indexOf('application') > -1 ) {
+    if ( httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 ) {
       return false;
     }
 
