@@ -61,6 +61,7 @@ export class SettingsToolbarComponent implements OnInit, OnDestroy {
       this.comRShopStore.getValue().ids.length +
       this.parkingStore.getValue().ids.length +
       this.officeStore.getValue().ids.length;
+
     this.settingsToolbar = [
       {
         id: 1,

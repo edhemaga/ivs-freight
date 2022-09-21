@@ -18,7 +18,12 @@
     <div class="driver-container">
       <div class="driver-personal">
         <div class="driver-avatar">
-          <img  *ngIf="driver?.avatar" class="driver-avatar-svg" [src]="imageBase64Service.sanitizer(driver?.avatar)" alt="driver-image">
+          <img
+            *ngIf="driver?.avatar"
+            class="driver-avatar-svg"
+            [src]="imageBase64Service.sanitizer(driver?.avatar)"
+            alt="driver-image"
+          />
           <app-profile-images
             *ngIf="!driver?.avatar"
             [indx]="0"
@@ -83,7 +88,7 @@
               >
                 <svg-icon
                   class="assignTo-vehicle"
-                  src="assets/svg/common/trucks/ic_truck_semi-truck.svg"
+                  src="assets/svg/common/trucks/ic_truck_semi-wSleeper.svg"
                 >
                 </svg-icon>
               </span>
@@ -176,7 +181,6 @@
       <!-- Off Duty Location-->
       <app-ta-custom-card
         [hasCounter]="driver.offDutyLocations.length"
-
         [cardName]="'Off Duty Location'"
         [isCardOpen]="false"
         *ngIf="driver.offDutyLocations.length"
@@ -403,11 +407,15 @@
         class="item-cards"
         [animationsDisabled]="false"
         [bodyTemplate]="'card'"
-        *ngIf="driver?.commissionSolo || driver?.solo?.loadedMile || driver?.team?.loadedMile"
+        *ngIf="
+          driver?.commissionSolo ||
+          driver?.solo?.loadedMile ||
+          driver?.team?.loadedMile
+        "
         [cardName]="driver.commissionSolo ? 'Commission Pay' : 'Mileage Pay'"
         [isCardOpen]="true"
       >
-        <div *ngIf="driver?.commissionSolo" class="purchase-template" >
+        <div *ngIf="driver?.commissionSolo" class="purchase-template">
           <div class="purchase-template-item">
             <div class="purchase-template-item-name">Solo</div>
             <div class="purchase-template-item-value commsion-solo">
@@ -415,14 +423,17 @@
             </div>
           </div>
 
-          <div class="purchase-template-item second-name" *ngIf="driver?.commissionTeam">
+          <div
+            class="purchase-template-item second-name"
+            *ngIf="driver?.commissionTeam"
+          >
             <div class="purchase-template-item-name">Team</div>
             <div class="purchase-template-item-value commsion-solo">
               {{ driver.commissionTeam }}%
             </div>
           </div>
         </div>
-        <div  class="mileage-template">
+        <div class="mileage-template">
           <div class="mileage-template-item" *ngIf="driver?.solo?.loadedMile">
             <div class="mileage-template-item-name">Empty (Solo)</div>
             <div class="mileage-template-item-value">
@@ -472,15 +483,18 @@
         [bodyTemplate]="'card'"
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
       >
-      <div class="charts-template perfomance" [class.p-0]="barChart.hoveringStatus">
-        <div *ngIf="!barChart.hoveringStatus">
-          <app-ta-tab-switch
-            [tabs]="tabsDriver"
-            (switchClicked)="changeTab($event)"
-            [type]="'type2-modal-popup'"
-          >
-          </app-ta-tab-switch>
-        </div>
+        <div
+          class="charts-template perfomance"
+          [class.p-0]="barChart.hoveringStatus"
+        >
+          <div *ngIf="!barChart.hoveringStatus">
+            <app-ta-tab-switch
+              [tabs]="tabsDriver"
+              (switchClicked)="changeTab($event)"
+              [type]="'type2-modal-popup'"
+            >
+            </app-ta-tab-switch>
+          </div>
           <div id="chart">
             <app-ta-chart
               #barChart
@@ -533,24 +547,22 @@
         [animationsDisabled]="false"
       >
         <div
-          *ngIf="
-            !driver.emergencyContactName ||
-            !driver.emergencyContactPhone
-          "
+          *ngIf="!driver.emergencyContactName || !driver.emergencyContactPhone"
           class="no-data-driver-details"
         >
           No Contact
         </div>
         <div
-          *ngIf="
-            driver.emergencyContactName &&
-            driver.emergencyContactPhone
-          "
+          *ngIf="driver.emergencyContactName && driver.emergencyContactPhone"
           class="purchase-template"
         >
           <div class="purchase-template-item">
             <div class="purchase-template-item-name">
-              {{ driver?.emergencyContactRelationship ? driver.emergencyContactRelationship : 'Name' }}
+              {{
+                driver?.emergencyContactRelationship
+                  ? driver.emergencyContactRelationship
+                  : "Name"
+              }}
             </div>
             <div class="purchase-template-item-value">
               {{ driver.emergencyContactName }}
@@ -608,7 +620,7 @@
               [cardNameCurrent]="'cdl'"
               (clickedCard)="getNameForDrop($event)"
               (dataDropDopwn)="getCdlById(cdl.id)"
-              [isCardOpen]="cdl.status==1?true:false"
+              [isCardOpen]="cdl.status == 1 ? true : false"
               [isDeactivated]="cdl.dateDeactivated"
               [stateTooltipName]="cdl.state.stateName"
               [shortName]="cdl.state.stateShortName"
@@ -668,18 +680,18 @@
                         <p
                           class="restriction-item-value"
                           *ngFor="
-                            let endors of cdl.cdlEndorsements;
+                            let endors of cdl?.cdlEndorsements;
                             trackBy: identity
                           "
                         >
-                          <span class="span-value" *ngIf="endors">
+                          <span class="span-value" *ngIf="endors?.length">
                             <span class="value-name">{{ endors?.code }}</span>
-                            <span *ngIf="toggler[i]" class="desc"
+                            <span *ngIf="toggler[i+'description']" class="desc"
                               >- {{ endors?.description }}</span
                             >
                           </span>
                         </p>
-                        <span class="no-driver" *ngIf="endors == ''">None</span>
+                        <span class="no-driver" *ngIf="!endors?.length">None</span>
                       </div>
                     </div>
                   </div>

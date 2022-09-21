@@ -14,6 +14,7 @@ import { DropDownService } from 'src/app/core/services/details-page/drop-down.se
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { dropActionNameTrailerTruck } from 'src/app/core/utils/function-drop.details-page';
+import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 import { CommonTruckTrailerService } from '../../../modals/common-truck-trailer-modals/common-truck-trailer.service';
 import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
@@ -201,28 +202,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
       });
   }
   public onFileAction(action: string) {
-    switch (action) {
-      case 'download': {
-        this.downloadFile(
-          'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-          'truckassist0'
-        );
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-  }
-  public downloadFile(url: string, filename: string) {
-    fetch(url).then((t) => {
-      return t.blob().then((b) => {
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(b);
-        a.setAttribute('download', filename);
-        a.click();
-      });
-    });
+    onFileActionMethods(action);
   }
 
   public hiddenPassword(value: any, numberOfCharacterToHide: number) {

@@ -10,6 +10,7 @@ import { ConfirmationService } from '../../../modals/confirmation-modal/confirma
 import { SettingsLocationService } from '../../state/location-state/settings-location.service';
 import { CompanyParkingService } from './parking-state/company-parking.service';
 import { ActivatedRoute } from '@angular/router';
+import { calculateParkingSlot } from 'src/app/core/utils/methods.calculations';
 @Component({
   selector: 'app-settings-parking',
   templateUrl: './settings-parking.component.html',
@@ -23,6 +24,16 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
   public parkingData: any;
   public parkingDataById: any;
   public parkingActions: any;
+  public parkingSlots: any[] = [
+    {
+      id: 5,
+      value: 0,
+    },
+    {
+      id: 6,
+      value: 0,
+    },
+  ];
   constructor(
     private settingsLocationService: SettingsLocationService,
     private companyParkingService: CompanyParkingService,
@@ -76,6 +87,7 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.parkingDataById = item));
   }
+
   public optionsEvent(any: any, action: string) {
     this.getParkingById(any.id);
 
@@ -151,9 +163,6 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
       .getParkingList()
       .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.parkingData = item.pagination));
-  }
-  public calculateParkingSlots(item: any) {
-    return Number(item.parkingSlot) + Number(item.fullParkingSlot);
   }
 
   public generateTextForProgressBar(data: any): string {

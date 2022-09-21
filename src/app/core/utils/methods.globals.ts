@@ -1,9 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 
-export function tableSearch(
-  res: any,
-  backFilterQuery: any
-): any {
+export function tableSearch(res: any, backFilterQuery: any): any {
   // On Typing
   if (!res.doReset && !res.isChipDelete && !res.chipAdded) {
     backFilterQuery[res.chip] = res.search;
@@ -986,27 +983,51 @@ export function checkNumberOfSpaces(k: number, numOfSpaces: number) {
 }
 
 export const applyDrag = (arr, dragResult) => {
-	const { removedIndex, addedIndex, payload } = dragResult;
-	if (removedIndex === null && addedIndex === null) return arr;
+  const { removedIndex, addedIndex, payload } = dragResult;
+  if (removedIndex === null && addedIndex === null) return arr;
 
-	const result = [...arr];
-	let itemToAdd = payload;
+  const result = [...arr];
+  let itemToAdd = payload;
 
-	if (removedIndex !== null) {
-		itemToAdd = result.splice(removedIndex, 1)[0];
-	}
+  if (removedIndex !== null) {
+    itemToAdd = result.splice(removedIndex, 1)[0];
+  }
 
-	if (addedIndex !== null) {
-		result.splice(addedIndex, 0, itemToAdd);
-	}
+  if (addedIndex !== null) {
+    result.splice(addedIndex, 0, itemToAdd);
+  }
 
-	return result;
+  return result;
 };
 
 export const generateItems = (count, creator) => {
-	const result = [];
-	for (let i = 0; i < count; i++) {
-		result.push(creator(i));
-	}
-	return result;
+  const result = [];
+  for (let i = 0; i < count; i++) {
+    result.push(creator(i));
+  }
+  return result;
 };
+export function onFileActionMethods(action: string) {
+  switch (action) {
+    case 'download': {
+      downloadFileMethods(
+        'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+        'truckassist0'
+      );
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
+export function downloadFileMethods(url: string, filename: string) {
+  fetch(url).then((t) => {
+    return t.blob().then((b) => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(b);
+      a.setAttribute('download', filename);
+      a.click();
+    });
+  });
+}

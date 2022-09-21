@@ -14,7 +14,7 @@ export class CompanyParkingService {
     pageIndex?: number,
     pageSize?: number,
     count?: number
-  ): Observable<ParkingListResponse> {
+  ): Observable<ParkingListResponse | any> {
     return this.companyParkingService.apiParkingListGet(
       pageIndex,
       pageSize,

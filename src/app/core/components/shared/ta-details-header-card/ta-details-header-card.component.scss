@@ -206,6 +206,8 @@ $border-radius: 3px;
     line-height: 24px;
     color: #6c6c6c;
     cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
     &::-moz-selection {
       color: #6c6c6c;
       background: rgb(183, 183, 183, 0.2);

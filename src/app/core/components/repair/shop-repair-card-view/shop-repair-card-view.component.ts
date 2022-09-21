@@ -14,6 +14,7 @@ import { RepairShopMinimalListQuery } from '../state/shop-details-state/shop-min
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import { RepairTService } from '../state/repair.service';
 
 @Component({
   selector: 'app-shop-repair-card-view',
@@ -31,12 +32,14 @@ export class ShopRepairCardViewComponent
   public tabs: any;
   public shopsDropdowns: any[] = [];
   public shopsList: any[] = this.repairShopMinimalQuery.getAll();
+  public repairShopObject: any;
   constructor(
     private shopQuery: ShopQuery,
     private detailsPageDriverSer: DetailsPageService,
     private tableService: TruckassistTableService,
     private cdRef: ChangeDetectorRef,
-    private repairShopMinimalQuery: RepairShopMinimalListQuery
+    private repairShopMinimalQuery: RepairShopMinimalListQuery,
+    private shopService: RepairTService
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (
@@ -44,8 +47,14 @@ export class ShopRepairCardViewComponent
     ) {
       this.getActiveServices(changes.shopResponse.currentValue);
       this.getShopsDropdown();
+      this.shopResponse = changes.shopResponse?.currentValue;
       this.noteControl.patchValue(changes.shopResponse.currentValue.note);
     }
+    this.getRepairShopById(changes.shopResponse.currentValue.id);
+    this.repairShopMinimalQuery
+      .selectAll()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.shopsList = item));
   }
   ngOnInit(): void {
     this.tableService.currentActionAnimation
@@ -63,7 +72,12 @@ export class ShopRepairCardViewComponent
   public identity(index: number, item: any): number {
     return item.id;
   }
-
+  public getRepairShopById(id: number) {
+    this.shopService
+      .getRepairShopById(id, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.repairShopObject = item));
+  }
   public getShopsDropdown() {
     this.shopsDropdowns = this.repairShopMinimalQuery.getAll().map((item) => {
       return {
