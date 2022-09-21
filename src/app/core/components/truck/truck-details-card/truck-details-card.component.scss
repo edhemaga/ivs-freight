@@ -79,7 +79,7 @@ app-truck-details-card {
 
     .rotate-owner {
         .single-icon-wrapper {
-            justify-content: flex-start;
+            justify-content: center;
             margin-top: 10px !important;
             svg {
                 transform: rotate(180deg);
@@ -94,7 +94,6 @@ app-truck-details-card {
     }
     .single-icon-wrapper {
         padding: 0 10px;
-        margin-top: 4px;
         cursor: pointer;
         .icon-rotate {
             cursor: pointer;

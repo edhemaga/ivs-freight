@@ -63,7 +63,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
-        if (res.animation) {
+        if (res.animation === 'update' && res.tab === 'repair-shop') {
           this.shopConf(res.data);
           this.cdRef.detectChanges();
         }

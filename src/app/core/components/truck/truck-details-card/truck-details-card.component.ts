@@ -585,6 +585,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
       return {
         id: item.id,
         name: item.truckNumber,
+        status: item.status,
         active: item.id === this.truck.id,
       };
     });
@@ -595,6 +596,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         return {
           id: item.id,
           name: item.truckNumber,
+          status: item.status,
           active: item.id === event.id,
         };
       });

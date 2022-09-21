@@ -43,6 +43,7 @@ app-trailer-details-item {
       align-items: flex-end;
       height: 18px;
       justify-content: center;
+      margin-top: 10px;
       cursor: pointer;
       .arrow-down-employment {
         svg {
@@ -65,7 +66,8 @@ app-trailer-details-item {
         }
       }
       .icon-show {
-        justify-content: flex-start !important;
+        justify-content: center !important;
+        margin-top: 0 !important;
       }
     }
   }
