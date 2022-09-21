@@ -28,6 +28,8 @@ import { ChangeDetectorRef } from '@angular/core';
 import { catchError, of } from 'rxjs';
 import { ColorFinderPipe } from '../pipes/color-finder.pipe';
 
+import { Options } from '@angular-slider/ngx-slider';
+
 @Component({
   selector: 'app-dispatchboard-tables',
   templateUrl: './dispatchboard-tables.component.html',
@@ -112,8 +114,6 @@ export class DispatchboardTablesComponent implements OnInit {
   checkForEmpty: string = '';
 
   @Input() set _dData(value) {
-    console.log('GET DATA INSIDE LIST');
-    console.log(value);
     // value.dispatches = value.dispatches.map((item) => {
     //   if( !item.hoursOfService ){
     //     item.hoursOfService = {
@@ -218,7 +218,6 @@ export class DispatchboardTablesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('WHat is date', this.dData);
   }
 
   addTruck(e) {
@@ -262,8 +261,6 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
   addStatus(e) {
-    console.log(e);
-
     if (e) {
       if ([7, 8, 9, 4, 10, 6].includes(e.statusValue.id)) {
         this.dData.dispatches[this.statusOpenedIndex].status = e;
@@ -289,8 +286,6 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
   addTrailer(e) {
-    console.log(e);
-
     if (e) {
       this.updateOrAddDispatchBoardAndSend(
         'trailerId',
@@ -322,7 +317,6 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
   dropList(event) {
-    console.log(event);
     moveItemInArray(
       this.dData.dispatches,
       event.previousIndex,
@@ -415,10 +409,6 @@ export class DispatchboardTablesComponent implements OnInit {
     this.selectTruck.reset();
     this.__change_in_proggress = true;
 
-    console.log(key);
-    console.log(value);
-    console.log(newData);
-
     this.checkForEmpty = key;
 
     if (oldData.id) {
@@ -463,7 +453,7 @@ export class DispatchboardTablesComponent implements OnInit {
           this.__change_in_proggress = false;
         });
     }
-    // console.log("HELOOOOO", newData);
+
   }
 
   set checkEmptySet(value) {
@@ -472,6 +462,32 @@ export class DispatchboardTablesComponent implements OnInit {
       this.chd.detectChanges();
     }, 300);
   }
+
+
+  options: Options = {
+    floor: 0,
+    ceil: 1440,
+    showSelectionBar: false,
+    noSwitching: true,
+    hideLimitLabels: true,
+    animate: false,
+    maxLimit: new Date().getHours() * 60 + new Date().getMinutes(),
+    translate: (value: number): string => {
+      const minutes = value;
+      const m = minutes % 60;
+      const h = (minutes - m) / 60;
+      const suffix = h >= 12 ? 'PM' : 'AM';
+      const formatedH = h > 12 ? h - 12 : h;
+      return (
+        formatedH.toString() +
+        ':' +
+        (m < 10 ? '0' : '') +
+        m.toString() +
+        ' ' +
+        suffix
+      );
+    },
+  };
 
   toggleHos(tooltip: any, data: any, id: number) {
     this.hosHelper.hos = [];
@@ -491,6 +507,10 @@ export class DispatchboardTablesComponent implements OnInit {
       //   }
       // });
     }
+
+    console.log("WHAT IS DATAA");
+    console.log(data);
+   
     if (tooltip.isOpen()) {
       tooltip.close();
     } else {
@@ -667,12 +687,10 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
   returnValueId(i) {
-    console.log('HOS RETURN VALUE ID');
     return 'valueSpan_' + i;
   }
 
   formatTime(minValue, maxValue) {
-    console.log('HOS RETURN VALUE formatTime');
     const minutes = maxValue - minValue;
     const m = minutes % 60;
     const h = (minutes - m) / 60;

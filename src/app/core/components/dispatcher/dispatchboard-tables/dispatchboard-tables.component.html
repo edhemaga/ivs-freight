@@ -768,6 +768,13 @@
             <div class="dispatcher-table-cell-container empty-box-field"></div>
           </td>
           <td class="empty-field">
+            <!-- [ngClass]="
+            (item.hoursOfService?.hos)[item.hoursOfService.hos.length - 1]
+              ?.flag === 'on'
+              ? 'active-flag'
+              : 'inactive-flag'
+          " -->
+
             <div
               #t1="ngbPopover"
               (click)="toggleHos(t1, item.hoursOfService, item.id)"
@@ -776,12 +783,6 @@
               "
               [class.statusOpened]="statusOpenedIndex > -1"
               [class.empty-box-field]="true"
-              [ngClass]="
-                (item.hoursOfService?.hos)[item.hoursOfService.hos.length - 1]
-                  ?.flag === 'on'
-                  ? 'active-flag'
-                  : 'inactive-flag'
-              "
               [ngbPopover]="hos"
               autoClose="outside"
               class="hos-column"
@@ -1204,6 +1205,8 @@
         *ngFor="let item of data; let i = index"
         class="item-container inactive-parent"
       >
+        {{ item.end }}
+        {{ item.start }}
         <div *ngIf="item?.flag === 'off'" class="individual-item">
           <div>
             <div
@@ -1227,13 +1230,21 @@
               [options]="options"
             ></ng5-slider> -->
 
-            <app-ta-ngx-slider
+            <ngx-slider
+              (userChange)="userChangeEnd($event, i, data)"
+              [(highValue)]="item.end"
+              [(value)]="item.start"
+              [ngClass]="i + ' inactive-wrapper-slider'"
+              [options]="options"
+            ></ngx-slider>
+
+            <!-- <app-ta-ngx-slider
               [sliderTemplate]="'hos-change'"
               [sliderOptions]="options"
               [startedValue]="item.start"
               [customClass]="i + ' inactive-wrapper-slider'"
               (onUserValueChange)="userChangeEnd($event, i, data)"
-            ></app-ta-ngx-slider>
+            ></app-ta-ngx-slider> -->
           </div>
           <div class="button-wrapper" id="{{ returnButtonId(i) }}">
             <span
