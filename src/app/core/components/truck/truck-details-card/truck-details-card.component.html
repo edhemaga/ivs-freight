@@ -140,7 +140,7 @@
               {{ truck?.emptyWeight | taThousandSeparator }} Ibs
             </div>
           </div>
-          <div *ngIf="truck?.truckEngineType.name" class="common-template-item">
+          <div *ngIf="truck?.truckEngineType?.name" class="common-template-item">
             <div class="common-template-item-name">Engine Type</div>
             <div class="common-template-item-value">
               {{ truck?.truckEngineType.name }}
@@ -152,7 +152,7 @@
               {{ truck?.axles }}
             </div>
           </div>
-          <div *ngIf="truck?.tireSize.name" class="common-template-item">
+          <div *ngIf="truck?.tireSize?.name" class="common-template-item">
             <div class="common-template-item-name">Tire size</div>
             <div class="common-template-item-value">
               {{ truck?.tireSize.name }}
@@ -221,7 +221,7 @@
             </p>
           </div>
         </div>
-        <div [ngClass]="{ 'rotate-owner': toggler }">
+        <div [ngClass]="{ 'rotate-owner': togglerOwner }">
           <div (click)="togglerOwner = !togglerOwner" class="single-icon-wrapper">
             <span
               [tooltipBackground]="'#6c6c6c'"
@@ -241,7 +241,7 @@
               position="top"
               class="hide-show"
             >
-              {{ togglerOwner ? "HIDE CONTACT" : "" }}
+              
             </span>
           </div>
         </div>

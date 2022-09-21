@@ -33,7 +33,7 @@ export class TrailerDetailsCardComponent
   public inspectionNote: FormControl = new FormControl();
   public toggler: boolean[] = [];
   public dataEdit: any;
-  public toggleOwner: boolean = true;
+  public toggleOwner: boolean;
   public trailerDropDowns: any[] = [];
   private destroy$ = new Subject<void>();
   public trailer_list: any[] = this.trailerMinimalQuery.getAll();
@@ -114,6 +114,7 @@ export class TrailerDetailsCardComponent
       return {
         id: item.id,
         name: item.trailerNumber,
+        status: item.status,
         active: item.id === this.trailer.id,
       };
     });
@@ -124,6 +125,7 @@ export class TrailerDetailsCardComponent
         return {
           id: item.id,
           name: item.trailerNumber,
+          status: item.status,
           active: item.id === event.id,
         };
       });
