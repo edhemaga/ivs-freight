@@ -88,6 +88,7 @@ export class DriverDetailsCardComponent
   public dataTestCard: any;
   public driverObject: any;
   private destroy$ = new Subject<void>();
+  public showMoreEmployment: boolean;
   barChartConfig: any = {
     dataProperties: [
       {
@@ -737,7 +738,7 @@ export class DriverDetailsCardComponent
           id: item.id,
           name: fullname,
           status: item.status,
-          svg: item.owner ? 'driver-owner' : null,
+          svg: item.owner ? 'owner-status' : null,
           folder: 'common',
           active: item.id === event.id,
         };

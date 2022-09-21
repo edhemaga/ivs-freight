@@ -499,4 +499,8 @@
   font-weight: 900;
   color: #b7b7b7;
   white-space: nowrap;
+  max-width: 550px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }

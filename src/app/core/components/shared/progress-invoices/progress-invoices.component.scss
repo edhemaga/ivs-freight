@@ -66,26 +66,37 @@
         width: 408px;
         height: 8px;
         border-radius: 2px;
-        background-color: #f3f3f3;
         .inside-progress {
             height: 8px;
             border-radius: 2px 0 0 2px;
         }
         .inside-progress-light-blue {
-            width: 20%;
-            background-color: #bdcaeb;
+            width: 62%;
+            background-color: #536bc2;
         }
-        .inside-progress-mid-blue {
-            width: 40%;
-            background-color: #97a8dc;
+        .inside-progress-mid-orange {
+            width: 24%;
+            background-color: #ffa726;
         }
-        .inside-progress-dark-blue {
-            width: 60%;
-            background-color: #6d82c8;
+        .inside-progress-dark-orange {
+            width: 48%;
+            background-color: #f77d3b;
         }
         .inside-progress-danger-broker {
-            width: 25%;
-            background-color: #e57373;
+            width: 19%;
+            background-color: #ef5350;
         }
     }
+}
+.light-blue-inv {
+    background-color: rgba(83, 107, 194, 0.2) !important;
+}
+.mid-orange-inv {
+    background-color: rgba(255, 167, 38, 0.2) !important;
+}
+.dark-orange-inv {
+    background-color: rgba(247, 125, 59, 0.2) !important;
+}
+.danger-inv {
+    background-color: rgba(239, 83, 80, 0.2) !important;
 }

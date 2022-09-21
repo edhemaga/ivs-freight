@@ -174,7 +174,8 @@ $top_driver_color: "8A9AEF", "FDB46B", "F27B8E", "6DC089", "A574C3", "73D0F1",
     align-items: flex-start;
     margin-bottom: 19px;
 
-    .row {
+    .main_driver_holder {
+      display: flex;
       width: 100%;
 
       .dashboard_top_driver_list {
