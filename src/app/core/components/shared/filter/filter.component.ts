@@ -963,7 +963,7 @@ export class FilterComponent implements OnInit {
   public locationForm!: FormGroup;
   public payForm!: FormGroup;
   public sliderForm!: FormGroup;
-  public milesForm!: FormGroup;
+  public rangeForm!: FormGroup;
 
   rangeValue: any = 0;
   usaSelectedStates: any[] = [];
@@ -1008,10 +1008,11 @@ export class FilterComponent implements OnInit {
 
   public paySliderData: Options = {
     floor: 0,
-    ceil: 3000000,
-    step: 0,
+    ceil: 20000,
+    step: 5,
     showSelectionBar: true,
-    hideLimitLabels: false,
+    hideLimitLabels: true,
+    noSwitching: true
   };
 
   public milesSliderData: Options = {
@@ -1025,6 +1026,10 @@ export class FilterComponent implements OnInit {
 
   minValueRange: number = 0;
   maxValueRange: number = 5000;
+
+  minValueSet: number = 0;
+  maxValueSet: number = 5000;
+
 
   @Input() type: string = 'userFilter';
   @Input() icon: string = 'user';
@@ -1043,10 +1048,14 @@ export class FilterComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-
-    this.milesForm = this.formBuilder.group({
-      milesFrom: 0,
-      milesTo: 5000,
+    if (this.type == 'payFilter'){
+      this.maxValueRange = 20000;
+      this.maxValueSet = 20000;
+    }
+    
+    this.rangeForm = this.formBuilder.group({
+      rangeFrom: 0, 
+      rangeTo: this.type == 'payFilter'? 20000 : 5000, 
     })
 
     this.searchForm = this.formBuilder.group({
@@ -1083,18 +1092,18 @@ export class FilterComponent implements OnInit {
       }
     });
 
-    this.milesForm.valueChanges.subscribe((changes) => {
+    this.rangeForm.valueChanges.subscribe((changes) => {
       if (changes){
-        //console.log('--changes--', changes);
+        console.log('--changes--', changes);
 
-        if ( changes.milesTo == null || changes.milesTo > 5000 ){
-          this.milesForm?.get('milesTo')?.setValue(5000);
+        if ( changes.rangeTo == null || changes.rangeTo > this.maxValueRange ){
+          this.rangeForm?.get('rangeTo')?.setValue(this.maxValueRange);
         }
 
-        if (changes.milesFrom > 4999){
-          this.milesForm?.get('milesFrom')?.setValue(4999);
-        } else if ( changes.milesFrom == null ) {
-          //this.milesForm?.get('milesFrom')?.setValue(0);
+        if (changes.rangeFrom > (this.maxValueRange - 1 )){
+          this.rangeForm?.get('rangeFrom')?.setValue(this.maxValueRange - 1);
+        } else if ( changes.rangeFrom == null ) {
+          //this.rangeForm?.get('rangeFrom')?.setValue(0);
         }
       }
     })
@@ -1654,6 +1663,10 @@ export class FilterComponent implements OnInit {
         } else {
           this.clearForm('clearAll');
         }
+      } else if ( this.type == 'milesFilter' || this.type == 'payFilter' ){
+        this.rangeForm.reset();
+        this.maxValueSet = this.maxValueRange;
+        this.minValueSet = this.minValueRange;
       }
     }
     this.setButtonAvailable = true;
@@ -1797,6 +1810,9 @@ export class FilterComponent implements OnInit {
             ' ' + this.moneyForm.get('singleTo')?.value
           ).slice(1);
         }
+      } else if ( this.type == 'milesFilter' || this.type == 'payFilter' ) {
+        this.maxValueSet = this.rangeForm.get('rangeTo')?.value;
+        this.minValueSet = this.rangeForm.get('rangeFrom')?.value;
       } else {
         this.filterActiveArray = [...this.selectedUser];
       }
@@ -1951,11 +1967,8 @@ export class FilterComponent implements OnInit {
   }
 
   setRangeSliderValue(mod){
-    this.milesForm?.get('milesFrom')?.setValue(mod.value);
-    this.milesForm?.get('milesTo')?.setValue(mod.highValue);
+    this.rangeForm?.get('rangeFrom')?.setValue(mod.value);
+    this.rangeForm?.get('rangeTo')?.setValue(mod.highValue);
   }
 
-  onBlurInput(mod){
-    console.log('--here----')
-  }
 }

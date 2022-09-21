@@ -1266,13 +1266,13 @@
           (onUserValueChange)="setRangeValue($event)"
         ></app-ta-ngx-slider>
       </div>
-      <div class="mainMilesHolder" *ngIf="type == 'payFilter' || type == 'milesFilter'" [formGroup]="milesForm">
+      <div class="mainMilesHolder" *ngIf="type == 'payFilter' || type == 'milesFilter'" [formGroup]="rangeForm">
         <div class="money-main-holder payPadding">
           <div class="money-value-holder">
             <app-ta-input
-              formControlName="milesFrom"
+              formControlName="rangeFrom"
               [inputConfig]="{
-                name: 'milesFrom',
+                name: 'rangeFrom',
                 type: 'number',
                 label: 'From',
                 placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
@@ -1282,15 +1282,14 @@
           </div>
           <div class="money-value-holder" [class.errorForm]="singleFormError">
             <app-ta-input
-              formControlName="milesTo"
+              formControlName="rangeTo"
               [inputConfig]="{
-                name: 'milesTo',
+                name: 'rangeTo',
                 type: 'number',
                 label: 'To',
                 placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
                 customClass: 'line-input-26'
               }"
-              (onfocusout)="onBlurInput('milesTo')"
             ></app-ta-input>
           </div>
         </div>
@@ -1304,8 +1303,8 @@
             (onUserValueChange)="setRangeSliderValue($event)"
             [sliderTemplate]="'range-slider'"
             [customFormControlName]="sliderControl"
-            [minValue]="milesForm.get('milesFrom').value"
-            [maxValue]="milesForm.get('milesTo').value"
+            [minValue]="rangeForm.get('rangeFrom').value"
+            [maxValue]="rangeForm.get('rangeTo').value"
           ></app-ta-ngx-slider>
           
         </div>
@@ -1315,14 +1314,14 @@
         <div
           (click)="clearAll()"
           class="button-clear"
-          [class.active]="rangeValue > 0"
+          [class.active]="rangeForm.get('rangeTo').value != maxValueRange || ( rangeForm.get('rangeFrom').value && rangeForm.get('rangeFrom').value != minValueRange )"
         >
           Clear All
         </div>
         <div
           (click)="setFilter($event)"
           class="button-set"
-          [class.active]="rangeValue > 0 && setButtonAvailable"
+          [class.active]="rangeForm.get('rangeTo').value != maxValueSet || ( rangeForm.get('rangeFrom').value && rangeForm.get('rangeFrom').value != minValueSet )"
         >
           Set
         </div>
