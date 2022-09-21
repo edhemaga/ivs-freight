@@ -1,3 +1,4 @@
+@import "./ta-input.colors.scss";
 // -------------------- Input Label --------------------
 .input-label {
   position: absolute;
@@ -5,46 +6,46 @@
   left: 6px;
   font-size: 14px;
   transition: all 0.3s ease-in-out;
-  color: #6c6c6c;
+  color: $input-label-color;
   -webkit-user-select: none;
   user-select: none;
   pointer-events: none;
   line-height: 18px;
 
   &::-moz-selection {
-    background-color: #e5e5e5 !important;
-    color: #3c3c3c !important;
+    background-color: $input-label-background-selection !important;
+    color: $input-label-text-selection !important;
   }
 
   &::selection {
-    background-color: #e5e5e5 !important;
-    color: #3c3c3c !important;
+    background-color: $input-label-background-selection !important;
+    color: $input-label-text-selection !important;
   }
 
   &.required {
     &::after {
       content: "*";
-      color: #e57373;
+      color: $input-label-required-star;
     }
   }
 
   &.disabled-empty {
     transition: all 0.3s ease-in-out;
-    color: #b7b7b7 !important;
+    color: $input-label-color-disabled !important;
   }
 
   &.disabled-filled {
     transition: all 0.3s ease-in-out;
-    color: #919191 !important;
+    color: $input-label-color-disabled !important;
   }
 
   &.up-label {
     top: -17px;
     left: 6px;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: $input-label-color-active-up;
     transition: all 0.3s ease-in-out;
-    color: #3c3c3c;
+    color: $input-label-color;
     -webkit-user-select: auto !important;
     -moz-user-select: auto !important;
     -ms-user-select: auto !important;
@@ -52,13 +53,13 @@
     pointer-events: all !important;
 
     &::-moz-selection {
-      background-color: #e5e5e5;
-      color: #3c3c3c;
+      background-color: $input-label-background-selection;
+      color: $input-label-text-selection;
     }
 
     &::selection {
-      background-color: #e5e5e5;
-      color: #3c3c3c;
+      background-color: $input-label-background-selection;
+      color: $input-label-text-selection;
     }
   }
 
@@ -73,7 +74,8 @@
   &.valid-focus-out,
   &.invalid-focus-out {
     transition: all 0.3s ease-in-out;
-    color: #6c6c6c;
+    color: $input-label-color;
+    font-weight: $input-label-color-active-up;
   }
 
   &.hidden-label {
@@ -82,8 +84,8 @@
 
   &.routing-address {
     font-size: 11px;
-    font-weight: 700;
-    color: #6c6c6c;
+    color: $input-label-color;
+    font-weight: $input-label-color-active-up;
     top: 2px !important;
   }
 
@@ -113,10 +115,10 @@
   }
 
   &.load-adjusted-rate {
-    color: #ffa726 !important;
+    color: $input-label-color-dark-yellow !important;
   }
 
   &.load-advance-rate {
-    color: #26a690 !important;
+    color: $input-label-color-dark-green !important;
   }
 }

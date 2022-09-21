@@ -1,3 +1,5 @@
+@import "./ta-input.colors.scss";
+
 .input-edit-pen {
   position: absolute;
   right: 50px;
@@ -13,13 +15,13 @@
       height: 18px !important;
       overflow: visible;
       path {
-        fill: #eeeeee;
+        fill: $input-edit-label-path-normal;
       }
       rect {
         transition: transform 0.3s;
         transform: scale(1);
         transform-origin: center;
-        fill: #b7b7b7;
+        fill: $input-edit-label-rect-normal;
       }
     }
 
@@ -30,7 +32,7 @@
           transform: scale(1.2);
           transform-origin: center;
           transition: transform 0.3s;
-          fill: #6c6c6c;
+          fill: $input-edit-label-rect-normal-hover;
         }
       }
     }

@@ -1,3 +1,5 @@
+@import "./ta-input.colors.scss";
+
 .placeholder-text {
   position: absolute;
   -webkit-user-select: none;
@@ -7,14 +9,14 @@
 
   svg {
     text {
-      fill: #aaaaaa;
+      fill: $input-placeholder-text-normal;
     }
   }
 
   &.focused {
     svg {
       text {
-        fill: #ffffff;
+        fill: $input-placeholder-text-focus;
       }
     }
   }

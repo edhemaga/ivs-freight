@@ -1,3 +1,4 @@
+@import "./ta-input.colors.scss";
 // -------------------- Input Required Check --------------------
 .input-required-check {
   position: absolute;
@@ -12,7 +13,7 @@
 
   svg {
     path {
-      fill: #97a8dc;
+      fill: $input-required-check-normal;
     }
   }
 
@@ -21,7 +22,7 @@
     top: 3.5px;
   }
 
-  &.input-30{
+  &.input-30 {
     top: 2px;
   }
 

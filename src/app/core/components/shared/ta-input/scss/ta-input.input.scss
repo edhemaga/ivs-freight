@@ -1,3 +1,4 @@
+@import "./ta-input.colors.scss";
 // -------------------- Input Control --------------------
 .input-control {
   width: 100%;
@@ -8,20 +9,20 @@
   padding: 4px 6px;
   font-size: 14px;
   font-weight: 400;
-  background-color: #f3f3f3;
-  color: #6c6c6c;
+  background-color: $input-background-color-normal;
+  color: $input-text-color-normal;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
   &::-moz-selection {
-    background-color: #e5e5e5 !important;
-    color: #3c3c3c !important;
+    background-color: $input-background-selection-normal !important;
+    color: $input-text-selection-normal !important;
   }
 
   &::selection {
-    background-color: #e5e5e5 !important;
-    color: #3c3c3c !important;
+    background-color: $input-background-selection-normal !important;
+    color: $input-text-selection-normal !important;
   }
 
   &.center {
@@ -37,7 +38,7 @@
   }
 
   &.disabled {
-    background-color: #fbfbfb !important;
+    background-color: $input-background-color-disabled !important;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -46,8 +47,8 @@
   }
 
   &.disabled-filled {
-    background-color: #fbfbfb !important;
-    color: #919191 !important;
+    background-color: $input-background-color-disabled !important;
+    color: $input-text-color-filled-disabled !important;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -56,39 +57,39 @@
   }
 
   &:hover {
-    background-color: #eeeeee;
-    color: #3c3c3c;
+    background-color: $input-background-color-normal-hover;
+    color: $input-text-color-normal-hover;
   }
 
   // Hover "label placehoder color change"
   &:hover ~ .input-label {
     transition: all 0.3s ease-in-out;
-    color: #3c3c3c;
+    color: $input-label-color-hover;
   }
 
   &:focus,
   &.focused {
     transition: all 0.3s ease-in-out;
-    background-color: #6c6c6c;
-    color: #ffffff;
+    background-color: $input-background-color-normal-focus;
+    color: $input-text-color-normal-focus;
 
     &::-webkit-input-placeholder {
-      color: #aaaaaa;
+      color: $input-placeholder-color-normal-focus;
     }
     &::-moz-placeholder {
-      color: #aaaaaa;
+      color: $input-placeholder-color-normal-focus;
     }
 
     &:-ms-input-placeholder {
-      color: #aaaaaa;
+      color: $input-placeholder-color-normal-focus;
     }
 
     &::-ms-input-placeholder {
-      color: #aaaaaa;
+      color: $input-placeholder-color-normal-focus;
     }
 
     &::placeholder {
-      color: #aaaaaa;
+      color: $input-placeholder-color-normal-focus;
     }
   }
 
@@ -96,28 +97,28 @@
   &.address-flag,
   &.input-commands,
   &.dropdown-label-active {
-    background-color: #6c6c6c !important;
-    color: #ffffff;
+    background-color: $input-background-color-normal-focus !important;
+    color: $input-text-color-normal-focus;
 
     &::-moz-selection {
-      background-color: #919191 !important;
+      background-color: $input-background-selection-normal-focus !important;
     }
 
     &::selection {
-      background-color: #919191 !important;
+      background-color: $input-background-selection-normal-focus !important;
     }
   }
 
   &.password-eye-invalid {
-    background-color: #ef5350 !important;
-    color: #ffffff;
+    background-color: $input-background-color-invalid-focus !important;
+    color: $input-text-color-normal-focus;
 
     &::-moz-selection {
-      background-color: #e57373 !important;
+      background-color: $input-background-selection-invalid-focus !important;
     }
 
     &::selection {
-      background-color: #e57373 !important;
+      background-color: $input-background-selection-invalid-focus !important;
     }
   }
 
@@ -140,55 +141,65 @@
   &.valid-focus-in,
   &.dropdown-placeholder-active,
   &.multiSelect-dropdown-active {
-    background-color: #536bc2 !important;
-    color: #ffffff !important;
+    background-color: $input-background-color-valid-focus !important;
+    color: $input-text-color-normal-focus !important;
 
     &::-webkit-input-placeholder {
-      color: #97a8dc;
+      color: $input-placeholder-color-valid-focus;
     }
     &::-moz-placeholder {
-      color: #97a8dc;
+      color: $input-placeholder-color-valid-focus;
     }
 
     &:-ms-input-placeholder {
-      color: #97a8dc;
+      color: $input-placeholder-color-valid-focus;
     }
 
     &::-ms-input-placeholder {
-      color: #97a8dc;
+      color: $input-placeholder-color-valid-focus;
     }
 
     &::placeholder {
-      color: #97a8dc;
+      color: $input-placeholder-color-valid-focus;
     }
 
     &::-moz-selection {
-      background-color: #6d82c7 !important;
-      color: #ffffff !important;
+      background-color: $input-background-selection-valid-focus !important;
+      color: $input-text-color-normal-focus !important;
     }
 
     &::selection {
-      background-color: #6d82c7 !important;
-      color: #ffffff !important;
+      background-color: $input-background-selection-valid-focus !important;
+      color: $input-text-color-normal-focus !important;
     }
+  }
+
+  &.valid-focus-out-filled {
+    background-color: $input-background-color-valid-focus-out !important;
+    color: $input-text-color-valid-focus-out !important;
   }
 
   &.invalid-focus-in {
-    background-color: #ef5350 !important;
+    background-color: $input-background-color-invalid-focus !important;
 
     &::-moz-selection {
-      background-color: #e57373 !important;
-      color: #ffffff !important;
+      background-color: $input-background-selection-invalid-focus !important;
+      color: $input-text-color-normal-focus !important;
     }
 
     &::selection {
-      background-color: #e57373 !important;
-      color: #ffffff !important;
+      background-color: $input-background-selection-invalid-focus !important;
+      color: $input-text-color-normal-focus !important;
     }
   }
 
+  &.invalid-focus-out-filled {
+    background-color: $input-background-color-invalid-focus-out !important;
+    color: $input-text-color-invalid-focus-out !important;
+  }
+
   &.blue-input-color {
-    color: #536bc2 !important;
+    color: $input-text-color-blue !important;
   }
 
   //------------------------- Custom class -------------------------
@@ -212,25 +223,25 @@
   }
 
   &.details-pages {
-    background-color: #6c6c6c !important;
+    background-color: $input-background-color-normal-focus !important;
 
     &::-webkit-input-placeholder {
-      color: #b7b7b7 !important;
+      color: $input-placeholder-color-normal-focus !important;
     }
     &::-moz-placeholder {
-      color: #b7b7b7 !important;
+      color: $input-placeholder-color-normal-focus !important;
     }
 
     &:-ms-input-placeholder {
-      color: #b7b7b7 !important;
+      color: $input-placeholder-color-normal-focus !important;
     }
 
     &::-ms-input-placeholder {
-      color: #b7b7b7 !important;
+      color: $input-placeholder-color-normal-focus !important;
     }
 
     &::placeholder {
-      color: #b7b7b7 !important;
+      color: $input-placeholder-color-normal-focus !important;
     }
   }
 }
