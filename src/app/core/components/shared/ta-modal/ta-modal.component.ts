@@ -163,14 +163,14 @@ export class TaModalComponent implements OnInit, OnDestroy {
             }
           }
 
-          if (!['save and add new', 'resend email'].includes(data.action)) {
+          if (!['save and add new'].includes(data.action)) {
             if (data.clearTimeout) {
               this.onAction('close');
             } else {
               const timeout = setTimeout(() => {
                 this.onAction('close');
                 clearTimeout(timeout);
-              }, 1200);
+              }, 1000);
             }
           }
         }
@@ -278,6 +278,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'multiple delete': {
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'cdl-void': {
         this.confirmationAction.emit(this.confirmationData);
         break;
       }

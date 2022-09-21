@@ -22,7 +22,7 @@
       "
       [hasArrow]="false"
       [isCommentData]="true"
-      [isCardOpen]="defaultPMs.length"
+      [isCardOpen]="defaultPMs.length > 0"
       [hasScrollBody]="defaultPMs.length > 18"
       (onActionEvent)="
         addPMs(null, 'new-pm', editData?.header === 'Truck' ? 5000 : 1)
@@ -68,7 +68,9 @@
                   ? 'MILEAGE'
                   : 'MONTHS',
                 type: 'text',
+                hideErrorMessage: true,
                 blackInput: true,
+                hideRequiredCheck: true,
                 commands: {
                   active: true,
                   type: 'pm-increment-decrement',
@@ -119,7 +121,9 @@
                   name: 'Description',
                   type: 'text',
                   blackInput: true,
-                  minLength: 20,
+                  hideErrorMessage: true,
+                  hideRequiredCheck: true,
+                  minLength: 2,
                   maxLength: 160,
                   textTransform: 'capitalize',
                   placeholderIcon: 'default_pm'
@@ -135,7 +139,9 @@
                   ? 'MILEAGE'
                   : 'MONTHS',
                 type: 'text',
+                hideErrorMessage: true,
                 blackInput: true,
+                hideRequiredCheck: true,
                 commands: {
                   active: true,
                   type: 'pm-increment-decrement',

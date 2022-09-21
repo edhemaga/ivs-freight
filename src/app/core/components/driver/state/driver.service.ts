@@ -62,6 +62,9 @@ export class DriverTService implements OnDestroy {
   // Get Driver List
   public getDrivers(
     active?: number,
+    _long?: number,
+    lat?: number,
+    distance?: number,
     pageIndex?: number,
     pageSize?: number,
     companyId?: number,
@@ -72,6 +75,9 @@ export class DriverTService implements OnDestroy {
   ): Observable<DriverListResponse> {
     return this.driverService.apiDriverListGet(
       active,
+      _long,
+      lat,
+      distance,
       pageIndex,
       pageSize,
       companyId,

@@ -16,6 +16,7 @@ import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { DriverTService } from './driver.service';
+import { RenewCdlCommand } from '../../../../../../appcoretruckassist/model/renewCdlCommand';
 
 @Injectable({
   providedIn: 'root',
@@ -51,8 +52,6 @@ export class CdlTService implements OnDestroy {
                     );
                   },
                 });
-              console.log(driver);
-
               driver = {
                 ...driver,
                 fullName: driver.firstName + ' ' + driver.lastName,
@@ -145,7 +144,61 @@ export class CdlTService implements OnDestroy {
             this.driverStore.add(driver);
             this.dlStore.update(driver.id, { cdls: driver.cdls });
             this.tableService.sendActionAnimation({
-              animation: 'delete',
+              animation: 'update',
+              data: driver,
+              id: driverId,
+            });
+
+            subDriver.unsubscribe();
+          },
+        });
+      })
+    );
+  }
+  public deactivateCdlById(id: number) {
+    return this.cdlService.apiCdlDeactivateIdPut(id).pipe(
+      tap((res: any) => {
+        let driverId = this.driverItemStore.getValue().ids[0];
+        const subDriver = this.driverService.getDriverById(driverId).subscribe({
+          next: (driver: DriverResponse | any) => {
+            this.driverStore.remove(({ id }) => id === driverId);
+
+            driver = {
+              ...driver,
+              fullName: driver.firstName + ' ' + driver.lastName,
+            };
+
+            this.driverStore.add(driver);
+            this.dlStore.update(driver.id, { cdls: driver.cdls });
+            this.tableService.sendActionAnimation({
+              animation: 'update',
+              data: driver,
+              id: driverId,
+            });
+
+            subDriver.unsubscribe();
+          },
+        });
+      })
+    );
+  }
+  public renewCdlUpdate(data: RenewCdlCommand): Observable<any> {
+    return this.cdlService.apiCdlRenewPut(data).pipe(
+      tap((res: any) => {
+        let driverId = this.driverItemStore.getValue().ids[0];
+        const subDriver = this.driverService.getDriverById(driverId).subscribe({
+          next: (driver: DriverResponse | any) => {
+            this.driverStore.remove(({ id }) => id === driverId);
+
+            driver = {
+              ...driver,
+              fullName: driver.firstName + ' ' + driver.lastName,
+            };
+
+            this.driverStore.add(driver);
+            this.dlStore.update(driver.id, { cdls: driver.cdls });
+            this.tableService.sendActionAnimation({
+              animation: 'update',
               data: driver,
               id: driverId,
             });
@@ -164,6 +217,7 @@ export class CdlTService implements OnDestroy {
   public getCdlDropdowns(): Observable<GetCdlModalResponse> {
     return this.cdlService.apiCdlModalGet();
   }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

@@ -27,7 +27,6 @@
               type: 'text',
               label: 'Report',
               isRequired: true,
-              textTransform: 'capitalize',
               autoFocus: true
             }"
           ></app-ta-input>
@@ -37,8 +36,7 @@
               name: 'Inspection Level',
               type: 'text',
               label: 'Inspection Level',
-              isDisabled: true,
-              textTransform: 'capitalize'
+              isDisabled: true
             }"
           ></app-ta-input>
           <app-ta-input
@@ -47,8 +45,7 @@
               name: 'Inspection Level',
               type: 'text',
               label: 'HM Inspection Level',
-              isDisabled: true,
-              textTransform: 'capitalize'
+              isDisabled: true
             }"
           ></app-ta-input>
         </div>
@@ -118,11 +115,10 @@
             <app-ta-input
               formControlName="driverName"
               [inputConfig]="{
-                name: 'Full Name',
+                name: 'Driver Name',
                 type: 'text',
                 label: 'Driver',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -140,8 +136,7 @@
                 name: 'State',
                 type: 'text',
                 label: 'State',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -163,11 +158,10 @@
             <app-ta-input
               formControlName="coDriverName"
               [inputConfig]="{
-                name: 'Full Name',
+                name: 'Driver Name',
                 type: 'text',
                 label: 'Driver',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -185,8 +179,7 @@
                 name: 'State',
                 type: 'text',
                 label: 'State',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -211,8 +204,7 @@
                 name: 'Truck Number',
                 type: 'text',
                 label: 'Unit',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -221,8 +213,7 @@
                 name: 'Truck Type',
                 type: 'text',
                 label: 'Type',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -231,8 +222,7 @@
                 name: 'Truck Make',
                 type: 'text',
                 label: 'Make',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -241,8 +231,7 @@
                 name: 'Truck Plate Make',
                 type: 'text',
                 label: 'Plate No.',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -251,8 +240,7 @@
                 name: 'Truck State',
                 type: 'text',
                 label: 'State',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -277,8 +265,7 @@
                 name: 'Trailer Number',
                 type: 'text',
                 label: 'Unit',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -287,8 +274,7 @@
                 name: 'Trailer Type',
                 type: 'text',
                 label: 'Type',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -297,8 +283,7 @@
                 name: 'Trailer Make',
                 type: 'text',
                 label: 'Make',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -307,8 +292,7 @@
                 name: 'Trailer Plate Make',
                 type: 'text',
                 label: 'Plate No.',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -317,8 +301,7 @@
                 name: 'Trailer State',
                 type: 'text',
                 label: 'State',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -398,9 +381,12 @@
                     [inputConfig]="{
                       name: 'Description',
                       type: 'text',
-                      minLength: 20,
+                      minLength: 2,
                       maxLength: 160,
-                      textTransform: 'capitalize'
+                      textTransform: 'capitalize',
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
                     }"
                   ></app-ta-input>
                 </div>
@@ -438,11 +424,10 @@
               formControlName="policeDepartment"
               [inputConfig]="{
                 name: 'Department',
-                minLength: 2,
-                maxLength: 36,
-                type: 'text',
                 label: 'Police Department',
-                textTransform: 'capitalize'
+                type: 'text',
+                minLength: 2,
+                maxLength: 36
               }"
             ></app-ta-input>
             <app-ta-input
@@ -450,8 +435,7 @@
               [inputConfig]="{
                 name: 'Police Officer',
                 type: 'text',
-                label: 'Police Officer',
-                textTransform: 'capitalize'
+                label: 'Police Officer'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -459,8 +443,7 @@
               [inputConfig]="{
                 name: 'Badge Number',
                 type: 'text',
-                label: 'Badge Number',
-                textTransform: 'capitalize'
+                label: 'Badge Number'
               }"
             ></app-ta-input>
           </div>
@@ -472,9 +455,8 @@
                 type: 'text',
                 label: 'Address, City, State Zip',
                 placeholderIcon: 'address',
-                minLength: 12,
-                maxLength: 256,
-                textTransform: 'capitalize'
+                minLength: 6,
+                maxLength: 256
               }"
               [activeAddress]="selectedAuthorityAddress"
               (selectedAddress)="onHandleAddress($event, 'address-authority')"
@@ -513,8 +495,7 @@
                 [inputConfig]="{
                   name: 'Facility',
                   type: 'text',
-                  label: 'Facility',
-                  textTransform: 'capitalize'
+                  label: 'Facility'
                 }"
               ></app-ta-input>
             </div>
@@ -524,19 +505,17 @@
                 [inputConfig]="{
                   name: 'Highway',
                   type: 'text',
-                  label: 'Highway',
-                  textTransform: 'capitalize'
+                  label: 'Highway'
                 }"
               ></app-ta-input>
             </div>
-            <div class="col-4">
+            <div class="col-4 no-p-left">
               <app-ta-input
                 formControlName="milePost"
                 [inputConfig]="{
                   name: 'Mile Post',
                   type: 'text',
-                  label: 'Mile Post',
-                  textTransform: 'capitalize'
+                  label: 'Mile Post'
                 }"
               ></app-ta-input>
             </div>
@@ -551,8 +530,7 @@
                   label: 'Origin',
                   placeholderIcon: 'address',
                   minLength: 12,
-                  maxLength: 256,
-                  textTransform: 'capitalize'
+                  maxLength: 256
                 }"
                 [activeAddress]="selectedAuthorityOrigin"
                 (selectedAddress)="onHandleAddress($event, 'address-origin')"
@@ -567,8 +545,7 @@
                   label: 'Destination',
                   placeholderIcon: 'address',
                   minLength: 12,
-                  maxLength: 256,
-                  textTransform: 'capitalize'
+                  maxLength: 256
                 }"
                 [activeAddress]="selectedAuthorityDestination"
                 (selectedAddress)="

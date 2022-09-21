@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { CreateTableConfigCommand, TableConfigResponse, TableConfigService, TableType } from 'appcoretruckassist';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -61,7 +62,23 @@ export class TruckassistTableService {
   private searchTableData = new BehaviorSubject<any>(null);
   public currentSearchTableData = this.searchTableData.asObservable();
 
-  constructor() {}
+  constructor(private tableColumnsConfigService: TableConfigService) {}
+  
+  // ------------------------------ Table Back Service Methods --------------------------------
+
+  sendTableConfig(tableConfig: CreateTableConfigCommand): Observable<object>{
+    return this.tableColumnsConfigService.apiTableconfigPost(tableConfig);
+  }
+
+  getTableConfig(tableType: TableType): Observable<TableConfigResponse>{
+    return this.tableColumnsConfigService.apiTableconfigTableTypeGet(tableType);
+  }
+
+  deleteTableConfig(tableType: TableType): Observable<TableConfigResponse>{
+    return this.tableColumnsConfigService.apiTableconfigTableTypeDelete(tableType);
+  }
+
+  // ------------------------------ Table Custom Service Methods --------------------------------
 
   /*  Search  */
   public sendCurrentSearchTableData(search: any) {

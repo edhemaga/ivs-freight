@@ -54,7 +54,7 @@ export class TaInputAddressComponent
 
   public invalidAddress: boolean = false;
 
-  public options = {
+  public options: any = {
     componentRestrictions: { country: ['US', 'CA'] },
   };
 
@@ -233,7 +233,7 @@ export class TaInputAddressComponent
     // Disable first character to be space
     if (
       !this.input.nativeElement.value &&
-      /^[ ]*$/.test(String.fromCharCode(event.charCode))
+      /^\s*$/.test(String.fromCharCode(event.charCode))
     ) {
       event.preventDefault();
       return false;
@@ -251,7 +251,7 @@ export class TaInputAddressComponent
   }
 
   public disableConsecutivelySpaces(event: any) {
-    if (/^[ ]*$/.test(String.fromCharCode(event.charCode))) {
+    if (/^\s*$/.test(String.fromCharCode(event.charCode))) {
       this.numberOfSpaces++;
       if (this.numberOfSpaces > 1) {
         event.preventDefault();
@@ -306,14 +306,35 @@ export class TaInputAddressComponent
     }
   }
 
+  public transformText(event: any) {
+    switch (this.inputConfig.textTransform) {
+      case 'capitalize': {
+        this.input.nativeElement.value =
+          this.input.nativeElement.value?.toString()?.charAt(0)?.toUpperCase() +
+          this.input.nativeElement.value?.toString()?.substring(1);
+        this.getSuperControl.patchValue(this.input.nativeElement.value);
+        break;
+      }
+      case 'uppercase': {
+        this.input.nativeElement.value = event.toLocaleUpperCase('en-US');
+        this.getSuperControl.patchValue(this.input.nativeElement.value);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
   public changeFlagText(event: Event) {
     this.changeAddressFlag = !this.changeAddressFlag;
     this.changeFlag.emit(this.changeAddressFlag);
 
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       this.isVisibleAddressFlag = true;
       this.isVisibleCommands = true;
       this.forceVisibilityOfCommands = true;
+      clearTimeout(timeout)
     }, 30);
   }
 

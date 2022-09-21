@@ -332,7 +332,7 @@
                           isRequired: true,
                           placeholderIcon: 'address',
                           textTransform: 'capitalize',
-                          minLength: 12,
+                          minLength: 6,
                           maxLength: 256,
                           incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
@@ -476,6 +476,13 @@
                     class="d-flex align-items-center btn-container"
                     [ngClass]="{
                       active: selectedMode === 'REVIEW_MODE'
+                    }"
+                    [ngStyle]="{
+                      'margin-left':
+                        selectedMode === 'APPLICANT_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                          ? '26px'
+                          : '5px'
                     }"
                     *ngIf="!isEditingArray[i]?.isEditing"
                   >
@@ -659,9 +666,12 @@
               dropdownWidthClass: 'w-col-416',
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
+            [activeItem]="selectedBank"
+            [options]="banksDropdownList"
+            [canAddNew]="true"
             [incorrectValue]="false"
             (incorrectEvent)="incorrectInput($event, 1, 7)"
-            [options]="banksDropdownList"
+            (saveItem)="onSaveNewBank($event)"
             (selectedItem)="handleInputSelect($event, 'BANK')"
           ></app-ta-input-dropdown>
         </div>
@@ -791,32 +801,16 @@
             </div>
           </div>
 
-          <span
-            class="required-note ta-font-semi-bold"
-            *ngIf="
-              personalInfoForm.controls[question.formControlNameExplain]
-                .status !== 'DISABLED' &&
-              !personalInfoForm.controls[question.formControlNameExplain]
-                ?.valid &&
-              personalInfoForm.controls[question.formControlNameExplain]
-                ?.touched &&
-              !personalInfoForm.controls[question.formControlNameExplain]
-            "
-            >Required</span
-          >
-
           <!-- EXPLAIN -->
 
           <div
             class="d-flex explain-container line-container"
-            *ngIf="
-              personalInfoForm.get(question.formControlName)?.value === 'YES'
-            "
+            *ngIf="personalInfoForm.get(question.formControlName)?.value"
             [ngStyle]="{
-              'margin-bottom':
-                personalInfoForm.get(question.formControlName)?.value === 'YES'
-                  ? '20px'
-                  : '0'
+              'margin-bottom': personalInfoForm.get(question.formControlName)
+                ?.value
+                ? '20px'
+                : '0'
             }"
           >
             <div class="w-100">
@@ -876,6 +870,7 @@
 >
   <app-applicant-next-back-btn
     [nextStep]="true"
+    [filledCorrectly]="personalInfoForm.valid"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

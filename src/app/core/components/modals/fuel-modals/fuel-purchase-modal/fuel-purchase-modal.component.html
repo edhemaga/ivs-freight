@@ -23,7 +23,7 @@
           }"
           [options]="truckType"
           [activeItem]="selectedTruckType"
-          (selectedItem)="onSelectDropdown($event, 'truck')"
+          (selectedItem)="onSelectDropDown($event, 'truck')"
         ></app-ta-input-dropdown>
       </div>
       <div class="col-6">
@@ -34,7 +34,9 @@
             type: 'text',
             label: 'Driver',
             isDisabled: true,
-            textTransform: 'capitalize'
+            textTransform: 'capitalize',
+            minLength: 2,
+            maxLength: 32
           }"
         ></app-ta-input>
       </div>
@@ -83,7 +85,7 @@
           }"
           [options]="fuelStops"
           [activeItem]="selectedFuelStop"
-          (selectedItem)="onSelectDropdown($event, 'fuel')"
+          (selectedItem)="onSelectDropDown($event, 'fuel')"
         ></app-ta-input-dropdown>
       </div>
       <div class="col-4">
@@ -98,19 +100,19 @@
           }"
           [options]="storeType"
           [activeItem]="selectedStoreType"
-          (selectedItem)="onSelectDropdown($event, 'store')"
+          (selectedItem)="onSelectDropDown($event, 'store')"
         ></app-ta-input-dropdown>
       </div>
     </div>
     <!-- Fake Table Card -->
     <app-ta-custom-card
-      [hasCounter]="fuelItems.length ? fuelItems.length : '0'"
+      [hasCounter]="fuelItems.length ? fuelItems.length : 0"
       [cardName]="'Items'"
       [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
       [hasArrow]="false"
       [isCommentData]="true"
-      [isCardOpen]="fuelItems.length"
-      [hasBodyData]="fuelItems.length"
+      [isCardOpen]="fuelItems.length > 0"
+      [hasBodyData]="fuelItems.length > 0"
       [hasScrollBody]="fuelItems.length > 10"
       (onActionEvent)="addFuelItems($event)"
     >
@@ -138,7 +140,7 @@
             (mouseenter)="hoverRowTable[ind] = true"
             (mouseleave)="hoverRowTable[ind] = false"
           >
-            <p *ngIf="!hoverRowTable[ind]">{{ fuelItem.controls.id.value }}</p>
+            <p *ngIf="!hoverRowTable[ind]">{{ fuelItem.get('id').value }}</p>
             <svg-icon
               class="common-fake-table-card-transfer-svg"
               *ngIf="hoverRowTable[ind]"
@@ -150,7 +152,10 @@
                 name: 'Input Dropdown',
                 type: 'text',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-114'
+                dropdownWidthClass: 'w-col-114',
+                hideErrorMessage: true,
+                blackInput: true,
+                hideRequiredCheck: true
               }"
               [options]="fuelItemsDropdown"
               [activeItem]="selectedFuelItemsFormArray[ind]"
@@ -162,7 +167,10 @@
               [inputConfig]="{
                 name: 'QTY',
                 type: 'text',
-                textTransform: 'capitalize'
+                textTransform: 'capitalize',
+                hideErrorMessage: true,
+                blackInput: true,
+                hideRequiredCheck: true
               }"
               (change)="onChange('qty', ind)"
             ></app-ta-input>
@@ -171,8 +179,12 @@
               [inputConfig]="{
                 name: 'Price',
                 type: 'text',
-                textTransform: 'capitalize',
-                thousandSeparator: true
+                minLength: 4,
+                maxLength: 11,
+                blackInput: true,
+                hideErrorMessage: true,
+                thousandSeparator: true,
+                hideRequiredCheck: true
               }"
               (change)="onChange('price', ind)"
             ></app-ta-input>
@@ -183,13 +195,7 @@
               position="top"
               tooltipBackground="#EF5350"
               class="common-fake-table-delete"
-              [ngClass]="{
-                'new-position':
-                  isContactCardsScrolling && brokerContact.get('email').value,
-                'new-position-without-email':
-                  isContactCardsScrolling && !brokerContact.get('email').value
-              }"
-              (click)="removeFuelItems(ind, fuelItem.controls)"
+              (click)="removeFuelItems(ind)"
             >
               <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
             </div>

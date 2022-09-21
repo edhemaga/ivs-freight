@@ -18,6 +18,7 @@ import { TrucksMinimalListStore } from '../state/truck-details-minima-list-state
 import { TruckDetailsQuery } from '../state/truck-details-state/truck.details.query';
 import { TruckItemStore } from '../state/truck-details-state/truck.details.store';
 import { TruckTService } from '../state/truck.service';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 @Component({
   selector: 'app-truck-details',
@@ -53,11 +54,13 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     private truckMinimalListQuery: TrucksMinimalListQuery,
     private truckItemStore: TruckItemStore,
     private trq: TruckDetailsQuery,
-    private truckMinimalStore: TrucksMinimalListStore
+    private truckMinimalStore: TrucksMinimalListStore,
+    private DetailsDataService: DetailsDataService
   ) {}
 
   ngOnInit(): void {
     this.initTableOptions(this.activated_route.snapshot.data.truck);
+
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
@@ -288,6 +291,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
   }
 
   public truckConf(data: TruckResponse) {
+    this.DetailsDataService.setNewData(data);
     this.truckDetailsConfig = [
       {
         id: 0,

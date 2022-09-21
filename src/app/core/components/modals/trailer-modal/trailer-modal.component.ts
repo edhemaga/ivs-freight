@@ -37,6 +37,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
 import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { trailerVolumeValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import {
   convertThousanSepInNumber,
   convertNumberInThousandSep,
@@ -150,7 +151,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       reeferUnit: [null],
       emptyWeight: [null, emptyWeightValidation],
       mileage: [null, mileageValidation],
-      volume: [null],
+      volume: [null, trailerVolumeValidation],
       insurancePolicy: [null, insurancePolicyValidation],
     });
 
@@ -227,7 +228,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             this.modalService.setModalSpinner({
               action: null,
               status: true,
-              clearTimeout: this.editData?.canOpenModal ? true : false,
+              clearTimeout: !!this.editData?.canOpenModal,
             });
           }
         }
@@ -349,7 +350,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             `Trailer "${trailerUnit} added"`,
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
           this.notificationService.error(
@@ -370,10 +370,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             `Trailer "${trailerUnit}" deleted`,
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () =>
           this.notificationService.error(
@@ -550,7 +546,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           this.selectedTireSize = res.tireSize ? res.tireSize : null;
           this.selectedDoorType = res.doorType ? res.doorType : null;
           this.selectedReeferType = res.reeferUnit ? res.reeferUnit : null;
-          this.trailerStatus = res.status === 1 ? false : true;
+          this.trailerStatus = res.status !== 1;
 
           console.log('Trailer make: ', this.selectedColor);
 
@@ -559,7 +555,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             status: this.trailerStatus,
           });
         },
-        error: (err) => {
+        error: () => {
           this.notificationService.error("Cant't get trailer.", 'Error:');
         },
       });
@@ -659,7 +655,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 this.loadingVinDecoder = false;
                 this.selectedTrailerMake = res.trailerMake;
               },
-              error: (error: any) => {
+              error: () => {
                 this.notificationService.error(
                   `Can't get data for that ${value} VIN.`,
                   'Error:'

@@ -197,6 +197,8 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [lastStep]="true"
+    [filledCorrectly]="authorizationForm.valid && signature"
+    (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>
 
@@ -205,5 +207,8 @@
 <div
   class="d-flex justify-content-center align-items-center back-btn-container"
 >
-  <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
+  <app-applicant-next-back-btn
+    [backStep]="true"
+    (stepEvent)="onStepAction($event)"
+  ></app-applicant-next-back-btn>
 </div>

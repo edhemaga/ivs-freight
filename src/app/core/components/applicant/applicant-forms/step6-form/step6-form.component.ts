@@ -1,10 +1,13 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -15,9 +18,12 @@ import {
   isFormValueEqual,
 } from '../../state/utils/utils';
 
-import { phoneFaxRegex } from '../../../shared/ta-input/ta-input.regex-validations';
+import {
+  phoneFaxRegex,
+  name2_24Validation,
+} from '../../../shared/ta-input/ta-input.regex-validations';
 
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
+import { FormService } from './../../../../services/form/form.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 
 import { ContactModel } from '../../state/model/education.model';
@@ -28,16 +34,23 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
   templateUrl: './step6-form.component.html',
   styleUrls: ['./step6-form.component.scss'],
 })
-export class Step6FormComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+export class Step6FormComponent
+  implements OnInit, OnDestroy, OnChanges, AfterViewInit
+{
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
+  @Input() markFormInvalid?: boolean;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
+  @Output() formStatusEmitter = new EventEmitter<any>();
+  @Output() markInvalidEmitter = new EventEmitter<any>();
+  @Output() lastFormValuesEmitter = new EventEmitter<any>();
 
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  private destroy$ = new Subject<void>();
+
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public subscription: Subscription;
 
@@ -107,13 +120,8 @@ export class Step6FormComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private inputResetService: TaInputResetService
+    private formService: FormService
   ) {}
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
   ngOnInit(): void {
     this.createForm();
@@ -124,10 +132,23 @@ export class Step6FormComponent implements OnInit, OnDestroy {
       this.subscription = this.contactForm.valueChanges
         .pipe(takeUntil(this.destroy$))
         .subscribe((updatedFormValues) => {
-          const { isEditingContact, ...previousFormValues } =
+          const { id, isEditingContact, ...previousFormValues } =
             this.formValuesToPatch;
 
           const { firstRowReview, ...newFormValues } = updatedFormValues;
+
+          previousFormValues.name = previousFormValues.name.toUpperCase();
+          previousFormValues.relationship =
+            previousFormValues.relationship.toUpperCase();
+
+          if (newFormValues.name) {
+            newFormValues.name = newFormValues.name.toUpperCase();
+          }
+
+          if (newFormValues.relationship) {
+            newFormValues.relationship =
+              newFormValues.relationship.toUpperCase();
+          }
 
           if (isFormValueEqual(previousFormValues, newFormValues)) {
             this.isContactEdited = false;
@@ -138,11 +159,33 @@ export class Step6FormComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewInit(): void {
+    this.contactForm.statusChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.formStatusEmitter.emit(res);
+      });
+
+    this.contactForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.lastFormValuesEmitter.emit(res);
+      });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.markFormInvalid?.currentValue) {
+      this.inputService.markInvalid(this.contactForm);
+
+      this.markInvalidEmitter.emit(false);
+    }
+  }
+
   private createForm(): void {
     this.contactForm = this.formBuilder.group({
-      contactName: [null, Validators.required],
-      contactPhone: [null, [Validators.required, phoneFaxRegex]],
-      contactRelationship: [null, Validators.required],
+      name: [null, [Validators.required, ...name2_24Validation]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
+      relationship: [null, [Validators.required, ...name2_24Validation]],
 
       firstRowReview: [null],
     });
@@ -150,9 +193,9 @@ export class Step6FormComponent implements OnInit, OnDestroy {
 
   public patchForm(): void {
     this.contactForm.patchValue({
-      contactName: this.formValuesToPatch.contactName,
-      contactPhone: this.formValuesToPatch.contactPhone,
-      contactRelationship: this.formValuesToPatch.contactRelationship,
+      name: this.formValuesToPatch.name,
+      phone: this.formValuesToPatch.phone,
+      relationship: this.formValuesToPatch.relationship,
     });
   }
 
@@ -171,9 +214,9 @@ export class Step6FormComponent implements OnInit, OnDestroy {
 
     this.formValuesEmitter.emit(saveData);
 
-    this.contactForm.reset();
+    this.formService.resetForm(this.contactForm);
 
-    this.inputResetService.resetInputSubject.next(true);
+    this.contactForm.reset();
   }
 
   public onSaveEditedContact(): void {
@@ -199,8 +242,6 @@ export class Step6FormComponent implements OnInit, OnDestroy {
 
     this.contactForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
-
     this.subscription.unsubscribe();
   }
 
@@ -210,8 +251,6 @@ export class Step6FormComponent implements OnInit, OnDestroy {
     this.isContactEdited = false;
 
     this.contactForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
   }
@@ -272,5 +311,10 @@ export class Step6FormComponent implements OnInit, OnDestroy {
       this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
         false;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

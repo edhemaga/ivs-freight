@@ -104,7 +104,7 @@
                 label: 'Address, City, State Zip',
                 placeholderIcon: 'address',
                 textTransform: 'capitalize',
-                minLength: 12,
+                minLength: 6,
                 maxLength: 256,
                 isDisabled: true
               }"
@@ -415,7 +415,7 @@
                     name: 'Description',
                     type: 'text',
                     label: 'Description',
-                    minLength: 20,
+                    minLength: 2,
                     maxLength: 160,
                     textTransform: 'capitalize',
                     isRequired: true
@@ -445,7 +445,7 @@
               <div class="d-flex align-items-center fatalities-injuries-group">
                 <div class="d-flex align-items-center injuries-group">
                   <app-ta-input-arrows
-                    [formControl]="injuriesControl"
+                    formControlName="injuries"
                     [inputConfig]="{
                       name: 'FatalInjuries',
                       type: 'text',
@@ -457,11 +457,13 @@
                     }"
                     [name]="'Injuries #'"
                     [type]="'applicant'"
+                    [elementOrder]="1"
+                    [minimum]="0"
                   ></app-ta-input-arrows>
                 </div>
                 <div class="d-flex align-items-center fatalities-group">
                   <app-ta-input-arrows
-                    [formControl]="fatalitiesControl"
+                    formControlName="fatalities"
                     [inputConfig]="{
                       name: 'FatalInjuries',
                       type: 'text',
@@ -473,6 +475,8 @@
                     }"
                     [name]="'Fatalities #'"
                     [type]="'applicant'"
+                    [elementOrder]="2"
+                    [minimum]="0"
                   ></app-ta-input-arrows>
                 </div>
               </div>
@@ -667,7 +671,7 @@
                   label: 'Address, City, State Zip',
                   isRequired: true,
                   placeholderIcon: 'address',
-                  minLength: 12,
+                  minLength: 6,
                   maxLength: 256,
                   textTransform: 'capitalize'
                 }"

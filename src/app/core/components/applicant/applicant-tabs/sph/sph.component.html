@@ -172,5 +172,7 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [lastStep]="true"
+    [filledCorrectly]="sphForm.valid && signature"
+    (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

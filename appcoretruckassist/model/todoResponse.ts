@@ -22,7 +22,7 @@ export interface TodoResponse {
     url?: string | null;
     status?: EnumValue;
     departments?: Array<DepartmentResponse> | null;
-    deadline?: string;
+    deadline?: string | null;
     note?: string | null;
     commentsCount?: number;
     createdAt?: string;

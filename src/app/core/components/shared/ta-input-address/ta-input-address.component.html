@@ -56,7 +56,7 @@
     [mainTooltip]="inputConfig.incorrectInput ? 'Mark Incorrect' : 'Clear'"
     [tooltipBackground]="inputConfig.incorrectInput ? '#ef5350' : '#6c6c6c'"
     position="top"
-    (click)="clearInput($event)"
+    (click)="clearInput()"
   >
     <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
   </div>
@@ -134,7 +134,7 @@
       'address-flag': inputConfig.addressFlag && isVisibleAddressFlag
     }"
     (keyup)="onBackspace($event)"
-    (input)="onChange($event.target.value)"
+    (input)="onChange($event.target.value); transformText($event.target.value)"
     (blur)="onBlur()"
     (focus)="onFocus()"
     (keypress)="manipulateWithInput($event)"

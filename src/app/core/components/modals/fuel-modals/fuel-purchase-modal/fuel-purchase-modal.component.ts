@@ -1,6 +1,5 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
-  ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
@@ -10,14 +9,16 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { FormService } from '../../../../services/form/form.service';
-import { NotificationService } from '../../../../services/notification/notification.service';
+import {
+  priceValidation,
+  fullNameValidation,
+} from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-fuel-purchase-modal',
   templateUrl: './fuel-purchase-modal.component.html',
   styleUrls: ['./fuel-purchase-modal.component.scss'],
-  providers: [ModalService, FormService],
+  providers: [ModalService],
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -49,9 +50,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private notificationService: NotificationService,
-    private cdRef: ChangeDetectorRef,
-    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -70,21 +68,13 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.fuelForm = this.formBuilder.group({
       truckTypeId: [null, Validators.required],
-      fullName: [null],
+      fullName: [null, fullNameValidation],
       date: [null, Validators.required],
       time: [null, Validators.required],
       fuelStopId: [null, Validators.required],
       storeId: [null],
       fuelItems: this.formBuilder.array([]),
     });
-
-    // this.formService.checkFormChange(this.fuelForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public get fuelItems(): FormArray {
@@ -101,7 +91,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
       id: [data?.id ? data?.id : null],
       itemId: [data?.itemId ? data?.itemId : null], // Validators.required
       qty: [[data?.qty ? data?.qty : null], Validators.required],
-      price: [[data?.price ? data?.price : null], Validators.required],
+      price: [
+        [data?.price ? data?.price : null],
+        [Validators.required, ...priceValidation],
+      ],
       subtotal: [[data?.subtotal ? data?.subtotal : null]],
     });
   }
@@ -209,7 +202,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onSelectDropdown(event: any, action: string, index?: number) {
+  public onSelectDropDown(event: any, action: string, index?: number) {
     switch (action) {
       case 'truck': {
         this.selectedTruckType = event;

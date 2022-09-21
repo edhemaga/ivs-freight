@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation,
+  OnDestroy,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Calendar } from '@fullcalendar/core';
 import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
@@ -7,21 +13,22 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 
 import moment from 'moment';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SharedService } from '../../../services/shared/shared.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnDestroy {
   @ViewChild('fullcalendar', { static: false })
   fullcalendar: FullCalendarComponent;
   public inputDate: FormControl = new FormControl(true);
+
+  private destroy$ = new Subject<void>();
 
   calendarIndex: number;
 
@@ -733,7 +740,7 @@ export class CalendarComponent implements OnInit {
     ];
 
     this.tableService.currentSearchTableData
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
           // your search code here
@@ -959,5 +966,10 @@ export class CalendarComponent implements OnInit {
   changeTab(ev) {
     this.changeCalendarView(ev.name.toLowerCase());
     this.checkCalendarTitle();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

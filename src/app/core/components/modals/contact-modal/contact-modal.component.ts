@@ -1,9 +1,8 @@
 import {
   addressUnitValidation,
   addressValidation,
-  departmentValidation,
-  labelValidation,
-} from './../../shared/ta-input/ta-input.regex-validations';
+  departmentValidation
+} from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -16,20 +15,23 @@ import {
   CreateResponse,
   UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
-import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  phoneFaxRegex,
+  fullNameValidation,
+} from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
 import { ContactTService } from '../../contacts/state/contact.service';
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../services/form/form.service';
 import { NotificationService } from '../../../services/notification/notification.service';
+import Croppie from "croppie";
 
 @Component({
   selector: 'app-contact-modal',
   templateUrl: './contact-modal.component.html',
   styleUrls: ['./contact-modal.component.scss'],
-  providers: [ModalService, FormService],
+  providers: [ModalService],
 })
 export class ContactModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -77,8 +79,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private uploadFileService: TaUploadFileService,
-    private contactService: ContactTService,
-    private formService: FormService
+    private contactService: ContactTService
   ) {}
 
   ngOnInit() {
@@ -99,7 +100,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.contactForm = this.formBuilder.group({
-      name: [null, [Validators.required, ...labelValidation]],
+      name: [null, [Validators.required, ...fullNameValidation]],
       companyContactLabelId: [null],
       phone: [null, [phoneFaxRegex, Validators.required]],
       email: [null, [Validators.required]],
@@ -116,14 +117,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
-
-    // this.formService.checkFormChange(this.contactForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -254,7 +247,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             'Company Contact successfully created.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -293,7 +285,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             'Company Contact successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -402,7 +393,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
           .subscribe({
             next: () => {
               this.notificationService.success(
-                'Successfuly update label',
+                'Successfuly updated label',
                 'Success'
               );
 

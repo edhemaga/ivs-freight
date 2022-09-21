@@ -38,7 +38,6 @@ import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRa
     './customer-table.component.scss',
     '../../../../../assets/scss/maps.scss',
   ],
-  encapsulation: ViewEncapsulation.None,
   providers: [TaThousandSeparatorPipe],
 })
 export class CustomerTableComponent
@@ -135,6 +134,9 @@ export class CustomerTableComponent
         if (res.animation === 'add' && res.tab === 'broker') {
           this.viewData.push(this.mapBrokerData(res.data));
 
+          console.log('Radi Se Dodavanje Broker-a');
+          console.log(this.viewData);
+
           this.addData(res.id);
         }
         // Update Broker
@@ -148,6 +150,9 @@ export class CustomerTableComponent
         // Add Shipper
         else if (res.animation === 'add' && res.tab === 'shipper') {
           this.viewData.push(this.mapShipperData(res.data));
+
+          console.log('Radi Se Dodavanje Shipper-a');
+          console.log(this.viewData);
 
           this.addData(res.id);
         }
@@ -390,6 +395,8 @@ export class CustomerTableComponent
       // for (let i = 0; i < 100; i++) {
       //   this.viewData.push(this.viewData[0]);
       // }
+    }else{
+      this.viewData = [];
     }
   }
 

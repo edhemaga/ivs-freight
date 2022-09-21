@@ -2,12 +2,24 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { Subject, takeUntil } from 'rxjs';
+
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
+import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
+import { ApplicantListsService } from '../../state/services/applicant-lists.service';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { Applicant } from '../../state/model/applicant.model';
 import { WorkHistoryModel } from '../../state/model/work-history.model';
-import { Subject, takeUntil } from 'rxjs';
+import {
+  CreateWorkExperienceCommand,
+  EnumValue,
+  TrailerLengthResponse,
+  TrailerTypeResponse,
+  TruckTypeResponse,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step2',
@@ -19,199 +31,31 @@ export class Step2Component implements OnInit, OnDestroy {
 
   public selectedMode: string = SelectedMode.APPLICANT;
 
+  public applicantId: number;
+
   public workExperienceForm: FormGroup;
 
-  public workExperienceArray: WorkHistoryModel[] = [
-    {
-      applicantId: '1',
-      employer: 'Kvelail',
-      jobDescription: 'Developer',
-      fromDate: '01/01/01',
-      toDate: '02/02/02',
-      employerPhone: '(621) 123-4567',
-      employerFax: '(621) 123-4567',
-      employerEmail: 'aasd@asd.com',
-      employerAddress: {
-        address: 'Chicago, IL, USA',
-        city: 'Chicago',
-        country: 'US',
-        state: 'IL',
-        stateShortName: 'IL',
-        street: '',
-        streetNumber: '',
-        zipCode: '',
-      },
-      employerAddressUnit: '1',
-      isDrivingPosition: true,
-      classesOfEquipment: [
-        {
-          vehicleIconSrc:
-            'assets/svg/truckassist-table/truck/ic_truck_semi-truck.svg',
-          vehicleType: 'Semi Sleeper',
-          trailerIconSrc: 'assets/svg/common/trailers/ic_trailer_dumper.svg',
-          trailerType: 'Dumper',
-          trailerLength: 1,
-          isEditingClassOfEquipment: false,
-        },
-        {
-          vehicleIconSrc:
-            'assets/svg/truckassist-table/truck/ic_truck_cargo-van.svg',
-          vehicleType: 'Cargo Van',
-          trailerIconSrc: null,
-          trailerType: null,
-          trailerLength: 2,
-          isEditingClassOfEquipment: false,
-        },
-        {
-          vehicleIconSrc:
-            'assets/svg/truckassist-table/truck/ic_truck_cargo-van.svg',
-          vehicleType: 'Cargo Van',
-          trailerIconSrc: 'assets/svg/common/trailers/ic_trailer_dumper.svg',
-          trailerType: 'Dumper',
-          trailerLength: 3,
-          isEditingClassOfEquipment: false,
-        },
-      ],
-      truckType: null,
-      trailerType: null,
-      trailerLength: null,
-      cfrPart: false,
-      fmCSA: false,
-      reasonForLeaving: 'Illness',
-      accountForPeriod: null,
-      isEditingWorkHistory: false,
-    },
-    {
-      applicantId: '1',
-      employer: 'Kvelail',
-      jobDescription: 'Developer',
-      fromDate: '01/01/01',
-      toDate: '02/02/02',
-      employerPhone: '(621) 123-4567',
-      employerFax: '(621) 123-4567',
-      employerEmail: 'aasd@asd.com',
-      employerAddress: {
-        address: 'Chicago, IL, USA',
-        city: 'Chicago',
-        country: 'US',
-        state: 'IL',
-        stateShortName: 'IL',
-        street: '',
-        streetNumber: '',
-        zipCode: '',
-      },
-      employerAddressUnit: '1',
-      isDrivingPosition: true,
-      classesOfEquipment: [
-        {
-          vehicleIconSrc:
-            'assets/svg/truckassist-table/truck/ic_truck_semi-truck.svg',
-          vehicleType: 'Semi Sleeper',
-          trailerIconSrc: 'assets/svg/common/trailers/ic_trailer_dumper.svg',
-          trailerType: 'Dumper',
-          trailerLength: 45,
-          isEditingClassOfEquipment: false,
-        },
-      ],
-      truckType: null,
-      trailerType: null,
-      trailerLength: null,
-      cfrPart: null,
-      fmCSA: null,
-      reasonForLeaving: 'Illness',
-      accountForPeriod: null,
-      isEditingWorkHistory: false,
-    },
-    {
-      applicantId: '1',
-      employer: 'Kvelail',
-      jobDescription: 'Developer',
-      fromDate: '01/01/01',
-      toDate: '02/02/02',
-      employerPhone: '(621) 123-4567',
-      employerFax: '(621) 123-4567',
-      employerEmail: 'aasd@asd.com',
-      employerAddress: {
-        address: 'Chicago, IL, USA',
-        city: 'Chicago',
-        country: 'US',
-        state: 'IL',
-        stateShortName: 'IL',
-        street: '',
-        streetNumber: '',
-        zipCode: '',
-      },
-      employerAddressUnit: '1',
-      isDrivingPosition: true,
-      classesOfEquipment: [
-        {
-          vehicleIconSrc:
-            'assets/svg/truckassist-table/truck/ic_truck_semi-truck.svg',
-          vehicleType: 'Semi Sleeper',
-          trailerIconSrc: 'assets/svg/common/trailers/ic_trailer_dumper.svg',
-          trailerType: 'Dumper',
-          trailerLength: 33,
-          isEditingClassOfEquipment: false,
-        },
-        {
-          vehicleIconSrc:
-            'assets/svg/truckassist-table/truck/ic_truck_cargo-van.svg',
-          vehicleType: 'Cargo Van',
-          trailerIconSrc: null,
-          trailerType: null,
-          trailerLength: null,
-          isEditingClassOfEquipment: false,
-        },
-      ],
-      truckType: null,
-      trailerType: null,
-      trailerLength: null,
-      cfrPart: null,
-      fmCSA: null,
-      reasonForLeaving: 'Illness',
-      accountForPeriod: null,
-      isEditingWorkHistory: false,
-    },
-    {
-      applicantId: '1',
-      employer: 'Kvelail',
-      jobDescription: 'Developer',
-      fromDate: '01/01/01',
-      toDate: '02/02/02',
-      employerPhone: '(621) 123-4567',
-      employerFax: '(621) 123-4567',
-      employerEmail: 'aasd@asd.com',
-      employerAddress: {
-        address: 'Chicago, IL, USA',
-        city: 'Chicago',
-        country: 'US',
-        state: 'IL',
-        stateShortName: 'IL',
-        street: '',
-        streetNumber: '',
-        zipCode: '',
-      },
-      employerAddressUnit: '1',
-      isDrivingPosition: false,
-      classesOfEquipment: [],
-      truckType: null,
-      trailerType: null,
-      trailerLength: null,
-      cfrPart: null,
-      fmCSA: null,
-      reasonForLeaving: 'Illness',
-      accountForPeriod: 'Dada',
-      isEditingWorkHistory: false,
-    },
-  ];
+  public formStatus: string = 'INVALID';
+  public innerFormStatus: string = 'VALID';
+  public markFormInvalid: boolean;
+  public markInnerFormInvalid: boolean;
+
+  public workExperienceArray: WorkHistoryModel[] = [];
+
+  public lastWorkExperienceCard: any;
 
   public selectedWorkExperienceIndex: number;
-
   public helperIndex: number = 2;
 
   public isEditing: boolean = false;
 
   public formValuesToPatch: any;
+
+  public vehicleType: TruckTypeResponse[] = [];
+  public trailerType: TrailerTypeResponse[] = [];
+  public trailerLengthType: TrailerLengthResponse[] = [];
+
+  public reasonsForLeaving: EnumValue[] = [];
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -251,26 +95,25 @@ export class Step2Component implements OnInit, OnDestroy {
     {},
   ];
 
-  /* public applicant: Applicant | undefined; */
-
-  /* public selectedItemIndex: number = -1; */
-
-  /* public workExperienceArray: WorkHistory[]; */
-
-  // public get showAddNew(): boolean {
-  //   /* return this.workHistories?.length &&
-  //       this.workHistories[this.workHistories?.length - 1]?.id
-  //       ? true
-  //       : false; */
-  //   return true;
-  // }
-
-  constructor(private formBuilder: FormBuilder, private router: Router) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private applicantActionsService: ApplicantActionsService,
+    private applicantListsService: ApplicantListsService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
 
-    /*     this.isNoExperience(); */
+    this.hasNoWorkExperience();
+
+    this.getDropdownLists();
+
+    this.applicantActionsService.getApplicantInfo$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res.personalInfo.applicantId;
+      });
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -290,6 +133,23 @@ export class Step2Component implements OnInit, OnDestroy {
 
       noWorkExperience: [false],
     });
+  }
+
+  private hasNoWorkExperience(): void {
+    this.workExperienceForm
+      .get('noWorkExperience')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        if (value) {
+          this.formValuesToPatch = null;
+
+          this.formStatus = 'VALID';
+          this.innerFormStatus = 'VALID';
+        } else {
+          this.formStatus = 'INVALID';
+          this.innerFormStatus = 'VALID';
+        }
+      });
   }
 
   public onDeleteWorkExperience(index: number): void {
@@ -359,6 +219,30 @@ export class Step2Component implements OnInit, OnDestroy {
     this.selectedWorkExperienceIndex = -1;
   }
 
+  public onGetFormStatus(status: string): void {
+    this.formStatus = status;
+  }
+
+  public onGetInnerFormStatus(status: string): void {
+    this.innerFormStatus = status;
+  }
+
+  public onMarkInvalidEmit(event: any): void {
+    if (!event) {
+      this.markFormInvalid = false;
+    }
+  }
+
+  public onMarkInnerInvalidEmit(event: any): void {
+    if (!event) {
+      this.markInnerFormInvalid = false;
+    }
+  }
+
+  public onGetLastFormValues(event: any): void {
+    this.lastWorkExperienceCard = event;
+  }
+
   public incorrectInput(
     event: any,
     inputIndex: number,
@@ -417,162 +301,157 @@ export class Step2Component implements OnInit, OnDestroy {
     }
   }
 
-  /* private isNoExperience(): void {
-    this.workExperienceForm
-      .get('noWorkExperience')
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe((value) => {
-        if (!value) {
-          this.workExperienceArray = this.workExperienceArray?.map((wh) => {
-            wh.isDeleted = false;
-            wh.isExpanded = false;
+  public getDropdownLists(): void {
+    this.applicantListsService
+      .getDropdownLists()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.vehicleType = data.truckTypes;
 
-            return wh;
-          });
+        this.trailerType = data.trailerTypes;
 
-          if (!this.workExperienceArray?.length) {
-            let workHistory = new WorkHistory(undefined);
+        this.trailerLengthType = data.trailerLenghts;
 
-            workHistory.isExpanded = true;
-
-            this.workExperienceArray?.push(workHistory);
-          }
-
-          this.selectedItemIndex = this.workExperienceArray?.length
-            ? this.workExperienceArray.length - 1
-            : -1;
-        } else {
-          this.workExperienceArray = this.workExperienceArray?.map((wh) => {
-            wh.isDeleted = true;
-            wh.isExpanded = false;
-
-            return wh;
-          });
-        }
+        this.reasonsForLeaving = data.reasonsForLeave;
       });
-  } */
-
-  /* public onStepAction(event: any): void {
-    if (event.action === 'back-step') {
-      this.router.navigateByUrl(`/applicant/${this.applicant.id}/1`);
-    }  else if (event.action === 'next-step') {
-            if (this.showAddNew) {
-                if (this.workExperienceForm.get('noWorkExperience').value) {
-                    if (this.workExperienceArray?.length) {
-                        this.workExperienceArray.forEach(element => {
-                            element.isDeleted = true;
-                            element.applicantId = this.applicant.id;
-                            this.apppEntityServices.workHistoryService
-                                .upsert(element)
-                                .subscribe(
-                                    response => {
-                                        this.notification.success(
-                                            'Work Experience has been deleted!',
-                                            'Success'
-                                        );
-                                    },
-                                    error => {
-                                        this.shared.handleError(error);
-                                    }
-                                );
-                        });
-                    }
-                } else {
-                    this.router.navigateByUrl(
-                        `/applicant/${this.applicant.id}/3`
-                    );
-                }
-            } else {
-                this.onAddWorkExperience();
-            }
-        }
-  } */
-
-  /* private formFilling(index: number): void {
-    this.selectedItemIndex = index;
-
-    if (this.workExperienceArray?.length) {
-      this.workExperienceArray?.forEach((wh, key) => {
-        wh.isExpanded = key === index ? true : false;
-      });
-
-      const workExperience: WorkHistory = new WorkHistory(
-        this.workExperienceArray[index]
-      );
-
-      this.workExperienceForm = this.formBuilder.group({
-        employer: [workExperience.employer, Validators.required],
-        jobDescription: [workExperience.jobDescription, Validators.required],
-        fromDate: [workExperience.fromDate, Validators.required],
-        toDate: [workExperience.toDate, Validators.required],
-        phone: [workExperience.employerPhone, Validators.required],
-        email: [workExperience.employerEmail, Validators.required],
-        address: [workExperience.employerAddress, Validators.required],
-        addressUnit: [
-          workExperience.employerAddressUnit,
-          Validators.maxLength(6),
-        ],
-        isDrivingPosition: [workExperience.isDrivingPosition],
-        truckType: [
-          workExperience.truckType && this.truckType.length
-            ? this.truckType.find((b) => b.name === workExperience.truckType)
-                ?.id
-            : null,
-          workExperience.isDrivingPosition
-            ? Validators.required
-            : Validators.nullValidator,
-        ],
-        trailerType: [
-          workExperience.trailerType && this.trailerType.length
-            ? this.trailerType.find(
-                (b) => b.name === workExperience.trailerType
-              )?.id
-            : null,
-          workExperience.isDrivingPosition
-            ? Validators.required
-            : Validators.nullValidator,
-        ],
-        trailerLength: [
-          this.trailerLengthType.find(
-            (a) => a.value === workExperience.trailerLength
-          ),
-          workExperience.isDrivingPosition
-            ? Validators.required
-            : Validators.nullValidator,
-        ],
-        cfrPart: [
-          workExperience.cfrPart,
-          workExperience.isDrivingPosition
-            ? Validators.required
-            : Validators.nullValidator,
-        ],
-        fmCSA: [
-          workExperience.fmCSA,
-          workExperience.isDrivingPosition
-            ? Validators.required
-            : Validators.nullValidator,
-        ],
-        reasonForLeaving: [
-          this.reasonsForLeaving.find(
-            (a) => workExperience.reasonForLeaving === a.name
-          ),
-          Validators.required,
-        ],
-        accountForPeriod: [workExperience.accountForPeriod],
-      });
-
-      this.workExperienceForm.get('noWorkExperience').patchValue(true);
-    } else {
-      this.workExperienceForm.get('noWorkExperience').patchValue(true);
-    }
-  } */
-
-  /* public onSubmitForm(): void {
-    this.onAddWorkExperience();
   }
- */
+
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+      this.onSubmit();
+    }
+
+    if (event.action === 'back-step') {
+      this.router.navigate([`/application/${this.applicantId}/1`]);
+    }
+  }
+
+  public onSubmit(): void {
+    if (this.formStatus === 'INVALID') {
+      this.markFormInvalid = true;
+      return;
+    }
+
+    if (this.innerFormStatus === 'INVALID') {
+      this.markInnerFormInvalid = true;
+      return;
+    }
+
+    const filteredWorkExperienceArray = this.workExperienceArray.map((item) => {
+      return {
+        employer: item.employer,
+        jobDescription: item.jobDescription,
+        from: convertDateToBackend(item.fromDate),
+        to: convertDateToBackend(item.toDate),
+        phone: item.employerPhone,
+        email: item.employerEmail,
+        fax: item.employerFax,
+        address: item.employerAddress,
+        isDrivingPosition: item.isDrivingPosition,
+        cfrPart: item.cfrPart,
+        fmcsa: item.fmCSA,
+        reasonForLeaving: this.reasonsForLeaving.find(
+          (reasonItem) => reasonItem.name === item.reasonForLeaving
+        ).id,
+        accountForPeriodBetween: item.accountForPeriod,
+        classesOfEquipment: item.classesOfEquipment[0]?.vehicleType
+          ? item.classesOfEquipment.map((classTtem, index) => {
+              return {
+                vehicleTypeId: this.vehicleType.find(
+                  (findItem) =>
+                    findItem.name === item.classesOfEquipment[index].vehicleType
+                )?.id,
+                trailerTypeId: this.trailerType.find(
+                  (findItem) =>
+                    findItem.name === item.classesOfEquipment[index].trailerType
+                )?.id,
+                trailerLengthId: this.trailerLengthType.find(
+                  (findItem) =>
+                    findItem.name ===
+                    item.classesOfEquipment[index].trailerLength
+                )?.id,
+              };
+            })
+          : [],
+      };
+    });
+
+    const { noWorkExperience } = this.workExperienceForm.value;
+
+    let filteredLastWorkExperienceCard: any;
+
+    if (!noWorkExperience) {
+      filteredLastWorkExperienceCard = {
+        employer: this.lastWorkExperienceCard.employer,
+        jobDescription: this.lastWorkExperienceCard.jobDescription,
+        from: convertDateToBackend(this.lastWorkExperienceCard.fromDate),
+        to: convertDateToBackend(this.lastWorkExperienceCard.toDate),
+        phone: this.lastWorkExperienceCard.employerPhone,
+        email: this.lastWorkExperienceCard.employerEmail,
+        fax: this.lastWorkExperienceCard.employerFax,
+        address: this.lastWorkExperienceCard.employerAddress,
+        isDrivingPosition: this.lastWorkExperienceCard.isDrivingPosition,
+        cfrPart: this.lastWorkExperienceCard.cfrPart,
+        fmcsa: this.lastWorkExperienceCard.fmCSA,
+        reasonForLeaving: this.reasonsForLeaving.find(
+          (item) => item.name === this.lastWorkExperienceCard.reasonForLeaving
+        ).id,
+        accountForPeriodBetween: this.lastWorkExperienceCard.accountForPeriod,
+        classesOfEquipment: this.lastWorkExperienceCard.classesOfEquipment[0]
+          .vehicleType
+          ? this.lastWorkExperienceCard.classesOfEquipment.map(
+              (item, index) => {
+                return {
+                  vehicleTypeId: this.vehicleType.find(
+                    (item) =>
+                      item.name ===
+                      this.lastWorkExperienceCard.classesOfEquipment[index]
+                        .vehicleType
+                  )?.id,
+                  trailerTypeId: this.trailerType.find(
+                    (item) =>
+                      item.name ===
+                      this.lastWorkExperienceCard.classesOfEquipment[index]
+                        .trailerType
+                  )?.id,
+                  trailerLengthId: this.trailerLengthType.find(
+                    (item) =>
+                      item.name ===
+                      this.lastWorkExperienceCard.classesOfEquipment[index]
+                        .trailerLength
+                  )?.id,
+                };
+              }
+            )
+          : [],
+      };
+    }
+
+    const saveData: CreateWorkExperienceCommand = {
+      applicantId: this.applicantId,
+      haveWorkExperience: noWorkExperience,
+      workExperienceItems: noWorkExperience
+        ? []
+        : [...filteredWorkExperienceArray, filteredLastWorkExperienceCard],
+    };
+
+    this.applicantActionsService
+      .createWorkExperience(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/3`]);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
 
   /* public onSubmitReview(data: any): void {} */
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

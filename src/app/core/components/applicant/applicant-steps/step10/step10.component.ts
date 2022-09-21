@@ -1,29 +1,45 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
+
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { Applicant } from '../../state/model/applicant.model';
-import { DisclosureRelease } from '../../state/model/disclosure-release.model';
+import { CreateDisclosureReleaseCommand } from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step10',
   templateUrl: './step10.component.html',
   styleUrls: ['./step10.component.scss'],
 })
-export class Step10Component implements OnInit {
-  public selectedMode: string = SelectedMode.REVIEW;
+export class Step10Component implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public disclosureReleaseForm: FormGroup;
 
-  /* public applicant: Applicant | undefined; */
+  public applicantId: number;
 
-  /* public disclosureReleaseInfo: DisclosureRelease | undefined; */
-
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private router: Router,
+    private applicantActionsService: ApplicantActionsService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
+
+    this.applicantActionsService.getApplicantInfo$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res.personalInfo.applicantId;
+      });
   }
 
   public createForm(): void {
@@ -92,51 +108,44 @@ export class Step10Component implements OnInit {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
+      this.onSubmit();
     }
 
     if (event.action === 'back-step') {
+      this.router.navigate([`/application/${this.applicantId}/9`]);
     }
   }
 
-  /* private formFilling(): void {
-    this.disclosureReleaseForm.patchValue({
-      isFirstDisclosure: this.disclosureReleaseInfo?.isFirstDisclosure,
-      isSecondDisclosure: this.disclosureReleaseInfo?.isSecondDisclosure,
-      isThirdDisclosure: this.disclosureReleaseInfo?.isThirdDisclosure,
-      isFourthDisclosure: this.disclosureReleaseInfo?.isFourthDisclosure,
-      isFiftyDisclosure: this.disclosureReleaseInfo?.isFifthDisclosure,
-      isSixDisclosure: this.disclosureReleaseInfo?.isSixthDisclosure,
-    });
-  } */
+  public onSubmit(): void {
+    if (this.disclosureReleaseForm.invalid) {
+      this.inputService.markInvalid(this.disclosureReleaseForm);
+      return;
+    }
 
-  /* public onSubmitForm(): void {
-    const disclosureReleaseForm = this.disclosureReleaseForm.value;
-    const disclosureRelease = new DisclosureRelease(this.disclosureReleaseInfo);
+    const { isSixthDisclosure, ...disclosureReleaseForm } =
+      this.disclosureReleaseForm.value;
 
-    disclosureRelease.applicantId = this.applicant?.id;
+    const saveData: CreateDisclosureReleaseCommand = {
+      ...disclosureReleaseForm,
+      applicantId: this.applicantId,
+      isSixDisclosure: isSixthDisclosure,
+    };
 
-    disclosureRelease.isFirstDisclosure =
-      disclosureReleaseForm.isFirstDisclosure;
-    disclosureRelease.isSecondDisclosure =
-      disclosureReleaseForm.isSecondDisclosure;
-    disclosureRelease.isThirdDisclosure =
-      disclosureReleaseForm.isThirdDisclosure;
-    disclosureRelease.isFourthDisclosure =
-      disclosureReleaseForm.isFourthDisclosure;
-    disclosureRelease.isFifthDisclosure =
-      disclosureReleaseForm.isFifthDisclosure;
-    disclosureRelease.isSixthDisclosure =
-      disclosureReleaseForm.isSixthDisclosure;
-
-    this.apppEntityServices.DisclosureReleaseService.upsert(
-        disclosureRelease
-      ).subscribe(
-        () => {
-          this.notification.success('Disclosure Release is updated');
+    this.applicantActionsService
+      .createDisclosureAndRelease(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/11`]);
         },
-        (error: any) => {
-          this.shared.handleError(error);
-        }
-      );
-  } */
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

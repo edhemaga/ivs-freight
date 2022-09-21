@@ -1,14 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { takeUntil, Subject } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-dashboard-top-driver',
   templateUrl: './dashboard-top-driver.component.html',
   styleUrls: ['./dashboard-top-driver.component.scss'],
 })
-export class DashboardTopDriverComponent implements OnInit {
+export class DashboardTopDriverComponent implements OnInit, OnDestroy {
   @ViewChild('doughnutChart', { static: false }) public doughnutChart: any;
   @ViewChild('topDriverBarChart', { static: false })
   public topDriverBarChart: any;
@@ -16,6 +15,8 @@ export class DashboardTopDriverComponent implements OnInit {
   @ViewChild('tabSwitch', { static: false }) public tabSwitch: any;
   @ViewChild('t2') t2: any;
   @ViewChild('t3') t3: any;
+
+  private destroy$ = new Subject<void>();
 
   topTenTitle: string = 'Driver';
   currentSwitchTab: string = 'All Time';
@@ -80,6 +81,7 @@ export class DashboardTopDriverComponent implements OnInit {
     hasPercentage: true,
     allowAnimation: true,
     offset: true,
+    tooltipOffset: {min: 105, max: 279},
     dataLabels: [
       'MAR',
       '',
@@ -356,6 +358,7 @@ export class DashboardTopDriverComponent implements OnInit {
       driversList: drivers,
       allowAnimation: true,
       noChartImage: 'assets/svg/common/no_data_pay.svg',
+      dontUseResponsive: true
     };
 
     if (this.doughnutChart) {
@@ -400,7 +403,7 @@ export class DashboardTopDriverComponent implements OnInit {
     ];
 
     this.tableService.currentSearchTableData
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
           // your search code here
@@ -577,5 +580,10 @@ export class DashboardTopDriverComponent implements OnInit {
 
   selectTimePeriod(period) {
     this.topDriverBarChart.updateTime(this.currentSwitchTab, period);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

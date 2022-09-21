@@ -41,7 +41,6 @@ import {
     './repair-table.component.scss',
     '../../../../../assets/scss/maps.scss',
   ],
-  encapsulation: ViewEncapsulation.None,
   providers: [TaThousandSeparatorPipe],
 })
 export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -880,5 +879,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     this.tableService.sendCurrentSwitchOptionSelected(null);
     this.resizeObserver.unobserve(document.querySelector('.table-container'));
     this.resizeObserver.disconnect();
+  }
+
+  // MAP
+  selectItem(id: any) {
+    this.mapsComponent.clickedMarker(id);
   }
 }

@@ -47,7 +47,9 @@
                     label: 'Terminal Name',
                     isRequired: true,
                     textTransform: 'capitalize',
-                    autoFocus: editData?.type !== 'edit' ? true : false
+                    autoFocus: editData?.type !== 'edit' ? true : false,
+                    minLength: 1,
+                    maxLength: 64
                   }"
                 ></app-ta-input>
               </div>
@@ -62,7 +64,7 @@
                     label: 'Address, City, State Zip',
                     isRequired: true,
                     placeholderIcon: 'address',
-                    minLength: 12,
+                    minLength: 6,
                     maxLength: 256,
                     textTransform: 'capitalize'
                   }"
@@ -322,7 +324,8 @@
                       name: 'Parking Slot',
                       type: 'text',
                       label: 'Parking Slot # (Truck)',
-                      textTransform: 'capitalize'
+                      minLength: 1,
+                      maxLength: 64
                     }"
                   ></app-ta-input>
                 </div>
@@ -335,7 +338,8 @@
                       name: 'Full Parking Slot',
                       type: 'text',
                       label: 'Full Parking Slot # (Semi Truck - Trailer)',
-                      textTransform: 'capitalize'
+                      minLength: 1,
+                      maxLength: 128
                     }"
                   ></app-ta-input>
                 </div>
@@ -480,12 +484,14 @@
             <app-ta-input
               formControlName="rent"
               [inputConfig]="{
-                name: 'Dollar',
+                name: 'Rent',
                 type: 'text',
                 label: 'Rent',
                 placeholderIcon: 'dollar',
                 customClass: 'dollar-placeholderIcon',
-                thousandSeparator: true
+                thousandSeparator: true,
+                minLength: 4,
+                maxLength: 8
               }"
             ></app-ta-input>
           </div>

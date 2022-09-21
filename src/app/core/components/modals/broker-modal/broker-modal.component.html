@@ -34,7 +34,7 @@
                 label: 'Business Name',
                 isRequired: true,
                 textTransform: 'uppercase',
-                autoFocus: editData?.type !== 'edit' ? true : false,
+                autoFocus: editData?.type !== 'edit',
                 minLength: 2,
                 maxLength: 64
               }"
@@ -49,7 +49,9 @@
                 name: 'DBA Name',
                 type: 'text',
                 label: 'DBA Name',
-                textTransform: 'capitalize'
+                textTransform: 'uppercase',
+                minLength: 2,
+                maxLength: 24
               }"
             ></app-ta-input>
           </div>
@@ -72,8 +74,8 @@
                 type: 'number',
                 label: 'MC/FF #',
                 textTransform: 'capitalize',
-                maxLength: 6,
-                minLength: 6
+                minLength: 5,
+                maxLength: 6
               }"
             ></app-ta-input>
           </div>
@@ -181,7 +183,9 @@
                   name: 'PO Box',
                   type: 'text',
                   label: 'PO Box #',
-                  isRequired: true
+                  isRequired: true,
+                  minLength: 1,
+                  maxLength: 6
                 }"
               ></app-ta-input>
             </div>
@@ -289,7 +293,9 @@
                     name: 'PO Box',
                     type: 'text',
                     label: 'PO Box #',
-                    isRequired: true
+                    isRequired: true,
+                    minLength: 1,
+                    maxLength: 6
                   }"
                 ></app-ta-input>
               </div>
@@ -338,7 +344,7 @@
               <app-ta-input
                 formControlName="creditLimit"
                 [inputConfig]="{
-                  name: 'Dollar',
+                  name: 'Credit Limit',
                   type: 'text',
                   label: 'Credit Limit',
                   isRequired:
@@ -347,7 +353,9 @@
                     this.brokerForm.get('creditType').value !== 'Custom',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 11
                 }"
               ></app-ta-input>
             </div>
@@ -391,12 +399,12 @@
       <!-------------------------------- Contact Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
         <app-ta-custom-card
-          [hasCounter]="brokerContacts.length ? brokerContacts.length : '0'"
+          [hasCounter]="brokerContacts.length ? brokerContacts.length : 0"
           [cardName]="'Contact'"
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [hasArrow]="false"
           [isCommentData]="true"
-          [isCardOpen]="brokerContacts.length"
+          [isCardOpen]="brokerContacts.length > 0"
           [hasScrollBody]="brokerContacts.length > 10"
           (onActionEvent)="addBrokerContacts($event)"
         >
@@ -426,20 +434,28 @@
                     id: 'Full Name' + ind,
                     name: 'Full Name',
                     type: 'text',
+                    hideRequiredCheck: true,
+                    blackInput: true,
+                    hideErrorMessage: true,
+                    minLength: 2,
+                    maxLength: 32,
                     textTransform: 'capitalize'
-                  }"
+                    }"
                 ></app-ta-input>
                 <app-ta-input-dropdown
                   formControlName="departmentId"
                   [inputConfig]="{
                     id: 'Input Dropdown' + ind,
                     name: 'Input Dropdown Department',
-                    minLength: 2,
-                    maxLength: 36,
                     type: 'text',
                     textTransform: 'capitalize',
                     isDropdown: true,
-                    dropdownWidthClass: 'w-col-120'
+                    dropdownWidthClass: 'w-col-120',
+                    minLength: 2,
+                    maxLength: 36,
+                    hideRequiredCheck: true,
+                    blackInput: true,
+                    hideErrorMessage: true
                   }"
                   [activeItem]="selectedContractDepartmentFormArray[ind]"
                   [options]="labelsDepartments"
@@ -453,7 +469,10 @@
                     id: 'Phone' + ind,
                     name: 'Phone',
                     type: 'text',
-                    mask: '(000) 000-0000'
+                    mask: '(000) 000-0000',
+                    hideRequiredCheck: true,
+                    blackInput: true,
+                    hideErrorMessage: true
                   }"
                 ></app-ta-input>
                 <app-ta-input
@@ -463,7 +482,10 @@
                     name: 'phone-extension',
                     type: 'text',
                     minLength: 1,
-                    maxLength: 8
+                    maxLength: 8,
+                    hideRequiredCheck: true,
+                    blackInput: true,
+                    hideErrorMessage: true
                   }"
                 ></app-ta-input>
                 <app-ta-input
@@ -471,7 +493,13 @@
                   [inputConfig]="{
                     id: 'Email' + ind,
                     name: 'Email',
-                    type: 'text'
+                    type: 'text',
+                    hideRequiredCheck: true,
+                    blackInput: true,
+                    hideErrorMessage: true,
+                    minLength: 5,
+                    maxLength: 64,
+                    textTransform: 'lowercase'
                   }"
                 ></app-ta-input>
                 <div
@@ -502,17 +530,17 @@
       <!-------------------------------- Review Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 3 && editData">
         <app-ta-custom-card
-          [hasCounter]="reviews.length ? reviews.length : '0'"
+          [hasCounter]="reviews.length ? reviews.length : 0"
           [cardName]="'Review'"
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [hasArrow]="false"
           [hasLikeDislike]="true"
           [isCardOpen]="true"
           [isCommentData]="true"
-          [hasBodyData]="reviews.length"
+          [hasBodyData]="reviews.length > 0"
           [hasScrollBody]="reviews.length > 6"
           [disableMultipleReviews]="disableOneMoreReview"
-          (onActionEvent)="createReview($event)"
+          (onActionEvent)="createReview()"
         >
           <div class="no-review-broker" *ngIf="!reviews.length">
             <svg-icon

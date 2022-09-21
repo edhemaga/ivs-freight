@@ -1,9 +1,9 @@
 import {
   convertDateFromBackend,
   convertThousanSepInNumber,
-} from './../../../../utils/methods.calculations';
-import { SumArraysPipe } from './../../../../pipes/sum-arrays.pipe';
-import { NotificationService } from './../../../../services/notification/notification.service';
+} from '../../../../utils/methods.calculations';
+import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
+import { NotificationService } from '../../../../services/notification/notification.service';
 import {
   ChangeDetectorRef,
   Component,
@@ -29,13 +29,15 @@ import { TruckModalComponent } from '../../truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '../../trailer-modal/trailer-modal.component';
 import { RepairShopModalComponent } from '../repair-shop-modal/repair-shop-modal.component';
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../../services/form/form.service';
 import {
   convertDateToBackend,
   convertNumberInThousandSep,
 } from '../../../../utils/methods.calculations';
 import {
   descriptionValidation,
+  invoiceValidation,
+  priceValidation,
+  repairOdometerValidation,
   vehicleUnitValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
@@ -43,7 +45,7 @@ import {
   selector: 'app-repair-order-modal',
   templateUrl: './repair-order-modal.component.html',
   styleUrls: ['./repair-order-modal.component.scss'],
-  providers: [SumArraysPipe, ModalService, FormService],
+  providers: [SumArraysPipe, ModalService],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -114,7 +116,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     private ngbActiveModal: NgbActiveModal,
     private sumArrayPipe: SumArraysPipe,
     private cdRef: ChangeDetectorRef,
-    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -151,21 +152,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       repairType: ['Bill'],
       unitType: ['Truck'],
       unit: [null, [Validators.required, ...vehicleUnitValidation]],
-      odometer: [null],
+      odometer: [null, repairOdometerValidation],
       date: [null, Validators.required],
-      invoice: [null],
+      invoice: [null, invoiceValidation],
       repairShopId: [null, Validators.required],
       items: this.formBuilder.array([]),
       note: [null],
     });
-
-    // this.formService.checkFormChange(this.repairOrderForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -216,7 +209,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     return this.formBuilder.group({
       id: [data.id],
       description: [data.description, [...descriptionValidation]],
-      price: [data.price],
+      price: [data.price, priceValidation],
       quantity: [data.quantity],
       subtotal: [data.subtotal],
       pmTruckId: [data.pmTruckId],
@@ -658,7 +651,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             'Repair successfully created.',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Repair can't be created.", 'Error');
@@ -741,7 +733,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             'Repair successfully updated.',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Repair can't be updated.", 'Error');
@@ -762,10 +753,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             'Repair successfully deleted.',
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error("Repair can't be deleted.", 'Error');

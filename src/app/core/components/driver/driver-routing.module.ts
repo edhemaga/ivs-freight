@@ -11,7 +11,7 @@ const routes: Routes = [
     component: DriverTableComponent,
     data: { title: 'Driver' },
   },
-  { // /truck/
+  {
     path: ':id/details',
     loadChildren: () =>
       import('./driver-details/driver-details.module').then(

@@ -1,14 +1,13 @@
 import {
   accountBankValidation,
   routingBankValidation,
-} from './../../shared/ta-input/ta-input.regex-validations';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { TruckModalComponent } from './../truck-modal/truck-modal.component';
-import { UpdateOwnerCommand } from './../../../../../../appcoretruckassist/model/updateOwnerCommand';
-import { CreateOwnerCommand } from './../../../../../../appcoretruckassist/model/createOwnerCommand';
-import { OwnerResponse } from './../../../../../../appcoretruckassist/model/ownerResponse';
-import { NotificationService } from './../../../services/notification/notification.service';
-import { OwnerModalResponse } from './../../../../../../appcoretruckassist/model/ownerModalResponse';
+} from "../../shared/ta-input/ta-input.regex-validations";
+import { TruckModalComponent } from '../truck-modal/truck-modal.component';
+import { UpdateOwnerCommand } from '../../../../../../appcoretruckassist';
+import { CreateOwnerCommand } from '../../../../../../appcoretruckassist';
+import { OwnerResponse } from '../../../../../../appcoretruckassist';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { OwnerModalResponse } from '../../../../../../appcoretruckassist';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -185,7 +184,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           this.modalService.setModalSpinner({
             action: null,
             status: true,
-            clearTimeout: this.editData?.canOpenModal ? true : false,
+            clearTimeout: !!this.editData?.canOpenModal,
           });
         }
 
@@ -257,7 +256,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           };
           this.labelsBank = [...this.labelsBank, this.selectedBank];
         },
-        error: (err) => {
+        error: () => {
           this.notificationService.error("Can't add new bank", 'Error');
         },
       });
@@ -308,7 +307,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             `Changes saved for "${bussinesName}"`,
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -330,10 +328,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             `"${bussinesName}" deleted`,
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(
@@ -375,7 +369,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             `"${bussinesName}" added`,
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(

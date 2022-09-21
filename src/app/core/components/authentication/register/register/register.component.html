@@ -71,7 +71,7 @@
                   type: 'text',
                   label: 'Company Name',
                   isRequired: true,
-                  textTransform: 'capitalize'
+                  textTransform: 'uppercase'
                 }"
               ></app-ta-input>
             </div>
@@ -101,7 +101,7 @@
                   label: 'Address, City, State Zip',
                   isRequired: true,
                   placeholderIcon: 'address',
-                  minLength: 12,
+                  minLength: 6,
                   maxLength: 256,
                   textTransform: 'capitalize'
                 }"
@@ -170,7 +170,9 @@
                   label: 'Password',
                   placeholderIcon: 'password',
                   isRequired: true,
-                  autocomplete: 'off'
+                  autocomplete: 'off',
+                  minLength: 8,
+                  maxLength: 64
                 }"
               ></app-ta-input>
             </div>
@@ -183,7 +185,9 @@
                   label: 'Confirm Password',
                   placeholderIcon: 'password',
                   isRequired: true,
-                  autocomplete: 'off'
+                  autocomplete: 'off',
+                  minLength: 8,
+                  maxLength: 64
                 }"
               ></app-ta-input>
             </div>

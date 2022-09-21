@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
@@ -10,13 +14,18 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
   styleUrls: ['./psp-authorization.component.scss'],
 })
 export class PspAuthorizationComponent implements OnInit {
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public pspAuthorizationForm: FormGroup;
 
   public signature: any;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private router: Router,
+    private applicantActionsService: ApplicantActionsService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -24,11 +33,11 @@ export class PspAuthorizationComponent implements OnInit {
 
   public createForm(): void {
     this.pspAuthorizationForm = this.formBuilder.group({
-      isConfirm: [false, Validators.required],
-      isAuthorize: [false, Validators.required],
-      isFurtherUnderstand: [false, Validators.required],
-      isPspReport: [false, Validators.required],
-      isDisclosureRegardingReport: [false, Validators.required],
+      isConfirm: [false, Validators.requiredTrue],
+      isAuthorize: [false, Validators.requiredTrue],
+      isFurtherUnderstand: [false, Validators.requiredTrue],
+      isPspReport: [false, Validators.requiredTrue],
+      isDisclosureRegardingReport: [false, Validators.requiredTrue],
     });
   }
 
@@ -77,6 +86,14 @@ export class PspAuthorizationComponent implements OnInit {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
+      this.onSubmit();
+    }
+  }
+
+  public onSubmit(): void {
+    if (this.pspAuthorizationForm.invalid) {
+      this.inputService.markInvalid(this.pspAuthorizationForm);
+      return;
     }
   }
 }

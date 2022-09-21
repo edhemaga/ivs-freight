@@ -21,12 +21,16 @@ import { BrokerContactResponse } from './brokerContactResponse';
 import { LoadPaymentPayResponse } from './loadPaymentPayResponse';
 import { SplitLoadResponse } from './splitLoadResponse';
 import { LoadStopResponse } from './loadStopResponse';
+import { LoadStopProgressBarResponse } from './loadStopProgressBarResponse';
+import { AddressEntity } from './addressEntity';
 import { LoadBillingAdditionalResponse } from './loadBillingAdditionalResponse';
 
 
 export interface LoadResponse { 
     id?: number;
     type?: EnumValue;
+    loadNumber?: string | null;
+    statusType?: EnumValue;
     status?: EnumValue;
     lastStatusPassed?: { [key: string]: number; } | null;
     dispatcher?: CompanyUserShortResponse;
@@ -57,9 +61,21 @@ export interface LoadResponse {
     totalPaid?: number | null;
     totalDue?: number;
     totalMiles?: number;
+    totalTimeDays?: number;
+    totalTimeHours?: number;
     paidDate?: string | null;
     invoicedDate?: string | null;
     shortPaid?: number | null;
     age?: number | null;
+    daysToPay?: number | null;
+    totalLoadTime?: { [key: string]: number; } | null;
+    firstPickupTime?: { [key: string]: number; } | null;
+    lastDeliveryTime?: { [key: string]: number; } | null;
+    currentLocation?: AddressEntity;
+    nextStop?: LoadStopResponse;
+    completedPercentage?: number;
+    progressBar?: Array<LoadStopProgressBarResponse> | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

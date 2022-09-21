@@ -8,10 +8,8 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { ITaInput } from '../ta-input/ta-input.config';
 
-@UntilDestroy()
 @Component({
   selector: 'app-ta-input-dropdown-label',
   templateUrl: './ta-input-dropdown-label.component.html',
@@ -33,7 +31,7 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
   @Output() saveLabel: EventEmitter<{ data: any; action: string }> =
     new EventEmitter<{ data: string; action: string }>();
 
-  public switchMode: string = 'Label';
+  public switchMode: 'Label' | 'Color' = 'Label';
 
   constructor(@Self() public superControl: NgControl) {
     this.superControl.valueAccessor = this;
@@ -63,7 +61,7 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
   /**
    * Select label mode
    */
-  public onSelectLabelMode(event: string) {
+  public onSelectLabelMode(event: 'Label' | 'Color') {
     this.switchMode = event;
   }
 

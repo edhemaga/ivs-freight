@@ -1,162 +1,57 @@
+import { HttpHandler, HttpRequest } from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {ToastrService} from 'ngx-toastr';
-import { ModalService } from '../../components/shared/ta-modal/modal.service';
+import {ToastrService, IndividualConfig} from 'ngx-toastr';
+
+const notificationOptions: Partial<IndividualConfig> = {
+  progressBar: false, 
+  progressAnimation: 'increasing',
+  positionClass: 'toast-bottom-left',
+  tapToDismiss: false,
+  timeOut: 3000,
+  extendedTimeOut: 3000,
+  easeTime: 100,
+  enableHtml: true,
+  toastClass: ''
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
 
-  constructor(public toastr: ToastrService, private modalService: ModalService) {
+  constructor(public toastr: ToastrService) {
+  } 
+
+  public errorToastr(httpRequest: HttpRequest<any>, next: HttpHandler){
+    
+    if ( httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 || httpRequest.url.indexOf('division') > -1 ) {
+      return false;
+    }
+
+    this.toastr.error("", "", {...notificationOptions, payload: { httpRequest, next }});
+  }
+
+  public successToastr(httpRequest: HttpRequest<any>, next: HttpHandler){
+    
+    if ( httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 || httpRequest.url.indexOf('division') > -1 ) {
+      return false;
+    }
+
+    this.toastr.success("", "", {...notificationOptions, payload: { httpRequest, next }});
   }
 
   public success(message: string, title?: string) {
-    let newMsg = ' '+message+' <div class="closeToastrBtn" (click)="clickOnClose"></div>';
-    this.toastr.success(newMsg, title, {
-      progressBar: false, 
-      progressAnimation: 'increasing',
-      positionClass: 'toast-bottom-left',
-      tapToDismiss: false,
-      easeTime: 0,
-      timeOut: 3000,
-      extendedTimeOut: 3000,
-      enableHtml: true,
-      toastClass: 'ngx-toastr myAnimationClass',
-    }).onShown.subscribe((show) => { 
-      document.querySelector('.closeToastrBtn')?.addEventListener('click',()=>{
-        this.addCloseAnimation();
-      })
-    });
+    console.log('--old success toast message')
+    //this.toastr.success(message, title, notificationOptions);
   }
 
-  public error(message: string, title?: string) {
-    let newMsg = ' '+message+' <div class="closeToastrBtn retryButton"></div> <div class="closeToastrBtn closeIcon" (click)="clickOnClose"></div>';
-    let mainTitle = title;
-    let retryStarted = false;
-    this.toastr.error(newMsg, title, {
-      progressBar: false,
-      progressAnimation: 'increasing',
-      positionClass: 'toast-bottom-left',
-      easeTime: 0,
-      timeOut: 3000,
-      extendedTimeOut: 30000,
-      tapToDismiss: false,
-      enableHtml: true,
-      toastClass: 'ngx-toastr myAnimationClass',
-    }).onShown.subscribe((show) => { 
-      document.querySelector('.closeIcon')?.addEventListener('click',()=>{
-        
-        if ( !retryStarted )
-          {
-            this.addCloseAnimation();
-          }
-        
-      })
-      
-      document.querySelector('.retryButton')?.addEventListener('mouseover',()=>{
-
-        let toastElement = <HTMLElement> document.querySelector('.ngx-toastr');
-        let toastTitle = <HTMLElement> document.querySelector('.toast-title');
-       
-        if ( !retryStarted )
-          {
-              toastElement.classList.add('retryClassColor');
-              let splitStr = title.split(' ');
-              let newTitle = '';
-              for (var i = 0; i < splitStr.length; i++) 
-                {
-                  splitStr[0] = 'RETRY';
-                  newTitle = newTitle + ' ' + splitStr[i];
-                }
-                
-              toastTitle.innerHTML = newTitle;
-          }
-      })
-
-      document.querySelector('.retryButton')?.addEventListener('mouseleave',()=>{
-        let toastElement = <HTMLElement> document.querySelector('.ngx-toastr');
-        let toastTitle = <HTMLElement> document.querySelector('.toast-title');
-        
-        if ( !retryStarted )
-          {
-            toastElement.classList.remove('retryClassColor');
-              let splitStr = title.split(' ');
-              let newTitle = '';
-              for (var i = 0; i < splitStr.length; i++) 
-                {
-                  splitStr[0] = 'FAILED';
-                  newTitle = newTitle + ' ' + splitStr[i];
-                }
-                
-              toastTitle.innerHTML = newTitle;
-          }
-      })
-
-      document.querySelector('.retryButton')?.addEventListener('click',()=>{
-        let toastElement = <HTMLElement> document.querySelector('.ngx-toastr');
-        let toastTitle = <HTMLElement> document.querySelector('.toast-title');
-        toastElement.classList.add('retryClassColor');
-
-        if ( !retryStarted )
-          {
-              let retryBtnElement = <HTMLElement> document.querySelector('.retryButton');
-              retryBtnElement?.classList.add('hideClass');
-
-              let closeBtnElement = <HTMLElement> document.querySelector('.closeIcon');
-              closeBtnElement?.classList.add('loaderClass');
-
-              let size = 'small';
-              let color = 'white';
-              this.modalService.setModalSpinner({ action: null, status: true });
-              //console.log('---spinner', this.modalService);
-              //console.log('---spinner', this.modalService);
-              closeBtnElement.innerHTML = `<app-ta-spinner [size]="${size}" [color]="${color}"></app-ta-spinner>`;
-
-              let splitStr = title.split(' ');
-              let lastWordNum = splitStr.length - 1;
-              let lastWordText = splitStr[lastWordNum];
-              
-              let newTitle = 'CREATING ' + lastWordText;
-              retryStarted = true;
-              
-                
-              toastTitle.innerHTML = newTitle;
-          }
-      })
-    
-    });; 
+  public error(message: string, title?: string, retryStatus?: boolean) {
+    console.log('--old error toast message')
+    //this.toastr.error(message, title, notificationOptions);
   }
 
   public warning(message: string, title?: string) {
-    let newMsg = ' '+message+' <div class="closeToastrBtn" (click)="clickOnClose"></div>';
-    this.toastr.warning(newMsg, title, {
-      progressBar: false,
-      progressAnimation: 'increasing',
-      positionClass: 'toast-bottom-left',
-      easeTime: 0,
-      timeOut: 3000,
-      extendedTimeOut: 3000,
-      tapToDismiss: false,
-      enableHtml: true,
-      toastClass: 'ngx-toastr myAnimationClass',
-    }).onShown.subscribe((show) => { 
-      document.querySelector('.closeToastrBtn')?.addEventListener('click',()=>{
-        this.addCloseAnimation();
-      })
-    
-    });;
+    console.log('--old warning toast message')
+    //this.toastr.warning(message, title, notificationOptions);
   }
-
-  public addCloseAnimation(){
-    let toastElement = <HTMLElement> document.querySelector('.ngx-toastr');
-        toastElement.classList.add('closeAnimationBtn');
-        
-        setTimeout(() =>{
-
-          this.toastr.clear();
-
-        }, 200);
-  }
-
-
 }

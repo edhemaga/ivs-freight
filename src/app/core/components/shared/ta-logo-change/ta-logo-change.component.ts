@@ -1,5 +1,5 @@
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
-import { ImageBase64Service } from './../../../utils/base64.image';
+import { ImageBase64Service } from '../../../utils/base64.image';
 import {
   AfterViewInit,
   Component,
@@ -12,13 +12,12 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import * as Croppie from 'croppie';
+import Croppie from 'croppie';
 import { CroppieDirective } from 'angular-croppie-module';
 import { Options } from '@angular-slider/ngx-slider';
 import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
 import {
   DropZoneConfig,
-  TaUploadDropzoneComponent,
 } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -34,6 +33,7 @@ export class TaLogoChangeComponent
 
   @ViewChild('croppie') croppieDirective: CroppieDirective | any;
   @Input() croppieOptions: Croppie.CroppieOptions = {
+    // Rectangle Cropper Options - all the same except Viewport width - boundary width 616, enforceBoundary: false
     enableExif: true,
     viewport: {
       width: 162,
@@ -45,6 +45,7 @@ export class TaLogoChangeComponent
       height: 194,
     },
   };
+  @Input() croppieShape: string;
   @Input() customClass: string;
   @Input() imageUrl: any | string = null;
   @Input() dropZoneConfig: DropZoneConfig = {
@@ -54,11 +55,20 @@ export class TaLogoChangeComponent
     multiple: false,
     globalDropZone: false,
   };
+  @Input() displayUploadZone?: boolean;
 
   @Output() validationEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
     false
   );
   @Output() base64ImageEvent: EventEmitter<string> = new EventEmitter<string>();
+
+  @Output() saveLogoEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
+    false
+  );
+
+  @Output() deleteLogoEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
+    false
+  );
 
   public showUploadZone = true;
   public imageScale = 0.5;
@@ -89,6 +99,14 @@ export class TaLogoChangeComponent
 
       clearTimeout(timeout);
     }, 150);
+
+    if (this.displayUploadZone) {
+      this.showUploadZone = true;
+
+      this.imageUrl = null;
+
+      this.deleteLogoEvent.emit(true);
+    }
   }
 
   ngOnInit(): void {
@@ -99,6 +117,12 @@ export class TaLogoChangeComponent
           this.onUploadImage(data);
         }
       });
+
+    if (this.imageUrl) {
+      this.showUploadZone = false;
+
+      this.saveLogoEvent.emit(true);
+    }
   }
 
   public ngAfterViewInit() {
@@ -129,8 +153,8 @@ export class TaLogoChangeComponent
     this.validationEvent.emit(this.isImageValid);
   }
 
-  public handleCroppieUpdate(event) {
-    this.ngxSliderPosition = event.zoom;
+  public handleCroppieUpdate() {
+    this.ngxSliderPosition = 0.9;
   }
 
   public zooming(event: any) {
@@ -144,10 +168,14 @@ export class TaLogoChangeComponent
         this.imageBase64Service.getStringFromBase64(base64)
       );
       this.imageUrl = base64;
-      this.showUploadZone = true;
+      this.showUploadZone = this.croppieShape !== 'rectangle';
     });
     this.isImageValid = true;
     this.validationEvent.emit(this.isImageValid);
+
+    if (this.croppieShape === 'rectangle') {
+      this.saveLogoEvent.emit(true);
+    }
   }
 
   public onDeleteSavedImage() {

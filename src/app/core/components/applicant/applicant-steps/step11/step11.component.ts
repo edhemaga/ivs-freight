@@ -1,10 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
+
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { Applicant } from '../../state/model/applicant.model';
-import { Authorization } from '../../state/model/authorization.model';
+import { CreateAuthorizationCommand } from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step11',
@@ -12,20 +17,31 @@ import { Authorization } from '../../state/model/authorization.model';
   styleUrls: ['./step11.component.scss'],
 })
 export class Step11Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  private destroy$ = new Subject<void>();
+
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public authorizationForm: FormGroup;
 
+  public applicantId: number;
+
   public signature: any;
 
-  /* public applicant: Applicant | undefined; */
-
-  /* public authorizationInfo: Authorization | undefined; */
-
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private router: Router,
+    private applicantActionsService: ApplicantActionsService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
+
+    this.applicantActionsService.getApplicantInfo$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res.personalInfo.applicantId;
+      });
   }
 
   public createForm(): void {
@@ -83,61 +99,51 @@ export class Step11Component implements OnInit, OnDestroy {
 
   public onSignatureAction(event: any): void {
     this.signature = event;
+
+    this.signature = this.signature.slice(22);
   }
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
+      this.onSubmit();
     }
 
     if (event.action === 'back-step') {
+      this.router.navigate([`/application/${this.applicantId}/10`]);
     }
   }
 
-  /* private formFilling(): void {
-    this.authorizationForm.patchValue({
-      isFirstAuthorization: this.authorizationInfo?.isFirstAuthorization,
-      isSecondAuthorization: this.authorizationInfo?.isSecondAuthorization,
-      isThirdAuthorization: this.authorizationInfo?.isThirdAuthorization,
-      isFourthAuthorization: this.authorizationInfo?.isFourthAuthorization,
-    });
-
-    this.signature = this.authorizationInfo?.signature;
-  } */
-
-  /* public onSubmitForm(): void {
-    if (!this.signatureToSave && !this.signature) {
-        this.notification.warning('Please give youre signature', 'Warning:');
-        return false;
-      } else if (this.signatureToSave) {
-        authorization.signature = this.signature;
-      }
-
+  public onSubmit(): void {
+    if (this.authorizationForm.invalid) {
+      this.inputService.markInvalid(this.authorizationForm);
+      return;
+    }
 
     const authorizationForm = this.authorizationForm.value;
-    const authorization = new Authorization(this.authorizationInfo);
 
-    authorization.applicantId = this.applicant?.id;
+    const saveData: CreateAuthorizationCommand = {
+      ...authorizationForm,
+      applicantId: this.applicantId,
+      signature: this.signature,
+    };
 
-    authorization.isFirstAuthorization = authorizationForm.isFirstAuthorization;
-    authorization.isSecondAuthorization =
-      authorizationForm.isSecondAuthorization;
-    authorization.isThirdAuthorization = authorizationForm.isThirdAuthorization;
-    authorization.isFourthAuthorization =
-      authorizationForm.isFourthAuthorization;
-
-      this.apppEntityServices.AuthorizationService.upsert(
-        authorization
-      ).subscribe(
-        () => {
-          this.notification.success('Authorization is updated');
+    this.applicantActionsService
+      .createAuthorization(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/medical-certificate/${this.applicantId}`]);
         },
-        (error: any) => {
-          this.shared.handleError(error);
-        }
-      );
-  } */
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
 
   /* public onSubmitReview(data: any): void {} */
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

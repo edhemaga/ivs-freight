@@ -8,14 +8,26 @@ import {
   addressUnitValidation,
   addressValidation,
   bankValidation,
+  customerCreditValidation,
+  customerPayTermValidation,
   daysValidRegex,
+  defaultBaseValidation,
   departmentValidation,
+  iftaValidation,
+  irpValidation,
   mcFFValidation,
   mileValidation,
   monthsValidRegex,
+  nicknameValidation,
   perStopValidation,
   phoneExtension,
+  prefixValidation,
   routingBankValidation,
+  scacValidation,
+  suffixValidation,
+  tollValidation,
+  urlValidation,
+  usdotValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -42,6 +54,10 @@ import {
   phoneFaxRegex,
 } from '../../../../shared/ta-input/ta-input.regex-validations';
 import { convertNumberInThousandSep } from '../../../../../utils/methods.calculations';
+import {
+  startingValidation,
+  cvcValidation,
+} from '../../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-settings-basic-modal',
@@ -214,6 +230,24 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   public selectedFleetType: string = null;
 
+  public croppieOptions: Croppie.CroppieOptions = {
+    enableExif: true,
+    viewport: {
+      width: 616,
+      height: 194,
+      type: 'square',
+    },
+    boundary: {
+      width: 616,
+      height: 194,
+    },
+    enforceBoundary: false,
+  };
+
+  // Logo Actions
+  public displayDeleteAction: boolean = false;
+  public displayUploadZone: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -249,8 +283,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     if (this.editData?.type === 'payroll-tab') {
-      this.tabChange({ id: 3 });
       const timeout = setTimeout(() => {
+        this.tabChange({ id: 3 });
+
         this.editCompany();
         clearTimeout(timeout);
       }, 150);
@@ -280,19 +315,19 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     this.companyForm = this.formBuilder.group({
       //----------------- Basic Tab
       name: [null, Validators.required],
-      usDot: [null, Validators.required],
+      usDot: [null, [Validators.required, ...usdotValidation]],
       ein: [null, einNumberRegex],
       mc: [null, [...mcFFValidation]],
       phone: [null, phoneFaxRegex],
       email: [null],
       fax: [null, phoneFaxRegex],
-      webUrl: [null],
+      webUrl: [null, urlValidation],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
-      irp: [null],
-      ifta: [null],
-      toll: [null],
-      scac: [null],
+      irp: [null, irpValidation],
+      ifta: [null, iftaValidation],
+      toll: [null, tollValidation],
+      scac: [null, scacValidation],
       timeZone: [null, Validators.required],
       currency: [null, Validators.required],
       companyType: [null],
@@ -302,15 +337,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       departmentContacts: this.formBuilder.array([]),
       bankAccounts: this.formBuilder.array([]),
       bankCards: this.formBuilder.array([]),
-      prefix: [null],
-      starting: [null, Validators.required],
-      sufix: [null],
+      prefix: [null, prefixValidation],
+      starting: [null, [Validators.required, ...startingValidation]],
+      suffix: [null, suffixValidation],
       autoInvoicing: [false],
       fleetType: ['Solo'],
       preferredLoadType: ['FTL'],
       factorByDefault: [false],
-      customerPayTerm: [null, daysValidRegex],
-      customerCredit: [null],
+      customerPayTerm: [null, [daysValidRegex, ...customerPayTermValidation]],
+      customerCredit: [null, customerCreditValidation],
       mvrMonths: [12, [Validators.required, monthsValidRegex]],
       truckInspectionMonths: [12, [Validators.required, monthsValidRegex]],
       trailerInspectionMonths: [12, [Validators.required, monthsValidRegex]],
@@ -337,37 +372,37 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       // Accounting
       accountingPayPeriod: ['Weekly', Validators.required],
       accountingEndingIn: ['Monday', Validators.required],
-      accountingDefaultBase: [null],
+      accountingDefaultBase: [null, defaultBaseValidation],
       // Company Owner
       companyOwnerPayPeriod: ['Weekly', Validators.required],
       companyOwnerEndingIn: ['Monday', Validators.required],
-      companyOwnerDefaultBase: [null],
+      companyOwnerDefaultBase: [null, defaultBaseValidation],
       // Dispatch
       dispatchPayPeriod: ['Weekly', Validators.required],
       dispatchEndingIn: ['Monday', Validators.required],
-      dispatchDefaultBase: [null],
+      dispatchDefaultBase: [null, defaultBaseValidation],
       dispatchDefaultCommission: [5],
       // Manager
       managerPayPeriod: ['Weekly', Validators.required],
       managerEndingIn: ['Monday', Validators.required],
-      managerDefaultBase: [null],
+      managerDefaultBase: [null, defaultBaseValidation],
       managerDefaultCommission: [2.5],
       // Recruiting
       recruitingPayPeriod: ['Weekly', Validators.required],
       recruitingEndingIn: ['Monday', Validators.required],
-      recruitingDefaultBase: [null],
+      recruitingDefaultBase: [null, defaultBaseValidation],
       // Repair
       repairPayPeriod: ['Weekly', Validators.required],
       repairEndingIn: ['Monday', Validators.required],
-      repairDefaultBase: [null],
+      repairDefaultBase: [null, defaultBaseValidation],
       // Safety
       safetyPayPeriod: ['Weekly', Validators.required],
       safetyEndingIn: ['Monday', Validators.required],
-      safetyDefaultBase: [null],
+      safetyDefaultBase: [null, defaultBaseValidation],
       // Other
       otherPayPeriod: ['Weekly', Validators.required],
       otherEndingIn: ['Monday', Validators.required],
-      otherDefaultBase: [null],
+      otherDefaultBase: [null, defaultBaseValidation],
     });
 
     this.inputService.customInputValidator(
@@ -614,15 +649,12 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   }): FormGroup {
     return this.formBuilder.group({
       id: [data?.id ? data.id : 0],
-      nickname: [data?.nickname ? data.nickname : null],
+      nickname: [data?.nickname ? data.nickname : null, nicknameValidation],
       card: [
         data?.card ? data.card : null,
         [Validators.minLength(16), Validators.maxLength(16)],
       ],
-      cvc: [
-        data?.cvc ? data.cvc : null,
-        [Validators.minLength(3), Validators.maxLength(3)],
-      ],
+      cvc: [data?.cvc ? data.cvc : null, cvcValidation],
       expireDate: [data?.expireDate ? data.expireDate : null],
     });
   }
@@ -925,7 +957,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       dateOfIncorporation,
       prefix,
       starting,
-      sufix,
+      suffix,
       customerPayTerm,
       customerCredit,
       mvrMonths,
@@ -1027,7 +1059,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             'Successfully added company division',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Can't add company division", 'Error');
@@ -1141,7 +1172,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       dateOfIncorporation,
       prefix,
       starting,
-      sufix,
+      suffix,
       customerPayTerm,
       customerCredit,
       mvrMonths,
@@ -1244,7 +1275,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             'Successfully updated company division',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -1265,10 +1295,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             'Successfully delete company division',
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(
@@ -1307,6 +1333,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       driverSoloDefaultCommission,
       driverTeamDefaultCommission,
       ownerDefaultCommission,
+      suffix,
       // Accounting
       accountingPayPeriod,
       accountingEndingIn,
@@ -1346,6 +1373,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     let newData: UpdateCompanyCommand = {
       ...form,
+      sufix: suffix,
       timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
       currency: this.selectedCurrency ? this.selectedCurrency.id : null,
       address: {
@@ -1361,6 +1389,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       preferredLoadType:
         this.companyForm.get('preferredLoadType').value === 'FTL' ? 1 : 2,
     };
+
+    console.log('form', form);
 
     for (let index = 0; index < departmentContacts.length; index++) {
       departmentContacts[index].departmentId =
@@ -1548,7 +1578,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             'Successfully update your main company',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Can't update main company!", 'Error');
@@ -1596,7 +1625,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       bankCards: [],
       prefix: this.editData.company.additionalInfo.prefix,
       starting: this.editData.company.additionalInfo.starting,
-      sufix: this.editData.company.additionalInfo.sufix,
+      suffix: this.editData.company.additionalInfo.sufix,
       autoInvoicing: this.editData.company.additionalInfo.autoInvoicing,
       preferredLoadType: this.editData.company.additionalInfo.preferredLoadType,
       factorByDefault: this.editData.company.additionalInfo.factorByDefault,
@@ -1922,6 +1951,29 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
           }
         }
       }
+    }
+  }
+
+  public handleDeleteClick(event: any) {
+    if (event.action === 'delete') {
+      this.displayUploadZone = true;
+    }
+
+    this.displayDeleteAction = false;
+  }
+
+  public onSaveLogoAction(event: any) {
+    if (event) {
+      this.displayDeleteAction = true;
+    }
+  }
+
+  public onDeleteLogoAction(event: any) {
+    if (event) {
+      this.displayUploadZone = false;
+
+      this.companyForm.get('logo').patchValue(null);
+      this.companyForm.get('logo').setErrors(null);
     }
   }
 

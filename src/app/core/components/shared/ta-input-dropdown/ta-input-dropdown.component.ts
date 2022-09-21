@@ -84,7 +84,7 @@ export class TaInputDropdownComponent
   private dropdownPosition: number = -1;
 
   // For Dispatchboard hover options
-  private hoveredOption: number = -1;
+  public hoveredOption: number = -1;
 
   constructor(
     @Self() public superControl: NgControl,
@@ -129,12 +129,18 @@ export class TaInputDropdownComponent
         changes.preloadMultiselectItems?.previousValue?.length &&
       this.inputConfig.multiselectDropdown
     ) {
-      const timeout = setTimeout(() => {
-        this.preloadMultiselectItems.forEach((item) => {
-          this.onMultiselectSelect(item, this.template);
-        });
-        clearTimeout(timeout);
-      }, 50);
+      if (changes.preloadMultiselectItems?.currentValue?.length) {
+        const timeout = setTimeout(() => {
+          this.preloadMultiselectItems.forEach((item) => {
+            this.onMultiselectSelect(item, this.template);
+          });
+          clearTimeout(timeout);
+        }, 50);
+      } else {
+        this.deleteAllMultiSelectItems(
+          changes.inputConfig?.currentValue?.label
+        );
+      }
     }
 
     // Details Pages
@@ -199,7 +205,7 @@ export class TaInputDropdownComponent
     // Reset Input
     this.inputResetService.resetInputSubject
       .pipe(debounceTime(50), takeUntil(this.destroy$))
-      .subscribe((action) => {
+      .subscribe(() => {
         this.inputRef.touchedInput = false;
       });
 
@@ -761,7 +767,7 @@ export class TaInputDropdownComponent
     };
   }
 
-  public removeMultiSelectItem(index: number) {
+  public removeMultiSelectItem(index: number, action: string) {
     this.options = this.originalOptions.map((item) => {
       if (item.id === this.multiselectItems[index].id) {
         return {
@@ -785,21 +791,36 @@ export class TaInputDropdownComponent
       this.inputConfig.label = this.multiSelectLabel;
     }
 
-    this.selectedItems.emit(
-      this.multiselectItems.map((item) => {
-        const { id, name } = item;
-        return {
-          id,
-          name,
-        };
-      })
-    );
+    if (action === 'multiselect') {
+      this.selectedItems.emit(
+        this.multiselectItems.map((item) => {
+          const { id, name } = item;
+          return {
+            id,
+            name,
+          };
+        })
+      );
+    } else {
+      this.selectedItems.emit(
+        this.multiselectItems.map((item) => {
+          const { id, code, description } = item;
+          return {
+            id,
+            code,
+            description,
+          };
+        })
+      );
+    }
   }
 
-  public delteAllMultiSelectItems(event: any) {
+  public deleteAllMultiSelectItems(currentLabel?: string) {
     this.multiselectItems = [];
     this.inputConfig.multiSelectDropdownActive = null;
-    this.inputConfig.label = this.multiSelectLabel;
+    this.inputConfig.label = currentLabel
+      ? currentLabel
+      : this.multiSelectLabel;
     this.options = this.options.map((item) => {
       return {
         ...item,
@@ -811,7 +832,7 @@ export class TaInputDropdownComponent
     this.lastActiveMultiselectItem = null;
   }
 
-  public toggleMultiselectDropdown(event: any) {
+  public toggleMultiselectDropdown() {
     this.isMultiSelectInputFocus = !this.isMultiSelectInputFocus;
 
     if (this.isMultiSelectInputFocus) {

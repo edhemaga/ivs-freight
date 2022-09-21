@@ -29,6 +29,8 @@ import {
   accountBankValidation,
   routingBankValidation,
   fuelCardValidation,
+  name2_24Validation,
+  nicknameValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
@@ -100,17 +102,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public payrollCompany: any;
 
   public loadingOwnerEin: boolean = false;
-
-  public logoOptions: Options = {
-    floor: 0.1,
-    ceil: 1.5,
-    step: 0.1,
-    animate: false,
-    showSelectionBar: true,
-    hideLimitLabels: true,
-  };
-
-  public slideInit = 0.5;
 
   public tabs: any[] = [
     {
@@ -226,11 +217,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
               });
 
               this.notificationService.success(successMessage, 'Success');
-
-              this.modalService.setModalSpinner({
-                action: null,
-                status: false,
-              });
             }
           },
           error: () => {
@@ -305,9 +291,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       ein: [null, einNumberRegex],
       bussinesName: [null],
       offDutyLocations: this.formBuilder.array([]),
-      emergencyContactName: [null, Validators.required],
+      emergencyContactName: [
+        null,
+        [Validators.required, ...name2_24Validation],
+      ],
       emergencyContactPhone: [null, [phoneFaxRegex, Validators.required]],
-      emergencyContactRelationship: [null],
+      emergencyContactRelationship: [null, name2_24Validation],
       note: [{ value: null, disabled: true }],
       avatar: [null],
       twic: [false],
@@ -326,13 +315,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
-    // this.formService.checkFormChange(this.driverForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public get offDutyLocations(): FormArray {
@@ -354,7 +336,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }): FormGroup {
     return this.formBuilder.group({
       id: [data?.id ? data.id : 0],
-      nickname: [data?.nickname ? data.nickname : null],
+      nickname: [data?.nickname ? data.nickname : null, nicknameValidation],
       address: [data?.address ? data.address : null, [...addressValidation]],
       city: [data?.city ? data.city : null],
       state: [data?.state ? data.state : null],
@@ -430,7 +412,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           };
           this.labelsBank = [...this.labelsBank, this.selectedBank];
         },
-        error: (err) => {
+        error: () => {
           this.notificationService.error("Can't add new bank", 'Error');
         },
       });
@@ -998,7 +980,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
           this.handlingPayrollFleetType(this.fleetType, true);
         },
-        error: (err) => {
+        error: () => {
           this.notificationService.error(
             "Driver's dropdowns can't be loaded.",
             'Error:'
@@ -1232,14 +1214,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             'CREATED DRIVER'
           );
 
-          this.modalService.setModalSpinner({
-            action: this.addNewAfterSave ? 'save and add new' : null,
-            status: false,
-          });
           // If clicked Save and Add New, reset form and fields
           if (this.addNewAfterSave) {
             this.formService.resetForm(this.driverForm);
-
+            this.modalService.setModalSpinner({
+              action: 'save and add new',
+              status: false,
+            });
             this.driverForm.get('ownerType').patchValue(null);
             this.driverForm.get('payType').patchValue(null);
 
@@ -1542,7 +1523,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             `Changes saved for "${driverFullName}" `,
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
           this.notificationService.error(
@@ -1584,7 +1564,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             commissionTeam: res.commissionTeam,
             ownerId: res.owner ? res.owner.id : null,
             useTruckAssistAch: res.useTruckAssistAch,
-            isOwner: res.owner ? true : false,
+            isOwner: !!res.owner,
             ownerType: res.owner
               ? res.owner?.ownerType?.name
                 ? res.owner?.ownerType?.name.includes('Proprietor')
@@ -1656,15 +1636,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
           this.onHandleAddress({
             address: res.address,
-            valid: res.address ? true : false,
+            valid: !!res.address,
           });
 
           this.modalService.changeModalStatus({
             name: 'deactivate',
-            status: res.status === 1 ? false : true,
+            status: res.status !== 1,
           });
 
-          this.driverStatus = res.status === 1 ? false : true;
+          this.driverStatus = res.status !== 1;
 
           this.fleetType = res.fleetType.name;
 
@@ -1728,10 +1708,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             'Driver successfully deleted.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error("Driver can't be deleted.", 'Error:');

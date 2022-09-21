@@ -119,7 +119,7 @@
 
           &.add-new-divider {
             &::after {
-              content: "";
+              content: '';
               position: absolute;
               bottom: 0;
               left: 0px;
@@ -180,7 +180,7 @@
             position: absolute;
             right: 4px;
             top: 2.5px;
-            content: url("../../assets/svg/common/ic_confirm.svg");
+            content: url('../../assets/svg/common/ic_confirm.svg');
             width: 14px;
             height: 10px;
           }
@@ -195,7 +195,7 @@
         &.last-active {
           position: relative;
           &::before {
-            content: "";
+            content: '';
             position: absolute;
             bottom: 0;
             left: 0px;
@@ -289,7 +289,7 @@
               width: 1px;
               height: 14px;
               background-color: #dadada;
-              content: "";
+              content: '';
               margin: 0 6px;
             }
           }
@@ -386,18 +386,6 @@
 
       //------------------------ Custom width dependent on 'col' bootstrap ------------------------
 
-      &.w-col-70 {
-        width: 70px;
-      }
-
-      &.w-col-92{
-        width: 92px;
-      }
-
-      &.w-col-142{
-        width: 142px;
-      }
-
       &.w-col-686 {
         width: 686px;
       }
@@ -442,7 +430,7 @@
         width: 402px;
       }
 
-      &.w-col-details-366 {
+      &.w-col-366 {
         width: 366px;
       }
 
@@ -470,6 +458,10 @@
         width: 291px;
       }
 
+      &.w-col-280 {
+        width: 280px;
+      }
+
       &.w-col-273 {
         width: 273px;
       }
@@ -482,8 +474,24 @@
         width: 251px;
       }
 
+      &.w-col-248 {
+        width: 248px;
+      }
+
+      &.w-col-246 {
+        width: 246px;
+      }
+
       &.w-col-245 {
         width: 245px;
+      }
+
+      &.w-col-234 {
+        width: 234px;
+      }
+
+      &.w-col-231 {
+        width: 231px;
       }
 
       &.w-col-229 {
@@ -502,8 +510,20 @@
         width: 216px;
       }
 
+      &.w-col-211 {
+        width: 211px;
+      }
+
       &.w-col-201 {
         width: 201px;
+      }
+
+      &.w-col-196 {
+        width: 196px;
+      }
+
+      &.w-col-192 {
+        width: 192px;
       }
 
       &.w-col-189 {
@@ -532,6 +552,10 @@
 
       &.w-col-176 {
         width: 176px;
+      }
+
+      &.w-col-174 {
+        width: 174px;
       }
 
       &.w-col-168 {
@@ -568,6 +592,10 @@
         width: 145px;
       }
 
+      &.w-col-142 {
+        width: 142px;
+      }
+
       &.w-col-140 {
         width: 140px;
       }
@@ -580,8 +608,16 @@
         width: 136px;
       }
 
+      &.w-col-130 {
+        width: 130px;
+      }
+
       &.w-col-129 {
         width: 129px;
+      }
+
+      &.w-col-128 {
+        width: 128px;
       }
 
       &.w-col-126 {
@@ -620,44 +656,28 @@
         width: 100px;
       }
 
+      &.w-col-92 {
+        width: 92px;
+      }
+
       &.w-col-88 {
         width: 88px;
+      }
+
+      &.w-col-78 {
+        width: 78px;
+      }
+
+      &.w-col-70 {
+        width: 70px;
       }
 
       &.w-col-66 {
         width: 66px;
       }
 
-      &.w-col-251 {
-        width: 251px;
-      }
-
-      &.w-col-211 {
-        width: 211px;
-      }
-
-      &.w-col-130 {
-        width: 130px;
-      }
-
-      &.w-col-234 {
-        width: 234px;
-      }
-
-      &.w-col-246 {
-        width: 246px;
-      }
-
-      &.w-col-174 {
-        width: 174px;
-      }
-
-      &.w-col-231 {
-        width: 231px;
-      }
-
-      &.w-col-192 {
-        width: 192px;
+      &.w-col-302 {
+        width: 302px;
       }
 
       // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------
@@ -667,25 +687,41 @@
         .dropdown-groups {
           display: flex;
           flex-direction: column;
+          padding: 0px 4px;
+          padding-top: 8px;
 
           p {
             margin: 0;
           }
 
+          &.last-group {
+            padding-bottom: 8px;
+          }
+
           .dropdown-group-header {
-            font-size: 10px;
-            color: #dadada;
+            font-size: 11px;
+            color: #cccccc;
             font-weight: 700;
             text-transform: uppercase;
-            line-height: 13px;
-            padding: 4px;
-            padding-bottom: 3px;
+            line-height: 14px;
+            padding: 0 6px;
+            margin-bottom: 8px;
+
+            &::selection {
+              background-color: rgb(204, 204, 204, 0.2);
+              color: #cccccc;
+            }
+
+            &::-moz-selection {
+              background-color: rgb(204, 204, 204, 0.2);
+              color: #cccccc;
+            }
           }
 
           .dropdown-subgroup-options {
             display: flex;
             align-items: center;
-            padding: 4px;
+            padding: 4px 6px;
             height: 26px;
 
             &:hover {
@@ -695,8 +731,20 @@
               transition: all 0.3s ease-in-out;
 
               .dropdown-subgroup-text {
+                font-size: 14px;
+                font-weight: 400;
                 color: #3c3c3c;
                 transition: all 0.3s ease-in-out;
+
+                &::selection {
+                  background-color: rgb(60, 60, 60, 0.2);
+                  color: #3c3c3c;
+                }
+
+                &::-moz-selection {
+                  background-color: rgb(60, 60, 60, 0.2);
+                  color: #3c3c3c;
+                }
 
                 &.active {
                   // Higlight text
@@ -759,7 +807,7 @@
                 &::after {
                   position: absolute;
                   right: 3px;
-                  content: url("../..//assets/svg/common/ic_confirm.svg");
+                  content: url('../..//assets/svg/common/ic_confirm.svg');
                   width: 14px;
                   height: 10px;
                 }
@@ -861,7 +909,7 @@
           font-weight: 600;
 
           &::after {
-            content: "";
+            content: '';
             height: 2px;
             width: 100%;
             background-color: #f3f3f3;

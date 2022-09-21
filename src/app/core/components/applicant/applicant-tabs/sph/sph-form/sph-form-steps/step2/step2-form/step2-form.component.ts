@@ -6,40 +6,53 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
+  OnChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription, Subject, takeUntil } from 'rxjs';
-import { TaInputRadiobuttonsComponent } from '../../../../../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
-import { SphFormAccidentModel } from '../../../../../../state/model/accident.model';
-import { Address } from '../../../../../../../shared/model/address';
-import { TaInputService } from '../../../../../../../shared/ta-input/ta-input.service';
-import { TaInputResetService } from '../../../../../../../shared/ta-input/ta-input-reset.service';
-import { AnswerChoices } from '../../../../../../state/model/applicant-question.model';
+
 import { isFormValueEqual } from '../../../../../../state/utils/utils';
+
 import {
   addressValidation,
   descriptionValidation,
 } from '../../../../../../../shared/ta-input/ta-input.regex-validations';
+
+import { TaInputService } from '../../../../../../../shared/ta-input/ta-input.service';
+import { FormService } from './../../../../../../../../services/form/form.service';
+
+import { TaInputRadiobuttonsComponent } from '../../../../../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
+
+import { SphFormAccidentModel } from '../../../../../../state/model/accident.model';
+import { AnswerChoices } from '../../../../../../state/model/applicant-question.model';
 import { InputSwitchActions } from '../../../../../../state/enum/input-switch-actions.enum';
+import { AddressEntity } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-sph-step2-form',
   templateUrl: './step2-form.component.html',
   styleUrls: ['./step2-form.component.scss'],
 })
-export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SphStep2FormComponent
+  implements OnInit, AfterViewInit, OnDestroy, OnChanges
+{
   private destroy$ = new Subject<void>();
   @ViewChild(TaInputRadiobuttonsComponent)
   component: TaInputRadiobuttonsComponent;
 
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
+  @Input() markFormInvalid?: boolean;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
+  @Output() formStatusEmitter = new EventEmitter<any>();
+  @Output() markInvalidEmitter = new EventEmitter<any>();
+  @Output() lastFormValuesEmitter = new EventEmitter<any>();
 
   public accidentForm: FormGroup;
 
@@ -51,7 +64,7 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public subscription: Subscription;
 
-  public selectedAddress: Address = null;
+  public selectedAddress: AddressEntity = null;
 
   public hazmatSpillRadios: any;
 
@@ -75,13 +88,8 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private inputResetService: TaInputResetService
+    private formService: FormService
   ) {}
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
   ngOnInit(): void {
     this.createForm();
@@ -114,6 +122,26 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.hazmatSpillRadios = this.component.buttons;
+
+    this.accidentForm.statusChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.formStatusEmitter.emit(res);
+      });
+
+    this.accidentForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.lastFormValuesEmitter.emit(res);
+      });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.markFormInvalid?.currentValue) {
+      this.inputService.markInvalid(this.accidentForm);
+
+      this.markInvalidEmitter.emit(false);
+    }
   }
 
   private createForm(): void {
@@ -201,7 +229,12 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.accidentForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
+    this.formService.resetForm(this.accidentForm);
+
+    this.accidentForm.patchValue({
+      fatalities: 0,
+      injuries: 0,
+    });
   }
 
   public onSaveEditedAccident(): void {
@@ -236,8 +269,6 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.accidentForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
-
     this.subscription.unsubscribe();
   }
 
@@ -251,8 +282,11 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.accidentForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
-
     this.subscription.unsubscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

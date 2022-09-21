@@ -38,8 +38,6 @@
           dropdownWidthClass: 'w-col-129',
           autoFocus:
             !editData?.type?.includes('edit') && !editData?.storageData?.unit
-              ? true
-              : false
         }"
         [canAddNew]="true"
         [canOpenModal]="true"
@@ -50,12 +48,14 @@
       <app-ta-input
         formControlName="odometer"
         [inputConfig]="{
-          name: 'Odometer',
+          name: 'repair-odometer',
           type: 'text',
           label: 'Odometer',
           isRequired: selectedPM[selectedPMIndex]?.id,
           isDisabled: selectedHeaderTab !== 1,
-          thousandSeparator: true
+          thousandSeparator: true,
+          minLength: 1,
+          maxLength: 7
         }"
       ></app-ta-input>
       <app-ta-input
@@ -78,7 +78,9 @@
           type: 'text',
           label: 'Invoice',
           isDisabled: selectedHeaderTab !== 1,
-          textTransform: 'capitalize'
+          textTransform: 'uppercase',
+          minLength: 1,
+          maxLength: 22
         }"
       ></app-ta-input>
     </div>
@@ -152,13 +154,13 @@
     <!-- Fake Table Card -->
     <div [ngClass]="{ 'repair-order': selectedHeaderTab !== 1 }">
       <app-ta-custom-card
-        [hasCounter]="items.length ? items.length : '0'"
+        [hasCounter]="items.length ? items.length : 0"
         [cardName]="'Item'"
         [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
         [hasArrow]="false"
         [isCommentData]="true"
-        [isCardOpen]="items.length"
-        [hasBodyData]="items.length"
+        [isCardOpen]="items.length > 0"
+        [hasBodyData]="items.length > 0"
         [hasScrollBody]="items.length > 10"
         (onActionEvent)="addItems($event)"
       >
@@ -190,7 +192,7 @@
               }"
             >
               <p>
-                {{ item.controls.id.value }}
+                {{ item.get('id').value }}
               </p>
               <div class="desc-pm-container">
                 <app-ta-input
@@ -199,9 +201,11 @@
                     id: 'Description' + ind,
                     name: 'Description',
                     type: 'text',
-                    minLength: 20,
+                    minLength: 2,
                     maxLength: 160,
                     hideRequiredCheck: true,
+                    blackInput: true,
+                    hideErrorMessage: true,
                     textTransform: 'capitalize',
                     blueInputColor:
                       !selectedPM[ind]?.logoName?.includes('ic_custom_pm'),
@@ -262,11 +266,14 @@
                   id: 'Price' + ind,
                   name: 'Price',
                   type: 'text',
-                  textTransform: 'capitalize',
                   thousandSeparator: true,
                   hideRequiredCheck: true,
+                  blackInput: true,
+                  hideErrorMessage: true,
                   blueInputColor:
-                    !selectedPM[ind]?.logoName?.includes('ic_custom_pm')
+                    !selectedPM[ind]?.logoName?.includes('ic_custom_pm'),
+                  minLength: 4,
+                  maxLength: 13
                 }"
                 (change)="onChange('price', ind)"
               ></app-ta-input>
@@ -279,6 +286,8 @@
                   type: 'text',
                   textTransform: 'capitalize',
                   hideRequiredCheck: true,
+                  blackInput: true,
+                  hideErrorMessage: true,
                   blueInputColor:
                     !selectedPM[ind]?.logoName?.includes('ic_custom_pm')
                 }"
@@ -295,7 +304,7 @@
                 position="top"
                 tooltipBackground="#EF5350"
                 class="common-fake-table-delete"
-                (click)="removeItems(ind, item.controls)"
+                (click)="removeItems(ind)"
               >
                 <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
               </div>
@@ -312,7 +321,7 @@
     </div>
 
     <app-ta-custom-card
-      [hasCounter]="pickedServices() ? pickedServices() : '0'"
+      [hasCounter]="pickedServices() ? pickedServices() : 0"
       [cardName]="'Service'"
       [isCardOpen]="true"
     >
@@ -330,9 +339,9 @@
     </app-ta-custom-card>
     <div *ngIf="selectedHeaderTab === 1" class="ta-card-body-overflow-none">
       <app-ta-custom-card
-        [hasCounter]="documents.length ? documents.length : '0'"
+        [hasCounter]="documents.length ? documents.length : 0"
         [cardName]="'Documents'"
-        [isCardOpen]="documents.length"
+        [isCardOpen]="documents.length > 0"
       >
         <app-ta-upload-files
           [files]="documents"

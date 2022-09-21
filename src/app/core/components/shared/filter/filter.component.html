@@ -2,7 +2,7 @@
   class="user-icon"
   app-autoclose-popover
   [customClass]="'filterpopovermain'"
-  [placement]="'bottom'"
+  [placement]="'bottom-left'"
   [ngClass]="{
     'active-options': t2?.isOpen(),
     'filter-active-colors':
@@ -11,7 +11,8 @@
       canadaSelectedStates.length > 0 ||
       usaSelectedStates.length ||
       rangeValue > 0 ||
-      moneyFilterStatus
+      moneyFilterStatus ||
+      locationState != ''
   }"
 >
   <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
@@ -41,8 +42,6 @@
       position="bottom"
       tooltipBackground="#6C6C6C"
       (click)="clearAll($event)"
-      (mouseover)="hideOtherToolTips($event)"
-      (mouseleave)="backOtherToolTips($event)"
     >
       <svg-icon src="assets/svg/common/ic_cancel_violation.svg"></svg-icon>
     </div>
@@ -84,7 +83,7 @@
           [inputConfig]="{
             name: 'search',
             type: 'text',
-            label: 'Search',
+            label: 'Search ' + filterTitle.split(' ')[0] + ' ',
             placeholderIcon: 'ic_search',
             customClass: 'filter-search-input',
             placeholderInsteadOfLabel: true,
@@ -124,13 +123,15 @@
               [size]="'small'"
               [type]="'driver'"
               [name]="item.name"
-            ></app-profile-images>
+            >
+            </app-profile-images>
           </div>
-          <div
-            class="user-profile-img"
-            *ngIf="type == 'statusFilter'"
-            [ngStyle]="{ backgroundColor: item.color }"
-          ></div>
+          <div class="user-profile-img" *ngIf="type == 'statusFilter'">
+            <div
+              class="status-circle"
+              [ngStyle]="{ backgroundColor: item.color }"
+            ></div>
+          </div>
           <div
             class="user-profile-img selected-filter-icon"
             *ngIf="leftSideIcon"
@@ -152,20 +153,24 @@
               (click)="removeFromSelectedUser(item, indx)"
               class="icon-delete"
             >
+              <div class="icon-delete-hold"></div>
               <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
             </div>
           </div>
         </div>
       </div>
       <div class="selected-user-holder" *ngIf="type == 'stateFilter'">
-        <div class="states-selected" *ngIf="usaSelectedStates.length > 0">
+        <div
+          class="states-selected usa-selected-holder"
+          *ngIf="usaSelectedStates.length > 0"
+        >
           <div class="state-name-holder">UNITED STATES</div>
           <div
             *ngFor="let item of usaSelectedStates; let indx = index"
             class="user-main-holder holder-bottom-margin"
           >
-            <div class="user-profile-img state-short-holder active">
-              {{ item.short }}
+            <div class="user-profile-img active state-border-radius">
+              <div class="state-short-holder">{{ item.short }}</div>
             </div>
             <div class="selected-user-frame">
               <div class="selected-name-text">{{ item.name }}</div>
@@ -193,8 +198,8 @@
             *ngFor="let item of canadaSelectedStates; let indx = index"
             class="user-main-holder"
           >
-            <div class="user-profile-img state-short-holder active">
-              {{ item.short }}
+            <div class="user-profile-img active">
+              <div class="state-short-holder">{{ item.short }}</div>
             </div>
             <div class="selected-user-frame">
               <div class="selected-name-text">{{ item.name }}</div>
@@ -243,7 +248,8 @@
                 [size]="'small'"
                 [type]="'user'"
                 [name]="item.name"
-              ></app-profile-images>
+              >
+              </app-profile-images>
             </div>
             <div class="user-frame">
               <div class="selected-name-text">{{ item.name }}</div>
@@ -283,10 +289,12 @@
               (click)="addToSelectedUser(item, indx, 'pending')"
               class="user-main-holder"
             >
-              <div
-                class="user-profile-img"
-                [ngStyle]="{ backgroundColor: item.color }"
-              ></div>
+              <div class="user-profile-img" *ngIf="type == 'statusFilter'">
+                <div
+                  class="status-circle"
+                  [ngStyle]="{ backgroundColor: item.color }"
+                ></div>
+              </div>
               <div class="user-frame">
                 <div class="selected-name-text">{{ item.name }}</div>
               </div>
@@ -476,7 +484,8 @@
                 [size]="'small'"
                 [type]="'driver'"
                 [name]="item.name"
-              ></app-profile-images>
+              >
+              </app-profile-images>
             </div>
             <div class="user-frame">
               <div class="selected-name-text">{{ item.name }}</div>
@@ -531,10 +540,10 @@
           <div
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
-            class="user-main-holder"
+            class="user-main-holder state-main-holder"
           >
-            <div class="user-profile-img state-short-holder">
-              {{ item.short }}
+            <div class="user-profile-img">
+              <div class="state-short-holder">{{ item.short }}</div>
             </div>
             <div class="user-frame">
               <div class="selected-name-text">{{ item.name }}</div>
@@ -549,10 +558,10 @@
           <div
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx, 'canada')"
-            class="user-main-holder"
+            class="user-main-holder state-main-holder"
           >
-            <div class="user-profile-img state-short-holder">
-              {{ item.short }}
+            <div class="user-profile-img">
+              <div class="state-short-holder">{{ item.short }}</div>
             </div>
             <div class="user-frame">
               <div class="selected-name-text">{{ item.name }}</div>
@@ -560,7 +569,10 @@
           </div>
         </div>
       </div>
-      <div class="border-filter"></div>
+      <div
+        class="border-filter"
+        *ngIf="pmFilterArray.length > selectedUser.length"
+      ></div>
       <div class="buttons-holder">
         <div
           (click)="clearAll()"
@@ -574,11 +586,13 @@
           Clear All
         </div>
         <div
+          (click)="setFilter($event)"
           class="button-set"
           [class.active]="
-            selectedUser.length > 0 ||
-            canadaSelectedStates.length > 0 ||
-            usaSelectedStates.length > 0
+            (selectedUser.length > 0 ||
+              canadaSelectedStates.length > 0 ||
+              usaSelectedStates.length > 0) &&
+            setButtonAvailable
           "
         >
           Set
@@ -630,7 +644,7 @@
           </div>
         </div>
       </div>
-      <div class="border-filter"></div>
+      <div class="border-filter time-data-border"></div>
       <div class="time-items-holder">
         <div
           class="time-items"
@@ -693,7 +707,7 @@
           </div>
         </div>
       </div>
-      <div class="border-filter"></div>
+      <div class="border-filter time-data-border"></div>
       <div class="time-items-holder">
         <div
           class="time-items"
@@ -776,7 +790,7 @@
           </div>
         </div>
       </div>
-      <div class="border-filter"></div>
+      <div class="border-filter time-data-border"></div>
       <div class="time-items-holder">
         <div
           class="time-items"
@@ -819,7 +833,7 @@
           </div>
         </div>
       </div>
-      <div class="border-filter"></div>
+      <div class="border-filter time-data-border"></div>
       <div class="time-items-holder">
         <div
           class="time-items"
@@ -902,7 +916,7 @@
           </div>
         </div>
       </div>
-      <div class="border-filter"></div>
+      <div class="border-filter time-data-border"></div>
       <div class="time-items-holder">
         <div
           class="time-items"
@@ -925,7 +939,7 @@
           </div>
         </div>
       </div>
-      <div class="border-filter"></div>
+      <div class="border-filter time-data-border"></div>
       <div class="buttons-holder">
         <div
           (click)="clearAll()"
@@ -934,114 +948,15 @@
         >
           Clear All
         </div>
-        <div class="button-set" [class.active]="selectedTimeValue != ''">
-          Set
-        </div>
-      </div>
-    </div>
-    <div *ngIf="type == 'dispatcherFilter'" class="dispatcher-holder">
-      <div class="dispatcher-header">
-        <div class="dispatcher-filter-box">{{ selectedDispatcher.length }}</div>
-        <div class="dispatcher-title-text">Dispatcher Filter</div>
-        <div class="dispatcher-close" (click)="t2.close()">
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-      </div>
-      <div class="dispatcher-border-filter"></div>
-      <div class="dispatcher-search-holder">
-        <div class="search-icons">
-          <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
-        </div>
-        <div class="border-search"></div>
-        <input
-          (keyup)="filterDispatcher($event)"
-          class="dispatcher-search-user-holder"
-          type="text"
-          placeholder="Search Dispatcher"
-        />
-      </div>
-      <div class="dispatcher-border-filter different-margin"></div>
-      <div class="dispatcher-selected-user-holder">
         <div
-          *ngFor="let item of selectedDispatcher; let indx = index"
-          class="dispatcher-selected-user-frame"
-        >
-          <div class="dispatcher-initials">
-            <app-profile-images
-              [indx]="indx"
-              [size]="'small'"
-              [type]="'user'"
-              [name]="item.name"
-            ></app-profile-images>
-          </div>
-          <div class="dispatcher-selected">{{ item.name }}</div>
-          <div class="selected-icon">
-            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
-          </div>
-          <div
-            ngbTooltip
-            mainTooltip="Remove User"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeFromSelectedDispatcher(item, indx)"
-            class="icon-delete"
-          >
-            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-          </div>
-        </div>
-      </div>
-      <div
-        *ngIf="selectedDispatcher.length > 0"
-        class="dispatcher-border-filter different-margin"
-      ></div>
-      <div
-        class="dispatcher-user-holder"
-        [ngStyle]="{
-          padding:
-            unselectedDispatcher.length > 7
-              ? '2px 0px 0px 12px'
-              : '2px 12px 0px 12px'
-        }"
-      >
-        <div
-          *ngFor="let item of unselectedDispatcher; let indx = index"
-          class="dispatcher-user-frame-holder"
-        >
-          <div
-            *ngIf="!item.hidden"
-            (click)="addToSelectedDispatcher(indx, item)"
-            class="dispatcher-user-frame"
-          >
-            <div class="dispatcher-initials">
-              <app-profile-images
-                [indx]="indx"
-                [size]="'small'"
-                [type]="'user'"
-                [name]="item.name"
-              ></app-profile-images>
-            </div>
-            <div class="unselecter-dispatcher">{{ item.name }}</div>
-          </div>
-        </div>
-      </div>
-      <div class="dispatcher-border-filter"></div>
-      <div class="filter-buttons-holder">
-        <div
-          (click)="clearAllDispatcher()"
-          class="filter-button-clear"
-          [class.active]="selectedDispatcher.length > 0"
-        >
-          Clear All
-        </div>
-        <div
-          class="filter-button-set"
-          [class.active]="selectedDispatcher.length > 0"
+          (click)="setFilter($event)"
+          class="button-set"
+          [class.active]="selectedTimeValue != '' && setButtonAvailable"
         >
           Set
         </div>
       </div>
     </div>
-
     <div
       *ngIf="moneyFilter"
       class="filter-holder money-filter"
@@ -1053,22 +968,16 @@
       </div>
       <div class="border-filter money-top-border-magin"></div>
       <div class="single-form-holder" *ngIf="subType != 'all'">
-        <div
-          class="clear-money-form"
-          *ngIf="moneyForm.value.singleFrom && moneyForm.value.singleTo"
-          (click)="clearForm('singleForm')"
-        >
-          CLEAR
-        </div>
         <div class="money-main-holder">
           <div class="money-value-holder">
             <app-ta-input
               formControlName="singleFrom"
               [inputConfig]="{
-                name: 'ssn',
+                name: 'singleFrom',
                 type: 'number',
                 label: 'From',
-                placeholderIcon: 'dollar'
+                placeholderIcon: 'dollar',
+                customClass: 'line-input-26'
               }"
             ></app-ta-input>
           </div>
@@ -1076,13 +985,13 @@
             <app-ta-input
               formControlName="singleTo"
               [inputConfig]="{
-                name: 'ssn',
+                name: 'singleTo',
                 type: 'number',
                 label: 'To',
-                placeholderIcon: 'dollar'
+                placeholderIcon: 'dollar',
+                customClass: 'line-input-26'
               }"
             ></app-ta-input>
-            <div class="invalid-message" *ngIf="singleFormError">Invalid</div>
           </div>
         </div>
       </div>
@@ -1110,15 +1019,19 @@
             ></svg-icon>
           </div>
         </div>
-        <div class="money-main-holder" *ngIf="showPart1">
+        <div
+          class="money-main-holder"
+          [@showHideCardBody]="showPart1 ? 'true' : 'false'"
+        >
           <div class="money-value-holder">
             <app-ta-input
               formControlName="multiFromFirstFrom"
               [inputConfig]="{
-                name: 'ssn',
+                name: 'multiFromFirstFrom',
                 type: 'number',
                 label: 'From',
-                placeholderIcon: 'dollar'
+                placeholderIcon: 'dollar',
+                customClass: 'line-input-26'
               }"
             ></app-ta-input>
           </div>
@@ -1129,15 +1042,13 @@
             <app-ta-input
               formControlName="multiFromFirstTo"
               [inputConfig]="{
-                name: 'ssn',
+                name: 'multiFromFirstTo',
                 type: 'number',
                 label: 'To',
-                placeholderIcon: 'dollar'
+                placeholderIcon: 'dollar',
+                customClass: 'line-input-26'
               }"
             ></app-ta-input>
-            <div class="invalid-message" *ngIf="multiFormFirstError">
-              Invalid
-            </div>
           </div>
         </div>
         <div
@@ -1167,15 +1078,19 @@
             ></svg-icon>
           </div>
         </div>
-        <div class="money-main-holder" *ngIf="showPart2">
+        <div
+          class="money-main-holder"
+          [@showHideCardBody]="showPart2 ? 'true' : 'false'"
+        >
           <div class="money-value-holder">
             <app-ta-input
               formControlName="multiFormSecondFrom"
               [inputConfig]="{
-                name: 'ssn',
+                name: 'multiFormSecondFrom',
                 type: 'number',
                 label: 'From',
-                placeholderIcon: 'dollar'
+                placeholderIcon: 'dollar',
+                customClass: 'line-input-26'
               }"
             ></app-ta-input>
           </div>
@@ -1186,15 +1101,13 @@
             <app-ta-input
               formControlName="multiFormSecondTo"
               [inputConfig]="{
-                name: 'ssn',
+                name: 'multiFormSecondTo',
                 type: 'number',
                 label: 'To',
-                placeholderIcon: 'dollar'
+                placeholderIcon: 'dollar',
+                customClass: 'line-input-26'
               }"
             ></app-ta-input>
-            <div class="invalid-message" *ngIf="multiFormSecondError">
-              Invalid
-            </div>
           </div>
         </div>
         <div
@@ -1224,15 +1137,19 @@
             ></svg-icon>
           </div>
         </div>
-        <div class="money-main-holder" *ngIf="showPart3">
+        <div
+          class="money-main-holder"
+          [@showHideCardBody]="showPart3 ? 'true' : 'false'"
+        >
           <div class="money-value-holder">
             <app-ta-input
               formControlName="multiFormThirdFrom"
               [inputConfig]="{
-                name: 'ssn',
+                name: 'multiFormThirdFrom',
                 type: 'number',
                 label: 'From',
-                placeholderIcon: 'dollar'
+                placeholderIcon: 'dollar',
+                customClass: 'line-input-26'
               }"
             ></app-ta-input>
           </div>
@@ -1243,15 +1160,13 @@
             <app-ta-input
               formControlName="multiFormThirdTo"
               [inputConfig]="{
-                name: 'ssn',
+                name: 'multiFormThirdTo',
                 type: 'number',
                 label: 'To',
-                placeholderIcon: 'dollar'
+                placeholderIcon: 'dollar',
+                customClass: 'line-input-26'
               }"
             ></app-ta-input>
-            <div class="invalid-message" *ngIf="multiFormThirdError">
-              Invalid
-            </div>
           </div>
         </div>
       </div>
@@ -1267,10 +1182,20 @@
         >
           Clear All
         </div>
-        <div class="button-set" [class.active]="moneyFilterStatus">Set</div>
+        <div
+          (click)="setFilter($event)"
+          class="button-set"
+          [class.active]="moneyFilterStatus && setButtonAvailable"
+        >
+          Set
+        </div>
       </div>
     </div>
-    <div *ngIf="swipeFilter" class="filter-holder swipe-filter">
+    <div
+      *ngIf="swipeFilter"
+      class="filter-holder swipe-filter"
+      [formGroup]="sliderForm"
+    >
       <div class="filter-header">
         <div class="user-title-text">{{ filterTitle }}</div>
       </div>
@@ -1283,19 +1208,26 @@
           [sliderOptions]="sliderData"
           [startedValue]="rangeValue"
           [customClass]="'custom-slider-filter'"
+          [sliderTemplate]="'commission'"
           (onUserValueChange)="setRangeValue($event)"
         ></app-ta-ngx-slider>
       </div>
-      <div class="border-filter top-border-margin"></div>
+      <div class="border-filter bottom-border-margin"></div>
       <div class="buttons-holder">
         <div
           (click)="clearAll()"
           class="button-clear"
-          [class.active]="rangeValue > 0"
+          [class.active]="rangeValue != swipeActiveRange || rangeValue > 0"
         >
           Clear All
         </div>
-        <div class="button-set" [class.active]="rangeValue > 0">Set</div>
+        <div
+          (click)="setFilter($event)"
+          class="button-set"
+          [class.active]="rangeValue != swipeActiveRange"
+        >
+          Set
+        </div>
       </div>
     </div>
     <div *ngIf="locationDefType" class="filter-holder location-filter">
@@ -1314,7 +1246,7 @@
             name: 'Address',
             type: 'text',
             label: 'Location',
-            minLength: 12,
+            minLength: 6,
             maxLength: 256,
             placeholderIcon: 'address',
             textTransform: 'capitalize',
@@ -1329,53 +1261,57 @@
       <div class="filter-middle-holder" *ngIf="type == 'locationFilter'">
         <app-ta-ngx-slider
           [sliderOptions]="locationSliderData"
-          [startedValue]="rangeValue"
+          [startedValue]="locationRange"
           [customClass]="'custom-slider-filter'"
           (onUserValueChange)="setRangeValue($event)"
         ></app-ta-ngx-slider>
       </div>
       <div
-        class="money-main-holder"
-        *ngIf="type == 'payFilter'"
-        [formGroup]="payForm"
+        class="money-main-holder payPadding"
+        *ngIf="type == 'payFilter' || type == 'milesFilter'"
+        [formGroup]="moneyForm"
       >
         <div class="money-value-holder">
           <app-ta-input
-            formControlName="payFrom"
+            formControlName="singleFrom"
             [inputConfig]="{
-              name: 'ssn',
+              name: 'singleFrom',
               type: 'number',
               label: 'From',
-              placeholderIcon: 'dollar'
+              placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
+              customClass: 'line-input-26'
             }"
           ></app-ta-input>
         </div>
-        <div class="money-value-holder">
+        <div class="money-value-holder" [class.errorForm]="singleFormError">
           <app-ta-input
-            formControlName="payTo"
+            formControlName="singleTo"
             [inputConfig]="{
-              name: 'ssn',
+              name: 'singleTo',
               type: 'number',
               label: 'To',
-              placeholderIcon: 'dollar'
+              placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
+              customClass: 'line-input-26'
             }"
           ></app-ta-input>
         </div>
       </div>
       <div
-        class="filter-middle-holder"
+        class="filter-middle-holder slider-two-holder"
         [formGroup]="payForm"
-        *ngIf="type == 'payFilter'"
+        *ngIf="type == 'payFilter' || type == 'milesFilter'"
       >
-        <!-- <app-ta-ngx-slider
-                    [sliderOptions]="paySliderData"
-                    [startedValue]="rangeValue"
-                    [customClass]="'custom-slider-filter'"
-                    (onUserValueChange)="setRangeValue($event)"
-                  ></app-ta-ngx-slider> -->
+        <app-ta-ngx-slider
+          [sliderOptions]="
+            type == 'payFilter' ? paySliderData : milesSliderData
+          "
+          [startedValue]="rangeValue"
+          [customClass]="'custom-slider-filter'"
+          (onUserValueChange)="setRangeValue($event)"
+        ></app-ta-ngx-slider>
       </div>
       <div class="border-filter bottom-border-margin"></div>
-      <div class="buttons-holder">
+      <div class="buttons-holder" *ngIf="type != 'locationFilter'">
         <div
           (click)="clearAll()"
           class="button-clear"
@@ -1383,7 +1319,29 @@
         >
           Clear All
         </div>
-        <div class="button-set" [class.active]="rangeValue > 0">Set</div>
+        <div
+          (click)="setFilter($event)"
+          class="button-set"
+          [class.active]="rangeValue > 0 && setButtonAvailable"
+        >
+          Set
+        </div>
+      </div>
+      <div class="buttons-holder" *ngIf="type == 'locationFilter'">
+        <div
+          (click)="clearAll()"
+          class="button-clear"
+          [class.active]="locationState != ''"
+        >
+          Clear All
+        </div>
+        <div
+          (click)="setFilter($event)"
+          class="button-set"
+          [class.active]="locationState != ''"
+        >
+          Set
+        </div>
       </div>
     </div>
   </div>

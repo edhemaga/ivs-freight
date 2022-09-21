@@ -16,7 +16,9 @@
             label: 'Title',
             isRequired: true,
             textTransform: 'capitalize',
-            autoFocus: editData?.type !== 'edit' ? true : false
+            autoFocus: editData?.type !== 'edit',
+            minLength: 2,
+            maxLength: 64
           }"
         ></app-ta-input>
       </div>
@@ -29,7 +31,7 @@
             name: 'Description',
             type: 'text',
             label: 'Description',
-            minLength: 20,
+            minLength: 2,
             maxLength: 160,
             textTransform: 'capitalize'
           }"
@@ -106,16 +108,15 @@
       </div>
     </div>
     <app-ta-custom-card
-      [hasCounter]="comments.length ? comments.length : '0'"
+      [hasCounter]="comments.length ? comments.length : 0"
       [cardName]="'Comment'"
-      [isCardOpen]="comments.length"
-      [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+      [isCardOpen]="comments.length > 0"
       [isCommentData]="true"
-      [hasBodyData]="comments.length"
+      [hasBodyData]="comments.length > 0"
       [hasScrollBody]="comments.length > 4"
       [disabledCard]="editData?.type !== 'edit'"
-      [hasActionSvg]="editData?.type === 'edit'"
-      (onActionEvent)="createComment($event)"
+      [hasActionSvg]="editData?.type === 'edit' ? 'assets/svg/common/ic_plus.svg' : ''"
+      (onActionEvent)="createComment()"
     >
       <app-ta-user-review
         *ngIf="comments.length"
@@ -126,9 +127,9 @@
     </app-ta-custom-card>
     <div class="ta-card-body-overflow-none">
       <app-ta-custom-card
-        [hasCounter]="documents.length ? documents.length : '0'"
+        [hasCounter]="documents.length ? documents.length : 0"
         [cardName]="'Documents'"
-        [isCardOpen]="documents.length"
+        [isCardOpen]="documents.length > 0"
       >
         <app-ta-upload-files
           [files]="documents"

@@ -1,4 +1,4 @@
-import { AddressEntity } from './../../../../../../appcoretruckassist/model/addressEntity';
+import { AddressEntity } from '../../../../../../appcoretruckassist';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { BrokerModalResponse } from './../../../../../../appcoretruckassist/model/brokerModalResponse';
+import { BrokerModalResponse } from '../../../../../../appcoretruckassist';
 import {
   BrokerResponse,
   CreateBrokerCommand,
@@ -38,10 +38,14 @@ import {
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
 import { BrokerTService } from '../../customer/state/broker-state/broker.service';
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../services/form/form.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { convertNumberInThousandSep } from '../../../utils/methods.calculations';
+import { poBoxValidation } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  name2_24Validation,
+  creditLimitValidation,
+} from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-broker-modal',
@@ -49,7 +53,7 @@ import { convertNumberInThousandSep } from '../../../utils/methods.calculations'
   styleUrls: ['./broker-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, FormService, TaLikeDislikeService],
+  providers: [ModalService, TaLikeDislikeService],
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -145,7 +149,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   public brokerDnuStatus: boolean = true;
 
   public companyUser: SignInResponse = null;
-  public hasCompanyUserReview: boolean = false;
 
   public isDirty: boolean = false;
 
@@ -158,8 +161,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     private brokerModalService: BrokerTService,
     private notificationService: NotificationService,
     private reviewRatingService: ReviewsRatingService,
-    private taLikeDislikeService: TaLikeDislikeService,
-    private formService: FormService
+    private taLikeDislikeService: TaLikeDislikeService
   ) {}
 
   ngOnInit() {
@@ -186,7 +188,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.brokerForm = this.formBuilder.group({
       businessName: [null, [Validators.required, ...businessNameValidation]],
-      dbaName: [null],
+      dbaName: [null, name2_24Validation],
       mcNumber: [null, [...mcFFValidation]],
       ein: [null, [einNumberRegex]],
       email: [null],
@@ -194,17 +196,17 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       // Physical Address
       physicalAddress: [null, [Validators.required, ...addressValidation]],
       physicalAddressUnit: [null, [...addressUnitValidation]],
-      physicalPoBox: [null],
+      physicalPoBox: [null, poBoxValidation],
       physicalPoBoxCity: [null, [...addressValidation]],
       // Billing Address
       isCheckedBillingAddress: [true],
       billingAddress: [null, [...addressValidation]],
       billingAddressUnit: [null, [...addressUnitValidation]],
-      billingPoBox: [null],
+      billingPoBox: [null, poBoxValidation],
       billingPoBoxCity: [null, [...addressValidation]],
       isCredit: [true],
       creditType: ['Custom'], // Custom | Unlimited
-      creditLimit: [null],
+      creditLimit: [null, creditLimitValidation],
       availableCredit: [null],
       payTerm: [null],
       note: [null],
@@ -218,16 +220,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
-
-    // if (this.editData) {
-    //   this.formService.checkFormChange(this.brokerForm);
-
-    //   this.formService.formValueChange$
-    //     .pipe(takeUntil(this.destroy$))
-    //     .subscribe((isFormChange: boolean) => {
-    //       isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //     });
-    // }
   }
 
   public get brokerContacts(): FormArray {
@@ -282,11 +274,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public onScrollingBrokerContacts(event: any) {
-    if (event.target.scrollLeft > 1) {
-      this.isContactCardsScrolling = true;
-    } else {
-      this.isContactCardsScrolling = false;
-    }
+    this.isContactCardsScrolling = event.target.scrollLeft > 1;
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -302,26 +290,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             next: (res: HttpResponseBase) => {
               if (res.status === 200 || res.status === 204) {
                 this.brokerDnuStatus = !this.brokerDnuStatus;
+                console.log('---res--', res);
                 this.modalService.changeModalStatus({
                   name: 'dnu',
                   status: this.brokerDnuStatus,
                 });
-                this.notificationService.success(
-                  `Broker ${
-                    this.brokerDnuStatus
-                      ? 'status changed to DNU'
-                      : 'removed from DNU'
-                  }.`,
-                  'Success:'
-                );
+               
               }
-            },
-            error: () => {
-              this.notificationService.error(
-                "Broker status can't be changed.",
-                'Success:'
-              );
-            },
+            }
           });
       }
       // BFB
@@ -545,7 +521,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public createReview(event: { check: boolean; action: string }) {
+  public createReview() {
     if (
       this.reviews.some((item) => item.isNewReview) ||
       this.disableOneMoreReview
@@ -583,7 +559,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     this.taLikeDislikeService.userLikeDislike$
       .pipe(takeUntil(this.destroy$))
       .subscribe((action: LikeDislikeModel) => {
-        let rating: CreateRatingCommand = null;
+        let rating: CreateRatingCommand;
 
         if (action.action === 'liked') {
           rating = {
@@ -603,7 +579,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           .addRating(rating)
           .pipe(takeUntil(this.destroy$))
           .subscribe({
-            next: (res: any) => {
+            next: () => {
               this.editBrokerById(this.editData.id);
               this.notificationService.success(
                 'Rating successfully updated.',
@@ -704,6 +680,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       }
       case 'contact-department': {
         this.selectedContractDepartmentFormArray[index] = event;
+        break;
       }
       default: {
         break;
@@ -784,10 +761,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             `Broker "${businessName}" added`,
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: null,
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(
@@ -852,10 +825,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             'Broker successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: null,
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error("Broker can't be updated.", 'Error:');
@@ -873,10 +842,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             'Broker successfully deleted.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error("Broker can't be deleted.", 'Error:');

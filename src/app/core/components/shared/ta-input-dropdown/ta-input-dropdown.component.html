@@ -16,7 +16,7 @@
       valid: !isMultiSelectInputFocus && multiselectItems.length > 0
     }"
     src="assets/svg/common/ic_arrow_down_updated.svg"
-    (click)="toggleMultiselectDropdown($event)"
+    (click)="toggleMultiselectDropdown()"
   ></svg-icon>
   <!-- Multiselect clear all -->
   <div
@@ -29,7 +29,7 @@
     mainTooltip="Clear All"
     tooltipBackground="#6c6c6c"
     position="bottom"
-    (click)="delteAllMultiSelectItems($event)"
+    (click)="deleteAllMultiSelectItems()"
   >
     <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
   </div>
@@ -57,7 +57,7 @@
         tooltipBackground="#6c6c6c"
         position="top"
         class="multiselect-item-clear"
-        (click)="removeMultiSelectItem(ind)"
+        (click)="removeMultiSelectItem(ind, 'multiselect')"
       >
         <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
       </div>
@@ -87,7 +87,7 @@
         tooltipBackground="#6c6c6c"
         position="top"
         class="multiselect-item-clear"
-        (click)="removeMultiSelectItem(ind)"
+        (click)="removeMultiSelectItem(ind, 'multiselect-res-endors')"
       >
         <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
       </div>
@@ -97,7 +97,7 @@
   <app-ta-input
     #t2="ngbPopover"
     popoverClass="ta-input-dropdown"
-    [formControl]="getSuperControl"
+    [formControl]="getSuperControl | formControl"
     [inputConfig]="inputConfig"
     [ngbPopover]="taInputDropdownPopover"
     [placement]="['bottom-left']"
@@ -233,8 +233,9 @@
       <!--------------------------- Grouping template (can see on contact modal)  --------------------------->
       <div *ngSwitchCase="'groups'">
         <div
-          *ngFor="let option of options; trackBy: identity"
+          *ngFor="let option of options; trackBy: identity; let i = index"
           class="dropdown-groups"
+          [ngClass]="{ 'last-group': i === options.length - 1 }"
         >
           <p
             *ngIf="options.length !== 1 && options[0].name !== 'No Results'"
@@ -243,7 +244,7 @@
             {{ option.groupName }}
           </p>
           <div
-            *ngFor="let item of option?.groups; trackBy: identity"
+            *ngFor="let item of option?.items; trackBy: identity"
             class="dropdown-subgroup-options"
             [ngClass]="{
               'no-result': options.length === 1 && item.name === 'No Results'
@@ -251,8 +252,8 @@
             (click)="onActiveItem(item)"
           >
             <img
-              class="dropdown-subgroup-image"
               *ngIf="item.svg"
+              class="dropdown-subgroup-image"
               [src]="item.svg"
               [alt]="item.name"
             />
@@ -333,7 +334,7 @@
               class="labels-template-logo"
               src="assets/svg/common/ic_dynamic_label.svg"
               appHoverSvg
-              [fill]="option?.code ? option.code : '#b7b7b7'"
+              [fill]="option?.code ? option.code.toString() : '#b7b7b7'"
               [fillHover]="option?.hoverCode ? option.hoverCode : null"
             ></svg-icon>
             <div class="labels-template-vertical-divider"></div>

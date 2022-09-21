@@ -19,16 +19,20 @@ import {
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { AccountTService } from '../../account/state/account.service';
 import { Subject, takeUntil } from 'rxjs';
-import { labelValidation } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  labelValidation,
+  passwordValidation,
+  urlValidation,
+  usernameValidation,
+} from '../../shared/ta-input/ta-input.regex-validations';
 import { NotificationService } from '../../../services/notification/notification.service';
-import { FormService } from '../../../services/form/form.service';
 
 @Component({
   selector: 'app-account-modal',
   templateUrl: './account-modal.component.html',
   styleUrls: ['./account-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, FormService],
+  providers: [ModalService],
 })
 export class AccountModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -49,8 +53,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private notificationService: NotificationService,
     private modalService: ModalService,
-    private accountService: AccountTService,
-    private formService: FormService
+    private accountService: AccountTService
   ) {}
 
   ngOnInit() {
@@ -72,9 +75,9 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   private createForm(): void {
     this.accountForm = this.formBuilder.group({
       name: [null, [Validators.required, ...labelValidation]],
-      username: [null, [Validators.required, Validators.maxLength(40)]],
-      password: [null, [Validators.required, Validators.maxLength(20)]],
-      url: [null],
+      username: [null, [Validators.required, ...usernameValidation]],
+      password: [null, [Validators.required, ...passwordValidation]],
+      url: [null, urlValidation],
       companyAccountLabelId: [null],
       note: [null],
     });
@@ -84,14 +87,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       'url',
       this.destroy$
     );
-
-    // this.formService.checkFormChange(this.accountForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -174,7 +169,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
           });
           this.selectedAccountLabel = res.companyAccountLabel;
         },
-        error: (err) => {
+        error: () => {
           this.notificationService.error("Can't get account.", 'Error:');
         },
       });
@@ -198,7 +193,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             'Company Account successfully created.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
           this.notificationService.error(
@@ -227,7 +221,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             'Company Account successfully edit..',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
           this.notificationService.error(
@@ -247,10 +240,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             'Company Account successfully deleted.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () =>
           this.notificationService.error(
@@ -289,7 +278,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
           .subscribe({
             next: () => {
               this.notificationService.success(
-                'Successfuly update label',
+                'Successfuly updated label',
                 'Success'
               );
 

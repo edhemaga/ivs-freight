@@ -23,6 +23,8 @@ import { TableStrategy } from './table_strategy';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { SharedService } from '../../../../services/shared/shared.service';
+import { DetailsDataService } from '../../../../services/details-data/details-data.service';
+
 
 @Component({
   selector: 'app-truckassist-table-body',
@@ -67,7 +69,7 @@ export class TruckassistTableBodyComponent
   dropDownActive: number = -1;
   progressData: any[] = [];
   checkForScrollTimeout: any;
-  viewDataEmpty: number;
+  viewDataEmpty: boolean;
   viewDataTimeOut: any;
   rowData: any;
   activeDescriptionDropdown: number = -1;
@@ -80,21 +82,22 @@ export class TruckassistTableBodyComponent
   statusTooltip: any;
   statusDropdownActive: number = -1;
   statusDropdownData: any;
+  showRowDropdown: number = -1;
 
   constructor(
     private router: Router,
     private tableService: TruckassistTableService,
     private changeDetectorRef: ChangeDetectorRef,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private detailsDataService: DetailsDataService,
   ) {}
 
   // --------------------------------NgOnInit---------------------------------
   ngOnInit(): void {
-    this.viewDataEmpty = this.viewData.length;
+    this.viewDataEmpty = this.viewData.length ? false : true;
 
-    if (this.viewDataEmpty) {
-      this.getTableSections();
-    }
+    // Get Table Sections(Pined, Not Pined, Actions)
+    this.getTableSections();
 
     // Get Selected Tab Data
     this.getSelectedTabTableData();
@@ -170,7 +173,9 @@ export class TruckassistTableBodyComponent
     if (!changes?.viewData?.firstChange && changes?.viewData) {
       clearTimeout(this.viewDataTimeOut);
 
-      this.viewData = changes.viewData.currentValue;
+      this.viewData = [...changes.viewData.currentValue];
+
+      this.viewDataEmpty = this.viewData.length ? false : true;
 
       if (!this.viewDataEmpty && changes.viewData.currentValue) {
         this.viewDataTimeOut = setTimeout(() => {
@@ -178,8 +183,11 @@ export class TruckassistTableBodyComponent
           this.getSelectedTabTableData();
         }, 10);
       }
-
-      this.viewDataEmpty = this.viewData.length;
+      
+      if (changes.viewData.currentValue[0]){
+        this.detailsDataService.setNewData(changes.viewData.currentValue[0]);
+      }
+      
     }
 
     if (!changes?.tableData?.firstChange && changes?.tableData) {
@@ -214,11 +222,13 @@ export class TruckassistTableBodyComponent
         changes?.selectedTab?.previousValue &&
       changes?.selectedTab
     ) {
+
       this.selectedTab = changes.selectedTab.currentValue;
 
       this.getSelectedTabTableData();
     }
   }
+
   // --------------------------------NgAfterViewInit---------------------------------
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -328,11 +338,20 @@ export class TruckassistTableBodyComponent
     }
   }
 
+  // Show Row Dropdown
+  onShowRowDropdown(index: number){
+    if(this.showRowDropdown === index){
+      this.showRowDropdown = -1;
+    }else{
+      this.showRowDropdown = index;
+    }
+  }
+
   // Go To Details Page
   goToDetails(route: any, row: any) {
     const link =
       route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
-
+    this.detailsDataService.setNewData(row);
     this.router.navigate([link]);
   }
 
@@ -429,6 +448,7 @@ export class TruckassistTableBodyComponent
 
     this.dropDownActive = tooltip.isOpen() ? row.id : -1;
     this.rowData = row;
+    this.detailsDataService.setNewData(row);
   }
 
   // Toggle Status Dropdown

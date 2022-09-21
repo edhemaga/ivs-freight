@@ -8,16 +8,4 @@ export class UserModalService {
 
 constructor(private userService: UserService) { }
 
-updateUser(id: number) {}
-
- addUser() {}
-
-deleteUserById(id: number) {}
-
- getUserById(id: number) {}
-
- getUserDropdowns() {
-   
- }
-
 }

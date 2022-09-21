@@ -2,17 +2,18 @@
   class="ta-logo-container"
   [ngClass]="{
     expanded: !showUploadZone && !imageUrl,
-    'image-zone-flex': imageUrl
+    'image-zone-flex': imageUrl,
+    'ta-logo-container-rectangle': croppieShape === 'rectangle'
   }"
 >
   <!------------------------ Croppie editing ------------------------>
-  <div [hidden]="showUploadZone || imageUrl" class="d-fex">
+  <div [hidden]="showUploadZone || imageUrl">
     <div class="d-flex">
       <img
         alt="cropped-image"
         #croppie="croppie"
         [croppieOptions]="croppieOptions"
-        (update)="handleCroppieUpdate($event)"
+        (update)="handleCroppieUpdate()"
       />
     </div>
     <div
@@ -66,6 +67,7 @@
     *ngIf="imageUrl"
   >
     <div
+      *ngIf="croppieShape !== 'rectangle'"
       class="ta-logo-image-delete"
       ngbTooltip
       mainTooltip="Delete"
@@ -80,6 +82,11 @@
     </div>
     <img
       class="ta-logo-image"
+      [ngStyle]="{
+        width: croppieShape === 'rectangle' ? '616px' : '162px',
+        border: croppieShape === 'rectangle' ? '4px dashed #e5e5e5' : '0',
+        animation: croppieShape === 'rectangle' ? 'none' : 'slideInImage 200ms'
+      }"
       [ngClass]="{
         'ta-logo-image-circle': croppieOptions.viewport.type == 'circle'
       }"

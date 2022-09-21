@@ -115,13 +115,15 @@ export class DispatcherStoreService {
   }
 
   set dispatchBoardItem(boardData) {
+    const dss = this.dispatcherStore.getValue();
+    const dispatchData = JSON.parse(JSON.stringify(dss.dispatchList));
     this.dispatcherStore.update((store) => ({
       ...store,
       dispatchList: {
         ...store.dispatchList,
         pagination: {
           ...store.dispatchList.pagination,
-          data: store.dispatchList.pagination.data.map((item) => {
+          data: dispatchData.pagination.data.map((item) => {
             let findedItem = false;
             if (item.id == boardData.id) {
               item.dispatches = item.dispatches
@@ -181,21 +183,24 @@ export class DispatcherStoreService {
     }));
   }
 
-  updateCountList(id: number, type: string, value: string) {
+  async updateCountList(id: number, type: string, value: string) {
+    const dss = await this.dispatcherStore.getValue();
+    const dispatchData = JSON.parse(JSON.stringify(dss.dispatchList))
+  
     this.dispatcherStore.update((store) => ({
       ...store,
       dispatchList: {
         ...store.dispatchList,
         pagination: {
           ...store.dispatchList.pagination,
-          data: store.dispatchList.pagination.data.map((item) => {
+          data: dispatchData.pagination.data.map((item) => {
             if (item.id == id) {
               switch (type) {
-                case 'truckId':
-                  item.truckCount += value ? 1 : -1;
+                case 'trailerId':
+                  item.trailerCount += value ? 1 : -1;
                   break;
                 case 'location':
-                  item.trailerCount += value ? 1 : -1;
+                  item.truckCount += value ? 1 : -1;
                   break;
                 case 'driverId':
                   item.driverCount += value ? 1 : -1;

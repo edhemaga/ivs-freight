@@ -13,7 +13,7 @@ import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-
 
 import { DriversInactiveState } from '../state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
-import { DriverListResponse } from 'appcoretruckassist';
+import { DriverListResponse, TableConfigResponse } from 'appcoretruckassist';
 
 import {
   Confirmation,
@@ -32,6 +32,7 @@ import {
 } from '../../../utils/methods.globals';
 import { getApplicantColumnsDefinition } from '../../../../../assets/utils/settings/applicant-columns';
 import { getDriverColumnsDefinition } from '../../../../../assets/utils/settings/driver-columns';
+import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
 
 @Component({
   selector: 'app-driver-table',
@@ -52,6 +53,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   loadingPage: boolean = true;
   backFilterQuery = {
     active: 1,
+    long: undefined,
+    lat: undefined,
+    distance: undefined,
     pageIndex: 1,
     pageSize: 25,
     companyId: undefined,
@@ -448,18 +452,29 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getGridColumns(stateName: string, resetColumns: boolean) {
-    const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
-    );
+    /* this.tableService
+      .getTableConfig('DRIVER')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((configResponse: TableConfigResponse) => {
+        const config = JSON.parse(configResponse.config);
+        console.log('Driver Table Config');
+        console.log(JSON.parse(configResponse.config));
 
-    if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
+        if(config){
+          return config;
+        }else{
+          if (stateName === 'applicants') {
+            return getApplicantColumnsDefinition();
+          } else {
+            return getDriverColumnsDefinition();
+          }
+        }
+      }); */
+
+    if (stateName === 'applicants') {
+      return getApplicantColumnsDefinition();
     } else {
-      if (stateName === 'applicants') {
-        return getApplicantColumnsDefinition();
-      } else {
-        return getDriverColumnsDefinition();
-      }
+      return getDriverColumnsDefinition();
     }
   }
 
@@ -760,6 +775,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   driverBackFilter(
     filter: {
       active: number;
+      long?: number;
+      lat?: number;
+      distance?: number;
       pageIndex: number;
       pageSize: number;
       companyId: number | undefined;
@@ -774,6 +792,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.driverTService
       .getDrivers(
         filter.active,
+        filter.long,
+        filter.lat,
+        filter.distance,
         filter.pageIndex,
         filter.pageSize,
         filter.companyId,
@@ -814,14 +835,30 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      this.modalService.openModal(DriverModalComponent, {
-        size: 'medium',
-      });
+      if (this.selectedTab === 'applicants') {
+        this.modalService.openModal(ApplicantModalComponent, {
+          size: 'small',
+        });
+      } else {
+        this.modalService.openModal(DriverModalComponent, {
+          size: 'medium',
+        });
+      }
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.mapingIndex = 0;
 
       this.backFilterQuery.pageIndex = 1;
+
+      /* this.tableService
+        .sendTableConfig({
+          tableType: 'DRIVER',
+          config: JSON.stringify(this.columns),
+        })
+        .subscribe((res: any) => {
+          console.log('sendTableConfig');
+          console.log(res);
+        }); */
 
       this.sendDriverData();
     } else if (event.action === 'view-mode') {
@@ -858,14 +895,27 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.backFilterQuery.pageIndex++;
       this.driverBackFilter(this.backFilterQuery, false, true);
     } else if (event.type === 'edit') {
-      this.modalService.openModal(
-        DriverModalComponent,
-        { size: 'medium' },
-        {
-          ...event,
-          disableButton: true,
-        }
-      );
+      if (this.selectedTab === 'applicants') {
+        this.modalService.openModal(
+          ApplicantModalComponent,
+          {
+            size: 'small',
+          },
+          {
+            id: 1,
+            type: 'edit',
+          }
+        );
+      } else {
+        this.modalService.openModal(
+          DriverModalComponent,
+          { size: 'medium' },
+          {
+            ...event,
+            disableButton: true,
+          }
+        );
+      }
     } else if (event.type === 'new-licence') {
       this.modalService.openModal(
         DriverCdlModalComponent,
@@ -1008,6 +1058,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    /*  this.tableService.sendTableConfig({
+      tableType: 'DRIVER',
+      config: JSON.stringify(this.columns),
+    }); */
+
     this.destroy$.next();
     this.destroy$.complete();
     this.tableService.sendActionAnimation({});
