@@ -45,6 +45,7 @@ ngb-modal-window[aria-hidden="true"] {
   &::-webkit-scrollbar {
     width: 3px;
   }
+
   &::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.3);
     border-left: 0px;
@@ -53,6 +54,7 @@ ngb-modal-window[aria-hidden="true"] {
     border-bottom: 6px solid rgba(0, 0, 0, 0.3);
     border-radius: 1px;
   }
+
   &::-webkit-scrollbar-track {
     padding: 5px;
     position: absolute;
@@ -108,7 +110,7 @@ ngb-modal-window[aria-hidden="true"] {
           cursor: grab;
           font-size: 18px;
           font-weight: 800;
-          color: #6c6c6c;
+          color: #2F2F2F;
           line-height: 18px;
           padding-top: 1px;
         }
@@ -166,6 +168,9 @@ ngb-modal-window[aria-hidden="true"] {
           svg {
             width: 24px;
             height: 24px;
+            path {
+              fill: #919191;
+            }
           }
           &:hover {
             cursor: pointer;
