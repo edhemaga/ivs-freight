@@ -65,6 +65,7 @@ export class DashboardPickupByStateComponent implements OnInit, OnDestroy {
     hasPercentage: true,
     allowAnimation: true,
     offset: true,
+    tooltipOffset: {min: 105, max: 279},
     dataLabels: [
       [20, 'MON'],
       [21, 'TUE'],

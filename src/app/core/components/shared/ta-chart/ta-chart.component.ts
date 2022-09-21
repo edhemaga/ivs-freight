@@ -998,6 +998,14 @@ export class TaChartComponent implements OnInit {
             ? this.hoverDataHolder.nativeElement.offsetWidth + 16
             : 0;
 
+          if (!clientWidth && this.chartConfig['tooltipOffset']) {
+            if (this.selectedDataRows.length > this.dataMaxRows) {
+              clientWidth = this.chartConfig['tooltipOffset']['max'];
+            } else {
+              clientWidth = this.chartConfig['tooltipOffset']['min'];
+            }
+          }
+
           this.hoverColumnHeight = this.chartConfig[
             'startGridBackgroundFromZero'
           ]
@@ -1010,11 +1018,7 @@ export class TaChartComponent implements OnInit {
             ? xAxis['_gridLineItems'][value]['x2'] + elWidth
             : xAxis['_gridLineItems'][value]['x2'];
 
-          if (
-            this.hoverDataHolder &&
-            this.hoverDataHolder.nativeElement &&
-            xPos + clientWidth > canvas.width
-          ) {
+          if (xPos + clientWidth > canvas.width) {
             oversizedHover = true;
           }
           if (oversizedHover) {
