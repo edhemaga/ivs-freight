@@ -22,7 +22,7 @@ export class TaCustomCardComponent {
   @Input() cardName: string = null;
   @Input() customClassHeaderSvg: boolean = false;
 
-  @Input() hasCounter: number;
+  @Input() hasCounter: number = -1;
   @Input() hasArrow: boolean = true;
   @Input() headerSvgEnabled: boolean = false;
   @Input() hasHeaderSvg: string = null;
