@@ -4,11 +4,12 @@
     [tooltipPrevious]="'Previous Load'"
     [cardDetailsDate]="load.dateCreated | formatDateP"
     [searchInputName]="'Search Load'"
+    [options]="loadDropdowns"
+    (selectValue)="onSelectLoad($event)"
+    (changeEvent)="onChangeLoad($event)"
   >
-    <!-- (selectValue)="onSelectedDriver($event)"
-    (changeEvent)="onChangeDriver($event)"
+    <!-- 
     [hasArrow]="hideArrow"
-    [optionsDrop]="dropData"
     (dropActions)="onDriverActions($event)" -->
     <div class="load-status-driver-container">
       <div class="load-status-time">
@@ -114,7 +115,7 @@
               <div class="driver-info">
                 <svg-icon
                   class="flex-load"
-                  src="assets/svg/common/trucks/trucks-details/ic_truck_car-hauler.svg"
+                  src="assets/svg/common/trucks/ic_truck_car-hauler.svg"
                 ></svg-icon>
                 <span class="driver-name">{{
                   load?.dispatch?.truck?.truckNumber
@@ -125,7 +126,7 @@
               <div class="driver-info">
                 <svg-icon
                   class="flex-load"
-                  src="assets/svg/common/trailers/trailer-details/ic_trailer_conestoga.svg"
+                  src="assets/svg/common/trailers/ic_trailer_conestoga.svg"
                 ></svg-icon>
                 <span class="driver-name">{{
                   load?.dispatch?.trailer?.trailerNumber

@@ -40,6 +40,7 @@ export class TaCustomCardV2Component {
   @Input() fontSizeCardName: string = '18px';
   @Input() fontWeightName: string = '600';
   @Input() totalMiles: boolean;
+  @Input() haveTimeDateLoad: boolean;
   @Input() textBottomPossiton: string = '-1px';
   @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
     new EventEmitter<{ check: boolean; action: string }>(null);

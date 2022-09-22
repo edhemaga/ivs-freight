@@ -1,19 +1,62 @@
-import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {
+  Component,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+  OnDestroy,
+} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, takeUntil, take } from 'rxjs';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { LoadResponse } from '../../../../../../appcoretruckassist/model/loadResponse';
+import { LoadDetailsListQuery } from '../state/load-details-state/load-details-list-state/load-d-list.query';
+import { LoadTService } from '../state/load.service';
 
 @Component({
   selector: 'app-load-details',
   templateUrl: './load-details.component.html',
   styleUrls: ['./load-details.component.scss'],
+  providers: [DetailsPageService],
 })
-export class LoadDetailsComponent implements OnInit, OnChanges {
+export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
   public loadConfig: any;
-  constructor(private activated_route: ActivatedRoute) {}
-  ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
-  }
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    private activated_route: ActivatedRoute,
+    private detailsPageService: DetailsPageService,
+    private loadTservice: LoadTService,
+    private router: Router,
+    private notificationService: NotificationService,
+    private ldlQuery: LoadDetailsListQuery
+  ) {}
+  ngOnChanges(changes: SimpleChanges) {}
   ngOnInit(): void {
+    this.detailsPageService.pageDetailChangeId$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((id) => {
+        let query;
+        if (this.ldlQuery.hasEntity(id)) {
+          query = this.ldlQuery.selectEntity(id).pipe(take(1));
+        } else {
+          query = this.loadTservice.getLoadById(id);
+        }
+
+        query.pipe(takeUntil(this.destroy$)).subscribe({
+          next: (res: LoadResponse) => {
+            this.detailCongif(res);
+            this.router.navigate([`/load/${res.id}/details`]);
+            this.notificationService.success(
+              'Load successfully changed',
+              'Success:'
+            );
+          },
+          error: () => {
+            this.notificationService.error("Load can't be loaded", 'Error:');
+          },
+        });
+      });
     this.detailCongif(this.activated_route.snapshot.data.loadItem);
   }
   /**Function template and names for header and other options in header */
@@ -21,7 +64,7 @@ export class LoadDetailsComponent implements OnInit, OnChanges {
     this.loadConfig = [
       {
         id: 0,
-        name: 'Active Load Details',
+        name: `${data?.statusType?.name} Load Details`,
         template: 'general',
         data: data,
       },
@@ -56,5 +99,9 @@ export class LoadDetailsComponent implements OnInit, OnChanges {
   /**Function retrun id */
   public identity(index: number, item: any): number {
     return index;
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

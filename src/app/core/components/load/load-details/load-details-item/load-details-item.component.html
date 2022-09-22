@@ -140,15 +140,30 @@
     </div>
     <div *ngSwitchCase="'stop'">
       <div class="stop-container">
-        <div class="stop-header-container">
+        <div
+          class="stop-header-container"
+          *ngIf="loadItem?.data?.statusType?.name === 'Active'"
+        >
           <div class="stop-location-wrapper stop-cont">
             <div class="location-item-wrapper">
               <span class="current-location-header">Current Location</span>
-              <span class="current-location-value">Kennesaw, GA 30144</span>
+              <span class="current-location-value">{{
+                loadItem?.data?.currentLocation?.city +
+                  ", " +
+                  loadItem?.data?.currentLocation?.stateShortName +
+                  " " +
+                  loadItem?.data?.currentLocation?.zipCode
+              }}</span>
             </div>
             <div class="location-item-wrapper">
               <span class="next-location-header">Next Stop - Pickup</span>
-              <span class="current-location-value">Mason, OH 45040</span>
+              <span class="current-location-value">{{
+                loadItem?.data?.nextStop?.shipper?.address?.city +
+                  ", " +
+                  loadItem?.data?.nextStop?.shipper?.address?.stateShortName +
+                  " " +
+                  loadItem?.data?.nextStop?.shipper?.address?.zipCode
+              }}</span>
             </div>
           </div>
           <div class="load-progress-container">
@@ -188,134 +203,222 @@
             </div>
             <div class="location-item-wrapper">
               <span class="total-header"
-                >Total <span class="total-load-perctange">868.3 mi</span></span
+                >Total <span class="total-load-perctange">{{loadItem.data.totalMiles}} mi</span></span
               >
               <span class="moving-value completed-value"
-                ><span class="total-load-perctange font-14">47%</span>Completed</span
+                ><span class="total-load-perctange font-14">47%</span
+                >Completed</span
               >
             </div>
+          </div>
+        </div>
+        <div
+          class="stop-header-container"
+          *ngIf="loadItem?.data?.statusType?.name === 'Pending'"
+        >
+          <div class="load-pickup-wrapper">
+            <div class="load-pickup-item">
+              <span class="load-header-pickup">First pickup</span>
+              <span class="load-value-pickup">{{loadItem?.data?.firstPickupTime.days}} day {{loadItem?.data?.firstPickupTime.hours}} hours</span>
+            </div>
+            <div class="load-pickup-item">
+              <span class="load-value-pickup">742.2 mi</span>
+              <span class="load-value-pickup-semi">1 day 15 hour</span>
+            </div>
+          </div>
+          <div class="load-progress">
+            <app-ta-currency-progress-bar
+              [template]="'broker-credit'"
+              [totalAmount]="100000"
+              [paidSoFarAmount]="50000"
+            >
+            </app-ta-currency-progress-bar>
           </div>
         </div>
       </div>
       <div class="stop-items-container">
         <app-ta-custom-card-v2
-         *ngFor="let item of loadItem?.data?.stops;let j = index;"
-        [animationsDisabled]="false"
-        [bodyTemplate]="'card'"
-        [totalMiles]="true"
-        [headerSvgLike]="'assets/svg/applicant/check.svg'"
-        [cardName]="item?.shipper?.address?.street+', ' +item?.shipper?.address?.stateShortName + ' ' + item?.shipper?.address?.zipCode"
-        [hasCounter]="item?.items?.length"
-        [hasDivider]="j>0?true:false"
-        [counterBackgroundColor]="item?.stopType.name==='Pickup'?'#E57373':'#4DB6A2'"
-        [isCardOpen]="true"
-        >
-        <div class="stop-information-container">
-          <div class="svg-value-wrapper">
-          <div class="driver-name"> {{
-            loadItem?.data?.dispatch?.driver?.firstName +
-              " " +
-              loadItem?.data?.dispatch?.driver?.lastName
-          }}</div>
-          <svg-icon class="flex-icon" src="assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg"></svg-icon>
-        </div>
-        <div class="svg-value-wrapper">
-          <svg-icon class="flex-icon" src="assets/svg/applicant/location.svg"></svg-icon>
-          <div class="regular-text">{{item?.shipper?.address?.address}}</div>
-        </div>
-        <div class="svg-value-wrapper">
-          <svg-icon class="flex-icon" src="assets/svg/common/ic_clock.svg"></svg-icon>
-          <div class="regular-text">Today, {{item?.timeFrom}} - {{item?.timeTo}} PM </div>
-          <div *ngIf="item.timeType.name==='Appointment'" class="appoitment-wrapper">APPOINTMENT</div>
-        </div>
-         </div>
-         <div class="divider"></div>
-        <app-ta-custom-card-v2
-          [cardName]="'Item'"
-          [bodyTemplate]="'card'"
+          *ngFor="let item of loadItem?.data?.stops; let j = index"
           [animationsDisabled]="false"
-          [counterBackgroundColor]="'#F3F3F3'"
-          [counterColor]="'#6c6c6c'"
-          [fontSizeCardName]="'14px'"
-          [fontWeightName]="'800'"
-          [arrowIconSvg]="'assets/svg/common/fill_arrow_down.svg'"
-          [hasCounter]="item?.items?.length"
-          [hasDivider]="false"
+          [bodyTemplate]="'card'"
+          [totalMiles]="true"
+          [haveTimeDateLoad]="
+            loadItem?.data?.statusType?.name === 'Pending' ? false : true
+          "
+          [headerSvgLike]="
+            loadItem?.data?.statusType?.name === 'Pending'
+              ? ''
+              : 'assets/svg/applicant/check.svg'
+          "
+          [cardName]="
+            item?.shipper?.address?.street +
+            ', ' +
+            item?.shipper?.address?.stateShortName +
+            ' ' +
+            item?.shipper?.address?.zipCode
+          "
+          [hasCounter]="item?.id"
+          [hasDivider]="j > 0 ? true : false"
+          [counterBackgroundColor]="
+            item?.stopType.name === 'Pickup' ? '#E57373' : '#4DB6A2'
+          "
           [isCardOpen]="true"
         >
-         
-          <div class="stops-wrapper-load">
-            <div class="stop-items-header-load">
-              <div class="cg-32">
-              <span class="item">#</span>
-              <span class="item">DESCRIPTION</span>
-            </div>
-            <div class="cg-82">
-              <span class="item">QTY</span>
-              <span class="item">TEMP</span>
-            </div>
-            <div class="cg-37">
-              <span class="item">WEIGHT</span>
+          <div class="stop-information-container">
+            <div class="svg-value-wrapper">
+              <div class="driver-name">
+                {{
+                  loadItem?.data?.dispatch?.driver?.firstName +
+                    " " +
+                    loadItem?.data?.dispatch?.driver?.lastName
+                }}
+              </div>
               <svg-icon
                 class="flex-icon"
-                src="assets/svg/common/load/ic_length.svg"
+                src="assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg"
               ></svg-icon>
+            </div>
+            <div class="svg-value-wrapper">
               <svg-icon
                 class="flex-icon"
-                src="assets/svg/common/load/ic_height.svg"
+                src="assets/svg/applicant/location.svg"
               ></svg-icon>
-            
+              <div class="regular-text">
+                {{ item?.shipper?.address?.address }}
+              </div>
+            </div>
+            <div class="svg-value-wrapper">
+              <svg-icon
+                class="flex-icon"
+                src="assets/svg/common/ic_clock.svg"
+              ></svg-icon>
+              <div class="regular-text">
+                Today, {{ item?.timeFrom }} - {{ item?.timeTo }} PM
+              </div>
+              <div
+                *ngIf="item.timeType.name === 'Appointment'"
+                class="appoitment-wrapper"
+              >
+                APPOINTMENT
+              </div>
+            </div>
+            <div
+              class="svg-value-wrapper"
+              *ngIf="loadItem?.data?.statusType?.name === 'Pending'"
+            >
               <svg-icon
                 class="flex-icon"
                 src="assets/svg/common/load/ic_load-.svg"
               ></svg-icon>
-            </div>
-            <div class="cg-23">
-              <span class="item">TARP</span>
-              <span class="item">SECURE</span>
-              <span class="item">BOL</span>
-            </div>
-            <div class="cg-51">
-              <span class="item">APPOINT.</span>
-              <span class="item">PICKUP NO.</span>
-            </div>
-            <div class="cg-69">
-              <span class="item">PO NO.</span>
-              <span class="item">SEAL NO.</span>
-            </div>
-              <span class="item">CODE</span>
-
-            </div>
-            <div class="divider-load"></div>
-            <div
-              class="stop-items-header-load"
-              
-            >
-             <div class="wrapper-item-divider" *ngFor="let items of item.items; let i = index; trackBy:identity">
-              <div class="wrap-load-items">
-                <span class="item-body">{{i+1}}</span>
-                <span class="item-body item-body-bold">{{ items?.description }}</span>
-                <span class="item-body">{{ items?.quantity + ' ' + items?.units?.name }}</span>
-                <span class="item-body">{{items?.temperature}} °F</span>
-                <span  class="item-body">{{ items?.weight }} Ibs</span>
-                <span class="item-body"><span *ngIf="items?.length">{{ items?.length }} ft</span></span>
-                <span class="item-body"><span *ngIf="items?.height">{{ items?.height }} ft</span></span>
-                <span class="item-body" >{{ items?.stackable?'Yes':'No' }}</span>
-                <span class="item-body" >{{items?.tarp?.name}}</span>
-                <span class="item-body">{{items?.boxingType?.name}}</span>
-                <span class="item-body">{{items?.bolNumber}}</span>
-                <span class="item-body">{{items?.appointmentNumber}}</span>
-                <span class="item-body">{{items?.pickupNumber}}</span>
-                <span class="item-body">{{items?.poNumber}}</span>
-                <span class="item-body">{{items?.sealNumber}}</span>
-                <span class="item-body">{{items?.code}}</span>
-              </div>
-              <div class="divider-load"></div>
-              </div>
+              <div class="regular-text">{{ item?.items?.length }} Items</div>
             </div>
           </div>
+          <div class="divider" *ngIf="loadItem?.data?.statusType?.name === 'Active'"></div>
+          <app-ta-custom-card-v2
+            *ngIf="loadItem?.data?.statusType?.name === 'Active'"
+            [cardName]="'Item'"
+            [bodyTemplate]="'card'"
+            [animationsDisabled]="false"
+            [counterBackgroundColor]="'#F3F3F3'"
+            [counterColor]="'#6c6c6c'"
+            [fontSizeCardName]="'14px'"
+            [fontWeightName]="'800'"
+            [arrowIconSvg]="'assets/svg/common/fill_arrow_down.svg'"
+            [hasCounter]="item?.items?.length"
+            [hasDivider]="false"
+            [isCardOpen]="true"
+          >
+            <div class="stops-wrapper-load">
+              <div class="stop-items-header-load">
+                <div class="cg-32">
+                  <span class="item">#</span>
+                  <span class="item">DESCRIPTION</span>
+                </div>
+                <div class="cg-82">
+                  <span class="item">QTY</span>
+                  <span class="item">TEMP</span>
+                </div>
+                <div class="cg-37">
+                  <span class="item">WEIGHT</span>
+                  <svg-icon
+                    class="flex-icon"
+                    src="assets/svg/common/load/ic_length.svg"
+                  ></svg-icon>
+                  <svg-icon
+                    class="flex-icon"
+                    src="assets/svg/common/load/ic_height.svg"
+                  ></svg-icon>
+
+                  <svg-icon
+                    class="flex-icon"
+                    src="assets/svg/common/load/ic_load-.svg"
+                  ></svg-icon>
+                </div>
+                <div class="cg-23">
+                  <span class="item">TARP</span>
+                  <span class="item">SECURE</span>
+                  <span class="item">BOL</span>
+                </div>
+                <div class="cg-51">
+                  <span class="item">APPOINT.</span>
+                  <span class="item">PICKUP NO.</span>
+                </div>
+                <div class="cg-69">
+                  <span class="item">PO NO.</span>
+                  <span class="item">SEAL NO.</span>
+                </div>
+                <span class="item">CODE</span>
+              </div>
+              <div class="divider-load"></div>
+              <div class="stop-items-header-load">
+                <div
+                  class="wrapper-item-divider"
+                  *ngFor="
+                    let items of item.items;
+                    let i = index;
+                    trackBy: identity
+                  "
+                >
+                  <div class="wrap-load-items">
+                    <span class="item-body">{{ i + 1 }}</span>
+                    <span class="item-body item-body-bold">{{
+                      items?.description
+                    }}</span>
+                    <span class="item-body">{{
+                      items?.quantity + " " + items?.units?.name
+                    }}</span>
+                    <span class="item-body">{{ items?.temperature }} °F</span>
+                    <span class="item-body">{{ items?.weight }} Ibs</span>
+                    <span class="item-body"
+                      ><span *ngIf="items?.length"
+                        >{{ items?.length }} ft</span
+                      ></span
+                    >
+                    <span class="item-body"
+                      ><span *ngIf="items?.height"
+                        >{{ items?.height }} ft</span
+                      ></span
+                    >
+                    <span class="item-body">{{
+                      items?.stackable ? "Yes" : "No"
+                    }}</span>
+                    <span class="item-body">{{ items?.tarp?.name }}</span>
+                    <span class="item-body">{{ items?.boxingType?.name }}</span>
+                    <span class="item-body">{{ items?.bolNumber }}</span>
+                    <span class="item-body">{{
+                      items?.appointmentNumber
+                    }}</span>
+                    <span class="item-body">{{ items?.pickupNumber }}</span>
+                    <span class="item-body">{{ items?.poNumber }}</span>
+                    <span class="item-body">{{ items?.sealNumber }}</span>
+                    <span class="item-body">{{ items?.code }}</span>
+                  </div>
+                  <div class="divider-load"></div>
+                </div>
+              </div>
+            </div>
+          </app-ta-custom-card-v2>
         </app-ta-custom-card-v2>
-      </app-ta-custom-card-v2>
         <div class="map-load-container">
           <span class="default-text">Here map</span>
         </div>
@@ -324,8 +427,8 @@
     <div *ngSwitchCase="'comment'">
       <div *ngIf="loadItem?.data?.comments.length" class="comment-container">
         <app-ta-user-review
-        [reviewData]="loadItem?.data?.comments"
         (changeReviewsEvent)="changeCommentEvent($event)"
+        [reviewData]="loadItem?.data?.comments"
         >
         </app-ta-user-review>
       </div>

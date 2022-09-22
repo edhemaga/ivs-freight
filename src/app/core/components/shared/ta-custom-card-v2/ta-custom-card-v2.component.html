@@ -43,7 +43,7 @@
         {{ cardName }}
       </span>
 
-      <div class="time-date-load-container">
+      <div *ngIf="haveTimeDateLoad" class="time-date-load-container">
         <span class="text">Tommorow, 10:00 AM - 08:00 PM </span> 
         <svg-icon class="appointment-svg" src="assets/svg/common/load/ic_appointment.svg"></svg-icon>
       </div>

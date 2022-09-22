@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoadTableComponent } from './load-table/load-table.component';
 import { LoatItemResolver } from './state/load-details-state/load-details.resolver';
 import { LoadCardComponent } from './load-card/load-card.component';
+import { LoadMinimalListResolver } from './state/load-details-state/load-minimal-list-state/laod-details-minamal.resolver';
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
       ),
     resolve: {
       loadItem: LoatItemResolver,
+      loadMinimalList: LoadMinimalListResolver,
     },
     data: { title: 'Load Details' },
   },
