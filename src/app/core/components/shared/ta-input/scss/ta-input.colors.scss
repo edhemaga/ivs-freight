@@ -30,6 +30,7 @@ $input-blue-color-7: rgb(
   224,
   0.2
 ); // state when input valid and focus out
+$input-blue-color-8: rgb(111, 158, 224, 0.4); // placeholder-icon divider
 
 $input-red-color-1: #ef5350; // was #f44336 :: input-error
 $input-red-color-2: #ff5050; // :: component hover
@@ -44,6 +45,7 @@ $input-red-color-8: rgb(
   115,
   0.2
 ); // state when input invalid and focus out
+$input-red-color-9: rgb(239, 83, 80, 0.4); // placeholder-icon divider
 
 $input-green-color-1: #26a690;
 
@@ -277,11 +279,14 @@ $input-placeholder-icon-path-valid-focus: $input-blue-color-4;
 $input-placeholder-icon-path-valid: $input-blue-color-3;
 
 $input-placeholder-icon-path-valid-required-out-component-hover: $input-blue-color-2;
+$input-placeholder-icon-valid-after: $input-blue-color-8;
 
 // Invalid Color
 $input-placeholder-icon-path-invalid-focus: $input-red-color-6;
 $input-placeholder-icon-path-invalid: $input-red-color-4;
 $input-placeholder-icon-path-invalid-component-hover: $input-red-color-2;
+
+$input-placeholder-icon-invalid-after: $input-red-color-9;
 
 $input-placeholder-icon-path-invalid-empty-required-component-hover: $input-red-color-3;
 

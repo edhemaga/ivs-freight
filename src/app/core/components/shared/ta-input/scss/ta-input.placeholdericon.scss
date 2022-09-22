@@ -81,6 +81,18 @@
     text {
       fill: $input-placeholder-icon-path-valid !important;
     }
+
+    &::after {
+      content: "";
+      display: block;
+      height: 16px;
+      width: 1px;
+      border-radius: 3px;
+      background: $input-placeholder-icon-valid-after;
+      position: absolute;
+      left: 24px;
+      top: 5px;
+    }
   }
 
   &.invalid-required-in {
@@ -107,6 +119,18 @@
 
     text {
       fill: $input-placeholder-icon-path-invalid !important;
+    }
+
+    &::after {
+      content: "";
+      display: block;
+      height: 16px;
+      width: 1px;
+      border-radius: 3px;
+      background: $input-placeholder-icon-invalid-after;
+      position: absolute;
+      left: 24px;
+      top: 5px;
     }
   }
 
