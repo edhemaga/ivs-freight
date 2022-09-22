@@ -175,8 +175,6 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
               next: (res: any) => {
-                console.log('corect password: ', res);
-                console.log('user typing: ', this.userPasswordTyping);
                 this.correctPassword = !!res.correctPassword;
                 this.loadingOldPassword = false;
 
