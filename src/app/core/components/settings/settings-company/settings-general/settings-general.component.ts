@@ -37,7 +37,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
   public timeZoneName: string = '';
   public companyDivision: boolean = false;
   public hasArrow: boolean;
-
+  public changeFont: boolean;
   constructor(
     private settingsCompanyService: SettingsCompanyService,
     public imageBase64Service: ImageBase64Service
@@ -57,6 +57,11 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
       changes?.companyData?.currentValue !== changes?.companyData?.previousValue
     ) {
       this.companyData = changes?.companyData?.currentValue;
+    }
+    if (this.companyData?.name.length > 13) {
+      this.changeFont = true;
+    } else {
+      this.changeFont = false;
     }
   }
   ngOnInit(): void {

@@ -7,6 +7,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class DashboardPerformanceComponent implements OnInit {
   @ViewChild('topChart', {static: false}) public topChart: any;
+  @ViewChild('bottomChart', {static: false}) public bottomChart: any;
   @ViewChild('timePeriod', {static: false}) public timePeriod: any;
   @ViewChild('t2') t2: any;
 
@@ -327,6 +328,7 @@ export class DashboardPerformanceComponent implements OnInit {
     offset: true,
     multiHoverData: true,
     multiChartHover: true,
+    tooltipOffset: {min: 134, max: 206},
     dataLabels: [['01', 'WED'], ['02', 'THU'], ['03', 'FRI'], ['04', 'SAT'], ['05', 'SUN'], ['06', 'MON'], ['07', 'TUE'], ['08', 'WED'], ['09', 'THU'],
       ['10', 'FRI'], ['11', 'SAT'], ['12', 'SUN'], ['13', 'MON'], ['14', 'TUE'], ['15', 'WED'], ['16', 'THU'], ['17', 'FRI'], ['18', 'SAT'],
       ['19', 'SUN'], ['20', 'MON'], ['21', 'TUE'], ['22', 'WED'], ['23', 'THU'], ['24', 'FRI']
@@ -371,6 +373,8 @@ export class DashboardPerformanceComponent implements OnInit {
     gridHoverBackground: true,
     hasHoverData: true,
     allowAnimation: true,
+    hoverOtherChart: true,
+    tooltipOffset: {min: 134, max: 206},
     dataLabels: [['01', 'WED'], ['02', 'THU'], ['03', 'FRI'], ['04', 'SAT'], ['05', 'SUN'], ['06', 'MON'], ['07', 'TUE'], ['08', 'WED'], ['09', 'THU'],
       ['10', 'FRI'], ['11', 'SAT'], ['12', 'SUN'], ['13', 'MON'], ['14', 'TUE'], ['15', 'WED'], ['16', 'THU'], ['17', 'FRI'], ['18', 'SAT'],
       ['19', 'SUN'], ['20', 'MON'], ['21', 'TUE'], ['22', 'WED'], ['23', 'THU'], ['24', 'FRI']
@@ -483,5 +487,13 @@ export class DashboardPerformanceComponent implements OnInit {
 
   selectTimePeriod(period){
     this.topChart.updateTime(this.currentSwitchTab, period);
+  }
+
+  hoverLineChart(value){
+    this.topChart.showChartTooltip(value);
+  }
+
+  removeOtherChartHover(){
+    this.topChart.chartHoverOut();
   }
 }
