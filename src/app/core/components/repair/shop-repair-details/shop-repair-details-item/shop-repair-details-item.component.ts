@@ -33,6 +33,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
       this.repairShopDislike =
         changes.shopData.currentValue.data.downRatingCount;
       this.getReviews(changes.shopData.currentValue.data);
+      this.showRepairItems[changes.shopData.currentValue] = false;
     }
   }
   ngOnInit(): void {
@@ -88,7 +89,10 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
       };
     });
   }
-
+  /**Function return id */
+  public identity(index: number, item: any): number {
+    return item.id;
+  }
   public changeReviewsEvent(reviews: { data: any[]; action: string }) {
     this.reviewsRepair = [...reviews.data];
     // TODO: API CREATE OR DELETE
