@@ -1,11 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 
 @Component({
   selector: 'app-ta-currency-progress-bar',
   templateUrl: './ta-currency-progress-bar.component.html',
   styleUrls: ['./ta-currency-progress-bar.component.scss'],
 })
-export class TaCurrencyProgressBarComponent implements OnInit {
+export class TaCurrencyProgressBarComponent implements OnInit, OnChanges {
   @Input() totalAmount: number;
   @Input() paidSoFarAmount: number;
   @Input() progressBarName: string;
@@ -13,12 +19,14 @@ export class TaCurrencyProgressBarComponent implements OnInit {
 
   public activePercentageOfPaid: number = 0;
   public status = null;
-
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges) {
+    //Need here for broker currency
     this.calculateCurrencyPercentage();
-
   }
-  
+  ngOnInit() {
+    // this.calculateCurrencyPercentage();
+  }
+
   public calculateCurrencyPercentage() {
     this.activePercentageOfPaid =
       (this.paidSoFarAmount / this.totalAmount) * 100;
@@ -31,8 +39,7 @@ export class TaCurrencyProgressBarComponent implements OnInit {
         colorFilled: '#E57373',
         colorEmpty: '#FFEBEE',
       };
-    } 
-    else if (
+    } else if (
       this.activePercentageOfPaid > 30 &&
       this.activePercentageOfPaid < 60
     ) {
@@ -43,8 +50,7 @@ export class TaCurrencyProgressBarComponent implements OnInit {
         colorFilled: '#FFB74D',
         colorEmpty: '#FFECD1',
       };
-    } 
-    else if (
+    } else if (
       this.activePercentageOfPaid > 60 &&
       this.activePercentageOfPaid <= 100
     ) {
@@ -55,8 +61,7 @@ export class TaCurrencyProgressBarComponent implements OnInit {
         colorFilled: '#AAAAAA',
         colorEmpty: '#DADADA',
       };
-    } 
-    else {
+    } else {
       this.status = null;
     }
   }
