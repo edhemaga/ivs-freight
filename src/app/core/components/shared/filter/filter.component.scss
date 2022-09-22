@@ -1206,6 +1206,11 @@
             content: "mi";
           }
         }
+
+        .ngx-slider-combined{
+          //display: none !important;
+          opacity: 0 !important;
+        }
       }
     }
 
@@ -1231,10 +1236,16 @@
 
         .ngx-slider-pointer-min{
           background-color: #fff !important;
+          border-radius: 2px !important;
+          box-shadow: 0 0 4px rgb(0 0 0 / 32%) !important;
+          opacity: 1 !important;
         }
         
         .ngx-slider-pointer-max{
           background-color: #fff !important;
+          border-radius: 2px !important;
+          box-shadow: 0 0 4px rgb(0 0 0 / 16%) !important;
+          opacity: 1 !important;
         }
       }
       

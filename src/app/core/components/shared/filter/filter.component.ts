@@ -1664,7 +1664,11 @@ export class FilterComponent implements OnInit {
           this.clearForm('clearAll');
         }
       } else if ( this.type == 'milesFilter' || this.type == 'payFilter' ){
-        this.rangeForm.reset();
+        //this.rangeForm.reset();
+
+        this.rangeForm.get('rangeFrom')?.setValue('0');
+        this.rangeForm.get('rangeTo')?.setValue(this.maxValueRange);
+
         this.maxValueSet = this.maxValueRange;
         this.minValueSet = this.minValueRange;
       }
