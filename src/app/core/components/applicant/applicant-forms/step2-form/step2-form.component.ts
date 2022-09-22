@@ -82,7 +82,7 @@ export class Step2FormComponent
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public subscription: Subscription;
   public classOfEquipmentSubscription: Subscription;

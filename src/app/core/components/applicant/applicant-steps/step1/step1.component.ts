@@ -345,7 +345,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     }
 
     if (this.selectedMode === SelectedMode.REVIEW) {
-      this.applicantActionsService.getApplicantById(1);
+      this.applicantActionsService
+        .getApplicantById(1)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe();
 
       this.applicantQuery.personalInfoList$
         .pipe(takeUntil(this.destroy$))
@@ -412,6 +415,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public patchStepValues(stepValues: any): void {
+    console.log('store', stepValues);
     const {
       id,
       isAgreement,
@@ -481,8 +485,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.personalInfoRadios[5].buttons[1].checked = true;
       }
     }, 150);
-
-    console.log('adrese sa beka', previousAddresses);
 
     this.personalInfoId = id;
     this.previousAddressesId = previousAddresses.map((item: any) => item.id);

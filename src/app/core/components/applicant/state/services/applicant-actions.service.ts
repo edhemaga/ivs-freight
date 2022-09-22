@@ -24,6 +24,7 @@ import {
   CreateWorkExperienceCommand,
   CreatePersonalInfoReviewCommand,
 } from 'appcoretruckassist/model/models';
+import { ApplicantQuery } from '../store/applicant.query';
 
 @Injectable({
   providedIn: 'root',
@@ -35,7 +36,8 @@ export class ApplicantActionsService {
 
   constructor(
     private applicantService: ApplicantService,
-    private applicantStore: ApplicantStore
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery
   ) {}
 
   public getApplicantInfo(data: any) {
@@ -137,7 +139,7 @@ export class ApplicantActionsService {
   public getApplicantById(id: number): Observable<ApplicantResponse> {
     return this.applicantService.apiApplicantIdGet(id).pipe(
       tap((res: ApplicantResponse) => {
-        this.applicantStore.add(res);
+        console.log('aaa');
       })
     );
   }
