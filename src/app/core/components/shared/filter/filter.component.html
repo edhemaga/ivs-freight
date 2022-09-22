@@ -575,7 +575,7 @@
       ></div>
       <div class="buttons-holder">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
           [class.active]="
             selectedUser.length > 0 ||
@@ -942,7 +942,7 @@
       <div class="border-filter time-data-border"></div>
       <div class="buttons-holder">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
           [class.active]="selectedTimeValue != ''"
         >
@@ -1176,7 +1176,7 @@
       ></div>
       <div class="buttons-holder">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
           [class.active]="moneyFilterStatus"
         >
@@ -1215,7 +1215,7 @@
       <div class="border-filter bottom-border-margin"></div>
       <div class="buttons-holder">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
           [class.active]="rangeValue != swipeActiveRange || rangeValue > 0"
         >
@@ -1250,7 +1250,7 @@
             maxLength: 256,
             placeholderIcon: 'address',
             textTransform: 'capitalize',
-            incorrectInput: selectedMode === 'REVIEW_MODE'
+            customClass: 'line-input-26'
           }"
           [incorrectValue]="false"
           (incorrectEvent)="incorrectInput($event, 0, 18)"
@@ -1273,10 +1273,11 @@
               formControlName="rangeFrom"
               [inputConfig]="{
                 name: 'rangeFrom',
-                type: 'number',
+                type: 'text',
                 label: 'From',
                 placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
-                customClass: 'line-input-26'
+                customClass: 'line-input-26',
+                thousandSeparator: true
               }"
             ></app-ta-input>
           </div>
@@ -1285,10 +1286,11 @@
               formControlName="rangeTo"
               [inputConfig]="{
                 name: 'rangeTo',
-                type: 'number',
+                type: 'text',
                 label: 'To',
                 placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
-                customClass: 'line-input-26'
+                customClass: 'line-input-26',
+                thousandSeparator: true
               }"
             ></app-ta-input>
           </div>
@@ -1303,8 +1305,8 @@
             (onUserValueChange)="setRangeSliderValue($event)"
             [sliderTemplate]="'range-slider'"
             [customFormControlName]="sliderControl"
-            [minValue]="rangeForm.get('rangeFrom').value"
-            [maxValue]="rangeForm.get('rangeTo').value"
+            [minValue]="minValueDragged"
+            [maxValue]="maxValueDragged"
           ></app-ta-ngx-slider>
           
         </div>
@@ -1312,9 +1314,9 @@
       <div class="border-filter bottom-border-margin"></div>
       <div class="buttons-holder" *ngIf="type != 'locationFilter'">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
-          [class.active]="rangeForm.get('rangeTo').value != maxValueRange || ( rangeForm.get('rangeFrom').value && rangeForm.get('rangeFrom').value != minValueRange )"
+          [class.active]="rangeForm.get('rangeTo').value != maxValueRange || rangeForm.get('rangeFrom').value != minValueRange"
         >
           Clear All
         </div>
@@ -1328,7 +1330,7 @@
       </div>
       <div class="buttons-holder" *ngIf="type == 'locationFilter'">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
           [class.active]="locationState != ''"
         >

@@ -12,8 +12,8 @@ export class TaNgxSliderComponent {
   @Input() sliderOptions: Options;
   @Input() startedValue: number = 50;
   @Input() customClass: string = null;
-  @Input() minValue: number = 0;
-  @Input() maxValue: number = 5000;
+  @Input() minValue: any = 0;
+  @Input() maxValue: any = 5000;
 
   @Output() onUserValueChange: EventEmitter<any> = new EventEmitter<any>();
 

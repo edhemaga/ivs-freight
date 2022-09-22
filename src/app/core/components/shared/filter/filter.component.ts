@@ -1,4 +1,4 @@
-import { filter } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import {
   Component,
@@ -11,16 +11,18 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@ang
 import { Options } from '@angular-slider/ngx-slider';
 import { addressValidation } from '../ta-input/ta-input.regex-validations';
 import { card_component_animation } from '../animations/card-component.animations';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss'],
-  providers: [NgbDropdownConfig],
+  providers: [NgbDropdownConfig, TaThousandSeparatorPipe],
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
 export class FilterComponent implements OnInit {
+  private destroy$ = new Subject<void>();
   @ViewChild('t2') t2: any;
 
   unselectedUser: any[] = [
@@ -1024,12 +1026,14 @@ export class FilterComponent implements OnInit {
     noSwitching: true
   };
 
-  minValueRange: number = 0;
-  maxValueRange: number = 5000;
+  minValueRange: any = '0';
+  maxValueRange: any = '5,000';
 
-  minValueSet: number = 0;
-  maxValueSet: number = 5000;
+  minValueSet: any = '0';
+  maxValueSet: any = '5,000';
 
+  minValueDragged: number = 0;
+  maxValueDragged: number = 20000;
 
   @Input() type: string = 'userFilter';
   @Input() icon: string = 'user';
@@ -1045,17 +1049,17 @@ export class FilterComponent implements OnInit {
   @Input() swipeFilter: boolean = false;
   @Input() locationDefType: boolean = false;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private thousandSeparator: TaThousandSeparatorPipe,) {}
 
   ngOnInit(): void {
     if (this.type == 'payFilter'){
-      this.maxValueRange = 20000;
-      this.maxValueSet = 20000;
+      this.maxValueRange = '20,000';
+      this.maxValueSet = '20,000';
     }
     
     this.rangeForm = this.formBuilder.group({
-      rangeFrom: 0, 
-      rangeTo: this.type == 'payFilter'? 20000 : 5000, 
+      rangeFrom: '0', 
+      rangeTo: this.type == 'payFilter'? '20,000' : '5,000', 
     })
 
     this.searchForm = this.formBuilder.group({
@@ -1086,29 +1090,44 @@ export class FilterComponent implements OnInit {
       payTo: '',
     });
 
-    this.locationForm.valueChanges.subscribe((changes) => {
+    this.locationForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       if (changes.address == null) {
         this.locationState = '';
       }
     });
 
-    this.rangeForm.valueChanges.subscribe((changes) => {
+    this.rangeForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       if (changes){
+
         console.log('--changes--', changes);
 
-        if ( changes.rangeTo == null || changes.rangeTo > this.maxValueRange ){
+        var rangeFromNum = 0;
+        var rangeToNum = parseInt(this.maxValueRange.replace(/,/g, ''), 10);
+        var maxRangeNum = parseInt(this.maxValueRange.replace(/,/g, ''), 10);
+        
+        if (changes.rangeFrom && typeof changes.rangeFrom === 'string' ){
+          rangeFromNum = parseInt(changes.rangeFrom.replace(/,/g, ''), 10);
+        }
+        if ( changes.rangeTo && changes.rangeTo != null && typeof changes.rangeTo === 'string' ){
+          rangeToNum = parseInt(changes.rangeTo.replace(/,/g, ''), 10);
+        }
+
+        if ( changes.rangeTo == null || rangeToNum > maxRangeNum ){
           this.rangeForm?.get('rangeTo')?.setValue(this.maxValueRange);
         }
 
-        if (changes.rangeFrom > (this.maxValueRange - 1 )){
-          this.rangeForm?.get('rangeFrom')?.setValue(this.maxValueRange - 1);
+        if (rangeFromNum > (maxRangeNum - 1 )){
+          this.rangeForm?.get('rangeFrom')?.setValue(maxRangeNum - 1);
         } else if ( changes.rangeFrom == null ) {
-          //this.rangeForm?.get('rangeFrom')?.setValue(0);
+          this.rangeForm?.get('rangeFrom')?.setValue('0');
         }
+
+        this.minValueDragged = rangeFromNum;
+        this.maxValueDragged = rangeToNum;
       }
     })
 
-    this.moneyForm.valueChanges.subscribe((changes) => {
+    this.moneyForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       if (changes.singleFrom || changes.singleTo) {
         if (changes.singleTo) {
           let to = parseInt(changes.singleTo);
@@ -1216,27 +1235,27 @@ export class FilterComponent implements OnInit {
       }
 
       if (this.singleFormError) {
-        this.moneyForm.get('singleTo').setErrors({ invalid: true });
+        this.moneyForm.get('singleTo')?.setErrors({ invalid: true });
       } else {
-        this.moneyForm.get('singleTo').setErrors(null);
+        this.moneyForm.get('singleTo')?.setErrors(null);
       }
 
       if (this.multiFormFirstError) {
-        this.moneyForm.get('multiFromFirstTo').setErrors({ invalid: true });
+        this.moneyForm.get('multiFromFirstTo')?.setErrors({ invalid: true });
       } else {
-        this.moneyForm.get('multiFromFirstTo').setErrors(null);
+        this.moneyForm.get('multiFromFirstTo')?.setErrors(null);
       }
 
       if (this.multiFormSecondError) {
-        this.moneyForm.get('multiFormSecondTo').setErrors({ invalid: true });
+        this.moneyForm.get('multiFormSecondTo')?.setErrors({ invalid: true });
       } else {
-        this.moneyForm.get('multiFormSecondTo').setErrors(null);
+        this.moneyForm.get('multiFormSecondTo')?.setErrors(null);
       }
 
       if (this.multiFormThirdError) {
-        this.moneyForm.get('multiFormThirdTo').setErrors({ invalid: true });
+        this.moneyForm.get('multiFormThirdTo')?.setErrors({ invalid: true });
       } else {
-        this.moneyForm.get('multiFormThirdTo').setErrors(null);
+        this.moneyForm.get('multiFormThirdTo')?.setErrors(null);
       }
 
       //console.log('---moneyFilterStatus', this.moneyFilterStatus);
@@ -1244,7 +1263,7 @@ export class FilterComponent implements OnInit {
       }
     });
 
-    this.searchForm.valueChanges.subscribe((changes) => {
+    this.searchForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       if (changes.search) {
         let inputValue = changes.search;
         this.searchInputValue = inputValue;
@@ -1574,6 +1593,12 @@ export class FilterComponent implements OnInit {
       e.stopPropagation();
     }
 
+   
+    const element = e.target;
+    if (!element.classList.contains('active')) {
+      return false;
+    }
+
     console.log('--type--', this.type);
 
     if (this.type == 'timeFilter') {
@@ -1584,95 +1609,112 @@ export class FilterComponent implements OnInit {
       this.selectedUser = [];
       this.usaSelectedStates = [];
       this.canadaSelectedStates = [];
+      
+      switch (this.type) {
+        case 'departmentFilter':
+          this.departmentArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'statusFilter':
+          this.pendingStatusArray.map((item) => {
+            item.isSelected = false;
+          });
+  
+          this.activeStatusArray.map((item) => {
+            item.isSelected = false;
+          });
+  
+          this.closedStatusArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'pmFilter':
+          this.pmFilterArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'categoryFuelFilter':
+          this.categoryFuelArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'categoryRepairFilter':
+          this.categoryRepairArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'truckFilter':
+          this.truckArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'trailerFilter':
+          this.trailerArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'brokerFilter':
+          this.brokerArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'driverFilter':
+          this.driverArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'truckTypeFilter':
+          this.truckTypeArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'userFilter':
+          this.unselectedUser.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'stateFilter':
+          this.usaStates.map((item) => {
+            item.isSelected = false;
+          });
+  
+          this.canadaStates.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'injuryFilter':
+          case 'fatalityFilter':
+            case 'violationFilter':
+              this.rangeValue = 0;
+        break;
+        case 'locationFilter':
+          this.locationForm.setValue({
+            address: '',
+          });
+          this.locationRange = 50;
+          this.locationState = '';
+        break;
+        case 'moneyFilter':
+          if (this.subType != 'all') {
+            this.clearForm('singleForm');
+          } else {
+            this.clearForm('clearAll');
+          }
+        break;
+        case 'milesFilter':
+          case 'payFilter':
+            //this.rangeForm.reset();
+            let maxNum = this.thousandSeparator.transform(this.maxValueRange)
+            this.rangeForm.get('rangeFrom')?.setValue('0');
+            this.rangeForm.get('rangeTo')?.setValue(maxNum);
 
-      if (this.type == 'departmentFilter') {
-        this.departmentArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'statusFilter') {
-        this.pendingStatusArray.map((item) => {
-          item.isSelected = false;
-        });
-
-        this.activeStatusArray.map((item) => {
-          item.isSelected = false;
-        });
-
-        this.closedStatusArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'pmFilter') {
-        this.pmFilterArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'categoryFuelFilter') {
-        this.categoryFuelArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'categoryRepairFilter') {
-        this.categoryRepairArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'truckFilter') {
-        this.truckArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'trailerFilter') {
-        this.trailerArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'brokerFilter') {
-        this.brokerArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'driverFilter') {
-        this.driverArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'truckTypeFilter') {
-        this.truckTypeArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'userFilter') {
-        this.unselectedUser.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'stateFilter') {
-        this.usaStates.map((item) => {
-          item.isSelected = false;
-        });
-
-        this.canadaStates.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (
-        this.type == 'injuryFilter' ||
-        this.type == 'fatalityFilter' ||
-        this.type == 'violationFilter'
-      ) {
-        this.rangeValue = 0;
-      } else if (this.type == 'locationFilter') {
-        this.locationForm.setValue({
-          address: '',
-        });
-        this.locationRange = 50;
-        this.locationState = '';
-      } else if (this.type == 'moneyFilter') {
-        if (this.subType != 'all') {
-          this.clearForm('singleForm');
-        } else {
-          this.clearForm('clearAll');
-        }
-      } else if ( this.type == 'milesFilter' || this.type == 'payFilter' ){
-        //this.rangeForm.reset();
-
-        this.rangeForm.get('rangeFrom')?.setValue('0');
-        this.rangeForm.get('rangeTo')?.setValue(this.maxValueRange);
-
-        this.maxValueSet = this.maxValueRange;
-        this.minValueSet = this.minValueRange;
+            this.maxValueSet = maxNum;
+            this.minValueSet = this.minValueRange;
+        break;
       }
     }
+
     this.setButtonAvailable = true;
     this.moneyFilterStatus = false;
     this.filterActiveArray = [];
@@ -1971,8 +2013,10 @@ export class FilterComponent implements OnInit {
   }
 
   setRangeSliderValue(mod){
-    this.rangeForm?.get('rangeFrom')?.setValue(mod.value);
-    this.rangeForm?.get('rangeTo')?.setValue(mod.highValue);
+    let fromValue = this.thousandSeparator.transform(mod.value);
+    let toValue = this.thousandSeparator.transform(mod.highValue);
+    this.rangeForm?.get('rangeFrom')?.setValue(fromValue);
+    this.rangeForm?.get('rangeTo')?.setValue(toValue);
   }
 
 }
