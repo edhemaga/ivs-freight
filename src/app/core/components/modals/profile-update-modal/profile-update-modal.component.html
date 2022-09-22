@@ -3,7 +3,6 @@
   [isModalValid]="profileUserForm.valid"
   (action)="onModalAction($event)"
 >
-
   <app-ta-tab-switch
     [tabs]="tabs"
     (switchClicked)="tabChange($event)"
@@ -14,9 +13,7 @@
   <form
     [formGroup]="profileUserForm"
     class="form-container form-container-without-mb"
-    [ngClass]="{
-    'tab-2': selectedTab === 2
-    }"
+    [ngClass]="{ 'tab-2': selectedTab === 2 }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
@@ -140,34 +137,40 @@
               active: profileUserForm.get('createNewPassword').value
             }"
           >
-<!--Before you set new password please confirm current.-->
-            <div *ngIf="!setNewPassword" class="profile-update-oldpassword-row">
-                <app-ta-input
-                  formControlName="oldPassword"
-                  [inputConfig]="{
-                    name: 'Password',
-                    type: 'password',
-                    label: 'Password',
-                    placeholderIcon: 'password',
-                    isRequired: true,
-                    autocomplete: 'off',
-                    minLength: 8,
-                    maxLength: 64,
-                    loadingSpinner: {
-                      size: 'small',
-                      color: 'white',
-                      isLoading: loadingOldPassword
-                    }
-                  }"
-                ></app-ta-input>
-                <div
-                  class="old-password-checkmark"
-                  [ngClass]="{
-                    valid: correctPassword
-                  }"
-                >
-                  <p (click)="onSetNewPassword()">Confirm</p>
-                </div>
+            <div
+              *ngIf="!setNewPassword"
+              class="profile-update-old-password-row"
+            >
+              <app-ta-input
+                formControlName="oldPassword"
+                [inputConfig]="{
+                  name: 'Password',
+                  type: 'password',
+                  label: 'Password',
+                  placeholderIcon: 'password',
+                  isRequired: true,
+                  autocomplete: 'off',
+                  minLength: 8,
+                  maxLength: 64,
+                  loadingSpinner: {
+                    size: 'small',
+                    color: 'white',
+                    isLoading: loadingOldPassword
+                  }
+                }"
+              ></app-ta-input>
+              <p *ngIf="!userPasswordTyping" class="old-password-message">
+                Before you set new password please confirm current.
+              </p>
+              <div
+                class="old-password-checkmark"
+                [ngClass]="{
+                  valid: correctPassword
+                }"
+                (click)="onSetNewPassword()"
+              >
+                <p>CONFIRM</p>
+              </div>
             </div>
             <div *ngIf="setNewPassword">
               <div class="row row-mb-22">
@@ -208,10 +211,7 @@
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
-        <app-ta-custom-card
-          [cardName]="'Profile Picture'"
-          [isCardOpen]="true"
-        >
+        <app-ta-custom-card [cardName]="'Profile Picture'" [isCardOpen]="true">
           <app-ta-logo-change
             [imageUrl]="this.profileUserForm.get('avatar').value"
             [croppieOptions]="croppieOptions"

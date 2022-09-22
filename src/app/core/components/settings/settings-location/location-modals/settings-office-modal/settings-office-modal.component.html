@@ -15,11 +15,13 @@
   <form
     [formGroup]="officeForm"
     class="form-container form-container-with-inputs"
-    [ngClass]=" {
-    'form-container-mt-12': selectedTab === 1,
-    'form-container-without-mb': selectedTab === 1 && !isDepartmentContactCardOpen,
-    'form-container-with-card': selectedTab === 1 && isDepartmentContactCardOpen,
-    'row-settings-location-additional': selectedTab === 2
+    [ngClass]="{
+      'form-container-mt-12': selectedTab === 1,
+      'form-container-without-mb':
+        selectedTab === 1 && !isDepartmentContactCardOpen,
+      'form-container-with-card':
+        selectedTab === 1 && isDepartmentContactCardOpen,
+      'row-settings-location-additional': selectedTab === 2
     }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
@@ -79,7 +81,7 @@
                   [inputConfig]="{
                     name: 'address-unit',
                     type: 'text',
-                    label: 'Unit #',
+                    label: 'Unit No.',
                     textTransform: 'uppercase',
                     minLength: 1,
                     maxLength: 10

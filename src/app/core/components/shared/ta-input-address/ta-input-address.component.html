@@ -129,6 +129,7 @@
           ? activeAddress?.address === getSuperControl.value
           : false) &&
         !focusInput &&
+        !inputConfig.isDisabled &&
         !isVisibleCommands &&
         !inputConfig.blackInput,
       'invalid-focus-in':
@@ -140,6 +141,7 @@
         getSuperControl.value &&
         invalidAddress &&
         !focusInput &&
+        !inputConfig.isDisabled &&
         !isVisibleCommands &&
         !inputConfig.blackInput,
       'has-input-icon': inputConfig.placeholderIcon,

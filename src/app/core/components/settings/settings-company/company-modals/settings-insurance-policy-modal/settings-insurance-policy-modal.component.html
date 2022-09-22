@@ -7,7 +7,10 @@
   [isModalValid]="insurancePolicyForm.valid"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="insurancePolicyForm" class="form-container form-container-without-mb">
+  <form
+    [formGroup]="insurancePolicyForm"
+    class="form-container form-container-without-mb"
+  >
     <div class="row">
       <div class="col-12">
         <app-ta-input
@@ -106,7 +109,7 @@
           [inputConfig]="{
             name: 'address-unit',
             type: 'text',
-            label: 'Unit #',
+            label: 'Unit No.',
             textTransform: 'uppercase',
             minLength: 1,
             maxLength: 10

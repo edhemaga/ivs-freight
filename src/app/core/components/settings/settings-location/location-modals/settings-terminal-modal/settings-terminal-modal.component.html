@@ -16,9 +16,9 @@
     [formGroup]="terminalForm"
     class="form-container"
     [ngClass]="{
-    'form-container-mt-12': selectedTab === 1,
-    'row-settings-location-additional': selectedTab === 2,
-    'form-container-with-inputs': selectedTab === 2
+      'form-container-mt-12': selectedTab === 1,
+      'row-settings-location-additional': selectedTab === 2,
+      'form-container-with-inputs': selectedTab === 2
     }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
@@ -78,7 +78,7 @@
                   [inputConfig]="{
                     name: 'address-unit',
                     type: 'text',
-                    label: 'Unit #',
+                    label: 'Unit No.',
                     textTransform: 'uppercase',
                     minLength: 1,
                     maxLength: 10

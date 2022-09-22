@@ -16,9 +16,10 @@
     [formGroup]="trailerForm"
     class="form-container"
     [ngClass]="{
-    'form-container-without-mb': selectedTab === 1,
-    'form-container-with-inputs': selectedTab === 2
-    }">
+      'form-container-without-mb': selectedTab === 1,
+      'form-container-with-inputs': selectedTab === 2
+    }"
+  >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 1">
@@ -29,7 +30,7 @@
               [inputConfig]="{
                 name: 'vehicle-unit',
                 type: 'text',
-                label: 'Unit #',
+                label: 'Unit No.',
                 isRequired: true,
                 textTransform: 'uppercase',
                 minLength: 1,

@@ -63,11 +63,11 @@
   }
 
   .ta-checkbox:checked ~ .ta-checkbox-label {
-    color: #6c6c6c !important;
+    color: #2f2f2f !important;
   }
 
   .ta-checkbox:checked ~ .ta-mark {
-    background-color: #6d82c7;
+    background-color: #3074d3;
     transition: all 0.3s ease-in-out;
   }
 
@@ -89,7 +89,7 @@
 
   .ta-checkbox-label {
     cursor: pointer;
-    color: #919191;
+    color: #6c6c6c;
     font-weight: 800;
     font-size: 14px;
     margin-left: 6px;
@@ -101,7 +101,7 @@
     user-select: none;
 
     &-required {
-      color: #e57373;
+      color: #f44336;
     }
   }
 
@@ -220,9 +220,6 @@
   }
 
   &.applicant-feedback {
-    /*
-    pointer-events: none !important; */
-
     .ta-checkbox:checked ~ .ta-checkbox-label {
       color: #919191 !important;
     }
@@ -235,9 +232,6 @@
   }
 
   &.applicant-disclosure-release-feedback {
-    /*
-    pointer-events: none !important; */
-
     .ta-checkbox:checked ~ .ta-checkbox-label {
       color: #919191 !important;
     }

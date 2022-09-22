@@ -16,9 +16,14 @@
     [formGroup]="parkingForm"
     class="form-container form-container-mt-12"
     [ngClass]="{
-    'form-container-without-mb': (selectedTab === 2 && !isFinanceCardOpen) || (selectedTab === 1 && !isParkingCardOpen),
-    'form-container-with-card': (selectedTab === 2 && isFinanceCardOpen) || (selectedTab === 1 && isParkingCardOpen)
-  }">
+      'form-container-without-mb':
+        (selectedTab === 2 && !isFinanceCardOpen) ||
+        (selectedTab === 1 && !isParkingCardOpen),
+      'form-container-with-card':
+        (selectedTab === 2 && isFinanceCardOpen) ||
+        (selectedTab === 1 && isParkingCardOpen)
+    }"
+  >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 1">
@@ -76,7 +81,7 @@
                   [inputConfig]="{
                     name: 'address-unit',
                     type: 'text',
-                    label: 'Unit #',
+                    label: 'Unit No.',
                     textTransform: 'uppercase',
                     minLength: 1,
                     maxLength: 10
@@ -210,7 +215,11 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Finance'" [isCardOpen]="true" (onOpenCard)="isFinanceCardOpen = $event">
+        <app-ta-custom-card
+          [cardName]="'Finance'"
+          [isCardOpen]="true"
+          (onOpenCard)="isFinanceCardOpen = $event"
+        >
           <div class="row row-mb-10">
             <div class="col-4">
               <app-ta-input
