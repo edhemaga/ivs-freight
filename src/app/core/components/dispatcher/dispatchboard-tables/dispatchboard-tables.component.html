@@ -788,6 +788,8 @@
               class="hos-column"
               placement="bottom"
               triggers="manual"
+              container="body"
+              popoverClass="hos-ngb-popover"
             >
               <!-- <span
                   *ngIf="item.driverName !== null && !item.isEmpty"
@@ -1183,8 +1185,82 @@
 </div>
 
 <!-- Popover for HOS -->
-<ng-template #hos let-data="value.data.hos" let-id="value.id">
-  <div class="slider-wrapper">
+<ng-template #hos>
+  <div class="hos-container">
+    <div class="hos-header">
+      <div class="hos-header-letters">
+        <div>M</div>
+        <div>N</div>
+        <div>M</div>
+      </div>
+      <div
+        class="hos-header-boxes"
+        *ngFor="let item of [].constructor(24); let i = index"
+      >
+        <span></span>
+      </div>
+      <div class="middle-border"></div>
+    </div>
+    <div class="hos-body">
+      <div class="ngx-slider-list">
+        <div
+          class="ngx-slider-item off-items"
+          *ngFor="
+            let item of openedHosData.hos | hosFilter: 'off';
+            let i = index
+          "
+        >
+          <!-- <div class="ngx-slider-info">10:00</div> -->
+          <ngx-slider
+            [(highValue)]="item.end"
+            [(value)]="item.start"
+            [options]="options"
+            [rightToLeft]="true"
+            (userChange)="userChangeEnd($event, item)"
+          ></ngx-slider>
+        </div>
+        <div
+          *ngIf="openedHosData.hos[openedHosData.hos.length - 1].flag == 'on'"
+          class="add-new off"
+        >
+          <svg-icon
+            (click)="addHOS('off')"
+            src="assets/svg/common/ic_pm_increment.svg"
+          >
+          </svg-icon>
+        </div>
+      </div>
+      <div class="ngx-slider-list">
+        <div
+          class="ngx-slider-item on-items"
+          *ngFor="
+            let item of openedHosData.hos | hosFilter: 'on';
+            let i = index
+          "
+        >
+          <!-- <div class="ngx-slider-info">10:00</div> -->
+          <ngx-slider
+            [(highValue)]="item.end"
+            [(value)]="item.start"
+            [options]="options"
+            [rightToLeft]="true"
+            (userChange)="userChangeEnd($event, item)"
+          ></ngx-slider>
+        </div>
+        <div
+          *ngIf="openedHosData.hos[openedHosData.hos.length - 1].flag == 'off'"
+          class="add-new on"
+        >
+          <svg-icon
+            (click)="addHOS('on')"
+            src="assets/svg/common/ic_pm_increment.svg"
+          >
+          </svg-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="slider-wrapper">
     <div class="time-ruler">
       <div
         *ngFor="let item of [].constructor(23); let i = index"
@@ -1205,8 +1281,6 @@
         *ngFor="let item of data; let i = index"
         class="item-container inactive-parent"
       >
-        {{ item.end }}
-        {{ item.start }}
         <div *ngIf="item?.flag === 'off'" class="individual-item">
           <div>
             <div
@@ -1222,14 +1296,6 @@
                 {{ formatTime(item.start, item.end) }}
               </span>
             </div>
-            <!-- <ng5-slider
-              (userChange)="userChangeEnd($event, i, data)"
-              [(highValue)]="item.end"
-              [(value)]="item.start"
-              [ngClass]="i + ' inactive-wrapper-slider'"
-              [options]="options"
-            ></ng5-slider> -->
-
             <ngx-slider
               (userChange)="userChangeEnd($event, i, data)"
               [(highValue)]="item.end"
@@ -1237,14 +1303,6 @@
               [ngClass]="i + ' inactive-wrapper-slider'"
               [options]="options"
             ></ngx-slider>
-
-            <!-- <app-ta-ngx-slider
-              [sliderTemplate]="'hos-change'"
-              [sliderOptions]="options"
-              [startedValue]="item.start"
-              [customClass]="i + ' inactive-wrapper-slider'"
-              (onUserValueChange)="userChangeEnd($event, i, data)"
-            ></app-ta-ngx-slider> -->
           </div>
           <div class="button-wrapper" id="{{ returnButtonId(i) }}">
             <span
@@ -1312,5 +1370,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </ng-template>

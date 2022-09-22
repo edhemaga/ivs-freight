@@ -19,6 +19,7 @@ import { ColorFinderPipe } from './pipes/color-finder.pipe';
 import { TruckassistSearchModule } from '../shared/truckassist-search/truckassist-search.module';
 import { NestedComponent } from './dispatchboard-tables/nested.component';
 import { GridsterModule } from 'angular-gridster2';
+import { HosFilterPipe } from './pipes/hos-filter.pipe';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -36,7 +37,8 @@ export function playerFactory() {
     DispatcherParkingComponent,
     DispatchboardTablesComponent,
     ColorFinderPipe,
-    NestedComponent
+    NestedComponent,
+    HosFilterPipe
   ],
   imports: [
     CommonModule,

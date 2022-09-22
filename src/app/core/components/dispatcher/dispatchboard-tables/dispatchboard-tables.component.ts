@@ -29,6 +29,7 @@ import { catchError, of } from 'rxjs';
 import { ColorFinderPipe } from '../pipes/color-finder.pipe';
 
 import { Options } from '@angular-slider/ngx-slider';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-dispatchboard-tables',
@@ -128,6 +129,8 @@ export class DispatchboardTablesComponent implements OnInit {
 
   @Input() dDataIndx: number;
 
+  itemValue: number = 123;
+
   truckAddress: FormControl = new FormControl(null);
 
   truckList: any[];
@@ -158,6 +161,10 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
   hosHelper = {
+    hos: [],
+  };
+
+  openedHosData = {
     hos: [],
   };
 
@@ -210,6 +217,7 @@ export class DispatchboardTablesComponent implements OnInit {
   pickDeliveryHovered: any = {};
 
   savedTruckId: any;
+  testTimeout: any;
 
   constructor(
     private dss: DispatcherStoreService,
@@ -217,8 +225,7 @@ export class DispatchboardTablesComponent implements OnInit {
     private colorPipe: ColorFinderPipe
   ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   addTruck(e) {
     if (e) {
@@ -453,7 +460,6 @@ export class DispatchboardTablesComponent implements OnInit {
           this.__change_in_proggress = false;
         });
     }
-
   }
 
   set checkEmptySet(value) {
@@ -462,7 +468,6 @@ export class DispatchboardTablesComponent implements OnInit {
       this.chd.detectChanges();
     }, 300);
   }
-
 
   options: Options = {
     floor: 0,
@@ -478,6 +483,7 @@ export class DispatchboardTablesComponent implements OnInit {
       const h = (minutes - m) / 60;
       const suffix = h >= 12 ? 'PM' : 'AM';
       const formatedH = h > 12 ? h - 12 : h;
+      return `${formatedH.toString()}:${m < 10 ? '0' : ''}${m.toString()}`;
       return (
         formatedH.toString() +
         ':' +
@@ -489,7 +495,8 @@ export class DispatchboardTablesComponent implements OnInit {
     },
   };
 
-  toggleHos(tooltip: any, data: any, id: number) {
+  tooltip: any;
+  toggleHos(tooltip: NgbTooltip, data: any, id: number) {
     this.hosHelper.hos = [];
     if (data === null || data.hos.length === 0) {
       data = {
@@ -498,34 +505,20 @@ export class DispatchboardTablesComponent implements OnInit {
             start: 0,
             end: new Date().getHours() * 60 + new Date().getMinutes(),
             flag: 'off',
+            indx: 0,
           },
         ],
       };
-      // this.gridData.forEach((element) => {
-      //   if (element.id === id) {
-      //     element.hosJson = data;
-      //   }
-      // });
     }
 
-    console.log("WHAT IS DATAA");
-    console.log(data);
-   
+    this.tooltip = tooltip;
+
+    this.openedHosData = data;
+
     if (tooltip.isOpen()) {
       tooltip.close();
     } else {
-      tooltip.open({ value: { data, id } });
-      setTimeout(() => {
-        data.hos.forEach((element, index) => {
-          const span = document.getElementById('valueSpan_' + index);
-          const cssStyle =
-            span.nextElementSibling.children[3].attributes[3].ownerElement;
-          const button = document.getElementById('buttonId_' + index);
-          button.style.marginLeft = data.hos[index].end / 3.8 + 'px';
-          span.style.width = cssStyle.clientWidth + 'px';
-          span.style.left = element.start / 3.8 + 'px';
-        });
-      });
+      tooltip.open();
     }
   }
 
@@ -540,166 +533,46 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
   dropHosList(event: any, data: any, id: number) {
-    const dragEl: any = event.previousContainer.data[event.previousIndex];
-    switch (data.length) {
-      case 1:
-        if (dragEl.flag === 'off') {
-          data[0].flag = 'on';
-        } else {
-          data[0].flag = 'off';
-        }
-        setTimeout(() => {
-          const span = document.getElementById('valueSpan_0');
-          const button = document.getElementById('buttonId_0');
-          const cssStyle =
-            span.nextElementSibling?.children[3].attributes[3].ownerElement;
-          span.style.width = cssStyle.clientWidth + 'px';
-          button.style.marginLeft = data[0].end / 3.8 + 'px';
-        });
-        break;
-      case 2:
-        if (event.previousContainer.id !== event.container.id) {
-          if (dragEl.flag === 'off') {
-            data = [
-              {
-                start: data[0].start,
-                end: data[1].end,
-                flag: 'on',
-              },
-            ];
-          } else {
-            data = [
-              {
-                start: data[0].start,
-                end: data[1].end,
-                flag: 'off',
-              },
-            ];
-          }
-          setTimeout(() => {
-            const span = document.getElementById('valueSpan_0');
-            const button = document.getElementById('buttonId_0');
-            const cssStyle =
-              span.nextElementSibling?.children[3].attributes[3].ownerElement;
-            span.style.width = cssStyle.clientWidth + 'px';
-            button.style.marginLeft = data[0].end / 3.8 + 'px';
-          });
-        }
-        break;
-      case 3:
-        if (event.previousContainer.id !== event.container.id) {
-          if (
-            event.previousIndex === 0 &&
-            event.previousContainer.data.length === 1
-          ) {
-            let tempObj = {};
-            if (
-              event.previousContainer.data[event.previousIndex].flag === 'off'
-            ) {
-              tempObj = {
-                start: event.container.data[0].start,
-                end: event.container.data[1].end,
-                flag: 'on',
-              };
-            } else {
-              tempObj = {
-                start: event.container.data[0].start,
-                end: event.container.data[1].end,
-                flag: 'off',
-              };
-            }
-            const tempArr = [];
-            tempArr.push(tempObj);
-            data = tempArr;
-            setTimeout(() => {
-              const span = document.getElementById('valueSpan_0');
-              const button = document.getElementById('buttonId_0');
-              const cssStyle =
-                span.nextElementSibling?.children[3].attributes[3].ownerElement;
-              span.style.width = cssStyle.clientWidth + 'px';
-              button.style.marginLeft = data[0].end / 3.8 + 'px';
-            });
-          } else if (event.previousContainer.data.length === 2) {
-            let tempObj = {};
-            const tempArr = [];
-            if (event.previousIndex === 0) {
-              if (event.previousContainer.data[0].flag === 'off') {
-                tempObj = {
-                  start: event.previousContainer.data[0].start,
-                  end: event.container.data[0].end,
-                  flag: 'on',
-                };
-              } else {
-                tempObj = {
-                  start: event.previousContainer.data[0].start,
-                  end: event.container.data[0].end,
-                  flag: 'off',
-                };
-              }
-              tempArr.push(tempObj);
-              tempArr.push(event.previousContainer.data[1]);
-              data = tempArr;
-              setTimeout(() => {
-                const span = document.getElementById('valueSpan_0');
-                const button = document.getElementById('buttonId_0');
-                const cssStyle =
-                  span.nextElementSibling?.children[3].attributes[3]
-                    .ownerElement;
-                span.style.width = cssStyle.clientWidth + 'px';
-                button.style.marginLeft = data[0].end / 3.8 + 'px';
-              });
-            } else if (event.previousIndex === 1) {
-              if (event.previousContainer.data[1].flag === 'off') {
-                tempObj = {
-                  start: event.container.data[0].start,
-                  end: event.previousContainer.data[1].end,
-                  flag: 'on',
-                };
-              } else {
-                tempObj = {
-                  start: event.container.data[0].start,
-                  end: event.previousContainer.data[1].end,
-                  flag: 'off',
-                };
-              }
-              tempArr.push(event.previousContainer.data[0]);
-              tempArr.push(tempObj);
-              data = tempArr;
-              setTimeout(() => {
-                const span = document.getElementById('valueSpan_1');
-                const button = document.getElementById('buttonId_1');
-                const cssStyle =
-                  span.nextElementSibling.children[3].attributes[3]
-                    .ownerElement;
-                span.style.width = cssStyle.clientWidth + 'px';
-                button.style.marginLeft = data[1].end / 3.8 + 'px';
-                span.style.left = data[1].start / 3.8 + 'px';
-              });
-            }
-          }
-        }
-    }
-    // this.gridData.forEach((element) => {
-    //   if (element.id === id) {
-    //     element.hosJson.hos = data;
-    //   }
-    // });
   }
 
-  returnValueId(i) {
-    return 'valueSpan_' + i;
+  addHOS(hosType) {
+    this.openedHosData.hos = [...this.openedHosData.hos];
+    this.openedHosData.hos.push({
+      start: this.openedHosData.hos[this.openedHosData.hos.length - 1].end,
+      end: new Date().getHours() * 60 + new Date().getMinutes(),
+      flag: hosType,
+      indx: this.openedHosData.hos.length,
+    });
   }
 
   formatTime(minValue, maxValue) {
     const minutes = maxValue - minValue;
     const m = minutes % 60;
     const h = (minutes - m) / 60;
-    const suffix = h >= 12 ? 'PM' : 'AM';
-    const formatedH = h > 12 ? h - 12 : h;
-    return h.toString() + ':' + (m < 10 ? '0' : '') + m.toString();
+    return h.toString() + ':' + (m < 10 ? '0' : '');
   }
 
-  returnButtonId(i) {
-    return 'buttonId_' + i;
+  changeHosDataPositions(event, index) {
+    const nextHos = index + 1;
+    if (this.openedHosData.hos[nextHos]) {
+      this.openedHosData.hos[nextHos].start = this.openedHosData.hos[index].end;
+    }
+  }
+
+  userChangeEnd(event, item) {
+    const index = item.indx;
+    const nextHos = index + 1;
+    if (this.openedHosData.hos[nextHos]) {
+      clearTimeout(this.testTimeout);
+      this.testTimeout = setTimeout(() => {
+        this.changeHosDataPositions(event, index);
+      }, 0);
+    }
+  }
+
+  saveHosData(hos, driverId, id) {
+    console.log(hos);
+    console.log(driverId);
+    console.log(id);
   }
 }
