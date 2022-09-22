@@ -156,6 +156,7 @@
           [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
           [isCardOpen]="true"
           (onOpenCard)="isParkingCardOpen = $event"
+          [animationsDisabled]="true"
         >
           <div class="row">
             <div class="col-12">
@@ -189,7 +190,11 @@
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
-        <app-ta-custom-card [cardName]="'Features'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Features'"
+          [isCardOpen]="true"
+          [animationsDisabled]="true"
+        >
           <div class="parking-gate-securityCamera">
             <div class="gate-field">
               <p>Gate</p>
@@ -219,6 +224,7 @@
           [cardName]="'Finance'"
           [isCardOpen]="true"
           (onOpenCard)="isFinanceCardOpen = $event"
+          [animationsDisabled]="true"
         >
           <div class="row row-mb-10">
             <div class="col-4">

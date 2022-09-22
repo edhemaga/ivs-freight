@@ -133,7 +133,10 @@
           ></app-ta-input>
         </div>
       </div>
-      <app-ta-custom-card [cardName]="'Load Requirements'">
+      <app-ta-custom-card
+        [cardName]="'Load Requirements'"
+        [animationsDisabled]="true"
+      >
         <div class="load-requirements-load">
           <app-ta-input-dropdown
             formControlName="truckReq"
@@ -227,7 +230,11 @@
         </div>
       </app-ta-custom-card>
 
-      <app-ta-custom-card [cardName]="'Create Stop'" [isCardOpen]="true">
+      <app-ta-custom-card
+        [cardName]="'Create Stop'"
+        [isCardOpen]="true"
+        [animationsDisabled]="true"
+      >
         <div class="stop-load-first-row">
           <app-ta-tab-switch
             [tabs]="stopTabs"
@@ -318,10 +325,18 @@
         </div>
       </app-ta-custom-card>
 
-      <app-ta-custom-card [cardName]="'Stops'" [hasCounter]="0">
+      <app-ta-custom-card
+        [cardName]="'Stops'"
+        [hasCounter]="0"
+        [animationsDisabled]="true"
+      >
       </app-ta-custom-card>
 
-      <app-ta-custom-card [cardName]="'Billing & Payment'" [isCardOpen]="true">
+      <app-ta-custom-card
+        [cardName]="'Billing & Payment'"
+        [isCardOpen]="true"
+        [animationsDisabled]="true"
+      >
         <div class="billing-payment-load">
           <!-- Base Rate -->
           <div class="billing-payment-rate">
@@ -423,6 +438,7 @@
         [hasBodyData]="comments.length > 0"
         [hasScrollBody]="comments.length > 6"
         (onActionEvent)="createComment()"
+        [animationsDisabled]="true"
       >
         <div class="no-review-broker" *ngIf="!comments.length">
           <svg-icon
@@ -441,6 +457,7 @@
         [hasCounter]="documents.length ? documents.length : 0"
         [cardName]="'Documents'"
         [isCardOpen]="documents.length > 0"
+        [animationsDisabled]="true"
       >
         <app-ta-upload-files
           [files]="documents"

@@ -181,7 +181,11 @@
         </div>
       </div>
       <div class="ta-card-body-overflow-none">
-        <app-ta-custom-card [cardName]="'Contact Image'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Contact Image'"
+          [isCardOpen]="true"
+          [animationsDisabled]="true"
+        >
           <app-ta-logo-change
             [croppieOptions]="croppieOptions"
             [customClass]="'modal-container-S'"

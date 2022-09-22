@@ -27,6 +27,7 @@
       (onActionEvent)="
         addPMs(null, 'new-pm', editData?.header === 'Truck' ? 5000 : 1)
       "
+      [animationsDisabled]="true"
     >
       <!-- Default PMs -->
       <div

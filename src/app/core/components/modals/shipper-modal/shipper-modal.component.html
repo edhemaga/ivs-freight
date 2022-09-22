@@ -134,6 +134,7 @@
         <app-ta-custom-card
           [cardName]="'Receiving Work Hours'"
           [isCardOpen]="true"
+          [animationsDisabled]="true"
         >
           <div class="shipper-work-hours row-mt-20 last-row">
             <div
@@ -197,6 +198,7 @@
         <app-ta-custom-card
           [cardName]="'Shipping Work Hours'"
           [isCardOpen]="!shipperForm.get('shippingHoursSameReceiving').value"
+          [animationsDisabled]="true"
         >
           <div class="shipper-work-hours row-mt-20 last-row">
             <div
@@ -266,6 +268,7 @@
           [isCardOpen]="shipperContacts.length > 0"
           [hasScrollBody]="shipperContacts.length > 10"
           (onActionEvent)="addShipperContacts($event)"
+          [animationsDisabled]="true"
         >
           <div
             formArrayName="shipperContacts"
@@ -396,6 +399,7 @@
           [hasScrollBody]="reviews.length > 6"
           [disableMultipleReviews]="disableOneMoreReview"
           (onActionEvent)="createReview()"
+          [animationsDisabled]="true"
         >
           <div class="no-review-shipper" *ngIf="!reviews.length">
             <svg-icon

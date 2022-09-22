@@ -300,6 +300,7 @@
           [isCardOpen]="true"
           [hasDeleteAction]="displayDeleteAction"
           (onActionEvent)="handleDeleteClick($event)"
+          [animationsDisabled]="true"
         >
           <app-ta-logo-change
             [croppieOptions]="croppieOptions"
@@ -328,6 +329,7 @@
           [isCardOpen]="departmentContacts.length"
           [hasScrollBody]="departmentContacts.length > 10"
           (onActionEvent)="addDepartmentContacts($event)"
+          [animationsDisabled]="true"
         >
           <div
             formArrayName="departmentContacts"
@@ -431,6 +433,7 @@
           [isCardOpen]="bankAccounts.length"
           [hasScrollBody]="bankAccounts.length > 10"
           (onActionEvent)="addBankAccount($event)"
+          [animationsDisabled]="true"
         >
           <div
             formArrayName="bankAccounts"
@@ -532,6 +535,7 @@
           [isCardOpen]="bankCards.length"
           [hasScrollBody]="bankCards.length > 10"
           (onActionEvent)="addBankCard($event)"
+          [animationsDisabled]="true"
         >
           <div
             formArrayName="bankCards"
@@ -616,6 +620,7 @@
           <app-ta-custom-card
             [cardName]="'Load Format and Customer Billing'"
             [isCardOpen]="true"
+            [animationsDisabled]="true"
           >
             <div class="row active-20">
               <div class="col-4">
@@ -728,7 +733,11 @@
               </div>
             </div>
           </app-ta-custom-card>
-          <app-ta-custom-card [cardName]="'Expiration'" [isCardOpen]="true">
+          <app-ta-custom-card
+            [cardName]="'Expiration'"
+            [isCardOpen]="true"
+            [animationsDisabled]="true"
+          >
             <div class="row">
               <div class="col-4">
                 <app-ta-input
@@ -838,7 +847,11 @@
             <div class="use-truck-assist-price">Pricing</div>
           </div>
         </div>
-        <app-ta-custom-card [cardName]="'Driver & Owner'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Driver & Owner'"
+          [isCardOpen]="true"
+          [animationsDisabled]="true"
+        >
           <div class="row">
             <div class="col-6">
               <app-ta-input-dropdown
@@ -1087,7 +1100,10 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Accounting'">
+        <app-ta-custom-card
+          [cardName]="'Accounting'"
+          [animationsDisabled]="true"
+        >
           <div class="row last-row">
             <div class="col-4">
               <app-ta-input-dropdown
@@ -1145,7 +1161,10 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Company Owner'">
+        <app-ta-custom-card
+          [cardName]="'Company Owner'"
+          [animationsDisabled]="true"
+        >
           <div class="row last-row">
             <div class="col-4">
               <app-ta-input-dropdown
@@ -1203,7 +1222,7 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Dispatch'">
+        <app-ta-custom-card [cardName]="'Dispatch'" [animationsDisabled]="true">
           <div class="row">
             <div class="col-6">
               <app-ta-input-dropdown
@@ -1274,7 +1293,7 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Manager'">
+        <app-ta-custom-card [cardName]="'Manager'" [animationsDisabled]="true">
           <div class="row">
             <div class="col-6">
               <app-ta-input-dropdown
@@ -1345,7 +1364,10 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Recruiting'">
+        <app-ta-custom-card
+          [cardName]="'Recruiting'"
+          [animationsDisabled]="true"
+        >
           <div class="row last-row">
             <div class="col-4">
               <app-ta-input-dropdown
@@ -1403,7 +1425,7 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Repair'">
+        <app-ta-custom-card [cardName]="'Repair'" [animationsDisabled]="true">
           <div class="row last-row">
             <div class="col-4">
               <app-ta-input-dropdown
@@ -1457,7 +1479,7 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Safety'">
+        <app-ta-custom-card [cardName]="'Safety'" [animationsDisabled]="true">
           <div class="row last-row">
             <div class="col-4">
               <app-ta-input-dropdown
@@ -1511,7 +1533,7 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Other'">
+        <app-ta-custom-card [cardName]="'Other'" [animationsDisabled]="true">
           <div class="row last-row">
             <div class="col-4">
               <app-ta-input-dropdown

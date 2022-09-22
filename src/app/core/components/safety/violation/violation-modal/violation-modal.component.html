@@ -7,7 +7,6 @@
   [disableDelete]="true"
   (action)="onModalAction($event)"
 >
-
   <app-ta-tab-switch
     [tabs]="tabs"
     (switchClicked)="tabChange($event)"
@@ -19,9 +18,9 @@
     [formGroup]="violationForm"
     class="form-container"
     [ngClass]="{
-    'tab-2': selectedTab !== 1,
-    'form-container-without-mb': selectedTab === 1 || !isSpecialChecksOpen,
-    'form-container-with-card': selectedTab === 2 && isSpecialChecksOpen
+      'tab-2': selectedTab !== 1,
+      'form-container-without-mb': selectedTab === 1 || !isSpecialChecksOpen,
+      'form-container-with-card': selectedTab === 2 && isSpecialChecksOpen
     }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
@@ -118,7 +117,11 @@
             }"
           ></app-ta-input>
         </div>
-        <app-ta-custom-card [cardName]="'Driver'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Driver'"
+          [isCardOpen]="true"
+          [animationsDisabled]="true"
+        >
           <div class="violation-modal-row-3">
             <app-ta-input
               formControlName="driverName"
@@ -161,7 +164,11 @@
             ></app-ta-input>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Co-Driver'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Co-Driver'"
+          [isCardOpen]="true"
+          [animationsDisabled]="true"
+        >
           <div class="violation-modal-row-4">
             <app-ta-input
               formControlName="coDriverName"
@@ -204,7 +211,11 @@
             ></app-ta-input>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Truck'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Truck'"
+          [isCardOpen]="true"
+          [animationsDisabled]="true"
+        >
           <div class="violation-modal-row-5">
             <app-ta-input
               formControlName="truckUnit"
@@ -265,7 +276,11 @@
             ></app-ta-input>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Trailer'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Trailer'"
+          [isCardOpen]="true"
+          [animationsDisabled]="true"
+        >
           <div class="violation-modal-row-6">
             <app-ta-input
               formControlName="trailerUnit"
@@ -332,6 +347,7 @@
             [cardName]="'Violation'"
             [isCardOpen]="violations.length > 0"
             [hasScrollBody]="violations.length > 10"
+            [animationsDisabled]="true"
           >
             <div
               formArrayName="violations"
@@ -361,7 +377,7 @@
                     ></svg-icon>
                     <span class="violation-category-text">{{
                       violation.get("categoryId").value
-                      }}</span>
+                    }}</span>
                   </p>
                   <p class="violation-unit">
                     {{ violation.get("unit").value }}
@@ -407,6 +423,7 @@
           [hasCounter]="documents.length ? documents.length : 0"
           [cardName]="'Documents'"
           [isCardOpen]="documents.length > 0"
+          [animationsDisabled]="true"
         >
           <app-ta-upload-files
             [files]="documents"
@@ -424,6 +441,7 @@
         <app-ta-custom-card
           [cardName]="'Authority Details'"
           [isCardOpen]="true"
+          [animationsDisabled]="true"
         >
           <div
             class="violation-modal-autority-details-row violation-modal-autority-details-row-1"
@@ -495,6 +513,7 @@
         <app-ta-custom-card
           [cardName]="'Location & Shipping Info'"
           [isCardOpen]="true"
+          [animationsDisabled]="true"
         >
           <div class="row">
             <div class="col-4">
@@ -600,6 +619,7 @@
           [cardName]="'Special Checks'"
           [isCardOpen]="isSpecialChecksOpen"
           (onOpenCard)="isSpecialChecksOpen = $event"
+          [animationsDisabled]="true"
         >
           <div class="violation-special-checks">
             <div

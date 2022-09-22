@@ -16,7 +16,10 @@
   (onTabHeaderChange)="onModalHeaderTabChange($event)"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="repairOrderForm" class="form-container form-container-without-mb">
+  <form
+    [formGroup]="repairOrderForm"
+    class="form-container form-container-without-mb"
+  >
     <div class="repair-modal-bill-first-row">
       <app-ta-tab-switch
         [tabs]="typeOfRepair"
@@ -163,6 +166,7 @@
         [hasBodyData]="items.length > 0"
         [hasScrollBody]="items.length > 10"
         (onActionEvent)="addItems($event)"
+        [animationsDisabled]="true"
       >
         <div
           formArrayName="items"
@@ -192,7 +196,7 @@
               }"
             >
               <p>
-                {{ item.get('id').value }}
+                {{ item.get("id").value }}
               </p>
               <div class="desc-pm-container">
                 <app-ta-input
@@ -324,6 +328,7 @@
       [hasCounter]="pickedServices() ? pickedServices() : 0"
       [cardName]="'Service'"
       [isCardOpen]="true"
+      [animationsDisabled]="true"
     >
       <div class="repair-shop-services">
         <div
@@ -342,6 +347,7 @@
         [hasCounter]="documents.length ? documents.length : 0"
         [cardName]="'Documents'"
         [isCardOpen]="documents.length > 0"
+        [animationsDisabled]="true"
       >
         <app-ta-upload-files
           [files]="documents"

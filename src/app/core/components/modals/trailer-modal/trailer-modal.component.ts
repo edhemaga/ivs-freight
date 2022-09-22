@@ -541,8 +541,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           this.selectedReeferType = res.reeferUnit ? res.reeferUnit : null;
           this.trailerStatus = res.status !== 1;
 
-          console.log('Trailer make: ', this.selectedColor);
-
           this.modalService.changeModalStatus({
             name: 'deactivate',
             status: this.trailerStatus,

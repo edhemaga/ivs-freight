@@ -419,7 +419,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   private onPayTypeSelected(payType: number): void {
-    console.log(payType);
     if (payType === 1) {
       if (['Solo', 'Combined'].includes(this.fleetType)) {
         if (!this.hasMilesSameRate) {
@@ -681,7 +680,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectDropdown(event: any, action: string): void {
-    console.log(event);
     switch (action) {
       case 'bank': {
         this.selectedBank = event;
@@ -900,8 +898,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.driverForm.get('mvrExpiration').patchValue(data.mvrExpiration);
           this.fleetType = data.fleetType;
           this.hasMilesSameRate = data.loadedAndEmptySameRate;
-          console.log('DROPDOWNMS');
-          console.log(data);
+
           if (['Solo', 'Combined'].includes(this.fleetType)) {
             this.driverForm
               .get('soloEmptyMile')

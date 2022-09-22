@@ -14,7 +14,10 @@
   [isModalValid]="registrationForm.valid"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="registrationForm" class="form-container form-container-without-mb">
+  <form
+    [formGroup]="registrationForm"
+    class="form-container form-container-without-mb"
+  >
     <div class="row">
       <div class="col-6">
         <app-ta-input
@@ -83,6 +86,7 @@
         [hasCounter]="documents.length ? documents.length : 0"
         [cardName]="'Documents'"
         [isCardOpen]="documents.length > 0"
+        [animationsDisabled]="true"
       >
         <app-ta-upload-files
           [files]="documents"

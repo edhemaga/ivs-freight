@@ -141,6 +141,7 @@
       [hasCounter]="pickedServices() ? pickedServices() : 0"
       [cardName]="'Service'"
       [isCardOpen]="true"
+      [animationsDisabled]="true"
     >
       <div class="repair-shop-services">
         <div
@@ -160,6 +161,7 @@
         [cardName]="'Open Hours'"
         [isCardOpen]="true"
         [hasBodyData]="true"
+        [animationsDisabled]="true"
       >
         <div
           formArrayName="openHours"
@@ -209,7 +211,11 @@
     </div>
 
     <!-- Bank Account -->
-    <app-ta-custom-card [cardName]="'Bank Account'" [isCardOpen]="true">
+    <app-ta-custom-card
+      [cardName]="'Bank Account'"
+      [isCardOpen]="true"
+      [animationsDisabled]="true"
+    >
       <div class="custom-bank-row">
         <div class="bank-field">
           <app-ta-input-dropdown

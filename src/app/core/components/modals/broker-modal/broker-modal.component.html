@@ -322,7 +322,11 @@
             </div>
           </div>
         </div>
-        <app-ta-custom-card [cardName]="'Billing'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Billing'"
+          [isCardOpen]="true"
+          [animationsDisabled]="true"
+        >
           <div
             class="broker-billing last-row"
             [ngClass]="{
@@ -409,6 +413,7 @@
           [isCardOpen]="brokerContacts.length > 0"
           [hasScrollBody]="brokerContacts.length > 10"
           (onActionEvent)="addBrokerContacts($event)"
+          [animationsDisabled]="true"
         >
           <div
             formArrayName="brokerContacts"
@@ -543,6 +548,7 @@
           [hasScrollBody]="reviews.length > 6"
           [disableMultipleReviews]="disableOneMoreReview"
           (onActionEvent)="createReview()"
+          [animationsDisabled]="true"
         >
           <div class="no-review-broker" *ngIf="!reviews.length">
             <svg-icon

@@ -135,7 +135,11 @@
           </div>
         </div>
         <!-- Payroll -->
-        <app-ta-custom-card [cardName]="'Payroll'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Payroll'"
+          [isCardOpen]="true"
+          [animationsDisabled]="true"
+        >
           <div
             class="custom-row-paytype-driver"
             [ngClass]="{
@@ -544,7 +548,7 @@
           [isCardOpen]="offDutyLocations.length > 0"
           [hasBodyData]="offDutyLocations.length > 0"
           (onActionEvent)="addOffDutyLocation($event)"
-          [animationsDisabled]="false"
+          [animationsDisabled]="true"
         >
           <div
             formArrayName="offDutyLocations"
@@ -611,7 +615,7 @@
             [hasCounter]="documents.length ? documents.length : 0"
             [cardName]="'Document'"
             [isCardOpen]="documents.length > 0"
-            [animationsDisabled]="false"
+            [animationsDisabled]="true"
           >
             <app-ta-upload-files
               [files]="documents"
@@ -624,7 +628,7 @@
         <app-ta-custom-card
           [cardName]="'Emergency Contact'"
           [isCardOpen]="true"
-          [animationsDisabled]="false"
+          [animationsDisabled]="true"
         >
           <div class="emergency-contact">
             <app-ta-input
@@ -671,7 +675,11 @@
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
-        <app-ta-custom-card [cardName]="'Profile Picture'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Profile Picture'"
+          [isCardOpen]="true"
+          [animationsDisabled]="true"
+        >
           <app-ta-logo-change
             [imageUrl]="this.driverForm.get('avatar').value"
             [customClass]="'modal-container-M'"
@@ -683,6 +691,7 @@
           <app-ta-custom-card
             [cardName]="'Cards & MVR Exp.'"
             [isCardOpen]="true"
+            [animationsDisabled]="true"
           >
             <div
               class="driver-twic-mvr-row"
@@ -747,7 +756,11 @@
           </app-ta-custom-card>
         </div>
 
-        <app-ta-custom-card [cardName]="'Notification'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Notification'"
+          [isCardOpen]="true"
+          [animationsDisabled]="true"
+        >
           <div class="driver-notification driver-notification-general">
             <p>GENERAL</p>
             <app-ta-checkbox

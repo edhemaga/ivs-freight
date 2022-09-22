@@ -115,8 +115,11 @@
       [hasBodyData]="comments.length > 0"
       [hasScrollBody]="comments.length > 4"
       [disabledCard]="editData?.type !== 'edit'"
-      [hasActionSvg]="editData?.type === 'edit' ? 'assets/svg/common/ic_plus.svg' : ''"
+      [hasActionSvg]="
+        editData?.type === 'edit' ? 'assets/svg/common/ic_plus.svg' : ''
+      "
       (onActionEvent)="createComment()"
+      [animationsDisabled]="true"
     >
       <app-ta-user-review
         *ngIf="comments.length"
@@ -130,6 +133,7 @@
         [hasCounter]="documents.length ? documents.length : 0"
         [cardName]="'Documents'"
         [isCardOpen]="documents.length > 0"
+        [animationsDisabled]="true"
       >
         <app-ta-upload-files
           [files]="documents"
