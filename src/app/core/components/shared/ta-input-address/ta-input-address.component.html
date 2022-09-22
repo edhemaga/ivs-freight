@@ -124,10 +124,23 @@
         focusInput &&
         !isVisibleCommands &&
         !inputConfig.blackInput,
+      'valid-focus-out-filled':
+        (activeAddress?.address
+          ? activeAddress?.address === getSuperControl.value
+          : false) &&
+        !focusInput &&
+        !isVisibleCommands &&
+        !inputConfig.blackInput,
       'invalid-focus-in':
         getSuperControl.value &&
         invalidAddress &&
         focusInput &&
+        !inputConfig.blackInput,
+      'invalid-focus-out-filled':
+        getSuperControl.value &&
+        invalidAddress &&
+        !focusInput &&
+        !isVisibleCommands &&
         !inputConfig.blackInput,
       'has-input-icon': inputConfig.placeholderIcon,
       'input-commands': inputConfig.commands?.active && isVisibleCommands,

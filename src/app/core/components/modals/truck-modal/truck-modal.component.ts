@@ -170,14 +170,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   private createForm(): void {
     this.truckForm = this.formBuilder.group({
       // Basic Tab
-      truckNumber: [
-        null,
-        [
-          Validators.required,
-          Validators.maxLength(6),
-          ...vehicleUnitValidation,
-        ],
-      ],
+      truckNumber: [null, [Validators.required, ...vehicleUnitValidation]],
       truckTypeId: [null, Validators.required],
       vin: [null, [Validators.required, ...vinNumberValidation]],
       truckMakeId: [null, Validators.required],

@@ -127,14 +127,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.trailerForm = this.formBuilder.group({
       companyOwned: [true],
-      trailerNumber: [
-        null,
-        [
-          Validators.required,
-          Validators.maxLength(8),
-          ...vehicleUnitValidation,
-        ],
-      ],
+      trailerNumber: [null, [Validators.required, ...vehicleUnitValidation]],
       trailerTypeId: [null, [Validators.required]],
       vin: [null, [Validators.required, ...vinNumberValidation]],
       trailerMakeId: [null, [Validators.required]],

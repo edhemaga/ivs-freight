@@ -571,11 +571,27 @@
     (keydown)="changeSelection($event, true)"
     [ngClass]="{
       focused: focusInput,
+      'valid-focus-out-filled':
+        getSuperControl.value &&
+        getSuperControl.valid &&
+        !focusInput &&
+        !isVisiblePasswordEye &&
+        !isVisibleCommands &&
+        !inputConfig?.dropdownImageInput?.url &&
+        !inputConfig.blackInput,
       'invalid-focus-in':
         inputConfig.isRequired &&
         getSuperControl.value &&
         getSuperControl.invalid &&
-        focusInput
+        focusInput,
+      'invalid-focus-out-filled':
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        !focusInput &&
+        !isVisiblePasswordEye &&
+        !isVisibleCommands &&
+        !inputConfig?.dropdownImageInput?.url &&
+        !inputConfig.blackInput
     }"
   >
     <span
