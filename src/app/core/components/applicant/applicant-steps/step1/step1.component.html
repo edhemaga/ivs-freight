@@ -37,6 +37,7 @@
       [customClass]="
         selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
       "
+      [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
     ></app-ta-checkbox>
   </div>
 
@@ -797,6 +798,7 @@
               <app-ta-input-radiobuttons
                 #cmp
                 [buttons]="question.answerChoices"
+                [disabled]="selectedMode === 'REVIEW_MODE'"
                 (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
               ></app-ta-input-radiobuttons>
             </div>
@@ -875,24 +877,7 @@
     [filledCorrectly]="
       selectedMode === 'APPLICANT_MODE' && personalInfoForm.valid
     "
-    [hasIncorrectFields]="
-      selectedMode === 'REVIEW_MODE' &&
-      (personalInfoForm.get('firstRowReview').value ||
-        personalInfoForm.get('secondRowReview').value ||
-        personalInfoForm.get('thirdRowReview').value ||
-        personalInfoForm.get('fourthRowReview').value ||
-        personalInfoForm.get('questionReview1').value ||
-        personalInfoForm.get('questionReview2').value ||
-        personalInfoForm.get('questionReview3').value ||
-        personalInfoForm.get('questionReview4').value ||
-        personalInfoForm.get('questionReview5').value ||
-        personalInfoForm.get('questionReview6').value ||
-        previousAddresses.controls[0]?.get('cardReview1').value ||
-        previousAddresses.controls[1]?.get('cardReview2').value ||
-        previousAddresses.controls[2]?.get('cardReview3').value ||
-        previousAddresses.controls[3]?.get('cardReview4').value ||
-        previousAddresses.controls[4]?.get('cardReview5').value)
-    "
+    [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && hasIncorrectFields"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

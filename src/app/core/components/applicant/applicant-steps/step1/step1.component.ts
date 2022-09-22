@@ -167,7 +167,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     },
   ];
   public cardReviewIndex: number = 0;
-  public hasIncorrectFields: any;
+  public hasIncorrectFields: boolean = false;
 
   public questions: ApplicantQuestion[] = [
     {
@@ -352,12 +352,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         .subscribe((res) => {
           this.patchStepValues(res);
         });
-
-      this.hasIncorrectFields = this.openAnnotationArray
-        .map((item) => item.lineInputs)
-        .some((item) => item.some((item) => item));
-
-      console.log('incorect', this.hasIncorrectFields);
     }
   }
 
@@ -1023,6 +1017,18 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             break;
         }
       }
+    }
+
+    const inputFieldsArray = JSON.stringify(
+      this.openAnnotationArray
+        .filter((item) => Object.keys(item).length !== 0)
+        .map((item) => item.lineInputs)
+    );
+
+    if (inputFieldsArray.includes('true')) {
+      this.hasIncorrectFields = true;
+    } else {
+      this.hasIncorrectFields = false;
     }
   }
 
