@@ -146,7 +146,7 @@
             *ngIf="broker.payTerm.name === 'Unlimited'"
             class="invoice-agein-unlimited"
           >
-            Avg. <span class="avg-days-invoice">42 Days</span>
+            Avg. <span class="avg-days-invoice">{{broker?.invoiceAgeingGroup?.averageDays}} Days</span>
           </div>
         </div>
         <app-progress-invoices
@@ -198,7 +198,7 @@
               <span  class="value-ageing">{{
                 broker?.availableCredit | formatCurrency
               }}</span>
-              <div class="percntage-broker">{{ getPercntageOfPaid }}%</div>
+              <div class="percntage-broker">{{ getPercntageOfPaid.toFixed(0) }}%</div>
             </div>
           </div>
         </div>
