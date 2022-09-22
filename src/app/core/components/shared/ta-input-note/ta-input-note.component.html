@@ -2,7 +2,7 @@
   <div *ngIf="isVisibleDivider" class="divider"></div>
   <div class="note-header" [class.active]="_isVisibleNote">
     <div class="note-label" (click)="openNote()">Note</div>
-    <div class="note_tools_container">
+  <div class="note_tools_container" (click)="!_isVisibleNote ? openNote() : ''">
       <app-ta-note-container
         [isExpanded]="_isVisibleNote"
         [range]="range"

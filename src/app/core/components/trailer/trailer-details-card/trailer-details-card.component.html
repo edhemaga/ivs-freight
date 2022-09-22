@@ -258,7 +258,7 @@
                 position="top"
                 class="hide-show"
               >
-                {{ toggleOwner ? "HIDE CONTACT" : "" }}
+              
               </span>
             </div>
           </div>
@@ -347,7 +347,7 @@
           >
             <app-ta-re-card
               [cardDocumentCounter]="1"
-              (resizePage)="toggleResizePage(i)"
+              (resizePage)="toggleResizePage(i,'registration')"
               [cardNameCommon]="reg.licensePlate"
               [hasCopyIcon]="true"
               [options]="dataEdit"
@@ -370,7 +370,7 @@
                   </div>
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler[i] }"
+                    [ngClass]="{ 'second-progress': toggler[i+'registration'] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
@@ -382,7 +382,7 @@
                     </div>
                   </div>
                 </div>
-                <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+                <div [@showHideCardBody]="toggler[i+'registration'] ? 'true' : 'false'">
                   <div class="divider"></div>
                   <div class="card-note">
                     <app-ta-input-note
@@ -425,17 +425,17 @@
               [options]="dataEdit"
               [cardNameCommon]="fhwa.issueDate | formatDateP"
               [optionsId]="fhwa.id"
-              (resizePage)="toggleResizePage(i)"
+              (resizePage)="toggleResizePage(i,'inspection')"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler }"
+                    [ngClass]="{ 'second-progress': toggler[i+'inspection'] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
-                        [expireDate]="fhwa.issueDate | formatDateP"
+                        [expireDate]="fhwa.expDate | formatDateP"
                         [startDate]="fhwa.issueDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
@@ -443,11 +443,11 @@
                     </div>
                   </div>
                 </div>
-                <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+                <div [@showHideCardBody]="toggler[i+'inspection']  ? 'true' : 'false'">
                   <div class="divider"></div>
                   <div class="card-note">
                     <app-ta-input-note
-                      [formControl]="registrationNote"
+                      [formControl]="inspectionNote"
                       [isVisibleDivider]="false"
                       [placeholder]="'Write something.'"
                       [customClass]="'note-small'"
@@ -483,7 +483,7 @@
           >
             <app-ta-re-card
               [cardDocumentCounter]="1"
-              (resizePage)="toggleResizePage(i)"
+              (resizePage)="toggleResizePage(i,'title')"
               [cardNameCommon]="title.number"
               [options]="dataEdit"
               [optionsId]="title.id"
@@ -506,19 +506,19 @@
                   </div>
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler[i] }"
+                    [ngClass]="{ 'second-progress': toggler[i+'title']  }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
                         [expireDate]="title.issueDate | formatDateP"
-                        [startDate]="title.issueDate | formatDateP"
+                        [startDate]="title.purchaseDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>
                     </div>
                   </div>
                 </div>
-                <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+                <div [@showHideCardBody]="toggler[i+'title']  ? 'true' : 'false'">
                   <div class="divider"></div>
 
                   <div class="card-note">

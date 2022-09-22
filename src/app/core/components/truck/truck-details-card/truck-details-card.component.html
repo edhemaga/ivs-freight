@@ -140,7 +140,7 @@
               {{ truck?.emptyWeight | taThousandSeparator }} Ibs
             </div>
           </div>
-          <div *ngIf="truck?.truckEngineType.name" class="common-template-item">
+          <div *ngIf="truck?.truckEngineType?.name" class="common-template-item">
             <div class="common-template-item-name">Engine Type</div>
             <div class="common-template-item-value">
               {{ truck?.truckEngineType.name }}
@@ -152,7 +152,7 @@
               {{ truck?.axles }}
             </div>
           </div>
-          <div *ngIf="truck?.tireSize.name" class="common-template-item">
+          <div *ngIf="truck?.tireSize?.name" class="common-template-item">
             <div class="common-template-item-name">Tire size</div>
             <div class="common-template-item-value">
               {{ truck?.tireSize.name }}
@@ -197,7 +197,7 @@
         </div>
         <div
           class="wrapper-owner"
-          [@showHideCardBody]="toggler ? 'true' : 'false'"
+          [@showHideCardBody]="togglerOwner ? 'true' : 'false'"
         >
           <div class="owner-items">
             <svg-icon
@@ -221,12 +221,12 @@
             </p>
           </div>
         </div>
-        <div [ngClass]="{ 'rotate-owner': toggler }">
-          <div (click)="toggler = !toggler" class="single-icon-wrapper">
+        <div [ngClass]="{ 'rotate-owner': togglerOwner }">
+          <div (click)="togglerOwner = !togglerOwner" class="single-icon-wrapper">
             <span
               [tooltipBackground]="'#6c6c6c'"
               ngbTooltip
-              [mainTooltip]="toggler ? 'Hide Contact' : 'Show More'"
+              [mainTooltip]="togglerOwner ? 'Hide Contact' : 'Show More'"
               position="top"
             >
               <svg-icon
@@ -237,11 +237,11 @@
             <span
               tooltipBackground="#6c6c6c"
               ngbTooltip
-              [mainTooltip]="toggler ? 'Hide Contact' : 'Show More'"
+              [mainTooltip]="togglerOwner ? 'Hide Contact' : 'Show More'"
               position="top"
               class="hide-show"
             >
-              {{ toggler ? "HIDE CONTACT" : "" }}
+              
             </span>
           </div>
         </div>
@@ -547,8 +547,8 @@
                     </div>
                   </div>
                 </div>
-                <div class="divider" *ngIf="toggler[i + 'registration']"></div>
                 <div *ngIf="toggler[i + 'registration']" class="note-wrapper">
+                  <div class="divider"></div>
                   <app-ta-input-note
                     [formControl]="registrationNote"
                     [isVisibleDivider]="false"
@@ -577,29 +577,30 @@
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let fhwa of truck?.inspections; trackBy: identity">
+          <div *ngFor="let fhwa of truck?.inspections; let i=index; trackBy: identity">
             <app-ta-re-card
               [options]="dataEdit"
               [cardNameCommon]="fhwa.issueDate | formatDateP"
               [expDateClose]="'04/04/24' | formatDateP"
+              (resizePage)="toggleResizePage(i , 'inspection')"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler }"
+                    [ngClass]="{ 'second-progress': toggler[i+'inspection'] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
-                        [expireDate]="'04/04/25'"
-                        [startDate]="formatDate(fhwa.issueDate)"
+                        [expireDate]="fhwa.expDate | formatDateP"
+                        [startDate]="fhwa.issueDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>
                     </div>
                   </div>
                 </div>
-                <div *ngIf="toggler" class="note-wrapper">
+                <div *ngIf="toggler[i+'inspection']" class="note-wrapper">
                   <app-ta-input-note
                     [formControl]="fhwaNote"
                     [placeholder]="'Write something.'"
@@ -628,7 +629,7 @@
           <div *ngFor="let title of truck?.titles; trackBy: identity">
             <app-ta-re-card
               [cardDocumentCounter]="1"
-              (resizePage)="toggleResizePage($event)"
+              (resizePage)="toggleResizePage(i , 'title')"
               [cardNameCommon]="title.number"
               [options]="dataEdit"
               [expDateClose]="'04/04/27' | formatDateP"
@@ -649,20 +650,20 @@
                   </div>
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler }"
+                    [ngClass]="{ 'second-progress': toggler[i + 'title'] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
-                        [expireDate]="'04/04/27'"
-                        [startDate]="title.issueDate | formatDateP"
+                        [expireDate]="title.issueDate | formatDateP"
+                        [startDate]="title.purchaseDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>
                     </div>
                   </div>
                 </div>
-                <div class="divider" *ngIf="toggler"></div>
-                <div *ngIf="toggler" class="note-wrapper">
+                <div *ngIf="toggler[i + 'title']" class="note-wrapper">
+                  <div class="divider" ></div>
                   <app-ta-input-note
                     [formControl]="titleNote"
                     [placeholder]="'Write something.'"

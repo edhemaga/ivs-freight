@@ -67,10 +67,10 @@
                   >
                 </span>
 
-                <span *ngIf="repairs.total" class="cost">{{
+                <span *ngIf="repairs?.total" class="cost">{{
                   repairs.total | formatCurrency
                 }}</span>
-                <div *ngIf="!repairs.invoice" class="button-wrapper-shop">
+                <div *ngIf="!repairs?.invoice" class="button-wrapper-shop">
                   Finish Order
                 </div>
                 <div
@@ -131,7 +131,7 @@
     <div *ngSwitchCase="'repaired-vehicle'">
       <div
         class="repaired-vehicle-container"
-        *ngIf="shopData.data.repairsByUnit.length"
+        *ngIf="shopData?.data?.repairsByUnit?.length"
       >
         <div class="repair-vehicle-header">
           <span class="repaier-headers">UNIT</span>
@@ -199,11 +199,11 @@
         </div>
       </div>
       <div class="review-container">
-        <div *ngIf="!reviewsRepair.length" class="no-reviews-details">
+        <div *ngIf="!reviewsRepair?.length" class="no-reviews-details">
           No review
         </div>
         <app-ta-user-review
-          *ngIf="reviewsRepair.length"
+          *ngIf="reviewsRepair?.length"
           [reviewData]="reviewsRepair"
           [isNewReview]="reviewsRepair[0].isNewReview"
           (changeReviewsEvent)="changeReviewsEvent($event)"

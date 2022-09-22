@@ -105,7 +105,7 @@
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [expireDate]="fhwa.issueDate | setFutureYear"
+                    [expireDate]="fhwa.expDate | formatDateP"
                     [startDate]="fhwa.issueDate | formatDateP"
                     [expiresSettings]="'details'"
                   >
@@ -172,8 +172,8 @@
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [expireDate]="title.issueDate | formatDateP"
-                    [startDate]="title.issueDate | formatDateP"
+                  [expireDate]="title.issueDate | formatDateP"
+                  [startDate]="title.purchaseDate | formatDateP"
                     [expiresSettings]="'details'"
                   >
                   </app-truckassist-progress-expiration>
@@ -201,7 +201,7 @@
       <div class="card-width" *ngSwitchCase="'lease-purchase'">
         <app-ta-re-card
           [hasSvg]="'assets/svg/common/green_arrow_down.svg'"
-          (resizePage)="toggleResizePage(5)"
+          (resizePage)="toggleResizePage(5+'lease')"
           [cardNameCommon]="'KSKA FREIGHT, INC'"
           [isCardOpen]="true"
           [expDateClose]="'04/04/27' | formatDateP"
@@ -265,7 +265,7 @@
             <!----------Progress Card---------->
             <div
               class="details-progress-container purchase-progress"
-              [ngClass]="{ 'no-toggler': !toggler[5] }"
+              [ngClass]="{ 'no-toggler': !toggler[5+'lease'] }"
             >
               <app-ta-currency-progress-bar
                 [template]="'payments'"
@@ -277,7 +277,7 @@
             </div>
 
             <!----------Amortization table Card---------->
-            <div [@showHideCardBody]="toggler[5] ? 'true' : 'false'">
+            <div [@showHideCardBody]="toggler[5+'lease'] ? 'true' : 'false'">
               <div class="details-document-container amortization-details">
                 <div class="divider"></div>
                 <div class="icon-counter-wrapper">
