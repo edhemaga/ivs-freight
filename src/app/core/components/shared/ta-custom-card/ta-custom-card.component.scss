@@ -417,18 +417,6 @@
 
   // CARD BODY
   .ta-card-body {
-    overflow: hidden;
-    transition: max-height 0.3s ease-in-out;
-
-    &.unopened {
-      max-height: 0;
-    }
-
-    &.active {
-      transition: max-height 0.3s ease-in-out;
-      max-height: 600px;
-    }
-
     &.scroll {
       overflow-y: scroll !important;
       scrollbar-width: none !important; /* Firefox */
@@ -453,6 +441,10 @@
         background-color: rgb(229, 229, 229, 0.2);
         color: #6c6c6c;
       }
+    }
+
+    .modal-holder {
+      margin-bottom: 22px;
     }
   }
 }

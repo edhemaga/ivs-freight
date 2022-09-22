@@ -3,7 +3,6 @@ import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import {
@@ -54,10 +53,7 @@ import {
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
   styleUrls: ['./driver-modal.component.scss'],
-  animations: [
-    tab_modal_animation('animationTabsModal'),
-    card_modal_animation('showHidePayroll', '6px'),
-  ],
+  animations: [tab_modal_animation('animationTabsModal')],
   providers: [ModalService, FormService, BankVerificationService],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
