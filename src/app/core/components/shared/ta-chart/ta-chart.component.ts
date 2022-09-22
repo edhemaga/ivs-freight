@@ -6,6 +6,8 @@ import {
   ChangeDetectorRef,
   ElementRef,
   HostListener,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
@@ -25,6 +27,7 @@ export class TaChartComponent implements OnInit {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
   lineChartData: ChartDataSets[] = [];
   @ViewChild('hoverDataHolder') hoverDataHolder: ElementRef;
+  @Output() hoverOtherChart: EventEmitter<any> = new EventEmitter();
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -102,7 +105,7 @@ export class TaChartComponent implements OnInit {
 
   setChartOptions() {
     this.lineChartOptions = {
-      responsive: true,
+      responsive: this.chartConfig['dontUseResponsive'] ? false : true,
       maintainAspectRatio: false,
       cutoutPercentage: 90,
       animation: {
@@ -947,6 +950,10 @@ export class TaChartComponent implements OnInit {
   }
 
   showChartTooltip(value) {
+    if (this.chartConfig['hoverOtherChart']) {
+      this.hoverOtherChart.emit(value);
+      return false;
+    }
     this.animationDuration = 0;
     this.hoveringStatus = true;
     const canvas = this.chart.chart.canvas;
@@ -965,10 +972,14 @@ export class TaChartComponent implements OnInit {
         const elWidth = xPoint1 - xPoint2;
         if (this.axesProperties?.horizontalAxes?.showGridLines) {
           xAxis['_gridLineItems'].map((item, i) => {
-            if (i) {
+            if (i && i != xAxis['_gridLineItems'].length - 1) {
               xAxis['_gridLineItems'][i].color = '#DADADA';
             }
-            if (i == value || i == value + 1) {
+            if (
+              i == value ||
+              i == value + 1 ||
+              i == xAxis['_gridLineItems'].length - 1
+            ) {
               xAxis['_gridLineItems'][i].color = 'transparent';
             }
           });
@@ -987,6 +998,14 @@ export class TaChartComponent implements OnInit {
             ? this.hoverDataHolder.nativeElement.offsetWidth + 16
             : 0;
 
+          if (!clientWidth && this.chartConfig['tooltipOffset']) {
+            if (this.selectedDataRows.length > this.dataMaxRows) {
+              clientWidth = this.chartConfig['tooltipOffset']['max'];
+            } else {
+              clientWidth = this.chartConfig['tooltipOffset']['min'];
+            }
+          }
+
           this.hoverColumnHeight = this.chartConfig[
             'startGridBackgroundFromZero'
           ]
@@ -999,11 +1018,7 @@ export class TaChartComponent implements OnInit {
             ? xAxis['_gridLineItems'][value]['x2'] + elWidth
             : xAxis['_gridLineItems'][value]['x2'];
 
-          if (
-            this.hoverDataHolder &&
-            this.hoverDataHolder.nativeElement &&
-            xPos + clientWidth > canvas.width
-          ) {
+          if (xPos + clientWidth > canvas.width) {
             oversizedHover = true;
           }
           if (oversizedHover) {
@@ -1016,7 +1031,9 @@ export class TaChartComponent implements OnInit {
     });
 
     this.showHoverData = true;
-    this.ref.detectChanges();
+    setTimeout(() => {
+      this.ref.detectChanges();
+    });
   }
 
   chartHoverOut() {
@@ -1032,6 +1049,9 @@ export class TaChartComponent implements OnInit {
       xAxis['_gridLineItems'].map((item, i) => {
         if (i) {
           xAxis['_gridLineItems'][i].color = '#DADADA';
+        }
+        if (i == xAxis['_gridLineItems'].length - 1) {
+          xAxis['_gridLineItems'][i].color = 'transparent';
         }
       });
     }

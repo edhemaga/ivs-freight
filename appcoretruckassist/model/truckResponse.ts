@@ -49,6 +49,15 @@ export interface TruckResponse {
     insurancePolicy?: string | null;
     mileage?: number | null;
     ipasEzpass?: string | null;
+    engineOilType?: EnumValue;
+    gearRatio?: EnumValue;
+    apUnit?: EnumValue;
+    tollTransponder?: EnumValue;
+    doubleBunk?: boolean | null;
+    refrigerator?: boolean | null;
+    dcInventer?: boolean | null;
+    blower?: boolean | null;
+    pto?: boolean | null;
     createdAt?: string;
     updatedAt?: string;
     registrations?: Array<RegistrationResponse> | null;

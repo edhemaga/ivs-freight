@@ -1,4 +1,10 @@
 @import "../broker-details.component.scss";
+app-broker-details-single {
+    .dots-vertical {
+        position: relative;
+        right: -10px;
+    }
+}
 .contact-wrapper {
     background-color: $color-white;
     border-radius: 3px;
@@ -84,7 +90,7 @@
         // height: calc(110vh - 68px);
         .t-body-broker-items {
             display: grid;
-            grid-template-columns: 91px 89px 124px 126px 173px 90px;
+            grid-template-columns: 91px 89px 124px 126px 153px 87px;
             align-items: center;
             padding: 0 8px;
             margin: 2px 0;
@@ -292,6 +298,17 @@
 //     right: 10px;
 // }
 .hours {
+    &::-moz-selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+    }
+}
+.load-total-rate {
+    text-align: right;
     &::-moz-selection {
         color: #6c6c6c;
         background: rgb(108, 108, 108, 0.2);

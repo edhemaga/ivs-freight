@@ -81,6 +81,7 @@ export class DashboardTopDriverComponent implements OnInit, OnDestroy {
     hasPercentage: true,
     allowAnimation: true,
     offset: true,
+    tooltipOffset: {min: 105, max: 279},
     dataLabels: [
       'MAR',
       '',
@@ -357,6 +358,7 @@ export class DashboardTopDriverComponent implements OnInit, OnDestroy {
       driversList: drivers,
       allowAnimation: true,
       noChartImage: 'assets/svg/common/no_data_pay.svg',
+      dontUseResponsive: true
     };
 
     if (this.doughnutChart) {
