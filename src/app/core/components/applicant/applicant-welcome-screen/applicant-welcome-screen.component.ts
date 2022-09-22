@@ -63,7 +63,7 @@ export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
 
           this.applicantId = { id: res.personalInfo.applicantId };
 
-          console.log(this.companyInfo);
+          console.log('res', res);
         },
         error: (err) => {
           console.log(err);

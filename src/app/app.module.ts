@@ -60,7 +60,7 @@ import { configFactory } from './app.config';
       preventDuplicates: true,
       enableHtml: true,
       timeOut: 5000,
-      toastComponent: CustomToastMessagesComponent, // added custom toast! 
+      toastComponent: CustomToastMessagesComponent, // added custom toast!
     }),
     NgIdleModule.forRoot(),
     ApiModule,
@@ -78,7 +78,6 @@ import { configFactory } from './app.config';
       deps: [UserLoggedService],
       multi: false,
     },
-    { provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true },
     EncryptionDecryptionService,
     GoogleMapsAPIWrapper,
   ],

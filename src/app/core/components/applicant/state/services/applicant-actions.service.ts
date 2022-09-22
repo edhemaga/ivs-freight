@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 import { ApplicantService } from './../../../../../../../appcoretruckassist/api/applicant.service';
+
+import { ApplicantStore } from '../store/applicant.store';
 
 import {
   VerifyApplicantCommand,
@@ -20,6 +22,7 @@ import {
   CreateAccidentRecordCommand,
   CreateApplicantCdlCommand,
   CreateWorkExperienceCommand,
+  CreatePersonalInfoReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -30,7 +33,10 @@ export class ApplicantActionsService {
     null
   );
 
-  constructor(private applicantService: ApplicantService) {}
+  constructor(
+    private applicantService: ApplicantService,
+    private applicantStore: ApplicantStore
+  ) {}
 
   public getApplicantInfo(data: any) {
     this.applicantInfoSubject.next(data);
@@ -40,20 +46,16 @@ export class ApplicantActionsService {
     return this.applicantInfoSubject.asObservable();
   }
 
-  /* BACKEND POST ACTION FUNCTIONS */
+  /* BACKEND POST ACTION FUNCTIONS -  APPLICANT MODE */
 
-  public verifyApplicant(
-    data: VerifyApplicantCommand
-  ): Observable<any> {
-    /* return this.applicantService.apiApplicantVerifyPost(data); */
-    return;
+  public verifyApplicant(data: VerifyApplicantCommand): Observable<any> {
+    return this.applicantService.apiApplicantAdminVerifyPost(data);
   }
 
   public acceptApplicant(
     data: AcceptApplicationCommand
   ): Observable<ApplicantResponse> {
-    /* return this.applicantService.apiApplicantAcceptPost(data); */
-    return;
+    return this.applicantService.apiApplicantAdminAcceptPost(data);
   }
 
   public createWorkExperience(
@@ -122,9 +124,21 @@ export class ApplicantActionsService {
     return this.applicantService.apiApplicantDriverrightsPut(data);
   }
 
+  /* BACKEND POST ACTION FUNCTIONS -  REVIEW MODE */
+
+  public createPersonalInfoReview(
+    data: CreatePersonalInfoReviewCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantPersonalReviewPost(data);
+  }
+
   /* BACKEND GET ACTION FUNCTIONS */
 
   public getApplicantById(id: number): Observable<ApplicantResponse> {
-    return this.applicantService.apiApplicantIdGet(id);
+    return this.applicantService.apiApplicantIdGet(id).pipe(
+      tap((res: ApplicantResponse) => {
+        this.applicantStore.add(res);
+      })
+    );
   }
 }

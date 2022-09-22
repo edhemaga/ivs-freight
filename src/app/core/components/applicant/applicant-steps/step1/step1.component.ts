@@ -2,26 +2,25 @@ import {
   bankValidation,
   lastNameValidation,
 } from './../../../shared/ta-input/ta-input.regex-validations';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChildren,
+  QueryList,
+  AfterViewInit,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpResponseBase } from '@angular/common/http';
-
-import { anyInputInLineIncorrect } from '../../state/utils/utils';
-
-import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { ApplicantQuestion } from '../../state/model/applicant-question.model';
-import { BankResponse } from 'appcoretruckassist/model/bankResponse';
+import { anyInputInLineIncorrect } from '../../state/utils/utils';
+
 import {
-  AddressEntity,
-  CreateResponse,
-  UpdatePersonalInfoCommand,
-} from 'appcoretruckassist/model/models';
+  convertDateToBackend,
+  convertDateFromBackend,
+} from 'src/app/core/utils/methods.calculations';
 
 import {
   phoneFaxRegex,
@@ -39,17 +38,36 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
+import { ApplicantQuery } from '../../state/store/applicant.query';
+
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { ApplicantQuestion } from '../../state/model/applicant-question.model';
+import { BankResponse } from 'appcoretruckassist/model/bankResponse';
+import {
+  AddressEntity,
+  CreateResponse,
+  UpdatePersonalInfoCommand,
+  CreatePersonalInfoReviewCommand,
+} from 'appcoretruckassist/model/models';
+
 @Component({
   selector: 'app-step1',
   templateUrl: './step1.component.html',
   styleUrls: ['./step1.component.scss'],
 })
-export class Step1Component implements OnInit, OnDestroy {
+export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChildren('cmp') components: QueryList<any>;
+
   private destroy$ = new Subject<void>();
 
   public selectedMode: string = SelectedMode.REVIEW;
 
+  public personalInfoRadios: any;
+
   public applicantId: number;
+  public personalInfoId: number;
+  public previousAddressesId: number;
 
   public personalInfoForm: FormGroup;
 
@@ -149,6 +167,7 @@ export class Step1Component implements OnInit, OnDestroy {
     },
   ];
   public cardReviewIndex: number = 0;
+  public hasIncorrectFields: any;
 
   public questions: ApplicantQuestion[] = [
     {
@@ -298,36 +317,52 @@ export class Step1Component implements OnInit, OnDestroy {
     private applicantListsService: ApplicantListsService,
     private applicantActionsService: ApplicantActionsService,
     private bankVerificationService: BankVerificationService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
     this.createForm();
 
-    this.createFirstAddress();
-
     this.getBanksDropdownList();
 
-    this.isBankUnselected();
+    if (this.selectedMode === SelectedMode.APPLICANT) {
+      this.createFirstAddress();
 
-    this.applicantActionsService.getApplicantInfo$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.personalInfoForm.patchValue({
-          email: res.personalInfo.email,
-        });
+      this.isBankUnselected();
 
-        this.applicantId = res.personalInfo.applicantId;
-      });
-
-    if (this.selectedMode === 'REVIEW_MODE') {
-      this.applicantActionsService
-        .getApplicantById(1)
+      this.applicantActionsService.getApplicantInfo$
         .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          console.log(res);
+        .subscribe({
+          next: (res: any) => {
+            this.personalInfoForm.patchValue({
+              email: res.personalInfo.email,
+            });
+
+            this.applicantId = res.personalInfo.applicantId;
+          },
         });
     }
+
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      this.applicantActionsService.getApplicantById(1);
+
+      this.applicantQuery.personalInfoList$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          this.patchStepValues(res);
+        });
+
+      this.hasIncorrectFields = this.openAnnotationArray
+        .map((item) => item.lineInputs)
+        .some((item) => item.some((item) => item));
+
+      console.log('incorect', this.hasIncorrectFields);
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.personalInfoRadios = this.components.toArray();
   }
 
   public get previousAddresses(): FormArray {
@@ -380,6 +415,161 @@ export class Step1Component implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
+  }
+
+  public patchStepValues(stepValues: any): void {
+    const {
+      id,
+      isAgreement,
+      firstName,
+      lastName,
+      doB,
+      phone,
+      email,
+      previousAddresses,
+      address,
+      ssn,
+      bank: { id: bankId },
+      bankName,
+      accountNumber,
+      routingNumber,
+      legalWork,
+      anotherName,
+      inMilitary,
+      felony,
+      misdemeanor,
+      drunkDriving,
+      legalWorkDescription,
+      anotherNameDescription,
+      inMilitaryDescription,
+      felonyDescription,
+      misdemeanorDescription,
+      drunkDrivingDescription,
+    } = stepValues;
+
+    setTimeout(() => {
+      this.selectedBank = this.banksDropdownList.find(
+        (item) => item.id === bankId
+      );
+
+      if (legalWork) {
+        this.personalInfoRadios[0].buttons[0].checked = true;
+      } else {
+        this.personalInfoRadios[0].buttons[1].checked = true;
+      }
+
+      if (anotherName) {
+        this.personalInfoRadios[1].buttons[0].checked = true;
+      } else {
+        this.personalInfoRadios[1].buttons[1].checked = true;
+      }
+
+      if (inMilitary) {
+        this.personalInfoRadios[2].buttons[0].checked = true;
+      } else {
+        this.personalInfoRadios[2].buttons[1].checked = true;
+      }
+
+      if (felony) {
+        this.personalInfoRadios[3].buttons[0].checked = true;
+      } else {
+        this.personalInfoRadios[3].buttons[1].checked = true;
+      }
+
+      if (misdemeanor) {
+        this.personalInfoRadios[4].buttons[0].checked = true;
+      } else {
+        this.personalInfoRadios[4].buttons[1].checked = true;
+      }
+      if (drunkDriving) {
+        this.personalInfoRadios[5].buttons[0].checked = true;
+      } else {
+        this.personalInfoRadios[5].buttons[1].checked = true;
+      }
+    }, 150);
+
+    console.log('adrese sa beka', previousAddresses);
+
+    this.personalInfoId = id;
+    this.previousAddressesId = previousAddresses.map((item: any) => item.id);
+
+    this.personalInfoForm.patchValue({
+      isAgreement: true,
+      firstName,
+      lastName,
+      dateOfBirth: convertDateFromBackend(doB),
+      phone,
+      email,
+      ssn,
+      bankId: bankName,
+      accountNumber,
+      routingNumber,
+      legalWork,
+      anotherName,
+      inMilitary,
+      felony,
+      misdemeanor,
+      drunkDriving,
+      legalWorkExplain: legalWorkDescription,
+      anotherNameExplain: anotherNameDescription,
+      inMilitaryExplain: inMilitaryDescription,
+      felonyExplain: felonyDescription,
+      misdemeanorExplain: misdemeanorDescription,
+      drunkDrivingExplain: drunkDrivingDescription,
+    });
+
+    const addresses = [...previousAddresses, address];
+
+    for (let i = 0; i < addresses.length; i++) {
+      this.previousAddresses.push(this.createNewAddress());
+
+      if (i === addresses.length - 1) {
+        this.isEditingArray = [
+          ...this.isEditingArray,
+          {
+            id: i,
+            isEditing: true,
+            isEditingAddress: false,
+            isFirstAddress: false,
+          },
+        ];
+
+        this.previousAddresses.at(i).patchValue({
+          address: address.address,
+          addressUnit: address.addressUnit,
+        });
+      } else {
+        this.isEditingArray = [
+          ...this.isEditingArray,
+          {
+            id: i,
+            isEditing: false,
+            isEditingAddress: false,
+            isFirstAddress: false,
+          },
+        ];
+
+        this.previousAddresses.at(i).patchValue({
+          address: previousAddresses[i].address.address,
+          addressUnit: previousAddresses[i].address.addressUnit,
+        });
+      }
+
+      const firstEmptyObjectInList = this.openAnnotationArray.find(
+        (item) => Object.keys(item).length === 0
+      );
+
+      const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+        firstEmptyObjectInList
+      );
+
+      this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+        lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+        lineInputs: [false],
+        displayAnnotationButton: false,
+        displayAnnotationTextArea: false,
+      };
+    }
   }
 
   public handleInputSelect(event: any, action: string, index?: number): void {
@@ -714,6 +904,15 @@ export class Step1Component implements OnInit, OnDestroy {
     this.helperIndex = 2;
   }
 
+  public getBanksDropdownList(): void {
+    this.applicantListsService
+      .getBanksDropdownList()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.banksDropdownList = data;
+      });
+  }
+
   public incorrectInput(
     event: any,
     inputIndex: number,
@@ -734,6 +933,32 @@ export class Step1Component implements OnInit, OnDestroy {
       if (selectedInputsLine.displayAnnotationTextArea) {
         selectedInputsLine.displayAnnotationButton = false;
         selectedInputsLine.displayAnnotationTextArea = false;
+      }
+
+      switch (selectedInputsLine.lineIndex) {
+        case 2:
+          this.previousAddresses.at(0).patchValue({
+            cardReview1: null,
+          });
+          break;
+        case 3:
+          this.previousAddresses.at(1).patchValue({
+            cardReview2: null,
+          });
+          break;
+        case 4:
+          this.previousAddresses.at(2).patchValue({
+            cardReview3: null,
+          });
+          break;
+        case 5:
+          this.previousAddresses.at(3).patchValue({
+            cardReview4: null,
+          });
+          break;
+
+        default:
+          break;
       }
     } else {
       if (event) {
@@ -756,6 +981,47 @@ export class Step1Component implements OnInit, OnDestroy {
           selectedInputsLine.displayAnnotationButton = false;
           selectedInputsLine.displayAnnotationTextArea = false;
         }
+
+        switch (lineIndex) {
+          case 0:
+            this.personalInfoForm.get('firstRowReview').patchValue(null);
+            break;
+          case 1:
+            this.personalInfoForm.get('secondRowReview').patchValue(null);
+            break;
+          case 6:
+            this.previousAddresses.at(4).patchValue({
+              cardReview5: null,
+            });
+            break;
+          case 7:
+            this.personalInfoForm.get('thirdRowReview').patchValue(null);
+            break;
+          case 8:
+            this.personalInfoForm.get('fourthRowReview').patchValue(null);
+            break;
+          case 9:
+            this.personalInfoForm.get('questionReview1').patchValue(null);
+            break;
+          case 10:
+            this.personalInfoForm.get('questionReview2').patchValue(null);
+            break;
+          case 11:
+            this.personalInfoForm.get('questionReview3').patchValue(null);
+            break;
+          case 12:
+            this.personalInfoForm.get('questionReview4').patchValue(null);
+            break;
+          case 13:
+            this.personalInfoForm.get('questionReview5').patchValue(null);
+            break;
+          case 14:
+            this.personalInfoForm.get('questionReview6').patchValue(null);
+            break;
+
+          default:
+            break;
+        }
       }
     }
   }
@@ -772,18 +1038,15 @@ export class Step1Component implements OnInit, OnDestroy {
     }
   }
 
-  public getBanksDropdownList(): void {
-    this.applicantListsService
-      .getBanksDropdownList()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.banksDropdownList = data;
-      });
-  }
-
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
   }
 
@@ -864,24 +1127,175 @@ export class Step1Component implements OnInit, OnDestroy {
       });
   }
 
-  /* public onSubmitReview(data: any): void {
-    const numberOfPreviousAddresses =
-      this.personalInfoForm.value.previousAddresses.length;
+  public onSubmitReview(): void {
+    const {
+      firstRowReview,
+      secondRowReview,
+      thirdRowReview,
+      fourthRowReview,
+      questionReview1,
+      questionReview2,
+      questionReview3,
+      questionReview4,
+      questionReview5,
+      questionReview6,
+    } = this.personalInfoForm.value;
 
-    this.reviewFeedback[data.index] = data.reviewFeedbackData;
+    const previousAddresses =
+      this.previousAddresses.controls.length === 1
+        ? []
+        : this.previousAddresses.controls.length === 2
+        ? [
+            {
+              previousAddressId: this.previousAddressesId[0],
+              isPreviousAddressValid:
+                !this.openAnnotationArray[2].lineInputs[0],
+              previousAddressMessage:
+                this.previousAddresses.controls[0]?.get('cardReview1').value,
+            },
+          ]
+        : this.previousAddresses.controls.length === 3
+        ? [
+            {
+              previousAddressId: this.previousAddressesId[0],
+              isPreviousAddressValid:
+                !this.openAnnotationArray[2].lineInputs[0],
+              previousAddressMessage:
+                this.previousAddresses.controls[0]?.get('cardReview1').value,
+            },
+            {
+              previousAddressId: this.previousAddressesId[1],
+              isPreviousAddressValid:
+                !this.openAnnotationArray[3].lineInputs[0],
+              previousAddressMessage:
+                this.previousAddresses.controls[1]?.get('cardReview2').value,
+            },
+          ]
+        : this.previousAddresses.controls.length === 4
+        ? [
+            {
+              previousAddressId: this.previousAddressesId[0],
+              isPreviousAddressValid:
+                !this.openAnnotationArray[2].lineInputs[0],
+              previousAddressMessage:
+                this.previousAddresses.controls[0]?.get('cardReview1').value,
+            },
+            {
+              previousAddressId: this.previousAddressesId[1],
+              isPreviousAddressValid:
+                !this.openAnnotationArray[3].lineInputs[0],
+              previousAddressMessage:
+                this.previousAddresses.controls[1]?.get('cardReview2').value,
+            },
+            {
+              previousAddressId: this.previousAddressesId[2],
+              isPreviousAddressValid:
+                !this.openAnnotationArray[4].lineInputs[0],
+              previousAddressMessage:
+                this.previousAddresses.controls[2]?.get('cardReview3').value,
+            },
+          ]
+        : this.previousAddresses.controls.length === 5
+        ? [
+            {
+              previousAddressId: this.previousAddressesId[0],
+              isPreviousAddressValid:
+                !this.openAnnotationArray[2].lineInputs[0],
+              previousAddressMessage:
+                this.previousAddresses.controls[0]?.get('cardReview1').value,
+            },
+            {
+              previousAddressId: this.previousAddressesId[1],
+              isPreviousAddressValid:
+                !this.openAnnotationArray[3].lineInputs[0],
+              previousAddressMessage:
+                this.previousAddresses.controls[1]?.get('cardReview2').value,
+            },
+            {
+              previousAddressId: this.previousAddressesId[2],
+              isPreviousAddressValid:
+                !this.openAnnotationArray[4].lineInputs[0],
+              previousAddressMessage:
+                this.previousAddresses.controls[2]?.get('cardReview3').value,
+            },
+            {
+              previousAddressId: this.previousAddressesId[3],
+              isPreviousAddressValid:
+                !this.openAnnotationArray[5].lineInputs[0],
+              previousAddressMessage:
+                this.previousAddresses.controls[3]?.get('cardReview4').value,
+            },
+          ]
+        : null;
 
-    this.countOfReview++;
+    const saveData: CreatePersonalInfoReviewCommand = {
+      applicantId: 1,
+      personalInfoId: this.personalInfoId,
+      isFirstNameValid: !this.openAnnotationArray[0].lineInputs[0],
+      isLastNameValid: !this.openAnnotationArray[0].lineInputs[1],
+      isDoBValid: !this.openAnnotationArray[0].lineInputs[2],
+      personalInfoMessage: firstRowReview,
+      isPhoneValid: !this.openAnnotationArray[1].lineInputs[0],
+      phoneMessage: secondRowReview,
+      isAddressValid:
+        this.previousAddresses.controls.length === 1
+          ? !this.openAnnotationArray[2].lineInputs[0]
+          : this.previousAddresses.controls.length === 2
+          ? !this.openAnnotationArray[3].lineInputs[0]
+          : this.previousAddresses.controls.length === 3
+          ? !this.openAnnotationArray[4].lineInputs[0]
+          : this.previousAddresses.controls.length === 4
+          ? !this.openAnnotationArray[5].lineInputs[0]
+          : this.previousAddresses.controls.length === 5
+          ? !this.openAnnotationArray[6].lineInputs[0]
+          : null,
+      addressMessage:
+        this.previousAddresses.controls.length === 1
+          ? this.previousAddresses.controls[0].get('cardReview1').value
+          : this.previousAddresses.controls.length === 2
+          ? this.previousAddresses.controls[1].get('cardReview2').value
+          : this.previousAddresses.controls.length === 3
+          ? this.previousAddresses.controls[2].get('cardReview3').value
+          : this.previousAddresses.controls.length === 4
+          ? this.previousAddresses.controls[3].get('cardReview4').value
+          : this.previousAddresses.controls.length === 5
+          ? this.previousAddresses.controls[4].get('cardReview5').value
+          : null,
+      isSsnValid: !this.openAnnotationArray[7].lineInputs[0],
+      isBankValid: !this.openAnnotationArray[7].lineInputs[1],
+      ssnBankMessage: thirdRowReview,
+      isAccountNumberValid: !this.openAnnotationArray[8].lineInputs[0],
+      isRoutingNumberValid: !this.openAnnotationArray[8].lineInputs[1],
+      accountRoutingMessage: fourthRowReview,
+      isLegalWorkValid: !this.openAnnotationArray[9].lineInputs[0],
+      legalWorkMessage: questionReview1,
+      isAnotherNameValid: !this.openAnnotationArray[10].lineInputs[0],
+      anotherNameMessage: questionReview2,
+      isInMilitaryValid: !this.openAnnotationArray[11].lineInputs[0],
+      inMilitaryMessage: questionReview3,
+      isFelonyValid: !this.openAnnotationArray[12].lineInputs[0],
+      felonyMessage: questionReview4,
+      isMisdemeanorValid: !this.openAnnotationArray[13].lineInputs[0],
+      misdemeanorMessage: questionReview5,
+      isDrunkDrivingValid: !this.openAnnotationArray[14].lineInputs[0],
+      drunkDrivingMessage: questionReview6,
+      previousAddressReviews: [...previousAddresses],
+    };
 
-    if (
-      this.countOfReview === 10 + numberOfPreviousAddresses &&
-      !data.firstLoad
-    ) {
-      // TODO: Send data to backend and move to next step
-      console.log(this.reviewFeedback);
-    } else if (data.firstLoad) {
-      this.countOfReview = 0;
-    }
-  } */
+    console.log('na bek', saveData);
+
+    this.applicantActionsService
+      .createPersonalInfoReview(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/2`]);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();
