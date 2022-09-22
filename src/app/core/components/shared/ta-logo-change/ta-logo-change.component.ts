@@ -119,7 +119,7 @@ export class TaLogoChangeComponent
         }
       });
 
-    if (this.imageUrl) {
+    if (this.croppieShape === 'rectangle' && this.imageUrl) {
       this.showUploadZone = false;
 
       this.saveLogoEvent.emit(true);
