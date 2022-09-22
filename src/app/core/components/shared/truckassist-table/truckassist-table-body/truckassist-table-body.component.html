@@ -609,22 +609,6 @@
                 <div class="lvl-container">{{ row[column.field] }}</div>
               </div>
 
-              <!-- CITATION COLUMN -->
-              <div
-                class="td-content set-center"
-                *ngIf="column.ngTemplate === 'citation'"
-                [ngStyle]="{
-                  width: column.width + 'px'
-                }"
-              >
-                <div
-                  class="citation-table"
-                  [ngClass]="{ 'citation-table-active': row.citation > 0 }"
-                >
-                  {{ row.citation ? row.citation : "0" }}
-                </div>
-              </div>
-
               <!-- VL COLUMN -->
               <div
                 class="td-content set-center"
@@ -1244,6 +1228,40 @@
                   </div>
                 </div>
               </div>
+
+              <!-- SW TW TOTAL COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'sw-tw-total'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="sw-tw-total-container">
+                  <div class="border"></div>
+                  <div class="regular-count">0</div>
+                  <div class="border"></div>
+                  <div class="regular-count">0</div>
+                  <div class="border"></div>
+                  <div class="bold-count">0</div>
+                  <div class="border"></div>
+                </div>
+              </div>
+
+              <!-- CITATION COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'citation'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="citation-container">
+                  <div class="citation-item cop-item">0</div>
+                  <div class="citation-item oss-item">0</div>
+                  <div class="citation-item money-item">0</div>
+                </div>
+              </div>
             </td>
           </div>
 
@@ -1789,22 +1807,6 @@
                 </div>
               </div>
 
-              <!-- CITATION COLUMN -->
-              <div
-                class="td-content set-center"
-                *ngIf="column.ngTemplate === 'citation'"
-                [ngStyle]="{
-                  width: column.width + 'px'
-                }"
-              >
-                <div
-                  class="citation-table"
-                  [ngClass]="{ 'citation-table-active': row.citation > 0 }"
-                >
-                  {{ row.citation ? row.citation : "0" }}
-                </div>
-              </div>
-
               <!-- VL COLUMN -->
               <div
                 class="td-content set-center"
@@ -2339,6 +2341,40 @@
                   </div>
                 </div>
               </div>
+
+              <!-- SW TW TOTAL COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'sw-tw-total'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="sw-tw-total-container">
+                  <div class="border"></div>
+                  <div class="regular-count">0</div>
+                  <div class="border"></div>
+                  <div class="regular-count">0</div>
+                  <div class="border"></div>
+                  <div class="bold-count">0</div>
+                  <div class="border"></div>
+                </div>
+              </div>
+
+              <!-- CITATION COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'citation'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="citation-container">
+                  <div class="citation-item cop-item">0</div>
+                  <div class="citation-item oss-item">0</div>
+                  <div class="citation-item money-item">0</div>
+                </div>
+              </div>
             </td>
           </div>
 
@@ -2439,7 +2475,7 @@
 
               <!-- FAVORITE COLUMN -->
               <div
-              class="td-content set-center"
+                class="td-content set-center"
                 *ngIf="column.ngTemplate === 'favorite'"
                 [ngStyle]="{
                   width: column.width + 'px',
@@ -2457,7 +2493,7 @@
 
               <!-- NOTE COLUMN -->
               <div
-              class="td-content set-center"
+                class="td-content set-center"
                 *ngIf="column.ngTemplate === 'note'"
                 [ngStyle]="{
                   width: column.width + 'px',
@@ -2501,11 +2537,215 @@
         </div>
 
         <!-- Roadside Inspection Row Dropdown -->
-        <div class="roadside-inspection-row-dropdown" [ngClass]="{'roadside-inspection-active': showRowDropdown === i}" *ngIf="options?.tableBodyConfig?.rowDropdownConfig === 'Roadside Inspection'">
-          <div class="roadside-inspection-border-container">
-            <div class="roadside-inspection-border"></div>
+        <div
+          class="roadside-inspection-row-dropdown"
+          [ngClass]="{ 'roadside-inspection-active': showRowDropdown === i }"
+          *ngIf="
+            options?.tableBodyConfig?.rowDropdownConfig ===
+            'Roadside Inspection'
+          "
+        >
+          <div class="roadside-inspection-content">
+            <!-- Border -->
+            <div class="roadside-inspection-border-container">
+              <div class="roadside-inspection-border"></div>
+            </div>
+
+            <!-- Violation Inspection -->
+            <div class="violation-inspection-container">
+              <!-- Title -->
+              <div class="inspection-title">
+                <div class="violation-title title">VIOLATION</div>
+                <div class="description-title title">DESCRIPTION</div>
+                <div class="sw-title title">SW</div>
+              </div>
+              <!-- Items -->
+              <div class="violations-items">
+                <svg-icon
+                  class="violation-icon"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/driver-violation.svg'
+                  "
+                  [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                ></svg-icon>
+
+                <div class="violation-code">395.5380</div>
+
+                <svg-icon
+                  class="oss-icon"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/violation-oss-icon.svg'
+                  "
+                  [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                ></svg-icon>
+
+                <div class="inspection-decription">
+                  CMV manufactured after 10/19/94 has an automatic airbrake
+                  adjustment system
+                </div>
+
+                <div class="sw-count">
+                  1
+                  <div class="oss-count">+2</div>
+                </div>
+
+                <svg-icon
+                  class="edit-icon"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/edit-icon.svg'
+                  "
+                  [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                ></svg-icon>
+              </div>
+            </div>
+
+            <!-- Border -->
+            <div class="roadside-inspection-border-container">
+              <div class="roadside-inspection-border"></div>
+            </div>
+
+            <!-- Citation Inspection -->
+            <div class="citation-inspection-container">
+              <!-- Title -->
+              <div class="inspection-title">
+                <div class="citation-title title">CITATION #</div>
+                <div class="description-title title">DESCRIPTION</div>
+                <div class="due-date-title title">Due Date</div>
+                <div class="paid-title title">PAID</div>
+                <div class="cost-title title">Cost</div>
+                <div class="actions-title title"></div>
+              </div>
+              <!-- Items -->
+              <div class="citation-items">
+                <div class="citation-code">OH-5545042</div>
+
+                <div class="citation-description">
+                  CMV manufactured after 10/19/94 has an automatic airbrake
+                  adjustment system
+                </div>
+
+                <div class="due-date">
+                  <div
+                    class="table-progress-cotnainer"
+                    *ngIf="row['tableDropdownProgress']?.expirationDays"
+                  >
+                    <!-- Progres Bar  -->
+                    <div
+                      class="table-progress-bar-container"
+                      [ngClass]="{
+                        'bg-expired-container':
+                          !row['tableDropdownProgress'].percentage,
+                        'bg-sliver-container':
+                          row['tableDropdownProgress'].percentage >= 25 &&
+                          row['tableDropdownProgress'].percentage < 100,
+                        'bg-orange-container':
+                          row['tableDropdownProgress'].percentage >= 5 &&
+                          row['tableDropdownProgress'].percentage < 25,
+                        'bg-danger-container':
+                          row['tableDropdownProgress'].percentage > 0 &&
+                          row['tableDropdownProgress'].percentage < 5,
+                        'bg-inactive-container':
+                          row['tableDropdownProgress'].percentage === 100
+                      }"
+                    >
+                      <div
+                        [ngClass]="{
+                          'bg-progress-sliver':
+                            row['tableDropdownProgress'].percentage >= 25 &&
+                            row['tableDropdownProgress'].percentage < 100,
+                          'bg-progress-orange':
+                            row['tableDropdownProgress'].percentage >= 5 &&
+                            row['tableDropdownProgress'].percentage < 25,
+                          'bg-progress-danger':
+                            row['tableDropdownProgress'].percentage > 0 &&
+                            row['tableDropdownProgress'].percentage < 5
+                        }"
+                        [ngStyle]="{
+                          width: row['tableDropdownProgress'].percentage + '%'
+                        }"
+                        class="table-progress-bar"
+                        *ngIf="
+                          row['tableDropdownProgress'].percentage > 0 &&
+                          row['tableDropdownProgress'].percentage < 100
+                        "
+                      ></div>
+                    </div>
+
+                    <!-- Progres Text -->
+                    <div
+                      class="table-progress-text"
+                      [ngStyle]="{
+                        width: 172 - 30 + 'px'
+                      }"
+                      *ngIf="
+                        row['tableDropdownProgress'].percentage > 0 &&
+                        row['tableDropdownProgress'].percentage < 100
+                      "
+                    >
+                      in {{ row["tableDropdownProgress"].expirationDays }} days
+                    </div>
+
+                    <!-- Progres Text Expired-->
+                    <div
+                      class="table-progress-text"
+                      [ngStyle]="{
+                        width: column.width - 30 + 'px'
+                      }"
+                      *ngIf="!row['tableDropdownProgress'].percentage"
+                    >
+                      {{ row["tableDropdownProgress"].expirationDays }} days ago
+                    </div>
+                  </div>
+                </div>
+
+                <div class="paid-item">
+                  <svg-icon
+                    class="paid-icon"
+                    [src]="
+                      '../../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg'
+                    "
+                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                  ></svg-icon>
+                </div>
+
+                <div class="cost-item">$1,240.00</div>
+
+                <div class="actions">
+                  <svg-icon
+                    class="attachment-icon"
+                    [src]="
+                      '../../../../../../assets/svg/truckassist-table/attachment/attachemnt-regular-svgIcon.svg'
+                    "
+                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                  ></svg-icon>
+
+                  <div class="note-container">
+                    <app-ta-note
+                      [note]="''"
+                      [openedAll]="false"
+                      [parking]="false"
+                    >
+                    </app-ta-note>
+                  </div>
+
+                  <svg-icon
+                    #t2="ngbPopover"
+                    (click)="toggleDropdown(t2, row)"
+                    [autoClose]="true"
+                    [ngbPopover]="dropdownPopover"
+                    [placement]="'bottom-right'"
+                    container="body"
+                    popoverClass="table-dropdown-popover"
+                    triggers="manual"
+                    [src]="
+                      '../../../../../../assets/svg/truckassist-table/dropdown/dropdown.svg'
+                    "
+                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                  ></svg-icon>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="roadside-inspection-content"></div>
         </div>
       </tr>
     </cdk-virtual-scroll-viewport>
