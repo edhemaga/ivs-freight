@@ -161,11 +161,16 @@
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
               [ngClass]="{
-                visible: terminalForm.get('officeChecked')?.value
+                visible: terminalForm.get('officeChecked')?.value,
+                rotate: !officeCheckboxCard
               }"
+              (click)="toggleCheckboxCard('office')"
             ></svg-icon>
           </div>
           <div
+            *ngIf="
+              terminalForm.get('officeChecked').value && officeCheckboxCard
+            "
             class="checkbox-card-body"
             [ngClass]="{
               'active-20': terminalForm.get('officeChecked').value
@@ -248,11 +253,16 @@
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
               [ngClass]="{
-                visible: terminalForm.get('parkingChecked')?.value
+                visible: terminalForm.get('parkingChecked')?.value,
+                rotate: !parkingCheckboxCard
               }"
+              (click)="toggleCheckboxCard('parking')"
             ></svg-icon>
           </div>
           <div
+            *ngIf="
+              terminalForm.get('parkingChecked').value && parkingCheckboxCard
+            "
             class="checkbox-card-body"
             [ngClass]="{
               'active-20': terminalForm.get('parkingChecked').value
@@ -387,11 +397,17 @@
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
               [ngClass]="{
-                visible: terminalForm.get('warehouseChecked')?.value
+                visible: terminalForm.get('warehouseChecked')?.value,
+                rotate: !warehouseCheckboxCard
               }"
+              (click)="toggleCheckboxCard('warehouse')"
             ></svg-icon>
           </div>
           <div
+            *ngIf="
+              terminalForm.get('warehouseChecked').value &&
+              warehouseCheckboxCard
+            "
             class="checkbox-card-body"
             [ngClass]="{
               'active-20': terminalForm.get('warehouseChecked').value

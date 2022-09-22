@@ -291,6 +291,12 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   private editUserById(id: number) {}
 
+  // Checkbox Card
+  public payrollCheckboxCard: boolean = true;
+  public toggleCheckboxCard() {
+    this.payrollCheckboxCard = !this.payrollCheckboxCard;
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

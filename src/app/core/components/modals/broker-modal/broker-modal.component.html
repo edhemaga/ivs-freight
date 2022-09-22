@@ -412,6 +412,7 @@
           [isCommentData]="true"
           [isCardOpen]="brokerContacts.length > 0"
           [hasScrollBody]="brokerContacts.length > 10"
+          [hasBodyData]="brokerContacts.length > 0"
           (onActionEvent)="addBrokerContacts($event)"
           [animationsDisabled]="true"
         >

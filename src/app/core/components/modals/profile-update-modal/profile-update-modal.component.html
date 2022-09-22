@@ -126,12 +126,17 @@
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
               [ngClass]="{
-                visible: profileUserForm.get('createNewPassword').value
+                visible: profileUserForm.get('createNewPassword').value,
+                rotate: !passwordCheckboxCard
               }"
+              (click)="toggleCheckboxCard()"
             ></svg-icon>
           </div>
           <div
-            *ngIf="profileUserForm.get('createNewPassword').value"
+            *ngIf="
+              profileUserForm.get('createNewPassword').value &&
+              passwordCheckboxCard
+            "
             class="checkbox-card-body"
             [ngClass]="{
               active: profileUserForm.get('createNewPassword').value

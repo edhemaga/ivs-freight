@@ -477,11 +477,15 @@
             <svg-icon
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
-              [ngClass]="{ visible: driverForm.get('isOwner').value }"
+              [ngClass]="{
+                visible: driverForm.get('isOwner').value,
+                rotate: !ownerCheckboxCard
+              }"
+              (click)="toggleCheckboxCard()"
             ></svg-icon>
           </div>
           <div
-            *ngIf="driverForm.get('isOwner').value"
+            *ngIf="driverForm.get('isOwner').value && ownerCheckboxCard"
             class="checkbox-card-body"
             [ngClass]="{ active: driverForm.get('isOwner').value }"
           >

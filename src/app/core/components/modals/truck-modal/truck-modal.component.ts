@@ -720,6 +720,12 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  // Checkbox Card
+  public companyOwnedCheckboxCard: boolean = true;
+  public toggleCheckboxCard() {
+    this.companyOwnedCheckboxCard = !this.companyOwnedCheckboxCard;
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

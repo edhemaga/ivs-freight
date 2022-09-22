@@ -229,11 +229,17 @@
             <svg-icon
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
-              [ngClass]="{ visible: userForm.get('isIncludePayroll').value }"
+              [ngClass]="{
+                visible: userForm.get('isIncludePayroll').value,
+                rotate: !payrollCheckboxCard
+              }"
+              (click)="toggleCheckboxCard()"
             ></svg-icon>
           </div>
           <div
-            *ngIf="userForm.get('isIncludePayroll').value"
+            *ngIf="
+              userForm.get('isIncludePayroll').value && payrollCheckboxCard
+            "
             class="checkbox-card-body"
             [ngClass]="{ active: userForm.get('isIncludePayroll').value }"
           >

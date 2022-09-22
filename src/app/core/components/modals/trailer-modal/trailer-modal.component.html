@@ -200,10 +200,17 @@
             <svg-icon
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
-              [ngClass]="{ visible: !trailerForm.get('companyOwned')?.value }"
+              [ngClass]="{
+                visible: !trailerForm.get('companyOwned')?.value,
+                rotate: !companyOwnedCheckboxCard
+              }"
+              (click)="toggleCheckboxCard()"
             ></svg-icon>
           </div>
           <div
+            *ngIf="
+              !trailerForm.get('companyOwned').value && companyOwnedCheckboxCard
+            "
             class="checkbox-card-body"
             [ngClass]="{ 'active-20': !trailerForm.get('companyOwned').value }"
           >

@@ -158,32 +158,34 @@
           (onOpenCard)="isParkingCardOpen = $event"
           [animationsDisabled]="true"
         >
-          <div class="row">
-            <div class="col-12">
-              <app-ta-input
-                formControlName="parkingSlot"
-                [inputConfig]="{
-                  name: 'Parking Slot',
-                  type: 'text',
-                  label: 'Parking Slot # (Truck)',
-                  minLength: 1,
-                  maxLength: 64
-                }"
-              ></app-ta-input>
+          <div class="checkbox-card-body active-20">
+            <div class="row">
+              <div class="col-12">
+                <app-ta-input
+                  formControlName="parkingSlot"
+                  [inputConfig]="{
+                    name: 'Parking Slot',
+                    type: 'text',
+                    label: 'Parking Slot # (Truck)',
+                    minLength: 1,
+                    maxLength: 64
+                  }"
+                ></app-ta-input>
+              </div>
             </div>
-          </div>
-          <div class="row row-mb-10">
-            <div class="col-12">
-              <app-ta-input
-                formControlName="fullParkingSlot"
-                [inputConfig]="{
-                  name: 'Full Parking Slot',
-                  type: 'text',
-                  label: 'Full Parking Slot # (Semi Truck - Trailer)',
-                  minLength: 1,
-                  maxLength: 128
-                }"
-              ></app-ta-input>
+            <div class="row row-mb-10">
+              <div class="col-12">
+                <app-ta-input
+                  formControlName="fullParkingSlot"
+                  [inputConfig]="{
+                    name: 'Full Parking Slot',
+                    type: 'text',
+                    label: 'Full Parking Slot # (Semi Truck - Trailer)',
+                    minLength: 1,
+                    maxLength: 128
+                  }"
+                ></app-ta-input>
+              </div>
             </div>
           </div>
         </app-ta-custom-card>

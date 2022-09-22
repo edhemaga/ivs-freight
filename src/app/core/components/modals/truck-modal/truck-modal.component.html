@@ -165,7 +165,7 @@
           <div class="divider"></div>
           <div
             class="checkbox-card-header"
-            [ngClass]="{ pointer: truckForm.get('companyOwned').value }"
+            [ngClass]="{ pointer: !truckForm.get('companyOwned').value }"
           >
             <app-ta-checkbox
               formControlName="companyOwned"
@@ -174,10 +174,17 @@
             <svg-icon
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
-              [ngClass]="{ visible: !truckForm.get('companyOwned')?.value }"
+              [ngClass]="{
+                visible: !truckForm.get('companyOwned')?.value,
+                rotate: !companyOwnedCheckboxCard
+              }"
+              (click)="toggleCheckboxCard()"
             ></svg-icon>
           </div>
           <div
+            *ngIf="
+              !truckForm.get('companyOwned').value && companyOwnedCheckboxCard
+            "
             class="checkbox-card-body"
             [ngClass]="{ 'active-20': !truckForm.get('companyOwned').value }"
           >

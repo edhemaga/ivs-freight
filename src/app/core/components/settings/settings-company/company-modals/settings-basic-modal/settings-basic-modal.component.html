@@ -738,7 +738,7 @@
             [isCardOpen]="true"
             [animationsDisabled]="true"
           >
-            <div class="row">
+            <div class="row last-row">
               <div class="col-4">
                 <app-ta-input
                   formControlName="mvrMonths"
@@ -834,9 +834,17 @@
             <svg-icon
               class="checkbox-card-header-arrow visible"
               src="assets/svg/common/ic_arrow_down_updated.svg"
+              [ngClass]="{
+                rotate: !useACHCheckboxCard,
+                visible: companyForm.get('useACHPayout').value
+              }"
+              (click)="toggleCheckboxCard()"
             ></svg-icon>
           </div>
-          <div class="checkbox-card-body active">
+          <div
+            *ngIf="companyForm.get('useACHPayout').value && useACHCheckboxCard"
+            class="checkbox-card-body active"
+          >
             <div class="use-truck-assist-header">
               THIS PROCESS MAY TAKE UP TO 5 DAYS.
             </div>

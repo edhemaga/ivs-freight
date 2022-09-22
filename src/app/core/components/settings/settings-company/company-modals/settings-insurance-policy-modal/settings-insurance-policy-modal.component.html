@@ -135,11 +135,18 @@
           class="checkbox-card-header-arrow"
           src="assets/svg/common/ic_arrow_down_updated.svg"
           [ngClass]="{
-            visible: insurancePolicyForm.get('commericalGeneralLiability').value
+            visible: insurancePolicyForm.get('commericalGeneralLiability')
+              .value,
+            rotate: !commericalGeneralCheckboxCard
           }"
+          (click)="toggleCheckboxCard('commercial-general')"
         ></svg-icon>
       </div>
       <div
+        *ngIf="
+          insurancePolicyForm.get('commericalGeneralLiability').value &&
+          commericalGeneralCheckboxCard
+        "
         class="checkbox-card-body"
         [ngClass]="{
           'active-20': insurancePolicyForm.get('commericalGeneralLiability')
@@ -303,11 +310,17 @@
           class="checkbox-card-header-arrow"
           src="assets/svg/common/ic_arrow_down_updated.svg"
           [ngClass]="{
-            visible: insurancePolicyForm.get('automobileLiability').value
+            visible: insurancePolicyForm.get('automobileLiability').value,
+            rotate: !automobileLiabilityCheckboxCard
           }"
+          (click)="toggleCheckboxCard('automobile-liability')"
         ></svg-icon>
       </div>
       <div
+        *ngIf="
+          insurancePolicyForm.get('automobileLiability').value &&
+          automobileLiabilityCheckboxCard
+        "
         class="checkbox-card-body"
         [ngClass]="{
           'active-20': insurancePolicyForm.get('automobileLiability').value
@@ -445,11 +458,17 @@
           class="checkbox-card-header-arrow"
           src="assets/svg/common/ic_arrow_down_updated.svg"
           [ngClass]="{
-            visible: insurancePolicyForm.get('motorTruckCargo').value
+            visible: insurancePolicyForm.get('motorTruckCargo').value,
+            rotate: !motorTruckCargoBreakDownCheckboxCard
           }"
+          (click)="toggleCheckboxCard('motor-truck-cargo')"
         ></svg-icon>
       </div>
       <div
+        *ngIf="
+          insurancePolicyForm.get('motorTruckCargo').value &&
+          motorTruckCargoBreakDownCheckboxCard
+        "
         class="checkbox-card-body"
         [ngClass]="{
           'active-20': insurancePolicyForm.get('motorTruckCargo').value
@@ -547,11 +566,17 @@
           class="checkbox-card-header-arrow"
           src="assets/svg/common/ic_arrow_down_updated.svg"
           [ngClass]="{
-            visible: insurancePolicyForm.get('physicalDamage').value
+            visible: insurancePolicyForm.get('physicalDamage').value,
+            rotate: !physicalDamageDownCheckboxCard
           }"
+          (click)="toggleCheckboxCard('physical-damage')"
         ></svg-icon>
       </div>
       <div
+        *ngIf="
+          insurancePolicyForm.get('physicalDamage').value &&
+          physicalDamageDownCheckboxCard
+        "
         class="checkbox-card-body"
         [ngClass]="{
           'active-20': insurancePolicyForm.get('physicalDamage').value
@@ -649,11 +674,17 @@
           class="checkbox-card-header-arrow"
           src="assets/svg/common/ic_arrow_down_updated.svg"
           [ngClass]="{
-            visible: insurancePolicyForm.get('trailerInterchange').value
+            visible: insurancePolicyForm.get('trailerInterchange').value,
+            rotate: !trailerInterchangeCheckboxCard
           }"
+          (click)="toggleCheckboxCard('trailer-interchange')"
         ></svg-icon>
       </div>
       <div
+        *ngIf="
+          insurancePolicyForm.get('trailerInterchange').value &&
+          trailerInterchangeCheckboxCard
+        "
         class="checkbox-card-body"
         [ngClass]="{
           'active-20': insurancePolicyForm.get('trailerInterchange').value

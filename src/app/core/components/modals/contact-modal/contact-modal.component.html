@@ -149,10 +149,15 @@
         <svg-icon
           class="checkbox-card-header-arrow"
           src="assets/svg/common/ic_arrow_down_updated.svg"
-          [ngClass]="{ visible: contactForm.get('shared').value }"
+          [ngClass]="{
+            visible: contactForm.get('shared').value,
+            rotate: !sharedContactCheckboxCard
+          }"
+          (click)="toggleCheckboxCard()"
         ></svg-icon>
       </div>
       <div
+        *ngIf="contactForm.get('shared').value && sharedContactCheckboxCard"
         class="checkbox-card-body"
         [ngClass]="{ 'active-20': contactForm.get('shared').value }"
       >
