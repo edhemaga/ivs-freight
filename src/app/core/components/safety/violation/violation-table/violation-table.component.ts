@@ -234,8 +234,9 @@ export class ViolationTableComponent
         showMapView: true,
         viewModeActive: 'List',
       },
-      tableBodyConfig: {
-        rowDropdownConfig: 'Roadside Inspection'
+      attachmentConfig: {
+        hasViolation: true,
+        hasCitation: true
       },
       actions: [
         {
@@ -338,6 +339,10 @@ export class ViolationTableComponent
           ? this.mapViolationSummaryData(data)
           : this.mapRoadsideInspectionData(data);
       });
+
+      /* for(let i = 0; i < 100; i++){
+        this.viewData.push(this.viewData[2]);
+      } */
 
       console.log('viewData');
       console.log(this.viewData)
