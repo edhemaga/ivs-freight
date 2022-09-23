@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TransponderGroup } from './transponderGroup';
 import { TruckMakeResponse } from './truckMakeResponse';
 import { EnumValue } from './enumValue';
 import { TruckEngineTypeResponse } from './truckEngineTypeResponse';
@@ -32,5 +33,9 @@ export interface GetTruckModalResponse {
     usStates?: Array<StateResponse> | null;
     canadaStates?: Array<StateResponse> | null;
     shifters?: Array<EnumValue> | null;
+    gearRatios?: Array<EnumValue> | null;
+    engineOilTypes?: Array<EnumValue> | null;
+    apUnits?: Array<EnumValue> | null;
+    ezPass?: Array<TransponderGroup> | null;
 }
 

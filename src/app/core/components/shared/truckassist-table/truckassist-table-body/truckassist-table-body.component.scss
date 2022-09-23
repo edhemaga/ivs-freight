@@ -1602,6 +1602,88 @@ table {
               }
             }
 
+            // SW TW TOTAL COLUMN
+            .sw-tw-total-container {
+              display: flex;
+              align-items: center;
+              height: 18px;
+
+              .border {
+                width: 1px;
+                height: 14px;
+                border-radius: 1px;
+                background: #dadada;
+              }
+
+              .regular-count,
+              .bold-count {
+                width: 30px;
+                font-size: 14px;
+                color: #6c6c6c;
+                margin: 0 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
+              }
+
+              .regular-count {
+                font-weight: 500;
+              }
+
+              .bold-count {
+                font-weight: bold;
+              }
+            }
+
+            // CITATION COLUMN
+            .citation-container {
+              width: 140px;
+              height: 24px;
+              border-radius: 2px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 3px;
+
+              .citation-item {
+                width: 30px;
+                height: 18px;
+                border-radius: 2px;
+                font-size: 14px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #ffffff;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                &::selection {
+                  color: #ffffff;
+                  background: #ffffff20;
+                }
+              }
+
+              .cop-item {
+                background: #6d82c7;
+              }
+
+              .oss-item {
+                background: #ffb74d;
+              }
+
+              .money-item {
+                background: #e57373;
+              }
+            }
+
             // PROGRESS COLUMN
             .applicant-status-container {
               width: fit-content;
@@ -1770,29 +1852,277 @@ table {
         overflow: hidden;
         transition: 0.25s ease-in-out;
 
-        .roadside-inspection-border-container{
-          height: 2px;
+        .roadside-inspection-content {
           width: 100%;
-          padding: 0 10px;
-
-          .roadside-inspection-border{
-            width: 100%;
-            height: 100%;
-            border-radius: 1px;
-            background: #F3F3F3;
-          }
-        }
-        
-
-        .roadside-inspection-content{
-          width: 100%;
-          height: 240px;
-          padding: 6px;
+          height: fit-content;
+          padding: 0 6px 6px 6px;
           transition: height 0.25s ease-in-out;
+
+          .roadside-inspection-border-container {
+            height: 2px;
+            width: 100%;
+            padding: 0 10px;
+            margin-top: 2px;
+
+            .roadside-inspection-border {
+              width: 100%;
+              height: 100%;
+              border-radius: 1px;
+              background: #f3f3f3;
+            }
+          }
+
+          .violation-inspection-container,
+          .citation-inspection-container {
+            .inspection-title {
+              width: 100%;
+              height: 36px;
+              display: flex;
+              align-items: center;
+
+              .title {
+                font-size: 14px;
+                font-weight: bold;
+                color: #919191;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+
+                &::selection {
+                  color: #919191;
+                  background: #91919120;
+                }
+              }
+
+              .violation-title,
+              .citation-title {
+                width: 186px;
+                padding-left: 8px;
+              }
+
+              .description-title {
+                flex-grow: 1;
+              }
+            }
+
+            .violations-items,
+            .citation-items {
+              cursor: pointer;
+              width: 100%;
+              height: 32px;
+              border-radius: 2px;
+              padding: 0 8px;
+              display: flex;
+              align-items: center;
+            }
+          }
+
+          // Violation
+          .violation-inspection-container {
+            width: 100%;
+            height: fit-content;
+
+            .inspection-title {
+              .sw-title {
+                width: 93px;
+              }
+            }
+
+            .violations-items {
+              background: #97a8dc10;
+
+              &:hover {
+                background: #97a8dc30;
+                transition: 0.25s;
+              }
+
+              svg-icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+
+              .violation-icon {
+                margin-right: 4px;
+              }
+
+              .violation-code {
+                font-size: 14px;
+                font-weight: bold;
+                color: #6c6c6c;
+                width: 156px;
+              }
+
+              .oss-icon {
+                margin-right: 6px;
+              }
+
+              .inspection-decription {
+                flex-grow: 1;
+                font-weight: 400;
+              }
+
+              .inspection-decription,
+              .sw-count {
+                font-size: 14px;
+                color: #6c6c6c;
+              }
+
+              .sw-count {
+                width: 48px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 22px;
+
+                .oss-count {
+                  font-size: 14px;
+                  font-weight: 600;
+                  color: #ffa726;
+                }
+              }
+
+              .edit-icon {
+                margin-right: 8px;
+              }
+            }
+          }
+
+          // Citation
+          .citation-inspection-container {
+            .inspection-title {
+              .due-date-title {
+                width: 172px;
+              }
+
+              .paid-title {
+                width: 76px;
+              }
+
+              .cost-title {
+                width: 90px;
+                display: flex;
+                justify-content: flex-end;
+              }
+
+              .actions-title {
+                width: 100px;
+              }
+            }
+
+            .citation-items {
+              background: #ef9a9a10;
+
+              &:hover {
+                background: #ef9a9a30;
+                transition: 0.25s;
+              }
+
+              .citation-code {
+                width: 178px;
+                font-size: 14px;
+                font-weight: bold;
+                color: #6c6c6c;
+              }
+
+              .citation-description {
+                flex-grow: 1;
+                font-size: 14px;
+                font-weight: 400;
+                color: #6c6c6c;
+              }
+
+              .due-date {
+                width: 172px;
+
+                .table-progress-cotnainer {
+                  display: flex;
+                  align-items: center;
+
+                  .table-progress-bar-container {
+                    border-radius: 3px;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    user-select: none;
+                    height: 20px;
+                    width: 24px;
+                    display: flex;
+                    overflow: hidden;
+                    line-height: 0;
+                    font-size: 14px;
+
+                    .table-progress-bar {
+                      text-align: left;
+                      display: flex;
+                      flex-direction: column;
+                      justify-content: center;
+                      white-space: nowrap;
+                    }
+                  }
+
+                  .table-progress-text {
+                    font-size: 14px;
+                    font-weight: 400;
+                    margin-left: 4px;
+                    color: #6c6c6c;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+
+                    &::selection {
+                      color: #6c6c6c;
+                      background: #6c6c6c20;
+                    }
+                  }
+                }
+              }
+
+              svg-icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+
+              .paid-item {
+                width: 76px;
+                display: flex;
+
+                .paid-icon {
+                  svg {
+                    path {
+                      fill: #aaaaaa;
+                    }
+                  }
+                }
+              }
+
+              .cost-item {
+                width: 90px;
+                display: flex;
+                justify-content: flex-end;
+                font-size: 14px;
+                font-weight: 600;
+                color: #6c6c6c;
+              }
+
+              .actions {
+                width: 92px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+
+                .attachment-icon,
+                .note-container {
+                  margin-right: 12px;
+                }
+              }
+            }
+          }
         }
       }
 
-      .roadside-inspection-active{
+      .roadside-inspection-active {
         max-height: 1000px;
         transition: 0.25s ease-in-out;
       }
