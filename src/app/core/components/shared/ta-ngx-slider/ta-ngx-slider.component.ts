@@ -16,6 +16,7 @@ export class TaNgxSliderComponent {
   @Input() maxValue: any = 5000;
 
   @Output() onUserValueChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onUserHighValueChange: EventEmitter<any> = new EventEmitter<any>();
 
   public userChangeEnd(changes: ChangeContext) {
     if (changes) {
@@ -31,6 +32,16 @@ export class TaNgxSliderComponent {
   public valueChange(event) {
     if (event) {
       this.onUserValueChange.emit(event);
+    }
+  }
+
+  public minValueChange(event){
+    this.onUserValueChange.emit(event);
+  }
+
+  public highValueChange(event){
+    if (event) {
+      this.onUserHighValueChange.emit(event);
     }
   }
 

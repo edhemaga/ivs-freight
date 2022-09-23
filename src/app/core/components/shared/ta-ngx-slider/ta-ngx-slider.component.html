@@ -31,7 +31,8 @@
         [(value)]="minValue"
         [(highValue)]="maxValue"
         [options]="sliderOptions"
-        (userChangeEnd)="userChangeEnd($event)"
+        (valueChange)="minValueChange($event)"
+        (highValueChange)="highValueChange($event)"
       ></ngx-slider>
     </div>
   </div>

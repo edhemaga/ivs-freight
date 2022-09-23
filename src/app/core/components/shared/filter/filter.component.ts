@@ -1011,7 +1011,7 @@ export class FilterComponent implements OnInit {
   public paySliderData: Options = {
     floor: 0,
     ceil: 20000,
-    step: 5,
+    step: 1,
     showSelectionBar: true,
     hideLimitLabels: true,
     noSwitching: true
@@ -1020,7 +1020,7 @@ export class FilterComponent implements OnInit {
   public milesSliderData: Options = {
     floor: 0,
     ceil: 5000,
-    step: 5,
+    step: 1,
     showSelectionBar: true,
     hideLimitLabels: true,
     noSwitching: true
@@ -1034,6 +1034,8 @@ export class FilterComponent implements OnInit {
 
   minValueDragged: number = 0;
   maxValueDragged: number = 20000;
+
+  rangeDiffNum: number = 0;
 
   @Input() type: string = 'userFilter';
   @Input() icon: string = 'user';
@@ -1098,7 +1100,6 @@ export class FilterComponent implements OnInit {
 
     this.rangeForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       if (changes){
-
         console.log('--changes--', changes);
 
         var rangeFromNum = 0;
@@ -1124,6 +1125,8 @@ export class FilterComponent implements OnInit {
 
         this.minValueDragged = rangeFromNum;
         this.maxValueDragged = rangeToNum;
+
+        this.rangeDiffNum = this.maxValueDragged - this.minValueDragged;
       }
     })
 
@@ -2016,6 +2019,16 @@ export class FilterComponent implements OnInit {
     let fromValue = this.thousandSeparator.transform(mod.value);
     let toValue = this.thousandSeparator.transform(mod.highValue);
     this.rangeForm?.get('rangeFrom')?.setValue(fromValue);
+    this.rangeForm?.get('rangeTo')?.setValue(toValue);
+  }
+
+  setMinValueRange(mod){
+    let fromValue = this.thousandSeparator.transform(mod);
+    this.rangeForm?.get('rangeFrom')?.setValue(fromValue);
+  }
+
+  setMaxValueRange(mod){
+    let toValue = this.thousandSeparator.transform(mod);
     this.rangeForm?.get('rangeTo')?.setValue(toValue);
   }
 
