@@ -727,6 +727,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  saveNoteValue(value){
+    this.truckForm.controls['note'].setValue(value);
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

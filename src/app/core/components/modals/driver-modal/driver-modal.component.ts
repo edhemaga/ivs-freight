@@ -1200,6 +1200,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           ? teamDriver
           : false
         : null,
+      note: this.driverForm.get('note').value,
     };
 
     let driverFullName = newData.firstName + ' ' + newData.lastName;
@@ -1713,6 +1714,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.notificationService.error("Driver can't be deleted.", 'Error:');
         },
       });
+  }
+
+  saveNoteValue(value){
+    this.driverForm.controls['note'].setValue(value);
   }
 
   ngOnDestroy(): void {

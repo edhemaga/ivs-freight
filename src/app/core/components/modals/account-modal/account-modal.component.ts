@@ -375,6 +375,10 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  saveNoteValue(value){
+    this.accountForm.controls['note'].setValue(value);
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
