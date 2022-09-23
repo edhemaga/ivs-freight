@@ -214,7 +214,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     this.onIncludeDuration();
     this.onIncludeFuelCost();
-    this.getTrucks();
+    //this.getTrucks();
   }
 
   ngOnChanges(changes: SimpleChanges) {
