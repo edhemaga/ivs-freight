@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ApUnit } from './apUnit';
 
 
 export interface CreateTruckCommand { 
@@ -34,5 +35,14 @@ export interface CreateTruckCommand {
     insurancePolicy?: string | null;
     mileage?: number | null;
     ipasEzpass?: string | null;
+    engineOilType?: number | null;
+    gearRatio?: number | null;
+    apUnit?: ApUnit;
+    tollTransponder?: number | null;
+    doubleBunk?: boolean | null;
+    refrigerator?: boolean | null;
+    dcInventer?: boolean | null;
+    blower?: boolean | null;
+    pto?: boolean | null;
 }
 
