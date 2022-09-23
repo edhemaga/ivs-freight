@@ -46,6 +46,15 @@ export interface TruckShortResponse {
     ipasEzpass?: string | null;
     licensePlate?: string | null;
     fhwaInspection?: string | null;
+    engineOilType?: EnumValue;
+    gearRatio?: EnumValue;
+    apUnit?: EnumValue;
+    tollTransponder?: EnumValue;
+    doubleBunk?: boolean | null;
+    refrigerator?: boolean | null;
+    dcInventer?: boolean | null;
+    blower?: boolean | null;
+    pto?: boolean | null;
     createdAt?: string;
     updatedAt?: string;
 }

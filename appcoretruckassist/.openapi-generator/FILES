@@ -67,6 +67,7 @@ model/addApplicantToFavouriteCommand.ts
 model/addressEntity.ts
 model/addressListResponse.ts
 model/addressResponse.ts
+model/apUnit.ts
 model/apiCategory.ts
 model/applicantAdminResponse.ts
 model/applicantCompanyInfoResponse.ts
@@ -505,6 +506,7 @@ model/trailerResponse.ts
 model/trailerShortResponse.ts
 model/trailerShortResponsePagination.ts
 model/trailerTypeResponse.ts
+model/transponderGroup.ts
 model/truckAccidentResponse.ts
 model/truckAutocompleteModelResponse.ts
 model/truckEngineTypeResponse.ts
