@@ -368,6 +368,11 @@ export class ViolationTableComponent
       tabelEndTime: data?.endTime ? data?.endTime : '',
       tableLvl: data?.inspectionLevel ? this.formatInspectionLevel(data?.inspectionLevel) : '',
       tableState: data?.country? data?.country : '',
+      /* Test */
+      tableDropdownProgress: {
+        expirationDays: 20,
+        percentage: 20
+      }
     };
   }
 

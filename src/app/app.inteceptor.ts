@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpEvent, HttpResponse, HttpRequest, HttpHandler } from '@angular/common/http';
-import { catchError, Observable, throwError, tap, finalize } from 'rxjs';
+import { catchError, Observable, throwError, tap, finalize, of } from 'rxjs';
 import { NotificationService } from './core/services/notification/notification.service';
 
 
@@ -12,10 +12,10 @@ export class AppInterceptor implements HttpInterceptor {
 
     }
 
-  intercept(httpRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(httpRequest: HttpRequest<any>, next: HttpHandler): Observable<any>{
     return next.handle(httpRequest).pipe(
         catchError((error: any) => {
-          if ( httpRequest.url.indexOf('api') > -1  ){
+          if ( httpRequest.url.indexOf('api') > -1 ){
             let timeOutValue = 1200;
             if ( httpRequest.url.indexOf('login') > -1 ){
               timeOutValue = 1;
@@ -25,7 +25,12 @@ export class AppInterceptor implements HttpInterceptor {
             }, timeOutValue);
           }
 
+          if ( error.status == 500 ){
+            return of('No data');
+            //return throwError(() => new Error('error'));
+          } else {
             return throwError(() => new Error(error.statusText));
+          } 
         }), 
         tap({
           complete: () => {
