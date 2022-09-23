@@ -57,7 +57,19 @@
       -o-object-fit: fill;
       object-fit: fill;
       height: 194px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
       user-select: none;
+
+      @-webkit-keyframes slideInImage {
+        from {
+          transform: translateX(200px);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
 
       @keyframes slideInImage {
         from {
@@ -164,59 +176,82 @@
       }
     }
   }
-
-  .slider-container {
+  .crop-accepted-container {
     display: flex;
-    align-items: center;
-    gap: 12px;
+    flex-direction: column;
 
-    .buttons-container {
-      margin-top: 12px;
+    .crop-message {
+      font-size: 11px;
+      font-weight: 600;
+      color: #ef5350;
+      padding-left: 10px;
+      position: relative;
+      top: 2px;
+
+      &::-moz-selection {
+        background-color: rgb(239, 83, 80, 0.2);
+        color: #ef5350;
+      }
+
+      &::selection {
+        background-color: rgb(239, 83, 80, 0.2);
+        color: #ef5350;
+      }
+    }
+
+    .slider-container {
       display: flex;
       align-items: center;
       gap: 12px;
-      cursor: pointer;
 
-      p {
-        margin: 0;
-        padding: 0;
-        font-size: 11px;
-        font-weight: 700;
-      }
-
-      .save-check {
-        background-color: #3074D3;
-        width: 84px;
-        height: 26px;
-        border-radius: 2px;
-        text-align: center;
-        padding: 5px 0px;
-        transition: all 0.3s ease-in-out;
+      .buttons-container {
+        margin-top: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
 
         p {
-          color: #FFFFFF;
+          margin: 0;
+          padding: 0;
+          font-size: 11px;
+          font-weight: 700;
         }
 
-        &:hover {
-          background-color: #255BB9;
+        .save-check {
+          background-color: #3074d3;
+          width: 84px;
+          height: 26px;
+          border-radius: 2px;
+          text-align: center;
+          padding: 5px 0px;
+          transition: all 0.3s ease-in-out;
+
+          p {
+            color: #ffffff;
+          }
+
+          &:hover {
+            background-color: #255bb9;
+          }
         }
-      }
 
-      .cancel-check {
-        background-color: #EEEEEE;
-        width: 84px;
-        height: 26px;
-        border-radius: 2px;
-        text-align: center;
-        padding: 5px 0px;
-        transition: all 0.3s ease-in-out;
+        .cancel-check {
+          background-color: #eeeeee;
+          width: 84px;
+          height: 26px;
+          border-radius: 2px;
+          text-align: center;
+          padding: 5px 0px;
+          transition: all 0.3s ease-in-out;
 
-        p {
-          color: #2F2F2F;
-        }
+          p {
+            color: #2f2f2f;
+          }
 
-        &:hover {
-          background-color: #E5E5E5;
+          &:hover {
+            background-color: #e5e5e5;
+          }
         }
       }
     }

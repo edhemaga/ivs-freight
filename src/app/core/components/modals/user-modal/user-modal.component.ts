@@ -25,7 +25,6 @@ import { tab_modal_animation } from '../../shared/animations/tabs-modal.animatio
 import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
-import { FormService } from '../../../services/form/form.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
@@ -34,7 +33,7 @@ import { NotificationService } from '../../../services/notification/notification
   styleUrls: ['./user-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, FormService, BankVerificationService],
+  providers: [ModalService, BankVerificationService],
 })
 export class UserModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -111,7 +110,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private formService: FormService,
     private bankVerificationService: BankVerificationService,
     private notificationService: NotificationService
   ) {}
@@ -160,14 +158,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
-
-    // this.formService.checkFormChange(this.userForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {

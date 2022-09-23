@@ -285,13 +285,13 @@ ngb-modal-window[aria-hidden="true"] {
           transition: all 0.3s ease-in-out;
 
           &.valid {
-            background-color: #6d82c7;
+            background-color: #3074d3;
             color: #ffffff;
             pointer-events: all;
 
             &:hover {
               color: #ffffff;
-              background-color: #536bc2;
+              background-color: #255bb9;
             }
           }
         }

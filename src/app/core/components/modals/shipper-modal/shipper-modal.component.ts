@@ -105,7 +105,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private taLikeDislikeService: TaLikeDislikeService,
-    private reviewRatingService: ReviewsRatingService,
+    private reviewRatingService: ReviewsRatingService
   ) {}
 
   ngOnInit() {
@@ -150,14 +150,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
-
-    // this.formService.checkFormChange(this.shipperForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

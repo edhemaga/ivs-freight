@@ -37,7 +37,6 @@ import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../services/form/form.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
 import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
@@ -48,7 +47,7 @@ import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
   styleUrls: ['./truck-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, FormService],
+  providers: [ModalService],
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -145,7 +144,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     private truckModalService: TruckTService,
     private notificationService: NotificationService,
     private modalService: ModalService,
-    private formService: FormService,
     private ngbActiveModal: NgbActiveModal,
     private vinDecoderService: VinDecoderService
   ) {}
@@ -203,14 +201,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       purchaseDate: [null],
       purchasePrice: [null],
     });
-
-    // this.formService.checkFormChange(this.truckForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public tabChange(event: any): void {

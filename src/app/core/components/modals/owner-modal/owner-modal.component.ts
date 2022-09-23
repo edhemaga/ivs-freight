@@ -1,7 +1,7 @@
 import {
   accountBankValidation,
   routingBankValidation,
-} from "../../shared/ta-input/ta-input.regex-validations";
+} from '../../shared/ta-input/ta-input.regex-validations';
 import { TruckModalComponent } from '../truck-modal/truck-modal.component';
 import { UpdateOwnerCommand } from '../../../../../../appcoretruckassist';
 import { CreateOwnerCommand } from '../../../../../../appcoretruckassist';
@@ -36,14 +36,13 @@ import { OwnerTService } from '../../owner/state/owner.service';
 import { TrailerModalComponent } from '../trailer-modal/trailer-modal.component';
 import { Subject, takeUntil } from 'rxjs';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
-import { FormService } from '../../../services/form/form.service';
 
 @Component({
   selector: 'app-owner-modal',
   templateUrl: './owner-modal.component.html',
   styleUrls: ['./owner-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, FormService, BankVerificationService],
+  providers: [ModalService, BankVerificationService],
 })
 export class OwnerModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -81,7 +80,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private ownerModalService: OwnerTService,
     private notificationService: NotificationService,
-    private formService: FormService,
     private bankVerificationService: BankVerificationService
   ) {}
 
@@ -117,14 +115,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
-
-    // this.formService.checkFormChange(this.ownerForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public tabChange(event: any): void {

@@ -42,7 +42,6 @@ import {
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
-import { FormService } from '../../../../../services/form/form.service';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../../../services/BANK-VERIFICATION/bankVerification.service';
 import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
@@ -64,7 +63,7 @@ import {
   templateUrl: './settings-basic-modal.component.html',
   styleUrls: ['./settings-basic-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [ModalService, FormService, BankVerificationService],
+  providers: [ModalService, BankVerificationService],
 })
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -253,7 +252,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService,
     private settingsCompanyService: SettingsCompanyService,
     private bankVerificationService: BankVerificationService
   ) {}
@@ -420,13 +418,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     if (['new-division', 'edit-division'].includes(this.editData.type)) {
       this.companyForm.get('email').setValidators(Validators.required);
     }
-    // this.formService.checkFormChange(this.companyForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

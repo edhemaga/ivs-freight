@@ -16,10 +16,8 @@
         (update)="handleCroppieUpdate()"
       />
     </div>
-    <div
-      class="slider-container"
-    >
-
+    <div class="crop-accepted-container">
+      <div class="slider-container">
         <app-ta-ngx-slider
           *ngIf="!showUploadZone"
           [sliderTemplate]="'logo-change'"
@@ -29,28 +27,31 @@
           (onUserValueChange)="zooming($event)"
         ></app-ta-ngx-slider>
 
-      <div class="buttons-container">
-        <div
-          (click)="saveImage()"
-          class="save-check"
-          ngbTooltip
-          mainTooltip="Confirm"
-          tooltipBackground="#536bc2"
-          position="top"
-        >
-          <p>CROP</p>
-        </div>
-        <div
-          (click)="onCancel()"
-          class="cancel-check"
-          ngbTooltip
-          mainTooltip="Cancel"
-          tooltipBackground="#6c6c6c"
-          position="top"
-        >
-          <p>CANCEL</p>
+        <div class="buttons-container">
+          <div
+            (click)="saveImage()"
+            class="save-check"
+            ngbTooltip
+            mainTooltip="Confirm"
+            tooltipBackground="#536bc2"
+            position="top"
+          >
+            <p>CROP</p>
+          </div>
+          <div
+            (click)="onCancel()"
+            class="cancel-check"
+            ngbTooltip
+            mainTooltip="Cancel"
+            tooltipBackground="#6c6c6c"
+            position="top"
+          >
+            <p>CANCEL</p>
+          </div>
         </div>
       </div>
+
+      <div class="crop-message">Crop Confirmation Required</div>
     </div>
   </div>
 

@@ -11,7 +11,6 @@ import { debounceTime, Subject, takeUntil } from 'rxjs';
 
 import { SettingsLocationService } from '../../../state/location-state/settings-location.service';
 import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
-import { FormService } from '../../../../../services/form/form.service';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
@@ -36,7 +35,7 @@ import {
   templateUrl: './settings-parking-modal.component.html',
   styleUrls: ['./settings-parking-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [ModalService, FormService],
+  providers: [ModalService],
 })
 export class SettingsParkingModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -121,7 +120,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService,
     private settingsLocationService: SettingsLocationService
   ) {}
 
@@ -160,14 +158,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
-
-    // this.formService.checkFormChange(this.parkingForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public tabChange(event: any, action?: string): void {
