@@ -34,7 +34,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../services/form/form.service';
 import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { trailerVolumeValidation } from '../../shared/ta-input/ta-input.regex-validations';
@@ -49,7 +48,7 @@ import {
   styleUrls: ['./trailer-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, FormService],
+  providers: [ModalService],
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -105,7 +104,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private modalService: ModalService,
     private ngbActiveModal: NgbActiveModal,
-    private formService: FormService,
     private vinDecoderService: VinDecoderService
   ) {}
 
@@ -147,14 +145,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       volume: [null, trailerVolumeValidation],
       insurancePolicy: [null, insurancePolicyValidation],
     });
-
-    // this.formService.checkFormChange(this.trailerForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   private isCompanyOwned() {
@@ -255,11 +245,15 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
-    let dotAnimation = document.querySelector('.animation-two-tabs');
+    let dotAnimation = null;
+    // setTimeout(() => {
+    dotAnimation = document.querySelector('.animation-two-tabs');
+    console.log(dotAnimation.getClientRects());
     this.animationObject = {
       value: this.selectedTab,
       params: { height: `${dotAnimation.getClientRects()[0].height}px` },
     };
+    // }, 30);
   }
 
   private getTrailerDropdowns(): void {

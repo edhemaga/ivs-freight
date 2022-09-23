@@ -35,7 +35,6 @@
         </div>
       </div>
       <div class="details-header-data">
-
         <div class="details-header-data-item second">
           <div *ngIf="trailer.color" class="light-green">
             <svg
@@ -97,7 +96,6 @@
         [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
         [isCardOpen]="true"
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         class="first-custom-card"
       >
         <div class="assignTo">
@@ -141,7 +139,6 @@
         [cardName]="'Additional Details'"
         [isCardOpen]="true"
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
       >
         <div
           *ngIf="
@@ -208,7 +205,6 @@
         [cardName]="'Owner'"
         [isCardOpen]="true"
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
       >
         <div class="owner-container">
           <div class="owner-items-name">
@@ -258,7 +254,6 @@
                 position="top"
                 class="hide-show"
               >
-              
               </span>
             </div>
           </div>
@@ -272,7 +267,6 @@
         [tooltipName]="'View in Modal'"
         [bodyTemplate]="'card'"
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-        [animationsDisabled]="false"
       >
         <div class="owner-history-container">
           <div class="status-container">
@@ -335,7 +329,6 @@
           class="item-cards"
           [bodyTemplate]="'card'"
           [hasCounter]="trailer.registrations.length"
-          [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
           <div
@@ -347,7 +340,7 @@
           >
             <app-ta-re-card
               [cardDocumentCounter]="1"
-              (resizePage)="toggleResizePage(i,'registration')"
+              (resizePage)="toggleResizePage(i, 'registration')"
               [cardNameCommon]="reg.licensePlate"
               [hasCopyIcon]="true"
               [options]="dataEdit"
@@ -370,7 +363,9 @@
                   </div>
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler[i+'registration'] }"
+                    [ngClass]="{
+                      'second-progress': toggler[i + 'registration']
+                    }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
@@ -382,7 +377,11 @@
                     </div>
                   </div>
                 </div>
-                <div [@showHideCardBody]="toggler[i+'registration'] ? 'true' : 'false'">
+                <div
+                  [@showHideCardBody]="
+                    toggler[i + 'registration'] ? 'true' : 'false'
+                  "
+                >
                   <div class="divider"></div>
                   <div class="card-note">
                     <app-ta-input-note
@@ -411,7 +410,6 @@
           [bodyTemplate]="'card'"
           [cardDocumentCounter]="1"
           [hasCounter]="trailer.inspections.length"
-          [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
           <div
@@ -425,13 +423,13 @@
               [options]="dataEdit"
               [cardNameCommon]="fhwa.issueDate | formatDateP"
               [optionsId]="fhwa.id"
-              (resizePage)="toggleResizePage(i,'inspection')"
+              (resizePage)="toggleResizePage(i, 'inspection')"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler[i+'inspection'] }"
+                    [ngClass]="{ 'second-progress': toggler[i + 'inspection'] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
@@ -443,7 +441,11 @@
                     </div>
                   </div>
                 </div>
-                <div [@showHideCardBody]="toggler[i+'inspection']  ? 'true' : 'false'">
+                <div
+                  [@showHideCardBody]="
+                    toggler[i + 'inspection'] ? 'true' : 'false'
+                  "
+                >
                   <div class="divider"></div>
                   <div class="card-note">
                     <app-ta-input-note
@@ -471,7 +473,6 @@
           class="item-cards"
           [bodyTemplate]="'card'"
           [hasCounter]="trailer.titles.length"
-          [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
           <div
@@ -483,7 +484,7 @@
           >
             <app-ta-re-card
               [cardDocumentCounter]="1"
-              (resizePage)="toggleResizePage(i,'title')"
+              (resizePage)="toggleResizePage(i, 'title')"
               [cardNameCommon]="title.number"
               [options]="dataEdit"
               [optionsId]="title.id"
@@ -506,7 +507,7 @@
                   </div>
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler[i+'title']  }"
+                    [ngClass]="{ 'second-progress': toggler[i + 'title'] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
@@ -518,7 +519,9 @@
                     </div>
                   </div>
                 </div>
-                <div [@showHideCardBody]="toggler[i+'title']  ? 'true' : 'false'">
+                <div
+                  [@showHideCardBody]="toggler[i + 'title'] ? 'true' : 'false'"
+                >
                   <div class="divider"></div>
 
                   <div class="card-note">
@@ -547,7 +550,6 @@
           class="item-cards"
           [bodyTemplate]="'card'"
           [hasCounter]="0"
-          [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
         </app-ta-custom-card>

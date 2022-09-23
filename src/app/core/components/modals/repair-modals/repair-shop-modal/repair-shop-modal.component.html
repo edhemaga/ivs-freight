@@ -141,7 +141,6 @@
       [hasCounter]="pickedServices() ? pickedServices() : 0"
       [cardName]="'Service'"
       [isCardOpen]="true"
-      [animationsDisabled]="true"
     >
       <div class="repair-shop-services">
         <div
@@ -161,7 +160,6 @@
         [cardName]="'Open Hours'"
         [isCardOpen]="true"
         [hasBodyData]="true"
-        [animationsDisabled]="true"
       >
         <div
           formArrayName="openHours"
@@ -211,11 +209,7 @@
     </div>
 
     <!-- Bank Account -->
-    <app-ta-custom-card
-      [cardName]="'Bank Account'"
-      [isCardOpen]="true"
-      [animationsDisabled]="true"
-    >
+    <app-ta-custom-card [cardName]="'Bank Account'" [isCardOpen]="true">
       <div class="custom-bank-row">
         <div class="bank-field">
           <app-ta-input-dropdown
@@ -269,9 +263,9 @@
       </div>
     </app-ta-custom-card>
     <!-- Note -->
-    <app-ta-input-note
+    <!-- <app-ta-input-note
       formControlName="note"
       [isVisibleNote]="repairShopForm.get('note').value"
-    ></app-ta-input-note>
+    ></app-ta-input-note> -->
   </form>
 </app-ta-modal>

@@ -5,7 +5,10 @@
   [isModalValid]="accountForm.valid"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="accountForm" class="form-container form-container-without-mb">
+  <form
+    [formGroup]="accountForm"
+    class="form-container form-container-without-mb"
+  >
     <div class="row">
       <div class="col-12">
         <app-ta-input
@@ -114,9 +117,9 @@
         ></app-ta-input>
       </div>
     </div>
-    <app-ta-input-note
+    <!-- <app-ta-input-note
       formControlName="note"
       [isVisibleNote]="accountForm.get('note').value"
-    ></app-ta-input-note>
+    ></app-ta-input-note> -->
   </form>
 </app-ta-modal>

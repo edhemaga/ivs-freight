@@ -18,10 +18,7 @@
     [formGroup]="accidentForm"
     class="form-container"
     [ngClass]="{
-      'tab-2': selectedTab !== 1,
-      'form-container-without-mb':
-        selectedTab === 1 || !isLocationAndShippingOpen,
-      'form-container-with-card': selectedTab === 2 && isLocationAndShippingOpen
+      'tab-2': selectedTab !== 1
     }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
@@ -156,11 +153,7 @@
             ></app-ta-input>
           </div>
         </div>
-        <app-ta-custom-card
-          [cardName]="'Driver'"
-          [isCardOpen]="true"
-          [animationsDisabled]="true"
-        >
+        <app-ta-custom-card [cardName]="'Driver'" [isCardOpen]="true">
           <div class="violation-modal-row-3">
             <app-ta-input
               formControlName="driverName"
@@ -203,11 +196,7 @@
             ></app-ta-input>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card
-          [cardName]="'Truck'"
-          [isCardOpen]="true"
-          [animationsDisabled]="true"
-        >
+        <app-ta-custom-card [cardName]="'Truck'" [isCardOpen]="true">
           <div class="violation-modal-row-5">
             <app-ta-input
               formControlName="truckUnit"
@@ -268,11 +257,7 @@
             ></app-ta-input>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card
-          [cardName]="'Trailer'"
-          [isCardOpen]="true"
-          [animationsDisabled]="true"
-        >
+        <app-ta-custom-card [cardName]="'Trailer'" [isCardOpen]="true">
           <div class="violation-modal-row-6">
             <app-ta-input-dropdown
               formControlName="trailerUnit"
@@ -341,7 +326,6 @@
             [cardName]="'Violation'"
             [isCardOpen]="violations.length > 0"
             [hasScrollBody]="violations.length > 10"
-            [animationsDisabled]="true"
           >
             <div
               formArrayName="violations"
@@ -396,121 +380,116 @@
           </app-ta-custom-card>
         </div>
 
-        <div class="insurance-card">
-          <app-ta-custom-card
-            [hasCounter]="insurances.length ? insurances.length : 0"
-            [cardName]="'Insurance'"
-            [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
-            [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-            [isCardOpen]="insurances.length > 0"
-            [hasBodyData]="insurances.length > 0"
-            (onActionEvent)="addInsurance($event)"
-            [animationsDisabled]="true"
+        <app-ta-custom-card
+          [hasCounter]="insurances.length ? insurances.length : 0"
+          [cardName]="'Insurance'"
+          [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
+          [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+          [isCardOpen]="insurances.length > 0"
+          [hasBodyData]="insurances.length > 0"
+          [hasScrollBody]="insurances.length > 0"
+          (onActionEvent)="addInsurance($event)"
+        >
+          <div
+            formArrayName="insurance"
+            class="common-fake-table-modal common-fake-table-modal-accident-insurance"
+            *ngIf="insurances.length"
           >
-            <div
-              formArrayName="insurance"
-              class="common-fake-table-modal common-fake-table-modal-accident-insurance"
-              *ngIf="insurances.length"
-            >
-              <div class="common-fake-table-label">
-                <p>INS. TYPE</p>
-                <p>CLAIM NO.</p>
-                <p>INS. ADJUSTER</p>
-                <p>PHONE</p>
-                <p>EMAIL</p>
-              </div>
-              <div
-                *ngFor="let insurance of insurances.controls; let ind = index"
-              >
-                <div [formGroupName]="ind" class="common-fake-table-card">
-                  <app-ta-input-dropdown
-                    formControlName="insuranceType"
-                    [inputConfig]="{
-                      name: 'Input Dropdown',
-                      type: 'text',
-                      isDropdown: true,
-                      dropdownWidthClass: 'w-col-136',
-                      hideErrorMessage: true,
-                      blackInput: true,
-                      hideRequiredCheck: true
-                    }"
-                    [options]="labelsInsuranceType"
-                    (selectedItem)="
-                      onSelectDropDown($event, 'insurance-type', ind)
-                    "
-                  ></app-ta-input-dropdown>
+            <div class="common-fake-table-label">
+              <p>INS. TYPE</p>
+              <p>CLAIM NO.</p>
+              <p>INS. ADJUSTER</p>
+              <p>PHONE</p>
+              <p>EMAIL</p>
+            </div>
+            <div *ngFor="let insurance of insurances.controls; let ind = index">
+              <div [formGroupName]="ind" class="common-fake-table-card">
+                <app-ta-input-dropdown
+                  formControlName="insuranceType"
+                  [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-136',
+                    hideErrorMessage: true,
+                    blackInput: true,
+                    hideRequiredCheck: true
+                  }"
+                  [options]="labelsInsuranceType"
+                  (selectedItem)="
+                    onSelectDropDown($event, 'insurance-type', ind)
+                  "
+                ></app-ta-input-dropdown>
 
-                  <app-ta-input
-                    formControlName="claimNumber"
-                    [inputConfig]="{
-                      name: 'Claim Number',
-                      type: 'text',
-                      textTransform: 'capitalize',
-                      hideErrorMessage: true,
-                      blackInput: true,
-                      hideRequiredCheck: true
-                    }"
-                  ></app-ta-input>
+                <app-ta-input
+                  formControlName="claimNumber"
+                  [inputConfig]="{
+                    name: 'Claim Number',
+                    type: 'text',
+                    textTransform: 'capitalize',
+                    hideErrorMessage: true,
+                    blackInput: true,
+                    hideRequiredCheck: true
+                  }"
+                ></app-ta-input>
 
-                  <app-ta-input
-                    formControlName="insuranceAdjuster"
-                    [inputConfig]="{
-                      name: 'Insurance Adjuster',
-                      type: 'text',
-                      textTransform: 'capitalize',
-                      hideErrorMessage: true,
-                      blackInput: true,
-                      hideRequiredCheck: true
-                    }"
-                  ></app-ta-input>
+                <app-ta-input
+                  formControlName="insuranceAdjuster"
+                  [inputConfig]="{
+                    name: 'Insurance Adjuster',
+                    type: 'text',
+                    textTransform: 'capitalize',
+                    hideErrorMessage: true,
+                    blackInput: true,
+                    hideRequiredCheck: true
+                  }"
+                ></app-ta-input>
 
-                  <app-ta-input
-                    formControlName="phone"
-                    [inputConfig]="{
-                      name: 'Phone',
-                      type: 'text',
-                      mask: '(000) 000-0000',
-                      hideErrorMessage: true,
-                      thousandSeparator: true,
-                      hideRequiredCheck: true
-                    }"
-                  ></app-ta-input>
+                <app-ta-input
+                  formControlName="phone"
+                  [inputConfig]="{
+                    name: 'Phone',
+                    type: 'text',
+                    mask: '(000) 000-0000',
+                    hideErrorMessage: true,
+                    thousandSeparator: true,
+                    hideRequiredCheck: true
+                  }"
+                ></app-ta-input>
 
-                  <app-ta-input
-                    formControlName="email"
-                    [inputConfig]="{
-                      name: 'Email',
-                      type: 'text',
-                      minLength: 5,
-                      maxLength: 64,
-                      textTransform: 'lowercase',
-                      hideErrorMessage: true,
-                      blackInput: true,
-                      hideRequiredCheck: true
-                    }"
-                  ></app-ta-input>
+                <app-ta-input
+                  formControlName="email"
+                  [inputConfig]="{
+                    name: 'Email',
+                    type: 'text',
+                    minLength: 5,
+                    maxLength: 64,
+                    textTransform: 'lowercase',
+                    hideErrorMessage: true,
+                    blackInput: true,
+                    hideRequiredCheck: true
+                  }"
+                ></app-ta-input>
 
-                  <div
-                    ngbTooltip
-                    mainTooltip="Delete"
-                    position="top"
-                    tooltipBackground="#EF5350"
-                    class="common-fake-table-delete"
-                    (click)="removeInsurance(ind)"
-                  >
-                    <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
-                  </div>
+                <div
+                  ngbTooltip
+                  mainTooltip="Delete"
+                  position="top"
+                  tooltipBackground="#EF5350"
+                  class="common-fake-table-delete"
+                  (click)="removeInsurance(ind)"
+                >
+                  <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
                 </div>
               </div>
             </div>
-          </app-ta-custom-card>
-        </div>
+          </div>
+        </app-ta-custom-card>
 
         <app-ta-custom-card
           [hasCounter]="documents.length ? documents.length : 0"
           [cardName]="'Documents'"
           [isCardOpen]="documents.length > 0"
-          [animationsDisabled]="true"
         >
           <app-ta-upload-files
             [files]="documents"
@@ -523,7 +502,6 @@
           [hasCounter]="media.length ? media.length : 0"
           [cardName]="'Media'"
           [isCardOpen]="media.length > 0"
-          [animationsDisabled]="true"
         >
           <app-ta-upload-files
             [files]="media"
@@ -532,17 +510,16 @@
           ></app-ta-upload-files>
         </app-ta-custom-card>
 
-        <app-ta-input-note
+        <!-- <app-ta-input-note
           formControlName="note"
           [isVisibleNote]="accidentForm.get('note').value"
-        ></app-ta-input-note>
+        ></app-ta-input-note> -->
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
         <app-ta-custom-card
           [cardName]="'Crash Environment'"
           [isCardOpen]="true"
-          [animationsDisabled]="true"
         >
           <div class="row">
             <div class="col-8">
@@ -566,7 +543,7 @@
               ></app-ta-input>
             </div>
           </div>
-          <div class="row last-row">
+          <div class="row row-mb-12">
             <div class="col-4">
               <app-ta-input
                 formControlName="roadAccessControl"
@@ -602,11 +579,8 @@
         <app-ta-custom-card
           [cardName]="'Authority Details'"
           [isCardOpen]="true"
-          [animationsDisabled]="true"
         >
-          <div
-            class="violation-modal-autority-details-row violation-modal-autority-details-row-1"
-          >
+          <div class="violation-modal-autority-details-row">
             <app-ta-input
               formControlName="reportingAgency"
               [inputConfig]="{
@@ -634,7 +608,9 @@
               }"
             ></app-ta-input>
           </div>
-          <div class="violation-modal-autority-details-row">
+          <div
+            class="violation-modal-autority-details-row violation-modal-autority-details-row-second"
+          >
             <app-ta-input-address
               formControlName="authorityAddress"
               [inputConfig]="{
@@ -675,7 +651,6 @@
           [cardName]="'Location & Shipping info'"
           [isCardOpen]="isLocationAndShippingOpen"
           (onOpenCard)="isLocationAndShippingOpen = $event"
-          [animationsDisabled]="true"
         >
           <div class="row">
             <div class="col-6">
@@ -713,7 +688,7 @@
               ></app-ta-input-address>
             </div>
           </div>
-          <div class="violation-modal-location-shipping-row-3 row-no-mb">
+          <div class="violation-modal-location-shipping-row-3">
             <app-ta-input-dropdown
               formControlName="shippingCustomer"
               [inputConfig]="{

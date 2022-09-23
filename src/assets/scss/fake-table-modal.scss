@@ -2,7 +2,6 @@
 .common-fake-table-modal {
   overflow: hidden;
   overflow-x: scroll;
-  margin-top: 10px;
 
   scrollbar-width: none !important; /* Firefox */
 
@@ -419,6 +418,8 @@
 
   // Accident Modal Violations
   &-accident-violations {
+    overflow-x: hidden !important;
+    margin: 12px 0px !important;
     .common-fake-table-label {
       p {
         &:nth-child(1) {
@@ -473,6 +474,8 @@
 
   // Accident Modal Insurance
   &-accident-insurance {
+    overflow-x: hidden !important;
+    margin: 12px 0px !important;
     .common-fake-table-label {
       p {
         &:nth-child(1) {

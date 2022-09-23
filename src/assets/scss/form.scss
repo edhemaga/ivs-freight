@@ -154,7 +154,7 @@
 
     &.custom-bank-row-driver {
       grid-template-columns: 184px 160px 248px;
-      margin-bottom: 20px;
+      margin-bottom: 0px;
     }
   }
 
@@ -183,7 +183,6 @@
     align-items: center;
     -moz-column-gap: 22px;
     column-gap: 22px;
-    margin-bottom: 22px;
     padding-left: 6px;
 
     &.extended {
@@ -441,7 +440,6 @@
     -moz-column-gap: 12px;
     column-gap: 12px;
     height: 36px;
-    margin-top: 11px;
     transition: all 0.3s ease-in-out;
   }
 }
@@ -847,7 +845,6 @@
   align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
-  margin-bottom: 22px;
 }
 .violation-modal-row-3,
 .violation-modal-row-4 {
@@ -857,7 +854,7 @@
   align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
-  margin-bottom: 22px;
+  margin: 12px 0px;
 }
 .violation-modal-row-5,
 .violation-modal-row-6 {
@@ -867,7 +864,7 @@
   align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
-  margin-bottom: 22px;
+  margin: 12px 0px;
 }
 .violation-modal-autority-details-row {
   display: grid;
@@ -876,9 +873,10 @@
   align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
-  margin-bottom: 22px;
-  &-1 {
-    margin-bottom: 32px;
+  margin-bottom: 32px;
+
+  &-second {
+    margin-bottom: 0px;
   }
 }
 .violation-modal-location-shipping-row-3 {
@@ -888,7 +886,7 @@
   align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
-  margin-bottom: 22px;
+  margin: 12px 0px;
 }
 
 //---------------- Accident Report, Federally, Recordable  ----------------
@@ -1217,4 +1215,14 @@
     }
   }
 }
+//---------------- Location Parking Financial Card ----------------
+.location-parking-financial-card {
+  display: grid;
+  grid-template-columns: repeat(3, 144px);
+  grid-template-rows: 26px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin: 12px 0px;
+}
+
 // ------------------------------------------------ end ------------------------------------------------

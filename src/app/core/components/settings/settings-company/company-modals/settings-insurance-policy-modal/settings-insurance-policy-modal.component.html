@@ -753,7 +753,6 @@
         [hasCounter]="documents.length ? documents.length : 0"
         [cardName]="'Documents'"
         [isCardOpen]="documents.length > 0"
-        [animationsDisabled]="true"
       >
         <app-ta-upload-files
           [files]="documents"
@@ -761,9 +760,9 @@
         ></app-ta-upload-files>
       </app-ta-custom-card>
     </div>
-    <app-ta-input-note
+    <!-- <app-ta-input-note
       formControlName="note"
       [isVisibleNote]="insurancePolicyForm.get('note').value"
-    ></app-ta-input-note>
+    ></app-ta-input-note> -->
   </form>
 </app-ta-modal>

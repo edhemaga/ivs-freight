@@ -86,7 +86,6 @@
         [hasCounter]="documents.length ? documents.length : 0"
         [cardName]="'Documents'"
         [isCardOpen]="documents.length > 0"
-        [animationsDisabled]="true"
       >
         <app-ta-upload-files
           [files]="documents"
@@ -95,9 +94,9 @@
       </app-ta-custom-card>
     </div>
 
-    <app-ta-input-note
+    <!-- <app-ta-input-note
       formControlName="note"
       [isVisibleNote]="registrationForm.get('note').value"
-    ></app-ta-input-note>
+    ></app-ta-input-note> -->
   </form>
 </app-ta-modal>

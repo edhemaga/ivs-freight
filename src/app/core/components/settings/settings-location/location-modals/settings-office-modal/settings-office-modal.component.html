@@ -161,7 +161,6 @@
           [hasScrollBody]="departmentContacts.length > 10"
           (onOpenCard)="isDepartmentContactCardOpen = $event"
           (onActionEvent)="addDepartmentContacts($event)"
-          [animationsDisabled]="true"
         >
           <div
             formArrayName="departmentContacts"

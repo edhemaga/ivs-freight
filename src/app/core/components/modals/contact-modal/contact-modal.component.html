@@ -186,11 +186,7 @@
         </div>
       </div>
       <div class="ta-card-body-overflow-none">
-        <app-ta-custom-card
-          [cardName]="'Contact Image'"
-          [isCardOpen]="true"
-          [animationsDisabled]="true"
-        >
+        <app-ta-custom-card [cardName]="'Contact Image'" [isCardOpen]="true">
           <app-ta-logo-change
             [croppieOptions]="croppieOptions"
             [customClass]="'modal-container-S'"
@@ -201,10 +197,10 @@
         </app-ta-custom-card>
       </div>
       <!-- Note -->
-      <app-ta-input-note
+      <!-- <app-ta-input-note
         formControlName="note"
         [isVisibleNote]="contactForm.get('note').value"
-      ></app-ta-input-note>
+      ></app-ta-input-note> -->
     </div>
   </form>
 </app-ta-modal>

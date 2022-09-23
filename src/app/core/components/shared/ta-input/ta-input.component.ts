@@ -787,6 +787,7 @@ export class TaInputComponent
         'months',
         'empty weight',
         'qty',
+        'purchase price',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/g.test(String.fromCharCode(event.charCode))) {
@@ -878,7 +879,6 @@ export class TaInputComponent
     ) {
       if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
         return !/^[IiOQ]*$/.test(String.fromCharCode(event.charCode));
-
       }
       event.preventDefault();
       return false;
@@ -1029,9 +1029,10 @@ export class TaInputComponent
 
     if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
-        return this.getSuperControl.value * 10 + event.charCode - 48 <= this.inputConfig.max;
-
-
+        return (
+          this.getSuperControl.value * 10 + event.charCode - 48 <=
+          this.inputConfig.max
+        );
       } else {
         event.preventDefault();
         return false;

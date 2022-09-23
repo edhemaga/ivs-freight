@@ -218,11 +218,7 @@
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
-        <app-ta-custom-card
-          [cardName]="'Profile Picture'"
-          [isCardOpen]="true"
-          [animationsDisabled]="true"
-        >
+        <app-ta-custom-card [cardName]="'Profile Picture'" [isCardOpen]="true">
           <app-ta-logo-change
             [imageUrl]="this.profileUserForm.get('avatar').value"
             [croppieOptions]="croppieOptions"

@@ -487,26 +487,30 @@
         !inputConfig?.dropdownImageInput?.url &&
         !inputConfig.blackInput,
       'valid-focus-out-filled':
-        getSuperControl.value &&
-        getSuperControl.valid &&
-        !focusInput &&
-        !inputConfig.isDisabled &&
-        !isVisiblePasswordEye &&
-        !isVisibleCommands &&
-        !inputConfig.blackInput,
+        (getSuperControl.value &&
+          getSuperControl.valid &&
+          !focusInput &&
+          !inputConfig.isDisabled &&
+          !isVisiblePasswordEye &&
+          !isVisibleCommands &&
+          !inputConfig.blackInput) ||
+        inputConfig.dropdownImageInput?.url,
       'invalid-focus-in':
         getSuperControl.value &&
         getSuperControl.invalid &&
         focusInput &&
         !inputConfig.blackInput,
       'invalid-focus-out-filled':
-        getSuperControl.value &&
-        getSuperControl.invalid &&
-        !focusInput &&
-        !inputConfig.isDisabled &&
-        !isVisiblePasswordEye &&
-        !isVisibleCommands &&
-        !inputConfig.blackInput,
+        (getSuperControl.value &&
+          getSuperControl.invalid &&
+          !focusInput &&
+          !inputConfig.isDisabled &&
+          !isVisiblePasswordEye &&
+          !isVisibleCommands &&
+          !inputConfig.blackInput) ||
+        (!inputConfig.dropdownImageInput?.url &&
+          touchedInput &&
+          getSuperControl.invalid),
       'password-eye':
         inputConfig.type === 'password' &&
         isVisiblePasswordEye &&

@@ -108,11 +108,7 @@
           </div>
         </div>
 
-        <app-ta-custom-card
-          [cardName]="'Employe Details'"
-          [isCardOpen]="true"
-          [animationsDisabled]="true"
-        >
+        <app-ta-custom-card [cardName]="'Employe Details'" [isCardOpen]="true">
           <div class="row row-mt-20">
             <div class="col-4">
               <app-ta-input-dropdown
@@ -340,10 +336,10 @@
               </div>
             </div>
           </div>
-          <app-ta-input-note
+          <!-- <app-ta-input-note
             formControlName="note"
             [isVisibleNote]="userForm.get('note').value"
-          ></app-ta-input-note>
+          ></app-ta-input-note> -->
         </div>
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
