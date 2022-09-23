@@ -30,6 +30,7 @@ import { ColorFinderPipe } from '../pipes/color-finder.pipe';
 
 import { Options } from '@angular-slider/ngx-slider';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { LabelType } from 'ng5-slider';
 
 @Component({
   selector: 'app-dispatchboard-tables',
@@ -477,7 +478,7 @@ export class DispatchboardTablesComponent implements OnInit {
     hideLimitLabels: true,
     animate: false,
     maxLimit: new Date().getHours() * 60 + new Date().getMinutes(),
-    translate: (value: number): string => {
+    translate: (value: number, label: LabelType): string => {
       const minutes = value;
       const m = minutes % 60;
       const h = (minutes - m) / 60;
@@ -532,7 +533,9 @@ export class DispatchboardTablesComponent implements OnInit {
     return tempArr;
   }
 
-  dropHosList(event: any, data: any, id: number) {
+  dropHosList(event: any, data: any) {
+    console.log(event);
+    console.log(data);
   }
 
   addHOS(hosType) {
@@ -545,11 +548,8 @@ export class DispatchboardTablesComponent implements OnInit {
     });
   }
 
-  formatTime(minValue, maxValue) {
-    const minutes = maxValue - minValue;
-    const m = minutes % 60;
-    const h = (minutes - m) / 60;
-    return h.toString() + ':' + (m < 10 ? '0' : '');
+  removeHos(item){
+    this.openedHosData.hos = this.openedHosData.hos.filter(it => it.indx !== item.indx)
   }
 
   changeHosDataPositions(event, index) {
@@ -570,9 +570,11 @@ export class DispatchboardTablesComponent implements OnInit {
     }
   }
 
-  saveHosData(hos, driverId, id) {
-    console.log(hos);
-    console.log(driverId);
-    console.log(id);
+  saveHosData(hos, indx) {
+    this.updateOrAddDispatchBoardAndSend(
+      'hourOfService',
+      this.openedHosData,
+      indx
+    );
   }
 }

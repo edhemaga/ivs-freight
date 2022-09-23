@@ -20,6 +20,7 @@ import { TruckassistSearchModule } from '../shared/truckassist-search/truckassis
 import { NestedComponent } from './dispatchboard-tables/nested.component';
 import { GridsterModule } from 'angular-gridster2';
 import { HosFilterPipe } from './pipes/hos-filter.pipe';
+import { TooltipWidthPipe } from './pipes/tooltip-width.pipe';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -38,7 +39,8 @@ export function playerFactory() {
     DispatchboardTablesComponent,
     ColorFinderPipe,
     NestedComponent,
-    HosFilterPipe
+    HosFilterPipe,
+    TooltipWidthPipe
   ],
   imports: [
     CommonModule,

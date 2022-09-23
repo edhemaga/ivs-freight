@@ -779,7 +779,7 @@
               #t1="ngbPopover"
               (click)="toggleHos(t1, item.hoursOfService, item.id)"
               (hidden)="
-                saveHosData(item.hoursOfService, item.driverId, item.id)
+                saveHosData(item.hoursOfService, rowIndex)
               "
               [class.statusOpened]="statusOpenedIndex > -1"
               [class.empty-box-field]="true"
@@ -1202,15 +1202,47 @@
       <div class="middle-border"></div>
     </div>
     <div class="hos-body">
-      <div class="ngx-slider-list">
+      <div
+        #firstList="cdkDropList"
+        (cdkDropListDropped)="dropHosList($event, data)"
+        [cdkDropListConnectedTo]="[secondList]"
+        [cdkDropListData]="openedHosData.hos | hosFilter: 'off'"
+        cdkDropList
+        class="ngx-slider-list"
+      >
         <div
+          cdkDrag
+          cdkDragLockAxis="y"
+          cdkDragPreviewContainer="parent"
           class="ngx-slider-item off-items"
           *ngFor="
             let item of openedHosData.hos | hosFilter: 'off';
             let i = index
           "
         >
-          <!-- <div class="ngx-slider-info">10:00</div> -->
+          <div
+            cdkDragHandle
+            style="cursor: grab"
+            class="ngx-slider-info"
+            [ngStyle]="{
+              width: (item | tooltipWidth).width + 'px',
+              left: (item | tooltipWidth).left + 'px'
+            }"
+          >
+            {{ (item | tooltipWidth).time }}
+            <span
+              class="remove_hos"
+              *ngIf="
+                item.indx !== 0 && item.indx == openedHosData.hos.length - 1
+              "
+            >
+              <svg-icon
+                (click)="removeHos(item)"
+                src="assets/svg/applicant/close-x.svg"
+              >
+              </svg-icon>
+            </span>
+          </div>
           <ngx-slider
             [(highValue)]="item.end"
             [(value)]="item.start"
@@ -1230,15 +1262,47 @@
           </svg-icon>
         </div>
       </div>
-      <div class="ngx-slider-list">
+      <div
+        #secondList="cdkDropList"
+        (cdkDropListDropped)="dropHosList($event, data)"
+        [cdkDropListConnectedTo]="[firstList]"
+        [cdkDropListData]="openedHosData.hos | hosFilter: 'on'"
+        cdkDropList
+        class="ngx-slider-list"
+      >
         <div
+          cdkDrag
+          cdkDragLockAxis="y"
+          cdkDragPreviewContainer="parent"
           class="ngx-slider-item on-items"
           *ngFor="
             let item of openedHosData.hos | hosFilter: 'on';
             let i = index
           "
         >
-          <!-- <div class="ngx-slider-info">10:00</div> -->
+          <div
+            cdkDragHandle
+            style="cursor: grab"
+            class="ngx-slider-info"
+            [ngStyle]="{
+              width: (item | tooltipWidth).width + 'px',
+              left: (item | tooltipWidth).left + 'px'
+            }"
+          >
+            {{ (item | tooltipWidth).time }}
+            <span
+              class="remove_hos"
+              *ngIf="
+                item.indx !== 0 && item.indx == openedHosData.hos.length - 1
+              "
+            >
+              <svg-icon
+                (click)="removeHos(item)"
+                src="assets/svg/applicant/close-x.svg"
+              >
+              </svg-icon>
+            </span>
+          </div>
           <ngx-slider
             [(highValue)]="item.end"
             [(value)]="item.start"
