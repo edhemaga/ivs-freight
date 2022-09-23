@@ -47,7 +47,7 @@ import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
   styleUrls: ['./truck-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService],
+  providers: [ModalService, TaInputService],
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -248,6 +248,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         // Save & Update
         if (data.action === 'save') {
           if (this.truckForm.invalid) {
+            console.log('invalid');
             this.inputService.markInvalid(this.truckForm);
             return;
           }

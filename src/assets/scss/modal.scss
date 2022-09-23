@@ -266,8 +266,8 @@ ngb-modal-window[aria-hidden="true"] {
           outline: none;
           border: none;
           border-radius: 2px;
-          background-color: #f3f3f3;
-          color: #b7b7b7;
+          background-color: #f7f7f7;
+          color: #aaaaaa;
           font-weight: 700;
           font-size: 14px;
           min-width: 150px;
@@ -279,15 +279,21 @@ ngb-modal-window[aria-hidden="true"] {
           -moz-user-select: none;
           -ms-user-select: none;
           user-select: none;
-          pointer-events: none;
+          // pointer-events: none;
           line-height: 18px;
           position: relative;
           transition: all 0.3s ease-in-out;
+          cursor: pointer;
+
+          &:hover {
+            background-color: #e5e5e5;
+            color: #aaaaaa;
+          }
 
           &.valid {
             background-color: #3074d3;
             color: #ffffff;
-            pointer-events: all;
+            // pointer-events: all;
 
             &:hover {
               color: #ffffff;
@@ -455,6 +461,7 @@ body:not(.modal-open) {
           left: 4px;
           width: calc(100% - 8px);
           -webkit-animation: shadowFadeIn 0.5s;
+          animation: shadowFadeIn 0.5s;
           box-shadow: 0 0 5px rgba(0, 0, 0, 0.15) inset;
         }
       }

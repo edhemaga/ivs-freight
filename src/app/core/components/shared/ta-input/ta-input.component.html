@@ -26,7 +26,7 @@
       !getSuperControl.value &&
       getSuperControl.invalid &&
       inputConfig.isDropdown &&
-      touchedInput &&
+      (touchedInput || getSuperControl.touched) &&
       !focusInput,
     'dropdown-label-active': selectedDropdownLabelColor && !editInputMode
   }"
@@ -122,7 +122,7 @@
   <!-- Input Invalid Danger Mark -->
   <svg-icon
     *ngIf="
-      (touchedInput &&
+      ((touchedInput || getSuperControl.touched) &&
         getSuperControl.value &&
         getSuperControl.invalid &&
         !focusInput &&
@@ -240,7 +240,7 @@
         inputConfig.isRequired &&
         !getSuperControl.value &&
         getSuperControl.invalid &&
-        touchedInput &&
+        (touchedInput || getSuperControl.touched) &&
         !focusInput
     }"
     src="assets/svg/common/ic_arrow_down_updated.svg"
@@ -357,7 +357,7 @@
         !getSuperControl.value &&
         getSuperControl.invalid &&
         !focusInput &&
-        touchedInput,
+        (touchedInput || getSuperControl.touched),
       'invalid-required-filled-out':
         getSuperControl.value &&
         getSuperControl.invalid &&
@@ -509,8 +509,9 @@
           !isVisibleCommands &&
           !inputConfig.blackInput) ||
         (!inputConfig.dropdownImageInput?.url &&
-          touchedInput &&
-          getSuperControl.invalid),
+          (touchedInput || getSuperControl.touched) &&
+          getSuperControl.invalid &&
+          !focusInput),
       'password-eye':
         inputConfig.type === 'password' &&
         isVisiblePasswordEye &&
@@ -589,13 +590,14 @@
         getSuperControl.invalid &&
         focusInput,
       'invalid-focus-out-filled':
-        getSuperControl.value &&
-        getSuperControl.invalid &&
-        !focusInput &&
-        !inputConfig.isDisabled &&
-        !isVisiblePasswordEye &&
-        !isVisibleCommands &&
-        !inputConfig.blackInput
+        (getSuperControl.value &&
+          getSuperControl.invalid &&
+          !focusInput &&
+          !inputConfig.isDisabled &&
+          !inputConfig.blackInput) ||
+        ((touchedInput || getSuperControl.touched) &&
+          getSuperControl.invalid &&
+          !focusInput)
     }"
   >
     <span
@@ -673,7 +675,7 @@
     *ngIf="
       !inputConfig.hideErrorMessage &&
       !(!getSuperControl.value && focusInput) &&
-      (touchedInput || getSuperControl.value) &&
+      (touchedInput || getSuperControl.touched || getSuperControl.value) &&
       getSuperControl.invalid
     "
     class="input-error {{ inputConfig.customClass }}"

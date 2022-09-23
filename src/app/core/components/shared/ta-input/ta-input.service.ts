@@ -26,13 +26,11 @@ export class TaInputService {
   /**
    * @param formGroup FormGroup - The form group to touch
    */
-  public markInvalid(formGroup: FormGroup, isSpecialCase?: boolean): boolean {
-    if (!isSpecialCase) {
-    }
-
+  public markInvalid(formGroup: FormGroup): boolean {
     if (formGroup.invalid) {
       (Object as any).values(formGroup.controls).forEach((control: any) => {
         control.markAsTouched();
+        console.log('control: ', control);
         if (control.controls) {
           this.markInvalid(control);
         }

@@ -222,6 +222,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
     // Save And Add New
     else if (data.action === 'save and add new') {
+      if (this.driverForm.invalid) {
+        this.inputService.markInvalid(this.driverForm);
+        return;
+      }
       this.addDriver();
       this.modalService.setModalSpinner({
         action: 'save and add new',
