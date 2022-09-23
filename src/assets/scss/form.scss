@@ -156,6 +156,10 @@
       grid-template-columns: 184px 160px 248px;
       margin-bottom: 0px;
     }
+
+    &.custom-bank-row-repair-shop {
+      margin-bottom: 0px !important;
+    }
   }
 
   //---------------- Driver Modal ------------------------------------
@@ -491,7 +495,6 @@
 .shipper-work-hours {
   display: grid;
   grid-template-columns: 112px 90px 186px 186px;
-  grid-template-rows: 26px;
   -moz-column-gap: 12px;
   column-gap: 12px;
   align-items: center;

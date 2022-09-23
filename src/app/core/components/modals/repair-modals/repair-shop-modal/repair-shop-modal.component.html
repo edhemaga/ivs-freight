@@ -210,62 +210,56 @@
 
     <!-- Bank Account -->
     <app-ta-custom-card [cardName]="'Bank Account'" [isCardOpen]="true">
-      <div class="custom-bank-row">
-        <div class="bank-field">
-          <app-ta-input-dropdown
-            formControlName="bankId"
-            [template]="'svg-template'"
-            [inputConfig]="{
-              name: 'Input Dropdown  Bank Name',
-              type: 'text',
-              label: 'Bank Name',
-              minLength: 2,
-              maxLength: 64,
-              textTransform: 'uppercase',
-              isDropdown: true,
-              dropdownWidthClass: 'w-col-163'
-            }"
-            [canAddNew]="true"
-            [options]="labelsBank"
-            [activeItem]="selectedBank"
-            (selectedItem)="onSelectDropdown($event, 'bank')"
-            (saveItem)="onSaveNewBank($event)"
-          ></app-ta-input-dropdown>
-        </div>
-        <div class="bank-field">
-          <app-ta-input
-            formControlName="routing"
-            [inputConfig]="{
-              name: 'routing-bank',
-              type: 'text',
-              label: 'Routing #',
-              isDisabled: !isBankSelected,
-              isRequired: isBankSelected,
-              minLength: 9,
-              maxLength: 9
-            }"
-          ></app-ta-input>
-        </div>
-        <div class="bank-field">
-          <app-ta-input
-            formControlName="account"
-            [inputConfig]="{
-              name: 'account-bank',
-              type: 'text',
-              label: 'Account #',
-              isDisabled: !isBankSelected,
-              isRequired: isBankSelected,
-              maxLength: 17,
-              minLength: 5
-            }"
-          ></app-ta-input>
-        </div>
+      <div class="custom-bank-row custom-bank-row-repair-shop">
+        <app-ta-input-dropdown
+          formControlName="bankId"
+          [template]="'svg-template'"
+          [inputConfig]="{
+            name: 'Input Dropdown  Bank Name',
+            type: 'text',
+            label: 'Bank Name',
+            minLength: 2,
+            maxLength: 64,
+            textTransform: 'uppercase',
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-163'
+          }"
+          [canAddNew]="true"
+          [options]="labelsBank"
+          [activeItem]="selectedBank"
+          (selectedItem)="onSelectDropdown($event, 'bank')"
+          (saveItem)="onSaveNewBank($event)"
+        ></app-ta-input-dropdown>
+        <app-ta-input
+          formControlName="routing"
+          [inputConfig]="{
+            name: 'routing-bank',
+            type: 'text',
+            label: 'Routing #',
+            isDisabled: !isBankSelected,
+            isRequired: isBankSelected,
+            minLength: 9,
+            maxLength: 9
+          }"
+        ></app-ta-input>
+        <app-ta-input
+          formControlName="account"
+          [inputConfig]="{
+            name: 'account-bank',
+            type: 'text',
+            label: 'Account #',
+            isDisabled: !isBankSelected,
+            isRequired: isBankSelected,
+            maxLength: 17,
+            minLength: 5
+          }"
+        ></app-ta-input>
       </div>
     </app-ta-custom-card>
     <!-- Note -->
-    <!-- <app-ta-input-note
+    <app-ta-input-note
       formControlName="note"
       [isVisibleNote]="repairShopForm.get('note').value"
-    ></app-ta-input-note> -->
+    ></app-ta-input-note>
   </form>
 </app-ta-modal>

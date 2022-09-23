@@ -53,8 +53,6 @@ import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
 export class TruckModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  @ViewChild('appNote', { static: false }) public appNote: any;
-
   @Input() editData: any;
 
   public truckForm: FormGroup;
