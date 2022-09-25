@@ -18,11 +18,11 @@
         <div class="repair-items-wrapper">
           <span
             *ngFor="let repairs of shopData?.data?.repairs; let i = index"
-            (click)="showRepairItems[i]=!showRepairItems[i]"
+            (click)="showRepairItems[repairs?.id]=!showRepairItems[repairs?.id]"
             class="item-shop-wrapper"
             [ngClass]="{
               'finish-order-cont': !repairs.invoice,
-              'open-items-body': showRepairItems[i] && repairs.invoice,
+              'open-items-body': showRepairItems[repairs?.id] && repairs.invoice,
               'open-items-body-no-invoice':
                 showRepairItems[i] && !repairs.invoice
             }"
@@ -31,9 +31,9 @@
               <div
                 class="items-header"
                 [ngClass]="{
-                  'open-items-body': showRepairItems[i] && repairs.invoice,
+                  'open-items-body': showRepairItems[repairs?.id] && repairs.invoice,
                   'open-items-body-no-invoice':
-                    showRepairItems[i] && !repairs.invoice
+                    showRepairItems[repairs?.id] && !repairs.invoice
                 }"
               >
                 <span class="unit">{{
@@ -94,7 +94,7 @@
             </div>
             <div
               *ngIf="repairs?.items?.length"
-              [@showHideCardBody]="showRepairItems[i] ? 'true' : 'false'"
+              [@showHideCardBody]="showRepairItems[repairs?.id] ? 'true' : 'false'"
               [ngClass]="{
                 'no-repairs-inovice': !repairs.invoice
               }"
