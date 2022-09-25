@@ -271,7 +271,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       bankId: [null, [...bankValidation]],
       account: [null, accountBankValidation],
       routing: [null, routingBankValidation],
-      payType: [null, Validators.required],
+      payType: [null, [Validators.required]],
       useTruckAssistAch: [false],
       soloDriver: [false],
       teamDriver: [false],
