@@ -148,9 +148,6 @@ export class DriverDetailsItemComponent
       };
     });
   }
-  public activateDeactiveCdl(id: number) {
-    this.driverService.activateDeactiveCdl(id);
-  }
   public getNameForDrop(name: string, cdlId?: number) {
     this.templateName = name === 'cdl' ? false : true;
     this.currentIndex = this.drivers[1]?.data?.cdls?.findIndex(
@@ -277,7 +274,12 @@ export class DriverDetailsItemComponent
   public optionsEvent(any: any, action: string) {
     const name = dropActionNameDriver(any, action);
     let dataForCdl;
-    if (this.activeCdl.length) {
+    console.log(any);
+
+    if (
+      (this.activeCdl.length && any.type === 'activate-item') ||
+      any.type === 'deactivate-item'
+    ) {
       dataForCdl = this.activeCdl;
     } else {
       dataForCdl = this.dataCdl;
@@ -292,6 +294,8 @@ export class DriverDetailsItemComponent
         this.dataMedical,
         this.dataTest,
         this.drivers[0].data.id,
+        null,
+        null,
         null,
         null,
         this.drivers[0].data
