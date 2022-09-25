@@ -8,7 +8,15 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { RepairShopResponse } from 'appcoretruckassist';
+import { Subject, takeUntil } from 'rxjs';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
+import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { RepairOrderModalComponent } from '../../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { RepairTService } from '../../state/repair.service';
 
 @Component({
   selector: 'app-shop-repair-details-item',
@@ -25,7 +33,14 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
   public repairShopLikes: number;
   public repairShopDislike: number;
   public showRepairItems: boolean[] = [];
-  constructor() {}
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    private dropDownService: DropDownService,
+    private modalService: ModalService,
+    private confirmationService: ConfirmationService,
+    private shopService: RepairTService
+  ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.shopData?.currentValue != changes.shopData?.previousValue) {
       this.shopData = changes.shopData.currentValue;
@@ -37,7 +52,73 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
     }
   }
   ngOnInit(): void {
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: Confirmation) => {
+          switch (res.type) {
+            case 'delete': {
+              // if (res.template === 'repair') {
+              //   this.deleteRepairByIdFunction(res.id);
+              // }
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        },
+      });
+
     this.initTableOptions();
+  }
+
+  public deleteRepairByIdFunction(id: number) {
+    this.shopService
+      .deleteRepairById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
+  }
+  public toggleRepairs(index: number, event?: any) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.showRepairItems[index] = !this.showRepairItems[index];
+  }
+  public optionsEvent(any: any, action: string) {
+    const name = dropActionNameDriver(any, action);
+    setTimeout(() => {
+      this.dropDownService.dropActions(
+        any,
+        name,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        any,
+        null,
+        null
+      );
+    }, 100);
+  }
+
+  public finishOrder(repairId: number, data: any, event?: any) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.modalService.openModal(
+      RepairOrderModalComponent,
+      { size: 'small' },
+      {
+        id: data.id,
+        payload: data,
+        file_id: repairId,
+        type: 'edit',
+        modal: 'repair',
+      }
+    );
   }
   /**Function for dots in cards */
   public initTableOptions(): void {

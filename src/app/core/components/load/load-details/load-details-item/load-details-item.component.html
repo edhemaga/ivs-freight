@@ -1,4 +1,9 @@
-<div class="details-component">
+<div
+  class="details-component"
+  [ngClass]="{
+    'details-closed-items': loadData[0]?.data?.statusType?.name === 'Closed'
+  }"
+>
   <div
     *ngFor="let loadItem of loadData; trackBy: identity"
     [ngSwitch]="loadItem.template"
@@ -7,13 +12,48 @@
       <app-load-card-view [load]="loadItem?.data"></app-load-card-view>
     </div>
     <div *ngSwitchCase="'finance'">
-      <div class="finance-container">
+      <div
+        class="finance-container"
+        [ngStyle]="{
+          width:
+            loadData[0]?.data?.statusType?.name === 'Closed' ? '536px' : '280px'
+        }"
+      >
         <div class="finance-wrapper">
-          <div class="balance-wrapper">
-            <span class="header">Balance</span>
-            <span class="value">{{
-              loadItem?.data.broker.availableCredit | formatCurrency
-            }}</span>
+          <div class="balance-container">
+            <div class="balance-wrapper">
+              <div class="balance-item-wrapper">
+                <span class="header">Balance</span>
+                <span class="value">{{
+                  loadItem?.data.broker.availableCredit | formatCurrency
+                }}</span>
+              </div>
+              <div
+                class="balance-item-wrapper"
+                *ngIf="loadItem?.data?.statusType?.name === 'Closed'"
+              >
+                <span class="value"
+                  >{{ loadItem?.data.daysToPay }} days left</span
+                >
+                <span class="header second-header"
+                  >Pay term
+                  <span class="header-bold"
+                    >{{ loadItem?.data?.broker?.payTerm?.name }}
+                  </span></span
+                >
+              </div>
+            </div>
+            <div
+              *ngIf="loadItem?.data?.statusType?.name === 'Closed'"
+              class="proggress-load-container"
+            >
+              <app-ta-currency-progress-bar
+                [template]="'broker-credit'"
+                [totalAmount]="100000"
+                [paidSoFarAmount]="50000"
+              >
+              </app-ta-currency-progress-bar>
+            </div>
           </div>
           <div class="divider"></div>
           <app-ta-custom-card
@@ -110,10 +150,21 @@
             <div class="billing-container">
               <div class="biling-header">
                 <span class="type">TYPE</span>
+                <span
+                  *ngIf="loadData[0]?.data?.statusType?.name === 'Closed'"
+                  class="type custom-position-header"
+                  >DATE & TIME</span
+                >
                 <span class="type">VALUE</span>
               </div>
               <div class="divider"></div>
-              <div class="billing-item">
+              <div
+                class="billing-item-payments"
+                [ngClass]="{
+                  'no-closed-load':
+                    loadData[0]?.data?.statusType?.name != 'Closed'
+                }"
+              >
                 <div class="icon-name">
                   <svg-icon
                     class="icon-additional"
@@ -121,8 +172,36 @@
                   ></svg-icon>
                   <div class="billing-name">Advance</div>
                 </div>
-                <div class="billing-value">
+                <div
+                  *ngIf="loadData[0]?.data?.statusType?.name === 'Closed'"
+                  class="billing-value custom-position-value"
+                >
+                  08/10/23 10:34 AM
+                </div>
+                <div class="billing-value billing-cost">
                   {{ loadItem?.data?.advancePay | formatCurrency }}
+                </div>
+              </div>
+              <div class="divider" *ngIf="loadItem?.data?.shortPaid"></div>
+              <div
+                class="billing-item-payments"
+                *ngIf="
+                  loadData[0]?.data?.statusType?.name === 'Closed' &&
+                  loadItem?.data?.shortPaid
+                "
+              >
+                <div class="icon-name">
+                  <svg-icon
+                    class="icon-additional"
+                    src="assets/svg/common/load/ic_short-pay.svg"
+                  ></svg-icon>
+                  <div class="billing-name">Short-Pay</div>
+                </div>
+                <div class="billing-value custom-position-value-second">
+                  08/10/23 10:34 AM
+                </div>
+                <div class="billing-value billing-cost">
+                  {{ loadItem?.data?.shortPaid | formatCurrency }}
                 </div>
               </div>
               <div class="total-bill-wrapper total-wrapper">
@@ -189,7 +268,12 @@
                 src="assets/svg/common/load/ic_load-start-position.svg"
               ></svg-icon>
             </div>
-            <div class="current-loaction">
+            <div
+              [ngStyle]="{
+                width: loadItem?.data?.completedPercentage + 2 + '%'
+              }"
+              class="current-loaction"
+            >
               <svg-icon
                 class="icon-start"
                 src="assets/svg/common/load/load-moving-right.svg"
@@ -203,7 +287,10 @@
             </div>
             <div class="location-item-wrapper">
               <span class="total-header"
-                >Total <span class="total-load-perctange">{{loadItem.data.totalMiles}} mi</span></span
+                >Total
+                <span class="total-load-perctange"
+                  >{{ loadItem?.data?.totalMiles }} mi</span
+                ></span
               >
               <span class="moving-value completed-value"
                 ><span class="total-load-perctange font-14">47%</span
@@ -219,7 +306,10 @@
           <div class="load-pickup-wrapper">
             <div class="load-pickup-item">
               <span class="load-header-pickup">First pickup</span>
-              <span class="load-value-pickup">{{loadItem?.data?.firstPickupTime.days}} day {{loadItem?.data?.firstPickupTime.hours}} hours</span>
+              <span class="load-value-pickup"
+                >{{ loadItem?.data?.firstPickupTime?.days }} day
+                {{ loadItem?.data?.firstPickupTime?.hours }} hours</span
+              >
             </div>
             <div class="load-pickup-item">
               <span class="load-value-pickup">742.2 mi</span>
@@ -235,15 +325,52 @@
             </app-ta-currency-progress-bar>
           </div>
         </div>
+
+        <div
+          class="stop-header-container-closed"
+          *ngIf="loadItem?.data?.statusType?.name === 'Closed'"
+        >
+          <div class="load-pickup-wrapper">
+            <div class="load-pickup-item">
+              <span class="load-value-pickup">842.22 mi</span>
+              <span class="load-header-pickup">1 day 15 hour</span>
+            </div>
+            <div class="load-pickup-item">
+              <span class="load-value-last-delivery-header">Last Delivery</span>
+              <span class="load-value-last-delivery-value"
+                ><span
+                  class="load-value-last-delivery-value"
+                  *ngIf="loadItem?.data?.lastDeliveryTime.days > 0"
+                  >{{ loadItem?.data?.lastDeliveryTime.days }} days ago</span
+                >
+                <span
+                  class="load-value-last-delivery-value"
+                  *ngIf="loadItem?.data?.lastDeliveryTime?.days <= 0"
+                  >{{ loadItem?.data?.lastDeliveryTime.hours }} hour ago</span
+                ></span
+              >
+            </div>
+          </div>
+        </div>
       </div>
       <div class="stop-items-container">
         <app-ta-custom-card-v2
           *ngFor="let item of loadItem?.data?.stops; let j = index"
           [animationsDisabled]="false"
           [bodyTemplate]="'card'"
-          [totalMiles]="true"
+          [totalMiles]="
+            loadItem?.data?.statusType?.name === 'Pending' ||
+            loadItem?.data?.statusType?.name === 'Active'
+              ? true
+              : false
+          "
+          [totalMilesValue]="item?.legMiles"
+         [totalMilesTime]="item?.legHours+ ':' + item.legMinutes"
           [haveTimeDateLoad]="
-            loadItem?.data?.statusType?.name === 'Pending' ? false : true
+            loadItem?.data?.statusType?.name === 'Pending' ||
+            loadItem?.data?.statusType?.name === 'Closed'
+              ? false
+              : true
           "
           [headerSvgLike]="
             loadItem?.data?.statusType?.name === 'Pending'
@@ -257,14 +384,35 @@
             ' ' +
             item?.shipper?.address?.zipCode
           "
-          [hasCounter]="item?.id"
+          [hasCounter]="item?.stopOrder"
           [hasDivider]="j > 0 ? true : false"
           [counterBackgroundColor]="
             item?.stopType.name === 'Pickup' ? '#E57373' : '#4DB6A2'
           "
+          [departBacgroudColor]="
+            item?.stopType.name === 'Pickup' ? '#FFEBEE' : '#E0F2E9'
+          "
+          [departColor]="
+            item?.stopType.name === 'Pickup' ? '#E57373' : '#4DB6A2'
+          "
+          [departCounter]="item?.depart ? true : false"
           [isCardOpen]="true"
         >
           <div class="stop-information-container">
+            <div
+              class="stop-status-wrapper"
+              *ngIf="loadItem?.data?.statusType?.name === 'Closed'"
+            >
+              <div class="stop-status-item">
+                <div class="header-status">LOADED</div>
+                <div class="value-status">March 27, 2023 | 01:05 PM</div>
+              </div>
+              <div class="stop-status-item">
+                <div class="header-status">CHECKED-IN</div>
+                <div class="value-status">March 21, 2023 | 10:05 PM</div>
+              </div>
+              <div class="divider"></div>
+            </div>
             <div class="svg-value-wrapper">
               <div class="driver-name">
                 {{
@@ -304,7 +452,10 @@
             </div>
             <div
               class="svg-value-wrapper"
-              *ngIf="loadItem?.data?.statusType?.name === 'Pending'"
+              *ngIf="
+                loadItem?.data?.statusType?.name === 'Pending' ||
+                loadItem?.data?.statusType?.name === 'Closed'
+              "
             >
               <svg-icon
                 class="flex-icon"
@@ -313,7 +464,10 @@
               <div class="regular-text">{{ item?.items?.length }} Items</div>
             </div>
           </div>
-          <div class="divider" *ngIf="loadItem?.data?.statusType?.name === 'Active'"></div>
+          <div
+            class="divider"
+            *ngIf="loadItem?.data?.statusType?.name === 'Active'"
+          ></div>
           <app-ta-custom-card-v2
             *ngIf="loadItem?.data?.statusType?.name === 'Active'"
             [cardName]="'Item'"
@@ -419,6 +573,7 @@
             </div>
           </app-ta-custom-card-v2>
         </app-ta-custom-card-v2>
+        <div class="divider"></div>
         <div class="map-load-container">
           <span class="default-text">Here map</span>
         </div>
@@ -427,8 +582,8 @@
     <div *ngSwitchCase="'comment'">
       <div *ngIf="loadItem?.data?.comments.length" class="comment-container">
         <app-ta-user-review
-        (changeReviewsEvent)="changeCommentEvent($event)"
-        [reviewData]="loadItem?.data?.comments"
+          (changeReviewsEvent)="changeCommentEvent($event)"
+          [reviewData]="loadItem?.data?.comments"
         >
         </app-ta-user-review>
       </div>

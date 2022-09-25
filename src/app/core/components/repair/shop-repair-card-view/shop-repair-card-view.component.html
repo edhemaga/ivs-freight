@@ -50,14 +50,18 @@
         <div class="working-hours-container" *ngIf="shopResponse?.openHours">
           <div class="open-now-wrapper" *ngIf="shopResponse?.openHoursToday">
             <div class="open-now-icon-text">
-              <div class="open-header">Open Now</div>
+              <div class="open-header">{{shopResponse?.openHoursToday==='Closed'?'Closed':'Open Now'}}</div>
               <svg-icon
-                class="icon-pulse"
-                src="assets/svg/common/ic_pulse_circle.svg"
+                class="icon-repair-shop-circle"
+                [ngClass]="{'close-repair':shopResponse?.openHoursToday==='Closed'}"
+                src="assets/svg/common/ic_open-now.svg"
               ></svg-icon>
             </div>
-            <div  class="open-time">
-              {{ shopResponse?.openHoursToday }}
+            <div *ngIf="shopResponse?.openHoursToday!='Closed'" class="open-time">
+              {{ shopResponse?.openHoursToday.substring(0,5) + ' AM' }}  {{ shopResponse?.openHoursToday.substring(6,13) + ' PM' }}
+            </div>
+            <div *ngIf="shopResponse?.openHoursToday==='Closed'" class="open-time-next">
+             Opens in {{shopResponse?.openHours[1]?.dayOfWeek}}  {{ shopResponse?.openHours[1]?.startTime + ' AM' }}
             </div>
           </div>
           <div class="open-hours-wrapper">
@@ -68,15 +72,22 @@
                 {{ shopResponse?.openHours[1]?.endTime }} PM
               </div>
             </div>
-            <div class="working-days" *ngIf="shopResponse?.openHours[5]?.startTime ">
+            <div class="working-days" *ngIf="shopResponse?.openHours[6]?.startTime ">
               <div class="open-header">Saturday</div>
               <div class="open-working-days-value">
-                {{ shopResponse?.openHours[5]?.startTime }} AM -
-                {{ shopResponse?.openHours[5]?.endTime }} PM
+                {{ shopResponse?.openHours[6]?.startTime }} AM -
+                {{ shopResponse?.openHours[6]?.endTime }} PM
+              </div>
+            </div>
+
+            <div class="working-days" *ngIf="!shopResponse?.openHours[6]?.startTime && ! shopResponse?.openHours[0]?.startTime">
+              <div class="open-header">Saturday - Sunday</div>
+              <div class="open-working-days-value">
+               Closed
               </div>
             </div>
           </div>
-          <div class="open-now-wrapper sunday">
+          <div *ngIf="shopResponse?.openHours[6]?.startTime" class="open-now-wrapper sunday">
             <div class="open-header">Sunday</div>
             <div class="open-working-days-value">
               {{

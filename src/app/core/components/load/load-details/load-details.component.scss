@@ -4,4 +4,8 @@ app-load-details {
         display: grid;
         grid-template-columns: 440px 280px 792px 280px !important;
     }
+    .details-closed-items {
+        display: grid;
+        grid-template-columns: 440px 536px 536px 280px !important;
+    }
 }

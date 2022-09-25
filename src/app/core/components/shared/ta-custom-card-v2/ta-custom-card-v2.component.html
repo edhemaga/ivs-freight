@@ -14,10 +14,20 @@
     <div class="header-content" [class.counter]="hasCounter">
       <!-- Counter -->
       <app-ta-counter
-        *ngIf="hasCounter"
+        *ngIf="hasCounter && !departCounter"
         [count]="hasCounter"
         [countBackground]="counterBackgroundColor"
         [countColor]="counterColor"
+        [countHeight]="'24px'"
+        [countWidth]="'24px'"
+        [countTextBottomPosition]="textBottomPossiton"
+      ></app-ta-counter>
+
+      <app-ta-counter
+        *ngIf="departCounter"
+        [count]="hasCounter"
+        [countBackground]="departBacgroudColor"
+        [countColor]="departColor"
         [countHeight]="'24px'"
         [countWidth]="'24px'"
         [countTextBottomPosition]="textBottomPossiton"
@@ -51,9 +61,9 @@
 
     <!-- Right Side (action side) of header -->
     <div class="header-actions">
-        <div *ngIf="totalMiles" class="total-miles-time">
-            <span class="item-miles">123 mi</span>
-            <span class="item-miles">02:45</span>
+        <div *ngIf="totalMiles &&totalMilesValue && totalMilesTime" class="total-miles-time">
+            <span class="item-miles">{{totalMilesValue}} mi</span>
+            <span class="item-miles">{{totalMilesTime}}</span>
         </div>
       <!-- Arrow -->
       <svg-icon

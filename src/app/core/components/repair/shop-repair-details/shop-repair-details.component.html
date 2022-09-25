@@ -12,6 +12,8 @@
       [statusInactive]="item.hide"
       [arrayIcons]="item.icons"
       [hasDateArrow]="true"
+      [showRepairHeaderOpen]="true"
+      [repairIsOpen]="togglerWorkTime"
       [totalCost]="item.total"
       [optionsId]="repairShopId"
       (dropActions)="dropActionRepair($event)"

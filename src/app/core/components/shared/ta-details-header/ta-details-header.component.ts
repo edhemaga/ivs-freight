@@ -38,6 +38,8 @@ export class TaCommonHeaderComponent implements OnInit {
   @Input() counterViolation: number;
   @Input() hasArrowDown: boolean;
   @Input() totalCost: any;
+  @Input() repairIsOpen: boolean;
+  @Input() showRepairHeaderOpen: boolean;
   public up: boolean = false;
   public down: boolean = false;
   constructor(private routes: ActivatedRoute) {}

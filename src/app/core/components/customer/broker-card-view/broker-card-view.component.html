@@ -131,7 +131,7 @@
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
         [hasDivider]="true"
-        [hasCounter]="invoiceAgeingCounter ? invoiceAgeingCounter : 0"
+        [hasCounter]="invoiceAgeingCounter ? invoiceAgeingCounter : broker?.invoiceAgeingGroup?.countInvoice"
         [cardName]="'Invoice Ageing'"
         [isCardOpen]="true"
       >

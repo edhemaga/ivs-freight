@@ -34,6 +34,10 @@ export function dropActionNameDriver(any: any, action: string) {
         dropAction = 'edit-repair-shop';
         break;
       }
+      case 'repair': {
+        dropAction = 'edit-repair';
+        break;
+      }
     }
   }
   if (any.type === 'delete-item') {
@@ -68,6 +72,10 @@ export function dropActionNameDriver(any: any, action: string) {
       }
       case 'repair-shop': {
         dropAction = 'delete-repair-shop';
+        break;
+      }
+      case 'repair': {
+        dropAction = 'delete-repair';
         break;
       }
     }

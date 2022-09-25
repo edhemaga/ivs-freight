@@ -22,7 +22,7 @@ import { LoadTService } from '../state/load.service';
 export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
   public loadConfig: any;
   private destroy$ = new Subject<void>();
-
+  public statusIsClosed: boolean;
   constructor(
     private activated_route: ActivatedRoute,
     private detailsPageService: DetailsPageService,
@@ -42,7 +42,6 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
         } else {
           query = this.loadTservice.getLoadById(id);
         }
-
         query.pipe(takeUntil(this.destroy$)).subscribe({
           next: (res: LoadResponse) => {
             this.detailCongif(res);
@@ -61,6 +60,12 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
   }
   /**Function template and names for header and other options in header */
   public detailCongif(data: LoadResponse) {
+    if (data?.statusType?.name === 'Closed') {
+      this.statusIsClosed = true;
+    } else {
+      this.statusIsClosed = false;
+    }
+
     this.loadConfig = [
       {
         id: 0,
@@ -92,7 +97,7 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
         hide: false,
         hasArrow: true,
         data: data,
-        length: data?.comments?.length ? data.comments.length : 0,
+        length: data?.comments?.length ? data.commentsCount : 0,
       },
     ];
   }

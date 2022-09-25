@@ -36,12 +36,13 @@
 
     <div class="icon-right">
       <div *ngIf="isInactive" class="inactive-status">INACTIVE</div>
+      <div *ngIf="showRepairHeaderOpen" [ngClass]="{'open-status':repairIsOpen}" class="inactive-status">{{repairIsOpen?'OPEN':'CLOSED'}}</div>
       <app-details-page-dropdown
         [customClassDropDown]="'drop-down-header'"
         [options]="options?.actions"
         [id]="optionsId"
-        [hasVericalDots]="true"
         (dropDownActions)="dropAct($event)"
+        [hasVericalDots]="true"
       >
       </app-details-page-dropdown>
     </div>

@@ -28,27 +28,36 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
   @Input() loadData: any;
   public comments: any[] = [];
   private destroy$ = new Subject<void>();
-  public newComment: boolean = false;
-  public companyUser: SignInResponse = null;
-  public loadItemLenght: number = 0;
+  public totalLegMiles: any;
+  public totalLegTime: any;
   constructor(
     private commentsService: CommentsService,
     private notificationService: NotificationService
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes.loadData.firstChange && changes.loadData.currentValue) {
-      this.loadData = changes.loadData.currentValue;
+      changes.loadData.currentValue[0].data;
+      // this.getLegMilesLegTime(changes?.loadData?.currentValue[0]?.data);
     }
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // this.getLegMilesLegTime(this.loadData[0].data);
+  }
+
+  // public getLegMilesLegTime(load: LoadResponse) {
+  //   let total = load.stops.map((item) => {
+  //     this.totalLegMiles = item.legMiles;
+  //     this.totalLegTime = item.legHours + item.legMinutes;
+  //     console.log(this.totalLegMiles);
+  //     console.log(this.totalLegTime);
+  //   });
+
+  //   return total;
+  // }
+
   /**Function retrun id */
   public identity(index: number, item: any): number {
     return item.id;
-  }
-  public getStopItems(loadData: LoadResponse) {
-    let coutn = loadData?.stops.map((item) => item.items.length);
-    let total = coutn.length;
-    return total;
   }
   changeCommentEvent(comments: ReviewCommentModal) {
     switch (comments.action) {

@@ -60,14 +60,13 @@ export class ShopRepairCardViewComponent
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
-        if (res.animation) {
+        if (res.animation && res.tab === 'repair-shop') {
           this.shopResponse = res.data;
           this.cdRef.detectChanges();
         }
       });
     this.tabsSwitcher();
   }
-
   /**Function return id */
   public identity(index: number, item: any): number {
     return item.id;

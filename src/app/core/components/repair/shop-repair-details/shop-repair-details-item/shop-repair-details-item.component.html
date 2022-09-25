@@ -18,7 +18,7 @@
         <div class="repair-items-wrapper">
           <span
             *ngFor="let repairs of shopData?.data?.repairs; let i = index"
-            (click)="showRepairItems[i] = !showRepairItems[i]"
+            (click)="showRepairItems[i]=!showRepairItems[i]"
             class="item-shop-wrapper"
             [ngClass]="{
               'finish-order-cont': !repairs.invoice,
@@ -41,7 +41,7 @@
                     ? repairs.trailer.trailerNumber
                     : repairs.truck.truckNumber
                 }}</span>
-                <span class="date">{{ repairs.date | formatDateP }}</span>
+                <span class="date">{{repairs.date? (repairs.date | formatDateP): (repairs.createdAt | formatDateP) }}</span>
                 <span class="date"
                   ><span class="inv" *ngIf="repairs.invoice">{{
                     repairs.invoice
@@ -58,6 +58,7 @@
                   <span
                     class="item-desc"
                     *ngFor="let desc of repairs?.items; trackBy: identity"
+                    [ngClass]="{ 'have-pm-description':  desc?.pmTruck != null || desc?.pmTrailer != null }"
                     >{{ desc.description }}
                     <span
                       class="full-stop-shop"
@@ -70,7 +71,11 @@
                 <span *ngIf="repairs?.total" class="cost">{{
                   repairs.total | formatCurrency
                 }}</span>
-                <div *ngIf="!repairs?.invoice" class="button-wrapper-shop">
+                <div
+                  (click)="finishOrder(repairs.id, repairs, $event)"
+                  *ngIf="!repairs.invoice"
+                  class="button-wrapper-shop"
+                >
                   Finish Order
                 </div>
                 <div
@@ -80,6 +85,8 @@
                   <app-details-page-dropdown
                     [options]="dummyData.actions"
                     [customClassDropDown]="'drop-down-details-single'"
+                    [id]="repairs.id"
+                    (dropDownActions)="optionsEvent($event, 'repair')"
                   >
                   </app-details-page-dropdown>
                 </div>
@@ -108,9 +115,33 @@
                 "
                 class="repair-body-container"
               >
-                <div class="repair-items-body">
+                <div
+                  class="repair-items-body"
+                  [ngClass]="{
+                    'have-pm-description':
+                      desc?.pmTruck != null || desc?.pmTrailer != null
+                  }"
+                >
                   <span class="description-item-counter">{{ i + 1 }}</span>
-                  <span class="description-item">{{ desc?.description }}</span>
+                  <div class="item-icon-desc-wrapper">
+                    <svg-icon
+                      *ngIf="desc?.pmTruck?.logoName"
+                      class="pm-icon"
+                      [src]="
+                        'assets/svg/common/repair-pm/' + desc?.pmTruck?.logoName
+                      "
+                      [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
+                    ></svg-icon>
+                    <svg-icon
+                    *ngIf="desc?.pmTrailer?.logoName"
+                    class="pm-icon"
+                    [src]="
+                      'assets/svg/common/repair-pm/' + desc?.pmTrailer?.logoName
+                    "
+                    [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
+                  ></svg-icon>
+                    <span class="description-item">{{ desc?.description }}</span>
+                  </div>
                   <span
                     *ngIf="desc.price"
                     class="description-item-qty qty-price"
@@ -123,7 +154,6 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="!showRepairItems[i]" class="divider"></div>
           </span>
         </div>
       </div>
