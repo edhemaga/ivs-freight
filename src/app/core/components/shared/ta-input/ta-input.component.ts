@@ -787,6 +787,8 @@ export class TaInputComponent
         'months',
         'empty weight',
         'qty',
+        'rangeFrom',
+        'rangeTo',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/g.test(String.fromCharCode(event.charCode))) {

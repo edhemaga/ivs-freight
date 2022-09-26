@@ -507,6 +507,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  saveNoteValue(value){
+    this.repairShopForm.controls['note'].setValue(value);
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

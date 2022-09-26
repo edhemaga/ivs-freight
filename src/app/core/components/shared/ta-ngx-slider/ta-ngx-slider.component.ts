@@ -12,12 +12,20 @@ export class TaNgxSliderComponent {
   @Input() sliderOptions: Options;
   @Input() startedValue: number = 50;
   @Input() customClass: string = null;
+  @Input() minValue: any = 0;
+  @Input() maxValue: any = 5000;
 
   @Output() onUserValueChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onUserHighValueChange: EventEmitter<any> = new EventEmitter<any>();
 
   public userChangeEnd(changes: ChangeContext) {
     if (changes) {
-      this.onUserValueChange.emit(changes.value);
+      if ( this.sliderTemplate == 'range-slider' ) {
+        this.onUserValueChange.emit(changes);
+      } else {
+        this.onUserValueChange.emit(changes.value);
+      }
+      
     }
   }
 
@@ -26,4 +34,15 @@ export class TaNgxSliderComponent {
       this.onUserValueChange.emit(event);
     }
   }
+
+  public minValueChange(event){
+    this.onUserValueChange.emit(event);
+  }
+
+  public highValueChange(event){
+    if (event) {
+      this.onUserHighValueChange.emit(event);
+    }
+  }
+
 }
