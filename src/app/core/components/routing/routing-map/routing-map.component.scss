@@ -1014,3 +1014,17 @@
       transform: translate(-21px, 0px) scale(1);
     }
 }
+
+.empty-stop-background {
+    position: absolute;
+    left: 2px;
+    top: 0px;
+
+    height: 24px;
+    width: 18px;
+
+    background: rgb(48, 116, 211, 0.2);
+
+    pointer-events: none;
+    z-index: 999;
+}

@@ -879,6 +879,24 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         );
       }
     });
+
+    map.addListener('idle', (ev) => {
+        // update the coordinates here
+        var bounds = map.getBounds();
+        var ne = bounds.getNorthEast(); // LatLng of the north-east corner
+        var sw = bounds.getSouthWest(); // LatLng of the south-west corder
+        var nw = new google.maps.LatLng(ne.lat(), sw.lng());
+        var se = new google.maps.LatLng(sw.lat(), ne.lng());
+
+        var mapCenter = map.getCenter();
+
+        // console.log('map bounds ne', ne.lat(), ne.lng());
+        // console.log('map bounds nw', nw.lat(), nw.lng());
+        // console.log('map bounds se', se.lat(), se.lng());
+        // console.log('map bounds sw', sw.lat(), sw.lng());
+        // console.log('map center', mapCenter.lat(), mapCenter.lng());
+        // console.log('map zoom level', this.mapZoom);
+    });
   }
 
   public onHandleAddress(event: any, route, index) {
@@ -1201,16 +1219,13 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       var stopAddressElements =
         routeElement.querySelectorAll('.route-card-row');
 
-      var addressRects = [];
-      stopAddressElements.forEach((item: HTMLElement, index) => {
-        addressRects.push(item.getBoundingClientRect());
-      });
-
       stopAddressElements.forEach((item: HTMLElement, index) => {
         if (item.classList.contains('cdk-drag')) {
+          var nextY = stopAddressElements[stopAddressElements.length - index - 2].getBoundingClientRect().y;
+          var currentY = item.getBoundingClientRect().y;
+
           var y =
-            addressRects[stopAddressElements.length - index - 2].y -
-            addressRects[index].y;
+            nextY - currentY;
 
           item.style.transition = 'top 0.2s ease-in-out';
           item.style.top = y + 'px';
@@ -2104,7 +2119,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
   calculateRouteGridPosition(x, y) {
     console.log('calculateRouteGridPosition x, y', x, y);
-    return { x: Math.floor(x / 12) * 12, y: y }; // will render the element every 12 pixels horizontally
+    return { x: Math.floor(x / 12) * 12, y: Math.floor(y / 6) * 6 }; // will render the element every 12 pixels horizontally
   }
 
   stopPickerAnimation() {
