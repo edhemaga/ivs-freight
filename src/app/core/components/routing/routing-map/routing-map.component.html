@@ -852,6 +852,21 @@
                     }}
                   </div>
                 </div>
+
+                <div 
+                  *ngIf="!stop.empty && b > 0"
+                  class="empty-stop-background" 
+                  [ngStyle]="{
+                    'height': (b >= route.stops.length-1) || (!route.stops[b+1] || route.stops[b+1].empty) ? '22px' : '24px',
+                    'background': route.isFocused ? '#ffffff4d' : route.color + '33',
+                    'border-top-left-radius': b == 1 || ((!route.stops[b-1] || route.stops[b-1].empty)) ? '2px' : '0px',
+                    'border-top-right-radius': b == 1 || ((!route.stops[b-1] || route.stops[b-1].empty)) ? '2px' : '0px',
+                    'border-bottom-right-radius': (!route.stops[b+1] || route.stops[b+1].empty) ? '2px' : '0px',
+                    'border-bottom-left-radius': (!route.stops[b+1] || route.stops[b+1].empty) ? '2px' : '0px'
+                  }"
+                >
+                </div>
+
               </div>
 
               <div
