@@ -243,12 +243,7 @@
                   position="top"
                   class="common-fake-table-delete"
                   [ngClass]="{
-                    'new-position':
-                      isContactCardsScrolling &&
-                      departmentContact.get('email').value,
-                    'new-position-without-email':
-                      isContactCardsScrolling &&
-                      !departmentContact.get('email').value
+                    scrolling: isContactCardsScrolling
                   }"
                   (click)="removeDepartmentContacts(ind)"
                 >

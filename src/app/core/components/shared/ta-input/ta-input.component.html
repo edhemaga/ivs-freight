@@ -474,7 +474,8 @@
     class="input-control
     {{ inputConfig.textTransform }}
     {{ inputConfig.textAlign }}
-    {{ inputConfig.customClass }}"
+    {{ inputConfig.customClass }}
+    "
     [ngClass]="{
       disabled: !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
@@ -487,31 +488,33 @@
         !inputConfig?.dropdownImageInput?.url &&
         !inputConfig.blackInput,
       'valid-focus-out-filled':
-        (getSuperControl.value &&
+        ((getSuperControl.value &&
           getSuperControl.valid &&
           !focusInput &&
           !inputConfig.isDisabled &&
           !isVisiblePasswordEye &&
           !isVisibleCommands &&
           !inputConfig.blackInput) ||
-        inputConfig.dropdownImageInput?.url,
+          inputConfig.dropdownImageInput?.url) &&
+        !inputConfig.blackInput,
       'invalid-focus-in':
         getSuperControl.value &&
         getSuperControl.invalid &&
         focusInput &&
         !inputConfig.blackInput,
       'invalid-focus-out-filled':
-        (getSuperControl.value &&
+        ((getSuperControl.value &&
           getSuperControl.invalid &&
           !focusInput &&
           !inputConfig.isDisabled &&
           !isVisiblePasswordEye &&
           !isVisibleCommands &&
           !inputConfig.blackInput) ||
-        (!inputConfig.dropdownImageInput?.url &&
-          (touchedInput || getSuperControl.touched) &&
-          getSuperControl.invalid &&
-          !focusInput),
+          (!inputConfig.dropdownImageInput?.url &&
+            (touchedInput || getSuperControl.touched) &&
+            getSuperControl.invalid &&
+            !focusInput)) &&
+        !inputConfig.blackInput,
       'password-eye':
         inputConfig.type === 'password' &&
         isVisiblePasswordEye &&
@@ -572,11 +575,11 @@
     tabindex="-1"
     (click)="showDateTimePlaceholder()"
     (paste)="onDatePaste($event)"
-    (blur)="onBlur($event)"
+    (blur)="onBlur()"
     (keydown)="changeSelection($event, true)"
     [ngClass]="{
       focused: focusInput,
-      'valid-focus-out-filled':
+      'valid-focus-out-filled-datepicker':
         getSuperControl.value &&
         getSuperControl.valid &&
         !focusInput &&
@@ -607,7 +610,7 @@
       (focus)="onFocus()"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
-      (blur)="onBlur($event)"
+      (blur)="onBlur()"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'mm' : 'HH'"
     ></span>
     <span
@@ -622,7 +625,7 @@
       (focus)="onFocus()"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
-      (blur)="onBlur($event)"
+      (blur)="onBlur()"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
     ></span>
     <span
@@ -637,7 +640,7 @@
       (focus)="onFocus()"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
-      (blur)="onBlur($event)"
+      (blur)="onBlur()"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'yy' : 'AM'"
     ></span>
   </div>

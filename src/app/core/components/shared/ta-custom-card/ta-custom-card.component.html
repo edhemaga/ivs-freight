@@ -160,7 +160,10 @@
   <!-- BODY -->
   <div class="ta-card-body" [ngClass]="{ scroll: hasScrollBody }">
     <div
-      [@showHideCardBody]="isCardOpen ? 'true' : 'false'"
+      [@showHideCardBody]="{
+        value: isCardOpen ? 'true' : 'false',
+        params: animationMarginParams
+      }"
       class="content-holder"
     >
       <ng-content></ng-content>

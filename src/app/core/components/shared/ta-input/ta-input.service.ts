@@ -28,27 +28,26 @@ export class TaInputService {
    */
   public markInvalid(formGroup: FormGroup): boolean {
     if (formGroup.invalid) {
-      (Object as any).values(formGroup.controls).forEach((control: any) => {
-        control.markAsTouched();
-        console.log('control: ', control);
-        if (control.controls) {
-          this.markInvalid(control);
-        }
+      Object.keys(formGroup.controls).forEach((key: any) => {
+        console.log('key: ---- ', key);
+        formGroup.get(key).markAsTouched();
+        formGroup.get(key).updateValueAndValidity();
+        console.log(
+          'control: ',
+          key +
+            ' - Valid: ' +
+            formGroup.get(key).valid +
+            ' - Touched:' +
+            formGroup.get(key).touched
+        );
       });
+
       this.notificationService.warning(
         'Please fill all required fields.',
         'Warning:'
       );
 
       return false;
-    } else {
-      (Object as any).values(formGroup.controls).forEach((control: any) => {
-        control.markAsTouched();
-        if (control.controls) {
-          this.markInvalid(control);
-        }
-      });
-      return true;
     }
   }
 
@@ -80,6 +79,11 @@ export class TaInputService {
     }
   }
 
+  /**
+   *
+   * @param formControl
+   * @param hasValidation
+   */
   public changeValidatorsCheck(
     formControl: AbstractControl,
     hasValidation: boolean = true
@@ -95,6 +99,13 @@ export class TaInputService {
     }
   }
 
+  /**
+   *
+   * @param formControl
+   * @param type
+   * @param destroy$
+   * @returns
+   */
   public customInputValidator(
     formControl: AbstractControl,
     type: string,

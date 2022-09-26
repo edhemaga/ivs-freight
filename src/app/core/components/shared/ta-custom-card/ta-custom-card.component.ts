@@ -50,6 +50,11 @@ export class TaCustomCardComponent {
 
   @Input() disableMultipleReviews: boolean = false;
 
+  @Input() animationMarginParams = {
+    marginTop: '12px',
+    marginBottom: '12px',
+  };
+
   @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
     new EventEmitter<{ check: boolean; action: string }>(null);
 
