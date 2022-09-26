@@ -1,4 +1,4 @@
-import { filter } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import {
   Component,
@@ -7,20 +7,22 @@ import {
   ViewEncapsulation,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
 import { addressValidation } from '../ta-input/ta-input.regex-validations';
 import { card_component_animation } from '../animations/card-component.animations';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss'],
-  providers: [NgbDropdownConfig],
+  providers: [NgbDropdownConfig, TaThousandSeparatorPipe],
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
 export class FilterComponent implements OnInit {
+  private destroy$ = new Subject<void>();
   @ViewChild('t2') t2: any;
 
   unselectedUser: any[] = [
@@ -963,6 +965,8 @@ export class FilterComponent implements OnInit {
   public locationForm!: FormGroup;
   public payForm!: FormGroup;
   public sliderForm!: FormGroup;
+  public rangeForm!: FormGroup;
+
   rangeValue: any = 0;
   usaSelectedStates: any[] = [];
   canadaSelectedStates: any[] = [];
@@ -987,6 +991,7 @@ export class FilterComponent implements OnInit {
   multiFormThirdFromActive: any = 0;
   multiFormThirdToActive: any = 0;
   locationRange: any = 50;
+  hoverClose: any = false;
 
   public sliderData: Options = {
     floor: 0,
@@ -1006,19 +1011,32 @@ export class FilterComponent implements OnInit {
 
   public paySliderData: Options = {
     floor: 0,
-    ceil: 3000000,
-    step: 0,
+    ceil: 20000,
+    step: 1,
     showSelectionBar: true,
-    hideLimitLabels: false,
+    hideLimitLabels: true,
+    noSwitching: true
   };
 
   public milesSliderData: Options = {
     floor: 0,
-    ceil: 3000,
-    step: 0,
+    ceil: 5000,
+    step: 1,
     showSelectionBar: true,
-    hideLimitLabels: false,
+    hideLimitLabels: true,
+    noSwitching: true
   };
+
+  minValueRange: any = '0';
+  maxValueRange: any = '5,000';
+
+  minValueSet: any = '0';
+  maxValueSet: any = '5,000';
+
+  minValueDragged: number = 0;
+  maxValueDragged: number = 20000;
+
+  rangeDiffNum: number = 0;
 
   @Input() type: string = 'userFilter';
   @Input() icon: string = 'user';
@@ -1034,9 +1052,24 @@ export class FilterComponent implements OnInit {
   @Input() swipeFilter: boolean = false;
   @Input() locationDefType: boolean = false;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private thousandSeparator: TaThousandSeparatorPipe,) {}
 
   ngOnInit(): void {
+
+    var mainPopElement = <HTMLElement>(document.querySelector('.mainPopoverClass'));
+    console.log('---mainPopElement--', mainPopElement); 
+
+
+    if (this.type == 'payFilter'){
+      this.maxValueRange = '20,000';
+      this.maxValueSet = '20,000';
+    }
+    
+    this.rangeForm = this.formBuilder.group({
+      rangeFrom: '0', 
+      rangeTo: this.type == 'payFilter'? '20,000' : '5,000', 
+    })
+
     this.searchForm = this.formBuilder.group({
       search: '',
     });
@@ -1065,13 +1098,45 @@ export class FilterComponent implements OnInit {
       payTo: '',
     });
 
-    this.locationForm.valueChanges.subscribe((changes) => {
+    this.locationForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       if (changes.address == null) {
         this.locationState = '';
       }
     });
 
-    this.moneyForm.valueChanges.subscribe((changes) => {
+    this.rangeForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
+      if (changes){
+        console.log('--changes--', changes);
+
+        var rangeFromNum = 0;
+        var rangeToNum = parseInt(this.maxValueRange.replace(/,/g, ''), 10);
+        var maxRangeNum = parseInt(this.maxValueRange.replace(/,/g, ''), 10);
+        
+        if (changes.rangeFrom && typeof changes.rangeFrom === 'string' ){
+          rangeFromNum = parseInt(changes.rangeFrom.replace(/,/g, ''), 10);
+        }
+        if ( changes.rangeTo && changes.rangeTo != null && typeof changes.rangeTo === 'string' ){
+          rangeToNum = parseInt(changes.rangeTo.replace(/,/g, ''), 10);
+        }
+
+        if ( changes.rangeTo == null || rangeToNum > maxRangeNum ){
+          this.rangeForm?.get('rangeTo')?.setValue(this.maxValueRange);
+        }
+
+        if (rangeFromNum > (maxRangeNum - 1 )){
+          this.rangeForm?.get('rangeFrom')?.setValue(maxRangeNum - 1);
+        } else if ( changes.rangeFrom == null ) {
+          this.rangeForm?.get('rangeFrom')?.setValue('0');
+        }
+
+        this.minValueDragged = rangeFromNum;
+        this.maxValueDragged = rangeToNum;
+
+        this.rangeDiffNum = this.maxValueDragged - this.minValueDragged;
+      }
+    })
+
+    this.moneyForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       if (changes.singleFrom || changes.singleTo) {
         if (changes.singleTo) {
           let to = parseInt(changes.singleTo);
@@ -1179,27 +1244,27 @@ export class FilterComponent implements OnInit {
       }
 
       if (this.singleFormError) {
-        this.moneyForm.get('singleTo').setErrors({ invalid: true });
+        this.moneyForm.get('singleTo')?.setErrors({ invalid: true });
       } else {
-        this.moneyForm.get('singleTo').setErrors(null);
+        this.moneyForm.get('singleTo')?.setErrors(null);
       }
 
       if (this.multiFormFirstError) {
-        this.moneyForm.get('multiFromFirstTo').setErrors({ invalid: true });
+        this.moneyForm.get('multiFromFirstTo')?.setErrors({ invalid: true });
       } else {
-        this.moneyForm.get('multiFromFirstTo').setErrors(null);
+        this.moneyForm.get('multiFromFirstTo')?.setErrors(null);
       }
 
       if (this.multiFormSecondError) {
-        this.moneyForm.get('multiFormSecondTo').setErrors({ invalid: true });
+        this.moneyForm.get('multiFormSecondTo')?.setErrors({ invalid: true });
       } else {
-        this.moneyForm.get('multiFormSecondTo').setErrors(null);
+        this.moneyForm.get('multiFormSecondTo')?.setErrors(null);
       }
 
       if (this.multiFormThirdError) {
-        this.moneyForm.get('multiFormThirdTo').setErrors({ invalid: true });
+        this.moneyForm.get('multiFormThirdTo')?.setErrors({ invalid: true });
       } else {
-        this.moneyForm.get('multiFormThirdTo').setErrors(null);
+        this.moneyForm.get('multiFormThirdTo')?.setErrors(null);
       }
 
       //console.log('---moneyFilterStatus', this.moneyFilterStatus);
@@ -1207,7 +1272,7 @@ export class FilterComponent implements OnInit {
       }
     });
 
-    this.searchForm.valueChanges.subscribe((changes) => {
+    this.searchForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       if (changes.search) {
         let inputValue = changes.search;
         this.searchInputValue = inputValue;
@@ -1532,9 +1597,19 @@ export class FilterComponent implements OnInit {
     this.checkFilterActiveValue();
   }
 
-  clearAll(e?) {
+  clearAll(e?, mod?) {
+
     if (e) {
       e.stopPropagation();
+    }
+
+    if (mod){
+      this.hoverClose = false;
+    }
+
+    const element = e.target;
+    if (!element.classList.contains('active') && !mod) {
+      return false;
     }
 
     console.log('--type--', this.type);
@@ -1547,87 +1622,112 @@ export class FilterComponent implements OnInit {
       this.selectedUser = [];
       this.usaSelectedStates = [];
       this.canadaSelectedStates = [];
+      
+      switch (this.type) {
+        case 'departmentFilter':
+          this.departmentArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'statusFilter':
+          this.pendingStatusArray.map((item) => {
+            item.isSelected = false;
+          });
+  
+          this.activeStatusArray.map((item) => {
+            item.isSelected = false;
+          });
+  
+          this.closedStatusArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'pmFilter':
+          this.pmFilterArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'categoryFuelFilter':
+          this.categoryFuelArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'categoryRepairFilter':
+          this.categoryRepairArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'truckFilter':
+          this.truckArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'trailerFilter':
+          this.trailerArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'brokerFilter':
+          this.brokerArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'driverFilter':
+          this.driverArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'truckTypeFilter':
+          this.truckTypeArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'userFilter':
+          this.unselectedUser.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'stateFilter':
+          this.usaStates.map((item) => {
+            item.isSelected = false;
+          });
+  
+          this.canadaStates.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'injuryFilter':
+          case 'fatalityFilter':
+            case 'violationFilter':
+              this.rangeValue = 0;
+        break;
+        case 'locationFilter':
+          this.locationForm.setValue({
+            address: '',
+          });
+          this.locationRange = 50;
+          this.locationState = '';
+        break;
+        case 'moneyFilter':
+          if (this.subType != 'all') {
+            this.clearForm('singleForm');
+          } else {
+            this.clearForm('clearAll');
+          }
+        break;
+        case 'milesFilter':
+          case 'payFilter':
+            //this.rangeForm.reset();
+            let maxNum = this.thousandSeparator.transform(this.maxValueRange)
+            this.rangeForm.get('rangeFrom')?.setValue('0');
+            this.rangeForm.get('rangeTo')?.setValue(maxNum);
 
-      if (this.type == 'departmentFilter') {
-        this.departmentArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'statusFilter') {
-        this.pendingStatusArray.map((item) => {
-          item.isSelected = false;
-        });
-
-        this.activeStatusArray.map((item) => {
-          item.isSelected = false;
-        });
-
-        this.closedStatusArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'pmFilter') {
-        this.pmFilterArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'categoryFuelFilter') {
-        this.categoryFuelArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'categoryRepairFilter') {
-        this.categoryRepairArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'truckFilter') {
-        this.truckArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'trailerFilter') {
-        this.trailerArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'brokerFilter') {
-        this.brokerArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'driverFilter') {
-        this.driverArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'truckTypeFilter') {
-        this.truckTypeArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'userFilter') {
-        this.unselectedUser.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'stateFilter') {
-        this.usaStates.map((item) => {
-          item.isSelected = false;
-        });
-
-        this.canadaStates.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (
-        this.type == 'injuryFilter' ||
-        this.type == 'fatalityFilter' ||
-        this.type == 'violationFilter'
-      ) {
-        this.rangeValue = 0;
-      } else if (this.type == 'locationFilter') {
-        this.locationForm.setValue({
-          address: '',
-        });
-        this.locationRange = 50;
-        this.locationState = '';
-      } else if (this.type == 'moneyFilter') {
-        if (this.subType != 'all') {
-          this.clearForm('singleForm');
-        } else {
-          this.clearForm('clearAll');
-        }
+            this.maxValueSet = maxNum;
+            this.minValueSet = this.minValueRange;
+        break;
       }
     }
+
     this.setButtonAvailable = true;
     this.moneyFilterStatus = false;
     this.filterActiveArray = [];
@@ -1679,6 +1779,7 @@ export class FilterComponent implements OnInit {
   }
 
   setRangeValue(mod) {
+    console.log(mod);
     if (this.type != 'locationFilter') {
       this.rangeValue = mod;
     } else {
@@ -1768,6 +1869,9 @@ export class FilterComponent implements OnInit {
             ' ' + this.moneyForm.get('singleTo')?.value
           ).slice(1);
         }
+      } else if ( this.type == 'milesFilter' || this.type == 'payFilter' ) {
+        this.maxValueSet = this.rangeForm.get('rangeTo')?.value;
+        this.minValueSet = this.rangeForm.get('rangeFrom')?.value;
       } else {
         this.filterActiveArray = [...this.selectedUser];
       }
@@ -1920,4 +2024,22 @@ export class FilterComponent implements OnInit {
       this.setButtonAvailable = false;
     }
   }
+
+  setRangeSliderValue(mod){
+    let fromValue = this.thousandSeparator.transform(mod.value);
+    let toValue = this.thousandSeparator.transform(mod.highValue);
+    this.rangeForm?.get('rangeFrom')?.setValue(fromValue);
+    this.rangeForm?.get('rangeTo')?.setValue(toValue);
+  }
+
+  setMinValueRange(mod){
+    let fromValue = this.thousandSeparator.transform(mod);
+    this.rangeForm?.get('rangeFrom')?.setValue(fromValue);
+  }
+
+  setMaxValueRange(mod){
+    let toValue = this.thousandSeparator.transform(mod);
+    this.rangeForm?.get('rangeTo')?.setValue(toValue);
+  }
+
 }
