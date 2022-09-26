@@ -851,6 +851,9 @@
   align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
+  &-2 {
+    margin-bottom: 22px;
+  }
 }
 .violation-modal-row-3,
 .violation-modal-row-4 {

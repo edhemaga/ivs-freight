@@ -37,7 +37,7 @@ export class ViolationTableComponent
     private modalService: ModalService,
     private roadsideActiveQuery: RoadsideActiveQuery,
     private roadsideInactiveQuery: RoadsideInactiveQuery,
-    private datePipe: DatePipe,
+    private datePipe: DatePipe
   ) {}
 
   // -------------------------------NgOnInit-------------------------------
@@ -235,7 +235,7 @@ export class ViolationTableComponent
         viewModeActive: 'List',
       },
       tableBodyConfig: {
-        rowDropdownConfig: 'Roadside Inspection'
+        rowDropdownConfig: 'Roadside Inspection',
       },
       actions: [
         {
@@ -340,7 +340,7 @@ export class ViolationTableComponent
       });
 
       console.log('viewData');
-      console.log(this.viewData)
+      console.log(this.viewData);
     } else {
       this.viewData = [];
     }
@@ -363,22 +363,26 @@ export class ViolationTableComponent
       tableDriverName: data?.driver_FullName ? data.driver_FullName : '',
       truckNumber: 'Nije povezano',
       trailerNumber: 'Nije povezano',
-      tableDate: data?.date ? this.datePipe.transform(data.date, 'MM/dd/yy') : '',
+      tableDate: data?.date
+        ? this.datePipe.transform(data.date, 'MM/dd/yy')
+        : '',
       tabelStartTime: data?.startTime ? data?.startTime : '',
       tabelEndTime: data?.endTime ? data?.endTime : '',
-      tableLvl: data?.inspectionLevel ? this.formatInspectionLevel(data?.inspectionLevel) : '',
-      tableState: data?.country? data?.country : '',
+      tableLvl: data?.inspectionLevel
+        ? this.formatInspectionLevel(data?.inspectionLevel)
+        : '',
+      tableState: data?.country ? data?.country : '',
     };
   }
 
   // Format Inspection Level
-  formatInspectionLevel(inspectionLevel: string){
+  formatInspectionLevel(inspectionLevel: string) {
     let level = '';
 
-    for(let i = 0; i < inspectionLevel.length; i++){
-      if(inspectionLevel[i] !== '.'){
+    for (let i = 0; i < inspectionLevel.length; i++) {
+      if (inspectionLevel[i] !== '.') {
         level += inspectionLevel[i];
-      }else{
+      } else {
         break;
       }
     }
@@ -389,7 +393,11 @@ export class ViolationTableComponent
   // On Toolbar Actions
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      alert('Treba da se odradi modal!');
+      this.modalService.openModal(
+        ViolationModalComponent,
+        { size: 'large-xl' },
+        { id: 1, type: 'edit' }
+      );
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setViolationData(event.tabData);
