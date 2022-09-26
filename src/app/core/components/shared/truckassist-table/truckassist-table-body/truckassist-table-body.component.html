@@ -1250,6 +1250,33 @@
                   <div class="citation-item money-item">0</div>
                 </div>
               </div>
+
+              <!-- ACCIDENT CITATION TYPE COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'accident-citation'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="accident-citation-container">
+                  <div class="accident-citation-item item-has-margin grey-item">
+                    0
+                  </div>
+                  <div
+                    class="accident-citation-item item-has-margin yellow-item"
+                  >
+                    0
+                  </div>
+                  <div class="accident-citation-item item-has-margin red-item">
+                    0
+                  </div>
+                  <div class="accident-citation-item item-has-margin blue-item">
+                    N
+                  </div>
+                  <div class="accident-citation-item blue-item">N</div>
+                </div>
+              </div>
             </td>
           </div>
 
@@ -2363,6 +2390,33 @@
                   <div class="citation-item money-item">0</div>
                 </div>
               </div>
+
+              <!-- ACCIDENT CITATION TYPE COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'accident-citation'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="accident-citation-container">
+                  <div class="accident-citation-item item-has-margin grey-item">
+                    0
+                  </div>
+                  <div
+                    class="accident-citation-item item-has-margin yellow-item"
+                  >
+                    0
+                  </div>
+                  <div class="accident-citation-item item-has-margin red-item">
+                    0
+                  </div>
+                  <div class="accident-citation-item item-has-margin blue-item">
+                    N
+                  </div>
+                  <div class="accident-citation-item blue-item">N</div>
+                </div>
+              </div>
             </td>
           </div>
 
@@ -2384,10 +2438,60 @@
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
                 }"
               >
-                <div (click)="onShowAttachments(row)" [ngClass]="{'attachment-active': activeAttachments === row.id}" class="attachments-icon-container">
+                <div
+                  (click)="onShowAttachments(row)"
+                  [ngClass]="{ 'action-active': activeAttachment === row.id }"
+                  class="attachments-icon-container"
+                >
                   <svg-icon
                     [src]="
                       '../../../../../../assets/svg/truckassist-table/attachment-icon.svg'
+                    "
+                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                  ></svg-icon>
+                </div>
+              </div>
+
+              <!-- MEDIA COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'media'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div
+                  class="media-icon-container"
+                  (click)="onShowMedia(row)"
+                  [ngClass]="{ 'action-active': activeMedia === row.id }"
+                >
+                  <svg-icon
+                    [src]="
+                      '../../../../../../assets/svg/truckassist-table/media-icon.svg'
+                    "
+                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                  ></svg-icon>
+                </div>
+              </div>
+
+              <!-- INSURANCE COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'insurance'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div
+                  class="inspection-icon-container"
+                  (click)="onShowInsurance(row)"
+                  [ngClass]="{ 'action-active': activeInsurance === row.id }"
+                >
+                  <svg-icon
+                    [src]="
+                      '../../../../../../assets/svg/truckassist-table/insurance-icon.svg'
                     "
                     [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
                   ></svg-icon>
@@ -2530,17 +2634,23 @@
         <div
           class="attachemnt-dropdown"
           [ngClass]="{
-            'attachemnt-dropdown-active': activeAttachments === row.id
+            'attachemnt-dropdown-active': activeAttachment === row.id
           }"
         >
           <div class="attachemnt-dropdown-content">
             <!-- Border -->
-            <div class="attachemnt-dropdown-border-container" *ngIf="options?.attachmentConfig?.hasViolation">
-              <div class="attachemnt-dropdown-border"></div>
+            <div
+              class="dropdown-border-container"
+              *ngIf="options?.attachmentConfig?.hasViolation"
+            >
+              <div class="dropdown-border"></div>
             </div>
 
             <!-- Violation Inspection -->
-            <div class="violation-inspection-container" *ngIf="options?.attachmentConfig?.hasViolation">
+            <div
+              class="violation-inspection-container"
+              *ngIf="options?.attachmentConfig?.hasViolation"
+            >
               <!-- Title -->
               <div class="inspection-title">
                 <div class="violation-title title">VIOLATION</div>
@@ -2608,12 +2718,18 @@
             </div>
 
             <!-- Border -->
-            <div class="attachemnt-dropdown-border-container" *ngIf="options?.attachmentConfig?.hasCitation">
-              <div class="attachemnt-dropdown-border"></div>
+            <div
+              class="dropdown-border-container"
+              *ngIf="options?.attachmentConfig?.hasCitation"
+            >
+              <div class="dropdown-border"></div>
             </div>
 
             <!-- Citation Inspection -->
-            <div class="citation-inspection-container" *ngIf="options?.attachmentConfig?.hasCitation">
+            <div
+              class="citation-inspection-container"
+              *ngIf="options?.attachmentConfig?.hasCitation"
+            >
               <!-- Title -->
               <div class="inspection-title">
                 <div class="citation-title title">CITATION #</div>
@@ -2755,8 +2871,8 @@
             </div>
 
             <!-- Border -->
-            <div class="attachemnt-dropdown-border-container">
-              <div class="attachemnt-dropdown-border"></div>
+            <div class="dropdown-border-container">
+              <div class="dropdown-border"></div>
             </div>
 
             <!-- Documents -->
@@ -2778,7 +2894,74 @@
               </div>
 
               <!-- Attachments -->
-              <div class="attacment-contaoner"></div>
+              <div class="attacment-container"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Media Dropdown -->
+        <div
+          class="media-dropdown"
+          [ngClass]="{
+            'media-dropdown-active': activeMedia === row.id
+          }"
+        >
+          <div class="media-dropdown-content">
+            <!-- Border -->
+            <div class="dropdown-border-container">
+              <div class="dropdown-border"></div>
+            </div>
+
+            <!-- Media -->
+            <div class="media-wrapper">
+              <!-- Title -->
+              <div class="media-title">
+                <div class="media-count-title">13 Media</div>
+                <svg-icon
+                  class="paid-icon"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/download-icon.svg'
+                  "
+                  [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                ></svg-icon>
+              </div>
+
+              <!-- Media Content -->
+              <div class="media-container"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Insurance Dropdown -->
+        <div
+          class="insurance-dropdown"
+          [ngClass]="{
+            'insurance-dropdown-active': activeInsurance === row.id
+          }"
+        >
+          <div class="insurance-dropdown-content">
+            <!-- Border -->
+            <div class="dropdown-border-container">
+              <div class="dropdown-border"></div>
+            </div>
+
+            <!-- Insurance -->
+            <div class="insurance-container">
+              <div class="insurance-title">
+                <div class="title-item insurance-type">Insurance Type</div>
+                <div class="title-item claim">Claim No.</div>
+                <div class="title-item insurance-adjuster">INSURANCE ADJUSTER</div>
+                <div class="title-item phone">PHONE</div>
+                <div class="title-item email">EMAIL</div>
+              </div>
+
+              <div class="insurance-item-container">
+                <div class="insurance-type">Automobile Liability</div>
+                <div class="claim">55784CC7F597</div>
+                <div class="insurance-adjuster">Aleksandar Djordjevic</div>
+                <div class="phone">(482) 120-8701</div>
+                <div class="email">betty-black@apolon_freight.com</div>
+              </div>
             </div>
           </div>
         </div>

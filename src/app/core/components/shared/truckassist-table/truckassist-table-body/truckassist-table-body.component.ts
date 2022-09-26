@@ -74,7 +74,9 @@ export class TruckassistTableBodyComponent
   activeDescriptionDropdown: number = -1;
   descriptionTooltip: any;
   pageHeight: number = window.innerHeight;
-  activeAttachments: number = -1;
+  activeAttachment: number = -1;
+  activeMedia: number = -1;
+  activeInsurance: number = -1;
   statusTooltip: any;
   statusDropdownActive: number = -1;
   statusDropdownData: any;
@@ -476,10 +478,28 @@ export class TruckassistTableBodyComponent
 
   // Show Attachments
   onShowAttachments(row: any) {
-    if (this.activeAttachments !== row.id) {
-      this.activeAttachments = row.id;
+    if (this.activeAttachment !== row.id) {
+      this.activeAttachment = row.id;
     } else {
-      this.activeAttachments = -1;
+      this.activeAttachment = -1;
+    }
+  }
+
+  // Show Media
+  onShowMedia(row: any){
+    if (this.activeMedia !== row.id) {
+      this.activeMedia = row.id;
+    } else {
+      this.activeMedia = -1;
+    }
+  }
+
+  // 
+  onShowInsurance(row: any){
+    if (this.activeInsurance !== row.id) {
+      this.activeInsurance = row.id;
+    } else {
+      this.activeInsurance = -1;
     }
   }
 

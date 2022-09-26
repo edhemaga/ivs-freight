@@ -738,16 +738,17 @@ table {
                 }
               }
             }
-
-            // ATTACHMENTS COLUMN
-            .attachments-icon-container {
+            // ATTACHMENTS, MEDIA AND INSURANCE COLUMN
+            .attachments-icon-container,
+            .media-icon-container,
+            .inspection-icon-container {
               cursor: pointer;
               width: 24px;
               height: 24px;
               display: flex;
               align-items: center;
-              border-radius: 2px;
               justify-content: center;
+              border-radius: 2px;
 
               svg-icon {
                 display: flex;
@@ -756,13 +757,13 @@ table {
               }
             }
 
-            .attachment-active{
-              background: #F3F3F3;
+            .action-active {
+              background: #f3f3f3;
 
-              svg-icon{
-                svg{
-                  path{
-                    fill: #6D82C7;
+              svg-icon {
+                svg {
+                  path {
+                    fill: #6d82c7;
                   }
                 }
               }
@@ -1695,6 +1696,53 @@ table {
               }
             }
 
+            // ACCIDENT CITATION TYPE
+            .accident-citation-container {
+              width: fit-content;
+              height: 24px;
+              border-radius: 2px;
+              padding: 3px;
+              display: flex;
+              align-items: center;
+
+              .accident-citation-item {
+                width: 30px;
+                height: 18px;
+                border-radius: 2px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: #ffffff;
+                font-size: 14px;
+                font-weight: 600;
+
+                &::selection {
+                  color: #ffffff;
+                  background: #ffffff20;
+                }
+              }
+
+              .item-has-margin {
+                margin-right: 22px;
+              }
+
+              .grey-item {
+                background: #aaaaaa;
+              }
+
+              .yellow-item {
+                background: #ffb74d;
+              }
+
+              .red-item {
+                background: #e57373;
+              }
+
+              .blue-item {
+                background: #6d82c7;
+              }
+            }
+
             // PROGRESS COLUMN
             .applicant-status-container {
               width: fit-content;
@@ -1855,27 +1903,31 @@ table {
         }
       }
 
-      // Roadside Inspection Row Dropdown
-      .attachemnt-dropdown {
+      // Attachment, Media And Insurance Dropdown
+      .attachemnt-dropdown,
+      .media-dropdown,
+      .insurance-dropdown {
         width: 100%;
         height: fit-content;
         max-height: 0px;
         overflow: hidden;
         transition: 0.25s ease-in-out;
 
-        .attachemnt-dropdown-content {
+        .attachemnt-dropdown-content,
+        .media-dropdown-content,
+        .insurance-dropdown-content {
           width: 100%;
           height: fit-content;
           padding: 0 6px 6px 6px;
           transition: height 0.25s ease-in-out;
 
-          .attachemnt-dropdown-border-container {
+          .dropdown-border-container {
             height: 2px;
             width: 100%;
             padding: 0 10px;
             margin-top: 2px;
 
-            .attachemnt-dropdown-border {
+            .dropdown-border {
               width: 100%;
               height: 100%;
               border-radius: 1px;
@@ -1928,7 +1980,7 @@ table {
             }
           }
 
-          // Violation
+          // VIOALTION
           .violation-inspection-container {
             width: 100%;
             height: fit-content;
@@ -2035,7 +2087,7 @@ table {
             }
           }
 
-          // Citation
+          // CITATION
           .citation-inspection-container {
             .inspection-title {
               .due-date-title {
@@ -2237,17 +2289,152 @@ table {
             }
 
             // ATTACHMENTS
-            .attacment-contaoner {
+            .attacment-container {
               width: 100%;
               height: 200px;
               padding: 0 4px;
               border: 1px solid red;
             }
           }
+
+          // MEDIA
+          .media-wrapper {
+            width: 100%;
+            height: fit-content;
+            position: relative;
+
+            .media-title {
+              width: 100%;
+              height: 26px;
+              display: flex;
+              align-items: center;
+              position: absolute;
+              top: 2px;
+              z-index: 100;
+
+              .media-count-title {
+                font-size: 14px;
+                font-weight: bold;
+                color: #919191;
+                margin: 0 6px 0 4px;
+
+                &::selection {
+                  color: #919191;
+                  background: #91919120;
+                }
+              }
+
+              svg-icon {
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+            }
+
+            .media-container {
+              width: 100%;
+              height: 200px;
+              padding: 0 4px;
+              border: 1px solid red;
+            }
+          }
+
+          // INSURANCE
+          .insurance-container {
+            width: 100%;
+            height: fit-content;
+
+            .insurance-title {
+              width: 100%;
+              height: 26px;
+              display: flex;
+              align-items: center;
+              padding: 0 8px;
+
+              .title-item {
+                font-size: 14px;
+                font-weight: bold;
+                color: #919191;
+
+                &::selection {
+                  color: #919191;
+                  background: #91919120;
+                }
+              }
+
+              .insurance-type {
+                width: 402px;
+              }
+
+              .claim {
+                width: 200px;
+              }
+
+              .insurance-adjuster {
+                width: 272px;
+              }
+
+              .phone {
+                width: 200px;
+              }
+
+              .email {
+                width: 251px;
+              }
+            }
+
+            .insurance-item-container {
+              width: 100%;
+              height: 32px;
+              border-radius: 2px;
+              background: #97a8dc10;
+              padding: 0 8px;
+              display: flex;
+              align-items: center;
+
+              div {
+                font-size: 14px;
+                font-weight: 400;
+                color: #6c6c6c;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
+              }
+
+              .insurance-type {
+                width: 402px;
+                font-weight: bold;
+              }
+
+              .claim {
+                width: 200px;
+              }
+
+              .insurance-adjuster {
+                width: 272px;
+              }
+
+              .phone {
+                width: 200px;
+              }
+
+              .email {
+                width: 251px;
+              }
+            }
+          }
         }
       }
 
-      .attachemnt-dropdown-active {
+      .attachemnt-dropdown-active,
+      .media-dropdown-active,
+      .insurance-dropdown-active {
         max-height: 1000px;
         transition: 0.25s ease-in-out;
       }

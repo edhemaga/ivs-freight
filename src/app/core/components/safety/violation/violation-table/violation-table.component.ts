@@ -106,7 +106,7 @@ export class ViolationTableComponent
         } */
       });
 
-    // Contact Actions
+    // Roadside Inspection Actions
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
@@ -302,6 +302,7 @@ export class ViolationTableComponent
     this.setViolationData(td);
   }
 
+  // Get Table Tab Data
   getTabData(dataType?: string) {
     if (dataType === 'active') {
       this.roadsideActive = this.roadsideActiveQuery.getAll();
