@@ -122,7 +122,7 @@ export class TaInputComponent
       (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) &&
       !this.inputConfig.isDisabled
     ) {
-      this.inputService.dropdownAddMode$
+      this.inputService.dropDownAddMode$
         .pipe(takeUntil(this.destroy$))
         .subscribe((action) => {
           if (action) {
