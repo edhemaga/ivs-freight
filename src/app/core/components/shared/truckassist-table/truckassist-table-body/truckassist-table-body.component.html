@@ -1,14 +1,11 @@
 <table class="truckassist-table-body-style">
   <tbody *ngIf="viewData.length">
-    <!-- [ngStyle]="{ height: pageHeight - 84 + 'px' }" -->
     <cdk-virtual-scroll-viewport
       #tableScrollRef
       [itemSize]="35"
       [ngStyle]="{
-        height:
-          viewData.length < 29
-            ? viewData.length * 32 + (viewData.length - 1) * 2 + 'px'
-            : 30 * 32 + 29 * 2 + 'px'
+        height: viewData.length * 32 + (viewData.length - 1) * 2 + 500 + 'px',
+        'max-height': 1048 + 'px'
       }"
     >
       <tr
@@ -20,22 +17,13 @@
         [ngClass]="{
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
-          'show-attachments':
-            activeAttachments === row.id && attachmentsNgbPopover.isOpen(),
           'row-repair-order': row.isRepairOrder && !row.actionAnimation,
           'add-animation': row.actionAnimation === 'add',
           'update-animation': row.actionAnimation === 'update',
           'delete-animation': row.actionAnimation === 'delete'
         }"
-        #attachmentsNgbPopover="ngbPopover"
-        [autoClose]="true"
-        [ngbPopover]="attachmentsPopover"
-        [placement]="'bottom-left'"
-        container="body"
-        popoverClass="table-attachments-popover"
-        triggers="manual"
       >
-        <div class="columns-container" (click)="onShowRowDropdown(i)">
+        <div class="columns-container">
           <!-- PINED -->
           <div class="pined-columns">
             <td *ngFor="let column of pinedColumns">
@@ -1262,6 +1250,33 @@
                   <div class="citation-item money-item">0</div>
                 </div>
               </div>
+
+              <!-- ACCIDENT CITATION TYPE COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'accident-citation'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="accident-citation-container">
+                  <div class="accident-citation-item item-has-margin grey-item">
+                    0
+                  </div>
+                  <div
+                    class="accident-citation-item item-has-margin yellow-item"
+                  >
+                    0
+                  </div>
+                  <div class="accident-citation-item item-has-margin red-item">
+                    0
+                  </div>
+                  <div class="accident-citation-item item-has-margin blue-item">
+                    N
+                  </div>
+                  <div class="accident-citation-item blue-item">N</div>
+                </div>
+              </div>
             </td>
           </div>
 
@@ -2375,6 +2390,33 @@
                   <div class="citation-item money-item">0</div>
                 </div>
               </div>
+
+              <!-- ACCIDENT CITATION TYPE COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'accident-citation'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="accident-citation-container">
+                  <div class="accident-citation-item item-has-margin grey-item">
+                    0
+                  </div>
+                  <div
+                    class="accident-citation-item item-has-margin yellow-item"
+                  >
+                    0
+                  </div>
+                  <div class="accident-citation-item item-has-margin red-item">
+                    0
+                  </div>
+                  <div class="accident-citation-item item-has-margin blue-item">
+                    N
+                  </div>
+                  <div class="accident-citation-item blue-item">N</div>
+                </div>
+              </div>
             </td>
           </div>
 
@@ -2397,10 +2439,62 @@
                 }"
               >
                 <div
-                  (click)="onShowAttachments(attachmentsNgbPopover, row)"
-                  class="attachments-btn"
+                  (click)="onShowAttachments(row)"
+                  [ngClass]="{ 'action-active': activeAttachment === row.id }"
+                  class="attachments-icon-container"
                 >
-                  <div class="attachments-svg"></div>
+                  <svg-icon
+                    [src]="
+                      '../../../../../../assets/svg/truckassist-table/attachment-icon.svg'
+                    "
+                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                  ></svg-icon>
+                </div>
+              </div>
+
+              <!-- MEDIA COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'media'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div
+                  class="media-icon-container"
+                  (click)="onShowMedia(row)"
+                  [ngClass]="{ 'action-active': activeMedia === row.id }"
+                >
+                  <svg-icon
+                    [src]="
+                      '../../../../../../assets/svg/truckassist-table/media-icon.svg'
+                    "
+                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                  ></svg-icon>
+                </div>
+              </div>
+
+              <!-- INSURANCE COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'insurance'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div
+                  class="inspection-icon-container"
+                  (click)="onShowInsurance(row)"
+                  [ngClass]="{ 'action-active': activeInsurance === row.id }"
+                >
+                  <svg-icon
+                    [src]="
+                      '../../../../../../assets/svg/truckassist-table/insurance-icon.svg'
+                    "
+                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                  ></svg-icon>
                 </div>
               </div>
 
@@ -2536,23 +2630,27 @@
           </div>
         </div>
 
-        <!-- Roadside Inspection Row Dropdown -->
+        <!-- Attachment Dropdown -->
         <div
-          class="roadside-inspection-row-dropdown"
-          [ngClass]="{ 'roadside-inspection-active': showRowDropdown === i }"
-          *ngIf="
-            options?.tableBodyConfig?.rowDropdownConfig ===
-            'Roadside Inspection'
-          "
+          class="attachemnt-dropdown"
+          [ngClass]="{
+            'attachemnt-dropdown-active': activeAttachment === row.id
+          }"
         >
-          <div class="roadside-inspection-content">
+          <div class="attachemnt-dropdown-content">
             <!-- Border -->
-            <div class="roadside-inspection-border-container">
-              <div class="roadside-inspection-border"></div>
+            <div
+              class="dropdown-border-container"
+              *ngIf="options?.attachmentConfig?.hasViolation"
+            >
+              <div class="dropdown-border"></div>
             </div>
 
             <!-- Violation Inspection -->
-            <div class="violation-inspection-container">
+            <div
+              class="violation-inspection-container"
+              *ngIf="options?.attachmentConfig?.hasViolation"
+            >
               <!-- Title -->
               <div class="inspection-title">
                 <div class="violation-title title">VIOLATION</div>
@@ -2572,6 +2670,7 @@
                 <div class="violation-code">395.5380</div>
 
                 <svg-icon
+                  *ngIf="!showInspectinDescriptionEdit"
                   class="oss-icon"
                   [src]="
                     '../../../../../../assets/svg/truckassist-table/violation-oss-icon.svg'
@@ -2579,9 +2678,25 @@
                   [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
                 ></svg-icon>
 
-                <div class="inspection-decription">
+                <div
+                  class="inspection-decription"
+                  *ngIf="!showInspectinDescriptionEdit"
+                >
                   CMV manufactured after 10/19/94 has an automatic airbrake
                   adjustment system
+                </div>
+
+                <div
+                  class="edit-description"
+                  *ngIf="showInspectinDescriptionEdit"
+                >
+                  <input
+                    id="inspectin-description-input"
+                    type="text"
+                    (keyup.enter)="onSaveInspectinDescription()"
+                    autofocus
+                    [(ngModel)]="editInspectinDescriptionText"
+                  />
                 </div>
 
                 <div class="sw-count">
@@ -2590,6 +2705,9 @@
                 </div>
 
                 <svg-icon
+                  (click)="
+                    showInspectinDescriptionEdit = !showInspectinDescriptionEdit
+                  "
                   class="edit-icon"
                   [src]="
                     '../../../../../../assets/svg/truckassist-table/edit-icon.svg'
@@ -2600,12 +2718,18 @@
             </div>
 
             <!-- Border -->
-            <div class="roadside-inspection-border-container">
-              <div class="roadside-inspection-border"></div>
+            <div
+              class="dropdown-border-container"
+              *ngIf="options?.attachmentConfig?.hasCitation"
+            >
+              <div class="dropdown-border"></div>
             </div>
 
             <!-- Citation Inspection -->
-            <div class="citation-inspection-container">
+            <div
+              class="citation-inspection-container"
+              *ngIf="options?.attachmentConfig?.hasCitation"
+            >
               <!-- Title -->
               <div class="inspection-title">
                 <div class="citation-title title">CITATION #</div>
@@ -2745,26 +2869,119 @@
                 </div>
               </div>
             </div>
+
+            <!-- Border -->
+            <div class="dropdown-border-container">
+              <div class="dropdown-border"></div>
+            </div>
+
+            <!-- Documents -->
+            <div class="document-container">
+              <!-- Title -->
+              <div class="document-title">
+                <div class="document-count-title">4 DOCUMENT</div>
+                <div class="download-document-btn">
+                  <svg-icon
+                    class="paid-icon"
+                    [src]="
+                      '../../../../../../assets/svg/truckassist-table/download-icon.svg'
+                    "
+                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                  ></svg-icon>
+
+                  <div class="title">Download All</div>
+                </div>
+              </div>
+
+              <!-- Attachments -->
+              <div class="attacment-container"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Media Dropdown -->
+        <div
+          class="media-dropdown"
+          [ngClass]="{
+            'media-dropdown-active': activeMedia === row.id
+          }"
+        >
+          <div class="media-dropdown-content">
+            <!-- Border -->
+            <div class="dropdown-border-container">
+              <div class="dropdown-border"></div>
+            </div>
+
+            <!-- Media -->
+            <div class="media-wrapper">
+              <!-- Title -->
+              <div class="media-title">
+                <div class="media-count-title">13 Media</div>
+                <svg-icon
+                  class="paid-icon"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/download-icon.svg'
+                  "
+                  [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                ></svg-icon>
+              </div>
+
+              <!-- Media Content -->
+              <div class="media-container"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Insurance Dropdown -->
+        <div
+          class="insurance-dropdown"
+          [ngClass]="{
+            'insurance-dropdown-active': activeInsurance === row.id
+          }"
+        >
+          <div class="insurance-dropdown-content">
+            <!-- Border -->
+            <div class="dropdown-border-container">
+              <div class="dropdown-border"></div>
+            </div>
+
+            <!-- Insurance -->
+            <div class="insurance-container">
+              <div class="insurance-title">
+                <div class="title-item insurance-type">Insurance Type</div>
+                <div class="title-item claim">Claim No.</div>
+                <div class="title-item insurance-adjuster">INSURANCE ADJUSTER</div>
+                <div class="title-item phone">PHONE</div>
+                <div class="title-item email">EMAIL</div>
+              </div>
+
+              <div class="insurance-item-container">
+                <div class="insurance-type">Automobile Liability</div>
+                <div class="claim">55784CC7F597</div>
+                <div class="insurance-adjuster">Aleksandar Djordjevic</div>
+                <div class="phone">(482) 120-8701</div>
+                <div class="email">betty-black@apolon_freight.com</div>
+              </div>
+            </div>
           </div>
         </div>
       </tr>
+
+      <div class="show-more-container" *ngIf="viewData.length">
+        <div class="showing">
+          {{ viewData.length }} OF {{ activeTableData.length }} SHOWING
+        </div>
+        <div
+          class="show-more"
+          (click)="onShowMore()"
+          *ngIf="viewData.length < activeTableData.length"
+        >
+          SHOW MORE
+        </div>
+      </div>
     </cdk-virtual-scroll-viewport>
   </tbody>
 </table>
-
-<!-- [ngStyle]="{ 'width.px': showMoreContainerWidth }" -->
-<div class="show-more-container" *ngIf="viewData.length">
-  <div class="showing">
-    {{ viewData.length }} OF {{ activeTableData.length }} SHOWING
-  </div>
-  <div
-    class="show-more"
-    (click)="onShowMore()"
-    *ngIf="viewData.length < activeTableData.length"
-  >
-    SHOW MORE
-  </div>
-</div>
 
 <!-- DROPDOWN -->
 <ng-template #dropdownPopover let-data="data">
@@ -2838,16 +3055,6 @@
       <div class="right-background"></div>
     </div>
   </div>
-</ng-template>
-
-<!-- ATTACHMENTS -->
-<ng-template #attachmentsPopover let-data="data">
-  <div
-    class="table-attachments"
-    [ngStyle]="{
-      width: attachmentWidth + 'px'
-    }"
-  ></div>
 </ng-template>
 
 <!-- STATUS -->

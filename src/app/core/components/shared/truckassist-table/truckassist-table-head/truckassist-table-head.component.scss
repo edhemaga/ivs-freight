@@ -153,29 +153,63 @@ table {
           }
         }
 
+        // Citation
         .citation-container {
           display: flex;
           overflow: hidden;
           width: 100%;
           justify-content: center;
 
-          .citation-wrapper{
+          .citation-wrapper {
             width: 140px;
             display: flex;
             padding: 3px;
             justify-content: space-between;
 
-            .icon-container{
+            .icon-container {
               display: flex;
               justify-content: center;
               align-items: center;
               width: 30px;
             }
 
-            svg-icon{
+            svg-icon {
               display: flex;
               justify-content: center;
               align-items: center;
+            }
+          }
+        }
+
+        // Accident Citation
+        .accident-citation-container {
+          width: 100%;
+          height: fit-content;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          .accident-citation-wrapper{
+            width: fit-content;
+            height: 18px;
+            display: flex;
+
+            .icon-container {
+              width: 30px;
+              height: 18px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+  
+              svg-icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+            }
+  
+            .has-margin{
+              margin-right: 22px;
             }
           }
         }
