@@ -217,6 +217,7 @@
         <app-ta-input-note
           #appNote
           formControlName="note"
+          (saveNoteValue)="saveNoteValue($event)"
           [isVisibleNote]="truckForm.get('note').value"
         ></app-ta-input-note>
       </div>

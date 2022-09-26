@@ -336,93 +336,6 @@
             [legendAttributes]="barChartLegend2"
           >
           </app-ta-chart>
-          <!-- <app-ta-chart
-              [chartConfig]="{
-                dataProperties: [
-                  {
-                    defaultConfig: {
-                      type: 'line',
-                      data: [2.25, 2.5, 2.2, 1.6, 2.2, 2.3],
-                      label: 'Salary',
-                      yAxisID: 'y-axis-0',
-                      borderColor: '#6D82C7',
-                      pointBackgroundColor: '#FFFFFF',
-                      pointHoverBackgroundColor: '#6D82C7',
-                      pointHoverBorderColor: '#FFFFFF',
-                      pointHoverRadius: 3,
-                      pointBorderWidth: 2
-                    }
-                  },
-                  {
-                    defaultConfig: {
-                      type: 'bar',
-                      data: [[2.7, 1.8], [2.8, 2.2], [2.7, 1.7], [2.1, 1.2], [2.7, 1.6], [2.6, 2.0]],
-                      label: 'Miles',
-                      yAxisID: 'y-axis-0',
-                      borderColor: '#FFCC80',
-                      backgroundColor: '#FFCC80',
-                      hoverBackgroundColor: '#FFA726',
-                      hasGradiendBackground: true,
-                      colors: ['rgba(128, 203, 186, 1)', 'rgba(255, 204, 128, 1)'],
-                      hoverColors: ['rgba(38, 166, 144, 1)', 'rgba(255, 167, 38, 1)'],
-                      maxBarThickness: 18
-                    }
-                  }
-                ],
-                showLegend: false,
-                chartValues: [46,755,000, 36.854],
-                defaultType: 'bar',
-                chartWidth: '417',
-                chartHeight: '130',
-                onHoverAnnotation: true,
-                offset: true,
-                hoverTimeDisplay: true,
-                allowAnimation: true,
-                animationOnlyOnLoad: true,
-                dataLabels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
-                noChartImage: 'assets/svg/common/mixed_no_data.svg'
-              }"
-              [axesProperties]="mixedBarAxes"
-              [legendAttributes]="mixedBarChartLegend"
-            >
-            </app-ta-chart>
-            <app-ta-chart
-              [chartConfig]="{
-                dataProperties: [
-                  {
-                    defaultConfig: {
-                      type: 'line',
-                      data: [12, 21, 27, 37, 28, 25, 21, 10, 15, 45, 27, 46, 41, 28, 24],
-                      yAxisID: 'y-axis-0',
-                      borderColor: '#6D82C7',
-                      pointBackgroundColor: '#FFFFFF',
-                      pointHoverBackgroundColor: '#6D82C7',
-                      pointHoverBorderColor: '#FFFFFF',
-                      pointHoverRadius: 3,
-                      pointBorderWidth: 2,
-                      fill: true,
-                      hasGradiendBackground: true,
-                      colors: ['rgba(189, 202, 235, 1)', 'rgba(255, 255, 255, 1)']
-                    }
-                  }
-                ],
-                showLegend: false,
-                chartValues: [2, 2],
-                defaultType: 'bar',
-                chartWidth: '417',
-                chartHeight: '130',
-                annotation: 28,
-                onHoverAnnotation: true,
-                hoverTimeDisplay: true,
-                allowAnimation: true,
-                animationOnlyOnLoad: true,
-                dataLabels: ['JUL', '', '', '', '', '', '', 'AUG', '', '', '', '', '', '', 'SEP'],
-                noChartImage: 'assets/svg/common/no_data_pay.svg'
-              }"
-              [axesProperties]="paymentAxes"
-              [legendAttributes]="paymentChartLegend"
-            >
-            </app-ta-chart> -->
         </div>
       </app-ta-custom-card>
 
@@ -478,7 +391,7 @@
       <div class="note-cards">
         <app-ta-input-note
           [formControl]="noteControl"
-          [value]="truck.note"
+          [note]="truck.note"
           [isVisibleDivider]="false"
           [isVisibleNote]="true"
           [isVisibleArrow]="true"

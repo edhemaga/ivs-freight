@@ -34,6 +34,7 @@
       (input)="changeValue($event.target.innerHTML)"
       (focus)="checkFocus($event)"
       (blur)="prepareForTextRange()"
+      [innerHTML]="note | safeHtml"
     ></div>
   </div>
   <div *ngIf="isVisibleSecondDivider" class="divider divider-second"></div>
