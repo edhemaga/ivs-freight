@@ -11,7 +11,7 @@ export class DetailsActiveItemPipe implements PipeTransform {
         return {
           name: option?.name,
           svg: option?.svg
-            ? `assets/svg/${option?.folder}/ic_${option?.svg}.svg`
+            ? `assets/svg/${option?.folder}/${option?.svg}`
             : null,
           folder: option?.folder,
         };

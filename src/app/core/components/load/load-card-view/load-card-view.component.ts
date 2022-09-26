@@ -37,12 +37,12 @@ export class LoadCardViewComponent implements OnInit, OnChanges {
     this.loadNote.patchValue(this.load?.note);
   }
   public getLoadDropdown() {
-    // svg: item.loadType.id === 'LTL' ? 'ltl-status' : null,
-    // folder: 'common',
     this.loadDropdowns = this.lmquery.getAll().map((item) => {
       return {
         id: item.id,
         name: 'Invoice' + ' ' + item.loadNumber,
+        svg: item.type.name === 'LTL' ? 'ic_ltl-status.svg' : null,
+        folder: 'common',
         status: item.status,
         active: item.id === this.load.id,
       };
@@ -50,12 +50,12 @@ export class LoadCardViewComponent implements OnInit, OnChanges {
   }
   public onSelectLoad(event: any) {
     if (event.id !== this.load.id) {
-      // svg: item.loadType.id === 'LTL' ? 'ltl-status' : null,
-      // folder: 'common',
       this.loadList = this.lmquery.getAll().map((item) => {
         return {
           id: item.id,
           name: 'Invoice' + ' ' + item.loadNumber,
+          svg: item.type.name === 'LTL' ? 'ic_ltl-status.svg' : null,
+          folder: 'common',
           status: item.status,
           active: item.id === event.id,
         };

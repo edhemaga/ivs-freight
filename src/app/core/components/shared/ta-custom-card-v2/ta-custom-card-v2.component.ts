@@ -46,6 +46,8 @@ export class TaCustomCardV2Component {
   @Input() departColor: string = '#4DB6A2';
   @Input() totalMilesValue: number;
   @Input() totalMilesTime: any;
+  @Input() totalWait: boolean;
+  @Input() totalWaitTime: any;
   @Input() textBottomPossiton: string = '-1px';
   @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
     new EventEmitter<{ check: boolean; action: string }>(null);

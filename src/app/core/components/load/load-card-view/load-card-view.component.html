@@ -7,6 +7,7 @@
     [options]="loadDropdowns"
     (selectValue)="onSelectLoad($event)"
     (changeEvent)="onChangeLoad($event)"
+    [haveDropSVG]="true"
   >
     <!-- 
     [hasArrow]="hideArrow"
@@ -66,23 +67,23 @@
         class="first-custom-card"
       >
         <div class="load-broker-container">
-          <div class="company-name">{{ load?.company?.companyName }}</div>
-          <div class="broker-name">Milos Cirkovic</div>
+          <div class="company-name">{{ load?.broker?.businessName }}</div>
+          <div class="broker-name" >{{ load?.brokerContact?.contactName }}</div>
           <div class="phone-ext-wrapper">
-            <div class="phone-ext-item-wrapper">
+            <div class="phone-ext-item-wrapper" *ngIf="load?.brokerContact?.phone">
               <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-              <span class="item-value"> (343) 4242-232</span>
+              <span class="item-value"> {{ load?.brokerContact?.phone }}</span>
             </div>
-            <div class="phone-ext-item-wrapper">
+            <div class="phone-ext-item-wrapper" *ngIf="load?.brokerContact?.exntensionPhone">
               <svg-icon
                 src="assets/svg/common/ic_phone-extension.svg"
               ></svg-icon>
-              <span class="item-value"> 43381</span>
+              <span class="item-value"> {{ load?.brokerContact?.exntensionPhone }}</span>
             </div>
           </div>
-          <div class="phone-ext-item-wrapper phone-ext-item-wrapper-last">
+          <div class="phone-ext-item-wrapper phone-ext-item-wrapper-last" *ngIf="load?.brokerContact?.email">
             <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-            <span class="item-value email-broker-load">milos@gma.com</span>
+            <span class="item-value email-broker-load">{{ load?.brokerContact?.email }}</span>
           </div>
         </div>
       </app-ta-custom-card>

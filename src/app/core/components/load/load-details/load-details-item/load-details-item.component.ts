@@ -30,6 +30,8 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
   private destroy$ = new Subject<void>();
   public totalLegMiles: any;
   public totalLegTime: any;
+  public status = null;
+  public activePercntage: any;
   constructor(
     private commentsService: CommentsService,
     private notificationService: NotificationService
@@ -37,13 +39,45 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes.loadData.firstChange && changes.loadData.currentValue) {
       changes.loadData.currentValue[0].data;
-      // this.getLegMilesLegTime(changes?.loadData?.currentValue[0]?.data);
+      this.getActivePertange(
+        changes?.loadData?.currentValue[0]?.data?.pendingPercentage
+      );
     }
   }
   ngOnInit(): void {
     // this.getLegMilesLegTime(this.loadData[0].data);
+    this.getActivePertange(this.loadData[0]?.data.pendingPercentage);
   }
-
+  public getActivePertange(data: any) {
+    this.activePercntage = data;
+    if (this.activePercntage > 0 && this.activePercntage < 30) {
+      this.status = {
+        status: 'short',
+        minPercentage: 0,
+        maxPercentage: 33,
+        colorFilled: '#E57373',
+        colorEmpty: '#FFEBEE',
+      };
+    } else if (this.activePercntage > 30 && this.activePercntage < 60) {
+      this.status = {
+        status: 'medium',
+        minPercentage: 33.1,
+        maxPercentage: 66,
+        colorFilled: '#FFB74D',
+        colorEmpty: '#FFECD1',
+      };
+    } else if (this.activePercntage > 60 && this.activePercntage <= 100) {
+      this.status = {
+        status: 'long',
+        minPercentage: 66.1,
+        maxPercentage: 100,
+        colorFilled: '#AAAAAA',
+        colorEmpty: '#DADADA',
+      };
+    } else {
+      this.status = null;
+    }
+  }
   // public getLegMilesLegTime(load: LoadResponse) {
   //   let total = load.stops.map((item) => {
   //     this.totalLegMiles = item.legMiles;

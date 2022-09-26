@@ -258,6 +258,7 @@ app-load-details-item {
             font-weight: 400;
             color: #6c6c6c;
             margin-left: 6px;
+            white-space: nowrap;
             &::-moz-selection {
                 color: #6c6c6c;
                 background: rgb(108, 108, 108, 0.2);
@@ -295,6 +296,7 @@ app-load-details-item {
             font-weight: 400;
             color: #6c6c6c;
             margin-left: 6px;
+            white-space: nowrap;
             &::-moz-selection {
                 color: #6c6c6c;
                 background: rgb(108, 108, 108, 0.2);
@@ -701,6 +703,17 @@ app-load-details-item {
             align-items: center;
             justify-content: space-between;
             padding-bottom: 12px;
+            .loaded-status {
+                color: #74bf97 !important;
+                &::-moz-selection {
+                    color: #74bf97 !important;
+                    background: rgb(116, 191, 151, 0.2) !important;
+                }
+                &::selection {
+                    color: #74bf97 !important;
+                    background: rgb(116, 191, 151, 0.2) !important;
+                }
+            }
             .header-status {
                 font-size: 14px;
                 font-weight: 900;
@@ -818,6 +831,7 @@ app-load-details-item {
     font-weight: $font-semibold;
     color: #6c6c6c;
     line-height: 28px;
+    text-align: right;
     &::-moz-selection {
         color: #6c6c6c;
         background: rgb(108, 108, 108, 0.2);
@@ -826,4 +840,21 @@ app-load-details-item {
         color: #6c6c6c;
         background: rgb(108, 108, 108, 0.2);
     }
+}
+.pays-data {
+    display: flex;
+    align-items: center;
+    width: 500px;
+    justify-content: space-between;
+    .pays-value {
+        width: 368px;
+    }
+}
+.mr-3-load {
+    margin-right: 3px;
+}
+.progress-bar-line-load {
+    height: 8px;
+    border-radius: 2px;
+    overflow: hidden;
 }

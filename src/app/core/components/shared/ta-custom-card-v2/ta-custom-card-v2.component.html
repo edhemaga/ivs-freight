@@ -65,6 +65,9 @@
             <span class="item-miles">{{totalMilesValue}} mi</span>
             <span class="item-miles">{{totalMilesTime}}</span>
         </div>
+        <div *ngIf="totalWait && totalWaitTime" class="total-miles-time">
+          <span class="item-miles"  [ngClass]="{'bold-open-wait':isCardOpen}">{{totalWaitTime}}</span>
+      </div>
       <!-- Arrow -->
       <svg-icon
         *ngIf="hasArrow && hasBodyData"

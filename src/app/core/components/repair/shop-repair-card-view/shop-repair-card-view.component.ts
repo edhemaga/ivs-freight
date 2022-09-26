@@ -83,7 +83,7 @@ export class ShopRepairCardViewComponent
         id: item.id,
         name: item.name,
         status: item.status,
-        svg: item.pinned ? 'star' : null,
+        svg: item.pinned ? 'ic_star.svg' : null,
         folder: 'common',
         active: item.id === this.shopResponse.id,
       };
@@ -97,7 +97,7 @@ export class ShopRepairCardViewComponent
           id: items.id,
           name: items.name,
           status: items.status,
-          svg: items.pinned ? 'star' : null,
+          svg: items.pinned ? 'ic_star.svg' : null,
           folder: 'common',
           active: items.id === event.id,
         };
