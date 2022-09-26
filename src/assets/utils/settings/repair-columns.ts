@@ -763,10 +763,10 @@ export function getRepairsShopColumnDefinition() {
       name: '',
       moveRight: true,
       headIconStyle: {
-        width: 19,
-        height: 19,
+        width: 18,
+        height: 18,
         imgPath:
-          'assets/svg/truckassist-table/attachment/attachemnt-regular-svgIcon.svg',
+          'assets/svg/truckassist-table/attachment-icon.svg',
       },
       hidden: false,
       width: 40,

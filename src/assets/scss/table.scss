@@ -2,6 +2,7 @@
 .truckassist-table-body-style {
   cdk-virtual-scroll-viewport{
     width: 100%;
+    overflow: hidden !important;
   }
   
   // DESCRIPTION
