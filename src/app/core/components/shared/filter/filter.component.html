@@ -3,6 +3,9 @@
   app-autoclose-popover
   [customClass]="'filterpopovermain'"
   [placement]="'bottom-left'"
+  #t2="ngbPopover"
+  [ngbPopover]="mainFilter"
+  autoClose="outside"
   [ngClass]="{
     'active-options': t2?.isOpen(),
     'filter-active-colors':
@@ -16,7 +19,12 @@
   }"
 >
   <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
-  <div mainContent style="pointer-events: none">
+  <div mainContent 
+    ngbTooltip
+    mainTooltip="{{ !hoverClose ? filterTitle : 'Clear' }}"
+    position="bottom"
+    tooltipBackground="#6C6C6C"
+  >
     <svg-icon [src]="icon | taSvg: 'common'"></svg-icon>
     <div *ngIf="selectedUser.length > 0" class="active-filter-num">
       {{ selectedUser.length }}
@@ -37,16 +45,16 @@
         moneyFilterStatus
       "
       class="active-filter-num clear-filter"
-      ngbTooltip
-      mainTooltip="Clear"
-      position="bottom"
-      tooltipBackground="#6C6C6C"
-      (click)="clearAll($event)"
+      (mouseenter)="hoverClose = true"
+      (mouseleave)="hoverClose = false"
+      (click)="clearAll($event, true)"
     >
       <svg-icon src="assets/svg/common/ic_cancel_violation.svg"></svg-icon>
     </div>
   </div>
-  <div popoverContent>
+</div>
+
+<ng-template #mainFilter>
     <div
       *ngIf="defFilterHolder"
       class="filter-holder"
@@ -575,7 +583,7 @@
       ></div>
       <div class="buttons-holder">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
           [class.active]="
             selectedUser.length > 0 ||
@@ -942,7 +950,7 @@
       <div class="border-filter time-data-border"></div>
       <div class="buttons-holder">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
           [class.active]="selectedTimeValue != ''"
         >
@@ -1176,7 +1184,7 @@
       ></div>
       <div class="buttons-holder">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
           [class.active]="moneyFilterStatus"
         >
@@ -1215,7 +1223,7 @@
       <div class="border-filter bottom-border-margin"></div>
       <div class="buttons-holder">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
           [class.active]="rangeValue != swipeActiveRange || rangeValue > 0"
         >
@@ -1236,7 +1244,7 @@
       </div>
       <div class="border-filter top-border-margin"></div>
       <div
-        class="filter-middle-holder"
+        class="filter-middle-holder location-middle-padding"
         [formGroup]="locationForm"
         *ngIf="type == 'locationFilter'"
       >
@@ -1250,7 +1258,7 @@
             maxLength: 256,
             placeholderIcon: 'address',
             textTransform: 'capitalize',
-            incorrectInput: selectedMode === 'REVIEW_MODE'
+            customClass: 'line-input-26'
           }"
           [incorrectValue]="false"
           (incorrectEvent)="incorrectInput($event, 0, 18)"
@@ -1258,7 +1266,7 @@
           (selectedAddress)="handleInputSelect($event)"
         ></app-ta-input-address>
       </div>
-      <div class="filter-middle-holder" *ngIf="type == 'locationFilter'">
+      <div class="filter-middle-holder location-slider-middle-padding" *ngIf="type == 'locationFilter'">
         <app-ta-ngx-slider
           [sliderOptions]="locationSliderData"
           [startedValue]="locationRange"
@@ -1266,70 +1274,74 @@
           (onUserValueChange)="setRangeValue($event)"
         ></app-ta-ngx-slider>
       </div>
-      <div
-        class="money-main-holder payPadding"
-        *ngIf="type == 'payFilter' || type == 'milesFilter'"
-        [formGroup]="moneyForm"
-      >
-        <div class="money-value-holder">
-          <app-ta-input
-            formControlName="singleFrom"
-            [inputConfig]="{
-              name: 'singleFrom',
-              type: 'number',
-              label: 'From',
-              placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
-              customClass: 'line-input-26'
-            }"
-          ></app-ta-input>
+      <div class="mainMilesHolder" *ngIf="type == 'payFilter' || type == 'milesFilter'" [formGroup]="rangeForm">
+        <div class="money-main-holder payPadding">
+          <div class="money-value-holder">
+            <app-ta-input
+              formControlName="rangeFrom"
+              [inputConfig]="{
+                name: 'rangeFrom',
+                type: 'text',
+                label: 'From',
+                placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
+                customClass: 'line-input-26',
+                thousandSeparator: true,
+                blackInput: true
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="money-value-holder" [class.errorForm]="singleFormError">
+            <app-ta-input
+              formControlName="rangeTo"
+              [inputConfig]="{
+                name: 'rangeTo',
+                type: 'text',
+                label: 'To',
+                placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
+                customClass: 'line-input-26',
+                thousandSeparator: true,
+                blackInput: true
+              }"
+            ></app-ta-input>
+          </div>
         </div>
-        <div class="money-value-holder" [class.errorForm]="singleFormError">
-          <app-ta-input
-            formControlName="singleTo"
-            [inputConfig]="{
-              name: 'singleTo',
-              type: 'number',
-              label: 'To',
-              placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
-              customClass: 'line-input-26'
-            }"
-          ></app-ta-input>
+        <div class="filter-middle-holder slider-two-holder" [class.closePointers]=" ( rangeDiffNum < 670 && type != 'payFilter' ) || ( rangeDiffNum < 2600 && type == 'payFilter' ) "> 
+          <app-ta-ngx-slider
+            [sliderOptions]="
+              type == 'payFilter' ? paySliderData : milesSliderData
+            "
+            [startedValue]="rangeValue"
+            [customClass]="'custom-slider-filter'"
+            (onUserValueChange)="setMinValueRange($event)"
+            (onUserHighValueChange)="setMaxValueRange($event)"
+            [sliderTemplate]="'range-slider'"
+            [customFormControlName]="sliderControl"
+            [minValue]="minValueDragged"
+            [maxValue]="maxValueDragged"
+          ></app-ta-ngx-slider>
+          
         </div>
-      </div>
-      <div
-        class="filter-middle-holder slider-two-holder"
-        [formGroup]="payForm"
-        *ngIf="type == 'payFilter' || type == 'milesFilter'"
-      >
-        <app-ta-ngx-slider
-          [sliderOptions]="
-            type == 'payFilter' ? paySliderData : milesSliderData
-          "
-          [startedValue]="rangeValue"
-          [customClass]="'custom-slider-filter'"
-          (onUserValueChange)="setRangeValue($event)"
-        ></app-ta-ngx-slider>
       </div>
       <div class="border-filter bottom-border-margin"></div>
       <div class="buttons-holder" *ngIf="type != 'locationFilter'">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
-          [class.active]="rangeValue > 0"
+          [class.active]="rangeForm.get('rangeTo').value != maxValueRange || rangeForm.get('rangeFrom').value != minValueRange"
         >
           Clear All
         </div>
         <div
           (click)="setFilter($event)"
           class="button-set"
-          [class.active]="rangeValue > 0 && setButtonAvailable"
+          [class.active]="rangeForm.get('rangeTo').value != maxValueSet || ( rangeForm.get('rangeFrom').value && rangeForm.get('rangeFrom').value != minValueSet )"
         >
           Set
         </div>
       </div>
       <div class="buttons-holder" *ngIf="type == 'locationFilter'">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
           [class.active]="locationState != ''"
         >
@@ -1344,5 +1356,4 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
+</ng-template>

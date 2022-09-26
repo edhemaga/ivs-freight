@@ -49,7 +49,8 @@
             column.name !== '' &&
             column.ngTemplate !== 'applicant-progress' &&
             column.ngTemplate !== 'sw-tw-total' &&
-            column.ngTemplate !== 'citation'
+            column.ngTemplate !== 'citation' &&
+            column.ngTemplate !== 'accident-citation'
           "
           class="th-title"
           (click)="sortHeaderClick(column)"
@@ -150,6 +151,75 @@
                 }"
                 [src]="
                   '../../../../../../assets/svg/truckassist-table/money-head-icon.svg'
+                "
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accident Citation Icons -->
+        <div
+          *ngIf="column.ngTemplate === 'accident-citation'"
+          class="accident-citation-container"
+          (click)="sortHeaderClick(column)"
+          [ngClass]="{
+            'sort-active': column.sortDirection !== '' && column.sortDirection,
+            'th-title-locked-cursor': locked
+          }"
+        >
+          <div class="accident-citation-wrapper">
+            <div class="icon-container has-margin">
+              <svg-icon
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                [src]="
+                  '../../../../../../assets/svg/truckassist-table/accident-crash-vehicles-icon.svg'
+                "
+              ></svg-icon>
+            </div>
+            <div class="icon-container has-margin">
+              <svg-icon
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                [src]="
+                  '../../../../../../assets/svg/truckassist-table/accident-injured-icon.svg'
+                "
+              ></svg-icon>
+            </div>
+            <div class="icon-container has-margin">
+              <svg-icon
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                [src]="
+                  '../../../../../../assets/svg/truckassist-table/accident-rip-icon.svg'
+                "
+              ></svg-icon>
+            </div>
+            <div class="icon-container has-margin">
+              <svg-icon
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                [src]="
+                  '../../../../../../assets/svg/truckassist-table/accident-hook-icon.svg'
+                "
+              ></svg-icon>
+            </div>
+            <div class="icon-container">
+              <svg-icon
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                [src]="
+                  '../../../../../../assets/svg/truckassist-table/accident-hazmat-icon.svg'
                 "
               ></svg-icon>
             </div>
@@ -276,7 +346,8 @@
               column.name !== '' &&
               column.ngTemplate !== 'applicant-progress' &&
               column.ngTemplate !== 'sw-tw-total' &&
-              column.ngTemplate !== 'citation'
+              column.ngTemplate !== 'citation' &&
+              column.ngTemplate !== 'accident-citation'
             "
             class="th-title"
             (click)="sortHeaderClick(column)"
@@ -380,6 +451,76 @@
                   }"
                   [src]="
                     '../../../../../../assets/svg/truckassist-table/money-head-icon.svg'
+                  "
+                ></svg-icon>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accident Citation Icons -->
+          <div
+            *ngIf="column.ngTemplate === 'accident-citation'"
+            class="accident-citation-container"
+            (click)="sortHeaderClick(column)"
+            [ngClass]="{
+              'sort-active':
+                column.sortDirection !== '' && column.sortDirection,
+              'th-title-locked-cursor': locked
+            }"
+          >
+            <div class="accident-citation-wrapper">
+              <div class="icon-container has-margin">
+                <svg-icon
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/accident-crash-vehicles-icon.svg'
+                  "
+                ></svg-icon>
+              </div>
+              <div class="icon-container has-margin">
+                <svg-icon
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/accident-injured-icon.svg'
+                  "
+                ></svg-icon>
+              </div>
+              <div class="icon-container has-margin">
+                <svg-icon
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/accident-rip-icon.svg'
+                  "
+                ></svg-icon>
+              </div>
+              <div class="icon-container has-margin">
+                <svg-icon
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/accident-hook-icon.svg'
+                  "
+                ></svg-icon>
+              </div>
+              <div class="icon-container">
+                <svg-icon
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/accident-hazmat-icon.svg'
                   "
                 ></svg-icon>
               </div>

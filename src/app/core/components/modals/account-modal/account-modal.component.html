@@ -116,6 +116,7 @@
     </div>
     <app-ta-input-note
       formControlName="note"
+      (saveNoteValue)="saveNoteValue($event)"
       [isVisibleNote]="accountForm.get('note').value"
     ></app-ta-input-note>
   </form>
