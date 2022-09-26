@@ -68,7 +68,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private notificationService: NotificationService,
-    private modalService: ModalService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -153,10 +153,13 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
   public tabChange(event: any): void {
     this.selectedTab = event.id;
     let dotAnimation = document.querySelector('.animation-two-tabs');
-    this.animationObject = {
-      value: this.selectedTab,
-      params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-    };
+    const animationTabTimeout = setTimeout(() => {
+      this.animationObject = {
+        value: this.selectedTab,
+        params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+      };
+      clearTimeout(animationTabTimeout);
+    });
   }
 
   public get violations(): FormArray {

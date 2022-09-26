@@ -245,15 +245,14 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
-    let dotAnimation = null;
-    // setTimeout(() => {
-    dotAnimation = document.querySelector('.animation-two-tabs');
-    console.log(dotAnimation.getClientRects());
-    this.animationObject = {
-      value: this.selectedTab,
-      params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-    };
-    // }, 30);
+    let dotAnimation = document.querySelector('.animation-two-tabs');
+    const animationTabTimeout = setTimeout(() => {
+      this.animationObject = {
+        value: this.selectedTab,
+        params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+      };
+      clearTimeout(animationTabTimeout);
+    });
   }
 
   private getTrailerDropdowns(): void {

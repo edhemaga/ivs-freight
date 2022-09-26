@@ -632,10 +632,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     let dotAnimation = document.querySelector('.animation-two-tabs');
 
-    this.animationObject = {
-      value: this.selectedTab,
-      params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-    };
+    const animationTabTimeout = setTimeout(() => {
+      this.animationObject = {
+        value: this.selectedTab,
+        params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+      };
+      clearTimeout(animationTabTimeout);
+    });
 
     if (this.selectedTab === 1) {
       this.dropZoneConfig = {
