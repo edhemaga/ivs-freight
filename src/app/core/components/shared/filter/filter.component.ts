@@ -1051,15 +1051,11 @@ export class FilterComponent implements OnInit {
   @Input() fuelType: boolean = false;
   @Input() swipeFilter: boolean = false;
   @Input() locationDefType: boolean = false;
+  @Input() legendView: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private thousandSeparator: TaThousandSeparatorPipe,) {}
 
   ngOnInit(): void {
-
-    var mainPopElement = <HTMLElement>(document.querySelector('.mainPopoverClass'));
-    console.log('---mainPopElement--', mainPopElement); 
-
-
     if (this.type == 'payFilter'){
       this.maxValueRange = '20,000';
       this.maxValueSet = '20,000';

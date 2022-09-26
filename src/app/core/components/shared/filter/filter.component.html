@@ -23,7 +23,7 @@
     ngbTooltip
     mainTooltip="{{ !hoverClose ? filterTitle : 'Clear' }}"
     position="bottom"
-    tooltipBackground="#6C6C6C"
+    tooltipBackground= "#6C6C6C"
   >
     <svg-icon [src]="icon | taSvg: 'common'"></svg-icon>
     <div *ngIf="selectedUser.length > 0" class="active-filter-num">
@@ -579,9 +579,9 @@
       </div>
       <div
         class="border-filter"
-        *ngIf="pmFilterArray.length > selectedUser.length"
+        *ngIf="!legendView && pmFilterArray.length > selectedUser.length"
       ></div>
-      <div class="buttons-holder">
+      <div class="buttons-holder" *ngIf="!legendView">
         <div
           (click)="clearAll($event)"
           class="button-clear"
