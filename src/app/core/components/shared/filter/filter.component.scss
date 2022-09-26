@@ -20,7 +20,7 @@
     svg-icon {
       svg {
         path {
-          fill: #000 !important;
+          fill: #6c6c6c !important;
         }
       }
     }
@@ -409,11 +409,11 @@
         svg-icon {
           svg {
             display: flex;
-            width: 16.38px;
-            height: 12.66px;
+            width: 16.38px !important;
+            height: 12.66px !important;
 
             path {
-              fill: #97a8dc;
+              fill: #97a8dc !important;
             }
           }
         }
@@ -436,11 +436,11 @@
         svg-icon {
           svg {
             display: flex;
-            width: 10.63px;
-            height: 10.63px;
+            width: 10.63px !important;
+            height: 10.63px !important;
 
             path {
-              fill: #eeeeee;
+              fill: #eeeeee !important;
             }
           }
         }
@@ -451,7 +451,7 @@
           svg-icon {
             svg {
               path {
-                fill: #fff;
+                fill: #fff !important;
               }
             }
           }
@@ -1473,11 +1473,11 @@
         svg-icon {
           svg {
             display: flex;
-            width: 12.47px;
-            height: 9.85px;
+            width: 12.47px !important;
+            height: 9.85px !important;
 
             path {
-              fill: #97a8dc;
+              fill: #97a8dc !important;
             }
           }
         }
@@ -1499,11 +1499,11 @@
         svg-icon {
           svg {
             display: flex;
-            width: 10.63px;
-            height: 10.63px;
+            width: 10.63px !important;
+            height: 10.63px !important;
 
             path {
-              fill: #eeeeee;
+              fill: #eeeeee !important;
             }
           }
         }
@@ -1514,7 +1514,7 @@
           svg-icon {
             svg {
               path {
-                fill: #fff;
+                fill: #fff !important;
               }
             }
           }
@@ -1999,12 +1999,6 @@
 
 .pac-container {
   z-index: 1071;
-}
-
-.popover-body {
-  position: relative;
-  left: -10px;
-  border-radius: 3px;
 }
 
 .popover {

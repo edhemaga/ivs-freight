@@ -3,6 +3,9 @@
   app-autoclose-popover
   [customClass]="'filterpopovermain'"
   [placement]="'bottom-left'"
+  #t2="ngbPopover"
+  [ngbPopover]="mainFilter"
+  autoClose="outside"
   [ngClass]="{
     'active-options': t2?.isOpen(),
     'filter-active-colors':
@@ -16,7 +19,12 @@
   }"
 >
   <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
-  <div mainContent style="pointer-events: none">
+  <div mainContent 
+    ngbTooltip
+    mainTooltip="{{ !hoverClose ? filterTitle : 'Clear' }}"
+    position="bottom"
+    tooltipBackground="#6C6C6C"
+  >
     <svg-icon [src]="icon | taSvg: 'common'"></svg-icon>
     <div *ngIf="selectedUser.length > 0" class="active-filter-num">
       {{ selectedUser.length }}
@@ -37,16 +45,16 @@
         moneyFilterStatus
       "
       class="active-filter-num clear-filter"
-      ngbTooltip
-      mainTooltip="Clear"
-      position="bottom"
-      tooltipBackground="#6C6C6C"
-      (click)="clearAll($event)"
+      (mouseenter)="hoverClose = true"
+      (mouseleave)="hoverClose = false"
+      (click)="clearAll($event, true)"
     >
       <svg-icon src="assets/svg/common/ic_cancel_violation.svg"></svg-icon>
     </div>
   </div>
-  <div popoverContent>
+</div>
+
+<ng-template #mainFilter>
     <div
       *ngIf="defFilterHolder"
       class="filter-holder"
@@ -1348,5 +1356,4 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
+</ng-template>

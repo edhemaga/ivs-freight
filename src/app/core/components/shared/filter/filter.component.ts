@@ -991,6 +991,7 @@ export class FilterComponent implements OnInit {
   multiFormThirdFromActive: any = 0;
   multiFormThirdToActive: any = 0;
   locationRange: any = 50;
+  hoverClose: any = false;
 
   public sliderData: Options = {
     floor: 0,
@@ -1054,6 +1055,11 @@ export class FilterComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private thousandSeparator: TaThousandSeparatorPipe,) {}
 
   ngOnInit(): void {
+
+    var mainPopElement = <HTMLElement>(document.querySelector('.mainPopoverClass'));
+    console.log('---mainPopElement--', mainPopElement); 
+
+
     if (this.type == 'payFilter'){
       this.maxValueRange = '20,000';
       this.maxValueSet = '20,000';
@@ -1591,14 +1597,18 @@ export class FilterComponent implements OnInit {
     this.checkFilterActiveValue();
   }
 
-  clearAll(e?) {
+  clearAll(e?, mod?) {
+
     if (e) {
       e.stopPropagation();
     }
 
-   
+    if (mod){
+      this.hoverClose = false;
+    }
+
     const element = e.target;
-    if (!element.classList.contains('active')) {
+    if (!element.classList.contains('active') && !mod) {
       return false;
     }
 
