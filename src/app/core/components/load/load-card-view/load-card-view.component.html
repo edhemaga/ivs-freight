@@ -68,8 +68,8 @@
       >
         <div class="load-broker-container">
           <div class="company-name">{{ load?.broker?.businessName }}</div>
-          <div class="broker-name" >{{ load?.brokerContact?.contactName }}</div>
-          <div class="phone-ext-wrapper">
+          <div class="broker-name" *ngIf="load?.brokerContact?.contactName">{{ load?.brokerContact?.contactName }}</div>
+          <div class="phone-ext-wrapper" *ngIf="load?.brokerContact?.phone">
             <div class="phone-ext-item-wrapper" *ngIf="load?.brokerContact?.phone">
               <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
               <span class="item-value"> {{ load?.brokerContact?.phone }}</span>
