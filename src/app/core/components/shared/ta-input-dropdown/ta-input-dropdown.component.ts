@@ -3,7 +3,6 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -30,13 +29,12 @@ import { TaInputResetService } from '../ta-input/ta-input-reset.service';
   styleUrls: ['./ta-input-dropdown.component.scss'],
   providers: [TaInputService],
   animations: [input_dropdown_animation('showHideDropdownOptions')],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaInputDropdownComponent
   implements OnInit, AfterViewInit, OnDestroy, OnChanges, ControlValueAccessor
 {
   private destroy$ = new Subject<void>();
-  @ViewChild(TaInputComponent) inputRef: TaInputComponent;
+  @ViewChild('input') inputRef: TaInputComponent;
   @ViewChild('t2') public popoverRef: NgbPopover;
 
   @Input() template: string; // different templates for body rendering
