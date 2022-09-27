@@ -526,21 +526,18 @@ export class TaInputComponent
       );
     }
 
-    // Custom Validation Year = must be here (double check validation)
+    /**
+     *  Custom Validation For This Type of Input Below, DONT TOUCH !
+     */
+
     if (['year'].includes(this.inputConfig.name.toLowerCase())) {
-      if (
-        parseInt(this.getSuperControl.value) >
-        parseInt(moment().add(1, 'year').format('YYYY'))
-      ) {
+      if (parseInt(value) > parseInt(moment().add(1, 'year').format('YYYY'))) {
         this.getSuperControl.setErrors({ invalid: true });
       }
     }
 
     if (['months'].includes(this.inputConfig.name.toLowerCase())) {
-      if (
-        parseInt(this.getSuperControl.value) < 1 ||
-        parseInt(this.getSuperControl.value) > 12
-      ) {
+      if (parseInt(value) < 1 || parseInt(value) > 12) {
         this.getSuperControl.setErrors({ invalid: true });
       } else {
         this.getSuperControl.setErrors(null);
@@ -548,13 +545,10 @@ export class TaInputComponent
     }
 
     if (['axles'].includes(this.inputConfig.name.toLowerCase())) {
-      if (
-        parseInt(this.getSuperControl.value) < 1 ||
-        parseInt(this.getSuperControl.value) > 17
-      ) {
-        if (parseInt(this.getSuperControl.value) < 1) {
+      if (parseInt(value) < 1 || parseInt(value) > 17) {
+        if (parseInt(value) < 1) {
           this.getSuperControl.setErrors({ min: 1 });
-        } else if (parseInt(this.getSuperControl.value) > 17) {
+        } else if (parseInt(value) > 17) {
           this.getSuperControl.setErrors({ max: 17 });
         }
       } else {
@@ -982,15 +976,7 @@ export class TaInputComponent
           .getInputRegexPattern('description')
           .test(String.fromCharCode(event.charCode))
       ) {
-        if (/^\s*$/.test(String.fromCharCode(event.charCode))) {
-          this.numberOfSpaces++;
-        } else {
-          this.numberOfSpaces = 0;
-        }
-        if (this.numberOfSpaces > 1) {
-          event.preventDefault();
-          return false;
-        }
+        this.disableConsecutivelySpaces(event);
         return true;
       }
       event.preventDefault();
@@ -1317,7 +1303,7 @@ export class TaInputComponent
       }
     }
 
-    // Delete Multiple Spaces in Word
+    // Check Multiple Spaces in Word
     for (let i = 0; i < formatedText.length; i++) {
       if (formatedText[i] === ' ') {
         if (formatedText[i + 1] !== ' ') {
@@ -1328,10 +1314,42 @@ export class TaInputComponent
       }
     }
 
+    if (['phone', 'ein', 'ssn'].includes(this.inputConfig.name.toLowerCase())) {
+      console.log(newText.length);
+
+      if (
+        'phone' === this.inputConfig.name.toLowerCase() &&
+        newText.length === 10
+      ) {
+        const timeout = setTimeout(() => {
+          this.getSuperControl.setErrors(null);
+          clearTimeout(timeout);
+        }, 0);
+      }
+
+      if (
+        'ein' === this.inputConfig.name.toLowerCase() &&
+        newText.length === 10
+      ) {
+        const timeout = setTimeout(() => {
+          this.getSuperControl.setErrors(null);
+          clearTimeout(timeout);
+        }, 0);
+      }
+
+      if (
+        'ssn' === this.inputConfig.name.toLowerCase() &&
+        newText.length === 10
+      ) {
+        const timeout = setTimeout(() => {
+          this.getSuperControl.setErrors(null);
+          clearTimeout(timeout);
+        }, 0);
+      }
+    }
+
     // Text Transform Format
     this.transformText(newText);
-
-    this.onChange(this.input.nativeElement.value);
   }
 
   public onDatePaste(e: any) {
