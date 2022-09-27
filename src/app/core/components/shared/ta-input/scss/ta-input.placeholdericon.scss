@@ -178,6 +178,22 @@
     }
   }
 
+  &.line-input-26-in-card {
+    top: 1px;
+
+    &::after {
+      content: "";
+      display: block;
+      height: 16px;
+      width: 1px;
+      border-radius: 3px;
+      background: $input-placeholder-icon-normal-after;
+      position: absolute;
+      left: 24px;
+      top: 4px;
+    }
+  }
+
   &.repair-shop-open-hour {
     svg {
       path {
