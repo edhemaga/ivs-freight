@@ -86,7 +86,7 @@
           src="assets/svg/common/ic_danger.svg"
         ></svg-icon>
         <div class="header-text-arrow-down">
-          <p class="header-name disable-selection">{{ headerText }}</p>
+          <p [ngClass]="{'pl-6-header':loadNames}" class="header-name disable-selection">{{ headerText }}</p>
           <svg-icon
             *ngIf="hasArrowDown"
             class="arrow-down-header"

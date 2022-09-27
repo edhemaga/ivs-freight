@@ -387,11 +387,7 @@
               ? false
               : true
           "
-          [headerSvgLike]="
-            loadItem?.data?.statusType?.name === 'Pending'
-              ? ''
-              : 'assets/svg/applicant/check.svg'
-          "
+          [headerSvgLike]="item?.wait.minutes || item?.wait.hours || item?.wait.days"
           [cardName]="
             item?.shipper?.address?.street +
             ', ' +

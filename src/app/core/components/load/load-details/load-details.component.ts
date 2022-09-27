@@ -80,6 +80,7 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
         req: false,
         hide: true,
         data: data,
+        pl: true,
       },
       {
         id: 2,
@@ -88,6 +89,7 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
         req: false,
         hide: true,
         data: data,
+        pl: false,
         length: data?.stops?.length ? data.stops.length : 0,
       },
       {
@@ -97,6 +99,7 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
         hide: false,
         hasArrow: true,
         data: data,
+        pl: false,
         length: data?.comments?.length ? data.commentsCount : 0,
       },
     ];

@@ -40,6 +40,7 @@ export class TaCommonHeaderComponent implements OnInit {
   @Input() totalCost: any;
   @Input() repairIsOpen: boolean;
   @Input() showRepairHeaderOpen: boolean;
+  @Input() loadNames: boolean;
   public up: boolean = false;
   public down: boolean = false;
   constructor(private routes: ActivatedRoute) {}

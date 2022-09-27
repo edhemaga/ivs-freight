@@ -54,8 +54,8 @@ export class LoadCardViewComponent implements OnInit, OnChanges {
         return {
           id: item.id,
           name: 'Invoice' + ' ' + item.loadNumber,
-          svg: item.type.name === 'LTL' ? 'ic_ltl-status.svg' : null,
-          folder: 'common',
+          // svg: item.type.name === 'LTL' ? 'ic_ltl-status.svg' : null,
+          // folder: 'common',
           status: item.status,
           active: item.id === event.id,
         };
