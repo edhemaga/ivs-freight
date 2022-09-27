@@ -103,7 +103,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     this.dispatcherQuery.modalBoardListData$
       .pipe(takeUntil(this.destroy$))
       .subscribe((result) => {
-        console.log("WHAT IS LIST RESULT", result);
+        //console.log("WHAT IS LIST RESULT", result);
         this.getDispatcherData(result.dispatchBoards);
       });
 
@@ -111,19 +111,19 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
       this.dispatchBoardSmallList = this.dispatcherQuery.dispatchboardShortList$;
       console.log(this.dispatchTableList);
 
-      this.dispatcherQuery.dispatchBoardListData$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(result => {
-        console.log("WHAT IS RESULT------");
-        console.log(result);
-      });
+      // this.dispatcherQuery.dispatchBoardListData$
+      // .pipe(takeUntil(this.destroy$))
+      // .subscribe(result => {
+      //   console.log("WHAT IS RESULT------");
+      //   console.log(result);
+      // });
 
-      this.dispatcherQuery.dispatchboardShortList$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(result => {
-        console.log("WHAT IS RESULT OF LISTTTTT------");
-        console.log(result);
-      })
+      // this.dispatcherQuery.dispatchboardShortList$
+      // .pipe(takeUntil(this.destroy$))
+      // .subscribe(result => {
+      //   console.log("WHAT IS RESULT OF LISTTTTT------");
+      //   console.log(result);
+      // })
   }
   ngOnDestroy(): void {
     this.destroy$.next();
