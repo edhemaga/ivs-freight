@@ -4,14 +4,14 @@ import {
   ViolationService,
 } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
+import { RoadsideInspectionResponse } from '../../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RoadsideService {
-
   constructor(private roadsideServis: ViolationService) {}
-  
+
   // Get Roadside List
   public getRoadsideList(
     active?: boolean,
@@ -33,5 +33,11 @@ export class RoadsideService {
       search1,
       search2
     );
+  }
+
+  public getRoadSideById(
+    roadId: number
+  ): Observable<RoadsideInspectionResponse> {
+    return this.roadsideServis.apiViolationIdGet(roadId);
   }
 }
