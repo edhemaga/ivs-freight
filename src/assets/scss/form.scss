@@ -206,7 +206,7 @@
     gap: 22px;
     align-items: center;
     padding-left: 6px;
-    margin-bottom: 26px;
+
     p {
       margin: 0;
       padding: 0;
@@ -228,13 +228,6 @@
 
     &-general {
       margin-top: 20px;
-    }
-
-    &-payroll {
-      margin-bottom: 0px;
-      p {
-        margin-right: 13px;
-      }
     }
   }
 
@@ -440,11 +433,8 @@
   .emergency-contact {
     display: grid;
     grid-template-columns: 214px 190px 188px;
-    align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
-    height: 36px;
-    transition: all 0.3s ease-in-out;
   }
 }
 
@@ -691,7 +681,6 @@
   grid-template-columns: 140px 1fr;
   grid-template-rows: 26px;
   align-items: center;
-  margin: 12px 0px;
   padding-left: 6px;
 
   .gate-field,
@@ -705,7 +694,21 @@
       font-size: 14px;
       font-weight: 500;
       color: #919191;
+
+      &::-moz-selection {
+        background-color: rgb(145, 145, 145, 0.2);
+        color: #919191;
+      }
+
+      &::selection {
+        background-color: rgb(145, 145, 145, 0.2);
+        color: #919191;
+      }
     }
+  }
+
+  &-location-terminal {
+    margin-bottom: 22px;
   }
 }
 //---------------- Repair Shop Services ----------------
@@ -848,6 +851,9 @@
   align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
+  &-2 {
+    margin-bottom: 22px;
+  }
 }
 .violation-modal-row-3,
 .violation-modal-row-4 {
@@ -857,7 +863,6 @@
   align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
-  margin: 12px 0px;
 }
 .violation-modal-row-5,
 .violation-modal-row-6 {
@@ -867,7 +872,6 @@
   align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
-  margin: 12px 0px;
 }
 .violation-modal-autority-details-row {
   display: grid;
@@ -889,7 +893,6 @@
   align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
-  margin: 12px 0px;
 }
 
 //---------------- Accident Report, Federally, Recordable  ----------------
@@ -1225,7 +1228,6 @@
   grid-template-rows: 26px;
   -moz-column-gap: 12px;
   column-gap: 12px;
-  margin: 12px 0px;
 }
 
 // ------------------------------------------------ end ------------------------------------------------

@@ -108,8 +108,12 @@
           </div>
         </div>
 
-        <app-ta-custom-card [cardName]="'Employe Details'" [isCardOpen]="true">
-          <div class="row row-mt-20">
+        <app-ta-custom-card
+          [cardName]="'Employe Details'"
+          [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
+          <div class="row">
             <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="departmentId"
@@ -154,7 +158,7 @@
             </div>
           </div>
           <div
-            class="phone-ext-email-small-modal"
+            class="phone-ext-email-small-modal row-no-mb"
             [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
           >
             <div class="phone-extension">

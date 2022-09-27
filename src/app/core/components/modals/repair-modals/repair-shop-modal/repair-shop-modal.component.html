@@ -170,38 +170,40 @@
             <p>FROM</p>
             <p>TO</p>
           </div>
-          <div *ngFor="let openHour of openHours.controls; let ind = index">
-            <div [formGroupName]="ind" class="common-fake-table-card">
-              <app-ta-checkbox
-                formControlName="isDay"
-                [customClass]="'medium'"
-                [name]="openHour.get('dayLabel').value"
-                [label]="openHour.get('dayLabel').value"
-                (formArrayAction)="openHourDayAction($event, ind)"
-              ></app-ta-checkbox>
-              <!-- Time Picker -->
-              <app-ta-input
-                *ngIf="openHour.get('isDay').value"
-                formControlName="startTime"
-                [inputConfig]="{
-                  name: 'timepicker',
-                  type: 'text',
-                  placeholderIcon: 'time',
-                  customClass: 'datetimeclass repair-shop-open-hour',
-                  hideClear: true
-                }"
-              ></app-ta-input>
-              <app-ta-input
-                *ngIf="openHour.get('isDay').value"
-                formControlName="endTime"
-                [inputConfig]="{
-                  name: 'timepicker',
-                  type: 'text',
-                  placeholderIcon: 'time',
-                  customClass: 'datetimeclass repair-shop-open-hour',
-                  hideClear: true
-                }"
-              ></app-ta-input>
+          <div class="common-fake-table-body">
+            <div *ngFor="let openHour of openHours.controls; let ind = index">
+              <div [formGroupName]="ind" class="common-fake-table-card">
+                <app-ta-checkbox
+                  formControlName="isDay"
+                  [customClass]="'medium'"
+                  [name]="openHour.get('dayLabel').value"
+                  [label]="openHour.get('dayLabel').value"
+                  (formArrayAction)="openHourDayAction($event, ind)"
+                ></app-ta-checkbox>
+                <!-- Time Picker -->
+                <app-ta-input
+                  *ngIf="openHour.get('isDay').value"
+                  formControlName="startTime"
+                  [inputConfig]="{
+                    name: 'timepicker',
+                    type: 'text',
+                    placeholderIcon: 'time',
+                    customClass: 'datetimeclass repair-shop-open-hour',
+                    hideClear: true
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  *ngIf="openHour.get('isDay').value"
+                  formControlName="endTime"
+                  [inputConfig]="{
+                    name: 'timepicker',
+                    type: 'text',
+                    placeholderIcon: 'time',
+                    customClass: 'datetimeclass repair-shop-open-hour',
+                    hideClear: true
+                  }"
+                ></app-ta-input>
+              </div>
             </div>
           </div>
         </div>
@@ -209,7 +211,11 @@
     </div>
 
     <!-- Bank Account -->
-    <app-ta-custom-card [cardName]="'Bank Account'" [isCardOpen]="true">
+    <app-ta-custom-card
+      [cardName]="'Bank Account'"
+      [isCardOpen]="true"
+      [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+    >
       <div class="custom-bank-row custom-bank-row-repair-shop">
         <app-ta-input-dropdown
           formControlName="bankId"

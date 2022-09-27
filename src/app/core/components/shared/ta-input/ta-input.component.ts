@@ -122,7 +122,7 @@ export class TaInputComponent
       (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) &&
       !this.inputConfig.isDisabled
     ) {
-      this.inputService.dropdownAddMode$
+      this.inputService.dropDownAddMode$
         .pipe(takeUntil(this.destroy$))
         .subscribe((action) => {
           if (action) {
@@ -294,7 +294,7 @@ export class TaInputComponent
     this.focusInput = true;
   }
 
-  public onBlur(e?: Event): void {
+  public onBlur(): void {
     // DropDown Label
     if (this.inputConfig.dropdownLabel && !this.editInputMode) {
       this.inputConfig.placeholderIcon = 'ic_dynamic_label.svg';
@@ -899,7 +899,7 @@ export class TaInputComponent
 
     if (['year'].includes(this.inputConfig.name.toLowerCase())) {
       if (
-        /^[0]*$/.test(String.fromCharCode(event.charCode)) &&
+        /^0*$/.test(String.fromCharCode(event.charCode)) &&
         !this.input.nativeElement.value
       ) {
         event.preventDefault();
@@ -933,7 +933,7 @@ export class TaInputComponent
 
     if (['description'].includes(this.inputConfig.name.toLowerCase())) {
       if (/^[A-Za-z\s]*$/.test(String.fromCharCode(event.charCode))) {
-        if (/^[ ]*$/.test(String.fromCharCode(event.charCode))) {
+        if (/^\s*$/.test(String.fromCharCode(event.charCode))) {
           this.numberOfSpaces++;
         } else {
           this.numberOfSpaces = 0;
@@ -1157,7 +1157,7 @@ export class TaInputComponent
   }
 
   private disableConsecutivelySpaces(event: any) {
-    if (/^[ ]*$/.test(String.fromCharCode(event.charCode))) {
+    if (/^\s*$/.test(String.fromCharCode(event.charCode))) {
       this.numberOfSpaces++;
       if (this.numberOfSpaces > 1) {
         event.preventDefault();
@@ -1195,10 +1195,10 @@ export class TaInputComponent
 
     const pasteText = event.clipboardData.getData('text');
     const limitCharacters = maxLength ? maxLength : 9999;
-    let regex = /^[\n]*$/; // any character except new line
+    let regex = /^\n*$/; // any character except new line
 
     if (['account name'].includes(this.inputConfig.name.toLowerCase())) {
-      regex = /^[!@#$%^&*`()_+\=\[\]{};':"\\|,<>\/?0-9]*$/;
+      regex = /^[!@#$%^&*`()_+=\[\]{};':"\\|,<>\/?0-9]*$/;
       this.input.nativeElement.value = pasteCheck(
         pasteText,
         regex,
@@ -1251,7 +1251,7 @@ export class TaInputComponent
   }
 
   setSpanSelection(element) {
-    var range, selection;
+    let range, selection;
 
     if (window.getSelection && document.createRange) {
       selection = window.getSelection();

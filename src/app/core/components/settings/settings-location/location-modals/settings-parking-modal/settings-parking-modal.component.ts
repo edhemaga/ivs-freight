@@ -191,10 +191,13 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       default: {
         this.selectedTab = event.id;
         let dotAnimation = document.querySelector('.animation-two-tabs');
-        this.animationObject = {
-          value: this.selectedTab,
-          params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-        };
+        const animationTabTimeout = setTimeout(() => {
+          this.animationObject = {
+            value: this.selectedTab,
+            params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+          };
+          clearTimeout(animationTabTimeout);
+        });
         break;
       }
     }

@@ -59,7 +59,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     private cdlService: CdlTService,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private notificationService: NotificationService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {

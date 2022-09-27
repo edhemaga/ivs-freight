@@ -56,7 +56,7 @@
             }"
           ></app-ta-input>
         </div>
-        <div class="violation-modal-row-2">
+        <div class="violation-modal-row-2 violation-molda-row-2-2">
           <app-ta-input-dropdown
             formControlName="country"
             [inputConfig]="{
@@ -117,7 +117,11 @@
             }"
           ></app-ta-input>
         </div>
-        <app-ta-custom-card [cardName]="'Driver'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Driver'"
+          [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
           <div class="violation-modal-row-3">
             <app-ta-input
               formControlName="driverName"
@@ -160,7 +164,11 @@
             ></app-ta-input>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Co-Driver'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Co-Driver'"
+          [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
           <div class="violation-modal-row-4">
             <app-ta-input
               formControlName="coDriverName"
@@ -203,7 +211,11 @@
             ></app-ta-input>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Truck'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Truck'"
+          [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
           <div class="violation-modal-row-5">
             <app-ta-input
               formControlName="truckUnit"
@@ -264,7 +276,11 @@
             ></app-ta-input>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Trailer'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Trailer'"
+          [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
           <div class="violation-modal-row-6">
             <app-ta-input
               formControlName="trailerUnit"
@@ -331,6 +347,7 @@
             [cardName]="'Violation'"
             [isCardOpen]="violations.length > 0"
             [hasScrollBody]="violations.length > 10"
+            [animationMarginParams]="{ marginTop: '18px', marginBottom: '5px' }"
           >
             <div
               formArrayName="violations"
@@ -346,56 +363,57 @@
                 <p>SMS</p>
                 <p>DESCRIPTION</p>
               </div>
-              <div
-                *ngFor="let violation of violations.controls; let ind = index"
-              >
-                <div [formGroupName]="ind" class="common-fake-table-card">
-                  <p class="violation-code">
-                    {{ violation.get("code").value }}
-                  </p>
-                  <p class="violation-category">
+              <div class="common-fake-table-body">
+                <div
+                  *ngFor="let violation of violations.controls; let ind = index"
+                >
+                  <div [formGroupName]="ind" class="common-fake-table-card">
+                    <p class="violation-code">
+                      {{ violation.get("code").value }}
+                    </p>
+                    <p class="violation-category">
+                      <svg-icon
+                        class="violation-category-svg"
+                        src="assets/svg/common/ic_vehicle_maintenance.svg"
+                      ></svg-icon>
+                      <span class="violation-category-text">{{
+                        violation.get("categoryId").value
+                      }}</span>
+                    </p>
+                    <p class="violation-unit">
+                      {{ violation.get("unit").value }}
+                    </p>
+                    <p class="violation-sw">{{ violation.get("sw").value }}</p>
                     <svg-icon
-                      class="violation-category-svg"
-                      src="assets/svg/common/ic_vehicle_maintenance.svg"
+                      class="violation-oos"
+                      [class.active]="violation.get('oos').value"
+                      src="{{
+                        violation.get('oos').value
+                          ? 'assets/svg/common/ic_confirm.svg'
+                          : 'assets/svg/common/ic_x.svg'
+                      }}"
                     ></svg-icon>
-                    <span class="violation-category-text">{{
-                      violation.get("categoryId").value
-                    }}</span>
-                  </p>
-                  <p class="violation-unit">
-                    {{ violation.get("unit").value }}
-                  </p>
-                  <p class="violation-sw">{{ violation.get("sw").value }}</p>
-                  <svg-icon
-                    class="violation-oos"
-                    [class.active]="violation.get('oos').value"
-                    src="{{
-                      violation.get('oos').value
-                        ? 'assets/svg/common/ic_confirm.svg'
-                        : 'assets/svg/common/ic_x.svg'
-                    }}"
-                  ></svg-icon>
-                  <svg-icon
-                    class="violation-sms"
-                    src="{{
-                      violation.get('sms').value
-                        ? 'assets/svg/common/ic_confirm.svg'
-                        : 'assets/svg/common/ic_x.svg'
-                    }}"
-                  ></svg-icon>
-                  <app-ta-input
-                    formControlName="description"
-                    [inputConfig]="{
-                      name: 'Description',
-                      type: 'text',
-                      minLength: 2,
-                      maxLength: 160,
-                      textTransform: 'capitalize',
-                      hideErrorMessage: true,
-                      blackInput: true,
-                      hideRequiredCheck: true
-                    }"
-                  ></app-ta-input>
+                    <svg-icon
+                      class="violation-sms"
+                      src="{{
+                        violation.get('sms').value
+                          ? 'assets/svg/common/ic_confirm.svg'
+                          : 'assets/svg/common/ic_x.svg'
+                      }}"
+                    ></svg-icon>
+                    <app-ta-input
+                      formControlName="description"
+                      [inputConfig]="{
+                        name: 'Description',
+                        type: 'text',
+                        minLength: 2,
+                        maxLength: 160,
+                        textTransform: 'capitalize',
+                        hideErrorMessage: true,
+                        hideRequiredCheck: true
+                      }"
+                    ></app-ta-input>
+                  </div>
                 </div>
               </div>
             </div>
@@ -423,10 +441,9 @@
         <app-ta-custom-card
           [cardName]="'Authority Details'"
           [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
         >
-          <div
-            class="violation-modal-autority-details-row violation-modal-autority-details-row-1"
-          >
+          <div class="violation-modal-autority-details-row">
             <app-ta-input
               formControlName="policeDepartment"
               [inputConfig]="{
@@ -454,7 +471,9 @@
               }"
             ></app-ta-input>
           </div>
-          <div class="violation-modal-autority-details-row">
+          <div
+            class="violation-modal-autority-details-row violation-modal-autority-details-row-second"
+          >
             <app-ta-input-address
               formControlName="addressAuthority"
               [inputConfig]="{
@@ -494,6 +513,7 @@
         <app-ta-custom-card
           [cardName]="'Location & Shipping Info'"
           [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
         >
           <div class="row">
             <div class="col-4">
@@ -561,7 +581,7 @@
               ></app-ta-input-address>
             </div>
           </div>
-          <div class="violation-modal-location-shipping-row-3">
+          <div class="violation-modal-location-shipping-row-3 row-no-mb">
             <app-ta-input-dropdown
               formControlName="customer"
               [inputConfig]="{
@@ -599,6 +619,7 @@
           [cardName]="'Special Checks'"
           [isCardOpen]="isSpecialChecksOpen"
           (onOpenCard)="isSpecialChecksOpen = $event"
+          [animationMarginParams]="{ marginTop: '12px', marginBottom: '0px' }"
         >
           <div class="violation-special-checks">
             <div

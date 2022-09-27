@@ -179,6 +179,11 @@
     color: $input-text-color-valid-focus-out !important;
   }
 
+  &.valid-focus-out-filled-datepicker {
+    background-color: $input-background-color-valid-focus-out !important;
+    color: $input-transparent-color !important;
+  }
+
   &.invalid-focus-in {
     background-color: $input-background-color-invalid-focus !important;
 

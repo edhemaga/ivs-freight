@@ -134,8 +134,9 @@
         <app-ta-custom-card
           [cardName]="'Receiving Work Hours'"
           [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '22px', marginBottom: '22px' }"
         >
-          <div class="shipper-work-hours row-mt-20 last-row">
+          <div class="shipper-work-hours">
             <div
               class="shipper-work-hours-field appointment"
               [ngClass]="{ active: isAppointmentReceiving }"
@@ -197,6 +198,7 @@
         <app-ta-custom-card
           [cardName]="'Shipping Work Hours'"
           [isCardOpen]="!shipperForm.get('shippingHoursSameReceiving').value"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
         >
           <div class="shipper-work-hours">
             <div
@@ -267,12 +269,13 @@
           [hasScrollBody]="shipperContacts.length > 10"
           [hasBodyData]="shipperContacts.length > 0"
           (onActionEvent)="addShipperContacts($event)"
+          [animationMarginParams]="{ marginTop: '10px', marginBottom: '5px' }"
         >
           <div
             formArrayName="shipperContacts"
             class="common-fake-table-modal common-fake-table-modal-shipper"
-            (scroll)="onScrollingShipperContacts($event)"
             *ngIf="shipperContacts.length"
+            (scroll)="onScrollingShipperContacts($event)"
           >
             <div class="common-fake-table-label">
               <p>FULL NAME <span>*</span></p>
@@ -281,102 +284,96 @@
               <p>EXT</p>
               <p>EMAIL</p>
             </div>
-            <div
-              *ngFor="
-                let shipperContact of shipperContacts.controls;
-                let ind = index
-              "
-            >
-              <div [formGroupName]="ind" class="common-fake-table-card">
-                <app-ta-input
-                  formControlName="fullName"
-                  [inputConfig]="{
-                    id: 'Full Name' + ind,
-                    name: 'Full Name',
-                    type: 'text',
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true,
-                    textTransform: 'capitalize',
-                    minLength: 2,
-                    maxLength: 32
-                  }"
-                ></app-ta-input>
-                <app-ta-input-dropdown
-                  formControlName="departmentId"
-                  [inputConfig]="{
-                    id: 'Input Dropdown' + ind,
-                    name: 'Input Dropdown Department',
-                    minLength: 2,
-                    maxLength: 36,
-                    type: 'text',
-                    isDropdown: true,
-                    textTransform: 'capitalize',
-                    dropdownWidthClass: 'w-col-120',
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true
-                  }"
-                  [options]="labelsDepartments"
-                  [activeItem]="selectedContractDepartmentFormArray[ind]"
-                  (selectedItem)="onSelectContactDepartment($event, ind)"
-                ></app-ta-input-dropdown>
-                <app-ta-input
-                  formControlName="phone"
-                  [inputConfig]="{
-                    id: 'Phone' + ind,
-                    name: 'Phone',
-                    type: 'text',
-                    mask: '(000) 000-0000',
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true
-                  }"
-                ></app-ta-input>
-                <app-ta-input
-                  formControlName="phoneExt"
-                  [inputConfig]="{
-                    id: 'Phone Extension' + ind,
-                    name: 'phone-extension',
-                    type: 'text',
-                    minLength: 1,
-                    maxLength: 8,
-                    hideErrorMessage: true,
-                    thousandSeparator: true,
-                    hideRequiredCheck: true
-                  }"
-                ></app-ta-input>
-                <app-ta-input
-                  formControlName="email"
-                  [inputConfig]="{
-                    id: 'Email' + ind,
-                    name: 'Email',
-                    type: 'text',
-                    minLength: 5,
-                    maxLength: 64,
-                    textTransform: 'lowercase',
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true
-                  }"
-                ></app-ta-input>
-                <div
-                  ngbTooltip
-                  mainTooltip="Delete"
-                  position="top"
-                  tooltipBackground="#EF5350"
-                  class="common-fake-table-delete"
-                  [ngClass]="{
-                    'new-position':
-                      isContactCardsScrolling &&
-                      shipperContact.get('email').value,
-                    'new-position-without-email':
-                      isContactCardsScrolling &&
-                      !shipperContact.get('email').value
-                  }"
-                  (click)="removeShipperContacts(ind)"
-                >
-                  <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+            <div class="common-fake-table-body">
+              <div
+                *ngFor="
+                  let shipperContact of shipperContacts.controls;
+                  let ind = index
+                "
+              >
+                <div [formGroupName]="ind" class="common-fake-table-card">
+                  <app-ta-input
+                    formControlName="fullName"
+                    [inputConfig]="{
+                      id: 'Full Name' + ind,
+                      name: 'Full Name',
+                      type: 'text',
+                      textTransform: 'capitalize',
+                      minLength: 2,
+                      maxLength: 32,
+                      hideErrorMessage: true,
+                      hideRequiredCheck: true
+                    }"
+                  ></app-ta-input>
+                  <app-ta-input-dropdown
+                    formControlName="departmentId"
+                    [inputConfig]="{
+                      id: 'Input Dropdown' + ind,
+                      name: 'Input Dropdown Department',
+                      minLength: 2,
+                      maxLength: 36,
+                      type: 'text',
+                      isDropdown: true,
+                      textTransform: 'capitalize',
+                      dropdownWidthClass: 'w-col-120',
+                      hideErrorMessage: true,
+                      hideRequiredCheck: true
+                    }"
+                    [options]="labelsDepartments"
+                    [activeItem]="selectedContractDepartmentFormArray[ind]"
+                    (selectedItem)="onSelectContactDepartment($event, ind)"
+                  ></app-ta-input-dropdown>
+                  <app-ta-input
+                    formControlName="phone"
+                    [inputConfig]="{
+                      id: 'Phone' + ind,
+                      name: 'Phone',
+                      type: 'text',
+                      mask: '(000) 000-0000',
+                      hideErrorMessage: true,
+                      hideRequiredCheck: true
+                    }"
+                  ></app-ta-input>
+                  <app-ta-input
+                    formControlName="phoneExt"
+                    [inputConfig]="{
+                      id: 'Phone Extension' + ind,
+                      name: 'phone-extension',
+                      type: 'text',
+                      minLength: 1,
+                      maxLength: 8,
+                      hideErrorMessage: true,
+                      hideRequiredCheck: true
+                    }"
+                  ></app-ta-input>
+                  <app-ta-input
+                    formControlName="email"
+                    [inputConfig]="{
+                      id: 'Email' + ind,
+                      name: 'Email',
+                      type: 'text',
+                      minLength: 5,
+                      maxLength: 64,
+                      textTransform: 'lowercase',
+                      hideErrorMessage: true,
+                      hideRequiredCheck: true
+                    }"
+                  ></app-ta-input>
+                  <div
+                    ngbTooltip
+                    mainTooltip="Delete"
+                    position="top"
+                    tooltipBackground="#EF5350"
+                    class="common-fake-table-delete"
+                    [ngClass]="{
+                      scrolling: isContactCardsScrolling
+                    }"
+                  >
+                    <svg-icon
+                      src="assets/svg/common/ic_trash.svg"
+                      (click)="removeShipperContacts(ind)"
+                    ></svg-icon>
+                  </div>
                 </div>
               </div>
             </div>
@@ -397,6 +394,7 @@
           [hasScrollBody]="reviews.length > 6"
           [disableMultipleReviews]="disableOneMoreReview"
           (onActionEvent)="createReview()"
+          [animationMarginParams]="{ marginTop: '10px', marginBottom: '12px' }"
         >
           <div class="no-review-shipper" *ngIf="!reviews.length">
             <svg-icon

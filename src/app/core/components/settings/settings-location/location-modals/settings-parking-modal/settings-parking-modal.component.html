@@ -156,8 +156,9 @@
           [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
           [isCardOpen]="true"
           (onOpenCard)="isParkingCardOpen = $event"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '12px' }"
         >
-          <div class="checkbox-card-body active-20">
+          <div class="checkbox-card-body">
             <div class="row">
               <div class="col-12">
                 <app-ta-input
@@ -172,7 +173,7 @@
                 ></app-ta-input>
               </div>
             </div>
-            <div class="row row-mb-10">
+            <div class="row row-no-mb">
               <div class="col-12">
                 <app-ta-input
                   formControlName="fullParkingSlot"
@@ -191,7 +192,11 @@
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
-        <app-ta-custom-card [cardName]="'Features'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Features'"
+          [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
           <div class="parking-gate-securityCamera">
             <div class="gate-field">
               <p>Gate</p>
@@ -221,6 +226,7 @@
           [cardName]="'Finance'"
           [isCardOpen]="true"
           (onOpenCard)="isFinanceCardOpen = $event"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '12px' }"
         >
           <div class="location-parking-financial-card">
             <app-ta-input

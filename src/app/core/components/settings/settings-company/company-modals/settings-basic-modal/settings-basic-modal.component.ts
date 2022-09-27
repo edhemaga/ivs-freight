@@ -463,10 +463,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   public tabChange(event: any): void {
     this.selectedTab = event.id;
     let dotAnimation = document.querySelector('.animation-three-tabs');
-    this.animationObject = {
-      value: this.selectedTab,
-      params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-    };
+    const animationTabTimeout = setTimeout(() => {
+      this.animationObject = {
+        value: this.selectedTab,
+        params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+      };
+      clearTimeout(animationTabTimeout);
+    });
 
     this.tabs = this.tabs.map((item) => {
       return {

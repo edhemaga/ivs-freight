@@ -119,6 +119,7 @@
         editData?.type === 'edit' ? 'assets/svg/common/ic_plus.svg' : ''
       "
       (onActionEvent)="createComment()"
+      [animationMarginParams]="{ marginTop: '10px', marginBottom: '12px' }"
     >
       <app-ta-user-review
         *ngIf="comments.length"

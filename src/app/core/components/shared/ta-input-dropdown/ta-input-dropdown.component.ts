@@ -611,7 +611,7 @@ export class TaInputDropdownComponent
     };
 
     this.inputConfig.dropdownLabelNew = true; // share this config with label
-    this.inputService.dropdownAddMode$.next(true);
+    this.inputService.dropDownAddMode$.next(true);
     this.popoverRef.close();
 
     this.isInAddMode = true;

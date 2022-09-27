@@ -424,11 +424,13 @@
       &::-webkit-scrollbar {
         width: 3px;
       }
+
       &::-webkit-scrollbar-thumb {
         background-color: transparent;
         border: 6px solid #6c6c6c;
         border-radius: 1px;
       }
+
       &::-webkit-scrollbar-track {
         padding: 0;
         position: relative;
