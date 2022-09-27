@@ -43,7 +43,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
                 );
               }),
               catchError((err: HttpErrorResponse) => {
-                if (err.status === 404) {
+                if (err.status === 404 || err.status === 500) {
                   localStorage.removeItem('user');
                   this.router.navigate(['/auth']);
                 }
