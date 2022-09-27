@@ -500,21 +500,36 @@ export class TaInputComponent
     this.capsLockOn = !!event.getModifierState('CapsLock');
   }
 
-  public transformText(value: string) {
+  public transformText(value: string, paste?: boolean) {
+    if (paste) {
+      this.input.nativeElement.value += value;
+
+      if (this.input.nativeElement.value.length > this.inputConfig.maxLength) {
+        this.input.nativeElement.value =
+          this.input.nativeElement.value.substring(
+            0,
+            this.inputConfig.maxLength
+          );
+      }
+    } else {
+      this.input.nativeElement.value = value;
+    }
+
     switch (this.inputConfig.textTransform) {
       case 'capitalize': {
         this.input.nativeElement.value =
-          value.charAt(0)?.toUpperCase() + value.substring(1);
+          this.input.nativeElement.value.charAt(0)?.toUpperCase() +
+          this.input.nativeElement.value.substring(1);
         this.getSuperControl.patchValue(this.input.nativeElement.value);
         break;
       }
       case 'uppercase': {
-        this.input.nativeElement.value = value.toLocaleUpperCase('en-US');
+        this.input.nativeElement.value =
+          this.input.nativeElement.value.toLocaleUpperCase('en-US');
         this.getSuperControl.patchValue(this.input.nativeElement.value);
         break;
       }
       default: {
-        this.input.nativeElement.value = value;
         this.getSuperControl.patchValue(this.input.nativeElement.value);
         break;
       }
@@ -1315,8 +1330,6 @@ export class TaInputComponent
     }
 
     if (['phone', 'ein', 'ssn'].includes(this.inputConfig.name.toLowerCase())) {
-      console.log(newText.length);
-
       if (
         'phone' === this.inputConfig.name.toLowerCase() &&
         newText.length === 10
@@ -1349,7 +1362,7 @@ export class TaInputComponent
     }
 
     // Text Transform Format
-    this.transformText(newText);
+    this.transformText(newText, true);
   }
 
   public onDatePaste(e: any) {
