@@ -393,6 +393,7 @@
         </app-ta-custom-card>
         <app-ta-input-note
           formControlName="note"
+          (saveNoteValue)="saveNoteValue($event)"
           [isVisibleNote]="brokerForm.get('note').value"
         ></app-ta-input-note>
       </div>

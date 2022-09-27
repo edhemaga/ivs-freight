@@ -215,27 +215,6 @@
   }
 }
 
-// Table Attachments Popup
-.table-attachments-popover {
-  background-color: unset !important;
-
-  .table-attachments {
-    margin-top: 2px;
-    height: 198px;
-    background: white;
-    animation: attachmentsAnimation 0.25s ease-in-out;
-  }
-
-  @keyframes attachmentsAnimation {
-    from {
-      height: 0px;
-    }
-    to {
-      height: 198px;
-    }
-  }
-}
-
 // Table Toolbar Options Popup
 .toolbar-options-popover {
   box-shadow: none !important;

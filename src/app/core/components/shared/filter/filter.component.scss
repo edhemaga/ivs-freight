@@ -20,7 +20,7 @@
     svg-icon {
       svg {
         path {
-          fill: #000 !important;
+          fill: #6c6c6c !important;
         }
       }
     }
@@ -123,7 +123,7 @@
   .filter-header {
     position: relative;
     width: 100%;
-    padding-left: 1px;
+    //padding-left: 1px;
     box-sizing: border-box;
     display: flex;
     justify-content: flex-start;
@@ -152,7 +152,7 @@
       font-size: 14px;
       font-weight: 800;
       color: #6c6c6c;
-      padding-left: 4px;
+      padding-left: 2px;
       box-sizing: border-box;
     }
 
@@ -409,11 +409,11 @@
         svg-icon {
           svg {
             display: flex;
-            width: 16.38px;
-            height: 12.66px;
+            width: 16.38px !important;
+            height: 12.66px !important;
 
             path {
-              fill: #97a8dc;
+              fill: #97a8dc !important;
             }
           }
         }
@@ -436,11 +436,11 @@
         svg-icon {
           svg {
             display: flex;
-            width: 10.63px;
-            height: 10.63px;
+            width: 10.63px !important;
+            height: 10.63px !important;
 
             path {
-              fill: #eeeeee;
+              fill: #eeeeee !important;
             }
           }
         }
@@ -451,7 +451,7 @@
           svg-icon {
             svg {
               path {
-                fill: #fff;
+                fill: #fff !important;
               }
             }
           }
@@ -1143,7 +1143,7 @@
   width: 300px;
 
   .bottom-border-margin {
-    margin: 12px 0px;
+    margin: 10px 0px;
   }
 
   .buttons-holder {
@@ -1161,10 +1161,23 @@
     padding-top: 10px;
     width: 100%;
 
+    &.location-middle-padding{
+      padding-top: 16px;
+    }
+
+    &.location-slider-middle-padding{
+      padding-top: 12px;
+
+      .ta-ngx-slider,
+      .custom-slider-commission {
+        margin-bottom: 7px !important;
+      }
+    }
+
     .ta-ngx-slider,
     .custom-slider-commission {
       margin-top: 8px;
-      margin-bottom: 9px;
+      margin-bottom: 8px;
 
       .ngx-slider {
         height: 6px;
@@ -1206,19 +1219,27 @@
             content: "mi";
           }
         }
+
+        .ngx-slider-combined{
+          //display: none !important;
+          opacity: 0 !important;
+          width: 0px !important;
+          padding: 0px !important;
+        }
       }
     }
 
     &.slider-two-holder {
+
+      padding-top: 22px;
+      padding-left: 4px;
+      padding-right: 4px;
+ 
       .ta-ngx-slider,
       .custom-slider-commission {
         .ngx-slider-pointer {
           width: 24px;
           height: 24px;
-        }
-
-        .ngx-slider-selection-bar {
-          width: 100% !important;
         }
 
         .ngx-slider-bubble {
@@ -1229,10 +1250,42 @@
             content: "";
           }
         }
+
+        .ngx-slider-pointer-min{
+          background-color: #fff !important;
+          border-radius: 2px !important;
+          box-shadow: 0px 0px 4px rgb(0 0 0 / 15%) !important;
+        }
+        
+        .ngx-slider-pointer-max{
+          background-color: #fff !important;
+          border-radius: 2px !important;
+          box-shadow: 0px 0px 4px rgb(0 0 0 / 15%) !important;
+        }
+      }
+      
+    }
+
+    &.closePointers{
+
+      .ta-ngx-slider,
+      .custom-slider-commission { 
+
+        .ngx-slider-pointer-min{
+          box-shadow: 0.3px -0.49px 4.4px rgb(0 0 0 / 30%) !important; 
+        }
+        
+        .ngx-slider-pointer-max{
+          box-shadow: 0.3px -0.49px 4.4px rgb(0 0 0 / 30%) !important;
+        }
       }
     }
   }
 
+  .mainMilesHolder{
+    width: 100%;
+  }
+  
   .money-main-holder {
     display: flex;
     justify-content: space-between;
@@ -1241,7 +1294,18 @@
     padding-top: 22px;
 
     &.payPadding {
-      padding-top: 18px;
+      padding-top: 15px;
+
+      .milesInputHolder{
+        width: 141px;
+        height: 41px;
+        
+        .milesInput{
+          width: 90px;
+          outline: none;
+        }
+      }
+      
     }
 
     .money-value-holder {
@@ -1409,11 +1473,11 @@
         svg-icon {
           svg {
             display: flex;
-            width: 12.47px;
-            height: 9.85px;
+            width: 12.47px !important;
+            height: 9.85px !important;
 
             path {
-              fill: #97a8dc;
+              fill: #97a8dc !important;
             }
           }
         }
@@ -1435,11 +1499,11 @@
         svg-icon {
           svg {
             display: flex;
-            width: 10.63px;
-            height: 10.63px;
+            width: 10.63px !important;
+            height: 10.63px !important;
 
             path {
-              fill: #eeeeee;
+              fill: #eeeeee !important;
             }
           }
         }
@@ -1450,7 +1514,7 @@
           svg-icon {
             svg {
               path {
-                fill: #fff;
+                fill: #fff !important;
               }
             }
           }
@@ -1935,12 +1999,6 @@
 
 .pac-container {
   z-index: 1071;
-}
-
-.popover-body {
-  position: relative;
-  //left: -10px;
-  border-radius: 3px;
 }
 
 .popover {

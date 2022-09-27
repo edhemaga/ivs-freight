@@ -662,6 +662,7 @@
         <!-- Note -->
         <app-ta-input-note
           formControlName="note"
+          (saveNoteValue)="saveNoteValue($event)"
           [isVisibleNote]="driverForm.get('note').value"
         ></app-ta-input-note>
       </div>
