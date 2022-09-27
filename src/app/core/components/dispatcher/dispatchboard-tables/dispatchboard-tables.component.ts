@@ -28,6 +28,10 @@ import { ChangeDetectorRef } from '@angular/core';
 import { catchError, of } from 'rxjs';
 import { ColorFinderPipe } from '../pipes/color-finder.pipe';
 
+import { Options } from '@angular-slider/ngx-slider';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { LabelType } from 'ng5-slider';
+
 @Component({
   selector: 'app-dispatchboard-tables',
   templateUrl: './dispatchboard-tables.component.html',
@@ -112,8 +116,6 @@ export class DispatchboardTablesComponent implements OnInit {
   checkForEmpty: string = '';
 
   @Input() set _dData(value) {
-    console.log("GET DATA INSIDE LIST");
-    console.log(value);
     // value.dispatches = value.dispatches.map((item) => {
     //   if( !item.hoursOfService ){
     //     item.hoursOfService = {
@@ -123,10 +125,12 @@ export class DispatchboardTablesComponent implements OnInit {
 
     //   return item;
     // });
-    this.dData = JSON.parse(JSON.stringify(value))
+    this.dData = JSON.parse(JSON.stringify(value));
   }
 
   @Input() dDataIndx: number;
+
+  itemValue: number = 123;
 
   truckAddress: FormControl = new FormControl(null);
 
@@ -135,19 +139,18 @@ export class DispatchboardTablesComponent implements OnInit {
   driverList: any[];
   __change_in_proggress: boolean = false;
 
-
   @Input() set smallList(value) {
     const newTruckList = JSON.parse(JSON.stringify(value.trucks));
     this.truckList = newTruckList.map((item) => {
       item.name = item.truckNumber;
-      item.colorD = this.colorPipe.transform("truck", item.truckType.id);
+      item.colorD = this.colorPipe.transform('truck', item.truckType.id);
       return item;
     });
 
     const newTrailerList = JSON.parse(JSON.stringify(value.trailers));
     this.trailerList = newTrailerList.map((item) => {
       item.name = item.trailerNumber;
-      item.colorD = this.colorPipe.transform("trailer", item.trailerType.id);
+      item.colorD = this.colorPipe.transform('trailer', item.trailerType.id);
       return item;
     });
 
@@ -159,6 +162,10 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
   hosHelper = {
+    hos: [],
+  };
+
+  openedHosData = {
     hos: [],
   };
 
@@ -211,6 +218,7 @@ export class DispatchboardTablesComponent implements OnInit {
   pickDeliveryHovered: any = {};
 
   savedTruckId: any;
+  testTimeout: any;
 
   constructor(
     private dss: DispatcherStoreService,
@@ -218,9 +226,7 @@ export class DispatchboardTablesComponent implements OnInit {
     private colorPipe: ColorFinderPipe
   ) {}
 
-  ngOnInit(): void {
-    console.log('WHat is date', this.dData);
-  }
+  ngOnInit(): void {}
 
   addTruck(e) {
     if (e) {
@@ -264,17 +270,20 @@ export class DispatchboardTablesComponent implements OnInit {
 
   addStatus(e) {
     if (e) {
-      this.updateOrAddDispatchBoardAndSend(
-        'status',
-        e.name,
-        this.statusOpenedIndex
-      );
+      if ([7, 8, 9, 4, 10, 6].includes(e.statusValue.id)) {
+        this.dData.dispatches[this.statusOpenedIndex].status = e;
+        this.showAddAddressField = this.statusOpenedIndex;
+      } else {
+        this.updateOrAddDispatchBoardAndSend(
+          'status',
+          e.statusValue.name,
+          this.statusOpenedIndex
+        );
+      }
     }
 
     this.statusOpenedIndex = -1;
   }
-
-
 
   openIndex(indx: number) {
     this.statusOpenedIndex = indx;
@@ -285,8 +294,6 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
   addTrailer(e) {
-    console.log(e);
-
     if (e) {
       this.updateOrAddDispatchBoardAndSend(
         'trailerId',
@@ -318,7 +325,6 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
   dropList(event) {
-    console.log(event);
     moveItemInArray(
       this.dData.dispatches,
       event.previousIndex,
@@ -389,7 +395,9 @@ export class DispatchboardTablesComponent implements OnInit {
 
     const dataId = oldData.id;
     let oldUpdateData: CreateDispatchCommand | UpdateDispatchCommand = {
-      status: oldData.status ? (oldData.status?.name as DispatchStatus) : 'Off',
+      status: oldData.status
+        ? (oldData.status?.statusValue.name as DispatchStatus)
+        : 'Off',
       order: oldData.order,
       truckId: oldData.truck ? oldData.truck?.id : null,
       trailerId: oldData.trailer ? oldData.trailer?.id : null,
@@ -408,10 +416,6 @@ export class DispatchboardTablesComponent implements OnInit {
 
     this.selectTruck.reset();
     this.__change_in_proggress = true;
-
-    console.log(key);
-    console.log(value);
-    console.log(newData);
 
     this.checkForEmpty = key;
 
@@ -457,7 +461,6 @@ export class DispatchboardTablesComponent implements OnInit {
           this.__change_in_proggress = false;
         });
     }
-    // console.log("HELOOOOO", newData);
   }
 
   set checkEmptySet(value) {
@@ -467,7 +470,34 @@ export class DispatchboardTablesComponent implements OnInit {
     }, 300);
   }
 
-  toggleHos(tooltip: any, data: any, id: number) {
+  options: Options = {
+    floor: 0,
+    ceil: 1440,
+    showSelectionBar: false,
+    noSwitching: true,
+    hideLimitLabels: true,
+    animate: false,
+    maxLimit: new Date().getHours() * 60 + new Date().getMinutes(),
+    translate: (value: number, label: LabelType): string => {
+      const minutes = value;
+      const m = minutes % 60;
+      const h = (minutes - m) / 60;
+      const suffix = h >= 12 ? 'PM' : 'AM';
+      const formatedH = h > 12 ? h - 12 : h;
+      return `${formatedH.toString()}:${m < 10 ? '0' : ''}${m.toString()}`;
+      return (
+        formatedH.toString() +
+        ':' +
+        (m < 10 ? '0' : '') +
+        m.toString() +
+        ' ' +
+        suffix
+      );
+    },
+  };
+
+  tooltip: any;
+  toggleHos(tooltip: NgbTooltip, data: any, id: number) {
     this.hosHelper.hos = [];
     if (data === null || data.hos.length === 0) {
       data = {
@@ -476,30 +506,20 @@ export class DispatchboardTablesComponent implements OnInit {
             start: 0,
             end: new Date().getHours() * 60 + new Date().getMinutes(),
             flag: 'off',
+            indx: 0,
           },
         ],
       };
-      // this.gridData.forEach((element) => {
-      //   if (element.id === id) {
-      //     element.hosJson = data;
-      //   }
-      // });
     }
+
+    this.tooltip = tooltip;
+
+    this.openedHosData = data;
+
     if (tooltip.isOpen()) {
       tooltip.close();
     } else {
-      tooltip.open({ value: { data, id } });
-      setTimeout(() => {
-        data.hos.forEach((element, index) => {
-          const span = document.getElementById('valueSpan_' + index);
-          const cssStyle =
-            span.nextElementSibling.children[3].attributes[3].ownerElement;
-          const button = document.getElementById('buttonId_' + index);
-          button.style.marginLeft = data.hos[index].end / 3.8 + 'px';
-          span.style.width = cssStyle.clientWidth + 'px';
-          span.style.left = element.start / 3.8 + 'px';
-        });
-      });
+      tooltip.open();
     }
   }
 
@@ -513,169 +533,48 @@ export class DispatchboardTablesComponent implements OnInit {
     return tempArr;
   }
 
-  dropHosList(event: any, data: any, id: number) {
-    const dragEl: any = event.previousContainer.data[event.previousIndex];
-    switch (data.length) {
-      case 1:
-        if (dragEl.flag === 'off') {
-          data[0].flag = 'on';
-        } else {
-          data[0].flag = 'off';
-        }
-        setTimeout(() => {
-          const span = document.getElementById('valueSpan_0');
-          const button = document.getElementById('buttonId_0');
-          const cssStyle =
-            span.nextElementSibling?.children[3].attributes[3].ownerElement;
-          span.style.width = cssStyle.clientWidth + 'px';
-          button.style.marginLeft = data[0].end / 3.8 + 'px';
-        });
-        break;
-      case 2:
-        if (event.previousContainer.id !== event.container.id) {
-          if (dragEl.flag === 'off') {
-            data = [
-              {
-                start: data[0].start,
-                end: data[1].end,
-                flag: 'on',
-              },
-            ];
-          } else {
-            data = [
-              {
-                start: data[0].start,
-                end: data[1].end,
-                flag: 'off',
-              },
-            ];
-          }
-          setTimeout(() => {
-            const span = document.getElementById('valueSpan_0');
-            const button = document.getElementById('buttonId_0');
-            const cssStyle =
-              span.nextElementSibling?.children[3].attributes[3].ownerElement;
-            span.style.width = cssStyle.clientWidth + 'px';
-            button.style.marginLeft = data[0].end / 3.8 + 'px';
-          });
-        }
-        break;
-      case 3:
-        if (event.previousContainer.id !== event.container.id) {
-          if (
-            event.previousIndex === 0 &&
-            event.previousContainer.data.length === 1
-          ) {
-            let tempObj = {};
-            if (
-              event.previousContainer.data[event.previousIndex].flag === 'off'
-            ) {
-              tempObj = {
-                start: event.container.data[0].start,
-                end: event.container.data[1].end,
-                flag: 'on',
-              };
-            } else {
-              tempObj = {
-                start: event.container.data[0].start,
-                end: event.container.data[1].end,
-                flag: 'off',
-              };
-            }
-            const tempArr = [];
-            tempArr.push(tempObj);
-            data = tempArr;
-            setTimeout(() => {
-              const span = document.getElementById('valueSpan_0');
-              const button = document.getElementById('buttonId_0');
-              const cssStyle =
-                span.nextElementSibling?.children[3].attributes[3].ownerElement;
-              span.style.width = cssStyle.clientWidth + 'px';
-              button.style.marginLeft = data[0].end / 3.8 + 'px';
-            });
-          } else if (event.previousContainer.data.length === 2) {
-            let tempObj = {};
-            const tempArr = [];
-            if (event.previousIndex === 0) {
-              if (event.previousContainer.data[0].flag === 'off') {
-                tempObj = {
-                  start: event.previousContainer.data[0].start,
-                  end: event.container.data[0].end,
-                  flag: 'on',
-                };
-              } else {
-                tempObj = {
-                  start: event.previousContainer.data[0].start,
-                  end: event.container.data[0].end,
-                  flag: 'off',
-                };
-              }
-              tempArr.push(tempObj);
-              tempArr.push(event.previousContainer.data[1]);
-              data = tempArr;
-              setTimeout(() => {
-                const span = document.getElementById('valueSpan_0');
-                const button = document.getElementById('buttonId_0');
-                const cssStyle =
-                  span.nextElementSibling?.children[3].attributes[3]
-                    .ownerElement;
-                span.style.width = cssStyle.clientWidth + 'px';
-                button.style.marginLeft = data[0].end / 3.8 + 'px';
-              });
-            } else if (event.previousIndex === 1) {
-              if (event.previousContainer.data[1].flag === 'off') {
-                tempObj = {
-                  start: event.container.data[0].start,
-                  end: event.previousContainer.data[1].end,
-                  flag: 'on',
-                };
-              } else {
-                tempObj = {
-                  start: event.container.data[0].start,
-                  end: event.previousContainer.data[1].end,
-                  flag: 'off',
-                };
-              }
-              tempArr.push(event.previousContainer.data[0]);
-              tempArr.push(tempObj);
-              data = tempArr;
-              setTimeout(() => {
-                const span = document.getElementById('valueSpan_1');
-                const button = document.getElementById('buttonId_1');
-                const cssStyle =
-                  span.nextElementSibling.children[3].attributes[3]
-                    .ownerElement;
-                span.style.width = cssStyle.clientWidth + 'px';
-                button.style.marginLeft = data[1].end / 3.8 + 'px';
-                span.style.left = data[1].start / 3.8 + 'px';
-              });
-            }
-          }
-        }
+  dropHosList(event: any, data: any) {
+    console.log(event);
+    console.log(data);
+  }
+
+  addHOS(hosType) {
+    this.openedHosData.hos = [...this.openedHosData.hos];
+    this.openedHosData.hos.push({
+      start: this.openedHosData.hos[this.openedHosData.hos.length - 1].end,
+      end: new Date().getHours() * 60 + new Date().getMinutes(),
+      flag: hosType,
+      indx: this.openedHosData.hos.length,
+    });
+  }
+
+  removeHos(item){
+    this.openedHosData.hos = this.openedHosData.hos.filter(it => it.indx !== item.indx)
+  }
+
+  changeHosDataPositions(event, index) {
+    const nextHos = index + 1;
+    if (this.openedHosData.hos[nextHos]) {
+      this.openedHosData.hos[nextHos].start = this.openedHosData.hos[index].end;
     }
-    // this.gridData.forEach((element) => {
-    //   if (element.id === id) {
-    //     element.hosJson.hos = data;
-    //   }
-    // });
   }
 
-  returnValueId(i) {
-    console.log('HOS RETURN VALUE ID');
-    return 'valueSpan_' + i;
+  userChangeEnd(event, item) {
+    const index = item.indx;
+    const nextHos = index + 1;
+    if (this.openedHosData.hos[nextHos]) {
+      clearTimeout(this.testTimeout);
+      this.testTimeout = setTimeout(() => {
+        this.changeHosDataPositions(event, index);
+      }, 0);
+    }
   }
 
-  formatTime(minValue, maxValue) {
-    console.log('HOS RETURN VALUE formatTime');
-    const minutes = maxValue - minValue;
-    const m = minutes % 60;
-    const h = (minutes - m) / 60;
-    const suffix = h >= 12 ? 'PM' : 'AM';
-    const formatedH = h > 12 ? h - 12 : h;
-    return h.toString() + ':' + (m < 10 ? '0' : '') + m.toString();
-  }
-
-  returnButtonId(i) {
-    return 'buttonId_' + i;
+  saveHosData(hos, indx) {
+    this.updateOrAddDispatchBoardAndSend(
+      'hourOfService',
+      this.openedHosData,
+      indx
+    );
   }
 }
