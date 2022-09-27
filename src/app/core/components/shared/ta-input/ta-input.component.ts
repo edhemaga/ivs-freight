@@ -26,7 +26,6 @@ import {
   convertNumberInThousandSep,
 } from '../../../utils/methods.calculations';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { left } from '../animations/tabs-modal.animation';
 @Component({
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
@@ -70,7 +69,13 @@ export class TaInputComponent
   public dateTimeInputDate: Date = new Date();
 
   public timeout = null;
-  public numberOfSpaces: number = 0;
+
+  // Number of spaces
+  public numberOfConsecutivelySpaces: number = 0;
+  public oneSpaceOnlyCounter: number = 0;
+
+  // Number of points
+  public numberOfPoints: number = 0;
 
   // Dropdown
   public dropdownToggler: boolean = false;
@@ -84,9 +89,6 @@ export class TaInputComponent
 
   // Input Commands
   public isVisibleCommands: boolean = false;
-
-  // Number of points
-  public numberOfPoints: number = 0;
 
   // Edit Input
   public editInputMode: boolean = false;
@@ -394,7 +396,8 @@ export class TaInputComponent
     } else {
       this.input.nativeElement.value = null;
       this.getSuperControl.setValue(null);
-      this.numberOfSpaces = 0;
+      this.numberOfConsecutivelySpaces = 0;
+      this.oneSpaceOnlyCounter = 0;
       this.inputConfig.dropdownImageInput = null;
       this.touchedInput = true;
 
@@ -472,7 +475,13 @@ export class TaInputComponent
       event.keyCode == 8 &&
       !(this.inputConfig.isDropdown || this.inputConfig.dropdownLabel)
     ) {
-      this.numberOfSpaces = 0;
+      // Reset Multiple Consecutively Spaces
+      this.numberOfConsecutivelySpaces = 0;
+
+      // Reset One Space Only
+      if (!this.getSuperControl.value.includes(' ')) {
+        this.oneSpaceOnlyCounter = 0;
+      }
 
       if (!this.input.nativeElement.value) {
         this.clearInput(event);
@@ -861,10 +870,7 @@ export class TaInputComponent
           .test(String.fromCharCode(event.charCode))
       ) {
         this.disableMultiplePoints(event);
-        if (space === 3) {
-          this.input.nativeElement.value =
-            this.input.nativeElement.value.trim();
-        }
+        this.enableOneSpaceOnly(event);
         return true;
       }
       event.preventDefault();
@@ -878,10 +884,7 @@ export class TaInputComponent
           .getInputRegexPattern('last name')
           .test(String.fromCharCode(event.charCode))
       ) {
-        if (space === 3) {
-          this.input.nativeElement.value =
-            this.input.nativeElement.value.trim();
-        }
+        this.enableOneSpaceOnly(event);
         return true;
       }
       event.preventDefault();
@@ -896,10 +899,7 @@ export class TaInputComponent
           .test(String.fromCharCode(event.charCode))
       ) {
         this.disableMultiplePoints(event);
-        if (space === 3) {
-          this.input.nativeElement.value =
-            this.input.nativeElement.value.trim();
-        }
+        this.enableOneSpaceOnly(event);
         return true;
       }
       event.preventDefault();
@@ -929,10 +929,7 @@ export class TaInputComponent
           .getInputRegexPattern('truck-trailer-model')
           .test(String.fromCharCode(event.charCode))
       ) {
-        if (space === 3) {
-          this.input.nativeElement.value =
-            this.input.nativeElement.value.trim();
-        }
+        this.enableOneSpaceOnly(event);
         return true;
       }
       event.preventDefault();
@@ -1133,10 +1130,7 @@ export class TaInputComponent
           .getInputRegexPattern('cdl-number')
           .test(String.fromCharCode(event.charCode))
       ) {
-        if (space === 3) {
-          this.input.nativeElement.value =
-            this.input.nativeElement.value.trim();
-        }
+        this.enableOneSpaceOnly(event);
         this.disableConsecutivelySpaces(event);
         return true;
       } else {
@@ -1170,10 +1164,7 @@ export class TaInputComponent
           .getInputRegexPattern('full name')
           .test(String.fromCharCode(event.charCode))
       ) {
-        if (space === 3) {
-          this.input.nativeElement.value =
-            this.input.nativeElement.value.trim();
-        }
+        this.enableOneSpaceOnly(event);
         this.disableMultiplePoints(event);
         this.disableConsecutivelySpaces(event);
         return true;
@@ -1249,15 +1240,34 @@ export class TaInputComponent
     this.input.nativeElement.value.trim();
   }
 
+  private enableOneSpaceOnly(event: any) {
+    if (
+      /^\s*$/.test(String.fromCharCode(event.charCode)) ||
+      this.getSuperControl.value?.includes(' ')
+    ) {
+      this.oneSpaceOnlyCounter++;
+    }
+
+    if (
+      this.oneSpaceOnlyCounter > 1 &&
+      /^\s*$/.test(String.fromCharCode(event.charCode))
+    ) {
+      event.preventDefault();
+      return false;
+    }
+
+    return true;
+  }
+
   private disableConsecutivelySpaces(event: any) {
     if (/^\s*$/.test(String.fromCharCode(event.charCode))) {
-      this.numberOfSpaces++;
-      if (this.numberOfSpaces > 1) {
+      this.numberOfConsecutivelySpaces++;
+      if (this.numberOfConsecutivelySpaces > 1) {
         event.preventDefault();
         return false;
       }
     } else {
-      this.numberOfSpaces = 0;
+      this.numberOfConsecutivelySpaces = 0;
     }
   }
 
