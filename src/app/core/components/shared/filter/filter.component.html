@@ -71,7 +71,7 @@
         <div class="user-filter-box" *ngIf="type == 'stateFilter'">
           {{ canadaSelectedStates.length + usaSelectedStates.length }}
         </div>
-        <div class="user-title-text">{{ filterTitle }}</div>
+        <div class="user-title-text counter-padd-title">{{ filterTitle }}</div>
         <div
           class="search-icon-holder"
           *ngIf="searchState"
@@ -954,7 +954,7 @@
           class="button-clear"
           [class.active]="selectedTimeValue != ''"
         >
-          Clear All
+          Clear
         </div>
         <div
           (click)="setFilter($event)"

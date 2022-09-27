@@ -113,7 +113,7 @@
   width: 260px;
   padding: 7px 6px 6px 6px;
   border-radius: 3px;
-  background-color: #fff;
+  background-color: #2f2f2f;
   box-shadow: 0 0 4px #00000026;
   display: flex;
   justify-content: flex-start;
@@ -134,13 +134,13 @@
       width: 24px;
       height: 24px;
       border-radius: 2px;
-      background-color: #f3f3f3;
+      background-color: #6c6c6c;
       display: flex;
       justify-content: center;
       align-items: center;
       font-size: 14px;
       font-weight: 800;
-      color: #6c6c6c;
+      color: #FFF;
       line-height: 24px;
     }
 
@@ -151,9 +151,13 @@
       line-height: 18px;
       font-size: 14px;
       font-weight: 800;
-      color: #6c6c6c;
+      color: #ffffff;
       padding-left: 2px;
       box-sizing: border-box;
+
+      &.counter-padd-title{
+        padding-left: 4.5px;
+      }
     }
 
     .close {
@@ -289,7 +293,8 @@
     height: 2px;
     border-radius: 1px;
     margin: 5px 0px 6px 0px;
-    background-color: #f3f3f3;
+    background-color: #aaa;
+    opacity: 0.2;
   }
 
   .border-second-margin {
@@ -367,7 +372,7 @@
       height: 26px;
       &:hover {
         cursor: pointer;
-        background-color: #f3f3f3;
+        background-color: #1d1d1d;
       }
 
       .user-profile-img {
@@ -391,8 +396,8 @@
       padding-left: 30px;
       box-sizing: border-box;
       font-size: 14px;
-      font-weight: 400;
-      color: #536bc2;
+      font-weight: 700;
+      color: #fff;
       line-height: 26px;
       margin-bottom: 2px;
 
@@ -413,7 +418,7 @@
             height: 12.66px !important;
 
             path {
-              fill: #97a8dc !important;
+              fill: #6F9EE0 !important;
             }
           }
         }
@@ -424,7 +429,6 @@
         width: 21px;
         height: 21px;
         border-radius: 1px;
-        background-color: #ef9a9a;
         display: none;
         justify-content: center;
         align-items: center;
@@ -440,7 +444,7 @@
             height: 10.63px !important;
 
             path {
-              fill: #eeeeee !important;
+              fill: #E57373 !important;
             }
           }
         }
@@ -451,7 +455,7 @@
           svg-icon {
             svg {
               path {
-                fill: #fff !important;
+                fill: #E57373 !important;
               }
             }
           }
@@ -496,7 +500,7 @@
     position: relative;
     width: 100%;
     max-height: 224px;
-    background-color: #fff;
+    background-color: #2f2f2f;
     //overflow: auto;
     display: flex;
     justify-content: flex-start;
@@ -513,14 +517,14 @@
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: #aaaaaa !important;
-      border: 4px solid #aaaaaa !important;
+      //background-color: #aaaaaa !important;
+      border: 4px solid #dadada !important; 
       border-radius: 1px;
     }
 
     &::-webkit-scrollbar-track {
       width: 4px;
-      background-color: #ffffff;
+      background-color: rgb(218 218 218 / 20%);
     }
 
     .user-frame-holder {
@@ -533,7 +537,7 @@
         width: 100%;
         &:hover {
           cursor: pointer;
-          background-color: #f3f3f3;
+          background-color: #1d1d1d;
         }
 
         &.state-main-holder {
@@ -552,7 +556,7 @@
         box-sizing: border-box;
         font-size: 14px;
         font-weight: 400;
-        color: #6c6c6c;
+        color: #fff;
         line-height: 18px;
         margin-bottom: 2px;
 
@@ -591,22 +595,22 @@
       width: 121px;
       height: 28px;
       border-radius: 2px;
-      background-color: #f3f3f3;
+      background-color: rgb(108 108 108 / 20%);
       display: flex;
       justify-content: center;
       align-items: center;
       font-size: 14px;
       font-weight: 600;
-      color: #aaaaaa;
+      color: #6c6c6c;
       line-height: 28px;
 
       &.active {
         cursor: pointer;
-        color: #6c6c6c;
-
+        color: #fff;
+        background-color: rgb(255 255 255 / 20%);
         &:hover {
           cursor: pointer;
-          background-color: #6c6c6c;
+          background-color: rgb(255 255 255 / 40%);
           color: #fff;
         }
       }
@@ -616,17 +620,17 @@
       width: 121px;
       height: 28px;
       border-radius: 2px;
-      background-color: #f3f3f3;
+      background-color: rgb(108 108 108 / 20%);
       display: flex;
       justify-content: center;
       align-items: center;
       font-size: 14px;
       font-weight: 700;
-      color: #aaaaaa;
+      color: #6c6c6c;
       line-height: 28px;
 
       &.active {
-        background-color: #6d82c7;
+        background-color: #6F9EE0;
         color: #ffffff;
         cursor: pointer;
 
@@ -664,6 +668,7 @@
   .user-holder {
     height: auto;
     max-height: 300px !important;
+    overflow-y: auto;
   }
 }
 
@@ -1354,7 +1359,7 @@
   padding: 10px 6px 6px 6px;
   width: 260px;
   border-radius: 3px;
-  background-color: #fff;
+  background-color: #2f2f2f;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -1413,7 +1418,8 @@
     height: 2px;
     border-radius: 1px;
     margin: 8px 0px 6px 0px;
-    background-color: #f3f3f3;
+    background-color: #aaa;
+    opacity: 0.2;
   }
 
   .time-data-border {
@@ -1423,7 +1429,7 @@
   .time-items-holder {
     padding: 0px 0px;
     width: 100%;
-    background-color: #fff;
+    background-color: #2f2f2f;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
@@ -1441,14 +1447,14 @@
       box-sizing: border-box;
       font-size: 14px;
       font-weight: 400;
-      color: #6c6c6c;
+      color: #FFF;
       line-height: 26px;
       margin-bottom: 4px;
 
       &:hover {
         cursor: pointer;
-        background-color: #f3f3f3;
-        color: #3c3c3c !important;
+        background-color: #1d1d1d;
+        color: #FFF !important;
       }
 
       &::-moz-selection {
@@ -1477,7 +1483,7 @@
             height: 9.85px !important;
 
             path {
-              fill: #97a8dc !important;
+              fill: #6F9EE0 !important;
             }
           }
         }
@@ -1488,7 +1494,6 @@
         width: 21px;
         height: 21px;
         display: none;
-        background-color: #ef9a9a;
         justify-content: center;
         align-items: center;
         top: 2.5px;
@@ -1503,7 +1508,7 @@
             height: 10.63px !important;
 
             path {
-              fill: #eeeeee !important;
+              fill: #E57373 !important;
             }
           }
         }
@@ -1514,7 +1519,7 @@
           svg-icon {
             svg {
               path {
-                fill: #fff !important;
+                fill: #E57373 !important;
               }
             }
           }
@@ -1523,14 +1528,15 @@
     }
 
     .active {
-      color: #536bc2 !important;
+      color: #FFF !important;
+      font-weight: 700;
 
       .selected-icon {
         display: flex;
       }
 
       &:hover {
-        color: #536bc2 !important;
+        color: #FFF !important;
 
         .selected-icon {
           display: none;
@@ -1556,22 +1562,23 @@
       width: 121px;
       height: 28px;
       border-radius: 2px;
-      background-color: #f3f3f3;
+      background-color: rgb(108 108 108 / 20%);
       display: flex;
       justify-content: center;
       align-items: center;
       font-size: 14px;
       font-weight: 600;
-      color: #aaaaaa;
+      color: #6c6c6c;
       line-height: 28px;
 
       &.active {
         cursor: pointer;
-        color: #6c6c6c;
+        background-color: rgb(255 255 255 / 20%);
+        color: #fff;
 
         &:hover {
           cursor: pointer;
-          background-color: #6c6c6c;
+          background-color: rgb(255 255 255 / 40%);
           color: #fff;
         }
       }
@@ -1581,17 +1588,17 @@
       width: 121px;
       height: 28px;
       border-radius: 2px;
-      background-color: #f3f3f3;
+      background-color: rgb(108 108 108 / 20%);
       display: flex;
       justify-content: center;
       align-items: center;
       font-size: 14px;
       font-weight: 700;
-      color: #aaaaaa;
+      color: #6c6c6c;
       line-height: 28px;
 
       &.active {
-        background-color: #6d82c7;
+        background-color: #6F9EE0;
         color: #ffffff;
         cursor: pointer;
 
