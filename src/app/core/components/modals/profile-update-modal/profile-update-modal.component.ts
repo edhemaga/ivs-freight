@@ -67,6 +67,8 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
   public setNewPassword: boolean = false;
   public loadingOldPassword: boolean = false;
 
+  public hasAutoFocus: boolean = true;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -271,7 +273,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
             addressUnit: res.address.addressUnit,
             avatar: res.avatar,
           });
-
+          this.hasAutoFocus = res.firstName ? false : true;
           this.selectedAddress = res.address;
         },
         error: () => {
