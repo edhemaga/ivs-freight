@@ -193,7 +193,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
-          }, 1000); */
+          }, 2300); */
         }
         // On Add Driver Inactive
         else if (res.animation === 'add' && this.selectedTab === 'inactive') {
@@ -260,7 +260,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.viewData.splice(driverIndex, 1);
             clearInterval(inetval);
-          }, 1000); */
+          }, 900); */
         }
       });
   }

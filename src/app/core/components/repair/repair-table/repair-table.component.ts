@@ -215,7 +215,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
+          }, 2300);
         }
         // On Update Repair
         else if (res.animation === 'update' && this.selectedTab === res.tab) {
@@ -261,7 +261,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
             this.viewData.splice(repairIndex, 1);
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
         }
       });
   }
