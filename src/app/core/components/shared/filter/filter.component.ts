@@ -6,12 +6,17 @@ import {
   OnInit,
   ViewEncapsulation,
   ViewChild,
+  ElementRef,
+  ChangeDetectorRef,
+  QueryList
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
 import { addressValidation } from '../ta-input/ta-input.regex-validations';
 import { card_component_animation } from '../animations/card-component.animations';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
+
 
 @Component({
   selector: 'app-filter',
@@ -23,6 +28,14 @@ import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe
 })
 export class FilterComponent implements OnInit {
   private destroy$ = new Subject<void>();
+  autoCloseComponent: QueryList<AutoclosePopoverComponent>;
+
+  @ViewChild(AutoclosePopoverComponent)
+  autoClose: AutoclosePopoverComponent;
+
+  @ViewChild('pop1', { static: false }) pop1: ElementRef;
+
+
   @ViewChild('t2') t2: any;
 
   unselectedUser: any[] = [
@@ -534,7 +547,7 @@ export class FilterComponent implements OnInit {
     {
       id: 1,
       name: 'Semi Truck',
-      icon: 'assets/svg/common/semi-truck.svg',
+      icon: 'assets/svg/common/trucks/ic_truck_semi-truck.svg',
     },
     {
       id: 2,
@@ -1038,6 +1051,8 @@ export class FilterComponent implements OnInit {
 
   rangeDiffNum: number = 0;
 
+  activeFilter: boolean = false;
+
   @Input() type: string = 'userFilter';
   @Input() icon: string = 'user';
   @Input() subType: string = 'pendingStatus';
@@ -1053,9 +1068,12 @@ export class FilterComponent implements OnInit {
   @Input() locationDefType: boolean = false;
   @Input() legendView: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private thousandSeparator: TaThousandSeparatorPipe,) {}
+  constructor(private formBuilder: FormBuilder, private thousandSeparator: TaThousandSeparatorPipe,private elementRef: ElementRef, private cdRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+
+    console.log('---pop1---', this.pop1);
+
     if (this.type == 'payFilter'){
       this.maxValueRange = '20,000';
       this.maxValueSet = '20,000';
@@ -1412,6 +1430,19 @@ export class FilterComponent implements OnInit {
         this.searchInputValue = '';
       }
     });
+  }
+
+  toggleDropdown(){
+    let mainElement3 = document.querySelector('.popover-body');
+    console.log('--popup close--', this.autoClose);
+    console.log('--pop1--', this.pop1);
+    if (mainElement3){
+      this.activeFilter = false;
+    } else {
+      console.log('--popup opened--');
+      this.activeFilter = true;
+    }
+    
   }
 
   addToSelectedUser(item, indx, subType?) {

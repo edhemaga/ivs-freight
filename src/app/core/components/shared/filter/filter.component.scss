@@ -69,7 +69,7 @@
       border: 1px solid #fff;
 
       user-select: none;
-
+      
       &:hover {
         background-color: #3551b7 !important;
       }
@@ -373,6 +373,18 @@
       &:hover {
         cursor: pointer;
         background-color: #1d1d1d;
+
+        .user-profile-img{
+          
+          svg-icon {
+            svg {
+              path {
+                fill: #DADADA;
+              }
+            }
+          }
+
+        }
       }
 
       .user-profile-img {
@@ -508,7 +520,7 @@
     flex-direction: column;
     padding: 0px 0px 0px 0px;
     box-sizing: border-box;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     user-select: none;
 
@@ -538,6 +550,14 @@
         &:hover {
           cursor: pointer;
           background-color: #1d1d1d;
+
+          .user-profile-img {
+            svg {
+              path {
+                fill: #DADADA;
+              }
+            }
+          }
         }
 
         &.state-main-holder {
@@ -650,9 +670,14 @@
     width: 90%;
     line-height: 26px;
 
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+    
+
+      span{
+        width: 99%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
   }
 }
 
@@ -708,7 +733,7 @@
           width: 16.65px;
 
           path {
-            fill: #6d82c7;
+            fill: #AAAAAA ;
           }
         }
       }
@@ -726,7 +751,7 @@
       width: 16.65px;
 
       path {
-        fill: #aaaaaa;
+        fill: #AAAAAA;
       }
     }
   }
@@ -756,7 +781,7 @@
         width: 42px;
 
         path {
-          fill: #919191;
+          fill: #DADADA;
         }
       }
     }
@@ -786,7 +811,7 @@
       top: 0px !important;
       display: flex;
       align-items: center;
-      height: 26px !important;
+      height: 22px !important;
       width: 44px !important;
     }
 
@@ -836,12 +861,6 @@
       font-size: 14px;
       font-weight: 600;
       color: #aaaaaa;
-
-      .input-custom-group {
-        .input-control {
-          //height: 26px !important;
-        }
-      }
 
       .invalid-message {
         position: absolute;
@@ -978,6 +997,20 @@
     font-size: 11px;
     font-weight: 600;
     color: #aaaaaa;
+  }
+
+  .sticky-head-title{
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    width: 100%;
+
+    background-color: #2f2f2f;
+    z-index: 2;
+  }
+
+  .canada-sticky-head-title{
+    padding-top: 10px;
   }
 
   .holder-bottom-margin {
@@ -1374,7 +1407,7 @@
     box-sizing: border-box;
     font-size: 14px;
     font-weight: 800;
-    color: #6c6c6c;
+    color: #FFF;
     line-height: 18px;
     user-select: none;
 
@@ -2006,6 +2039,11 @@
 
 .pac-container {
   z-index: 1071;
+}
+
+.main-popover-body{
+  position: relative;
+  left: -10px;
 }
 
 .popover {

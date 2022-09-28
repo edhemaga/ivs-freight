@@ -3,11 +3,9 @@
   app-autoclose-popover
   [customClass]="'filterpopovermain'"
   [placement]="'bottom-left'"
-  #t2="ngbPopover"
-  [ngbPopover]="mainFilter"
   autoClose="outside"
   [ngClass]="{
-    'active-options': t2?.isOpen(),
+    'active-options': activeFilter,
     'filter-active-colors':
       selectedUser.length > 0 ||
       selectedTimeValue != '' ||
@@ -24,6 +22,7 @@
     mainTooltip="{{ !hoverClose ? filterTitle : 'Clear' }}"
     position="bottom"
     tooltipBackground= "#6C6C6C"
+    (click)="toggleDropdown()"
   >
     <svg-icon [src]="icon | taSvg: 'common'"></svg-icon>
     <div *ngIf="selectedUser.length > 0" class="active-filter-num">
@@ -52,9 +51,7 @@
       <svg-icon src="assets/svg/common/ic_cancel_violation.svg"></svg-icon>
     </div>
   </div>
-</div>
-
-<ng-template #mainFilter>
+  <div popoverContent class="main-popover-body" #pop1>
     <div
       *ngIf="defFilterHolder"
       class="filter-holder"
@@ -147,7 +144,9 @@
             <svg-icon src="{{ item.icon }}"></svg-icon>
           </div>
           <div class="selected-user-frame">
-            <div class="selected-name-text">{{ item.name }}</div>
+            <div class="selected-name-text">
+              <span> {{ item.name }} </span> 
+            </div>
             <div class="selected-icon">
               <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
             </div>
@@ -181,7 +180,9 @@
               <div class="state-short-holder">{{ item.short }}</div>
             </div>
             <div class="selected-user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
               <div class="selected-icon">
                 <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
               </div>
@@ -210,7 +211,9 @@
               <div class="state-short-holder">{{ item.short }}</div>
             </div>
             <div class="selected-user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
               <div class="selected-icon">
                 <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
               </div>
@@ -260,7 +263,9 @@
               </app-profile-images>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
             </div>
           </div>
         </div>
@@ -277,7 +282,9 @@
           >
             <div class="user-frame">
               <div class="selected-name-text">
-                <div class="selected-name-text">{{ item.name }}</div>
+                <div class="selected-name-text">
+                  <span> {{ item.name }} </span>
+                </div>
               </div>
             </div>
           </div>
@@ -304,7 +311,9 @@
                 ></div>
               </div>
               <div class="user-frame">
-                <div class="selected-name-text">{{ item.name }}</div>
+                <div class="selected-name-text">
+                  <span> {{ item.name }} </span>
+                </div>
               </div>
             </div>
           </div>
@@ -328,7 +337,9 @@
                 [ngStyle]="{ backgroundColor: item.color }"
               ></div>
               <div class="user-frame">
-                <div class="selected-name-text">{{ item.name }}</div>
+                <div class="selected-name-text">
+                  <span>  {{ item.name }} </span>
+                </div>
               </div>
             </div>
           </div>
@@ -352,7 +363,9 @@
                 [ngStyle]="{ backgroundColor: item.color }"
               ></div>
               <div class="user-frame">
-                <div class="selected-name-text">{{ item.name }}</div>
+                <div class="selected-name-text">
+                  <span> {{ item.name }} </span>
+                </div>
               </div>
             </div>
           </div>
@@ -372,7 +385,9 @@
               <svg-icon src="{{ item.icon }}"></svg-icon>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
             </div>
           </div>
         </div>
@@ -388,7 +403,9 @@
             class="user-main-holder"
           >
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
             </div>
           </div>
         </div>
@@ -407,7 +424,9 @@
               <svg-icon src="{{ item.icon }}"></svg-icon>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                  <span> {{ item.name }} </span>
+                </div>
             </div>
           </div>
         </div>
@@ -423,7 +442,9 @@
             class="user-main-holder"
           >
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -439,7 +460,9 @@
             class="user-main-holder"
           >
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -455,7 +478,9 @@
             class="user-main-holder"
           >
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -471,7 +496,9 @@
             class="user-main-holder"
           >
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -496,7 +523,9 @@
               </app-profile-images>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -515,7 +544,9 @@
               <svg-icon src="{{ item.icon }}"></svg-icon>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -534,13 +565,15 @@
               <svg-icon src="{{ item.icon }}"></svg-icon>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="user-holder" *ngIf="type == 'stateFilter'">
-        <div class="state-name-holder">UNITED STATES</div>
+        <div class="state-name-holder sticky-head-title">UNITED STATES</div>
         <div
           *ngFor="let item of usaStates; let indx = index"
           class="user-frame-holder"
@@ -554,11 +587,13 @@
               <div class="state-short-holder">{{ item.short }}</div>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
-        <div class="state-name-holder">CANADA</div>
+        <div class="state-name-holder canada-sticky-head-title">CANADA</div>
         <div
           *ngFor="let item of canadaStates; let indx = index"
           class="user-frame-holder"
@@ -572,7 +607,9 @@
               <div class="state-short-holder">{{ item.short }}</div>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+               <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -1356,4 +1393,7 @@
         </div>
       </div>
     </div>
-</ng-template>
+  </div>
+</div>
+
+
