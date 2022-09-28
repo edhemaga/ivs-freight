@@ -8,7 +8,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./violation-card-view.component.scss'],
 })
 export class ViolationCardViewComponent implements OnInit {
-  @Input() public vilationCardData: any;
+  @Input() public violationCardData: any;
   @Input() public templateCard: boolean;
   public violationDropdown: any;
   public noteControl: FormControl = new FormControl();
@@ -17,6 +17,8 @@ export class ViolationCardViewComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
+    console.log(this.violationCardData);
+
     this.dummyDataSpecial = [
       {
         id: 1,

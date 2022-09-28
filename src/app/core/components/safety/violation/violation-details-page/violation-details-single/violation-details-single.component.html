@@ -5,7 +5,7 @@
   >
     <!---------------------------- GENERAL TEMPLATE ----------------------------->
     <div *ngSwitchCase="'general'">
-      <app-violation-card-view> </app-violation-card-view>
+      <app-violation-card-view [violationCardData]="violation.data"> </app-violation-card-view>
     </div>
     <!---------------------------- Violation TEMPLATE ----------------------------->
     <div class="violation" *ngSwitchCase="'violation'">

@@ -1,4 +1,6 @@
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { RoadsideInspectionResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-violation-details-page',
@@ -7,37 +9,38 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ViolationDetailsPageComponent implements OnInit {
   public violationInitCongif: any[] = [];
-  constructor() {}
+  public violationData: any;
+  constructor(private act_route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.violationConfig();
+    this.violationConfig(this.act_route.snapshot.data.roadItem);
   }
 
   /**Default names for header */
-  public violationConfig() {
+  public violationConfig(data: RoadsideInspectionResponse) {
     this.violationInitCongif = [
       {
         id: 0,
         name: 'Roadside Insp. Details',
         template: 'general',
-        data: '',
+        data: data,
       },
       {
         id: 1,
         name: 'Violation',
         template: 'violation',
-        data: '',
+        data: data,
         hide: true,
         customText: 'Time Weight',
         hasArrow: false,
         length: 14,
-        counterViolation: 4,
+        counterViolation: data?.timeWeight ? data.timeWeight : 0,
       },
       {
         id: 2,
         name: 'Citation',
         template: 'citation',
-        data: '',
+        data: data,
         length: 12,
       },
     ];

@@ -1,6 +1,6 @@
 <div class="cards-item-wrapper-1">
   <app-ta-details-header-card
-    [cardDetailsDate]="'02/12/22'"
+    [cardDetailsDate]="violationCardData?.date | formatDateP"
     [tooltipNext]="'Next Violation'"
     [tooltipPrevious]="'Previous Violation'"
     [searchInputName]="'Search Violation'"
@@ -14,17 +14,17 @@
     <div class="violation-template-data">
       <div class="violation-template-items">
         <svg-icon class="state" src="assets/svg/common/ic_state.svg"></svg-icon>
-        <div class="value">Alabama (AL)</div>
+        <div class="value">Alabama ({{violationCardData?.state}})</div>
       </div>
       <div class="violation-template-items"></div>
       <div class="violation-template-items">
         <svg-icon class="state" src="assets/svg/common/ic_date.svg"></svg-icon>
-        <div class="value">05/12/22</div>
+        <div class="value">{{violationCardData?.date | formatDateP}}</div>
       </div>
 
       <div class="violation-template-items">
         <svg-icon class="state" src="assets/svg/common/ic_clock.svg"></svg-icon>
-        <div class="value">08:47 - 10:15 PM</div>
+        <div class="value">{{violationCardData?.startTime}} - {{violationCardData?.endTime}}</div>
       </div>
     </div>
   </app-ta-details-header-card>
@@ -43,11 +43,11 @@
         <div class="violation-template-cards-data">
           <div class="violation-card-items">
             <span class="name">Inspection Level</span>
-            <span class="value">III - Driver Only</span>
+            <span class="value">{{violationCardData?.inspectionLevel}} </span>
           </div>
           <div class="violation-card-items">
             <span class="name">HM Inspection Type</span>
-            <span class="value">None</span>
+            <span class="value">{{violationCardData?.hmInspectionType?'':'None'}}</span>
           </div>
         </div>
       </app-ta-custom-card>
@@ -64,21 +64,21 @@
               class="driver"
               src="assets/svg/common/user-image.svg"
             ></svg-icon>
-            <span class="driver-name">Angello Trotter</span>
+            <span class="driver-name">{{violationCardData?.driver_FullName}}</span>
           </div>
         </div>
         <div class="violation-template-cards-data">
           <div class="violation-card-items">
             <span class="name">Licence No.</span>
-            <span class="value">123456</span>
+            <span class="value">{{violationCardData?.driver_LicenceNo}}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">State</span>
-            <span class="value">Texas (TX)</span>
+            <span class="value">({{violationCardData?.driver_State}})</span>
           </div>
           <div class="violation-card-items">
             <span class="name">Date of Birth</span>
-            <span class="value">22/12/89</span>
+            <span class="value">{{violationCardData?.driver_DateOfBirth | formatDateP}}</span>
           </div>
         </div>
       </app-ta-custom-card>
@@ -86,6 +86,7 @@
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
         [hasDivider]="true"
+        *ngIf="violationCardData?.coDriver_FullName"
         [cardName]="'Co-Driver'"
         [isCardOpen]="true"
       >
@@ -95,21 +96,21 @@
               class="driver"
               src="assets/svg/common/user-image.svg"
             ></svg-icon>
-            <span class="driver-name">Denis Rodman</span>
+            <span class="driver-name">{{violationCardData?.coDriver_FullName}}</span>
           </div>
         </div>
         <div class="violation-template-cards-data">
           <div class="violation-card-items">
             <span class="name">Licence No.</span>
-            <span class="value">123456</span>
+            <span class="value">{{violationCardData?.coDriver_LicenceNo}}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">State</span>
-            <span class="value">Texas (TX)</span>
+            <span class="value">Texas ({{violationCardData?.coDriver_State}})</span>
           </div>
           <div class="violation-card-items">
             <span class="name">Date of Birth</span>
-            <span class="value">22/12/89</span>
+            <span class="value">{{violationCardData?.coDriver_DateOfBirth | formatDateP}}</span>
           </div>
         </div>
       </app-ta-custom-card>
@@ -122,7 +123,7 @@
       >
         <div class="violation-driver-container">
           <div class="violation-driver-item">
-            <span class="driver-name">Unit 36543</span>
+            <span class="driver-name">Unit {{violationCardData?.truck_Unit}}</span>
             <svg-icon
               class="truck"
               src="assets/svg/common/semi-truck.svg"
@@ -132,19 +133,19 @@
         <div class="violation-template-cards-data">
           <div class="violation-card-items">
             <span class="name">Make</span>
-            <span class="value">VOLVO</span>
+            <span class="value">{{violationCardData?.truck_Make}}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">Vin</span>
-            <span class="value">1234567897654</span>
+            <span class="value">{{violationCardData?.truck_VIN}}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">Plate No.</span>
-            <span class="value">PA 24735</span>
+            <span class="value">{{violationCardData?.truck_PlateNo}}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">State</span>
-            <span class="value">Pennsylvania (PA)</span>
+            <span class="value">Pennsylvania ({{violationCardData?.truck_State}})</span>
           </div>
         </div>
       </app-ta-custom-card>
@@ -157,7 +158,7 @@
       >
         <div class="violation-driver-container">
           <div class="violation-driver-item">
-            <span class="driver-name">Unit C3543</span>
+            <span class="driver-name">Unit {{violationCardData?.trailer_Unit}}</span>
             <svg-icon
               class="truck"
               src="assets/svg/common/trailer.svg"
@@ -167,19 +168,19 @@
         <div class="violation-template-cards-data">
           <div class="violation-card-items">
             <span class="name">Make</span>
-            <span class="value">VOLVO</span>
+            <span class="value">{{violationCardData?.trailer_Make}}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">Vin</span>
-            <span class="value">1234567897654</span>
+            <span class="value">{{violationCardData?.trailer_VIN}}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">Plate No.</span>
-            <span class="value">PA 24735</span>
+            <span class="value">{{violationCardData?.trailer_PlateNo}}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">State</span>
-            <span class="value">Pennsylvania (PA)</span>
+            <span class="value">Pennsylvania ({{violationCardData?.trailer_State}})</span>
           </div>
         </div>
       </app-ta-custom-card>
@@ -193,17 +194,17 @@
       >
         <div class="violation-driver-container">
           <div class="violation-driver-item">
-            <span class="driver-name">Indiana State Police</span>
+            <span class="driver-name">{{violationCardData?.policeDepartment}}</span>
           </div>
         </div>
         <div class="violation-template-cards-data">
           <div class="violation-card-items">
             <span class="name">Police Officer</span>
-            <span class="value">Aleksandar Djordjevic</span>
+            <span class="value">{{violationCardData?.policeOfficer}}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">Badge No.</span>
-            <app-ta-copy [copyValue]="'123456'"> </app-ta-copy>
+            <app-ta-copy [copyValue]="violationCardData?.badgeNo"> </app-ta-copy>
            
           </div>
         </div>
@@ -223,14 +224,14 @@
               class="driver"
               src="assets/svg/common/ic_phone.svg"
             ></svg-icon>
-            <app-ta-copy [copyValue]="'(123) 333-2344'"> </app-ta-copy>
+            <app-ta-copy [copyValue]="violationCardData?.phone"> </app-ta-copy>
           </div>
           <div class="violation-driver-item">
             <svg-icon
               class="driver"
               src="assets/svg/common/ic_fax.svg"
             ></svg-icon>
-            <app-ta-copy [copyValue]="'(123) 333-1344'"> </app-ta-copy>
+            <app-ta-copy [copyValue]="violationCardData?.fax"> </app-ta-copy>
            
           </div>
         </div>
@@ -246,19 +247,19 @@
         <div class="violation-template-cards-data">
           <div class="violation-card-items">
             <span class="name">Country</span>
-            <span class="value">Chestnut County</span>
+            <span class="value">{{violationCardData?.country}}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">Facillity</span>
-            <span class="value">Roadside</span>
+            <span class="value">{{violationCardData?.facility}}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">Highway</span>
-            <span class="value">165</span>
+            <span class="value">{{violationCardData?.highway}}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">MilePost</span>
-            <span class="value">39</span>
+            <span class="value">{{violationCardData?.milePost}}</span>
           </div>
         </div>
       </app-ta-custom-card>
@@ -273,11 +274,11 @@
         <div class="violation-template-cards-data">
           <div class="violation-card-items">
             <span class="name">Customer</span>
-            <span class="value">COMAX TRADE, INC</span>
+            <span class="value">{{violationCardData?.customer}}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">BoL</span>
-            <span class="value">2425354454</span>
+            <span class="value">{{violationCardData?.boL}}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">Origin</span>
@@ -285,11 +286,11 @@
           </div>
           <div class="violation-card-items">
             <span class="name">Destination</span>
-            <span class="value">Carol Stream, IL, USA</span>
+            <span class="value">{{violationCardData?.destination}}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">Cargo</span>
-            <span class="value">Office Supplies</span>
+            <span class="value">{{violationCardData?.cargo}}</span>
           </div>
         </div>
       </app-ta-custom-card>
@@ -302,22 +303,160 @@
         [isCardOpen]="true"
       >
         <div class="violation-driver-container">
-          <div
-            class="violation-driver-item"
-            *ngFor="let special of dummyDataSpecial"
-          >
+         
+
+          <div class="violation-driver-item">
             <svg-icon
               class="special"
-              src="{{
-                special.checked
-                  ? 'assets/svg/common/ic_cancel_violation.svg'
-                  : ' assets/svg/common/ic_confirm.svg'
-              }}"
+              [src]="
+                violationCardData.alcContSubCheck
+                  ? ' assets/svg/common/ic_confirm.svg'
+                  : 'assets/svg/common/ic_cancel_violation.svg'
+              "
             ></svg-icon>
             <span
               class="value-police"
-              [ngClass]="{ 'cross-out': special.checked }"
-              >{{ special.name }}</span
+              [ngClass]="{ 'cross-out': !violationCardData?.alcContSubCheck }"
+              >Alc/Cont. Sub. Check</span
+            >
+          </div>
+          <div class="violation-driver-item">
+            <svg-icon
+              class="special"
+              [src]="
+                violationCardData.condByLocalJuris
+                  ? ' assets/svg/common/ic_confirm.svg'
+                  : 'assets/svg/common/ic_cancel_violation.svg'
+              "
+            ></svg-icon>
+            <span
+              class="value-police"
+              [ngClass]="{ 'cross-out': !violationCardData?.condByLocalJuris }"
+              >Cond. by Local Juris.</span
+            >
+          </div>
+
+          <div class="violation-driver-item">
+            <svg-icon
+              class="special"
+              [src]="
+                violationCardData.sizeAndWeightEnf
+                  ? ' assets/svg/common/ic_confirm.svg'
+                  : 'assets/svg/common/ic_cancel_violation.svg'
+              "
+            ></svg-icon>
+            <span
+              class="value-police"
+              [ngClass]="{ 'cross-out': !violationCardData?.sizeAndWeightEnf }"
+              >Size & Weight Enf.</span
+            >
+          </div>
+          <div class="violation-driver-item">
+            <svg-icon
+              class="special"
+              [src]="
+                violationCardData.eScreenInspection
+                  ? ' assets/svg/common/ic_confirm.svg'
+                  : 'assets/svg/common/ic_cancel_violation.svg'
+              "
+            ></svg-icon>
+            <span
+              class="value-police"
+              [ngClass]="{ 'cross-out': !violationCardData?.eScreenInspection }"
+              >eScreen Inspection</span
+            >
+          </div>
+          <div class="violation-driver-item">
+            <svg-icon
+              class="special"
+              [src]="
+                violationCardData.trafficEnforcment
+                  ? ' assets/svg/common/ic_confirm.svg'
+                  : 'assets/svg/common/ic_cancel_violation.svg'
+              "
+            ></svg-icon>
+            <span
+              class="value-police"
+              [ngClass]="{ 'cross-out': !violationCardData?.trafficEnforcment }"
+              >Traffic Enforcement</span
+            >
+          </div>
+
+          <div class="violation-driver-item">
+            <svg-icon
+              class="special"
+              [src]="
+                violationCardData.pasaConditionInsp
+                  ? ' assets/svg/common/ic_confirm.svg'
+                  : 'assets/svg/common/ic_cancel_violation.svg'
+              "
+            ></svg-icon>
+            <span
+              class="value-police"
+              [ngClass]="{ 'cross-out': !violationCardData?.pasaConditionInsp }"
+              >PASA Cond. Insp.</span
+            >
+          </div>
+
+          <div class="violation-driver-item">
+            <svg-icon
+              class="special"
+              [src]="
+                violationCardData.drugInterdSearch
+                  ? ' assets/svg/common/ic_confirm.svg'
+                  : 'assets/svg/common/ic_cancel_violation.svg'
+              "
+            ></svg-icon>
+            <span
+              class="value-police"
+              [ngClass]="{ 'cross-out': !violationCardData?.drugInterdSearch }"
+              >Drug Interd. Search</span
+            >
+          </div>
+          <div class="violation-driver-item">
+            <svg-icon
+              class="special"
+              [src]="
+                violationCardData.borderEnfInspection
+                  ? ' assets/svg/common/ic_confirm.svg'
+                  : 'assets/svg/common/ic_cancel_violation.svg'
+              "
+            ></svg-icon>
+            <span
+              class="value-police"
+              [ngClass]="{ 'cross-out': !violationCardData?.borderEnfInspection }"
+              >Border Enf. Insp.</span
+            >
+          </div>
+
+          <div class="violation-driver-item">
+            <svg-icon
+              class="special"
+              [src]="
+                violationCardData.postCrashInspection
+                  ? ' assets/svg/common/ic_confirm.svg'
+                  : 'assets/svg/common/ic_cancel_violation.svg'
+              "
+            ></svg-icon>
+            <span
+              class="value-police"
+              [ngClass]="{ 'cross-out': !violationCardData?.postCrashInspection }"
+              >Post Crash Insp.</span
+            >
+          </div>
+          <div class="violation-driver-item">
+            <svg-icon
+              class="special"
+              [src]="
+                violationCardData.pbbtInspection
+                  ? ' assets/svg/common/ic_confirm.svg'
+                  : 'assets/svg/common/ic_cancel_violation.svg'
+              "
+            ></svg-icon>
+            <span
+              class="value-police"
+              [ngClass]="{ 'cross-out': !violationCardData?.pbbtInspection }"
+              >PBBT Inspection</span
             >
           </div>
         </div>
