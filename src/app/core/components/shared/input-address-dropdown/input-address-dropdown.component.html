@@ -1,0 +1,22 @@
+<div class="address_holder" [formGroup]="addressForm">
+  <app-ta-input-dropdown
+    formControlName="address"
+    [inputConfig]="{
+      name: 'Input Dropdown',
+      type: 'text',
+      label: 'Address, City, State Zip',
+      placeholderIcon: 'address',
+      isRequired: true,
+      isDropdown: true,
+      dropdownWidthClass: 'w-col-512',
+      loadingSpinner: {
+        size: 'small',
+        color: 'white',
+        isLoading: loadingAddresses
+      }
+    }"
+    [options]="addresList"
+    [activeItem]="selctedAddress"
+    (selectedItem)="onSelectDropdown($event, 'address')"
+  ></app-ta-input-dropdown>
+</div>

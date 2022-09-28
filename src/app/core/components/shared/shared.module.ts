@@ -108,6 +108,7 @@ import { TtTitleModalComponent } from '../modals/common-truck-trailer-modals/tt-
 import { ConfirmationModalComponent } from '../modals/confirmation-modal/confirmation-modal.component';
 import { CustomToastMessagesComponent } from './custom-toast-messages/custom-toast-messages.component'; 
 import { SvgDefinitionsComponent } from '../../../svg-definitions/svg-definitions.component';
+import { InputAddressDropdownComponent } from './input-address-dropdown/input-address-dropdown.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -199,7 +200,8 @@ export function playerFactory() {
     AutoclosePopoverComponent,
     CustomToastMessagesComponent,
     MapToolbarComponent,
-    AutoclosePopoverComponent
+    AutoclosePopoverComponent,
+    InputAddressDropdownComponent
   ],
   imports: [
     CommonModule,
@@ -343,6 +345,7 @@ export function playerFactory() {
     AutoclosePopoverComponent,
     TtTitleModalComponent,
     ConfirmationModalComponent,
+    InputAddressDropdownComponent
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
