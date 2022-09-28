@@ -308,6 +308,7 @@
 
 .route-card-content {
     position: relative;
+    display: grid;
     margin-top: 8px;
 
     .empty-miles {
@@ -406,6 +407,10 @@
                     color: #6C6C6C !important;
                 }
             }
+        }
+
+        .loaded-stop-background {
+            display: none;
         }
     }
 
@@ -1015,7 +1020,7 @@
     }
 }
 
-.empty-stop-background {
+.loaded-stop-background {
     position: absolute;
     left: 2px;
     top: 0px;

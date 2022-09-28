@@ -248,7 +248,10 @@
                 cdkDrag
                 cdkDragBoundary=".route-card-content"
                 [ngClass]="{ 'focused-route': route.isFocused }"
-                [ngStyle]="{ cursor: route.stops.length == 1 ? 'pointer' : '' }"
+                [ngStyle]="{ 
+                  cursor: route.stops.length == 1 ? 'pointer' : '',
+                  order: (insertBeforeActive > -1 && insertBeforeActive >= b) ? b+2 : b+1
+                }"
                 (click)="focusStop($event, i, b)"
               >
                 <div
@@ -375,7 +378,7 @@
 
                 <div 
                   *ngIf="!stop.empty && b > 0"
-                  class="empty-stop-background" 
+                  class="loaded-stop-background" 
                   [ngStyle]="{
                     'height': (b >= route.stops.length-1) || (!route.stops[b+1] || route.stops[b+1].empty) ? '22px' : '24px',
                     'background': route.isFocused ? '#ffffff4d' : route.color + '33',
@@ -394,6 +397,8 @@
                 [formGroup]="$any(addressInputs)"
                 [ngClass]="{ 'focused-route': route.isFocused }"
                 (click)="focusStop($event, i, b)"
+                [attr.data-id]="'newStop'+route.id"
+                [ngStyle]="{ order: insertBeforeActive > -1 ? insertBeforeActive+1 : route.stops.length+1 }"
               >
                 <div
                   class="focused-route-number-background"
@@ -855,7 +860,7 @@
 
                 <div 
                   *ngIf="!stop.empty && b > 0"
-                  class="empty-stop-background" 
+                  class="loaded-stop-background" 
                   [ngStyle]="{
                     'height': (b >= route.stops.length-1) || (!route.stops[b+1] || route.stops[b+1].empty) ? '22px' : '24px',
                     'background': route.isFocused ? '#ffffff4d' : route.color + '33',
@@ -976,7 +981,7 @@
       </div>
     </div>
 
-    <div class="map-zoom-controls">
+    <!-- <div class="map-zoom-controls">
       <div class="map-zoom-container">
         <div class="map-zoom-button" (click)="zoomMap('plus')">
           <svg-icon
@@ -991,7 +996,7 @@
           ></svg-icon>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <agm-map
       [latitude]="mapLatitude"
@@ -1299,12 +1304,7 @@
             >
               <div
                 class="marker-container marker-icon stop-picker-icon stop-picker-marker-animation"
-                (click)="
-                  addNewStop(
-                    $event,
-                    addressFlag == 'Empty' ? 'empty' : 'loaded'
-                  )
-                "
+                (click)="addNewStop($event)"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -1408,15 +1408,17 @@
                   </text>
                 </svg>
               </div>
-              <div class="stop-picker-window" *ngIf="tableData[selectedMapIndex].routes[focusedRouteIndex].stops.length">
+              <div 
+                *ngIf="tableData[selectedMapIndex].routes[focusedRouteIndex].stops.length"
+                class="stop-picker-window" 
+                [ngStyle]="{ visibility: stopPickerLocation.editIndex != null && stopPickerLocation.editIndex == 0 ? 'hidden': 'visible' }"
+              >
                 <div
                   class="stop-picker-button"
-                  (click)="
-                    addressFlag == 'Empty' ? (addressFlag = 'Loaded') : (addressFlag = 'Empty')
-                  "
+                  (click)="changeEmptyLoaded()"
                 >
                   <div class="stop-picker-button-text">
-                    {{ addressFlag == "Empty" ? "Empty" : "Loaded" }}
+                    {{ stopPickerLocation.empty ? "Empty" : "Loaded" }}
                   </div>
                 </div>
               </div>

@@ -76,6 +76,8 @@
         border-radius: 3px;
         padding: 2px;
         display: flex;
+        background: #ffffff;
+        transition: 0.2s;
 
         .data-count,
         .tab-title {
@@ -102,6 +104,16 @@
           justify-content: center;
           align-items: center;
           margin-right: 8px;
+        }
+      }
+
+      &:hover {
+        .tab {
+          background: #f3f3f3;
+
+          .tab-title {
+            color: #424242;
+          }
         }
       }
     }
@@ -417,6 +429,11 @@
 .tab-active {
   background: #424242 !important;
   transition: 0.25s;
+  
+  .tab {
+    background: #424242 !important;
+    transition: 0.25s;
+  }
 
   .data-count,
   .tab-title {

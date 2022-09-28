@@ -58,17 +58,25 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   }
 
   dontUseTab: boolean = false;
+  insertBeforeActive: number = -1;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: any) {
     const key = event.keyCode;
+
+    console.log('handleKeyboardEvent key', key);
 
     if (key === 9) {
       /* Tab switch routes */
       event.preventDefault();
       this.switchRouteFocus(event.shiftKey);
     } else if (key === 27) {
+      this.insertBeforeActive = -1;
+
       if (this.focusedRouteIndex != null) {
+        /* Remove focus from Add new stop input */
+        this.focusOnInput(this.focusedRouteIndex, true);
+
         /* Remove focus from all routes */
         this.focusRoute(this.focusedRouteIndex);
       }
@@ -116,6 +124,35 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         this.mapToolbar.onToolBarAction(
           this.mapToolbar.routeToEdit?.id ? 'edit-route' : 'add-route'
         );
+      }
+    } else if (key === 118) {
+      event.preventDefault();
+      event.stopPropagation();
+      
+      if (this.focusedRouteIndex != null) {
+        var currentlyFocusedStop = this.findFocusedStop(this.focusedRouteIndex);
+
+        if (currentlyFocusedStop > -1) {
+          this.insertBeforeActive = currentlyFocusedStop;
+
+          this.focusOnInput(this.focusedRouteIndex);
+        }
+      }
+    } else if (key === 116) {
+      if (this.focusedRouteIndex != null) {
+        event.preventDefault();
+        
+        this.focusOnInput(this.focusedRouteIndex);
+      }
+    } else if (key === 18) {
+      event.preventDefault();
+      
+      if (this.focusedRouteIndex != null) {
+        var inputInFocus = this.checkInputFocus(this.focusedRouteIndex);
+
+        if ( inputInFocus || this.stopPickerLocation?.lat ) {
+          this.changeEmptyLoaded();
+        }
       }
     }
 
@@ -866,7 +903,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                       address.zipCode,
                     lat: result.geometry.location.lat(),
                     long: result.geometry.location.lng(),
-                    empty: null,
+                    empty: mainthis.addressFlag == 'Empty' ? true : false,
                   };
 
                   mainthis.stopPickerAnimation();
@@ -890,12 +927,21 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
         var mapCenter = map.getCenter();
 
+        // console.log('NorthEast latitude', ne.lat());
+        // console.log('NorthEast longitude', ne.lng());
+        // console.log('NorthWest latitude', nw.lat());
+        // console.log('NorthWest longitude', nw.lng());
+        // console.log('SouthEast latitude', se.lat());
+        // console.log('SouthEast longitude', se.lng());
+        // console.log('SouthWest latitude', sw.lat());
+        // console.log('SouthWest longitude', sw.lng());
+        // console.log('Zoom level', this.mapZoom);
+        // console.log('Map center', mapCenter.lat(), mapCenter.lng());
+
         // console.log('map bounds ne', ne.lat(), ne.lng());
         // console.log('map bounds nw', nw.lat(), nw.lng());
         // console.log('map bounds se', se.lat(), se.lng());
         // console.log('map bounds sw', sw.lat(), sw.lng());
-        // console.log('map center', mapCenter.lat(), mapCenter.lng());
-        // console.log('map zoom level', this.mapZoom);
     });
   }
 
@@ -913,7 +959,15 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         request,
         function (results, status) {
           if (status === google.maps.places.PlacesServiceStatus.OK) {
-            route.stops.push({
+            var insertIndex =
+            mainthis.insertBeforeActive > -1
+              ? mainthis.insertBeforeActive
+              : mainthis.tableData[mainthis.selectedMapIndex].routes[mainthis.focusedRouteIndex]
+                  .stops.length;
+
+            mainthis.tableData[mainthis.selectedMapIndex].routes[
+              mainthis.focusedRouteIndex
+            ].stops.splice(insertIndex, 0, {
               address: event.address,
               cityAddress:
                 event.address.city +
@@ -930,12 +984,33 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
               long: results[0].geometry.location.lng(),
             });
 
+            mainthis.insertBeforeActive = -1;
+
+            // route.stops.push({
+            //   address: event.address,
+            //   cityAddress:
+            //     event.address.city +
+            //     ', ' +
+            //     event.address.state +
+            //     ' ' +
+            //     event.address.zipCode,
+            //   leg: '60.6',
+            //   total: '60.6',
+            //   time: '01:15',
+            //   totalTime: '01:15',
+            //   empty: mainthis.addressFlag == 'Empty' ? true : false,
+            //   lat: results[0].geometry.location.lat(),
+            //   long: results[0].geometry.location.lng(),
+            // });
+
             mainthis.calculateDistanceBetweenStops(index);
             mainthis.calculateRouteWidth(route);
             mainthis.ref.detectChanges();
           }
         }
       );
+    } else if ( event.action == 'cancel' ) {
+      this.insertBeforeActive = -1;
     }
   }
 
@@ -1552,9 +1627,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     }
   }
 
-  addNewStop(event, loadType) {
-    this.stopPickerLocation.empty = loadType == 'empty' ? true : false;
-    this.addressFlag = loadType == 'empty' ? 'Empty' : 'Loaded';
+  addNewStop(event) {
+    this.addressFlag = this.stopPickerLocation.empty ? 'Empty' : 'Loaded';
 
     if (this.stopPickerLocation.editIndex != null) {
       this.tableData[this.selectedMapIndex].routes[
@@ -1611,7 +1685,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     this.focusStop(event, routeIndex, stopIndex);
 
     this.stopPickerLocation =
-      this.tableData[this.selectedMapIndex].routes[routeIndex].stops[stopIndex];
+      JSON.parse(JSON.stringify(this.tableData[this.selectedMapIndex].routes[routeIndex].stops[stopIndex]));
     this.stopPickerLocation.editIndex = stopIndex;
 
     this.stopPickerAnimation();
@@ -1642,6 +1716,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         item.isSelected = false;
       }
     });
+    
+    //this.insertBeforeActive = -1;
 
     this.ref.detectChanges();
   }
@@ -2139,5 +2215,38 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     this.stopPickerActive = false;
     this.stopPickerLocation = {};
     this.agmMap.setOptions({ draggableCursor: '' });
+  }
+
+  focusOnInput(routeIndex, blur?) {
+    let route = this.tableData[this.selectedMapIndex].routes[routeIndex];
+
+    const inputContainerElement: HTMLElement = document.querySelector(
+      '[data-id="newStop' + route.id + '"]'
+    );
+
+    const inputElement = inputContainerElement.querySelector('input');
+
+    if ( blur ) {
+      inputElement.blur();
+    } else {
+      inputElement.focus();
+    }
+  }
+
+  checkInputFocus(routeIndex) {
+    let route = this.tableData[this.selectedMapIndex].routes[routeIndex];
+
+    const inputContainerElement: HTMLElement = document.querySelector(
+      '[data-id="newStop' + route.id + '"]'
+    );
+
+    const inputElement = inputContainerElement.querySelector('input');
+
+    return inputElement === document.activeElement;
+  }
+
+  changeEmptyLoaded() {
+    this.stopPickerLocation.empty = this.stopPickerLocation.empty ? false : true;
+    this.addressFlag = this.addressFlag == 'Empty' ? 'Loaded' : 'Empty';
   }
 }
