@@ -10,7 +10,7 @@ import {Subject, takeUntil} from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
 import {ApplicantTService} from "../../driver/state/applicant.service";
 import {FormService} from "../../../services/form/form.service";
-import {ApplicantAdminResponse, ApplicantResponse} from "../../../../../../appcoretruckassist";
+import {ApplicantAdminResponse} from "../../../../../../appcoretruckassist";
 
 @Component({
   selector: 'app-applicant-modal',

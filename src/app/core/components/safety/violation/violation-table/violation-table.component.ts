@@ -37,7 +37,7 @@ export class ViolationTableComponent
     private modalService: ModalService,
     private roadsideActiveQuery: RoadsideActiveQuery,
     private roadsideInactiveQuery: RoadsideInactiveQuery,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
   ) {}
 
   // -------------------------------NgOnInit-------------------------------
@@ -106,7 +106,7 @@ export class ViolationTableComponent
         } */
       });
 
-    // Contact Actions
+    // Roadside Inspection Actions
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
@@ -234,8 +234,9 @@ export class ViolationTableComponent
         showMapView: true,
         viewModeActive: 'List',
       },
-      tableBodyConfig: {
-        rowDropdownConfig: 'Roadside Inspection',
+      attachmentConfig: {
+        hasViolation: true,
+        hasCitation: true
       },
       actions: [
         {
@@ -301,6 +302,7 @@ export class ViolationTableComponent
     this.setViolationData(td);
   }
 
+  // Get Table Tab Data
   getTabData(dataType?: string) {
     if (dataType === 'active') {
       this.roadsideActive = this.roadsideActiveQuery.getAll();
@@ -339,8 +341,12 @@ export class ViolationTableComponent
           : this.mapRoadsideInspectionData(data);
       });
 
+      /* for(let i = 0; i < 100; i++){
+        this.viewData.push(this.viewData[2]);
+      } */
+
       console.log('viewData');
-      console.log(this.viewData);
+      console.log(this.viewData)
     } else {
       this.viewData = [];
     }
@@ -363,26 +369,27 @@ export class ViolationTableComponent
       tableDriverName: data?.driver_FullName ? data.driver_FullName : '',
       truckNumber: 'Nije povezano',
       trailerNumber: 'Nije povezano',
-      tableDate: data?.date
-        ? this.datePipe.transform(data.date, 'MM/dd/yy')
-        : '',
+      tableDate: data?.date ? this.datePipe.transform(data.date, 'MM/dd/yy') : '',
       tabelStartTime: data?.startTime ? data?.startTime : '',
       tabelEndTime: data?.endTime ? data?.endTime : '',
-      tableLvl: data?.inspectionLevel
-        ? this.formatInspectionLevel(data?.inspectionLevel)
-        : '',
-      tableState: data?.country ? data?.country : '',
+      tableLvl: data?.inspectionLevel ? this.formatInspectionLevel(data?.inspectionLevel) : '',
+      tableState: data?.country? data?.country : '',
+      /* Test */
+      tableDropdownProgress: {
+        expirationDays: 20,
+        percentage: 20
+      }
     };
   }
 
   // Format Inspection Level
-  formatInspectionLevel(inspectionLevel: string) {
+  formatInspectionLevel(inspectionLevel: string){
     let level = '';
 
-    for (let i = 0; i < inspectionLevel.length; i++) {
-      if (inspectionLevel[i] !== '.') {
+    for(let i = 0; i < inspectionLevel.length; i++){
+      if(inspectionLevel[i] !== '.'){
         level += inspectionLevel[i];
-      } else {
+      }else{
         break;
       }
     }
@@ -393,11 +400,7 @@ export class ViolationTableComponent
   // On Toolbar Actions
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      this.modalService.openModal(
-        ViolationModalComponent,
-        { size: 'large-xl' },
-        { id: 1, type: 'edit' }
-      );
+      alert('Treba da se odradi modal!');
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setViolationData(event.tabData);

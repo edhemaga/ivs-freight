@@ -77,7 +77,11 @@
       <div class="container_separate" *ngIf="isExpanded">
         <div class="container_separate_inner"></div>
       </div>
-      <div class="note_container" *ngIf="isExpanded">
+      <div
+        class="note_container"
+        (click)="preventMouseDown($event)"
+        *ngIf="isExpanded"
+      >
         <app-ta-note-container
           [isExpanded]="isExpanded"
           [range]="range"

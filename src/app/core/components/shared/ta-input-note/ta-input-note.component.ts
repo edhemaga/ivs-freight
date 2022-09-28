@@ -11,6 +11,7 @@ import {
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { card_component_animation } from '../animations/card-component.animations';
 import { SharedService } from '../../../services/shared/shared.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-ta-input-note',
@@ -22,10 +23,12 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   _isVisibleNote: any = null;
   selectionTaken: any;
   range: any;
+  @Input() note: any;
   value: string = '';
   savedValue: string = '';
   saveInterval: any;
   isFocused: any = false;
+  lastTypeTime: any;
   saveIntervalStarted: boolean = false;
   @Input() isVisibleDivider: boolean = true;
   @Input() public animationsDisabled = false;
@@ -89,17 +92,17 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   changeValue(event) {
     this.value = event;
     this.checkActiveItems();
-    let saveValue = this.value;
+    this.lastTypeTime = moment().unix();
 
     if (!this.saveIntervalStarted) {
       this.saveIntervalStarted = true;
       this.saveInterval = setInterval(() => {
-        if (saveValue == this.value) {
+        if (moment().unix() - this.lastTypeTime >= 2) {
           this.saveIntervalStarted = false;
           clearInterval(this.saveInterval);
+          this.saveNote(true);
         }
-        this.saveNote(true);
-      }, 60000);
+      }, 100);
     }
   }
 

@@ -82,15 +82,7 @@
     }
 
     &::after {
-      content: "";
-      display: block;
-      height: 16px;
-      width: 1px;
-      border-radius: 3px;
-      background: $input-placeholder-icon-valid-after;
-      position: absolute;
-      left: 24px;
-      top: 5px;
+      background: $input-placeholder-icon-valid-after !important;
     }
   }
 
@@ -121,15 +113,7 @@
     }
 
     &::after {
-      content: "";
-      display: block;
-      height: 16px;
-      width: 1px;
-      border-radius: 3px;
-      background: $input-placeholder-icon-invalid-after;
-      position: absolute;
-      left: 24px;
-      top: 5px;
+      background: $input-placeholder-icon-invalid-after !important;
     }
   }
 
@@ -166,15 +150,19 @@
     top: 2px;
 
     &::after {
-      content: "";
-      display: block;
-      height: 16px;
-      width: 1px;
-      border-radius: 3px;
       background: $input-placeholder-icon-normal-after;
-      position: absolute;
+
       left: 24px;
       top: 3px;
+    }
+  }
+
+  &.line-input-26-in-card {
+    top: 1px;
+
+    &::after {
+      background: $input-placeholder-icon-normal-after;
+      top: 4px;
     }
   }
 

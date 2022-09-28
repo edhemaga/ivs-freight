@@ -466,7 +466,7 @@
     "
     [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
-    mask="{{ inputConfig.mask }}"
+    [mask]="inputConfig.mask"
     [min]="inputConfig.min ? inputConfig.min : 0"
     [max]="inputConfig.max"
     [step]="inputConfig.step ? inputConfig.step : null"
@@ -557,7 +557,7 @@
     (keyup)="onKeyUp($event)"
     (blur)="onBlur()"
     (focus)="onFocus()"
-    (paste)="onPaste($event, inputConfig.maxLength)"
+    (paste)="onPaste($event)"
     (input)="onChange($event.target.value); transformText($event.target.value)"
     [(ngModel)]="input.value"
   />
