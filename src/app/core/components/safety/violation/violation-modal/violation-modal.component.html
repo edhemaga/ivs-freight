@@ -34,8 +34,7 @@
               type: 'text',
               label: 'Report',
               isRequired: true,
-              autoFocus: true,
-              customClass: 'line-input-26-in-card'
+              autoFocus: true
             }"
           ></app-ta-input>
           <app-ta-input
@@ -44,18 +43,16 @@
               name: 'Inspection Level',
               type: 'text',
               label: 'Inspection Level',
-              isDisabled: true,
-              customClass: 'line-input-26-in-card'
+              isDisabled: true
             }"
           ></app-ta-input>
           <app-ta-input
-            formControlName="hmInspectionLevel"
+            formControlName="hmInspectionType"
             [inputConfig]="{
               name: 'Inspection Level',
               type: 'text',
               label: 'HM Inspection Level',
-              isDisabled: true,
-              customClass: 'line-input-26-in-card'
+              isDisabled: true
             }"
           ></app-ta-input>
         </div>
@@ -68,8 +65,7 @@
               label: 'Country',
               isDisabled: true,
               isDropdown: true,
-              dropdownWidthClass: 'w-col-148',
-              customClass: 'line-input-26-in-card'
+              dropdownWidthClass: 'w-col-148'
             }"
           ></app-ta-input-dropdown>
           <app-ta-input-dropdown
@@ -80,8 +76,7 @@
               label: 'State',
               isDisabled: true,
               isDropdown: true,
-              dropdownWidthClass: 'w-col-148',
-              customClass: 'line-input-26-in-card'
+              dropdownWidthClass: 'w-col-148'
             }"
           ></app-ta-input-dropdown>
           <app-ta-input
@@ -93,35 +88,32 @@
               label: 'Date',
               placeholderIcon: 'date',
               isDisabled: true,
-              customClass: 'datetimeclass',
-              customClass: 'line-input-26-in-card'
+              customClass: 'datetimeclass'
             }"
           ></app-ta-input>
           <!-- Time Picker -->
           <app-ta-input
-            formControlName="start"
+            formControlName="startTime"
             [inputConfig]="{
               name: 'timepicker',
               type: 'text',
               isDropdown: true,
               label: 'Start',
               placeholderIcon: 'time',
-              customClass: 'datetimeclass',
-              customClass: 'line-input-26-in-card'
+              customClass: 'datetimeclass'
             }"
           ></app-ta-input>
 
           <!-- Time Picker -->
           <app-ta-input
-            formControlName="end"
+            formControlName="endTime"
             [inputConfig]="{
               name: 'timepicker',
               type: 'text',
               label: 'End',
               isDropdown: true,
               placeholderIcon: 'time',
-              customClass: 'datetimeclass',
-              customClass: 'line-input-26-in-card'
+              customClass: 'datetimeclass'
             }"
           ></app-ta-input>
         </div>
@@ -137,8 +129,7 @@
                 name: 'Driver Name',
                 type: 'text',
                 label: 'Driver',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -147,8 +138,7 @@
                 name: 'Licence Number',
                 type: 'text',
                 label: 'Licence No.',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -157,8 +147,7 @@
                 name: 'State',
                 type: 'text',
                 label: 'State',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -170,8 +159,7 @@
                 isDropdown: true,
                 placeholderIcon: 'date',
                 isDisabled: true,
-                customClass: 'datetimeclass',
-                customClass: 'line-input-26-in-card'
+                customClass: 'datetimeclass'
               }"
             ></app-ta-input>
           </div>
@@ -188,8 +176,7 @@
                 name: 'Driver Name',
                 type: 'text',
                 label: 'Driver',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -198,8 +185,7 @@
                 name: 'Licence Number',
                 type: 'text',
                 label: 'Licence No.',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -208,8 +194,7 @@
                 name: 'State',
                 type: 'text',
                 label: 'State',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
@@ -221,8 +206,7 @@
                 isDropdown: true,
                 placeholderIcon: 'date',
                 isDisabled: true,
-                customClass: 'datetimeclass',
-                customClass: 'line-input-26-in-card'
+                customClass: 'datetimeclass'
               }"
             ></app-ta-input>
           </div>
@@ -234,57 +218,52 @@
         >
           <div class="violation-modal-row-5">
             <app-ta-input
-              formControlName="truckUnit"
+              formControlName="truck_Unit"
               [inputConfig]="{
                 name: 'Truck Number',
                 type: 'text',
                 label: 'Unit',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
-              formControlName="truckType"
+              formControlName="truck_Type"
               [inputConfig]="{
                 name: 'Truck Type',
                 type: 'text',
                 label: 'Type',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
-              formControlName="truckMake"
+              formControlName="truck_Make"
               [inputConfig]="{
                 name: 'Truck Make',
                 type: 'text',
                 label: 'Make',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
-              formControlName="truckPlateNumber"
+              formControlName="truck_PlateNo"
               [inputConfig]="{
                 name: 'Truck Plate Make',
                 type: 'text',
                 label: 'Plate No.',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
-              formControlName="truckState"
+              formControlName="truck_State"
               [inputConfig]="{
                 name: 'Truck State',
                 type: 'text',
                 label: 'State',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
-              formControlName="truckVIN"
+              formControlName="truck_VIN"
               [inputConfig]="{
                 name: 'vin-number',
                 type: 'text',
@@ -292,8 +271,7 @@
                 minLength: 5,
                 maxLength: 17,
                 textTransform: 'uppercase',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
           </div>
@@ -305,57 +283,52 @@
         >
           <div class="violation-modal-row-6">
             <app-ta-input
-              formControlName="trailerUnit"
+              formControlName="trailer_Unit"
               [inputConfig]="{
                 name: 'Trailer Number',
                 type: 'text',
                 label: 'Unit',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
-              formControlName="trailerType"
+              formControlName="trailer_Type"
               [inputConfig]="{
                 name: 'Trailer Type',
                 type: 'text',
                 label: 'Type',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
-              formControlName="trailerMake"
+              formControlName="trailer_Make"
               [inputConfig]="{
                 name: 'Trailer Make',
                 type: 'text',
                 label: 'Make',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
-              formControlName="trailerPlateNumber"
+              formControlName="trailer_PlateNo"
               [inputConfig]="{
                 name: 'Trailer Plate Make',
                 type: 'text',
                 label: 'Plate No.',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
-              formControlName="trailerState"
+              formControlName="trailer_State"
               [inputConfig]="{
                 name: 'Trailer State',
                 type: 'text',
                 label: 'State',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
             <app-ta-input
-              formControlName="trailerVIN"
+              formControlName="trailer_VIN"
               [inputConfig]="{
                 name: 'vin-number',
                 type: 'text',
@@ -363,8 +336,7 @@
                 minLength: 5,
                 maxLength: 17,
                 textTransform: 'uppercase',
-                isDisabled: true,
-                customClass: 'line-input-26-in-card'
+                isDisabled: true
               }"
             ></app-ta-input>
           </div>
@@ -405,7 +377,7 @@
                         src="assets/svg/common/ic_vehicle_maintenance.svg"
                       ></svg-icon>
                       <span class="violation-category-text">{{
-                        violation.get("categoryId").value
+                        violation.get("category").value
                       }}</span>
                     </p>
                     <p class="violation-unit">
@@ -438,8 +410,7 @@
                         maxLength: 160,
                         textTransform: 'capitalize',
                         hideErrorMessage: true,
-                        hideRequiredCheck: true,
-                        customClass: 'line-input-26-in-card'
+                        hideRequiredCheck: true
                       }"
                     ></app-ta-input>
                   </div>
@@ -480,8 +451,7 @@
                 label: 'Police Department',
                 type: 'text',
                 minLength: 2,
-                maxLength: 36,
-                customClass: 'line-input-26-in-card'
+                maxLength: 36
               }"
             ></app-ta-input>
             <app-ta-input
@@ -489,17 +459,15 @@
               [inputConfig]="{
                 name: 'Police Officer',
                 type: 'text',
-                label: 'Police Officer',
-                customClass: 'line-input-26-in-card'
+                label: 'Police Officer'
               }"
             ></app-ta-input>
             <app-ta-input
-              formControlName="badgeNumber"
+              formControlName="badgeNo"
               [inputConfig]="{
                 name: 'Badge Number',
                 type: 'text',
-                label: 'Badge Number',
-                customClass: 'line-input-26-in-card'
+                label: 'Badge Number'
               }"
             ></app-ta-input>
           </div>
@@ -507,40 +475,37 @@
             class="violation-modal-autority-details-row violation-modal-autority-details-row-second"
           >
             <app-ta-input-address
-              formControlName="addressAuthority"
+              formControlName="address"
               [inputConfig]="{
                 name: 'Address',
                 type: 'text',
                 label: 'Address, City, State Zip',
                 placeholderIcon: 'address',
                 minLength: 6,
-                maxLength: 256,
-                customClass: 'line-input-26-in-card'
+                maxLength: 256
               }"
               [activeAddress]="selectedAuthorityAddress"
               (selectedAddress)="onHandleAddress($event, 'address-authority')"
             ></app-ta-input-address>
             <app-ta-input
-              formControlName="phoneAuthority"
+              formControlName="phone"
               [inputConfig]="{
                 name: 'Phone',
                 type: 'text',
                 label: 'Phone',
                 isRequired: true,
                 placeholderIcon: 'phone',
-                mask: '(000) 000-0000',
-                customClass: 'line-input-26-in-card'
+                mask: '(000) 000-0000'
               }"
             ></app-ta-input>
             <app-ta-input
-              formControlName="faxAuthority"
+              formControlName="fax"
               [inputConfig]="{
                 name: 'Fax',
                 type: 'text',
                 label: 'Fax',
                 mask: '(000) 000-0000',
-                placeholderIcon: 'fax',
-                customClass: 'line-input-26-in-card'
+                placeholderIcon: 'fax'
               }"
             ></app-ta-input>
           </div>
@@ -557,8 +522,7 @@
                 [inputConfig]="{
                   name: 'Facility',
                   type: 'text',
-                  label: 'Facility',
-                  customClass: 'line-input-26-in-card'
+                  label: 'Facility'
                 }"
               ></app-ta-input>
             </div>
@@ -568,8 +532,7 @@
                 [inputConfig]="{
                   name: 'Highway',
                   type: 'text',
-                  label: 'Highway',
-                  customClass: 'line-input-26-in-card'
+                  label: 'Highway'
                 }"
               ></app-ta-input>
             </div>
@@ -579,8 +542,7 @@
                 [inputConfig]="{
                   name: 'Mile Post',
                   type: 'text',
-                  label: 'Mile Post',
-                  customClass: 'line-input-26-in-card'
+                  label: 'Mile Post'
                 }"
               ></app-ta-input>
             </div>
@@ -588,15 +550,14 @@
           <div class="row">
             <div class="col-6">
               <app-ta-input-address
-                formControlName="originAddress"
+                formControlName="location"
                 [inputConfig]="{
                   name: 'Address',
                   type: 'text',
                   label: 'Origin',
                   placeholderIcon: 'address',
                   minLength: 12,
-                  maxLength: 256,
-                  customClass: 'line-input-26-in-card'
+                  maxLength: 256
                 }"
                 [activeAddress]="selectedAuthorityOrigin"
                 (selectedAddress)="onHandleAddress($event, 'address-origin')"
@@ -604,15 +565,14 @@
             </div>
             <div class="col-6">
               <app-ta-input-address
-                formControlName="destinationAddress"
+                formControlName="destination"
                 [inputConfig]="{
                   name: 'Address',
                   type: 'text',
                   label: 'Destination',
                   placeholderIcon: 'address',
                   minLength: 12,
-                  maxLength: 256,
-                  customClass: 'line-input-26-in-card'
+                  maxLength: 256
                 }"
                 [activeAddress]="selectedAuthorityDestination"
                 (selectedAddress)="
@@ -629,20 +589,18 @@
                 type: 'text',
                 label: 'Customer',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-273',
-                customClass: 'line-input-26-in-card'
+                dropdownWidthClass: 'w-col-273'
               }"
               [options]="labelsViolationCustomer"
               (selectedItem)="onSelectDropDown($event)"
             ></app-ta-input-dropdown>
             <app-ta-input
-              formControlName="bol"
+              formControlName="boL"
               [inputConfig]="{
                 name: 'BoL',
                 type: 'text',
                 label: 'BoL',
-                textTransform: 'capitalize',
-                customClass: 'line-input-26-in-card'
+                textTransform: 'capitalize'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -651,8 +609,7 @@
                 name: 'Cargo',
                 type: 'text',
                 label: 'Cargo',
-                textTransform: 'capitalize',
-                customClass: 'line-input-26-in-card'
+                textTransform: 'capitalize'
               }"
             ></app-ta-input>
           </div>
