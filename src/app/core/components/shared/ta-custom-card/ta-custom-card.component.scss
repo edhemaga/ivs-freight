@@ -444,5 +444,20 @@
         color: #6c6c6c;
       }
     }
+
+    .content-holder {
+      &.innactive {
+        height: 0px !important;
+        overflow: hidden !important;
+        opacity: 0 !important;
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+      }
+
+      &.active{
+        overflow: visible !important;
+        opacity: 1 !important;
+      }
+    }
   }
 }

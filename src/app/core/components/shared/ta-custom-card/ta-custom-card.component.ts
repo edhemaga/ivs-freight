@@ -5,6 +5,8 @@ import {
   Output,
   EventEmitter,
   ViewEncapsulation,
+  SimpleChanges,
+  OnChanges,
 } from '@angular/core';
 import { card_modal_animation } from '../animations/card-modal.animation';
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
@@ -16,7 +18,7 @@ import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
   animations: [card_modal_animation('showHideCardBody')],
   encapsulation: ViewEncapsulation.None,
 })
-export class TaCustomCardComponent {
+export class TaCustomCardComponent implements OnChanges {
   @Input() animationsDisabled = true;
   @Input() bodyTemplate: string = 'modal'; //  'modal' | 'card'
   @Input() cardName: string = null;
@@ -41,7 +43,14 @@ export class TaCustomCardComponent {
   @Input() controlName: FormControl;
 
   @Input() tooltipName: string = '';
-  @Input() isCardOpen: boolean = false; // if has data, set on true
+
+  _isCardOpen: any = 'null';
+  noActive: string;
+
+  @Input() set isCardOpen(value: boolean) {
+    this.noActive = value ? "active" : "innactive";
+  }
+
   @Input() isCommentData: boolean = false;
   @Input() textBottomPossiton: string;
 
@@ -67,16 +76,22 @@ export class TaCustomCardComponent {
 
   constructor(private uploadFileService: TaUploadFileService) {}
 
+  ngOnChanges(changes: SimpleChanges): void {
+  }
+
   public isCardOpenEvent(event: any) {
     if (!this.disabledCard) {
       event.preventDefault();
       event.stopPropagation();
       if (this.hasBodyData) {
-        this.isCardOpen = !this.isCardOpen;
+        const oldNoActive = this.noActive;
+        this.noActive = "";
+        this._isCardOpen = oldNoActive == 'innactive' ? true : !this._isCardOpen;
+        
       }
       this.zoneTriger = !this.zoneTriger;
       this.uploadFileService.visibilityDropZone(this.zoneTriger);
-      this.onOpenCard.emit(this.isCardOpen);
+      this.onOpenCard.emit(this._isCardOpen);
     }
   }
 

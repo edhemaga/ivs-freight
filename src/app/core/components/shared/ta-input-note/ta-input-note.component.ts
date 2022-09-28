@@ -20,7 +20,7 @@ import moment from 'moment';
   animations: [card_component_animation('showHideCardBody')],
 })
 export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
-  _isVisibleNote: any = null;
+  _isVisibleNote: any = 0;
   selectionTaken: any;
   range: any;
   @Input() note: any;
@@ -33,9 +33,16 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   @Input() isVisibleDivider: boolean = true;
   @Input() public animationsDisabled = false;
 
-  @Input('isVisibleNote') set isVisibleNote(value: any) {
-    this._isVisibleNote = value ? true : null;
+
+  noActive: string;
+
+  @Input() set isVisibleNote(value: boolean) {
+    this.noActive = value ? "active" : "innactive";
   }
+
+  // @Input('isVisibleNote') set isVisibleNote(value: any) {
+  //   this._isVisibleNote = value ? true : false;
+  // }
 
   @Input() isVisibleArrow: boolean = true;
   @Input() minRows: number = 2;
@@ -73,6 +80,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   public registerOnTouched(fn: any): void {}
 
   public openNote() {
+    this.noActive = "";
     this._isVisibleNote = !this._isVisibleNote;
     if (this._isVisibleNote) {
       this.checkActiveItems();

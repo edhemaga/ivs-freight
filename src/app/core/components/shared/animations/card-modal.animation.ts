@@ -35,4 +35,5 @@ export const card_modal_animation = (type: string) =>
       })
     ),
     transition('false <=> true', [animate('.3s ease-in-out')]),
+    transition('null <=> false', [animate('.3s ease-in-out')]),
   ]);

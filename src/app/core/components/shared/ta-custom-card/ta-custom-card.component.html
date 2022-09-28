@@ -3,7 +3,7 @@
   <div
     [ngClass]="{ 'has-counter': hasCounter }"
     class="ta-card-header"
-    [class.active]="isCardOpen"
+    [class.active]="_isCardOpen && _isCardOpen != 'null'"
     [class.no-data]="!hasBodyData"
     [class.disabled]="disabledCard"
     (mouseenter)="isHeaderHover = true"
@@ -38,7 +38,7 @@
 
       <!-- Svg near name -->
       <div
-        *ngIf="hasHeaderSvg && (isCardOpen || headerSvgEnabled)"
+        *ngIf="hasHeaderSvg && ((_isCardOpen && _isCardOpen != 'null') || headerSvgEnabled)"
         ngbTooltip
         [mainTooltip]="tooltipName"
         [tooltipBackground]="tooltipName ? '#6c6c6c' : '#ffffff'"
@@ -62,7 +62,7 @@
     >
       <!-- Like & Dislike -->
       <app-ta-like-dislike
-        *ngIf="hasLikeDislike && hasBodyData && isCardOpen"
+        *ngIf="hasLikeDislike && hasBodyData && (_isCardOpen && _isCardOpen != 'null')"
       ></app-ta-like-dislike>
 
       <div
@@ -87,10 +87,10 @@
         class="header-action-container"
         [class.hovered]="isHeaderHover"
         [class.data]="
-          (hasBodyData && isCardOpen && hasArrow) ||
-          (isHeaderHover && hasBodyData && !isCardOpen && hasArrow)
+          (hasBodyData && (_isCardOpen && _isCardOpen != 'null')  && hasArrow) ||
+          (isHeaderHover && hasBodyData && (!_isCardOpen || _isCardOpen == 'null') && hasArrow)
         "
-        [class.comment]="hasBodyData && isCardOpen && isCommentData"
+        [class.comment]="hasBodyData && ( _isCardOpen && _isCardOpen != 'null' ) && isCommentData"
         (click)="onAction($event, 'add')"
       >
         <svg-icon
@@ -100,7 +100,7 @@
           src="{{ hasActionSvg }}"
         ></svg-icon>
         <p
-          *ngIf="isHeaderHover || (hasBodyData && isCardOpen)"
+          *ngIf="isHeaderHover || (hasBodyData && ( _isCardOpen && _isCardOpen != 'null' ))"
           class="header-action-text"
         >
           ADD NEW
@@ -109,7 +109,7 @@
 
       <!-- Header (Details page, Calendar...) -->
       <div
-        *ngIf="(hasPlusHeader && isCardOpen) || stayOpen"
+        *ngIf="(hasPlusHeader && ( _isCardOpen && _isCardOpen != 'null')) || stayOpen"
         class="arrow-down-plus"
       >
         <div
@@ -151,7 +151,7 @@
       <svg-icon
         *ngIf="hasArrow && hasBodyData"
         class="header-arrow"
-        [ngClass]="{ rotate: isCardOpen }"
+        [ngClass]="{ rotate: (_isCardOpen && _isCardOpen != 'null' ) }"
         src="assets/svg/common/ic_arrow_down_updated.svg"
       ></svg-icon>
     </div>
@@ -160,8 +160,10 @@
   <!-- BODY -->
   <div class="ta-card-body" [ngClass]="{ scroll: hasScrollBody }">
     <div
+      [ngClass]="noActive"
+      [ngStyle]="animationMarginParams"
       [@showHideCardBody]="{
-        value: isCardOpen ? 'true' : 'false',
+        value: _isCardOpen.toString(),
         params: animationMarginParams
       }"
       class="content-holder"
