@@ -272,17 +272,22 @@
                 src="assets/svg/common/load/ic_load-start-position.svg"
               ></svg-icon>
             </div>
+            
             <div
               [ngStyle]="{
-                width: loadItem?.data?.completedPercentage + 2 + '%'
+                width: loadItem?.data?.completedPercentage + '%'
               }"
               class="current-loaction"
             >
-              <svg-icon
-                class="icon-start"
-                src="assets/svg/common/load/load-moving-right.svg"
-              ></svg-icon>
-            </div>
+          </div>
+          <div [ngStyle]="{
+            'left': loadItem?.data?.completedPercentage + .5 + '%'
+          }" class="moving-icon">
+            <svg-icon
+              class="icon-start"
+              src="assets/svg/common/load/load-moving-right.svg"
+            ></svg-icon>
+          </div>
           </div>
           <div class="stop-location-wrapper moving-cont">
             <div class="location-item-wrapper">
