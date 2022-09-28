@@ -106,7 +106,7 @@ export class ViolationTableComponent
         } */
       });
 
-    // Contact Actions
+    // Roadside Inspection Actions
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
@@ -234,8 +234,9 @@ export class ViolationTableComponent
         showMapView: true,
         viewModeActive: 'List',
       },
-      tableBodyConfig: {
-        rowDropdownConfig: 'Roadside Inspection'
+      attachmentConfig: {
+        hasViolation: true,
+        hasCitation: true
       },
       actions: [
         {
@@ -301,6 +302,7 @@ export class ViolationTableComponent
     this.setViolationData(td);
   }
 
+  // Get Table Tab Data
   getTabData(dataType?: string) {
     if (dataType === 'active') {
       this.roadsideActive = this.roadsideActiveQuery.getAll();
@@ -338,6 +340,10 @@ export class ViolationTableComponent
           ? this.mapViolationSummaryData(data)
           : this.mapRoadsideInspectionData(data);
       });
+
+      /* for(let i = 0; i < 100; i++){
+        this.viewData.push(this.viewData[2]);
+      } */
 
       console.log('viewData');
       console.log(this.viewData)
