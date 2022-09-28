@@ -226,7 +226,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
+          }, 2300);
         }
         // On Add Driver Inactive
         else if (res.animation === 'add' && this.selectedTab === 'inactive') {
@@ -293,7 +293,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.viewData.splice(driverIndex, 1);
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
         }
       });
 
@@ -1018,7 +1018,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = closeAnimationAction(true, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
         },
         error: () => {
           this.notificationService.error(
@@ -1037,7 +1037,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.viewData = this.viewData.map((driver: any) => {
           response.map((id: any) => {
             if (driver.id === id) {
-              driver.actionAnimation = 'delete';
+              driver.actionAnimation = 'delete-multiple';
             }
           });
 
@@ -1050,7 +1050,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
           this.viewData = closeAnimationAction(true, this.viewData);
 
           clearInterval(inetval);
-        }, 1000);
+        }, 900);
 
         this.tableService.sendRowsSelected([]);
         this.tableService.sendResetSelectedColumns(true);

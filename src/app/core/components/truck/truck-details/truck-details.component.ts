@@ -53,13 +53,14 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private truckMinimalListQuery: TrucksMinimalListQuery,
     private truckItemStore: TruckItemStore,
+    private trq: TruckDetailsQuery,
     private truckMinimalStore: TrucksMinimalListStore,
-    private DetailsDataService: DetailsDataService,
+    private DetailsDataService: DetailsDataService
   ) {}
 
   ngOnInit(): void {
     this.initTableOptions(this.activated_route.snapshot.data.truck);
-    
+
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
@@ -106,9 +107,6 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         }
         query.pipe(takeUntil(this.destroy$)).subscribe({
           next: (res: TruckResponse) => {
-            this.currentIndex = this.truckList.findIndex(
-              (truck) => truck.id === res.id
-            );
             this.truckConf(res);
             this.initTableOptions(res);
             if (this.router.url.includes('details')) {

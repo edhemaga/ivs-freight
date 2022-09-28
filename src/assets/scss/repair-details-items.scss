@@ -541,6 +541,7 @@ $transition: all 0.3s ease-in-out;
         .parking-template-text {
             color: $color-gray-dark;
             margin-left: 6px;
+            font-size: 14px;
             &::-moz-selection {
                 color: $color-gray-dark;
                 background: rgb(108, 108, 108, 0.2);

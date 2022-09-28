@@ -22,21 +22,22 @@
   </div>
   <div class="settings-body">
     <app-ta-re-card
-      *ngFor="let item of repairShopData?.data; let i = index; trackBy: identity"
+      *ngFor="
+        let item of repairShopData?.data;
+        let i = index;
+        trackBy: identity
+      "
       [cardNameCommon]="item.name"
-      [settingsIcon]="item.companyOwned?'ic_company.svg':''"
+      [settingsIcon]="item.companyOwned ? 'ic_company.svg' : ''"
       [hasFooter]="false"
       [haveHeaderText]="true"
       [options]="repairsActions"
       [optionsId]="item.id"
-      (dropActions)="repairDropActions($event,'repair-shop')"
+      (dropActions)="repairDropActions($event, 'repair-shop')"
       [paddingDots]="'11px 0px 0px 12px'"
     >
       <div class="settings-body-items">
-        <div
-          *ngIf="item.phone"
-          class="single-item"
-        >
+        <div *ngIf="item.phone" class="single-item">
           <svg-icon
             class="company-icons"
             src="assets/svg/common/ic_phone.svg"
@@ -63,7 +64,6 @@
         [cardName]="'Services'"
         [isCardOpen]="true"
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
       >
         <div
           class="repair-shop-template-data"

@@ -9,7 +9,10 @@
   [isModalValid]="factoringForm.valid"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="factoringForm" class="form-container">
+  <form
+    [formGroup]="factoringForm"
+    class="form-container form-container-without-mb"
+  >
     <div class="row">
       <div class="col-12">
         <app-ta-input
@@ -20,7 +23,7 @@
             label: 'Company Name',
             isRequired: true,
             textTransform: 'uppercase',
-            autoFocus: editData?.type !== 'edit' ? true : false
+            autoFocus: editData?.type !== 'edit'
           }"
         ></app-ta-input>
       </div>
@@ -76,7 +79,7 @@
           [inputConfig]="{
             name: 'address-unit',
             type: 'text',
-            label: 'Unit #',
+            label: 'Unit No.',
             textTransform: 'uppercase',
             minLength: 1,
             maxLength: 10

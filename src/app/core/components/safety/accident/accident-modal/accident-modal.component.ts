@@ -3,16 +3,14 @@ import {
   addressValidation,
   vinNumberValidation,
   descriptionValidation,
-} from './../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { DropZoneConfig } from '../../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
-import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../../services/form/form.service';
+import { Subject } from 'rxjs';
 import { NotificationService } from '../../../../services/notification/notification.service';
 
 @Component({
@@ -20,7 +18,7 @@ import { NotificationService } from '../../../../services/notification/notificat
   templateUrl: './accident-modal.component.html',
   styleUrls: ['./accident-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [ModalService, FormService],
+  providers: [ModalService],
 })
 export class AccidentModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -62,21 +60,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
   public addressOrigin: AddressEntity = null;
   public addressAuthority: AddressEntity = null;
 
-  public dropZoneConfigFile: DropZoneConfig = {
-    dropZoneType: 'files', // files | image | media
-    dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
-    dropZoneAvailableFiles: 'application/pdf, application/png, application/jpg',
-    multiple: true,
-    globalDropZone: false,
-  };
-
-  public dropZoneConfigMedia: DropZoneConfig = {
-    dropZoneType: 'media',
-    dropZoneAvailableFiles: 'video/mp4,video/x-m4v,video/*',
-    dropZoneSvg: 'assets/svg/common/ic_media_dropzone.svg',
-    multiple: false,
-    globalDropZone: false,
-  };
+  public isLocationAndShippingOpen: boolean = true;
 
   public isDirty: boolean;
 
@@ -84,8 +68,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private notificationService: NotificationService,
-    private modalService: ModalService,
-    private formService: FormService
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -165,23 +148,18 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
-
-    // this.formService.checkFormChange(this.accidentForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
     let dotAnimation = document.querySelector('.animation-two-tabs');
-    this.animationObject = {
-      value: this.selectedTab,
-      params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-    };
+    const animationTabTimeout = setTimeout(() => {
+      this.animationObject = {
+        value: this.selectedTab,
+        params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+      };
+      clearTimeout(animationTabTimeout);
+    });
   }
 
   public get violations(): FormArray {
@@ -306,9 +284,6 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       }
       case 'trailer-unit': {
         this.selectedTrailerUnit = event;
-        break;
-      }
-      case 'insurance-type': {
         break;
       }
       case 'insurance-type': {

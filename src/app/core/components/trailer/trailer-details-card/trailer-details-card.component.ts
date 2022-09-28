@@ -114,6 +114,8 @@ export class TrailerDetailsCardComponent
       return {
         id: item.id,
         name: item.trailerNumber,
+        svg: item.trailerType.logoName,
+        folder: 'common/trailers',
         status: item.status,
         active: item.id === this.trailer.id,
       };
@@ -126,6 +128,8 @@ export class TrailerDetailsCardComponent
           id: item.id,
           name: item.trailerNumber,
           status: item.status,
+          svg: item.trailerType.logoName,
+          folder: 'common/trailers',
           active: item.id === event.id,
         };
       });

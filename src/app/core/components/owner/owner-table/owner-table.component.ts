@@ -131,7 +131,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
               this.viewData = this.viewData.map((owner: any) => {
                 response.map((r: any) => {
                   if (owner.id === r.id) {
-                    owner.actionAnimation = 'delete';
+                    owner.actionAnimation = 'delete-multiple';
                   }
                 });
 
@@ -144,7 +144,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.viewData = closeAnimationAction(true, this.viewData);
 
                 clearInterval(inetval);
-              }, 1000);
+              }, 900);
 
               this.tableService.sendRowsSelected([]);
               this.tableService.sendResetSelectedColumns(true);
@@ -173,7 +173,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
               this.viewData = closeAnimationAction(false, this.viewData);
 
               clearInterval(inetval);
-            }, 1000);
+            }, 2300);
           }
 
           this.updateDataCount();
@@ -216,7 +216,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
               this.viewData.splice(ownerIndex, 1);
               clearInterval(inetval);
-            }, 1000);
+            }, 900);
           }
 
           this.updateDataCount();

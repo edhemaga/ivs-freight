@@ -14,7 +14,6 @@ import { TestTService } from '../../../state/test.service';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
-import { FormService } from '../../../../../services/form/form.service';
 import {
   convertDateToBackend,
   convertDateFromBackend,
@@ -52,8 +51,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     private testService: TestTService,
     private inputService: TaInputService,
     private notificationService: NotificationService,
-    private modalService: ModalService,
-    private formService: FormService
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -73,14 +71,6 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       testingDate: [null, Validators.required],
       note: [null],
     });
-
-    // this.formService.checkFormChange(this.drugForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

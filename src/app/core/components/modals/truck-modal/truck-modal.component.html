@@ -12,7 +12,14 @@
   >
   </app-ta-tab-switch>
 
-  <form [formGroup]="truckForm" class="form-container">
+  <form
+    [formGroup]="truckForm"
+    class="form-container"
+    [ngClass]="{
+      'form-container-without-mb': selectedTab === 1,
+      'form-container-with-inputs': selectedTab === 2
+    }"
+  >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 1">
@@ -28,7 +35,7 @@
                 textTransform: 'uppercase',
                 minLength: 1,
                 maxLength: 8,
-                autoFocus: editData?.type !== 'edit' ? true : false
+                autoFocus: editData?.type !== 'edit'
               }"
             ></app-ta-input>
           </div>
@@ -158,7 +165,7 @@
           <div class="divider"></div>
           <div
             class="checkbox-card-header"
-            [ngClass]="{ pointer: truckForm.get('companyOwned').value }"
+            [ngClass]="{ pointer: !truckForm.get('companyOwned').value }"
           >
             <app-ta-checkbox
               formControlName="companyOwned"
@@ -167,10 +174,17 @@
             <svg-icon
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
-              [ngClass]="{ visible: !truckForm.get('companyOwned')?.value }"
+              [ngClass]="{
+                visible: !truckForm.get('companyOwned')?.value,
+                rotate: !companyOwnedCheckboxCard
+              }"
+              (click)="toggleCheckboxCard()"
             ></svg-icon>
           </div>
           <div
+            *ngIf="
+              !truckForm.get('companyOwned').value && companyOwnedCheckboxCard
+            "
             class="checkbox-card-body"
             [ngClass]="{ 'active-20': !truckForm.get('companyOwned').value }"
           >
@@ -215,9 +229,7 @@
           </div>
         </div>
         <app-ta-input-note
-          #appNote
           formControlName="note"
-          (saveNoteValue)="saveNoteValue($event)"
           [isVisibleNote]="truckForm.get('note').value"
         ></app-ta-input-note>
       </div>
@@ -285,7 +297,7 @@
         </div>
 
         <!-- Third Row -->
-        <div class="truck-additional-three-columns">
+        <div class="truck-additional-two-columns">
           <app-ta-input-dropdown
             formControlName="apUnit"
             [inputConfig]="{
@@ -293,13 +305,60 @@
               type: 'text',
               label: 'AP Unit',
               isDropdown: true,
-              dropdownWidthClass: 'w-col-128'
+              dropdownWidthClass: 'w-col-196'
             }"
             [options]="apUnits"
             [activeItem]="selectedAPUnit"
             (selectedItem)="onSelectDropdown($event, 'ap-unit')"
           ></app-ta-input-dropdown>
 
+          <app-ta-input
+            formControlName="transmissionModel"
+            [inputConfig]="{
+              name: 'Transmission Model',
+              type: 'text',
+              label: 'Transmission Model'
+            }"
+          ></app-ta-input>
+        </div>
+
+        <!-- Fourth Row -->
+        <div class="truck-additional-three-columns">
+          <app-ta-input
+            formControlName="fuelTankSize"
+            [inputConfig]="{
+              name: 'Fuel Tank Size',
+              type: 'text',
+              label: 'Fuel Tank Size'
+            }"
+          ></app-ta-input>
+          <app-ta-input
+            formControlName="axles"
+            [inputConfig]="{
+              name: 'Axles',
+              type: 'number',
+              label: 'Axle',
+              minLength: 1,
+              maxLength: 2
+            }"
+          ></app-ta-input>
+          <app-ta-input-dropdown
+            formControlName="brakes"
+            [inputConfig]="{
+              name: 'Input Dropdown',
+              type: 'text',
+              label: 'Brakes',
+              isDropdown: true,
+              dropdownWidthClass: 'w-col-134'
+            }"
+            [options]="brakes"
+            [activeItem]="selectedBrakes"
+            (selectedItem)="onSelectDropdown($event, 'brakes')"
+          ></app-ta-input-dropdown>
+        </div>
+
+        <!-- Fifth Row -->
+        <div class="truck-additional-three-columns">
           <app-ta-input-dropdown
             formControlName="tireSizeId"
             [inputConfig]="{
@@ -313,35 +372,36 @@
             [activeItem]="selectedTireSize"
             (selectedItem)="onSelectDropdown($event, 'tire-size')"
           ></app-ta-input-dropdown>
-
-          <app-ta-input
-            formControlName="axles"
-            [inputConfig]="{
-              name: 'Axles',
-              type: 'number',
-              label: 'Axle',
-              minLength: 1,
-              maxLength: 2
-            }"
-          ></app-ta-input>
-        </div>
-
-        <!-- Fourth Row -->
-        <div class="truck-additional-three-columns">
           <app-ta-input-dropdown
-            formControlName="gearRatio"
+            formControlName="frontWheels"
             [inputConfig]="{
               name: 'Input Dropdown',
               type: 'text',
-              label: 'Gear Ratio',
+              label: 'Front Wheels',
               isDropdown: true,
-              dropdownWidthClass: 'w-col-128'
+              dropdownWidthClass: 'w-col-134'
             }"
-            [options]="gearRatios"
-            [activeItem]="selectedGearRatio"
-            (selectedItem)="onSelectDropdown($event, 'gear-ratio')"
+            [options]="frontWheels"
+            [activeItem]="selectedFrontWheels"
+            (selectedItem)="onSelectDropdown($event, 'front-wheels')"
           ></app-ta-input-dropdown>
+          <app-ta-input-dropdown
+            formControlName="rearWheels"
+            [inputConfig]="{
+              name: 'Input Dropdown',
+              type: 'text',
+              label: 'Rear Wheels',
+              isDropdown: true,
+              dropdownWidthClass: 'w-col-134'
+            }"
+            [options]="rearWheels"
+            [activeItem]="selectedRearWheels"
+            (selectedItem)="onSelectDropdown($event, 'rear-wheels')"
+          ></app-ta-input-dropdown>
+        </div>
 
+        <!-- Sixth Row -->
+        <div class="truck-additional-three-columns">
           <app-ta-input-dropdown
             formControlName="shifter"
             [inputConfig]="{
@@ -355,6 +415,21 @@
             [activeItem]="selectedShifter"
             (selectedItem)="onSelectDropdown($event, 'shifter')"
           ></app-ta-input-dropdown>
+
+          <app-ta-input-dropdown
+            formControlName="gearRatio"
+            [inputConfig]="{
+              name: 'Input Dropdown',
+              type: 'text',
+              label: 'Gear Ratio',
+              isDropdown: true,
+              dropdownWidthClass: 'w-col-134'
+            }"
+            [options]="gearRatios"
+            [activeItem]="selectedGearRatio"
+            (selectedItem)="onSelectDropdown($event, 'gear-ratio')"
+          ></app-ta-input-dropdown>
+
           <div class="double-bank-checkbox">
             <app-ta-checkbox
               formControlName="doubleBank"
@@ -365,7 +440,7 @@
           </div>
         </div>
 
-        <!-- Fifth Row -->
+        <!-- Seventh Row -->
         <div class="truck-additional-fifth-columns">
           <app-ta-checkbox
             formControlName="refrigerator"
@@ -396,7 +471,7 @@
           ></app-ta-checkbox>
         </div>
 
-        <!-- Sixth Row -->
+        <!-- Eighth Row -->
         <div class="truck-additional-two-columns">
           <app-ta-input-dropdown
             formControlName="tollTransponder"
@@ -419,16 +494,28 @@
               name: 'Device No',
               type: 'number',
               label: 'Device No.',
-              disabled: true
+              isDisabled: true
             }"
           ></app-ta-input>
         </div>
 
-        <!-- Seventh Row -->
+        <!-- Ninth Row -->
         <div
           class="truck-additional-three-columns"
-          [ngClass]="{ 'row-mb-12': !truckForm.get('companyOwned').value }"
+          [ngClass]="{ 'row-no-mb': !truckForm.get('companyOwned').value }"
         >
+          <app-ta-input
+            formControlName="insurancePolicy"
+            [inputConfig]="{
+              name: 'insurance-policy',
+              type: 'text',
+              label: 'Insurance Policy',
+              minLength: 8,
+              maxLength: 14,
+              textTransform: 'uppercase'
+            }"
+          ></app-ta-input>
+
           <app-ta-input
             formControlName="mileage"
             [inputConfig]="{
@@ -439,18 +526,6 @@
               maxLength: 10,
               placeholderText: 'mi',
               thousandSeparator: true
-            }"
-          ></app-ta-input>
-
-          <app-ta-input
-            formControlName="insurancePolicy"
-            [inputConfig]="{
-              name: 'insurance-policy',
-              type: 'text',
-              label: 'Insurance Policy',
-              minLength: 8,
-              maxLength: 14,
-              textTransform: 'uppercase'
             }"
           ></app-ta-input>
 
@@ -478,10 +553,10 @@
           ></app-ta-input>
         </div>
 
-        <!-- Eight Row -->
+        <!-- Ten Row -->
         <div
           *ngIf="truckForm.get('companyOwned').value"
-          class="truck-additional-two-columns row-mb-12"
+          class="truck-additional-two-columns row-no-mb"
         >
           <app-ta-input
             formControlName="purchaseDate"

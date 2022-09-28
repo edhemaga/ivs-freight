@@ -196,54 +196,54 @@ export class EventService {
     }
 
     /**
-     * @param eventSpecParamsCompanyUserId 
-     * @param eventSpecParamsPageIndex 
-     * @param eventSpecParamsPageSize 
-     * @param eventSpecParamsCompanyId 
-     * @param eventSpecParamsSort 
-     * @param eventSpecParamsSearch 
-     * @param eventSpecParamsSearch1 
-     * @param eventSpecParamsSearch2 
+     * @param companyUserId 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param companyId 
+     * @param sort 
+     * @param search 
+     * @param search1 
+     * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiEventListGet(eventSpecParamsCompanyUserId?: number, eventSpecParamsPageIndex?: number, eventSpecParamsPageSize?: number, eventSpecParamsCompanyId?: number, eventSpecParamsSort?: string, eventSpecParamsSearch?: string, eventSpecParamsSearch1?: string, eventSpecParamsSearch2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<Array<EventResponse>>;
-    public apiEventListGet(eventSpecParamsCompanyUserId?: number, eventSpecParamsPageIndex?: number, eventSpecParamsPageSize?: number, eventSpecParamsCompanyId?: number, eventSpecParamsSort?: string, eventSpecParamsSearch?: string, eventSpecParamsSearch1?: string, eventSpecParamsSearch2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<Array<EventResponse>>>;
-    public apiEventListGet(eventSpecParamsCompanyUserId?: number, eventSpecParamsPageIndex?: number, eventSpecParamsPageSize?: number, eventSpecParamsCompanyId?: number, eventSpecParamsSort?: string, eventSpecParamsSearch?: string, eventSpecParamsSearch1?: string, eventSpecParamsSearch2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<Array<EventResponse>>>;
-    public apiEventListGet(eventSpecParamsCompanyUserId?: number, eventSpecParamsPageIndex?: number, eventSpecParamsPageSize?: number, eventSpecParamsCompanyId?: number, eventSpecParamsSort?: string, eventSpecParamsSearch?: string, eventSpecParamsSearch1?: string, eventSpecParamsSearch2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiEventListGet(companyUserId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<Array<EventResponse>>;
+    public apiEventListGet(companyUserId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<Array<EventResponse>>>;
+    public apiEventListGet(companyUserId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<Array<EventResponse>>>;
+    public apiEventListGet(companyUserId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
-        if (eventSpecParamsCompanyUserId !== undefined && eventSpecParamsCompanyUserId !== null) {
+        if (companyUserId !== undefined && companyUserId !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>eventSpecParamsCompanyUserId, 'EventSpecParams.CompanyUserId');
+            <any>companyUserId, 'CompanyUserId');
         }
-        if (eventSpecParamsPageIndex !== undefined && eventSpecParamsPageIndex !== null) {
+        if (pageIndex !== undefined && pageIndex !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>eventSpecParamsPageIndex, 'EventSpecParams.PageIndex');
+            <any>pageIndex, 'PageIndex');
         }
-        if (eventSpecParamsPageSize !== undefined && eventSpecParamsPageSize !== null) {
+        if (pageSize !== undefined && pageSize !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>eventSpecParamsPageSize, 'EventSpecParams.PageSize');
+            <any>pageSize, 'PageSize');
         }
-        if (eventSpecParamsCompanyId !== undefined && eventSpecParamsCompanyId !== null) {
+        if (companyId !== undefined && companyId !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>eventSpecParamsCompanyId, 'EventSpecParams.CompanyId');
+            <any>companyId, 'CompanyId');
         }
-        if (eventSpecParamsSort !== undefined && eventSpecParamsSort !== null) {
+        if (sort !== undefined && sort !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>eventSpecParamsSort, 'EventSpecParams.Sort');
+            <any>sort, 'Sort');
         }
-        if (eventSpecParamsSearch !== undefined && eventSpecParamsSearch !== null) {
+        if (search !== undefined && search !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>eventSpecParamsSearch, 'EventSpecParams.Search');
+            <any>search, 'Search');
         }
-        if (eventSpecParamsSearch1 !== undefined && eventSpecParamsSearch1 !== null) {
+        if (search1 !== undefined && search1 !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>eventSpecParamsSearch1, 'EventSpecParams.Search1');
+            <any>search1, 'Search1');
         }
-        if (eventSpecParamsSearch2 !== undefined && eventSpecParamsSearch2 !== null) {
+        if (search2 !== undefined && search2 !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>eventSpecParamsSearch2, 'EventSpecParams.Search2');
+            <any>search2, 'Search2');
         }
 
         let headers = this.defaultHeaders;

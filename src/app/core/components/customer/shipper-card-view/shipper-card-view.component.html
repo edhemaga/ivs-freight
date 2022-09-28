@@ -12,35 +12,33 @@
     <div class="repair-information-wrapper">
       <div class="repair-information-item" *ngIf="shipper?.phone">
         <span
-        tooltipBackground="#6c6c6c"
-        ngbTooltip
-        mainTooltip="Call"
-        position="top"
-        class="semi-tooltip"
-      >
-        <svg-icon
-          class="repair-icon"
-          src="assets/svg/common/ic_phone.svg"
-        ></svg-icon>
+          tooltipBackground="#6c6c6c"
+          ngbTooltip
+          mainTooltip="Call"
+          position="top"
+          class="semi-tooltip"
+        >
+          <svg-icon
+            class="repair-icon"
+            src="assets/svg/common/ic_phone.svg"
+          ></svg-icon>
         </span>
         <app-ta-copy [copyValue]="shipper?.phone"></app-ta-copy>
-       
       </div>
       <div class="repair-information-item" *ngIf="shipper?.email">
         <span
-        tooltipBackground="#6c6c6c"
-        ngbTooltip
-        mainTooltip="Send Email"
-        position="top"
-        class="semi-tooltip"
-      >
-        <svg-icon
-          class="repair-icon"
-          src="assets/svg/common/ic_email.svg"
-        ></svg-icon>
+          tooltipBackground="#6c6c6c"
+          ngbTooltip
+          mainTooltip="Send Email"
+          position="top"
+          class="semi-tooltip"
+        >
+          <svg-icon
+            class="repair-icon"
+            src="assets/svg/common/ic_email.svg"
+          ></svg-icon>
         </span>
         <app-ta-copy [copyValue]="shipper?.email"></app-ta-copy>
-      
       </div>
       <div class="repair-information-item">
         <svg-icon
@@ -55,7 +53,6 @@
     <div class="repair-cards">
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="false"
         [cardName]="'Avillable Hours'"
         [isCardOpen]="true"
@@ -103,19 +100,15 @@
       </app-ta-custom-card>
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [cardName]="'Average Waiting Time'"
         [tooltipName]="'View in Modal'"
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
         [isCardOpen]="true"
-      > 
-      <div class="charts-template perfomance">
-        <app-ta-tab-switch
-          [tabs]="shipperTabs"
-          [type]="'type2-modal-popup'"
-        >
-        </app-ta-tab-switch>
+      >
+        <div class="charts-template perfomance">
+          <app-ta-tab-switch [tabs]="shipperTabs" [type]="'type2-modal-popup'">
+          </app-ta-tab-switch>
         </div>
       </app-ta-custom-card>
       <!--------Note--------->
@@ -123,7 +116,6 @@
       <div class="note-cards">
         <app-ta-input-note
           [formControl]="note"
-          [isVisibleSecondDivider]="false"
           [isVisibleArrow]="true"
           [minRows]="1"
           [isVisibleDivider]="false"

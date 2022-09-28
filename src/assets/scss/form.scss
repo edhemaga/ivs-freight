@@ -4,6 +4,16 @@
 .form-container {
   margin-top: 26px;
 
+  // Specific Classes to add on settings/location/modals
+  &.form-container-mt-12 {
+    margin-top: 12px !important;
+  }
+
+  &.row-settings-location-additional {
+    margin-top: 26px !important;
+    margin-bottom: 10px !important;
+  }
+
   label {
     &.control-label {
       margin-bottom: 20px;
@@ -22,22 +32,13 @@
     margin-top: 26px;
   }
 
-  .dropdown-row {
-    margin-bottom: 28px !important;
-  }
-
   // If has something below row
   .last-row {
     margin-bottom: 22px !important;
   }
 
-  // Specific Classes to add on settings/location/modals
-  &.form-container-mt-12 {
-    margin-top: 12px !important;
-  }
-  &.row-settings-location-additional {
-    margin-top: 26px !important;
-    margin-bottom: 10px !important;
+  .dropdown-row {
+    margin-bottom: 28px !important;
   }
 
   // Custom
@@ -65,8 +66,16 @@
     margin-bottom: 12px !important;
   }
 
+  .row-mb-22 {
+    margin-bottom: 22px !important;
+  }
+
   .row-no-m {
     margin-top: 0px !important;
+    margin-bottom: 0px !important;
+  }
+
+  .row-no-mb {
     margin-bottom: 0px !important;
   }
 
@@ -118,6 +127,20 @@
     grid-template-columns: repeat(2, 100%);
   }
 
+  //------------------------ Different Form Container Views ---------------------------------------------------
+
+  &.form-container-with-inputs {
+    margin-bottom: 22px !important;
+  }
+
+  &.form-container-with-card {
+    margin-bottom: 12px !important;
+  }
+
+  &.form-container-without-mb {
+    margin-bottom: 0px !important;
+  }
+
   //------------------------------------------------ Custom Schedule Of Inputs ------------------------------------------------------
 
   //---------------- Bank Inputs ----------------
@@ -131,7 +154,11 @@
 
     &.custom-bank-row-driver {
       grid-template-columns: 184px 160px 248px;
-      margin-bottom: 20px;
+      margin-bottom: 0px;
+    }
+
+    &.custom-bank-row-repair-shop {
+      margin-bottom: 0px !important;
     }
   }
 
@@ -160,7 +187,7 @@
     align-items: center;
     -moz-column-gap: 22px;
     column-gap: 22px;
-    margin-bottom: 22px;
+    padding-left: 6px;
 
     &.extended {
       grid-template-columns: 59px 143px 116px 1fr;
@@ -179,7 +206,7 @@
     gap: 22px;
     align-items: center;
     padding-left: 6px;
-    margin-bottom: 26px;
+
     p {
       margin: 0;
       padding: 0;
@@ -202,13 +229,6 @@
     &-general {
       margin-top: 20px;
     }
-
-    &-payroll {
-      margin-bottom: 0px;
-      p {
-        margin-right: 13px;
-      }
-    }
   }
 
   //---------------- Custom Checkbox Card With Content In ----------------
@@ -219,7 +239,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 5px 4px;
+      padding: 7px 4px;
       line-height: 18px;
 
       &.pointer {
@@ -256,11 +276,18 @@
             fill: #b7b7b7;
           }
         }
+
         &.visible {
           svg {
             transform: rotate(180deg);
             transition: all 0.3s ease-in-out;
             opacity: 1;
+          }
+        }
+
+        &.rotate {
+          svg {
+            transform: rotate(0deg);
           }
         }
       }
@@ -406,12 +433,8 @@
   .emergency-contact {
     display: grid;
     grid-template-columns: 214px 190px 188px;
-    align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
-    height: 36px;
-    margin-top: 11px;
-    transition: all 0.3s ease-in-out;
   }
 }
 
@@ -462,7 +485,6 @@
 .shipper-work-hours {
   display: grid;
   grid-template-columns: 112px 90px 186px 186px;
-  grid-template-rows: 26px;
   -moz-column-gap: 12px;
   column-gap: 12px;
   align-items: center;
@@ -504,7 +526,7 @@
 
 .truck-additional-three-columns {
   display: grid;
-  grid-template-columns: 128px 164px 140px;
+  grid-template-columns: 164px repeat(2, 134px);
   -moz-column-gap: 12px;
   column-gap: 12px;
   align-items: center;
@@ -659,7 +681,6 @@
   grid-template-columns: 140px 1fr;
   grid-template-rows: 26px;
   align-items: center;
-  margin: 12px 0px;
   padding-left: 6px;
 
   .gate-field,
@@ -673,7 +694,21 @@
       font-size: 14px;
       font-weight: 500;
       color: #919191;
+
+      &::-moz-selection {
+        background-color: rgb(145, 145, 145, 0.2);
+        color: #919191;
+      }
+
+      &::selection {
+        background-color: rgb(145, 145, 145, 0.2);
+        color: #919191;
+      }
     }
+  }
+
+  &-location-terminal {
+    margin-bottom: 22px;
   }
 }
 //---------------- Repair Shop Services ----------------
@@ -816,7 +851,9 @@
   align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
-  margin-bottom: 22px;
+  &-2 {
+    margin-bottom: 22px;
+  }
 }
 .violation-modal-row-3,
 .violation-modal-row-4 {
@@ -826,7 +863,6 @@
   align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
-  margin-bottom: 22px;
 }
 .violation-modal-row-5,
 .violation-modal-row-6 {
@@ -836,7 +872,6 @@
   align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
-  margin-bottom: 22px;
 }
 .violation-modal-autority-details-row {
   display: grid;
@@ -845,9 +880,10 @@
   align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
-  margin-bottom: 22px;
-  &-1 {
-    margin-bottom: 32px;
+  margin-bottom: 32px;
+
+  &-second {
+    margin-bottom: 0px;
   }
 }
 .violation-modal-location-shipping-row-3 {
@@ -857,7 +893,6 @@
   align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
-  margin-bottom: 22px;
 }
 
 //---------------- Accident Report, Federally, Recordable  ----------------
@@ -1119,39 +1154,36 @@
 }
 
 //---------------- Profile Update Old Password ----------------
-.profile-update-oldpassword-row {
+.profile-update-old-password-row {
   display: grid;
-  grid-template-columns: 378px 1fr;
+  grid-template-columns: 352px 1fr;
   align-items: center;
-  -moz-column-gap: 22px;
-  column-gap: 22px;
-  padding-left: 6px;
-  margin-bottom: 12px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin-bottom: 22px;
+  position: relative;
 
-  .old-password-text {
-    font-size: 14px;
-    line-height: 18px;
-    font-weight: 500;
-    color: #6c6c6c;
-    margin: 0;
+  .old-password-message {
+    font-size: 11px;
+    font-weight: 600;
+    color: #aaaaaa;
+    position: absolute;
+    top: 27px;
+    left: 6px;
+    p {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
 
     &::-moz-selection {
-      color: #6c6c6c;
-      background-color: rgb(108, 108, 108, 0.2);
+      background-color: rgb(170, 170, 170, 0.2);
+      color: #aaaaaa;
     }
 
     &::selection {
-      color: #6c6c6c;
-      background-color: rgb(108, 108, 108, 0.2);
+      background-color: rgb(170, 170, 170, 0.2);
+      color: #aaaaaa;
     }
-  }
-
-  .old-password-content {
-    display: grid;
-    grid-template-columns: 172px 26px;
-    align-items: center;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
   }
 
   .old-password-checkmark {
@@ -1164,33 +1196,38 @@
     justify-content: center;
     text-align: center;
     cursor: pointer;
-    padding-bottom: 2px;
+    padding: 5px 15px;
 
-    svg-icon {
-      svg {
-        width: 18px;
-        height: 18px;
-        path {
-          fill: #b7b7b7;
-        }
-      }
+    p {
+      margin: 0;
+      padding: 0;
+      color: #aaaaaa;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
     }
 
     &.valid {
-      background-color: #6d82c7;
-      svg-icon {
-        svg {
-          path {
-            fill: #ffffff;
-          }
-        }
+      background-color: #3074d3;
+      transition: all 0.3s ease-in-out;
+
+      p {
+        color: #ffffff;
       }
 
       &:hover {
-        background-color: #536bc2;
-        transition: all 0.3s ease-in-out;
+        background-color: #255bb9;
       }
     }
   }
 }
+//---------------- Location Parking Financial Card ----------------
+.location-parking-financial-card {
+  display: grid;
+  grid-template-columns: repeat(3, 144px);
+  grid-template-rows: 26px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+}
+
 // ------------------------------------------------ end ------------------------------------------------

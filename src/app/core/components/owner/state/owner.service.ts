@@ -8,7 +8,7 @@ import {
   OwnerService,
   UpdateOwnerCommand,
 } from 'appcoretruckassist';
-import { Observable, tap } from 'rxjs';
+import {Observable, of, tap} from 'rxjs';
 import { OwnerActiveQuery } from './owner-active-state/owner-active.query';
 import { OwnerActiveStore } from './owner-active-state/owner-active.store';
 import { OwnerInactiveQuery } from './owner-inactive-state/owner-inactive.query';
@@ -108,17 +108,18 @@ export class OwnerTService {
     search1?: string,
     search2?: string
   ): Observable<GetOwnerListResponse> {
-    return this.ownerService.apiOwnerListGet(
-      active,
-      companyOwnerId,
-      pageIndex,
-      pageSize,
-      companyId,
-      sort,
-      search,
-      search1,
-      search2
-    );
+    // return this.ownerService.apiOwnerListGet(
+    //   active,
+    //   companyOwnerId,
+    //   pageIndex,
+    //   pageSize,
+    //   companyId,
+    //   sort,
+    //   search,
+    //   search1,
+    //   search2
+    // );
+    return of();
   }
 
   // Get Owner By Id

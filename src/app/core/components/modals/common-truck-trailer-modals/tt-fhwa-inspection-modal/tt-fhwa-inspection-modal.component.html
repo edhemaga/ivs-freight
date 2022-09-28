@@ -14,7 +14,10 @@
   [isModalValid]="fhwaInspectionForm.valid"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="fhwaInspectionForm" class="form-container">
+  <form
+    [formGroup]="fhwaInspectionForm"
+    class="form-container form-container-without-mb"
+  >
     <div class="row last-row">
       <div class="col-12">
         <app-ta-input

@@ -65,10 +65,10 @@
                   <span class="hours" *ngIf="loads?.wait.hours > 0"
                     >{{ loads?.wait.hours }} h</span
                   >
-                  <span class="hours" *ngIf="loads?.wait.days <= 0">{{
+                  <span class="hours" *ngIf="loads?.wait.hours <= 0 && loads?.wait.days <= 0">{{
                     loads?.wait.minutes
-                  }}</span>
-                  min</span
+                  }} min</span>
+                  </span
                 >
               </div>
             </div>
@@ -81,7 +81,6 @@
           <app-ta-custom-card
             *ngFor="let shipperContact of shipperContacts; trackBy: identity"
             [bodyTemplate]="'card'"
-            [animationsDisabled]="false"
             [hasDivider]="false"
             [cardName]="shipperContact.department.name"
             [isCardOpen]="true"

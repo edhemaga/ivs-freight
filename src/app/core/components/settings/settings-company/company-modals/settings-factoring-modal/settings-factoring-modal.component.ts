@@ -9,7 +9,6 @@ import { SettingsCompanyService } from '../../../state/company-state/settings-co
 import { UpdateFactoringCompanyCommand } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
-import { FormService } from '../../../../../services/form/form.service';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
 import { phoneFaxRegex } from '../../../../shared/ta-input/ta-input.regex-validations';
@@ -18,7 +17,7 @@ import { phoneFaxRegex } from '../../../../shared/ta-input/ta-input.regex-valida
   selector: 'app-settings-factoring-modal',
   templateUrl: './settings-factoring-modal.component.html',
   styleUrls: ['./settings-factoring-modal.component.scss'],
-  providers: [ModalService, FormService],
+  providers: [ModalService],
 })
 export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -35,7 +34,6 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService,
     private settingsCompanyService: SettingsCompanyService
   ) {}
 
@@ -62,14 +60,6 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
-
-    // this.formService.checkFormChange(this.factoringForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onHandleAddress(event: {

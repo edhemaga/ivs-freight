@@ -20,6 +20,7 @@ api/dispatch.service.ts
 api/driver.service.ts
 api/employmentHistory.service.ts
 api/event.service.ts
+api/fuel.service.ts
 api/geolocation.service.ts
 api/inspection.service.ts
 api/load.service.ts
@@ -63,7 +64,11 @@ model/accidentResponse.ts
 model/accidentShortResponse.ts
 model/accidentShortResponsePagination.ts
 model/accountColorResponse.ts
+model/activateDeactivateEFSFuelCard.ts
 model/addApplicantToFavouriteCommand.ts
+model/addFuelCardCommand.ts
+model/addFuelStopCommand.ts
+model/addFuelTransactionCommand.ts
 model/addressEntity.ts
 model/addressListResponse.ts
 model/addressResponse.ts
@@ -147,6 +152,7 @@ model/companyUserModalResponse.ts
 model/companyUserResponse.ts
 model/companyUserResponsePagination.ts
 model/companyUserShortResponse.ts
+model/connectEFSCommand.ts
 model/contactColorResponse.ts
 model/contactEmailResponse.ts
 model/contactEmailType.ts
@@ -183,6 +189,7 @@ model/createDrugAndAlcoholReviewCommand.ts
 model/createEducationCommand.ts
 model/createEducationReviewCommand.ts
 model/createEventCommand.ts
+model/createFuelItemCommand.ts
 model/createInspectionCommand.ts
 model/createInsurancePolicyAddonCommand.ts
 model/createInsurancePolicyCommand.ts
@@ -253,6 +260,11 @@ model/driverShortResponsePagination.ts
 model/drugAndAlcoholFeedbackResponse.ts
 model/drugAndAlcoholReviewResponse.ts
 model/editCdlCommand.ts
+model/editEFSFuelTransactionCommand.ts
+model/editFuelCardCommand.ts
+model/editFuelItemCommand.ts
+model/editFuelStopCommand.ts
+model/editFuelTransactionCommand.ts
 model/editMedicalCommand.ts
 model/editMvrCommand.ts
 model/editTestCommand.ts
@@ -271,8 +283,23 @@ model/eventType.ts
 model/factoringCompany.ts
 model/fleetType.ts
 model/forgotPasswordCommand.ts
+model/fuelCardListResponse.ts
+model/fuelCardResponse.ts
+model/fuelCardResponsePagination.ts
+model/fuelCardShortResponse.ts
+model/fuelDispatchHistoryResponse.ts
+model/fuelItemResponse.ts
+model/fuelStopExtensionResponse.ts
+model/fuelStopListResponse.ts
+model/fuelStopResponse.ts
+model/fuelStopResponsePagination.ts
+model/fuelStopShortResponse.ts
+model/fuelTransactionListResponse.ts
+model/fuelTransactionResponse.ts
+model/fuelTransactionResponsePagination.ts
 model/getApplicantListQuery.ts
 model/getApplicantListResponse.ts
+model/getAvailableCreditEFSQuery.ts
 model/getBrokerListResponse.ts
 model/getCdlModalResponse.ts
 model/getCommentModalResponse.ts
@@ -281,6 +308,8 @@ model/getCompanyContactLabelListResponse.ts
 model/getCompanyContactListResponse.ts
 model/getCompanyUserListResponse.ts
 model/getDriverModalResponse.ts
+model/getEFSTransactionCommand.ts
+model/getFuelModalResponse.ts
 model/getHazardousMaterialDropdownModalQuery.ts
 model/getMapListResponse.ts
 model/getMvrModalResponse.ts
@@ -304,6 +333,7 @@ model/insuranceTypeResponse.ts
 model/inviteEmployerResponse.ts
 model/invitePreviousEmployerCommand.ts
 model/invoiceAgeingResponse.ts
+model/itemFuel.ts
 model/legResponse.ts
 model/loadBillingAdditionalCommand.ts
 model/loadBillingAdditionalResponse.ts
@@ -343,6 +373,7 @@ model/mapMinimalResponse.ts
 model/mapMinimalResponsePagination.ts
 model/mapResponse.ts
 model/medicalResponse.ts
+model/milesByStateResponse.ts
 model/models.ts
 model/moveMultipleToApplicantsCommand.ts
 model/moveToApplicantsCommand.ts
@@ -441,6 +472,7 @@ model/selectCompanyCommand.ts
 model/selectCompanyResponse.ts
 model/serviceType.ts
 model/serviceTypeResponse.ts
+model/setConnectStatusEFSCommand.ts
 model/setNewPasswordCommand.ts
 model/sevenDaysHosFeedbackResponse.ts
 model/sevenDaysHosReviewResponse.ts

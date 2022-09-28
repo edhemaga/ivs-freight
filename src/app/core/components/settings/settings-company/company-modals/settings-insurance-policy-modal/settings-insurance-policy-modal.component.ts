@@ -28,7 +28,6 @@ import {
 
 import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../../../services/form/form.service';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import {
   FormGroup,
@@ -49,7 +48,7 @@ import {
   selector: 'app-settings-insurance-policy-modal',
   templateUrl: './settings-insurance-policy-modal.component.html',
   styleUrls: ['./settings-insurance-policy-modal.component.scss'],
-  providers: [ModalService, FormService],
+  providers: [ModalService],
 })
 export class SettingsInsurancePolicyModalComponent
   implements OnInit, OnDestroy
@@ -83,7 +82,6 @@ export class SettingsInsurancePolicyModalComponent
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService,
     private settingsCompanyService: SettingsCompanyService
   ) {}
 
@@ -155,14 +153,6 @@ export class SettingsInsurancePolicyModalComponent
       'email',
       this.destroy$
     );
-
-    // this.formService.checkFormChange(this.insurancePolicyForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -1015,6 +1005,46 @@ export class SettingsInsurancePolicyModalComponent
             break;
           }
         }
+      }
+    }
+  }
+
+  // Checkbox Card
+  public commericalGeneralCheckboxCard: boolean = true;
+  public automobileLiabilityCheckboxCard: boolean = true;
+  public motorTruckCargoBreakDownCheckboxCard: boolean = true;
+  public physicalDamageDownCheckboxCard: boolean = true;
+  public trailerInterchangeCheckboxCard: boolean = true;
+
+  public toggleCheckboxCard(action: string) {
+    switch (action) {
+      case 'commercial-general': {
+        this.commericalGeneralCheckboxCard =
+          !this.commericalGeneralCheckboxCard;
+        break;
+      }
+      case 'automobile-liability': {
+        this.automobileLiabilityCheckboxCard =
+          !this.automobileLiabilityCheckboxCard;
+        break;
+      }
+      case 'motor-truck-cargo': {
+        this.motorTruckCargoBreakDownCheckboxCard =
+          !this.motorTruckCargoBreakDownCheckboxCard;
+        break;
+      }
+      case 'physical-damage': {
+        this.physicalDamageDownCheckboxCard =
+          !this.physicalDamageDownCheckboxCard;
+        break;
+      }
+      case 'trailer-interchange': {
+        this.trailerInterchangeCheckboxCard =
+          !this.trailerInterchangeCheckboxCard;
+        break;
+      }
+      default: {
+        break;
       }
     }
   }

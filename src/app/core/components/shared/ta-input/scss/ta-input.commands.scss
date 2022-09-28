@@ -1,3 +1,5 @@
+@import "./ta-input.colors.scss";
+
 .ta-input-commands {
   display: flex;
   align-items: center;
@@ -18,13 +20,13 @@
         height: 18px !important;
         overflow: visible;
         path {
-          fill: #6c6c6c;
+          fill: $input-commands-path-fill-normal;
         }
         rect {
           transition: transform 0.3s;
           transform: scale(1);
           transform-origin: center;
-          fill: #b7b7b7;
+          fill: $input-commands-rect-fill-normal;
         }
       }
 
@@ -35,22 +37,22 @@
             transform: scale(1.2);
             transform-origin: center;
             transition: transform 0.3s;
-            fill: #eeeeee;
+            fill: $input-commands-rect-fill-normal-hover;
           }
         }
       }
 
       &.invalid-focus-in {
         path {
-          fill: #ef5350 !important;
+          fill: $input-commands-path-fill-invalid-focus !important;
         }
         rect {
-          fill: #ffcdd2 !important;
+          fill: $input-commands-rect-fill-invalid-focus !important;
         }
         &:hover {
           svg {
             rect {
-              fill: #fffafa !important;
+              fill: $input-commands-rect-fill-invalid-focus-hover !important;
             }
           }
         }
@@ -71,13 +73,13 @@
         height: 18px !important;
         overflow: visible;
         path {
-          fill: #6c6c6c;
+          fill: $input-commands-path-fill-normal;
         }
         rect {
           transition: transform 0.3s;
           transform: scale(1);
           transform-origin: center;
-          fill: #b7b7b7;
+          fill: $input-commands-rect-fill-normal;
         }
       }
 
@@ -88,22 +90,22 @@
             transform: scale(1.2);
             transform-origin: center;
             transition: transform 0.3s;
-            fill: #eeeeee;
+            fill: $input-commands-rect-fill-normal-hover;
           }
         }
       }
 
       &.invalid-focus-in {
         path {
-          fill: #ef5350 !important;
+          fill: $input-commands-path-fill-invalid-focus !important;
         }
         rect {
-          fill: #ffcdd2 !important;
+          fill: $input-commands-rect-fill-invalid-focus !important;
         }
         &:hover {
           svg {
             rect {
-              fill: #fffafa !important;
+              fill: $input-commands-rect-fill-invalid-focus-hover !important;
             }
           }
         }
@@ -129,13 +131,13 @@
           height: 18px !important;
           overflow: visible;
           path {
-            fill: #ffffff;
+            fill: $input-commands-path-fill-address-flag;
           }
           rect {
             transition: transform 0.3s;
             transform: scale(1);
             transform-origin: center;
-            fill: #b7b7b7;
+            fill: $input-commands-rect-fill-address-flag;
           }
         }
 
@@ -146,7 +148,7 @@
               transform: scale(1.2);
               transform-origin: center;
               transition: transform 0.3s;
-              fill: #6c6c6c;
+              fill: $input-commands-rect-fill-address-flag-hover;
             }
           }
         }
@@ -166,13 +168,13 @@
           height: 18px !important;
           overflow: visible;
           path {
-            fill: #ffffff;
+            fill: $input-commands-path-fill-address-flag;
           }
           rect {
             transition: transform 0.3s;
             transform: scale(1);
             transform-origin: center;
-            fill: #b7b7b7;
+            fill: $input-commands-rect-fill-address-flag;
           }
         }
 
@@ -183,7 +185,7 @@
               transform: scale(1.2);
               transform-origin: center;
               transition: transform 0.3s;
-              fill: #6c6c6c;
+              fill: $input-commands-rect-fill-address-flag-hover;
             }
           }
         }

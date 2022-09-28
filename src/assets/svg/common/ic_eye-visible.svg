@@ -1,21 +1,6 @@
-<svg id="Group_61959" data-name="Group 61959" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
-  <defs>
-    <clipPath id="clip-path">
-      <rect id="Rectangle_44880" data-name="Rectangle 44880" width="16" height="16" fill="#b7b7b7"/>
-    </clipPath>
-  </defs>
-  <g id="Group_61958" data-name="Group 61958" clip-path="url(#clip-path)">
-    <g id="Group_61957" data-name="Group 61957">
-      <g id="Group_61956" data-name="Group 61956" clip-path="url(#clip-path)">
-        <g id="Group_61955" data-name="Group 61955" opacity="0">
-          <g id="Group_61954" data-name="Group 61954">
-            <g id="Group_61953" data-name="Group 61953" clip-path="url(#clip-path)">
-              <rect id="Rectangle_44877" data-name="Rectangle 44877" width="16" height="16" fill="#b7b7b7"/>
-            </g>
-          </g>
-        </g>
-        <path id="Path_33737" data-name="Path 33737" d="M46.314,132.435a7.921,7.921,0,0,0-14.226,0,.809.809,0,0,0,0,.73,7.921,7.921,0,0,0,14.226,0,.809.809,0,0,0,0-.73M39.2,136.4a3.6,3.6,0,1,1,3.6-3.6,3.6,3.6,0,0,1-3.6,3.6h0m0-6a2.383,2.383,0,0,0-.633.095,1.2,1.2,0,0,1-1.673,1.673A2.395,2.395,0,1,0,39.2,130.4" transform="translate(-31.201 -124.8)" fill="#b7b7b7"/>
-      </g>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+  <g id="Hidden" transform="translate(-836 -700)">
+    <rect id="Rectangle_73495" data-name="Rectangle 73495" width="18" height="18" transform="translate(836 700)" fill="#6f9ee0" opacity="0"/>
+    <path id="Union_824" data-name="Union 824" d="M21204.229,24467.363a.7.7,0,0,1-.7-.7v-1.26a.7.7,0,0,1,.7-.7h.6a.7.7,0,0,1,.7.7v1.26a.7.7,0,0,1-.7.7Zm-3.7-.65-.559-.2a.7.7,0,0,1-.418-.9l.43-1.186a.7.7,0,0,1,.9-.422l.566.207a.7.7,0,0,1,.416.9l-.43,1.186a.708.708,0,0,1-.662.461A.694.694,0,0,1,21200.525,24466.713Zm7.111-.424-.43-1.18a.7.7,0,0,1,.416-.9l.561-.2a.7.7,0,0,1,.9.416l.43,1.186a.7.7,0,0,1-.418.9l-.564.2a.7.7,0,0,1-.9-.418Zm-10.93-1.658-.455-.387a.688.688,0,0,1-.086-.982l.8-.971a.708.708,0,0,1,.988-.086l.461.387a.7.7,0,0,1,.086.982l-.811.971a.707.707,0,0,1-.988.086Zm14.656-.1-.811-.965a.7.7,0,0,1,.086-.982l.461-.387a.706.706,0,0,1,.988.086l.8.965a.7.7,0,0,1-.086.988l-.455.381a.694.694,0,0,1-.451.166A.7.7,0,0,1,21211.363,24464.533Zm-10.646-1.9a8.822,8.822,0,0,1-3.408-3,.707.707,0,0,1,.252-1.02l.969-.521a.689.689,0,0,1,.9.2,6.151,6.151,0,0,0,10.213.006.677.677,0,0,1,.891-.209l.975.521a.706.706,0,0,1,.246,1.02,8.652,8.652,0,0,1-11.033,3Z" transform="translate(-20359.531 -23753.051)" fill="#6f9ee0"/>
   </g>
 </svg>

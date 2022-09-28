@@ -723,7 +723,7 @@ export class DriverDetailsCardComponent
         id: item.id,
         name: fullname,
         status: item.status,
-        svg: item.owner ? 'driver-owner' : null,
+        svg: item.owner ? 'ic_owner-status.svg' : null,
         folder: 'common',
         active: item.id === this.driver.id,
       };
@@ -738,7 +738,7 @@ export class DriverDetailsCardComponent
           id: item.id,
           name: fullname,
           status: item.status,
-          svg: item.owner ? 'owner-status' : null,
+          svg: item.owner ? 'ic_owner-status.svg' : null,
           folder: 'common',
           active: item.id === event.id,
         };
