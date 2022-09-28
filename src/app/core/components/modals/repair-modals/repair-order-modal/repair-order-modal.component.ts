@@ -1004,10 +1004,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  saveNoteValue(value){
-    this.repairOrderForm.controls['note'].setValue(value);
-  }
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

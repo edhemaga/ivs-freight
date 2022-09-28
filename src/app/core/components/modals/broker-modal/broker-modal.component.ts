@@ -1370,10 +1370,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     return { mainAddress, billingAddress, mainPoBox, billingPoBox };
   }
 
-  saveNoteValue(value){
-    this.brokerForm.controls['note'].setValue(value);
-  }
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

@@ -431,10 +431,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  saveNoteValue(value){
-    this.ownerForm.controls['note'].setValue(value);
-  }
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

@@ -46,7 +46,6 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   @Input() placeholder: string = 'Write a note.';
   @Input() isReadOnly: boolean = false;
   @Input() customClass: string = null;
-  @Output() saveNoteValue = new EventEmitter();
   @ViewChild('main_editor', { static: true }) noteRef: ElementRef;
 
   constructor(
@@ -120,7 +119,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     }
     if (allowSave) {
       this.savedValue = this.value;
-      this.saveNoteValue.emit(this.value);
+      this.getSuperControl.patchValue(this.value)
     }
   }
 
