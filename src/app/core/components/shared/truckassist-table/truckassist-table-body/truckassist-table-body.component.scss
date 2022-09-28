@@ -1907,11 +1907,12 @@ table {
       .attachemnt-dropdown,
       .media-dropdown,
       .insurance-dropdown {
-        width: 100%;
-        height: fit-content;
+        /*  width: 100%; */
+        width: 0px;
+        /* height: fit-content; */
         max-height: 0px;
         overflow: hidden;
-        transition: 0.25s ease-in-out;
+        transition: max-height 0.1s ease-in-out;
 
         .attachemnt-dropdown-content,
         .media-dropdown-content,
@@ -2435,8 +2436,9 @@ table {
       .attachemnt-dropdown-active,
       .media-dropdown-active,
       .insurance-dropdown-active {
+        width: 100% !important;
         max-height: 1000px;
-        transition: 0.25s ease-in-out;
+        transition: max-height 0.25s ease-in-out;
       }
     }
 
