@@ -3,16 +3,14 @@
 //-------------------- Input Dropdown arrow -----------------
 .input-dropdown-arrow {
   position: absolute;
-  right: 4px;
+  right: 6px;
   top: 3px;
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   line-height: 18px;
   display: inline-block;
   cursor: pointer;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   z-index: 10;
 

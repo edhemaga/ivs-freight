@@ -61,10 +61,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public ownerType: any[] = [];
   public grossWeight: any[] = [];
   public tireSize: any[] = [];
+  public frontWheels: any[] = [];
+  public rearWheels: any[] = [];
   public shifters: any[] = [];
   public engineModels: any[] = [];
   public engineOilTypes: any[] = [];
   public apUnits: any[] = [];
+  public brakes: any[] = [];
   public gearRatios: any[] = [];
   public tollTransponders: any[] = [
     {
@@ -95,6 +98,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     },
   ];
 
+  public selectedBrakes: any = null;
   public selectedShifter: any = null;
   public selectedTruckType: any = null;
   public selectedTruckMake: any = null;
@@ -108,6 +112,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public selectedAPUnit: any = null;
   public selectedGearRatio: any = null;
   public selectedTollTransponders: any = null;
+
+  public selectedFrontWheels: any = null;
+  public selectedRearWheels: any = null;
 
   public selectedTab: number = 1;
   public tabs: any[] = [
@@ -183,6 +190,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       emptyWeight: [null, emptyWeightValidation],
       engineOilType: [null],
       apUnit: [null],
+      transmissionModel: [null],
+      fuelTankSize: [null],
+      brakes: [null],
       tireSizeId: [null],
       axles: [null, axlesValidation],
       gearRatio: [null],
@@ -197,7 +207,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       mileage: [null, mileageValidation],
       insurancePolicy: [null, insurancePolicyValidation],
       fhwaexp: [12, Validators.required],
-
+      frontWheels: [null],
+      rearWheels: [null],
       purchaseDate: [null],
       purchasePrice: [null],
     });
@@ -483,6 +494,18 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       }
       case 'toll-transponder': {
         this.selectedTollTransponders = event;
+        break;
+      }
+      case 'brakes': {
+        this.selectedBrakes = event;
+        break;
+      }
+      case 'front-wheels': {
+        this.selectedFrontWheels = event;
+        break;
+      }
+      case 'rear-wheels': {
+        this.selectedRearWheels = event;
         break;
       }
       default: {

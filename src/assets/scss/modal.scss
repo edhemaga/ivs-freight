@@ -118,7 +118,7 @@ ngb-modal-window[aria-hidden="true"] {
           cursor: grab;
           font-size: 18px;
           font-weight: 800;
-          color: #2f2f2f;
+          color: #424242;
           line-height: 18px;
           padding-top: 1px;
         }
@@ -159,8 +159,8 @@ ngb-modal-window[aria-hidden="true"] {
         }
 
         .edit-name {
-          color: #fff;
-          background: #6c6c6c;
+          color: #ffffff;
+          background: #424242;
           padding: 2px 6px;
           margin: 0px;
           border-radius: 2px;
@@ -213,8 +213,8 @@ ngb-modal-window[aria-hidden="true"] {
           text-align: center;
           font-size: 14px;
           font-weight: 700;
-          color: #ef5350;
-          background-color: #f3f3f3;
+          color: #f44336;
+          background-color: #eeeeee;
           outline: none;
           border: none;
           margin: 0;
@@ -229,7 +229,7 @@ ngb-modal-window[aria-hidden="true"] {
 
           &:hover {
             color: #ffffff;
-            background-color: #ef5350;
+            background-color: #f44336;
           }
         }
 
@@ -243,7 +243,7 @@ ngb-modal-window[aria-hidden="true"] {
           font-size: 14px;
           font-weight: 700;
           color: #6c6c6c;
-          background-color: #f3f3f3;
+          background-color: #eeeeee;
           outline: none;
           border: none;
           margin: 0;
@@ -266,7 +266,7 @@ ngb-modal-window[aria-hidden="true"] {
           outline: none;
           border: none;
           border-radius: 2px;
-          background-color: #f7f7f7;
+          background-color: #eeeeee;
           color: #aaaaaa;
           font-weight: 700;
           font-size: 14px;
@@ -317,12 +317,12 @@ ngb-modal-window[aria-hidden="true"] {
 
         .modal-gray-btn {
           background-color: #919191;
-          color: #f3f3f3;
+          color: #ffffff;
         }
 
         .modal-red-btn {
-          background-color: #e57373;
-          color: #f3f3f3;
+          background-color: #f44336;
+          color: #ffffff;
         }
       }
     }
