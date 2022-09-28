@@ -1,18 +1,59 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { RoadsideInspectionResponse } from 'appcoretruckassist';
+import { LoadResponse, RoadsideInspectionResponse } from 'appcoretruckassist';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { RoadsideDetailsListQuery } from '../state/roadside-details-state/roadside-details-list-state/roadside-details-list.query';
+import { takeUntil, take, Subject } from 'rxjs';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { RoadsideService } from '../state/roadside.service';
 
 @Component({
   selector: 'app-violation-details-page',
   templateUrl: './violation-details-page.component.html',
   styleUrls: ['./violation-details-page.component.scss'],
+  providers: [DetailsPageService],
 })
 export class ViolationDetailsPageComponent implements OnInit {
   public violationInitCongif: any[] = [];
   public violationData: any;
-  constructor(private act_route: ActivatedRoute) {}
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    private act_route: ActivatedRoute,
+    private router: Router,
+    private notificationService: NotificationService,
+    private detailsPageService: DetailsPageService,
+    private rsdlq: RoadsideDetailsListQuery,
+    private roadSer: RoadsideService
+  ) {}
 
   ngOnInit(): void {
+    this.detailsPageService.pageDetailChangeId$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((id) => {
+        let query;
+        if (this.rsdlq.hasEntity(id)) {
+          query = this.rsdlq.selectEntity(id).pipe(take(1));
+        } else {
+          query = this.roadSer.getRoadSideById(id);
+        }
+        query.pipe(takeUntil(this.destroy$)).subscribe({
+          next: (res: LoadResponse) => {
+            this.violationConfig(res);
+            this.router.navigate([`/safety/violation/${res.id}/details`]);
+            this.notificationService.success(
+              'Violation successfully changed',
+              'Success:'
+            );
+          },
+          error: () => {
+            this.notificationService.error(
+              "Violation can't be loaded",
+              'Error:'
+            );
+          },
+        });
+      });
     this.violationConfig(this.act_route.snapshot.data.roadItem);
   }
 
@@ -33,7 +74,7 @@ export class ViolationDetailsPageComponent implements OnInit {
         hide: true,
         customText: 'Time Weight',
         hasArrow: false,
-        length: 14,
+        length: data?.violations?.length ? data.violations.length : 0,
         counterViolation: data?.timeWeight ? data.timeWeight : 0,
       },
       {

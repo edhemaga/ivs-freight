@@ -10,6 +10,8 @@ import { catchError, tap, take } from 'rxjs/operators';
 import { RoadsideService } from '../roadside.service';
 import { RoadItemState, RoadItemStore } from './roadside-details.store';
 import { RoadsideInspectionResponse } from '../../../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
+import { RoadsideDetailsListStore } from './roadside-details-list-state/roadside-details-list.store';
+import { RoadsideDetailsListQuery } from './roadside-details-list-state/roadside-details-list.query';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +20,8 @@ export class RoadItemResolver implements Resolve<RoadItemState> {
   constructor(
     private roadService: RoadsideService,
     private roadDetailsStore: RoadItemStore,
-
+    private rsdls: RoadsideDetailsListStore,
+    private rsdlq: RoadsideDetailsListQuery,
     private router: Router
   ) {}
   resolve(
@@ -27,22 +30,24 @@ export class RoadItemResolver implements Resolve<RoadItemState> {
   ): Observable<RoadItemState> | Observable<any> {
     const truck_id = route.paramMap.get('id');
     let id = parseInt(truck_id);
-    // if (this.truckDetailsListQuery.hasEntity(trid)) {
-    //   return this.truckDetailsListQuery.selectEntity(trid).pipe(
-    //     tap((truckResponse: TruckResponse) => {
-    //       this.truckDetailsStore.set([truckResponse]);
-    //     }),
-    //     take(1)
-    //   );
-    // } else {
-    return this.roadService.getRoadSideById(id).pipe(
-      catchError((error) => {
-        this.router.navigate(['/truck']);
-        return of('No road data for...' + id);
-      }),
-      tap((roadResponse: RoadsideInspectionResponse) => {
-        this.roadDetailsStore.set([roadResponse]);
-      })
-    );
+    if (this.rsdlq.hasEntity(id)) {
+      return this.rsdlq.selectEntity(id).pipe(
+        tap((roadResponse: RoadsideInspectionResponse) => {
+          this.roadDetailsStore.set([roadResponse]);
+        }),
+        take(1)
+      );
+    } else {
+      return this.roadService.getRoadSideById(id).pipe(
+        catchError((error) => {
+          this.router.navigate(['/safety/violation']);
+          return of('No road data for...' + id);
+        }),
+        tap((roadResponse: RoadsideInspectionResponse) => {
+          this.rsdls.add(roadResponse);
+          this.roadDetailsStore.set([roadResponse]);
+        })
+      );
+    }
   }
 }

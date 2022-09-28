@@ -1,5 +1,7 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { RoadsideActiveQuery } from '../state/roadside-state/roadside-active/roadside-active.query';
 
 @Component({
   selector: 'app-violation-card-view',
@@ -13,78 +15,74 @@ export class ViolationCardViewComponent implements OnInit {
   public violationDropdown: any;
   public noteControl: FormControl = new FormControl();
   public dummyDataSpecial: any;
-
-  constructor() {}
+  public violationList: any[] = this.violationActiveQuery.getAll();
+  constructor(
+    private violationActiveQuery: RoadsideActiveQuery,
+    private detailsPageDriverSer: DetailsPageService
+  ) {}
 
   ngOnInit(): void {
-    console.log(this.violationCardData);
-
-    this.dummyDataSpecial = [
-      {
-        id: 1,
-        name: 'Alc/Cont. Sub. Check',
-        checked: false,
-      },
-      {
-        id: 2,
-        name: 'Cond. by Local Juris.',
-        checked: false,
-      },
-      {
-        id: 3,
-        name: 'Size & Weight Enf.',
-        checked: true,
-      },
-      {
-        id: 4,
-        name: 'eScreen Inspection',
-        checked: false,
-      },
-      {
-        id: 5,
-        name: 'Traffic Enforcement',
-        checked: false,
-      },
-      {
-        id: 6,
-        name: 'PASA Cond. Insp.',
-        checked: true,
-      },
-      {
-        id: 7,
-        name: 'Drug Interd. Search',
-        checked: false,
-      },
-      {
-        id: 8,
-        name: 'Border Enf. Insp.',
-        checked: false,
-      },
-      {
-        id: 9,
-        name: 'Post Crash Insp.',
-        checked: false,
-      },
-      {
-        id: 10,
-        name: 'PBBT Inspection',
-        checked: true,
-      },
-    ];
-
     this.noteControl.patchValue(
       'How to pursue pleasure rationally encounter consequences that are extremely painful.'
     );
-    let names = [
-      { id: 1, name: 'MS1017010339' },
-      { id: 2, name: 'MS10120339' },
-    ];
-    this.violationDropdown = names.map((item) => {
+    this.getViolationDropdown();
+  }
+
+  public getViolationDropdown() {
+    this.violationDropdown = this.violationActiveQuery.getAll().map((item) => {
       return {
         id: item.id,
-        name: item.name,
-        active: item.id === 1,
+        name: item.report,
+        active: item.id === this.violationCardData.id,
       };
     });
+  }
+
+  public onSelectViolation(event: any) {
+    if (event.id !== this.violationCardData.id) {
+      this.violationList = this.violationActiveQuery.getAll().map((item) => {
+        console.log(item);
+
+        return {
+          id: item.id,
+          name: item.report,
+          active: item.id === event.id,
+        };
+      });
+      this.detailsPageDriverSer.getDataDetailId(event.id);
+    }
+  }
+
+  public onChangeViolation(action: string) {
+    let currentIndex = this.violationList.findIndex(
+      (violationId) => violationId.id === this.violationCardData.id
+    );
+
+    switch (action) {
+      case 'previous': {
+        currentIndex = --currentIndex;
+        if (currentIndex != -1) {
+          this.detailsPageDriverSer.getDataDetailId(
+            this.violationList[currentIndex].id
+          );
+          this.onSelectViolation({ id: this.violationList[currentIndex].id });
+        }
+        break;
+      }
+      case 'next': {
+        currentIndex = ++currentIndex;
+        if (currentIndex !== -1 && this.violationList.length > currentIndex) {
+          this.detailsPageDriverSer.getDataDetailId(
+            this.violationList[currentIndex].id
+          );
+          this.onSelectViolation({ id: this.violationList[currentIndex].id });
+        }
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
   }
 }

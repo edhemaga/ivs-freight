@@ -6,10 +6,9 @@
     [searchInputName]="'Search Violation'"
     [lastEdit]="'3 days ago'"
     [options]="violationDropdown"
+    (selectValue)="onSelectViolation($event)"
+    (changeEvent)="onChangeViolation($event)"
   >
-    <!-- 
-    (selectValue)="onSelectedTruck($event)"
-    (changeEvent)="onChangeTruck($event)" -->
 
     <div class="violation-template-data">
       <div class="violation-template-items">
