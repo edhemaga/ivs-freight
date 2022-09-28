@@ -30,9 +30,7 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
   tooltip: any;
   dropDownActive: number = -1;
 
-  constructor(
-    private DetailsDataService: DetailsDataService,
-  ) {}
+  constructor(private DetailsDataService: DetailsDataService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.options?.currentValue) {
@@ -53,7 +51,7 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
       tooltip.close();
     } else {
       tooltip.open({ data: this.dropContent });
-      if ( this.data ){
+      if (this.data) {
         this.DetailsDataService.setNewData(this.data);
       }
     }
@@ -73,7 +71,9 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
   public identity(index: number, item: any): number {
     return item.id;
   }
-  onAction(action: any) {
+  onAction(action: any, event?: any) {
+    event.stopPropagation();
+    event.preventDefault();
     this.dropDownActions.emit({
       id: this.id,
       data: this.data,

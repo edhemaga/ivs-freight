@@ -5,6 +5,7 @@ import { LoadRoutingModule } from './load-routing.module';
 import { LoadTableComponent } from './load-table/load-table.component';
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
 import { LoadCardComponent } from './load-card/load-card.component';
+import { LoadDetailsModule } from './load-details/load-details.module';
 
 @NgModule({
   declarations: [LoadTableComponent, LoadCardComponent],
@@ -13,6 +14,7 @@ import { LoadCardComponent } from './load-card/load-card.component';
     LoadRoutingModule,
     TruckassistTableModule,
     AngularSvgIconModule,
+    LoadDetailsModule,
   ],
 })
 export class LoadModule {}

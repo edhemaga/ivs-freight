@@ -106,8 +106,9 @@ import { AutoclosePopoverComponent } from './autoclose-popover/autoclose-popover
 import { ApplicantModalComponent } from '../modals/applicant-modal/applicant-modal.component';
 import { TtTitleModalComponent } from '../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 import { ConfirmationModalComponent } from '../modals/confirmation-modal/confirmation-modal.component';
-import { CustomToastMessagesComponent } from './custom-toast-messages/custom-toast-messages.component'; 
+import { CustomToastMessagesComponent } from './custom-toast-messages/custom-toast-messages.component';
 import { SvgDefinitionsComponent } from '../../../svg-definitions/svg-definitions.component';
+import { TaCustomCardV2Component } from './ta-custom-card-v2/ta-custom-card-v2.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -199,7 +200,8 @@ export function playerFactory() {
     AutoclosePopoverComponent,
     CustomToastMessagesComponent,
     MapToolbarComponent,
-    AutoclosePopoverComponent
+    AutoclosePopoverComponent,
+    TaCustomCardV2Component,
   ],
   imports: [
     CommonModule,
@@ -284,6 +286,7 @@ export function playerFactory() {
     TaReCardComponent,
     TaDetailsHeaderCardComponent,
     TaCustomCardComponent,
+    TaCustomCardV2Component,
     TaCheckboxComponent,
     TaCommonHeaderComponent,
     TaReCardComponent,

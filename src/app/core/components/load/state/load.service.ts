@@ -1,3 +1,4 @@
+import { LoadResponse } from './../../../../../../appcoretruckassist/model/loadResponse';
 import { Injectable } from '@angular/core';
 import {
   LoadListResponse,
@@ -5,12 +6,19 @@ import {
   LoadTemplateListResponse,
 } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
+import { LoadMinimalListResponse } from '../../../../../../appcoretruckassist/model/loadMinimalListResponse';
+import { LoadDetailsListQuery } from './load-details-state/load-details-list-state/load-d-list.query';
+import { LoadDetailsListStore } from './load-details-state/load-details-list-state/load-d-list.store';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoadTService {
-  constructor(private loadServices: LoadService) {}
+  constructor(
+    private loadServices: LoadService,
+    private ldlStore: LoadDetailsListStore,
+    private ldlQuery: LoadDetailsListQuery
+  ) {}
 
   // Get Load List
   // statusType -> 1 - pending, 2 - active, 3 - closed
@@ -53,7 +61,13 @@ export class LoadTService {
       search2
     );
   }
-
+  //Get Load minimal list
+  public getLoadMinimalList(
+    pageIndex?: number,
+    pageSize?: number
+  ): Observable<LoadMinimalListResponse> {
+    return this.loadServices.apiLoadListMinimalGet(pageIndex, pageSize);
+  }
   // Get Load Template List
   public getLoadTemplateList(
     loadType?: number,
@@ -79,5 +93,8 @@ export class LoadTService {
       search1,
       search2
     );
+  }
+  public getLoadById(loadId: number): Observable<LoadResponse> {
+    return this.loadServices.apiLoadIdGet(loadId);
   }
 }

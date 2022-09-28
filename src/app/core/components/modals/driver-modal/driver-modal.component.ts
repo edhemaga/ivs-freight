@@ -1715,11 +1715,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         },
       });
   }
-
-  saveNoteValue(value){
-    this.driverForm.controls['note'].setValue(value);
-  }
-
+  
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

@@ -7,7 +7,7 @@
   [routerLinkActiveOptions]="{ exact: true }"
 >
   <app-ta-counter
-    *ngIf="cardCount"
+    *ngIf="cardCount!=null"
     [count]="cardCount"
     [countColor]="routeColor.color"
     [countBackground]="routeColor.background"

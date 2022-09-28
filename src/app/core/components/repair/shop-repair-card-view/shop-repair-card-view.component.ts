@@ -60,14 +60,13 @@ export class ShopRepairCardViewComponent
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
-        if (res.animation) {
+        if (res.animation && res.tab === 'repair-shop') {
           this.shopResponse = res.data;
           this.cdRef.detectChanges();
         }
       });
     this.tabsSwitcher();
   }
-
   /**Function return id */
   public identity(index: number, item: any): number {
     return item.id;
@@ -84,7 +83,7 @@ export class ShopRepairCardViewComponent
         id: item.id,
         name: item.name,
         status: item.status,
-        svg: item.pinned ? 'star' : null,
+        svg: item.pinned ? 'ic_star.svg' : null,
         folder: 'common',
         active: item.id === this.shopResponse.id,
       };
@@ -98,7 +97,7 @@ export class ShopRepairCardViewComponent
           id: items.id,
           name: items.name,
           status: items.status,
-          svg: items.pinned ? 'star' : null,
+          svg: items.pinned ? 'ic_star.svg' : null,
           folder: 'common',
           active: items.id === event.id,
         };

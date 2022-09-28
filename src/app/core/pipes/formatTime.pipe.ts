@@ -5,9 +5,14 @@ import moment from 'moment';
   name: 'formatTime',
 })
 export class formatTimePipe implements PipeTransform {
-  transform(time: string): any {
-    if (time) {
-      return moment(time).format('hh:mm A');
+  transform(time: string, template?: string): any {
+    switch (template) {
+      case 'hours-min': {
+        return moment(time).format('hh:mm');
+      }
+      default: {
+        return moment(time).format('hh:mm A');
+      }
     }
   }
 }
