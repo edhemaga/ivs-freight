@@ -7,7 +7,7 @@ import {
   Output,
   Self,
 } from '@angular/core';
-import { Subject, switchMap, takeUntil } from 'rxjs';
+import { filter, Subject, switchMap, takeUntil } from 'rxjs';
 import { AddressService } from 'src/app/core/services/shared/address.service';
 import { AddressEntity } from 'appcoretruckassist';
 import {
@@ -68,47 +68,25 @@ export class InputAddressDropdownComponent
     this.addressForm.valueChanges
       .pipe(
         takeUntil(this.destroy$),
-        switchMap(async (query) => this.addressService
-        .getAdresses(query))
-        )
-      .subscribe((changes) => {
-        console.log(changes, 'changeschangeschangeschanges')
-        //this.getSearchedAdresses(changes.address);
+        filter((term: { address: string }) => term.address.length >= 3),
+        switchMap((query) => {
+          return this.addressService.getAdresses(query.address);
+        })
+      )
+      .subscribe((res) => {
+        this.addresList = res.addresses.map((item, indx) => {
+          return {
+            ...item,
+            name: item.address.address,
+            id: indx,
+          };
+        });
+        this.loadingAddresses = false;
       });
   }
 
   get getSuperControl() {
     return this.superControl.control;
-  }
-
-  public getSearchedAdresses(searchedAddress) {
-    this.addresList = [];
-    if (
-      searchedAddress &&
-      searchedAddress != '' &&
-      searchedAddress?.length > 2
-    ) {
-      this.loadingAddresses = true;
-      this.addressService
-        .getAdresses(searchedAddress)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (res) => {
-            console.log(res, 'final addresses');
-            this.addresList = res.addresses.map((item, indx) => {
-              return {
-                ...item,
-                name: item.address.address,
-                id: indx,
-              };
-            });
-            this.loadingAddresses = false;
-          },
-          error: () => {
-            this.loadingAddresses = false;
-          },
-        });
-    }
   }
 
   public onSelectDropdown(event: any, action: string) {
