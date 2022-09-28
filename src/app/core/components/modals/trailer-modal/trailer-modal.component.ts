@@ -666,10 +666,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  saveNoteValue(value){
-    this.trailerForm.controls['note'].setValue(value);
-  }
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
