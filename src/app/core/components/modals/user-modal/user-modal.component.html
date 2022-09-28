@@ -12,7 +12,7 @@
   >
   </app-ta-tab-switch>
 
-  <form [formGroup]="userForm" class="form-container">
+  <form [formGroup]="userForm" class="form-container form-container-no-mb">
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 1">
@@ -70,7 +70,7 @@
               [inputConfig]="{
                 name: 'address-unit',
                 type: 'text',
-                label: 'Unit #',
+                label: 'Unit No.',
                 textTransform: 'uppercase',
                 minLength: 1,
                 maxLength: 10
@@ -108,8 +108,12 @@
           </div>
         </div>
 
-        <app-ta-custom-card [cardName]="'Employe Details'" [isCardOpen]="true">
-          <div class="row row-mt-20">
+        <app-ta-custom-card
+          [cardName]="'Employe Details'"
+          [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
+          <div class="row">
             <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="departmentId"
@@ -154,7 +158,7 @@
             </div>
           </div>
           <div
-            class="phone-ext-email-small-modal"
+            class="phone-ext-email-small-modal row-no-mb"
             [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
           >
             <div class="phone-extension">
@@ -225,11 +229,17 @@
             <svg-icon
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
-              [ngClass]="{ visible: userForm.get('isIncludePayroll').value }"
+              [ngClass]="{
+                visible: userForm.get('isIncludePayroll').value,
+                rotate: !payrollCheckboxCard
+              }"
+              (click)="toggleCheckboxCard()"
             ></svg-icon>
           </div>
           <div
-            *ngIf="userForm.get('isIncludePayroll').value"
+            *ngIf="
+              userForm.get('isIncludePayroll').value && payrollCheckboxCard
+            "
             class="checkbox-card-body"
             [ngClass]="{ active: userForm.get('isIncludePayroll').value }"
           >

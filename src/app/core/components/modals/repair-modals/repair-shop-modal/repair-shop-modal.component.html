@@ -7,7 +7,10 @@
   [isModalValid]="repairShopForm.valid"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="repairShopForm" class="form-container">
+  <form
+    [formGroup]="repairShopForm"
+    class="form-container form-container-without-mb"
+  >
     <div class="row first-row">
       <div class="col-11">
         <app-ta-input
@@ -115,7 +118,7 @@
           [inputConfig]="{
             name: 'address-unit',
             type: 'text',
-            label: 'Unit #',
+            label: 'Unit No.',
             textTransform: 'uppercase',
             minLength: 1,
             maxLength: 10
@@ -167,38 +170,40 @@
             <p>FROM</p>
             <p>TO</p>
           </div>
-          <div *ngFor="let openHour of openHours.controls; let ind = index">
-            <div [formGroupName]="ind" class="common-fake-table-card">
-              <app-ta-checkbox
-                formControlName="isDay"
-                [customClass]="'medium'"
-                [name]="openHour.get('dayLabel').value"
-                [label]="openHour.get('dayLabel').value"
-                (formArrayAction)="openHourDayAction($event, ind)"
-              ></app-ta-checkbox>
-              <!-- Time Picker -->
-              <app-ta-input
-                *ngIf="openHour.get('isDay').value"
-                formControlName="startTime"
-                [inputConfig]="{
-                  name: 'timepicker',
-                  type: 'text',
-                  placeholderIcon: 'time',
-                  customClass: 'datetimeclass repair-shop-open-hour',
-                  hideClear: true
-                }"
-              ></app-ta-input>
-              <app-ta-input
-                *ngIf="openHour.get('isDay').value"
-                formControlName="endTime"
-                [inputConfig]="{
-                  name: 'timepicker',
-                  type: 'text',
-                  placeholderIcon: 'time',
-                  customClass: 'datetimeclass repair-shop-open-hour',
-                  hideClear: true
-                }"
-              ></app-ta-input>
+          <div class="common-fake-table-body">
+            <div *ngFor="let openHour of openHours.controls; let ind = index">
+              <div [formGroupName]="ind" class="common-fake-table-card">
+                <app-ta-checkbox
+                  formControlName="isDay"
+                  [customClass]="'medium'"
+                  [name]="openHour.get('dayLabel').value"
+                  [label]="openHour.get('dayLabel').value"
+                  (formArrayAction)="openHourDayAction($event, ind)"
+                ></app-ta-checkbox>
+                <!-- Time Picker -->
+                <app-ta-input
+                  *ngIf="openHour.get('isDay').value"
+                  formControlName="startTime"
+                  [inputConfig]="{
+                    name: 'timepicker',
+                    type: 'text',
+                    placeholderIcon: 'time',
+                    customClass: 'datetimeclass repair-shop-open-hour',
+                    hideClear: true
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  *ngIf="openHour.get('isDay').value"
+                  formControlName="endTime"
+                  [inputConfig]="{
+                    name: 'timepicker',
+                    type: 'text',
+                    placeholderIcon: 'time',
+                    customClass: 'datetimeclass repair-shop-open-hour',
+                    hideClear: true
+                  }"
+                ></app-ta-input>
+              </div>
             </div>
           </div>
         </div>
@@ -206,57 +211,55 @@
     </div>
 
     <!-- Bank Account -->
-    <app-ta-custom-card [cardName]="'Bank Account'" [isCardOpen]="true">
-      <div class="custom-bank-row">
-        <div class="bank-field">
-          <app-ta-input-dropdown
-            formControlName="bankId"
-            [template]="'svg-template'"
-            [inputConfig]="{
-              name: 'Input Dropdown  Bank Name',
-              type: 'text',
-              label: 'Bank Name',
-              minLength: 2,
-              maxLength: 64,
-              textTransform: 'uppercase',
-              isDropdown: true,
-              dropdownWidthClass: 'w-col-163'
-            }"
-            [canAddNew]="true"
-            [options]="labelsBank"
-            [activeItem]="selectedBank"
-            (selectedItem)="onSelectDropdown($event, 'bank')"
-            (saveItem)="onSaveNewBank($event)"
-          ></app-ta-input-dropdown>
-        </div>
-        <div class="bank-field">
-          <app-ta-input
-            formControlName="routing"
-            [inputConfig]="{
-              name: 'routing-bank',
-              type: 'text',
-              label: 'Routing #',
-              isDisabled: !isBankSelected,
-              isRequired: isBankSelected,
-              minLength: 9,
-              maxLength: 9
-            }"
-          ></app-ta-input>
-        </div>
-        <div class="bank-field">
-          <app-ta-input
-            formControlName="account"
-            [inputConfig]="{
-              name: 'account-bank',
-              type: 'text',
-              label: 'Account #',
-              isDisabled: !isBankSelected,
-              isRequired: isBankSelected,
-              maxLength: 17,
-              minLength: 5
-            }"
-          ></app-ta-input>
-        </div>
+    <app-ta-custom-card
+      [cardName]="'Bank Account'"
+      [isCardOpen]="true"
+      [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+    >
+      <div class="custom-bank-row custom-bank-row-repair-shop">
+        <app-ta-input-dropdown
+          formControlName="bankId"
+          [template]="'svg-template'"
+          [inputConfig]="{
+            name: 'Input Dropdown  Bank Name',
+            type: 'text',
+            label: 'Bank Name',
+            minLength: 2,
+            maxLength: 64,
+            textTransform: 'uppercase',
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-163'
+          }"
+          [canAddNew]="true"
+          [options]="labelsBank"
+          [activeItem]="selectedBank"
+          (selectedItem)="onSelectDropdown($event, 'bank')"
+          (saveItem)="onSaveNewBank($event)"
+        ></app-ta-input-dropdown>
+        <app-ta-input
+          formControlName="routing"
+          [inputConfig]="{
+            name: 'routing-bank',
+            type: 'text',
+            label: 'Routing #',
+            isDisabled: !isBankSelected,
+            isRequired: isBankSelected,
+            minLength: 9,
+            maxLength: 9
+          }"
+        ></app-ta-input>
+        <app-ta-input
+          formControlName="account"
+          [inputConfig]="{
+            name: 'account-bank',
+            type: 'text',
+            label: 'Account #',
+            isDisabled: !isBankSelected,
+            isRequired: isBankSelected,
+            maxLength: 17,
+            minLength: 5
+          }"
+        ></app-ta-input>
       </div>
     </app-ta-custom-card>
     <!-- Note -->

@@ -21,7 +21,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { TaUserService } from '../../../services/user/user.service';
-import Croppie from "croppie";
+import Croppie from 'croppie';
 
 @Component({
   selector: 'app-profile-update-modal',
@@ -62,7 +62,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
   };
 
   public selectedAddress: AddressEntity = null;
-
+  public userPasswordTyping: boolean = false;
   public correctPassword: boolean = false;
   public setNewPassword: boolean = false;
   public loadingOldPassword: boolean = false;
@@ -100,7 +100,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     this.profileUserForm = this.formBuilder.group({
       firstName: [null, [Validators.required, ...firstNameValidation]],
       lastName: [null, [Validators.required, ...lastNameValidation]],
-      mobile: [null, phoneFaxRegex],
+      phone: [null, phoneFaxRegex],
       email: [null],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
@@ -167,7 +167,8 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       .get('oldPassword')
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
-        if (value) {
+        this.userPasswordTyping = value?.toString().length >= 1;
+        if (value && value.length >= 8) {
           this.loadingOldPassword = true;
           this.userService
             .validateUserPassword({ password: value })
@@ -176,6 +177,12 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
               next: (res: any) => {
                 this.correctPassword = !!res.correctPassword;
                 this.loadingOldPassword = false;
+
+                if (!this.correctPassword) {
+                  this.profileUserForm
+                    .get('oldPassword')
+                    .setErrors({ invalid: true });
+                }
               },
               error: () => {
                 this.notificationService.error(
@@ -202,7 +209,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
           this.profileUserForm.get('password').setErrors(null);
         } else {
           this.profileUserForm.get('password').setErrors({
-            invalid: true,
+            passwordDontMatch: true,
           });
         }
       });
@@ -258,13 +265,12 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
           this.profileUserForm.patchValue({
             firstName: res.firstName,
             lastName: res.lastName,
-            mobile: res.phone,
+            phone: res.phone,
             email: res.email,
             address: res.address.address,
             addressUnit: res.address.addressUnit,
             avatar: res.avatar,
           });
-
           this.selectedAddress = res.address;
         },
         error: () => {
@@ -302,7 +308,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Successfuly updated profile',
+            'Successfuly update profile',
             'Success'
           );
 
@@ -319,6 +325,12 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
           this.notificationService.error("Can't update your profile.", 'Error');
         },
       });
+  }
+
+  // Checkbox card
+  public passwordCheckboxCard: boolean = true;
+  public toggleCheckboxCard() {
+    this.passwordCheckboxCard = !this.passwordCheckboxCard;
   }
 
   ngOnDestroy(): void {

@@ -67,17 +67,20 @@ import { configFactory } from './app.config';
   ],
   providers: [
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: RefreshTokenInterceptor,
-      multi: true,
-    },
-    {
       provide: Configuration,
       useFactory: (userLoggedService: UserLoggedService) =>
         configFactory(userLoggedService),
       deps: [UserLoggedService],
       multi: false,
     },
+    [
+      { provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true },
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: RefreshTokenInterceptor,
+        multi: true,
+      },
+    ],
     EncryptionDecryptionService,
     GoogleMapsAPIWrapper,
   ],

@@ -15,8 +15,10 @@
 
   <form
     [formGroup]="brokerForm"
-    class="form-container"
-    [ngClass]="{ 'tab-2': selectedTab !== 1 }"
+    class="form-container form-container-without-mb"
+    [ngClass]="{
+      'tab-2': selectedTab !== 1
+    }"
   >
     <div
       class="{{ editData ? 'animation-three-tabs' : 'animation-two-tabs' }}"
@@ -154,7 +156,7 @@
                 [inputConfig]="{
                   name: 'address-unit',
                   type: 'text',
-                  label: 'Unit #',
+                  label: 'Unit No.',
                   textTransform: 'uppercase',
                   minLength: 1,
                   maxLength: 10
@@ -264,7 +266,7 @@
                   [inputConfig]="{
                     name: 'address-unit',
                     type: 'text',
-                    label: 'Unit #',
+                    label: 'Unit No.',
                     textTransform: 'uppercase',
                     minLength: 1,
                     maxLength: 10
@@ -320,9 +322,13 @@
             </div>
           </div>
         </div>
-        <app-ta-custom-card [cardName]="'Billing'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Billing'"
+          [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
           <div
-            class="broker-billing row-mt-20 last-row"
+            class="broker-billing"
             [ngClass]="{
               'row-gap':
                 this.brokerForm.get('creditType').value === 'Enable' &&
@@ -406,13 +412,15 @@
           [isCommentData]="true"
           [isCardOpen]="brokerContacts.length > 0"
           [hasScrollBody]="brokerContacts.length > 10"
+          [hasBodyData]="brokerContacts.length > 0"
           (onActionEvent)="addBrokerContacts($event)"
+          [animationMarginParams]="{ marginTop: '10px', marginBottom: '5px' }"
         >
           <div
             formArrayName="brokerContacts"
             class="common-fake-table-modal common-fake-table-modal-broker"
-            (scroll)="onScrollingBrokerContacts($event)"
             *ngIf="brokerContacts.length"
+            (scroll)="onScrollingBrokerContacts($event)"
           >
             <div class="common-fake-table-label">
               <p>FULL NAME <span>*</span></p>
@@ -421,106 +429,99 @@
               <p>EXT</p>
               <p>EMAIL</p>
             </div>
-            <div
-              *ngFor="
-                let brokerContact of brokerContacts.controls;
-                let ind = index
-              "
-            >
-              <div [formGroupName]="ind" class="common-fake-table-card">
-                <app-ta-input
-                  formControlName="contactName"
-                  [inputConfig]="{
-                    id: 'Full Name' + ind,
-                    name: 'Full Name',
-                    type: 'text',
-                    hideRequiredCheck: true,
-                    blackInput: true,
-                    hideErrorMessage: true,
-                    minLength: 2,
-                    maxLength: 32,
-                    textTransform: 'capitalize'
+            <div class="common-fake-table-body">
+              <div
+                *ngFor="
+                  let brokerContact of brokerContacts.controls;
+                  let ind = index
+                "
+              >
+                <div [formGroupName]="ind" class="common-fake-table-card">
+                  <app-ta-input
+                    formControlName="contactName"
+                    [inputConfig]="{
+                      id: 'Full Name' + ind,
+                      name: 'Full Name',
+                      type: 'text',
+                      minLength: 2,
+                      maxLength: 32,
+                      textTransform: 'capitalize',
+                      hideRequiredCheck: true,
+                      hideErrorMessage: true
                     }"
-                ></app-ta-input>
-                <app-ta-input-dropdown
-                  formControlName="departmentId"
-                  [inputConfig]="{
-                    id: 'Input Dropdown' + ind,
-                    name: 'Input Dropdown Department',
-                    type: 'text',
-                    textTransform: 'capitalize',
-                    isDropdown: true,
-                    dropdownWidthClass: 'w-col-120',
-                    minLength: 2,
-                    maxLength: 36,
-                    hideRequiredCheck: true,
-                    blackInput: true,
-                    hideErrorMessage: true
-                  }"
-                  [activeItem]="selectedContractDepartmentFormArray[ind]"
-                  [options]="labelsDepartments"
-                  (selectedItem)="
-                    onSelectDropDown($event, 'contact-department', ind)
-                  "
-                ></app-ta-input-dropdown>
-                <app-ta-input
-                  formControlName="phone"
-                  [inputConfig]="{
-                    id: 'Phone' + ind,
-                    name: 'Phone',
-                    type: 'text',
-                    mask: '(000) 000-0000',
-                    hideRequiredCheck: true,
-                    blackInput: true,
-                    hideErrorMessage: true
-                  }"
-                ></app-ta-input>
-                <app-ta-input
-                  formControlName="extensionPhone"
-                  [inputConfig]="{
-                    id: 'Phone Extension' + ind,
-                    name: 'phone-extension',
-                    type: 'text',
-                    minLength: 1,
-                    maxLength: 8,
-                    hideRequiredCheck: true,
-                    blackInput: true,
-                    hideErrorMessage: true
-                  }"
-                ></app-ta-input>
-                <app-ta-input
-                  formControlName="email"
-                  [inputConfig]="{
-                    id: 'Email' + ind,
-                    name: 'Email',
-                    type: 'text',
-                    hideRequiredCheck: true,
-                    blackInput: true,
-                    hideErrorMessage: true,
-                    minLength: 5,
-                    maxLength: 64,
-                    textTransform: 'lowercase'
-                  }"
-                ></app-ta-input>
-                <div
-                  ngbTooltip
-                  mainTooltip="Delete"
-                  position="top"
-                  tooltipBackground="#EF5350"
-                  class="common-fake-table-delete"
-                  [ngClass]="{
-                    'new-position':
-                      isContactCardsScrolling &&
-                      brokerContact.get('email').value,
-                    'new-position-without-email':
-                      isContactCardsScrolling &&
-                      !brokerContact.get('email').value
-                  }"
-                >
-                  <svg-icon
-                    src="assets/svg/common/ic_trash.svg"
-                    (click)="removeBrokerContacts(ind)"
-                  ></svg-icon>
+                  ></app-ta-input>
+                  <app-ta-input-dropdown
+                    formControlName="departmentId"
+                    [inputConfig]="{
+                      id: 'Input Dropdown' + ind,
+                      name: 'Input Dropdown Department',
+                      type: 'text',
+                      textTransform: 'capitalize',
+                      isDropdown: true,
+                      dropdownWidthClass: 'w-col-120',
+                      minLength: 2,
+                      maxLength: 36,
+                      hideRequiredCheck: true,
+                      hideErrorMessage: true
+                    }"
+                    [activeItem]="selectedContractDepartmentFormArray[ind]"
+                    [options]="labelsDepartments"
+                    (selectedItem)="
+                      onSelectDropDown($event, 'contact-department', ind)
+                    "
+                  ></app-ta-input-dropdown>
+                  <app-ta-input
+                    formControlName="phone"
+                    [inputConfig]="{
+                      id: 'Phone' + ind,
+                      name: 'Phone',
+                      type: 'text',
+                      mask: '(000) 000-0000',
+                      hideRequiredCheck: true,
+                      hideErrorMessage: true
+                    }"
+                  ></app-ta-input>
+                  <app-ta-input
+                    formControlName="extensionPhone"
+                    [inputConfig]="{
+                      id: 'Phone Extension' + ind,
+                      name: 'phone-extension',
+                      type: 'text',
+                      minLength: 1,
+                      maxLength: 8,
+                      hideRequiredCheck: true,
+                      hideErrorMessage: true
+                    }"
+                  ></app-ta-input>
+                  <app-ta-input
+                    formControlName="email"
+                    [inputConfig]="{
+                      id: 'Email' + ind,
+                      name: 'Email',
+                      type: 'text',
+                      hideRequiredCheck: true,
+                      blackInput: true,
+                      hideErrorMessage: true,
+                      minLength: 5,
+                      maxLength: 64,
+                      textTransform: 'lowercase'
+                    }"
+                  ></app-ta-input>
+                  <div
+                    ngbTooltip
+                    mainTooltip="Delete"
+                    position="top"
+                    tooltipBackground="#EF5350"
+                    class="common-fake-table-delete"
+                    [ngClass]="{
+                      scrolling: isContactCardsScrolling
+                    }"
+                  >
+                    <svg-icon
+                      src="assets/svg/common/ic_trash.svg"
+                      (click)="removeBrokerContacts(ind)"
+                    ></svg-icon>
+                  </div>
                 </div>
               </div>
             </div>
@@ -541,6 +542,7 @@
           [hasScrollBody]="reviews.length > 6"
           [disableMultipleReviews]="disableOneMoreReview"
           (onActionEvent)="createReview()"
+          [animationMarginParams]="{ marginTop: '10px', marginBottom: '12px' }"
         >
           <div class="no-review-broker" *ngIf="!reviews.length">
             <svg-icon

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 
-import { ApplicantService } from './../../../../../../../appcoretruckassist/api/applicant.service';
+import { ApplicantService } from '../../../../../../../appcoretruckassist';
 
 import { ApplicantStore } from '../store/applicant.store';
 
@@ -50,7 +50,9 @@ export class ApplicantActionsService {
 
   /* BACKEND POST ACTION FUNCTIONS -  APPLICANT MODE */
 
-  public verifyApplicant(data: VerifyApplicantCommand): Observable<any> {
+  public verifyApplicant(
+    data: VerifyApplicantCommand
+  ): Observable<ApplicantResponse> {
     return this.applicantService.apiApplicantAdminVerifyPost(data);
   }
 

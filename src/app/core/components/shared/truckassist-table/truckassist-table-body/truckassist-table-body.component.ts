@@ -25,7 +25,6 @@ import { TruckassistTableService } from '../../../../services/truckassist-table/
 import { SharedService } from '../../../../services/shared/shared.service';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 
-
 @Component({
   selector: 'app-truckassist-table-body',
   templateUrl: './truckassist-table-body.component.html',
@@ -75,21 +74,21 @@ export class TruckassistTableBodyComponent
   activeDescriptionDropdown: number = -1;
   descriptionTooltip: any;
   pageHeight: number = window.innerHeight;
-  activeAttachments: number = -1;
-  attachmentsTooltip: any;
-  isAttachmentClosing: boolean;
-  attachmentWidth: number = 0;
+  activeAttachment: number = -1;
+  activeMedia: number = -1;
+  activeInsurance: number = -1;
   statusTooltip: any;
   statusDropdownActive: number = -1;
   statusDropdownData: any;
-  showRowDropdown: number = -1;
+  showInspectinDescriptionEdit: boolean;
+  editInspectinDescriptionText: string = '';
 
   constructor(
     private router: Router,
     private tableService: TruckassistTableService,
     private changeDetectorRef: ChangeDetectorRef,
     private sharedService: SharedService,
-    private detailsDataService: DetailsDataService,
+    private detailsDataService: DetailsDataService
   ) {}
 
   // --------------------------------NgOnInit---------------------------------
@@ -183,11 +182,10 @@ export class TruckassistTableBodyComponent
           this.getSelectedTabTableData();
         }, 10);
       }
-      
-      if (changes.viewData.currentValue[0]){
+
+      if (changes.viewData.currentValue[0]) {
         this.detailsDataService.setNewData(changes.viewData.currentValue[0]);
       }
-      
     }
 
     if (!changes?.tableData?.firstChange && changes?.tableData) {
@@ -222,7 +220,6 @@ export class TruckassistTableBodyComponent
         changes?.selectedTab?.previousValue &&
       changes?.selectedTab
     ) {
-
       this.selectedTab = changes.selectedTab.currentValue;
 
       this.getSelectedTabTableData();
@@ -335,15 +332,6 @@ export class TruckassistTableBodyComponent
 
         this.changeDetectorRef.detectChanges();
       }, 100);
-    }
-  }
-
-  // Show Row Dropdown
-  onShowRowDropdown(index: number){
-    if(this.showRowDropdown === index){
-      this.showRowDropdown = -1;
-    }else{
-      this.showRowDropdown = index;
     }
   }
 
@@ -489,29 +477,35 @@ export class TruckassistTableBodyComponent
   }
 
   // Show Attachments
-  onShowAttachments(popup: any, row: any) {
-    this.attachmentWidth = document.querySelector('.table-tr').clientWidth;
-
-    if (!popup.isOpen()) {
-      let timeInterval = 0;
-
-      if (this.activeAttachments !== -1 && this.activeAttachments !== row.id) {
-        timeInterval = 250;
-      }
-
-      setTimeout(() => {
-        this.isAttachmentClosing = false;
-        this.attachmentsTooltip = popup;
-
-        if (popup.isOpen()) {
-          popup.close();
-        } else {
-          popup.open({ data: row });
-        }
-
-        this.activeAttachments = popup.isOpen() ? row.id : -1;
-      }, timeInterval);
+  onShowAttachments(row: any) {
+    if (this.activeAttachment !== row.id) {
+      this.activeAttachment = row.id;
+    } else {
+      this.activeAttachment = -1;
     }
+  }
+
+  // Show Media
+  onShowMedia(row: any){
+    if (this.activeMedia !== row.id) {
+      this.activeMedia = row.id;
+    } else {
+      this.activeMedia = -1;
+    }
+  }
+
+  // 
+  onShowInsurance(row: any){
+    if (this.activeInsurance !== row.id) {
+      this.activeInsurance = row.id;
+    } else {
+      this.activeInsurance = -1;
+    }
+  }
+
+  // Save Inspectin Description
+  onSaveInspectinDescription() {
+    console.log('Poziva se onSaveInspectinDescription');
   }
 
   // Finish Order

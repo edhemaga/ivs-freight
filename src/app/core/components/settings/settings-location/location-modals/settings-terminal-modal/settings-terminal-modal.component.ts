@@ -5,7 +5,7 @@ import {
   parkingSlotValidation,
   phoneExtension,
   terminalNameValidation,
-} from './../../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
@@ -18,7 +18,6 @@ import {
 
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { SettingsLocationService } from '../../../state/location-state/settings-location.service';
-import { FormService } from '../../../../../services/form/form.service';
 import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
@@ -39,7 +38,7 @@ import { Address } from '../../../../shared/model/address';
   templateUrl: './settings-terminal-modal.component.html',
   styleUrls: ['./settings-terminal-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [ModalService, FormService],
+  providers: [ModalService],
 })
 export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -113,7 +112,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   public isOfficePhoneExtExist: boolean = false;
   public isParkingPhoneExtExist: boolean = false;
   public isWarehousePhoneExtExist: boolean = false;
-  public isFuelStationPhoneExtExist: boolean = false;
 
   public isDirty: boolean;
 
@@ -124,7 +122,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService,
     private settingsLocationService: SettingsLocationService
   ) {}
 
@@ -202,14 +199,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
-
-    // this.formService.checkFormChange(this.terminalForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public tabChange(event: any): void {
@@ -645,6 +634,31 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
           this.notificationService.error("Can't load modal dropdowns", 'Error');
         },
       });
+  }
+
+  // Checkbox Card
+  public officeCheckboxCard: boolean = true;
+  public parkingCheckboxCard: boolean = true;
+  public warehouseCheckboxCard: boolean = true;
+
+  public toggleCheckboxCard(action: string) {
+    switch (action) {
+      case 'office': {
+        this.officeCheckboxCard = !this.officeCheckboxCard;
+        break;
+      }
+      case 'parking': {
+        this.parkingCheckboxCard = !this.parkingCheckboxCard;
+        break;
+      }
+      case 'warehouse': {
+        this.warehouseCheckboxCard = !this.warehouseCheckboxCard;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   ngOnDestroy() {

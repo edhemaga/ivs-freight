@@ -17,6 +17,14 @@ export class FuelDetailsItemComponent implements OnInit {
   public selectedTab: number;
   public fuelDropdown: any;
   public storeDropdown: any;
+  public fuelPriceColors: any[] = [
+    '#4DB6A2',
+    '#81C784',
+    '#FFD54F',
+    '#FFB74D',
+    '#E57373',
+    '#919191',
+  ];
   constructor() {}
 
   ngOnInit(): void {
@@ -122,25 +130,25 @@ export class FuelDetailsItemComponent implements OnInit {
     this.dummyDataVehicle = [
       {
         unit: 'R53202',
-        icon: 'assets/svg/truckassist-table/trailer/container.svg',
+        icon: 'assets/svg/common/trailers/ic_trailer_low-boy.svg',
         key: '24',
         cost: '132,567,25',
       },
       {
         unit: 'R53202',
-        icon: 'assets/svg/truckassist-table/trailer/container.svg',
+        icon: 'assets/svg/common/trailers/ic_trailer_step-deck.svg',
         key: '54',
         cost: '132,567,25',
       },
       {
         unit: 'R53202',
-        icon: 'assets/svg/truckassist-table/trailer/dumper.svg',
+        icon: 'assets/svg/common/trailers/ic_trailer_step-deck.svg',
         key: '234',
         cost: '132,567,25',
       },
       {
         unit: 'R53202',
-        icon: 'assets/svg/truckassist-table/trailer/dumper.svg',
+        icon: 'assets/svg/common/trailers/ic_trailer_flatbed.svg',
         key: '42',
         cost: '132,567,25',
       },

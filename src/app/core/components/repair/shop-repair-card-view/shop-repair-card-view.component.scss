@@ -1,12 +1,37 @@
 @import "../shop-repair-details/shop-repair-details-item/shop-repair-details-item.component.scss";
 
-app-shop-repair-card-view {
-	.icon-pulse {
-		margin-left: 3px;
-		svg {
-			display: flex;
+.icon-repair-shop-circle {
+	display: flex;
+	svg {
+		display: flex;
+		rect {
+			fill: #4db6a2;
 		}
 	}
+}
+.close-repair {
+	display: flex;
+	svg {
+		display: flex;
+		rect {
+			fill: #e57373;
+		}
+	}
+}
+.open-time-next {
+	font-size: 18px;
+	font-weight: $font-semibold;
+	color: #919191;
+	&::-moz-selection {
+		color: #919191;
+		background: rgb(145, 145, 145, 0.2);
+	}
+	&::selection {
+		color: $color-gray-dark;
+		background: rgb(145, 145, 145, 0.2);
+	}
+}
+app-shop-repair-card-view {
 	.svg-area {
 		display: block;
 	}

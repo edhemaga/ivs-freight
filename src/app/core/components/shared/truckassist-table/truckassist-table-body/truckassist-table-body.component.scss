@@ -738,21 +738,33 @@ table {
                 }
               }
             }
-
-            // ATTACHMENTS COLUMN
-            .attachments-btn {
-              width: 18px;
-              height: 18px;
+            // ATTACHMENTS, MEDIA AND INSURANCE COLUMN
+            .attachments-icon-container,
+            .media-icon-container,
+            .inspection-icon-container {
               cursor: pointer;
+              width: 24px;
+              height: 24px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 2px;
 
-              .attachments-svg {
-                width: 18px;
-                height: 18px;
-                background-image: url("../../../../../../assets/svg/truckassist-table/attachment/attachment-regular.png");
-                background-repeat: no-repeat;
+              svg-icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+            }
 
-                &:hover {
-                  background-image: url("../../../../../../assets/svg/truckassist-table/attachment/attachment-hover.png");
+            .action-active {
+              background: #f3f3f3;
+
+              svg-icon {
+                svg {
+                  path {
+                    fill: #6d82c7;
+                  }
                 }
               }
             }
@@ -1684,6 +1696,53 @@ table {
               }
             }
 
+            // ACCIDENT CITATION TYPE
+            .accident-citation-container {
+              width: fit-content;
+              height: 24px;
+              border-radius: 2px;
+              padding: 3px;
+              display: flex;
+              align-items: center;
+
+              .accident-citation-item {
+                width: 30px;
+                height: 18px;
+                border-radius: 2px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: #ffffff;
+                font-size: 14px;
+                font-weight: 600;
+
+                &::selection {
+                  color: #ffffff;
+                  background: #ffffff20;
+                }
+              }
+
+              .item-has-margin {
+                margin-right: 22px;
+              }
+
+              .grey-item {
+                background: #aaaaaa;
+              }
+
+              .yellow-item {
+                background: #ffb74d;
+              }
+
+              .red-item {
+                background: #e57373;
+              }
+
+              .blue-item {
+                background: #6d82c7;
+              }
+            }
+
             // PROGRESS COLUMN
             .applicant-status-container {
               width: fit-content;
@@ -1844,27 +1903,32 @@ table {
         }
       }
 
-      // Roadside Inspection Row Dropdown
-      .roadside-inspection-row-dropdown {
-        width: 100%;
-        height: fit-content;
+      // Attachment, Media And Insurance Dropdown
+      .attachemnt-dropdown,
+      .media-dropdown,
+      .insurance-dropdown {
+        /*  width: 100%; */
+        width: 0px;
+        /* height: fit-content; */
         max-height: 0px;
         overflow: hidden;
-        transition: 0.25s ease-in-out;
+        transition: max-height 0.2s ease-in-out;
 
-        .roadside-inspection-content {
+        .attachemnt-dropdown-content,
+        .media-dropdown-content,
+        .insurance-dropdown-content {
           width: 100%;
           height: fit-content;
           padding: 0 6px 6px 6px;
           transition: height 0.25s ease-in-out;
 
-          .roadside-inspection-border-container {
+          .dropdown-border-container {
             height: 2px;
             width: 100%;
             padding: 0 10px;
             margin-top: 2px;
 
-            .roadside-inspection-border {
+            .dropdown-border {
               width: 100%;
               height: 100%;
               border-radius: 1px;
@@ -1917,7 +1981,7 @@ table {
             }
           }
 
-          // Violation
+          // VIOALTION
           .violation-inspection-container {
             width: 100%;
             height: fit-content;
@@ -1951,6 +2015,11 @@ table {
                 font-weight: bold;
                 color: #6c6c6c;
                 width: 156px;
+
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
               }
 
               .oss-icon {
@@ -1962,10 +2031,39 @@ table {
                 font-weight: 400;
               }
 
+              .edit-description {
+                flex-grow: 1;
+                height: 26px;
+                background: #6c6c6c;
+                border-radius: 2px;
+
+                input {
+                  width: 100%;
+                  height: 100%;
+                  border: none;
+                  background: transparent;
+                  padding: 4px 6px;
+                  outline: none;
+                  color: #ffffff;
+                  font-size: 14px;
+                  font-weight: 400;
+
+                  &::selection {
+                    color: #ffffff;
+                    background: #ffffff20;
+                  }
+                }
+              }
+
               .inspection-decription,
               .sw-count {
                 font-size: 14px;
                 color: #6c6c6c;
+
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
               }
 
               .sw-count {
@@ -1974,22 +2072,23 @@ table {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                margin-right: 22px;
+                margin-right: 30px;
 
                 .oss-count {
                   font-size: 14px;
                   font-weight: 600;
                   color: #ffa726;
-                }
-              }
 
-              .edit-icon {
-                margin-right: 8px;
+                  &::selection {
+                    color: #ffa726;
+                    background: #ffa72620;
+                  }
+                }
               }
             }
           }
 
-          // Citation
+          // CITATION
           .citation-inspection-container {
             .inspection-title {
               .due-date-title {
@@ -2024,6 +2123,11 @@ table {
                 font-size: 14px;
                 font-weight: bold;
                 color: #6c6c6c;
+
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
               }
 
               .citation-description {
@@ -2031,6 +2135,11 @@ table {
                 font-size: 14px;
                 font-weight: 400;
                 color: #6c6c6c;
+
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
               }
 
               .due-date {
@@ -2104,6 +2213,11 @@ table {
                 font-size: 14px;
                 font-weight: 600;
                 color: #6c6c6c;
+
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
               }
 
               .actions {
@@ -2119,12 +2233,212 @@ table {
               }
             }
           }
+
+          // DOCUMENT
+          .document-container {
+            width: 100%;
+            height: fit-content;
+            position: relative;
+
+            // TITLE
+            .document-title {
+              width: 100%;
+              height: 26px;
+              display: flex;
+              align-items: center;
+              position: absolute;
+              top: 2px;
+              z-index: 100;
+
+              .document-count-title {
+                font-size: 14px;
+                font-weight: bold;
+                color: #919191;
+                margin-left: 4px;
+
+                &::selection {
+                  color: #919191;
+                  background: #91919120;
+                }
+              }
+
+              .download-document-btn {
+                cursor: pointer;
+                user-select: none;
+                width: 138px;
+                height: 26px;
+                background: #f3f3f3;
+                border-radius: 2px;
+                padding: 4px 8px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin: 0 4px 0 auto;
+
+                svg-icon {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                }
+
+                .title {
+                  font-size: 14px;
+                  font-weight: bold;
+                  color: #6c6c6c;
+                }
+              }
+            }
+
+            // ATTACHMENTS
+            .attacment-container {
+              width: 100%;
+              height: 200px;
+              padding: 0 4px;
+              border: 1px solid red;
+            }
+          }
+
+          // MEDIA
+          .media-wrapper {
+            width: 100%;
+            height: fit-content;
+            position: relative;
+
+            .media-title {
+              width: 100%;
+              height: 26px;
+              display: flex;
+              align-items: center;
+              position: absolute;
+              top: 2px;
+              z-index: 100;
+
+              .media-count-title {
+                font-size: 14px;
+                font-weight: bold;
+                color: #919191;
+                margin: 0 6px 0 4px;
+
+                &::selection {
+                  color: #919191;
+                  background: #91919120;
+                }
+              }
+
+              svg-icon {
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+            }
+
+            .media-container {
+              width: 100%;
+              height: 200px;
+              padding: 0 4px;
+              border: 1px solid red;
+            }
+          }
+
+          // INSURANCE
+          .insurance-container {
+            width: 100%;
+            height: fit-content;
+
+            .insurance-title {
+              width: 100%;
+              height: 26px;
+              display: flex;
+              align-items: center;
+              padding: 0 8px;
+
+              .title-item {
+                font-size: 14px;
+                font-weight: bold;
+                color: #919191;
+
+                &::selection {
+                  color: #919191;
+                  background: #91919120;
+                }
+              }
+
+              .insurance-type {
+                width: 402px;
+              }
+
+              .claim {
+                width: 200px;
+              }
+
+              .insurance-adjuster {
+                width: 272px;
+              }
+
+              .phone {
+                width: 200px;
+              }
+
+              .email {
+                width: 251px;
+              }
+            }
+
+            .insurance-item-container {
+              width: 100%;
+              height: 32px;
+              border-radius: 2px;
+              background: #97a8dc10;
+              padding: 0 8px;
+              display: flex;
+              align-items: center;
+
+              div {
+                font-size: 14px;
+                font-weight: 400;
+                color: #6c6c6c;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
+              }
+
+              .insurance-type {
+                width: 402px;
+                font-weight: bold;
+              }
+
+              .claim {
+                width: 200px;
+              }
+
+              .insurance-adjuster {
+                width: 272px;
+              }
+
+              .phone {
+                width: 200px;
+              }
+
+              .email {
+                width: 251px;
+              }
+            }
+          }
         }
       }
 
-      .roadside-inspection-active {
+      .attachemnt-dropdown-active,
+      .media-dropdown-active,
+      .insurance-dropdown-active {
+        width: 100% !important;
         max-height: 1000px;
-        transition: 0.25s ease-in-out;
+        transition: max-height 0.2s ease-in-out;
       }
     }
 
@@ -2237,12 +2551,6 @@ table {
       }
     }
 
-    // Show Attachments
-    .show-attachments {
-      margin-bottom: 202px;
-      transition: 0.25s;
-    }
-
     // Repair Order Row
     .row-repair-order {
       background: #fff3e0;
@@ -2270,7 +2578,6 @@ table {
   margin-top: 3px;
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
 
   .showing,
   .show-more {
@@ -2350,9 +2657,45 @@ table {
 }
 
 // ACTION ANIMATION
+
+// Add Animation
 .add-animation {
-  background: green !important;
-  transition: 0.4s;
+  position: relative !important;
+  z-index: -1;
+  animation: drop-new-row 0.3s ease-out, show-new-row 0.25s ease-out;
+
+  .columns-container{
+    animation: hide-new-row-background 2s ease-in 0.3s;
+  }
+}
+
+// 1
+@keyframes drop-new-row {
+  0% {
+    top: -34px;
+  }
+  100% {
+    top: 0px;
+  }
+}
+
+@keyframes show-new-row {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1
+  }
+}
+
+// 2
+@keyframes hide-new-row-background {
+  0% {
+    background: #E0EAF8;
+  }
+  100% {
+    background: #ffffff
+  }
 }
 
 .update-animation {
@@ -2360,9 +2703,81 @@ table {
   transition: 0.4s;
 }
 
+// Delete Animation
 .delete-animation {
-  background: red !important;
-  transition: 0.4s;
+  overflow: hidden !important;
+  min-height: unset !important;
+
+  animation: deleting-row-decrease-size 0.3s ease-in 0.3s, deleting-row-visibility 0.3s ease-in 0.3s, deleting-row-decrease-height 0.3s ease-in 0.6s;
+
+  .columns-container{
+    animation: deleting-row-add-color 0.3s ease-in;
+  }
+}
+
+.multiple-delete-animation{
+  overflow: hidden !important;
+  min-height: unset !important;
+
+  animation: deleting-row-decrease-size 0.3s ease-in 0.3s, deleting-row-visibility 0.3s ease-in 0.3s, deleting-row-decrease-height 0.3s ease-in 0.6s;
+
+  .columns-container{
+    animation: multiple-deleting-row-add-color 0.3s ease-in;
+  }
+}
+
+// 1
+@keyframes multiple-deleting-row-add-color {
+  0% {
+    background: #E5E5E5;
+  }
+  100% {
+    background: #FFEBEE;
+  }
+}
+
+@keyframes deleting-row-add-color {
+  0% {
+    background: #ffffff;
+  }
+  100% {
+    background: #FFEBEE;
+  }
+}
+
+// 2
+@keyframes deleting-row-decrease-size {
+  0% {
+    background: #FFEBEE;
+    transform: scaleX(1);
+  }
+  100% {
+    background: #FFEBEE;
+    transform: scaleX(0.7);
+  }
+}
+
+@keyframes deleting-row-visibility {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+// 3
+@keyframes deleting-row-decrease-height {
+  0% {
+    opacity: 0;
+    min-height: 32px;
+    height: 32px;
+  }
+  100% {
+    opacity: 0;
+    min-height: 0px;
+    height: 0px;
+  }
 }
 
 // NG CLASS

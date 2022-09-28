@@ -14,7 +14,7 @@
 export interface ApplicantPreviousAddressReviewResponse { 
     id?: number;
     previousAddressId?: number;
-    isPreviousAddressValid?: number;
+    isPreviousAddressValid?: boolean;
     previousAddressMessage?: string | null;
 }
 

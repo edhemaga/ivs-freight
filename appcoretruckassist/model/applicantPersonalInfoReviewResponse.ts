@@ -21,6 +21,7 @@ export interface ApplicantPersonalInfoReviewResponse {
     isPhoneValid?: boolean;
     phoneMessage?: string | null;
     isAddressValid?: boolean;
+    isAddressUnitValid?: boolean;
     addressMessage?: string | null;
     isSsnValid?: boolean;
     isBankValid?: boolean;

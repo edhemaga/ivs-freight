@@ -24,7 +24,7 @@ export interface PersonalInfoFeedbackResponse {
     phone?: string | null;
     email?: string | null;
     doB?: string;
-    isAgreement?: boolean;
+    isAgreed?: boolean;
     address?: AddressEntity;
     ssn?: string | null;
     bank?: BankResponse;

@@ -17,13 +17,7 @@ export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
 
   resolve(): Observable<LoadTemplateState | boolean> {
     return this.loadService
-      .getLoadTemplateList(
-        undefined,
-        undefined,
-        undefined,
-        1,
-        25
-      )
+      .getLoadTemplateList(undefined, undefined, undefined, 1, 25)
       .pipe(
         catchError(() => {
           return of('No load template data...');
