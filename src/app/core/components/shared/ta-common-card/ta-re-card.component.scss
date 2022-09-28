@@ -175,6 +175,16 @@ p {
             }
         }
     }
+    &:hover {
+        .hide-text {
+            color: #3551b7 !important;
+        }
+        svg {
+            path {
+                fill: #3551b7 !important;
+            }
+        }
+    }
 }
 .hide-text {
     color: #6d82c7;

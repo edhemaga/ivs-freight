@@ -513,6 +513,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         id: item.id,
         name: item.truckNumber,
         status: item.status,
+        svg: item.truckType.logoName,
+        folder: 'common/trucks',
         active: item.id === this.truck.id,
       };
     });
@@ -523,6 +525,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         return {
           id: item.id,
           name: item.truckNumber,
+          svg: item.truckType.logoName,
+          folder: 'common/trucks',
           status: item.status,
           active: item.id === event.id,
         };
