@@ -257,7 +257,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
           this.viewData = this.viewData.map((driver: any, index: number) => {
             if (driver.id === res.id) {
-              driver.actionAnimation = 'update';
+              driver.actionAnimation = this.selectedTab === 'active' ? 'deactivate' : 'activate';
               driverIndex = index;
             }
 
@@ -271,7 +271,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.viewData.splice(driverIndex, 1);
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
         }
         // On Delete Driver
         else if (res.animation === 'delete') {

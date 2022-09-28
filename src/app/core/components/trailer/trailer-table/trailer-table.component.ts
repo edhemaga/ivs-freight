@@ -138,10 +138,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
 
-    // Add Trailer
+    // Trailer Actions
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
+        // Add Trailer ACtive
         if (res.animation === 'add') {
           this.viewData.push(this.mapTrailerData(res.data));
 
@@ -160,9 +161,13 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             clearInterval(inetval);
           }, 2300);
-        } else if (res.animation === 'add' && this.selectedTab === 'inactive') {
+        } 
+        // Add Trailer Inactive
+        else if (res.animation === 'add' && this.selectedTab === 'inactive') {
           this.updateDataCount();
-        } else if (res.animation === 'update') {
+        } 
+        // Update Trailer
+        else if (res.animation === 'update') {
           this.viewData = this.viewData.map((trailer: any) => {
             if (trailer.id === res.id) {
               trailer = this.mapTrailerData(res.data);
@@ -177,12 +182,14 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             clearInterval(inetval);
           }, 1000);
-        } else if (res.animation === 'update-status') {
+        } 
+        // Update Trailer Status
+        else if (res.animation === 'update-status') {
           let trailerIndex: number;
 
           this.viewData = this.viewData.map((trailer: any, index: number) => {
             if (trailer.id === res.id) {
-              trailer.actionAnimation = 'update';
+              trailer.actionAnimation = this.selectedTab === 'active' ? 'deactivate' : 'activate';
               trailerIndex = index;
             }
 
@@ -196,7 +203,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.viewData.splice(trailerIndex, 1);
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
         }
       });
 
@@ -301,7 +308,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
           contentType: 'add',
         },
         {
-          title: 'Activate',
+          title: this.selectedTab === 'active' ? 'Deactivate' : 'Activate',
           reverseTitle: 'Deactivate',
           name: 'activate-item',
           class: 'regular-text',
@@ -623,8 +630,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             'Trailer successfully changed status',
             'Success:'
           );
-
-          this.sendTrailerData();
         },
         error: () => {
           this.notificationService.error(

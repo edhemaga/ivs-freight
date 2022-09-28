@@ -186,7 +186,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
           this.viewData = this.viewData.map((truck: any, index: number) => {
             if (truck.id === res.id) {
-              truck.actionAnimation = 'update';
+              truck.actionAnimation = this.selectedTab === 'active' ? 'deactivate' : 'activate';
               truckIndex = index;
             }
 
@@ -200,7 +200,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.viewData.splice(truckIndex, 1);
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
         } else if (res.animation === 'delete') {
           let truckIndex: number;
 
