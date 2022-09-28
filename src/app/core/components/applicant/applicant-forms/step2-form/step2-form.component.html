@@ -14,7 +14,7 @@
           autoFocus: true,
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[20].lineInputs[0]"
         (incorrectEvent)="incorrectInput($event, 0, 20)"
       ></app-ta-input>
     </div>
@@ -359,90 +359,44 @@
                 {{ classOfEquipment.trailerLength }}
               </p>
             </div>
+          </div>
+
+          <div
+            class="d-flex align-items-center btn-container"
+            *ngIf="selectedMode === 'APPLICANT_MODE'"
+          >
+            <div
+              ngbTooltip
+              mainTooltip="Edit"
+              tooltipBackground="#6C6C6C"
+              position="top"
+            >
+              <svg-icon
+                class="edit-icon"
+                src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                (click)="onEditClassOfEquipment(i)"
+              ></svg-icon>
+            </div>
 
             <div
-              class="d-flex align-items-center btn-container"
-              [ngClass]="{
-                active: selectedMode === 'REVIEW_MODE'
-              }"
+              ngbTooltip
+              mainTooltip="Delete"
+              tooltipBackground="#EF5350"
+              position="top"
             >
-              <div
-                ngbTooltip
-                mainTooltip="Edit"
-                tooltipBackground="#6C6C6C"
-                position="top"
-              >
-                <svg-icon
-                  class="edit-icon"
-                  src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                  [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18
-                  }"
-                  (click)="onEditClassOfEquipment(i)"
-                ></svg-icon>
-              </div>
-
-              <div
-                ngbTooltip
-                mainTooltip="Delete"
-                tooltipBackground="#EF5350"
-                position="top"
-              >
-                <svg-icon
-                  class="delete-icon"
-                  src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                  [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18
-                  }"
-                  (click)="onDeleteClassOfEquipment(i)"
-                ></svg-icon>
-              </div>
-
-              <div *ngIf="selectedMode === 'REVIEW_MODE'">
-                <div
-                  class="review-icon-box"
-                  ngbTooltip
-                  mainTooltip="Mark Incorrect"
-                  tooltipBackground="#F44336"
-                  position="top"
-                >
-                  <svg-icon
-                    class="review-icon"
-                    [ngClass]="{
-                      active:
-                        openAnnotationArray[i + 10].displayAnnotationButton ||
-                        openAnnotationArray[i + 10].displayAnnotationTextArea
-                    }"
-                    src="assets/svg/ic_x.svg"
-                    [svgStyle]="{
-                      'width.px': 18,
-                      'height.px': 18
-                    }"
-                    (click)="incorrectInput($event, 0, i + 10, 'card')"
-                  ></svg-icon>
-                </div>
-              </div>
-
-              <div *ngIf="selectedMode === 'FEEDBACK_MODE'">
-                <div
-                  class="feedback-icon-box"
-                  ngbTooltip
-                  mainTooltip="Marked Incorrect"
-                  tooltipBackground="#F44336"
-                  position="top"
-                >
-                  <svg-icon
-                    class="feedback-icon"
-                    src="assets/svg/common/ic_danger.svg"
-                    [svgStyle]="{
-                      'width.px': 18,
-                      'height.px': 18
-                    }"
-                  ></svg-icon>
-                </div>
-              </div>
+              <svg-icon
+                class="delete-icon"
+                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                (click)="onDeleteClassOfEquipment(i)"
+              ></svg-icon>
             </div>
           </div>
 
@@ -496,13 +450,10 @@
                 .replace(' ', '')
                 .toLowerCase()
             },
-            customClass: 'truck-trailer-dropdown',
-            incorrectInput: selectedMode === 'REVIEW_MODE'
+            customClass: 'truck-trailer-dropdown'
           }"
           [options]="vehicleType"
           [activeItem]="selectedVehicleType"
-          [incorrectValue]="false"
-          (incorrectEvent)="incorrectInput($event, 0, 24)"
           (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
         ></app-ta-input-dropdown>
       </div>
@@ -533,14 +484,10 @@
                     ?.trim()
                     .replace(' ', '')
                     .toLowerCase()
-            },
-
-            incorrectInput: selectedMode === 'REVIEW_MODE'
+            }
           }"
           [activeItem]="selectedTrailerType"
           [options]="trailerType"
-          [incorrectValue]="false"
-          (incorrectEvent)="incorrectInput($event, 1, 24)"
           (selectedItem)="handleInputSelect($event, 'TRAILER-TYPE')"
         ></app-ta-input-dropdown>
       </div>
@@ -554,13 +501,10 @@
             isDropdown: true,
             isDisabled: !isTruckSelected,
             isRequired: isTruckSelected,
-            dropdownWidthClass: 'w-col-130',
-            incorrectInput: selectedMode === 'REVIEW_MODE'
+            dropdownWidthClass: 'w-col-130'
           }"
           [options]="trailerLengthType"
           [activeItem]="selectedTrailerLength"
-          [incorrectValue]="false"
-          (incorrectEvent)="incorrectInput($event, 2, 24)"
           (selectedItem)="handleInputSelect($event, 'TRAILER-LENGTH')"
         ></app-ta-input-dropdown>
       </div>
@@ -813,6 +757,29 @@
         (click)="onSaveEditedWorkExperience()"
       >
         Save Changes
+      </button>
+    </div>
+
+    <div
+      class="d-flex align-items-center justify-content-center btn-container"
+      *ngIf="isReviewingCard"
+    >
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-bold add-btn cancel-btn"
+        (click)="onCancelReviewWorkExperience()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-bold add-btn save-btn"
+        [ngClass]="{
+          disabled: !isCardReviewedIncorrect
+        }"
+        (click)="onAddAnnotation()"
+      >
+        Add Annotation
       </button>
     </div>
   </div>

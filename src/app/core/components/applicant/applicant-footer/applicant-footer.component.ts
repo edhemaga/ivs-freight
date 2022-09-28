@@ -5,6 +5,7 @@ import {
   ViewChild,
   ElementRef,
   NgZone,
+  Input,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -17,7 +18,6 @@ import moment from 'moment';
 
 import { SelectedMode } from '../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../state/enum/input-switch-actions.enum';
-import { CompanyInfoModel } from '../state/model/company.model';
 import { IdNameList } from '../state/model/lists.model';
 import { ApplicantCompanyInfoResponse } from 'appcoretruckassist';
 
@@ -35,9 +35,11 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
   @ViewChild('documentsBox')
   documentsBox: ElementRef;
 
+  @Input() mode: string;
+
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string;
 
   public sphTabForm: FormGroup;
 
@@ -120,7 +122,19 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    if (this.selectedMode === 'REVIEW_MODE') {
+    if (this.mode === SelectedMode.FEEDBACK) {
+      this.selectedMode = SelectedMode.FEEDBACK;
+    } else if (this.mode === SelectedMode.REVIEW) {
+      this.selectedMode = SelectedMode.REVIEW;
+    } else {
+      this.selectedMode = SelectedMode.APPLICANT;
+    }
+
+    if (this.selectedMode === SelectedMode.APPLICANT) {
+      this.getCompanyInfo();
+    }
+
+    if (this.selectedMode === SelectedMode.REVIEW) {
       this.createForm();
 
       this.getRequestsBoxHeight();
@@ -128,8 +142,6 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
     }
 
     this.copyrightYear = moment().format('YYYY');
-
-    this.getCompanyInfo();
   }
 
   public get previousRequests(): FormArray {

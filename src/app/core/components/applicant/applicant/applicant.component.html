@@ -4,7 +4,7 @@
       class="container-fluid d-flex flex-column justify-content-between applicant-container"
     >
       <div class="d-flex flex-column justify-content-center">
-        <app-applicant-header></app-applicant-header>
+        <app-applicant-header [mode]="selectedMode"></app-applicant-header>
 
         <div class="d-flex justify-content-center step-progress-bar">
           <div
@@ -73,7 +73,7 @@
         <router-outlet></router-outlet>
       </div>
 
-      <app-applicant-footer></app-applicant-footer>
+      <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
     </div>
   </div>
 </div>

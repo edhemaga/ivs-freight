@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SelectedMode } from '../state/enum/selected-mode.enum';
+
+import { Subject, takeUntil } from 'rxjs';
+
+import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
 
 import { INavigation } from '../state/model/navigation.model';
 
@@ -8,8 +12,10 @@ import { INavigation } from '../state/model/navigation.model';
   templateUrl: './applicant.component.html',
   styleUrls: ['./applicant.component.scss'],
 })
-export class ApplicantComponent implements OnInit {
-  public selectedMode = SelectedMode.APPLICANT;
+export class ApplicantComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
+  public selectedMode = SelectedMode.REVIEW;
 
   public menuItems: INavigation[] = [
     {
@@ -111,9 +117,21 @@ export class ApplicantComponent implements OnInit {
     { id: 7, hasIncorrectAnswer: false, sentToReview: false },
   ];
 
-  constructor() {}
+  constructor(private applicantActionsService: ApplicantActionsService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      this.applicantActionsService
+        .getApplicantById(1)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe();
+    }
+  }
 
   public trackByIdentity = (index: number, item: any): number => index;
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

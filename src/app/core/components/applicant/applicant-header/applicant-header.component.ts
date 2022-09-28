@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { SelectedMode } from '../state/enum/selected-mode.enum';
 import { INavigation } from '../state/model/navigation.model';
 
@@ -8,7 +8,9 @@ import { INavigation } from '../state/model/navigation.model';
   styleUrls: ['./applicant-header.component.scss'],
 })
 export class ApplicantHeaderComponent implements OnInit {
-  public selectedMode = SelectedMode.APPLICANT;
+  @Input() mode: string;
+
+  public selectedMode: string;
 
   public menuItems: INavigation[] = [
     {
@@ -88,7 +90,15 @@ export class ApplicantHeaderComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.mode === SelectedMode.FEEDBACK) {
+      this.selectedMode = SelectedMode.FEEDBACK;
+    } else if (this.mode === SelectedMode.REVIEW) {
+      this.selectedMode = SelectedMode.REVIEW;
+    } else {
+      this.selectedMode = SelectedMode.APPLICANT;
+    }
+  }
 
   public trackByIdentity = (index: number, item: any): number => index;
 }

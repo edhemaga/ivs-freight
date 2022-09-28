@@ -1,8 +1,4 @@
 import {
-  bankValidation,
-  lastNameValidation,
-} from './../../../shared/ta-input/ta-input.regex-validations';
-import {
   Component,
   OnInit,
   OnDestroy,
@@ -30,6 +26,8 @@ import {
   addressValidation,
   addressUnitValidation,
   firstNameValidation,
+  bankValidation,
+  lastNameValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
 import { ApplicantListsService } from './../../state/services/applicant-lists.service';
@@ -38,6 +36,7 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
+import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
@@ -318,6 +317,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     private applicantActionsService: ApplicantActionsService,
     private bankVerificationService: BankVerificationService,
     private notificationService: NotificationService,
+    private applicantStore: ApplicantStore,
     private applicantQuery: ApplicantQuery
   ) {}
 
@@ -345,16 +345,15 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     }
 
     if (this.selectedMode === SelectedMode.REVIEW) {
-      this.applicantActionsService
-        .getApplicantById(1)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe();
+      let stepValuesResponse: any;
 
       this.applicantQuery.personalInfoList$
         .pipe(takeUntil(this.destroy$))
         .subscribe((res) => {
-          this.patchStepValues(res);
+          stepValuesResponse = res;
         });
+
+      this.patchStepValues(stepValuesResponse);
     }
   }
 
@@ -415,7 +414,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public patchStepValues(stepValues: any): void {
-    console.log('store', stepValues);
     const {
       id,
       isAgreement,
@@ -443,7 +441,33 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       felonyDescription,
       misdemeanorDescription,
       drunkDrivingDescription,
+      personalInfoReview,
     } = stepValues;
+
+    this.personalInfoForm.patchValue({
+      isAgreement: true,
+      firstName,
+      lastName,
+      dateOfBirth: convertDateFromBackend(doB),
+      phone,
+      email,
+      ssn,
+      bankId: bankName,
+      accountNumber,
+      routingNumber,
+      legalWork,
+      anotherName,
+      inMilitary,
+      felony,
+      misdemeanor,
+      drunkDriving,
+      legalWorkExplain: legalWorkDescription,
+      anotherNameExplain: anotherNameDescription,
+      inMilitaryExplain: inMilitaryDescription,
+      felonyExplain: felonyDescription,
+      misdemeanorExplain: misdemeanorDescription,
+      drunkDrivingExplain: drunkDrivingDescription,
+    });
 
     setTimeout(() => {
       this.selectedBank = this.banksDropdownList.find(
@@ -489,31 +513,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     this.personalInfoId = id;
     this.previousAddressesId = previousAddresses.map((item: any) => item.id);
 
-    this.personalInfoForm.patchValue({
-      isAgreement: true,
-      firstName,
-      lastName,
-      dateOfBirth: convertDateFromBackend(doB),
-      phone,
-      email,
-      ssn,
-      bankId: bankName,
-      accountNumber,
-      routingNumber,
-      legalWork,
-      anotherName,
-      inMilitary,
-      felony,
-      misdemeanor,
-      drunkDriving,
-      legalWorkExplain: legalWorkDescription,
-      anotherNameExplain: anotherNameDescription,
-      inMilitaryExplain: inMilitaryDescription,
-      felonyExplain: felonyDescription,
-      misdemeanorExplain: misdemeanorDescription,
-      drunkDrivingExplain: drunkDrivingDescription,
-    });
-
     const addresses = [...previousAddresses, address];
 
     for (let i = 0; i < addresses.length; i++) {
@@ -534,6 +533,29 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
           address: address.address,
           addressUnit: address.addressUnit,
         });
+
+        if (this.selectedMode === SelectedMode.REVIEW) {
+          const { isAddressValid, addressMessage } = personalInfoReview || {};
+
+          const firstEmptyObjectInList = this.openAnnotationArray.find(
+            (item) => Object.keys(item).length === 0
+          );
+
+          const indexOfFirstEmptyObjectInList =
+            this.openAnnotationArray.indexOf(firstEmptyObjectInList);
+
+          this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+            lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+            lineInputs: [isAddressValid == null ? false : !isAddressValid],
+            displayAnnotationButton: false,
+            displayAnnotationTextArea: addressMessage ? true : false,
+          };
+
+          this.previousAddresses
+            .at(this.previousAddresses.length - 1)
+            .get(`cardReview${i + 1}`)
+            .patchValue(addressMessage ? addressMessage : null);
+        }
       } else {
         this.isEditingArray = [
           ...this.isEditingArray,
@@ -549,22 +571,133 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
           address: previousAddresses[i].address.address,
           addressUnit: previousAddresses[i].address.addressUnit,
         });
+
+        if (this.selectedMode === SelectedMode.REVIEW) {
+          const firstEmptyObjectInList = this.openAnnotationArray.find(
+            (item) => Object.keys(item).length === 0
+          );
+
+          const indexOfFirstEmptyObjectInList =
+            this.openAnnotationArray.indexOf(firstEmptyObjectInList);
+
+          this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+            lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+            lineInputs: [false],
+            displayAnnotationButton: false,
+            displayAnnotationTextArea: false,
+          };
+        }
       }
 
-      const firstEmptyObjectInList = this.openAnnotationArray.find(
-        (item) => Object.keys(item).length === 0
-      );
+      this.previousAddresses.removeAt(i + 1);
+    }
 
-      const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
-        firstEmptyObjectInList
-      );
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      if (personalInfoReview) {
+        const {
+          isFirstNameValid,
+          isLastNameValid,
+          isDoBValid,
+          personalInfoMessage,
+          isPhoneValid,
+          phoneMessage,
+          isSsnValid,
+          isBankValid,
+          ssnBankMessage,
+          isAccountNumberValid,
+          isRoutingNumberValid,
+          accountRoutingMessage,
+          isLegalWorkValid,
+          legalWorkMessage,
+          isAnotherNameValid,
+          anotherNameMessage,
+          isInMilitaryValid,
+          inMilitaryMessage,
+          isFelonyValid,
+          felonyMessage,
+          isMisdemeanorValid,
+          misdemeanorMessage,
+          isDrunkDrivingValid,
+          drunkDrivingMessage,
+        } = personalInfoReview;
 
-      this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-        lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
-        lineInputs: [false],
-        displayAnnotationButton: false,
-        displayAnnotationTextArea: false,
-      };
+        this.openAnnotationArray[0] = {
+          ...this.openAnnotationArray[0],
+          lineInputs: [!isFirstNameValid, !isLastNameValid, !isDoBValid],
+          displayAnnotationTextArea: personalInfoMessage ? true : false,
+        };
+        this.openAnnotationArray[1] = {
+          ...this.openAnnotationArray[1],
+          lineInputs: [!isPhoneValid],
+          displayAnnotationTextArea: phoneMessage ? true : false,
+        };
+        this.openAnnotationArray[7] = {
+          ...this.openAnnotationArray[7],
+          lineInputs: [!isSsnValid, !isBankValid],
+          displayAnnotationTextArea: ssnBankMessage ? true : false,
+        };
+        this.openAnnotationArray[8] = {
+          ...this.openAnnotationArray[8],
+          lineInputs: [!isAccountNumberValid, !isRoutingNumberValid],
+          displayAnnotationTextArea: accountRoutingMessage ? true : false,
+        };
+        this.openAnnotationArray[9] = {
+          ...this.openAnnotationArray[9],
+          lineInputs: [!isLegalWorkValid],
+          displayAnnotationTextArea: legalWorkMessage ? true : false,
+        };
+        this.openAnnotationArray[10] = {
+          ...this.openAnnotationArray[10],
+          lineInputs: [!isAnotherNameValid],
+          displayAnnotationTextArea: anotherNameMessage ? true : false,
+        };
+        this.openAnnotationArray[11] = {
+          ...this.openAnnotationArray[11],
+          lineInputs: [!isInMilitaryValid],
+          displayAnnotationTextArea: inMilitaryMessage ? true : false,
+        };
+        this.openAnnotationArray[12] = {
+          ...this.openAnnotationArray[12],
+          lineInputs: [!isFelonyValid],
+          displayAnnotationTextArea: felonyMessage ? true : false,
+        };
+        this.openAnnotationArray[13] = {
+          ...this.openAnnotationArray[13],
+          lineInputs: [!isMisdemeanorValid],
+          displayAnnotationTextArea: misdemeanorMessage ? true : false,
+        };
+        this.openAnnotationArray[14] = {
+          ...this.openAnnotationArray[14],
+          lineInputs: [!isDrunkDrivingValid],
+          displayAnnotationTextArea: drunkDrivingMessage ? true : false,
+        };
+
+        this.personalInfoForm.patchValue({
+          firstRowReview: personalInfoMessage,
+          secondRowReview: phoneMessage,
+          thirdRowReview: ssnBankMessage,
+          fourthRowReview: accountRoutingMessage,
+
+          questionReview1: legalWorkMessage,
+          questionReview2: anotherNameMessage,
+          questionReview3: inMilitaryMessage,
+          questionReview4: felonyMessage,
+          questionReview5: misdemeanorMessage,
+          questionReview6: drunkDrivingMessage,
+        });
+      }
+    }
+
+    const inputFieldsArray = JSON.stringify(
+      this.openAnnotationArray
+        .filter((item) => Object.keys(item).length !== 0)
+        .map((item) => item.lineInputs)
+    );
+
+    if (inputFieldsArray.includes('true')) {
+      this.hasIncorrectFields = true;
+    } else {
+      this.hasIncorrectFields = false;
     }
   }
 
@@ -1290,8 +1423,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       previousAddressReviews: [...previousAddresses],
     };
 
-    console.log('na bek', saveData);
-
     this.applicantActionsService
       .createPersonalInfoReview(saveData)
       .pipe(takeUntil(this.destroy$))
@@ -1303,6 +1434,16 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
           console.log(err);
         },
       });
+
+    this.applicantStore.update(1, (entity) => {
+      return {
+        ...entity,
+        personalInfo: {
+          ...entity.personalInfo,
+          personalInfoReview: saveData,
+        },
+      };
+    });
   }
 
   ngOnDestroy(): void {

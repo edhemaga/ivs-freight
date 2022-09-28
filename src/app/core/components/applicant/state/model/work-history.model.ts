@@ -1,6 +1,6 @@
 export interface WorkHistoryModel {
   id?: number;
-  applicantId: string;
+  applicantId?: string;
   employer: string;
   jobDescription: string;
   fromDate: string;

@@ -19,7 +19,7 @@ import { CreateAuthorizationCommand } from 'appcoretruckassist/model/models';
 export class Step11Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public authorizationForm: FormGroup;
 
@@ -37,11 +37,13 @@ export class Step11Component implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
 
-    this.applicantActionsService.getApplicantInfo$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res.personalInfo.applicantId;
-      });
+    if (this.selectedMode === SelectedMode.APPLICANT) {
+      this.applicantActionsService.getApplicantInfo$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          this.applicantId = res.personalInfo.applicantId;
+        });
+    }
   }
 
   public createForm(): void {

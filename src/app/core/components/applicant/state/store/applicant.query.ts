@@ -9,6 +9,10 @@ export class ApplicantQuery extends QueryEntity<ApplicantState> {
     (state) => state.entities[1].personalInfo
   );
 
+  public workExperienceList$ = this.select(
+    (state) => state.entities[1].workExperience
+  );
+
   constructor(protected applicantStore: ApplicantStore) {
     super(applicantStore);
   }

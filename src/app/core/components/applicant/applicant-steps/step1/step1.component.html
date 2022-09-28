@@ -97,7 +97,7 @@
               autoFocus: true,
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
-            [incorrectValue]="false"
+            [incorrectValue]="openAnnotationArray[0].lineInputs[0]"
             (incorrectEvent)="incorrectInput($event, 0, 0)"
           ></app-ta-input>
         </div>
@@ -114,7 +114,7 @@
               textTransform: 'capitalize',
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
-            [incorrectValue]="false"
+            [incorrectValue]="openAnnotationArray[0].lineInputs[1]"
             (incorrectEvent)="incorrectInput($event, 1, 0)"
           ></app-ta-input>
         </div>
@@ -130,7 +130,7 @@
               customClass: 'datetimeclass',
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
-            [incorrectValue]="false"
+            [incorrectValue]="openAnnotationArray[0].lineInputs[2]"
             (incorrectEvent)="incorrectInput($event, 2, 0)"
           ></app-ta-input>
         </div>
@@ -176,7 +176,7 @@
               mask: '(000) 000-0000',
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
-            [incorrectValue]="false"
+            [incorrectValue]="openAnnotationArray[1].lineInputs[0]"
             (incorrectEvent)="incorrectInput($event, 0, 1)"
           ></app-ta-input>
         </div>
@@ -337,7 +337,19 @@
                           maxLength: 256,
                           incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
-                        [incorrectValue]="false"
+                        [incorrectValue]="
+                          openAnnotationArray[6].lineInputs
+                            ? openAnnotationArray[6].lineInputs[0]
+                            : openAnnotationArray[5].lineInputs
+                            ? openAnnotationArray[5].lineInputs[0]
+                            : openAnnotationArray[4].lineInputs
+                            ? openAnnotationArray[4].lineInputs[0]
+                            : openAnnotationArray[3].lineInputs
+                            ? openAnnotationArray[3].lineInputs[0]
+                            : openAnnotationArray[2].lineInputs
+                            ? openAnnotationArray[2].lineInputs[0]
+                            : false
+                        "
                         (incorrectEvent)="incorrectInput($event, 0, i + 2)"
                         (selectedAddress)="
                           handleInputSelect($event, 'PREVIOUS-ADDRESS', i)
@@ -648,7 +660,7 @@
               mask: '000-00-0000',
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
-            [incorrectValue]="false"
+            [incorrectValue]="openAnnotationArray[7].lineInputs[0]"
             (incorrectEvent)="incorrectInput($event, 0, 7)"
           ></app-ta-input>
         </div>
@@ -670,7 +682,7 @@
             [activeItem]="selectedBank"
             [options]="banksDropdownList"
             [canAddNew]="true"
-            [incorrectValue]="false"
+            [incorrectValue]="openAnnotationArray[7].lineInputs[1]"
             (incorrectEvent)="incorrectInput($event, 1, 7)"
             (saveItem)="onSaveNewBank($event)"
             (selectedItem)="handleInputSelect($event, 'BANK')"
@@ -719,7 +731,7 @@
               minLength: 5,
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
-            [incorrectValue]="false"
+            [incorrectValue]="openAnnotationArray[8].lineInputs[0]"
             (incorrectEvent)="incorrectInput($event, 0, 8)"
           ></app-ta-input>
         </div>
@@ -736,7 +748,7 @@
               maxLength: 9,
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
-            [incorrectValue]="false"
+            [incorrectValue]="openAnnotationArray[8].lineInputs[1]"
             (incorrectEvent)="incorrectInput($event, 1, 8)"
           ></app-ta-input>
         </div>
@@ -829,7 +841,7 @@
                   placeholderInsteadOfLabel: true,
                   incorrectInput: selectedMode === 'REVIEW_MODE'
                 }"
-                [incorrectValue]="false"
+                [incorrectValue]="openAnnotationArray[i + 9].lineInputs[0]"
                 (incorrectEvent)="incorrectInput($event, 0, i + 9)"
               ></app-ta-input>
             </div>
