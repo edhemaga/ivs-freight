@@ -2,21 +2,23 @@
   <app-ta-input-dropdown
     formControlName="address"
     [inputConfig]="{
-      name: 'Input Dropdown',
-      type: 'text',
-      label: 'Address, City, State Zip',
-      placeholderIcon: 'address',
-      isRequired: true,
-      isDropdown: true,
+      name: inputConfig.name,
+      type: inputConfig.type,
+      label: inputConfig.label,
+      placeholderIcon: inputConfig.placeholderIcon,
+      isRequired: inputConfig.isRequired,
       dropdownWidthClass: 'w-col-512',
       loadingSpinner: {
         size: 'small',
         color: 'white',
         isLoading: loadingAddresses
-      }
+      },
+      minLength: inputConfig.minLength,
+      maxLength: inputConfig.maxLength,
+      textTransform: inputConfig.textTransform
     }"
     [options]="addresList"
-    [activeItem]="selctedAddress"
+    [activeItem]="activeAddress"
     (selectedItem)="onSelectDropdown($event, 'address')"
   ></app-ta-input-dropdown>
 </div>

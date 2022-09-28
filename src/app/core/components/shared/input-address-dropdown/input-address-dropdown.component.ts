@@ -1,27 +1,64 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  Self,
+} from '@angular/core';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 import { AddressService } from 'src/app/core/services/shared/address.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AddressEntity } from 'appcoretruckassist';
+import {
+  FormBuilder,
+  FormGroup,
+  NgControl,
+  ControlValueAccessor,
+} from '@angular/forms';
+import { ITaInput } from '../ta-input/ta-input.config';
 
 @Component({
   selector: 'app-input-address-dropdown',
   templateUrl: './input-address-dropdown.component.html',
   styleUrls: ['./input-address-dropdown.component.scss'],
 })
-export class InputAddressDropdownComponent implements OnInit, OnDestroy {
+export class InputAddressDropdownComponent
+  implements OnInit, ControlValueAccessor, OnDestroy
+{
   private destroy$ = new Subject<void>();
   public addressForm!: FormGroup;
-  selctedAddress: any;
+  @Input() set activeAddress(value) {
+    if (this.addressForm && value.address) {
+      this.addressForm.controls['address'].setValue(value.address);
+    }
+  }
   loadingAddresses: boolean = false;
   addresList: any[] = [];
+  currentAddress: any;
+  @Input() inputConfig: ITaInput;
+  @Output() selectedAddress: EventEmitter<{
+    address: AddressEntity;
+    valid: boolean;
+  }> = new EventEmitter<{ address: AddressEntity; valid: boolean }>(null);
 
   constructor(
+    @Self() public superControl: NgControl,
     private addressService: AddressService,
     private formBuilder: FormBuilder
-  ) {}
-  ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
+  ) {
+    this.superControl.valueAccessor = this;
   }
+
+  writeValue(obj: any): void {}
+
+  public registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  public onChange(event: any): void {}
+
+  registerOnTouched(fn: any): void {}
 
   ngOnInit(): void {
     this.addressForm = this.formBuilder.group({
@@ -29,10 +66,19 @@ export class InputAddressDropdownComponent implements OnInit, OnDestroy {
     });
 
     this.addressForm.valueChanges
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap(async (query) => this.addressService
+        .getAdresses(query))
+        )
       .subscribe((changes) => {
-        this.getSearchedAdresses(changes.address);
+        console.log(changes, 'changeschangeschangeschanges')
+        //this.getSearchedAdresses(changes.address);
       });
+  }
+
+  get getSuperControl() {
+    return this.superControl.control;
   }
 
   public getSearchedAdresses(searchedAddress) {
@@ -68,12 +114,23 @@ export class InputAddressDropdownComponent implements OnInit, OnDestroy {
   public onSelectDropdown(event: any, action: string) {
     switch (action) {
       case 'address': {
-        this.selctedAddress = event;
+        this.activeAddress = event;
+        this.selectedAddress.emit({
+          address: event.address,
+          valid: true,
+        });
+        this.getSuperControl.setValue(event.address.address);
+        this.getSuperControl.setErrors(null);
         break;
       }
       default: {
         break;
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
