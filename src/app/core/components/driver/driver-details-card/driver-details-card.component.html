@@ -74,7 +74,6 @@
         [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
         [isCardOpen]="true"
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         class="first-custom-card"
       >
         <div class="assignTo">
@@ -144,7 +143,6 @@
       <!-- Additional info -->
       <app-ta-custom-card
         class="item-cards"
-        [animationsDisabled]="false"
         [bodyTemplate]="'card'"
         [cardName]="'Additional info'"
         [isCardOpen]="false"
@@ -186,7 +184,6 @@
         [isCardOpen]="false"
         *ngIf="driver.offDutyLocations.length"
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         class="item-cards"
       >
         <div
@@ -229,7 +226,6 @@
         [isCardOpen]="false"
         class="item-cards"
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
       >
         <div class="employment-history-container">
           <div class="years-of-service">
@@ -368,7 +364,6 @@
       <app-ta-custom-card
         *ngIf="driver.owner"
         class="item-cards"
-        [animationsDisabled]="false"
         [bodyTemplate]="'card'"
         [cardName]="driver.owner ? 'Owner Details' : 'Owner - Sole Proprietor'"
         [isCardOpen]="driver.owner ? true : false"
@@ -406,7 +401,6 @@
       <!-- Commission Pay-->
       <app-ta-custom-card
         class="item-cards"
-        [animationsDisabled]="false"
         [bodyTemplate]="'card'"
         *ngIf="
           driver?.commissionSolo ||
@@ -480,7 +474,6 @@
         [tooltipName]="'View in Modal'"
         [isCardOpen]="true"
         class="item-cards"
-        [animationsDisabled]="false"
         [bodyTemplate]="'card'"
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
       >
@@ -516,7 +509,6 @@
         [isCardOpen]="false"
         class="item-cards"
         [customClassHeaderSvg]="true"
-        [animationsDisabled]="false"
         [bodyTemplate]="'card'"
       >
         <div class="purchase-template">
@@ -545,7 +537,6 @@
         [isCardOpen]="false"
         class="item-cards"
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
       >
         <div
           *ngIf="!driver.emergencyContactName || !driver.emergencyContactPhone"
@@ -587,7 +578,6 @@
             [isVisibleNote]="true"
             [isVisibleArrow]="true"
             [minRows]="1"
-            [isVisibleSecondDivider]="false"
             [placeholder]="'Write something.'"
             [customClass]="'note-small'"
             [note]="driver.note"
@@ -605,7 +595,6 @@
           class="item-cards"
           [bodyTemplate]="'card'"
           [hasCounter]="driver.cdls.length"
-          [animationsDisabled]="false"
           [hasPlusHeader]="true"
           (onActionEvent)="onModalAction('CDL')"
         >
@@ -688,12 +677,16 @@
                         >
                           <span class="span-value" *ngIf="endors?.length">
                             <span class="value-name">{{ endors?.code }}</span>
-                            <span *ngIf="toggler[i+'description']" class="desc"
+                            <span
+                              *ngIf="toggler[i + 'description']"
+                              class="desc"
                               >- {{ endors?.description }}</span
                             >
                           </span>
                         </p>
-                        <span class="no-driver" *ngIf="!endors?.length">None</span>
+                        <span class="no-driver" *ngIf="!endors?.length"
+                          >None</span
+                        >
                       </div>
                     </div>
                   </div>
@@ -774,7 +767,6 @@
                       [formControl]="cdlNote"
                       [isVisibleDivider]="false"
                       [isVisibleNote]="true"
-                      [isVisibleSecondDivider]="false"
                       [isVisibleArrow]="false"
                       [minRows]="1"
                       [placeholder]="'Write something.'"
@@ -797,7 +789,6 @@
           class="item-cards"
           [bodyTemplate]="'card'"
           [hasCounter]="driver.tests.length"
-          [animationsDisabled]="false"
           [hasPlusHeader]="true"
           (onActionEvent)="onModalAction('DrugAlcohol')"
         >
@@ -870,7 +861,6 @@
                       [formControl]="testNote"
                       [isVisibleDivider]="false"
                       [isVisibleNote]="true"
-                      [isVisibleSecondDivider]="false"
                       [isVisibleArrow]="false"
                       [minRows]="1"
                       [placeholder]="'Write something.'"
@@ -892,7 +882,6 @@
           class="item-cards"
           [bodyTemplate]="'card'"
           [hasCounter]="driver.medicals.length"
-          [animationsDisabled]="false"
           [hasPlusHeader]="true"
           (onActionEvent)="onModalAction('Medical')"
         >
@@ -980,7 +969,6 @@
                       [formControl]="medicalNote"
                       [isVisibleDivider]="false"
                       [isVisibleNote]="true"
-                      [isVisibleSecondDivider]="false"
                       [isVisibleArrow]="false"
                       [minRows]="1"
                       [placeholder]="'Write something.'"
@@ -1003,7 +991,6 @@
           class="item-cards"
           [bodyTemplate]="'card'"
           [hasCounter]="driver.mvrs.length"
-          [animationsDisabled]="false"
           [hasPlusHeader]="true"
           (onActionEvent)="onModalAction('MVR')"
         >
@@ -1086,7 +1073,6 @@
                       [formControl]="mvrNote"
                       [isVisibleDivider]="false"
                       [isVisibleNote]="true"
-                      [isVisibleSecondDivider]="false"
                       [isVisibleArrow]="false"
                       [minRows]="1"
                       [placeholder]="'Write something.'"

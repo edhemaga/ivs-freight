@@ -5,7 +5,7 @@
   [isModalValid]="taskForm.valid"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="taskForm" class="form-container">
+  <form [formGroup]="taskForm" class="form-container form-container-without-mb">
     <div class="row">
       <div class="col-12">
         <app-ta-input
@@ -115,8 +115,11 @@
       [hasBodyData]="comments.length > 0"
       [hasScrollBody]="comments.length > 4"
       [disabledCard]="editData?.type !== 'edit'"
-      [hasActionSvg]="editData?.type === 'edit' ? 'assets/svg/common/ic_plus.svg' : ''"
+      [hasActionSvg]="
+        editData?.type === 'edit' ? 'assets/svg/common/ic_plus.svg' : ''
+      "
       (onActionEvent)="createComment()"
+      [animationMarginParams]="{ marginTop: '10px', marginBottom: '12px' }"
     >
       <app-ta-user-review
         *ngIf="comments.length"

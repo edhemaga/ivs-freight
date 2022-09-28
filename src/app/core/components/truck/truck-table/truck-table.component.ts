@@ -161,7 +161,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
+          }, 2300);
         } else if (res.animation === 'add' && this.selectedTab === 'inactive') {
           this.updateDataCount();
         } else if (res.animation === 'update') {
@@ -220,7 +220,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.viewData.splice(truckIndex, 1);
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
         }
       });
 
@@ -684,7 +684,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = closeAnimationAction(true, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
         }
       });
   }
@@ -697,7 +697,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.viewData = this.viewData.map((truck: any) => {
           response.map((id: any) => {
             if (truck.id === id) {
-              truck.actionAnimation = 'delete';
+              truck.actionAnimation = 'delete-multiple';
             }
           });
 
@@ -709,7 +709,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
           this.viewData = closeAnimationAction(true, this.viewData);
 
           clearInterval(inetval);
-        }, 1000);
+        }, 900);
 
         this.tableService.sendRowsSelected([]);
         this.tableService.sendResetSelectedColumns(true);

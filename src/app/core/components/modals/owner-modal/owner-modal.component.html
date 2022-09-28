@@ -12,7 +12,10 @@
   >
   </app-ta-tab-switch>
 
-  <form [formGroup]="ownerForm" class="form-container">
+  <form
+    [formGroup]="ownerForm"
+    class="form-container form-container-without-mb"
+  >
     <div class="row" *ngIf="selectedTab === 1">
       <div class="col-8">
         <app-ta-input
@@ -53,7 +56,8 @@
             minLength: 2,
             maxLength: 26,
             isRequired: true,
-            textTransform: 'capitalize'
+            textTransform: 'capitalize',
+            autoFocus: selectedTab === 2 && !ownerForm.get('firstName').value
           }"
         ></app-ta-input>
       </div>
@@ -138,7 +142,7 @@
           [inputConfig]="{
             name: 'address-unit',
             type: 'text',
-            label: 'Unit #',
+            label: 'Unit No.',
             textTransform: 'uppercase',
             minLength: 1,
             maxLength: 10

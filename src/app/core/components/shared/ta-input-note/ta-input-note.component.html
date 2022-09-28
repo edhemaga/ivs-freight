@@ -22,8 +22,9 @@
   </div>
   <div
     class="note-body"
+    [ngClass]="noActive"
     #noteBody
-    [@showHideCardBody]="_isVisibleNote ? 'true' : 'false'"
+    [@showHideCardBody]="_isVisibleNote.toString()"
   >
     <div
       #main_editor
@@ -37,5 +38,4 @@
       [innerHTML]="note | safeHtml"
     ></div>
   </div>
-  <div *ngIf="isVisibleSecondDivider" class="divider divider-second"></div>
 </div>

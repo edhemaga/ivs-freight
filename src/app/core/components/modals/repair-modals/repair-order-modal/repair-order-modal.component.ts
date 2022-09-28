@@ -115,7 +115,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private ngbActiveModal: NgbActiveModal,
     private sumArrayPipe: SumArraysPipe,
-    private cdRef: ChangeDetectorRef,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {

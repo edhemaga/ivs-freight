@@ -25,14 +25,13 @@ import {
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../../services/BANK-VERIFICATION/bankVerification.service';
-import { FormService } from '../../../../services/form/form.service';
 import { NotificationService } from '../../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-repair-shop-modal',
   templateUrl: './repair-shop-modal.component.html',
   styleUrls: ['./repair-shop-modal.component.scss'],
-  providers: [ModalService, FormService, BankVerificationService],
+  providers: [ModalService, BankVerificationService],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -68,7 +67,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     private shopService: RepairTService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService,
     private bankVerificationService: BankVerificationService
   ) {}
 
@@ -110,14 +108,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
-
-    // this.formService.checkFormChange(this.repairShopForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

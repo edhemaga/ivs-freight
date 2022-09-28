@@ -65,7 +65,6 @@
     <div class="repair-cards">
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="false"
         [cardName]="'Additional Info'"
         [isCardOpen]="true"
@@ -83,7 +82,6 @@
       </app-ta-custom-card>
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [hasCounter]="20"
         [cardName]="'Paid Invoice'"
@@ -115,7 +113,6 @@
       </app-ta-custom-card>
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [cardName]="'Mileage Rate History'"
         [isCardOpen]="false"
@@ -141,7 +138,6 @@
       </app-ta-custom-card>
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [hasCounter]="invoiceAgeingCounter ? invoiceAgeingCounter : broker?.invoiceAgeingGroup?.countInvoice"
         [cardName]="'Invoice Ageing'"
@@ -211,7 +207,6 @@
 
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [cardName]="'Terms and Credit'"
         [isCardOpen]="true"
@@ -256,7 +251,6 @@
 
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [cardName]="'Payment History'"
         [isCardOpen]="false"
@@ -284,7 +278,6 @@
       <div class="note-cards">
         <app-ta-input-note
           [formControl]="note"
-          [isVisibleSecondDivider]="false"
           [isVisibleArrow]="true"
           [minRows]="1"
           [isVisibleDivider]="false"

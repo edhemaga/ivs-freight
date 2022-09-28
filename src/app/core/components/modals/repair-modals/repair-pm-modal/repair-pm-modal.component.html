@@ -10,7 +10,7 @@
   [isModalValid]="PMform.valid"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="PMform" class="form-container">
+  <form [formGroup]="PMform" class="form-container form-container-without-mb">
     <app-ta-custom-card
       [hasCounter]="activePMs()"
       [hasDivider]="false"
@@ -41,52 +41,54 @@
             {{ editData?.header?.includes("Truck") ? "MILEAGE" : "MONTHS" }}
           </p>
         </div>
-        <div
-          *ngFor="
-            let pm of defaultPMs.controls;
-            let ind = index;
-            trackBy: identity
-          "
-        >
-          <div [formGroupName]="ind" class="common-fake-table-card">
-            <app-ta-checkbox
-              formControlName="isChecked"
-              [name]="ind + 'default'"
-              [customClass]="'regular'"
-              [disabled]="
-                editData?.header?.includes('Truck') ? ind < 4 : ind < 1
-              "
-              [svg]="pm.get('svg').value"
-              [label]="pm.get('title').value"
-            >
-            </app-ta-checkbox>
+        <div class="common-fake-table-body common-fake-table-body-height-auto">
+          <div
+            *ngFor="
+              let pm of defaultPMs.controls;
+              let ind = index;
+              trackBy: identity
+            "
+          >
+            <div [formGroupName]="ind" class="common-fake-table-card">
+              <app-ta-checkbox
+                formControlName="isChecked"
+                [name]="ind + 'default'"
+                [customClass]="'regular'"
+                [disabled]="
+                  editData?.header?.includes('Truck') ? ind < 4 : ind < 1
+                "
+                [svg]="pm.get('svg').value"
+                [label]="pm.get('title').value"
+              >
+              </app-ta-checkbox>
 
-            <app-ta-input
-              formControlName="mileage"
-              [inputConfig]="{
-                name: editData?.header?.includes('Truck')
-                  ? 'MILEAGE'
-                  : 'MONTHS',
-                type: 'text',
-                hideErrorMessage: true,
-                blackInput: true,
-                hideRequiredCheck: true,
-                commands: {
-                  active: true,
-                  type: 'pm-increment-decrement',
-                  firstCommand: {
-                    name: 'decrement',
-                    svg: 'assets/svg/common/ic_pm_decrement.svg'
+              <app-ta-input
+                formControlName="mileage"
+                [inputConfig]="{
+                  name: editData?.header?.includes('Truck')
+                    ? 'MILEAGE'
+                    : 'MONTHS',
+                  type: 'text',
+                  hideErrorMessage: true,
+                  blackInput: true,
+                  hideRequiredCheck: true,
+                  commands: {
+                    active: true,
+                    type: 'pm-increment-decrement',
+                    firstCommand: {
+                      name: 'decrement',
+                      svg: 'assets/svg/common/ic_pm_decrement.svg'
+                    },
+                    secondCommand: {
+                      name: 'increment',
+                      svg: 'assets/svg/common/ic_pm_increment.svg'
+                    }
                   },
-                  secondCommand: {
-                    name: 'increment',
-                    svg: 'assets/svg/common/ic_pm_increment.svg'
-                  }
-                },
-                thousandSeparator: true,
-                maxLength: editData?.header?.includes('Truck') ? 999999999 : 2
-              }"
-            ></app-ta-input>
+                  thousandSeparator: true,
+                  maxLength: editData?.header?.includes('Truck') ? 999999999 : 2
+                }"
+              ></app-ta-input>
+            </div>
           </div>
         </div>
       </div>
@@ -98,77 +100,83 @@
         [ngStyle]="{ 'margin-top': '0px' }"
         *ngIf="newPMs.length"
       >
-        <div
-          *ngFor="let pm of newPMs.controls; let ind = index; trackBy: identity"
-        >
-          <div [formGroupName]="ind" class="common-fake-table-card">
-            <app-ta-checkbox
-              formControlName="isChecked"
-              [name]="ind + 'new'"
-              [customClass]="'regular'"
-              [svg]="pm.get('svg').value"
-              [label]="pm.get('value').value"
-            >
-            </app-ta-checkbox>
-            <div
-              class="pm-new-input-container"
-              [ngStyle]="{ position: 'absolute', left: '25.5px' }"
-              *ngIf="!pm.get('hidden').value"
-            >
+        <div class="common-fake-table-body">
+          <div
+            *ngFor="
+              let pm of newPMs.controls;
+              let ind = index;
+              trackBy: identity
+            "
+          >
+            <div [formGroupName]="ind" class="common-fake-table-card">
+              <app-ta-checkbox
+                formControlName="isChecked"
+                [name]="ind + 'new'"
+                [customClass]="'regular'"
+                [svg]="pm.get('svg').value"
+                [label]="pm.get('value').value"
+              >
+              </app-ta-checkbox>
+              <div
+                class="pm-new-input-container"
+                [ngStyle]="{ position: 'absolute', left: '25.5px' }"
+                *ngIf="!pm.get('hidden').value"
+              >
+                <app-ta-input
+                  formControlName="value"
+                  [inputConfig]="{
+                    name: 'Description',
+                    type: 'text',
+                    blackInput: true,
+                    hideErrorMessage: true,
+                    hideRequiredCheck: true,
+                    minLength: 2,
+                    maxLength: 160,
+                    textTransform: 'capitalize',
+                    placeholderIcon: 'default_pm'
+                  }"
+                  (change)="onChangeValueNewPM(ind)"
+                ></app-ta-input>
+              </div>
+
               <app-ta-input
-                formControlName="value"
+                formControlName="mileage"
                 [inputConfig]="{
-                  name: 'Description',
+                  name: editData?.header?.includes('Truck')
+                    ? 'MILEAGE'
+                    : 'MONTHS',
                   type: 'text',
-                  blackInput: true,
                   hideErrorMessage: true,
+                  blackInput: true,
                   hideRequiredCheck: true,
-                  minLength: 2,
-                  maxLength: 160,
-                  textTransform: 'capitalize',
-                  placeholderIcon: 'default_pm'
-                }"
-                (change)="onChangeValueNewPM(ind)"
-              ></app-ta-input>
-            </div>
-
-            <app-ta-input
-              formControlName="mileage"
-              [inputConfig]="{
-                name: editData?.header?.includes('Truck')
-                  ? 'MILEAGE'
-                  : 'MONTHS',
-                type: 'text',
-                hideErrorMessage: true,
-                blackInput: true,
-                hideRequiredCheck: true,
-                commands: {
-                  active: true,
-                  type: 'pm-increment-decrement',
-                  firstCommand: {
-                    name: 'decrement',
-                    svg: 'assets/svg/common/ic_pm_decrement.svg'
+                  commands: {
+                    active: true,
+                    type: 'pm-increment-decrement',
+                    firstCommand: {
+                      name: 'decrement',
+                      svg: 'assets/svg/common/ic_pm_decrement.svg'
+                    },
+                    secondCommand: {
+                      name: 'increment',
+                      svg: 'assets/svg/common/ic_pm_increment.svg'
+                    }
                   },
-                  secondCommand: {
-                    name: 'increment',
-                    svg: 'assets/svg/common/ic_pm_increment.svg'
-                  }
-                },
-                thousandSeparator: true,
-                maxLength: editData?.header?.includes('Truck') ? 999999999 : 2
-              }"
-            ></app-ta-input>
+                  thousandSeparator: true,
+                  maxLength: editData?.header?.includes('Truck') ? 999999999 : 2
+                }"
+              ></app-ta-input>
 
-            <div
-              *ngIf="editData?.type === 'new'"
-              ngbTooltip
-              mainTooltip="Delete"
-              position="top"
-              tooltipBackground="#EF5350"
-              class="common-fake-table-delete"
-              (click)="removeNewPMs(ind)"
-            >
-              <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+              <div
+                *ngIf="editData?.type === 'new'"
+                ngbTooltip
+                mainTooltip="Delete"
+                position="top"
+                tooltipBackground="#EF5350"
+                class="common-fake-table-delete"
+                (click)="removeNewPMs(ind)"
+              >
+                <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+              </div>
             </div>
           </div>
         </div>

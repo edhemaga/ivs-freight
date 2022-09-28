@@ -64,7 +64,6 @@
         [cardName]="'Office'"
         [isCardOpen]="true"
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [textBottomPossiton]="'-2px'"
       >
         <div class="parking-template-data">
@@ -75,7 +74,7 @@
             ></svg-icon>
             <app-ta-copy [copyValue]="item.officePhone"> </app-ta-copy>
           </div>
-          
+
           <div *ngIf="item.officeExtPhone" class="parking-template-item">
             <svg-icon
               class="company-icons"
@@ -94,45 +93,43 @@
         </div>
       </app-ta-custom-card>
       <app-ta-custom-card
-      *ngIf="item.warehouseChecked"
-      [cardName]="'Warehouse'"
-      [isCardOpen]="true"
-      [bodyTemplate]="'card'"
-      [animationsDisabled]="false"
-      [textBottomPossiton]="'-2px'"
-    >
-      <div class="parking-template-data">
-        <div *ngIf="item.warehousePhone" class="parking-template-item">
-          <svg-icon
-            class="company-icons"
-            src="assets/svg/common/ic_phone.svg"
-          ></svg-icon>
-          <app-ta-copy [copyValue]="item.warehousePhone"> </app-ta-copy>
+        *ngIf="item.warehouseChecked"
+        [cardName]="'Warehouse'"
+        [isCardOpen]="true"
+        [bodyTemplate]="'card'"
+        [textBottomPossiton]="'-2px'"
+      >
+        <div class="parking-template-data">
+          <div *ngIf="item.warehousePhone" class="parking-template-item">
+            <svg-icon
+              class="company-icons"
+              src="assets/svg/common/ic_phone.svg"
+            ></svg-icon>
+            <app-ta-copy [copyValue]="item.warehousePhone"> </app-ta-copy>
+          </div>
+
+          <div *ngIf="item.warehouseExtPhone" class="parking-template-item">
+            <svg-icon
+              class="company-icons"
+              src="assets/svg/common/ic_phone-extension.svg"
+            ></svg-icon>
+            <app-ta-copy [copyValue]="item.warehouseExtPhone"> </app-ta-copy>
+          </div>
+          <div class="parking-template-item">
+            <svg-icon
+              *ngIf="item.warehouseEmail"
+              class="company-icons"
+              src="assets/svg/common/ic_email.svg"
+            ></svg-icon>
+            <app-ta-copy [copyValue]="item.warehouseEmail"> </app-ta-copy>
+          </div>
         </div>
-        
-        <div *ngIf="item.warehouseExtPhone" class="parking-template-item">
-          <svg-icon
-            class="company-icons"
-            src="assets/svg/common/ic_phone-extension.svg"
-          ></svg-icon>
-          <app-ta-copy [copyValue]="item.warehouseExtPhone"> </app-ta-copy>
-        </div>
-        <div class="parking-template-item">
-          <svg-icon
-            *ngIf="item.warehouseEmail"
-            class="company-icons"
-            src="assets/svg/common/ic_email.svg"
-          ></svg-icon>
-          <app-ta-copy [copyValue]="item.warehouseEmail"> </app-ta-copy>
-        </div>
-      </div>
-    </app-ta-custom-card>
+      </app-ta-custom-card>
       <app-ta-custom-card
         *ngIf="item.parkingChecked"
         [cardName]="'Parking'"
         [isCardOpen]="true"
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [textBottomPossiton]="'-2px'"
       >
         <div class="parking-template-data">

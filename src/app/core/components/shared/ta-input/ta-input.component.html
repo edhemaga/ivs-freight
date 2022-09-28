@@ -26,7 +26,7 @@
       !getSuperControl.value &&
       getSuperControl.invalid &&
       inputConfig.isDropdown &&
-      touchedInput &&
+      (touchedInput || getSuperControl.touched) &&
       !focusInput,
     'dropdown-label-active': selectedDropdownLabelColor && !editInputMode
   }"
@@ -122,7 +122,7 @@
   <!-- Input Invalid Danger Mark -->
   <svg-icon
     *ngIf="
-      (touchedInput &&
+      ((touchedInput || getSuperControl.touched) &&
         getSuperControl.value &&
         getSuperControl.invalid &&
         !focusInput &&
@@ -240,10 +240,10 @@
         inputConfig.isRequired &&
         !getSuperControl.value &&
         getSuperControl.invalid &&
-        touchedInput &&
+        (touchedInput || getSuperControl.touched) &&
         !focusInput
     }"
-    src="assets/svg/common/ic_arrow_down_updated.svg"
+    src="assets/svg/common/ic_arrow_input.svg"
     (click)="toggleDropdownOptions()"
   ></svg-icon>
 
@@ -357,7 +357,7 @@
         !getSuperControl.value &&
         getSuperControl.invalid &&
         !focusInput &&
-        touchedInput,
+        (touchedInput || getSuperControl.touched),
       'invalid-required-filled-out':
         getSuperControl.value &&
         getSuperControl.invalid &&
@@ -423,7 +423,7 @@
     {{ selectedDropdownLabelColor.count }}
   </p>
 
-  <!-- Special Dropdown Selected Image with or without Text -->
+  <!-- Special Dropdown Selected Image with or Without Text -->
   <svg-icon
     *ngIf="
       inputConfig.dropdownImageInput &&
@@ -466,7 +466,7 @@
     "
     [minLength]="inputConfig.minLength ? inputConfig.minLength : 0"
     [maxLength]="inputConfig.maxLength ? inputConfig.maxLength : 999"
-    mask="{{ inputConfig.mask }}"
+    [mask]="inputConfig.mask"
     [min]="inputConfig.min ? inputConfig.min : 0"
     [max]="inputConfig.max"
     [step]="inputConfig.step ? inputConfig.step : null"
@@ -474,7 +474,8 @@
     class="input-control
     {{ inputConfig.textTransform }}
     {{ inputConfig.textAlign }}
-    {{ inputConfig.customClass }}"
+    {{ inputConfig.customClass }}
+    "
     [ngClass]="{
       disabled: !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
@@ -486,10 +487,33 @@
         !isVisibleCommands &&
         !inputConfig?.dropdownImageInput?.url &&
         !inputConfig.blackInput,
+      'valid-focus-out-filled':
+        ((getSuperControl.value &&
+          getSuperControl.valid &&
+          !focusInput &&
+          !inputConfig.isDisabled &&
+          !isVisiblePasswordEye &&
+          !isVisibleCommands &&
+          !inputConfig.blackInput) ||
+          inputConfig.dropdownImageInput?.url) &&
+        !inputConfig.blackInput,
       'invalid-focus-in':
         getSuperControl.value &&
         getSuperControl.invalid &&
         focusInput &&
+        !inputConfig.blackInput,
+      'invalid-focus-out-filled':
+        ((getSuperControl.value &&
+          getSuperControl.invalid &&
+          !focusInput &&
+          !inputConfig.isDisabled &&
+          !isVisiblePasswordEye &&
+          !isVisibleCommands &&
+          !inputConfig.blackInput) ||
+          (!inputConfig.dropdownImageInput?.url &&
+            (touchedInput || getSuperControl.touched) &&
+            getSuperControl.invalid &&
+            !focusInput)) &&
         !inputConfig.blackInput,
       'password-eye':
         inputConfig.type === 'password' &&
@@ -533,7 +557,7 @@
     (keyup)="onKeyUp($event)"
     (blur)="onBlur()"
     (focus)="onFocus()"
-    (paste)="onPaste($event, inputConfig.maxLength)"
+    (paste)="onPaste($event)"
     (input)="onChange($event.target.value); transformText($event.target.value)"
     [(ngModel)]="input.value"
   />
@@ -551,15 +575,32 @@
     tabindex="-1"
     (click)="showDateTimePlaceholder()"
     (paste)="onDatePaste($event)"
-    (blur)="onBlur($event)"
+    (blur)="onBlur()"
     (keydown)="changeSelection($event, true)"
     [ngClass]="{
       focused: focusInput,
+      'valid-focus-out-filled-datepicker':
+        getSuperControl.value &&
+        getSuperControl.valid &&
+        !focusInput &&
+        !inputConfig.isDisabled &&
+        !isVisiblePasswordEye &&
+        !isVisibleCommands &&
+        !inputConfig.blackInput,
       'invalid-focus-in':
         inputConfig.isRequired &&
         getSuperControl.value &&
         getSuperControl.invalid &&
-        focusInput
+        focusInput,
+      'invalid-focus-out-filled':
+        (getSuperControl.value &&
+          getSuperControl.invalid &&
+          !focusInput &&
+          !inputConfig.isDisabled &&
+          !inputConfig.blackInput) ||
+        ((touchedInput || getSuperControl.touched) &&
+          getSuperControl.invalid &&
+          !focusInput)
     }"
   >
     <span
@@ -569,7 +610,7 @@
       (focus)="onFocus()"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
-      (blur)="onBlur($event)"
+      (blur)="onBlur()"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'mm' : 'HH'"
     ></span>
     <span
@@ -584,7 +625,7 @@
       (focus)="onFocus()"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
-      (blur)="onBlur($event)"
+      (blur)="onBlur()"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
     ></span>
     <span
@@ -599,7 +640,7 @@
       (focus)="onFocus()"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
-      (blur)="onBlur($event)"
+      (blur)="onBlur()"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'yy' : 'AM'"
     ></span>
   </div>
@@ -637,7 +678,7 @@
     *ngIf="
       !inputConfig.hideErrorMessage &&
       !(!getSuperControl.value && focusInput) &&
-      (touchedInput || getSuperControl.value) &&
+      (touchedInput || getSuperControl.touched || getSuperControl.value) &&
       getSuperControl.invalid
     "
     class="input-error {{ inputConfig.customClass }}"

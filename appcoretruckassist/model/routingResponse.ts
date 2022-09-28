@@ -15,8 +15,11 @@ import { LegResponse } from './legResponse';
 
 export interface RoutingResponse { 
     legs?: Array<LegResponse> | null;
+    shape?: string | null;
     totalMiles?: number;
     totalCost?: number;
+    totalHours?: number;
+    totalMinutes?: number;
     routePoints?: Array<LongLat> | null;
 }
 
