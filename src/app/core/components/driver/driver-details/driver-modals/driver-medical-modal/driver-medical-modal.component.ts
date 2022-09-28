@@ -12,7 +12,6 @@ import { MedicalTService } from '../../../state/medical.service';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
-import { FormService } from '../../../../../services/form/form.service';
 import {
   convertDateToBackend,
   convertDateFromBackend,
@@ -42,8 +41,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private medicalService: MedicalTService,
     private notificationService: NotificationService,
-    private modalService: ModalService,
-    private formService: FormService
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -60,14 +58,6 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
       expDate: [null, Validators.required],
       note: [null],
     });
-
-    // this.formService.checkFormChange(this.medicalForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   private getDriverById(id: number) {

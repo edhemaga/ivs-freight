@@ -3,7 +3,6 @@ import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import {
@@ -54,10 +53,7 @@ import {
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
   styleUrls: ['./driver-modal.component.scss'],
-  animations: [
-    tab_modal_animation('animationTabsModal'),
-    card_modal_animation('showHidePayroll', '6px'),
-  ],
+  animations: [tab_modal_animation('animationTabsModal')],
   providers: [ModalService, FormService, BankVerificationService],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
@@ -226,6 +222,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
     // Save And Add New
     else if (data.action === 'save and add new') {
+      if (this.driverForm.invalid) {
+        this.inputService.markInvalid(this.driverForm);
+        return;
+      }
       this.addDriver();
       this.modalService.setModalSpinner({
         action: 'save and add new',
@@ -265,13 +265,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       email: [null, [Validators.required]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
-      dateOfBirth: [null],
+      dateOfBirth: [null, Validators.required],
       ssn: [null, [Validators.required, ssnNumberRegex]],
       mvrExpiration: [5, Validators.required],
       bankId: [null, [...bankValidation]],
       account: [null, accountBankValidation],
       routing: [null, routingBankValidation],
-      payType: [null, Validators.required],
+      payType: [null, [Validators.required]],
       useTruckAssistAch: [false],
       soloDriver: [false],
       teamDriver: [false],
@@ -419,7 +419,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   private onPayTypeSelected(payType: number): void {
-    console.log(payType);
     if (payType === 1) {
       if (['Solo', 'Combined'].includes(this.fleetType)) {
         if (!this.hasMilesSameRate) {
@@ -681,7 +680,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectDropdown(event: any, action: string): void {
-    console.log(event);
     switch (action) {
       case 'bank': {
         this.selectedBank = event;
@@ -900,8 +898,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.driverForm.get('mvrExpiration').patchValue(data.mvrExpiration);
           this.fleetType = data.fleetType;
           this.hasMilesSameRate = data.loadedAndEmptySameRate;
-          console.log('DROPDOWNMS');
-          console.log(data);
+
           if (['Solo', 'Combined'].includes(this.fleetType)) {
             this.driverForm
               .get('soloEmptyMile')
@@ -1200,7 +1197,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           ? teamDriver
           : false
         : null,
-      note: this.driverForm.get('note').value,
     };
 
     let driverFullName = newData.firstName + ' ' + newData.lastName;
@@ -1715,7 +1711,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         },
       });
   }
-  
+
+  // Checkbox card
+  public ownerCheckboxCard: boolean = true;
+  public toggleCheckboxCard() {
+    this.ownerCheckboxCard = !this.ownerCheckboxCard;
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

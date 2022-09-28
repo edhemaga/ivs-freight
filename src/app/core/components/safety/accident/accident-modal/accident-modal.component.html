@@ -17,7 +17,9 @@
   <form
     [formGroup]="accidentForm"
     class="form-container"
-    [ngClass]="{ 'tab-2': selectedTab !== 1 }"
+    [ngClass]="{
+      'tab-2': selectedTab !== 1
+    }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
@@ -30,7 +32,8 @@
               type: 'text',
               label: 'Report',
               isDisabled: editData?.type === 'edit',
-              autoFocus: editData?.type === 'edit' ? false : true
+              autoFocus: editData?.type !== 'edit',
+              customClass: 'line-input-26-in-card'
             }"
           ></app-ta-input>
           <app-ta-input
@@ -39,7 +42,8 @@
               name: 'Federally Recordable',
               type: 'text',
               isDisabled: editData?.type === 'edit',
-              label: 'Federally Recordable'
+              label: 'Federally Recordable',
+              customClass: 'line-input-26-in-card'
             }"
           ></app-ta-input>
           <app-ta-input
@@ -48,7 +52,8 @@
               name: 'State Recordable',
               type: 'text',
               isDisabled: editData?.type === 'edit',
-              label: 'State Recordable'
+              label: 'State Recordable',
+              customClass: 'line-input-26-in-card'
             }"
           ></app-ta-input>
         </div>
@@ -60,7 +65,8 @@
               type: 'text',
               isDisabled: editData?.type === 'edit',
               label: 'Injury',
-              placeholderIcon: 'injury'
+              placeholderIcon: 'injury',
+              customClass: 'line-input-26-in-card'
             }"
           ></app-ta-input>
           <app-ta-input
@@ -70,7 +76,8 @@
               type: 'text',
               isDisabled: editData?.type === 'edit',
               label: 'Fatality',
-              placeholderIcon: 'fatality'
+              placeholderIcon: 'fatality',
+              customClass: 'line-input-26-in-card'
             }"
           ></app-ta-input>
           <app-ta-input
@@ -80,7 +87,8 @@
               type: 'text',
               isDisabled: editData?.type === 'edit',
               label: 'Towing',
-              placeholderIcon: 'towing'
+              placeholderIcon: 'towing',
+              customClass: 'line-input-26-in-card'
             }"
           ></app-ta-input>
           <app-ta-input
@@ -90,7 +98,8 @@
               type: 'text',
               isDisabled: editData?.type === 'edit',
               label: 'Hazmat',
-              placeholderIcon: 'hazmat'
+              placeholderIcon: 'hazmat',
+              customClass: 'line-input-26-in-card'
             }"
           ></app-ta-input>
           <app-ta-input
@@ -100,7 +109,8 @@
               type: 'text',
               isDisabled: editData?.type === 'edit',
               label: 'Vehicle No.',
-              placeholderIcon: 'crash_vehicle'
+              placeholderIcon: 'crash_vehicle',
+              customClass: 'line-input-26-in-card'
             }"
           ></app-ta-input>
         </div>
@@ -116,7 +126,8 @@
                 placeholderIcon: 'address',
                 minLength: 12,
                 maxLength: 256,
-                textTransform: 'capitalize'
+                textTransform: 'capitalize',
+                customClass: 'line-input-26-in-card'
               }"
               [activeAddress]="addressLocation"
               (selectedAddress)="onHandleAddress($event, 'location')"
@@ -132,7 +143,8 @@
                 label: 'Date',
                 isDisabled: editData?.type === 'edit',
                 placeholderIcon: 'date',
-                customClass: 'datetimeclass'
+                customClass: 'datetimeclass',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
           </div>
@@ -146,12 +158,17 @@
                 isDropdown: true,
                 isDisabled: editData?.type === 'edit',
                 placeholderIcon: 'time',
-                customClass: 'datetimeclass'
+                customClass: 'datetimeclass',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
           </div>
         </div>
-        <app-ta-custom-card [cardName]="'Driver'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Driver'"
+          [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
           <div class="violation-modal-row-3">
             <app-ta-input
               formControlName="driverName"
@@ -159,7 +176,8 @@
                 name: 'Driver Name',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Driver'
+                label: 'Driver',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -168,7 +186,8 @@
                 name: 'Licence Number',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Licence No.'
+                label: 'Licence No.',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -177,7 +196,8 @@
                 name: 'State',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'State'
+                label: 'State',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -189,12 +209,17 @@
                 isDropdown: true,
                 label: 'DoB',
                 placeholderIcon: 'date',
-                customClass: 'datetimeclass'
+                customClass: 'datetimeclass',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Truck'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Truck'"
+          [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
           <div class="violation-modal-row-5">
             <app-ta-input
               formControlName="truckUnit"
@@ -202,7 +227,8 @@
                 name: 'Truck Number',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Unit'
+                label: 'Unit',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -211,7 +237,8 @@
                 name: 'Truck Type',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Type'
+                label: 'Type',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -220,7 +247,8 @@
                 name: 'Truck Make',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Make'
+                label: 'Make',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -229,7 +257,8 @@
                 name: 'Truck Plate Make',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Plate No.'
+                label: 'Plate No.',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -238,7 +267,8 @@
                 name: 'Truck State',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'State'
+                label: 'State',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -250,12 +280,17 @@
                 maxLength: 17,
                 textTransform: 'uppercase',
                 type: 'text',
-                isDisabled: editData?.type === 'edit'
+                isDisabled: editData?.type === 'edit',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Trailer'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Trailer'"
+          [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
           <div class="violation-modal-row-6">
             <app-ta-input-dropdown
               formControlName="trailerUnit"
@@ -264,7 +299,8 @@
                 type: 'text',
                 label: 'Unit',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-100'
+                dropdownWidthClass: 'w-col-100',
+                customClass: 'line-input-26-in-card'
               }"
               [options]="labelsTrailerUnits"
               (selectedItem)="onSelectDropDown($event, 'trailer-unit')"
@@ -275,7 +311,8 @@
                 name: 'Trailer Type',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Type'
+                label: 'Type',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -284,7 +321,8 @@
                 name: 'Trailer Make',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Make'
+                label: 'Make',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -293,7 +331,8 @@
                 name: 'Trailer Plate Number',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Plate No.'
+                label: 'Plate No.',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -302,7 +341,8 @@
                 name: 'Trailer State',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'State'
+                label: 'State',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -314,7 +354,8 @@
                 minLength: 5,
                 maxLength: 17,
                 textTransform: 'uppercase',
-                isDisabled: editData?.type === 'edit'
+                isDisabled: editData?.type === 'edit',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
           </div>
@@ -322,7 +363,7 @@
         <div class="violation-card">
           <app-ta-custom-card
             [cardName]="'Violation'"
-            [isCardOpen]="violations.length"
+            [isCardOpen]="violations.length > 0"
             [hasScrollBody]="violations.length > 10"
           >
             <div
@@ -336,70 +377,73 @@
                 <p>HM</p>
                 <p>DESCRIPTION</p>
               </div>
-              <div
-                *ngFor="let violation of violations.controls; let ind = index"
-              >
-                <div [formGroupName]="ind" class="common-fake-table-card">
-                  <p class="violation-category">
+              <div class="common-fake-table-body">
+                <div
+                  *ngFor="let violation of violations.controls; let ind = index"
+                >
+                  <div [formGroupName]="ind" class="common-fake-table-card">
+                    <p class="violation-category">
+                      <svg-icon
+                        class="violation-category-svg"
+                        src="assets/svg/common/ic_crash_indicator.svg"
+                      ></svg-icon>
+                      <span class="violation-category-text">{{
+                        violation.get("categoryId").value
+                      }}</span>
+                    </p>
+                    <p class="violation-sw">{{ violation.get("sw").value }}</p>
                     <svg-icon
-                      class="violation-category-svg"
-                      src="assets/svg/common/ic_crash_indicator.svg"
+                      class="violation-hm"
+                      [class.active]="violation.get('hm').value"
+                      src="{{
+                        violation.get('hm').value
+                          ? 'assets/svg/common/ic_confirm.svg'
+                          : 'assets/svg/common/ic_x.svg'
+                      }}"
                     ></svg-icon>
-                    <span lass="violation-category-text">{{
-                      violation.get("categoryId").value
-                    }}</span>
-                  </p>
-                  <p class="violation-sw">{{ violation.get("sw").value }}</p>
-                  <svg-icon
-                    class="violation-hm"
-                    [class.active]="violation.get('hm').value"
-                    src="{{
-                      violation.get('hm').value
-                        ? 'assets/svg/common/ic_confirm.svg'
-                        : 'assets/svg/common/ic_x.svg'
-                    }}"
-                  ></svg-icon>
-                  <app-ta-input
-                    formControlName="description"
-                    [inputConfig]="{
-                      name: 'Description',
-                      type: 'text',
-                      minLength: 2,
-                      maxLength: 160,
-                      textTransform: 'capitalize',
-                      hideErrorMessage: true,
-                      blackInput: true,
-                      hideRequiredCheck: true
-                    }"
-                  ></app-ta-input>
+                    <app-ta-input
+                      formControlName="description"
+                      [inputConfig]="{
+                        name: 'Description',
+                        type: 'text',
+                        minLength: 2,
+                        maxLength: 160,
+                        textTransform: 'capitalize',
+                        hideErrorMessage: true,
+                        hideRequiredCheck: true,
+                        customClass: 'line-input-26-in-card'
+                      }"
+                    ></app-ta-input>
+                  </div>
                 </div>
               </div>
             </div>
           </app-ta-custom-card>
         </div>
 
-        <div class="insurance-card">
-          <app-ta-custom-card
-            [hasCounter]="insurances.length ? insurances.length : '0'"
-            [cardName]="'Insurance'"
-            [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
-            [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-            [isCardOpen]="insurances.length"
-            [hasBodyData]="insurances.length"
-            (onActionEvent)="addInsurance($event)"
+        <app-ta-custom-card
+          [hasCounter]="insurances.length ? insurances.length : 0"
+          [cardName]="'Insurance'"
+          [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
+          [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+          [isCardOpen]="insurances.length > 0"
+          [hasBodyData]="insurances.length > 0"
+          [hasScrollBody]="insurances.length > 0"
+          (onActionEvent)="addInsurance($event)"
+        >
+          <div
+            formArrayName="insurance"
+            class="common-fake-table-modal common-fake-table-modal-accident-insurance"
+            *ngIf="insurances.length"
           >
-            <div
-              formArrayName="insurance"
-              class="common-fake-table-modal common-fake-table-modal-accident-insurance"
-              *ngIf="insurances.length"
-            >
-              <div class="common-fake-table-label">
-                <p>INS. TYPE</p>
-                <p>CLAIM NO.</p>
-                <p>INS. ADJUSTER</p>
-                <p>PHONE</p>
-                <p>EMAIL</p>
-              </div>
+            <div class="common-fake-table-label">
+              <p>INS. TYPE</p>
+              <p>CLAIM NO.</p>
+              <p>INS. ADJUSTER</p>
+              <p>PHONE</p>
+              <p>EMAIL</p>
+            </div>
+            <div class="common-fake-table-body">
               <div
                 *ngFor="let insurance of insurances.controls; let ind = index"
               >
@@ -412,8 +456,8 @@
                       isDropdown: true,
                       dropdownWidthClass: 'w-col-136',
                       hideErrorMessage: true,
-                      blackInput: true,
-                      hideRequiredCheck: true
+                      hideRequiredCheck: true,
+                      customClass: 'line-input-26-in-card'
                     }"
                     [options]="labelsInsuranceType"
                     (selectedItem)="
@@ -428,8 +472,8 @@
                       type: 'text',
                       textTransform: 'capitalize',
                       hideErrorMessage: true,
-                      blackInput: true,
-                      hideRequiredCheck: true
+                      hideRequiredCheck: true,
+                      customClass: 'line-input-26-in-card'
                     }"
                   ></app-ta-input>
 
@@ -440,8 +484,8 @@
                       type: 'text',
                       textTransform: 'capitalize',
                       hideErrorMessage: true,
-                      blackInput: true,
-                      hideRequiredCheck: true
+                      hideRequiredCheck: true,
+                      customClass: 'line-input-26-in-card'
                     }"
                   ></app-ta-input>
 
@@ -452,8 +496,8 @@
                       type: 'text',
                       mask: '(000) 000-0000',
                       hideErrorMessage: true,
-                      thousandSeparator: true,
-                      hideRequiredCheck: true
+                      hideRequiredCheck: true,
+                      customClass: 'line-input-26-in-card'
                     }"
                   ></app-ta-input>
 
@@ -466,8 +510,8 @@
                       maxLength: 64,
                       textTransform: 'lowercase',
                       hideErrorMessage: true,
-                      blackInput: true,
-                      hideRequiredCheck: true
+                      hideRequiredCheck: true,
+                      customClass: 'line-input-26-in-card'
                     }"
                   ></app-ta-input>
 
@@ -484,31 +528,29 @@
                 </div>
               </div>
             </div>
-          </app-ta-custom-card>
-        </div>
+          </div>
+        </app-ta-custom-card>
 
         <app-ta-custom-card
-          [hasCounter]="documents.length ? documents.length : '0'"
+          [hasCounter]="documents.length ? documents.length : 0"
           [cardName]="'Documents'"
-          [isCardOpen]="documents.length"
+          [isCardOpen]="documents.length > 0"
         >
           <app-ta-upload-files
             [files]="documents"
             [size]="'large'"
-            [dropZoneConfig]="dropZoneConfigFile"
             (onFileEvent)="onFilesEvent($event)"
           ></app-ta-upload-files>
         </app-ta-custom-card>
 
         <app-ta-custom-card
-          [hasCounter]="media.length ? media.length : '0'"
+          [hasCounter]="media.length ? media.length : 0"
           [cardName]="'Media'"
-          [isCardOpen]="media.length"
+          [isCardOpen]="media.length > 0"
         >
           <app-ta-upload-files
             [files]="media"
             [size]="'large'"
-            [dropZoneConfig]="dropZoneConfigMedia"
             (onFileEvent)="onFilesEvent($event)"
           ></app-ta-upload-files>
         </app-ta-custom-card>
@@ -523,6 +565,7 @@
         <app-ta-custom-card
           [cardName]="'Crash Environment'"
           [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
         >
           <div class="row">
             <div class="col-8">
@@ -531,7 +574,8 @@
                 [inputConfig]="{
                   name: 'Roadway Trafficway',
                   type: 'text',
-                  label: 'Roadway Trafficway'
+                  label: 'Roadway Trafficway',
+                  customClass: 'line-input-26-in-card'
                 }"
               ></app-ta-input>
             </div>
@@ -541,19 +585,21 @@
                 [inputConfig]="{
                   name: 'Weather Condition',
                   type: 'text',
-                  label: 'Weather Condition'
+                  label: 'Weather Condition',
+                  customClass: 'line-input-26-in-card'
                 }"
               ></app-ta-input>
             </div>
           </div>
-          <div class="row last-row">
+          <div class="row row-mb-12">
             <div class="col-4">
               <app-ta-input
                 formControlName="roadAccessControl"
                 [inputConfig]="{
                   name: 'Road Access Control',
                   type: 'text',
-                  label: 'Road Access Control'
+                  label: 'Road Access Control',
+                  customClass: 'line-input-26-in-card'
                 }"
               ></app-ta-input>
             </div>
@@ -563,7 +609,8 @@
                 [inputConfig]="{
                   name: 'Road Surface Condition',
                   type: 'text',
-                  label: 'Road Surface Condition'
+                  label: 'Road Surface Condition',
+                  customClass: 'line-input-26-in-card'
                 }"
               ></app-ta-input>
             </div>
@@ -573,7 +620,8 @@
                 [inputConfig]="{
                   name: 'Light Condition',
                   type: 'text',
-                  label: 'Light Condition'
+                  label: 'Light Condition',
+                  customClass: 'line-input-26-in-card'
                 }"
               ></app-ta-input>
             </div>
@@ -582,17 +630,17 @@
         <app-ta-custom-card
           [cardName]="'Authority Details'"
           [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
         >
-          <div
-            class="violation-modal-autority-details-row violation-modal-autority-details-row-1"
-          >
+          <div class="violation-modal-autority-details-row">
             <app-ta-input
               formControlName="reportingAgency"
               [inputConfig]="{
                 name: 'Reporting Agency',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Reporting Agency'
+                label: 'Reporting Agency',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -600,7 +648,8 @@
               [inputConfig]="{
                 name: 'Police Officer',
                 type: 'text',
-                label: 'Police Officer'
+                label: 'Police Officer',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -609,11 +658,14 @@
                 name: 'Badge Number',
                 type: 'text',
                 isDisabled: editData?.type === 'edit',
-                label: 'Badge Number'
+                label: 'Badge Number',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
           </div>
-          <div class="violation-modal-autority-details-row">
+          <div
+            class="violation-modal-autority-details-row violation-modal-autority-details-row-second"
+          >
             <app-ta-input-address
               formControlName="authorityAddress"
               [inputConfig]="{
@@ -623,7 +675,8 @@
                 placeholderIcon: 'address',
                 minLength: 12,
                 maxLength: 256,
-                textTransform: 'capitalize'
+                textTransform: 'capitalize',
+                customClass: 'line-input-26-in-card'
               }"
               [activeAddress]="addressAuthority"
               (selectedAddress)="onHandleAddress($event, 'address-authority')"
@@ -635,7 +688,8 @@
                 type: 'text',
                 label: 'Phone',
                 placeholderIcon: 'phone',
-                mask: '(000) 000-0000'
+                mask: '(000) 000-0000',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -645,14 +699,17 @@
                 type: 'text',
                 label: 'Fax',
                 mask: '(000) 000-0000',
-                placeholderIcon: 'fax'
+                placeholderIcon: 'fax',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
           </div>
         </app-ta-custom-card>
         <app-ta-custom-card
           [cardName]="'Location & Shipping info'"
-          [isCardOpen]="true"
+          [isCardOpen]="isLocationAndShippingOpen"
+          (onOpenCard)="isLocationAndShippingOpen = $event"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
         >
           <div class="row">
             <div class="col-6">
@@ -665,7 +722,8 @@
                   placeholderIcon: 'address',
                   minLength: 12,
                   maxLength: 256,
-                  textTransform: 'capitalize'
+                  textTransform: 'capitalize',
+                  customClass: 'line-input-26-in-card'
                 }"
                 [activeAddress]="addressOrigin"
                 (selectedAddress)="onHandleAddress($event, 'address-origin')"
@@ -681,7 +739,8 @@
                   placeholderIcon: 'address',
                   minLength: 12,
                   maxLength: 256,
-                  textTransform: 'capitalize'
+                  textTransform: 'capitalize',
+                  customClass: 'line-input-26-in-card'
                 }"
                 [activeAddress]="addressDestination"
                 (selectedAddress)="
@@ -698,7 +757,8 @@
                 type: 'text',
                 label: 'Customer',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-273'
+                dropdownWidthClass: 'w-col-273',
+                customClass: 'line-input-26-in-card'
               }"
               [options]="labelsViolationCustomer"
               (selectedItem)="onSelectDropDown($event, 'shipping-customer')"
@@ -708,7 +768,8 @@
               [inputConfig]="{
                 name: 'BoL',
                 type: 'text',
-                label: 'BoL'
+                label: 'BoL',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
             <app-ta-input
@@ -716,7 +777,8 @@
               [inputConfig]="{
                 name: 'Cargo',
                 type: 'text',
-                label: 'Cargo'
+                label: 'Cargo',
+                customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
           </div>

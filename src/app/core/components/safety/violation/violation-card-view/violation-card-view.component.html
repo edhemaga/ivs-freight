@@ -7,10 +7,6 @@
     [lastEdit]="'3 days ago'"
     [options]="violationDropdown"
   >
-    <!-- 
-    (selectValue)="onSelectedTruck($event)"
-    (changeEvent)="onChangeTruck($event)" -->
-
     <div class="violation-template-data">
       <div class="violation-template-items">
         <svg-icon class="state" src="assets/svg/common/ic_state.svg"></svg-icon>
@@ -35,7 +31,6 @@
     <div class="details-cards">
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="false"
         [cardName]="'Additional Info'"
         [isCardOpen]="true"
@@ -53,7 +48,6 @@
       </app-ta-custom-card>
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [cardName]="'Driver'"
         [isCardOpen]="true"
@@ -84,7 +78,6 @@
       </app-ta-custom-card>
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [cardName]="'Co-Driver'"
         [isCardOpen]="true"
@@ -115,7 +108,6 @@
       </app-ta-custom-card>
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [cardName]="'Truck'"
         [isCardOpen]="true"
@@ -150,7 +142,6 @@
       </app-ta-custom-card>
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [cardName]="'Trailer'"
         [isCardOpen]="true"
@@ -186,7 +177,6 @@
 
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [cardName]="'Authority Details'"
         [isCardOpen]="true"
@@ -204,7 +194,6 @@
           <div class="violation-card-items">
             <span class="name">Badge No.</span>
             <app-ta-copy [copyValue]="'123456'"> </app-ta-copy>
-           
           </div>
         </div>
         <div class="violation-driver-container authority">
@@ -231,14 +220,12 @@
               src="assets/svg/common/ic_fax.svg"
             ></svg-icon>
             <app-ta-copy [copyValue]="'(123) 333-1344'"> </app-ta-copy>
-           
           </div>
         </div>
       </app-ta-custom-card>
 
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [cardName]="'Location Details'"
         [isCardOpen]="true"
@@ -265,7 +252,6 @@
 
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [cardName]="'Customer Details'"
         [isCardOpen]="true"
@@ -295,7 +281,6 @@
       </app-ta-custom-card>
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [hasCounter]="10"
         [cardName]="'Special Checks'"
@@ -331,7 +316,6 @@
           [isVisibleNote]="true"
           [isVisibleArrow]="true"
           [minRows]="1"
-          [isVisibleSecondDivider]="false"
           [placeholder]="'Write something.'"
         ></app-ta-input-note>
       </div>

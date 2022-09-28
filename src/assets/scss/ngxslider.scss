@@ -64,7 +64,7 @@
       height: 22px;
       background-color: transparent !important;
 
-      border-radius: 2px !important;
+      border-radius: 20px !important;
       top: -8.5px;
 
       &::after {
@@ -81,7 +81,7 @@
     -moz-column-gap: 12px;
     column-gap: 12px;
     align-items: center;
-    margin-top: 0px;
+    margin-top: 1px;
 
     .custom-slider-text {
       font-size: 14px;
@@ -106,20 +106,20 @@
 
   //-------------- Logo Change --------------
   &.custom-slider-logo-change {
-    width: 384px;
+    width: 264px;
     position: relative;
     bottom: 2px;
 
     &.modal-container-S {
-      width: 319px;
+      width: 264px;
     }
 
     &.modal-container-M {
-      width: 478px;
+      width: 424px;
     }
 
     &.modal-container-XL {
-      width: 668px;
+      width: 644px;
     }
 
     .ngx-slider {
@@ -143,7 +143,7 @@
         top: -6px !important;
         background-color: #ffffff !important;
         box-shadow: 0 0 4px rgb(0, 0, 0, 0.15) !important;
-        border-radius: 2px !important;
+        border-radius: 20px !important;
 
         &::after {
           content: none !important;

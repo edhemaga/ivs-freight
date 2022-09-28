@@ -15,7 +15,7 @@ export interface StopResponse {
     id?: number;
     city?: string | null;
     stateShortName?: string | null;
-    zipCode?: number;
+    zipCode?: string | null;
     leg?: number | null;
     total?: number | null;
     longitude?: number;

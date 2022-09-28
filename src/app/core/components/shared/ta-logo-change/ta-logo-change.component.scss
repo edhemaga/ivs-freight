@@ -57,7 +57,19 @@
       -o-object-fit: fill;
       object-fit: fill;
       height: 194px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
       user-select: none;
+
+      @-webkit-keyframes slideInImage {
+        from {
+          transform: translateX(200px);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
 
       @keyframes slideInImage {
         from {
@@ -91,6 +103,7 @@
         svg {
           width: 18px;
           height: 18px;
+
           path {
             fill: #dadada;
           }
@@ -99,6 +112,7 @@
 
       &:hover {
         transition: all 0.3s ease-in-out;
+
         .delete-logo-svg {
           svg {
             path {
@@ -162,45 +176,81 @@
       }
     }
   }
-
-  .buttons-container {
-    margin-top: 12px;
-    margin-left: 12px;
+  .crop-accepted-container {
     display: flex;
-    align-items: center;
-    cursor: pointer;
+    flex-direction: column;
 
-    .save-check {
-      svg-icon {
-        svg {
-          width: 22px;
-          height: 22px;
-        }
+    .crop-message {
+      font-size: 11px;
+      font-weight: 600;
+      color: #ef5350;
+      padding-left: 10px;
+      position: relative;
+      top: 2px;
+
+      &::-moz-selection {
+        background-color: rgb(239, 83, 80, 0.2);
+        color: #ef5350;
       }
 
-      &:hover {
-        transition: all 0.3s ease-in-out;
-        svg-icon {
-          svg {
-            #Rectangle_20156 {
-              fill: #536bc2;
-              transition: all 0.3s ease-in-out;
-            }
-          }
-        }
+      &::selection {
+        background-color: rgb(239, 83, 80, 0.2);
+        color: #ef5350;
       }
     }
 
-    .cancel-check {
-      margin-left: 6px;
-      &:hover {
-        transition: all 0.3s ease-in-out;
-        svg-icon {
-          svg {
-            #Rectangle_20157 {
-              fill: #ef5350;
-              transition: all 0.3s ease-in-out;
-            }
+    .slider-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .buttons-container {
+        margin-top: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+
+        p {
+          margin: 0;
+          padding: 0;
+          font-size: 11px;
+          font-weight: 700;
+        }
+
+        .save-check {
+          background-color: #3074d3;
+          width: 84px;
+          height: 26px;
+          border-radius: 2px;
+          text-align: center;
+          padding: 5px 0px;
+          transition: all 0.3s ease-in-out;
+
+          p {
+            color: #ffffff;
+          }
+
+          &:hover {
+            background-color: #255bb9;
+          }
+        }
+
+        .cancel-check {
+          background-color: #eeeeee;
+          width: 84px;
+          height: 26px;
+          border-radius: 2px;
+          text-align: center;
+          padding: 5px 0px;
+          transition: all 0.3s ease-in-out;
+
+          p {
+            color: #2f2f2f;
+          }
+
+          &:hover {
+            background-color: #e5e5e5;
           }
         }
       }

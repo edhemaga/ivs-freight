@@ -1,3 +1,4 @@
+@import "./ta-input.colors.scss";
 //-------------------- Input Icon ---------------------
 .input-icon {
   position: absolute;
@@ -18,7 +19,7 @@
   &.default-svg-color {
     svg {
       path {
-        fill: #b7b7b7;
+        fill: $input-placeholder-icon-normal;
       }
     }
   }
@@ -29,7 +30,7 @@
     height: 16px;
     width: 1px;
     border-radius: 3px;
-    background: #e5e5e5;
+    background: $input-placeholder-icon-normal-after;
     position: absolute;
     left: 24px;
     top: 5px;
@@ -38,7 +39,7 @@
   &.disabled-empty {
     svg {
       path {
-        fill: #dadada !important;
+        fill: $input-placeholder-icon-disabled !important;
       }
     }
   }
@@ -46,7 +47,7 @@
   &.disabled-filled {
     svg {
       path {
-        fill: #cccccc !important;
+        fill: $input-placeholder-icon-disabled-filled !important;
       }
     }
   }
@@ -59,12 +60,12 @@
     transition: all 0.3s ease-in-out;
     svg {
       path {
-        fill: #bdcaeb !important;
+        fill: $input-placeholder-icon-path-valid-focus !important;
       }
     }
 
     text {
-      fill: #bdcaeb !important;
+      fill: $input-placeholder-icon-path-valid-focus !important;
     }
   }
 
@@ -72,12 +73,16 @@
     transition: all 0.3s ease-in-out;
     svg {
       path {
-        fill: #97a8dc;
+        fill: $input-placeholder-icon-path-valid;
       }
     }
 
     text {
-      fill: #97a8dc !important;
+      fill: $input-placeholder-icon-path-valid !important;
+    }
+
+    &::after {
+      background: $input-placeholder-icon-valid-after !important;
     }
   }
 
@@ -85,12 +90,12 @@
     transition: all 0.3s ease-in-out;
     svg {
       path {
-        fill: #ffcdd2 !important;
+        fill: $input-placeholder-icon-path-invalid-focus !important;
       }
     }
 
     text {
-      fill: #ffcdd2 !important;
+      fill: $input-placeholder-icon-path-invalid-focus !important;
     }
   }
 
@@ -104,14 +109,18 @@
     }
 
     text {
-      fill: #e57373 !important;
+      fill: $input-placeholder-icon-path-invalid !important;
+    }
+
+    &::after {
+      background: $input-placeholder-icon-invalid-after !important;
     }
   }
 
   &.password-eye {
     svg {
       path {
-        fill: #b7b7b7 !important;
+        fill: $input-placeholder-icon-normal !important;
       }
     }
   }
@@ -119,7 +128,7 @@
   &.password-eye-invalid {
     svg {
       path {
-        fill: #ffcdd2 !important;
+        fill: $input-placeholder-icon-path-invalid-focus !important;
       }
     }
   }
@@ -141,22 +150,26 @@
     top: 2px;
 
     &::after {
-      content: "";
-      display: block;
-      height: 16px;
-      width: 1px;
-      border-radius: 3px;
-      background: #e5e5e5;
-      position: absolute;
+      background: $input-placeholder-icon-normal-after;
+
       left: 24px;
       top: 3px;
+    }
+  }
+
+  &.line-input-26-in-card {
+    top: 1px;
+
+    &::after {
+      background: $input-placeholder-icon-normal-after;
+      top: 4px;
     }
   }
 
   &.repair-shop-open-hour {
     svg {
       path {
-        fill: #b7b7b7 !important;
+        fill: $input-placeholder-icon-normal !important;
       }
     }
   }
@@ -164,7 +177,7 @@
   &.load-adjusted-rate {
     svg {
       path {
-        fill: #ffa726 !important;
+        fill: $input-placeholder-icon-color-dark-yellow !important;
       }
     }
   }
@@ -172,7 +185,7 @@
   &.load-advance-rate {
     svg {
       path {
-        fill: #26a690 !important;
+        fill: $input-placeholder-icon-color-dark-green !important;
       }
     }
   }

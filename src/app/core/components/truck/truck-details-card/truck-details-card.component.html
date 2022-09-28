@@ -15,8 +15,7 @@
             <svg-icon
               class="truck truck-color-code"
               src="{{
-                'assets/svg/common/trucks/' +
-                  truck?.truckType?.logoName
+                'assets/svg/common/trucks/' + truck?.truckType?.logoName
               }}"
             >
             </svg-icon>
@@ -26,7 +25,6 @@
             <div class="svg-wrapper">
               <svg-icon
                 class="details-header-model"
-               
                 src="{{
                   'assets/svg/common/trucksmake/' + truck?.truckMake?.logoName
                 }}"
@@ -62,7 +60,7 @@
             </div>
             <p *ngIf="truck.color" class="vin-text">{{ truck?.color.name }}</p>
             <svg-icon
-              [ngClass]="{ 'date-details-svg': truck?.color?.code}"
+              [ngClass]="{ 'date-details-svg': truck?.color?.code }"
               src="assets/svg/common/year-truck.svg"
             ></svg-icon>
             <p class="vin-text date">{{ truck.year }}</p>
@@ -87,7 +85,6 @@
       <!--------Assinged to--------->
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="false"
         [cardName]="'Assigned To'"
         [tooltipName]="'Dispatch History'"
@@ -115,7 +112,6 @@
       <!--------Additonal Details--------->
       <app-ta-custom-card
         class="item-cards"
-        [animationsDisabled]="false"
         [bodyTemplate]="'card'"
         [isCardOpen]="true"
         [cardName]="'Additional Details'"
@@ -140,7 +136,10 @@
               {{ truck?.emptyWeight | taThousandSeparator }} Ibs
             </div>
           </div>
-          <div *ngIf="truck?.truckEngineType?.name" class="common-template-item">
+          <div
+            *ngIf="truck?.truckEngineType?.name"
+            class="common-template-item"
+          >
             <div class="common-template-item-name">Engine Type</div>
             <div class="common-template-item-value">
               {{ truck?.truckEngineType.name }}
@@ -175,7 +174,6 @@
 
       <!--------Owner--------->
       <app-ta-custom-card
-        [animationsDisabled]="false"
         class="item-cards"
         [cardName]="'Owner'"
         [bodyTemplate]="'card'"
@@ -222,7 +220,10 @@
           </div>
         </div>
         <div [ngClass]="{ 'rotate-owner': togglerOwner }">
-          <div (click)="togglerOwner = !togglerOwner" class="single-icon-wrapper">
+          <div
+            (click)="togglerOwner = !togglerOwner"
+            class="single-icon-wrapper"
+          >
             <span
               [tooltipBackground]="'#6c6c6c'"
               ngbTooltip
@@ -241,7 +242,6 @@
               position="top"
               class="hide-show"
             >
-              
             </span>
           </div>
         </div>
@@ -249,7 +249,6 @@
 
       <!--------Perfomance--------->
       <app-ta-custom-card
-        [animationsDisabled]="false"
         class="item-cards"
         [cardName]="'Expenses'"
         [bodyTemplate]="'card'"
@@ -281,7 +280,6 @@
         [tooltipName]="'View in Modal'"
         [bodyTemplate]="'card'"
         [cardName]="'Fuel Consumption'"
-        [animationsDisabled]="false"
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
         class="item-cards"
       >
@@ -312,7 +310,6 @@
         [tooltipName]="'View in Modal'"
         [cardName]="'Revenue'"
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
         class="item-cards"
         [isCardOpen]="true"
@@ -344,7 +341,6 @@
         [tooltipName]="'View in Modal'"
         [cardName]="'Owner History'"
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
         class="item-cards"
       >
@@ -396,7 +392,6 @@
           [isVisibleNote]="true"
           [isVisibleArrow]="true"
           [minRows]="1"
-          [isVisibleSecondDivider]="false"
           [placeholder]="'Write something.'"
         >
         </app-ta-input-note>
@@ -413,7 +408,6 @@
           [hasCounter]="
             truck?.registrations?.length ? truck.registrations.length : 0
           "
-          [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
           <div
@@ -466,7 +460,6 @@
                   <app-ta-input-note
                     [formControl]="registrationNote"
                     [isVisibleDivider]="false"
-                    [isVisibleSecondDivider]="false"
                     [placeholder]="'Write something.'"
                     [customClass]="'note-small'"
                     [isVisibleArrow]="false"
@@ -489,21 +482,26 @@
           [hasCounter]="
             truck?.inspections?.length ? truck.inspections.length : 0
           "
-          [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let fhwa of truck?.inspections; let i=index; trackBy: identity">
+          <div
+            *ngFor="
+              let fhwa of truck?.inspections;
+              let i = index;
+              trackBy: identity
+            "
+          >
             <app-ta-re-card
               [options]="dataEdit"
               [cardNameCommon]="fhwa.issueDate | formatDateP"
               [expDateClose]="'04/04/24' | formatDateP"
-              (resizePage)="toggleResizePage(i , 'inspection')"
+              (resizePage)="toggleResizePage(i, 'inspection')"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler[i+'inspection'] }"
+                    [ngClass]="{ 'second-progress': toggler[i + 'inspection'] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
@@ -515,11 +513,10 @@
                     </div>
                   </div>
                 </div>
-                <div *ngIf="toggler[i+'inspection']" class="note-wrapper">
+                <div *ngIf="toggler[i + 'inspection']" class="note-wrapper">
                   <app-ta-input-note
                     [formControl]="fhwaNote"
                     [placeholder]="'Write something.'"
-                    [isVisibleSecondDivider]="false"
                     [customClass]="'note-small'"
                     [isVisibleArrow]="false"
                     [minRows]="1"
@@ -539,13 +536,12 @@
           class="item-cards"
           [bodyTemplate]="'card'"
           [hasCounter]="truck?.titles?.length ? truck.titles.length : 0"
-          [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
           <div *ngFor="let title of truck?.titles; trackBy: identity">
             <app-ta-re-card
               [cardDocumentCounter]="1"
-              (resizePage)="toggleResizePage(i , 'title')"
+              (resizePage)="toggleResizePage(i, 'title')"
               [cardNameCommon]="title.number"
               [options]="dataEdit"
               [expDateClose]="'04/04/27' | formatDateP"
@@ -579,11 +575,10 @@
                   </div>
                 </div>
                 <div *ngIf="toggler[i + 'title']" class="note-wrapper">
-                  <div class="divider" ></div>
+                  <div class="divider"></div>
                   <app-ta-input-note
                     [formControl]="titleNote"
                     [placeholder]="'Write something.'"
-                    [isVisibleSecondDivider]="false"
                     [customClass]="'note-small'"
                     [isVisibleArrow]="false"
                     [minRows]="1"
@@ -604,7 +599,6 @@
           class="item-cards"
           [bodyTemplate]="'card'"
           [hasCounter]="0"
-          [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
         </app-ta-custom-card>

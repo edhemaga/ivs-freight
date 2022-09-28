@@ -1,3 +1,5 @@
+@import "./scss/ta-input.colors.scss";
+
 .input-custom-group {
   display: block;
   position: relative;
@@ -18,24 +20,24 @@
       .input-icon {
         svg {
           path {
-            fill: #aaaaaa;
+            fill: $input-placeholder-icon-focus-out-hover;
           }
         }
 
         &:hover ~ .input-label {
-          color: #3c3c3c;
+          color: $input-label-color-hover;
         }
 
         &:hover ~ .input-control {
-          background-color: #eeeeee;
-          color: #3c3c3c;
+          background-color: $input-background-color-normal-hover;
+          color: $input-text-color-normal-hover;
         }
       }
 
       .input-dropdown-arrow {
         svg {
           path {
-            fill: #aaaaaa;
+            fill: $input-dropdown-path-fill-focus-out-hover;
           }
         }
       }
@@ -66,7 +68,7 @@
         &.invalid-required-filled-out {
           svg {
             path {
-              fill: #ff5050 !important;
+              fill: $input-placeholder-icon-path-invalid-component-hover !important;
             }
           }
         }
@@ -79,10 +81,10 @@
         .input-clear-x {
           svg {
             path {
-              fill: #eeeeee;
+              fill: $input-clear-path-fill-invalid-component-hover;
             }
             rect {
-              fill: #b7b7b7;
+              fill: $input-clear-rect-fill-invalid-component-hover;
             }
           }
         }
@@ -92,27 +94,27 @@
           .input-clear-x {
             svg {
               path {
-                fill: #eeeeee;
+                fill: $input-clear-path-fill-invalid-component-hover-on-hover;
               }
               rect {
-                fill: #6c6c6c;
+                fill: $input-clear-rect-fill-invalid-component-hover-on-hover;
               }
             }
           }
         }
 
         &:hover ~ .input-label {
-          color: #3c3c3c;
+          color: $input-label-color-hover;
         }
 
         &:hover ~ .input-control {
-          background-color: #eeeeee;
-          color: #3c3c3c;
+          background-color: $input-background-color-normal-hover;
+          color: $input-text-color-normal-hover;
         }
       }
 
       .input-error {
-        color: #f44336 !important;
+        color: $input-error-color-component-hover !important;
       }
     }
   }
@@ -123,14 +125,14 @@
         transition: all 0.3s ease-in-out;
         svg {
           path {
-            fill: #ef5350;
+            fill: $input-dropdown-path-fill-invalid;
           }
         }
         &:hover {
           transition: all 0.3s ease-in-out;
           svg {
             path {
-              fill: #6c6c6c;
+              fill: $input-dropdown-path-fill-normal-hover;
             }
           }
         }
@@ -146,7 +148,7 @@
         &.invalid-required-empty {
           svg {
             path {
-              fill: #ef5350;
+              fill: $input-placeholder-icon-path-invalid-empty-required-component-hover;
             }
           }
         }
@@ -156,31 +158,31 @@
         .input-clear-x {
           svg {
             path {
-              fill: #ef5350;
+              fill: $input-clear-path-fill-invalid-focus;
             }
           }
         }
 
         &:hover ~ .input-label {
-          color: #3c3c3c;
+          color: $input-label-color-hover;
         }
 
         &:hover ~ .input-control {
-          background-color: #eeeeee;
-          color: #3c3c3c;
+          background-color: $input-background-color-normal-hover;
+          color: $input-text-color-normal-hover;
         }
       }
 
       .input-invalid-danger-mark {
         svg {
           path {
-            fill: #ef5350 !important;
+            fill: $input-danger-mark-path-fill !important;
           }
         }
       }
 
       .input-error {
-        color: #f44336 !important;
+        color: $input-error-color-component-hover !important;
       }
     }
   }
@@ -191,7 +193,7 @@
         transition: all 0.3s ease-in-out;
         svg {
           path {
-            fill: #b7b7b7 !important;
+            fill: $input-placeholder-icon-normal !important;
           }
         }
       }
@@ -202,14 +204,14 @@
         svg {
           path {
             transition: all 0.3s ease-in-out;
-            fill: #ef9a9a !important;
+            fill: $input-clear-path-fill-invalid-empty-focus-required !important;
           }
         }
       }
     }
 
     .input-error {
-      color: #f44336 !important;
+      color: $input-error-color-component-hover !important;
       transition: all 0.3s ease-in-out;
     }
   }
@@ -222,7 +224,7 @@
         &.valid-required-out {
           svg {
             path {
-              fill: #6d82c7;
+              fill: $input-placeholder-icon-path-valid-required-out-component-hover;
             }
           }
         }
@@ -236,19 +238,19 @@
           .input-clear-x {
             svg {
               rect {
-                fill: #6c6c6c;
+                fill: $input-clear-path-fill-normal-focus;
               }
             }
           }
         }
 
         &:hover ~ .input-label {
-          color: #3c3c3c;
+          color: $input-label-color-hover;
         }
 
         &:hover ~ .input-control {
-          background-color: #eeeeee;
-          color: #3c3c3c;
+          background-color: $input-background-color-normal-hover;
+          color: $input-text-color-normal-hover;
         }
       }
 
@@ -262,7 +264,7 @@
           display: inline-block;
           svg {
             path {
-              fill: #6d82c7;
+              fill: $input-password-path-fill-valid-component-hover;
             }
           }
         }
@@ -272,14 +274,14 @@
         transition: all 0.3s ease-in-out;
         svg {
           path {
-            fill: #6d82c7;
+            fill: $input-dropdown-path-fill-component-hover;
           }
         }
         &:hover {
           transition: all 0.3s ease-in-out;
           svg {
             path {
-              fill: #6c6c6c;
+              fill: $input-dropdown-path-fill-normal-hover;
             }
           }
         }
@@ -289,7 +291,6 @@
 
   &.valid-dropdown-image-selection {
     &:hover {
-
       .input-clear {
         display: inline-block;
       }
@@ -298,14 +299,14 @@
         transition: all 0.3s ease-in-out;
         svg {
           path {
-            fill: #6d82c7;
+            fill: $input-dropdown-path-fill-component-hover;
           }
         }
         &:hover {
           transition: all 0.3s ease-in-out;
           svg {
             path {
-              fill: #6c6c6c;
+              fill: $input-dropdown-path-fill-normal-hover;
             }
           }
         }

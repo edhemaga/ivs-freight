@@ -15,7 +15,7 @@ import { EnumValue } from './enumValue';
 export interface LoadMinimalResponse { 
     id?: number;
     loadNumber?: string | null;
-    loadType?: EnumValue;
+    type?: EnumValue;
     statusType?: EnumValue;
 }
 
