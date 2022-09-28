@@ -131,7 +131,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
+          }, 2300);
 
           this.updateDataCount();
         }
@@ -172,7 +172,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.viewData.splice(accountIndex, 1);
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
 
           this.updateDataCount();
         }
@@ -190,7 +190,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
               this.viewData = this.viewData.map((account: any) => {
                 response.map((r: any) => {
                   if (account.id === r.id) {
-                    account.actionAnimation = 'delete';
+                    account.actionAnimation = 'delete-multiple';
                   }
                 });
 
@@ -203,7 +203,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.viewData = closeAnimationAction(true, this.viewData);
 
                 clearInterval(inetval);
-              }, 1000);
+              }, 900);
 
               this.tableService.sendRowsSelected([]);
               this.tableService.sendResetSelectedColumns(true);

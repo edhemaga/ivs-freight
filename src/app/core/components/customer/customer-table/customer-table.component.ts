@@ -750,7 +750,7 @@ export class CustomerTableComponent
       this.viewData = closeAnimationAction(false, this.viewData);
 
       clearInterval(inetval);
-    }, 1000);
+    }, 2300);
   }
 
   // Update Shipper Or Broker In Viewdata
@@ -787,7 +787,7 @@ export class CustomerTableComponent
       this.viewData = closeAnimationAction(true, this.viewData);
 
       clearInterval(inetval);
-    }, 1000);
+    }, 900);
   }
 
   // Multiple Delete Shipper Or Broker From Viewdata
@@ -795,7 +795,7 @@ export class CustomerTableComponent
     this.viewData = this.viewData.map((data: any) => {
       response.map((r: any) => {
         if (data.id === r.id) {
-          data.actionAnimation = 'delete';
+          data.actionAnimation = 'delete-multiple';
         }
       });
 
@@ -808,7 +808,7 @@ export class CustomerTableComponent
       this.viewData = closeAnimationAction(true, this.viewData);
 
       clearInterval(inetval);
-    }, 1000);
+    }, 900);
 
     this.tableService.sendRowsSelected([]);
     this.tableService.sendResetSelectedColumns(true);

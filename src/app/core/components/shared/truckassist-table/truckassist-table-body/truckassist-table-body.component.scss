@@ -1907,11 +1907,12 @@ table {
       .attachemnt-dropdown,
       .media-dropdown,
       .insurance-dropdown {
-        width: 100%;
-        height: fit-content;
+        /*  width: 100%; */
+        width: 0px;
+        /* height: fit-content; */
         max-height: 0px;
         overflow: hidden;
-        transition: 0.25s ease-in-out;
+        transition: max-height 0.2s ease-in-out;
 
         .attachemnt-dropdown-content,
         .media-dropdown-content,
@@ -2435,8 +2436,9 @@ table {
       .attachemnt-dropdown-active,
       .media-dropdown-active,
       .insurance-dropdown-active {
+        width: 100% !important;
         max-height: 1000px;
-        transition: 0.25s ease-in-out;
+        transition: max-height 0.2s ease-in-out;
       }
     }
 
@@ -2655,9 +2657,45 @@ table {
 }
 
 // ACTION ANIMATION
+
+// Add Animation
 .add-animation {
-  background: green !important;
-  transition: 0.4s;
+  position: relative !important;
+  z-index: -1;
+  animation: drop-new-row 0.3s ease-out, show-new-row 0.25s ease-out;
+
+  .columns-container{
+    animation: hide-new-row-background 2s ease-in 0.3s;
+  }
+}
+
+// 1
+@keyframes drop-new-row {
+  0% {
+    top: -34px;
+  }
+  100% {
+    top: 0px;
+  }
+}
+
+@keyframes show-new-row {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1
+  }
+}
+
+// 2
+@keyframes hide-new-row-background {
+  0% {
+    background: #E0EAF8;
+  }
+  100% {
+    background: #ffffff
+  }
 }
 
 .update-animation {
@@ -2665,9 +2703,81 @@ table {
   transition: 0.4s;
 }
 
+// Delete Animation
 .delete-animation {
-  background: red !important;
-  transition: 0.4s;
+  overflow: hidden !important;
+  min-height: unset !important;
+
+  animation: deleting-row-decrease-size 0.3s ease-in 0.3s, deleting-row-visibility 0.3s ease-in 0.3s, deleting-row-decrease-height 0.3s ease-in 0.6s;
+
+  .columns-container{
+    animation: deleting-row-add-color 0.3s ease-in;
+  }
+}
+
+.multiple-delete-animation{
+  overflow: hidden !important;
+  min-height: unset !important;
+
+  animation: deleting-row-decrease-size 0.3s ease-in 0.3s, deleting-row-visibility 0.3s ease-in 0.3s, deleting-row-decrease-height 0.3s ease-in 0.6s;
+
+  .columns-container{
+    animation: multiple-deleting-row-add-color 0.3s ease-in;
+  }
+}
+
+// 1
+@keyframes multiple-deleting-row-add-color {
+  0% {
+    background: #E5E5E5;
+  }
+  100% {
+    background: #FFEBEE;
+  }
+}
+
+@keyframes deleting-row-add-color {
+  0% {
+    background: #ffffff;
+  }
+  100% {
+    background: #FFEBEE;
+  }
+}
+
+// 2
+@keyframes deleting-row-decrease-size {
+  0% {
+    background: #FFEBEE;
+    transform: scaleX(1);
+  }
+  100% {
+    background: #FFEBEE;
+    transform: scaleX(0.7);
+  }
+}
+
+@keyframes deleting-row-visibility {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+// 3
+@keyframes deleting-row-decrease-height {
+  0% {
+    opacity: 0;
+    min-height: 32px;
+    height: 32px;
+  }
+  100% {
+    opacity: 0;
+    min-height: 0px;
+    height: 0px;
+  }
 }
 
 // NG CLASS

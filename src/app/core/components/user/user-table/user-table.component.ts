@@ -123,7 +123,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
+          }, 2300);
 
           this.updateDataCount(); */
         }
@@ -164,7 +164,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.viewData.splice(contactIndex, 1);
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
 
           this.updateDataCount(); */
         }
@@ -182,7 +182,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
               this.viewData = this.viewData.map((contact: any) => {
                 response.map((r: any) => {
                   if (contact.id === r.id) {
-                    contact.actionAnimation = 'delete';
+                    contact.actionAnimation = 'delete-multiple';
                   }
                 });
 
@@ -195,7 +195,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.viewData = closeAnimationAction(true, this.viewData);
 
                 clearInterval(inetval);
-              }, 1000);
+              }, 900);
 
               this.tableService.sendRowsSelected([]);
               this.tableService.sendResetSelectedColumns(true);

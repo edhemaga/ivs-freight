@@ -159,7 +159,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
+          }, 2300);
         } else if (res.animation === 'add' && this.selectedTab === 'inactive') {
           this.updateDataCount();
         } else if (res.animation === 'update') {
@@ -660,7 +660,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = closeAnimationAction(true, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
         },
         error: () => {
           this.notificationService.error(
@@ -682,7 +682,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.viewData = this.viewData.map((trailer: any) => {
           response.map((id: any) => {
             if (trailer.id === id) {
-              trailer.actionAnimation = 'delete';
+              trailer.actionAnimation = 'delete-multiple';
 
               if (trailerNumber == '') {
                 trailerNumber = trailer.trailerNumber;
@@ -708,7 +708,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
           this.viewData = closeAnimationAction(true, this.viewData);
 
           clearInterval(inetval);
-        }, 1000);
+        }, 900);
 
         this.tableService.sendRowsSelected([]);
         this.tableService.sendResetSelectedColumns(true);

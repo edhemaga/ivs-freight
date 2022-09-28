@@ -167,13 +167,15 @@ export class AccidentTableComponent
             return contact;
           });
 
+          this.updateDataCount();
+
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
+          }, 2300);
 
-          this.updateDataCount(); */
+           */
         }
         // Update Accident
         else if (res.animation === 'update') {
@@ -207,14 +209,16 @@ export class AccidentTableComponent
             return contact;
           });
 
+          this.updateDataCount();
+          
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
 
             this.viewData.splice(contactIndex, 1);
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
 
-          this.updateDataCount(); */
+           */
         }
       });
 
@@ -230,7 +234,7 @@ export class AccidentTableComponent
               this.viewData = this.viewData.map((contact: any) => {
                 response.map((r: any) => {
                   if (contact.id === r.id) {
-                    contact.actionAnimation = 'delete';
+                    contact.actionAnimation = 'delete-multiple';
                   }
                 });
 
@@ -243,7 +247,7 @@ export class AccidentTableComponent
                 this.viewData = closeAnimationAction(true, this.viewData);
 
                 clearInterval(inetval);
-              }, 1000);
+              }, 900);
 
               this.tableService.sendRowsSelected([]);
               this.tableService.sendResetSelectedColumns(true);
