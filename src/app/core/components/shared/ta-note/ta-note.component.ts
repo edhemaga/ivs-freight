@@ -12,6 +12,7 @@ import {
 import { Subject } from 'rxjs';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { SharedService } from '../../../services/shared/shared.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-ta-note',
@@ -52,6 +53,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   editorDoc: any;
   value: string = '';
   savedValue: string = '';
+  lastTypeTime: any;
   saveInterval: any;
   saveIntervalStarted: boolean = false;
   noteIcon: string = 'Note - Empty.svg';
@@ -68,6 +70,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   selectionTaken: any;
   range: any;
   isFocused: boolean = false;
+  allowNoteClose: boolean = true;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -145,24 +148,29 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   preventMouseDown(ev) {
+    this.allowNoteClose = false;
     ev.stopPropagation();
     ev.preventDefault();
+
+    setTimeout(() => {
+      this.allowNoteClose = true;
+    }, 500);
   }
 
   valueChange(event) {
     this.value = event;
     this.checkActiveItems();
-    let saveValue = this.value;
+    this.lastTypeTime = moment().unix();
 
     if (!this.saveIntervalStarted) {
       this.saveIntervalStarted = true;
       this.saveInterval = setInterval(() => {
-        if (saveValue == this.value) {
+        if (moment().unix() - this.lastTypeTime >= 2) {
           this.saveIntervalStarted = false;
           clearInterval(this.saveInterval);
+          this.saveNote(true);
         }
-        this.saveNote(true);
-      }, 60000);
+      }, 100);
     }
   }
 
@@ -171,17 +179,23 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   saveNote(autoSave?: boolean) {
-    if (!autoSave) {
-      this.closeNote();
-    }
+    setTimeout(() => {
+      if (!autoSave && this.openedAll && this.allowNoteClose) {
+        this.closeNote();
+      }
+      this.allowNoteClose = true;
+    }, 200);
     if (this.value == '<br>') {
       this.value = this.value.replace('<br>', '');
     }
 
-    this.note = this.value;
     this.savedValue = this.value;
-    if( this.dispatchIndex == -1 ) this.saveNoteValue.emit(this.value);
-    else this.saveNoteValue.emit({note: this.value, dispatchIndex: this.dispatchIndex});
+    if (this.dispatchIndex == -1) this.saveNoteValue.emit(this.value);
+    else
+      this.saveNoteValue.emit({
+        note: this.value,
+        dispatchIndex: this.dispatchIndex,
+      });
   }
 
   closeNote() {
@@ -190,6 +204,8 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     this.showCollorPattern = false;
     this.isExpanded = false;
     this.buttonsExpanded = false;
+
+    this.ref.detectChanges();
   }
 
   maxLimitForContenteditableDiv(e: any, limit: number) {

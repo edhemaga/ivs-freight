@@ -119,9 +119,21 @@
         [tooltipName]="'View in Modal'"
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
       >
-        <div class="charts-template perfomance">
-          <app-ta-tab-switch [tabs]="tabsBroker" [type]="'type2-modal-popup'">
-          </app-ta-tab-switch>
+        <div
+          class="charts-template perfomance"
+          [class.p-0]="mileageChart.hoveringStatus"
+        >
+          <div *ngIf="!mileageChart.hoveringStatus">
+            <app-ta-tab-switch [type]="'type2-modal-popup'" [tabs]="tabsBroker">
+            </app-ta-tab-switch>
+          </div>
+          <app-ta-chart
+            #mileageChart
+            [chartConfig]="mileageChartConfig"
+            [axesProperties]="mileageBarAxes"
+            [legendAttributes]="mileageBarChartLegend"
+          >
+          </app-ta-chart>
         </div>
       </app-ta-custom-card>
       <app-ta-custom-card
@@ -244,9 +256,21 @@
         [isCardOpen]="false"
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
       >
-        <div class="charts-template perfomance">
-          <app-ta-tab-switch [tabs]="tabsBroker" [type]="'type2-modal-popup'">
-          </app-ta-tab-switch>
+        <div
+          class="charts-template perfomance"
+          [class.p-0]="paymentChart.hoveringStatus"
+        >
+          <div *ngIf="!paymentChart.hoveringStatus">
+            <app-ta-tab-switch [tabs]="tabsBroker" [type]="'type2-modal-popup'">
+            </app-ta-tab-switch>
+          </div>
+          <app-ta-chart
+            #paymentChart
+            [chartConfig]="paymentChartConfig"
+            [axesProperties]="paymentAxes"
+            [legendAttributes]="paymentChartLegend"
+          >
+          </app-ta-chart>
         </div>
       </app-ta-custom-card>
 
@@ -259,6 +283,7 @@
           [isVisibleDivider]="false"
           [placeholder]="'Write something.'"
           [customClass]="'note-small'"
+          [note]="broker.note"
         ></app-ta-input-note>
       </div>
     </div>
