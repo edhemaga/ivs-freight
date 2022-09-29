@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Truck' : 'Edit Truck'"
   [editData]="editData"
   [editName]="editData?.data?.truckNumber"
-  [isModalValid]="truckForm.valid"
+  [isModalValid]="truckForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <app-ta-tab-switch
@@ -120,7 +120,7 @@
                 isRequired: true,
                 textTransform: 'uppercase',
                 minLength: 1,
-                maxLength: 30
+                maxLength: 50
               }"
             ></app-ta-input>
           </div>

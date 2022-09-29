@@ -215,13 +215,9 @@ export class TaInputDropdownComponent
     return this.superControl.control;
   }
 
-  writeValue(obj: any): void {
-
-  }
-  registerOnChange(fn: any): void {
-  }
-  registerOnTouched(fn: any): void {
-  }
+  writeValue(obj: any): void {}
+  registerOnChange(fn: any): void {}
+  registerOnTouched(fn: any): void {}
 
   private dropDownShowHideEvent() {
     this.inputService.dropDownShowHide$
@@ -496,6 +492,7 @@ export class TaInputDropdownComponent
             ...this.inputConfig,
             blackInput: false,
           };
+          this.getSuperControl.updateValueAndValidity();
           this.changeDetectionRef.detectChanges();
           clearTimeout(timeout);
         }, 100);

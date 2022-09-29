@@ -87,7 +87,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   public addNewAfterSave: boolean = false;
 
@@ -315,6 +315,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
+
+    this.formService.checkFormChange(this.driverForm);
+
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public get offDutyLocations(): FormArray {

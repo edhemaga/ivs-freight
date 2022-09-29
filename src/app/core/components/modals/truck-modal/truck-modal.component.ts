@@ -36,10 +36,11 @@ import { TruckTService } from '../../truck/state/truck.service';
 import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, skip } from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
 import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
+import { FormService } from '../../../services/form/form.service';
 
 @Component({
   selector: 'app-truck-modal',
@@ -47,7 +48,7 @@ import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
   styleUrls: ['./truck-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, TaInputService],
+  providers: [ModalService, TaInputService, FormService],
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -143,7 +144,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
   public truckStatus: boolean = true;
   public loadingVinDecoder: boolean = false;
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -152,7 +153,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private modalService: ModalService,
     private ngbActiveModal: NgbActiveModal,
-    private vinDecoderService: VinDecoderService
+    private vinDecoderService: VinDecoderService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -212,6 +214,15 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       purchaseDate: [null],
       purchasePrice: [null],
     });
+
+    this.formService.checkFormChange(this.truckForm);
+
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+        console.log(this.isFormDirty);
+      });
   }
 
   public tabChange(event: any): void {
@@ -225,7 +236,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
   public onModalAction(data: { action: string; bool: boolean }): void {
     if (data.action === 'close') {
-      this.truckForm.reset();
+      return;
     } else {
       if (data.action === 'deactivate' && this.editData) {
         this.truckModalService
@@ -331,6 +342,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             truckMakeId: res.truckMake ? ' ' : null,
             model: res.model,
             year: res.year,
+            vin: res.vin,
             colorId: res.color ? res.color.name : null,
             companyOwned: res.companyOwned,
             ownerId: res.companyOwned
@@ -350,7 +362,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             insurancePolicy: res.insurancePolicy,
             mileage: res.mileage,
           });
-          this.truckForm.get('vin').patchValue(res.vin, { emitEvent: false });
 
           this.selectedTruckType = res.truckType ? res.truckType : null;
           this.selectedTruckMake = res.truckMake ? res.truckMake : null;
@@ -517,7 +528,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   private vinDecoder() {
     this.truckForm
       .get('vin')
-      .valueChanges.pipe(takeUntil(this.destroy$))
+      .valueChanges.pipe(takeUntil(this.destroy$), skip(1))
       .subscribe((value) => {
         if (value?.length > 13 && value?.length < 17) {
           this.truckForm.get('vin').setErrors({ invalid: true });

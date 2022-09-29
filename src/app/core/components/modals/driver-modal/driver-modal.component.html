@@ -4,7 +4,7 @@
   [editData]="editData"
   [saveAndAddNew]="editData?.type !== 'edit'"
   [customClass]="'modal-container-M'"
-  [isModalValid]="driverForm.valid"
+  [isModalValid]="driverForm.valid && isFormDirty"
   [dropZoneConfig]="dropZoneConfig"
   (action)="onModalAction($event)"
 >
@@ -158,7 +158,7 @@
             <app-ta-input-dropdown
               formControlName="payType"
               [inputConfig]="{
-                name: 'Input Dropdown', 
+                name: 'Input Dropdown',
                 type: 'text',
                 label: 'Pay type',
                 isRequired: true,
