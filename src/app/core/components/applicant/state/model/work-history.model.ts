@@ -20,6 +20,7 @@ export interface WorkHistoryModel {
   reasonForLeaving: string;
   accountForPeriod: string;
   isEditingWorkHistory: boolean;
+  workExperienceItemReview: any;
 }
 
 export interface AnotherClassOfEquipmentModel {

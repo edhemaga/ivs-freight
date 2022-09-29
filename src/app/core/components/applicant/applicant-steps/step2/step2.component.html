@@ -50,6 +50,7 @@
       <div
         class="d-flex flex-column history-panel-container"
         *ngIf="workExperienceArray.length"
+        [ngStyle]="{ 'margin-bottom': isReviewingCard ? 0 : '32px' }"
       >
         <!-- CREATED WORK HISTORY DATA -->
 
@@ -83,7 +84,6 @@
               <p class="m-0 ta-font-bold">to <span>*</span></p>
             </div>
           </div>
-
           <div
             class="d-flex align-items-center history-panel line-container"
             *ngIf="!workHistory.isEditingWorkHistory"
@@ -173,7 +173,11 @@
                         'width.px': 18,
                         'height.px': 18
                       }"
-                      (click)="incorrectInput($event, 0, i, 'card')"
+                      (click)="
+                        openAnnotationArray[i].lineInputs[0]
+                          ? incorrectInput($event, 0, i, 'card')
+                          : onCardReview(i)
+                      "
                     ></svg-icon>
                   </div>
                 </div>
@@ -282,7 +286,14 @@
     class="d-flex justify-content-center work-experience-group"
     [formGroup]="workExperienceForm"
     [ngStyle]="{
-      'margin-top': selectedMode !== 'APPLICANT_MODE' ? '22px' : '12px'
+      'margin-top':
+        selectedMode === 'APPLICANT_MODE'
+          ? '12px'
+          : selectedMode === 'REVIEW_MODE' &&
+            workExperienceArray[workExperienceArray.length - 1]
+              .isEditingWorkHistory
+          ? 0
+          : '22px'
     }"
     *ngIf="!isEditing"
   >
@@ -293,6 +304,7 @@
       [customClass]="
         selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
       "
+      [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
     ></app-ta-checkbox>
   </div>
 </div>
@@ -309,7 +321,10 @@
       formStatus === 'VALID' &&
       innerFormStatus === 'VALID'
     "
-    [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && hasIncorrectFields"
+    [hasIncorrectFields]="
+      selectedMode === 'REVIEW_MODE' &&
+      (hasIncorrectFields || cardsWithIncorrectFields)
+    "
     [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>

@@ -59,7 +59,7 @@
           textTransform: 'capitalize',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[21].lineInputs[0]"
         (incorrectEvent)="incorrectInput($event, 0, 21)"
       ></app-ta-input>
     </div>
@@ -75,7 +75,7 @@
           customClass: 'datetimeclass',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[21].lineInputs[1]"
         (incorrectEvent)="incorrectInput($event, 1, 21)"
       ></app-ta-input>
     </div>
@@ -91,7 +91,7 @@
           customClass: 'datetimeclass',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[21].lineInputs[2]"
         (incorrectEvent)="incorrectInput($event, 2, 21)"
       ></app-ta-input>
     </div>
@@ -135,7 +135,7 @@
           mask: '(000) 000-0000',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[22].lineInputs[0]"
         (incorrectEvent)="incorrectInput($event, 0, 22)"
       ></app-ta-input>
     </div>
@@ -153,7 +153,7 @@
           textTransform: 'lowercase',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[22].lineInputs[1]"
         (incorrectEvent)="incorrectInput($event, 1, 22)"
       ></app-ta-input>
     </div>
@@ -168,7 +168,7 @@
           mask: '(000) 000-0000',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[22].lineInputs[2]"
         (incorrectEvent)="incorrectInput($event, 2, 22)"
       ></app-ta-input>
     </div>
@@ -214,7 +214,7 @@
           minLength: 12,
           maxLength: 256
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[23].lineInputs[0]"
         (incorrectEvent)="incorrectInput($event, 0, 23)"
         [activeAddress]="selectedAddress"
         (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
@@ -232,7 +232,7 @@
           textTransform: 'uppercase',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[23].lineInputs[1]"
         (incorrectEvent)="incorrectInput($event, 1, 23)"
       ></app-ta-input>
     </div>
@@ -273,6 +273,7 @@
       [customClass]="
         selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
       "
+      [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
     ></app-ta-checkbox>
   </div>
 
@@ -640,7 +641,7 @@
         }"
         [options]="reasonsForLeaving"
         [activeItem]="selectedReasonForLeaving"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[25].lineInputs[0]"
         (incorrectEvent)="incorrectInput($event, 0, 25)"
         (selectedItem)="handleInputSelect($event, 'REASON-FOR-LEAVING')"
       ></app-ta-input-dropdown>
@@ -683,7 +684,7 @@
           textTransform: 'capitalize',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[26].lineInputs[0]"
         (incorrectEvent)="incorrectInput($event, 0, 26)"
       ></app-ta-input>
     </div>

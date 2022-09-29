@@ -590,17 +590,50 @@ export class Step2FormComponent
         }
       }, 350);
 
-      if (this.isReviewingCard) {
-        console.log('status', this.formValuesToPatch.workExperienceItemReview);
-        const { isEmployerValid } =
-          this.formValuesToPatch.workExperienceItemReview;
+      console.log('prijepatch', this.formValuesToPatch);
+      console.log('ajtem', this.formValuesToPatch.workExperienceItemReview);
+
+      if (this.formValuesToPatch.workExperienceItemReview) {
+        const {
+          isEmployerValid,
+          isJobDescriptionValid,
+          isFromValid,
+          isToValid,
+          isPhoneValid,
+          isEmailValid,
+          isFaxValid,
+          isAddressValid,
+          isAddressUnitValid,
+          isReasonForLeavingValid,
+          isAccountForPeriodBetweenValid,
+        } = this.formValuesToPatch.workExperienceItemReview;
 
         this.openAnnotationArray[20] = {
           ...this.openAnnotationArray[20],
           lineInputs: [!isEmployerValid],
         };
+        this.openAnnotationArray[21] = {
+          ...this.openAnnotationArray[21],
+          lineInputs: [!isJobDescriptionValid, !isFromValid, !isToValid],
+        };
+        this.openAnnotationArray[22] = {
+          ...this.openAnnotationArray[22],
+          lineInputs: [!isPhoneValid, !isEmailValid, !isFaxValid],
+        };
+        this.openAnnotationArray[23] = {
+          ...this.openAnnotationArray[23],
+          lineInputs: [!isAddressValid, !isAddressUnitValid],
+        };
+        this.openAnnotationArray[25] = {
+          ...this.openAnnotationArray[25],
+          lineInputs: [!isReasonForLeavingValid],
+        };
+        this.openAnnotationArray[26] = {
+          ...this.openAnnotationArray[26],
+          lineInputs: [!isAccountForPeriodBetweenValid],
+        };
 
-        console.log(this.openAnnotationArray[20]);
+        console.log('patch');
       }
     }
   }
@@ -1353,7 +1386,11 @@ export class Step2FormComponent
         this.hasIncorrectFieldsEmitter.emit(false);
       }
 
-      this.openAnnotationArrayValuesEmitter.emit(this.openAnnotationArray);
+      const filteredOpenAnnotationArray = this.openAnnotationArray.filter(
+        (item) => Object.keys(item).length !== 0
+      );
+
+      this.openAnnotationArrayValuesEmitter.emit(filteredOpenAnnotationArray);
     }
   }
 
@@ -1380,7 +1417,13 @@ export class Step2FormComponent
       return;
     }
 
-    this.cardOpenAnnotationArrayValuesEmitter.emit(this.openAnnotationArray);
+    const filteredOpenAnnotationArray = this.openAnnotationArray.filter(
+      (item) => Object.keys(item).length !== 0
+    );
+
+    this.cardOpenAnnotationArrayValuesEmitter.emit(filteredOpenAnnotationArray);
+
+    this.isCardReviewedIncorrect = false;
   }
 
   ngOnDestroy(): void {
