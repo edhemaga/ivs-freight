@@ -1,6 +1,6 @@
-<div class="address_holder" [formGroup]="addressForm">
+<div class="address_holder">
   <app-ta-input-dropdown
-    formControlName="address"
+    [formControl]="getSuperControl"
     [inputConfig]="inputConfig"
     [options]="addresList"
     [activeItem]="activeAddress"

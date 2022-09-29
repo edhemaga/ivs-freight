@@ -481,7 +481,7 @@ export class TaInputComponent
       this.numberOfConsecutivelySpaces = 0;
 
       // Reset One Space Only
-      if (!this.getSuperControl.value.includes(' ')) {
+      if (!this.getSuperControl.value?.includes(' ')) {
         this.oneSpaceOnlyCounter = 0;
       }
 

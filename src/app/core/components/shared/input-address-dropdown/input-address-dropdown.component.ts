@@ -62,17 +62,15 @@ export class InputAddressDropdownComponent
   registerOnTouched(fn: any): void {}
 
   ngOnInit(): void {
-    this.addressForm = this.formBuilder.group({
-      address: '',
-    });
 
-    this.addressForm.valueChanges
+    this.getSuperControl.valueChanges
       .pipe(
         takeUntil(this.destroy$),
-        filter((term: { address: string }) => term?.address?.length >= 3),
+        filter((term: string ) => { console.log(term?.length); return term?.length >= 3}),
         switchMap((query) => {
+          console.log(query, 'queryquery')
           return this.addressService.getAddresses(
-            query.address,
+            query,
             this.searchLayers
           );
         })
@@ -111,7 +109,6 @@ export class InputAddressDropdownComponent
             valid: true,
           });
           this.getSuperControl.setValue(event.address.address);
-          this.getSuperControl.setErrors(null);
         } else {
           this.addresList = [];
           this.getSuperControl.setValue(null);

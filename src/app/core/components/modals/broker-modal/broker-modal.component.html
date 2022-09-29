@@ -139,12 +139,16 @@
                 [inputConfig]="{
                   name: 'Address',
                   type: 'text',
+                  label: 'Address, City, State Zip',
                   isRequired: true,
                   placeholderIcon: 'address',
+                  placeholder: 'Address, City, State Zip',
+                  textTransform: 'capitalize',
+                  dropdownWidthClass: 'w-col-512',
                   minLength: 12,
-                  maxLength: 256,
-                  textTransform: 'capitalize'
+                  maxLength: 256
                 }"
+                [incorrectValue]="false"
                 [placeholderType]="'longAddress'"
                 [activeAddress]="selectedPhysicalAddress"
                 (selectedAddress)="onHandleAddress($event, 'physical-address')"
