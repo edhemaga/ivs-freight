@@ -225,16 +225,17 @@ export class DispatchboardTablesComponent implements OnInit {
     private dss: DispatcherStoreService,
     private chd: ChangeDetectorRef,
     private colorPipe: ColorFinderPipe,
-    private inputService: TaInputService,
+    private inputService: TaInputService
   ) {}
 
   ngOnInit(): void {
-    this.inputService.onFocusOutInput$.subscribe(res => {
-
-      if( this.showAddAddressField != -1 ){
-        this.showAddAddressField = -1;
+    this.inputService.onFocusOutInput$.subscribe((res) => {
+      if (this.showAddAddressField != -1) {
+        setTimeout(() => {
+          this.showAddAddressField = -1;
+        }, 500);
       }
-    })
+    });
   }
 
   addTruck(e) {
@@ -508,7 +509,7 @@ export class DispatchboardTablesComponent implements OnInit {
   tooltip: any;
   toggleHos(tooltip: NgbTooltip, data: any, id: number) {
     this.hosHelper.hos = [];
-    if ( !data.hos || data.hos.length === 0 ) {
+    if (!data.hos || data.hos.length === 0) {
       data = {
         hos: [
           {
@@ -557,8 +558,10 @@ export class DispatchboardTablesComponent implements OnInit {
     });
   }
 
-  removeHos(item){
-    this.openedHosData.hos = this.openedHosData.hos.filter(it => it.indx !== item.indx)
+  removeHos(item) {
+    this.openedHosData.hos = this.openedHosData.hos.filter(
+      (it) => it.indx !== item.indx
+    );
   }
 
   changeHosDataPositions(event, index) {
