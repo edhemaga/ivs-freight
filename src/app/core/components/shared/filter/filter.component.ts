@@ -8,7 +8,8 @@ import {
   ViewChild,
   ElementRef,
   ChangeDetectorRef,
-  QueryList
+  QueryList,
+  AfterViewInit
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
@@ -26,7 +27,7 @@ import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popove
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
-export class FilterComponent implements OnInit {
+export class FilterComponent implements OnInit, AfterViewInit {
   private destroy$ = new Subject<void>();
   autoCloseComponent: QueryList<AutoclosePopoverComponent>;
 
@@ -37,6 +38,8 @@ export class FilterComponent implements OnInit {
 
 
   @ViewChild('t2') t2: any;
+  @ViewChild('mainFilter') mainFilter: any;
+
 
   unselectedUser: any[] = [
     {
@@ -1072,11 +1075,11 @@ export class FilterComponent implements OnInit {
   @Input() locationDefType: boolean = false;
   @Input() legendView: boolean = false;
 
+  resizeObserver: ResizeObserver;
+
   constructor(private formBuilder: FormBuilder, private thousandSeparator: TaThousandSeparatorPipe,private elementRef: ElementRef, private cdRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-
-    console.log('---pop1---', this.pop1);
 
     if (this.type == 'payFilter'){
       this.maxValueRange = '20,000';
@@ -1124,7 +1127,7 @@ export class FilterComponent implements OnInit {
 
     this.rangeForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       if (changes){
-        console.log('--changes--', changes);
+        //console.log('--changes--', changes);
 
         var rangeFromNum = 0;
         var rangeToNum = parseInt(this.maxValueRange.replace(/,/g, ''), 10);
@@ -1436,17 +1439,24 @@ export class FilterComponent implements OnInit {
     });
   }
 
-  toggleDropdown(){
-    let mainElement3 = document.querySelector('.popover-body');
-    console.log('--popup close--', this.autoClose);
-    console.log('--pop1--', this.pop1);
-    if (mainElement3){
-      this.activeFilter = false;
-    } else {
-      console.log('--popup opened--');
-      this.activeFilter = true;
-    }
-    
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.observMainContainer();
+    }, 10);
+  }
+
+  observMainContainer(){
+    this.resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        if ( entry.contentRect.height ){
+          this.activeFilter = true;
+        } else {
+          this.activeFilter = false;
+          this.cdRef.detectChanges();
+        }
+      });
+    });
+    this.resizeObserver.observe(this.pop1.nativeElement);
   }
 
   addToSelectedUser(item, indx, subType?) {

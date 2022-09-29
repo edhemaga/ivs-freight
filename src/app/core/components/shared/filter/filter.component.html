@@ -22,7 +22,6 @@
     mainTooltip="{{ !hoverClose ? filterTitle : 'Clear' }}"
     position="bottom"
     tooltipBackground= "#6C6C6C"
-    (click)="toggleDropdown()"
   >
     <svg-icon [src]="icon | taSvg: 'common'"></svg-icon>
     <div *ngIf="selectedUser.length > 0" class="active-filter-num">
