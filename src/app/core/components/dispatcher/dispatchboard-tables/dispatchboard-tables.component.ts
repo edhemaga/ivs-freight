@@ -230,8 +230,7 @@ export class DispatchboardTablesComponent implements OnInit {
 
   ngOnInit(): void {
     this.inputService.onFocusOutInput$.subscribe(res => {
-      console.log(" INPUT IS BLURED");
-      console.log(res);
+
       if( this.showAddAddressField != -1 ){
         this.showAddAddressField = -1;
       }
