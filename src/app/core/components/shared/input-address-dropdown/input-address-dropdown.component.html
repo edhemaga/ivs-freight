@@ -1,17 +1,7 @@
 <div class="address_holder" [formGroup]="addressForm">
   <app-ta-input-dropdown
     formControlName="address"
-    [inputConfig]="{
-      name: inputConfig.name,
-      type: inputConfig.type,
-      label: placeholderType == 'longAddress' ? 'Address, City, State Zip' : 'City, State',
-      placeholderIcon: inputConfig.placeholderIcon,
-      isRequired: inputConfig.isRequired,
-      dropdownWidthClass: 'w-col-512',
-      minLength: inputConfig.minLength,
-      maxLength: inputConfig.maxLength,
-      textTransform: inputConfig.textTransform
-    }"
+    [inputConfig]="inputConfig"
     [options]="addresList"
     [activeItem]="activeAddress"
     (selectedItem)="onSelectDropdown($event, 'address')"

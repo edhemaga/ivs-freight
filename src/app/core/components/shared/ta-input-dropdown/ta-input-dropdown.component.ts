@@ -27,7 +27,6 @@ import { TaInputResetService } from '../ta-input/ta-input-reset.service';
   selector: 'app-ta-input-dropdown',
   templateUrl: './ta-input-dropdown.component.html',
   styleUrls: ['./ta-input-dropdown.component.scss'],
-  providers: [TaInputService],
   animations: [input_dropdown_animation('showHideDropdownOptions')],
 })
 export class TaInputDropdownComponent

@@ -2163,6 +2163,10 @@
     width: 136px;
     min-width: 136px;
     max-width: 136px;
+
+    .input-control{
+      height: 28px !important;
+    }
   }
 
   .status-field {
