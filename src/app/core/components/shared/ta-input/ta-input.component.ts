@@ -827,7 +827,6 @@ export class TaInputComponent
           .getInputRegexPattern('email')
           .test(String.fromCharCode(event.charCode))
       ) {
-        this.disableMultiplePoints(event);
         return true;
       }
       event.preventDefault();
