@@ -36,6 +36,7 @@ export class InputAddressDropdownComponent
   addresList: any[] = [];
   currentAddress: any;
   searchLayers: any[] = [];
+  clickedOnSelect: boolean = false;
   @Input() inputConfig: ITaInput;
   @Input() placeholderType: string;
   @Output() selectedAddress: EventEmitter<{
@@ -64,17 +65,14 @@ export class InputAddressDropdownComponent
   registerOnTouched(fn: any): void {}
 
   ngOnInit(): void {
-    this.addressForm = this.formBuilder.group({
-      address: '',
-    });
 
-    this.addressForm.valueChanges
+    this.getSuperControl.valueChanges
       .pipe(
         takeUntil(this.destroy$),
-        filter((term: { address: string }) => term?.address?.length >= 3),
+        filter((term: string ) => { return term?.length >= 3}),
         switchMap((query) => {
           return this.addressService.getAddresses(
-            query.address,
+            query,
             this.searchLayers
           );
         })
@@ -104,10 +102,19 @@ export class InputAddressDropdownComponent
   }
 
   public onCloseDropdown(e){
+    setTimeout(()=>{
+      if(!this.clickedOnSelect){
+        this.addresList = [];
+        this.getSuperControl.setValue(null);
+      }
+      this.clickedOnSelect = false;
+    },200)
+    
     this.closeDropdown.emit(e);
   }
 
   public onSelectDropdown(event: any, action: string) {
+    this.clickedOnSelect = true;
     switch (action) {
       case 'address': {
         this.activeAddress = event;
@@ -117,7 +124,6 @@ export class InputAddressDropdownComponent
             valid: true,
           });
           this.getSuperControl.setValue(event.address.address);
-          this.getSuperControl.setErrors(null);
         } else {
           this.addresList = [];
           this.getSuperControl.setValue(null);

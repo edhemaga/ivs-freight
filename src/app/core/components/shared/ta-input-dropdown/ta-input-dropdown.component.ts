@@ -157,6 +157,12 @@ export class TaInputDropdownComponent
         clearTimeout(timeout);
       });
     }
+
+    if(this.inputConfig.name === 'Address') {
+      if(!this.getSuperControl.value) {
+        this.popoverRef?.open();
+      }
+    }
   }
 
   ngAfterViewInit() {
