@@ -590,7 +590,7 @@
                 placeholderInsteadOfLabel: true
               }"
               [incorrectValue]="false"
-              [placeholderType]="'shortAddress'"
+              [placeholderType]="'longAddress'"
               (incorrectEvent)="incorrectInput($event, 0, 18)"
               [activeAddress]="selectedAddress"
               (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
@@ -1110,6 +1110,7 @@
                 [incorrectValue]="false"
                 (incorrectEvent)="incorrectInput($event, 0, 18)"
                 [activeAddress]="selectedAddress"
+                [placeholderType]="'longAddress'"
                 (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
               ></app-input-address-dropdown>
             </div>
