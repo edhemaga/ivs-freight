@@ -495,7 +495,7 @@
           !isVisiblePasswordEye &&
           !isVisibleCommands &&
           !inputConfig.blackInput) ||
-          inputConfig.dropdownImageInput?.url) &&
+          (!focusInput && inputConfig.dropdownImageInput?.url)) &&
         !inputConfig.blackInput,
       'invalid-focus-in':
         getSuperControl.value &&
