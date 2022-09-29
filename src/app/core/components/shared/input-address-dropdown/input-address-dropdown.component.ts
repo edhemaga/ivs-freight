@@ -43,6 +43,8 @@ export class InputAddressDropdownComponent
     valid: boolean;
   }> = new EventEmitter<{ address: AddressEntity; valid: boolean }>(null);
 
+  @Output() closeDropdown: EventEmitter<boolean> = new EventEmitter<boolean>(null);
+
   constructor(
     @Self() public superControl: NgControl,
     private addressService: AddressService,
@@ -99,6 +101,10 @@ export class InputAddressDropdownComponent
 
   get getSuperControl() {
     return this.superControl.control;
+  }
+
+  public onCloseDropdown(e){
+    this.closeDropdown.emit(e);
   }
 
   public onSelectDropdown(event: any, action: string) {

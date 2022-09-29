@@ -594,6 +594,7 @@
               (incorrectEvent)="incorrectInput($event, 0, 18)"
               [activeAddress]="selectedAddress"
               (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+              (closeDropdown)="onHideDropdown($event)"
             ></app-input-address-dropdown>
             <div
               class="full-loc-hold"
@@ -1112,6 +1113,7 @@
                 [activeAddress]="selectedAddress"
                 [placeholderType]="'longAddress'"
                 (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+                (closeDropdown)="onHideDropdown($event)"
               ></app-input-address-dropdown>
             </div>
           </td>

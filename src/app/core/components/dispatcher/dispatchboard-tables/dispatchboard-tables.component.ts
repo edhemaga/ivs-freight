@@ -224,19 +224,10 @@ export class DispatchboardTablesComponent implements OnInit {
   constructor(
     private dss: DispatcherStoreService,
     private chd: ChangeDetectorRef,
-    private colorPipe: ColorFinderPipe,
-    private inputService: TaInputService
+    private colorPipe: ColorFinderPipe
   ) {}
 
-  ngOnInit(): void {
-    this.inputService.onFocusOutInput$.subscribe((res) => {
-      if (this.showAddAddressField != -1) {
-        setTimeout(() => {
-          this.showAddAddressField = -1;
-        }, 500);
-      }
-    });
-  }
+  ngOnInit(): void {}
 
   addTruck(e) {
     if (e) {
@@ -260,6 +251,14 @@ export class DispatchboardTablesComponent implements OnInit {
       this.selectTruck.reset();
       this.showAddAddressField = -1;
     }
+  }
+
+  onHideDropdown(e) {
+    setTimeout(() => {
+      if( this.showAddAddressField != -2 ) this.dData.dispatches[this.showAddAddressField].truck = null;
+      this.showAddAddressField = -1;
+      this.chd.detectChanges();
+    }, 200);
   }
 
   addDriver(e) {
