@@ -81,12 +81,21 @@
           <svg-icon class="basic-logo-edit" src="ic_pen.svg"></svg-icon>
         </div>
         <img
-        *ngIf="companyData.logo"
-        [src]="imageBase64Service.sanitizer(companyData.logo)"
-        [alt]="companyData.logo?.name?.substring(0, 1)"
-        class="company-logo-img"
-      />
-        <div *ngIf="!companyData.logo" [ngStyle]="{'font-size': changeFont?'22px':'48px','margin-top': changeFont?'60px':'30px'}" class="no-company-logo">{{companyData?.name}}</div>
+          *ngIf="companyData.logo"
+          [src]="imageBase64Service.sanitizer(companyData.logo)"
+          [alt]="companyData.logo?.name?.substring(0, 1)"
+          class="company-logo-img"
+        />
+        <div
+          *ngIf="!companyData.logo"
+          [ngStyle]="{
+            'font-size': changeFont ? '22px' : '48px',
+            'margin-top': changeFont ? '60px' : '30px'
+          }"
+          class="no-company-logo"
+        >
+          {{ companyData?.name }}
+        </div>
       </div>
       <!-- Middle -->
       <div class="basic-middle">
@@ -149,7 +158,6 @@
         [cardName]="'Additional Details'"
         [bodyTemplate]="'card'"
         [isCardOpen]="true"
-        [animationsDisabled]="false"
       >
         <div class="additional-template-data">
           <div class="additional-template-item">
@@ -196,7 +204,6 @@
         [cardName]="'Department Contact'"
         [bodyTemplate]="'card'"
         [isCardOpen]="true"
-        [animationsDisabled]="false"
         [textBottomPossiton]="'-1px'"
         *ngIf="companyData?.departmentContacts?.length"
         [hasCounter]="companyData?.departmentContacts?.length"
@@ -235,7 +242,6 @@
         [cardName]="'Bank Account'"
         [bodyTemplate]="'card'"
         [isCardOpen]="true"
-        [animationsDisabled]="false"
         *ngIf="companyData?.bankAccounts?.length"
       >
         <div
@@ -271,7 +277,6 @@
         [hasCounter]="companyData?.bankCards?.length"
         [isCardOpen]="true"
         *ngIf="companyData?.bankCards?.length"
-        [animationsDisabled]="false"
         [textBottomPossiton]="'-1px'"
       >
         <div class="bank-card-template-data">
@@ -316,7 +321,6 @@
         [cardName]="'Load Format & Customer Billing'"
         [bodyTemplate]="'card'"
         [isCardOpen]="true"
-        [animationsDisabled]="false"
       >
         <div class="additional-template-data">
           <div class="additional-template-item">
@@ -331,9 +335,7 @@
           <div class="additional-template-item">
             <p class="additional-template-value-name">Pref. Load Type</p>
             <p class="additional-template-value">
-              {{
-                companyData?.additionalInfo?.preferredLoadType
-              }}
+              {{ companyData?.additionalInfo?.preferredLoadType }}
             </p>
           </div>
 
@@ -344,14 +346,20 @@
             </p>
           </div>
 
-          <div class="additional-template-item" *ngIf="companyData?.additionalInfo?.customerPayTerm">
+          <div
+            class="additional-template-item"
+            *ngIf="companyData?.additionalInfo?.customerPayTerm"
+          >
             <p class="additional-template-value-name">Customer Pay Term</p>
             <p class="additional-template-value">
               {{ companyData?.additionalInfo?.customerPayTerm }} days
             </p>
           </div>
 
-          <div class="additional-template-item" *ngIf="companyData?.additionalInfo?.customerCredit">
+          <div
+            class="additional-template-item"
+            *ngIf="companyData?.additionalInfo?.customerCredit"
+          >
             <p class="additional-template-value-name">Customer Credit</p>
             <p class="additional-template-value">
               ${{ companyData?.additionalInfo?.customerCredit }}
@@ -370,7 +378,6 @@
         [cardName]="'Expiration'"
         [bodyTemplate]="'card'"
         [isCardOpen]="true"
-        [animationsDisabled]="false"
       >
         <div class="additional-template-data">
           <div class="additional-template-item">

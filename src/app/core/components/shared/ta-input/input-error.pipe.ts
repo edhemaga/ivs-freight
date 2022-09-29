@@ -32,6 +32,10 @@ export class InputErrorPipe implements PipeTransform {
         errorMessageValue = `${value['max']} Is Maximum Value`;
       }
 
+      if (value['passwordDontMatch']) {
+        errorMessageValue = "Passwords don't match.";
+      }
+
       if (value['pattern']?.requiredPattern) {
         switch (inputName.toLowerCase()) {
           case 'phone': {

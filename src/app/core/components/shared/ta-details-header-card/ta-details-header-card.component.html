@@ -23,6 +23,7 @@
           class="owner-tooltip"
         >
           <svg-icon
+           *ngIf="haveDropSVG"
             class="current-active-owner"
             src="{{ (options | detailActiveItem).svg }}"
           ></svg-icon>
@@ -165,7 +166,7 @@
         tooltipBackground="#6C6C6C"
         ngbTooltip
         mainTooltip="Date Added"
-        position="top"
+        position="bottom"
       >
         <div class="details-header-wrapper-data-item bottom">
           <svg-icon
@@ -181,7 +182,7 @@
         tooltipBackground="#6C6C6C"
         ngbTooltip
         mainTooltip="Date Terminated"
-        position="top"
+        position="bottom"
       >
         <div
           *ngIf="statusInactive == 0"
@@ -201,7 +202,7 @@
         tooltipBackground="#6C6C6C"
         ngbTooltip
         mainTooltip="Last Used"
-        position="top"
+        position="bottom"
       >
         <div
           *ngIf="dateChecked"
@@ -221,7 +222,7 @@
         tooltipBackground="#6C6C6C"
         ngbTooltip
         mainTooltip="Last Used"
-        position="top"
+        position="bottom"
       >
         <div *ngIf="lastEdit" class="details-header-wrapper-data-item bottom">
           <svg-icon

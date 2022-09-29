@@ -5,13 +5,12 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { Subject } from 'rxjs';
-import { FormService } from '../../../services/form/form.service';
 
 @Component({
   selector: 'app-load-modal',
   templateUrl: './load-modal.component.html',
   styleUrls: ['./load-modal.component.scss'],
-  providers: [FormService, ModalService],
+  providers: [ModalService],
 })
 export class LoadModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -110,7 +109,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private formService: FormService,
     private modalService: ModalService,
     private inputService: TaInputService
   ) {}
@@ -153,14 +151,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       lingPaymentAdvanceRate: [null],
       note: [null],
     });
-
-    // this.formService.checkFormChange(this.loadForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public onModalHeaderTabChange(event: any): void {

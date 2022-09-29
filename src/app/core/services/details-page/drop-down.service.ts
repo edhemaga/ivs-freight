@@ -10,6 +10,7 @@ import { TtRegistrationModalComponent } from '../../components/modals/common-tru
 import { TtTitleModalComponent } from '../../components/modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 import { ConfirmationModalComponent } from '../../components/modals/confirmation-modal/confirmation-modal.component';
 import { DriverModalComponent } from '../../components/modals/driver-modal/driver-modal.component';
+import { RepairOrderModalComponent } from '../../components/modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { RepairShopModalComponent } from '../../components/modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { ShipperModalComponent } from '../../components/modals/shipper-modal/shipper-modal.component';
 import { TrailerModalComponent } from '../../components/modals/trailer-modal/trailer-modal.component';
@@ -325,6 +326,33 @@ export class DropDownService {
           );
         }
 
+        break;
+      }
+      case 'edit-repair': {
+        this.modalService.openModal(
+          RepairOrderModalComponent,
+          { size: 'small' },
+          {
+            id: data.id,
+            payload: data,
+            file_id: any.id,
+            type: name,
+            modal: 'repair',
+          }
+        );
+        break;
+      }
+      case 'delete-repair': {
+        this.modalService.openModal(
+          ConfirmationModalComponent,
+          { size: 'small' },
+          {
+            id: data.id,
+            template: 'repair',
+            type: 'delete',
+            image: false,
+          }
+        );
         break;
       }
       default: {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
-  ApplicantResponse,
+  ApplicantAdminResponse,
   ApplicantService,
   CreateApplicantCommand,
   ResendInviteCommand,
@@ -15,22 +15,19 @@ export class ApplicantTService {
 
   constructor(private applicantService: ApplicantService) { }
 
-  public addApplicant(data: CreateApplicantCommand): Observable<object> {
-   /*  return this.applicantService.apiApplicantPost(data) */
-   return null;
+  public addApplicantAdmin(data: CreateApplicantCommand): Observable<object> {
+    return this.applicantService.apiApplicantAdminPost(data)
   }
 
-  public updateApplicant(data: UpdateApplicantCommand): Observable<object> {
-    /* return this.applicantService.apiApplicantPut(data); */
-    return null;
+  public updateApplicantAdmin(data: UpdateApplicantCommand): Observable<object> {
+    return this.applicantService.apiApplicantAdminPut(data);
   }
 
-  public resendApplicantInvite(data:ResendInviteCommand): Observable<object> {
-    /* return this.applicantService.apiApplicantResendInvitePost(data); */
-    return null;
+  public resendApplicantInviteAdmin(data:ResendInviteCommand): Observable<object> {
+    return this.applicantService.apiApplicantAdminResendInvitePost(data);
   }
 
-  public getApplicantById(id: number): Observable<ApplicantResponse> {
-    return this.applicantService.apiApplicantIdGet(id)
+  public getApplicantByIdAdmin(id: number): Observable<ApplicantAdminResponse> {
+    return this.applicantService.apiApplicantAdminIdGet(id)
   }
 }

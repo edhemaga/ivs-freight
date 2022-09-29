@@ -12,7 +12,18 @@
   >
   </app-ta-tab-switch>
 
-  <form [formGroup]="parkingForm" class="form-container form-container-mt-12">
+  <form
+    [formGroup]="parkingForm"
+    class="form-container form-container-mt-12"
+    [ngClass]="{
+      'form-container-without-mb':
+        (selectedTab === 2 && !isFinanceCardOpen) ||
+        (selectedTab === 1 && !isParkingCardOpen),
+      'form-container-with-card':
+        (selectedTab === 2 && isFinanceCardOpen) ||
+        (selectedTab === 1 && isParkingCardOpen)
+    }"
+  >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 1">
@@ -38,7 +49,7 @@
                     type: 'text',
                     label: 'Parking Name',
                     isRequired: true,
-                    autoFocus: editData?.type !== 'edit' ? true : false,
+                    autoFocus: editData?.type !== 'edit',
                     textTransform: 'capitalize',
                     minLength: 1,
                     maxLength: 64
@@ -70,7 +81,7 @@
                   [inputConfig]="{
                     name: 'address-unit',
                     type: 'text',
-                    label: 'Unit #',
+                    label: 'Unit No.',
                     textTransform: 'uppercase',
                     minLength: 1,
                     maxLength: 10
@@ -139,45 +150,53 @@
         <!-- Parking Slot -->
         <app-ta-custom-card
           [hasCounter]="
-            (parkingSlots | sumArrays) === 0 ? '0' : (parkingSlots | sumArrays)
+            (parkingSlots | sumArrays) === 0 ? 0 : (parkingSlots | sumArrays)
           "
           [cardName]="'Parking Slot'"
           [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
           [isCardOpen]="true"
+          (onOpenCard)="isParkingCardOpen = $event"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '12px' }"
         >
-          <div class="row row-mt-20">
-            <div class="col-12">
-              <app-ta-input
-                formControlName="parkingSlot"
-                [inputConfig]="{
-                  name: 'Parking Slot',
-                  type: 'text',
-                  label: 'Parking Slot # (Truck)',
-                  minLength: 1,
-                  maxLength: 64
-                }"
-              ></app-ta-input>
+          <div class="checkbox-card-body">
+            <div class="row">
+              <div class="col-12">
+                <app-ta-input
+                  formControlName="parkingSlot"
+                  [inputConfig]="{
+                    name: 'Parking Slot',
+                    type: 'text',
+                    label: 'Parking Slot # (Truck)',
+                    minLength: 1,
+                    maxLength: 64
+                  }"
+                ></app-ta-input>
+              </div>
             </div>
-          </div>
-          <div class="row row-mb-10">
-            <div class="col-12">
-              <app-ta-input
-                formControlName="fullParkingSlot"
-                [inputConfig]="{
-                  name: 'Full Parking Slot',
-                  type: 'text',
-                  label: 'Full Parking Slot # (Semi Truck - Trailer)',
-                  minLength: 1,
-                  maxLength: 128
-                }"
-              ></app-ta-input>
+            <div class="row row-no-mb">
+              <div class="col-12">
+                <app-ta-input
+                  formControlName="fullParkingSlot"
+                  [inputConfig]="{
+                    name: 'Full Parking Slot',
+                    type: 'text',
+                    label: 'Full Parking Slot # (Semi Truck - Trailer)',
+                    minLength: 1,
+                    maxLength: 128
+                  }"
+                ></app-ta-input>
+              </div>
             </div>
           </div>
         </app-ta-custom-card>
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
-        <app-ta-custom-card [cardName]="'Features'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Features'"
+          [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
           <div class="parking-gate-securityCamera">
             <div class="gate-field">
               <p>Gate</p>
@@ -203,56 +222,55 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Finance'" [isCardOpen]="true">
-          <div class="row row-mb-10">
-            <div class="col-4">
-              <app-ta-input
-                formControlName="rent"
-                [inputConfig]="{
-                  name: 'Rent',
-                  type: 'text',
-                  label: 'Rent',
-                  placeholderIcon: 'dollar',
-                  customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true,
-                  minLength: 4,
-                  maxLength: 8
-                }"
-              ></app-ta-input>
-            </div>
-            <div class="col-4">
-              <app-ta-input-dropdown
-                formControlName="payPeriod"
-                [inputConfig]="{
-                  name: 'Input Dropdown',
-                  type: 'text',
-                  label: 'Pay Period',
-                  isDropdown: true,
-                  dropdownWidthClass: 'w-col-148'
-                }"
-                [options]="payPeriods"
-                [activeItem]="selectedPayPeriod"
-                (selectedItem)="onSelectDropdown($event, 'pay-period')"
-              ></app-ta-input-dropdown>
-            </div>
-            <div class="col-4 no-p-left">
-              <app-ta-input-dropdown
-                formControlName="monthlyDay"
-                [inputConfig]="{
-                  name: 'Input Dropdown',
-                  type: 'text',
-                  label: 'Day',
-                  isDropdown: true,
-                  isDisabled: !parkingForm.get('payPeriod').value,
-                  dropdownWidthClass: 'w-col-148'
-                }"
-                [options]="
-                  selectedDay?.name === 'Weekly' ? weeklyDays : monthlyDays
-                "
-                [activeItem]="selectedDay"
-                (selectedItem)="onSelectDropdown($event, 'day')"
-              ></app-ta-input-dropdown>
-            </div>
+        <app-ta-custom-card
+          [cardName]="'Finance'"
+          [isCardOpen]="true"
+          (onOpenCard)="isFinanceCardOpen = $event"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '12px' }"
+        >
+          <div class="location-parking-financial-card">
+            <app-ta-input
+              formControlName="rent"
+              [inputConfig]="{
+                name: 'Rent',
+                type: 'text',
+                label: 'Rent',
+                placeholderIcon: 'dollar',
+                customClass: 'dollar-placeholderIcon',
+                thousandSeparator: true,
+                minLength: 4,
+                maxLength: 8
+              }"
+            ></app-ta-input>
+            <app-ta-input-dropdown
+              formControlName="payPeriod"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Pay Period',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-148'
+              }"
+              [options]="payPeriods"
+              [activeItem]="selectedPayPeriod"
+              (selectedItem)="onSelectDropdown($event, 'pay-period')"
+            ></app-ta-input-dropdown>
+            <app-ta-input-dropdown
+              formControlName="monthlyDay"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Day',
+                isDropdown: true,
+                isDisabled: !parkingForm.get('payPeriod').value,
+                dropdownWidthClass: 'w-col-148'
+              }"
+              [options]="
+                selectedDay?.name === 'Weekly' ? weeklyDays : monthlyDays
+              "
+              [activeItem]="selectedDay"
+              (selectedItem)="onSelectDropdown($event, 'day')"
+            ></app-ta-input-dropdown>
           </div>
         </app-ta-custom-card>
       </div>

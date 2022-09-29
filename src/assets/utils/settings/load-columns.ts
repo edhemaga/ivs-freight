@@ -42,9 +42,9 @@ export function getLoadTemplateColumnDefinition() {
       disabled: false,
       export: true,
       resizable: true,
-      linkField: {
-        routerLinkStart: '/loads/edit/',
-        routerLinkEnd: '/detail',
+      link: {
+        routerLinkStart: '/load/',
+        routerLinkEnd: '/details',
       },
     },
     {
@@ -1078,9 +1078,9 @@ export function getLoadClosedColumnDefinition() {
       disabled: false,
       export: true,
       resizable: true,
-      linkField: {
-        routerLinkStart: '/loads/edit/',
-        routerLinkEnd: '/detail',
+      link: {
+        routerLinkStart: '/load',
+        routerLinkEnd: '/details',
       },
     },
     {

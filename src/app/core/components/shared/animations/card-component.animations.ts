@@ -33,4 +33,5 @@ export const card_component_animation = (
       })
     ),
     transition('false <=> true', [animate('.3s ease-in-out')]),
+    transition('0 <=> true', [animate('.3s ease-in-out')]),
   ]);

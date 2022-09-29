@@ -115,7 +115,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private ngbActiveModal: NgbActiveModal,
     private sumArrayPipe: SumArraysPipe,
-    private cdRef: ChangeDetectorRef,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -1002,10 +1002,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             : null,
       };
     });
-  }
-
-  saveNoteValue(value){
-    this.repairOrderForm.controls['note'].setValue(value);
   }
 
   ngOnDestroy(): void {

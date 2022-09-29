@@ -1,21 +1,22 @@
+@import "./ta-input.colors.scss";
 //-------------------- Input Error --------------------
 .input-error {
   position: absolute;
   top: 26px;
   right: 5px;
-  color: #ef5350;
+  color: $input-error-color;
   font-size: 11px;
   font-weight: 600;
   display: inline-block;
 
   &::-moz-selection {
-    background-color: #ffe1e4;
-    color: #ef5350;
+    background-color: $input-error-background-selection;
+    color: $input-error-color;
   }
 
   &::selection {
-    background-color: #ffe1e4;
-    color: #ef5350;
+    background-color: $input-error-background-selection;
+    color: $input-error-color;
   }
 
   //------------------------- Custom class -------------------------

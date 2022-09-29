@@ -1,3 +1,5 @@
+@import "./ta-input.colors.scss";
+
 .input-invalid-danger-mark {
   position: absolute;
   right: 4px;
@@ -7,17 +9,17 @@
     width: 18px;
     height: 18px;
     path {
-      fill: #e57373;
+      fill: $input-danger-mark-path-fill;
     }
   }
 
   &:hover ~ .input-label {
-    color: #3c3c3c;
+    color: $input-label-color-hover;
   }
 
   &:hover ~ .input-control {
-    background-color: #eeeeee;
-    color: #3c3c3c;
+    background-color: $input-background-color-normal-hover;
+    color: $input-text-color-normal-hover;
   }
 
   // Custom class
@@ -29,5 +31,9 @@
 
   &.input-30 {
     top: 2px;
+  }
+
+  &.line-input-26-in-card {
+    top: 1px;
   }
 }

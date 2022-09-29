@@ -9,12 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TrailerTypeResponse } from './trailerTypeResponse';
 import { BankResponse } from './bankResponse';
 import { EnumValue } from './enumValue';
+import { TruckTypeResponse } from './truckTypeResponse';
 
 
 export interface OwnerModalResponse { 
     banks?: Array<BankResponse> | null;
     ownerTypes?: Array<EnumValue> | null;
+    truckTypes?: Array<TruckTypeResponse> | null;
+    trailerTypes?: Array<TrailerTypeResponse> | null;
 }
 

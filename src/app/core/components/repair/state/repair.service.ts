@@ -126,7 +126,12 @@ export class RepairTService implements OnDestroy {
               this.shopMinimalStore.add(shop);
               this.sdls.update(shop.id, { repairs: shop.repairs });
               this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit });
-
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                tab: 'repair-shop',
+                data: shop,
+                id: shop.id,
+              });
               subShop.unsubscribe();
             },
           });
@@ -202,7 +207,7 @@ export class RepairTService implements OnDestroy {
 
   public deleteRepairById(
     repairId: number,
-    tabSelected: string
+    tabSelected?: string
   ): Observable<object> {
     return this.repairService.apiRepairIdDelete(repairId).pipe(
       tap(() => {
@@ -212,7 +217,12 @@ export class RepairTService implements OnDestroy {
             next: (shop: RepairShopResponse | any) => {
               this.sdls.update(shop.id, { repairs: shop.repairs });
               this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit });
-
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                tab: 'repair-shop',
+                data: shop,
+                id: shop.id,
+              });
               subShop.unsubscribe();
             },
           });
@@ -383,6 +393,7 @@ export class RepairTService implements OnDestroy {
       }
       this.repairShopId = this.repairShopList[this.currentIndex].id;
     }
+
     return this.shopServices.apiRepairshopIdGet(repairId);
   }
 

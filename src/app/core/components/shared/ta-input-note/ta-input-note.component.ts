@@ -5,13 +5,11 @@ import {
   Input,
   OnInit,
   Output,
-  Renderer2,
   Self,
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { card_component_animation } from '../animations/card-component.animations';
-import { input_note_animation } from './ta-input-note.animation';
 import { SharedService } from '../../../services/shared/shared.service';
 import moment from 'moment';
 
@@ -22,7 +20,7 @@ import moment from 'moment';
   animations: [card_component_animation('showHideCardBody')],
 })
 export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
-  _isVisibleNote: any = null;
+  _isVisibleNote: any = 0;
   selectionTaken: any;
   range: any;
   @Input() note: any;
@@ -33,12 +31,18 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   lastTypeTime: any;
   saveIntervalStarted: boolean = false;
   @Input() isVisibleDivider: boolean = true;
-  @Input() isVisibleSecondDivider: boolean = true;
   @Input() public animationsDisabled = false;
 
-  @Input('isVisibleNote') set isVisibleNote(value: any) {
-    this._isVisibleNote = value ? true : null;
+
+  noActive: string;
+
+  @Input() set isVisibleNote(value: boolean) {
+    this.noActive = value ? "active" : "innactive";
   }
+
+  // @Input('isVisibleNote') set isVisibleNote(value: any) {
+  //   this._isVisibleNote = value ? true : false;
+  // }
 
   @Input() isVisibleArrow: boolean = true;
   @Input() minRows: number = 2;
@@ -46,7 +50,6 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   @Input() placeholder: string = 'Write a note.';
   @Input() isReadOnly: boolean = false;
   @Input() customClass: string = null;
-  @Output() saveNoteValue = new EventEmitter();
   @ViewChild('main_editor', { static: true }) noteRef: ElementRef;
 
   constructor(
@@ -76,6 +79,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   public registerOnTouched(fn: any): void {}
 
   public openNote() {
+    this.noActive = "";
     this._isVisibleNote = !this._isVisibleNote;
     if (this._isVisibleNote) {
       this.checkActiveItems();
@@ -120,7 +124,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     }
     if (allowSave) {
       this.savedValue = this.value;
-      this.saveNoteValue.emit(this.value);
+      this.getSuperControl.patchValue(this.value)
     }
   }
 
