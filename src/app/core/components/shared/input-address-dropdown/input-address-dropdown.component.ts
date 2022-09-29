@@ -29,14 +29,15 @@ export class InputAddressDropdownComponent
   private destroy$ = new Subject<void>();
   public addressForm!: FormGroup;
   @Input() set activeAddress(value) {
-    if (this.addressForm && value.address) {
+    if (this.addressForm && value?.address) {
       this.addressForm.controls['address'].setValue(value.address);
     }
   }
-  loadingAddresses: boolean = false;
   addresList: any[] = [];
   currentAddress: any;
+  searchLayers: any[] = [];
   @Input() inputConfig: ITaInput;
+  @Input() placeholderType: string;
   @Output() selectedAddress: EventEmitter<{
     address: AddressEntity;
     valid: boolean;
@@ -68,9 +69,9 @@ export class InputAddressDropdownComponent
     this.addressForm.valueChanges
       .pipe(
         takeUntil(this.destroy$),
-        filter((term: { address: string }) => term.address.length >= 3),
+        filter((term: { address: string }) => term?.address?.length >= 3),
         switchMap((query) => {
-          return this.addressService.getAdresses(query.address);
+          return this.addressService.getAddresses(query.address, this.searchLayers);
         })
       )
       .subscribe((res) => {
@@ -81,8 +82,11 @@ export class InputAddressDropdownComponent
             id: indx,
           };
         });
-        this.loadingAddresses = false;
       });
+  }
+
+  ngAfterViewInit(): void {
+    this.searchLayers = this.placeholderType == 'longAddress' ? ['Address'] : this.placeholderType == 'shortAddress' ? ['Locality'] : [];
   }
 
   get getSuperControl() {
@@ -93,12 +97,18 @@ export class InputAddressDropdownComponent
     switch (action) {
       case 'address': {
         this.activeAddress = event;
-        this.selectedAddress.emit({
-          address: event.address,
-          valid: true,
-        });
-        this.getSuperControl.setValue(event.address.address);
-        this.getSuperControl.setErrors(null);
+        if (event?.address) {
+          this.selectedAddress.emit({
+            address: event.address,
+            valid: true,
+          });
+          this.getSuperControl.setValue(event.address.address);
+          this.getSuperControl.setErrors(null);
+        }
+        else {
+          this.addresList = [];
+          this.getSuperControl.setValue(null);
+        }
         break;
       }
       default: {

@@ -137,13 +137,13 @@
                 [inputConfig]="{
                   name: 'Address',
                   type: 'text',
-                  label: 'Address, City, State Zip',
                   isRequired: true,
                   placeholderIcon: 'address',
                   minLength: 12,
                   maxLength: 256,
                   textTransform: 'capitalize'
                 }"
+                [placeholderType]="'longAddress'"
                 [activeAddress]="selectedPhysicalAddress"
                 (selectedAddress)="onHandleAddress($event, 'physical-address')"
               ></app-input-address-dropdown>

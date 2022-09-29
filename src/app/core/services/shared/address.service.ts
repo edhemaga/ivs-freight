@@ -17,7 +17,7 @@ export class AddressService implements OnDestroy {
     this.destroy$.complete();
   }
 
-  public getAdresses(addressData) {
-    return this.geoService.apiGeolocationAutocompleteGet(addressData);
+  public getAddresses(addressData, layers) {
+    return this.geoService.apiGeolocationAutocompleteGet(addressData, layers);
   }
 }

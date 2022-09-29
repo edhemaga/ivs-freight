@@ -4,15 +4,10 @@
     [inputConfig]="{
       name: inputConfig.name,
       type: inputConfig.type,
-      label: inputConfig.label,
+      label: placeholderType == 'longAddress' ? 'Address, City, State Zip' : 'City, State',
       placeholderIcon: inputConfig.placeholderIcon,
       isRequired: inputConfig.isRequired,
       dropdownWidthClass: 'w-col-512',
-      loadingSpinner: {
-        size: 'small',
-        color: 'white',
-        isLoading: loadingAddresses
-      },
       minLength: inputConfig.minLength,
       maxLength: inputConfig.maxLength,
       textTransform: inputConfig.textTransform
