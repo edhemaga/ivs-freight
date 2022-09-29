@@ -33,11 +33,12 @@ import {
 export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public tableOptions: any = {};
-  public tableData: any[] = [];
-  public viewData: any[] = [];
-  public columns: any[] = [];
-  public selectedTab = 'active';
+  tableOptions: any = {};
+  tableData: any[] = [];
+  viewData: any[] = [];
+  columns: any[] = [];
+  selectedTab = 'active';
+  activeViewMode: string = 'List';
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
@@ -276,17 +277,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public initTableOptions(): void {
     this.tableOptions = {
-      disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        viewModeActive: 'List',
-      },
-      config: {
-        showSort: true,
-        sortBy: '',
-        sortDirection: '',
-        disabledColumns: [0],
-        minWidth: 60,
+        viewModeOptions: [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+        ],
       },
       actions: [
         {
@@ -323,7 +318,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
           contentType: 'delete',
         },
       ],
-      export: true,
     };
   }
 
@@ -517,7 +511,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.sendTrailerData();
     } else if (event.action === 'view-mode') {
-      this.tableOptions.toolbarActions.viewModeActive = event.mode;
+      this.activeViewMode = event.mode;
     }
   }
 
@@ -536,7 +530,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
-    let trailerNum = event.data.trailerNumber;
     const mappedEvent = {
       ...event,
       data: {
@@ -545,6 +538,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         avatar: `assets/svg/common/trailers/${event.data?.trailerType?.logoName}`,
       },
     };
+    
     switch (event.type) {
       case 'show-more': {
         this.backFilterQuery.pageIndex++;

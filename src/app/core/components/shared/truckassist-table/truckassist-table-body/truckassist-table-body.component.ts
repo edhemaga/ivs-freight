@@ -224,6 +224,16 @@ export class TruckassistTableBodyComponent
 
       this.getSelectedTabTableData();
     }
+
+    if (!changes?.options?.firstChange && changes?.options) {
+      this.options = changes.options.currentValue;
+
+
+      this.setDropContent();
+
+      console.log('Table options');
+      console.log(this.options);
+    }
   }
 
   // --------------------------------NgAfterViewInit---------------------------------
@@ -418,6 +428,8 @@ export class TruckassistTableBodyComponent
 
   // Set Dropdown Content
   setDropContent() {
+    this.dropContent = [];
+    
     if (this.options.actions.length) {
       for (let i = 0; i < this.options.actions.length; i++) {
         this.dropContent.push(this.options.actions[i]);
@@ -428,6 +440,7 @@ export class TruckassistTableBodyComponent
   // Toggle Dropdown
   toggleDropdown(tooltip: any, row: any) {
     this.tooltip = tooltip;
+
     if (tooltip.isOpen()) {
       tooltip.close();
     } else {

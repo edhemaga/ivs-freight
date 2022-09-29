@@ -205,6 +205,12 @@ export class TruckassistTableToolbarComponent
 
   // Chnage View Mode
   changeModeView(modeView: string) {
+    this.options.toolbarActions.viewModeOptions = this.options.toolbarActions.viewModeOptions.map((viewMode: any) => {
+      viewMode.active = viewMode.name === modeView;
+
+      return viewMode;
+    })
+
     this.toolBarAction.emit({
       action: 'view-mode',
       mode: modeView,

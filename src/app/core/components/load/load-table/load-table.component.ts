@@ -27,11 +27,13 @@ import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe
 })
 export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$ = new Subject<void>();
+
   tableOptions: any = {};
   tableData: any[] = [];
   viewData: any[] = [];
   columns: any[] = [];
   selectedTab = 'pending';
+  activeViewMode: string = 'List';
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
@@ -284,19 +286,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   initTableOptions(): void {
     this.tableOptions = {
-      disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        showMoneyCount: true,
-        hideViewMode: false,
-        viewModeActive: 'List',
-      },
-      config: {
-        showSort: true,
-        sortBy: '',
-        sortDirection: '',
-        disabledColumns: [0],
-        minWidth: 60,
+        viewModeOptions: [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+        ],
       },
       actions: [
         {
@@ -314,7 +308,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
           contentType: 'delete',
         },
       ],
-      export: true,
     };
   }
 
@@ -524,6 +517,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.selectedTab = event.tabData.field;
 
       this.sendLoadData();
+    }else if (event.action === 'view-mode') {
+      this.activeViewMode = event.mode;
     }
   }
 

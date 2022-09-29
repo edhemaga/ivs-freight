@@ -42,13 +42,15 @@ import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-
 })
 export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  public tableOptions: any = {};
-  public tableData: any[] = [];
-  public viewData: any[] = [];
-  public columns: any[] = [];
-  public selectedTab = 'active';
-  public driversActive: DriversActiveState[] = [];
-  public driversInactive: DriversInactiveState[] = [];
+
+  tableOptions: any = {};
+  tableData: any[] = [];
+  viewData: any[] = [];
+  columns: any[] = [];
+  selectedTab = 'active';
+  activeViewMode: string = 'List';
+  driversActive: DriversActiveState[] = [];
+  driversInactive: DriversInactiveState[] = [];
   resetColumns: boolean;
   loadingPage: boolean = true;
   backFilterQuery = {
@@ -257,7 +259,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
           this.viewData = this.viewData.map((driver: any, index: number) => {
             if (driver.id === res.id) {
-              driver.actionAnimation = this.selectedTab === 'active' ? 'deactivate' : 'activate';
+              driver.actionAnimation =
+                this.selectedTab === 'active' ? 'deactivate' : 'activate';
               driverIndex = index;
             }
 
@@ -318,66 +321,100 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   initTableOptions(): void {
     this.tableOptions = {
-      disabledMutedStyle: null,
       toolbarActions: {
-        hideViewMode: false,
-        viewModeActive: 'List',
+        showLocationFilter: this.selectedTab !== 'applicants',
+        showArhiveFilter: this.selectedTab === 'applicants',
+        viewModeOptions: [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+        ],
       },
-      config: {
-        showSort: true,
-        sortBy: '',
-        sortDirection: '',
-        disabledColumns: [0],
-        minWidth: 60,
-      },
-      actions: [
-        {
-          title: 'Edit Driver',
-          name: 'edit',
-          class: 'regular-text',
-          contentType: 'edit',
-        },
-        {
-          title: 'Add CDL',
-          name: 'new-licence',
-          class: 'regular-text',
-          contentType: 'add',
-        },
-        {
-          title: 'Add Medical',
-          name: 'new-medical',
-          class: 'regular-text',
-          contentType: 'add',
-        },
-        {
-          title: 'Add MVR',
-          name: 'new-mvr',
-          class: 'regular-text',
-          contentType: 'add',
-        },
-        {
-          title: 'Add Test',
-          name: 'new-drug',
-          class: 'regular-text',
-          contentType: 'add',
-        },
-        {
-          title: this.selectedTab === 'inactive' ? 'Deactivate' : 'Activate',
-          name: 'activate-item',
-          class: 'regular-text',
-          contentType: 'activate',
-        },
-        {
-          title: 'Delete',
-          name: 'delete-item',
-          type: 'driver',
-          text: 'Are you sure you want to delete driver(s)?',
-          class: 'delete-text',
-          contentType: 'delete',
-        },
-      ],
-      export: true,
+      actions: this.getTableActions(),
     };
+  }
+
+  getTableActions() {
+    return this.selectedTab === 'applicants'
+      ? [
+          {
+            title: 'Hire Applicant',
+            name: 'hire-applicant',
+            class: '',
+            contentType: '',
+          },
+          {
+            title: 'Resend Invitation',
+            name: 'resend-invitation',
+            class: '',
+            contentType: '',
+          },
+          {
+            title: 'Add to Favourites',
+            name: 'add-to-favourites',
+            class: '',
+            contentType: '',
+          },
+          {
+            title: 'Add to Favourites',
+            name: 'add-to-favourites',
+            class: '',
+            contentType: '',
+          },
+          {
+            title: 'Delete',
+            name: 'delete-applicant',
+            type: 'driver',
+            text: 'Are you sure you want to delete applicant(s)?',
+            class: 'delete-text',
+            contentType: 'delete',
+          },
+        ]
+      : [
+          {
+            title: 'Edit Driver',
+            name: 'edit',
+            class: 'regular-text',
+            contentType: 'edit',
+          },
+          {
+            title: 'Add CDL',
+            name: 'new-licence',
+            class: 'regular-text',
+            contentType: 'add',
+          },
+          {
+            title: 'Add Medical',
+            name: 'new-medical',
+            class: 'regular-text',
+            contentType: 'add',
+          },
+          {
+            title: 'Add MVR',
+            name: 'new-mvr',
+            class: 'regular-text',
+            contentType: 'add',
+          },
+          {
+            title: 'Add Test',
+            name: 'new-drug',
+            class: 'regular-text',
+            contentType: 'add',
+          },
+          {
+            title: this.selectedTab === 'inactive' ? 'Activate' : 'Deactivate',
+            name: 'activate-item',
+            class: 'regular-text',
+            contentType: 'activate',
+          },
+          {
+            title: 'Delete',
+            name: 'delete-item',
+            type: 'driver',
+            text: 'Are you sure you want to delete driver(s)?',
+            class: 'delete-text',
+            contentType: 'delete',
+          },
+        ];
   }
 
   sendDriverData() {
@@ -863,7 +900,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.sendDriverData();
     } else if (event.action === 'view-mode') {
       this.mapingIndex = 0;
-      this.tableOptions.toolbarActions.viewModeActive = event.mode;
+
+      this.activeViewMode = event.mode;
     }
   }
 
@@ -966,14 +1004,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
           image: true,
         }
       );
-    } else if (event.type === 'show-more') {
-      this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
-      this.backFilterQuery.pageIndex++;
-      this.driverBackFilter(this.backFilterQuery);
     }
   }
 
-  changeDriverStatus(id: number) {
+  private changeDriverStatus(id: number) {
     this.driverTService
       .changeDriverStatus(id, this.selectedTab)
       .pipe(takeUntil(this.destroy$))
@@ -993,7 +1027,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  deleteDriverById(id: number) {
+  private deleteDriverById(id: number) {
     this.driverTService
       .deleteDriverById(id, this.selectedTab)
       .pipe(takeUntil(this.destroy$))
@@ -1029,7 +1063,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  multipleDeleteDrivers(response: any[]) {
+  private multipleDeleteDrivers(response: any[]) {
     this.driverTService
       .deleteDriverList(response)
       .pipe(takeUntil(this.destroy$))
