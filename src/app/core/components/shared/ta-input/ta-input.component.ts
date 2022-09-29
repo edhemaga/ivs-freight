@@ -256,6 +256,7 @@ export class TaInputComponent
   }
 
   public onFocus(): void {
+    console.log("onFocus");
     // Password
     if (this.inputConfig.type === 'password') {
       this.isVisiblePasswordEye = true;
@@ -357,7 +358,6 @@ export class TaInputComponent
       this.focusInput = false;
     }
 
-    console.log("BLURRR");
     this.blurInput.emit(true);
 
     this.inputService.onFocusOutInput$.next(true);
@@ -1394,6 +1394,7 @@ export class TaInputComponent
   selectionInput: number = -1;
 
   setSelection(e) {
+    console.log("setSelection");
     e.preventDefault();
     e.stopPropagation();
 
@@ -1428,6 +1429,7 @@ export class TaInputComponent
   }
 
   showDateTimePlaceholder() {
+    console.log("showDateTimePlaceholder");
     this.showDateInput = true;
     this.focusInput = true;
     this.selectionInput = -1;

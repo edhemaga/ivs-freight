@@ -447,6 +447,89 @@
   >
   </svg-icon>
 
+  <!-- DateTime Picker -->
+  <div
+    #holder1
+    class="date_time_holder input-control"
+    *ngIf="
+      (inputConfig.name === 'datepicker' ||
+        inputConfig.name === 'timepicker') &&
+      !inputConfig.isDisabled
+    "
+    [class.active]="showDateInput"
+    tabindex="-1"
+    (click)="showDateTimePlaceholder()"
+    (paste)="onDatePaste($event)"
+    (blur)="onBlur()"
+    (keydown)="changeSelection($event, true)"
+    [ngClass]="{
+      focused: focusInput,
+      'valid-focus-out-filled-datepicker':
+        getSuperControl.value &&
+        getSuperControl.valid &&
+        !focusInput &&
+        !inputConfig.isDisabled &&
+        !isVisiblePasswordEye &&
+        !isVisibleCommands &&
+        !inputConfig.blackInput,
+      'invalid-focus-in':
+        inputConfig.isRequired &&
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        focusInput,
+      'invalid-focus-out-filled':
+        (getSuperControl.value &&
+          getSuperControl.invalid &&
+          !focusInput &&
+          !inputConfig.isDisabled &&
+          !inputConfig.blackInput) ||
+        ((touchedInput || getSuperControl.touched) &&
+          getSuperControl.invalid &&
+          !focusInput)
+    }"
+  >
+    <span
+      #span1
+      class="main"
+      tabindex="0"
+      (focus)="onFocus()"
+      (click)="setSelection($event)"
+      (keydown)="changeSelection($event)"
+      (blur)="onBlur()"
+      [innerHTML]="inputConfig.name === 'datepicker' ? 'mm' : 'HH'"
+    ></span>
+    <span
+      (click)="setSelection($event)"
+      [innerHTML]="inputConfig.name === 'datepicker' ? '/' : ':'"
+      >/</span
+    >
+    <span
+      #span2
+      class="main"
+      tabindex="1"
+      (focus)="onFocus()"
+      (click)="setSelection($event)"
+      (keydown)="changeSelection($event)"
+      (blur)="onBlur()"
+      [innerHTML]="inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
+    ></span>
+    <span
+      (click)="setSelection($event)"
+      [innerHTML]="inputConfig.name === 'datepicker' ? '/' : ' '"
+      >/</span
+    >
+    <span
+      #span3
+      class="main"
+      tabindex="2"
+      (focus)="onFocus()"
+      (click)="setSelection($event)"
+      (keydown)="changeSelection($event)"
+      (blur)="onBlur()"
+      [innerHTML]="inputConfig.name === 'datepicker' ? 'yy' : 'AM'"
+    ></span>
+  </div>
+
   <!-- Input Control -->
   <input
     #input
@@ -561,89 +644,6 @@
     (input)="onChange($event.target.value); transformText($event.target.value)"
     [(ngModel)]="input.value"
   />
-
-  <!-- DateTime Picker -->
-  <div
-    #holder1
-    class="date_time_holder input-control"
-    *ngIf="
-      (inputConfig.name === 'datepicker' ||
-        inputConfig.name === 'timepicker') &&
-      !inputConfig.isDisabled
-    "
-    [class.active]="showDateInput"
-    tabindex="-1"
-    (click)="showDateTimePlaceholder()"
-    (paste)="onDatePaste($event)"
-    (blur)="onBlur()"
-    (keydown)="changeSelection($event, true)"
-    [ngClass]="{
-      focused: focusInput,
-      'valid-focus-out-filled-datepicker':
-        getSuperControl.value &&
-        getSuperControl.valid &&
-        !focusInput &&
-        !inputConfig.isDisabled &&
-        !isVisiblePasswordEye &&
-        !isVisibleCommands &&
-        !inputConfig.blackInput,
-      'invalid-focus-in':
-        inputConfig.isRequired &&
-        getSuperControl.value &&
-        getSuperControl.invalid &&
-        focusInput,
-      'invalid-focus-out-filled':
-        (getSuperControl.value &&
-          getSuperControl.invalid &&
-          !focusInput &&
-          !inputConfig.isDisabled &&
-          !inputConfig.blackInput) ||
-        ((touchedInput || getSuperControl.touched) &&
-          getSuperControl.invalid &&
-          !focusInput)
-    }"
-  >
-    <span
-      #span1
-      class="main"
-      tabindex="0"
-      (focus)="onFocus()"
-      (click)="setSelection($event)"
-      (keydown)="changeSelection($event)"
-      (blur)="onBlur()"
-      [innerHTML]="inputConfig.name === 'datepicker' ? 'mm' : 'HH'"
-    ></span>
-    <span
-      (click)="setSelection($event)"
-      [innerHTML]="inputConfig.name === 'datepicker' ? '/' : ':'"
-      >/</span
-    >
-    <span
-      #span2
-      class="main"
-      tabindex="1"
-      (focus)="onFocus()"
-      (click)="setSelection($event)"
-      (keydown)="changeSelection($event)"
-      (blur)="onBlur()"
-      [innerHTML]="inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
-    ></span>
-    <span
-      (click)="setSelection($event)"
-      [innerHTML]="inputConfig.name === 'datepicker' ? '/' : ' '"
-      >/</span
-    >
-    <span
-      #span3
-      class="main"
-      tabindex="2"
-      (focus)="onFocus()"
-      (click)="setSelection($event)"
-      (keydown)="changeSelection($event)"
-      (blur)="onBlur()"
-      [innerHTML]="inputConfig.name === 'datepicker' ? 'yy' : 'AM'"
-    ></span>
-  </div>
   <!-- Input Label -->
   <label
     *ngIf="!inputConfig.multiSelectDropdownActive"
