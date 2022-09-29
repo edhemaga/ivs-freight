@@ -71,7 +71,10 @@ export class InputAddressDropdownComponent
         takeUntil(this.destroy$),
         filter((term: { address: string }) => term?.address?.length >= 3),
         switchMap((query) => {
-          return this.addressService.getAddresses(query.address, this.searchLayers);
+          return this.addressService.getAddresses(
+            query.address,
+            this.searchLayers
+          );
         })
       )
       .subscribe((res) => {
@@ -86,7 +89,12 @@ export class InputAddressDropdownComponent
   }
 
   ngAfterViewInit(): void {
-    this.searchLayers = this.placeholderType == 'longAddress' ? ['Address'] : this.placeholderType == 'shortAddress' ? ['Locality'] : [];
+    this.searchLayers =
+      this.placeholderType == 'longAddress'
+        ? ['Address']
+        : this.placeholderType == 'shortAddress'
+        ? ['Locality']
+        : [];
   }
 
   get getSuperControl() {
@@ -104,8 +112,7 @@ export class InputAddressDropdownComponent
           });
           this.getSuperControl.setValue(event.address.address);
           this.getSuperControl.setErrors(null);
-        }
-        else {
+        } else {
           this.addresList = [];
           this.getSuperControl.setValue(null);
         }

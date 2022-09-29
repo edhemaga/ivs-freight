@@ -31,6 +31,7 @@ import { ColorFinderPipe } from '../pipes/color-finder.pipe';
 import { Options } from '@angular-slider/ngx-slider';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { LabelType } from 'ng5-slider';
+import { TaInputService } from '../../shared/ta-input/ta-input.service';
 
 @Component({
   selector: 'app-dispatchboard-tables',
@@ -223,10 +224,19 @@ export class DispatchboardTablesComponent implements OnInit {
   constructor(
     private dss: DispatcherStoreService,
     private chd: ChangeDetectorRef,
-    private colorPipe: ColorFinderPipe
+    private colorPipe: ColorFinderPipe,
+    private inputService: TaInputService,
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.inputService.onFocusOutInput$.subscribe(res => {
+      console.log(" INPUT IS BLURED");
+      console.log(res);
+      if( this.showAddAddressField != -1 ){
+        this.showAddAddressField = -1;
+      }
+    })
+  }
 
   addTruck(e) {
     if (e) {
@@ -499,7 +509,7 @@ export class DispatchboardTablesComponent implements OnInit {
   tooltip: any;
   toggleHos(tooltip: NgbTooltip, data: any, id: number) {
     this.hosHelper.hos = [];
-    if (data === null || data.hos.length === 0) {
+    if ( !data.hos || data.hos.length === 0 ) {
       data = {
         hos: [
           {
