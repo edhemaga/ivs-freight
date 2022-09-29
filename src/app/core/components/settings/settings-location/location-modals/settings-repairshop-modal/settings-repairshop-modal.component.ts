@@ -130,7 +130,6 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }): void {
     switch (data.action) {
       case 'close': {
-        this.repairShopForm.reset();
         break;
       }
       case 'save': {

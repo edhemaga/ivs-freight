@@ -59,7 +59,6 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.fhwaInspectionForm.reset();
         break;
       }
       case 'save': {

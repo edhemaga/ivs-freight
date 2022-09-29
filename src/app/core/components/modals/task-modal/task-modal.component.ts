@@ -66,7 +66,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private todoService: TodoTService,
     private commentsService: CommentsService,
-    private notificationService: NotificationService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -104,7 +104,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.taskForm.reset();
         break;
       }
       case 'save': {
@@ -333,7 +332,9 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             title: res.title,
             description: res.description,
             url: res.url,
-            deadline: res.deadline ? convertDateFromBackend(res.deadline) : null,
+            deadline: res.deadline
+              ? convertDateFromBackend(res.deadline)
+              : null,
             departmentIds: null,
             companyUserIds: null,
             note: res.note,

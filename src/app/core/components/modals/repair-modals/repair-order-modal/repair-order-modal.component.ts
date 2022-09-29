@@ -164,7 +164,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.repairOrderForm.reset();
         break;
       }
       case 'save': {

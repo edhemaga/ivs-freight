@@ -207,7 +207,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.PMform.reset();
         break;
       }
       case 'save': {

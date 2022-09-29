@@ -333,7 +333,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       }
     } else {
       if (data.action === 'close') {
-        this.brokerForm.reset();
+        return;
       } else {
         // Save & Update
         if (data.action === 'save') {

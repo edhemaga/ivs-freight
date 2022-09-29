@@ -67,7 +67,6 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.registrationForm.reset();
         break;
       }
       case 'save': {

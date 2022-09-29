@@ -94,7 +94,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.cdlForm.reset();
         break;
       }
       case 'save': {

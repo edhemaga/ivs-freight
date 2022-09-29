@@ -166,7 +166,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }): void {
     let trailerUnit = this.trailerForm.get('trailerNumber').value;
     if (data.action === 'close') {
-      this.trailerForm.reset();
+      return;
     } else {
       let successMessage = `Trailer "${trailerUnit}" ${
         !this.trailerStatus ? 'Deactivated' : 'Activated'

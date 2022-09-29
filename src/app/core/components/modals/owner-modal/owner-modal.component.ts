@@ -158,7 +158,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.ownerForm.reset();
         break;
       }
       case 'save': {

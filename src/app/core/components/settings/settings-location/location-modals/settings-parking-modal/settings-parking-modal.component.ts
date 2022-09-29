@@ -206,7 +206,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }): void {
     switch (data.action) {
       case 'close': {
-        this.parkingForm.reset();
         break;
       }
       case 'save': {

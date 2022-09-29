@@ -92,7 +92,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.accountForm.reset();
         break;
       }
       case 'save': {

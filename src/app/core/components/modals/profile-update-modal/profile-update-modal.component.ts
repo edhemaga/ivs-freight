@@ -121,7 +121,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
 
   public onModalAction(data: { action: string; bool: boolean }): void {
     if (data.action === 'close') {
-      this.profileUserForm.reset();
+      return;
     }
 
     if (data.action === 'save') {

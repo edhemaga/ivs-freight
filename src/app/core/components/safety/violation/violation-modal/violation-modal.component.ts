@@ -205,7 +205,6 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     // Update
     switch (data.action) {
       case 'close': {
-        this.violationForm.reset();
         break;
       }
       case 'save': {

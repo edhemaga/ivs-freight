@@ -219,7 +219,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       }
     } else {
       if (data.action === 'close') {
-        this.shipperForm.reset();
+        return;
       } else {
         // Save & Update
         if (data.action === 'save') {

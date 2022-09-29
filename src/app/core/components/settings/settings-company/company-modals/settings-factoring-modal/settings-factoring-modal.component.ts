@@ -72,7 +72,6 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.factoringForm.reset();
         break;
       }
       case 'save': {

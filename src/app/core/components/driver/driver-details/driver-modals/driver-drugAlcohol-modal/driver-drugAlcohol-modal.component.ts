@@ -76,7 +76,6 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.drugForm.reset();
         break;
       }
       case 'save': {

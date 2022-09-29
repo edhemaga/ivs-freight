@@ -179,7 +179,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public onModalAction(data: { action: string; bool: boolean }): void {
     if (data.action === 'close') {
-      this.driverForm.reset();
+      return;
     }
     // Change Driver Status
 

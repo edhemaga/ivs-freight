@@ -77,7 +77,6 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.medicalForm.reset();
         break;
       }
       case 'save': {

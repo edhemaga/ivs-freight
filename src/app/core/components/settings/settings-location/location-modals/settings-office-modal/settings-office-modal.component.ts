@@ -42,7 +42,7 @@ import {
   styleUrls: ['./settings-office-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService]
+  providers: [ModalService],
 })
 export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -140,7 +140,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }): void {
     switch (data.action) {
       case 'close': {
-        this.officeForm.reset();
         break;
       }
       case 'save': {

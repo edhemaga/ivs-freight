@@ -158,7 +158,6 @@ export class SettingsInsurancePolicyModalComponent
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.insurancePolicyForm.reset();
         break;
       }
       case 'save': {

@@ -122,7 +122,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.contactForm.reset();
         break;
       }
       case 'save': {

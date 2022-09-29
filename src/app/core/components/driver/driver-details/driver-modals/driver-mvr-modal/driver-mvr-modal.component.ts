@@ -83,7 +83,6 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.mvrForm.reset();
         break;
       }
       case 'save': {
