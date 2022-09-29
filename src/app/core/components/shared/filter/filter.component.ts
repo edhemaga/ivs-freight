@@ -1028,7 +1028,9 @@ export class FilterComponent implements OnInit {
     step: 1,
     showSelectionBar: true,
     hideLimitLabels: true,
-    noSwitching: true
+    noSwitching: true,
+    pushRange: true,
+    minRange: 2000,
   };
 
   public milesSliderData: Options = {
@@ -1037,7 +1039,9 @@ export class FilterComponent implements OnInit {
     step: 1,
     showSelectionBar: true,
     hideLimitLabels: true,
-    noSwitching: true
+    noSwitching: true,
+    pushRange: true,
+    minRange: 10,
   };
 
   minValueRange: any = '0';
