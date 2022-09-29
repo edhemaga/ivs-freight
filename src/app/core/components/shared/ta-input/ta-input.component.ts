@@ -75,6 +75,7 @@ export class TaInputComponent
   public oneSpaceOnlyCounter: number = 0;
 
   // Number of points
+  public numberOfConsecutivelyPoints: number = 0;
   public numberOfPoints: number = 0;
 
   // Dropdown
@@ -397,6 +398,8 @@ export class TaInputComponent
       this.input.nativeElement.value = null;
       this.getSuperControl.setValue(null);
       this.numberOfConsecutivelySpaces = 0;
+      this.numberOfConsecutivelyPoints = 0;
+      this.numberOfPoints = 0;
       this.oneSpaceOnlyCounter = 0;
       this.inputConfig.dropdownImageInput = null;
       this.touchedInput = true;
@@ -827,6 +830,7 @@ export class TaInputComponent
           .getInputRegexPattern('email')
           .test(String.fromCharCode(event.charCode))
       ) {
+        this.disableMultiplePoints(event);
         return true;
       }
       event.preventDefault();
@@ -1267,6 +1271,18 @@ export class TaInputComponent
       }
     } else {
       this.numberOfConsecutivelySpaces = 0;
+    }
+  }
+
+  private disableConsecutivelyPoints(event: any) {
+    if (/^\s*$/.test(String.fromCharCode(event.charCode))) {
+      this.numberOfConsecutivelyPoints++;
+      if (this.numberOfConsecutivelyPoints > 1) {
+        event.preventDefault();
+        return false;
+      }
+    } else {
+      this.numberOfConsecutivelyPoints = 0;
     }
   }
 
