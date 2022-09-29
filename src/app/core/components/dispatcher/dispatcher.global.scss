@@ -2160,9 +2160,15 @@
     min-width: 176px;
   }
   .location-field {
+    position: relative;
     width: 136px;
     min-width: 136px;
     max-width: 136px;
+
+    app-input-address-dropdown{
+      top: 2px;
+      position: absolute;
+    }
 
     .input-control{
       height: 28px !important;

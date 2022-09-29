@@ -27,6 +27,7 @@ import { TaInputResetService } from '../ta-input/ta-input-reset.service';
   selector: 'app-ta-input-dropdown',
   templateUrl: './ta-input-dropdown.component.html',
   styleUrls: ['./ta-input-dropdown.component.scss'],
+  providers: [TaInputService],
   animations: [input_dropdown_animation('showHideDropdownOptions')],
 })
 export class TaInputDropdownComponent
@@ -60,6 +61,7 @@ export class TaInputDropdownComponent
 
   @Output() selectedItemColor: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectedLabelMode: EventEmitter<any> = new EventEmitter<any>();
+  @Output() closeDropdown: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Output() saveItem: EventEmitter<{ data: any; action: string }> =
     new EventEmitter<{ data: any; action: string }>();
@@ -220,13 +222,9 @@ export class TaInputDropdownComponent
     return this.superControl.control;
   }
 
-  writeValue(obj: any): void {
-
-  }
-  registerOnChange(fn: any): void {
-  }
-  registerOnTouched(fn: any): void {
-  }
+  writeValue(obj: any): void {}
+  registerOnChange(fn: any): void {}
+  registerOnTouched(fn: any): void {}
 
   private dropDownShowHideEvent() {
     this.inputService.dropDownShowHide$
@@ -853,6 +851,10 @@ export class TaInputDropdownComponent
       this.inputRef.focusInput = false;
       this.popoverRef.close();
     }
+  }
+
+  onBlurInput(e) {
+    this.closeDropdown.emit(e);
   }
 
   ngOnDestroy(): void {
