@@ -354,6 +354,8 @@ export class TaInputComponent
       this.focusInput = false;
     }
 
+    console.log("BLUR ON THIS");
+
     this.inputService.onFocusOutInput$.next(true);
     this.touchedInput = true;
   }
