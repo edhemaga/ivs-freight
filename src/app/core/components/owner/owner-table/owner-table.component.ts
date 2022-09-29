@@ -25,16 +25,17 @@ import { getOwnerColumnDefinition } from '../../../../../assets/utils/settings/o
 export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public tableOptions: any = {};
-  public tableData: any[] = [];
-  public viewData: any[] = [];
-  public columns: any[] = [];
-  public selectedTab = 'active';
+  tableOptions: any = {};
+  tableData: any[] = [];
+  viewData: any[] = [];
+  columns: any[] = [];
+  selectedTab = 'active';
+  activeViewMode: string = 'List';
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
-  public ownerActive: OwnerActiveState[] = [];
-  public ownerInactive: OwnerInactiveState[] = [];
+  ownerActive: OwnerActiveState[] = [];
+  ownerInactive: OwnerInactiveState[] = [];
   backFilterQuery = {
     active: 1,
     companyOwnerId: undefined,
@@ -242,17 +243,12 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   initTableOptions(): void {
     this.tableOptions = {
-      disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        viewModeActive: 'List',
-      },
-      config: {
-        showSort: true,
-        sortBy: '',
-        sortDirection: '',
-        disabledColumns: [0],
-        minWidth: 60,
+        showLocationFilter: true,
+        viewModeOptions: [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+        ],
       },
       actions: [
         {
@@ -270,7 +266,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
           contentType: 'delete',
         },
       ],
-      export: true,
     };
   }
 
@@ -440,7 +435,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.sendOwnerData();
     } else if (event.action === 'view-mode') {
-      this.tableOptions.toolbarActions.viewModeActive = event.mode;
+      this.activeViewMode = event.mode;
     }
   }
 

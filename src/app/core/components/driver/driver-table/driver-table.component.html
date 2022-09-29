@@ -8,7 +8,7 @@
     [tableContainerWidth]="tableContainerWidth"
   ></app-truckassist-table-toolbar>
 
-  <div *ngIf="tableOptions.toolbarActions.viewModeActive == 'List'">
+  <div *ngIf="activeViewMode == 'List'">
     <app-truckassist-table-head
       [options]="tableOptions"
       [viewData]="viewData"
@@ -28,7 +28,7 @@
     ></app-truckassist-table-body>
   </div>
 
-  <div *ngIf="tableOptions.toolbarActions.viewModeActive == 'Card'">
+  <div *ngIf="activeViewMode == 'Card'">
     <app-driver-card [viewData]="viewData"></app-driver-card>
   </div>
 </div>

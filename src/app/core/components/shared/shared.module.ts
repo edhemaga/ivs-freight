@@ -234,7 +234,7 @@ export function playerFactory() {
     CroppieModule,
     PdfViewerModule,
     DirectivesModule,
-    TruckassistTableModule,
+    /* TruckassistTableModule, */
     AppTooltipeModule,
     ChartsModule,
     TaNoteModule,
