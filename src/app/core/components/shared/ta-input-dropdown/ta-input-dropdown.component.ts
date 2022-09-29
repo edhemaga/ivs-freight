@@ -61,6 +61,7 @@ export class TaInputDropdownComponent
 
   @Output() selectedItemColor: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectedLabelMode: EventEmitter<any> = new EventEmitter<any>();
+  @Output() closeDropdown: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Output() saveItem: EventEmitter<{ data: any; action: string }> =
     new EventEmitter<{ data: any; action: string }>();
@@ -156,6 +157,12 @@ export class TaInputDropdownComponent
         clearTimeout(timeout);
       });
     }
+
+    if(this.inputConfig.name === 'Address') {
+      if(!this.getSuperControl.value) {
+        this.popoverRef?.open();
+      }
+    }
   }
 
   ngAfterViewInit() {
@@ -215,13 +222,9 @@ export class TaInputDropdownComponent
     return this.superControl.control;
   }
 
-  writeValue(obj: any): void {
-
-  }
-  registerOnChange(fn: any): void {
-  }
-  registerOnTouched(fn: any): void {
-  }
+  writeValue(obj: any): void {}
+  registerOnChange(fn: any): void {}
+  registerOnTouched(fn: any): void {}
 
   private dropDownShowHideEvent() {
     this.inputService.dropDownShowHide$
@@ -848,6 +851,10 @@ export class TaInputDropdownComponent
       this.inputRef.focusInput = false;
       this.popoverRef.close();
     }
+  }
+
+  onBlurInput(e) {
+    this.closeDropdown.emit(e);
   }
 
   ngOnDestroy(): void {

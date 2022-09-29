@@ -1,0 +1,10 @@
+<div class="address_holder">
+  <app-ta-input-dropdown
+    [formControl]="getSuperControl"
+    [inputConfig]="inputConfig"
+    [options]="addresList"
+    [activeItem]="activeAddress"
+    (selectedItem)="onSelectDropdown($event, 'address')"
+    (closeDropdown)="onCloseDropdown($event)"
+  ></app-ta-input-dropdown>
+</div>
