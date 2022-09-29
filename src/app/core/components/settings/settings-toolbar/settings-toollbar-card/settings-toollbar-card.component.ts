@@ -11,7 +11,7 @@ import { filter } from 'rxjs';
 export class SettingsToollbarCardComponent implements OnInit, OnDestroy {
   @Input() cardId: number;
   @Input() cardName: string;
-  @Input() cardCount: number;
+  @Input() cardCount: number = 0;
   @Input() cardSvg: boolean;
   @Input() cardBackground: boolean;
   @Input() route: string;

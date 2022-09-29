@@ -20,7 +20,7 @@
   <!-- Input Invalid Danger Mark -->
   <svg-icon
     *ngIf="
-      touchedInput &&
+      (touchedInput || getSuperControl.touched) &&
       getSuperControl.value &&
       getSuperControl.invalid &&
       !focusInput &&
@@ -91,9 +91,9 @@
         !inputConfig.commands?.active,
       'invalid-required-empty':
         !getSuperControl.value &&
-        invalidAddress &&
+        (invalidAddress || getSuperControl.invalid) &&
         !focusInput &&
-        touchedInput &&
+        (touchedInput || getSuperControl.touched) &&
         !inputConfig.commands?.active,
       'invalid-required-filled-out':
         getSuperControl.value && invalidAddress && !focusInput
@@ -124,11 +124,29 @@
         focusInput &&
         !isVisibleCommands &&
         !inputConfig.blackInput,
+      'valid-focus-out-filled':
+        (activeAddress?.address
+          ? activeAddress?.address === getSuperControl.value
+          : false) &&
+        !focusInput &&
+        !inputConfig.isDisabled &&
+        !isVisibleCommands &&
+        !inputConfig.blackInput,
       'invalid-focus-in':
         getSuperControl.value &&
         invalidAddress &&
         focusInput &&
         !inputConfig.blackInput,
+      'invalid-focus-out-filled':
+        (getSuperControl.value &&
+          (getSuperControl.invalid || invalidAddress) &&
+          !focusInput &&
+          !inputConfig.isDisabled &&
+          !isVisibleCommands &&
+          !inputConfig.blackInput) ||
+        ((touchedInput || getSuperControl.touched) &&
+          (getSuperControl.invalid || invalidAddress) &&
+          !focusInput),
       'has-input-icon': inputConfig.placeholderIcon,
       'input-commands': inputConfig.commands?.active && isVisibleCommands,
       'address-flag': inputConfig.addressFlag && isVisibleAddressFlag
@@ -223,7 +241,7 @@
   <span
     *ngIf="
       !(!getSuperControl.value && focusInput) &&
-      (touchedInput || getSuperControl.value) &&
+      (touchedInput || getSuperControl.touched || getSuperControl.value) &&
       getSuperControl.invalid &&
       !inputConfig.commands?.active &&
       !inputConfig.hideErrorMessage

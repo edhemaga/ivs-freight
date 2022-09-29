@@ -74,6 +74,8 @@ export interface LoadResponse {
     currentLocation?: AddressEntity;
     nextStop?: LoadStopResponse;
     completedPercentage?: number;
+    pendingPercentage?: number | null;
+    closedPercentage?: number | null;
     progressBar?: Array<LoadStopProgressBarResponse> | null;
     createdAt?: string;
     updatedAt?: string;

@@ -21,7 +21,7 @@
 <ng-template #dropdownPopover let-data="data">
   <div class="details-dropdown">
     <div
-      (click)="onAction(action)"
+      (click)="onAction(action,$event)"
       *ngFor="let action of options;let i=index; trackBy:identity"
       class="details-dropdown-content "
       [ngClass]="{'hide':!action.show}"

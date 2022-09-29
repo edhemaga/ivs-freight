@@ -41,7 +41,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
     private pmTService: PmTService,
     private notificationService: NotificationService,
     private inputService: TaInputService,
-    private modalService: ModalService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {

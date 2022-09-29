@@ -142,7 +142,7 @@ export class ContactsTableComponent
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
+          }, 2300);
 
           this.updateDataCount();
         }
@@ -183,7 +183,7 @@ export class ContactsTableComponent
 
             this.viewData.splice(contactIndex, 1);
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
 
           this.updateDataCount();
         }
@@ -201,7 +201,7 @@ export class ContactsTableComponent
               this.viewData = this.viewData.map((contact: any) => {
                 response.map((r: any) => {
                   if (contact.id === r.id) {
-                    contact.actionAnimation = 'delete';
+                    contact.actionAnimation = 'deletemultiple';
                   }
                 });
 

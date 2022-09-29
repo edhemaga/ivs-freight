@@ -14,12 +14,15 @@
 
   <form
     [formGroup]="officeForm"
-    class="form-container"
-    [ngClass]="
-      selectedTab === 1
-        ? 'form-container-mt-12'
-        : 'row-settings-location-additional'
-    "
+    class="form-container form-container-with-inputs"
+    [ngClass]="{
+      'form-container-mt-12': selectedTab === 1,
+      'form-container-without-mb':
+        selectedTab === 1 && !isDepartmentContactCardOpen,
+      'form-container-with-card':
+        selectedTab === 1 && isDepartmentContactCardOpen,
+      'row-settings-location-additional': selectedTab === 2
+    }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
@@ -47,7 +50,7 @@
                     label: 'Office Name',
                     isRequired: true,
                     textTransform: 'capitalize',
-                    autoFocus: editData?.type !== 'edit' ? true : false,
+                    autoFocus: editData?.type !== 'edit',
                     minLength: 2,
                     maxLength: 64
                   }"
@@ -78,7 +81,7 @@
                   [inputConfig]="{
                     name: 'address-unit',
                     type: 'text',
-                    label: 'Unit #',
+                    label: 'Unit No.',
                     textTransform: 'uppercase',
                     minLength: 1,
                     maxLength: 10
@@ -148,15 +151,17 @@
         <!-- Department Contacts -->
         <app-ta-custom-card
           [hasCounter]="
-            departmentContacts.length ? departmentContacts.length : '0'
+            departmentContacts.length ? departmentContacts.length : 0
           "
           [cardName]="'Department Contact'"
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [hasArrow]="true"
-          [hasBodyData]="departmentContacts.length"
-          [isCardOpen]="departmentContacts.length"
+          [hasBodyData]="departmentContacts.length > 0"
+          [isCardOpen]="departmentContacts.length > 0"
           [hasScrollBody]="departmentContacts.length > 10"
+          (onOpenCard)="isDepartmentContactCardOpen = $event"
           (onActionEvent)="addDepartmentContacts($event)"
+          [animationMarginParams]="{ marginTop: '12px', marginBottom: '0px' }"
         >
           <div
             formArrayName="departmentContacts"
@@ -170,85 +175,82 @@
               <p>EXT</p>
               <p>EMAIL <span>*</span></p>
             </div>
-            <div
-              *ngFor="
-                let departmentContact of departmentContacts.controls;
-                let ind = index
-              "
-            >
-              <div [formGroupName]="ind" class="common-fake-table-card">
-                <app-ta-input-dropdown
-                  formControlName="departmentId"
-                  [inputConfig]="{
-                    name: 'Input Dropdown Department',
-                    minLength: 2,
-                    maxLength: 36,
-                    type: 'text',
-                    isDropdown: true,
-                    textTransform: 'capitalize',
-                    dropdownWidthClass: 'w-col-120',
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true
-                  }"
-                  [options]="departments"
-                  [activeItem]="selectedDepartmentFormArray[ind]"
-                  (selectedItem)="onSelectContactDepartment($event, ind)"
-                ></app-ta-input-dropdown>
-                <app-ta-input
-                  formControlName="phone"
-                  [inputConfig]="{
-                    name: 'Phone',
-                    type: 'text',
-                    mask: '(000) 000-0000',
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true
-                  }"
-                ></app-ta-input>
-                <app-ta-input
-                  formControlName="extensionPhone"
-                  [inputConfig]="{
-                    name: 'phone-extension',
-                    type: 'text',
-                    minLength: 1,
-                    maxLength: 8,
-                    placeholderIcon: 'phone-extension',
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true
-                  }"
-                ></app-ta-input>
-                <app-ta-input
-                  formControlName="email"
-                  [inputConfig]="{
-                    name: 'Email',
-                    type: 'text',
-                    minLength: 5,
-                    maxLength: 64,
-                    textTransform: 'lowercase',
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true
-                  }"
-                ></app-ta-input>
-                <div
-                  ngbTooltip
-                  mainTooltip="Delete"
-                  tooltipBackground="#EF5350"
-                  position="top"
-                  class="common-fake-table-delete"
-                  [ngClass]="{
-                    'new-position':
-                      isContactCardsScrolling &&
-                      departmentContact.get('email').value,
-                    'new-position-without-email':
-                      isContactCardsScrolling &&
-                      !departmentContact.get('email').value
-                  }"
-                  (click)="removeDepartmentContacts(ind)"
-                >
-                  <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+            <div class="common-fake-table-body">
+              <div
+                *ngFor="
+                  let departmentContact of departmentContacts.controls;
+                  let ind = index
+                "
+              >
+                <div [formGroupName]="ind" class="common-fake-table-card">
+                  <app-ta-input-dropdown
+                    formControlName="departmentId"
+                    [inputConfig]="{
+                      name: 'Input Dropdown Department',
+                      minLength: 2,
+                      maxLength: 36,
+                      type: 'text',
+                      isDropdown: true,
+                      textTransform: 'capitalize',
+                      dropdownWidthClass: 'w-col-120',
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
+                    }"
+                    [options]="departments"
+                    [activeItem]="selectedDepartmentFormArray[ind]"
+                    (selectedItem)="onSelectContactDepartment($event, ind)"
+                  ></app-ta-input-dropdown>
+                  <app-ta-input
+                    formControlName="phone"
+                    [inputConfig]="{
+                      name: 'Phone',
+                      type: 'text',
+                      mask: '(000) 000-0000',
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
+                    }"
+                  ></app-ta-input>
+                  <app-ta-input
+                    formControlName="extensionPhone"
+                    [inputConfig]="{
+                      name: 'phone-extension',
+                      type: 'text',
+                      minLength: 1,
+                      maxLength: 8,
+                      placeholderIcon: 'phone-extension',
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
+                    }"
+                  ></app-ta-input>
+                  <app-ta-input
+                    formControlName="email"
+                    [inputConfig]="{
+                      name: 'Email',
+                      type: 'text',
+                      minLength: 5,
+                      maxLength: 64,
+                      textTransform: 'lowercase',
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
+                    }"
+                  ></app-ta-input>
+                  <div
+                    ngbTooltip
+                    mainTooltip="Delete"
+                    tooltipBackground="#EF5350"
+                    position="top"
+                    class="common-fake-table-delete"
+                    [ngClass]="{
+                      scrolling: isContactCardsScrolling
+                    }"
+                    (click)="removeDepartmentContacts(ind)"
+                  >
+                    <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+                  </div>
                 </div>
               </div>
             </div>

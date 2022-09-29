@@ -5,15 +5,19 @@ import moment from 'moment';
   name: 'formatDateP',
 })
 export class formatDatePipe implements PipeTransform {
-  transform(date: string,template?:string):any {
-    switch(template){
-      case 'short-format':{
-        return moment(date).format('MM/YY')
+  transform(date: string, template?: string): any {
+    switch (template) {
+      case 'short-format': {
+        return moment(date).format('MM/YY');
       }
-      default:{
+      case 'month-format': {
+        return moment(date, 'YYYY-MM-DDTHH:mm:ss.SSS[Z]').format(
+          'MMMM DD, YYYY | hh:mm A'
+        );
+      }
+      default: {
         return moment(date).format('MM/DD/YY');
       }
     }
-
   }
 }

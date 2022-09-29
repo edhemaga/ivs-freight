@@ -26,6 +26,7 @@ export interface LoadStopResponse {
     timeTo?: string | null;
     arrive?: string | null;
     depart?: string | null;
+    wait?: { [key: string]: number; } | null;
     items?: Array<LoadStopItemResponse> | null;
     legMiles?: number | null;
     legHours?: number | null;

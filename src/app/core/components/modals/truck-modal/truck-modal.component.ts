@@ -37,7 +37,6 @@ import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../services/form/form.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
 import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
@@ -48,12 +47,10 @@ import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
   styleUrls: ['./truck-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, FormService],
+  providers: [ModalService, TaInputService],
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-
-  @ViewChild('appNote', { static: false }) public appNote: any;
 
   @Input() editData: any;
 
@@ -64,10 +61,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public ownerType: any[] = [];
   public grossWeight: any[] = [];
   public tireSize: any[] = [];
+  public frontWheels: any[] = [];
+  public rearWheels: any[] = [];
   public shifters: any[] = [];
   public engineModels: any[] = [];
   public engineOilTypes: any[] = [];
   public apUnits: any[] = [];
+  public brakes: any[] = [];
   public gearRatios: any[] = [];
   public tollTransponders: any[] = [
     {
@@ -98,6 +98,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     },
   ];
 
+  public selectedBrakes: any = null;
   public selectedShifter: any = null;
   public selectedTruckType: any = null;
   public selectedTruckMake: any = null;
@@ -111,6 +112,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public selectedAPUnit: any = null;
   public selectedGearRatio: any = null;
   public selectedTollTransponders: any = null;
+
+  public selectedFrontWheels: any = null;
+  public selectedRearWheels: any = null;
 
   public selectedTab: number = 1;
   public tabs: any[] = [
@@ -147,7 +151,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     private truckModalService: TruckTService,
     private notificationService: NotificationService,
     private modalService: ModalService,
-    private formService: FormService,
     private ngbActiveModal: NgbActiveModal,
     private vinDecoderService: VinDecoderService
   ) {}
@@ -170,14 +173,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   private createForm(): void {
     this.truckForm = this.formBuilder.group({
       // Basic Tab
-      truckNumber: [
-        null,
-        [
-          Validators.required,
-          Validators.maxLength(6),
-          ...vehicleUnitValidation,
-        ],
-      ],
+      truckNumber: [null, [Validators.required, ...vehicleUnitValidation]],
       truckTypeId: [null, Validators.required],
       vin: [null, [Validators.required, ...vinNumberValidation]],
       truckMakeId: [null, Validators.required],
@@ -194,6 +190,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       emptyWeight: [null, emptyWeightValidation],
       engineOilType: [null],
       apUnit: [null],
+      transmissionModel: [null],
+      fuelTankSize: [null],
+      brakes: [null],
       tireSizeId: [null],
       axles: [null, axlesValidation],
       gearRatio: [null],
@@ -208,18 +207,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       mileage: [null, mileageValidation],
       insurancePolicy: [null, insurancePolicyValidation],
       fhwaexp: [12, Validators.required],
-
+      frontWheels: [null],
+      rearWheels: [null],
       purchaseDate: [null],
       purchasePrice: [null],
     });
-
-    // this.formService.checkFormChange(this.truckForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
   }
 
   public tabChange(event: any): void {
@@ -267,6 +259,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         // Save & Update
         if (data.action === 'save') {
           if (this.truckForm.invalid) {
+            console.log('invalid');
             this.inputService.markInvalid(this.truckForm);
             return;
           }
@@ -503,6 +496,18 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         this.selectedTollTransponders = event;
         break;
       }
+      case 'brakes': {
+        this.selectedBrakes = event;
+        break;
+      }
+      case 'front-wheels': {
+        this.selectedFrontWheels = event;
+        break;
+      }
+      case 'rear-wheels': {
+        this.selectedRearWheels = event;
+        break;
+      }
       default: {
         break;
       }
@@ -727,8 +732,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  saveNoteValue(value){
-    this.truckForm.controls['note'].setValue(value);
+  // Checkbox Card
+  public companyOwnedCheckboxCard: boolean = true;
+  public toggleCheckboxCard() {
+    this.companyOwnedCheckboxCard = !this.companyOwnedCheckboxCard;
   }
 
   ngOnDestroy(): void {

@@ -15,11 +15,11 @@
   <form
     [formGroup]="terminalForm"
     class="form-container"
-    [ngClass]="
-      selectedTab === 1
-        ? 'form-container-mt-12'
-        : 'row-settings-location-additional'
-    "
+    [ngClass]="{
+      'form-container-mt-12': selectedTab === 1,
+      'row-settings-location-additional': selectedTab === 2,
+      'form-container-with-inputs': selectedTab === 2
+    }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
@@ -47,7 +47,7 @@
                     label: 'Terminal Name',
                     isRequired: true,
                     textTransform: 'capitalize',
-                    autoFocus: editData?.type !== 'edit' ? true : false,
+                    autoFocus: editData?.type !== 'edit',
                     minLength: 1,
                     maxLength: 64
                   }"
@@ -78,7 +78,7 @@
                   [inputConfig]="{
                     name: 'address-unit',
                     type: 'text',
-                    label: 'Unit #',
+                    label: 'Unit No.',
                     textTransform: 'uppercase',
                     minLength: 1,
                     maxLength: 10
@@ -161,11 +161,16 @@
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
               [ngClass]="{
-                visible: terminalForm.get('officeChecked')?.value
+                visible: terminalForm.get('officeChecked')?.value,
+                rotate: !officeCheckboxCard
               }"
+              (click)="toggleCheckboxCard('office')"
             ></svg-icon>
           </div>
           <div
+            *ngIf="
+              terminalForm.get('officeChecked').value && officeCheckboxCard
+            "
             class="checkbox-card-body"
             [ngClass]="{
               'active-20': terminalForm.get('officeChecked').value
@@ -186,7 +191,8 @@
                         label: 'Phone',
                         placeholderIcon: 'phone',
                         isRequired: true,
-                        mask: '(000) 000-0000'
+                        mask: '(000) 000-0000',
+                        customClass: 'line-input-26-in-card'
                       }"
                     ></app-ta-input>
                   </div>
@@ -210,7 +216,8 @@
                       label: 'Ext.',
                       minLength: 1,
                       maxLength: 8,
-                      placeholderIcon: 'phone-extension'
+                      placeholderIcon: 'phone-extension',
+                      customClass: 'line-input-26-in-card'
                     }"
                   ></app-ta-input>
                 </div>
@@ -224,7 +231,8 @@
                       placeholderIcon: 'email',
                       minLength: 5,
                       maxLength: 64,
-                      textTransform: 'lowercase'
+                      textTransform: 'lowercase',
+                      customClass: 'line-input-26-in-card'
                     }"
                   ></app-ta-input>
                 </div>
@@ -248,11 +256,16 @@
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
               [ngClass]="{
-                visible: terminalForm.get('parkingChecked')?.value
+                visible: terminalForm.get('parkingChecked')?.value,
+                rotate: !parkingCheckboxCard
               }"
+              (click)="toggleCheckboxCard('parking')"
             ></svg-icon>
           </div>
           <div
+            *ngIf="
+              terminalForm.get('parkingChecked').value && parkingCheckboxCard
+            "
             class="checkbox-card-body"
             [ngClass]="{
               'active-20': terminalForm.get('parkingChecked').value
@@ -344,7 +357,9 @@
                   ></app-ta-input>
                 </div>
               </div>
-              <div class="parking-gate-securityCamera">
+              <div
+                class="parking-gate-securityCamera parking-gate-securityCamera-location-terminal"
+              >
                 <div class="gate-field">
                   <p>Gate</p>
                   <div class="gate-radio">
@@ -387,11 +402,17 @@
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
               [ngClass]="{
-                visible: terminalForm.get('warehouseChecked')?.value
+                visible: terminalForm.get('warehouseChecked')?.value,
+                rotate: !warehouseCheckboxCard
               }"
+              (click)="toggleCheckboxCard('warehouse')"
             ></svg-icon>
           </div>
           <div
+            *ngIf="
+              terminalForm.get('warehouseChecked').value &&
+              warehouseCheckboxCard
+            "
             class="checkbox-card-body"
             [ngClass]="{
               'active-20': terminalForm.get('warehouseChecked').value

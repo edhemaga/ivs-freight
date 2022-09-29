@@ -1,6 +1,39 @@
 @import "../shop-repair-details.component.scss";
 
 app-shop-repair-details-item {
+  .have-pm-description {
+    color: #536bc2 !important;
+    .description-item {
+      color: #536bc2 !important;
+    }
+    .description-item-qty {
+      color: #536bc2 !important;
+    }
+    .description-item-total {
+      color: #536bc2 !important;
+    }
+    .full-stop-shop {
+      color: #6c6c6c !important;
+    }
+  }
+  .item-icon-desc-wrapper {
+    display: flex;
+    align-items: center;
+    .pm-icon {
+      background-color: #6d82c7;
+      height: 20px;
+      width: 20px;
+      display: flex;
+      border-radius: 1px;
+      padding: 1px;
+      margin-right: 6px;
+      svg {
+        path {
+          fill: #ffffff;
+        }
+      }
+    }
+  }
   .working-hours-container {
     padding: 0 10px;
     .open-now-wrapper {
@@ -122,6 +155,7 @@ app-shop-repair-details-item {
     align-items: center;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: #6c6c6c;
     &::-moz-selection {
       color: $color-gray-dark;
       background: rgb(108, 108, 108, 0.2);

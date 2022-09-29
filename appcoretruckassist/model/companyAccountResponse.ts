@@ -21,6 +21,7 @@ export interface CompanyAccountResponse {
     password?: string | null;
     api?: number;
     apiCategory?: EnumValue;
+    connected?: boolean;
     note?: string | null;
     companyAccountLabel?: CompanyAccountLabelResponse;
     createdAt?: string;

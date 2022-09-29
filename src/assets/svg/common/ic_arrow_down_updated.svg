@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><rect width="18" height="18" fill="none"/><path d="M5.9,7.9.248,2.251a.845.845,0,0,1,0-1.194h0l.8-.8a.846.846,0,0,1,1.193,0L6.5,4.487,10.762.247a.844.844,0,0,1,1.193,0l.8.8a.844.844,0,0,1,0,1.193L7.09,7.9A.843.843,0,0,1,5.9,7.9h0" transform="translate(2.505 5.334)" fill="#b7b7b7"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+  <g id="Show_More" data-name="Show More" transform="translate(0 18) rotate(-90)">
+    <rect id="Rectangle_55592" data-name="Rectangle 55592" width="18" height="18" fill="#aaa" opacity="0"/>
+    <path id="caret-left" d="M7.181,11.81V.853a.852.852,0,0,0-1.454-.6L.249,5.729a.852.852,0,0,0,0,1.2l5.478,5.478A.852.852,0,0,0,7.181,11.81Z" transform="translate(4.786 2.668)" fill="#aaa"/>
+  </g>
+</svg>

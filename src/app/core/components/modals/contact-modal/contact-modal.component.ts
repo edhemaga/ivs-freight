@@ -1,7 +1,7 @@
 import {
   addressUnitValidation,
   addressValidation,
-  departmentValidation
+  departmentValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -25,7 +25,7 @@ import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file
 import { ContactTService } from '../../contacts/state/contact.service';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
-import Croppie from "croppie";
+import Croppie from 'croppie';
 
 @Component({
   selector: 'app-contact-modal',
@@ -488,6 +488,12 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  // Checkbox card
+  public sharedContactCheckboxCard: boolean = true;
+  public toggleCheckboxCard() {
+    this.sharedContactCheckboxCard = !this.sharedContactCheckboxCard;
   }
 
   ngOnDestroy(): void {

@@ -172,7 +172,7 @@
               [inputConfig]="{
                 name: 'address-unit',
                 type: 'text',
-                label: 'Unit #',
+                label: 'Unit No.',
                 textTransform: 'uppercase',
                 minLength: 1,
                 maxLength: 10
@@ -331,7 +331,7 @@
         >
           <div
             formArrayName="departmentContacts"
-            class="common-fake-table-modal hide-oveflow"
+            class="common-fake-table-modal common-fake-table-modal-department-contacts hide-overflow-x"
             *ngIf="departmentContacts.length"
           >
             <div class="common-fake-table-label">
@@ -340,82 +340,84 @@
               <p>EXT</p>
               <p>EMAIL <span>*</span></p>
             </div>
-            <div
-              *ngFor="
-                let departmentContact of departmentContacts.controls;
-                let ind = index
-              "
-            >
-              <div [formGroupName]="ind" class="common-fake-table-card">
-                <app-ta-input-dropdown
-                  formControlName="departmentId"
-                  [inputConfig]="{
-                    id: 'Input Dropdown Dep' + ind,
-                    name: 'Input Dropdown Department',
-                    minLength: 2,
-                    maxLength: 36,
-                    textTransform: 'capitalize',
-                    type: 'text',
-                    isDropdown: true,
-                    dropdownWidthClass: 'w-col-120',
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true
-                  }"
-                  [options]="departments"
-                  [activeItem]="selectedDepartmentFormArray[ind]"
-                  (selectedItem)="
-                    onSelectFakeTableData($event, ind, 'department')
-                  "
-                ></app-ta-input-dropdown>
-                <app-ta-input
-                  formControlName="phone"
-                  [inputConfig]="{
-                    id: 'Phone' + ind,
-                    name: 'Phone',
-                    type: 'text',
-                    mask: '(000) 000-0000',
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true
-                  }"
-                ></app-ta-input>
-                <app-ta-input
-                  formControlName="extensionPhone"
-                  [inputConfig]="{
-                    id: 'Phone Extension' + ind,
-                    name: 'phone-extension',
-                    type: 'text',
-                    minLength: 1,
-                    maxLength: 8,
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true
-                  }"
-                ></app-ta-input>
-                <app-ta-input
-                  formControlName="email"
-                  [inputConfig]="{
-                    id: 'Email' + ind,
-                    name: 'Email',
-                    type: 'text',
-                    minLength: 5,
-                    maxLength: 64,
-                    textTransform: 'lowercase',
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true
-                  }"
-                ></app-ta-input>
-                <div
-                  ngbTooltip
-                  mainTooltip="Delete"
-                  tooltipBackground="#EF5350"
-                  position="top"
-                  class="common-fake-table-delete"
-                  (click)="removeDepartmentContacts(ind)"
-                >
-                  <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+            <div class="common-fake-table-body">
+              <div
+                *ngFor="
+                  let departmentContact of departmentContacts.controls;
+                  let ind = index
+                "
+              >
+                <div [formGroupName]="ind" class="common-fake-table-card">
+                  <app-ta-input-dropdown
+                    formControlName="departmentId"
+                    [inputConfig]="{
+                      id: 'Input Dropdown Dep' + ind,
+                      name: 'Input Dropdown Department',
+                      minLength: 2,
+                      maxLength: 36,
+                      textTransform: 'capitalize',
+                      type: 'text',
+                      isDropdown: true,
+                      dropdownWidthClass: 'w-col-120',
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
+                    }"
+                    [options]="departments"
+                    [activeItem]="selectedDepartmentFormArray[ind]"
+                    (selectedItem)="
+                      onSelectFakeTableData($event, ind, 'department')
+                    "
+                  ></app-ta-input-dropdown>
+                  <app-ta-input
+                    formControlName="phone"
+                    [inputConfig]="{
+                      id: 'Phone' + ind,
+                      name: 'Phone',
+                      type: 'text',
+                      mask: '(000) 000-0000',
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
+                    }"
+                  ></app-ta-input>
+                  <app-ta-input
+                    formControlName="extensionPhone"
+                    [inputConfig]="{
+                      id: 'Phone Extension' + ind,
+                      name: 'phone-extension',
+                      type: 'text',
+                      minLength: 1,
+                      maxLength: 8,
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
+                    }"
+                  ></app-ta-input>
+                  <app-ta-input
+                    formControlName="email"
+                    [inputConfig]="{
+                      id: 'Email' + ind,
+                      name: 'Email',
+                      type: 'text',
+                      minLength: 5,
+                      maxLength: 64,
+                      textTransform: 'lowercase',
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
+                    }"
+                  ></app-ta-input>
+                  <div
+                    ngbTooltip
+                    mainTooltip="Delete"
+                    tooltipBackground="#EF5350"
+                    position="top"
+                    class="common-fake-table-delete"
+                    (click)="removeDepartmentContacts(ind)"
+                  >
+                    <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+                  </div>
                 </div>
               </div>
             </div>
@@ -434,7 +436,7 @@
         >
           <div
             formArrayName="bankAccounts"
-            class="common-fake-table-modal common-fake-table-modal-banks hide-oveflow"
+            class="common-fake-table-modal common-fake-table-modal-banks hide-overflow-x"
             *ngIf="bankAccounts.length"
           >
             <div class="common-fake-table-label">
@@ -442,81 +444,86 @@
               <p>ROUTING <span>*</span></p>
               <p>ACCOUNT <span>*</span></p>
             </div>
-            <div
-              *ngFor="let bankAccount of bankAccounts.controls; let ind = index"
-            >
-              <div [formGroupName]="ind" class="common-fake-table-card">
-                <app-ta-input-dropdown
-                  formControlName="bankId"
-                  [template]="'svg-template'"
-                  [inputConfig]="{
-                    id: 'Input Dropdown Bank Name' + ind,
-                    name: 'Input Dropdown',
-                    type: 'text',
-                    minLength: 2,
-                    maxLength: 64,
-                    textTransform: 'uppercase',
-                    isDropdown: true,
-                    dropdownWidthClass: 'w-col-163',
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true
-                  }"
-                  [canAddNew]="true"
-                  [options]="banks"
-                  [activeItem]="selectedBankAccountFormArray[ind]"
-                  (selectedItem)="
-                    onSelectFakeTableData($event, ind, 'bankAccounts')
-                  "
-                  (saveItem)="onSaveNewBank($event, ind)"
-                ></app-ta-input-dropdown>
-                <app-ta-input
-                  formControlName="routing"
-                  [inputConfig]="{
-                    id: 'Routing Number' + ind,
-                    name: 'routing-bank',
-                    type: 'text',
-                    isDisabled: !isBankSelectedFormArray[ind],
-                    minLength: 9,
-                    maxLength: 9,
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true
-                  }"
-                ></app-ta-input>
-                <app-ta-input
-                  formControlName="account"
-                  [inputConfig]="{
-                    id: 'Account Number' + ind,
-                    name: 'account-bank',
-                    type: 'password',
-                    placeholderIcon: 'password',
-                    isDisabled: !isBankSelectedFormArray[ind],
-                    maxLength: 17,
-                    minLength: 5,
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true
-                  }"
-                ></app-ta-input>
-                <svg-icon
-                  class="common-fake-table-check"
-                  src="assets/svg/common/ic_confirm.svg"
-                ></svg-icon>
-                <div
-                  class="common-fake-table-status common-fake-table-status-pending"
-                >
-                  Pending
-                </div>
-                <div
-                  class="common-fake-table-delete"
-                  (click)="removeBankAccount(ind)"
-                  ngbTooltip
-                  mainTooltip="Delete"
-                  tooltipBackground="#EF5350"
-                  position="top"
-                >
-                  <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+            <div class="common-fake-table-body">
+              <div
+                *ngFor="
+                  let bankAccount of bankAccounts.controls;
+                  let ind = index
+                "
+              >
+                <div [formGroupName]="ind" class="common-fake-table-card">
+                  <app-ta-input-dropdown
+                    formControlName="bankId"
+                    [template]="'svg-template'"
+                    [inputConfig]="{
+                      id: 'Input Dropdown Bank Name' + ind,
+                      name: 'Input Dropdown',
+                      type: 'text',
+                      minLength: 2,
+                      maxLength: 64,
+                      textTransform: 'uppercase',
+                      isDropdown: true,
+                      dropdownWidthClass: 'w-col-163',
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
+                    }"
+                    [canAddNew]="true"
+                    [options]="banks"
+                    [activeItem]="selectedBankAccountFormArray[ind]"
+                    (selectedItem)="
+                      onSelectFakeTableData($event, ind, 'bankAccounts')
+                    "
+                    (saveItem)="onSaveNewBank($event, ind)"
+                  ></app-ta-input-dropdown>
+                  <app-ta-input
+                    formControlName="routing"
+                    [inputConfig]="{
+                      id: 'Routing Number' + ind,
+                      name: 'routing-bank',
+                      type: 'text',
+                      isDisabled: !isBankSelectedFormArray[ind],
+                      minLength: 9,
+                      maxLength: 9,
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
+                    }"
+                  ></app-ta-input>
+                  <app-ta-input
+                    formControlName="account"
+                    [inputConfig]="{
+                      id: 'Account Number' + ind,
+                      name: 'account-bank',
+                      type: 'password',
+                      placeholderIcon: 'password',
+                      isDisabled: !isBankSelectedFormArray[ind],
+                      maxLength: 17,
+                      minLength: 5,
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
+                    }"
+                  ></app-ta-input>
+                  <svg-icon
+                    class="common-fake-table-check"
+                    src="assets/svg/common/ic_confirm.svg"
+                  ></svg-icon>
+                  <div
+                    class="common-fake-table-status common-fake-table-status-pending"
+                  >
+                    Pending
+                  </div>
+                  <div
+                    class="common-fake-table-delete"
+                    (click)="removeBankAccount(ind)"
+                    ngbTooltip
+                    mainTooltip="Delete"
+                    tooltipBackground="#EF5350"
+                    position="top"
+                  >
+                    <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+                  </div>
                 </div>
               </div>
             </div>
@@ -535,7 +542,7 @@
         >
           <div
             formArrayName="bankCards"
-            class="common-fake-table-modal common-fake-table-modal-bank-cards hide-oveflow"
+            class="common-fake-table-modal common-fake-table-modal-bank-cards hide-overflow-x"
             *ngIf="bankCards.length"
           >
             <div class="common-fake-table-label">
@@ -544,69 +551,71 @@
               <p>CVC</p>
               <p>EXP</p>
             </div>
-            <div *ngFor="let bankCard of bankCards.controls; let ind = index">
-              <div [formGroupName]="ind" class="common-fake-table-card">
-                <app-ta-input
-                  formControlName="nickname"
-                  [inputConfig]="{
-                    id: 'Nickname' + ind,
-                    name: 'Nickname',
-                    type: 'text',
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true,
-                    minLength: 2,
-                    maxLength: 128
-                  }"
-                ></app-ta-input>
-                <app-ta-input
-                  formControlName="card"
-                  [inputConfig]="{
-                    id: 'Card Number' + ind,
-                    name: 'Card Number',
-                    type: 'password',
-                    placeholderIcon: 'visa',
-                    maxLength: 16,
-                    minLength: 16,
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true
-                  }"
-                ></app-ta-input>
-                <app-ta-input
-                  formControlName="cvc"
-                  [inputConfig]="{
-                    id: 'CVC' + ind,
-                    name: 'CVC',
-                    type: 'password',
-                    placeholderIcon: 'password',
-                    maxLength: 4,
-                    minLength: 3,
-                    hideErrorMessage: true,
-                    blackInput: true,
-                    hideRequiredCheck: true
-                  }"
-                ></app-ta-input>
-                <app-ta-input
-                  formControlName="expireDate"
-                  [inputConfig]="{
-                    id: 'Datepicker' + ind,
-                    name: 'datepicker',
-                    type: 'text',
-                    isDropdown: true,
-                    placeholderIcon: 'date',
-                    customClass: 'datetimeclass'
-                  }"
-                ></app-ta-input>
-                <div
-                  ngbTooltip
-                  mainTooltip="Delete"
-                  tooltipBackground="#EF5350"
-                  position="top"
-                  class="common-fake-table-delete"
-                  (click)="removeBankCard(ind)"
-                >
-                  <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+            <div class="common-fake-table-body">
+              <div *ngFor="let bankCard of bankCards.controls; let ind = index">
+                <div [formGroupName]="ind" class="common-fake-table-card">
+                  <app-ta-input
+                    formControlName="nickname"
+                    [inputConfig]="{
+                      id: 'Nickname' + ind,
+                      name: 'Nickname',
+                      type: 'text',
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true,
+                      minLength: 2,
+                      maxLength: 128
+                    }"
+                  ></app-ta-input>
+                  <app-ta-input
+                    formControlName="card"
+                    [inputConfig]="{
+                      id: 'Card Number' + ind,
+                      name: 'Card Number',
+                      type: 'password',
+                      placeholderIcon: 'visa',
+                      maxLength: 16,
+                      minLength: 16,
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
+                    }"
+                  ></app-ta-input>
+                  <app-ta-input
+                    formControlName="cvc"
+                    [inputConfig]="{
+                      id: 'CVC' + ind,
+                      name: 'CVC',
+                      type: 'password',
+                      placeholderIcon: 'password',
+                      maxLength: 4,
+                      minLength: 3,
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
+                    }"
+                  ></app-ta-input>
+                  <app-ta-input
+                    formControlName="expireDate"
+                    [inputConfig]="{
+                      id: 'Datepicker' + ind,
+                      name: 'datepicker',
+                      type: 'text',
+                      isDropdown: true,
+                      placeholderIcon: 'date',
+                      customClass: 'datetimeclass'
+                    }"
+                  ></app-ta-input>
+                  <div
+                    ngbTooltip
+                    mainTooltip="Delete"
+                    tooltipBackground="#EF5350"
+                    position="top"
+                    class="common-fake-table-delete"
+                    (click)="removeBankCard(ind)"
+                  >
+                    <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+                  </div>
                 </div>
               </div>
             </div>
@@ -616,8 +625,12 @@
           <app-ta-custom-card
             [cardName]="'Load Format and Customer Billing'"
             [isCardOpen]="true"
+            [animationMarginParams]="{
+              marginTop: '18px',
+              marginBottom: '22px'
+            }"
           >
-            <div class="row active-20">
+            <div class="row row-no-mb">
               <div class="col-4">
                 <app-ta-input
                   formControlName="prefix"
@@ -728,8 +741,15 @@
               </div>
             </div>
           </app-ta-custom-card>
-          <app-ta-custom-card [cardName]="'Expiration'" [isCardOpen]="true">
-            <div class="row">
+          <app-ta-custom-card
+            [cardName]="'Expiration'"
+            [isCardOpen]="true"
+            [animationMarginParams]="{
+              marginTop: '18px',
+              marginBottom: '22px'
+            }"
+          >
+            <div class="row row-no-mb">
               <div class="col-4">
                 <app-ta-input
                   formControlName="mvrMonths"
@@ -825,9 +845,17 @@
             <svg-icon
               class="checkbox-card-header-arrow visible"
               src="assets/svg/common/ic_arrow_down_updated.svg"
+              [ngClass]="{
+                rotate: !useACHCheckboxCard,
+                visible: companyForm.get('useACHPayout').value
+              }"
+              (click)="toggleCheckboxCard()"
             ></svg-icon>
           </div>
-          <div class="checkbox-card-body active">
+          <div
+            *ngIf="companyForm.get('useACHPayout').value && useACHCheckboxCard"
+            class="checkbox-card-body active"
+          >
             <div class="use-truck-assist-header">
               THIS PROCESS MAY TAKE UP TO 5 DAYS.
             </div>
@@ -838,8 +866,12 @@
             <div class="use-truck-assist-price">Pricing</div>
           </div>
         </div>
-        <app-ta-custom-card [cardName]="'Driver & Owner'" [isCardOpen]="true">
-          <div class="row">
+        <app-ta-custom-card
+          [cardName]="'Driver & Owner'"
+          [isCardOpen]="true"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
+          <div class="row row-no-mb">
             <div class="col-6">
               <app-ta-input-dropdown
                 formControlName="driveOwnerPayPeriod"
@@ -850,7 +882,8 @@
                   label: 'Pay Period',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-297'
+                  dropdownWidthClass: 'w-col-297',
+                  customClass: 'line-input-26-in-card'
                 }"
                 [options]="payPeriods"
                 [activeItem]="selectedDriverPayPeriod"
@@ -867,7 +900,8 @@
                   label: 'Ending In',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-308'
+                  dropdownWidthClass: 'w-col-308',
+                  customClass: 'line-input-26-in-card'
                 }"
                 [options]="endingIns"
                 [activeItem]="selectedDriverEndingIn"
@@ -898,7 +932,8 @@
                   customClass: 'dollar-placeholderIcon',
                   min: 0,
                   max: 10,
-                  maxLength: 4
+                  maxLength: 4,
+                  customClass: 'line-input-26-in-card'
                 }"
               ></app-ta-input>
               <app-ta-input
@@ -913,7 +948,8 @@
                   customClass: 'dollar-placeholderIcon',
                   min: 0,
                   max: 10,
-                  maxLength: 4
+                  maxLength: 4,
+                  customClass: 'line-input-26-in-card'
                 }"
               ></app-ta-input>
               <app-ta-input
@@ -928,7 +964,8 @@
                   customClass: 'dollar-placeholderIcon',
                   min: 0,
                   max: 10,
-                  maxLength: 4
+                  maxLength: 4,
+                  customClass: 'line-input-26-in-card'
                 }"
               ></app-ta-input>
               <app-ta-input
@@ -942,7 +979,8 @@
                   customClass: 'dollar-placeholderIcon',
                   thousandSeparator: true,
                   min: 0,
-                  max: 5000
+                  max: 5000,
+                  customClass: 'line-input-26-in-card'
                 }"
               ></app-ta-input>
             </div>
@@ -968,7 +1006,8 @@
                   customClass: 'dollar-placeholderIcon',
                   min: 0,
                   max: 10,
-                  maxLength: 4
+                  maxLength: 4,
+                  customClass: 'line-input-26-in-card'
                 }"
               ></app-ta-input>
               <app-ta-input
@@ -983,7 +1022,8 @@
                   customClass: 'dollar-placeholderIcon',
                   min: 0,
                   max: 10,
-                  maxLength: 4
+                  maxLength: 4,
+                  customClass: 'line-input-26-in-card'
                 }"
               ></app-ta-input>
               <app-ta-input
@@ -998,7 +1038,8 @@
                   customClass: 'dollar-placeholderIcon',
                   min: 0,
                   max: 10,
-                  maxLength: 4
+                  maxLength: 4,
+                  customClass: 'line-input-26-in-card'
                 }"
               ></app-ta-input>
               <app-ta-input
@@ -1012,7 +1053,8 @@
                   customClass: 'dollar-placeholderIcon',
                   thousandSeparator: true,
                   min: 0,
-                  max: 5000
+                  max: 5000,
+                  customClass: 'line-input-26-in-card'
                 }"
               ></app-ta-input>
             </div>
@@ -1087,8 +1129,11 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Accounting'">
-          <div class="row last-row">
+        <app-ta-custom-card
+          [cardName]="'Accounting'"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
+          <div class="row row-no-mb">
             <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="accountingPayPeriod"
@@ -1145,8 +1190,11 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Company Owner'">
-          <div class="row last-row">
+        <app-ta-custom-card
+          [cardName]="'Company Owner'"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
+          <div class="row row-no-mb">
             <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="companyOwnerPayPeriod"
@@ -1203,7 +1251,10 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Dispatch'">
+        <app-ta-custom-card
+          [cardName]="'Dispatch'"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
           <div class="row">
             <div class="col-6">
               <app-ta-input-dropdown
@@ -1240,7 +1291,7 @@
               ></app-ta-input-dropdown>
             </div>
           </div>
-          <div class="row last-row">
+          <div class="row row-no-mb">
             <div class="col-6">
               <app-ta-input
                 formControlName="dispatchDefaultBase"
@@ -1274,7 +1325,10 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Manager'">
+        <app-ta-custom-card
+          [cardName]="'Manager'"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
           <div class="row">
             <div class="col-6">
               <app-ta-input-dropdown
@@ -1311,7 +1365,7 @@
               ></app-ta-input-dropdown>
             </div>
           </div>
-          <div class="row last-row">
+          <div class="row row-no-mb">
             <div class="col-6">
               <app-ta-input
                 formControlName="managerDefaultBase"
@@ -1345,8 +1399,11 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Recruiting'">
-          <div class="row last-row">
+        <app-ta-custom-card
+          [cardName]="'Recruiting'"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
+          <div class="row row-no-mb">
             <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="recruitingPayPeriod"
@@ -1403,8 +1460,11 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Repair'">
-          <div class="row last-row">
+        <app-ta-custom-card
+          [cardName]="'Repair'"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
+          <div class="row row-no-mb">
             <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="repairPayPeriod"
@@ -1457,8 +1517,11 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Safety'">
-          <div class="row last-row">
+        <app-ta-custom-card
+          [cardName]="'Safety'"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
+          <div class="row row-no-mb">
             <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="safetyPayPeriod"
@@ -1511,8 +1574,11 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Other'">
-          <div class="row last-row">
+        <app-ta-custom-card
+          [cardName]="'Other'"
+          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        >
+          <div class="row row-no-mb">
             <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="otherPayPeriod"

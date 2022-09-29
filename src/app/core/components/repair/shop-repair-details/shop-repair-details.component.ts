@@ -37,6 +37,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
   public repairList: any = this.shopDetailsMinimalQuery.getAll();
   public currentIndex: number = 0;
   public repairObject: any;
+  public togglerWorkTime: boolean;
   constructor(
     private act_route: ActivatedRoute,
     private detailsPageDriverService: DetailsPageService,
@@ -222,6 +223,11 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         })
       );
     }
+    if (data?.openHoursToday === 'Closed') {
+      this.togglerWorkTime = false;
+    } else {
+      this.togglerWorkTime = true;
+    }
 
     this.shopRepairConfig = [
       {
@@ -235,6 +241,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         nameDefault: 'Repair',
         template: 'repair',
         icon: true,
+        repairOpen: data?.openHoursToday === 'Closed' ? false : true,
         length: data?.repairs?.length ? data.repairs.length : 0,
         customText: 'Date',
         total: total,
@@ -274,6 +281,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         hide: true,
         customText: 'Repairs',
         data: data,
+        repairOpen: data?.openHoursToday === 'Closed' ? false : true,
       },
       {
         id: 3,
@@ -283,6 +291,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         customText: 'Date',
         hide: false,
         data: data,
+        repairOpen: data?.openHoursToday === 'Closed' ? false : true,
       },
     ];
     this.repairShopId = data?.id ? data.id : null;

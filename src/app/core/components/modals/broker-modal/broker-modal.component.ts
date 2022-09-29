@@ -290,14 +290,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             next: (res: HttpResponseBase) => {
               if (res.status === 200 || res.status === 204) {
                 this.brokerDnuStatus = !this.brokerDnuStatus;
-                console.log('---res--', res);
+
                 this.modalService.changeModalStatus({
                   name: 'dnu',
                   status: this.brokerDnuStatus,
                 });
-               
               }
-            }
+            },
           });
       }
       // BFB
@@ -1368,10 +1367,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       }
     }
     return { mainAddress, billingAddress, mainPoBox, billingPoBox };
-  }
-
-  saveNoteValue(value){
-    this.brokerForm.controls['note'].setValue(value);
   }
 
   ngOnDestroy(): void {

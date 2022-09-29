@@ -5,7 +5,10 @@
   [isModalValid]="fuelStopForm.valid"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="fuelStopForm" class="form-container">
+  <form
+    [formGroup]="fuelStopForm"
+    class="form-container form-container-without-mb"
+  >
     <div class="row">
       <div class="col-7">
         <app-ta-input-dropdown
@@ -97,7 +100,7 @@
           [inputConfig]="{
             name: 'address-unit',
             type: 'text',
-            label: 'Unit #',
+            label: 'Unit No.',
             textTransform: 'uppercase',
             minLength: 1,
             maxLength: 10

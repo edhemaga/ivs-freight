@@ -259,10 +259,10 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
   public getInvoiceAgeingCount(data: BrokerResponse) {
     this.getPercntageOfPaid = (data?.availableCredit / data?.creditLimit) * 100;
 
-    let firstGroup = data?.invoiceAgeingGroupOne?.totalSum;
-    let secondGroup = data?.invoiceAgeingGroupTwo?.totalSum;
-    let threeGroup = data?.invoiceAgeingGroupThree?.totalSum;
-    let fourGroup = data?.invoiceAgeingGroupFour?.totalSum;
+    let firstGroup = data?.invoiceAgeingGroupOne?.countInvoice;
+    let secondGroup = data?.invoiceAgeingGroupTwo?.countInvoice;
+    let threeGroup = data?.invoiceAgeingGroupThree?.countInvoice;
+    let fourGroup = data?.invoiceAgeingGroupFour?.countInvoice;
     this.invoiceAgeingCounter =
       firstGroup + secondGroup + threeGroup + fourGroup;
   }
