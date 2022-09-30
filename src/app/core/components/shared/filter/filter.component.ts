@@ -1061,6 +1061,12 @@ export class FilterComponent implements OnInit, AfterViewInit {
   rangeDiffNum: number = 0;
 
   activeFilter: boolean = false;
+  longVal: any = 0;
+  latVal: any = 0;
+
+  longValueSet: any = 0;
+  latValSet: any = 0;
+  locationRangeSet: any = 50;
 
   @Input() type: string = 'userFilter';
   @Input() icon: string = 'user';
@@ -1079,7 +1085,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
   @Input() toDoSubType: string = '';
 
   @Output() setFilter = new EventEmitter<any>();
-  @Output() clearFilter = new EventEmitter<any>();
 
   resizeObserver: ResizeObserver;
 
@@ -1754,6 +1759,12 @@ export class FilterComponent implements OnInit, AfterViewInit {
           });
           this.locationRange = 50;
           this.locationState = '';
+          this.longVal = 0;
+          this.latVal = 0;
+
+          this.longValueSet = this.longVal;
+          this.latValSet = this.latVal;
+          this.locationRangeSet = this.locationRange;
         break;
         case 'moneyFilter':
           if (this.subType != 'all') {
@@ -1779,6 +1790,15 @@ export class FilterComponent implements OnInit, AfterViewInit {
     this.moneyFilterStatus = false;
     this.filterActiveArray = [];
     this.swipeActiveRange = 0;
+    this.autoClose.tooltip.close();
+
+    let data = {
+      'action' : 'Clear',
+      'type' : this.type
+    }
+    if ( this.setFilter ) {
+      this.setFilter.emit(data);
+    }
   }
 
   filterUser(e: any) {
@@ -1835,9 +1855,14 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   handleInputSelect(e) {
-    console.log('--e---', e);
+
     if (e?.address?.address) {
       this.locationState = e.address.address;
+    }
+
+    if (e?.longLat) {
+      this.longVal = e?.longLat?.longitude;
+      this.latVal = e?.longLat?.latitude;
     }
   }
 
@@ -1880,6 +1905,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
   public setFilterValue(e) {
     const element = e.target;
     if (element.classList.contains('active')) {
+
+      let queryParams = {};
+
       this.setButtonAvailable = false;
 
       if (this.type == 'timeFilter') {
@@ -1920,6 +1948,18 @@ export class FilterComponent implements OnInit, AfterViewInit {
       } else if ( this.type == 'milesFilter' || this.type == 'payFilter' ) {
         this.maxValueSet = this.rangeForm.get('rangeTo')?.value;
         this.minValueSet = this.rangeForm.get('rangeFrom')?.value;
+      } else if ( this.type == 'locationFilter' ) {
+
+        queryParams = {
+          'longValue' : this.longVal,
+          'latValue' : this.latVal,
+          'rangeValue' : this.locationRange,
+        };
+
+        this.longValueSet = this.longVal;
+        this.latValSet = this.latVal;
+        this.locationRangeSet = this.locationRange;
+
       } else {
         this.filterActiveArray = [...this.selectedUser];
         let selectedUsersIdArray: any = [];
@@ -1927,18 +1967,22 @@ export class FilterComponent implements OnInit, AfterViewInit {
           selectedUsersIdArray.push(data.id);
         })
 
-        if (this.toDoSubType){
-          let todoParams = {
-            'data' : selectedUsersIdArray,
-            'type' : this.toDoSubType,
-          }
-          this.setFilter.emit(todoParams);
-        } else {
-          this.setFilter.emit(selectedUsersIdArray);
-        }
-
-        
+        queryParams = selectedUsersIdArray;
       }
+
+      let data = {
+        'filterType' : this.type,
+        'action' : 'Set',
+        'queryParams' : queryParams,
+        'subType' : this.toDoSubType ? this.toDoSubType : '',
+      }
+
+      console.log('--data---', data);
+      if ( this.setFilter ) {
+        this.setFilter.emit(data);
+      }
+      this.autoClose.tooltip.close();
+
     } else {
       return false;
     }

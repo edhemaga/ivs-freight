@@ -1383,14 +1383,14 @@
         <div
           (click)="clearAll($event)"
           class="button-clear"
-          [class.active]="locationState != ''"
+          [class.active]=" longVal != 0 || latVal != 0 || locationRange != 50"
         >
           Clear All
         </div>
         <div
           (click)="setFilterValue($event)"
           class="button-set"
-          [class.active]="locationState != ''"
+          [class.active]="longValueSet != longVal || latValSet != latVal || ( locationRange != locationRangeSet && longVal != 0 && latVal != 0 ) "
         >
           Set
         </div>
