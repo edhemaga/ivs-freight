@@ -248,9 +248,12 @@
                 cdkDrag
                 cdkDragBoundary=".route-card-content"
                 [ngClass]="{ 'focused-route': route.isFocused }"
-                [ngStyle]="{ 
+                [ngStyle]="{
                   cursor: route.stops.length == 1 ? 'pointer' : '',
-                  order: (insertBeforeActive > -1 && insertBeforeActive >= b) ? b+2 : b+1
+                  order:
+                    insertBeforeActive > -1 && insertBeforeActive >= b
+                      ? b + 2
+                      : b + 1
                 }"
                 (click)="focusStop($event, i, b)"
               >
@@ -376,29 +379,50 @@
                   </div>
                 </div>
 
-                <div 
+                <div
                   *ngIf="!stop.empty && b > 0"
-                  class="loaded-stop-background" 
+                  class="loaded-stop-background"
                   [ngStyle]="{
-                    'height': (b >= route.stops.length-1) || (!route.stops[b+1] || route.stops[b+1].empty) ? '22px' : '24px',
-                    'background': route.isFocused ? '#ffffff4d' : route.color + '33',
-                    'border-top-left-radius': b == 1 || ((!route.stops[b-1] || route.stops[b-1].empty)) ? '2px' : '0px',
-                    'border-top-right-radius': b == 1 || ((!route.stops[b-1] || route.stops[b-1].empty)) ? '2px' : '0px',
-                    'border-bottom-right-radius': (!route.stops[b+1] || route.stops[b+1].empty) ? '2px' : '0px',
-                    'border-bottom-left-radius': (!route.stops[b+1] || route.stops[b+1].empty) ? '2px' : '0px'
+                    height:
+                      b >= route.stops.length - 1 ||
+                      !route.stops[b + 1] || route.stops[b + 1].empty
+                        ? '22px'
+                        : '24px',
+                    background: route.isFocused
+                      ? '#ffffff4d'
+                      : route.color + '33',
+                    'border-top-left-radius':
+                      b == 1 || !route.stops[b - 1] || route.stops[b - 1].empty
+                        ? '2px'
+                        : '0px',
+                    'border-top-right-radius':
+                      b == 1 || !route.stops[b - 1] || route.stops[b - 1].empty
+                        ? '2px'
+                        : '0px',
+                    'border-bottom-right-radius':
+                      !route.stops[b + 1] || route.stops[b + 1].empty
+                        ? '2px'
+                        : '0px',
+                    'border-bottom-left-radius':
+                      !route.stops[b + 1] || route.stops[b + 1].empty
+                        ? '2px'
+                        : '0px'
                   }"
-                >
-                </div>
-
+                ></div>
               </div>
 
               <div
                 class="route-card-row m-0"
                 [formGroup]="$any(addressInputs)"
                 [ngClass]="{ 'focused-route': route.isFocused }"
-                (click)="focusStop($event, i, b)"
-                [attr.data-id]="'newStop'+route.id"
-                [ngStyle]="{ order: insertBeforeActive > -1 ? insertBeforeActive+1 : route.stops.length+1 }"
+                (click)="focusOnInput(i, false, $event)"
+                [attr.data-id]="'newStop' + route.id"
+                [ngStyle]="{
+                  order:
+                    insertBeforeActive > -1
+                      ? insertBeforeActive + 1
+                      : route.stops.length + 1
+                }"
               >
                 <div
                   class="focused-route-number-background"
@@ -858,27 +882,43 @@
                   </div>
                 </div>
 
-                <div 
+                <div
                   *ngIf="!stop.empty && b > 0"
-                  class="loaded-stop-background" 
+                  class="loaded-stop-background"
                   [ngStyle]="{
-                    'height': (b >= route.stops.length-1) || (!route.stops[b+1] || route.stops[b+1].empty) ? '22px' : '24px',
-                    'background': route.isFocused ? '#ffffff4d' : route.color + '33',
-                    'border-top-left-radius': b == 1 || ((!route.stops[b-1] || route.stops[b-1].empty)) ? '2px' : '0px',
-                    'border-top-right-radius': b == 1 || ((!route.stops[b-1] || route.stops[b-1].empty)) ? '2px' : '0px',
-                    'border-bottom-right-radius': (!route.stops[b+1] || route.stops[b+1].empty) ? '2px' : '0px',
-                    'border-bottom-left-radius': (!route.stops[b+1] || route.stops[b+1].empty) ? '2px' : '0px'
+                    height:
+                      b >= route.stops.length - 1 ||
+                      !route.stops[b + 1] || route.stops[b + 1].empty
+                        ? '22px'
+                        : '24px',
+                    background: route.isFocused
+                      ? '#ffffff4d'
+                      : route.color + '33',
+                    'border-top-left-radius':
+                      b == 1 || !route.stops[b - 1] || route.stops[b - 1].empty
+                        ? '2px'
+                        : '0px',
+                    'border-top-right-radius':
+                      b == 1 || !route.stops[b - 1] || route.stops[b - 1].empty
+                        ? '2px'
+                        : '0px',
+                    'border-bottom-right-radius':
+                      !route.stops[b + 1] || route.stops[b + 1].empty
+                        ? '2px'
+                        : '0px',
+                    'border-bottom-left-radius':
+                      !route.stops[b + 1] || route.stops[b + 1].empty
+                        ? '2px'
+                        : '0px'
                   }"
-                >
-                </div>
-
+                ></div>
               </div>
 
               <div
                 class="route-card-row m-0"
                 [formGroup]="$any(addressInputs)"
                 [ngClass]="{ 'focused-route': route.isFocused }"
-                (click)="focusStop($event, i, b)"
+                (click)="focusOnInput(i, false, $event)"
               >
                 <div
                   class="focused-route-number-background"
@@ -1305,6 +1345,7 @@
               <div
                 class="marker-container marker-icon stop-picker-icon stop-picker-marker-animation"
                 (click)="addNewStop($event)"
+                (mousewheel)="markerZoom($event, stopPickerLocation)"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -1408,15 +1449,16 @@
                   </text>
                 </svg>
               </div>
-              <div 
-                *ngIf="tableData[selectedMapIndex].routes[focusedRouteIndex].stops.length"
-                class="stop-picker-window" 
-                [ngStyle]="{ visibility: stopPickerLocation.editIndex != null && stopPickerLocation.editIndex == 0 ? 'hidden': 'visible' }"
+              <div
+                *ngIf="
+                  tableData[selectedMapIndex].routes[focusedRouteIndex].stops
+                    .length &&
+                  (stopPickerLocation.editIndex == null ||
+                    stopPickerLocation.editIndex > 0)
+                "
+                class="stop-picker-window"
               >
-                <div
-                  class="stop-picker-button"
-                  (click)="changeEmptyLoaded()"
-                >
+                <div class="stop-picker-button" (click)="changeEmptyLoaded()">
                   <div class="stop-picker-button-text">
                     {{ stopPickerLocation.empty ? "Empty" : "Loaded" }}
                   </div>

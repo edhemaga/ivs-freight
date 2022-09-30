@@ -803,6 +803,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
   zoomChange(event) {
     this.mapZoom = event;
+    this.ref.detectChanges();
   }
 
   getMapInstance(map) {
@@ -837,9 +838,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         return false;
       }
 
-      if (mainthis.stopPickerLocation.editIndex != null) {
-        mainthis.stopPickerLocation = {};
-        mainthis.ref.detectChanges();
+      if (mainthis.stopPickerLocation.lat) {
+        this.addNewStop(e.domEvent);
       }
 
       if (mainthis.focusedRouteIndex != null && mainthis.stopPickerActive) {
@@ -2217,19 +2217,37 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     this.agmMap.setOptions({ draggableCursor: '' });
   }
 
-  focusOnInput(routeIndex, blur?) {
-    let route = this.tableData[this.selectedMapIndex].routes[routeIndex];
+  focusOnInput(routeIndex, blur?, event?) {
+    var clickedElement = '';
 
-    const inputContainerElement: HTMLElement = document.querySelector(
-      '[data-id="newStop' + route.id + '"]'
-    );
+    if ( event ) {
+      event.stopPropagation();
+      event.preventDefault();
+      clickedElement = event.target.tagName;
+      console.log('clickedElement', clickedElement);
+    }
 
-    const inputElement = inputContainerElement.querySelector('input');
+    if ( !this.tableData[this.selectedMapIndex].routes[routeIndex].isFocused) {
+      this.focusRoute(routeIndex);
+    }
 
-    if ( blur ) {
-      inputElement.blur();
-    } else {
-      inputElement.focus();
+    var checkInputFocus = this.checkInputFocus(routeIndex);
+    console.log('checkInputFocus', checkInputFocus);
+
+    if ( clickedElement != 'INPUT' && !checkInputFocus ) {
+      let route = this.tableData[this.selectedMapIndex].routes[routeIndex];
+
+      const inputContainerElement: HTMLElement = document.querySelector(
+        '[data-id="newStop' + route.id + '"]'
+      );
+
+      const inputElement = inputContainerElement.querySelector('input');
+
+      if ( blur ) {
+        inputElement.blur();
+      } else {
+        inputElement.focus();
+      }
     }
   }
 
