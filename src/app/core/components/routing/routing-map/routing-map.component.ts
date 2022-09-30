@@ -64,7 +64,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   handleKeyboardEvent(event: any) {
     const key = event.keyCode;
 
-    console.log('handleKeyboardEvent key', key);
+    //console.log('handleKeyboardEvent key', key);
 
     if (key === 9) {
       /* Tab switch routes */
@@ -892,7 +892,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                   address.address = result.formatted_address;
                 }
 
-                if (address.city && address.zipCode) {
+                var validCountries = mainthis.tableData[mainthis.selectedMapIndex].borderType == 'open' ? ['US', 'CA'] : ['US'];
+                
+                if (validCountries.indexOf(address.country) > -1 && address.city && address.zipCode) {
                   mainthis.stopPickerLocation = {
                     address: address,
                     cityAddress:
@@ -965,47 +967,51 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
               : mainthis.tableData[mainthis.selectedMapIndex].routes[mainthis.focusedRouteIndex]
                   .stops.length;
 
-            mainthis.tableData[mainthis.selectedMapIndex].routes[
-              mainthis.focusedRouteIndex
-            ].stops.splice(insertIndex, 0, {
-              address: event.address,
-              cityAddress:
-                event.address.city +
-                ', ' +
-                event.address.state +
-                ' ' +
-                event.address.zipCode,
-              leg: '60.6',
-              total: '60.6',
-              time: '01:15',
-              totalTime: '01:15',
-              empty: mainthis.addressFlag == 'Empty' ? true : false,
-              lat: results[0].geometry.location.lat(),
-              long: results[0].geometry.location.lng(),
-            });
-
-            mainthis.insertBeforeActive = -1;
-
-            // route.stops.push({
-            //   address: event.address,
-            //   cityAddress:
-            //     event.address.city +
-            //     ', ' +
-            //     event.address.state +
-            //     ' ' +
-            //     event.address.zipCode,
-            //   leg: '60.6',
-            //   total: '60.6',
-            //   time: '01:15',
-            //   totalTime: '01:15',
-            //   empty: mainthis.addressFlag == 'Empty' ? true : false,
-            //   lat: results[0].geometry.location.lat(),
-            //   long: results[0].geometry.location.lng(),
-            // });
-
-            mainthis.calculateDistanceBetweenStops(index);
-            mainthis.calculateRouteWidth(route);
-            mainthis.ref.detectChanges();
+            var validCountries = mainthis.tableData[mainthis.selectedMapIndex].borderType == 'open' ? ['US', 'CA'] : ['US'];
+          
+            if (validCountries.indexOf(event.address.country) > -1) {
+              mainthis.tableData[mainthis.selectedMapIndex].routes[
+                mainthis.focusedRouteIndex
+              ].stops.splice(insertIndex, 0, {
+                address: event.address,
+                cityAddress:
+                  event.address.city +
+                  ', ' +
+                  event.address.state +
+                  ' ' +
+                  event.address.zipCode,
+                leg: '60.6',
+                total: '60.6',
+                time: '01:15',
+                totalTime: '01:15',
+                empty: mainthis.addressFlag == 'Empty' ? true : false,
+                lat: results[0].geometry.location.lat(),
+                long: results[0].geometry.location.lng(),
+              });
+  
+              mainthis.insertBeforeActive = -1;
+  
+              // route.stops.push({
+              //   address: event.address,
+              //   cityAddress:
+              //     event.address.city +
+              //     ', ' +
+              //     event.address.state +
+              //     ' ' +
+              //     event.address.zipCode,
+              //   leg: '60.6',
+              //   total: '60.6',
+              //   time: '01:15',
+              //   totalTime: '01:15',
+              //   empty: mainthis.addressFlag == 'Empty' ? true : false,
+              //   lat: results[0].geometry.location.lat(),
+              //   long: results[0].geometry.location.lng(),
+              // });
+  
+              mainthis.calculateDistanceBetweenStops(index);
+              mainthis.calculateRouteWidth(route);
+              mainthis.ref.detectChanges();
+            }
           }
         }
       );
@@ -1325,6 +1331,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   clearRouteStops(id) {
     let route = this.getRouteById(id);
     const routeIndex = this.getRouteIndexById(id);
+
+    if ( this.focusedRouteIndex == routeIndex ) {
+      this.focusedStopIndex = null;
+      this.stopPickerLocation = {};
+    }
 
     if (route && route.stops && route.stops.length) {
       route.stops = [];
