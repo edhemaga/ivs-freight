@@ -37,7 +37,7 @@ export class ViolationDetailsPageComponent implements OnInit {
         if (this.rsdlq.hasEntity(id)) {
           query = this.rsdlq.selectEntity(id).pipe(take(1));
         } else {
-          query = this.roadSer.getRoadSideById(id);
+          query = this.roadSer.getRoadsideById(id);
         }
         query.pipe(takeUntil(this.destroy$)).subscribe({
           next: (res: LoadResponse) => {

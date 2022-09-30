@@ -38,7 +38,7 @@ export class RoadItemResolver implements Resolve<RoadItemState> {
     //     take(1)
     //   );
     // } else {
-    return this.roadService.getRoadSideById(id).pipe(
+    return this.roadService.getRoadsideById(id).pipe(
       catchError((error) => {
         this.router.navigate(['/safety/violation']);
         return of('No road data for...' + id);
