@@ -404,7 +404,7 @@ export class DispatchboardTablesComponent implements OnInit {
       driverId: oldData.driver ? oldData.driver?.id : null,
       coDriverId: oldData.coDriver ? oldData.coDriver?.id : null,
       location: oldData.location?.address ? oldData.location : null,
-      hourOfService: 0,
+      // hourOfService: 0,
       note: oldData.note,
       loadIds: [],
     };
@@ -548,8 +548,10 @@ export class DispatchboardTablesComponent implements OnInit {
     });
   }
 
-  removeHos(item){
-    this.openedHosData.hos = this.openedHosData.hos.filter(it => it.indx !== item.indx)
+  removeHos(item) {
+    this.openedHosData.hos = this.openedHosData.hos.filter(
+      (it) => it.indx !== item.indx
+    );
   }
 
   changeHosDataPositions(event, index) {
