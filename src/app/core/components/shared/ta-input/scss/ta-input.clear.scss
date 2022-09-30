@@ -10,6 +10,10 @@
   z-index: 10;
   cursor: pointer;
 
+  &.datetimeclass{
+    z-index: 22;
+  }
+
   .input-clear-x {
     svg {
       width: 18px !important;

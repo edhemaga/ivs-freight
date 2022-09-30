@@ -450,7 +450,7 @@
   <!-- DateTime Picker -->
   <div
     #holder1
-    class="date_time_holder input-control"
+    class="date_time_holder input-control showDateInput"
     *ngIf="
       (inputConfig.name === 'datepicker' ||
         inputConfig.name === 'timepicker') &&
@@ -458,7 +458,6 @@
     "
     [class.active]="showDateInput"
     tabindex="-1"
-    (click)="showDateTimePlaceholder()"
     (paste)="onDatePaste($event)"
     (blur)="onBlur()"
     (keydown)="changeSelection($event, true)"
@@ -492,7 +491,7 @@
       #span1
       class="main"
       tabindex="0"
-      (focus)="onFocus()"
+      (focus)="onFocus($event)"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
@@ -639,7 +638,7 @@
     (keypress)="manipulateWithInput($event)"
     (keyup)="onKeyUp($event)"
     (blur)="onBlur()"
-    (focus)="onFocus()"
+    (focus)="onFocus($event)"
     (paste)="onPaste($event)"
     (input)="onChange($event.target.value); transformText($event.target.value)"
     [(ngModel)]="input.value"
