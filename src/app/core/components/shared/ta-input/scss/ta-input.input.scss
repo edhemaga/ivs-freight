@@ -207,6 +207,10 @@
     color: $input-text-color-blue !important;
   }
 
+  &.dropdown-input-image-without-text-transparent {
+    color: $input-transparent-color !important;
+  }
+
   //------------------------- Custom class -------------------------
   &.input-32 {
     height: 32px;

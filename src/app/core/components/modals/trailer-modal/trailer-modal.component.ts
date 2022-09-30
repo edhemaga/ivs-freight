@@ -33,7 +33,7 @@ import { TrailerTService } from '../../trailer/state/trailer.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
-import { skip, Subject, takeUntil } from 'rxjs';
+import { skip, Subject, takeUntil, tap } from 'rxjs';
 import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { trailerVolumeValidation } from '../../shared/ta-input/ta-input.regex-validations';
@@ -97,6 +97,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   public trailerStatus: boolean = true;
   public loadingVinDecoder: boolean = false;
   public isFormDirty: boolean;
+  public skipVinDecocerEdit: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -113,15 +114,17 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     this.createForm();
     this.isCompanyOwned();
     this.getTrailerDropdowns();
-    this.vinDecoder();
 
     if (this.editData?.id) {
+      this.skipVinDecocerEdit = true;
       this.editTrailerById(this.editData.id);
     }
 
     if (this.editData?.storageData) {
       this.populateStorageData(this.editData.storageData);
     }
+
+    this.vinDecoder();
   }
 
   private createForm() {
@@ -258,13 +261,11 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   public tabChange(event: any): void {
     this.selectedTab = event.id;
     let dotAnimation = document.querySelector('.animation-two-tabs');
-    const animationTabTimeout = setTimeout(() => {
-      this.animationObject = {
-        value: this.selectedTab,
-        params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-      };
-      clearTimeout(animationTabTimeout);
-    });
+
+    this.animationObject = {
+      value: this.selectedTab,
+      params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+    };
   }
 
   private getTrailerDropdowns(): void {
@@ -452,7 +453,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         companyOwned: res.companyOwned,
         trailerNumber: res.trailerNumber,
         trailerTypeId: res.trailerTypeId,
-        trailerMakeId: ' ',
+        trailerMakeId: res.trailerMake.name,
         model: res.model,
         colorId: res.colorId,
         year: res.year.toString(),
@@ -505,7 +506,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             companyOwned: res.companyOwned,
             trailerNumber: res.trailerNumber,
             trailerTypeId: res.trailerType ? res.trailerType.name : null,
-            trailerMakeId: res.trailerMake ? ' ' : null,
+            trailerMakeId: res.trailerMake ? res.trailerMake.name : null,
             model: res.model,
             vin: res.vin,
             colorId: res.color ? res.color.name : null,
@@ -549,6 +550,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             name: 'deactivate',
             status: this.trailerStatus,
           });
+
+          console.log('trailer', this.trailerForm.value);
         },
         error: () => {
           this.notificationService.error("Cant't get trailer.", 'Error:');
@@ -630,8 +633,12 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   private vinDecoder() {
     this.trailerForm
       .get('vin')
-      .valueChanges.pipe(takeUntil(this.destroy$), skip(1))
+      .valueChanges.pipe(
+        takeUntil(this.destroy$),
+        this.skipVinDecocerEdit ? skip(1) : tap()
+      )
       .subscribe((value) => {
+        this.skipVinDecocerEdit = false;
         if (value?.length > 13 && value?.length < 17) {
           this.trailerForm.get('vin').setErrors({ invalid: true });
         }
@@ -645,7 +652,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 this.trailerForm.patchValue({
                   model: res?.model ? res.model : null,
                   year: res?.year ? res.year.toString() : null,
-                  trailerMakeId: res.trailerMake?.name ? ' ' : null,
+                  trailerMakeId: res.trailerMake?.name
+                    ? res.trailerMake.name
+                    : null,
                 });
                 this.loadingVinDecoder = false;
                 this.selectedTrailerMake = res.trailerMake;

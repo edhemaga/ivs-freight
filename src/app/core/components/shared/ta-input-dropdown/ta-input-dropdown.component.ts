@@ -235,19 +235,8 @@ export class TaInputDropdownComponent
 
             // Prevent user to typing dummmy data if activeItem doesn't exist
             if (this.activeItem) {
-              // Dropdown image selection
-              if (
-                !this.inputConfig?.dropdownImageInput?.withText &&
-                this.inputConfig?.dropdownImageInput?.url
-              ) {
-                this.getSuperControl.patchValue(null);
-                this.getSuperControl.setErrors(null);
-              }
-              // Native dropdown
-              else {
-                this.getSuperControl.setValue(this.activeItem.name);
-                this.changeDetectionRef.detectChanges();
-              }
+              this.getSuperControl.setValue(this.activeItem.name);
+              this.changeDetectionRef.detectChanges();
             } else {
               const index = this.originalOptions.findIndex(
                 (item) => item.name === this.getSuperControl.value
@@ -492,7 +481,6 @@ export class TaInputDropdownComponent
             ...this.inputConfig,
             blackInput: false,
           };
-          this.getSuperControl.updateValueAndValidity();
           this.changeDetectionRef.detectChanges();
           clearTimeout(timeout);
         }, 100);

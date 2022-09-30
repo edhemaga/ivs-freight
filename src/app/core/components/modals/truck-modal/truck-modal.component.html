@@ -252,7 +252,7 @@
           ></app-ta-input-dropdown>
 
           <app-ta-input-dropdown
-            formControlName="engineModel"
+            formControlName="engineModelId"
             [inputConfig]="{
               name: 'Input Dropdown',
               type: 'text',
@@ -261,7 +261,7 @@
               dropdownWidthClass: 'w-col-248'
             }"
             [options]="engineModels"
-            [activeItem]="selectedEngineModel"
+            [activeItem]="selectedEngineModelId"
             (selectedItem)="onSelectDropdown($event, 'engine-model')"
           ></app-ta-input-dropdown>
         </div>
