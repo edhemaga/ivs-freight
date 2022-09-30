@@ -230,9 +230,6 @@ export class TruckassistTableBodyComponent
 
 
       this.setDropContent();
-
-      console.log('Table options');
-      console.log(this.options);
     }
   }
 

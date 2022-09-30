@@ -19,16 +19,10 @@ export class ToolbarFiltersComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.options?.firstChange && changes?.options) {
       this.options = changes.options.currentValue;
-
-      console.log('NgOnChanges options');
-      console.log(this.options);
     }
 
     if (!changes?.activeTableData?.firstChange && changes?.activeTableData) {
       this.activeTableData = changes.activeTableData.currentValue;
-
-      console.log('NgOnChanges activeTableData');
-      console.log(this.activeTableData);
     }
   }
 

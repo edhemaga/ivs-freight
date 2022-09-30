@@ -164,11 +164,14 @@ export class RepairTService implements OnDestroy {
   // Get Repair List
   public getRepairList(
     repairShopId?: number,
-    repairType?: number,
     unitType?: number,
     dateFrom?: string,
     dateTo?: string,
     isPM?: number,
+    categoryIds?: Array<number>,
+    pmTruckTitles?: Array<string>,
+    pmTrailerTitles?: Array<string>,
+    isOrder?: boolean,
     pageIndex?: number,
     pageSize?: number,
     companyId?: number,
@@ -177,22 +180,24 @@ export class RepairTService implements OnDestroy {
     search1?: string,
     search2?: string
   ): Observable<RepairListResponse> {
-    // return this.repairService.apiRepairListGet(
-    //   repairShopId,
-    //   repairType,
-    //   unitType,
-    //   dateFrom,
-    //   dateTo,
-    //   isPM,
-    //   pageIndex,
-    //   pageSize,
-    //   companyId,
-    //   sort,
-    //   search,
-    //   search1,
-    //   search2
-    // );
-    return of();
+    return this.repairService.apiRepairListGet(
+      repairShopId,
+      unitType,
+      dateFrom,
+      dateTo,
+      isPM,
+      categoryIds,
+      pmTruckTitles,
+      pmTrailerTitles,
+      isOrder,
+      pageIndex,
+      pageSize,
+      companyId,
+      sort,
+      search,
+      search1,
+      search2
+    );
   }
 
   public getRepairById(id: number): Observable<RepairResponse> {
