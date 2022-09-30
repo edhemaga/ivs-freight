@@ -55,6 +55,9 @@ export class TaInputComponent
   @Output('incorrectEvent') incorrectInput: EventEmitter<any> =
     new EventEmitter<any>();
 
+  @Output('blurInput') blurInput: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
+
   @Output('change') changeInput: EventEmitter<any> = new EventEmitter<any>();
   @Output('commandEvent') commandEvent: EventEmitter<any> =
     new EventEmitter<any>();
@@ -354,6 +357,9 @@ export class TaInputComponent
       this.focusInput = false;
     }
 
+    console.log("BLURRR");
+    this.blurInput.emit(true);
+
     this.inputService.onFocusOutInput$.next(true);
     this.touchedInput = true;
   }
@@ -479,7 +485,7 @@ export class TaInputComponent
       this.numberOfConsecutivelySpaces = 0;
 
       // Reset One Space Only
-      if (!this.getSuperControl.value.includes(' ')) {
+      if (!this.getSuperControl.value?.includes(' ')) {
         this.oneSpaceOnlyCounter = 0;
       }
 
