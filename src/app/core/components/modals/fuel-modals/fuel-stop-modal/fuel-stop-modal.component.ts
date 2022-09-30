@@ -9,8 +9,9 @@ import {
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { fuelStoreValidation } from '../../../shared/ta-input/ta-input.regex-validations';
+import { FormService } from '../../../../services/form/form.service';
 
 @Component({
   selector: 'app-fuel-stop-modal',
@@ -31,12 +32,13 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
 
   public isFavouriteFuelStop: boolean = false;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -63,12 +65,18 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
       addressUnit: [null, [...addressUnitValidation]],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.fuelStopForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.fuelStopForm.reset();
         break;
       }
       case 'save': {
@@ -77,8 +85,10 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData) {
-          this.updateFuelStop(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateFuelStop(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addFuelStop();
           this.modalService.setModalSpinner({ action: null, status: true });

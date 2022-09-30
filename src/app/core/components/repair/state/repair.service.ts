@@ -3,7 +3,7 @@ import { RepairModalResponse } from './../../../../../../appcoretruckassist/mode
 
 import { Injectable, OnDestroy } from '@angular/core';
 import { RepairService } from 'appcoretruckassist/api/repair.service';
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
+import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import {
   CreateRepairCommand,
   CreateResponse,
@@ -177,21 +177,22 @@ export class RepairTService implements OnDestroy {
     search1?: string,
     search2?: string
   ): Observable<RepairListResponse> {
-    return this.repairService.apiRepairListGet(
-      repairShopId,
-      repairType,
-      unitType,
-      dateFrom,
-      dateTo,
-      isPM,
-      pageIndex,
-      pageSize,
-      companyId,
-      sort,
-      search,
-      search1,
-      search2
-    );
+    // return this.repairService.apiRepairListGet(
+    //   repairShopId,
+    //   repairType,
+    //   unitType,
+    //   dateFrom,
+    //   dateTo,
+    //   isPM,
+    //   pageIndex,
+    //   pageSize,
+    //   companyId,
+    //   sort,
+    //   search,
+    //   search1,
+    //   search2
+    // );
+    return of();
   }
 
   public getRepairById(id: number): Observable<RepairResponse> {

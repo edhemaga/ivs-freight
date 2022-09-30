@@ -31,6 +31,7 @@ $input-blue-color-7: rgb(
   0.2
 ); // state when input valid and focus out
 $input-blue-color-8: rgb(111, 158, 224, 0.4); // placeholder-icon divider
+$input-blue-color-9: rgb(111, 158, 224, 0);
 
 $input-red-color-1: #ef5350; // was #f44336 :: input-error
 $input-red-color-2: #ff5050; // :: component hover
@@ -213,6 +214,7 @@ $input-background-selection-valid-focus: $input-blue-color-2;
 
 // Valid Color Focus Out
 $input-background-color-valid-focus-out: $input-blue-color-7;
+$input-background-color-valid-focus-out-datepicker: $input-blue-color-9;
 $input-text-color-valid-focus-out: $input-black-color-1;
 
 // Disabled Color

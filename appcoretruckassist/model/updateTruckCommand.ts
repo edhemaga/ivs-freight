@@ -9,6 +9,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { WheelsType } from './wheelsType';
+import { Brakes } from './brakes';
 import { ApUnit } from './apUnit';
 
 
@@ -31,6 +33,11 @@ export interface UpdateTruckCommand {
     emptyWeight?: number | null;
     truckEngineTypeId?: number | null;
     tireSizeId?: number | null;
+    fuelTankSize?: number | null;
+    brakes?: Brakes;
+    frontWheels?: WheelsType;
+    rearWheels?: WheelsType;
+    transmissionModel?: string | null;
     shifter?: number | null;
     axles?: number | null;
     insurancePolicy?: string | null;

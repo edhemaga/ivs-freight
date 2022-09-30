@@ -13,6 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
+import { FormService } from '../../../../../services/form/form.service';
 import {
   convertDateToBackend,
   convertDateFromBackend,
@@ -22,7 +23,7 @@ import {
   selector: 'app-driver-mvr-modal',
   templateUrl: './driver-mvr-modal.component.html',
   styleUrls: ['./driver-mvr-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class DriverMvrModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -37,7 +38,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   public cdls: any[] = [];
   public selectedCdl: any = null;
 
-  public isDirty: boolean = false;
+  public isFormDirty: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,7 +46,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private notificationService: NotificationService,
     private modalService: ModalService,
-    private mvrService: MvrTService
+    private mvrService: MvrTService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -64,6 +66,13 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       cdlId: [null, Validators.required],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.mvrForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   private getDriverById(id: number) {
@@ -83,7 +92,6 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.mvrForm.reset();
         break;
       }
       case 'save': {
@@ -93,8 +101,10 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData.type === 'edit-mvr') {
-          this.updateMVR();
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateMVR();
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addMVR();
           this.modalService.setModalSpinner({ action: null, status: true });
