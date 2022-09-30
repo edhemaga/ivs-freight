@@ -3,7 +3,6 @@ import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import {
@@ -54,10 +53,7 @@ import {
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
   styleUrls: ['./driver-modal.component.scss'],
-  animations: [
-    tab_modal_animation('animationTabsModal'),
-    card_modal_animation('showHidePayroll', '6px'),
-  ],
+  animations: [tab_modal_animation('animationTabsModal')],
   providers: [ModalService, FormService, BankVerificationService],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
@@ -91,7 +87,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   public addNewAfterSave: boolean = false;
 
@@ -183,7 +179,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public onModalAction(data: { action: string; bool: boolean }): void {
     if (data.action === 'close') {
-      this.driverForm.reset();
+      return;
     }
     // Change Driver Status
 
@@ -226,6 +222,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
     // Save And Add New
     else if (data.action === 'save and add new') {
+      if (this.driverForm.invalid) {
+        this.inputService.markInvalid(this.driverForm);
+        return;
+      }
       this.addDriver();
       this.modalService.setModalSpinner({
         action: 'save and add new',
@@ -241,8 +241,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       }
       // Update
       if (this.editData?.id) {
-        this.updateDriver(this.editData.id);
-        this.modalService.setModalSpinner({ action: null, status: true });
+        if (this.isFormDirty) {
+          this.updateDriver(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
+        }
       }
       // Save
       else {
@@ -265,13 +267,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       email: [null, [Validators.required]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
-      dateOfBirth: [null],
+      dateOfBirth: [null, Validators.required],
       ssn: [null, [Validators.required, ssnNumberRegex]],
-      mvrExpiration: [5, Validators.required],
+      mvrExpiration: ['5', Validators.required],
       bankId: [null, [...bankValidation]],
       account: [null, accountBankValidation],
       routing: [null, routingBankValidation],
-      payType: [null, Validators.required],
+      payType: [null, [Validators.required]],
       useTruckAssistAch: [false],
       soloDriver: [false],
       teamDriver: [false],
@@ -315,6 +317,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
+
+    this.formService.checkFormChange(this.driverForm);
+
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public get offDutyLocations(): FormArray {
@@ -419,7 +429,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   private onPayTypeSelected(payType: number): void {
-    console.log(payType);
     if (payType === 1) {
       if (['Solo', 'Combined'].includes(this.fleetType)) {
         if (!this.hasMilesSameRate) {
@@ -681,7 +690,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectDropdown(event: any, action: string): void {
-    console.log(event);
     switch (action) {
       case 'bank': {
         this.selectedBank = event;
@@ -897,11 +905,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         next: (data: GetDriverModalResponse) => {
           this.labelsBank = data.banks;
           this.labelsPayType = data.payTypes;
-          this.driverForm.get('mvrExpiration').patchValue(data.mvrExpiration);
+          this.driverForm
+            .get('mvrExpiration')
+            .patchValue(data.mvrExpiration.toString());
           this.fleetType = data.fleetType;
           this.hasMilesSameRate = data.loadedAndEmptySameRate;
-          console.log('DROPDOWNMS');
-          console.log(data);
+
           if (['Solo', 'Combined'].includes(this.fleetType)) {
             this.driverForm
               .get('soloEmptyMile')
@@ -975,7 +984,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
               perMileTeam: data.perMileTeam,
               commissionTeam: data.defaultTeamDriverCommission,
             },
-            mvrExpiration: data.mvrExpiration,
+            mvrExpiration: data.mvrExpiration.toString(),
           };
 
           this.handlingPayrollFleetType(this.fleetType, true);
@@ -1013,7 +1022,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       mailNotificationPayroll,
       pushNotificationPayroll,
       smsNotificationPayroll,
-
+      mvrExpiration,
       address,
       addressUnit,
       bussinesName,
@@ -1025,6 +1034,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       dateOfBirth: convertDateToBackend(
         this.driverForm.get('dateOfBirth').value
       ),
+      mvrExpiration: parseInt(mvrExpiration),
       ownerId:
         this.driverForm.get('ownerType').value === 'Sole Proprietor'
           ? null
@@ -1200,7 +1210,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           ? teamDriver
           : false
         : null,
-      note: this.driverForm.get('note').value,
     };
 
     let driverFullName = newData.firstName + ' ' + newData.lastName;
@@ -1259,7 +1268,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
             this.driverForm
               .get('mvrExpiration')
-              .patchValue(this.payrollCompany.mvrExpiration);
+              .patchValue(this.payrollCompany.mvrExpiration.toString());
 
             this.driverForm.get('mailNotificationGeneral').patchValue(true);
             this.driverForm.get('mailNotificationPayroll').patchValue(true);
@@ -1302,7 +1311,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       soloPerStop,
       perMileSolo,
       commissionSolo,
-
+      mvrExpiration,
       teamEmptyMile,
       teamLoadedMile,
       teamPerStop,
@@ -1332,6 +1341,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       dateOfBirth: convertDateToBackend(
         this.driverForm.get('dateOfBirth').value
       ),
+      mvrExpiration: parseInt(mvrExpiration),
       ownerId:
         this.driverForm.get('ownerType').value === 'Sole Proprietor'
           ? null
@@ -1548,7 +1558,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             addressUnit: res.address ? res.address.addressUnit : null,
             dateOfBirth: convertDateFromBackend(res.dateOfBirth),
             ssn: res.ssn,
-            mvrExpiration: res.mvrExpiration,
+            mvrExpiration: res.mvrExpiration.toString(),
             bankId: res.bank ? res.bank.name : null,
             account: res.account,
             routing: res.routing,
@@ -1591,7 +1601,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             avatar: res.avatar,
 
             twic: res.twic,
-            twicExpDate: convertDateFromBackend(res.twicExpDate),
+            twicExpDate: res.twicExpDate
+              ? convertDateFromBackend(res.twicExpDate)
+              : null,
             fuelCard: res.fuelCard,
 
             mailNotificationGeneral: res.general.mailNotification,
@@ -1715,7 +1727,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         },
       });
   }
-  
+
+  // Checkbox card
+  public ownerCheckboxCard: boolean = true;
+  public toggleCheckboxCard() {
+    this.ownerCheckboxCard = !this.ownerCheckboxCard;
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

@@ -3,7 +3,7 @@ import {
   phoneExtension,
   addressValidation,
   addressUnitValidation,
-} from './../../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../../shared/ta-input/ta-input.regex-validations';
 import { Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -17,11 +17,11 @@ import {
 
 import { Subject, takeUntil } from 'rxjs';
 import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
-import { FormService } from '../../../../../services/form/form.service';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
 import { RepairTService } from '../../../../repair/state/repair.service';
+import { FormService } from '../../../../../services/form/form.service';
 import {
   repairShopValidation,
   rentValidation,
@@ -74,17 +74,19 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
 
   public services: any[] = [];
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   public repairShopName: string = null;
+
+  public isServiceCardOpen: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private formService: FormService,
     private notificationService: NotificationService,
-    private repairService: RepairTService
+    private repairService: RepairTService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -117,13 +119,12 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
       this.destroy$
     );
 
-    // this.formService.checkFormChange(this.repairShopForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
+    this.formService.checkFormChange(this.repairShopForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public tabChange(event: any): void {
@@ -138,7 +139,6 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }): void {
     switch (data.action) {
       case 'close': {
-        this.repairShopForm.reset();
         break;
       }
       case 'save': {
@@ -147,8 +147,10 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData?.type === 'edit') {
-          this.updateRepariShop(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateRepariShop(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addRepairShop();
           this.modalService.setModalSpinner({ action: null, status: true });
@@ -173,9 +175,14 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         this.repairShopForm.get('weeklyDay').patchValue(null);
         this.repairShopForm.get('monthlyDay').patchValue(null);
         this.selectedDay = null;
+        break;
       }
       case 'day': {
         this.selectedDay = event;
+        break;
+      }
+      default: {
+        break;
       }
     }
   }

@@ -3,7 +3,6 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -30,13 +29,12 @@ import { TaInputResetService } from '../ta-input/ta-input-reset.service';
   styleUrls: ['./ta-input-dropdown.component.scss'],
   providers: [TaInputService],
   animations: [input_dropdown_animation('showHideDropdownOptions')],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaInputDropdownComponent
   implements OnInit, AfterViewInit, OnDestroy, OnChanges, ControlValueAccessor
 {
   private destroy$ = new Subject<void>();
-  @ViewChild(TaInputComponent) inputRef: TaInputComponent;
+  @ViewChild('input') inputRef: TaInputComponent;
   @ViewChild('t2') public popoverRef: NgbPopover;
 
   @Input() template: string; // different templates for body rendering
@@ -63,6 +61,7 @@ export class TaInputDropdownComponent
 
   @Output() selectedItemColor: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectedLabelMode: EventEmitter<any> = new EventEmitter<any>();
+  @Output() closeDropdown: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Output() saveItem: EventEmitter<{ data: any; action: string }> =
     new EventEmitter<{ data: any; action: string }>();
@@ -158,6 +157,15 @@ export class TaInputDropdownComponent
         clearTimeout(timeout);
       });
     }
+
+    if(this.inputConfig.name === 'Address') {
+      if(this.getSuperControl.value && this.inputRef.focusInput) {
+        this.popoverRef?.open();
+      }
+      else{
+        this.popoverRef?.close();
+      }
+    }
   }
 
   ngAfterViewInit() {
@@ -237,19 +245,8 @@ export class TaInputDropdownComponent
 
             // Prevent user to typing dummmy data if activeItem doesn't exist
             if (this.activeItem) {
-              // Dropdown image selection
-              if (
-                !this.inputConfig?.dropdownImageInput?.withText &&
-                this.inputConfig?.dropdownImageInput?.url
-              ) {
-                this.getSuperControl.patchValue(null);
-                this.getSuperControl.setErrors(null);
-              }
-              // Native dropdown
-              else {
-                this.getSuperControl.setValue(this.activeItem.name);
-                this.changeDetectionRef.detectChanges();
-              }
+              this.getSuperControl.setValue(this.activeItem.name);
+              this.changeDetectionRef.detectChanges();
             } else {
               const index = this.originalOptions.findIndex(
                 (item) => item.name === this.getSuperControl.value
@@ -607,7 +604,7 @@ export class TaInputDropdownComponent
     };
 
     this.inputConfig.dropdownLabelNew = true; // share this config with label
-    this.inputService.dropdownAddMode$.next(true);
+    this.inputService.dropDownAddMode$.next(true);
     this.popoverRef.close();
 
     this.isInAddMode = true;
@@ -846,6 +843,10 @@ export class TaInputDropdownComponent
       this.inputRef.focusInput = false;
       this.popoverRef.close();
     }
+  }
+
+  onBlurInput(e) {
+    this.closeDropdown.emit(e);
   }
 
   ngOnDestroy(): void {

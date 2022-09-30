@@ -2,10 +2,13 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Account' : 'Edit Account'"
   [editData]="editData"
   [editName]="editData?.data?.name"
-  [isModalValid]="accountForm.valid"
+  [isModalValid]="accountForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="accountForm" class="form-container">
+  <form
+    [formGroup]="accountForm"
+    class="form-container form-container-without-mb"
+  >
     <div class="row">
       <div class="col-12">
         <app-ta-input

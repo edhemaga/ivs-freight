@@ -3,17 +3,16 @@ import {
   addressValidation,
   vinNumberValidation,
   descriptionValidation,
-} from './../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { DropZoneConfig } from '../../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../../services/form/form.service';
 import { NotificationService } from '../../../../services/notification/notification.service';
+import { FormService } from '../../../../services/form/form.service';
 
 @Component({
   selector: 'app-accident-modal',
@@ -62,23 +61,9 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
   public addressOrigin: AddressEntity = null;
   public addressAuthority: AddressEntity = null;
 
-  public dropZoneConfigFile: DropZoneConfig = {
-    dropZoneType: 'files', // files | image | media
-    dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
-    dropZoneAvailableFiles: 'application/pdf, application/png, application/jpg',
-    multiple: true,
-    globalDropZone: false,
-  };
+  public isLocationAndShippingOpen: boolean = true;
 
-  public dropZoneConfigMedia: DropZoneConfig = {
-    dropZoneType: 'media',
-    dropZoneAvailableFiles: 'video/mp4,video/x-m4v,video/*',
-    dropZoneSvg: 'assets/svg/common/ic_media_dropzone.svg',
-    multiple: false,
-    globalDropZone: false,
-  };
-
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -166,22 +151,24 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       this.destroy$
     );
 
-    // this.formService.checkFormChange(this.accidentForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
+    this.formService.checkFormChange(this.accidentForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
     let dotAnimation = document.querySelector('.animation-two-tabs');
-    this.animationObject = {
-      value: this.selectedTab,
-      params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-    };
+    const animationTabTimeout = setTimeout(() => {
+      this.animationObject = {
+        value: this.selectedTab,
+        params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+      };
+      clearTimeout(animationTabTimeout);
+    });
   }
 
   public get violations(): FormArray {
@@ -223,7 +210,6 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }): void {
     switch (data.action) {
       case 'close': {
-        this.accidentForm.reset();
         break;
       }
       case 'save': {
@@ -232,8 +218,10 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData) {
-          this.updateAccident(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateAccident(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addAccident();
           this.modalService.setModalSpinner({ action: null, status: true });
@@ -306,9 +294,6 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       }
       case 'trailer-unit': {
         this.selectedTrailerUnit = event;
-        break;
-      }
-      case 'insurance-type': {
         break;
       }
       case 'insurance-type': {

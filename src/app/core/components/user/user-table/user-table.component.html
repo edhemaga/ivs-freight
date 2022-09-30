@@ -1,13 +1,14 @@
 <div class="table-container">
-    <app-truckassist-table-toolbar
-      (toolBarAction)="onToolBarAction($event)"
-      [options]="tableOptions"
-      [tableData]="tableData"
-      [selectedTab]="selectedTab"
-      [columns]="columns"
-      [tableContainerWidth]="tableContainerWidth"
-    ></app-truckassist-table-toolbar>
-  
+  <app-truckassist-table-toolbar
+    (toolBarAction)="onToolBarAction($event)"
+    [options]="tableOptions"
+    [tableData]="tableData"
+    [selectedTab]="selectedTab"
+    [columns]="columns"
+    [tableContainerWidth]="tableContainerWidth"
+  ></app-truckassist-table-toolbar>
+
+  <div *ngIf="activeViewMode == 'List'">
     <app-truckassist-table-head
       [options]="tableOptions"
       [viewData]="viewData"
@@ -15,7 +16,7 @@
       (headActions)="onTableHeadActions($event)"
       [tableContainerWidth]="tableContainerWidth"
     ></app-truckassist-table-head>
-  
+
     <app-truckassist-table-body
       [viewData]="viewData"
       [columns]="columns"
@@ -26,4 +27,4 @@
       [tableContainerWidth]="tableContainerWidth"
     ></app-truckassist-table-body>
   </div>
-  
+</div>

@@ -1,7 +1,6 @@
 <app-ta-modal
   [modalTitle]="'Profile Update'"
-  [isModalValid]="profileUserForm.valid"
-  [customClass]="'modal-container-M'"
+  [isModalValid]="profileUserForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <app-ta-tab-switch
@@ -13,7 +12,7 @@
 
   <form
     [formGroup]="profileUserForm"
-    class="form-container"
+    class="form-container form-container-without-mb"
     [ngClass]="{ 'tab-2': selectedTab === 2 }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
@@ -30,8 +29,7 @@
                 isRequired: true,
                 minLength: 2,
                 maxLength: 26,
-                textTransform: 'capitalize',
-                autoFocus: !profileUserForm.get('firstName').value
+                textTransform: 'capitalize'
               }"
             ></app-ta-input>
           </div>
@@ -53,13 +51,14 @@
         <div class="row">
           <div class="col-5">
             <app-ta-input
-              formControlName="mobile"
+              formControlName="phone"
               [inputConfig]="{
                 name: 'Phone',
                 type: 'text',
                 label: 'Phone',
                 placeholderIcon: 'phone',
-                mask: '(000) 000-0000'
+                mask: '(000) 000-0000',
+                maxLength: 14
               }"
             ></app-ta-input>
           </div>
@@ -127,55 +126,59 @@
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
               [ngClass]="{
-                visible: profileUserForm.get('createNewPassword').value
+                visible: profileUserForm.get('createNewPassword').value,
+                rotate: !passwordCheckboxCard
               }"
+              (click)="toggleCheckboxCard()"
             ></svg-icon>
           </div>
           <div
-            *ngIf="profileUserForm.get('createNewPassword').value"
+            *ngIf="
+              profileUserForm.get('createNewPassword').value &&
+              passwordCheckboxCard
+            "
             class="checkbox-card-body"
             [ngClass]="{
               active: profileUserForm.get('createNewPassword').value
             }"
           >
-            <div *ngIf="!setNewPassword" class="profile-update-oldpassword-row">
-              <p class="old-password-text">
+            <div
+              *ngIf="!setNewPassword"
+              class="profile-update-old-password-row"
+            >
+              <app-ta-input
+                formControlName="oldPassword"
+                [inputConfig]="{
+                  name: 'Password',
+                  type: 'password',
+                  label: 'Password',
+                  placeholderIcon: 'password',
+                  isRequired: true,
+                  autocomplete: 'off',
+                  minLength: 8,
+                  maxLength: 64,
+                  loadingSpinner: {
+                    size: 'small',
+                    color: 'white',
+                    isLoading: loadingOldPassword
+                  }
+                }"
+              ></app-ta-input>
+              <p *ngIf="!userPasswordTyping" class="old-password-message">
                 Before you set new password please confirm current.
               </p>
-              <div class="old-password-content">
-                <app-ta-input
-                  formControlName="oldPassword"
-                  [inputConfig]="{
-                    name: 'Password',
-                    type: 'password',
-                    label: 'Password',
-                    placeholderIcon: 'password',
-                    isRequired: true,
-                    autocomplete: 'off',
-                    minLength: 8,
-                    maxLength: 64,
-                    loadingSpinner: {
-                      size: 'small',
-                      color: 'white',
-                      isLoading: loadingOldPassword
-                    }
-                  }"
-                ></app-ta-input>
-                <div
-                  class="old-password-checkmark"
-                  [ngClass]="{
-                    valid: correctPassword
-                  }"
-                >
-                  <svg-icon
-                    (click)="onSetNewPassword()"
-                    src="assets/svg/common/ic_confirm.svg"
-                  ></svg-icon>
-                </div>
+              <div
+                class="old-password-checkmark"
+                [ngClass]="{
+                  valid: correctPassword
+                }"
+                (click)="onSetNewPassword()"
+              >
+                <p>CONFIRM</p>
               </div>
             </div>
             <div *ngIf="setNewPassword">
-              <div class="row row-mb-10">
+              <div class="row row-mb-22">
                 <div class="col-6">
                   <app-ta-input
                     formControlName="newPassword"
@@ -187,7 +190,8 @@
                       isRequired: true,
                       autocomplete: 'off',
                       minLength: 8,
-                      maxLength: 64
+                      maxLength: 64,
+                      customClass: 'line-input-26'
                     }"
                   ></app-ta-input>
                 </div>
@@ -202,7 +206,8 @@
                       isRequired: true,
                       autocomplete: 'off',
                       minLength: 8,
-                      maxLength: 64
+                      maxLength: 64,
+                      customClass: 'line-input-26'
                     }"
                   ></app-ta-input>
                 </div>
@@ -213,13 +218,9 @@
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
-        <app-ta-custom-card
-          [cardName]="'Profile Picture'"
-          [isCardOpen]="true"
-        >
+        <app-ta-custom-card [cardName]="'Profile Picture'" [isCardOpen]="true">
           <app-ta-logo-change
             [imageUrl]="this.profileUserForm.get('avatar').value"
-            [customClass]="'modal-container-M'"
             [croppieOptions]="croppieOptions"
             (validationEvent)="onImageValidation($event)"
             (base64ImageEvent)="onUploadImage($event)"

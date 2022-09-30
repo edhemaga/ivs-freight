@@ -1,14 +1,10 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import {
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { FormService } from '../../../../services/form/form.service';
 import {
   priceValidation,
   fullNameValidation,
@@ -18,7 +14,7 @@ import {
   selector: 'app-fuel-purchase-modal',
   templateUrl: './fuel-purchase-modal.component.html',
   styleUrls: ['./fuel-purchase-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -44,12 +40,13 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
   public hoverRowTable: boolean[] = [];
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -75,6 +72,13 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
       storeId: [null],
       fuelItems: this.formBuilder.array([]),
     });
+
+    this.formService.checkFormChange(this.fuelForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public get fuelItems(): FormArray {
@@ -172,7 +176,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.fuelForm.reset();
         break;
       }
       case 'save': {
@@ -181,8 +184,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData) {
-          this.updateFuel(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateFuel(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addFuel();
           this.modalService.setModalSpinner({ action: null, status: true });

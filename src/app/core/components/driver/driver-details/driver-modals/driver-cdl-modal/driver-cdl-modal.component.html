@@ -8,11 +8,11 @@
   "
   [editData]="editData"
   [editName]="modalName"
-  [isModalValid]="cdlForm.valid"
+  [isModalValid]="cdlForm.valid && isFormDirty"
   [specificCaseModalName]="true"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="cdlForm" class="form-container">
+  <form [formGroup]="cdlForm" class="form-container form-container-without-mb">
     <div class="row">
       <div class="col-6">
         <app-ta-input

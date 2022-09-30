@@ -21,11 +21,12 @@ export class ViolationTableComponent
 {
   private destroy$ = new Subject<void>();
 
-  public tableOptions: any = {};
-  public tableData: any[] = [];
-  public viewData: any[] = [];
-  public columns: any[] = [];
-  public selectedTab = 'active';
+  tableOptions: any = {};
+  tableData: any[] = [];
+  viewData: any[] = [];
+  columns: any[] = [];
+  selectedTab = 'active';
+  activeViewMode: string = 'List';
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
@@ -37,7 +38,7 @@ export class ViolationTableComponent
     private modalService: ModalService,
     private roadsideActiveQuery: RoadsideActiveQuery,
     private roadsideInactiveQuery: RoadsideInactiveQuery,
-    private datePipe: DatePipe,
+    private datePipe: DatePipe
   ) {}
 
   // -------------------------------NgOnInit-------------------------------
@@ -126,7 +127,7 @@ export class ViolationTableComponent
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
+          }, 2300);
 
           this.updateDataCount(); */
         }
@@ -167,7 +168,7 @@ export class ViolationTableComponent
 
             this.viewData.splice(contactIndex, 1);
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
 
           this.updateDataCount(); */
         }
@@ -185,7 +186,7 @@ export class ViolationTableComponent
               this.viewData = this.viewData.map((contact: any) => {
                 response.map((r: any) => {
                   if (contact.id === r.id) {
-                    contact.actionAnimation = 'delete';
+                    contact.actionAnimation = 'delete-multiple';
                   }
                 });
 
@@ -198,7 +199,7 @@ export class ViolationTableComponent
                 this.viewData = closeAnimationAction(true, this.viewData);
 
                 clearInterval(inetval);
-              }, 1000);
+              }, 900);
 
               this.tableService.sendRowsSelected([]);
               this.tableService.sendResetSelectedColumns(true);
@@ -228,15 +229,16 @@ export class ViolationTableComponent
   // Table Options
   initTableOptions(): void {
     this.tableOptions = {
-      disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        showMapView: true,
-        viewModeActive: 'List',
+        viewModeOptions: [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+          { name: 'Map', active: this.activeViewMode === 'Map' },
+        ],
       },
       attachmentConfig: {
         hasViolation: true,
-        hasCitation: true
+        hasCitation: true,
       },
       actions: [
         {
@@ -254,7 +256,6 @@ export class ViolationTableComponent
           contentType: 'delete',
         },
       ],
-      export: true,
     };
   }
 
@@ -346,7 +347,7 @@ export class ViolationTableComponent
       } */
 
       console.log('viewData');
-      console.log(this.viewData)
+      console.log(this.viewData);
     } else {
       this.viewData = [];
     }
@@ -369,27 +370,31 @@ export class ViolationTableComponent
       tableDriverName: data?.driver_FullName ? data.driver_FullName : '',
       truckNumber: 'Nije povezano',
       trailerNumber: 'Nije povezano',
-      tableDate: data?.date ? this.datePipe.transform(data.date, 'MM/dd/yy') : '',
+      tableDate: data?.date
+        ? this.datePipe.transform(data.date, 'MM/dd/yy')
+        : '',
       tabelStartTime: data?.startTime ? data?.startTime : '',
       tabelEndTime: data?.endTime ? data?.endTime : '',
-      tableLvl: data?.inspectionLevel ? this.formatInspectionLevel(data?.inspectionLevel) : '',
-      tableState: data?.country? data?.country : '',
+      tableLvl: data?.inspectionLevel
+        ? this.formatInspectionLevel(data?.inspectionLevel)
+        : '',
+      tableState: data?.country ? data?.country : '',
       /* Test */
       tableDropdownProgress: {
         expirationDays: 20,
-        percentage: 20
-      }
+        percentage: 20,
+      },
     };
   }
 
   // Format Inspection Level
-  formatInspectionLevel(inspectionLevel: string){
+  formatInspectionLevel(inspectionLevel: string) {
     let level = '';
 
-    for(let i = 0; i < inspectionLevel.length; i++){
-      if(inspectionLevel[i] !== '.'){
+    for (let i = 0; i < inspectionLevel.length; i++) {
+      if (inspectionLevel[i] !== '.') {
         level += inspectionLevel[i];
-      }else{
+      } else {
         break;
       }
     }
@@ -404,6 +409,8 @@ export class ViolationTableComponent
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setViolationData(event.tabData);
+    } else if (event.action === 'view-mode') {
+      this.activeViewMode = event.mode;
     }
   }
 

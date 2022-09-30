@@ -31,6 +31,7 @@ import { ColorFinderPipe } from '../pipes/color-finder.pipe';
 import { Options } from '@angular-slider/ngx-slider';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { LabelType } from 'ng5-slider';
+import { TaInputService } from '../../shared/ta-input/ta-input.service';
 
 @Component({
   selector: 'app-dispatchboard-tables',
@@ -252,6 +253,14 @@ export class DispatchboardTablesComponent implements OnInit {
     }
   }
 
+  onHideDropdown(e) {
+    setTimeout(() => {
+      if( this.showAddAddressField != -2 ) this.dData.dispatches[this.showAddAddressField].truck = null;
+      this.showAddAddressField = -1;
+      this.chd.detectChanges();
+    }, 200);
+  }
+
   addDriver(e) {
     if (e) {
       const driverOrCoDriver = !this.dData.dispatches[this.driverSelectOpened]
@@ -404,7 +413,7 @@ export class DispatchboardTablesComponent implements OnInit {
       driverId: oldData.driver ? oldData.driver?.id : null,
       coDriverId: oldData.coDriver ? oldData.coDriver?.id : null,
       location: oldData.location?.address ? oldData.location : null,
-      hourOfService: 0,
+      // hourOfService: 0,
       note: oldData.note,
       loadIds: [],
     };
@@ -499,7 +508,7 @@ export class DispatchboardTablesComponent implements OnInit {
   tooltip: any;
   toggleHos(tooltip: NgbTooltip, data: any, id: number) {
     this.hosHelper.hos = [];
-    if (data === null || data.hos.length === 0) {
+    if (!data.hos || data.hos.length === 0) {
       data = {
         hos: [
           {
@@ -548,8 +557,10 @@ export class DispatchboardTablesComponent implements OnInit {
     });
   }
 
-  removeHos(item){
-    this.openedHosData.hos = this.openedHosData.hos.filter(it => it.indx !== item.indx)
+  removeHos(item) {
+    this.openedHosData.hos = this.openedHosData.hos.filter(
+      (it) => it.indx !== item.indx
+    );
   }
 
   changeHosDataPositions(event, index) {

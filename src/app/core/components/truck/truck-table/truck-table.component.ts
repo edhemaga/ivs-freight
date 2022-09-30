@@ -34,13 +34,14 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 })
 export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  public tableOptions: any = {};
-  public tableData: any[] = [];
-  public viewData: any[] = [];
-  public columns: any[] = [];
-  public selectedTab = 'active';
-  public trucksActive: TruckActiveState[] = [];
-  public trucksInactive: TruckInactiveState[] = [];
+  tableOptions: any = {};
+  tableData: any[] = [];
+  viewData: any[] = [];
+  columns: any[] = [];
+  selectedTab = 'active';
+  activeViewMode: string = 'List';
+  trucksActive: TruckActiveState[] = [];
+  trucksInactive: TruckInactiveState[] = [];
   resetColumns: boolean;
   loadingPage: boolean = true;
   tableContainerWidth: number = 0;
@@ -161,7 +162,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
+          }, 2300);
         } else if (res.animation === 'add' && this.selectedTab === 'inactive') {
           this.updateDataCount();
         } else if (res.animation === 'update') {
@@ -186,7 +187,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
           this.viewData = this.viewData.map((truck: any, index: number) => {
             if (truck.id === res.id) {
-              truck.actionAnimation = 'update';
+              truck.actionAnimation = this.selectedTab === 'active' ? 'deactivate' : 'activate';
               truckIndex = index;
             }
 
@@ -200,7 +201,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.viewData.splice(truckIndex, 1);
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
         } else if (res.animation === 'delete') {
           let truckIndex: number;
 
@@ -220,7 +221,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.viewData.splice(truckIndex, 1);
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
         }
       });
 
@@ -294,17 +295,12 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   initTableOptions(): void {
     this.tableOptions = {
-      disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        viewModeActive: 'List',
-      },
-      config: {
-        showSort: true,
-        sortBy: '',
-        sortDirection: '',
-        disabledColumns: [0],
-        minWidth: 60,
+        showMoneyFilter: true,
+        viewModeOptions: [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+        ],
       },
       actions: [
         {
@@ -347,7 +343,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
           contentType: 'delete',
         },
       ],
-      export: true,
     };
   }
 
@@ -538,7 +533,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.sendTruckData();
     } else if (event.action === 'view-mode') {
-      this.tableOptions.toolbarActions.viewModeActive = event.mode;
+      this.activeViewMode = event.mode;
     }
   }
 
@@ -684,7 +679,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = closeAnimationAction(true, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
         }
       });
   }
@@ -697,7 +692,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.viewData = this.viewData.map((truck: any) => {
           response.map((id: any) => {
             if (truck.id === id) {
-              truck.actionAnimation = 'delete';
+              truck.actionAnimation = 'delete-multiple';
             }
           });
 
@@ -709,7 +704,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
           this.viewData = closeAnimationAction(true, this.viewData);
 
           clearInterval(inetval);
-        }, 1000);
+        }, 900);
 
         this.tableService.sendRowsSelected([]);
         this.tableService.sendResetSelectedColumns(true);

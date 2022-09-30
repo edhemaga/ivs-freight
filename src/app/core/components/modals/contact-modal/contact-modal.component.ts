@@ -1,7 +1,7 @@
 import {
   addressUnitValidation,
   addressValidation,
-  departmentValidation
+  departmentValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -25,13 +25,14 @@ import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file
 import { ContactTService } from '../../contacts/state/contact.service';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
-import Croppie from "croppie";
+import Croppie from 'croppie';
+import { FormService } from '../../../services/form/form.service';
 
 @Component({
   selector: 'app-contact-modal',
   templateUrl: './contact-modal.component.html',
   styleUrls: ['./contact-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class ContactModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -50,7 +51,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   public selectedAddress: any = null;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   public dropZoneConfig: DropZoneConfig = {
     dropZoneType: 'image',
@@ -79,7 +80,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private uploadFileService: TaUploadFileService,
-    private contactService: ContactTService
+    private contactService: ContactTService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -117,12 +119,18 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
+
+    this.formService.checkFormChange(this.contactForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.contactForm.reset();
         break;
       }
       case 'save': {
@@ -488,6 +496,12 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  // Checkbox card
+  public sharedContactCheckboxCard: boolean = true;
+  public toggleCheckboxCard() {
+    this.sharedContactCheckboxCard = !this.sharedContactCheckboxCard;
   }
 
   ngOnDestroy(): void {

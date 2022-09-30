@@ -4,11 +4,14 @@
   "
   [editData]="editData"
   [editName]="modalName"
-  [isModalValid]="medicalForm.valid"
+  [isModalValid]="medicalForm.valid && isFormDirty"
   [specificCaseModalName]="true"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="medicalForm" class="form-container">
+  <form
+    [formGroup]="medicalForm"
+    class="form-container form-container-without-mb"
+  >
     <div class="row first-row last-row">
       <div class="col-6">
         <app-ta-input

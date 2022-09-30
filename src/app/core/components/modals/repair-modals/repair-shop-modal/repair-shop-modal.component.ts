@@ -25,14 +25,14 @@ import {
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../../services/BANK-VERIFICATION/bankVerification.service';
-import { FormService } from '../../../../services/form/form.service';
 import { NotificationService } from '../../../../services/notification/notification.service';
+import { FormService } from '../../../../services/form/form.service';
 
 @Component({
   selector: 'app-repair-shop-modal',
   templateUrl: './repair-shop-modal.component.html',
   styleUrls: ['./repair-shop-modal.component.scss'],
-  providers: [ModalService, FormService, BankVerificationService],
+  providers: [ModalService, BankVerificationService, FormService],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -60,7 +60,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     'Saturday',
   ];
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -68,8 +68,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     private shopService: RepairTService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService,
-    private bankVerificationService: BankVerificationService
+    private bankVerificationService: BankVerificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -111,19 +111,17 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       this.destroy$
     );
 
-    // this.formService.checkFormChange(this.repairShopForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
+    this.formService.checkFormChange(this.repairShopForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.repairShopForm.reset();
         break;
       }
       case 'save': {

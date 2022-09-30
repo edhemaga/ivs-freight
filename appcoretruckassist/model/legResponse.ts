@@ -14,5 +14,7 @@
 export interface LegResponse { 
     miles?: number;
     cost?: number;
+    hours?: number;
+    minutes?: number;
 }
 

@@ -1,22 +1,23 @@
 import {
   firstNameValidation,
-  lastNameValidation, phoneFaxRegex,
+  lastNameValidation,
+  phoneFaxRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import {Subject, takeUntil} from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
-import {ApplicantTService} from "../../driver/state/applicant.service";
-import {FormService} from "../../../services/form/form.service";
-import {ApplicantResponse} from "../../../../../../appcoretruckassist";
+import { ApplicantTService } from '../../driver/state/applicant.service';
+import { FormService } from '../../../services/form/form.service';
+import { ApplicantAdminResponse } from '../../../../../../appcoretruckassist';
 
 @Component({
   selector: 'app-applicant-modal',
   templateUrl: './applicant-modal.component.html',
   styleUrls: ['./applicant-modal.component.scss'],
-  providers: [ModalService, FormService]
+  providers: [ModalService, FormService],
 })
 export class ApplicantModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -27,6 +28,8 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
 
   private addNewApplicant: boolean = false;
   public applicantFullName: string = null;
+
+  public isFormDirty: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,7 +43,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
 
-    if(this.editData.type === 'edit') {
+    if (this.editData?.type === 'edit') {
       this.editApplicant(this.editData.id);
     }
   }
@@ -59,12 +62,18 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
+
+    this.formService.checkFormChange(this.applicantForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
-    switch(data.action) {
+    switch (data.action) {
       case 'close': {
-        this.applicantForm.reset();
         break;
       }
       case 'resend email': {
@@ -95,8 +104,10 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
         }
 
         if (this.editData?.type === 'edit') {
-          this.updateApplicant(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateApplicant(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addApplicant();
           this.modalService.setModalSpinner({ action: null, status: true });
@@ -110,71 +121,95 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
   }
 
   private resendApplicationEmail(id: number) {
-    this.applicantService.resendApplicantInvite({id}).pipe(takeUntil(this.destroy$)).subscribe({
-      next: () => {
-        this.notificationService.success("Successfully resend email to applicant.", 'Success')
-      },
-      error: () => {
-        this.notificationService.error("Can't resend email to applicant.", 'Error')
-      }
-    })
+    this.applicantService
+      .resendApplicantInviteAdmin({ id })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfully resend email to applicant.',
+            'Success'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't resend email to applicant.",
+            'Error'
+          );
+        },
+      });
   }
 
   private updateApplicant(id: number) {
-    this.applicantService.updateApplicant({
-      ...this.applicantForm.value,
-      id
-    }).pipe(takeUntil(this.destroy$)).subscribe({
-      next: () => {
-        this.notificationService.success('Successfully update applicant.', 'Success');
-      },
-      error: () => {
-        this.notificationService.error("Can't update applicant.", 'Error')
-      }
-    })
+    this.applicantService
+      .updateApplicantAdmin({
+        ...this.applicantForm.value,
+        id,
+      })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfully update applicant.',
+            'Success'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Can't update applicant.", 'Error');
+        },
+      });
   }
 
   private addApplicant() {
-    this.applicantService.addApplicant(this.applicantForm.value).pipe(takeUntil(this.destroy$)).subscribe({
-      next: () => {
-        if(this.addNewApplicant) {
+    this.applicantService
+      .addApplicantAdmin(this.applicantForm.value)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          if (this.addNewApplicant) {
+            this.modalService.setModalSpinner({
+              action: 'save and add new',
+              status: false,
+            });
+            this.addNewApplicant = false;
+            this.formService.resetForm(this.applicantForm);
+          }
+
+          this.notificationService.success(
+            'Successfully add applicant.',
+            'Success'
+          );
+        },
+        error: () => {
           this.modalService.setModalSpinner({
             action: 'save and add new',
             status: false,
           });
-          this.addNewApplicant = false;
-          this.formService.resetForm(this.applicantForm)
-        }
-
-        this.notificationService.success('Successfully add applicant.', 'Success');
-      },
-      error: () => {
-        this.modalService.setModalSpinner({
-          action: 'save and add new',
-          status: false,
-        });
-        this.notificationService.error("Can't add applicant.", 'Error')
-      }
-    })
+          this.notificationService.error("Can't add applicant.", 'Error');
+        },
+      });
   }
 
   private editApplicant(id: number) {
-    this.applicantService.getApplicantById(id).pipe(takeUntil(this.destroy$)).subscribe({
-      next:(res: ApplicantResponse) => {
-        this.applicantForm.patchValue({
-          firstName: res.personalInfo.firstName,
-          lastName: res.personalInfo.lastName,
-          phone: res.personalInfo.phone,
-          email: res.personalInfo.email,
-          note: null,
-        })
+    this.applicantService
+      .getApplicantByIdAdmin(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: ApplicantAdminResponse) => {
+          this.applicantForm.patchValue({
+            firstName: res.firstName,
+            lastName: res.lastName,
+            phone: res.phone,
+            email: res.email,
+            note: res.note,
+          });
 
-        this.applicantFullName = res.personalInfo.firstName.concat(' ', res.personalInfo.lastName)
-      },
-      error: () => {
-        this.notificationService.error("Can't load applicant.", 'Error')
-      }
-    })
+          this.applicantFullName = res.firstName.concat(' ', res.lastName);
+        },
+        error: () => {
+          this.notificationService.error("Can't load applicant.", 'Error');
+        },
+      });
   }
 
   ngOnDestroy(): void {

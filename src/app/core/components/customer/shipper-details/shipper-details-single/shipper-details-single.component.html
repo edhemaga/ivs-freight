@@ -81,7 +81,6 @@
           <app-ta-custom-card
             *ngFor="let shipperContact of shipperContacts; trackBy: identity"
             [bodyTemplate]="'card'"
-            [animationsDisabled]="false"
             [hasDivider]="false"
             [cardName]="shipperContact.department.name"
             [isCardOpen]="true"

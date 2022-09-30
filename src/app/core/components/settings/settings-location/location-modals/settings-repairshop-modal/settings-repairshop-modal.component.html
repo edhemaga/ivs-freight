@@ -4,7 +4,7 @@
   "
   [editData]="editData"
   [editName]="repairShopName"
-  [isModalValid]="repairShopForm.valid"
+  [isModalValid]="repairShopForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <app-ta-tab-switch
@@ -16,12 +16,13 @@
 
   <form
     [formGroup]="repairShopForm"
-    class="form-container"
-    [ngClass]="
-      selectedTab === 1
-        ? 'form-container-mt-12'
-        : 'row-settings-location-additional'
-    "
+    class="form-container form-container-with-inputs"
+    [ngClass]="{
+      'form-container-mt-12': selectedTab === 1,
+      'row-settings-location-additional': selectedTab === 2,
+      'form-container-without-mb': selectedTab === 1 && !isServiceCardOpen,
+      'form-container-with-card': selectedTab === 1 && isServiceCardOpen
+    }"
   >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
@@ -50,7 +51,7 @@
                       label: 'Shop Name',
                       isRequired: true,
                       textTransform: 'uppercase',
-                      autoFocus: editData?.type !== 'edit' ? true : false,
+                      autoFocus: editData?.type !== 'edit',
                       minLength: 2,
                       maxLength: 64
                     }"
@@ -81,7 +82,7 @@
                     [inputConfig]="{
                       name: 'address-unit',
                       type: 'text',
-                      label: 'Unit #',
+                      label: 'Unit No.',
                       textTransform: 'uppercase',
                       minLength: 1,
                       maxLength: 10
@@ -103,7 +104,8 @@
                         label: 'Phone',
                         placeholderIcon: 'phone',
                         isRequired: true,
-                        mask: '(000) 000-0000'
+                        mask: '(000) 000-0000',
+                        maxLength: 14
                       }"
                     ></app-ta-input>
                   </div>
@@ -151,9 +153,11 @@
         </div>
         <!-- Repair Shop Servies -->
         <app-ta-custom-card
-          [hasCounter]="pickedServices() ? pickedServices() : '0'"
+          [hasCounter]="pickedServices() ? pickedServices() : 0"
           [cardName]="'Service'"
           [isCardOpen]="true"
+          (onOpenCard)="isServiceCardOpen = $event"
+          [animationMarginParams]="{ marginTop: '12px', marginBottom: '0px' }"
         >
           <div class="repair-shop-services">
             <div

@@ -17,25 +17,23 @@
           class="repair-icon"
           src="assets/svg/common/ic_phone.svg"
         ></svg-icon>
-       
-          <app-ta-copy [copyValue]="shopResponse?.phone"></app-ta-copy>
-         
-      
+
+        <app-ta-copy [copyValue]="shopResponse?.phone"></app-ta-copy>
       </div>
       <div class="repair-information-item" *ngIf="shopResponse?.email">
         <svg-icon
           class="repair-icon"
           src="assets/svg/common/ic_email.svg"
         ></svg-icon>
-       <app-ta-copy [copyValue]="shopResponse?.email"></app-ta-copy>
+        <app-ta-copy [copyValue]="shopResponse?.email"></app-ta-copy>
       </div>
       <div class="repair-information-item">
         <svg-icon
           class="repair-icon"
           src="assets/svg/common/ic_address.svg"
         ></svg-icon>
-      
-        <app-ta-copy [copyValue]=" shopResponse?.address?.address"></app-ta-copy>
+
+        <app-ta-copy [copyValue]="shopResponse?.address?.address"></app-ta-copy>
       </div>
     </div>
   </app-ta-details-header-card>
@@ -43,7 +41,6 @@
     <div class="repair-cards">
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="false"
         [cardName]="'Working Hours'"
         [isCardOpen]="true"
@@ -51,29 +48,51 @@
         <div class="working-hours-container" *ngIf="shopResponse?.openHours">
           <div class="open-now-wrapper" *ngIf="shopResponse?.openHoursToday">
             <div class="open-now-icon-text">
-              <div class="open-header">{{shopResponse?.openHoursToday==='Closed'?'Closed':'Open Now'}}</div>
+              <div class="open-header">
+                {{
+                  shopResponse?.openHoursToday === "Closed"
+                    ? "Closed"
+                    : "Open Now"
+                }}
+              </div>
               <svg-icon
                 class="icon-repair-shop-circle"
-                [ngClass]="{'close-repair':shopResponse?.openHoursToday==='Closed'}"
+                [ngClass]="{
+                  'close-repair': shopResponse?.openHoursToday === 'Closed'
+                }"
                 src="assets/svg/common/ic_open-now.svg"
               ></svg-icon>
             </div>
-            <div *ngIf="shopResponse?.openHoursToday!='Closed'" class="open-time">
-              {{ shopResponse?.openHoursToday.substring(0,5) + ' AM' }}  {{ shopResponse?.openHoursToday.substring(6,13) + ' PM' }}
+            <div
+              *ngIf="shopResponse?.openHoursToday != 'Closed'"
+              class="open-time"
+            >
+              {{ shopResponse?.openHoursToday.substring(0, 5) + " AM" }}
+              {{ shopResponse?.openHoursToday.substring(6, 13) + " PM" }}
             </div>
-            <div *ngIf="shopResponse?.openHoursToday==='Closed'" class="open-time-next">
-             Opens in {{shopResponse?.openHours[1]?.dayOfWeek}}  {{ shopResponse?.openHours[1]?.startTime + ' AM' }}
+            <div
+              *ngIf="shopResponse?.openHoursToday === 'Closed'"
+              class="open-time-next"
+            >
+              Opens in {{ shopResponse?.openHours[1]?.dayOfWeek }}
+              {{ shopResponse?.openHours[1]?.startTime + " AM" }}
             </div>
           </div>
           <div class="open-hours-wrapper">
-            <div class="working-days" *ngIf="shopResponse?.openHours[1]?.startTime">
+            <div
+              class="working-days"
+              *ngIf="shopResponse?.openHours[1]?.startTime"
+            >
               <div class="open-header">Monday - Friday</div>
               <div class="open-working-days-value">
                 {{ shopResponse?.openHours[1]?.startTime }} AM -
                 {{ shopResponse?.openHours[1]?.endTime }} PM
               </div>
             </div>
-            <div class="working-days" *ngIf="shopResponse?.openHours[6]?.startTime ">
+            <div
+              class="working-days"
+              *ngIf="shopResponse?.openHours[6]?.startTime"
+            >
               <div class="open-header">Saturday</div>
               <div class="open-working-days-value">
                 {{ shopResponse?.openHours[6]?.startTime }} AM -
@@ -81,14 +100,21 @@
               </div>
             </div>
 
-            <div class="working-days" *ngIf="!shopResponse?.openHours[6]?.startTime && ! shopResponse?.openHours[0]?.startTime">
+            <div
+              class="working-days"
+              *ngIf="
+                !shopResponse?.openHours[6]?.startTime &&
+                !shopResponse?.openHours[0]?.startTime
+              "
+            >
               <div class="open-header">Saturday - Sunday</div>
-              <div class="open-working-days-value">
-               Closed
-              </div>
+              <div class="open-working-days-value">Closed</div>
             </div>
           </div>
-          <div *ngIf="shopResponse?.openHours[6]?.startTime" class="open-now-wrapper sunday">
+          <div
+            *ngIf="shopResponse?.openHours[6]?.startTime"
+            class="open-now-wrapper sunday"
+          >
             <div class="open-header">Sunday</div>
             <div class="open-working-days-value">
               {{
@@ -103,7 +129,6 @@
 
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [cardName]="'Service'"
         [hasCounter]="count"
         [isCardOpen]="true"
@@ -133,7 +158,6 @@
       </app-ta-custom-card>
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [cardName]="'Repair Expenses'"
         [isCardOpen]="true"
         [tooltipName]="'View in Modal'"
@@ -245,7 +269,6 @@
       <div class="note-cards">
         <app-ta-input-note
           [formControl]="noteControl"
-          [isVisibleSecondDivider]="false"
           [isVisibleArrow]="true"
           [minRows]="1"
           [isVisibleDivider]="false"

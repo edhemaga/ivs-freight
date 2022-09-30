@@ -47,14 +47,15 @@ export class CustomerTableComponent
 
   @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
 
-  public tableOptions: any = {};
-  public tableData: any[] = [];
-  public viewData: any[] = [];
-  public columns: any[] = [];
-  public brokers: BrokerState[] = [];
-  public shipper: ShipperState[] = [];
-  public selectedTab = 'active';
-  public resetColumns: boolean;
+  tableOptions: any = {};
+  tableData: any[] = [];
+  viewData: any[] = [];
+  columns: any[] = [];
+  brokers: BrokerState[] = [];
+  shipper: ShipperState[] = [];
+  selectedTab = 'active';
+  activeViewMode: string = 'List';
+  resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
   backFilterQuery = {
@@ -272,18 +273,11 @@ export class CustomerTableComponent
 
   public initTableOptions(): void {
     this.tableOptions = {
-      disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: false,
-        showMapView: this.selectedTab === 'active' ? false : true,
-        viewModeActive: 'List',
-      },
-      config: {
-        showSort: true,
-        sortBy: '',
-        sortDirection: '',
-        disabledColumns: [0],
-        minWidth: 60,
+        showMoneyFilter: this.selectedTab === 'active',
+        showLocationFilter: this.selectedTab === 'inactive',
+        showStateFilter: this.selectedTab === 'inactive',
+        viewModeOptions: this.getViewModeOptions(),
       },
       actions: [
         {
@@ -309,8 +303,20 @@ export class CustomerTableComponent
           svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
         },
       ],
-      export: true,
     };
+  }
+
+  getViewModeOptions() {
+    return this.selectedTab === 'active'
+      ? [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+        ]
+      : [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+          { name: 'Map', active: this.activeViewMode === 'Map' },
+        ];
   }
 
   sendCustomerData() {
@@ -395,7 +401,7 @@ export class CustomerTableComponent
       // for (let i = 0; i < 100; i++) {
       //   this.viewData.push(this.viewData[0]);
       // }
-    }else{
+    } else {
       this.viewData = [];
     }
   }
@@ -582,7 +588,7 @@ export class CustomerTableComponent
 
       this.sendCustomerData();
     } else if (event.action === 'view-mode') {
-      this.tableOptions.toolbarActions.viewModeActive = event.mode;
+      this.activeViewMode = event.mode;
     }
   }
 
@@ -696,7 +702,7 @@ export class CustomerTableComponent
         entityTypeRatingId: this.selectedTab === 'active' ? 1 : 3,
         entityTypeId: event.data.id,
         thumb: event.subType === 'like' ? 1 : -1,
-        tableData: event.data
+        tableData: event.data,
       };
 
       this.reviewRatingService
@@ -750,7 +756,7 @@ export class CustomerTableComponent
       this.viewData = closeAnimationAction(false, this.viewData);
 
       clearInterval(inetval);
-    }, 1000);
+    }, 2300);
   }
 
   // Update Shipper Or Broker In Viewdata
@@ -787,7 +793,7 @@ export class CustomerTableComponent
       this.viewData = closeAnimationAction(true, this.viewData);
 
       clearInterval(inetval);
-    }, 1000);
+    }, 900);
   }
 
   // Multiple Delete Shipper Or Broker From Viewdata
@@ -795,7 +801,7 @@ export class CustomerTableComponent
     this.viewData = this.viewData.map((data: any) => {
       response.map((r: any) => {
         if (data.id === r.id) {
-          data.actionAnimation = 'delete';
+          data.actionAnimation = 'delete-multiple';
         }
       });
 
@@ -808,7 +814,7 @@ export class CustomerTableComponent
       this.viewData = closeAnimationAction(true, this.viewData);
 
       clearInterval(inetval);
-    }, 1000);
+    }, 900);
 
     this.tableService.sendRowsSelected([]);
     this.tableService.sendResetSelectedColumns(true);

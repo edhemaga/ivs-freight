@@ -1,23 +1,14 @@
 <div class="table-container">
-  <div
-    class="table-toolbar-container"
-    [ngClass]="{
-      'toolbar-relative': tableOptions.toolbarActions.viewModeActive == 'Map'
-    }"
-  >
-    <app-truckassist-table-toolbar
-      (toolBarAction)="onToolBarAction($event)"
-      [options]="tableOptions"
-      [tableData]="tableData"
-      [selectedTab]="selectedTab"
-      [columns]="columns"
-      [tableContainerWidth]="tableContainerWidth"
-    ></app-truckassist-table-toolbar>
-  </div>
-  <div
-    class="table-list-container"
-    *ngIf="tableOptions.toolbarActions.viewModeActive !== 'Map'"
-  >
+  <app-truckassist-table-toolbar
+    (toolBarAction)="onToolBarAction($event)"
+    [options]="tableOptions"
+    [tableData]="tableData"
+    [selectedTab]="selectedTab"
+    [columns]="columns"
+    [tableContainerWidth]="tableContainerWidth"
+  ></app-truckassist-table-toolbar>
+
+  <div *ngIf="activeViewMode == 'List'">
     <app-truckassist-table-head
       [options]="tableOptions"
       [viewData]="viewData"
@@ -37,10 +28,7 @@
     ></app-truckassist-table-body>
   </div>
 
-  <div
-    class="customer-map-container"
-    *ngIf="tableOptions.toolbarActions.viewModeActive == 'Map'"
-  >
+  <div class="customer-map-container" *ngIf="activeViewMode == 'Map'">
     <app-map-list
       [type]="'shipper'"
       [columns]="columns"

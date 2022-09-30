@@ -17,7 +17,7 @@ export class RepairTrailerResolver implements Resolve<RepairTrailerState> {
 
   resolve(): Observable<RepairTrailerState | boolean> {
     return this.repairService
-      .getRepairList(undefined, undefined, 2, undefined, undefined, undefined, 1, 25)
+      .getRepairList(undefined, 2, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 1, 25)
       .pipe(
         catchError(() => {
           return of('No repair trailers data...');

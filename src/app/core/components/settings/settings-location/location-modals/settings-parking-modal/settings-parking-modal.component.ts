@@ -11,11 +11,11 @@ import { debounceTime, Subject, takeUntil } from 'rxjs';
 
 import { SettingsLocationService } from '../../../state/location-state/settings-location.service';
 import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
-import { FormService } from '../../../../../services/form/form.service';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
 import { rentValidation } from '../../../../shared/ta-input/ta-input.regex-validations';
+import { FormService } from '../../../../../services/form/form.service';
 import {
   addressValidation,
   addressUnitValidation,
@@ -36,7 +36,7 @@ import {
   templateUrl: './settings-parking-modal.component.html',
   styleUrls: ['./settings-parking-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [ModalService, FormService],
+  providers: [ModalService],
 })
 export class SettingsParkingModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -109,17 +109,20 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
   public isPhoneExtExist: boolean = false;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   public parkingName: string = null;
+
+  public isFinanceCardOpen: boolean = true;
+  public isParkingCardOpen: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService,
-    private settingsLocationService: SettingsLocationService
+    private settingsLocationService: SettingsLocationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -158,13 +161,12 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       this.destroy$
     );
 
-    // this.formService.checkFormChange(this.parkingForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
+    this.formService.checkFormChange(this.parkingForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public tabChange(event: any, action?: string): void {
@@ -198,10 +200,13 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       default: {
         this.selectedTab = event.id;
         let dotAnimation = document.querySelector('.animation-two-tabs');
-        this.animationObject = {
-          value: this.selectedTab,
-          params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-        };
+        const animationTabTimeout = setTimeout(() => {
+          this.animationObject = {
+            value: this.selectedTab,
+            params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+          };
+          clearTimeout(animationTabTimeout);
+        });
         break;
       }
     }
@@ -210,7 +215,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }): void {
     switch (data.action) {
       case 'close': {
-        this.parkingForm.reset();
         break;
       }
       case 'save': {
@@ -219,8 +223,10 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData?.type === 'edit') {
-          this.updateParking(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateParking(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addParking();
           this.modalService.setModalSpinner({ action: null, status: true });

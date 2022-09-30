@@ -41,6 +41,7 @@ export class AccidentTableComponent
   viewData: any[] = [];
   columns: any[] = [];
   selectedTab = 'active';
+  activeViewMode: string = 'List';
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
@@ -167,13 +168,15 @@ export class AccidentTableComponent
             return contact;
           });
 
+          this.updateDataCount();
+
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
+          }, 2300);
 
-          this.updateDataCount(); */
+           */
         }
         // Update Accident
         else if (res.animation === 'update') {
@@ -207,14 +210,16 @@ export class AccidentTableComponent
             return contact;
           });
 
+          this.updateDataCount();
+          
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
 
             this.viewData.splice(contactIndex, 1);
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
 
-          this.updateDataCount(); */
+           */
         }
       });
 
@@ -230,7 +235,7 @@ export class AccidentTableComponent
               this.viewData = this.viewData.map((contact: any) => {
                 response.map((r: any) => {
                   if (contact.id === r.id) {
-                    contact.actionAnimation = 'delete';
+                    contact.actionAnimation = 'delete-multiple';
                   }
                 });
 
@@ -243,7 +248,7 @@ export class AccidentTableComponent
                 this.viewData = closeAnimationAction(true, this.viewData);
 
                 clearInterval(inetval);
-              }, 1000);
+              }, 900);
 
               this.tableService.sendRowsSelected([]);
               this.tableService.sendResetSelectedColumns(true);
@@ -273,19 +278,19 @@ export class AccidentTableComponent
   // Table Options
   initTableOptions(): void {
     this.tableOptions = {
-      disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        hideViewMode: false,
-        showMapView: true,
-        viewModeActive: 'List',
-      },
-      config: {
-        showSort: true,
-        sortBy: '',
-        sortDirection: '',
-        disabledColumns: [0],
-        minWidth: 60,
+        showTimeFilter: this.selectedTab === 'active',
+        showLocationFilter: this.selectedTab === 'active',
+        showDriverFilter: this.selectedTab === 'active',
+        showTruckFilter: this.selectedTab === 'active',
+        showTrailerFilter: this.selectedTab === 'active',
+        showInjuryFilter: this.selectedTab === 'active',
+        showTowingFilter: this.selectedTab === 'active',
+        viewModeOptions: [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+          { name: 'Map', active: this.activeViewMode === 'Map' },
+        ],
       },
       actions: [
         {
@@ -308,7 +313,6 @@ export class AccidentTableComponent
           svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
         },
       ],
-      export: true,
     };
   }
 
@@ -434,12 +438,10 @@ export class AccidentTableComponent
       this.modalService.openModal(AccidentModalComponent, { size: 'large-xl' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
-      this.setAccidentData(event.tabData);
+      
+      this.sendAccidentData();
     } else if (event.action === 'view-mode') {
-      this.tableOptions.toolbarActions.viewModeActive = event.mode;
-      if (event.mode == 'Map') {
-        //this.mapsComponent.markersDropAnimation();
-      }
+      this.activeViewMode = event.mode;
     }
   }
 

@@ -63,8 +63,10 @@ export class TruckassistTableHeadComponent
     this.tableService.currentScroll
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: number) => {
-        let scroll = document.getElementById('scroll');
-        scroll.scrollLeft = response;
+        if (this.viewData.length) {
+          let scroll = document.getElementById('scroll');
+          scroll.scrollLeft = response;
+        }
       });
 
     // Rows Selected

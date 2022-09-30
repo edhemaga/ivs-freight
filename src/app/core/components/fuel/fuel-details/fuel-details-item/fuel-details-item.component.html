@@ -35,7 +35,6 @@
       <div class="repair-cards">
         <app-ta-custom-card
           [bodyTemplate]="'card'"
-          [animationsDisabled]="false"
           [hasDivider]="false"
           [cardName]="'Last Fuel Price'"
           [isCardOpen]="true"
@@ -50,31 +49,31 @@
                   <div
                     class="fuel-price-level first-color"
                     [ngStyle]="{
-                      background: fuelPriceColors[0]
+                      'background-color': fuelPriceColors[0]
                     }"
                   ></div>
                   <div
                     class="fuel-price-level"
                     [ngStyle]="{
-                      background: fuelPriceColors[1]
+                      'background-color': fuelPriceColors[1]
                     }"
                   ></div>
                   <div
                     class="fuel-price-level"
                     [ngStyle]="{
-                      background: fuelPriceColors[2]
+                      'background-color': fuelPriceColors[2]
                     }"
                   ></div>
                   <div
                     class="fuel-price-level"
                     [ngStyle]="{
-                      background: fuelPriceColors[3]
+                      'background-color': fuelPriceColors[3]
                     }"
                   ></div>
                   <div
                     class="fuel-price-level last-color"
                     [ngStyle]="{
-                      background: fuelPriceColors[4]
+                      'background-color': fuelPriceColors[4]
                     }"
                   ></div>
                   <svg-icon
@@ -98,31 +97,31 @@
                   <div
                     class="fuel-price-level first-color"
                     [ngStyle]="{
-                      background: fuelPriceColors[0]
+                      'background-color': fuelPriceColors[0]
                     }"
                   ></div>
                   <div
                     class="fuel-price-level"
                     [ngStyle]="{
-                      background: fuelPriceColors[1]
+                      'background-color': fuelPriceColors[1]
                     }"
                   ></div>
                   <div
                     class="fuel-price-level"
                     [ngStyle]="{
-                      background: fuelPriceColors[2]
+                      'background-color': fuelPriceColors[2]
                     }"
                   ></div>
                   <div
                     class="fuel-price-level"
                     [ngStyle]="{
-                      background: fuelPriceColors[3]
+                      'background-color': fuelPriceColors[3]
                     }"
                   ></div>
                   <div
                     class="fuel-price-level last-color"
                     [ngStyle]="{
-                      background: fuelPriceColors[4]
+                      'background-color': fuelPriceColors[4]
                     }"
                   ></div>
                   <svg-icon
@@ -141,7 +140,6 @@
         </app-ta-custom-card>
         <app-ta-custom-card
           [bodyTemplate]="'card'"
-          [animationsDisabled]="false"
           [hasDivider]="true"
           [cardName]="'Fuel Expense'"
           [tooltipName]="'View in Modal'"
@@ -151,7 +149,7 @@
           <div class="charts-template perfomance">
             <app-ta-tab-switch
               [tabs]="tabsFuel"
-              [type]="'type2-modal-popup'" 
+              [type]="'type2-modal-popup'"
               (switchClicked)="changeTab($event)"
             >
             </app-ta-tab-switch>
@@ -255,7 +253,6 @@
         <div class="note-cards">
           <app-ta-input-note
             [formControl]="noteControl"
-            [isVisibleSecondDivider]="false"
             [isVisibleArrow]="true"
             [minRows]="1"
             [isVisibleDivider]="false"

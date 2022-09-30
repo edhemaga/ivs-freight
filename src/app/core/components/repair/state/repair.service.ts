@@ -3,7 +3,7 @@ import { RepairModalResponse } from './../../../../../../appcoretruckassist/mode
 
 import { Injectable, OnDestroy } from '@angular/core';
 import { RepairService } from 'appcoretruckassist/api/repair.service';
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
+import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import {
   CreateRepairCommand,
   CreateResponse,
@@ -164,11 +164,14 @@ export class RepairTService implements OnDestroy {
   // Get Repair List
   public getRepairList(
     repairShopId?: number,
-    repairType?: number,
     unitType?: number,
     dateFrom?: string,
     dateTo?: string,
     isPM?: number,
+    categoryIds?: Array<number>,
+    pmTruckTitles?: Array<string>,
+    pmTrailerTitles?: Array<string>,
+    isOrder?: boolean,
     pageIndex?: number,
     pageSize?: number,
     companyId?: number,
@@ -179,11 +182,14 @@ export class RepairTService implements OnDestroy {
   ): Observable<RepairListResponse> {
     return this.repairService.apiRepairListGet(
       repairShopId,
-      repairType,
       unitType,
       dateFrom,
       dateTo,
       isPM,
+      categoryIds,
+      pmTruckTitles,
+      pmTrailerTitles,
+      isOrder,
       pageIndex,
       pageSize,
       companyId,

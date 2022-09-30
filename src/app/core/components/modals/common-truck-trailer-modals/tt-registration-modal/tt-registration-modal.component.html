@@ -11,10 +11,13 @@
       : 'Truck ' + editData?.payload?.truckNumber
   "
   [specificCaseModalName]="true"
-  [isModalValid]="registrationForm.valid"
+  [isModalValid]="registrationForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="registrationForm" class="form-container">
+  <form
+    [formGroup]="registrationForm"
+    class="form-container form-container-without-mb"
+  >
     <div class="row">
       <div class="col-6">
         <app-ta-input

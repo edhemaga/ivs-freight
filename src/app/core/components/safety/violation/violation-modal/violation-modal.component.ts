@@ -8,22 +8,23 @@ import {
   addressValidation,
   departmentValidation,
   descriptionValidation,
+  fullNameValidation,
   phoneFaxRegex,
   vinNumberValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../../services/form/form.service';
-import { NotificationService } from '../../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-violation-modal',
   templateUrl: './violation-modal.component.html',
   styleUrls: ['./violation-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [FormService, ModalService],
+  providers: [ModalService, FormService],
 })
 export class ViolationModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
+
   @Input() editData: any;
 
   public violationForm: FormGroup;
@@ -92,6 +93,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       active: false,
     },
   ];
+  public isSpecialChecksOpen: boolean = true;
 
   public animationObject = {
     value: this.selectedTab,
@@ -107,13 +109,12 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private notificationService: NotificationService,
     private formService: FormService
   ) {}
 
@@ -123,92 +124,96 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     if (this.editData) {
       this.editViolationById(this.editData.id);
     }
+
+    this.addViolation({
+      code: '392.2-SLLS3',
+      category: 'Vehicle Maintenance',
+      unit: 'Trailer',
+      sw: '10+2',
+      oos: true,
+      sms: false,
+      description: 'Allowing or requiring a driver to use i…',
+    });
   }
 
   private createForm() {
     this.violationForm = this.formBuilder.group({
       report: [null, Validators.required],
       inspectionLevel: [null],
-      hmInspectionLevel: [null],
+      hmInspectionType: [null],
       country: [null],
       state: [null],
+      startTime: [null],
+      endTime: [null],
       date: [null],
-      start: [null],
-      end: [null],
-      driverName: [null],
+      // Driver
+      driverName: [null, [...fullNameValidation]],
       driverLicenceNumber: [null],
       driverState: [null],
       driverDOB: [null],
-      coDriverName: [null],
+      // Co Driver
+      coDriverName: [null, [...fullNameValidation]],
       coDriverLicenceNumber: [null],
       coDriverState: [null],
       coDriverDOB: [null],
-      truckUnit: [null],
-      truckType: [null],
-      truckMake: [null],
-      truckPlateNumber: [null],
-      truckState: [null],
-      truckVIN: [null, [...vinNumberValidation]],
-      trailerUnit: [null],
-      trailerType: [null],
-      trailerMake: [null],
-      trailerPlateNumber: [null],
-      trailerState: [null],
-      trailerVIN: [null, [...vinNumberValidation]],
-      violations: this.formBuilder.array([
-        this.formBuilder.group({
-          code: ['392.2-SLLS3'],
-          categoryId: ['Vehicle Maintenance'],
-          unit: ['Trailer'],
-          sw: ['10+2'],
-          oos: [true],
-          sms: [false],
-          description: [
-            'Allowing or requiring a driver to use i…',
-            [...descriptionValidation],
-          ],
-        }),
-      ]),
+      // Truck
+      truck_Unit: [null],
+      truck_Type: [null],
+      truck_Make: [null],
+      truck_PlateNo: [null],
+      truck_State: [null],
+      truck_VIN: [null, [...vinNumberValidation]],
+      // Trailer
+      trailer_Unit: [null],
+      trailer_Type: [null],
+      trailer_Make: [null],
+      trailer_PlateNo: [null],
+      trailer_State: [null],
+      trailer_VIN: [null, [...vinNumberValidation]],
+      // Violation
+      violations: this.formBuilder.array([]),
       note: [null],
       policeDepartment: [null, [...departmentValidation]],
       policeOfficer: [null],
-      badgeNumber: [null],
-      addressAuthority: [null, [...addressValidation]],
-      phoneAuthority: [null],
-      faxAuthority: [null, phoneFaxRegex],
+      badgeNo: [null],
+      address: [null, [...addressValidation]],
+      phone: [null, phoneFaxRegex],
+      fax: [null, phoneFaxRegex],
       facility: [null],
       highway: [null],
       milePost: [null],
-      originAddress: [null, [...addressValidation]],
-      destinationAddress: [null, [...addressValidation]],
+      location: [null, [...addressValidation]],
+      destination: [null, [...addressValidation]],
       customer: [null],
-      bol: [null],
+      boL: [null],
       cargo: [null],
     });
 
-    // this.formService.checkFormChange(this.violationForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
+    this.formService.checkFormChange(this.violationForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
     let dotAnimation = document.querySelector('.animation-two-tabs');
-    this.animationObject = {
-      value: this.selectedTab,
-      params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-    };
+
+    const animationTabTimeout = setTimeout(() => {
+      this.animationObject = {
+        value: this.selectedTab,
+        params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+      };
+      clearTimeout(animationTabTimeout);
+    });
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {
     // Update
     switch (data.action) {
       case 'close': {
-        this.violationForm.reset();
         break;
       }
       case 'save': {
@@ -217,8 +222,10 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData) {
-          this.updateViolation(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateViolation(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         }
         break;
       }
@@ -230,6 +237,38 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
   public get violations(): FormArray {
     return this.violationForm.get('violations') as FormArray;
+  }
+
+  public createViolation(data: {
+    code: string;
+    category: string;
+    unit: string;
+    sw: string;
+    oos: boolean;
+    sms: boolean;
+    description: string;
+  }) {
+    return this.formBuilder.group({
+      code: [data.code],
+      category: [data.category],
+      unit: [data.unit],
+      sw: [data.sw],
+      oos: [data.oos],
+      sms: [data.sms],
+      description: [data.description, [...descriptionValidation]],
+    });
+  }
+
+  public addViolation(data: {
+    code: string;
+    category: string;
+    unit: string;
+    sw: string;
+    oos: boolean;
+    sms: boolean;
+    description: string;
+  }) {
+    this.violations.push(this.createViolation(data));
   }
 
   public onHandleAddress(

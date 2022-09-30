@@ -76,6 +76,7 @@
                 isRequired: true,
                 placeholderIcon: 'phone',
                 mask: '(000) 000-0000',
+                maxLength: 14,
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
               [incorrectValue]="false"
@@ -138,7 +139,7 @@
               [inputConfig]="{
                 name: 'address-unit',
                 type: 'text',
-                label: 'Unit #',
+                label: 'Unit No.',
                 minLength: 1,
                 maxLength: 10,
                 textTransform: 'uppercase',
@@ -220,6 +221,7 @@
                 isRequired: true,
                 placeholderIcon: 'phone',
                 mask: '(000) 000-0000',
+                maxLength: 14,
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
               [incorrectValue]="false"
@@ -282,7 +284,7 @@
               [inputConfig]="{
                 name: 'address-unit',
                 type: 'text',
-                label: 'Unit #',
+                label: 'Unit No.',
                 minLength: 1,
                 maxLength: 10,
                 textTransform: 'uppercase',

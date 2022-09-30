@@ -42,7 +42,6 @@ import {
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
-import { FormService } from '../../../../../services/form/form.service';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../../../services/BANK-VERIFICATION/bankVerification.service';
 import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
@@ -54,6 +53,7 @@ import {
   phoneFaxRegex,
 } from '../../../../shared/ta-input/ta-input.regex-validations';
 import { convertNumberInThousandSep } from '../../../../../utils/methods.calculations';
+import { FormService } from '../../../../../services/form/form.service';
 import {
   startingValidation,
   cvcValidation,
@@ -64,7 +64,7 @@ import {
   templateUrl: './settings-basic-modal.component.html',
   styleUrls: ['./settings-basic-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [ModalService, FormService, BankVerificationService],
+  providers: [ModalService, BankVerificationService, FormService],
 })
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -196,7 +196,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   // Payroll tab
   public truckAssistText: string = "Use Truck Assist's ACH Payout";
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   // Dropdowns
   public banks: any[] = [];
@@ -253,9 +253,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService,
     private settingsCompanyService: SettingsCompanyService,
-    private bankVerificationService: BankVerificationService
+    private bankVerificationService: BankVerificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -420,19 +420,18 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     if (['new-division', 'edit-division'].includes(this.editData.type)) {
       this.companyForm.get('email').setValidators(Validators.required);
     }
-    // this.formService.checkFormChange(this.companyForm);
 
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
+    this.formService.checkFormChange(this.companyForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.companyForm.reset();
         break;
       }
       case 'save': {
@@ -446,8 +445,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.addCompanyDivision();
             this.modalService.setModalSpinner({ action: null, status: true });
           } else {
-            this.updateCompanyDivision(this.editData.company.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
+            if (this.isFormDirty) {
+              this.updateCompanyDivision(this.editData.company.id);
+              this.modalService.setModalSpinner({ action: null, status: true });
+            }
           }
         } else {
           this.updateCompany();
@@ -472,10 +473,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   public tabChange(event: any): void {
     this.selectedTab = event.id;
     let dotAnimation = document.querySelector('.animation-three-tabs');
-    this.animationObject = {
-      value: this.selectedTab,
-      params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-    };
+    const animationTabTimeout = setTimeout(() => {
+      this.animationObject = {
+        value: this.selectedTab,
+        params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+      };
+      clearTimeout(animationTabTimeout);
+    });
 
     this.tabs = this.tabs.map((item) => {
       return {
@@ -1975,6 +1979,12 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       this.companyForm.get('logo').patchValue(null);
       this.companyForm.get('logo').setErrors(null);
     }
+  }
+
+  // Checkbox Card
+  public useACHCheckboxCard: boolean = true;
+  public toggleCheckboxCard() {
+    this.useACHCheckboxCard = !this.useACHCheckboxCard;
   }
 
   ngOnDestroy(): void {

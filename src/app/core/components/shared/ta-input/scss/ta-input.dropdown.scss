@@ -1,25 +1,42 @@
+@import "./ta-input.colors.scss";
+
 //-------------------- Input Dropdown arrow -----------------
 .input-dropdown-arrow {
   position: absolute;
-  right: 4px;
+  right: 6px;
   top: 3px;
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   line-height: 18px;
   display: inline-block;
   cursor: pointer;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   z-index: 10;
+
+  &.datetimeclass{
+    display: flex;
+    align-items: center;
+    width: 40px;
+    height: 26px;
+    right: 0px;
+    top: 0px;
+    justify-content: flex-end;
+    padding-right: 6px;
+
+    z-index: 21 !important;
+
+    svg{
+      width: auto;
+    }
+  }
 
   svg {
     width: 100%;
     transform: rotate(0deg);
     transition: all 0.3s ease-in-out;
     path {
-      fill: #aaaaaa;
+      fill: $input-dropdown-path-fill-normal;
       transition: all 0.3s ease-in-out;
     }
   }
@@ -27,7 +44,7 @@
   &:hover {
     svg {
       path {
-        fill: #6c6c6c;
+        fill: $input-dropdown-path-fill-normal-hover;
         transition: all 0.3s ease-in-out;
       }
     }
@@ -38,7 +55,7 @@
       transform: rotate(180deg);
       transition: all 0.2s ease-in-out;
       path {
-        fill: #dadada;
+        fill: $input-dropdown-active-path-fill-normal;
         transition: all 0.2s ease-in-out;
       }
     }
@@ -46,7 +63,7 @@
     &:hover {
       svg {
         path {
-          fill: #f7f7f7;
+          fill: $input-dropdown-active-path-fill-normal-hover;
           transition: all 0.3s ease-in-out;
         }
       }
@@ -56,7 +73,7 @@
       z-index: 1;
       svg {
         path {
-          fill: #dadada !important;
+          fill: $input-dropdown-active-path-fill-normal !important;
         }
       }
     }
@@ -65,7 +82,7 @@
   &.invalid {
     svg {
       path {
-        fill: #ffcdd2;
+        fill: $input-dropdown-path-fill-invalid-focus;
         transition: all 0.3s ease-in-out;
       }
     }
@@ -73,7 +90,7 @@
     &:hover {
       svg {
         path {
-          fill: #fffafa;
+          fill: $input-dropdown-path-fill-invalid-focus-hover;
           transition: all 0.3s ease-in-out;
         }
       }
@@ -83,7 +100,7 @@
   &.invalid-focus-out-required {
     svg {
       path {
-        fill: #e57373;
+        fill: $input-dropdown-path-fill-invalid;
         transition: all 0.3s ease-in-out;
       }
     }
@@ -92,7 +109,7 @@
   &.valid {
     svg {
       path {
-        fill: #d4dff4;
+        fill: $input-dropdown-path-fill-valid-focus;
         transition: all 0.3s ease-in-out;
       }
     }
@@ -100,7 +117,7 @@
     &:hover {
       svg {
         path {
-          fill: #f5fafc;
+          fill: $input-dropdown-path-fill-valid-focus-hover;
           transition: all 0.3s ease-in-out;
         }
       }
@@ -108,20 +125,20 @@
 
     &:hover ~ .input-label {
       transition: all 0.3s ease-in-out;
-      color: #3c3c3c;
+      color: $input-label-color-hover;
     }
 
     &:hover ~ .input-control {
       transition: all 0.3s ease-in-out;
-      background-color: #536bc2;
-      color: #ffffff;
+      background-color: $input-background-color-valid-focus;
+      color: $input-text-color-normal-focus;
     }
   }
 
   &.valid-focus-out-required {
     svg {
       path {
-        fill: #97a8dc;
+        fill: $input-dropdown-path-fill-valid;
         transition: all 0.3s ease-in-out;
       }
     }
@@ -132,20 +149,20 @@
       transition: all 0.3s ease-in-out;
       svg {
         path {
-          fill: #6c6c6c;
+          fill: $input-dropdown-path-fill-normal-hover;
         }
       }
     }
 
     &:hover ~ .input-label {
       transition: all 0.3s ease-in-out;
-      color: #3c3c3c;
+      color: $input-label-color-hover;
     }
 
     &:hover ~ .input-control {
       transition: all 0.3s ease-in-out;
-      background-color: #eeeeee;
-      color: #3c3c3c;
+      background-color: $input-background-color-normal;
+      color: $input-text-color-normal;
     }
   }
 
@@ -154,7 +171,7 @@
       transform: rotate(180deg);
       transition: all 0.2s ease-in-out;
       path {
-        fill: #dadada;
+        fill: $input-dropdown-path-fill-normal;
         transition: all 0.2s ease-in-out;
       }
     }
@@ -162,7 +179,7 @@
     &:hover {
       svg {
         path {
-          fill: #f7f7f7;
+          fill: $input-dropdown-path-fill-normal-hover;
           transition: all 0.3s ease-in-out;
         }
       }
@@ -180,12 +197,12 @@
   &.details-pages {
     svg {
       path {
-        fill: #aaaaaa !important;
+        fill: $input-dropdown-path-fill-normal !important;
       }
     }
     &:hover {
       path {
-        fill: #f7f7f7 !important;
+        fill: $input-dropdown-path-fill-normal-hover !important;
         transition: all 0.3s ease-in-out;
       }
     }
@@ -209,13 +226,13 @@
       overflow: visible;
 
       path {
-        fill: #536bc2;
+        fill: $input-dropdown-confirm-path-fill-valid;
       }
       rect {
         transition: transform 0.3s;
         transform: scale(1);
         transform-origin: center;
-        fill: #bdcaeb !important;
+        fill: $input-dropdown-confirm-rect-fill-valid !important;
       }
     }
 
@@ -226,7 +243,7 @@
           transform: scale(1.2);
           transform-origin: center;
           transition: transform 0.3s;
-          fill: #f5fafc !important;
+          fill: $input-dropdown-confirm-rect-fill-valid-hover !important;
         }
       }
     }

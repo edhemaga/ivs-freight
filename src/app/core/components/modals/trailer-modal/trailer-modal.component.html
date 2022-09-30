@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Trailer' : 'Edit Trailer'"
   [editData]="editData"
   [editName]="editData?.data?.trailerNumber"
-  [isModalValid]="trailerForm.valid"
+  [isModalValid]="trailerForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <app-ta-tab-switch
@@ -12,7 +12,14 @@
   >
   </app-ta-tab-switch>
 
-  <form [formGroup]="trailerForm" class="form-container">
+  <form
+    [formGroup]="trailerForm"
+    class="form-container"
+    [ngClass]="{
+      'form-container-without-mb': selectedTab === 1,
+      'form-container-with-inputs': selectedTab === 2
+    }"
+  >
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 1">
@@ -23,7 +30,7 @@
               [inputConfig]="{
                 name: 'vehicle-unit',
                 type: 'text',
-                label: 'Unit #',
+                label: 'Unit No.',
                 isRequired: true,
                 textTransform: 'uppercase',
                 minLength: 1,
@@ -123,7 +130,7 @@
                 label: 'Model',
                 textTransform: 'uppercase',
                 minLength: 1,
-                maxLength: 30
+                maxLength: 50
               }"
             ></app-ta-input>
           </div>
@@ -193,10 +200,17 @@
             <svg-icon
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
-              [ngClass]="{ visible: !trailerForm.get('companyOwned')?.value }"
+              [ngClass]="{
+                visible: !trailerForm.get('companyOwned')?.value,
+                rotate: !companyOwnedCheckboxCard
+              }"
+              (click)="toggleCheckboxCard()"
             ></svg-icon>
           </div>
           <div
+            *ngIf="
+              !trailerForm.get('companyOwned').value && companyOwnedCheckboxCard
+            "
             class="checkbox-card-body"
             [ngClass]="{ 'active-20': !trailerForm.get('companyOwned').value }"
           >
@@ -434,7 +448,7 @@
           </div>
         </div>
         <!-------------------------------- THIRD ROW -------------------------------->
-        <div class="row last-modal-row">
+        <div class="row row-no-mb">
           <div class="col-12">
             <app-ta-input
               formControlName="insurancePolicy"

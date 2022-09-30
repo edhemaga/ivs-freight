@@ -1,3 +1,4 @@
+@import "./ta-input.colors.scss";
 // -------------------- Input Clear --------------------
 .input-clear {
   position: absolute;
@@ -9,13 +10,17 @@
   z-index: 10;
   cursor: pointer;
 
+  &.datetimeclass{
+    z-index: 22;
+  }
+
   .input-clear-x {
     svg {
       width: 18px !important;
       height: 18px !important;
       overflow: visible;
       path {
-        fill: #eeeeee;
+        fill: $input-clear-path-fill-normal;
       }
       rect {
         transition: transform 0.3s;
@@ -41,17 +46,17 @@
     .input-clear-x {
       svg {
         path {
-          fill: #536bc2;
+          fill: $input-clear-path-fill-valid-focus;
         }
         rect {
-          fill: #bdcaeb !important;
+          fill: $input-clear-rect-fill-valid-focus !important;
         }
       }
 
       &:hover {
         svg {
           rect {
-            fill: #f5fafc !important;
+            fill: $input-clear-rect-fill-valid-focus-hover !important;
           }
         }
       }
@@ -63,16 +68,16 @@
     .input-clear-x {
       svg {
         path {
-          fill: #ef5350;
+          fill: $input-clear-path-fill-invalid-focus;
         }
         rect {
-          fill: #ffcdd2;
+          fill: $input-clear-rect-fill-invalid-focus;
         }
       }
       &:hover {
         svg {
           rect {
-            fill: #fffafa;
+            fill: $input-clear-rect-fill-invalid-focus-hover;
           }
         }
       }
@@ -85,25 +90,26 @@
   &.dropdown-label-position,
   &.repair-m-pm {
     right: 27px !important;
+    top: 0px;
   }
 
   &.incorrect-input {
     .input-clear-x {
       svg {
         path {
-          fill: #ef5350 !important;
+          fill: $input-clear-path-fill-incorrect !important;
         }
         rect {
-          fill: transparent !important;
+          fill: $input-clear-rect-fill-incorrect !important;
         }
       }
       &:hover {
         svg {
           path {
-            fill: #ffffff !important;
+            fill: $input-clear-path-fill-incorrect-hover !important;
           }
           rect {
-            fill: #ef5350 !important;
+            fill: $input-clear-rect-fill-incorrect-hover !important;
           }
         }
       }
@@ -115,20 +121,20 @@
     .input-clear-x {
       svg {
         path {
-          fill: #ffffff !important;
+          fill: $input-clear-path-fill-incorrect-enabled !important;
         }
         rect {
-          fill: #ef5350 !important;
+          fill: $input-clear-rect-fill-incorrect-enabled !important;
         }
       }
 
       &:hover {
         svg {
           path {
-            fill: #ffffff !important;
+            fill: $input-clear-path-fill-incorrect-enabled !important;
           }
           rect {
-            fill: #ef5350 !important;
+            fill: $input-clear-rect-fill-incorrect-enabled !important;
           }
         }
       }
@@ -140,16 +146,16 @@
     .input-clear-x {
       svg {
         path {
-          fill: #ef5350 !important;
+          fill: $input-clear-path-fill-invalid-focus !important;
         }
         rect {
-          fill: #ffcdd2 !important;
+          fill: $input-clear-rect-fill-invalid-focus !important;
         }
       }
       &:hover {
         svg {
           rect {
-            fill: #fffafa !important;
+            fill: $input-clear-rect-fill-invalid-focus-hover !important;
           }
         }
       }
@@ -170,22 +176,26 @@
     top: 2px;
   }
 
+  &.line-input-26-in-card {
+    top: 1px;
+  }
+
   &.focus {
     &.repair-shop-open-hour {
       display: inline-block;
       svg {
         path {
-          fill: #6c6c6c !important;
+          fill: $input-clear-path-fill-normal-focus !important;
         }
         rect {
-          fill: #b7b7b7 !important;
+          fill: $input-clear-rect-fill-normal-focus !important;
         }
       }
 
       &:hover {
         svg {
           rect {
-            fill: #eeeeee !important;
+            fill: $input-clear-rect-fill-normal-focus-hover !important;
           }
         }
       }
@@ -196,17 +206,17 @@
     display: inline-block !important;
     svg {
       path {
-        fill: #6c6c6c !important;
+        fill: $input-clear-path-fill-normal-focus !important;
       }
       rect {
-        fill: #b7b7b7 !important;
+        fill: $input-clear-rect-fill-normal-focus !important;
       }
     }
 
     &:hover {
       svg {
         rect {
-          fill: #eeeeee !important;
+          fill: $input-clear-rect-fill-normal-focus-hover !important;
         }
       }
     }
