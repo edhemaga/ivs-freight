@@ -28,7 +28,9 @@
       (click)="onSelectTab(data)"
     >
       <div class="tab">
-        <div class="data-count" *ngIf="!data.hideDataCount">{{ data.length }}</div>
+        <div class="data-count" *ngIf="!data.hideDataCount">
+          {{ data.length }}
+        </div>
         <svg-icon
           *ngIf="data.iconLink"
           [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
@@ -52,40 +54,22 @@
     <!-- VIEW MODE SELECT -->
     <div
       class="view-mode-container"
-      *ngIf="!options.toolbarActions.hideViewMode"
+      *ngIf="options?.toolbarActions?.viewModeOptions?.length"
     >
       <div
+        *ngFor="let viewMode of  options.toolbarActions.viewModeOptions"
         class="mode"
         [ngClass]="{
-          'mode-active': options.toolbarActions.viewModeActive == 'List'
+          'mode-active': viewMode.active
         }"
-        (click)="changeModeView('List')"
+        (click)="changeModeView(viewMode.name)"
       >
-        List
-      </div>
-      <div
-        class="mode"
-        [ngClass]="{
-          'mode-active': options.toolbarActions.viewModeActive == 'Card'
-        }"
-        (click)="changeModeView('Card')"
-      >
-        Card
-      </div>
-      <div
-        class="mode"
-        [ngClass]="{
-          'mode-active': options.toolbarActions.viewModeActive == 'Map'
-        }"
-        (click)="changeModeView('Map')"
-        *ngIf="options.toolbarActions.showMapView"
-      >
-        Map
+        {{ viewMode.name }}
       </div>
     </div>
 
     <!-- BORDER -->
-    <div class="border-container" *ngIf="!options.toolbarActions.hideViewMode">
+    <div class="border-container" *ngIf="options?.toolbarActions?.viewModeOptions?.length">
       <div class="border"></div>
     </div>
 
@@ -98,21 +82,31 @@
     <!-- BORDER -->
     <div
       class="border-container"
-      *ngIf="!options.toolbarActions.hideLocationFilter"
+      *ngIf="options.toolbarActions.showLocationFilter"
     >
       <div class="border"></div>
     </div>
 
     <!-- LOCATION FILTER -->
-    <div
-      class="location-filter-container"
-      *ngIf="!options.toolbarActions.hideLocationFilter"
+    <app-filter
+      *ngIf="options.toolbarActions.showLocationFilter"
+      [type]="'locationFilter'"
+      [icon]="'address'"
+      [filterTitle]="'Location Filter'"
+      [locationDefType]="true"
     >
-      <svg-icon
-        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-        [src]="'assets/svg/truckassist-table/location-icon.svg'"
-      ></svg-icon>
+    </app-filter>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showArhiveFilter"
+    >
+      <div class="border"></div>
     </div>
+
+    <!-- ARHIVE FILTER -->
+    <div class="no-filter" *ngIf="options.toolbarActions.showArhiveFilter">Arhive Filter</div>
   </div>
 
   <!-- TABLE ACTIONS -->

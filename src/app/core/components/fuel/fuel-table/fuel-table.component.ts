@@ -27,22 +27,22 @@ export class FuelTableComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public tableOptions: any = {};
-  public tableData: any[] = [];
-  public viewData: any[] = [];
-  s;
-  public columns: any[] = [];
-  public selectedTab = 'active';
+  tableOptions: any = {};
+  tableData: any[] = [];
+  viewData: any[] = [];
+  columns: any[] = [];
+  selectedTab = 'active';
+  activeViewMode: string = 'List';
   resetColumns: boolean;
 
-  public sortTypes: any[] = [];
-  public sortDirection: string = 'asc';
-  public activeSortType: any = {};
-  public sortBy: any;
-  public searchValue: string = '';
-  public locationFilterOn: boolean = false;
+  sortTypes: any[] = [];
+  sortDirection: string = 'asc';
+  activeSortType: any = {};
+  sortBy: any;
+  searchValue: string = '';
+  locationFilterOn: boolean = false;
 
-  public fuelPriceColors: any[] = [
+  fuelPriceColors: any[] = [
     '#4CAF4F',
     '#8AC34A',
     '#FEC107',
@@ -51,7 +51,7 @@ export class FuelTableComponent implements OnInit, OnDestroy {
     '#919191',
   ];
 
-  public fuelPriceHoverColors: any[] = [
+  fuelPriceHoverColors: any[] = [
     '#43A047',
     '#7CB242',
     '#FFB300',
@@ -63,7 +63,7 @@ export class FuelTableComponent implements OnInit, OnDestroy {
   constructor(
     private modalService: ModalService,
     private tableService: TruckassistTableService,
-    private thousandSeparator: TaThousandSeparatorPipe,
+    private thousandSeparator: TaThousandSeparatorPipe
   ) {}
 
   ngOnDestroy(): void {
@@ -72,8 +72,7 @@ export class FuelTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.initTableOptions();
-    this.getFuelData();
+    this.sendFuelData();
 
     // Reset Columns
     this.tableService.currentResetColumns
@@ -105,21 +104,10 @@ export class FuelTableComponent implements OnInit, OnDestroy {
       : '';
   }
 
-  public initTableOptions(): void {
+  initTableOptions(): void {
     this.tableOptions = {
-      disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        hideViewMode: false,
-        showMapView: true,
-        viewModeActive: 'List',
-      },
-      config: {
-        showSort: true,
-        sortBy: '',
-        sortDirection: '',
-        disabledColumns: [0],
-        minWidth: 60,
+        viewModeOptions: this.getViewModeOptions(),
       },
       actions: [
         {
@@ -142,15 +130,25 @@ export class FuelTableComponent implements OnInit, OnDestroy {
           svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
         },
       ],
-      export: true,
     };
   }
 
-  getFuelData() {
-    this.sendFuelData();
+  getViewModeOptions() {
+    return this.selectedTab === 'active'
+      ? [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+        ]
+      : [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+          { name: 'Map', active: this.activeViewMode === 'Map' },
+        ];
   }
 
   sendFuelData() {
+    this.initTableOptions();
+    
     this.tableData = [
       {
         title: 'Fuel',
@@ -234,18 +232,18 @@ export class FuelTableComponent implements OnInit, OnDestroy {
             '<div class="description-dot-container"><span class="description-dot"></span></div>'
           ),
         descriptionItems: this.fuelItemsDumyData.map((item) => {
-              return {
-                ...item,
-                description: 'Test',
-                descriptionPrice: item?.price
-                  ? '$' + this.thousandSeparator.transform(item.price)
-                  : '',
-                descriptionTotalPrice: item?.subtotal
-                  ? '$' + this.thousandSeparator.transform(item.subtotal)
-                  : '',
-                pmDescription: null,
-              };
-            }),
+          return {
+            ...item,
+            description: 'Test',
+            descriptionPrice: item?.price
+              ? '$' + this.thousandSeparator.transform(item.price)
+              : '',
+            descriptionTotalPrice: item?.subtotal
+              ? '$' + this.thousandSeparator.transform(item.subtotal)
+              : '',
+            pmDescription: null,
+          };
+        }),
         companyId: 1,
         companyName: 'Test Company',
         createdAt: '2022-03-24T00:10:11',
@@ -308,10 +306,7 @@ export class FuelTableComponent implements OnInit, OnDestroy {
       this.selectedTab = event.tabData.field;
       this.setFuelData(event.tabData);
     } else if (event.action === 'view-mode') {
-      this.tableOptions.toolbarActions.viewModeActive = event.mode;
-      if (event.mode == 'Map') {
-        //this.mapsComponent.markersDropAnimation();
-      }
+      this.activeViewMode = event.mode;
     }
   }
 

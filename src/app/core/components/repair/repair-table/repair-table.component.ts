@@ -47,14 +47,15 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
   private destroy$ = new Subject<void>();
   @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
 
-  public tableOptions: any = {};
-  public tableData: any[] = [];
-  public viewData: any[] = [];
-  public columns: any[] = [];
-  public selectedTab = 'active';
-  public repairTrucks: RepairTruckState[] = [];
-  public repairTrailers: RepairTrailerState[] = [];
-  public repairShops: ShopState[] = [];
+  tableOptions: any = {};
+  tableData: any[] = [];
+  viewData: any[] = [];
+  columns: any[] = [];
+  selectedTab = 'active';
+  activeViewMode: string = 'List';
+  repairTrucks: RepairTruckState[] = [];
+  repairTrailers: RepairTrailerState[] = [];
+  repairShops: ShopState[] = [];
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
@@ -284,20 +285,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // Repair Table Options
-  public initTableOptions(): void {
+  initTableOptions(): void {
     this.tableOptions = {
-      disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        showMapView: this.selectedTab === 'repair-shop' ? true : false,
-        viewModeActive: 'List',
-      },
-      config: {
-        showSort: true,
-        sortBy: '',
-        sortDirection: '',
-        disabledColumns: [0],
-        minWidth: 60,
+        viewModeOptions: this.getViewModeOptions(),
       },
       actions: [
         {
@@ -322,8 +313,21 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
           svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
         },
       ],
-      export: true,
     };
+  }
+
+  // Get View Mode Options
+  getViewModeOptions() {
+    return this.selectedTab === 'repair-shop'
+      ? [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+          { name: 'Map', active: this.activeViewMode === 'Map' },
+        ]
+      : [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+        ];
   }
 
   // Send Repair Data
@@ -677,62 +681,41 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Table Toolbar Actions
   onToolBarAction(event: any) {
-    switch (event.action) {
-      case 'tab-selected': {
-        this.selectedTab = event.tabData.field;
+    if (event.action === 'tab-selected') {
+      this.selectedTab = event.tabData.field;
 
-        this.backFilterQuery.pageIndex = 1;
-        this.shopFilterQuery.pageIndex = 1;
+      this.backFilterQuery.pageIndex = 1;
+      this.shopFilterQuery.pageIndex = 1;
 
-        this.sendRepairData();
-        break;
-      }
-      case 'open-modal': {
-        switch (this.selectedTab) {
-          case 'active': {
-            this.modalService.openModal(
-              RepairOrderModalComponent,
-              {
-                size: 'large',
-              },
-              {
-                type: 'new-truck',
-              }
-            );
-            break;
+      this.sendRepairData();
+    } else if (event.action === 'open-modal') {
+      if (this.selectedTab === 'active') {
+        this.modalService.openModal(
+          RepairOrderModalComponent,
+          {
+            size: 'large',
+          },
+          {
+            type: 'new-truck',
           }
-          case 'inactive': {
-            this.modalService.openModal(
-              RepairOrderModalComponent,
-              {
-                size: 'large',
-              },
-              {
-                type: 'new-trailer',
-              }
-            );
-            break;
+        );
+      } else if (this.selectedTab === 'inactive') {
+        this.modalService.openModal(
+          RepairOrderModalComponent,
+          {
+            size: 'large',
+          },
+          {
+            type: 'new-trailer',
           }
-          default: {
-            this.modalService.openModal(RepairShopModalComponent, {
-              size: 'small',
-            });
-            break;
-          }
-        }
-        break;
+        );
+      } else {
+        this.modalService.openModal(RepairShopModalComponent, {
+          size: 'small',
+        });
       }
-      case 'view-mode': {
-        this.tableOptions.toolbarActions.viewModeActive = event.mode;
-
-        if (event.mode == 'Map') {
-          //this.mapsComponent.markersDropAnimation();
-        }
-        break;
-      }
-      default: {
-        break;
-      }
+    } else if (event.action === 'view-mode') {
+      this.activeViewMode = event.mode;
     }
   }
 
@@ -842,7 +825,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         entityTypeRatingId: 2,
         entityTypeId: event.data.id,
         thumb: event.subType === 'like' ? 1 : -1,
-        tableData: event.data
+        tableData: event.data,
       };
 
       this.reviewRatingService
