@@ -1,7 +1,15 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ViewEncapsulation,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { RoadsideActiveQuery } from '../state/roadside-state/roadside-active/roadside-active.query';
+import { RoadsideInspectionResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-violation-card-view',
@@ -9,23 +17,60 @@ import { RoadsideActiveQuery } from '../state/roadside-state/roadside-active/roa
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./violation-card-view.component.scss'],
 })
-export class ViolationCardViewComponent implements OnInit {
+export class ViolationCardViewComponent implements OnInit, OnChanges {
   @Input() public violationCardData: any;
   @Input() public templateCard: boolean;
   public violationDropdown: any;
   public noteControl: FormControl = new FormControl();
   public dummyDataSpecial: any;
   public violationList: any[] = this.violationActiveQuery.getAll();
+  public specialChecksCounter: number = 0;
   constructor(
     private violationActiveQuery: RoadsideActiveQuery,
     private detailsPageDriverSer: DetailsPageService
   ) {}
-
+  ngOnChanges(changes: SimpleChanges): void {
+    this.countSpecialChecks(changes?.violationCardData?.currentValue);
+    this.getViolationDropdown();
+  }
   ngOnInit(): void {
     this.noteControl.patchValue(
       'How to pursue pleasure rationally encounter consequences that are extremely painful.'
     );
-    this.getViolationDropdown();
+  }
+
+  public countSpecialChecks(violDate: RoadsideInspectionResponse) {
+    this.specialChecksCounter = 0;
+    if (violDate?.alcContSubCheck) {
+      this.specialChecksCounter++;
+    }
+    if (violDate?.condByLocalJuris) {
+      this.specialChecksCounter++;
+    }
+    if (violDate?.sizeAndWeightEnf) {
+      this.specialChecksCounter++;
+    }
+    if (violDate?.eScreenInspection) {
+      this.specialChecksCounter++;
+    }
+    if (violDate?.trafficEnforcment) {
+      this.specialChecksCounter++;
+    }
+    if (violDate?.pasaConditionInsp) {
+      this.specialChecksCounter++;
+    }
+    if (violDate?.drugInterdSearch) {
+      this.specialChecksCounter++;
+    }
+    if (violDate?.borderEnfInspection) {
+      this.specialChecksCounter++;
+    }
+    if (violDate?.postCrashInspection) {
+      this.specialChecksCounter++;
+    }
+    if (violDate?.pbbtInspection) {
+      this.specialChecksCounter++;
+    }
   }
 
   public getViolationDropdown() {
@@ -41,8 +86,6 @@ export class ViolationCardViewComponent implements OnInit {
   public onSelectViolation(event: any) {
     if (event.id !== this.violationCardData.id) {
       this.violationList = this.violationActiveQuery.getAll().map((item) => {
-        console.log(item);
-
         return {
           id: item.id,
           name: item.report,

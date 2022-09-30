@@ -52,6 +52,10 @@
                 display: flex;
                 width: 18px;
                 height: 18px;
+
+                path {
+                    fill: #aaaaaa;
+                }
             }
         }
         .value {
@@ -67,6 +71,16 @@
             &::selection {
                 color: #6c6c6c;
                 background: rgb(108, 108, 108, 0.2);
+            }
+        }
+        &:hover {
+            .value {
+                color: #3c3c3c;
+            }
+            svg {
+                path {
+                    fill: #919191;
+                }
             }
         }
     }
@@ -148,6 +162,11 @@
             svg {
                 width: 55px;
                 height: 20px;
+                &:hover {
+                    path {
+                        fill: #3c3c3c;
+                    }
+                }
             }
         }
         .driver-name {

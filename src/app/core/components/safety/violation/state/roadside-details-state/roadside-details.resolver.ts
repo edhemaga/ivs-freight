@@ -30,24 +30,24 @@ export class RoadItemResolver implements Resolve<RoadItemState> {
   ): Observable<RoadItemState> | Observable<any> {
     const truck_id = route.paramMap.get('id');
     let id = parseInt(truck_id);
-    if (this.rsdlq.hasEntity(id)) {
-      return this.rsdlq.selectEntity(id).pipe(
-        tap((roadResponse: RoadsideInspectionResponse) => {
-          this.roadDetailsStore.set([roadResponse]);
-        }),
-        take(1)
-      );
-    } else {
-      return this.roadService.getRoadSideById(id).pipe(
-        catchError((error) => {
-          this.router.navigate(['/safety/violation']);
-          return of('No road data for...' + id);
-        }),
-        tap((roadResponse: RoadsideInspectionResponse) => {
-          this.rsdls.add(roadResponse);
-          this.roadDetailsStore.set([roadResponse]);
-        })
-      );
-    }
+    // if (this.rsdlq.hasEntity(id)) {
+    //   return this.rsdlq.selectEntity(id).pipe(
+    //     tap((roadResponse: RoadsideInspectionResponse) => {
+    //       this.roadDetailsStore.set([roadResponse]);
+    //     }),
+    //     take(1)
+    //   );
+    // } else {
+    return this.roadService.getRoadSideById(id).pipe(
+      catchError((error) => {
+        this.router.navigate(['/safety/violation']);
+        return of('No road data for...' + id);
+      }),
+      tap((roadResponse: RoadsideInspectionResponse) => {
+        this.rsdls.add(roadResponse);
+        this.roadDetailsStore.set([roadResponse]);
+      })
+    );
   }
+  // }
 }

@@ -9,6 +9,178 @@
     </div>
     <!---------------------------- Violation TEMPLATE ----------------------------->
     <div class="violation" *ngSwitchCase="'violation'">
+      <div class="violation-card-table-wrapper">
+        <div class="card-road-container">
+        <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [hasDivider]="false"
+        [cardName]="'Driver'"
+        [isCardOpen]="true"
+      >
+        <div class="violation-driver-container">
+          <div class="violation-driver-item">
+            <svg-icon
+              class="driver"
+              src="assets/svg/common/user-image.svg"
+            ></svg-icon>
+            <span class="driver-name">{{
+              violation?.data?.driver_FullName
+            }}</span>
+          </div>
+        </div>
+        <div class="violation-template-cards-data">
+          <div class="violation-card-items">
+            <span class="name">Licence No.</span>
+            <app-ta-copy [copyValue]="violation?.data?.driver_LicenceNo"></app-ta-copy>
+           
+          </div>
+          <div class="violation-card-items">
+            <span class="name">State</span>
+            <span class="value">({{ violation?.data?.driver_State }})</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Date of Birth</span>
+            <span class="value">{{
+              violation?.data?.driver_DateOfBirth | formatDateP
+            }}</span>
+          </div>
+        </div>
+      </app-ta-custom-card>
+      <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [hasDivider]="true"
+        *ngIf="violation?.data?.coDriver_FullName"
+        [cardName]="'Co-Driver'"
+        [isCardOpen]="true"
+      >
+        <div class="violation-driver-container">
+          <div class="violation-driver-item">
+            <svg-icon
+              class="driver"
+              src="assets/svg/common/user-image.svg"
+            ></svg-icon>
+            <span class="driver-name">{{
+              violation?.data?.coDriver_FullName
+            }}</span>
+          </div>
+        </div>
+        <div class="violation-template-cards-data">
+          <div class="violation-card-items">
+            <span class="name">Licence No.</span>
+            <app-ta-copy [copyValue]="violation?.data?.coDriver_LicenceNo"></app-ta-copy>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">State</span>
+            <span class="value"
+              >Texas ({{ violation?.data?.coDriver_State }})</span
+            >
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Date of Birth</span>
+            <span class="value">{{
+              violation?.data?.coDriver_DateOfBirth | formatDateP
+            }}</span>
+          </div>
+        </div>
+      </app-ta-custom-card>
+      <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [hasDivider]="true"
+        [cardName]="'Truck'"
+        [isCardOpen]="true"
+      >
+        <div class="violation-driver-container">
+          <div class="violation-driver-item">
+            <span class="driver-name"
+              >Unit {{ violation?.data?.truck_Unit }}</span
+            >
+            <span
+            tooltipBackground="#3C3C3C"
+            ngbTooltip
+            [mainTooltip]="violation?.data?.truck_Type"
+            position="top"
+          >
+            <svg-icon
+              class="truck"
+              src="assets/svg/common/semi-truck.svg"
+            ></svg-icon>
+            </span>
+          </div>
+        </div>
+        <div class="violation-template-cards-data">
+          <div class="violation-card-items">
+            <span class="name">Make</span>
+            <span class="value">{{ violation?.data?.truck_Make }}</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Vin</span>
+            <app-ta-copy [copyValue]="violation?.data?.truck_VIN"></app-ta-copy>
+           
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Plate No.</span>
+            <span class="value">{{ violation?.data?.truck_PlateNo }}</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">State</span>
+            <span class="value"
+              >Pennsylvania ({{ violation?.data?.truck_State }})</span
+            >
+          </div>
+        </div>
+      </app-ta-custom-card>
+      <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [hasDivider]="true"
+        [cardName]="'Trailer'"
+        [isCardOpen]="true"
+      >
+        <div class="violation-driver-container">
+          <div class="violation-driver-item">
+            <span class="driver-name"
+              >Unit {{ violation?.data?.trailer_Unit }}</span
+            >
+            <span
+            tooltipBackground="#3C3C3C"
+            ngbTooltip
+            [mainTooltip]="violation?.data?.trailer_Type"
+            position="top"
+          >
+            <svg-icon
+              class="truck"
+              src="assets/svg/common/trailer.svg"
+            ></svg-icon>
+            </span>
+          </div>
+        </div>
+        <div class="violation-template-cards-data">
+          <div class="violation-card-items">
+            <span class="name">Make</span>
+            <span class="value">{{ violation?.data?.trailer_Make }}</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Vin</span>
+            <app-ta-copy [copyValue]="violation?.data?.trailer_VIN"></app-ta-copy>
+            
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Plate No.</span>
+            <span class="value">{{ violation?.data?.trailer_PlateNo }}</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">State</span>
+            <span class="value"
+              >Pennsylvania ({{ violation?.data?.trailer_State }})</span
+            >
+          </div>
+        </div>
+      </app-ta-custom-card>
+    </div>
+    <div class="violation-table-wrapper-head">
       <div class="violation-table-container">
       <div class="violation-table-wrapper">
         <div class="violation-t-head">
@@ -26,12 +198,14 @@
         <div class="divider"></div>
         <div *ngFor="let violations of violation?.data?.violations; trackBy:identity"  class="violation-t-body">
           <div class="t-body-items">
+            <div class="description-name-wrapper">
             <div class="icon-text-wrapper">
               <svg-icon
                 class="body-icons"
                 src="assets/svg/common/violation-details/ic_steering-wheel.svg"
               ></svg-icon>
               <span class="name">{{violations?.code}}</span>
+              
             </div>
 
             <div class="icon-text-wrapper">
@@ -44,55 +218,18 @@
                 >{{violations?.description}}</span
               >
             </div>
-            <div class="total-violation">
-              4<span *ngIf="violations?.oos" class="total-yellow">+2</span>
-            </div>
+          </div>
+          <div class="total-violation">
+            4<span *ngIf="violations?.oos" class="total-yellow">+2</span>
+          </div>
           </div>
           <div class="divider"></div>
         </div>
 
-        <!-- <div class="violation-t-body">
-          <div class="t-body-items">
-            <div class="icon-text-wrapper">
-              <svg-icon
-                class="body-icons"
-                src="assets/svg/common/violation-details/ic_steering-wheel.svg"
-              ></svg-icon>
-              <span class="name">392.2SLLS2</span>
-            </div>
-
-            <div class="icon-text-wrapper">
-              <span class="name-default"
-                >CMV manufactured after 10/19/94 has an automatic airbrake
-                adjustment system that fails to compensate for wear</span
-              >
-            </div>
-            <div class="total-violation">8</div>
-          </div>
-          <div class="divider"></div>
-        </div> -->
-
-        <!-- <div class="violation-t-body">
-          <div class="t-body-items">
-            <div class="icon-text-wrapper">
-              <svg-icon
-                class="body-icons"
-                src="assets/svg/common/violation-details/ic_steering-wheel.svg"
-              ></svg-icon>
-              <span class="name">392.2SLLS2</span>
-            </div>
-
-            <div class="icon-text-wrapper">
-              <span class="name-default"
-                >State/Local Laws - Speeding 6-10 miles per hour over the speed
-                limitation</span
-              >
-            </div>
-         
-          </div>
-        </div> -->
+        
       </div>
     </div>
+  
       <div class="violation-table-wrapper second-table">
         <div class="violation-t-head">
           <div class="t-head-items">
@@ -109,6 +246,7 @@
         <div class="divider"></div>
         <div class="violation-t-body">
           <div class="t-body-items">
+            <div class="description-name-wrapper">
             <div class="icon-text-wrapper">
               <svg-icon
                 class="body-icons"
@@ -127,32 +265,13 @@
                 limitation</span
               >
             </div>
+          </div>
             <div class="total-violation">4</div>
           </div>
           <div class="divider"></div>
         </div>
 
-        <div class="violation-t-body">
-          <div class="t-body-items">
-            <div class="icon-text-wrapper">
-              <svg-icon
-                class="body-icons"
-                src="assets/svg/common/violation-details/ic_steering-wheel.svg"
-              ></svg-icon>
-              <span class="name">392.2SLLS2</span>
-            </div>
-
-            <div class="icon-text-wrapper">
-              <span class="name-default"
-                >CMV manufactured after 10/19/94 has an automatic airbrake
-                adjustment system that fails to compensate for wear</span
-              >
-            </div>
-            <div class="total-violation">
-              8<span class="total-yellow">+2</span>
-            </div>
-          </div>
-        </div>
+       
       </div>
 
       <div class="violation-table-wrapper second-table">
@@ -171,6 +290,7 @@
         <div class="divider"></div>
         <div class="violation-t-body">
           <div class="t-body-items">
+            <div class="description-name-wrapper">
             <div class="icon-text-wrapper">
               <svg-icon
                 class="body-icons"
@@ -189,32 +309,12 @@
                 limitation</span
               >
             </div>
+            </div>
             <div class="total-violation">4</div>
           </div>
           <div class="divider"></div>
         </div>
 
-        <div class="violation-t-body">
-          <div class="t-body-items">
-            <div class="icon-text-wrapper">
-              <svg-icon
-                class="body-icons"
-                src="assets/svg/common/violation-details/ic_trailer.svg"
-              ></svg-icon>
-              <span class="name">392.2SLLS2</span>
-            </div>
-
-            <div class="icon-text-wrapper">
-              <span class="name-default"
-                >CMV manufactured after 10/19/94 has an automatic airbrake
-                adjustment system that fails to compensate for wear</span
-              >
-            </div>
-            <div class="total-violation">
-              8<span class="total-yellow">+2</span>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="violation-table-wrapper second-table">
@@ -233,6 +333,7 @@
         <div class="divider"></div>
         <div class="violation-t-body">
           <div class="t-body-items">
+            <div class="description-name-wrapper">
             <div class="icon-text-wrapper">
               <svg-icon
                 class="body-icons"
@@ -251,52 +352,12 @@
                 limitation</span
               >
             </div>
+            </div>
             <div class="total-violation">
               4<span class="total-yellow">+2</span>
             </div>
           </div>
           <div class="divider"></div>
-        </div>
-
-        <div class="violation-t-body">
-          <div class="t-body-items">
-            <div class="icon-text-wrapper">
-              <svg-icon
-                class="body-icons"
-                src="assets/svg/common/violation-details/ic_steering-wheel.svg"
-              ></svg-icon>
-              <span class="name">392.2SLLS2</span>
-            </div>
-
-            <div class="icon-text-wrapper">
-              <span class="name-default"
-                >CMV manufactured after 10/19/94 has an automatic airbrake
-                adjustment system that fails to compensate for wear</span
-              >
-            </div>
-            <div class="total-violation">8</div>
-          </div>
-          <div class="divider"></div>
-        </div>
-
-        <div class="violation-t-body">
-          <div class="t-body-items">
-            <div class="icon-text-wrapper">
-              <svg-icon
-                class="body-icons"
-                src="assets/svg/common/violation-details/ic_steering-wheel.svg"
-              ></svg-icon>
-              <span class="name">392.2SLLS2</span>
-            </div>
-
-            <div class="icon-text-wrapper">
-              <span class="name-default"
-                >State/Local Laws - Speeding 6-10 miles per hour over the speed
-                limitation</span
-              >
-            </div>
-           
-          </div>
         </div>
       </div>
 
@@ -316,6 +377,7 @@
         <div class="divider"></div>
         <div class="violation-t-body">
           <div class="t-body-items">
+            <div class="description-name-wrapper">
             <div class="icon-text-wrapper">
               <svg-icon
                 class="body-icons"
@@ -334,31 +396,10 @@
                 limitation</span
               >
             </div>
+          </div>
             <div class="total-violation">4</div>
           </div>
           <div class="divider"></div>
-        </div>
-
-        <div class="violation-t-body">
-          <div class="t-body-items">
-            <div class="icon-text-wrapper">
-              <svg-icon
-                class="body-icons"
-                src="assets/svg/common/violation-details/ic_trailer.svg"
-              ></svg-icon>
-              <span class="name">392.2SLLS2</span>
-            </div>
-
-            <div class="icon-text-wrapper">
-              <span class="name-default"
-                >CMV manufactured after 10/19/94 has an automatic airbrake
-                adjustment system that fails to compensate for wear</span
-              >
-            </div>
-            <div class="total-violation">
-              8<span class="total-yellow">+2</span>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -378,6 +419,7 @@
         <div class="divider"></div>
         <div class="violation-t-body">
           <div class="t-body-items">
+            <div class="description-name-wrapper">
             <div class="icon-text-wrapper">
               <svg-icon
                 class="body-icons"
@@ -396,6 +438,7 @@
                 limitation</span
               >
             </div>
+            </div>
             <div class="total-violation">
               4<span class="total-yellow">+2</span>
             </div>
@@ -403,47 +446,10 @@
           <div class="divider"></div>
         </div>
 
-        <div class="violation-t-body">
-          <div class="t-body-items">
-            <div class="icon-text-wrapper">
-              <svg-icon
-                class="body-icons"
-                src="assets/svg/common/violation-details/ic_steering-wheel.svg"
-              ></svg-icon>
-              <span class="name">392.2SLLS2</span>
-            </div>
 
-            <div class="icon-text-wrapper">
-              <span class="name-default"
-                >CMV manufactured after 10/19/94 has an automatic airbrake
-                adjustment system that fails to compensate for wear</span
-              >
-            </div>
-            <div class="total-violation">8</div>
-          </div>
-          <div class="divider"></div>
-        </div>
-
-        <div class="violation-t-body">
-          <div class="t-body-items">
-            <div class="icon-text-wrapper">
-              <svg-icon
-                class="body-icons"
-                src="assets/svg/common/violation-details/ic_steering-wheel.svg"
-              ></svg-icon>
-              <span class="name">392.2SLLS2</span>
-            </div>
-
-            <div class="icon-text-wrapper">
-              <span class="name-default"
-                >State/Local Laws - Speeding 6-10 miles per hour over the speed
-                limitation</span
-              >
-            </div>
-           
-          </div>
-        </div>
       </div>
+    </div>
+    </div>
     </div>
 
     <!---------------------------- Citation TEMPLATE ----------------------------->

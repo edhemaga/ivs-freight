@@ -24,7 +24,7 @@
               'finish-order-cont': !repairs.invoice,
               'open-items-body': showRepairItems[repairs?.id] && repairs.invoice,
               'open-items-body-no-invoice':
-                showRepairItems[i] && !repairs.invoice
+                showRepairItems[repairs?.id] && !repairs.invoice
             }"
           >
             <div class="repair-items">

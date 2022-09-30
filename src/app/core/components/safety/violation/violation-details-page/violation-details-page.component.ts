@@ -17,7 +17,8 @@ export class ViolationDetailsPageComponent implements OnInit {
   public violationInitCongif: any[] = [];
   public violationData: any;
   private destroy$ = new Subject<void>();
-
+  public violationDrop: any;
+  public violationId: number;
   constructor(
     private act_route: ActivatedRoute,
     private router: Router,
@@ -28,6 +29,7 @@ export class ViolationDetailsPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initOptions();
     this.detailsPageService.pageDetailChangeId$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
@@ -56,7 +58,45 @@ export class ViolationDetailsPageComponent implements OnInit {
       });
     this.violationConfig(this.act_route.snapshot.data.roadItem);
   }
+  /**Function for dots in cards */
+  public initOptions(): void {
+    this.violationDrop = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        {
+          title: 'Print',
+          name: 'print',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: true,
+        },
 
+        {
+          title: 'Edit',
+          name: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
+        },
+
+        {
+          title: 'Add Citation',
+          name: 'add-citation',
+          svg: 'assets/svg/common/ic_plus.svg',
+          show: true,
+        },
+      ],
+      export: true,
+    };
+  }
   /**Default names for header */
   public violationConfig(data: RoadsideInspectionResponse) {
     this.violationInitCongif = [
@@ -68,7 +108,7 @@ export class ViolationDetailsPageComponent implements OnInit {
       },
       {
         id: 1,
-        name: 'Violation',
+        name: 'Team',
         template: 'violation',
         data: data,
         hide: true,
@@ -85,6 +125,7 @@ export class ViolationDetailsPageComponent implements OnInit {
         length: 12,
       },
     ];
+    this.violationId = data?.id ? data.id : null;
   }
 
   /**Function return id */
