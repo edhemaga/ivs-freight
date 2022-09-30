@@ -107,6 +107,12 @@ export class FuelTableComponent implements OnInit, OnDestroy {
   initTableOptions(): void {
     this.tableOptions = {
       toolbarActions: {
+        showTimeFilter: this.selectedTab === 'active',
+        showTruckFilter: this.selectedTab === 'active',
+        showLocationFilter: true,
+        showFuelStopFilter: this.selectedTab === 'active',
+        showMoneyFilter: true,
+        showCategoryFilter: this.selectedTab === 'active',
         viewModeOptions: this.getViewModeOptions(),
       },
       actions: [
@@ -151,15 +157,19 @@ export class FuelTableComponent implements OnInit, OnDestroy {
     
     this.tableData = [
       {
-        title: 'Fuel',
+        title: 'Transactions',
         field: 'active',
         length: 8,
         data: this.getDumyData(8),
-        extended: false,
-        hideLength: false,
         gridNameTitle: 'Fuel',
-        selectTab: true,
-        stateName: 'fuels',
+        gridColumns: this.getGridColumns('fuel', this.resetColumns),
+      },
+      {
+        title: 'Stop',
+        field: 'inactive',
+        length: 3,
+        data: this.getDumyData(3),
+        gridNameTitle: 'Fuel',
         gridColumns: this.getGridColumns('fuel', this.resetColumns),
       },
     ];
@@ -304,7 +314,8 @@ export class FuelTableComponent implements OnInit, OnDestroy {
       });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
-      this.setFuelData(event.tabData);
+
+      this.sendFuelData();
     } else if (event.action === 'view-mode') {
       this.activeViewMode = event.mode;
     }
