@@ -15,7 +15,7 @@ export class OwnerActiveResolver implements Resolve<OwnerActiveState> {
     private ownerStore: OwnerActiveStore
   ) {}
   resolve(): Observable<OwnerActiveState | boolean> {
-    return this.ownerService.getOwner(1, null, 1, 25).pipe(
+    return this.ownerService.getOwner(1, undefined, undefined, undefined, undefined, undefined, undefined, 1, 25).pipe(
       catchError(() => {
         return of('No owner data...');
       }),
