@@ -41,6 +41,7 @@ import { ShipperTService } from '../../customer/state/shipper-state/shipper.serv
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
+import { FormService } from '../../../services/form/form.service';
 
 @Component({
   selector: 'app-shipper-modal',
@@ -48,7 +49,7 @@ import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRa
   styleUrls: ['./shipper-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, TaLikeDislikeService],
+  providers: [ModalService, TaLikeDislikeService, FormService],
 })
 export class ShipperModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -92,7 +93,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
   public companyUser: SignInResponse = null;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   public disableOneMoreReview: boolean = false;
 
@@ -105,7 +106,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private taLikeDislikeService: TaLikeDislikeService,
-    private reviewRatingService: ReviewsRatingService
+    private reviewRatingService: ReviewsRatingService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -150,6 +152,13 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
+
+    this.formService.checkFormChange(this.shipperForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

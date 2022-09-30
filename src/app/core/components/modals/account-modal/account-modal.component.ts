@@ -26,13 +26,14 @@ import {
   usernameValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { FormService } from '../../../services/form/form.service';
 
 @Component({
   selector: 'app-account-modal',
   templateUrl: './account-modal.component.html',
   styleUrls: ['./account-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class AccountModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -46,14 +47,15 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   public colors: any[] = [];
   public selectedAccountColor: any;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private notificationService: NotificationService,
     private modalService: ModalService,
-    private accountService: AccountTService
+    private accountService: AccountTService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -87,6 +89,13 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       'url',
       this.destroy$
     );
+
+    this.formService.checkFormChange(this.accountForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -101,8 +110,10 @@ export class AccountModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData) {
-          this.updateCompanyAccount(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateCompanyAccount(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addCompanyAccount();
           this.modalService.setModalSpinner({ action: null, status: true });

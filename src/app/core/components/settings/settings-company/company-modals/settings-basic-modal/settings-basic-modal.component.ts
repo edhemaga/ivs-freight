@@ -53,6 +53,7 @@ import {
   phoneFaxRegex,
 } from '../../../../shared/ta-input/ta-input.regex-validations';
 import { convertNumberInThousandSep } from '../../../../../utils/methods.calculations';
+import { FormService } from '../../../../../services/form/form.service';
 import {
   startingValidation,
   cvcValidation,
@@ -63,7 +64,7 @@ import {
   templateUrl: './settings-basic-modal.component.html',
   styleUrls: ['./settings-basic-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [ModalService, BankVerificationService],
+  providers: [ModalService, BankVerificationService, FormService],
 })
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -195,7 +196,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   // Payroll tab
   public truckAssistText: string = "Use Truck Assist's ACH Payout";
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   // Dropdowns
   public banks: any[] = [];
@@ -253,7 +254,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private settingsCompanyService: SettingsCompanyService,
-    private bankVerificationService: BankVerificationService
+    private bankVerificationService: BankVerificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -418,6 +420,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     if (['new-division', 'edit-division'].includes(this.editData.type)) {
       this.companyForm.get('email').setValidators(Validators.required);
     }
+
+    this.formService.checkFormChange(this.companyForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -436,8 +445,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.addCompanyDivision();
             this.modalService.setModalSpinner({ action: null, status: true });
           } else {
-            this.updateCompanyDivision(this.editData.company.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
+            if (this.isFormDirty) {
+              this.updateCompanyDivision(this.editData.company.id);
+              this.modalService.setModalSpinner({ action: null, status: true });
+            }
           }
         } else {
           this.updateCompany();

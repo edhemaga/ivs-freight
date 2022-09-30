@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit-drug' ? 'Add Test' : 'Edit Test'"
   [editData]="editData"
   [editName]="modalName"
-  [isModalValid]="drugForm.valid"
+  [isModalValid]="drugForm.valid && isFormDirty"
   [specificCaseModalName]="true"
   (action)="onModalAction($event)"
 >

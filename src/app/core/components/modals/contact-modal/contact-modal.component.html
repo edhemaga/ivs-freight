@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Contact' : 'Edit Contact'"
   [editData]="editData"
   [editName]="editData?.data?.name"
-  [isModalValid]="contactForm.valid"
+  [isModalValid]="contactForm.valid && isFormDirty"
   [dropZoneConfig]="dropZoneConfig"
   (action)="onModalAction($event)"
 >

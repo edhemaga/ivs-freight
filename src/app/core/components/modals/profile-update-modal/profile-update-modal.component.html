@@ -1,6 +1,6 @@
 <app-ta-modal
   [modalTitle]="'Profile Update'"
-  [isModalValid]="profileUserForm.valid"
+  [isModalValid]="profileUserForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <app-ta-tab-switch

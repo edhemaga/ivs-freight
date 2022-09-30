@@ -6,7 +6,7 @@
   "
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="factoringForm.valid"
+  [isModalValid]="factoringForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <form

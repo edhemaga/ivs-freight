@@ -15,6 +15,7 @@ import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
 import { rentValidation } from '../../../../shared/ta-input/ta-input.regex-validations';
+import { FormService } from '../../../../../services/form/form.service';
 import {
   addressValidation,
   addressUnitValidation,
@@ -108,7 +109,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
   public isPhoneExtExist: boolean = false;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   public parkingName: string = null;
 
@@ -120,7 +121,8 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private settingsLocationService: SettingsLocationService
+    private settingsLocationService: SettingsLocationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -158,6 +160,13 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
+
+    this.formService.checkFormChange(this.parkingForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public tabChange(event: any, action?: string): void {
@@ -214,8 +223,10 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData?.type === 'edit') {
-          this.updateParking(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateParking(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addParking();
           this.modalService.setModalSpinner({ action: null, status: true });

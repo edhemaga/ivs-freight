@@ -12,12 +12,13 @@ import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
 import { phoneFaxRegex } from '../../../../shared/ta-input/ta-input.regex-validations';
+import { FormService } from '../../../../../services/form/form.service';
 
 @Component({
   selector: 'app-settings-factoring-modal',
   templateUrl: './settings-factoring-modal.component.html',
   styleUrls: ['./settings-factoring-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -27,14 +28,15 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
 
   public selectedAddress: AddressEntity = null;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private settingsCompanyService: SettingsCompanyService
+    private settingsCompanyService: SettingsCompanyService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +62,13 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
+
+    this.formService.checkFormChange(this.factoringForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onHandleAddress(event: {
@@ -80,8 +89,13 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.factoringForm);
           return;
         }
-        this.updateFactoringCompany(this.editData.company);
-        this.modalService.setModalSpinner({ action: null, status: true });
+        if (this.editData.type === 'edit') {
+          if (this.isFormDirty) {
+            this.updateFactoringCompany(this.editData.company);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
+        }
+
         break;
       }
       case 'delete': {

@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Parking' : 'Edit Parking'"
   [editData]="editData"
   [editName]="parkingName"
-  [isModalValid]="parkingForm.valid"
+  [isModalValid]="parkingForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <app-ta-tab-switch

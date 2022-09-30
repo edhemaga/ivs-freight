@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Task' : 'Edit Task'"
   [editName]="taskName"
   [editData]="editData"
-  [isModalValid]="taskForm.valid"
+  [isModalValid]="taskForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <form [formGroup]="taskForm" class="form-container form-container-without-mb">

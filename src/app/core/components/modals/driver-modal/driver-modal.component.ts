@@ -241,8 +241,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       }
       // Update
       if (this.editData?.id) {
-        this.updateDriver(this.editData.id);
-        this.modalService.setModalSpinner({ action: null, status: true });
+        if (this.isFormDirty) {
+          this.updateDriver(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
+        }
       }
       // Save
       else {

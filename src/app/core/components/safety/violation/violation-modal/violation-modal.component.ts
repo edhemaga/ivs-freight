@@ -12,14 +12,15 @@ import {
   phoneFaxRegex,
   vinNumberValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../../services/form/form.service';
 
 @Component({
   selector: 'app-violation-modal',
   templateUrl: './violation-modal.component.html',
   styleUrls: ['./violation-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class ViolationModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -108,12 +109,13 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -186,6 +188,13 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       boL: [null],
       cargo: [null],
     });
+
+    this.formService.checkFormChange(this.violationForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public tabChange(event: any): void {
@@ -213,8 +222,10 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData) {
-          this.updateViolation(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateViolation(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         }
         break;
       }

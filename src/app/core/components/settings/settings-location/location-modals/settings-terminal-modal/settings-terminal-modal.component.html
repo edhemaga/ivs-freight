@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Terminal' : 'Edit Terminal'"
   [editData]="editData"
   [editName]="terminalName"
-  [isModalValid]="terminalForm.valid"
+  [isModalValid]="terminalForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <app-ta-tab-switch

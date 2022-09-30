@@ -4,7 +4,7 @@
   "
   [editData]="editData"
   [editName]="repairShopName"
-  [isModalValid]="repairShopForm.valid"
+  [isModalValid]="repairShopForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <app-ta-tab-switch

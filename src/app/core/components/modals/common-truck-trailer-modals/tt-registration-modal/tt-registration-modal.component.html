@@ -11,7 +11,7 @@
       : 'Truck ' + editData?.payload?.truckNumber
   "
   [specificCaseModalName]="true"
-  [isModalValid]="registrationForm.valid"
+  [isModalValid]="registrationForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <form

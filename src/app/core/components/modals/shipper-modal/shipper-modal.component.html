@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Shipper' : 'Edit Shipper'"
   [editData]="editData"
   [editName]="editData?.data?.businessName"
-  [isModalValid]="shipperForm.valid"
+  [isModalValid]="shipperForm.valid && isFormDirty"
   [customClass]="'modal-container-M'"
   (action)="onModalAction($event)"
 >

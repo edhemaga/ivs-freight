@@ -37,6 +37,7 @@ import {
 } from '@angular/forms';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
+import { FormService } from '../../../../../services/form/form.service';
 import {
   convertDateToBackend,
   convertThousanSepInNumber,
@@ -48,7 +49,7 @@ import {
   selector: 'app-settings-insurance-policy-modal',
   templateUrl: './settings-insurance-policy-modal.component.html',
   styleUrls: ['./settings-insurance-policy-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class SettingsInsurancePolicyModalComponent
   implements OnInit, OnDestroy
@@ -75,14 +76,15 @@ export class SettingsInsurancePolicyModalComponent
   public idPhysicalDamage = null;
   public idTrailerInterchange = null;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private settingsCompanyService: SettingsCompanyService
+    private settingsCompanyService: SettingsCompanyService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -153,6 +155,13 @@ export class SettingsInsurancePolicyModalComponent
       'email',
       this.destroy$
     );
+
+    this.formService.checkFormChange(this.insurancePolicyForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -167,8 +176,10 @@ export class SettingsInsurancePolicyModalComponent
           return;
         }
         if (this.editData.type === 'edit') {
-          this.updateInsurancePolicy(this.editData.company.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateInsurancePolicy(this.editData.company.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addInsurancePolicy(this.editData.company);
           this.modalService.setModalSpinner({ action: null, status: true });

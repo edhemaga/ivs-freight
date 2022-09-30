@@ -4,7 +4,7 @@
   [editName]="applicantFullName"
   [saveAndAddNew]="editData?.type !== 'edit'"
   [resendEmail]="editData?.type === 'edit'"
-  [isModalValid]="applicantForm.valid"
+  [isModalValid]="applicantForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <form [formGroup]="applicantForm" class="form-container">

@@ -26,6 +26,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { CommentsService } from '../../../services/comments/comments.service';
+import { FormService } from '../../../services/form/form.service';
 import {
   convertDateToBackend,
   convertDateFromBackend,
@@ -35,7 +36,7 @@ import {
   selector: 'app-task-modal',
   templateUrl: './task-modal.component.html',
   styleUrls: ['./task-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class TaskModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -56,7 +57,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   public companyUser: SignInResponse = null;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   public taskName: string = null;
 
@@ -66,7 +67,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private todoService: TodoTService,
     private commentsService: CommentsService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -99,6 +101,13 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       'url',
       this.destroy$
     );
+
+    this.formService.checkFormChange(this.taskForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -112,8 +121,10 @@ export class TaskModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData?.type === 'edit') {
-          this.updateTaskById(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateTaskById(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addTask();
           this.modalService.setModalSpinner({ action: null, status: true });

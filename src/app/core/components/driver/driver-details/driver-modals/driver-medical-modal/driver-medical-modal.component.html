@@ -4,7 +4,7 @@
   "
   [editData]="editData"
   [editName]="modalName"
-  [isModalValid]="medicalForm.valid"
+  [isModalValid]="medicalForm.valid && isFormDirty"
   [specificCaseModalName]="true"
   (action)="onModalAction($event)"
 >

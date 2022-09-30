@@ -14,6 +14,7 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { licensePlateValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 import { NotificationService } from '../../../../services/notification/notification.service';
+import { FormService } from '../../../../services/form/form.service';
 import {
   convertDateToBackend,
   convertDateFromBackend,
@@ -23,7 +24,7 @@ import {
   selector: 'app-tt-registration-modal',
   templateUrl: './tt-registration-modal.component.html',
   styleUrls: ['./tt-registration-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class TtRegistrationModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -33,7 +34,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   public stateTypes: any[] = [];
   public selectedStateType: any = null;
@@ -43,7 +44,8 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     private commonTruckTrailerService: CommonTruckTrailerService,
     private notificationService: NotificationService,
     private inputService: TaInputService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -62,6 +64,13 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
       expDate: [null, Validators.required],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.registrationForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -76,8 +85,10 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData.type === 'edit-registration') {
-          this.updateRegistration();
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateRegistration();
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addRegistration();
           this.modalService.setModalSpinner({ action: null, status: true });

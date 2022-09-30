@@ -276,8 +276,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             return;
           }
           if (this.editData?.id) {
-            this.updateTruck(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
+            if (this.isFormDirty) {
+              this.updateTruck(this.editData.id);
+              this.modalService.setModalSpinner({ action: null, status: true });
+            }
           } else {
             this.addTruck();
             this.modalService.setModalSpinner({

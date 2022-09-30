@@ -10,15 +10,16 @@ import { tab_modal_animation } from '../../../shared/animations/tabs-modal.anima
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../../services/notification/notification.service';
+import { FormService } from '../../../../services/form/form.service';
 
 @Component({
   selector: 'app-accident-modal',
   templateUrl: './accident-modal.component.html',
   styleUrls: ['./accident-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class AccidentModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -62,13 +63,14 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
 
   public isLocationAndShippingOpen: boolean = true;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private notificationService: NotificationService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -148,6 +150,13 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
+
+    this.formService.checkFormChange(this.accidentForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public tabChange(event: any): void {
@@ -209,8 +218,10 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData) {
-          this.updateAccident(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateAccident(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addAccident();
           this.modalService.setModalSpinner({ action: null, status: true });

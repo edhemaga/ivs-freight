@@ -13,6 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
+import { FormService } from '../../../../../services/form/form.service';
 import {
   convertDateFromBackend,
   convertDateToBackend,
@@ -26,7 +27,7 @@ import {
   selector: 'app-driver-cdl-modal',
   templateUrl: './driver-cdl-modal.component.html',
   styleUrls: ['./driver-cdl-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class DriverCdlModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -51,7 +52,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -59,7 +60,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     private cdlService: CdlTService,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -89,6 +91,13 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       endorsements: [null],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.cdlForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -102,8 +111,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData.type === 'edit-licence') {
-          this.updateCdl();
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateCdl();
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addCdl();
           this.modalService.setModalSpinner({ action: null, status: true });

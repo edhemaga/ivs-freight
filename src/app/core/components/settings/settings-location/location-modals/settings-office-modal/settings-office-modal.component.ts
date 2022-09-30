@@ -23,6 +23,7 @@ import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
 import { rentValidation } from '../../../../shared/ta-input/ta-input.regex-validations';
+import { FormService } from '../../../../../services/form/form.service';
 import {
   addressValidation,
   addressUnitValidation,
@@ -42,7 +43,7 @@ import {
   styleUrls: ['./settings-office-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -68,7 +69,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   public selectedDepartmentFormArray: any[] = [];
   public isDepartmentContactCardOpen: boolean = false;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   public officeName: string = null;
 
@@ -93,7 +94,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private settingsLocationService: SettingsLocationService
+    private settingsLocationService: SettingsLocationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -126,6 +128,13 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
+
+    this.formService.checkFormChange(this.officeForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public tabChange(event: any): void {
@@ -148,8 +157,10 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData?.type === 'edit') {
-          this.updateCompanyOffice(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateCompanyOffice(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addCompanyOffice();
           this.modalService.setModalSpinner({ action: null, status: true });

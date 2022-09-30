@@ -2,7 +2,7 @@
   [modalTitle]="'Edit Roadside Inspection'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="violationForm.valid"
+  [isModalValid]="violationForm.valid && isFormDirty"
   [customClass]="'modal-container-XL'"
   [disableDelete]="true"
   (action)="onModalAction($event)"

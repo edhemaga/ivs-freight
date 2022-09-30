@@ -29,6 +29,8 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
   private addNewApplicant: boolean = false;
   public applicantFullName: string = null;
 
+  public isFormDirty: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -60,6 +62,13 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
+
+    this.formService.checkFormChange(this.applicantForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -95,8 +104,10 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
         }
 
         if (this.editData?.type === 'edit') {
-          this.updateApplicant(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateApplicant(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addApplicant();
           this.modalService.setModalSpinner({ action: null, status: true });

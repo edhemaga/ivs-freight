@@ -32,13 +32,14 @@ import {
   convertNumberInThousandSep,
 } from '../../../../../utils/methods.calculations';
 import { Address } from '../../../../shared/model/address';
+import { FormService } from '../../../../../services/form/form.service';
 
 @Component({
   selector: 'app-settings-terminal-modal',
   templateUrl: './settings-terminal-modal.component.html',
   styleUrls: ['./settings-terminal-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -113,7 +114,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   public isParkingPhoneExtExist: boolean = false;
   public isWarehousePhoneExtExist: boolean = false;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   public terminalName: string = null;
 
@@ -122,7 +123,8 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private settingsLocationService: SettingsLocationService
+    private settingsLocationService: SettingsLocationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -199,6 +201,13 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
+
+    this.formService.checkFormChange(this.terminalForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public tabChange(event: any): void {
@@ -221,8 +230,10 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData?.type === 'edit') {
-          this.updateTerminal(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateTerminal(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addTerminal();
           this.modalService.setModalSpinner({ action: null, status: true });
