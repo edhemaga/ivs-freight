@@ -567,6 +567,28 @@ export class Step3FormComponent
           selectedInputsLine.displayAnnotationButton = false;
           selectedInputsLine.displayAnnotationTextArea = false;
         }
+
+        switch (lineIndex) {
+          case 10:
+            this.licenseForm.get('firstRowReview').patchValue(null);
+
+            break;
+          case 11:
+            this.licenseForm.get('secondRowReview').patchValue(null);
+
+            break;
+          case 12:
+            this.licenseForm.get('thirdRowReview').patchValue(null);
+
+            break;
+          case 13:
+            this.licenseForm.get('fourthRowReview').patchValue(null);
+
+            break;
+
+          default:
+            break;
+        }
       }
     }
 

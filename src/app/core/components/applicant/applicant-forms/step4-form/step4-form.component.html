@@ -130,6 +130,7 @@
       <div class="radios-box">
         <app-ta-input-radiobuttons
           [buttons]="answerChoices"
+          [disabled]="selectedMode === 'REVIEW_MODE'"
           (changedValue)="handleInputSelect($event, 'HAZMAT-SPILL')"
         ></app-ta-input-radiobuttons>
       </div>
@@ -256,6 +257,29 @@
         (click)="onSaveEditedAccident()"
       >
         Save Changes
+      </button>
+    </div>
+
+    <div
+      class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
+      *ngIf="isReviewingCard"
+    >
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+        (click)="onCancelReviewAccident()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+        [ngClass]="{
+          disabled: !isCardReviewedIncorrect
+        }"
+        (click)="onAddAnnotation()"
+      >
+        Add Annotation
       </button>
     </div>
   </div>

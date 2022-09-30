@@ -187,8 +187,6 @@ export class Step3Component implements OnInit, OnDestroy {
   }
 
   public patchStepValues(stepValues: any) {
-    console.log('stepvalues', stepValues);
-
     const { cdlDenied, cdlDeniedExplanation, licences } = stepValues;
 
     const lastItemInLicenseArray = licences[licences.length - 1];
@@ -522,6 +520,10 @@ export class Step3Component implements OnInit, OnDestroy {
         if (!isAnyInputInLineIncorrect) {
           selectedInputsLine.displayAnnotationButton = false;
           selectedInputsLine.displayAnnotationTextArea = false;
+        }
+
+        if (lineIndex === 14) {
+          this.permitForm.get('fifthRowReview').patchValue(null);
         }
       }
     }

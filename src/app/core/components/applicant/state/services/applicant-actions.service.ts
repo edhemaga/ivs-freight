@@ -26,6 +26,7 @@ import {
   CreateAuthorizationReviewCommand,
   CreateWorkExperienceReviewCommand,
   CreateApplicantCdlReviewCommand,
+  CreateAccidentRecordReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -147,6 +148,12 @@ export class ApplicantActionsService {
     data: CreateApplicantCdlReviewCommand
   ): Observable<object> {
     return this.applicantService.apiApplicantCdlReviewPost(data);
+  }
+
+  public createAccidentRecordReview(
+    data: CreateAccidentRecordReviewCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantAccidentrecordReviewPost(data);
   }
 
   public createAuthorizationReview(

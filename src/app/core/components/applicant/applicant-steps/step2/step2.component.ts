@@ -132,7 +132,6 @@ export class Step2Component implements OnInit, OnDestroy {
   }
 
   public patchStepValues(stepValues: any) {
-    console.log(stepValues);
     const { haveWorkExperience, workExperienceItems } = stepValues;
 
     this.workExperienceForm
@@ -727,9 +726,6 @@ export class Step2Component implements OnInit, OnDestroy {
       contactMessage: this.lastWorkExperienceCard.thirdRowReview,
       isAddressValid: lastItemReview ? lastItemReview.isAddressValid : true,
       addressMessage: this.lastWorkExperienceCard.fourthRowReview,
-      /*   isCfrPartValid: true,
-      isFmcsaValid: true,
-      cfrFmcsaMessage: null, */
       isReasonForLeavingValid: lastItemReview
         ? lastItemReview.isReasonForLeavingValid
         : true,
@@ -738,21 +734,7 @@ export class Step2Component implements OnInit, OnDestroy {
         ? lastItemReview.isAccountForPeriodBetweenValid
         : true,
       accountForPeriodBetweenMessage:
-        this.lastWorkExperienceCard.seventhRowReview /*,
-      classOfEquipmentReviews: [
-        {
-          isVehicleTypeValid: this.emitedOpenAnnotationArray
-            ? !this.emitedOpenAnnotationArray[24].lineInputs[0]
-            : true,
-          isTrailerTypeValid: this.emitedOpenAnnotationArray
-            ? !this.emitedOpenAnnotationArray[24].lineInputs[1]
-            : true,
-          isTrailerLengthValid: this.emitedOpenAnnotationArray
-            ? !this.emitedOpenAnnotationArray[24].lineInputs[2]
-            : true,
-          classOfEquipmentMessage: this.lastWorkExperienceCard.fifthRowReview,
-        },
-      ], */,
+        this.lastWorkExperienceCard.seventhRowReview,
     };
 
     const saveData: CreateWorkExperienceReviewCommand = {

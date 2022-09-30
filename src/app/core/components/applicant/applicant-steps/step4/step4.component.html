@@ -29,6 +29,7 @@
       [customClass]="
         selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
       "
+      [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
     ></app-ta-checkbox>
   </div>
 
@@ -84,47 +85,55 @@
           *ngIf="!accident.isEditingAccident"
         >
           <div class="d-flex align-items-center info-btn-container">
-            <div class="d-flex align-items-center date-box">
-              <p class="m-0 ta-font-regular">
-                {{ accident.date }}
-              </p>
-            </div>
-            <div class="d-flex align-items-center state-box">
-              <p class="m-0 ta-font-regular">
-                {{ accident.accidentState }}
-              </p>
-            </div>
-            <div class="d-flex align-items-center fatalities-box">
-              <p class="m-0 ta-font-regular">
-                {{ accident.fatalities }}
-              </p>
-            </div>
-            <div class="d-flex align-items-center injuries-box">
-              <p class="m-0 ta-font-regular">
-                {{ accident.injuries }}
-              </p>
-            </div>
-            <div class="d-flex align-items-center hazmat-box">
-              <p class="m-0 ta-font-regular">
-                {{ accident.hazmatSpill ? 'Yes' : 'No' }}
-              </p>
-            </div>
             <div
-              class="d-flex align-items-center description-box"
+              class="d-flex align-items-center"
               [ngStyle]="{
-                width: selectedMode === 'FEEDBACK_MODE' ? '190px' : '209px'
+                cursor: selectedMode === 'REVIEW_MODE' ? 'pointer' : 'auto'
               }"
+              (click)="onCardReview(i)"
             >
-              <p
-                class="m-0 ta-font-regular d-inline-block text-truncate"
-                style="max-width: 207px"
-                ngbTooltip
-                [mainTooltip]="accident.description"
-                tooltipBackground="#6C6C6C"
-                position="bottom-left"
+              <div class="d-flex align-items-center date-box">
+                <p class="m-0 ta-font-regular">
+                  {{ accident.date }}
+                </p>
+              </div>
+              <div class="d-flex align-items-center state-box">
+                <p class="m-0 ta-font-regular">
+                  {{ accident.accidentState }}
+                </p>
+              </div>
+              <div class="d-flex align-items-center fatalities-box">
+                <p class="m-0 ta-font-regular">
+                  {{ accident.fatalities }}
+                </p>
+              </div>
+              <div class="d-flex align-items-center injuries-box">
+                <p class="m-0 ta-font-regular">
+                  {{ accident.injuries }}
+                </p>
+              </div>
+              <div class="d-flex align-items-center hazmat-box">
+                <p class="m-0 ta-font-regular">
+                  {{ accident.hazmatSpill ? 'Yes' : 'No' }}
+                </p>
+              </div>
+              <div
+                class="d-flex align-items-center description-box"
+                [ngStyle]="{
+                  width: selectedMode === 'FEEDBACK_MODE' ? '190px' : '209px'
+                }"
               >
-                {{ accident.description }}
-              </p>
+                <p
+                  class="m-0 ta-font-regular d-inline-block text-truncate"
+                  style="max-width: 207px"
+                  ngbTooltip
+                  [mainTooltip]="accident.description"
+                  tooltipBackground="#6C6C6C"
+                  position="bottom-left"
+                >
+                  {{ accident.description }}
+                </p>
+              </div>
             </div>
             <div
               class="d-flex align-items-center btn-container"
@@ -186,7 +195,11 @@
                       'width.px': 18,
                       'height.px': 18
                     }"
-                    (click)="incorrectInput($event, 0, i, 'card')"
+                    (click)="
+                      openAnnotationArray[i].lineInputs[0]
+                        ? incorrectInput($event, 0, i, 'card')
+                        : onCardReview(i)
+                    "
                   ></svg-icon>
                 </div>
               </div>
@@ -244,11 +257,17 @@
           *ngIf="accident.isEditingAccident"
         >
           <app-step4-form
+            [mode]="selectedMode"
             [isEditing]="isEditing"
             [formValuesToPatch]="formValuesToPatch"
+            [isReviewingCard]="isReviewingCard"
             (cancelFormEditingEmitter)="cancelAccidentEditing($event)"
             (formValuesEmitter)="getAccidentFormValues($event)"
             (saveFormEditingEmitter)="saveEditedAccident($event)"
+            (cancelFormReviewingEmitter)="cancelAccidentReview($event)"
+            (cardOpenAnnotationArrayValuesEmitter)="
+              onGetCardOpenAnnotationArrayValues($event)
+            "
           ></app-step4-form>
         </div>
       </div>
@@ -256,14 +275,26 @@
 
     <!-- FORM SECTION -->
 
-    <form *ngIf="!isEditing">
+    <form
+      *ngIf="
+        (selectedMode === 'APPLICANT_MODE' && !isEditing) ||
+        (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
+      "
+    >
       <app-step4-form
+        [mode]="selectedMode"
         [isEditing]="isEditing"
         [markFormInvalid]="markFormInvalid"
+        [formValuesToPatch]="formValuesToPatch"
+        [isReviewingCard]="isReviewingCard"
         (formValuesEmitter)="getAccidentFormValues($event)"
         (formStatusEmitter)="onGetFormStatus($event)"
         (markInvalidEmitter)="onMarkInvalidEmit($event)"
         (lastFormValuesEmitter)="onGetLastFormValues($event)"
+        (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
+        (openAnnotationArrayValuesEmitter)="
+          onGetOpenAnnotationArrayValues($event)
+        "
       ></app-step4-form>
     </form>
   </div>
@@ -276,7 +307,13 @@
 >
   <app-applicant-next-back-btn
     [nextStep]="true"
-    [filledCorrectly]="formStatus === 'VALID'"
+    [filledCorrectly]="
+      selectedMode === 'APPLICANT_MODE' && formStatus === 'VALID'
+    "
+    [hasIncorrectFields]="
+      selectedMode === 'REVIEW_MODE' &&
+      (hasIncorrectFields || cardsWithIncorrectFields)
+    "
     [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
