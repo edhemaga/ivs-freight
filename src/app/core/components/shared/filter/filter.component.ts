@@ -9,7 +9,9 @@ import {
   ElementRef,
   ChangeDetectorRef,
   QueryList,
-  AfterViewInit
+  AfterViewInit,
+  EventEmitter,
+  Output
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
@@ -633,7 +635,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     {
       id: 10,
       name: 'Low Boy/RGN',
-      icon: 'assets/svg/truckassist-table/trailer/low-boy-RGN.svg',
+      icon: 'assets/svg/common/trailers/ic_trailer_low-boy.svg',
     },
     {
       id: 11,
@@ -1074,6 +1076,10 @@ export class FilterComponent implements OnInit, AfterViewInit {
   @Input() swipeFilter: boolean = false;
   @Input() locationDefType: boolean = false;
   @Input() legendView: boolean = false;
+  @Input() toDoSubType: string = '';
+
+  @Output() setFilter = new EventEmitter<any>();
+  @Output() clearFilter = new EventEmitter<any>();
 
   resizeObserver: ResizeObserver;
 
@@ -1829,6 +1835,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   handleInputSelect(e) {
+    console.log('--e---', e);
     if (e?.address?.address) {
       this.locationState = e.address.address;
     }
@@ -1870,7 +1877,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setFilter(e) {
+  public setFilterValue(e) {
     const element = e.target;
     if (element.classList.contains('active')) {
       this.setButtonAvailable = false;
@@ -1915,6 +1922,22 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.minValueSet = this.rangeForm.get('rangeFrom')?.value;
       } else {
         this.filterActiveArray = [...this.selectedUser];
+        let selectedUsersIdArray: any = [];
+        this.filterActiveArray.map((data) => {
+          selectedUsersIdArray.push(data.id);
+        })
+
+        if (this.toDoSubType){
+          let todoParams = {
+            'data' : selectedUsersIdArray,
+            'type' : this.toDoSubType,
+          }
+          this.setFilter.emit(todoParams);
+        } else {
+          this.setFilter.emit(selectedUsersIdArray);
+        }
+
+        
       }
     } else {
       return false;

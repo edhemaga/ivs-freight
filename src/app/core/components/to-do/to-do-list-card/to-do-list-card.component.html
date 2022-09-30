@@ -19,15 +19,23 @@
           </div>
           <div class="border-right"></div>
           <div class="box-icons" >
-            <app-filter [type]="'timeFilter'" [filterTitle]="'Time Filter'" [icon]="'pending'"> </app-filter>
+            <app-filter 
+              [type]="'timeFilter'" 
+              [filterTitle]="'Time Filter'" 
+              [icon]="'pending'"
+              [toDoSubType]="'to-do'"
+              (setFilter)="setFilterEvent($event)"> 
+            </app-filter>
           </div>
           <div class="border-right"></div>
           <div class="box-icons">
             <app-filter 
               [type]="'userFilter'"
               [searchState]="true"
-              [filterTitle]="'Dispatcher Filter'"
+              [filterTitle]="'User Filter'"
               [defFilterHolder]="true"
+              [toDoSubType]="'to-do'"
+              (setFilter)="setFilterEvent($event)"
             >
             </app-filter>
           </div>
@@ -39,165 +47,11 @@
               [filterTitle]="'Department Filter'"
               [defFilterHolder]="true"
               [noLeftIcon]="true"
+              [toDoSubType]="'to-do'"
+              (setFilter)="setFilterEvent($event)"
             >
             </app-filter>
           </div>
-          <div class="border-right"></div>
-          <div
-            class="box-icons"
-          >
-            <app-filter
-              [type]="'truckFilter'"
-              [icon]="'truck'"
-              [filterTitle]="'Truck Filter'"
-              [defFilterHolder]="true"
-              [noLeftIcon]="true"
-            >
-            </app-filter>
-          </div>
-          <div
-            class="box-icons"
-          >
-            <app-filter
-              [type]="'trailerFilter'"
-              [icon]="'trailer'"
-              [filterTitle]="'Truck Filter'"
-              [defFilterHolder]="true"
-              [noLeftIcon]="true"
-            >
-            </app-filter>
-          </div>
-          <div
-            class="box-icons"
-          >
-            <app-filter
-              [type]="'injuryFilter'"
-              [icon]="'injury'"
-              [filterTitle]="'Injury Filter'"
-              [swipeFilter]="true"
-            >
-            </app-filter>
-          </div>
-          <div class="border-right"></div>
-          <div
-            class="box-icons"
-          >
-            <app-filter
-              [type]="'statusFilter'"
-              [icon]="'broker-half-circle'"
-              [filterTitle]="'Status Filter'"
-              [defFilterHolder]="true"
-              [noLeftIcon]="false"
-            >
-            </app-filter>
-          </div>
-          <div class="border-right"></div>
-          <div
-            class="box-icons"
-          >
-            <app-filter
-              [type]="'moneyFilter'"
-              [icon]="'dollar'"
-              [filterTitle]="'Status Filter'"
-              [subType]="'all'"
-              [moneyFilter]="true"
-          
-            >
-            </app-filter>
-          </div>
-          <div class="border-right"></div>
-          <div
-            class="box-icons"
-          >
-            <app-filter
-              [type]="'moneyFilter'"
-              [icon]="'dollar'"
-              [filterTitle]="'Status Filter'"
-              [subType]="'all1'"
-              [moneyFilter]="true"
-          
-            >
-            </app-filter>
-          </div>
-          <div class="border-right"></div>
-          <div
-            class="box-icons"
-          >
-            <app-filter
-              [type]="'pmFilter'"
-              [icon]="'default_pm'"
-              [filterTitle]="'PM Filter'"
-              [defFilterHolder]="true"
-              [noLeftIcon]="false"
-              [leftSideIcon]="true"
-            >
-            </app-filter>
-          </div>
-          <div class="border-right"></div>
-          <div
-            class="box-icons"
-          >
-            <app-filter
-              [type]="'truckTypeFilter'"
-              [icon]="'truck'"
-              [filterTitle]="'Truck Type Filter'"
-              [defFilterHolder]="true"
-              [noLeftIcon]="false"
-              [leftSideIcon]="true"
-              [largeLeftIcon]="true"
-            >
-            </app-filter>
-          </div>
-          <div class="border-right"></div>
-          <div
-            class="box-icons"
-          >
-            <app-filter
-              [type]="'locationFilter'"
-              [icon]="'address'"
-              [filterTitle]="'Location Filter'"
-              [locationDefType]="true"
-            >
-            </app-filter>
-          </div>
-          <div class="border-right"></div>
-          <div
-            class="box-icons"
-          >
-            <app-filter
-              [type]="'stateFilter'"
-              [icon]="'state'"
-              [filterTitle]="'State / Province Filter'"
-              [defFilterHolder]="true"
-              [leftSideIcon]="true"
-            >
-            </app-filter>
-          </div>
-          <div class="border-right"></div>
-          <div
-            class="box-icons"
-          >
-            <app-filter
-              [type]="'payFilter'"
-              [icon]="'dollar'"
-              [filterTitle]="'Pay Filter'"
-              [locationDefType]="true"
-            >
-            </app-filter>
-          </div>
-          <div class="border-right"></div>
-          <div
-            class="box-icons"
-          >
-            <app-filter
-              [type]="'milesFilter'"
-              [icon]="'mileage'"
-              [filterTitle]="'Pay Filter'"
-              [locationDefType]="true"
-            >
-            </app-filter>
-          </div>
-          <div class="border-right"></div>
         </div>
         <div class="toolbar-icons-frame">
           <div class="border-right"></div>
@@ -236,15 +90,22 @@
           </div>
           <div class="border-right"></div>
           <div class="box-icons" >
-            <app-filter [type]="'timeFilter'" [icon]="'pending'"> </app-filter>
+            <app-filter 
+              [type]="'timeFilter'" 
+              [icon]="'pending'"
+              [toDoSubType]="'ongoing'"
+              (setFilter)="setFilterEvent($event)"> 
+            </app-filter>
           </div>
           <div class="border-right"></div>
           <div class="box-icons">
             <app-filter
               [type]="'userFilter'"
               [searchState]="true"
-              [filterTitle]="'Dispatcher Filter'"
+              [filterTitle]="'User Filter'"
               [defFilterHolder]="true"
+              [toDoSubType]="'ongoing'"
+              (setFilter)="setFilterEvent($event)"
             >
             </app-filter>
           </div>
@@ -256,6 +117,8 @@
               [filterTitle]="'Department Filter'"
               [defFilterHolder]="true"
               [noLeftIcon]="true"
+              [toDoSubType]="'ongoing'"
+              (setFilter)="setFilterEvent($event)"
             >
             </app-filter>
           </div>
@@ -281,15 +144,22 @@
           </div>
           <div class="border-right"></div>
           <div class="box-icons">
-            <app-filter [type]="'timeFilter'" [icon]="'pending'"> </app-filter>
+            <app-filter 
+              [type]="'timeFilter'" 
+              [icon]="'pending'"
+              [toDoSubType]="'done'"
+              (setFilter)="setFilterEvent($event)"> 
+            </app-filter>
           </div>
           <div class="border-right"></div>
           <div class="box-icons">
             <app-filter
               [type]="'userFilter'"
               [searchState]="true"
-              [filterTitle]="'Dispatcher Filter'"
+              [filterTitle]="'User Filter'"
               [defFilterHolder]="true"
+              [toDoSubType]="'done'"
+              (setFilter)="setFilterEvent($event)"
             >
             </app-filter>
           </div>
@@ -301,6 +171,8 @@
               [filterTitle]="'Department Filter'"
               [defFilterHolder]="true"
               [noLeftIcon]="true"
+              [toDoSubType]="'done'"
+              (setFilter)="setFilterEvent($event)"
             >
             </app-filter>
           </div>

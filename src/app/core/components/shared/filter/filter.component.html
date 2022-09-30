@@ -630,7 +630,7 @@
           Clear All
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
           [class.active]="
             (selectedUser.length > 0 ||
@@ -993,7 +993,7 @@
           Clear
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
           [class.active]="selectedTimeValue != '' && setButtonAvailable"
         >
@@ -1227,7 +1227,7 @@
           Clear All
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
           [class.active]="moneyFilterStatus && setButtonAvailable"
         >
@@ -1266,7 +1266,7 @@
           Clear All
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
           [class.active]="rangeValue != swipeActiveRange"
         >
@@ -1284,23 +1284,27 @@
         [formGroup]="locationForm"
         *ngIf="type == 'locationFilter'"
       >
-        <app-ta-input-address
+          <app-input-address-dropdown
           formControlName="address"
-          [inputConfig]="{
-            name: 'Address',
-            type: 'text',
-            label: 'Location',
-            minLength: 6,
-            maxLength: 256,
-            placeholderIcon: 'address',
-            textTransform: 'capitalize',
-            customClass: 'line-input-26'
-          }"
-          [incorrectValue]="false"
-          (incorrectEvent)="incorrectInput($event, 0, 18)"
-          [activeAddress]="selectedAddress"
-          (selectedAddress)="handleInputSelect($event)"
-        ></app-ta-input-address>
+            [inputConfig]="{
+              name: 'Address',
+              type: 'text',
+              label: 'Location',
+              placeholderIcon: 'address',
+              placeholder: 'Location',
+              textTransform: 'capitalize',
+              dropdownWidthClass: 'w-col-288',
+              minLength: 6,
+              maxLength: 256,
+              placeholderInsteadOfLabel: true,
+              customClass: 'line-input-26'
+            }"
+            [incorrectValue]="false"
+            [placeholderType]="'longAddress'"
+            (incorrectEvent)="incorrectInput($event, 0, 18)"
+            [activeAddress]="selectedAddress"
+            (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+          ></app-input-address-dropdown>
       </div>
       <div class="filter-middle-holder location-slider-middle-padding" *ngIf="type == 'locationFilter'">
         <app-ta-ngx-slider
@@ -1368,7 +1372,7 @@
           Clear All
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
           [class.active]="rangeForm.get('rangeTo').value != maxValueSet || ( rangeForm.get('rangeFrom').value && rangeForm.get('rangeFrom').value != minValueSet )"
         >
@@ -1384,7 +1388,7 @@
           Clear All
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
           [class.active]="locationState != ''"
         >
