@@ -36,13 +36,13 @@ export class InputAddressDropdownComponent
   addresList: any[] = [];
   currentAddress: any;
   searchLayers: any[] = [];
-  clickedOnSelect: boolean = false;
   @Input() inputConfig: ITaInput;
   @Input() placeholderType: string;
   @Output() selectedAddress: EventEmitter<{
     address: AddressEntity;
     valid: boolean;
-  }> = new EventEmitter<{ address: AddressEntity; valid: boolean }>(null);
+    longLat: any;
+  }> = new EventEmitter<{ address: AddressEntity; valid: boolean; longLat: any; }>(null);
 
   @Output() closeDropdown: EventEmitter<boolean> = new EventEmitter<boolean>(null);
 
@@ -102,19 +102,10 @@ export class InputAddressDropdownComponent
   }
 
   public onCloseDropdown(e){
-    setTimeout(()=>{
-      if(!this.clickedOnSelect){
-        this.addresList = [];
-        this.getSuperControl.setValue(null);
-      }
-      this.clickedOnSelect = false;
-    },200)
-    
     this.closeDropdown.emit(e);
   }
 
   public onSelectDropdown(event: any, action: string) {
-    this.clickedOnSelect = true;
     switch (action) {
       case 'address': {
         this.activeAddress = event;
@@ -122,6 +113,7 @@ export class InputAddressDropdownComponent
           this.selectedAddress.emit({
             address: event.address,
             valid: true,
+            longLat: event.longLat
           });
           this.getSuperControl.setValue(event.address.address);
         } else {

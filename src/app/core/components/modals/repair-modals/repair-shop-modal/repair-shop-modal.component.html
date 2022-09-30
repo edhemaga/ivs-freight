@@ -96,7 +96,7 @@
     </div>
     <div class="row last-row">
       <div class="col-10">
-        <app-ta-input-address
+        <app-input-address-dropdown
           formControlName="address"
           [inputConfig]="{
             name: 'Address',
@@ -104,13 +104,18 @@
             label: 'Address, City, State Zip',
             isRequired: true,
             placeholderIcon: 'address',
-            minLength: 6,
+            placeholder: 'Address, City, State Zip',
+            textTransform: 'capitalize',
+            dropdownWidthClass: 'w-col-512',
+            minLength: 12,
             maxLength: 256,
-            textTransform: 'capitalize'
+            isDropdown: true
           }"
+          [incorrectValue]="false"
+          [placeholderType]="'longAddress'"
           [activeAddress]="selectedAddress"
           (selectedAddress)="onHandleAddress($event)"
-        ></app-ta-input-address>
+        ></app-input-address-dropdown>
       </div>
       <div class="col-2">
         <app-ta-input
