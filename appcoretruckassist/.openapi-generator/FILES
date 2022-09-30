@@ -96,6 +96,7 @@ model/bankCardResponse.ts
 model/bankListResponse.ts
 model/bankResponse.ts
 model/bankResponsePagination.ts
+model/brakes.ts
 model/brokerContactCommand.ts
 model/brokerContactResponse.ts
 model/brokerMinimalListResponse.ts
@@ -240,6 +241,9 @@ model/dispatchHistoryListResponse.ts
 model/dispatchHistoryModalResponse.ts
 model/dispatchHistoryResponse.ts
 model/dispatchHistoryResponsePagination.ts
+model/dispatchHosCommand.ts
+model/dispatchHosFlag.ts
+model/dispatchHosResponse.ts
 model/dispatchModalResponse.ts
 model/dispatchResponse.ts
 model/dispatchResponsePagination.ts
@@ -636,6 +640,7 @@ model/violationCommand.ts
 model/violationResponse.ts
 model/weatherDataResponse.ts
 model/weatherDaysResponse.ts
+model/wheelsType.ts
 model/workExperienceFeedbackResponse.ts
 model/workExperienceItemCommand.ts
 model/workExperienceItemResponse.ts

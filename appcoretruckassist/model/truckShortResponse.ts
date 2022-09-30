@@ -39,6 +39,11 @@ export interface TruckShortResponse {
     emptyWeight?: number | null;
     truckEngineType?: TruckEngineTypeResponse;
     tireSize?: TireSizeResponse;
+    fuelTankSize?: number | null;
+    brakes?: EnumValue;
+    frontWheels?: EnumValue;
+    rearWheels?: EnumValue;
+    transmissionModel?: string | null;
     shifter?: EnumValue;
     axles?: number | null;
     insurancePolicy?: string | null;
