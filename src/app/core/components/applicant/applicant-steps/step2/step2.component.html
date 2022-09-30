@@ -317,6 +317,7 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [filledCorrectly]="
+      selectedMode === 'APPLICANT_MODE' &&
       workExperienceForm.valid &&
       formStatus === 'VALID' &&
       innerFormStatus === 'VALID'

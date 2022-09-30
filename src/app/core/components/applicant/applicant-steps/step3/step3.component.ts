@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -6,11 +12,17 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
-import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+  convertDateFromBackend,
+  convertDateToBackend,
+} from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 import { ApplicantListsService } from '../../state/services/applicant-lists.service';
+
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
@@ -19,6 +31,7 @@ import { AnswerChoices } from '../../state/model/applicant-question.model';
 import {
   CountryType,
   CreateApplicantCdlCommand,
+  CreateApplicantCdlReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Component({
@@ -27,9 +40,19 @@ import {
   styleUrls: ['./step3.component.scss'],
 })
 export class Step3Component implements OnInit, OnDestroy {
+  @ViewChildren('cmp') set content(content: QueryList<any>) {
+    if (content) {
+      const radioButtonsArray = content.toArray();
+
+      this.permitRadios = radioButtonsArray[0]
+        ? radioButtonsArray[0].buttons
+        : null;
+    }
+  }
+
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public permitForm: FormGroup;
   public licenseForm: FormGroup;
@@ -47,11 +70,14 @@ export class Step3Component implements OnInit, OnDestroy {
   public helperIndex: number = 2;
 
   public isEditing: boolean = false;
+  public isReviewingCard: boolean = false;
 
   public formValuesToPatch: any;
 
   public canadaStates: any[] = [];
   public usStates: any[] = [];
+
+  public permitRadios: any;
 
   public answerChoices: AnswerChoices[] = [
     {
@@ -76,30 +102,10 @@ export class Step3Component implements OnInit, OnDestroy {
     displayAnnotationButton?: boolean;
     displayAnnotationTextArea?: boolean;
   }[] = [
-    {
-      lineIndex: 0,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 1,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 2,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 3,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
+    {},
+    {},
+    {},
+    {},
     {},
     {},
     {},
@@ -117,13 +123,18 @@ export class Step3Component implements OnInit, OnDestroy {
       displayAnnotationTextArea: false,
     },
   ];
+  public hasIncorrectFields: boolean = false;
+  public cardsWithIncorrectFields: boolean = false;
+  public previousFormValuesOnReview: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private router: Router,
     private applicantActionsService: ApplicantActionsService,
-    private applicantListsService: ApplicantListsService
+    private applicantListsService: ApplicantListsService,
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
@@ -131,11 +142,25 @@ export class Step3Component implements OnInit, OnDestroy {
 
     this.getDropdownLists();
 
-    this.applicantActionsService.getApplicantInfo$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res.personalInfo.applicantId;
-      });
+    if (this.selectedMode === SelectedMode.APPLICANT) {
+      this.applicantActionsService.getApplicantInfo$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          this.applicantId = res.personalInfo.applicantId;
+        });
+    }
+
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      let stepValuesResponse: any;
+
+      this.applicantQuery.cdlInformationList$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          stepValuesResponse = res;
+        });
+
+      this.patchStepValues(stepValuesResponse);
+    }
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -159,6 +184,86 @@ export class Step3Component implements OnInit, OnDestroy {
       permitExplain: [null],
       fifthRowReview: [null],
     });
+  }
+
+  public patchStepValues(stepValues: any) {
+    console.log('stepvalues', stepValues);
+
+    const { cdlDenied, cdlDeniedExplanation, licences } = stepValues;
+
+    const lastItemInLicenseArray = licences[licences.length - 1];
+
+    const restOfTheItemsInLicenseArray = [...licences];
+
+    restOfTheItemsInLicenseArray.pop();
+
+    const filteredLicenseArray = restOfTheItemsInLicenseArray.map((item) => {
+      return {
+        isEditingLicense: false,
+        licenseNumber: item.licenseNumber,
+        country: item.country.name,
+        state: item.state.stateShortName,
+        classType: item.class.name,
+        expDate: convertDateFromBackend(item.expDate).replace(/-/g, '/'),
+        restrictions: item.cdlRestrictions,
+        endorsments: item.cdlEndorsements,
+        licenseReview: item.licenseReview ? item.licenseReview : null,
+      };
+    });
+
+    const filteredLastItemInLicenseArray = {
+      isEditingLicense: false,
+      licenseNumber: lastItemInLicenseArray.licenseNumber,
+      country: lastItemInLicenseArray.country.name,
+      state: lastItemInLicenseArray.state.stateShortName,
+      classType: lastItemInLicenseArray.class.name,
+      expDate: convertDateFromBackend(lastItemInLicenseArray.expDate).replace(
+        /-/g,
+        '/'
+      ),
+      restrictions: lastItemInLicenseArray.cdlRestrictions,
+      endorsments: lastItemInLicenseArray.cdlEndorsements,
+      licenseReview: lastItemInLicenseArray.licenseReview
+        ? lastItemInLicenseArray.licenseReview
+        : null,
+    };
+
+    this.licenseArray = [...filteredLicenseArray];
+
+    this.formValuesToPatch = filteredLastItemInLicenseArray;
+    this.previousFormValuesOnReview = filteredLastItemInLicenseArray;
+
+    for (let i = 0; i < filteredLicenseArray.length; i++) {
+      const firstEmptyObjectInList = this.openAnnotationArray.find(
+        (item) => Object.keys(item).length === 0
+      );
+
+      const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+        firstEmptyObjectInList
+      );
+
+      this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+        lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+        lineInputs: [false],
+        displayAnnotationButton: false,
+        displayAnnotationTextArea: false,
+      };
+    }
+
+    this.permitForm.patchValue({
+      permit: cdlDenied,
+      permitExplain: cdlDeniedExplanation,
+    });
+
+    setTimeout(() => {
+      const permitValue = this.permitForm.get('permit').value;
+
+      if (permitValue) {
+        this.permitRadios[0].checked = true;
+      } else {
+        this.permitRadios[1].checked = true;
+      }
+    }, 100);
   }
 
   public handleInputSelect(event: any, action: string): void {
@@ -266,6 +371,101 @@ export class Step3Component implements OnInit, OnDestroy {
     this.lastLicenseCard = event;
   }
 
+  public onHasIncorrectFields(event: any): void {
+    if (event) {
+      this.hasIncorrectFields = true;
+    } else {
+      this.hasIncorrectFields = false;
+    }
+  }
+
+  public onGetOpenAnnotationArrayValues(event: any): void {
+    this.previousFormValuesOnReview.licenseReview = {
+      isLicenseNumberValid: !event[0].lineInputs[0],
+      isCountryValid: !event[0].lineInputs[1],
+      isStateValid: !event[1].lineInputs[0],
+      isClassValid: !event[1].lineInputs[1],
+      isExpDateValid: !event[1].lineInputs[2],
+      isRestrictionsValid: !event[2].lineInputs[0],
+      isEndorsmentsValid: !event[3].lineInputs[0],
+    };
+  }
+
+  public onGetCardOpenAnnotationArrayValues(event: any): void {
+    this.isReviewingCard = false;
+
+    this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
+
+    this.licenseArray[this.selectedLicenseIndex].licenseReview = {
+      isLicenseNumberValid: !event[0].lineInputs[0],
+      isCountryValid: !event[0].lineInputs[1],
+      isStateValid: !event[1].lineInputs[0],
+      isClassValid: !event[1].lineInputs[1],
+      isExpDateValid: !event[1].lineInputs[2],
+      isRestrictionsValid: !event[2].lineInputs[0],
+      isEndorsmentsValid: !event[3].lineInputs[0],
+    };
+
+    const hasInvalidFields = JSON.stringify(
+      this.licenseArray[this.selectedLicenseIndex].licenseReview
+    );
+
+    if (hasInvalidFields.includes('false')) {
+      this.openAnnotationArray[
+        this.selectedLicenseIndex
+      ].displayAnnotationButton = true;
+
+      this.openAnnotationArray[this.selectedLicenseIndex].lineInputs[0] = true;
+
+      this.cardsWithIncorrectFields = true;
+    } else {
+      this.openAnnotationArray[
+        this.selectedLicenseIndex
+      ].displayAnnotationButton = false;
+
+      this.hasIncorrectFields = false;
+    }
+
+    this.helperIndex = 2;
+    this.selectedLicenseIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnReview;
+  }
+
+  public cancelLicenseReview(event: any): void {
+    this.isReviewingCard = false;
+
+    this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
+
+    this.helperIndex = 2;
+    this.selectedLicenseIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnReview;
+  }
+
+  public getDropdownLists(): void {
+    this.applicantListsService
+      .getDropdownLists()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.usStates = data.usStates.map((item) => {
+          return {
+            id: item.id,
+            name: item.stateShortName,
+            stateName: item.stateName,
+          };
+        });
+
+        this.canadaStates = data.canadaStates.map((item) => {
+          return {
+            id: item.id,
+            name: item.stateShortName,
+            stateName: item.stateName,
+          };
+        });
+      });
+  }
+
   public incorrectInput(
     event: any,
     inputIndex: number,
@@ -277,15 +477,30 @@ export class Step3Component implements OnInit, OnDestroy {
     );
 
     if (type === 'card') {
-      selectedInputsLine.lineInputs[inputIndex] =
-        !selectedInputsLine.lineInputs[inputIndex];
-
-      selectedInputsLine.displayAnnotationButton =
-        !selectedInputsLine.displayAnnotationButton;
+      if (selectedInputsLine.displayAnnotationButton) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+        selectedInputsLine.displayAnnotationButton = false;
+      }
 
       if (selectedInputsLine.displayAnnotationTextArea) {
         selectedInputsLine.displayAnnotationButton = false;
         selectedInputsLine.displayAnnotationTextArea = false;
+      }
+
+      Object.keys(this.licenseArray[lineIndex].licenseReview).forEach((key) => {
+        this.licenseArray[lineIndex].licenseReview[key] = true;
+      });
+
+      const inputFieldsArray = JSON.stringify(
+        this.openAnnotationArray
+          .filter((item) => Object.keys(item).length !== 0)
+          .map((item) => item.lineInputs)
+      );
+
+      if (inputFieldsArray.includes('true')) {
+        this.cardsWithIncorrectFields = true;
+      } else {
+        this.cardsWithIncorrectFields = false;
       }
     } else {
       if (event) {
@@ -324,32 +539,32 @@ export class Step3Component implements OnInit, OnDestroy {
     }
   }
 
-  public getDropdownLists(): void {
-    this.applicantListsService
-      .getDropdownLists()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.usStates = data.usStates.map((item) => {
-          return {
-            id: item.id,
-            name: item.stateShortName,
-            stateName: item.stateName,
-          };
-        });
+  public onCardReview(index: number) {
+    if (this.isReviewingCard) {
+      return;
+    }
 
-        this.canadaStates = data.canadaStates.map((item) => {
-          return {
-            id: item.id,
-            name: item.stateShortName,
-            stateName: item.stateName,
-          };
-        });
-      });
+    this.helperIndex = index;
+    this.selectedLicenseIndex = index;
+
+    this.licenseArray[index].isEditingLicense = true;
+
+    this.isReviewingCard = true;
+
+    const selectedLicense = this.licenseArray[index];
+
+    this.formValuesToPatch = selectedLicense;
   }
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
 
     if (event.action === 'back-step') {
@@ -431,7 +646,38 @@ export class Step3Component implements OnInit, OnDestroy {
       });
   }
 
-  /* public onSubmitReview(data: any): void {} */
+  public onSubmitReview(): void {
+    const lastItemReview = this.previousFormValuesOnReview.licenseReview;
+
+    const lastReviewedItemInLicenseArray = {
+      isLicenseNumberValid: lastItemReview
+        ? lastItemReview.isLicenseNumberValid
+        : true,
+      isCountryValid: lastItemReview ? lastItemReview.isCountryValid : true,
+      licenseCountryMessage: this.lastLicenseCard.firstRowReview,
+      isStateValid: lastItemReview ? lastItemReview.isStateValid : true,
+      isClassValid: lastItemReview ? lastItemReview.isClassValid : true,
+      isExpDateValid: lastItemReview ? lastItemReview.isExpDateValid : true,
+      stateClassExpDateMessage: this.lastLicenseCard.secondRowReview,
+      isEndorsmentsValid: lastItemReview
+        ? lastItemReview.isEndorsmentsValid
+        : true,
+      endorsmentsMessage: this.lastLicenseCard.thirdRowReview,
+      isRestrictionsValid: lastItemReview
+        ? lastItemReview.isRestrictionsValid
+        : true,
+      restrictionsMessage: this.lastLicenseCard.fourthRowReview,
+    };
+
+    const saveData: CreateApplicantCdlReviewCommand = {
+      applicantId: 1,
+      isCdlDeniedExplanationValid: !this.openAnnotationArray[14].lineInputs[0],
+      cdlDeniedExplanationMessage: this.permitForm.get('fifthRowReview').value,
+      licenceReviews: [lastReviewedItemInLicenseArray],
+    };
+
+    console.log('save', saveData);
+  }
 
   ngOnDestroy(): void {}
 }

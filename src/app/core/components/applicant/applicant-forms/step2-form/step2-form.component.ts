@@ -88,7 +88,7 @@ export class Step2FormComponent
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public subscription: Subscription;
   public classOfEquipmentSubscription: Subscription;
@@ -252,14 +252,6 @@ export class Step2FormComponent
   ) {}
 
   ngOnInit(): void {
-    if (this.mode === SelectedMode.FEEDBACK) {
-      this.selectedMode = SelectedMode.FEEDBACK;
-    } else if (this.mode === SelectedMode.REVIEW) {
-      this.selectedMode = SelectedMode.REVIEW;
-    } else {
-      this.selectedMode = SelectedMode.APPLICANT;
-    }
-
     this.createForm();
 
     this.getDropdownLists();
@@ -268,80 +260,9 @@ export class Step2FormComponent
 
     if (this.selectedMode === SelectedMode.APPLICANT) {
       if (this.formValuesToPatch) {
-        this.patchForm();
+        this.patchForm(this.formValuesToPatch);
 
-        this.subscription = this.workExperienceForm.valueChanges
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((updatedFormValues) => {
-            const {
-              employerAddress,
-              applicantId,
-              isEditingWorkHistory,
-              ...previousFormValues
-            } = this.formValuesToPatch;
-
-            previousFormValues.employerAddress = employerAddress.address;
-
-            this.editingCardAddress = employerAddress;
-
-            previousFormValues.classesOfEquipment = JSON.stringify(
-              previousFormValues.classesOfEquipment
-            );
-
-            const {
-              classOfEquipmentCards,
-              classOfEquipmentSubscription,
-              vehicleType: updatedVehicleType,
-              trailerType: updatedTrailerType,
-              trailerLength,
-              firstRowReview,
-              secondRowReview,
-              thirdRowReview,
-              fourthRowReview,
-              fifthRowReview,
-              sixthRowReview,
-              seventhRowReview,
-              ...newFormValues
-            } = updatedFormValues;
-
-            const { vehicleType, trailerType, ...classOfEquipmentForm } =
-              this.classOfEquipmentForm.value;
-
-            let vehicleTypeImageLocation: any;
-            let trailerTypeImageLocation: any;
-
-            if (vehicleType) {
-              vehicleTypeImageLocation = this.vehicleType.find(
-                (item) => item.name === vehicleType
-              ).logoName;
-            }
-
-            if (trailerType) {
-              trailerTypeImageLocation = this.trailerType.find(
-                (item) => item.name === trailerType
-              ).logoName;
-            }
-
-            const lastClassOfEquipmentCard = {
-              ...classOfEquipmentForm,
-              vehicleType,
-              vehicleTypeImageLocation,
-              trailerType,
-              trailerTypeImageLocation,
-              isEditingClassOfEquipment: false,
-            };
-
-            newFormValues.classesOfEquipment = JSON.stringify([
-              ...this.classOfEquipmentArray,
-              lastClassOfEquipmentCard,
-            ]);
-
-            if (isFormValueEqual(previousFormValues, newFormValues)) {
-              this.isWorkExperienceEdited = false;
-            } else {
-              this.isWorkExperienceEdited = true;
-            }
-          });
+        this.startValueChangesMonitoring();
       }
     }
   }
@@ -422,25 +343,38 @@ export class Step2FormComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    setTimeout(() => {
-      if (this.selectedMode === SelectedMode.APPLICANT) {
-        if (changes.markFormInvalid?.currentValue) {
-          this.inputService.markInvalid(this.workExperienceForm);
+    if (changes.mode?.previousValue !== changes.mode?.currentValue) {
+      this.selectedMode = changes.mode?.currentValue;
 
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        if (
+          changes.markFormInvalid?.previousValue !==
+          changes.markFormInvalid?.currentValue
+        ) {
+          this.inputService.markInvalid(this.workExperienceForm);
           this.markInvalidEmitter.emit(false);
         }
 
-        if (changes.markInnerFormInvalid?.currentValue) {
+        if (
+          changes.markInnerFormInvalid?.previousValue !==
+          changes.markInnerFormInvalid?.currentValue
+        ) {
           this.inputService.markInvalid(this.classOfEquipmentForm);
-
           this.markInnerFormInvalidEmitter.emit(false);
         }
       }
 
       if (this.selectedMode === SelectedMode.REVIEW) {
-        this.patchForm();
+        if (
+          changes.formValuesToPatch?.previousValue !==
+          changes.formValuesToPatch?.currentValue
+        ) {
+          setTimeout(() => {
+            this.patchForm(changes.formValuesToPatch.currentValue);
+          }, 100);
+        }
       }
-    }, 100);
+    }
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -502,48 +436,87 @@ export class Step2FormComponent
     );
   }
 
-  public patchForm(): void {
+  public patchForm(formValue: any): void {
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      if (formValue.workExperienceItemReview) {
+        const {
+          isEmployerValid,
+          isJobDescriptionValid,
+          isFromValid,
+          isToValid,
+          isPhoneValid,
+          isEmailValid,
+          isFaxValid,
+          isAddressValid,
+          isAddressUnitValid,
+          isReasonForLeavingValid,
+          isAccountForPeriodBetweenValid,
+        } = formValue.workExperienceItemReview;
+
+        this.openAnnotationArray[20] = {
+          ...this.openAnnotationArray[20],
+          lineInputs: [!isEmployerValid],
+        };
+        this.openAnnotationArray[21] = {
+          ...this.openAnnotationArray[21],
+          lineInputs: [!isJobDescriptionValid, !isFromValid, !isToValid],
+        };
+        this.openAnnotationArray[22] = {
+          ...this.openAnnotationArray[22],
+          lineInputs: [!isPhoneValid, !isEmailValid, !isFaxValid],
+        };
+        this.openAnnotationArray[23] = {
+          ...this.openAnnotationArray[23],
+          lineInputs: [!isAddressValid, !isAddressUnitValid],
+        };
+        this.openAnnotationArray[25] = {
+          ...this.openAnnotationArray[25],
+          lineInputs: [!isReasonForLeavingValid],
+        };
+        this.openAnnotationArray[26] = {
+          ...this.openAnnotationArray[26],
+          lineInputs: [!isAccountForPeriodBetweenValid],
+        };
+      }
+    }
+
     this.workExperienceForm.patchValue({
-      employer: this.formValuesToPatch.employer,
-      jobDescription: this.formValuesToPatch.jobDescription,
-      fromDate: this.formValuesToPatch.fromDate,
-      toDate: this.formValuesToPatch.toDate,
-      employerPhone: this.formValuesToPatch.employerPhone,
-      employerEmail: this.formValuesToPatch.employerEmail,
-      employerFax: this.formValuesToPatch.employerFax,
-      employerAddress: this.formValuesToPatch.employerAddress.address,
-      employerAddressUnit: this.formValuesToPatch.employerAddressUnit,
-      isDrivingPosition: this.formValuesToPatch.isDrivingPosition,
-      cfrPart: this.formValuesToPatch.cfrPart,
-      fmCSA: this.formValuesToPatch.fmCSA,
-      reasonForLeaving: this.formValuesToPatch.reasonForLeaving,
-      accountForPeriod: this.formValuesToPatch.accountForPeriod,
+      employer: formValue.employer,
+      jobDescription: formValue.jobDescription,
+      fromDate: formValue.fromDate,
+      toDate: formValue.toDate,
+      employerPhone: formValue.employerPhone,
+      employerEmail: formValue.employerEmail,
+      employerFax: formValue.employerFax,
+      employerAddress: formValue.employerAddress.address,
+      employerAddressUnit: formValue.employerAddressUnit,
+      isDrivingPosition: formValue.isDrivingPosition,
+      cfrPart: formValue.cfrPart,
+      fmCSA: formValue.fmCSA,
+      reasonForLeaving: formValue.reasonForLeaving,
+      accountForPeriod: formValue.accountForPeriod,
     });
 
-    this.selectedAddress = this.formValuesToPatch.employerAddress;
+    this.selectedAddress = formValue.employerAddress;
 
     setTimeout(() => {
       this.selectedReasonForLeaving = this.reasonsForLeaving.find(
-        (item) => item.name === this.formValuesToPatch.reasonForLeaving
+        (item) => item.name === formValue.reasonForLeaving
       );
     }, 150);
 
-    if (this.formValuesToPatch.isDrivingPosition) {
+    if (formValue.isDrivingPosition) {
       const lastItemInClassOfEquipmentArray =
-        this.formValuesToPatch.classesOfEquipment[
-          this.formValuesToPatch.classesOfEquipment.length - 1
-        ];
+        formValue.classesOfEquipment[formValue.classesOfEquipment.length - 1];
 
       const restOfTheItemsInClassOfEquipmentArray = [
-        ...this.formValuesToPatch.classesOfEquipment,
+        ...formValue.classesOfEquipment,
       ];
 
       restOfTheItemsInClassOfEquipmentArray.pop();
 
       this.classOfEquipmentArray = [...restOfTheItemsInClassOfEquipmentArray];
-      this.helperClassOfEquipmentArray = [
-        ...this.formValuesToPatch.classesOfEquipment,
-      ];
+      this.helperClassOfEquipmentArray = [...formValue.classesOfEquipment];
 
       this.classOfEquipmentForm.patchValue({
         vehicleType: lastItemInClassOfEquipmentArray.vehicleType,
@@ -588,54 +561,83 @@ export class Step2FormComponent
               item.name === lastItemInClassOfEquipmentArray.trailerLength
           );
         }
-      }, 350);
-
-      console.log('prijepatch', this.formValuesToPatch);
-      console.log('ajtem', this.formValuesToPatch.workExperienceItemReview);
-
-      if (this.formValuesToPatch.workExperienceItemReview) {
-        const {
-          isEmployerValid,
-          isJobDescriptionValid,
-          isFromValid,
-          isToValid,
-          isPhoneValid,
-          isEmailValid,
-          isFaxValid,
-          isAddressValid,
-          isAddressUnitValid,
-          isReasonForLeavingValid,
-          isAccountForPeriodBetweenValid,
-        } = this.formValuesToPatch.workExperienceItemReview;
-
-        this.openAnnotationArray[20] = {
-          ...this.openAnnotationArray[20],
-          lineInputs: [!isEmployerValid],
-        };
-        this.openAnnotationArray[21] = {
-          ...this.openAnnotationArray[21],
-          lineInputs: [!isJobDescriptionValid, !isFromValid, !isToValid],
-        };
-        this.openAnnotationArray[22] = {
-          ...this.openAnnotationArray[22],
-          lineInputs: [!isPhoneValid, !isEmailValid, !isFaxValid],
-        };
-        this.openAnnotationArray[23] = {
-          ...this.openAnnotationArray[23],
-          lineInputs: [!isAddressValid, !isAddressUnitValid],
-        };
-        this.openAnnotationArray[25] = {
-          ...this.openAnnotationArray[25],
-          lineInputs: [!isReasonForLeavingValid],
-        };
-        this.openAnnotationArray[26] = {
-          ...this.openAnnotationArray[26],
-          lineInputs: [!isAccountForPeriodBetweenValid],
-        };
-
-        console.log('patch');
-      }
+      }, 100);
     }
+  }
+
+  public startValueChangesMonitoring(): void {
+    this.subscription = this.workExperienceForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((updatedFormValues) => {
+        const {
+          employerAddress,
+          applicantId,
+          isEditingWorkHistory,
+          ...previousFormValues
+        } = this.formValuesToPatch;
+
+        previousFormValues.employerAddress = employerAddress.address;
+
+        this.editingCardAddress = employerAddress;
+
+        previousFormValues.classesOfEquipment = JSON.stringify(
+          previousFormValues.classesOfEquipment
+        );
+
+        const {
+          classOfEquipmentCards,
+          classOfEquipmentSubscription,
+          vehicleType: updatedVehicleType,
+          trailerType: updatedTrailerType,
+          trailerLength,
+          firstRowReview,
+          secondRowReview,
+          thirdRowReview,
+          fourthRowReview,
+          fifthRowReview,
+          sixthRowReview,
+          seventhRowReview,
+          ...newFormValues
+        } = updatedFormValues;
+
+        const { vehicleType, trailerType, ...classOfEquipmentForm } =
+          this.classOfEquipmentForm.value;
+
+        let vehicleTypeImageLocation: any;
+        let trailerTypeImageLocation: any;
+
+        if (vehicleType) {
+          vehicleTypeImageLocation = this.vehicleType.find(
+            (item) => item.name === vehicleType
+          ).logoName;
+        }
+
+        if (trailerType) {
+          trailerTypeImageLocation = this.trailerType.find(
+            (item) => item.name === trailerType
+          ).logoName;
+        }
+
+        const lastClassOfEquipmentCard = {
+          ...classOfEquipmentForm,
+          vehicleType,
+          vehicleTypeImageLocation,
+          trailerType,
+          trailerTypeImageLocation,
+          isEditingClassOfEquipment: false,
+        };
+
+        newFormValues.classesOfEquipment = JSON.stringify([
+          ...this.classOfEquipmentArray,
+          lastClassOfEquipmentCard,
+        ]);
+
+        if (isFormValueEqual(previousFormValues, newFormValues)) {
+          this.isWorkExperienceEdited = false;
+        } else {
+          this.isWorkExperienceEdited = true;
+        }
+      });
   }
 
   private isDriverPosition(): void {

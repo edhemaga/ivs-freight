@@ -71,12 +71,6 @@ export class Step2Component implements OnInit, OnDestroy {
     displayAnnotationButton?: boolean;
     displayAnnotationTextArea?: boolean;
   }[] = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
-  public emitedOpenAnnotationArray: {
-    lineIndex?: number;
-    lineInputs?: boolean[];
-    displayAnnotationButton?: boolean;
-    displayAnnotationTextArea?: boolean;
-  }[];
   public hasIncorrectFields: boolean = false;
   public cardsWithIncorrectFields: boolean = false;
   public previousFormValuesOnReview: any;
@@ -115,8 +109,6 @@ export class Step2Component implements OnInit, OnDestroy {
         });
 
       this.patchStepValues(stepValuesResponse);
-
-      console.log('res', stepValuesResponse);
     }
   }
 
@@ -140,6 +132,7 @@ export class Step2Component implements OnInit, OnDestroy {
   }
 
   public patchStepValues(stepValues: any) {
+    console.log(stepValues);
     const { haveWorkExperience, workExperienceItems } = stepValues;
 
     this.workExperienceForm
@@ -387,8 +380,6 @@ export class Step2Component implements OnInit, OnDestroy {
   }
 
   public onGetOpenAnnotationArrayValues(event: any): void {
-    this.emitedOpenAnnotationArray = event;
-
     this.previousFormValuesOnReview.workExperienceItemReview = {
       isEmployerValid: !event[0].lineInputs[0],
       isJobDescriptionValid: !event[1].lineInputs[0],
@@ -402,8 +393,6 @@ export class Step2Component implements OnInit, OnDestroy {
       isReasonForLeavingValid: !event[5].lineInputs[0],
       isAccountForPeriodBetweenValid: !event[6].lineInputs[0],
     };
-
-    console.log('add', this.previousFormValuesOnReview);
   }
 
   public onGetCardOpenAnnotationArrayValues(event: any): void {
@@ -468,8 +457,6 @@ export class Step2Component implements OnInit, OnDestroy {
     this.selectedWorkExperienceIndex = -1;
 
     this.formValuesToPatch = this.previousFormValuesOnReview;
-
-    console.log('cancel', this.previousFormValuesOnReview);
   }
 
   public getDropdownLists(): void {
@@ -501,30 +488,30 @@ export class Step2Component implements OnInit, OnDestroy {
       if (selectedInputsLine.displayAnnotationButton) {
         selectedInputsLine.lineInputs[inputIndex] = false;
         selectedInputsLine.displayAnnotationButton = false;
-
-        Object.keys(
-          this.workExperienceArray[lineIndex].workExperienceItemReview
-        ).forEach((key) => {
-          this.workExperienceArray[lineIndex].workExperienceItemReview[key] =
-            true;
-        });
-
-        const inputFieldsArray = JSON.stringify(
-          this.openAnnotationArray
-            .filter((item) => Object.keys(item).length !== 0)
-            .map((item) => item.lineInputs)
-        );
-
-        if (inputFieldsArray.includes('true')) {
-          this.cardsWithIncorrectFields = true;
-        } else {
-          this.cardsWithIncorrectFields = false;
-        }
       }
 
       if (selectedInputsLine.displayAnnotationTextArea) {
         selectedInputsLine.displayAnnotationButton = false;
         selectedInputsLine.displayAnnotationTextArea = false;
+      }
+
+      Object.keys(
+        this.workExperienceArray[lineIndex].workExperienceItemReview
+      ).forEach((key) => {
+        this.workExperienceArray[lineIndex].workExperienceItemReview[key] =
+          true;
+      });
+
+      const inputFieldsArray = JSON.stringify(
+        this.openAnnotationArray
+          .filter((item) => Object.keys(item).length !== 0)
+          .map((item) => item.lineInputs)
+      );
+
+      if (inputFieldsArray.includes('true')) {
+        this.cardsWithIncorrectFields = true;
+      } else {
+        this.cardsWithIncorrectFields = false;
       }
     } else {
       if (event) {
@@ -722,47 +709,36 @@ export class Step2Component implements OnInit, OnDestroy {
   }
 
   public onSubmitReview(): void {
+    const lastItemReview =
+      this.previousFormValuesOnReview.workExperienceItemReview;
+
     const lastReviewedItemInWorkExperienceArray = {
-      isEmployerValid: this.emitedOpenAnnotationArray
-        ? !this.emitedOpenAnnotationArray[20].lineInputs[0]
-        : true,
+      isEmployerValid: lastItemReview ? lastItemReview.isEmployerValid : true,
       employerMessage: this.lastWorkExperienceCard.firstRowReview,
-      isJobDescriptionValid: this.emitedOpenAnnotationArray
-        ? !this.emitedOpenAnnotationArray[21].lineInputs[0]
+      isJobDescriptionValid: lastItemReview
+        ? lastItemReview.isJobDescriptionValid
         : true,
-      isFromValid: this.emitedOpenAnnotationArray
-        ? !this.emitedOpenAnnotationArray[21].lineInputs[1]
-        : true,
-      isToValid: this.emitedOpenAnnotationArray
-        ? !this.emitedOpenAnnotationArray[21].lineInputs[2]
-        : true,
+      isFromValid: lastItemReview ? lastItemReview.isFromValid : true,
+      isToValid: lastItemReview ? lastItemReview.isToValid : true,
       jobDescriptionMessage: this.lastWorkExperienceCard.secondRowReview,
-      isPhoneValid: this.emitedOpenAnnotationArray
-        ? !this.emitedOpenAnnotationArray[22].lineInputs[0]
-        : true,
-      isFaxValid: this.emitedOpenAnnotationArray
-        ? !this.emitedOpenAnnotationArray[22].lineInputs[1]
-        : true,
-      isEmailValid: this.emitedOpenAnnotationArray
-        ? !this.emitedOpenAnnotationArray[22].lineInputs[2]
-        : true,
+      isPhoneValid: lastItemReview ? lastItemReview.isPhoneValid : true,
+      isFaxValid: lastItemReview ? lastItemReview.isFaxValid : true,
+      isEmailValid: lastItemReview ? lastItemReview.isEmailValid : true,
       contactMessage: this.lastWorkExperienceCard.thirdRowReview,
-      isAddressValid: this.emitedOpenAnnotationArray
-        ? !this.emitedOpenAnnotationArray[23].lineInputs[0]
-        : true,
+      isAddressValid: lastItemReview ? lastItemReview.isAddressValid : true,
       addressMessage: this.lastWorkExperienceCard.fourthRowReview,
-      isCfrPartValid: true,
+      /*   isCfrPartValid: true,
       isFmcsaValid: true,
-      cfrFmcsaMessage: null,
-      isReasonForLeavingValid: this.emitedOpenAnnotationArray
-        ? !this.emitedOpenAnnotationArray[25].lineInputs[0]
+      cfrFmcsaMessage: null, */
+      isReasonForLeavingValid: lastItemReview
+        ? lastItemReview.isReasonForLeavingValid
         : true,
       reasonForLeavingMessage: this.lastWorkExperienceCard.sixthRowReview,
-      isAccountForPeriodBetweenValid: this.emitedOpenAnnotationArray
-        ? !this.emitedOpenAnnotationArray[26].lineInputs[0]
+      isAccountForPeriodBetweenValid: lastItemReview
+        ? lastItemReview.isAccountForPeriodBetweenValid
         : true,
       accountForPeriodBetweenMessage:
-        this.lastWorkExperienceCard.seventhRowReview,
+        this.lastWorkExperienceCard.seventhRowReview /*,
       classOfEquipmentReviews: [
         {
           isVehicleTypeValid: this.emitedOpenAnnotationArray
@@ -776,7 +752,7 @@ export class Step2Component implements OnInit, OnDestroy {
             : true,
           classOfEquipmentMessage: this.lastWorkExperienceCard.fifthRowReview,
         },
-      ],
+      ], */,
     };
 
     const saveData: CreateWorkExperienceReviewCommand = {
@@ -785,7 +761,6 @@ export class Step2Component implements OnInit, OnDestroy {
     };
 
     console.log('saveData', saveData.workExperienceItemReviews[0]);
-    console.log('openan', this.emitedOpenAnnotationArray);
   }
 
   ngOnDestroy(): void {

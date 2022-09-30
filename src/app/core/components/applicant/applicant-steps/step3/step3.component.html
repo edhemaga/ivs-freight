@@ -59,30 +59,38 @@
         *ngIf="!license.isEditingLicense"
       >
         <div class="d-flex align-items-center info-btn-container">
-          <div class="d-flex align-items-center license-box">
-            <p class="m-0 ta-font-regular">
-              {{ license.licenseNumber }}
-            </p>
-          </div>
-          <div class="d-flex align-items-center state-box">
-            <p class="m-0 ta-font-regular">
-              {{ license.state }}
-            </p>
-          </div>
-          <div class="d-flex align-items-center class-box">
-            <p class="m-0 ta-font-regular">
-              {{ license.classType }}
-            </p>
-          </div>
           <div
-            class="d-flex align-items-center date-box"
+            class="d-flex align-items-center"
             [ngStyle]="{
-              width: selectedMode === 'FEEDBACK_MODE' ? '115px' : '136px'
+              cursor: selectedMode === 'REVIEW_MODE' ? 'pointer' : 'auto'
             }"
+            (click)="onCardReview(i)"
           >
-            <p class="m-0 ta-font-regular">
-              {{ license.expDate }}
-            </p>
+            <div class="d-flex align-items-center license-box">
+              <p class="m-0 ta-font-regular">
+                {{ license.licenseNumber }}
+              </p>
+            </div>
+            <div class="d-flex align-items-center state-box">
+              <p class="m-0 ta-font-regular">
+                {{ license.state }}
+              </p>
+            </div>
+            <div class="d-flex align-items-center class-box">
+              <p class="m-0 ta-font-regular">
+                {{ license.classType }}
+              </p>
+            </div>
+            <div
+              class="d-flex align-items-center date-box"
+              [ngStyle]="{
+                width: selectedMode === 'FEEDBACK_MODE' ? '115px' : '136px'
+              }"
+            >
+              <p class="m-0 ta-font-regular">
+                {{ license.expDate }}
+              </p>
+            </div>
           </div>
           <div
             class="d-flex align-items-center btn-container"
@@ -144,7 +152,11 @@
                     'width.px': 18,
                     'height.px': 18
                   }"
-                  (click)="incorrectInput($event, 0, i, 'card')"
+                  (click)="
+                    openAnnotationArray[i].lineInputs[0]
+                      ? incorrectInput($event, 0, i, 'card')
+                      : onCardReview(i)
+                  "
                 ></svg-icon>
               </div>
             </div>
@@ -202,11 +214,17 @@
         *ngIf="license.isEditingLicense"
       >
         <app-step3-form
+          [mode]="selectedMode"
           [isEditing]="isEditing"
           [formValuesToPatch]="formValuesToPatch"
+          [isReviewingCard]="isReviewingCard"
           (formValuesEmitter)="getLicenseFormValues($event)"
           (cancelFormEditingEmitter)="cancelLicenseEditing($event)"
           (saveFormEditingEmitter)="saveEditedLicense($event)"
+          (cancelFormReviewingEmitter)="cancelLicenseReview($event)"
+          (cardOpenAnnotationArrayValuesEmitter)="
+            onGetCardOpenAnnotationArrayValues($event)
+          "
         ></app-step3-form>
       </div>
     </div>
@@ -214,15 +232,30 @@
 
   <!-- FORM SECTION -->
 
-  <div class="d-flex flex-column justify-content-center form-section">
-    <form *ngIf="!isEditing">
+  <div
+    class="d-flex flex-column justify-content-center form-section"
+    [ngStyle]="{ 'margin-top': isReviewingCard ? 0 : '22px' }"
+  >
+    <form
+      *ngIf="
+        (selectedMode === 'APPLICANT_MODE' && !isEditing) ||
+        (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
+      "
+    >
       <app-step3-form
+        [mode]="selectedMode"
         [isEditing]="isEditing"
+        [formValuesToPatch]="formValuesToPatch"
         [markFormInvalid]="markFormInvalid"
+        [isReviewingCard]="isReviewingCard"
         (formValuesEmitter)="getLicenseFormValues($event)"
         (formStatusEmitter)="onGetFormStatus($event)"
         (markInvalidEmitter)="onMarkInvalidEmit($event)"
         (lastFormValuesEmitter)="onGetLastFormValues($event)"
+        (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
+        (openAnnotationArrayValuesEmitter)="
+          onGetOpenAnnotationArrayValues($event)
+        "
       ></app-step3-form>
     </form>
 
@@ -231,7 +264,12 @@
     <div
       class="d-flex flex-column permit-container"
       [ngStyle]="{
-        'margin-top': selectedMode === 'APPLICANT_MODE' ? '22px' : '32px'
+        'margin-top':
+          selectedMode === 'APPLICANT_MODE'
+            ? '22px'
+            : selectedMode === 'REVIEW_MODE' && isReviewingCard
+            ? 0
+            : '32px'
       }"
       [formGroup]="permitForm"
       *ngIf="!isEditing"
@@ -254,7 +292,9 @@
 
         <div class="permit-radios-box">
           <app-ta-input-radiobuttons
+            #cmp
             [buttons]="answerChoices"
+            [disabled]="selectedMode === 'REVIEW_MODE'"
             (changedValue)="handleInputSelect($event, 'PERMIT')"
           ></app-ta-input-radiobuttons>
         </div>
@@ -321,7 +361,15 @@
 >
   <app-applicant-next-back-btn
     [nextStep]="true"
-    [filledCorrectly]="permitForm.valid && formStatus === 'VALID'"
+    [filledCorrectly]="
+      selectedMode === 'APPLICANT_MODE' &&
+      permitForm.valid &&
+      formStatus === 'VALID'
+    "
+    [hasIncorrectFields]="
+      selectedMode === 'REVIEW_MODE' &&
+      (hasIncorrectFields || cardsWithIncorrectFields)
+    "
     [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>

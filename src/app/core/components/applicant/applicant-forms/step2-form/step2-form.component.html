@@ -616,6 +616,7 @@
           <app-ta-input-radiobuttons
             #cmp
             [buttons]="question.answerChoices"
+            [disabled]="selectedMode === 'REVIEW_MODE'"
             (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
           ></app-ta-input-radiobuttons>
         </div>
