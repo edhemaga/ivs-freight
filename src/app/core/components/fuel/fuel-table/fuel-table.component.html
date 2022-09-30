@@ -1,30 +1,33 @@
 <div class="table-container">
-  <div class="table-toolbar-container" [ngClass]="{ 'toolbar-relative': tableOptions.toolbarActions.viewModeActive == 'Map' }">
-    <app-truckassist-table-toolbar
+  <app-truckassist-table-toolbar
       (toolBarAction)="onToolBarAction($event)"
       [options]="tableOptions"
       [tableData]="tableData"
       [selectedTab]="selectedTab"
       [columns]="columns"
     ></app-truckassist-table-toolbar>
-  </div>
-  <div class="table-list-container" *ngIf="tableOptions.toolbarActions.viewModeActive !== 'Map'">
+
+  <div *ngIf="activeViewMode == 'List'">
     <app-truckassist-table-head
       [options]="tableOptions"
       [viewData]="viewData"
       [columns]="columns"
+      (headActions)="onTableHeadActions($event)"
+      [tableContainerWidth]="tableContainerWidth"
     ></app-truckassist-table-head>
-  
+
     <app-truckassist-table-body
       [viewData]="viewData"
       [columns]="columns"
       [options]="tableOptions"
       [selectedTab]="selectedTab"
       (bodyActions)="onTableBodyActions($event)"
+      [tableData]="tableData"
+      [tableContainerWidth]="tableContainerWidth"
     ></app-truckassist-table-body>
   </div>
     
-  <div class="customer-map-container" *ngIf="tableOptions.toolbarActions.viewModeActive == 'Map'">
+  <div class="customer-map-container" *ngIf="activeViewMode == 'Map'">
     <app-map-list 
       [type]="'fuelStop'"
       [sortTypes]="sortTypes" 

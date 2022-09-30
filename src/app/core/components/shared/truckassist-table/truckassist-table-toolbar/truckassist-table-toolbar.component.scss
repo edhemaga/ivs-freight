@@ -4,6 +4,18 @@
   margin-top: 22px;
   user-select: none;
 
+  // NO FILTER YET
+  .no-filter{
+    height: 28px;
+    width: fit-content;
+    color: #6c6c6c;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   // BORDER
   .border-container {
     width: 6px;
