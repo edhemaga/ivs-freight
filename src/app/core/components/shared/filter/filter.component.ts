@@ -1796,6 +1796,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
       'action' : 'Clear',
       'type' : this.type
     }
+
+    console.log('--data---', data);
     if ( this.setFilter ) {
       this.setFilter.emit(data);
     }
@@ -1907,6 +1909,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     if (element.classList.contains('active')) {
 
       let queryParams = {};
+      let subType = '';
 
       this.setButtonAvailable = false;
 
@@ -1966,16 +1969,17 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.filterActiveArray.map((data) => {
           selectedUsersIdArray.push(data.id);
         })
-
         queryParams = selectedUsersIdArray;
+        subType = this.toDoSubType ? this.toDoSubType : '';
       }
 
-      let data = {
-        'filterType' : this.type,
-        'action' : 'Set',
-        'queryParams' : queryParams,
-        'subType' : this.toDoSubType ? this.toDoSubType : '',
-      }
+        let data = {
+          'filterType' : this.type,
+          'action' : 'Set',
+          'queryParams' : queryParams,
+          'subType' : subType,
+          
+        }
 
       console.log('--data---', data);
       if ( this.setFilter ) {
