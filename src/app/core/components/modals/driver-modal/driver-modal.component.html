@@ -75,7 +75,8 @@
               label: 'Phone',
               isRequired: true,
               placeholderIcon: 'phone',
-              mask: '(000) 000-0000'
+              mask: '(000) 000-0000',
+              maxLength: 14
             }"
           ></app-ta-input>
           <app-ta-input
@@ -98,7 +99,8 @@
               type: 'text',
               label: 'SSN',
               isRequired: true,
-              mask: '000-00-0000'
+              mask: '000-00-0000',
+              maxLength: 11
             }"
           ></app-ta-input>
         </div>
@@ -514,6 +516,7 @@
                       label: 'EIN #',
                       isRequired: true,
                       mask: '00-0000000',
+                      maxLength: 10,
                       loadingSpinner: {
                         size: 'small',
                         color: 'white',
@@ -656,6 +659,7 @@
                 isRequired: true,
                 placeholderIcon: 'phone',
                 mask: '(000) 000-0000',
+                maxLength: 14,
                 customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>
