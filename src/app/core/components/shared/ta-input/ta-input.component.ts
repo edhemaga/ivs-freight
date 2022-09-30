@@ -81,6 +81,7 @@ export class TaInputComponent
   public oneSpaceOnlyCounter: number = 0;
 
   // Number of points
+  public numberOfConsecutivelyPoints: number = 0;
   public numberOfPoints: number = 0;
 
   // Dropdown
@@ -98,6 +99,9 @@ export class TaInputComponent
 
   // Edit Input
   public editInputMode: boolean = false;
+
+  // Input Selection
+  public inputSelection: boolean = false;
 
   constructor(
     @Self() public superControl: NgControl,
@@ -419,6 +423,8 @@ export class TaInputComponent
       this.input.nativeElement.value = null;
       this.getSuperControl.setValue(null);
       this.numberOfConsecutivelySpaces = 0;
+      this.numberOfConsecutivelyPoints = 0;
+      this.numberOfPoints = 0;
       this.oneSpaceOnlyCounter = 0;
       this.inputConfig.dropdownImageInput = null;
       this.touchedInput = true;
@@ -534,14 +540,21 @@ export class TaInputComponent
 
   public transformText(value: string, paste?: boolean) {
     if (paste) {
-      this.input.nativeElement.value += value;
+      if (!this.inputSelection) {
+        this.input.nativeElement.value += value;
 
-      if (this.input.nativeElement.value.length > this.inputConfig.maxLength) {
-        this.input.nativeElement.value =
-          this.input.nativeElement.value.substring(
-            0,
-            this.inputConfig.maxLength
-          );
+        if (
+          this.input.nativeElement.value.length > this.inputConfig.maxLength
+        ) {
+          this.input.nativeElement.value =
+            this.input.nativeElement.value.substring(
+              0,
+              this.inputConfig.maxLength
+            );
+        }
+      } else {
+        this.input.nativeElement.value = value;
+        this.inputSelection = false;
       }
     } else {
       this.input.nativeElement.value = value;
@@ -602,6 +615,14 @@ export class TaInputComponent
         this.getSuperControl.setErrors(null);
       }
     }
+
+    // Delete spaces on begin and end
+    this.input.nativeElement.value = this.input.nativeElement.value.trim();
+    this.getSuperControl.patchValue(this.input.nativeElement.value);
+  }
+
+  public selectionChange(event: any) {
+    this.inputSelection = true;
   }
 
   public onEditInput(event: Event) {
@@ -850,7 +871,7 @@ export class TaInputComponent
           .getInputRegexPattern('email')
           .test(String.fromCharCode(event.charCode))
       ) {
-        this.disableMultiplePoints(event);
+        this.disableConsecutivelyPoints(event);
         return true;
       }
       event.preventDefault();
@@ -886,7 +907,6 @@ export class TaInputComponent
     }
 
     if (['first name'].includes(this.inputConfig.name.toLowerCase())) {
-      let space = this.input.nativeElement.value.split(' ').length;
       if (
         this.inputService
           .getInputRegexPattern('first name')
@@ -901,7 +921,6 @@ export class TaInputComponent
     }
 
     if (['last name'].includes(this.inputConfig.name.toLowerCase())) {
-      let space = this.input.nativeElement.value.split(' ').length;
       if (
         this.inputService
           .getInputRegexPattern('last name')
@@ -915,7 +934,6 @@ export class TaInputComponent
     }
 
     if (['bank name'].includes(this.inputConfig.name.toLowerCase())) {
-      let space = this.input.nativeElement.value.split(' ').length;
       if (
         this.inputService
           .getInputRegexPattern('bank name')
@@ -946,7 +964,6 @@ export class TaInputComponent
     }
 
     if (['truck-trailer-model'].includes(this.inputConfig.name.toLowerCase())) {
-      let space = this.input.nativeElement.value.split(' ').length;
       if (
         this.inputService
           .getInputRegexPattern('truck-trailer-model')
@@ -1147,7 +1164,6 @@ export class TaInputComponent
     }
 
     if (['cdl-number'].includes(this.inputConfig.name.toLowerCase())) {
-      let space = this.input.nativeElement.value.split(' ').length;
       if (
         this.inputService
           .getInputRegexPattern('cdl-number')
@@ -1181,7 +1197,6 @@ export class TaInputComponent
     }
 
     if (['full name'].includes(this.inputConfig.name.toLowerCase())) {
-      let space = this.input.nativeElement.value.split(' ').length;
       if (
         this.inputService
           .getInputRegexPattern('full name')
@@ -1294,6 +1309,18 @@ export class TaInputComponent
     }
   }
 
+  private disableConsecutivelyPoints(event: any) {
+    if (/^[.]*$/.test(String.fromCharCode(event.charCode))) {
+      this.numberOfConsecutivelyPoints++;
+      if (this.numberOfConsecutivelyPoints > 1) {
+        event.preventDefault();
+        return false;
+      }
+    } else {
+      this.numberOfConsecutivelyPoints = 0;
+    }
+  }
+
   private disableMultiplePoints(event: any) {
     if (/^[.]*$/.test(String.fromCharCode(event.charCode))) {
       if (!this.getSuperControl.value) {
@@ -1316,7 +1343,7 @@ export class TaInputComponent
     }
   }
 
-  public onPaste(event: any) {
+  public onPaste(event?: any) {
     event.preventDefault();
     this.pasteCheck(
       event.clipboardData.getData('text'),

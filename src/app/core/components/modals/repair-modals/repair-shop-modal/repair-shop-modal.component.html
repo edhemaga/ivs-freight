@@ -4,7 +4,7 @@
   "
   [editData]="editData"
   [editName]="editData?.data?.name"
-  [isModalValid]="repairShopForm.valid"
+  [isModalValid]="repairShopForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <form
@@ -51,7 +51,8 @@
               label: 'Phone',
               isRequired: true,
               placeholderIcon: 'phone',
-              mask: '(000) 000-0000'
+              mask: '(000) 000-0000',
+              maxLength: 14
             }"
           ></app-ta-input>
         </div>

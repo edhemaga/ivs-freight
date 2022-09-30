@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Account' : 'Edit Account'"
   [editData]="editData"
   [editName]="editData?.data?.name"
-  [isModalValid]="accountForm.valid"
+  [isModalValid]="accountForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <form

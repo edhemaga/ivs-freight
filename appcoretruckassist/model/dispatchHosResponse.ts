@@ -9,12 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DayOfWeek } from './dayOfWeek';
+import { EnumValue } from './enumValue';
 
 
-export interface RepairShopOpenHoursCommand { 
-    dayOfWeek?: DayOfWeek;
-    startTime?: string | null;
-    endTime?: string | null;
+export interface DispatchHosResponse { 
+    id?: number;
+    start?: number;
+    end?: number;
+    flag?: EnumValue;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

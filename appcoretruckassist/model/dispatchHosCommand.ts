@@ -9,12 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DayOfWeek } from './dayOfWeek';
+import { DispatchHosFlag } from './dispatchHosFlag';
 
 
-export interface RepairShopOpenHoursCommand { 
-    dayOfWeek?: DayOfWeek;
-    startTime?: string | null;
-    endTime?: string | null;
+export interface DispatchHosCommand { 
+    id?: number | null;
+    start?: number;
+    end?: number;
+    flag?: DispatchHosFlag;
 }
 

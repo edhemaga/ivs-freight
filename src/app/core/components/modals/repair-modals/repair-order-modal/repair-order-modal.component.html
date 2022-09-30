@@ -8,7 +8,7 @@
   "
   [editData]="editData"
   [editName]="editData?.data?.textUnit"
-  [isModalValid]="repairOrderForm.valid"
+  [isModalValid]="repairOrderForm.valid && isFormDirty"
   [tabChange]="editData?.type?.includes('edit-fo') ? null : headerTabs"
   [tabChangePosition]="'right'"
   [disableDelete]="editData?.type?.includes('edit-fo')"

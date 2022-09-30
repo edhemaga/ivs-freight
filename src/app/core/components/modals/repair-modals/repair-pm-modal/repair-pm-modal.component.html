@@ -7,7 +7,7 @@
       : null
   "
   [disableDelete]="true"
-  [isModalValid]="PMform.valid"
+  [isModalValid]="PMform.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <form [formGroup]="PMform" class="form-container form-container-without-mb">
@@ -69,9 +69,6 @@
                     ? 'MILEAGE'
                     : 'MONTHS',
                   type: 'text',
-                  hideErrorMessage: true,
-                  blackInput: true,
-                  hideRequiredCheck: true,
                   commands: {
                     active: true,
                     type: 'pm-increment-decrement',
@@ -84,8 +81,13 @@
                       svg: 'assets/svg/common/ic_pm_increment.svg'
                     }
                   },
+                  maxLength: editData?.header?.includes('Truck')
+                    ? 999999999
+                    : 2,
                   thousandSeparator: true,
-                  maxLength: editData?.header?.includes('Truck') ? 999999999 : 2
+                  hideErrorMessage: true,
+                  blackInput: true,
+                  hideRequiredCheck: true
                 }"
               ></app-ta-input>
             </div>

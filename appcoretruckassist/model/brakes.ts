@@ -9,12 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DayOfWeek } from './dayOfWeek';
 
 
-export interface RepairShopOpenHoursCommand { 
-    dayOfWeek?: DayOfWeek;
-    startTime?: string | null;
-    endTime?: string | null;
-}
+export type Brakes = 'Drum' | 'Disc';
+
+export const Brakes = {
+    Drum: 'Drum' as Brakes,
+    Disc: 'Disc' as Brakes
+};
 

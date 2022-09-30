@@ -163,7 +163,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }): void {
     switch (data.action) {
       case 'close': {
-        this.userForm.reset();
         break;
       }
       case 'save': {

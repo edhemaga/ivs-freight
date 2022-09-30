@@ -9,12 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DayOfWeek } from './dayOfWeek';
 
 
-export interface RepairShopOpenHoursCommand { 
-    dayOfWeek?: DayOfWeek;
-    startTime?: string | null;
-    endTime?: string | null;
-}
+export type DispatchHosFlag = 'On' | 'Off';
+
+export const DispatchHosFlag = {
+    On: 'On' as DispatchHosFlag,
+    Off: 'Off' as DispatchHosFlag
+};
 

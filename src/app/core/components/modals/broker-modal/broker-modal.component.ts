@@ -42,6 +42,7 @@ import { NotificationService } from '../../../services/notification/notification
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { convertNumberInThousandSep } from '../../../utils/methods.calculations';
 import { poBoxValidation } from '../../shared/ta-input/ta-input.regex-validations';
+import { FormService } from '../../../services/form/form.service';
 import {
   name2_24Validation,
   creditLimitValidation,
@@ -53,7 +54,7 @@ import {
   styleUrls: ['./broker-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, TaLikeDislikeService],
+  providers: [ModalService, TaLikeDislikeService, FormService],
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -150,7 +151,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   public companyUser: SignInResponse = null;
 
-  public isDirty: boolean = false;
+  public isFormDirty: boolean = false;
 
   public disableOneMoreReview: boolean = false;
 
@@ -161,7 +162,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     private brokerModalService: BrokerTService,
     private notificationService: NotificationService,
     private reviewRatingService: ReviewsRatingService,
-    private taLikeDislikeService: TaLikeDislikeService
+    private taLikeDislikeService: TaLikeDislikeService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -170,16 +172,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     this.isCredit({ id: 301, name: 'Custom', checked: true });
     this.followIsBillingAddressSame();
 
-    if (this.editData) {
-      const timeout = setTimeout(() => {
-        this.editBrokerById(this.editData.id);
-        this.tabs.push({
-          id: 3,
-          name: 'Review',
-        });
-        this.ratingChanges();
-        clearTimeout(timeout);
-      }, 50);
+    if (this.editData?.id) {
+      this.editBrokerById(this.editData.id);
+      this.tabs.push({
+        id: 3,
+        name: 'Review',
+      });
+      this.ratingChanges();
     }
 
     this.companyUser = JSON.parse(localStorage.getItem('user'));
@@ -220,6 +219,12 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
+    this.formService.checkFormChange(this.brokerForm, 400);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public get brokerContacts(): FormArray {
@@ -260,7 +265,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     if (event.check) {
       this.brokerContacts.push(form);
     }
-
     this.inputService.customInputValidator(
       form.get('email'),
       'email',
@@ -271,6 +275,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   public removeBrokerContacts(id: number) {
     this.brokerContacts.removeAt(id);
     this.selectedContractDepartmentFormArray.splice(id, 1);
+
+    if (this.brokerContacts.length === 0) {
+      this.brokerForm.markAsUntouched();
+    }
   }
 
   public onScrollingBrokerContacts(event: any) {
@@ -333,7 +341,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       }
     } else {
       if (data.action === 'close') {
-        this.brokerForm.reset();
+        return;
       } else {
         // Save & Update
         if (data.action === 'save') {
@@ -342,11 +350,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             return;
           }
           if (this.editData) {
-            this.updateBroker(this.editData.id);
-            this.modalService.setModalSpinner({
-              action: null,
-              status: true,
-            });
+            if (this.isFormDirty) {
+              this.updateBroker(this.editData.id);
+              this.modalService.setModalSpinner({
+                action: null,
+                status: true,
+              });
+            }
           } else {
             this.addBroker();
             this.modalService.setModalSpinner({
@@ -942,15 +952,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                   email: contact.email,
                 })
               );
-              // this.brokerContacts.push(
-              //   this.formBuilder.group({
-              //     contactName: contact.contactName,
-              //     departmentId: contact.department.name,
-              //     phone: contact.phone,
-              //     extensionPhone: contact.extensionPhone,
-              //     email: contact.email,
-              //   })
-              // );
+
               this.selectedContractDepartmentFormArray.push(contact.department);
             }
           }

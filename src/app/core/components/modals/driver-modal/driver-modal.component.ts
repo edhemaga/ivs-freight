@@ -87,7 +87,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   public addNewAfterSave: boolean = false;
 
@@ -179,7 +179,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public onModalAction(data: { action: string; bool: boolean }): void {
     if (data.action === 'close') {
-      this.driverForm.reset();
+      return;
     }
     // Change Driver Status
 
@@ -241,8 +241,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       }
       // Update
       if (this.editData?.id) {
-        this.updateDriver(this.editData.id);
-        this.modalService.setModalSpinner({ action: null, status: true });
+        if (this.isFormDirty) {
+          this.updateDriver(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
+        }
       }
       // Save
       else {
@@ -267,7 +269,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       addressUnit: [null, [...addressUnitValidation]],
       dateOfBirth: [null, Validators.required],
       ssn: [null, [Validators.required, ssnNumberRegex]],
-      mvrExpiration: [5, Validators.required],
+      mvrExpiration: ['5', Validators.required],
       bankId: [null, [...bankValidation]],
       account: [null, accountBankValidation],
       routing: [null, routingBankValidation],
@@ -315,6 +317,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
+
+    this.formService.checkFormChange(this.driverForm);
+
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public get offDutyLocations(): FormArray {
@@ -895,7 +905,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         next: (data: GetDriverModalResponse) => {
           this.labelsBank = data.banks;
           this.labelsPayType = data.payTypes;
-          this.driverForm.get('mvrExpiration').patchValue(data.mvrExpiration);
+          this.driverForm
+            .get('mvrExpiration')
+            .patchValue(data.mvrExpiration.toString());
           this.fleetType = data.fleetType;
           this.hasMilesSameRate = data.loadedAndEmptySameRate;
 
@@ -972,7 +984,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
               perMileTeam: data.perMileTeam,
               commissionTeam: data.defaultTeamDriverCommission,
             },
-            mvrExpiration: data.mvrExpiration,
+            mvrExpiration: data.mvrExpiration.toString(),
           };
 
           this.handlingPayrollFleetType(this.fleetType, true);
@@ -1010,7 +1022,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       mailNotificationPayroll,
       pushNotificationPayroll,
       smsNotificationPayroll,
-
+      mvrExpiration,
       address,
       addressUnit,
       bussinesName,
@@ -1022,6 +1034,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       dateOfBirth: convertDateToBackend(
         this.driverForm.get('dateOfBirth').value
       ),
+      mvrExpiration: parseInt(mvrExpiration),
       ownerId:
         this.driverForm.get('ownerType').value === 'Sole Proprietor'
           ? null
@@ -1255,7 +1268,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
             this.driverForm
               .get('mvrExpiration')
-              .patchValue(this.payrollCompany.mvrExpiration);
+              .patchValue(this.payrollCompany.mvrExpiration.toString());
 
             this.driverForm.get('mailNotificationGeneral').patchValue(true);
             this.driverForm.get('mailNotificationPayroll').patchValue(true);
@@ -1298,7 +1311,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       soloPerStop,
       perMileSolo,
       commissionSolo,
-
+      mvrExpiration,
       teamEmptyMile,
       teamLoadedMile,
       teamPerStop,
@@ -1328,6 +1341,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       dateOfBirth: convertDateToBackend(
         this.driverForm.get('dateOfBirth').value
       ),
+      mvrExpiration: parseInt(mvrExpiration),
       ownerId:
         this.driverForm.get('ownerType').value === 'Sole Proprietor'
           ? null
@@ -1544,7 +1558,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             addressUnit: res.address ? res.address.addressUnit : null,
             dateOfBirth: convertDateFromBackend(res.dateOfBirth),
             ssn: res.ssn,
-            mvrExpiration: res.mvrExpiration,
+            mvrExpiration: res.mvrExpiration.toString(),
             bankId: res.bank ? res.bank.name : null,
             account: res.account,
             routing: res.routing,
@@ -1587,7 +1601,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             avatar: res.avatar,
 
             twic: res.twic,
-            twicExpDate: convertDateFromBackend(res.twicExpDate),
+            twicExpDate: res.twicExpDate
+              ? convertDateFromBackend(res.twicExpDate)
+              : null,
             fuelCard: res.fuelCard,
 
             mailNotificationGeneral: res.general.mailNotification,
