@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { DispatchStatus } from './dispatchStatus';
+import { DispatchHosCommand } from './dispatchHosCommand';
 import { AddressEntity } from './addressEntity';
 
 
@@ -22,8 +23,8 @@ export interface UpdateDispatchCommand {
     driverId?: number | null;
     coDriverId?: number | null;
     location?: AddressEntity;
-    hourOfService?: number | null;
     note?: string | null;
     loadIds?: Array<number> | null;
+    hoursOfService?: Array<DispatchHosCommand> | null;
 }
 

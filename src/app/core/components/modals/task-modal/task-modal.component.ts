@@ -26,6 +26,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { CommentsService } from '../../../services/comments/comments.service';
+import { FormService } from '../../../services/form/form.service';
 import {
   convertDateToBackend,
   convertDateFromBackend,
@@ -35,7 +36,7 @@ import {
   selector: 'app-task-modal',
   templateUrl: './task-modal.component.html',
   styleUrls: ['./task-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class TaskModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -56,7 +57,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   public companyUser: SignInResponse = null;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   public taskName: string = null;
 
@@ -67,6 +68,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     private todoService: TodoTService,
     private commentsService: CommentsService,
     private notificationService: NotificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -99,12 +101,18 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       'url',
       this.destroy$
     );
+
+    this.formService.checkFormChange(this.taskForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.taskForm.reset();
         break;
       }
       case 'save': {
@@ -113,8 +121,10 @@ export class TaskModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData?.type === 'edit') {
-          this.updateTaskById(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateTaskById(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addTask();
           this.modalService.setModalSpinner({ action: null, status: true });
@@ -333,7 +343,9 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             title: res.title,
             description: res.description,
             url: res.url,
-            deadline: res.deadline ? convertDateFromBackend(res.deadline) : null,
+            deadline: res.deadline
+              ? convertDateFromBackend(res.deadline)
+              : null,
             departmentIds: null,
             companyUserIds: null,
             note: res.note,

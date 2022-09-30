@@ -296,6 +296,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   initTableOptions(): void {
     this.tableOptions = {
       toolbarActions: {
+        showMoneyFilter: true,
         viewModeOptions: [
           { name: 'List', active: this.activeViewMode === 'List' },
           { name: 'Card', active: this.activeViewMode === 'Card' },

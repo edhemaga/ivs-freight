@@ -279,6 +279,13 @@ export class AccidentTableComponent
   initTableOptions(): void {
     this.tableOptions = {
       toolbarActions: {
+        showTimeFilter: this.selectedTab === 'active',
+        showLocationFilter: this.selectedTab === 'active',
+        showDriverFilter: this.selectedTab === 'active',
+        showTruckFilter: this.selectedTab === 'active',
+        showTrailerFilter: this.selectedTab === 'active',
+        showInjuryFilter: this.selectedTab === 'active',
+        showTowingFilter: this.selectedTab === 'active',
         viewModeOptions: [
           { name: 'List', active: this.activeViewMode === 'List' },
           { name: 'Card', active: this.activeViewMode === 'Card' },
@@ -431,7 +438,8 @@ export class AccidentTableComponent
       this.modalService.openModal(AccidentModalComponent, { size: 'large-xl' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
-      this.setAccidentData(event.tabData);
+      
+      this.sendAccidentData();
     } else if (event.action === 'view-mode') {
       this.activeViewMode = event.mode;
     }

@@ -9,7 +9,7 @@
       : 'Truck ' + editData?.payload?.truckNumber
   "
   [specificCaseModalName]="true"
-  [isModalValid]="ttTitleForm.valid"
+  [isModalValid]="ttTitleForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <form

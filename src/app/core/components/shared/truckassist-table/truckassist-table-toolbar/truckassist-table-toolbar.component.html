@@ -41,75 +41,10 @@
     </div>
   </div>
 
-  <!-- TABLE FILTERS AND OTHER -->
-  <div class="table-filter-and-other-container">
-    <!-- TOTAL MONEY COUNT -->
-    <div
-      class="money-count-container"
-      *ngIf="options.toolbarActions.showMoneyCount"
-    >
-      Nije Povezano
-    </div>
+  <!-- TOOLBAR FILTERS AND OTHER -->
+  <app-toolbar-filters [activeTableData]="activeTableData"  [options]="options" (toolbarFilter)="changeModeView($event)"></app-toolbar-filters>
 
-    <!-- VIEW MODE SELECT -->
-    <div
-      class="view-mode-container"
-      *ngIf="options?.toolbarActions?.viewModeOptions?.length"
-    >
-      <div
-        *ngFor="let viewMode of  options.toolbarActions.viewModeOptions"
-        class="mode"
-        [ngClass]="{
-          'mode-active': viewMode.active
-        }"
-        (click)="changeModeView(viewMode.name)"
-      >
-        {{ viewMode.name }}
-      </div>
-    </div>
-
-    <!-- BORDER -->
-    <div class="border-container" *ngIf="options?.toolbarActions?.viewModeOptions?.length">
-      <div class="border"></div>
-    </div>
-
-    <!-- SEARCH -->
-    <app-truckassist-search
-      [searchType]="'tabel'"
-      [selectedTabData]="activeTableData"
-    ></app-truckassist-search>
-
-    <!-- BORDER -->
-    <div
-      class="border-container"
-      *ngIf="options.toolbarActions.showLocationFilter"
-    >
-      <div class="border"></div>
-    </div>
-
-    <!-- LOCATION FILTER -->
-    <app-filter
-      *ngIf="options.toolbarActions.showLocationFilter"
-      [type]="'locationFilter'"
-      [icon]="'address'"
-      [filterTitle]="'Location Filter'"
-      [locationDefType]="true"
-    >
-    </app-filter>
-
-    <!-- BORDER -->
-    <div
-      class="border-container"
-      *ngIf="options.toolbarActions.showArhiveFilter"
-    >
-      <div class="border"></div>
-    </div>
-
-    <!-- ARHIVE FILTER -->
-    <div class="no-filter" *ngIf="options.toolbarActions.showArhiveFilter">Arhive Filter</div>
-  </div>
-
-  <!-- TABLE ACTIONS -->
+  <!-- TOOLBAR ACTIONS -->
   <div class="table-actions">
     <div class="actions-container">
       <!-- Activation -->

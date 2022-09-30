@@ -12,6 +12,7 @@ import {
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../../services/notification/notification.service';
+import { FormService } from '../../../../services/form/form.service';
 import {
   convertDateFromBackend,
   convertDateToBackend,
@@ -21,7 +22,7 @@ import {
   selector: 'app-tt-fhwa-inspection-modal',
   templateUrl: './tt-fhwa-inspection-modal.component.html',
   styleUrls: ['./tt-fhwa-inspection-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -31,14 +32,15 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
     private commonTruckTrailerService: CommonTruckTrailerService,
     private inputService: TaInputService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -54,12 +56,18 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
       issueDate: [null, Validators.required],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.fhwaInspectionForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.fhwaInspectionForm.reset();
         break;
       }
       case 'save': {
@@ -69,8 +77,10 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData.type === 'edit-inspection') {
-          this.updateInspection();
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateInspection();
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addInspection();
           this.modalService.setModalSpinner({ action: null, status: true });

@@ -287,6 +287,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
   initTableOptions(): void {
     this.tableOptions = {
       toolbarActions: {
+        showTimeFilter: this.selectedTab !== 'template',
+        showDispatcherFilter: this.selectedTab !== 'template',
+        showStatusFilter: this.selectedTab !== 'template',
+        showLtlFilter: true,
+        showMoneyFilter: true,
         viewModeOptions: [
           { name: 'List', active: this.activeViewMode === 'List' },
           { name: 'Card', active: this.activeViewMode === 'Card' },
