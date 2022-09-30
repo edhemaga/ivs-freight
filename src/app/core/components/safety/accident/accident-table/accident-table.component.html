@@ -9,28 +9,30 @@
     [tableContainerWidth]="tableContainerWidth"
   ></app-truckassist-table-toolbar>
 
-  <app-truckassist-table-head
-    [options]="tableOptions"
-    [viewData]="viewData"
-    [columns]="columns"
-    (headActions)="onTableHeadActions($event)"
-    [tableContainerWidth]="tableContainerWidth"
-  ></app-truckassist-table-head>
+  <div *ngIf="activeViewMode == 'List'">
+    <app-truckassist-table-head
+      [options]="tableOptions"
+      [viewData]="viewData"
+      [columns]="columns"
+      (headActions)="onTableHeadActions($event)"
+      [tableContainerWidth]="tableContainerWidth"
+    ></app-truckassist-table-head>
 
-  <app-truckassist-table-body
-    [viewData]="viewData"
-    [columns]="columns"
-    [options]="tableOptions"
-    [selectedTab]="selectedTab"
-    (bodyActions)="onTableBodyActions($event)"
-    [tableData]="tableData"
-    [tableContainerWidth]="tableContainerWidth"
-  ></app-truckassist-table-body>
+    <app-truckassist-table-body
+      [viewData]="viewData"
+      [columns]="columns"
+      [options]="tableOptions"
+      [selectedTab]="selectedTab"
+      (bodyActions)="onTableBodyActions($event)"
+      [tableData]="tableData"
+      [tableContainerWidth]="tableContainerWidth"
+    ></app-truckassist-table-body>
+  </div>
 </div>
 
 <div class="accident-info-sidebar-container"></div>
 
-<div class="customer-map-container" *ngIf="tableOptions.toolbarActions.viewModeActive == 'Map'">
+<div class="customer-map-container" *ngIf="activeViewMode == 'Map'">
   <app-map-list 
     [type]="'accident'"
     [sortTypes]="sortTypes" 
