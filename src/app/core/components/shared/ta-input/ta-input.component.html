@@ -577,7 +577,7 @@
           !isVisiblePasswordEye &&
           !isVisibleCommands &&
           !inputConfig.blackInput) ||
-          inputConfig.dropdownImageInput?.url) &&
+          (!focusInput && inputConfig.dropdownImageInput?.url)) &&
         !inputConfig.blackInput,
       'invalid-focus-in':
         getSuperControl.value &&
@@ -633,12 +633,17 @@
       'dropdown-input-image-color':
         inputConfig?.dropdownImageInput?.withText &&
         inputConfig?.dropdownImageInput?.url &&
-        inputConfig?.dropdownImageInput?.template === 'color'
+        inputConfig?.dropdownImageInput?.template === 'color',
+      'dropdown-input-image-without-text-transparent':
+        inputConfig?.dropdownImageInput &&
+        !inputConfig?.dropdownImageInput?.withText &&
+        !focusInput
     }"
     (keypress)="manipulateWithInput($event)"
     (keyup)="onKeyUp($event)"
     (blur)="onBlur()"
-    (focus)="onFocus($event)"
+    (focus)="onFocus()"
+    (select)="selectionChange($event)"
     (paste)="onPaste($event)"
     (input)="onChange($event.target.value); transformText($event.target.value)"
     [(ngModel)]="input.value"
