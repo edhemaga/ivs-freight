@@ -550,8 +550,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             name: 'deactivate',
             status: this.trailerStatus,
           });
-
-          console.log('trailer', this.trailerForm.value);
         },
         error: () => {
           this.notificationService.error("Cant't get trailer.", 'Error:');
