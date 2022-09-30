@@ -15,6 +15,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
 
+  &.datetimeclass{
+    letter-spacing: 1px;
+  }
+
   &::-moz-selection {
     background-color: $input-background-selection-normal !important;
     color: $input-text-selection-normal !important;

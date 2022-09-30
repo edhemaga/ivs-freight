@@ -166,11 +166,7 @@ export class TaInputComponent
       .pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
-          this.touchedInput = false;
-          this.getSuperControl.patchValue(null);
-          this.inputResetService.resetInputSubject.next(false);
-
-          this.resetDateTimeInputs();
+          this.resetForms();
         }
       });
 
@@ -184,6 +180,14 @@ export class TaInputComponent
           this.resetDateTimeInputs();
         }
       });
+  }
+
+  resetForms() {
+    this.touchedInput = false;
+    this.getSuperControl.patchValue(null);
+    this.inputResetService.resetInputSubject.next(false);
+
+    this.resetDateTimeInputs();
   }
 
   ngAfterViewInit() {
@@ -1870,6 +1874,7 @@ export class TaInputComponent
           this.span3.nativeElement.innerHTML = 'yy';
           this.dateTimeInputDate = new Date();
           this.showDateInput = false;
+          this.resetForms();
         }
       } else {
         if (
@@ -1882,6 +1887,7 @@ export class TaInputComponent
           this.span2.nativeElement.innerHTML = 'MM';
           this.dateTimeInputDate = new Date();
           this.showDateInput = false;
+          this.resetForms();
         }
       }
 
