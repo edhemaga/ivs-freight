@@ -121,7 +121,12 @@
 <ng-template #taInputDropdownPopover>
   <!--------------------------- Dropdown options --------------------------->
   <div
-    *ngIf="!inputConfig.isDisabled"
+    *ngIf="
+      (inputConfig.name != 'Address' && !inputConfig.isDisabled) ||
+      (inputConfig.name == 'Address' &&
+        !inputConfig.isDisabled &&
+        getSuperControl.value?.length)
+    "
     class="dropdown-options  {{ inputConfig.dropdownWidthClass }}"
     [ngClass]="{
       scroll: options | taDropdownCount: template,

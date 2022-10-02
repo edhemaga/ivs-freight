@@ -42,9 +42,15 @@ export class InputAddressDropdownComponent
     address: AddressEntity;
     valid: boolean;
     longLat: any;
-  }> = new EventEmitter<{ address: AddressEntity; valid: boolean; longLat: any; }>(null);
+  }> = new EventEmitter<{
+    address: AddressEntity;
+    valid: boolean;
+    longLat: any;
+  }>(null);
 
-  @Output() closeDropdown: EventEmitter<boolean> = new EventEmitter<boolean>(null);
+  @Output() closeDropdown: EventEmitter<boolean> = new EventEmitter<boolean>(
+    null
+  );
 
   constructor(
     @Self() public superControl: NgControl,
@@ -65,16 +71,17 @@ export class InputAddressDropdownComponent
   registerOnTouched(fn: any): void {}
 
   ngOnInit(): void {
-
     this.getSuperControl.valueChanges
       .pipe(
         takeUntil(this.destroy$),
-        filter((term: string ) => { return term?.length >= 3}),
+        filter((term: string) => {
+          if (!term) {
+            this.addresList = [];
+          }
+          return term?.length >= 3;
+        }),
         switchMap((query) => {
-          return this.addressService.getAddresses(
-            query,
-            this.searchLayers
-          );
+          return this.addressService.getAddresses(query, this.searchLayers);
         })
       )
       .subscribe((res) => {
@@ -101,7 +108,7 @@ export class InputAddressDropdownComponent
     return this.superControl.control;
   }
 
-  public onCloseDropdown(e){
+  public onCloseDropdown(e) {
     this.closeDropdown.emit(e);
   }
 
@@ -113,7 +120,7 @@ export class InputAddressDropdownComponent
           this.selectedAddress.emit({
             address: event.address,
             valid: true,
-            longLat: event.longLat
+            longLat: event.longLat,
           });
           this.getSuperControl.setValue(event.address.address);
         } else {
