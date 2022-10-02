@@ -18,6 +18,7 @@ import { ResizeColumnDirective } from '../../../directives/resize-column.directi
 import { DirectivesModule } from '../../../directives/directives.module';
 import { PipesModule } from '../../../pipes/pipes.module';
 import { SharedModule } from '../shared.module';
+import { ToolbarFiltersComponent } from './truckassist-table-toolbar/toolbar-filters/toolbar-filters.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { SharedModule } from '../shared.module';
     TruckassistTableToolbarComponent,
     GetExpireDataPipe,
     ResizeColumnDirective,
+    ToolbarFiltersComponent,
   ],
   imports: [
     CommonModule,

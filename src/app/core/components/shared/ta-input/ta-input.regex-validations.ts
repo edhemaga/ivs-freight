@@ -109,7 +109,7 @@ export const vinNumberValidation = [
 //---------------- Truck Trailer Model
 export const truckTrailerModelValidation = [
   Validators.minLength(1),
-  Validators.maxLength(30),
+  Validators.maxLength(50),
 ];
 
 //---------------- Axles Model

@@ -154,9 +154,9 @@ export class TruckassistTableToolbarComponent
 
     this.setToolbarWidth();
 
-    if (!this.tableLocked) {
+    /* if (!this.tableLocked) {
       this.resetInactivityTimer();
-    }
+    } */
   }
 
   // Set Toolbar Width
@@ -204,16 +204,10 @@ export class TruckassistTableToolbarComponent
   }
 
   // Chnage View Mode
-  changeModeView(modeView: string) {
-    this.options.toolbarActions.viewModeOptions = this.options.toolbarActions.viewModeOptions.map((viewMode: any) => {
-      viewMode.active = viewMode.name === modeView;
-
-      return viewMode;
-    })
-
+  changeModeView(modeView: any) {
     this.toolBarAction.emit({
       action: 'view-mode',
-      mode: modeView,
+      mode: modeView.mode,
     });
   }
 
@@ -262,11 +256,11 @@ export class TruckassistTableToolbarComponent
         toaggleUnlockTable: true,
       });
 
-      if (!this.tableLocked) {
+      /* if (!this.tableLocked) {
         this.setInactivityTimer();
       } else {
         clearTimeout(this.inactiveTimeOutInterval);
-      }
+      } */
     } else if (action.text === 'Columns') {
       action.active = !action.active;
     } else if (action.text === 'Reset Columns') {
@@ -281,16 +275,16 @@ export class TruckassistTableToolbarComponent
   }
 
   // Reset Inactivity Timer
-  resetInactivityTimer() {
+  /* resetInactivityTimer() {
     clearTimeout(this.inactiveTimeOutInterval);
 
     setTimeout(() => {
       this.setInactivityTimer();
     }, 100);
-  }
+  } */
 
   // Set Inactivity Timer
-  setInactivityTimer() {
+  /* setInactivityTimer() {
     this.inactiveTimeOutInterval = setTimeout(() => {
       this.tableLocked = true;
 
@@ -302,7 +296,7 @@ export class TruckassistTableToolbarComponent
         toaggleUnlockTable: true,
       });
     }, 60000);
-  }
+  } */
 
   // Toaggle Column
   onToaggleColumn(column: any, index: number) {

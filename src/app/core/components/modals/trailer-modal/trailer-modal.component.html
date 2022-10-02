@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Trailer' : 'Edit Trailer'"
   [editData]="editData"
   [editName]="editData?.data?.trailerNumber"
-  [isModalValid]="trailerForm.valid"
+  [isModalValid]="trailerForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <app-ta-tab-switch
@@ -130,7 +130,7 @@
                 label: 'Model',
                 textTransform: 'uppercase',
                 minLength: 1,
-                maxLength: 30
+                maxLength: 50
               }"
             ></app-ta-input>
           </div>

@@ -4,7 +4,7 @@
   [editName]="applicantFullName"
   [saveAndAddNew]="editData?.type !== 'edit'"
   [resendEmail]="editData?.type === 'edit'"
-  [isModalValid]="applicantForm.valid"
+  [isModalValid]="applicantForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <form [formGroup]="applicantForm" class="form-container">
@@ -49,7 +49,8 @@
             label: 'Phone',
             isRequired: true,
             placeholderIcon: 'phone',
-            mask: '(000) 000-0000'
+            mask: '(000) 000-0000',
+            maxLength: 14
           }"
         ></app-ta-input>
       </div>

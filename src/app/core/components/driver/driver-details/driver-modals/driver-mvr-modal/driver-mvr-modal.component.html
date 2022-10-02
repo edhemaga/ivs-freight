@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit-mvr' ? 'Add MVR' : 'Edit MVR'"
   [editData]="editData"
   [editName]="modalName"
-  [isModalValid]="mvrForm.valid"
+  [isModalValid]="mvrForm.valid && isFormDirty"
   [specificCaseModalName]="true"
   (action)="onModalAction($event)"
 >

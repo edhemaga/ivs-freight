@@ -19,7 +19,14 @@
           </div>
           <div class="border-right"></div>
           <div class="box-icons" >
-            <app-filter [type]="'timeFilter'" [filterTitle]="'Time Filter'" [icon]="'pending'"> </app-filter>
+            <app-filter 
+              [type]="'timeFilter'" 
+              [filterTitle]="'Time Filter'" 
+              [icon]="'pending'"
+              [toDoSubType]="'to-do'"
+              (setFilter)="setFilterEvent($event)"
+              > 
+            </app-filter>
           </div>
           <div class="border-right"></div>
           <div class="box-icons">
@@ -28,6 +35,8 @@
               [searchState]="true"
               [filterTitle]="'User Filter'"
               [defFilterHolder]="true"
+              [toDoSubType]="'to-do'"
+              (setFilter)="setFilterEvent($event)"
             >
             </app-filter>
           </div>
@@ -39,6 +48,8 @@
               [filterTitle]="'Department Filter'"
               [defFilterHolder]="true"
               [noLeftIcon]="true"
+              [toDoSubType]="'to-do'"
+              (setFilter)="setFilterEvent($event)"
             >
             </app-filter>
           </div>
@@ -80,7 +91,12 @@
           </div>
           <div class="border-right"></div>
           <div class="box-icons" >
-            <app-filter [type]="'timeFilter'" [icon]="'pending'"> </app-filter>
+            <app-filter 
+              [type]="'timeFilter'" 
+              [icon]="'pending'"
+              [toDoSubType]="'ongoing'"
+              (setFilter)="setFilterEvent($event)"> 
+            </app-filter>
           </div>
           <div class="border-right"></div>
           <div class="box-icons">
@@ -89,6 +105,8 @@
               [searchState]="true"
               [filterTitle]="'User Filter'"
               [defFilterHolder]="true"
+              [toDoSubType]="'ongoing'"
+              (setFilter)="setFilterEvent($event)"
             >
             </app-filter>
           </div>
@@ -100,6 +118,8 @@
               [filterTitle]="'Department Filter'"
               [defFilterHolder]="true"
               [noLeftIcon]="true"
+              [toDoSubType]="'ongoing'"
+              (setFilter)="setFilterEvent($event)"
             >
             </app-filter>
           </div>
@@ -125,7 +145,12 @@
           </div>
           <div class="border-right"></div>
           <div class="box-icons">
-            <app-filter [type]="'timeFilter'" [icon]="'pending'"> </app-filter>
+            <app-filter 
+              [type]="'timeFilter'" 
+              [icon]="'pending'"
+              [toDoSubType]="'done'"
+              (setFilter)="setFilterEvent($event)"> 
+            </app-filter>
           </div>
           <div class="border-right"></div>
           <div class="box-icons">
@@ -134,6 +159,8 @@
               [searchState]="true"
               [filterTitle]="'User Filter'"
               [defFilterHolder]="true"
+              [toDoSubType]="'done'"
+              (setFilter)="setFilterEvent($event)"
             >
             </app-filter>
           </div>
@@ -145,6 +172,8 @@
               [filterTitle]="'Department Filter'"
               [defFilterHolder]="true"
               [noLeftIcon]="true"
+              [toDoSubType]="'done'"
+              (setFilter)="setFilterEvent($event)"
             >
             </app-filter>
           </div>

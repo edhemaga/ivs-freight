@@ -37,5 +37,7 @@ export interface GetTruckModalResponse {
     engineOilTypes?: Array<EnumValue> | null;
     apUnits?: Array<EnumValue> | null;
     ezPass?: Array<TransponderGroup> | null;
+    wheelsTypes?: Array<EnumValue> | null;
+    brakes?: Array<EnumValue> | null;
 }
 

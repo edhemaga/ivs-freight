@@ -413,7 +413,7 @@ export class DispatchboardTablesComponent implements OnInit {
       driverId: oldData.driver ? oldData.driver?.id : null,
       coDriverId: oldData.coDriver ? oldData.coDriver?.id : null,
       location: oldData.location?.address ? oldData.location : null,
-      hourOfService: 0,
+      // hourOfService: 0,
       note: oldData.note,
       loadIds: [],
     };

@@ -39,6 +39,11 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   backFilterQuery = {
     active: 1,
     companyOwnerId: undefined,
+    long: undefined,
+    lat: undefined,
+    distance: undefined,
+    truckTypeIds: undefined,
+    trailerTypeIds: undefined,
     pageIndex: 1,
     pageSize: 25,
     companyId: undefined,
@@ -244,7 +249,10 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   initTableOptions(): void {
     this.tableOptions = {
       toolbarActions: {
+        showMoneyFilter: true,
         showLocationFilter: true,
+        showTruckTypeFilter: true,
+        showTrailerTypeFilter: true,
         viewModeOptions: [
           { name: 'List', active: this.activeViewMode === 'List' },
           { name: 'Card', active: this.activeViewMode === 'Card' },
@@ -377,6 +385,11 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     filter: {
       active: number;
       companyOwnerId: number | undefined;
+      long: number | undefined;
+      lat: number | undefined;
+      distance: number | undefined;
+      truckTypeIds: Array<number> | undefined;
+      trailerTypeIds: Array<number> | undefined;
       pageIndex: number;
       pageSize: number;
       companyId: number | undefined;
@@ -392,6 +405,11 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .getOwner(
         filter.active,
         filter.companyOwnerId,
+        filter.long,
+        filter.lat,
+        filter.distance,
+        filter.truckTypeIds,
+        filter.trailerTypeIds,
         filter.pageIndex,
         filter.pageSize,
         filter.companyId,

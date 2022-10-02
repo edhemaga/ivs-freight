@@ -1,0 +1,349 @@
+<div class="table-filter-container">
+    <!-- TOTAL MONEY COUNT -->
+    <div
+      class="money-count-container"
+      *ngIf="options.toolbarActions.showMoneyCount"
+    >
+      Nije Povezano
+    </div>
+
+    <!-- VIEW MODE SELECT -->
+    <div
+      class="view-mode-container"
+      *ngIf="options?.toolbarActions?.viewModeOptions?.length"
+    >
+      <div
+        *ngFor="let viewMode of options.toolbarActions.viewModeOptions"
+        class="mode"
+        [ngClass]="{
+          'mode-active': viewMode.active
+        }"
+        (click)="changeModeView(viewMode.name)"
+      >
+        {{ viewMode.name }}
+      </div>
+    </div>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options?.toolbarActions?.viewModeOptions?.length"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- SEARCH -->
+    <app-truckassist-search
+      [searchType]="'tabel'"
+      [selectedTabData]="activeTableData"
+    ></app-truckassist-search>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showLocationFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- LOCATION FILTER -->
+    <app-filter
+      *ngIf="options.toolbarActions.showLocationFilter"
+      [type]="'locationFilter'"
+      [icon]="'address'"
+      [filterTitle]="'Location Filter'"
+      [locationDefType]="true"
+    >
+    </app-filter>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showFuelStopFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- FUEL STOP FILTER -->
+    <div class="no-filter" *ngIf="options.toolbarActions.showFuelStopFilter">
+      Fuel Stop Filter
+    </div>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showDriverFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- DRIVER FILTER -->
+    <div class="no-filter" *ngIf="options.toolbarActions.showDriverFilter">
+      Driver Filter
+    </div>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showStateFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- STATE FILTER -->
+    <app-filter
+      *ngIf="options.toolbarActions.showStateFilter"
+      [type]="'stateFilter'"
+      [icon]="'state'"
+      [filterTitle]="'State / Province Filter'"
+      [defFilterHolder]="true"
+      [leftSideIcon]="true"
+    >
+    </app-filter>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showArhiveFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- ARHIVE FILTER -->
+    <div class="no-filter" *ngIf="options.toolbarActions.showArhiveFilter">
+      Arhive Filter
+    </div>
+
+    <!-- BORDER -->
+    <div class="border-container" *ngIf="options.toolbarActions.showTimeFilter">
+      <div class="border"></div>
+    </div>
+
+    <!-- TIME FILTER -->
+    <app-filter
+      *ngIf="options.toolbarActions.showTimeFilter"
+      [type]="'timeFilter'"
+      [icon]="'pending'"
+    >
+    </app-filter>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showTruckFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- TRUCK FILTER -->
+    <div class="no-filter" *ngIf="options.toolbarActions.showTruckFilter">
+      Truck Filter
+    </div>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showTrailerFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- TRAILER FILTER -->
+    <div class="no-filter" *ngIf="options.toolbarActions.showTrailerFilter">
+      Trailer Filter
+    </div>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showInjuryFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- INJURY FILTER -->
+    <div class="no-filter" *ngIf="options.toolbarActions.showInjuryFilter">
+      Injury Filter
+    </div>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showTowingFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- TOWING FILTER -->
+    <div class="no-filter" *ngIf="options.toolbarActions.showTowingFilter">
+      Towing Filter
+    </div>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showHazmatFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- HAZMAT FILTER -->
+    <div class="no-filter" *ngIf="options.toolbarActions.showHazmatFilter">
+      Hazmat Filter
+    </div>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showRepairOrderFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- REPAIR ORDER FILTER -->
+    <div class="no-filter" *ngIf="options.toolbarActions.showRepairOrderFilter">
+      Repair Order Filter
+    </div>
+
+    <!-- BORDER -->
+    <div class="border-container" *ngIf="options.toolbarActions.showPMFilter">
+      <div class="border"></div>
+    </div>
+
+    <!-- PM FILTER -->
+    <app-filter
+      *ngIf="options.toolbarActions.showPMFilter"
+      [type]="'pmFilter'"
+      [icon]="'default_pm'"
+      [filterTitle]="'PM Filter'"
+      [defFilterHolder]="true"
+      [noLeftIcon]="false"
+      [leftSideIcon]="true"
+    >
+    </app-filter>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showCategoryFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- CATEGORY FILTER -->
+    <app-filter
+      *ngIf="options.toolbarActions.showCategoryFilter"
+      [type]="'categoryRepairFilter'"
+      [icon]="'ic_key-repair'"
+      [filterTitle]="'Category Repair Filter'"
+      [defFilterHolder]="true"
+      [noLeftIcon]="false"
+      [leftSideIcon]="true"
+    >
+    </app-filter>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showDispatcherFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- DISPECHER FILTER -->
+    <app-filter
+      *ngIf="options.toolbarActions.showDispatcherFilter"
+      [type]="'userFilter'"
+      [searchState]="true"
+      [filterTitle]="'Dispatcher Filter'"
+      [defFilterHolder]="true"
+    >
+    </app-filter>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showStatusFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- STATUS FILTER -->
+    <app-filter
+      *ngIf="options.toolbarActions.showStatusFilter"
+      [type]="'statusFilter'"
+      [icon]="'broker-half-circle'"
+      [filterTitle]="'Status Filter'"
+      [defFilterHolder]="true"
+      [noLeftIcon]="false"
+    >
+    </app-filter>
+
+    <!-- BORDER -->
+    <div class="border-container" *ngIf="options.toolbarActions.showLtlFilter">
+      <div class="border"></div>
+    </div>
+
+    <!-- LTL FILTER -->
+    <div class="no-filter" *ngIf="options.toolbarActions.showLtlFilter">
+      LTL Filter
+    </div>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showTruckTypeFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- TRUCK TYPE FILTER -->
+    <div class="no-filter" *ngIf="options.toolbarActions.showTruckTypeFilter">
+      Truck Type Filter
+    </div>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showTrailerTypeFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- TRAILER TYPE FILTER -->
+    <div class="no-filter" *ngIf="options.toolbarActions.showTrailerTypeFilter">
+      Trailer Type Filter
+    </div>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showLabelFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- LABEL FILTER -->
+    <div class="no-filter" *ngIf="options.toolbarActions.showLabelFilter">
+      Label Filter
+    </div>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showMoneyFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <!-- MONEY FILTER -->
+    <app-filter
+      *ngIf="options.toolbarActions.showMoneyFilter"
+      [type]="'moneyFilter'"
+      [icon]="'dollar'"
+      [filterTitle]="'Money Filter'"
+      [subType]="'all'"
+      [moneyFilter]="true"
+    >
+    </app-filter>
+  </div>
