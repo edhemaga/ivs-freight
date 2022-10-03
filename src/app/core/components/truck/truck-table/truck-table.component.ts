@@ -24,7 +24,6 @@ import {
   tableSearch,
 } from '../../../utils/methods.globals';
 import { getTruckColumnDefinition } from '../../../../../assets/utils/settings/truck-columns';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @Component({
   selector: 'app-truck-table',
@@ -187,7 +186,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
           this.viewData = this.viewData.map((truck: any, index: number) => {
             if (truck.id === res.id) {
-              truck.actionAnimation = this.selectedTab === 'active' ? 'deactivate' : 'activate';
+              truck.actionAnimation =
+                this.selectedTab === 'active' ? 'deactivate' : 'activate';
               truckIndex = index;
             }
 
@@ -560,7 +560,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         avatar: `assets/svg/common/trucks/${event.data?.truckType?.logoName}`,
       },
     };
-    let truckNum = event.data?.truckNumber;
 
     switch (event.type) {
       case 'show-more': {
@@ -606,20 +605,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'activate-item': {
-        this.truckService
-          .changeTruckStatus(event.id, this.selectedTab)
-          .pipe(untilDestroyed(this))
-          .subscribe({
-          });
-        break;
-      }
-      case 'delete-item': {
-        this.truckService
-          .deleteTruckById(event.id, this.selectedTab)
-          .pipe(untilDestroyed(this))
-          .subscribe({
-          
-          });
         this.modalService.openModal(
           ConfirmationModalComponent,
           { size: 'small' },
@@ -655,8 +640,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.truckService
       .changeTruckStatus(id, this.selectedTab)
       .pipe(takeUntil(this.destroy$))
-      .subscribe({
-      });
+      .subscribe({});
   }
 
   private deleteTruckById(id: number) {
@@ -680,7 +664,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             clearInterval(inetval);
           }, 900);
-        }
+        },
       });
   }
 
