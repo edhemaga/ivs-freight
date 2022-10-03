@@ -48,9 +48,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     pageSize: 25,
     companyId: undefined,
     sort: undefined,
-    search: undefined,
-    search1: undefined,
-    search2: undefined,
+    searchOne: undefined,
+    searchTwo: undefined,
+    searchThree: undefined,
   };
 
   constructor(
@@ -394,9 +394,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       pageSize: number;
       companyId: number | undefined;
       sort: string | undefined;
-      search: string | undefined;
-      search1: string | undefined;
-      search2: string | undefined;
+      searchOne: string | undefined;
+      searchTwo: string | undefined;
+      searchThree: string | undefined;
     },
     isSearch?: boolean,
     isShowMore?: boolean
@@ -414,9 +414,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         filter.pageSize,
         filter.companyId,
         filter.sort,
-        filter.search,
-        filter.search1,
-        filter.search2,
+        filter.searchOne,
+        filter.searchTwo,
+        filter.searchThree
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe((owners: GetOwnerListResponse) => {
