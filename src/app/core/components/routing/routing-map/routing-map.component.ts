@@ -806,7 +806,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
   public onHandleAddress(event: any, route, index) {
     this.addressInputs.at(index).reset();
-    if (event.action == 'confirm' && event.address) {
+    if (event.address) {
       var request = {
         query: event.address.address,
         fields: ['formatted_address', 'place_id', 'name', 'geometry'],

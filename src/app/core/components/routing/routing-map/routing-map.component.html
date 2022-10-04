@@ -424,19 +424,24 @@
                   }"
                 >
                   <!-- Add New Stop -->
-                  <app-ta-input-address
+                  <app-input-address-dropdown
                     formControlName="address"
                     [inputConfig]="{
                       name: 'Address',
                       type: 'text',
                       label: 'Add New Stop',
+                      placeholder: 'Add New Stop',
                       textTransform: 'capitalize',
-                      addressFlag: addressFlag,
-                      minLength: 12,
+                      dropdownWidthClass: this.tableData[this.selectedMapIndex].addressType == 'address' ? 'w-col-310' : 'w-col-229',
+                      minLength: 6,
                       maxLength: 256,
+                      isDropdown: true,
                       blackInput: true,
-                      hideErrorMessage: true,
-                      customClass: 'input-22',
+                      placeholderInsteadOfLabel: true,
+                      routingAddress: true
+                    }"
+                    [placeholderType]="this.tableData[this.selectedMapIndex].addressType == 'address' ? 'longAddress' : 'shortAddress'"
+                    [commandHandler]="{
                       commands: {
                         active: true,
                         type: 'confirm-cancel',
@@ -458,13 +463,14 @@
                         }
                       }
                     }"
-                    (commandEvent)="onHandleAddress($event, route, i)"
+                    [isRouting]="true"
                     (changeFlag)="
                       $event === true
                         ? (addressFlag = 'Loaded')
                         : (addressFlag = 'Empty')
                     "
-                  ></app-ta-input-address>
+                    (commandEvent)="onHandleAddress($event, route, i)"
+                  ></app-input-address-dropdown>
                 </div>
               </div>
             </div>
