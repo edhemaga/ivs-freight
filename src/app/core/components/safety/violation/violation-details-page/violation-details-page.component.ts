@@ -105,6 +105,7 @@ export class ViolationDetailsPageComponent implements OnInit {
         name: 'Roadside Insp. Details',
         template: 'general',
         data: data,
+        secondName: '',
       },
       {
         id: 1,
@@ -116,6 +117,7 @@ export class ViolationDetailsPageComponent implements OnInit {
         hasArrow: false,
         length: data?.violations?.length ? data.violations.length : 0,
         counterViolation: data?.timeWeight ? data.timeWeight : 0,
+        secondName: 'Violation',
       },
       {
         id: 2,
@@ -123,6 +125,7 @@ export class ViolationDetailsPageComponent implements OnInit {
         template: 'citation',
         data: data,
         length: 12,
+        secondName: '',
       },
     ];
     this.violationId = data?.id ? data.id : null;

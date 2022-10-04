@@ -8,7 +8,7 @@ import { FormControl } from '@angular/forms';
   encapsulation: ViewEncapsulation.None,
 })
 export class FuelDetailsItemComponent implements OnInit {
-  @Input() data: any;
+  @Input() fuelData: any;
   public noteControl: FormControl = new FormControl();
   public dummyDataVehicle: any[] = [];
   public dummyDataFuel: any[] = [];
@@ -60,6 +60,10 @@ export class FuelDetailsItemComponent implements OnInit {
         name: 'ALL',
       },
     ];
+  }
+  /**Function return id */
+  public identity(index: number, item: any): number {
+    return item.id;
   }
   /**Function for dots in cards */
   public initTableOptions(): void {
@@ -120,7 +124,7 @@ export class FuelDetailsItemComponent implements OnInit {
       return {
         id: item.id,
         name: item.name,
-        svg: item.pinned ? 'star' : null,
+        svg: item.pinned ? 'ic_star.svg' : null,
         folder: 'common',
         active: item.id,
       };
