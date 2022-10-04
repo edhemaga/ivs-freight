@@ -833,13 +833,20 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     }
 
     map.addListener('click', (e) => {
+      console.log('mapClick', mainthis.stopJustAdded);
+
       if (mainthis.stopJustAdded) {
         mainthis.stopJustAdded = false;
         return false;
       }
 
       if (mainthis.stopPickerLocation.lat) {
-        this.addNewStop(e.domEvent);
+        mainthis.addNewStop(e.domEvent, true);
+        console.log('addNewStop');
+      }
+
+      if (!mainthis.stopPickerActive && mainthis.focusedStopIndex != null) {
+        mainthis.focusStop(e.domEvent, mainthis.focusedRouteIndex, mainthis.focusedStopIndex)
       }
 
       if (mainthis.focusedRouteIndex != null && mainthis.stopPickerActive) {
@@ -1345,6 +1352,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   deleteRoute(id) {
     const routeIndex = this.getRouteIndexById(id);
 
+    if ( this.focusedRouteIndex == routeIndex ) {
+      this.focusedRouteIndex = null;
+    }
+
     if (routeIndex > -1) {
       this.tableData[this.selectedMapIndex].routes.splice(routeIndex, 1);
     }
@@ -1397,7 +1408,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         route.isFocused = false;
 
         route.stops.map((stop) => {
-          if (stop.isSelected) stop.isSelected = false;
+          if (stop.isSelected) {
+            stop.isSelected = false; 
+            this.focusedStopIndex = null;
+          }
         });
       }
     });
@@ -1638,8 +1652,21 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     }
   }
 
-  addNewStop(event) {
+  addNewStop(event, mapClick?) {
     this.addressFlag = this.stopPickerLocation.empty ? 'Empty' : 'Loaded';
+
+    var input = document
+      .querySelector('input');
+    
+    input.addEventListener("keydown", function (e) {
+      if (e.code === "Enter") {
+          console.log('enter key pressed');
+      }
+    });
+
+      console.log('input', input);
+
+    var showLoaded = false;
 
     if (this.stopPickerLocation.editIndex != null) {
       this.tableData[this.selectedMapIndex].routes[
@@ -1647,13 +1674,34 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       ].stops[this.stopPickerLocation.editIndex].empty =
         this.stopPickerLocation.empty;
 
-      this.stopJustAdded = true;
+      if (!mapClick) {
+        this.stopJustAdded = true;
+      }
     } else {
       var insertIndex =
         this.focusedStopIndex != null
           ? this.focusedStopIndex + 1
           : this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex]
               .stops.length;
+
+      // var previousStop = this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].stops[insertIndex-1];
+      // var nextStop = this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].stops[insertIndex+1];
+    
+      //   previousStop.showLoaded = !this.stopPickerLocation.empty;
+      // }
+
+      // if ( this.stopPickerLocation.empty ) {
+      //   showLoaded = false;
+      // }
+
+      if ( !this.stopPickerLocation.empty ) {
+        showLoaded = true;
+
+        var previousStop = this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].stops[insertIndex-1];
+        if ( previousStop ) {
+          previousStop.showLoaded = true;
+        }
+      }
 
       this.tableData[this.selectedMapIndex].routes[
         this.focusedRouteIndex
@@ -1667,6 +1715,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         empty: this.stopPickerLocation.empty,
         lat: this.stopPickerLocation.lat,
         long: this.stopPickerLocation.long,
+        showLoaded: showLoaded
       });
 
       this.focusStop(
@@ -2274,8 +2323,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     return inputElement === document.activeElement;
   }
 
-  changeEmptyLoaded() {
+  changeEmptyLoaded(event?) {
     this.stopPickerLocation.empty = this.stopPickerLocation.empty ? false : true;
     this.addressFlag = this.addressFlag == 'Empty' ? 'Loaded' : 'Empty';
+
+    if (event) {
+      this.addNewStop(event);
+    }
   }
 }

@@ -110,8 +110,8 @@
         }
     
         &.stop-picker-icon {
-            top: -40px !important;
-            transform: translateX(-21px);
+            top: -36px !important;
+            transform: translateX(-22px);
         }
     }
     
@@ -146,7 +146,7 @@
     max-height: 500px;
     max-width: 500px;
 
-    transition: width 0.2s, height 0.2s, padding-right 0.2s;
+    transition: width 0.2s, height 0.2s, padding-right 0.2s, max-height 0.2s;
 
     pointer-events: all;
     cursor: pointer;
@@ -783,7 +783,7 @@
 
 .stop-picker-window {
     position: absolute;
-    top: -31px;
+    top: -27px;
     left: 91px;
 
     display: flex;
@@ -848,7 +848,7 @@
 
 .stop-picker-address {
     position: absolute;
-    top: -29px;
+    top: -25px;
     left: calc( 50% - 5px );
 
     display: flex;
@@ -1004,19 +1004,19 @@
 
 @-webkit-keyframes stop-picker-animation {
     from {
-      transform: translate(-21px, 10px) scale(0.7);
+      transform: translate(-22px, 5px) scale(0.7);
     }
     to {
-      transform: translate(-21px, 0px) scale(1);
+      transform: translate(-22px, 0px) scale(1);
     }
 }
   
 @keyframes stop-picker-animation {
     from {
-      transform: translate(-21px, 10px) scale(0.7);
+      transform: translate(-22px, 5px) scale(0.7);
     }
     to {
-      transform: translate(-21px, 0px) scale(1);
+      transform: translate(-22px, 0px) scale(1);
     }
 }
 

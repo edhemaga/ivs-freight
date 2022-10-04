@@ -565,12 +565,15 @@
         <app-ta-input
           formControlName="fuelMpg"
           [inputConfig]="{
-            name: 'Mpg',
-            type: 'number',
+            name: 'Per Mile',
+            type: 'text',
             label: 'Miles Per Gallon',
             placeholderIcon: 'mileage',
             isRequired: true,
-            customClass: 'line-input-26'
+            customClass: 'line-input-26',
+            min: 0,
+            max: 10,
+            maxLength: 4
           }"
         ></app-ta-input>
       </div>
@@ -583,12 +586,15 @@
         <app-ta-input
           formControlName="fuelPrice"
           [inputConfig]="{
-            name: 'Fuel Price',
-            type: 'number',
+            name: 'Per Mile',
+            type: 'text',
             label: 'Price Per Gallon',
             placeholderIcon: 'dollar',
             isRequired: true,
-            customClass: 'line-input-26'
+            customClass: 'line-input-26',
+            min: 0,
+            max: 10,
+            maxLength: 4
           }"
         ></app-ta-input>
       </div>
