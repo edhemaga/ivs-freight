@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Shipper' : 'Edit Shipper'"
   [editData]="editData"
   [editName]="editData?.data?.businessName"
-  [isModalValid]="shipperForm.valid"
+  [isModalValid]="shipperForm.valid && isFormDirty"
   [customClass]="'modal-container-M'"
   (action)="onModalAction($event)"
 >
@@ -56,7 +56,8 @@
                   type: 'text',
                   label: 'Phone',
                   placeholderIcon: 'phone',
-                  mask: '(000) 000-0000'
+                  mask: '(000) 000-0000',
+                  maxLength: 14
                 }"
               ></app-ta-input>
             </div>
@@ -335,6 +336,7 @@
                       name: 'Phone',
                       type: 'text',
                       mask: '(000) 000-0000',
+                      maxLength: 14,
                       hideErrorMessage: true,
                       hideRequiredCheck: true
                     }"

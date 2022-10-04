@@ -15,6 +15,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
 
+  &.datetimeclass{
+    letter-spacing: 1px;
+  }
+
   &::-moz-selection {
     background-color: $input-background-selection-normal !important;
     color: $input-text-selection-normal !important;
@@ -180,7 +184,7 @@
   }
 
   &.valid-focus-out-filled-datepicker {
-    background-color: $input-background-color-valid-focus-out !important;
+    background-color: $input-background-color-valid-focus-out-datepicker !important;
     color: $input-transparent-color !important;
   }
 
@@ -205,6 +209,10 @@
 
   &.blue-input-color {
     color: $input-text-color-blue !important;
+  }
+
+  &.dropdown-input-image-without-text-transparent {
+    color: $input-transparent-color !important;
   }
 
   //------------------------- Custom class -------------------------

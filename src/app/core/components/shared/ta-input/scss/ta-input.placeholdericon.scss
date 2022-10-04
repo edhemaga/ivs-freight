@@ -16,6 +16,10 @@
     }
   }
 
+  &.datetimeclass{
+    z-index: 21;
+  }
+
   &.default-svg-color {
     svg {
       path {

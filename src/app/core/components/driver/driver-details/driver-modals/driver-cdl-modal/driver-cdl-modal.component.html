@@ -8,7 +8,7 @@
   "
   [editData]="editData"
   [editName]="modalName"
-  [isModalValid]="cdlForm.valid"
+  [isModalValid]="cdlForm.valid && isFormDirty"
   [specificCaseModalName]="true"
   (action)="onModalAction($event)"
 >

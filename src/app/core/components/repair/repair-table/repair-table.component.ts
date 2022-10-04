@@ -61,11 +61,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
   resizeObserver: ResizeObserver;
   backFilterQuery = {
     repairShopId: undefined,
-    repairType: undefined,
     unitType: 1,
     dateFrom: undefined,
     dateTo: undefined,
     isPM: undefined,
+    categoryIds: undefined,
+    pmTruckTitles: undefined,
+    pmTrailerTitles: undefined,
+    isOrder: undefined,
     pageIndex: 1,
     pageSize: 25,
     companyId: undefined,
@@ -288,6 +291,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
   initTableOptions(): void {
     this.tableOptions = {
       toolbarActions: {
+        showTimeFilter: this.selectedTab !== 'repair-shop',
+        showRepairOrderFilter: this.selectedTab !== 'repair-shop',
+        showPMFilter: this.selectedTab !== 'repair-shop',
+        showCategoryFilter: true,
+        showMoneyFilter: true,
+        showLocationFilter: true,
         viewModeOptions: this.getViewModeOptions(),
       },
       actions: [
@@ -547,19 +556,22 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
   // Repair Back Filters
   repairBackFilter(
     filter: {
-      repairShopId?: number | undefined;
-      repairType?: number | undefined;
-      unitType?: number | undefined;
-      dateFrom?: string | undefined;
-      dateTo?: string | undefined;
-      isPM?: number | undefined;
-      pageIndex?: number;
-      pageSize?: number;
-      companyId?: number | undefined;
-      sort?: string | undefined;
-      searchOne?: string | undefined;
-      searchTwo?: string | undefined;
-      searchThree?: string | undefined;
+      repairShopId: number;
+      unitType: number;
+      dateFrom: string;
+      dateTo: string;
+      isPM: number;
+      categoryIds: Array<number>;
+      pmTruckTitles: Array<string>;
+      pmTrailerTitles: Array<string>;
+      isOrder: boolean;
+      pageIndex: number;
+      pageSize: number;
+      companyId: number;
+      sort: string;
+      searchOne: string | undefined;
+      searchTwo: string | undefined;
+      searchThree: string | undefined;
     },
     isSearch?: boolean,
     isShowMore?: boolean
@@ -567,18 +579,21 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     this.repairService
       .getRepairList(
         filter.repairShopId,
-        filter.repairType,
         filter.unitType,
         filter.dateFrom,
         filter.dateTo,
         filter.isPM,
+        filter.categoryIds,
+        filter.pmTruckTitles,
+        filter.pmTrailerTitles,
+        filter.isOrder,
         filter.pageIndex,
         filter.pageSize,
         filter.companyId,
         filter.sort,
         filter.searchOne,
         filter.searchTwo,
-        filter.searchThree
+        filter.searchThree,
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe((repair: RepairListResponse) => {

@@ -1,5 +1,5 @@
-<table>
-  <thead [ngClass]="{ 'set-cursor-resize': rezaizeing }">
+<table *ngIf="viewData.length">
+  <thead [ngClass]="{ 'set-cursor-resize': rezaizeing }" >
     <!-- Pined -->
     <tr class="tr pined-columns-container">
       <th

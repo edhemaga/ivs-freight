@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Terminal' : 'Edit Terminal'"
   [editData]="editData"
   [editName]="terminalName"
-  [isModalValid]="terminalForm.valid"
+  [isModalValid]="terminalForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <app-ta-tab-switch
@@ -105,7 +105,8 @@
                       label: 'Phone',
                       placeholderIcon: 'phone',
                       isRequired: true,
-                      mask: '(000) 000-0000'
+                      mask: '(000) 000-0000',
+                      maxLength: 14
                     }"
                   ></app-ta-input>
                 </div>
@@ -197,6 +198,7 @@
                         placeholderIcon: 'phone',
                         isRequired: true,
                         mask: '(000) 000-0000',
+                        maxLength: 14,
                         customClass: 'line-input-26-in-card'
                       }"
                     ></app-ta-input>
@@ -291,7 +293,8 @@
                         label: 'Phone',
                         placeholderIcon: 'phone',
                         isRequired: true,
-                        mask: '(000) 000-0000'
+                        mask: '(000) 000-0000',
+                        maxLength: 14
                       }"
                     ></app-ta-input>
                   </div>
@@ -438,7 +441,8 @@
                         label: 'Phone',
                         placeholderIcon: 'phone',
                         isRequired: true,
-                        mask: '(000) 000-0000'
+                        mask: '(000) 000-0000',
+                        maxLength: 14
                       }"
                     ></app-ta-input>
                   </div>

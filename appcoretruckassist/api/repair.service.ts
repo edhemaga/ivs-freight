@@ -321,11 +321,14 @@ export class RepairService {
 
     /**
      * @param repairShopId 
-     * @param repairType 
      * @param unitType 
      * @param dateFrom 
      * @param dateTo 
      * @param isPM 
+     * @param categoryIds 
+     * @param pmTruckTitles 
+     * @param pmTrailerTitles 
+     * @param isOrder 
      * @param pageIndex 
      * @param pageSize 
      * @param companyId 
@@ -336,19 +339,15 @@ export class RepairService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairListGet(repairShopId?: number, repairType?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<RepairListResponse>;
-    public apiRepairListGet(repairShopId?: number, repairType?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<RepairListResponse>>;
-    public apiRepairListGet(repairShopId?: number, repairType?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<RepairListResponse>>;
-    public apiRepairListGet(repairShopId?: number, repairType?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiRepairListGet(repairShopId?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, categoryIds?: Array<number>, pmTruckTitles?: Array<string>, pmTrailerTitles?: Array<string>, isOrder?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<RepairListResponse>;
+    public apiRepairListGet(repairShopId?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, categoryIds?: Array<number>, pmTruckTitles?: Array<string>, pmTrailerTitles?: Array<string>, isOrder?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<RepairListResponse>>;
+    public apiRepairListGet(repairShopId?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, categoryIds?: Array<number>, pmTruckTitles?: Array<string>, pmTrailerTitles?: Array<string>, isOrder?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<RepairListResponse>>;
+    public apiRepairListGet(repairShopId?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, categoryIds?: Array<number>, pmTruckTitles?: Array<string>, pmTrailerTitles?: Array<string>, isOrder?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (repairShopId !== undefined && repairShopId !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>repairShopId, 'RepairShopId');
-        }
-        if (repairType !== undefined && repairType !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>repairType, 'RepairType');
         }
         if (unitType !== undefined && unitType !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
@@ -365,6 +364,28 @@ export class RepairService {
         if (isPM !== undefined && isPM !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>isPM, 'IsPM');
+        }
+        if (categoryIds) {
+            categoryIds.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'CategoryIds');
+            })
+        }
+        if (pmTruckTitles) {
+            pmTruckTitles.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'PmTruckTitles');
+            })
+        }
+        if (pmTrailerTitles) {
+            pmTrailerTitles.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'PmTrailerTitles');
+            })
+        }
+        if (isOrder !== undefined && isOrder !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>isOrder, 'IsOrder');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
           queryParameters = this.addToHttpParams(queryParameters,

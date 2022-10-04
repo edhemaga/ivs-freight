@@ -274,6 +274,9 @@ export class CustomerTableComponent
   public initTableOptions(): void {
     this.tableOptions = {
       toolbarActions: {
+        showMoneyFilter: this.selectedTab === 'active',
+        showLocationFilter: this.selectedTab === 'inactive',
+        showStateFilter: this.selectedTab === 'inactive',
         viewModeOptions: this.getViewModeOptions(),
       },
       actions: [

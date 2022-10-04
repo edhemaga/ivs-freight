@@ -245,6 +245,7 @@ export class ContactsTableComponent
   public initTableOptions(): void {
     this.tableOptions = {
       toolbarActions: {
+        showLabelFilter: true,
         viewModeOptions: [
           { name: 'List', active: this.activeViewMode === 'List' },
           { name: 'Card', active: this.activeViewMode === 'Card' },

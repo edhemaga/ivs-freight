@@ -83,6 +83,7 @@
                   type: 'text',
                   label: 'EIN',
                   mask: '00-0000000',
+                  maxLength: 10,
                   isRequired: true
                 }"
               ></app-ta-input>
@@ -141,7 +142,8 @@
                   label: 'Phone',
                   isRequired: true,
                   placeholderIcon: 'phone',
-                  mask: '(000) 000-0000'
+                  mask: '(000) 000-0000',
+                  maxLength: 14
                 }"
               ></app-ta-input>
             </div>

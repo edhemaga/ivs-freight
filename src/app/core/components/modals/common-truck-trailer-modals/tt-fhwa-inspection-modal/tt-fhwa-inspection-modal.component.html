@@ -11,7 +11,7 @@
       : 'Truck ' + editData?.payload?.truckNumber
   "
   [specificCaseModalName]="true"
-  [isModalValid]="fhwaInspectionForm.valid"
+  [isModalValid]="fhwaInspectionForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
   <form
