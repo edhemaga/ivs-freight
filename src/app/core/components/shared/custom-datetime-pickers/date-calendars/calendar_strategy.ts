@@ -4,21 +4,23 @@ import {distinctUntilChanged} from "rxjs/operators";
 import {Injectable} from "@angular/core";
 import { CalendarScrollService } from "../calendar-scroll.service";
 
-export const STARTING_YEAR = 1905;
-export const RANGE = 2352;
+// STARTING YEAR OF CALLENDAR, IT IS NOW YEAR MINUS 90 YEARS
+export const STARTING_YEAR = new Date().getFullYear() - 90;
+export const RANGE = 12; // 95 * 12
 
 export const FULL_SIZE = 182;
+
 const BUFFER = 500;
 const CYCLE = getCycle();
 export const CYCLE_HEIGHT = reduceCycle();
 
 function getCycle(): ReadonlyArray<ReadonlyArray<number>> {
-  return Array.from({length: 28}, (_, i) =>
+  return Array.from({length: 1}, (_, i) =>
     Array.from({length: 12}, (_, month) => FULL_SIZE)
   );
 }
 
-function reduceCycle(lastYear: number = 28, lastMonth: number = 12): number {
+function reduceCycle(lastYear: number = 1, lastMonth: number = 12): number {
   return CYCLE.reduce(
     (total, year, yearIndex) =>
       yearIndex <= lastYear ? 
@@ -54,7 +56,8 @@ export class MobileCalendarStrategy implements VirtualScrollStrategy {
 
   attach(viewport: CdkVirtualScrollViewport) {
     this.viewport = viewport;
-    this.viewport.setTotalContentSize(CYCLE_HEIGHT * 7);
+    console.log(CYCLE_HEIGHT);
+    this.viewport.setTotalContentSize(CYCLE_HEIGHT);
     this.updateRenderedRange(this.viewport);
   }
 
@@ -105,17 +108,23 @@ export class MobileCalendarStrategy implements VirtualScrollStrategy {
     const firstVisibleIndex = this.getIndexForOffset(offset);
 
     const startOffsetIndex = FULL_SIZE * start;
+    console.log(start, end, dataLength);
 
     const startBuffer = offset - startOffsetIndex;
+    console.log(offset, startOffsetIndex, startBuffer);
     if (startBuffer < BUFFER && start !== 0) {
+      console.log("FIRST ONE");
       newRange.start = Math.max(0, this.getIndexForOffset(offset - BUFFER * 2));
       newRange.end = Math.min(
         dataLength,
         this.getIndexForOffset(offset + viewportSize + BUFFER)
       );
     } else {
+      console.log("SECOND ONE");
       const endBuffer = (FULL_SIZE * end) - offset - viewportSize;
-    
+      console.log("END BUFFER", endBuffer);
+      console.log("WHAT IS END", end);
+      console.log("DATA LENGTH",dataLength );
       if (endBuffer < BUFFER && end !== dataLength) {
         newRange.start = Math.max(0, this.getIndexForOffset(offset - BUFFER));
         newRange.end = Math.min(
@@ -125,7 +134,9 @@ export class MobileCalendarStrategy implements VirtualScrollStrategy {
       }
     }
 
+    console.log(newRange);
     viewport.setRenderedRange(newRange);
+    
     viewport.setRenderedContentOffset(this.getOffsetForIndex(newRange.start));
     if( this.calendarService.selectedScroll === 'main' ){
       this.index$.next({indx: firstVisibleIndex, scrollOffset: offset, cycleSize: FULL_SIZE, type: "main", offsetIndx: (offset / FULL_SIZE)});

@@ -1,5 +1,5 @@
 <div
-  class="input-custom-group"
+  class="input-custom-group {{ inputConfig.customClass }}"
   [ngClass]="{
     'hover-focus-out':
       !focusInput && !inputConfig.dropdownLabel && !selectedDropdownLabelColor,
@@ -450,7 +450,7 @@
   <!-- DateTime Picker -->
   <div
     #holder1
-    class="date_time_holder input-control showDateInput"
+    class="date_time_holder input-control"
     *ngIf="
       (inputConfig.name === 'datepicker' ||
         inputConfig.name === 'timepicker') &&
@@ -458,6 +458,8 @@
     "
     [class.active]="showDateInput"
     tabindex="-1"
+    (focus)="focusMainField($event)"
+    (click)="selectLastDateTimeHold()"
     (paste)="onDatePaste($event)"
     (blur)="onBlur()"
     (keydown)="changeSelection($event, true)"
@@ -484,7 +486,11 @@
           !inputConfig.blackInput) ||
         ((touchedInput || getSuperControl.touched) &&
           getSuperControl.invalid &&
-          !focusInput)
+          !focusInput),
+          'valid-focus-in-datepicker':
+          getSuperControl.value &&
+          getSuperControl.valid &&
+          focusInput
     }"
   >
     <span
@@ -497,11 +503,12 @@
       (blur)="onBlur()"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'mm' : 'HH'"
     ></span>
-    <span
-      (click)="setSelection($event)"
-      [innerHTML]="inputConfig.name === 'datepicker' ? '/' : ':'"
-      >/</span
-    >
+    <span>
+      <div
+        class="border-picker"
+        [innerHTML]="inputConfig.name === 'datepicker' ? '/' : ':'"
+      ></div>
+    </span>
     <span
       #span2
       class="main"
@@ -512,11 +519,12 @@
       (blur)="onBlur()"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
     ></span>
-    <span
-      (click)="setSelection($event)"
-      [innerHTML]="inputConfig.name === 'datepicker' ? '/' : ' '"
-      >/</span
-    >
+    <span>
+      <div
+        class="border-picker"
+        [innerHTML]="inputConfig.name === 'datepicker' ? '/' : ' '"
+      ></div>
+    </span>
     <span
       #span3
       class="main"

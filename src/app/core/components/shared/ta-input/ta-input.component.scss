@@ -4,6 +4,11 @@
   display: block;
   position: relative;
 
+  &.datetimeclass{
+    background-color: #eeeeee;
+    border-radius: 2px !important; 
+  }
+
   &.address-flag {
     display: grid;
     grid-template-columns: 1fr 40px;

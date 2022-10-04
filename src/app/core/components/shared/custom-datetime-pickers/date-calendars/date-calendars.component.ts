@@ -51,7 +51,7 @@ export class DateCalendarsComponent implements OnInit {
     return sendDate;
   });
 
-  justYears = Array.from({ length: 196 }, (_, i) => {
+  justYears = Array.from({ length: 1 }, (_, i) => {
     return new Date(STARTING_YEAR + i, 1, 1);
   });
 

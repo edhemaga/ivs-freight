@@ -17,6 +17,8 @@
 
   &.datetimeclass{
     letter-spacing: 1px;
+    pointer-events: none;
+    opacity: 0;
   }
 
   &::-moz-selection {
@@ -142,6 +144,14 @@
     padding-left: 29px;
   }
 
+  &.valid-focus-in-datepicker{
+    background-color: $input-background-color-valid-focus !important;
+
+    span, span .border-picker{
+      color: $input-text-color-normal-focus !important;
+    }
+  }
+
   &.valid-focus-in,
   &.dropdown-placeholder-active,
   &.multiSelect-dropdown-active {
@@ -183,9 +193,11 @@
     color: $input-text-color-valid-focus-out !important;
   }
 
-  &.valid-focus-out-filled-datepicker {
+  &.valid-focus-out-filled-datepicker  {
     background-color: $input-background-color-valid-focus-out-datepicker !important;
-    color: $input-transparent-color !important;
+    span, span .border-picker{
+      color: $input-text-color-valid-focus-out !important;
+    }
   }
 
   &.invalid-focus-in {

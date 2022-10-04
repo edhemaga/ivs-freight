@@ -95,37 +95,37 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
     this.selectedYearFromInput = this.dateTime.getFullYear();
     //this.selectedYearFromInput = this.months.getFullYear();
 
-    this.calendarService.scrollToAutoIndex
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((indx) => {
-        this.virtualScrollViewport.scrollToIndex(indx, 'auto');
-      });
+    // this.calendarService.scrollToAutoIndex
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((indx) => {
+    //     this.virtualScrollViewport.scrollToIndex(indx, 'auto');
+    //   });
 
-    this.calendarService.scrolledIndexChange
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (
-          res.type != 'main' &&
-          this.calendarService.selectedScroll != 'main'
-        ) {
-          const sizeTimes = FULL_SIZE / res.cycleSize;
-          const newScrollSize = Math.ceil(sizeTimes * res.scrollOffset);
-          this.virtualScrollViewport.scrollToOffset(newScrollSize);
-        }
-      });
+    // this.calendarService.scrolledIndexChange
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((res) => {
+    //     if (
+    //       res.type != 'main' &&
+    //       this.calendarService.selectedScroll != 'main'
+    //     ) {
+    //       const sizeTimes = FULL_SIZE / res.cycleSize;
+    //       const newScrollSize = Math.ceil(sizeTimes * res.scrollOffset);
+    //       this.virtualScrollViewport.scrollToOffset(newScrollSize);
+    //     }
+    //   });
 
-    this.calendarService.scrollToDate
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        setTimeout(() => {
-          if (res) {
-            const indx = this.findIndexInMonth(res);
-            this.virtualScrollViewport.scrollToIndex(indx);
-          } else {
-            this.virtualScrollViewport.scrollToIndex(this.currentIndex);
-          }
-        }, 200);
-      });
+    // this.calendarService.scrollToDate
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((res) => {
+    //     setTimeout(() => {
+    //       if (res) {
+    //         const indx = this.findIndexInMonth(res);
+    //         this.virtualScrollViewport.scrollToIndex(indx);
+    //       } else {
+    //         this.virtualScrollViewport.scrollToIndex(this.currentIndex);
+    //       }
+    //     }, 200);
+    //   });
   }
 
   findIndexInMonth(date: string): number {
