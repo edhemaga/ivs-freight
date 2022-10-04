@@ -158,11 +158,10 @@ export class TaInputDropdownComponent
       });
     }
 
-    if(this.inputConfig.name === 'Address') {
-      if(this.getSuperControl.value && this.inputRef.focusInput) {
+    if (this.inputConfig.name === 'Address' || this.inputConfig.name === 'RoutingAddress') {
+      if (this.getSuperControl.value && this.inputRef.focusInput) {
         this.popoverRef?.open();
-      }
-      else{
+      } else {
         this.popoverRef?.close();
       }
     }
@@ -302,16 +301,29 @@ export class TaInputDropdownComponent
         }
         // Press 'enter'
         if (keyCode === 13) {
-          const selectedItem = $('.dropdown-option-hovered').text().trim();
+          let selectedItem = $('.dropdown-option-hovered').text().trim();
+          if (
+            (this.inputConfig.name == 'Address' || this.inputConfig.name == 'RoutingAddress') &&
+            (!selectedItem || selectedItem == '')
+          ) {
+            selectedItem = this.options[0].name;
+          }
           if (selectedItem === 'Add New') {
             this.addNewConfig();
           } else {
             const existItem = this.options
               .map((item) => {
-                if (item.name) {
+                if (item.name && this.inputConfig.name != 'Address' && this.inputConfig.name != 'RoutingAddress') {
                   return {
                     id: item.id,
                     name: item.name,
+                  };
+                } else if (item.name && (this.inputConfig.name == 'Address' || this.inputConfig.name == 'RoutingAddress')) {
+                  return {
+                    id: item.id,
+                    name: item.name,
+                    address: item.address,
+                    longLat: item.longLat,
                   };
                 } else if (item.code) {
                   return {
@@ -485,15 +497,16 @@ export class TaInputDropdownComponent
         this.getSuperControl.setValue(option.name);
         this.options = this.originalOptions;
         this.selectedItem.emit(option);
-
-        const timeout = setTimeout(() => {
-          this.inputConfig = {
-            ...this.inputConfig,
-            blackInput: false,
-          };
-          this.changeDetectionRef.detectChanges();
-          clearTimeout(timeout);
-        }, 100);
+        if (this.inputConfig.name != 'RoutingAddress') {
+          const timeout = setTimeout(() => {
+            this.inputConfig = {
+              ...this.inputConfig,
+              blackInput: false,
+            };
+            this.changeDetectionRef.detectChanges();
+            clearTimeout(timeout);
+          }, 100);
+        }
       }
     }
   }

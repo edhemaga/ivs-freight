@@ -122,8 +122,11 @@
   <!--------------------------- Dropdown options --------------------------->
   <div
     *ngIf="
-      (inputConfig.name != 'Address' && !inputConfig.isDisabled) ||
-      (inputConfig.name == 'Address' &&
+      (inputConfig.name != 'Address' &&
+        inputConfig.name != 'RoutingAddress' &&
+        !inputConfig.isDisabled) ||
+      ((inputConfig.name == 'Address' ||
+        inputConfig.name == 'RoutingAddress') &&
         !inputConfig.isDisabled &&
         getSuperControl.value?.length)
     "

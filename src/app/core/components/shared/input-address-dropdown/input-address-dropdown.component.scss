@@ -35,6 +35,7 @@
     &.not_expanded {
       input {
         background-color: #fff !important;
+        cursor: pointer;
       }
       &:hover {
         input {
@@ -45,6 +46,12 @@
     &.expanded_address {
       input {
         background-color: #6c6c6c !important;
+        color: #fff !important;
+      }
+
+      .valid-focus-out-filled{
+        background-color: #6c6c6c !important;
+        color: #fff !important;
       }
     }
 

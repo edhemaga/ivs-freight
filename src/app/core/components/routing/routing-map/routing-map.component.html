@@ -427,12 +427,12 @@
                   <app-input-address-dropdown
                     formControlName="address"
                     [inputConfig]="{
-                      name: 'Address',
+                      name: 'RoutingAddress',
                       type: 'text',
                       label: 'Add New Stop',
                       placeholder: 'Add New Stop',
                       textTransform: 'capitalize',
-                      dropdownWidthClass: this.tableData[this.selectedMapIndex].addressType == 'address' ? 'w-col-310' : 'w-col-229',
+                      dropdownWidthClass: dropdownWidth,
                       minLength: 6,
                       maxLength: 256,
                       isDropdown: true,

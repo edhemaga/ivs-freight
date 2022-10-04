@@ -197,6 +197,9 @@ export class InputAddressDropdownComponent
 
     if (!this.chosenFromDropdown) {
       this.inputDropdown?.inputRef?.input.nativeElement.focus();
+      setTimeout(()=>{
+        this.inputDropdown.inputRef.focusInput = true;
+      }, 500);
     }
   }
 
