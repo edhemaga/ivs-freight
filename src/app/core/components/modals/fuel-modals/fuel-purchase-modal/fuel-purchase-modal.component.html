@@ -4,10 +4,10 @@
   "
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="fuelForm.valid"
+  [isModalValid]="fuelForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="fuelForm" class="form-container">
+  <form [formGroup]="fuelForm" class="form-container form-container-without-mb">
     <div class="row">
       <div class="col-6">
         <app-ta-input-dropdown
@@ -130,74 +130,76 @@
           <p>PRICE <span>*</span></p>
           <p>SUBTOTAL</p>
         </div>
-        <div
-          *ngFor="let fuelItem of fuelItems.controls; let ind = index"
-          cdkDrag
-        >
+        <div class="common-fake-table-body">
           <div
-            [formGroupName]="ind"
-            class="common-fake-table-card"
-            (mouseenter)="hoverRowTable[ind] = true"
-            (mouseleave)="hoverRowTable[ind] = false"
+            *ngFor="let fuelItem of fuelItems.controls; let ind = index"
+            cdkDrag
           >
-            <p *ngIf="!hoverRowTable[ind]">{{ fuelItem.get('id').value }}</p>
-            <svg-icon
-              class="common-fake-table-card-transfer-svg"
-              *ngIf="hoverRowTable[ind]"
-              src="assets/svg/common/ic_transfer-array.svg"
-            ></svg-icon>
-            <app-ta-input-dropdown
-              formControlName="itemId"
-              [inputConfig]="{
-                name: 'Input Dropdown',
-                type: 'text',
-                isDropdown: true,
-                dropdownWidthClass: 'w-col-114',
-                hideErrorMessage: true,
-                blackInput: true,
-                hideRequiredCheck: true
-              }"
-              [options]="fuelItemsDropdown"
-              [activeItem]="selectedFuelItemsFormArray[ind]"
-              (selectedItem)="onSelectDropDown($event, 'fuel-items', ind)"
-            ></app-ta-input-dropdown>
-
-            <app-ta-input
-              formControlName="qty"
-              [inputConfig]="{
-                name: 'QTY',
-                type: 'text',
-                textTransform: 'capitalize',
-                hideErrorMessage: true,
-                blackInput: true,
-                hideRequiredCheck: true
-              }"
-              (change)="onChange('qty', ind)"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="price"
-              [inputConfig]="{
-                name: 'Price',
-                type: 'text',
-                minLength: 4,
-                maxLength: 11,
-                blackInput: true,
-                hideErrorMessage: true,
-                thousandSeparator: true,
-                hideRequiredCheck: true
-              }"
-              (change)="onChange('price', ind)"
-            ></app-ta-input>
-            <p class="fuel-subtotal">{{ subtotal[ind].value | currency }}</p>
             <div
-              ngbTooltip
-              mainTooltip="Delete"
-              position="top"
-              tooltipBackground="#EF5350"
-              class="common-fake-table-delete"
-              (click)="removeFuelItems(ind)"
+              [formGroupName]="ind"
+              class="common-fake-table-card"
+              (mouseenter)="hoverRowTable[ind] = true"
+              (mouseleave)="hoverRowTable[ind] = false"
             >
-              <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+              <p *ngIf="!hoverRowTable[ind]">{{ fuelItem.get("id").value }}</p>
+              <svg-icon
+                class="common-fake-table-card-transfer-svg"
+                *ngIf="hoverRowTable[ind]"
+                src="assets/svg/common/ic_transfer-array.svg"
+              ></svg-icon>
+              <app-ta-input-dropdown
+                formControlName="itemId"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  isDropdown: true,
+                  dropdownWidthClass: 'w-col-114',
+                  hideErrorMessage: true,
+                  blackInput: true,
+                  hideRequiredCheck: true
+                }"
+                [options]="fuelItemsDropdown"
+                [activeItem]="selectedFuelItemsFormArray[ind]"
+                (selectedItem)="onSelectDropDown($event, 'fuel-items', ind)"
+              ></app-ta-input-dropdown>
+
+              <app-ta-input
+                formControlName="qty"
+                [inputConfig]="{
+                  name: 'QTY',
+                  type: 'text',
+                  textTransform: 'capitalize',
+                  hideErrorMessage: true,
+                  blackInput: true,
+                  hideRequiredCheck: true
+                }"
+                (change)="onChange('qty', ind)"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="price"
+                [inputConfig]="{
+                  name: 'Price',
+                  type: 'text',
+                  minLength: 4,
+                  maxLength: 11,
+                  blackInput: true,
+                  hideErrorMessage: true,
+                  thousandSeparator: true,
+                  hideRequiredCheck: true
+                }"
+                (change)="onChange('price', ind)"
+              ></app-ta-input>
+              <p class="fuel-subtotal">{{ subtotal[ind].value | currency }}</p>
+              <div
+                ngbTooltip
+                mainTooltip="Delete"
+                position="top"
+                tooltipBackground="#EF5350"
+                class="common-fake-table-delete"
+                (click)="removeFuelItems(ind)"
+              >
+                <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+              </div>
             </div>
           </div>
         </div>

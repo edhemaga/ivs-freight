@@ -6,7 +6,7 @@ import {
   trigger,
 } from '@angular/animations';
 
-export const card_modal_animation = (type: string, mt: string = '12px', mb: string = '12px') =>
+export const card_modal_animation = (type: string) =>
   trigger(type, [
     state(
       'true',
@@ -14,10 +14,26 @@ export const card_modal_animation = (type: string, mt: string = '12px', mb: stri
         height: '*',
         overflow: 'visible',
         opacity: '1',
-        'margin-top': mt,
-        'margin-bottom': mb,
+        'margin-top': '{{marginTop}}',
+        'margin-bottom': '{{marginBottom}}',
+      }),
+      {
+        params: {
+          marginTop: '{{marginTop}}',
+          marginBottom: '{{marginBottom}}',
+        },
+      }
+    ),
+    state(
+      'false',
+      style({
+        height: '0px',
+        overflow: 'hidden',
+        opacity: '0',
+        'margin-top': '0px',
+        'margin-bottom': '0px',
       })
     ),
-    state('false', style({ height: '0px', overflow: 'hidden', opacity: '0', 'margin-top': '0px', 'margin-bottom': '0px' })),
-    transition('false <=> true', [animate('.3s ease-in-out')])
+    transition('false <=> true', [animate('.3s ease-in-out')]),
+    transition('null <=> false', [animate('.3s ease-in-out')]),
   ]);

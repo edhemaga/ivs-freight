@@ -28,10 +28,14 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('stackedBarChart', { static: false }) public stackedBarChart: any;
   @ViewChild('payrollChart', { static: false }) public payrollChart: any;
   public noteControl: FormControl = new FormControl();
+  public fhwaNote: FormControl = new FormControl();
+  public registrationNote: FormControl = new FormControl();
+  public titleNote: FormControl = new FormControl();
   public buttonsArrayPerfomance: any;
   public buttonsArrayFuel: any;
   public buttonsArrayRevenue: any;
   public toggler: boolean[] = [];
+  public togglerOwner: boolean;
   public truckDropDowns: any[] = [];
   public dataEdit: any;
   private destroy$ = new Subject<void>();
@@ -272,48 +276,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     },
   ];
 
-  public mixedBarChartLegend: any[] = [
-    {
-      title: 'Avg. Rate',
-      value: 2.37,
-      image: 'assets/svg/common/round_blue.svg',
-      prefix: '$',
-      elementId: 0,
-    },
-    {
-      title: 'Highest Rate',
-      value: 2.86,
-      image: 'assets/svg/common/round_green.svg',
-      prefix: '$',
-      elementId: [1, 0],
-    },
-    {
-      title: 'Lowest Rate',
-      value: 1.29,
-      image: 'assets/svg/common/round_yellow.svg',
-      prefix: '$',
-      elementId: [1, 1],
-    },
-  ];
-
-  public paymentChartLegend: any[] = [
-    {
-      title: 'Avg. Pay Period',
-      value: 27,
-      image: 'assets/svg/common/round_blue_red.svg',
-      sufix: 'days',
-      elementId: 0,
-      titleReplace: 'Pay Period',
-      imageReplace: 'assets/svg/common/round_blue.svg',
-    },
-    {
-      title: 'Pay Term',
-      value: 32,
-      image: 'assets/svg/common/dash_line.svg',
-      sufix: 'days',
-    },
-  ];
-
   public barAxes: object = {
     verticalLeftAxes: {
       visible: true,
@@ -372,37 +334,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
       maxValue: 24000,
       stepSize: 6000,
       showGridLines: false,
-    },
-    horizontalAxes: {
-      visible: true,
-      position: 'bottom',
-      showGridLines: false,
-    },
-  };
-
-  public mixedBarAxes: object = {
-    verticalLeftAxes: {
-      visible: true,
-      minValue: 1,
-      maxValue: 3,
-      stepSize: 0.5,
-      showGridLines: true,
-      decimal: true,
-    },
-    horizontalAxes: {
-      visible: true,
-      position: 'bottom',
-      showGridLines: false,
-    },
-  };
-
-  public paymentAxes: object = {
-    verticalLeftAxes: {
-      visible: true,
-      minValue: 0,
-      maxValue: 52,
-      stepSize: 13,
-      showGridLines: true,
     },
     horizontalAxes: {
       visible: true,
@@ -581,6 +512,9 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
       return {
         id: item.id,
         name: item.truckNumber,
+        status: item.status,
+        svg: item.truckType.logoName,
+        folder: 'common/trucks',
         active: item.id === this.truck.id,
       };
     });
@@ -591,6 +525,9 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         return {
           id: item.id,
           name: item.truckNumber,
+          svg: item.truckType.logoName,
+          folder: 'common/trucks',
+          status: item.status,
           active: item.id === event.id,
         };
       });

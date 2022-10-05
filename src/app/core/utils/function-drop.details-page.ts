@@ -34,6 +34,10 @@ export function dropActionNameDriver(any: any, action: string) {
         dropAction = 'edit-repair-shop';
         break;
       }
+      case 'repair': {
+        dropAction = 'edit-repair';
+        break;
+      }
     }
   }
   if (any.type === 'delete-item') {
@@ -70,6 +74,10 @@ export function dropActionNameDriver(any: any, action: string) {
         dropAction = 'delete-repair-shop';
         break;
       }
+      case 'repair': {
+        dropAction = 'delete-repair';
+        break;
+      }
     }
   }
   if (any.type === 'renew') {
@@ -77,6 +85,9 @@ export function dropActionNameDriver(any: any, action: string) {
   }
   if (any.type === 'activate-item') {
     dropAction = 'activate-item';
+  }
+  if (any.type === 'deactivate-item') {
+    dropAction = 'deactivate-item';
   }
   return dropAction;
 }

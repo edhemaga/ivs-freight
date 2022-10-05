@@ -3,7 +3,7 @@
   cdkDropList
   (cdkDropListDropped)="dropList($event)"
 >
-<div
+  <div
     *ngIf="__change_in_proggress"
     @iconAnimation
     class="loadingItem goTop"
@@ -89,9 +89,7 @@
                     <div
                       *ngIf="
                         item.truck !== null &&
-                        !__isBoardLocked &&
-                        item.pickup === null &&
-                        item.delivery === null
+                        !__isBoardLocked
                       "
                       [mainTooltip]="'remove'"
                       [tooltipBackground]="'#6C6C6C'"
@@ -388,7 +386,7 @@
                         type: 'text',
                         label: 'Trailer #',
                         isDropdown: true,
-                        dropdownWidthClass: 'w-col-142',
+                        dropdownWidthClass: 'w-col-139',
                         blackInput: true,
                         hide: true,
                         autoFocus: true,
@@ -573,27 +571,31 @@
             </div>
           </td>
           <td class="location-field">
-            <app-ta-input-address
+            <app-input-address-dropdown
               *ngIf="showAddAddressField == rowIndex"
               [formControl]="truckAddress"
               [inputConfig]="{
                 name: 'Address',
                 type: 'text',
-                label: 'Truck Address',
+                label: 'Location',
                 isRequired: true,
                 placeholderIcon: 'address',
+                placeholder: 'Location',
                 textTransform: 'capitalize',
                 incorrectInput: selectedMode === 'REVIEW_MODE',
+                dropdownWidthClass: 'w-col-134',
                 minLength: 12,
                 maxLength: 256,
                 autoFocus: true,
                 placeholderInsteadOfLabel: true
               }"
               [incorrectValue]="false"
+              [placeholderType]="'longAddress'"
               (incorrectEvent)="incorrectInput($event, 0, 18)"
               [activeAddress]="selectedAddress"
               (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-            ></app-ta-input-address>
+              (closeDropdown)="onHideDropdown($event)"
+            ></app-input-address-dropdown>
             <div
               class="full-loc-hold"
               *ngIf="showAddAddressField != rowIndex"
@@ -638,6 +640,8 @@
                   [statusMainIndex]="rowIndex"
                   [statusTypes]="'dispatch'"
                   [withStatusAgo]="true"
+                  [nextStopType]="item.nextStopType"
+                  [currentStopType]="item.currentStopType"
                 ></app-ta-status-switch>
               </div>
             </div>
@@ -766,25 +770,26 @@
             <div class="dispatcher-table-cell-container empty-box-field"></div>
           </td>
           <td class="empty-field">
+            <!-- [ngClass]="
+            (item.hoursOfService?.hos)[item.hoursOfService.hos.length - 1]
+              ?.flag === 'on'
+              ? 'active-flag'
+              : 'inactive-flag'
+          " -->
+
             <div
               #t1="ngbPopover"
               (click)="toggleHos(t1, item.hoursOfService, item.id)"
-              (hidden)="
-                saveHosData(item.hoursOfService, item.driverId, item.id)
-              "
+              (hidden)="saveHosData(item.hoursOfService, rowIndex)"
               [class.statusOpened]="statusOpenedIndex > -1"
               [class.empty-box-field]="true"
-              [ngClass]="
-                (item.hoursOfService?.hos)[item.hoursOfService.hos.length - 1]
-                  ?.flag === 'on'
-                  ? 'active-flag'
-                  : 'inactive-flag'
-              "
               [ngbPopover]="hos"
               autoClose="outside"
               class="hos-column"
               placement="bottom"
               triggers="manual"
+              container="body"
+              popoverClass="hos-ngb-popover"
             >
               <!-- <span
                   *ngIf="item.driverName !== null && !item.isEmpty"
@@ -1039,7 +1044,7 @@
                         type: 'text',
                         label: 'Trailer #',
                         isDropdown: true,
-                        dropdownWidthClass: 'w-col-142',
+                        dropdownWidthClass: 'w-col-139',
                         blackInput: true,
                         hide: true,
                         autoFocus: true,
@@ -1085,16 +1090,18 @@
           </td>
           <td class="location-field">
             <div class="full-loc-hold empty-box-field">
-              <app-ta-input-address
+              <app-input-address-dropdown
                 *ngIf="showAddAddressField == -2"
                 [formControl]="truckAddress"
                 [inputConfig]="{
                   name: 'Address',
                   type: 'text',
-                  label: 'Truck Address',
+                  label: 'Location',
+                  placeholder: 'Location',
                   isRequired: true,
                   placeholderIcon: 'address',
                   textTransform: 'capitalize',
+                  dropdownWidthClass: 'w-col-134',
                   incorrectInput: selectedMode === 'REVIEW_MODE',
                   minLength: 12,
                   maxLength: 256,
@@ -1104,8 +1111,10 @@
                 [incorrectValue]="false"
                 (incorrectEvent)="incorrectInput($event, 0, 18)"
                 [activeAddress]="selectedAddress"
+                [placeholderType]="'longAddress'"
                 (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-              ></app-ta-input-address>
+                (closeDropdown)="onHideDropdown($event)"
+              ></app-input-address-dropdown>
             </div>
           </td>
           <td class="status-field">
@@ -1180,8 +1189,146 @@
 </div>
 
 <!-- Popover for HOS -->
-<ng-template #hos let-data="value.data.hos" let-id="value.id">
-  <div class="slider-wrapper">
+<ng-template #hos>
+  <div class="hos-container">
+    <div class="hos-header">
+      <div class="hos-header-letters">
+        <div>M</div>
+        <div>N</div>
+        <div>M</div>
+      </div>
+      <div
+        class="hos-header-boxes"
+        *ngFor="let item of [].constructor(24); let i = index"
+      >
+        <span></span>
+      </div>
+      <div class="middle-border"></div>
+    </div>
+    <div class="hos-body">
+      <div
+        #firstList="cdkDropList"
+        (cdkDropListDropped)="dropHosList($event, data)"
+        [cdkDropListConnectedTo]="[secondList]"
+        [cdkDropListData]="openedHosData.hos | hosFilter: 'off'"
+        cdkDropList
+        class="ngx-slider-list"
+      >
+        <div
+          cdkDrag
+          cdkDragLockAxis="y"
+          cdkDragPreviewContainer="parent"
+          class="ngx-slider-item off-items"
+          *ngFor="
+            let item of openedHosData.hos | hosFilter: 'off';
+            let i = index
+          "
+        >
+          <div
+            cdkDragHandle
+            style="cursor: grab"
+            class="ngx-slider-info"
+            [ngStyle]="{
+              width: (item | tooltipWidth).width + 'px',
+              left: (item | tooltipWidth).left + 'px'
+            }"
+          >
+            {{ (item | tooltipWidth).time }}
+            <span
+              class="remove_hos"
+              *ngIf="
+                item.indx !== 0 && item.indx == openedHosData.hos.length - 1
+              "
+            >
+              <svg-icon
+                (click)="removeHos(item)"
+                src="assets/svg/applicant/close-x.svg"
+              >
+              </svg-icon>
+            </span>
+          </div>
+          <ngx-slider
+            [(highValue)]="item.end"
+            [(value)]="item.start"
+            [options]="options"
+            [rightToLeft]="true"
+            (userChange)="userChangeEnd($event, item)"
+          ></ngx-slider>
+        </div>
+        <div
+          *ngIf="openedHosData.hos[openedHosData.hos.length - 1].flag == 'on'"
+          class="add-new off"
+        >
+          <svg-icon
+            (click)="addHOS('off')"
+            src="assets/svg/common/ic_pm_increment.svg"
+          >
+          </svg-icon>
+        </div>
+      </div>
+      <div
+        #secondList="cdkDropList"
+        (cdkDropListDropped)="dropHosList($event, data)"
+        [cdkDropListConnectedTo]="[firstList]"
+        [cdkDropListData]="openedHosData.hos | hosFilter: 'on'"
+        cdkDropList
+        class="ngx-slider-list"
+      >
+        <div
+          cdkDrag
+          cdkDragLockAxis="y"
+          cdkDragPreviewContainer="parent"
+          class="ngx-slider-item on-items"
+          *ngFor="
+            let item of openedHosData.hos | hosFilter: 'on';
+            let i = index
+          "
+        >
+          <div
+            cdkDragHandle
+            style="cursor: grab"
+            class="ngx-slider-info"
+            [ngStyle]="{
+              width: (item | tooltipWidth).width + 'px',
+              left: (item | tooltipWidth).left + 'px'
+            }"
+          >
+            {{ (item | tooltipWidth).time }}
+            <span
+              class="remove_hos"
+              *ngIf="
+                item.indx !== 0 && item.indx == openedHosData.hos.length - 1
+              "
+            >
+              <svg-icon
+                (click)="removeHos(item)"
+                src="assets/svg/applicant/close-x.svg"
+              >
+              </svg-icon>
+            </span>
+          </div>
+          <ngx-slider
+            [(highValue)]="item.end"
+            [(value)]="item.start"
+            [options]="options"
+            [rightToLeft]="true"
+            (userChange)="userChangeEnd($event, item)"
+          ></ngx-slider>
+        </div>
+        <div
+          *ngIf="openedHosData.hos[openedHosData.hos.length - 1].flag == 'off'"
+          class="add-new on"
+        >
+          <svg-icon
+            (click)="addHOS('on')"
+            src="assets/svg/common/ic_pm_increment.svg"
+          >
+          </svg-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="slider-wrapper">
     <div class="time-ruler">
       <div
         *ngFor="let item of [].constructor(23); let i = index"
@@ -1217,21 +1364,13 @@
                 {{ formatTime(item.start, item.end) }}
               </span>
             </div>
-            <!-- <ng5-slider
+            <ngx-slider
               (userChange)="userChangeEnd($event, i, data)"
               [(highValue)]="item.end"
               [(value)]="item.start"
               [ngClass]="i + ' inactive-wrapper-slider'"
               [options]="options"
-            ></ng5-slider> -->
-
-            <app-ta-ngx-slider
-              [sliderTemplate]="'hos-change'"
-              [sliderOptions]="options"
-              [startedValue]="item.start"
-              [customClass]="i + ' inactive-wrapper-slider'"
-              (onUserValueChange)="userChangeEnd($event, i, data)"
-            ></app-ta-ngx-slider>
+            ></ngx-slider>
           </div>
           <div class="button-wrapper" id="{{ returnButtonId(i) }}">
             <span
@@ -1299,5 +1438,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </ng-template>

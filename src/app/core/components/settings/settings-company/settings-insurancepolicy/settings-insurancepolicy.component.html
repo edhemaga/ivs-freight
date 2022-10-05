@@ -81,7 +81,6 @@
             [bodyTemplate]="'card'"
             [isCardOpen]="false"
             [hasDivider]="true"
-            [animationsDisabled]="false"
           >
             <div class="insuarance-card-top-container">
               <div class="name-div-wrapper">
@@ -162,35 +161,35 @@
                   }}
                 </p>
               </div>
-              <div class="payroll-template-item" *ngIf="insuranceAdditional?.personalAndAdvertisingInjury">
+              <div
+                class="payroll-template-item"
+                *ngIf="insuranceAdditional?.personalAndAdvertisingInjury"
+              >
                 <p class="payroll-name">Pers. and Adv. Injury</p>
-                <p
-                  class="payroll-value"
-                  
-                >
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.personalAndAdvertisingInjury
                       | taThousandSeparator
                   }}
                 </p>
               </div>
-              <div class="payroll-template-item"  *ngIf="insuranceAdditional?.generalAggregate">
+              <div
+                class="payroll-template-item"
+                *ngIf="insuranceAdditional?.generalAggregate"
+              >
                 <p class="payroll-name">General Aggregate</p>
-                <p
-                  class="payroll-value"
-                 
-                >
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.generalAggregate | taThousandSeparator
                   }}
                 </p>
               </div>
-              <div class="payroll-template-item"  *ngIf="insuranceAdditional?.productsCompOperAggregate">
+              <div
+                class="payroll-template-item"
+                *ngIf="insuranceAdditional?.productsCompOperAggregate"
+              >
                 <p class="payroll-name">Products - Comp / OP</p>
-                <p
-                  class="payroll-value"
-                 
-                >
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.productsCompOperAggregate
                       | taThousandSeparator
@@ -206,47 +205,47 @@
               "
               class="payroll-template-data"
             >
-              <div class="payroll-template-item" *ngIf="insuranceAdditional?.combinedSingleLimit">
+              <div
+                class="payroll-template-item"
+                *ngIf="insuranceAdditional?.combinedSingleLimit"
+              >
                 <p class="payroll-name">Combined Single</p>
-                <p
-                  class="payroll-value"
-                  
-                >
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.combinedSingleLimit
                       | taThousandSeparator
                   }}
                 </p>
               </div>
-              <div class="payroll-template-item"  *ngIf="insuranceAdditional?.propertyDamage">
+              <div
+                class="payroll-template-item"
+                *ngIf="insuranceAdditional?.propertyDamage"
+              >
                 <p class="payroll-name">Property Damage</p>
-                <p
-                  class="payroll-value"
-                 
-                >
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.propertyDamage | taThousandSeparator
                   }}
                 </p>
               </div>
-              <div class="payroll-template-item" *ngIf="insuranceAdditional?.bodilyInjuryPerson">
+              <div
+                class="payroll-template-item"
+                *ngIf="insuranceAdditional?.bodilyInjuryPerson"
+              >
                 <p class="payroll-name">Boldly Injury(Person)</p>
-                <p
-                  class="payroll-value"
-                  
-                >
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.bodilyInjuryPerson
                       | taThousandSeparator
                   }}
                 </p>
               </div>
-              <div class="payroll-template-item" *ngIf="insuranceAdditional?.bodilyInjuryAccident">
+              <div
+                class="payroll-template-item"
+                *ngIf="insuranceAdditional?.bodilyInjuryAccident"
+              >
                 <p class="payroll-name">Boldly Injury(Accident)</p>
-                <p
-                  class="payroll-value"
-                  
-                >
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.bodilyInjuryAccident
                       | taThousandSeparator
@@ -262,23 +261,23 @@
               "
               class="payroll-template-data"
             >
-              <div class="payroll-template-item" *ngIf="insuranceAdditional?.singleConveyance">
+              <div
+                class="payroll-template-item"
+                *ngIf="insuranceAdditional?.singleConveyance"
+              >
                 <p class="payroll-name">Single Conveyance</p>
-                <p
-                  class="payroll-value"
-                  
-                >
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.singleConveyance | taThousandSeparator
                   }}
                 </p>
               </div>
-              <div class="payroll-template-item" *ngIf="insuranceAdditional?.deductable">
+              <div
+                class="payroll-template-item"
+                *ngIf="insuranceAdditional?.deductable"
+              >
                 <p class="payroll-name">Deductable</p>
-                <p
-                  class="payroll-value"
-                  
-                >
+                <p class="payroll-value">
                   ${{ insuranceAdditional?.deductable | taThousandSeparator }}
                 </p>
               </div>
@@ -291,24 +290,24 @@
               "
               class="payroll-template-data"
             >
-              <div class="payroll-template-item"  *ngIf="insuranceAdditional?.comprehensiveAndCollision">
+              <div
+                class="payroll-template-item"
+                *ngIf="insuranceAdditional?.comprehensiveAndCollision"
+              >
                 <p class="payroll-name">Comprehen. & Collision</p>
-                <p
-                  class="payroll-value"
-                 
-                >
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.comprehensiveAndCollision
                       | taThousandSeparator
                   }}
                 </p>
               </div>
-              <div class="payroll-template-item"  *ngIf="insuranceAdditional?.deductable">
+              <div
+                class="payroll-template-item"
+                *ngIf="insuranceAdditional?.deductable"
+              >
                 <p class="payroll-name">Deductable</p>
-                <p
-                  class="payroll-value"
-                 
-                >
+                <p class="payroll-value">
                   ${{ insuranceAdditional?.deductable | taThousandSeparator }}
                 </p>
               </div>
@@ -321,7 +320,10 @@
               "
               class="payroll-template-data"
             >
-              <div class="payroll-template-item"  *ngIf="insuranceAdditional?.value">
+              <div
+                class="payroll-template-item"
+                *ngIf="insuranceAdditional?.value"
+              >
                 <p class="payroll-name">Value</p>
                 <p class="payroll-value">
                   ${{ insuranceAdditional?.value | taThousandSeparator }}
@@ -386,7 +388,6 @@
               [formControl]="insuranceNote"
               [isVisibleDivider]="false"
               [isVisibleNote]="true"
-              [isVisibleSecondDivider]="false"
               [isVisibleArrow]="false"
               [minRows]="1"
               [placeholder]="'Write something.'"

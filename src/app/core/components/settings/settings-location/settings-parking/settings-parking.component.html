@@ -22,21 +22,17 @@
   <span class="settings-body">
     <app-ta-re-card
       *ngFor="let item of parkingData?.data; trackBy: identity"
-      [settingsIcon]="item.isOwner?'ic_company.svg':''"
+      [settingsIcon]="item.isOwner ? 'ic_company.svg' : ''"
       [cardNameCommon]="item.name"
       [hasFooter]="false"
       [haveHeaderText]="true"
       [optionsId]="item.id"
       [options]="parkingActions"
-      (dropActions)="optionsEvent($event,'parking')"
+      (dropActions)="optionsEvent($event, 'parking')"
       [paddingDots]="'11px 0px 0px 12px'"
     >
       <div class="settings-body-items">
-        <div
-          *ngIf="item.phone"
-          class="single-item"
-
-        >
+        <div *ngIf="item.phone" class="single-item">
           <svg-icon
             class="company-icons"
             src="assets/svg/common/ic_phone.svg"
@@ -59,11 +55,10 @@
         </div>
       </div>
       <app-ta-custom-card
-        [hasCounter]="calculateParkingSlots(item)"
+        [hasCounter]="item.parkingSlotCount + item.fullParkingSlotCount"
         [cardName]="'Parking Slot'"
         [isCardOpen]="true"
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
       >
         <div
           class="parking-template-data"

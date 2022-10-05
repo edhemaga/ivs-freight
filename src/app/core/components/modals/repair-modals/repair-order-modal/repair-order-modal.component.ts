@@ -29,6 +29,7 @@ import { TruckModalComponent } from '../../truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '../../trailer-modal/trailer-modal.component';
 import { RepairShopModalComponent } from '../repair-shop-modal/repair-shop-modal.component';
 import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../../services/form/form.service';
 import {
   convertDateToBackend,
   convertNumberInThousandSep,
@@ -45,7 +46,7 @@ import {
   selector: 'app-repair-order-modal',
   templateUrl: './repair-order-modal.component.html',
   styleUrls: ['./repair-order-modal.component.scss'],
-  providers: [SumArraysPipe, ModalService],
+  providers: [SumArraysPipe, ModalService, FormService],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -105,7 +106,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   public selectedPMIndex: number;
   public pmOptions: any[] = []; // this array fill when truck/trailer switch change
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -116,6 +117,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     private ngbActiveModal: NgbActiveModal,
     private sumArrayPipe: SumArraysPipe,
     private cdRef: ChangeDetectorRef,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -159,12 +161,18 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       items: this.formBuilder.array([]),
       note: [null],
     });
+
+    this.formService.checkFormChange(this.repairOrderForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.repairOrderForm.reset();
         break;
       }
       case 'save': {
@@ -173,8 +181,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData.type.includes('edit')) {
-          this.updateRepair(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateRepair(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addRepair();
           this.modalService.setModalSpinner({ action: null, status: true });

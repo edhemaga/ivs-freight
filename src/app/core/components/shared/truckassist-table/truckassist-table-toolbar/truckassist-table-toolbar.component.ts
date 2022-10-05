@@ -75,6 +75,7 @@ export class TruckassistTableToolbarComponent
   inactiveTimeOutInterval: any;
   timeOutToaggleColumn: any;
   columnsOptions: any[] = [];
+  isMapShowning: boolean = false;
 
   constructor(private tableService: TruckassistTableService) {}
 
@@ -116,6 +117,9 @@ export class TruckassistTableToolbarComponent
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.options?.firstChange && changes?.options) {
       this.options = changes.options.currentValue;
+
+      console.log('Otpions');
+      console.log(this.options);
     }
 
     if (
@@ -154,9 +158,9 @@ export class TruckassistTableToolbarComponent
 
     this.setToolbarWidth();
 
-    if (!this.tableLocked) {
+    /* if (!this.tableLocked) {
       this.resetInactivityTimer();
-    }
+    } */
   }
 
   // Set Toolbar Width
@@ -204,11 +208,13 @@ export class TruckassistTableToolbarComponent
   }
 
   // Chnage View Mode
-  changeModeView(modeView: string) {
+  changeModeView(modeView: any) {
     this.toolBarAction.emit({
       action: 'view-mode',
-      mode: modeView,
+      mode: modeView.mode,
     });
+
+    this.isMapShowning = modeView.mode === 'Map';
   }
 
   // Delete Selected Rows
@@ -256,11 +262,11 @@ export class TruckassistTableToolbarComponent
         toaggleUnlockTable: true,
       });
 
-      if (!this.tableLocked) {
+      /* if (!this.tableLocked) {
         this.setInactivityTimer();
       } else {
         clearTimeout(this.inactiveTimeOutInterval);
-      }
+      } */
     } else if (action.text === 'Columns') {
       action.active = !action.active;
     } else if (action.text === 'Reset Columns') {
@@ -275,16 +281,16 @@ export class TruckassistTableToolbarComponent
   }
 
   // Reset Inactivity Timer
-  resetInactivityTimer() {
+  /* resetInactivityTimer() {
     clearTimeout(this.inactiveTimeOutInterval);
 
     setTimeout(() => {
       this.setInactivityTimer();
     }, 100);
-  }
+  } */
 
   // Set Inactivity Timer
-  setInactivityTimer() {
+  /* setInactivityTimer() {
     this.inactiveTimeOutInterval = setTimeout(() => {
       this.tableLocked = true;
 
@@ -296,7 +302,7 @@ export class TruckassistTableToolbarComponent
         toaggleUnlockTable: true,
       });
     }, 60000);
-  }
+  } */
 
   // Toaggle Column
   onToaggleColumn(column: any, index: number) {

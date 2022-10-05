@@ -68,7 +68,6 @@
                 <app-ta-input-note
                   [formControl]="registrationNote"
                   [isVisibleDivider]="false"
-                  [isVisibleSecondDivider]="false"
                   [placeholder]="'Write something.'"
                   [customClass]="'note-small'"
                   [isVisibleArrow]="false"
@@ -123,7 +122,6 @@
                 <app-ta-input-note
                   [formControl]="fhwaNote"
                   [isVisibleDivider]="false"
-                  [isVisibleSecondDivider]="false"
                   [placeholder]="'Write something.'"
                   [customClass]="'note-small'"
                   [isVisibleArrow]="false"
@@ -177,7 +175,7 @@
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
                     [expireDate]="title.issueDate | formatDateP"
-                    [startDate]="title.issueDate | formatDateP"
+                    [startDate]="title.purchaseDate | formatDateP"
                     [expiresSettings]="'details'"
                   >
                   </app-truckassist-progress-expiration>
@@ -193,7 +191,6 @@
                   [placeholder]="'Write something.'"
                   [customClass]="'note-small'"
                   [isVisibleArrow]="false"
-                  [isVisibleSecondDivider]="false"
                   [minRows]="1"
                   [isVisibleDivider]="false"
                   [isVisibleNote]="true"

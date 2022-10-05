@@ -33,11 +33,12 @@ import {
 export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public tableOptions: any = {};
-  public tableData: any[] = [];
-  public viewData: any[] = [];
-  public columns: any[] = [];
-  public selectedTab = 'active';
+  tableOptions: any = {};
+  tableData: any[] = [];
+  viewData: any[] = [];
+  columns: any[] = [];
+  selectedTab = 'active';
+  activeViewMode: string = 'List';
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
@@ -138,10 +139,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
 
-    // Add Trailer
+    // Trailer Actions
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
+        // Add Trailer ACtive
         if (res.animation === 'add') {
           this.viewData.push(this.mapTrailerData(res.data));
 
@@ -159,10 +161,14 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
-        } else if (res.animation === 'add' && this.selectedTab === 'inactive') {
+          }, 2300);
+        } 
+        // Add Trailer Inactive
+        else if (res.animation === 'add' && this.selectedTab === 'inactive') {
           this.updateDataCount();
-        } else if (res.animation === 'update') {
+        } 
+        // Update Trailer
+        else if (res.animation === 'update') {
           this.viewData = this.viewData.map((trailer: any) => {
             if (trailer.id === res.id) {
               trailer = this.mapTrailerData(res.data);
@@ -177,12 +183,14 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             clearInterval(inetval);
           }, 1000);
-        } else if (res.animation === 'update-status') {
+        } 
+        // Update Trailer Status
+        else if (res.animation === 'update-status') {
           let trailerIndex: number;
 
           this.viewData = this.viewData.map((trailer: any, index: number) => {
             if (trailer.id === res.id) {
-              trailer.actionAnimation = 'update';
+              trailer.actionAnimation = this.selectedTab === 'active' ? 'deactivate' : 'activate';
               trailerIndex = index;
             }
 
@@ -196,7 +204,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.viewData.splice(trailerIndex, 1);
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
         }
       });
 
@@ -269,17 +277,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public initTableOptions(): void {
     this.tableOptions = {
-      disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        viewModeActive: 'List',
-      },
-      config: {
-        showSort: true,
-        sortBy: '',
-        sortDirection: '',
-        disabledColumns: [0],
-        minWidth: 60,
+        viewModeOptions: [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+        ],
       },
       actions: [
         {
@@ -301,7 +303,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
           contentType: 'add',
         },
         {
-          title: 'Activate',
+          title: this.selectedTab === 'active' ? 'Deactivate' : 'Activate',
           reverseTitle: 'Deactivate',
           name: 'activate-item',
           class: 'regular-text',
@@ -316,7 +318,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
           contentType: 'delete',
         },
       ],
-      export: true,
     };
   }
 
@@ -510,7 +511,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.sendTrailerData();
     } else if (event.action === 'view-mode') {
-      this.tableOptions.toolbarActions.viewModeActive = event.mode;
+      this.activeViewMode = event.mode;
     }
   }
 
@@ -529,7 +530,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
-    let trailerNum = event.data.trailerNumber;
     const mappedEvent = {
       ...event,
       data: {
@@ -538,6 +538,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         avatar: `assets/svg/common/trailers/${event.data?.trailerType?.logoName}`,
       },
     };
+    
     switch (event.type) {
       case 'show-more': {
         this.backFilterQuery.pageIndex++;
@@ -623,8 +624,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             'Trailer successfully changed status',
             'Success:'
           );
-
-          this.sendTrailerData();
         },
         error: () => {
           this.notificationService.error(
@@ -660,7 +659,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = closeAnimationAction(true, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
         },
         error: () => {
           this.notificationService.error(
@@ -682,7 +681,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.viewData = this.viewData.map((trailer: any) => {
           response.map((id: any) => {
             if (trailer.id === id) {
-              trailer.actionAnimation = 'delete';
+              trailer.actionAnimation = 'delete-multiple';
 
               if (trailerNumber == '') {
                 trailerNumber = trailer.trailerNumber;
@@ -708,7 +707,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
           this.viewData = closeAnimationAction(true, this.viewData);
 
           clearInterval(inetval);
-        }, 1000);
+        }, 900);
 
         this.tableService.sendRowsSelected([]);
         this.tableService.sendResetSelectedColumns(true);

@@ -1,3 +1,5 @@
+@import "./ta-input.colors.scss";
+
 .dropdown-selected-image {
   position: absolute;
   left: 6px;
@@ -11,7 +13,7 @@
   &.semitruck {
     svg {
       path {
-        fill: #97d568 !important;
+        fill: $input-semitruck-path-fill !important;
       }
     }
   }
@@ -19,7 +21,7 @@
   &.semisleeper {
     svg {
       path {
-        fill: #ffb74d !important;
+        fill: $input-semisleepertruck-path-fill !important;
       }
     }
   }
@@ -27,7 +29,7 @@
   &.boxtruck {
     svg {
       path {
-        fill: #fb6f6f !important;
+        fill: $input-boxtruck-path-fill !important;
       }
     }
   }
@@ -35,7 +37,7 @@
   &.cargovan {
     svg {
       path {
-        fill: #68c3ff !important;
+        fill: $input-cargovantruck-path-fill !important;
       }
     }
   }
@@ -43,7 +45,7 @@
   &.towtruck {
     svg {
       path {
-        fill: #ba68c8 !important;
+        fill: $input-towtruck-path-fill !important;
       }
     }
   }
@@ -51,7 +53,7 @@
   &.carhauler {
     svg {
       path {
-        fill: #59a5a5 !important;
+        fill: $input-carhaulertruck-path-fill !important;
       }
     }
   }
@@ -59,7 +61,7 @@
   &.spotter {
     svg {
       path {
-        fill: #415fc1 !important;
+        fill: $input-spottertruck-path-fill !important;
       }
     }
   }
@@ -67,7 +69,7 @@
   &.bus {
     svg {
       path {
-        fill: #ff7043 !important;
+        fill: $input-bus-path-fill !important;
       }
     }
   }
@@ -76,7 +78,7 @@
   &.reefer {
     svg {
       path {
-        fill: #ef6e6e !important;
+        fill: $input-reefertrailer-path-fill !important;
       }
     }
   }
@@ -84,7 +86,7 @@
   &.dryvan {
     svg {
       path {
-        fill: #5673aa !important;
+        fill: $input-dryvantrailer-path-fill !important;
       }
     }
   }
@@ -92,15 +94,15 @@
   &.sidekit {
     svg {
       path {
-        fill: #76a77d !important;
+        fill: $input-sidekittrailer-path-fill !important;
       }
     }
   }
 
-  &.conestog {
+  &.conestoga {
     svg {
       path {
-        fill: #484848 !important;
+        fill: $input-conestogatrailer-path-fill !important;
       }
     }
   }
@@ -108,7 +110,7 @@
   &.dumper {
     svg {
       path {
-        fill: #8fdee1 !important;
+        fill: $input-dumpertrailer-path-fill !important;
       }
     }
   }
@@ -117,7 +119,7 @@
     padding: 0 !important;
     svg {
       path {
-        fill: #ffbe7d !important;
+        fill: $input-containertrailer-path-fill !important;
       }
     }
   }
@@ -125,7 +127,7 @@
   &.tanker-liquid {
     svg {
       path: {
-        fill: #81ccff !important;
+        fill: $input-tankerliquidtrailer-path-fill !important;
       }
     }
   }
@@ -133,7 +135,7 @@
   &.carhauler {
     svg {
       path {
-        fill: #668888 !important;
+        fill: $input-carhaulertrailer-path-fill !important;
       }
     }
   }
@@ -141,7 +143,7 @@
   &.flatbed {
     svg {
       path {
-        fill: #af88ea !important;
+        fill: $input-flatbedtrailer-path-fill !important;
       }
     }
   }
@@ -149,7 +151,7 @@
   &.low-boy-rgn {
     svg {
       path {
-        fill: #955fa2 !important;
+        fill: $input-lowboyrgntrailer-path-fill !important;
       }
     }
   }
@@ -157,7 +159,7 @@
   &.chassis {
     svg {
       path {
-        fill: #547556 !important;
+        fill: $input-chassistrailer-path-fill !important;
       }
     }
   }
@@ -165,7 +167,7 @@
   &.stepdeck {
     svg {
       path {
-        fill: #f2dd75 !important;
+        fill: $input-stepdecktrailer-path-fill !important;
       }
     }
   }
@@ -173,7 +175,7 @@
   &.tanker-dry-bulk {
     svg {
       path: {
-        fill: #8ee0d2 !important;
+        fill: $input-tankerdrybulktrailer-path-fill !important;
       }
     }
   }

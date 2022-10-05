@@ -1,9 +1,9 @@
 import { RepairShopMinimalListResponse } from './../../../../../../appcoretruckassist/model/repairShopMinimalListResponse';
 import { RepairModalResponse } from './../../../../../../appcoretruckassist/model/repairModalResponse';
 
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { RepairService } from 'appcoretruckassist/api/repair.service';
-import { Observable, tap } from 'rxjs';
+import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import {
   CreateRepairCommand,
   CreateResponse,
@@ -24,11 +24,18 @@ import { RepairTruckQuery } from './repair-truck-state/repair-truck.query';
 import { RepairTrailerQuery } from './repair-trailer-state/repair-trailer.query';
 import { ShopQuery } from './shop-state/shop.query';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-
+import { ShopDetailsListStore } from './shop-details-state/shop-details-list-state/shop-details-list.store';
+import { RepairShopMinimalListStore } from './shop-details-state/shop-minimal-list-state/shop-minimal.store';
+import { ShopItemStore } from './shop-details-state/shop-detail.store';
+import { RepairShopMinimalListQuery } from './shop-details-state/shop-minimal-list-state/shop-minimal.query';
 @Injectable({
   providedIn: 'root',
 })
-export class RepairTService {
+export class RepairTService implements OnDestroy {
+  public currentIndex: number;
+  public repairShopList: any;
+  public repairShopId: number;
+  private destroy$ = new Subject<void>();
   constructor(
     private repairService: RepairService,
     private shopServices: RepairShopService,
@@ -38,45 +45,70 @@ export class RepairTService {
     private repairTrailerQuery: RepairTrailerQuery,
     private shopStore: ShopStore,
     private shopQuery: ShopQuery,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private sdls: ShopDetailsListStore,
+    private shopMinimalStore: RepairShopMinimalListStore,
+    private shopDetailsMinimalQuery: RepairShopMinimalListQuery,
+
+    private sItemStore: ShopItemStore
   ) {}
 
   // <----------------------- Repair Truck And Trailer -------------------->
   public addRepair(data: CreateRepairCommand): Observable<CreateResponse> {
     return this.repairService.apiRepairPost(data).pipe(
       tap((res: any) => {
-        const subRepair = this.getRepairById(res.id).subscribe({
-          next: (repair: RepairResponse | any) => {
-            const repairCount = JSON.parse(
-              localStorage.getItem('repairTruckTrailerTableCount')
-            );
+        const subShop = this.getRepairShopById(data.repairShopId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (shop: RepairShopResponse | any) => {
+              this.shopMinimalStore.remove(
+                ({ id }) => id === data.repairShopId
+              );
+              this.shopMinimalStore.add(shop);
+              this.sdls.update(shop.id, { repairs: shop.repairs });
+              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit });
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                tab: 'repair-shop',
+                data: shop,
+                id: shop.id,
+              });
+              subShop.unsubscribe();
+            },
+          });
+        const subRepair = this.getRepairById(res.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (repair: RepairResponse | any) => {
+              const repairCount = JSON.parse(
+                localStorage.getItem('repairTruckTrailerTableCount')
+              );
 
-            if (repair.truckId) {
-              this.repairTruckStore.add(repair);
-              repairCount.repairTrucks++;
-            } else if (repair.trailerId) {
-              this.repairTrailerStore.add(repair);
-              repairCount.repairTrailers++;
-            }
+              if (repair.truckId) {
+                this.repairTruckStore.add(repair);
+                repairCount.repairTrucks++;
+              } else if (repair.trailerId) {
+                this.repairTrailerStore.add(repair);
+                repairCount.repairTrailers++;
+              }
+              localStorage.setItem(
+                'repairTruckTrailerTableCount',
+                JSON.stringify({
+                  repairTrucks: repairCount.repairTrucks,
+                  repairTrailers: repairCount.repairTrailers,
+                })
+              );
 
-            localStorage.setItem(
-              'repairTruckTrailerTableCount',
-              JSON.stringify({
-                repairTrucks: repairCount.repairTrucks,
-                repairTrailers: repairCount.repairTrailers,
-              })
-            );
+              this.tableService.sendActionAnimation({
+                animation: 'add',
+                tab: repair?.truckId ? 'active' : 'inactive',
+                data: repair,
+                id: repair.id,
+              });
 
-            this.tableService.sendActionAnimation({
-              animation: 'add',
-              tab: repair?.truckId ? 'active' : 'inactive',
-              data: repair,
-              id: repair.id,
-            });
-
-            subRepair.unsubscribe();
-          },
-        });
+              subRepair.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -84,28 +116,47 @@ export class RepairTService {
   public updateRepair(data: UpdateRepairCommand): Observable<object> {
     return this.repairService.apiRepairPut(data).pipe(
       tap(() => {
-        const subRepair = this.getRepairById(data.id).subscribe({
-          next: (repair: RepairResponse | any) => {
-            if (repair.truckId) {
-              this.repairTruckStore.remove(({ id }) => id === data.id);
+        const subShop = this.getRepairShopById(data.repairShopId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (shop: RepairShopResponse | any) => {
+              this.shopMinimalStore.remove(
+                ({ id }) => id === data.repairShopId
+              );
+              this.shopMinimalStore.add(shop);
+              this.sdls.update(shop.id, { repairs: shop.repairs });
+              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit });
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                tab: 'repair-shop',
+                data: shop,
+                id: shop.id,
+              });
+              subShop.unsubscribe();
+            },
+          });
+        const subRepair = this.getRepairById(data.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (repair: RepairResponse | any) => {
+              if (repair.truckId) {
+                this.repairTruckStore.remove(({ id }) => id === data.id);
+                this.repairTruckStore.add(repair);
+              } else if (repair.trailerId) {
+                this.repairTrailerStore.remove(({ id }) => id === data.id);
 
-              this.repairTruckStore.add(repair);
-            } else if (repair.trailerId) {
-              this.repairTrailerStore.remove(({ id }) => id === data.id);
+                this.repairTrailerStore.add(repair);
+              }
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                tab: repair?.truckId ? 'active' : 'inactive',
+                data: repair,
+                id: repair.id,
+              });
 
-              this.repairTrailerStore.add(repair);
-            }
-
-            this.tableService.sendActionAnimation({
-              animation: 'update',
-              tab: repair?.truckId ? 'active' : 'inactive',
-              data: repair,
-              id: repair.id,
-            });
-
-            subRepair.unsubscribe();
-          },
-        });
+              subRepair.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -113,11 +164,14 @@ export class RepairTService {
   // Get Repair List
   public getRepairList(
     repairShopId?: number,
-    repairType?: number,
     unitType?: number,
     dateFrom?: string,
     dateTo?: string,
     isPM?: number,
+    categoryIds?: Array<number>,
+    pmTruckTitles?: Array<string>,
+    pmTrailerTitles?: Array<string>,
+    isOrder?: boolean,
     pageIndex?: number,
     pageSize?: number,
     companyId?: number,
@@ -128,11 +182,14 @@ export class RepairTService {
   ): Observable<RepairListResponse> {
     return this.repairService.apiRepairListGet(
       repairShopId,
-      repairType,
       unitType,
       dateFrom,
       dateTo,
       isPM,
+      categoryIds,
+      pmTruckTitles,
+      pmTrailerTitles,
+      isOrder,
       pageIndex,
       pageSize,
       companyId,
@@ -156,10 +213,25 @@ export class RepairTService {
 
   public deleteRepairById(
     repairId: number,
-    tabSelected: string
+    tabSelected?: string
   ): Observable<object> {
     return this.repairService.apiRepairIdDelete(repairId).pipe(
       tap(() => {
+        const subShop = this.getRepairShopById(this.repairShopId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (shop: RepairShopResponse | any) => {
+              this.sdls.update(shop.id, { repairs: shop.repairs });
+              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit });
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                tab: 'repair-shop',
+                data: shop,
+                id: shop.id,
+              });
+              subShop.unsubscribe();
+            },
+          });
         const repairCount = JSON.parse(
           localStorage.getItem('repairTruckTrailerTableCount')
         );
@@ -173,7 +245,6 @@ export class RepairTService {
 
           repairCount.repairTrailers--;
         }
-
         localStorage.setItem(
           'repairTruckTrailerTableCount',
           JSON.stringify({
@@ -205,33 +276,35 @@ export class RepairTService {
   ): Observable<CreateResponse> {
     return this.shopServices.apiRepairshopPost(data).pipe(
       tap((res: any) => {
-        const subShop = this.getRepairShopById(res.id).subscribe({
-          next: (shop: RepairShopResponse | any) => {
-            const repairShopCount = JSON.parse(
-              localStorage.getItem('repairShopTableCount')
-            );
+        const subShop = this.getRepairShopById(res.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (shop: RepairShopResponse | any) => {
+              const repairShopCount = JSON.parse(
+                localStorage.getItem('repairShopTableCount')
+              );
 
-            this.shopStore.add(shop);
+              this.shopStore.add(shop);
+              this.shopMinimalStore.add(shop);
+              repairShopCount.repairShops++;
 
-            repairShopCount.repairShops++;
+              localStorage.setItem(
+                'repairShopTableCount',
+                JSON.stringify({
+                  repairShops: repairShopCount.repairShops,
+                })
+              );
 
-            localStorage.setItem(
-              'repairShopTableCount',
-              JSON.stringify({
-                repairShops: repairShopCount.repairShops,
-              })
-            );
+              this.tableService.sendActionAnimation({
+                animation: 'add',
+                tab: 'repair-shop',
+                data: shop,
+                id: shop.id,
+              });
 
-            this.tableService.sendActionAnimation({
-              animation: 'add',
-              tab: 'repair-shop',
-              data: shop,
-              id: shop.id,
-            });
-
-            subShop.unsubscribe();
-          },
-        });
+              subShop.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -239,22 +312,25 @@ export class RepairTService {
   public updateRepairShop(data: UpdateRepairShopCommand): Observable<object> {
     return this.shopServices.apiRepairshopPut(data).pipe(
       tap(() => {
-        const subShop = this.getRepairShopById(data.id).subscribe({
-          next: (shop: RepairShopResponse | any) => {
-            this.shopStore.remove(({ id }) => id === data.id);
+        const subShop = this.getRepairShopById(data.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (shop: RepairShopResponse | any) => {
+              this.shopStore.remove(({ id }) => id === data.id);
+              this.shopMinimalStore.remove(({ id }) => id === data.id);
+              this.shopMinimalStore.add(shop);
+              this.shopStore.add(shop);
+              this.sdls.replace(shop.id, shop);
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                tab: 'repair-shop',
+                data: shop,
+                id: shop.id,
+              });
 
-            this.shopStore.add(shop);
-
-            this.tableService.sendActionAnimation({
-              animation: 'update',
-              tab: 'repair-shop',
-              data: shop,
-              id: shop.id,
-            });
-
-            subShop.unsubscribe();
-          },
-        });
+              subShop.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -299,8 +375,68 @@ export class RepairTService {
     );
   }
 
-  public getRepairShopById(id: number): Observable<RepairShopResponse> {
-    return this.shopServices.apiRepairshopIdGet(id);
+  public getRepairShopById(
+    repairId: number,
+    getIndex?: boolean
+  ): Observable<RepairShopResponse> {
+    this.shopDetailsMinimalQuery
+      .selectAll()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.repairShopList = item));
+    if (getIndex) {
+      this.currentIndex = this.repairShopList.findIndex(
+        (driver) => driver.id === repairId
+      );
+      let last = this.repairShopList.at(-1);
+
+      if (last.id === repairId) {
+        this.currentIndex = --this.currentIndex;
+      } else {
+        this.currentIndex = ++this.currentIndex;
+      }
+      if (this.currentIndex == -1) {
+        this.currentIndex = 0;
+      }
+      this.repairShopId = this.repairShopList[this.currentIndex].id;
+    }
+
+    return this.shopServices.apiRepairshopIdGet(repairId);
+  }
+
+  public deleteRepairShopByIdDetails(shopId: number): Observable<any> {
+    return this.shopServices.apiRepairshopIdDelete(shopId).pipe(
+      tap(() => {
+        const shopCount = JSON.parse(
+          localStorage.getItem('repairShopTableCount')
+        );
+        this.shopStore.remove(({ id }) => id === shopId);
+        this.shopMinimalStore.remove(({ id }) => id === shopId);
+        this.sdls.remove(({ id }) => id === shopId);
+
+        shopCount.repairShops--;
+
+        localStorage.setItem(
+          'repairShopTableCount',
+          JSON.stringify({
+            repairShops: shopCount.repairShops,
+          })
+        );
+        const subShop = this.getRepairShopById(this.repairShopId, true)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (shop: RepairShopResponse) => {
+              this.tableService.sendActionAnimation({
+                animation: 'delete',
+                tab: 'repair-shop',
+                data: shop,
+                id: shop.id,
+              });
+
+              subShop.unsubscribe();
+            },
+          });
+      })
+    );
   }
 
   public deleteRepairShopById(shopId: number): Observable<any> {
@@ -311,7 +447,8 @@ export class RepairTService {
         );
 
         this.shopStore.remove(({ id }) => id === shopId);
-
+        this.shopMinimalStore.remove(({ id }) => id === shopId);
+        this.sdls.remove(({ id }) => id === shopId);
         shopCount.repairShops--;
 
         localStorage.setItem(
@@ -369,5 +506,9 @@ export class RepairTService {
 
   public getRepairShopModalDropdowns(): Observable<RepairShopModalResponse> {
     return this.shopServices.apiRepairshopModalGet();
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -3,8 +3,9 @@
   app-autoclose-popover
   [customClass]="'filterpopovermain'"
   [placement]="'bottom-left'"
+  autoClose="outside"
   [ngClass]="{
-    'active-options': t2?.isOpen(),
+    'active-options': activeFilter,
     'filter-active-colors':
       selectedUser.length > 0 ||
       selectedTimeValue != '' ||
@@ -16,7 +17,12 @@
   }"
 >
   <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
-  <div mainContent style="pointer-events: none">
+  <div mainContent 
+    ngbTooltip
+    mainTooltip="{{ !hoverClose ? filterTitle : 'Clear' }}"
+    position="bottom"
+    tooltipBackground= "#6C6C6C"
+  >
     <svg-icon [src]="icon | taSvg: 'common'"></svg-icon>
     <div *ngIf="selectedUser.length > 0" class="active-filter-num">
       {{ selectedUser.length }}
@@ -37,16 +43,14 @@
         moneyFilterStatus
       "
       class="active-filter-num clear-filter"
-      ngbTooltip
-      mainTooltip="Clear"
-      position="bottom"
-      tooltipBackground="#6C6C6C"
-      (click)="clearAll($event)"
+      (mouseenter)="hoverClose = true"
+      (mouseleave)="hoverClose = false"
+      (click)="clearAll($event, true)"
     >
       <svg-icon src="assets/svg/common/ic_cancel_violation.svg"></svg-icon>
     </div>
   </div>
-  <div popoverContent>
+  <div popoverContent class="main-popover-body" #pop1>
     <div
       *ngIf="defFilterHolder"
       class="filter-holder"
@@ -63,7 +67,7 @@
         <div class="user-filter-box" *ngIf="type == 'stateFilter'">
           {{ canadaSelectedStates.length + usaSelectedStates.length }}
         </div>
-        <div class="user-title-text">{{ filterTitle }}</div>
+        <div class="user-title-text counter-padd-title">{{ filterTitle }}</div>
         <div
           class="search-icon-holder"
           *ngIf="searchState"
@@ -139,7 +143,9 @@
             <svg-icon src="{{ item.icon }}"></svg-icon>
           </div>
           <div class="selected-user-frame">
-            <div class="selected-name-text">{{ item.name }}</div>
+            <div class="selected-name-text">
+              <span> {{ item.name }} </span> 
+            </div>
             <div class="selected-icon">
               <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
             </div>
@@ -173,7 +179,9 @@
               <div class="state-short-holder">{{ item.short }}</div>
             </div>
             <div class="selected-user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
               <div class="selected-icon">
                 <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
               </div>
@@ -202,7 +210,9 @@
               <div class="state-short-holder">{{ item.short }}</div>
             </div>
             <div class="selected-user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
               <div class="selected-icon">
                 <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
               </div>
@@ -252,7 +262,9 @@
               </app-profile-images>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
             </div>
           </div>
         </div>
@@ -269,7 +281,9 @@
           >
             <div class="user-frame">
               <div class="selected-name-text">
-                <div class="selected-name-text">{{ item.name }}</div>
+                <div class="selected-name-text">
+                  <span> {{ item.name }} </span>
+                </div>
               </div>
             </div>
           </div>
@@ -296,7 +310,9 @@
                 ></div>
               </div>
               <div class="user-frame">
-                <div class="selected-name-text">{{ item.name }}</div>
+                <div class="selected-name-text">
+                  <span> {{ item.name }} </span>
+                </div>
               </div>
             </div>
           </div>
@@ -320,7 +336,9 @@
                 [ngStyle]="{ backgroundColor: item.color }"
               ></div>
               <div class="user-frame">
-                <div class="selected-name-text">{{ item.name }}</div>
+                <div class="selected-name-text">
+                  <span>  {{ item.name }} </span>
+                </div>
               </div>
             </div>
           </div>
@@ -344,7 +362,9 @@
                 [ngStyle]="{ backgroundColor: item.color }"
               ></div>
               <div class="user-frame">
-                <div class="selected-name-text">{{ item.name }}</div>
+                <div class="selected-name-text">
+                  <span> {{ item.name }} </span>
+                </div>
               </div>
             </div>
           </div>
@@ -364,7 +384,9 @@
               <svg-icon src="{{ item.icon }}"></svg-icon>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
             </div>
           </div>
         </div>
@@ -380,7 +402,9 @@
             class="user-main-holder"
           >
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
             </div>
           </div>
         </div>
@@ -399,7 +423,9 @@
               <svg-icon src="{{ item.icon }}"></svg-icon>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                  <span> {{ item.name }} </span>
+                </div>
             </div>
           </div>
         </div>
@@ -415,7 +441,9 @@
             class="user-main-holder"
           >
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -431,7 +459,9 @@
             class="user-main-holder"
           >
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -447,7 +477,9 @@
             class="user-main-holder"
           >
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -463,7 +495,9 @@
             class="user-main-holder"
           >
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -488,7 +522,9 @@
               </app-profile-images>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -507,7 +543,9 @@
               <svg-icon src="{{ item.icon }}"></svg-icon>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -526,13 +564,15 @@
               <svg-icon src="{{ item.icon }}"></svg-icon>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="user-holder" *ngIf="type == 'stateFilter'">
-        <div class="state-name-holder">UNITED STATES</div>
+        <div class="state-name-holder sticky-head-title">UNITED STATES</div>
         <div
           *ngFor="let item of usaStates; let indx = index"
           class="user-frame-holder"
@@ -546,11 +586,13 @@
               <div class="state-short-holder">{{ item.short }}</div>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
-        <div class="state-name-holder">CANADA</div>
+        <div class="state-name-holder canada-sticky-head-title">CANADA</div>
         <div
           *ngFor="let item of canadaStates; let indx = index"
           class="user-frame-holder"
@@ -564,18 +606,20 @@
               <div class="state-short-holder">{{ item.short }}</div>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+               <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div
         class="border-filter"
-        *ngIf="pmFilterArray.length > selectedUser.length"
+        *ngIf="!legendView && pmFilterArray.length > selectedUser.length"
       ></div>
-      <div class="buttons-holder">
+      <div class="buttons-holder" *ngIf="!legendView">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
           [class.active]="
             selectedUser.length > 0 ||
@@ -586,7 +630,7 @@
           Clear All
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
           [class.active]="
             (selectedUser.length > 0 ||
@@ -942,14 +986,14 @@
       <div class="border-filter time-data-border"></div>
       <div class="buttons-holder">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
           [class.active]="selectedTimeValue != ''"
         >
-          Clear All
+          Clear
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
           [class.active]="selectedTimeValue != '' && setButtonAvailable"
         >
@@ -1176,14 +1220,14 @@
       ></div>
       <div class="buttons-holder">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
           [class.active]="moneyFilterStatus"
         >
           Clear All
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
           [class.active]="moneyFilterStatus && setButtonAvailable"
         >
@@ -1215,14 +1259,14 @@
       <div class="border-filter bottom-border-margin"></div>
       <div class="buttons-holder">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
           [class.active]="rangeValue != swipeActiveRange || rangeValue > 0"
         >
           Clear All
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
           [class.active]="rangeValue != swipeActiveRange"
         >
@@ -1236,29 +1280,33 @@
       </div>
       <div class="border-filter top-border-margin"></div>
       <div
-        class="filter-middle-holder"
+        class="filter-middle-holder location-middle-padding"
         [formGroup]="locationForm"
         *ngIf="type == 'locationFilter'"
       >
-        <app-ta-input-address
+          <app-input-address-dropdown
           formControlName="address"
-          [inputConfig]="{
-            name: 'Address',
-            type: 'text',
-            label: 'Location',
-            minLength: 6,
-            maxLength: 256,
-            placeholderIcon: 'address',
-            textTransform: 'capitalize',
-            incorrectInput: selectedMode === 'REVIEW_MODE'
-          }"
-          [incorrectValue]="false"
-          (incorrectEvent)="incorrectInput($event, 0, 18)"
-          [activeAddress]="selectedAddress"
-          (selectedAddress)="handleInputSelect($event)"
-        ></app-ta-input-address>
+            [inputConfig]="{
+              name: 'Address',
+              type: 'text',
+              label: 'Location',
+              placeholderIcon: 'address',
+              placeholder: 'Location',
+              textTransform: 'capitalize',
+              dropdownWidthClass: 'w-col-288',
+              minLength: 6,
+              maxLength: 256,
+              placeholderInsteadOfLabel: true,
+              customClass: 'line-input-26'
+            }"
+            [incorrectValue]="false"
+            [placeholderType]="'longAddress'"
+            (incorrectEvent)="incorrectInput($event, 0, 18)"
+            [activeAddress]="selectedAddress"
+            (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+          ></app-input-address-dropdown>
       </div>
-      <div class="filter-middle-holder" *ngIf="type == 'locationFilter'">
+      <div class="filter-middle-holder location-slider-middle-padding" *ngIf="type == 'locationFilter'">
         <app-ta-ngx-slider
           [sliderOptions]="locationSliderData"
           [startedValue]="locationRange"
@@ -1266,79 +1314,83 @@
           (onUserValueChange)="setRangeValue($event)"
         ></app-ta-ngx-slider>
       </div>
-      <div
-        class="money-main-holder payPadding"
-        *ngIf="type == 'payFilter' || type == 'milesFilter'"
-        [formGroup]="moneyForm"
-      >
-        <div class="money-value-holder">
-          <app-ta-input
-            formControlName="singleFrom"
-            [inputConfig]="{
-              name: 'singleFrom',
-              type: 'number',
-              label: 'From',
-              placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
-              customClass: 'line-input-26'
-            }"
-          ></app-ta-input>
+      <div class="mainMilesHolder" *ngIf="type == 'payFilter' || type == 'milesFilter'" [formGroup]="rangeForm">
+        <div class="money-main-holder payPadding">
+          <div class="money-value-holder">
+            <app-ta-input
+              formControlName="rangeFrom"
+              [inputConfig]="{
+                name: 'rangeFrom',
+                type: 'text',
+                label: 'From',
+                placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
+                customClass: 'line-input-26',
+                thousandSeparator: true,
+                blackInput: true
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="money-value-holder" [class.errorForm]="singleFormError">
+            <app-ta-input
+              formControlName="rangeTo"
+              [inputConfig]="{
+                name: 'rangeTo',
+                type: 'text',
+                label: 'To',
+                placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
+                customClass: 'line-input-26',
+                thousandSeparator: true,
+                blackInput: true
+              }"
+            ></app-ta-input>
+          </div>
         </div>
-        <div class="money-value-holder" [class.errorForm]="singleFormError">
-          <app-ta-input
-            formControlName="singleTo"
-            [inputConfig]="{
-              name: 'singleTo',
-              type: 'number',
-              label: 'To',
-              placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
-              customClass: 'line-input-26'
-            }"
-          ></app-ta-input>
+        <div class="filter-middle-holder slider-two-holder" [class.closePointers]=" ( rangeDiffNum < 670 && type != 'payFilter' ) || ( rangeDiffNum < 2600 && type == 'payFilter' ) "> 
+          <app-ta-ngx-slider
+            [sliderOptions]="
+              type == 'payFilter' ? paySliderData : milesSliderData
+            "
+            [startedValue]="rangeValue"
+            [customClass]="'custom-slider-filter'"
+            (onUserValueChange)="setMinValueRange($event)"
+            (onUserHighValueChange)="setMaxValueRange($event)"
+            [sliderTemplate]="'range-slider'"
+            [customFormControlName]="sliderControl"
+            [minValue]="minValueDragged"
+            [maxValue]="maxValueDragged"
+          ></app-ta-ngx-slider>
+          
         </div>
-      </div>
-      <div
-        class="filter-middle-holder slider-two-holder"
-        [formGroup]="payForm"
-        *ngIf="type == 'payFilter' || type == 'milesFilter'"
-      >
-        <app-ta-ngx-slider
-          [sliderOptions]="
-            type == 'payFilter' ? paySliderData : milesSliderData
-          "
-          [startedValue]="rangeValue"
-          [customClass]="'custom-slider-filter'"
-          (onUserValueChange)="setRangeValue($event)"
-        ></app-ta-ngx-slider>
       </div>
       <div class="border-filter bottom-border-margin"></div>
       <div class="buttons-holder" *ngIf="type != 'locationFilter'">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
-          [class.active]="rangeValue > 0"
+          [class.active]="rangeForm.get('rangeTo').value != maxValueRange || rangeForm.get('rangeFrom').value != minValueRange"
         >
           Clear All
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
-          [class.active]="rangeValue > 0 && setButtonAvailable"
+          [class.active]="rangeForm.get('rangeTo').value != maxValueSet || ( rangeForm.get('rangeFrom').value && rangeForm.get('rangeFrom').value != minValueSet )"
         >
           Set
         </div>
       </div>
       <div class="buttons-holder" *ngIf="type == 'locationFilter'">
         <div
-          (click)="clearAll()"
+          (click)="clearAll($event)"
           class="button-clear"
-          [class.active]="locationState != ''"
+          [class.active]=" longVal != 0 || latVal != 0 || locationRange != 50"
         >
           Clear All
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
-          [class.active]="locationState != ''"
+          [class.active]="longValueSet != longVal || latValSet != latVal || ( locationRange != locationRangeSet && longVal != 0 && latVal != 0 ) "
         >
           Set
         </div>
@@ -1346,3 +1398,5 @@
     </div>
   </div>
 </div>
+
+

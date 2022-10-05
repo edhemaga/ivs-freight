@@ -11,10 +11,13 @@
       : 'Truck ' + editData?.payload?.truckNumber
   "
   [specificCaseModalName]="true"
-  [isModalValid]="fhwaInspectionForm.valid"
+  [isModalValid]="fhwaInspectionForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="fhwaInspectionForm" class="form-container">
+  <form
+    [formGroup]="fhwaInspectionForm"
+    class="form-container form-container-without-mb"
+  >
     <div class="row last-row">
       <div class="col-12">
         <app-ta-input

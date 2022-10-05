@@ -585,6 +585,10 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
       });
   }
 
+  setFilterEvent(event: any) {
+    console.log('--here---', event);
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

@@ -41,6 +41,7 @@ export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
   @Output() changeEvent = new EventEmitter<string>();
   @Input() public dateChecked: string = '';
   @Input() public lastEdit: string = '';
+  @Input() public haveDropSVG: boolean;
   public inputFormControl: FormControl = new FormControl();
   public driversList: any[] = this.driverMinimalQuery.getAll();
   public selectedDropdown: boolean = false;

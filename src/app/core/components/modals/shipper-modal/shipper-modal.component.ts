@@ -41,6 +41,7 @@ import { ShipperTService } from '../../customer/state/shipper-state/shipper.serv
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
+import { FormService } from '../../../services/form/form.service';
 
 @Component({
   selector: 'app-shipper-modal',
@@ -48,7 +49,7 @@ import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRa
   styleUrls: ['./shipper-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, TaLikeDislikeService],
+  providers: [ModalService, TaLikeDislikeService, FormService],
 })
 export class ShipperModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -92,7 +93,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
   public companyUser: SignInResponse = null;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   public disableOneMoreReview: boolean = false;
 
@@ -106,6 +107,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private taLikeDislikeService: TaLikeDislikeService,
     private reviewRatingService: ReviewsRatingService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -151,13 +153,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       this.destroy$
     );
 
-    // this.formService.checkFormChange(this.shipperForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
+    this.formService.checkFormChange(this.shipperForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -227,7 +228,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       }
     } else {
       if (data.action === 'close') {
-        this.shipperForm.reset();
+        return;
       } else {
         // Save & Update
         if (data.action === 'save') {
@@ -266,10 +267,13 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     let dotAnimation = document.querySelector(
       this.editData ? '.animation-three-tabs' : '.animation-two-tabs'
     );
-    this.animationObject = {
-      value: this.selectedTab,
-      params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-    };
+    const animationTabTimeout = setTimeout(() => {
+      this.animationObject = {
+        value: this.selectedTab,
+        params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+      };
+      clearTimeout(animationTabTimeout);
+    });
   }
 
   public get shipperContacts(): FormArray {

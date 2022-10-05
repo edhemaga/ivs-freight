@@ -28,7 +28,6 @@ import {
 
 import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../../../services/form/form.service';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import {
   FormGroup,
@@ -38,6 +37,7 @@ import {
 } from '@angular/forms';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
+import { FormService } from '../../../../../services/form/form.service';
 import {
   convertDateToBackend,
   convertThousanSepInNumber,
@@ -76,15 +76,15 @@ export class SettingsInsurancePolicyModalComponent
   public idPhysicalDamage = null;
   public idTrailerInterchange = null;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService,
-    private settingsCompanyService: SettingsCompanyService
+    private settingsCompanyService: SettingsCompanyService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -156,19 +156,17 @@ export class SettingsInsurancePolicyModalComponent
       this.destroy$
     );
 
-    // this.formService.checkFormChange(this.insurancePolicyForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
+    this.formService.checkFormChange(this.insurancePolicyForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.insurancePolicyForm.reset();
         break;
       }
       case 'save': {
@@ -178,8 +176,10 @@ export class SettingsInsurancePolicyModalComponent
           return;
         }
         if (this.editData.type === 'edit') {
-          this.updateInsurancePolicy(this.editData.company.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateInsurancePolicy(this.editData.company.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addInsurancePolicy(this.editData.company);
           this.modalService.setModalSpinner({ action: null, status: true });
@@ -1015,6 +1015,46 @@ export class SettingsInsurancePolicyModalComponent
             break;
           }
         }
+      }
+    }
+  }
+
+  // Checkbox Card
+  public commericalGeneralCheckboxCard: boolean = true;
+  public automobileLiabilityCheckboxCard: boolean = true;
+  public motorTruckCargoBreakDownCheckboxCard: boolean = true;
+  public physicalDamageDownCheckboxCard: boolean = true;
+  public trailerInterchangeCheckboxCard: boolean = true;
+
+  public toggleCheckboxCard(action: string) {
+    switch (action) {
+      case 'commercial-general': {
+        this.commericalGeneralCheckboxCard =
+          !this.commericalGeneralCheckboxCard;
+        break;
+      }
+      case 'automobile-liability': {
+        this.automobileLiabilityCheckboxCard =
+          !this.automobileLiabilityCheckboxCard;
+        break;
+      }
+      case 'motor-truck-cargo': {
+        this.motorTruckCargoBreakDownCheckboxCard =
+          !this.motorTruckCargoBreakDownCheckboxCard;
+        break;
+      }
+      case 'physical-damage': {
+        this.physicalDamageDownCheckboxCard =
+          !this.physicalDamageDownCheckboxCard;
+        break;
+      }
+      case 'trailer-interchange': {
+        this.trailerInterchangeCheckboxCard =
+          !this.trailerInterchangeCheckboxCard;
+        break;
+      }
+      default: {
+        break;
       }
     }
   }

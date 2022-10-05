@@ -1,4 +1,4 @@
-import { filter } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import {
   Component,
@@ -6,22 +6,42 @@ import {
   OnInit,
   ViewEncapsulation,
   ViewChild,
+  ElementRef,
+  ChangeDetectorRef,
+  QueryList,
+  AfterViewInit,
+  EventEmitter,
+  Output
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
 import { addressValidation } from '../ta-input/ta-input.regex-validations';
 import { card_component_animation } from '../animations/card-component.animations';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
+
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss'],
-  providers: [NgbDropdownConfig],
+  providers: [NgbDropdownConfig, TaThousandSeparatorPipe],
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
-export class FilterComponent implements OnInit {
+export class FilterComponent implements OnInit, AfterViewInit {
+  private destroy$ = new Subject<void>();
+  autoCloseComponent: QueryList<AutoclosePopoverComponent>;
+
+  @ViewChild(AutoclosePopoverComponent)
+  autoClose: AutoclosePopoverComponent;
+
+  @ViewChild('pop1', { static: false }) pop1: ElementRef;
+
+
   @ViewChild('t2') t2: any;
+  @ViewChild('mainFilter') mainFilter: any;
+
 
   unselectedUser: any[] = [
     {
@@ -532,7 +552,7 @@ export class FilterComponent implements OnInit {
     {
       id: 1,
       name: 'Semi Truck',
-      icon: 'assets/svg/common/semi-truck.svg',
+      icon: 'assets/svg/common/trucks/ic_truck_semi-truck.svg',
     },
     {
       id: 2,
@@ -615,7 +635,7 @@ export class FilterComponent implements OnInit {
     {
       id: 10,
       name: 'Low Boy/RGN',
-      icon: 'assets/svg/truckassist-table/trailer/low-boy-RGN.svg',
+      icon: 'assets/svg/common/trailers/ic_trailer_low-boy.svg',
     },
     {
       id: 11,
@@ -963,6 +983,8 @@ export class FilterComponent implements OnInit {
   public locationForm!: FormGroup;
   public payForm!: FormGroup;
   public sliderForm!: FormGroup;
+  public rangeForm!: FormGroup;
+
   rangeValue: any = 0;
   usaSelectedStates: any[] = [];
   canadaSelectedStates: any[] = [];
@@ -987,6 +1009,7 @@ export class FilterComponent implements OnInit {
   multiFormThirdFromActive: any = 0;
   multiFormThirdToActive: any = 0;
   locationRange: any = 50;
+  hoverClose: any = false;
 
   public sliderData: Options = {
     floor: 0,
@@ -1006,19 +1029,44 @@ export class FilterComponent implements OnInit {
 
   public paySliderData: Options = {
     floor: 0,
-    ceil: 3000000,
-    step: 0,
+    ceil: 20000,
+    step: 1,
     showSelectionBar: true,
-    hideLimitLabels: false,
+    hideLimitLabels: true,
+    noSwitching: true,
+    pushRange: true,
+    minRange: 2000,
   };
 
   public milesSliderData: Options = {
     floor: 0,
-    ceil: 3000,
-    step: 0,
+    ceil: 5000,
+    step: 1,
     showSelectionBar: true,
-    hideLimitLabels: false,
+    hideLimitLabels: true,
+    noSwitching: true,
+    pushRange: true,
+    minRange: 10,
   };
+
+  minValueRange: any = '0';
+  maxValueRange: any = '5,000';
+
+  minValueSet: any = '0';
+  maxValueSet: any = '5,000';
+
+  minValueDragged: number = 0;
+  maxValueDragged: number = 20000;
+
+  rangeDiffNum: number = 0;
+
+  activeFilter: boolean = false;
+  longVal: any = 0;
+  latVal: any = 0;
+
+  longValueSet: any = 0;
+  latValSet: any = 0;
+  locationRangeSet: any = 50;
 
   @Input() type: string = 'userFilter';
   @Input() icon: string = 'user';
@@ -1033,10 +1081,27 @@ export class FilterComponent implements OnInit {
   @Input() fuelType: boolean = false;
   @Input() swipeFilter: boolean = false;
   @Input() locationDefType: boolean = false;
+  @Input() legendView: boolean = false;
+  @Input() toDoSubType: string = '';
 
-  constructor(private formBuilder: FormBuilder) {}
+  @Output() setFilter = new EventEmitter<any>();
+
+  resizeObserver: ResizeObserver;
+
+  constructor(private formBuilder: FormBuilder, private thousandSeparator: TaThousandSeparatorPipe,private elementRef: ElementRef, private cdRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+
+    if (this.type == 'payFilter'){
+      this.maxValueRange = '20,000';
+      this.maxValueSet = '20,000';
+    }
+    
+    this.rangeForm = this.formBuilder.group({
+      rangeFrom: '0', 
+      rangeTo: this.type == 'payFilter'? '20,000' : '5,000', 
+    })
+
     this.searchForm = this.formBuilder.group({
       search: '',
     });
@@ -1065,13 +1130,45 @@ export class FilterComponent implements OnInit {
       payTo: '',
     });
 
-    this.locationForm.valueChanges.subscribe((changes) => {
+    this.locationForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       if (changes.address == null) {
         this.locationState = '';
       }
     });
 
-    this.moneyForm.valueChanges.subscribe((changes) => {
+    this.rangeForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
+      if (changes){
+        //console.log('--changes--', changes);
+
+        var rangeFromNum = 0;
+        var rangeToNum = parseInt(this.maxValueRange.replace(/,/g, ''), 10);
+        var maxRangeNum = parseInt(this.maxValueRange.replace(/,/g, ''), 10);
+        
+        if (changes.rangeFrom && typeof changes.rangeFrom === 'string' ){
+          rangeFromNum = parseInt(changes.rangeFrom.replace(/,/g, ''), 10);
+        }
+        if ( changes.rangeTo && changes.rangeTo != null && typeof changes.rangeTo === 'string' ){
+          rangeToNum = parseInt(changes.rangeTo.replace(/,/g, ''), 10);
+        }
+
+        if ( changes.rangeTo == null || rangeToNum > maxRangeNum ){
+          this.rangeForm?.get('rangeTo')?.setValue(this.maxValueRange);
+        }
+
+        if (rangeFromNum > (maxRangeNum - 1 )){
+          this.rangeForm?.get('rangeFrom')?.setValue(maxRangeNum - 1);
+        } else if ( changes.rangeFrom == null ) {
+          this.rangeForm?.get('rangeFrom')?.setValue('0');
+        }
+
+        this.minValueDragged = rangeFromNum;
+        this.maxValueDragged = rangeToNum;
+
+        this.rangeDiffNum = this.maxValueDragged - this.minValueDragged;
+      }
+    })
+
+    this.moneyForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       if (changes.singleFrom || changes.singleTo) {
         if (changes.singleTo) {
           let to = parseInt(changes.singleTo);
@@ -1179,27 +1276,27 @@ export class FilterComponent implements OnInit {
       }
 
       if (this.singleFormError) {
-        this.moneyForm.get('singleTo').setErrors({ invalid: true });
+        this.moneyForm.get('singleTo')?.setErrors({ invalid: true });
       } else {
-        this.moneyForm.get('singleTo').setErrors(null);
+        this.moneyForm.get('singleTo')?.setErrors(null);
       }
 
       if (this.multiFormFirstError) {
-        this.moneyForm.get('multiFromFirstTo').setErrors({ invalid: true });
+        this.moneyForm.get('multiFromFirstTo')?.setErrors({ invalid: true });
       } else {
-        this.moneyForm.get('multiFromFirstTo').setErrors(null);
+        this.moneyForm.get('multiFromFirstTo')?.setErrors(null);
       }
 
       if (this.multiFormSecondError) {
-        this.moneyForm.get('multiFormSecondTo').setErrors({ invalid: true });
+        this.moneyForm.get('multiFormSecondTo')?.setErrors({ invalid: true });
       } else {
-        this.moneyForm.get('multiFormSecondTo').setErrors(null);
+        this.moneyForm.get('multiFormSecondTo')?.setErrors(null);
       }
 
       if (this.multiFormThirdError) {
-        this.moneyForm.get('multiFormThirdTo').setErrors({ invalid: true });
+        this.moneyForm.get('multiFormThirdTo')?.setErrors({ invalid: true });
       } else {
-        this.moneyForm.get('multiFormThirdTo').setErrors(null);
+        this.moneyForm.get('multiFormThirdTo')?.setErrors(null);
       }
 
       //console.log('---moneyFilterStatus', this.moneyFilterStatus);
@@ -1207,7 +1304,7 @@ export class FilterComponent implements OnInit {
       }
     });
 
-    this.searchForm.valueChanges.subscribe((changes) => {
+    this.searchForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       if (changes.search) {
         let inputValue = changes.search;
         this.searchInputValue = inputValue;
@@ -1351,6 +1448,26 @@ export class FilterComponent implements OnInit {
         this.searchInputValue = '';
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.observMainContainer();
+    }, 10);
+  }
+
+  observMainContainer(){
+    this.resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        if ( entry.contentRect.height ){
+          this.activeFilter = true;
+        } else {
+          this.activeFilter = false;
+          this.cdRef.detectChanges();
+        }
+      });
+    });
+    this.resizeObserver.observe(this.pop1.nativeElement);
   }
 
   addToSelectedUser(item, indx, subType?) {
@@ -1532,9 +1649,19 @@ export class FilterComponent implements OnInit {
     this.checkFilterActiveValue();
   }
 
-  clearAll(e?) {
+  clearAll(e?, mod?) {
+
     if (e) {
       e.stopPropagation();
+    }
+
+    if (mod){
+      this.hoverClose = false;
+    }
+
+    const element = e.target;
+    if (!element.classList.contains('active') && !mod) {
+      return false;
     }
 
     console.log('--type--', this.type);
@@ -1547,91 +1674,133 @@ export class FilterComponent implements OnInit {
       this.selectedUser = [];
       this.usaSelectedStates = [];
       this.canadaSelectedStates = [];
+      
+      switch (this.type) {
+        case 'departmentFilter':
+          this.departmentArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'statusFilter':
+          this.pendingStatusArray.map((item) => {
+            item.isSelected = false;
+          });
+  
+          this.activeStatusArray.map((item) => {
+            item.isSelected = false;
+          });
+  
+          this.closedStatusArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'pmFilter':
+          this.pmFilterArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'categoryFuelFilter':
+          this.categoryFuelArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'categoryRepairFilter':
+          this.categoryRepairArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'truckFilter':
+          this.truckArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'trailerFilter':
+          this.trailerArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'brokerFilter':
+          this.brokerArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'driverFilter':
+          this.driverArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'truckTypeFilter':
+          this.truckTypeArray.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'userFilter':
+          this.unselectedUser.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'stateFilter':
+          this.usaStates.map((item) => {
+            item.isSelected = false;
+          });
+  
+          this.canadaStates.map((item) => {
+            item.isSelected = false;
+          });
+        break;
+        case 'injuryFilter':
+          case 'fatalityFilter':
+            case 'violationFilter':
+              this.rangeValue = 0;
+        break;
+        case 'locationFilter':
+          this.locationForm.setValue({
+            address: '',
+          });
+          this.locationRange = 50;
+          this.locationState = '';
+          this.longVal = 0;
+          this.latVal = 0;
 
-      if (this.type == 'departmentFilter') {
-        this.departmentArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'statusFilter') {
-        this.pendingStatusArray.map((item) => {
-          item.isSelected = false;
-        });
+          this.longValueSet = this.longVal;
+          this.latValSet = this.latVal;
+          this.locationRangeSet = this.locationRange;
+        break;
+        case 'moneyFilter':
+          if (this.subType != 'all') {
+            this.clearForm('singleForm');
+          } else {
+            this.clearForm('clearAll');
+          }
+        break;
+        case 'milesFilter':
+          case 'payFilter':
+            //this.rangeForm.reset();
+            let maxNum = this.thousandSeparator.transform(this.maxValueRange)
+            this.rangeForm.get('rangeFrom')?.setValue('0');
+            this.rangeForm.get('rangeTo')?.setValue(maxNum);
 
-        this.activeStatusArray.map((item) => {
-          item.isSelected = false;
-        });
-
-        this.closedStatusArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'pmFilter') {
-        this.pmFilterArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'categoryFuelFilter') {
-        this.categoryFuelArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'categoryRepairFilter') {
-        this.categoryRepairArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'truckFilter') {
-        this.truckArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'trailerFilter') {
-        this.trailerArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'brokerFilter') {
-        this.brokerArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'driverFilter') {
-        this.driverArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'truckTypeFilter') {
-        this.truckTypeArray.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'userFilter') {
-        this.unselectedUser.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (this.type == 'stateFilter') {
-        this.usaStates.map((item) => {
-          item.isSelected = false;
-        });
-
-        this.canadaStates.map((item) => {
-          item.isSelected = false;
-        });
-      } else if (
-        this.type == 'injuryFilter' ||
-        this.type == 'fatalityFilter' ||
-        this.type == 'violationFilter'
-      ) {
-        this.rangeValue = 0;
-      } else if (this.type == 'locationFilter') {
-        this.locationForm.setValue({
-          address: '',
-        });
-        this.locationRange = 50;
-        this.locationState = '';
-      } else if (this.type == 'moneyFilter') {
-        if (this.subType != 'all') {
-          this.clearForm('singleForm');
-        } else {
-          this.clearForm('clearAll');
-        }
+            this.maxValueSet = maxNum;
+            this.minValueSet = this.minValueRange;
+        break;
       }
     }
+
     this.setButtonAvailable = true;
     this.moneyFilterStatus = false;
     this.filterActiveArray = [];
     this.swipeActiveRange = 0;
+    this.autoClose.tooltip.close();
+
+    let data = {
+      'action' : 'Clear',
+      'type' : this.type
+    }
+
+    console.log('--data---', data);
+    if ( this.setFilter ) {
+      this.setFilter.emit(data);
+    }
   }
 
   filterUser(e: any) {
@@ -1679,6 +1848,7 @@ export class FilterComponent implements OnInit {
   }
 
   setRangeValue(mod) {
+    console.log(mod);
     if (this.type != 'locationFilter') {
       this.rangeValue = mod;
     } else {
@@ -1687,8 +1857,14 @@ export class FilterComponent implements OnInit {
   }
 
   handleInputSelect(e) {
+
     if (e?.address?.address) {
       this.locationState = e.address.address;
+    }
+
+    if (e?.longLat) {
+      this.longVal = e?.longLat?.longitude;
+      this.latVal = e?.longLat?.latitude;
     }
   }
 
@@ -1728,9 +1904,13 @@ export class FilterComponent implements OnInit {
     }
   }
 
-  setFilter(e) {
+  public setFilterValue(e) {
     const element = e.target;
     if (element.classList.contains('active')) {
+
+      let queryParams = {};
+      let subType = '';
+
       this.setButtonAvailable = false;
 
       if (this.type == 'timeFilter') {
@@ -1768,9 +1948,45 @@ export class FilterComponent implements OnInit {
             ' ' + this.moneyForm.get('singleTo')?.value
           ).slice(1);
         }
+      } else if ( this.type == 'milesFilter' || this.type == 'payFilter' ) {
+        this.maxValueSet = this.rangeForm.get('rangeTo')?.value;
+        this.minValueSet = this.rangeForm.get('rangeFrom')?.value;
+      } else if ( this.type == 'locationFilter' ) {
+
+        queryParams = {
+          'longValue' : this.longVal,
+          'latValue' : this.latVal,
+          'rangeValue' : this.locationRange,
+        };
+
+        this.longValueSet = this.longVal;
+        this.latValSet = this.latVal;
+        this.locationRangeSet = this.locationRange;
+
       } else {
         this.filterActiveArray = [...this.selectedUser];
+        let selectedUsersIdArray: any = [];
+        this.filterActiveArray.map((data) => {
+          selectedUsersIdArray.push(data.id);
+        })
+        queryParams = selectedUsersIdArray;
+        subType = this.toDoSubType ? this.toDoSubType : '';
       }
+
+        let data = {
+          'filterType' : this.type,
+          'action' : 'Set',
+          'queryParams' : queryParams,
+          'subType' : subType,
+          
+        }
+
+      console.log('--data---', data);
+      if ( this.setFilter ) {
+        this.setFilter.emit(data);
+      }
+      this.autoClose.tooltip.close();
+
     } else {
       return false;
     }
@@ -1920,4 +2136,22 @@ export class FilterComponent implements OnInit {
       this.setButtonAvailable = false;
     }
   }
+
+  setRangeSliderValue(mod){
+    let fromValue = this.thousandSeparator.transform(mod.value);
+    let toValue = this.thousandSeparator.transform(mod.highValue);
+    this.rangeForm?.get('rangeFrom')?.setValue(fromValue);
+    this.rangeForm?.get('rangeTo')?.setValue(toValue);
+  }
+
+  setMinValueRange(mod){
+    let fromValue = this.thousandSeparator.transform(mod);
+    this.rangeForm?.get('rangeFrom')?.setValue(fromValue);
+  }
+
+  setMaxValueRange(mod){
+    let toValue = this.thousandSeparator.transform(mod);
+    this.rangeForm?.get('rangeTo')?.setValue(toValue);
+  }
+
 }

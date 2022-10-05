@@ -128,6 +128,92 @@ table {
           }
         }
 
+        // SW TW TOTLE
+        .sw-tw-title-container {
+          display: flex;
+          overflow: hidden;
+          width: fit-content;
+
+          .sw-tw-title {
+            width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #6c6c6c;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+
+            &::selection {
+              color: #6c6c6c;
+              background: #6c6c6c20;
+            }
+          }
+        }
+
+        // Citation
+        .citation-container {
+          display: flex;
+          overflow: hidden;
+          width: 100%;
+          justify-content: center;
+
+          .citation-wrapper {
+            width: 140px;
+            display: flex;
+            padding: 3px;
+            justify-content: space-between;
+
+            .icon-container {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 30px;
+            }
+
+            svg-icon {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+        }
+
+        // Accident Citation
+        .accident-citation-container {
+          width: 100%;
+          height: fit-content;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          .accident-citation-wrapper{
+            width: fit-content;
+            height: 18px;
+            display: flex;
+
+            .icon-container {
+              width: 30px;
+              height: 18px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+  
+              svg-icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+            }
+  
+            .has-margin{
+              margin-right: 22px;
+            }
+          }
+        }
+
         // Sort
         .sort-indicator-container {
           width: 12px;
@@ -227,7 +313,7 @@ table {
   justify-content: center;
 }
 
-.set-center-th-title{
+.set-center-th-title {
   display: flex;
   justify-content: center;
 }
@@ -249,7 +335,7 @@ table {
   padding: 2px 2px 2px 1px;
   justify-content: flex-end;
 
-  th{
+  th {
     display: flex;
     justify-content: center;
     align-items: center;

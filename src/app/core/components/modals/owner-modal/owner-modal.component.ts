@@ -1,7 +1,7 @@
 import {
   accountBankValidation,
   routingBankValidation,
-} from "../../shared/ta-input/ta-input.regex-validations";
+} from '../../shared/ta-input/ta-input.regex-validations';
 import { TruckModalComponent } from '../truck-modal/truck-modal.component';
 import { UpdateOwnerCommand } from '../../../../../../appcoretruckassist';
 import { CreateOwnerCommand } from '../../../../../../appcoretruckassist';
@@ -43,7 +43,7 @@ import { FormService } from '../../../services/form/form.service';
   templateUrl: './owner-modal.component.html',
   styleUrls: ['./owner-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, FormService, BankVerificationService],
+  providers: [ModalService, BankVerificationService, FormService],
 })
 export class OwnerModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -52,7 +52,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
   @Input() editData: any;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   public ownerForm: FormGroup;
 
@@ -81,8 +81,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private ownerModalService: OwnerTService,
     private notificationService: NotificationService,
-    private formService: FormService,
-    private bankVerificationService: BankVerificationService
+    private bankVerificationService: BankVerificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -118,13 +118,12 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       this.destroy$
     );
 
-    // this.formService.checkFormChange(this.ownerForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
+    this.formService.checkFormChange(this.ownerForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public tabChange(event: any): void {
@@ -168,7 +167,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.ownerForm.reset();
         break;
       }
       case 'save': {
@@ -177,8 +175,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData?.id) {
-          this.updateOwner(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateOwner(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addOwner();
           this.modalService.setModalSpinner({

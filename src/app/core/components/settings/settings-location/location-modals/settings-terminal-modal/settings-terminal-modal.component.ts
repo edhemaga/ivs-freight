@@ -5,7 +5,7 @@ import {
   parkingSlotValidation,
   phoneExtension,
   terminalNameValidation,
-} from './../../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
@@ -18,7 +18,6 @@ import {
 
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { SettingsLocationService } from '../../../state/location-state/settings-location.service';
-import { FormService } from '../../../../../services/form/form.service';
 import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
@@ -33,6 +32,7 @@ import {
   convertNumberInThousandSep,
 } from '../../../../../utils/methods.calculations';
 import { Address } from '../../../../shared/model/address';
+import { FormService } from '../../../../../services/form/form.service';
 
 @Component({
   selector: 'app-settings-terminal-modal',
@@ -113,9 +113,8 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   public isOfficePhoneExtExist: boolean = false;
   public isParkingPhoneExtExist: boolean = false;
   public isWarehousePhoneExtExist: boolean = false;
-  public isFuelStationPhoneExtExist: boolean = false;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   public terminalName: string = null;
 
@@ -124,8 +123,8 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService,
-    private settingsLocationService: SettingsLocationService
+    private settingsLocationService: SettingsLocationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -203,13 +202,12 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       this.destroy$
     );
 
-    // this.formService.checkFormChange(this.terminalForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
+    this.formService.checkFormChange(this.terminalForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public tabChange(event: any): void {
@@ -224,7 +222,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }): void {
     switch (data.action) {
       case 'close': {
-        this.terminalForm.reset();
         break;
       }
       case 'save': {
@@ -233,8 +230,10 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData?.type === 'edit') {
-          this.updateTerminal(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateTerminal(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addTerminal();
           this.modalService.setModalSpinner({ action: null, status: true });
@@ -645,6 +644,31 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
           this.notificationService.error("Can't load modal dropdowns", 'Error');
         },
       });
+  }
+
+  // Checkbox Card
+  public officeCheckboxCard: boolean = true;
+  public parkingCheckboxCard: boolean = true;
+  public warehouseCheckboxCard: boolean = true;
+
+  public toggleCheckboxCard(action: string) {
+    switch (action) {
+      case 'office': {
+        this.officeCheckboxCard = !this.officeCheckboxCard;
+        break;
+      }
+      case 'parking': {
+        this.parkingCheckboxCard = !this.parkingCheckboxCard;
+        break;
+      }
+      case 'warehouse': {
+        this.warehouseCheckboxCard = !this.warehouseCheckboxCard;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   ngOnDestroy() {

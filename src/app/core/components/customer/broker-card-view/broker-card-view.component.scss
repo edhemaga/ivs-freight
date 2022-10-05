@@ -119,16 +119,9 @@
     width: 408px;
     height: 8px;
     border-radius: 2px;
-    background-color: #ffecd1;
     margin-left: 10px;
     margin-top: 8px;
     margin-bottom: 16px;
-    .inside-fill {
-        height: 8px;
-        width: 30%;
-        border-radius: 2px 0 0 2px;
-        background-color: #ffb74d;
-    }
 }
 .invoice-agein-unlimited {
     white-space: nowrap;
@@ -148,6 +141,26 @@
     .avg-days-invoice {
         margin-left: 6px;
         font-weight: 600 !important;
+        &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+        }
+    }
+}
+.credit-perctange {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 408px;
+    .percntage-broker {
+        font-size: 18px;
+        font-weight: 600;
+        color: $color-gray-dark;
+        line-height: 16px;
         &::-moz-selection {
             color: $color-gray-dark;
             background: rgb(183, 183, 183, 0.2);

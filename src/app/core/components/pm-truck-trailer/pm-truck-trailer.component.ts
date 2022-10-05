@@ -16,11 +16,12 @@ import {
 })
 export class PmTruckTrailerComponent implements OnInit {
   private destroy$ = new Subject<void>();
-  public tableOptions: any = {};
-  public tableData: any[] = [];
-  public viewData: any[] = [];
-  public columns: any[] = [];
-  public selectedTab = 'active';
+  tableOptions: any = {};
+  tableData: any[] = [];
+  viewData: any[] = [];
+  columns: any[] = [];
+  selectedTab = 'active';
+  activeViewMode: string = 'List';
   resetColumns: boolean;
 
   constructor(
@@ -29,7 +30,6 @@ export class PmTruckTrailerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initTableOptions();
     this.sendPMData();
 
     // Reset Columns
@@ -46,18 +46,11 @@ export class PmTruckTrailerComponent implements OnInit {
 
   initTableOptions(): void {
     this.tableOptions = {
-      disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        viewModeActive: 'List',
-        showGeneralPmBtn: true,
-      },
-      config: {
-        showSort: true,
-        sortBy: '',
-        sortDirection: '',
-        disabledColumns: [0],
-        minWidth: 60,
+        viewModeOptions: [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+        ],
       },
       actions: [
         {
@@ -74,11 +67,12 @@ export class PmTruckTrailerComponent implements OnInit {
           contentType: 'delete',
         },
       ],
-      export: true,
     };
   }
 
   sendPMData() {
+    this.initTableOptions();
+
     this.tableData = [
       {
         title: 'Truck',
@@ -205,47 +199,33 @@ export class PmTruckTrailerComponent implements OnInit {
   }
 
   onToolBarAction(event: any) {
-    switch (event.action) {
-      case 'tab-selected': {
-        this.selectedTab = event.tabData.field;
-        this.sendPMData();
-        break;
-      }
-      case 'open-general-pm': {
-        switch (this.selectedTab) {
-          case 'active': {
-            this.modalService.openModal(
-              RepairPmModalComponent,
-              { size: 'small' },
-              {
-                type: 'new',
-                header: 'Truck',
-                action: 'generic-pm',
-              }
-            );
-            break;
+    if (event.action === 'tab-selected') {
+      this.selectedTab = event.tabData.field;
+      this.sendPMData();
+    } else if (event.action === 'open-general-pm') {
+      if (this.selectedTab === 'active') {
+        this.modalService.openModal(
+          RepairPmModalComponent,
+          { size: 'small' },
+          {
+            type: 'new',
+            header: 'Truck',
+            action: 'generic-pm',
           }
-          case 'inactive': {
-            this.modalService.openModal(
-              RepairPmModalComponent,
-              { size: 'small' },
-              {
-                type: 'new',
-                header: 'Trailer',
-                action: 'generic-pm',
-              }
-            );
-            break;
+        );
+      } else {
+        this.modalService.openModal(
+          RepairPmModalComponent,
+          { size: 'small' },
+          {
+            type: 'new',
+            header: 'Trailer',
+            action: 'generic-pm',
           }
-          default: {
-            break;
-          }
-        }
-        break;
+        );
       }
-      default: {
-        break;
-      }
+    } else if (event.action === 'view-mode') {
+      this.activeViewMode = event.mode;
     }
   }
 

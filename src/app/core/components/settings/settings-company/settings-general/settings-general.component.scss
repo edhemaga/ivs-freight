@@ -493,10 +493,14 @@
   margin-top: 8px;
 }
 .no-company-logo {
-  font-size: 48px;
-  position: fixed;
-  margin-top: 30px;
+  // font-size: 48px;
+  position: absolute;
+  // margin-top: 30px;
   font-weight: 900;
   color: #b7b7b7;
+  white-space: nowrap;
+  max-width: 550px;
+  text-overflow: ellipsis;
+  overflow: hidden;
   white-space: nowrap;
 }

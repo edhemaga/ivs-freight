@@ -27,11 +27,12 @@ export class ContactsTableComponent
 {
   private destroy$ = new Subject<void>();
 
-  public tableOptions: any = {};
-  public tableData: any[] = [];
-  public viewData: any[] = [];
-  public columns: any[] = [];
-  public selectedTab = 'active';
+  tableOptions: any = {};
+  tableData: any[] = [];
+  viewData: any[] = [];
+  columns: any[] = [];
+  selectedTab = 'active';
+  activeViewMode: string = 'List';
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
@@ -142,7 +143,7 @@ export class ContactsTableComponent
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
-          }, 1000);
+          }, 2300);
 
           this.updateDataCount();
         }
@@ -183,7 +184,7 @@ export class ContactsTableComponent
 
             this.viewData.splice(contactIndex, 1);
             clearInterval(inetval);
-          }, 1000);
+          }, 900);
 
           this.updateDataCount();
         }
@@ -201,7 +202,7 @@ export class ContactsTableComponent
               this.viewData = this.viewData.map((contact: any) => {
                 response.map((r: any) => {
                   if (contact.id === r.id) {
-                    contact.actionAnimation = 'delete';
+                    contact.actionAnimation = 'deletemultiple';
                   }
                 });
 
@@ -243,17 +244,12 @@ export class ContactsTableComponent
   // Table Options
   public initTableOptions(): void {
     this.tableOptions = {
-      disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        viewModeActive: 'List',
-      },
-      config: {
-        showSort: true,
-        sortBy: '',
-        sortDirection: '',
-        disabledColumns: [0],
-        minWidth: 60,
+        showLabelFilter: true,
+        viewModeOptions: [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+        ],
       },
       actions: [
         {
@@ -271,7 +267,6 @@ export class ContactsTableComponent
           contentType: 'delete',
         },
       ],
-      export: true,
     };
   }
 
@@ -490,7 +485,7 @@ export class ContactsTableComponent
     } else if (event.action === 'view-mode') {
       this.mapingIndex = 0;
 
-      this.tableOptions.toolbarActions.viewModeActive = event.mode;
+      this.activeViewMode = event.mode;
     }
   }
 

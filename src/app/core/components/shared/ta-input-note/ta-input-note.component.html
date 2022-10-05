@@ -2,7 +2,7 @@
   <div *ngIf="isVisibleDivider" class="divider"></div>
   <div class="note-header" [class.active]="_isVisibleNote">
     <div class="note-label" (click)="openNote()">Note</div>
-    <div class="note_tools_container">
+  <div class="note_tools_container" (click)="!_isVisibleNote ? openNote() : ''">
       <app-ta-note-container
         [isExpanded]="_isVisibleNote"
         [range]="range"
@@ -22,8 +22,9 @@
   </div>
   <div
     class="note-body"
+    [ngClass]="noActive"
     #noteBody
-    [@showHideCardBody]="_isVisibleNote ? 'true' : 'false'"
+    [@showHideCardBody]="_isVisibleNote.toString()"
   >
     <div
       #main_editor
@@ -34,7 +35,7 @@
       (input)="changeValue($event.target.innerHTML)"
       (focus)="checkFocus($event)"
       (blur)="prepareForTextRange()"
+      [innerHTML]="note | safeHtml"
     ></div>
   </div>
-  <div *ngIf="isVisibleSecondDivider" class="divider divider-second"></div>
 </div>

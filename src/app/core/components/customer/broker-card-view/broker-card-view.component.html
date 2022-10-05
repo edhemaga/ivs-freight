@@ -65,7 +65,6 @@
     <div class="repair-cards">
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="false"
         [cardName]="'Additional Info'"
         [isCardOpen]="true"
@@ -83,7 +82,6 @@
       </app-ta-custom-card>
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [hasCounter]="20"
         [cardName]="'Paid Invoice'"
@@ -115,23 +113,33 @@
       </app-ta-custom-card>
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [cardName]="'Mileage Rate History'"
         [isCardOpen]="false"
         [tooltipName]="'View in Modal'"
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
       >
-        <div class="charts-template perfomance">
-          <app-ta-tab-switch [tabs]="tabsBroker" [type]="'type2-modal-popup'">
-          </app-ta-tab-switch>
+        <div
+          class="charts-template perfomance"
+          [class.p-0]="mileageChart.hoveringStatus"
+        >
+          <div *ngIf="!mileageChart.hoveringStatus">
+            <app-ta-tab-switch [type]="'type2-modal-popup'" [tabs]="tabsBroker">
+            </app-ta-tab-switch>
+          </div>
+          <app-ta-chart
+            #mileageChart
+            [chartConfig]="mileageChartConfig"
+            [axesProperties]="mileageBarAxes"
+            [legendAttributes]="mileageBarChartLegend"
+          >
+          </app-ta-chart>
         </div>
       </app-ta-custom-card>
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
-        [hasCounter]="invoiceAgeingCounter ? invoiceAgeingCounter : 0"
+        [hasCounter]="invoiceAgeingCounter ? invoiceAgeingCounter : broker?.invoiceAgeingGroup?.countInvoice"
         [cardName]="'Invoice Ageing'"
         [isCardOpen]="true"
       >
@@ -143,18 +151,18 @@
             }}</span>
           </div>
           <div
-            *ngIf="
-              broker.payTerm.name === 'Unlimited'
-            "
+            *ngIf="broker.payTerm.name === 'Unlimited'"
             class="invoice-agein-unlimited"
           >
-          
-          Avg. <span class="avg-days-invoice">42 Days</span>
-        </div>
+            Avg.
+            <span class="avg-days-invoice"
+              >{{ broker?.invoiceAgeingGroup?.averageDays }} Days</span
+            >
+          </div>
         </div>
         <app-progress-invoices
           *ngIf="
-            broker.payTerm.name !== 'Unlimited'
+            broker.payTerm.name !== 'Unlimited' && broker?.invoiceAgeingGroupOne
           "
           [invoiceDays]="broker?.invoiceAgeingGroupOne?.periodOfDays"
           [invoiceCounter]="broker?.invoiceAgeingGroupOne?.countInvoice"
@@ -165,8 +173,7 @@
 
         <app-progress-invoices
           *ngIf="
-            
-            broker.payTerm.name !== 'Unlimited'
+            broker.payTerm.name !== 'Unlimited' && broker?.invoiceAgeingGroupTwo
           "
           [invoiceDays]="broker?.invoiceAgeingGroupTwo?.periodOfDays"
           [invoiceCounter]="broker?.invoiceAgeingGroupTwo?.countInvoice"
@@ -176,8 +183,8 @@
         </app-progress-invoices>
         <app-progress-invoices
           *ngIf="
-           
-            broker.payTerm.name !== 'Unlimited'
+            broker.payTerm.name !== 'Unlimited' &&
+            broker?.invoiceAgeingGroupThree
           "
           [invoiceDays]="broker?.invoiceAgeingGroupThree?.periodOfDays"
           [invoiceCounter]="broker?.invoiceAgeingGroupThree?.countInvoice"
@@ -187,8 +194,8 @@
         </app-progress-invoices>
         <app-progress-invoices
           *ngIf="
-           
-            broker.payTerm.name !== 'Unlimited'
+            broker.payTerm.name !== 'Unlimited' &&
+            broker?.invoiceAgeingGroupFour
           "
           [invoiceDays]="broker?.invoiceAgeingGroupFour?.periodOfDays"
           [invoiceCounter]="broker?.invoiceAgeingGroupFour?.countInvoice"
@@ -200,26 +207,24 @@
 
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [cardName]="'Terms and Credit'"
         [isCardOpen]="true"
       >
-        <div
-          class="invoice-ageing-template"
-          *ngIf="broker.creditType.name !== 'Unlimited'"
-        >
+        <div class="invoice-ageing-template" *ngIf="broker?.availableCredit">
           <div class="invoice-ageing-template-item">
             <span class="header-name">Available Credit</span>
-            <span *ngIf="broker.availableCredit" class="value-ageing">{{
-              broker?.availableCredit | formatCurrency
-            }}</span>
+            <div class="credit-perctange">
+              <span class="value-ageing">{{
+                broker?.availableCredit | formatCurrency
+              }}</span>
+              <div class="percntage-broker">
+                {{ getPercntageOfPaid.toFixed(0) }}%
+              </div>
+            </div>
           </div>
         </div>
-        <div
-          class="progress-container"
-          *ngIf="broker.creditType.name !== 'Unlimited'"
-        >
+        <div class="progress-container" *ngIf="broker.availableCredit">
           <app-ta-currency-progress-bar
             [template]="'broker-credit'"
             [totalAmount]="broker.creditLimit"
@@ -246,15 +251,26 @@
 
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        [animationsDisabled]="false"
         [hasDivider]="true"
         [cardName]="'Payment History'"
         [isCardOpen]="false"
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
       >
-        <div class="charts-template perfomance">
-          <app-ta-tab-switch [tabs]="tabsBroker" [type]="'type2-modal-popup'">
-          </app-ta-tab-switch>
+        <div
+          class="charts-template perfomance"
+          [class.p-0]="paymentChart.hoveringStatus"
+        >
+          <div *ngIf="!paymentChart.hoveringStatus">
+            <app-ta-tab-switch [tabs]="tabsBroker" [type]="'type2-modal-popup'">
+            </app-ta-tab-switch>
+          </div>
+          <app-ta-chart
+            #paymentChart
+            [chartConfig]="paymentChartConfig"
+            [axesProperties]="paymentAxes"
+            [legendAttributes]="paymentChartLegend"
+          >
+          </app-ta-chart>
         </div>
       </app-ta-custom-card>
 
@@ -262,12 +278,12 @@
       <div class="note-cards">
         <app-ta-input-note
           [formControl]="note"
-          [isVisibleSecondDivider]="false"
           [isVisibleArrow]="true"
           [minRows]="1"
           [isVisibleDivider]="false"
           [placeholder]="'Write something.'"
           [customClass]="'note-small'"
+          [note]="broker.note"
         ></app-ta-input-note>
       </div>
     </div>

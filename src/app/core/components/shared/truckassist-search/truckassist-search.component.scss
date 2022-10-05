@@ -3,12 +3,12 @@
 
   .search-container {
     width: fit-content;
-    height: 26px;
+    height: 28px;
     display: flex;
 
     .icon-container {
-      width: 32px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -38,7 +38,7 @@
     }
 
     .search-input {
-      height: 26px;
+      height: 28px;
       width: 0;
       transition: 0.25s;
       input {
@@ -67,7 +67,7 @@
 
   .chips-container {
     width: fit-content;
-    height: 26px;
+    height: 28px;
     display: flex;
     gap: 4px;
     background: #ffffff;
@@ -76,7 +76,7 @@
     .chip {
       cursor: pointer;
       min-width: 57px;
-      height: 26px;
+      height: 28px;
       border-radius: 3px;
       color: #ffffff;
       font-size: 14px;
@@ -191,7 +191,6 @@
 
 @keyframes searchThreeAnimation {
   from {
-    /* -184px */
     left: -140px;
   }
   to {

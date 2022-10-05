@@ -35,6 +35,7 @@ import { TruckassistTableService } from '../../../services/truckassist-table/tru
 import { ImageBase64Service } from '../../../utils/base64.image';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 
 @Component({
   selector: 'app-driver-details-card',
@@ -87,6 +88,7 @@ export class DriverDetailsCardComponent
   public dataTestCard: any;
   public driverObject: any;
   private destroy$ = new Subject<void>();
+  public showMoreEmployment: boolean;
   barChartConfig: any = {
     dataProperties: [
       {
@@ -721,7 +723,7 @@ export class DriverDetailsCardComponent
         id: item.id,
         name: fullname,
         status: item.status,
-        svg: item.owner ? 'driver-owner' : null,
+        svg: item.owner ? 'ic_owner-status.svg' : null,
         folder: 'common',
         active: item.id === this.driver.id,
       };
@@ -736,7 +738,7 @@ export class DriverDetailsCardComponent
           id: item.id,
           name: fullname,
           status: item.status,
-          svg: item.owner ? 'driver-owner' : null,
+          svg: item.owner ? 'ic_owner-status.svg' : null,
           folder: 'common',
           active: item.id === event.id,
         };
@@ -776,7 +778,9 @@ export class DriverDetailsCardComponent
       }
     }
   }
-
+  public onFileAction(action: string) {
+    onFileActionMethods(action);
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

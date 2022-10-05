@@ -1,4 +1,4 @@
-import { SettingsLocationService } from './../../../state/location-state/settings-location.service';
+import { SettingsLocationService } from '../../../state/location-state/settings-location.service';
 import { FormArray, Validators } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {
@@ -19,11 +19,11 @@ import {
 
 import { Subject, takeUntil } from 'rxjs';
 import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
-import { FormService } from '../../../../../services/form/form.service';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
 import { rentValidation } from '../../../../shared/ta-input/ta-input.regex-validations';
+import { FormService } from '../../../../../services/form/form.service';
 import {
   addressValidation,
   addressUnitValidation,
@@ -67,8 +67,9 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
   public departments: any[] = [];
   public selectedDepartmentFormArray: any[] = [];
+  public isDepartmentContactCardOpen: boolean = false;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   public officeName: string = null;
 
@@ -93,8 +94,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService,
-    private settingsLocationService: SettingsLocationService
+    private settingsLocationService: SettingsLocationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -128,13 +129,12 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       this.destroy$
     );
 
-    // this.formService.checkFormChange(this.officeForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
+    this.formService.checkFormChange(this.officeForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public tabChange(event: any): void {
@@ -148,8 +148,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
   public onModalAction(data: { action: string; bool: boolean }): void {
     switch (data.action) {
-      case 'clsoe': {
-        this.officeForm.reset();
+      case 'close': {
         break;
       }
       case 'save': {
@@ -158,8 +157,10 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData?.type === 'edit') {
-          this.updateCompanyOffice(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateCompanyOffice(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addCompanyOffice();
           this.modalService.setModalSpinner({ action: null, status: true });
@@ -234,11 +235,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   }
 
   public onScrollingDepartmentContacts(event: any) {
-    if (event.target.scrollLeft > 1) {
-      this.isContactCardsScrolling = true;
-    } else {
-      this.isContactCardsScrolling = false;
-    }
+    this.isContactCardsScrolling = event.target.scrollLeft > 1;
   }
 
   public onSelectDropdown(event: any, action: string) {

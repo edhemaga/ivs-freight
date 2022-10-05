@@ -17,25 +17,17 @@ export const left = [
       ':enter',
       [
         style({
-          transform: 'translateX(-30%)',
+          transform: 'translateX(-80%)',
           opacity: 0,
-          offset: 0,
-          height: "{{height}}"
+          height: '{{height}}',
         }),
         animate(
-          '.2s ease-out',
+          '.2s',
           keyframes([
-            style({
-              transform: 'translateX(-15%)',
-              opacity: 0.7,
-              offset: 0.9,
-              height: "*"
-            }),
             style({
               transform: 'translateX(0%)',
               opacity: 1,
-              offset: 1,
-              height: "*"
+              height: '*',
             }),
           ])
         ),
@@ -49,13 +41,14 @@ export const left = [
       [
         style({
           transform: 'translateX(0%)',
-          opacity: 0
+          opacity: 0,
         }),
         animate(
-          '.25s ease-out',
+          '.2s',
           style({
-            transform: 'translateX(50%)',
-            opacity: 0
+            transform: 'translateX(80%)',
+            opacity: 0,
+            height: '*',
           })
         ),
       ],
@@ -75,25 +68,17 @@ const right = [
       ':enter',
       [
         style({
-          transform: 'translateX(50%)',
+          transform: 'translateX(80%)',
           opacity: 0,
-          offset: 0,
-          height: "{{height}}"
+          height: '{{height}}',
         }),
         animate(
-          '.2s ease-out',
+          '.2s',
           keyframes([
-            style({
-              transform: 'translateX(25%)',
-              opacity: 0.7,
-              offset: 0.9,
-              height: "*"
-            }),
             style({
               transform: 'translateX(0%)',
               opacity: 1,
-              offset: 1,
-              height: "*"
+              height: '*',
             }),
           ])
         ),
@@ -107,13 +92,14 @@ const right = [
       [
         style({
           transform: 'translateX(0%)',
-          opacity: 0
+          opacity: 0,
         }),
         animate(
-          '.2s ease-out',
+          '.2s',
           style({
-            transform: 'translateX(-50%)',
-            opacity: 0
+            transform: 'translateX(-80%)',
+            opacity: 0,
+            height: '*',
           })
         ),
       ],
@@ -126,6 +112,6 @@ const right = [
 
 export const tab_modal_animation = (type: string) =>
   trigger(type, [
-    transition(':increment', right, {  params: {height: "{{height}}"} }),
-    transition(':decrement', left, {  params: {height: "{{height}}"} }),
+    transition(':increment', right, { params: { height: '{{height}}' } }),
+    transition(':decrement', left, { params: { height: '{{height}}' } }),
   ]);

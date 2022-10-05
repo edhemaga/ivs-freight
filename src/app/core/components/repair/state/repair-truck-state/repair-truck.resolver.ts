@@ -17,12 +17,16 @@ export class RepairTruckResolver implements Resolve<RepairTruckState> {
 
   resolve(): Observable<RepairTruckState | boolean> {
     return this.repairService
-      .getRepairList(undefined, undefined, 1, undefined, undefined, undefined, 1, 25)
+      .getRepairList(undefined, 1, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 1, 25)
       .pipe(
         catchError(() => {
           return of('No repair trucks data...');
         }),
         tap((repairTruckPagination: RepairListResponse) => {
+
+          console.log('RepairTruckResolver');
+          console.log(repairTruckPagination);
+          
           localStorage.setItem(
             'repairTruckTrailerTableCount',
             JSON.stringify({

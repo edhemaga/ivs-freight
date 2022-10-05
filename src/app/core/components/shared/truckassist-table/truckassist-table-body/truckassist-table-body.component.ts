@@ -25,7 +25,6 @@ import { TruckassistTableService } from '../../../../services/truckassist-table/
 import { SharedService } from '../../../../services/shared/shared.service';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 
-
 @Component({
   selector: 'app-truckassist-table-body',
   templateUrl: './truckassist-table-body.component.html',
@@ -75,20 +74,21 @@ export class TruckassistTableBodyComponent
   activeDescriptionDropdown: number = -1;
   descriptionTooltip: any;
   pageHeight: number = window.innerHeight;
-  activeAttachments: number = -1;
-  attachmentsTooltip: any;
-  isAttachmentClosing: boolean;
-  attachmentWidth: number = 0;
+  activeAttachment: number = -1;
+  activeMedia: number = -1;
+  activeInsurance: number = -1;
   statusTooltip: any;
   statusDropdownActive: number = -1;
   statusDropdownData: any;
+  showInspectinDescriptionEdit: boolean;
+  editInspectinDescriptionText: string = '';
 
   constructor(
     private router: Router,
     private tableService: TruckassistTableService,
     private changeDetectorRef: ChangeDetectorRef,
     private sharedService: SharedService,
-    private DetailsDataService: DetailsDataService,
+    private detailsDataService: DetailsDataService
   ) {}
 
   // --------------------------------NgOnInit---------------------------------
@@ -182,11 +182,10 @@ export class TruckassistTableBodyComponent
           this.getSelectedTabTableData();
         }, 10);
       }
-      
-      if (changes.viewData.currentValue[0]){
-        this.DetailsDataService.setNewData(changes.viewData.currentValue[0]);
+
+      if (changes.viewData.currentValue[0]) {
+        this.detailsDataService.setNewData(changes.viewData.currentValue[0]);
       }
-      
     }
 
     if (!changes?.tableData?.firstChange && changes?.tableData) {
@@ -221,12 +220,19 @@ export class TruckassistTableBodyComponent
         changes?.selectedTab?.previousValue &&
       changes?.selectedTab
     ) {
-
       this.selectedTab = changes.selectedTab.currentValue;
 
       this.getSelectedTabTableData();
     }
+
+    if (!changes?.options?.firstChange && changes?.options) {
+      this.options = changes.options.currentValue;
+
+
+      this.setDropContent();
+    }
   }
+
   // --------------------------------NgAfterViewInit---------------------------------
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -340,7 +346,7 @@ export class TruckassistTableBodyComponent
   goToDetails(route: any, row: any) {
     const link =
       route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
-    this.DetailsDataService.setNewData(row);
+    this.detailsDataService.setNewData(row);
     this.router.navigate([link]);
   }
 
@@ -419,6 +425,8 @@ export class TruckassistTableBodyComponent
 
   // Set Dropdown Content
   setDropContent() {
+    this.dropContent = [];
+    
     if (this.options.actions.length) {
       for (let i = 0; i < this.options.actions.length; i++) {
         this.dropContent.push(this.options.actions[i]);
@@ -429,6 +437,7 @@ export class TruckassistTableBodyComponent
   // Toggle Dropdown
   toggleDropdown(tooltip: any, row: any) {
     this.tooltip = tooltip;
+
     if (tooltip.isOpen()) {
       tooltip.close();
     } else {
@@ -437,7 +446,7 @@ export class TruckassistTableBodyComponent
 
     this.dropDownActive = tooltip.isOpen() ? row.id : -1;
     this.rowData = row;
-    this.DetailsDataService.setNewData(row);
+    this.detailsDataService.setNewData(row);
   }
 
   // Toggle Status Dropdown
@@ -478,29 +487,35 @@ export class TruckassistTableBodyComponent
   }
 
   // Show Attachments
-  onShowAttachments(popup: any, row: any) {
-    this.attachmentWidth = document.querySelector('.table-tr').clientWidth;
-
-    if (!popup.isOpen()) {
-      let timeInterval = 0;
-
-      if (this.activeAttachments !== -1 && this.activeAttachments !== row.id) {
-        timeInterval = 250;
-      }
-
-      setTimeout(() => {
-        this.isAttachmentClosing = false;
-        this.attachmentsTooltip = popup;
-
-        if (popup.isOpen()) {
-          popup.close();
-        } else {
-          popup.open({ data: row });
-        }
-
-        this.activeAttachments = popup.isOpen() ? row.id : -1;
-      }, timeInterval);
+  onShowAttachments(row: any) {
+    if (this.activeAttachment !== row.id) {
+      this.activeAttachment = row.id;
+    } else {
+      this.activeAttachment = -1;
     }
+  }
+
+  // Show Media
+  onShowMedia(row: any){
+    if (this.activeMedia !== row.id) {
+      this.activeMedia = row.id;
+    } else {
+      this.activeMedia = -1;
+    }
+  }
+
+  // Show Insurance
+  onShowInsurance(row: any){
+    if (this.activeInsurance !== row.id) {
+      this.activeInsurance = row.id;
+    } else {
+      this.activeInsurance = -1;
+    }
+  }
+
+  // Save Inspectin Description
+  onSaveInspectinDescription() {
+    console.log('Poziva se onSaveInspectinDescription');
   }
 
   // Finish Order

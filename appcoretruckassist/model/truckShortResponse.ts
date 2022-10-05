@@ -39,6 +39,11 @@ export interface TruckShortResponse {
     emptyWeight?: number | null;
     truckEngineType?: TruckEngineTypeResponse;
     tireSize?: TireSizeResponse;
+    fuelTankSize?: number | null;
+    brakes?: EnumValue;
+    frontWheels?: EnumValue;
+    rearWheels?: EnumValue;
+    transmissionModel?: string | null;
     shifter?: EnumValue;
     axles?: number | null;
     insurancePolicy?: string | null;
@@ -46,6 +51,15 @@ export interface TruckShortResponse {
     ipasEzpass?: string | null;
     licensePlate?: string | null;
     fhwaInspection?: string | null;
+    engineOilType?: EnumValue;
+    gearRatio?: EnumValue;
+    apUnit?: EnumValue;
+    tollTransponder?: EnumValue;
+    doubleBunk?: boolean | null;
+    refrigerator?: boolean | null;
+    dcInventer?: boolean | null;
+    blower?: boolean | null;
+    pto?: boolean | null;
     createdAt?: string;
     updatedAt?: string;
 }

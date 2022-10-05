@@ -28,9 +28,12 @@ export class TrailerDetailsCardComponent
   @Input() trailer: TrailerResponse | any;
   @Input() templateCard: boolean = false;
   public note: FormControl = new FormControl();
-  public toggler: boolean = false;
+  public titleNote: FormControl = new FormControl();
+  public registrationNote: FormControl = new FormControl();
+  public inspectionNote: FormControl = new FormControl();
+  public toggler: boolean[] = [];
   public dataEdit: any;
-  public toggleOwner: boolean = true;
+  public toggleOwner: boolean;
   public trailerDropDowns: any[] = [];
   private destroy$ = new Subject<void>();
   public trailer_list: any[] = this.trailerMinimalQuery.getAll();
@@ -61,8 +64,9 @@ export class TrailerDetailsCardComponent
       .subscribe((item) => item);
   }
   /**Function for toggle page in cards */
-  public toggleResizePage(value: boolean) {
-    this.toggler = value;
+  /**Function for toggle page in cards */
+  public toggleResizePage(value: number, indexName: string) {
+    this.toggler[value + indexName] = !this.toggler[value + indexName];
   }
   /**Function for dots in cards */
   public initTableOptions(): void {
@@ -110,6 +114,9 @@ export class TrailerDetailsCardComponent
       return {
         id: item.id,
         name: item.trailerNumber,
+        svg: item.trailerType.logoName,
+        folder: 'common/trailers',
+        status: item.status,
         active: item.id === this.trailer.id,
       };
     });
@@ -120,6 +127,9 @@ export class TrailerDetailsCardComponent
         return {
           id: item.id,
           name: item.trailerNumber,
+          status: item.status,
+          svg: item.trailerType.logoName,
+          folder: 'common/trailers',
           active: item.id === event.id,
         };
       });

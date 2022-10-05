@@ -735,7 +735,9 @@ p {
       font-size: $font-size14;
       font-weight: 400;
       color: $color-gray-dark;
-      height: 18px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       &::-moz-selection {
         color: $color-gray-dark;
         background: rgb(183, 183, 183, 0.2);

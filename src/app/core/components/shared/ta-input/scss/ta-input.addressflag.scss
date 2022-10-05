@@ -1,11 +1,12 @@
+@import "./ta-input.colors.scss";
 .input-address-flag {
   position: absolute;
   top: 2px;
   right: 48px;
   width: 62px;
   height: 18px;
-  background-color: #919191;
-  color: #ffffff;
+  background-color: $input-address-flag-background-color;
+  color: $input-address-flag-text-color;
   text-align: center;
   border-radius: 2px;
   padding-top: 1px;
@@ -26,7 +27,7 @@
   }
 
   &:hover {
-    background-color: #b7b7b7;
+    background-color: $input-address-flag-background-color-hover;
     transition: all 0.3s ease-in-out;
   }
 }

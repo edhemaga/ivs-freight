@@ -6,10 +6,13 @@
   "
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="factoringForm.valid"
+  [isModalValid]="factoringForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="factoringForm" class="form-container">
+  <form
+    [formGroup]="factoringForm"
+    class="form-container form-container-without-mb"
+  >
     <div class="row">
       <div class="col-12">
         <app-ta-input
@@ -20,7 +23,7 @@
             label: 'Company Name',
             isRequired: true,
             textTransform: 'uppercase',
-            autoFocus: editData?.type !== 'edit' ? true : false
+            autoFocus: editData?.type !== 'edit'
           }"
         ></app-ta-input>
       </div>
@@ -34,7 +37,8 @@
             type: 'text',
             label: 'Phone',
             placeholderIcon: 'phone',
-            mask: '(000) 000-0000'
+            mask: '(000) 000-0000',
+            maxLength: 14
           }"
         ></app-ta-input>
       </div>
@@ -76,7 +80,7 @@
           [inputConfig]="{
             name: 'address-unit',
             type: 'text',
-            label: 'Unit #',
+            label: 'Unit No.',
             textTransform: 'uppercase',
             minLength: 1,
             maxLength: 10

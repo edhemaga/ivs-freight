@@ -22,7 +22,7 @@ import {
   selector: 'app-driver-medical-modal',
   templateUrl: './driver-medical-modal.component.html',
   styleUrls: ['./driver-medical-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class DriverMedicalModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -34,7 +34,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -61,13 +61,12 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
       note: [null],
     });
 
-    // this.formService.checkFormChange(this.medicalForm);
-
-    // this.formService.formValueChange$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((isFormChange: boolean) => {
-    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-    //   });
+    this.formService.checkFormChange(this.medicalForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   private getDriverById(id: number) {
@@ -87,7 +86,6 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.medicalForm.reset();
         break;
       }
       case 'save': {
@@ -97,8 +95,10 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData.type === 'edit-medical') {
-          this.updateMedical(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateMedical(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addMedical();
           this.modalService.setModalSpinner({ action: null, status: true });
