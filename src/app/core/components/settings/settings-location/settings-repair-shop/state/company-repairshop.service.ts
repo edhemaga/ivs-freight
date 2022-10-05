@@ -17,13 +17,15 @@ export class CompanyRepairShopService {
     pageSize?: number,
     companyId?: number
   ): Observable<RepairShopListResponse> {
-    return this.companyRepairShop.apiRepairshopListGet(
+    /* return this.companyRepairShop.apiRepairshopListGet(
       null,
       null,
       true,
       pageIndex,
       pageSize,
       companyId
-    );
+    ); */
+
+    return;
   }
 }

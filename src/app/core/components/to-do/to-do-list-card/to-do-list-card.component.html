@@ -340,18 +340,24 @@
                         >
                         </app-profile-images>
                       </div>
+                      <div class="user_tooltip_name_hold">
+                        <div class="user_tooltip_name">{{ user.firstName + ' ' + user.lastName }}</div>
+                      </div>
                     </div>
                   </div>
                   <div class="list-text" *ngIf="item.description">
                     {{ item.description }}
                   </div>
-                  <div class="link" [class.closed]="!item.linkActive">
+                  <div
+                    class="link"
+                    [class.closed]="!item.linkActive"
+                  >
                     {{ item.url }}
                   </div>
                 </div>
                 <div
                   class="comment_main_holder"
-                  [class.closed]="!item.commentActive"
+                  [@showHideCardBody]="item.commentActive ? 'true' : 'false'"
                 >
                   <div class="comment-holder">
                     <div

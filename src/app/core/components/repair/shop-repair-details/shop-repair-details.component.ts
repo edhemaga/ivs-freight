@@ -218,7 +218,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     this.getRepairById(data.id);
     let total;
     this.DetailsDataService.setNewData(data);
-    if (data?.repairs?.length) {
+    /* if (data?.repairs?.length) {
       total = this.sumArr.transform(
         data.repairs.map((item) => {
           return {
@@ -227,7 +227,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
           };
         })
       );
-    }
+    } */
     if (data?.openHoursToday === 'Closed') {
       this.togglerWorkTime = false;
     } else {
