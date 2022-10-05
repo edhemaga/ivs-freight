@@ -16,6 +16,7 @@ export interface CreateDrugAndAlcoholReviewCommand {
     isPhoneValid?: boolean;
     carrierPhoneMessage?: string | null;
     isAddressValid?: boolean;
+    isAddressUnitValid?: boolean;
     addressMessage?: string | null;
     isSapValid?: boolean;
     isSapPhoneValid?: boolean;

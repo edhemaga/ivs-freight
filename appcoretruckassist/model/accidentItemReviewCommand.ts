@@ -15,13 +15,11 @@ export interface AccidentItemReviewCommand {
     isLocationValid?: boolean;
     isDateValid?: boolean;
     locationDateMessage?: string | null;
-    isFatalitiesValid?: boolean;
-    isInjuriesValid?: boolean;
-    isHazmatSpillValid?: boolean;
-    fatalInjurHazmatMessage?: string | null;
     isVehicleTypeValid?: boolean;
     isDescriptionValid?: boolean;
     vehicleTypeDescriptionMessage?: string | null;
+    isPrimary?: boolean;
+    commonMessage?: string | null;
     accidentRecordId?: number;
 }
 

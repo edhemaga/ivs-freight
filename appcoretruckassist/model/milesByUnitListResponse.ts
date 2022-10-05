@@ -9,17 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { MilesByUnitResponsePagination } from './milesByUnitResponsePagination';
 
 
-export interface AccidentItemCommand { 
-    id?: number | null;
-    location?: AddressEntity;
-    date?: string;
-    fatalities?: number | null;
-    injuries?: number | null;
-    hazmatSpill?: boolean;
-    vehicleTypeId?: number;
-    description?: string | null;
+export interface MilesByUnitListResponse { 
+    pagination?: MilesByUnitResponsePagination;
+    activeTruckCount?: number;
+    inactiveTruckCount?: number;
 }
 

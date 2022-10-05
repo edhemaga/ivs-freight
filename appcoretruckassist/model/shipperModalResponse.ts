@@ -9,12 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ShipperContactDepartmentResponse } from './shipperContactDepartmentResponse';
 import { DepartmentResponse } from './departmentResponse';
 
 
 export interface ShipperModalResponse { 
-    departmentsShipperContacts?: Array<ShipperContactDepartmentResponse> | null;
     departments?: Array<DepartmentResponse> | null;
 }
 
