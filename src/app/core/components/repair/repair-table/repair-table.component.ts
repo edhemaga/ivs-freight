@@ -82,6 +82,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     active: 1,
     pinned: undefined,
     companyOwned: undefined,
+    categoryIds: undefined,
+    long: undefined,
+    lat: undefined,
+    distance: undefined,
+    costFrom: undefined,
+    costTo: undefined,
     pageIndex: 1,
     pageSize: 25,
     companyId: undefined,
@@ -593,7 +599,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         filter.sort,
         filter.searchOne,
         filter.searchTwo,
-        filter.searchThree,
+        filter.searchThree
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe((repair: RepairListResponse) => {
@@ -630,15 +636,21 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
   shopBackFilter(
     filter: {
       active?: number;
-      pinned?: boolean;
-      companyOwned?: boolean;
+      pinned?: boolean | undefined;
+      companyOwned?: boolean | undefined;
+      categoryIds?: Array<number> | undefined;
+      long?: number | undefined;
+      lat?: number | undefined;
+      distance?: number | undefined;
+      costFrom?: number | undefined;
+      costTo?: number | undefined;
       pageIndex?: number;
       pageSize?: number;
-      companyId?: number;
-      sort?: string;
-      searchOne?: string | undefined;
-      searchTwo?: string | undefined;
-      searchThree?: string | undefined;
+      companyId?: number | undefined;
+      sort?: string | undefined;
+      search?: string | undefined;
+      search1?: string | undefined;
+      search2?: string | undefined;
     },
     isSearch?: boolean,
     isShowMore?: boolean
@@ -648,13 +660,19 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         filter.active,
         filter.pinned,
         filter.companyOwned,
+        filter.categoryIds,
+        filter.long,
+        filter.lat,
+        filter.distance,
+        filter.costFrom,
+        filter.costTo,
         filter.pageIndex,
         filter.pageSize,
         filter.companyId,
         filter.sort,
-        filter.searchOne,
-        filter.searchTwo,
-        filter.searchThree
+        filter.search,
+        filter.search1,
+        filter.search2
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe((shop: RepairShopListResponse) => {
