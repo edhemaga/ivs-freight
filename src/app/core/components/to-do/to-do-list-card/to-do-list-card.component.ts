@@ -174,7 +174,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private confirmationService: ConfirmationService,
     private imageBase64Service: ImageBase64Service,
-    private DetailsDataService: DetailsDataService,
+    private DetailsDataService: DetailsDataService
   ) {}
 
   ngOnInit(): void {
@@ -182,7 +182,11 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     this.initTableOptions();
     this.todoTest = this.todoQuery.selectTodoList$;
     this.todoQuery.selectTodoList$.subscribe((resp) => {
-      this.updateTodosList(resp.pagination.data);
+      if (resp.length) {
+        resp.map((item) => {
+          this.updateTodosList(item.pagination.data);
+        });
+      }
     });
 
     this.confirmationService.confirmationData$
@@ -368,7 +372,9 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
   toggleComment(e: Event, mainIndx: number, indx: number) {
     e.preventDefault();
     e.stopPropagation();
-    this.DetailsDataService.setNewData(this.scene.children[mainIndx].children[indx]);
+    this.DetailsDataService.setNewData(
+      this.scene.children[mainIndx].children[indx]
+    );
     this.scene.children[mainIndx].children[indx]['commentActive'] =
       !this.scene.children[mainIndx].children[indx]['commentActive'];
   }
