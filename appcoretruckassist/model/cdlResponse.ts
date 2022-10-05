@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { CdlEndorsementResponse } from './cdlEndorsementResponse';
+import { FileResponse } from './fileResponse';
 import { CdlRestrictionResponse } from './cdlRestrictionResponse';
 import { EnumValue } from './enumValue';
 import { StateResponse } from './stateResponse';
@@ -29,5 +30,6 @@ export interface CdlResponse {
     note?: string | null;
     createdAt?: string;
     updatedAt?: string;
+    file?: FileResponse;
 }
 

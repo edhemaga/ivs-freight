@@ -13,8 +13,6 @@
 
 export interface CdlReviewResponse { 
     id?: number;
-    isCdlDenieValid?: boolean;
-    cdlDeniedMessage?: string | null;
     isCdlDeniedExplanationValid?: boolean;
     cdlDeniedExplanationMessage?: string | null;
     cdlInformationId?: number;

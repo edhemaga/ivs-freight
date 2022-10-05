@@ -13,7 +13,6 @@ import { RepairByUnitResponse } from './repairByUnitResponse';
 import { RepairShopOpenHoursResponse } from './repairShopOpenHoursResponse';
 import { BankResponse } from './bankResponse';
 import { EnumValue } from './enumValue';
-import { RepairResponse } from './repairResponse';
 import { RepairShopServiceTypeResponse } from './repairShopServiceTypeResponse';
 import { AddressEntity } from './addressEntity';
 import { ReviewResponse } from './reviewResponse';
@@ -52,7 +51,6 @@ export interface RepairShopResponse {
     serviceTypes?: Array<RepairShopServiceTypeResponse> | null;
     openHours?: Array<RepairShopOpenHoursResponse> | null;
     reviews?: Array<ReviewResponse> | null;
-    repairs?: Array<RepairResponse> | null;
     repairsByUnit?: Array<RepairByUnitResponse> | null;
 }
 

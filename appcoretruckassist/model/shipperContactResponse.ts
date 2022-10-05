@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ShipperContactDepartmentResponse } from './shipperContactDepartmentResponse';
+import { DepartmentResponse } from './departmentResponse';
 
 
 export interface ShipperContactResponse { 
     id?: number;
     fullName?: string | null;
-    department?: ShipperContactDepartmentResponse;
+    department?: DepartmentResponse;
     phone?: string | null;
     phoneExt?: string | null;
     email?: string | null;

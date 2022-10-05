@@ -26,6 +26,7 @@ api/inspection.service.ts
 api/load.service.ts
 api/map.service.ts
 api/medical.service.ts
+api/miles.service.ts
 api/mvr.service.ts
 api/owner.service.ts
 api/ownerHistory.service.ts
@@ -119,8 +120,6 @@ model/cdlReviewResponse.ts
 model/checkOwnerSsnEinResponse.ts
 model/classOfEquipmentCommand.ts
 model/classOfEquipmentResponse.ts
-model/classOfEquipmentReviewCommand.ts
-model/classOfEquipmentReviewResponse.ts
 model/classType.ts
 model/colorResponse.ts
 model/commentByEntityTypeListResponse.ts
@@ -170,7 +169,6 @@ model/createAuthorizationCommand.ts
 model/createAuthorizationReviewCommand.ts
 model/createBankCommand.ts
 model/createBrokerCommand.ts
-model/createCdlCommand.ts
 model/createCommentCommand.ts
 model/createCompanyAccountCommand.ts
 model/createCompanyAccountLabelCommand.ts
@@ -180,8 +178,6 @@ model/createCompanyOfficeCommand.ts
 model/createCompanyUserCommand.ts
 model/createContactEmailCommand.ts
 model/createContactPhoneCommand.ts
-model/createDisclosureReleaseCommand.ts
-model/createDisclosureReleaseReviewCommand.ts
 model/createDispatchCommand.ts
 model/createDivisionCompanyCommand.ts
 model/createDriverCommand.ts
@@ -232,7 +228,6 @@ model/deleteMultipleApplicationsCommand.ts
 model/departmentContactResponse.ts
 model/departmentResponse.ts
 model/disclosureReleaseFeedbackResponse.ts
-model/disclosureReleaseReviewResponse.ts
 model/dispatchBoardListResponse.ts
 model/dispatchBoardResponse.ts
 model/dispatchBoardResponsePagination.ts
@@ -258,12 +253,10 @@ model/driverMinimalResponse.ts
 model/driverMinimalResponsePagination.ts
 model/driverResponse.ts
 model/driverRightsFeedbackResponse.ts
-model/driverRightsReviewResponse.ts
 model/driverShortResponse.ts
 model/driverShortResponsePagination.ts
 model/drugAndAlcoholFeedbackResponse.ts
 model/drugAndAlcoholReviewResponse.ts
-model/editCdlCommand.ts
 model/editEFSFuelTransactionCommand.ts
 model/editFuelCardCommand.ts
 model/editFuelItemCommand.ts
@@ -285,6 +278,7 @@ model/eventModalResponse.ts
 model/eventResponse.ts
 model/eventType.ts
 model/factoringCompany.ts
+model/fileResponse.ts
 model/fleetType.ts
 model/forgotPasswordCommand.ts
 model/fuelCardListResponse.ts
@@ -301,6 +295,8 @@ model/fuelStopShortResponse.ts
 model/fuelTransactionListResponse.ts
 model/fuelTransactionResponse.ts
 model/fuelTransactionResponsePagination.ts
+model/fuelledVehicleHistoryListResponse.ts
+model/fuelledVehicleResponse.ts
 model/getApplicantListQuery.ts
 model/getApplicantListResponse.ts
 model/getAvailableCreditEFSQuery.ts
@@ -378,6 +374,10 @@ model/mapMinimalResponsePagination.ts
 model/mapResponse.ts
 model/medicalResponse.ts
 model/milesByStateResponse.ts
+model/milesByUnitListResponse.ts
+model/milesByUnitResponse.ts
+model/milesByUnitResponsePagination.ts
+model/milesStopResponse.ts
 model/models.ts
 model/moveMultipleToApplicantsCommand.ts
 model/moveToApplicantsCommand.ts
@@ -481,7 +481,6 @@ model/setNewPasswordCommand.ts
 model/sevenDaysHosFeedbackResponse.ts
 model/sevenDaysHosReviewResponse.ts
 model/shipperContactCommand.ts
-model/shipperContactDepartmentResponse.ts
 model/shipperContactResponse.ts
 model/shipperListResponse.ts
 model/shipperMinimalListResponse.ts
