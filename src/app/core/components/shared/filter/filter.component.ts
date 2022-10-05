@@ -2331,6 +2331,23 @@ export class FilterComponent implements OnInit, AfterViewInit {
       thirdFormChanged = 'changed';
     }
 
+
+    let formsActive = 0;
+
+    if ( firstFrom || firstTo) {
+      formsActive = formsActive + 1;
+    }
+
+    if ( secFrom || secTo ) {
+      formsActive = formsActive + 1;
+    }
+
+    if ( thirdFrom || thirdTo ) {
+      formsActive = formsActive + 1;
+    }
+
+    this.activeFormNum = formsActive;
+
     if ( firstFormChanged == 'changed' || secondFormChanged == 'changed' || thirdFormChanged == 'changed' ) {
       this.setButtonAvailable = true;
     } else {
