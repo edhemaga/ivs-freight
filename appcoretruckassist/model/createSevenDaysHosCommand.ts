@@ -10,13 +10,14 @@
  * Do not edit the class manually.
  */
 import { HosCommand } from './hosCommand';
+import { AddressEntity } from './addressEntity';
 
 
 export interface CreateSevenDaysHosCommand { 
     hos?: Array<HosCommand> | null;
     releasedFromWork?: boolean;
     releasedDate?: string;
-    location?: string | null;
+    location?: AddressEntity;
     workingForAnotherEmployer?: boolean;
     intendToWorkForAnotherEmployer?: boolean;
     certifyInfomation?: boolean;

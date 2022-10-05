@@ -9,17 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
 
 
-export interface AccidentItemCommand { 
-    id?: number | null;
-    location?: AddressEntity;
-    date?: string;
-    fatalities?: number | null;
-    injuries?: number | null;
-    hazmatSpill?: boolean;
-    vehicleTypeId?: number;
-    description?: string | null;
+export interface FileResponse { 
+    url?: string | null;
+    fileName?: string | null;
 }
 

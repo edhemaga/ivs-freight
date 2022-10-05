@@ -13,8 +13,6 @@ import { CdlLicenseReviewCommand } from './cdlLicenseReviewCommand';
 
 
 export interface CreateApplicantCdlReviewCommand { 
-    isCdlDenieValid?: boolean;
-    cdlDeniedMessage?: string | null;
     isCdlDeniedExplanationValid?: boolean;
     cdlDeniedExplanationMessage?: string | null;
     cdlInformationId?: number;
