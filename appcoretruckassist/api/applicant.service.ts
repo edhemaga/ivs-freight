@@ -34,8 +34,6 @@ import { CreateApplicantCdlReviewCommand } from '../model/models';
 import { CreateApplicantCommand } from '../model/models';
 import { CreateAuthorizationCommand } from '../model/models';
 import { CreateAuthorizationReviewCommand } from '../model/models';
-import { CreateDisclosureReleaseCommand } from '../model/models';
-import { CreateDisclosureReleaseReviewCommand } from '../model/models';
 import { CreateDrugAndAlcoholCommand } from '../model/models';
 import { CreateDrugAndAlcoholReviewCommand } from '../model/models';
 import { CreateEducationCommand } from '../model/models';
@@ -1892,68 +1890,6 @@ export class ApplicantService {
     }
 
     /**
-     * @param createDisclosureReleaseCommand 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiApplicantDisclosurereleasePost(createDisclosureReleaseCommand?: CreateDisclosureReleaseCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiApplicantDisclosurereleasePost(createDisclosureReleaseCommand?: CreateDisclosureReleaseCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiApplicantDisclosurereleasePost(createDisclosureReleaseCommand?: CreateDisclosureReleaseCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiApplicantDisclosurereleasePost(createDisclosureReleaseCommand?: CreateDisclosureReleaseCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        let credential: string | undefined;
-        // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
-        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/applicant/disclosurerelease`,
-            createDisclosureReleaseCommand,
-            {
-                responseType: <any>responseType,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
      * @param updateDisclosureReleaseCommand 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -2005,68 +1941,6 @@ export class ApplicantService {
 
         return this.httpClient.put<object>(`${this.configuration.basePath}/api/applicant/disclosurerelease`,
             updateDisclosureReleaseCommand,
-            {
-                responseType: <any>responseType,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param createDisclosureReleaseReviewCommand 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiApplicantDisclosurereleaseReviewPost(createDisclosureReleaseReviewCommand?: CreateDisclosureReleaseReviewCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiApplicantDisclosurereleaseReviewPost(createDisclosureReleaseReviewCommand?: CreateDisclosureReleaseReviewCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiApplicantDisclosurereleaseReviewPost(createDisclosureReleaseReviewCommand?: CreateDisclosureReleaseReviewCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiApplicantDisclosurereleaseReviewPost(createDisclosureReleaseReviewCommand?: CreateDisclosureReleaseReviewCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        let credential: string | undefined;
-        // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
-        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/applicant/disclosurerelease/review`,
-            createDisclosureReleaseReviewCommand,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

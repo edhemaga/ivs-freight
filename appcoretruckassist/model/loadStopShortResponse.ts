@@ -14,6 +14,7 @@ import { ShipperShortResponse } from './shipperShortResponse';
 
 
 export interface LoadStopShortResponse { 
+    loadNumber?: string | null;
     stopType?: EnumValue;
     stopOrder?: number;
     shipper?: ShipperShortResponse;

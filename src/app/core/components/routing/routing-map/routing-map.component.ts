@@ -44,6 +44,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   @ViewChild('mapToolbar') mapToolbar: any;
   @ViewChild('t2') t2: any;
+  dropdownWidth: string = 'w-col-229';
 
   @HostListener('mousemove', ['$event']) onMouseOver(event) {
     if (this.stopPickerActive && this.focusedRouteIndex != null) {
@@ -806,7 +807,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
   public onHandleAddress(event: any, route, index) {
     this.addressInputs.at(index).reset();
-    if (event.action == 'confirm' && event.address) {
+    if (event.address) {
       var request = {
         query: event.address.address,
         fields: ['formatted_address', 'place_id', 'name', 'geometry'],
@@ -1578,34 +1579,45 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
   calculateRouteWidth(route) {
     var widthNumber = 312;
+    this.dropdownWidth = 'w-col-229';
 
     if (route.expanded) {
       if (this.tableData[this.selectedMapIndex].addressType == 'address') {
         if (route.fuelPrice && route.hasEmptyMiles) {
           widthNumber = 792;
+          this.dropdownWidth = 'w-col-709';
         } else if (route.fuelPrice && !route.hasEmptyMiles) {
           widthNumber = 664;
+          this.dropdownWidth = 'w-col-582';
         } else if (!route.fuelPrice && route.hasEmptyMiles) {
           widthNumber = 640;
+          this.dropdownWidth = 'w-col-557';
         } else {
           widthNumber = 512;
+          this.dropdownWidth = 'w-col-429';
         }
       } else {
         if (route.fuelPrice && route.hasEmptyMiles) {
           widthNumber = 712;
+          this.dropdownWidth = 'w-col-629';
         } else if (route.fuelPrice && !route.hasEmptyMiles) {
           widthNumber = 584;
+          this.dropdownWidth = 'w-col-501';
         } else if (!route.fuelPrice && route.hasEmptyMiles) {
           widthNumber = 560;
+          this.dropdownWidth = 'w-col-477';
         } else {
           widthNumber = 432;
+          this.dropdownWidth = 'w-col-348';
         }
       }
     } else {
       if (this.tableData[this.selectedMapIndex].addressType == 'address') {
         widthNumber = 392;
+        this.dropdownWidth = 'w-col-310';
       } else {
         widthNumber = 312;
+        this.dropdownWidth = 'w-col-229';
       }
     }
 

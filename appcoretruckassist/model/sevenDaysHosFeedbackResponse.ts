@@ -11,6 +11,7 @@
  */
 import { HosResponse } from './hosResponse';
 import { SevenDaysHosReviewResponse } from './sevenDaysHosReviewResponse';
+import { AddressEntity } from './addressEntity';
 
 
 export interface SevenDaysHosFeedbackResponse { 
@@ -18,7 +19,7 @@ export interface SevenDaysHosFeedbackResponse {
     hos?: Array<HosResponse> | null;
     releasedFromWork?: boolean;
     releasedDate?: string;
-    location?: string | null;
+    location?: AddressEntity;
     workingForAnotherEmployer?: boolean;
     intendToWorkForAnotherEmployer?: boolean;
     certifyInfomation?: boolean;

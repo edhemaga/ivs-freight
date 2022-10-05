@@ -11,7 +11,6 @@
  */
 import { TrailerLengthResponse } from './trailerLengthResponse';
 import { TrailerTypeResponse } from './trailerTypeResponse';
-import { ClassOfEquipmentReviewResponse } from './classOfEquipmentReviewResponse';
 import { TruckTypeResponse } from './truckTypeResponse';
 
 
@@ -21,6 +20,5 @@ export interface ClassOfEquipmentResponse {
     trailerType?: TrailerTypeResponse;
     trailerLength?: TrailerLengthResponse;
     workExperienceItemId?: number;
-    classOfEquipmentReview?: ClassOfEquipmentReviewResponse;
 }
 

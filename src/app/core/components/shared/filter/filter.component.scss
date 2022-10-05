@@ -656,7 +656,7 @@
 
         &:hover {
           cursor: pointer;
-          background-color: #536bc2;
+          background-color: #98B9EA;
           color: #fff;
         }
       }
@@ -859,7 +859,7 @@
       justify-content: center;
       align-items: center;
       font-size: 14px;
-      font-weight: 600;
+      //font-weight: 600;
       color: #aaaaaa;
 
       .invalid-message {
@@ -915,7 +915,7 @@
     .form-name {
       font-size: 14px;
       font-weight: 800;
-      color: #6c6c6c;
+      color: #FFF;
     }
 
     .hide-money-form {
@@ -965,17 +965,18 @@
     height: 20px;
     width: 54px;
 
-    color: #6c6c6c;
+    color: #fff;
+    
     font-size: 11px;
     font-weight: bold;
 
-    background-color: #f3f3f3;
+    background-color: rgba(255, 255, 255, 0.2);
     border-radius: 2px;
     cursor: pointer;
 
     &:hover {
-      background-color: #6c6c6c;
-      color: #ffffff;
+      background-color: rgb(255 255 255 / 40%);
+      color: #fff;
     }
   }
 }

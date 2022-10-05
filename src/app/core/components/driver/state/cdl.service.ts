@@ -2,10 +2,10 @@ import { Injectable, OnDestroy } from '@angular/core';
 import {
   CdlResponse,
   CdlService,
-  CreateCdlCommand,
+  /* CreateCdlCommand, */
   CreateResponse,
   DriverResponse,
-  EditCdlCommand,
+  /* EditCdlCommand, */
   GetCdlModalResponse,
 } from 'appcoretruckassist';
 /* import { CreateCdlResponse } from 'appcoretruckassist/model/createCdlResponse'; */
@@ -34,7 +34,7 @@ export class CdlTService implements OnDestroy {
   ) {}
 
   /* Observable<CreateCdlResponse> */
-  public addCdl(data: CreateCdlCommand): Observable<CreateResponse> {
+  public addCdl(data: /* CreateCdlCommand */ any): Observable<CreateResponse> {
     return this.cdlService.apiCdlPost(data).pipe(
       tap((res: CreateResponse) => {
         const subDriver = this.driverService

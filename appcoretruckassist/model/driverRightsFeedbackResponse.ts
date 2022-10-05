@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DriverRightsReviewResponse } from './driverRightsReviewResponse';
 
 
 export interface DriverRightsFeedbackResponse { 
@@ -17,7 +16,6 @@ export interface DriverRightsFeedbackResponse {
     understandDriverRights?: boolean | null;
     reviewed?: boolean | null;
     approved?: boolean | null;
-    driverRightReview?: DriverRightsReviewResponse;
     applicantId?: number;
 }
 
