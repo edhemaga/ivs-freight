@@ -1286,6 +1286,13 @@ export class TaInputComponent
       }
     }
 
+    if (
+      ['input dropdown label'].includes(this.inputConfig.name.toLowerCase())
+    ) {
+      this.disableConsecutivelySpaces(event);
+      this.disableConsecutivelyPoints(event);
+    }
+
     this.input.nativeElement.value.trim();
   }
 
