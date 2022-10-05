@@ -200,6 +200,45 @@ export class RepairTService implements OnDestroy {
     );
   }
 
+  // Get Repair List Details
+  public getRepairListDetails(
+    repairShopId?: number,
+    unitType?: number,
+    dateFrom?: string,
+    dateTo?: string,
+    isPM?: number,
+    categoryIds?: Array<number>,
+    pmTruckTitles?: Array<string>,
+    pmTrailerTitles?: Array<string>,
+    isOrder?: boolean,
+    pageIndex?: number,
+    pageSize?: number,
+    companyId?: number,
+    sort?: string,
+    search?: string,
+    search1?: string,
+    search2?: string
+  ): Observable<RepairListResponse> {
+    return this.repairService.apiRepairListGet(
+      repairShopId,
+      unitType,
+      dateFrom,
+      dateTo,
+      isPM,
+      categoryIds,
+      pmTruckTitles,
+      pmTrailerTitles,
+      isOrder,
+      pageIndex,
+      pageSize,
+      companyId,
+      sort,
+      search,
+      search1,
+      search2
+    );
+  }
+
   public getRepairById(id: number): Observable<RepairResponse> {
     return this.repairService.apiRepairIdGet(id);
   }

@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -28,6 +29,8 @@ import { RepairTService } from '../../state/repair.service';
 })
 export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
   @Input() shopData: RepairShopResponse | any = null;
+  @Input() repairsData: any;
+  public data;
   public dummyData: any;
   public reviewsRepair: any = [];
   public repairShopLikes: number;
@@ -39,7 +42,8 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
     private dropDownService: DropDownService,
     private modalService: ModalService,
     private confirmationService: ConfirmationService,
-    private shopService: RepairTService
+    private shopService: RepairTService,
+    private act_route: ActivatedRoute
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.shopData?.currentValue != changes.shopData?.previousValue) {
@@ -48,7 +52,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
       this.repairShopDislike =
         changes.shopData.currentValue.data.downRatingCount;
       this.getReviews(changes.shopData.currentValue.data);
-      changes?.shopData?.currentValue?.data?.repairs.map((item) => {
+      changes?.repairsData?.currentValue?.map((item) => {
         this.showRepairItems[item.id] = false;
       });
     }

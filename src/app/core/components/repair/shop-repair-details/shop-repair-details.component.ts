@@ -38,6 +38,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
   public currentIndex: number = 0;
   public repairObject: any;
   public togglerWorkTime: boolean;
+  public repairsData: any;
   constructor(
     private act_route: ActivatedRoute,
     private detailsPageDriverService: DetailsPageService,
@@ -56,6 +57,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.repairsData = this.act_route.snapshot.data.repairs.pagination.data;
     this.currentIndex = this.repairList.findIndex(
       (shop) => shop.id === this.act_route.snapshot.data.shop.id
     );
@@ -66,6 +68,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         if (res.animation === 'update' && res.tab === 'repair-shop') {
           this.shopConf(res.data);
+
           this.cdRef.detectChanges();
         }
       });
@@ -101,6 +104,8 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         query.pipe(takeUntil(this.destroy$)).subscribe({
           next: (res: RepairShopResponse) => {
             this.shopConf(res);
+            this.repairsData =
+              this.act_route.snapshot.data.repairs.pagination.data;
             if (this.router.url.includes('shop-details')) {
               this.router.navigate([`/repair/${res.id}/shop-details`]);
             }
@@ -242,7 +247,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         template: 'repair',
         icon: true,
         repairOpen: data?.openHoursToday === 'Closed' ? false : true,
-        length: data?.repairs?.length ? data.repairs.length : 0,
+        length: this.repairsData.length,
         customText: 'Date',
         total: total,
         icons: [
