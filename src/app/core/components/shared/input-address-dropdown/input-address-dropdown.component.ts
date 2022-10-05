@@ -6,6 +6,8 @@ import {
   OnInit,
   Output,
   Self,
+  ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 import { filter, Subject, switchMap, takeUntil } from 'rxjs';
 import { AddressService } from 'src/app/core/services/shared/address.service';
@@ -21,13 +23,18 @@ import { ITaInput } from '../ta-input/ta-input.config';
 @Component({
   selector: 'app-input-address-dropdown',
   templateUrl: './input-address-dropdown.component.html',
-  styleUrls: ['./input-address-dropdown.component.scss'],
+  styleUrls: [
+    './input-address-dropdown.component.scss',
+    '../ta-input/ta-input.component.scss',
+  ],
+  encapsulation: ViewEncapsulation.None,
 })
 export class InputAddressDropdownComponent
   implements OnInit, ControlValueAccessor, OnDestroy
 {
   private destroy$ = new Subject<void>();
   public addressForm!: FormGroup;
+  @ViewChild('inputDropdown') inputDropdown: any;
   @Input() set activeAddress(value) {
     if (this.addressForm && value?.address) {
       this.addressForm.controls['address'].setValue(value.address);
@@ -36,15 +43,35 @@ export class InputAddressDropdownComponent
   addresList: any[] = [];
   currentAddress: any;
   searchLayers: any[] = [];
+  currentAddressData: any;
   @Input() inputConfig: ITaInput;
-  @Input() placeholderType: string;
+  @Input() set placeholderType(value) {
+    this.checkSearchLayers(value);
+  }
+  @Input() commandHandler: any;
+  @Input() isRouting: boolean = false;
+  addressExpanded: boolean = false;
+  chosenFromDropdown: boolean = false;
+  stopType: string = 'EMPTY';
   @Output() selectedAddress: EventEmitter<{
     address: AddressEntity;
     valid: boolean;
     longLat: any;
-  }> = new EventEmitter<{ address: AddressEntity; valid: boolean; longLat: any; }>(null);
+  }> = new EventEmitter<{
+    address: AddressEntity;
+    valid: boolean;
+    longLat: any;
+  }>(null);
 
-  @Output() closeDropdown: EventEmitter<boolean> = new EventEmitter<boolean>(null);
+  @Output() closeDropdown: EventEmitter<boolean> = new EventEmitter<boolean>(
+    null
+  );
+
+  @Output() commandEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
+    null
+  );
+
+  @Output() changeFlag: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(
     @Self() public superControl: NgControl,
@@ -65,16 +92,17 @@ export class InputAddressDropdownComponent
   registerOnTouched(fn: any): void {}
 
   ngOnInit(): void {
-
     this.getSuperControl.valueChanges
       .pipe(
         takeUntil(this.destroy$),
-        filter((term: string ) => { return term?.length >= 3}),
+        filter((term: string) => {
+          if (!term) {
+            this.addresList = [];
+          }
+          return term?.length >= 3;
+        }),
         switchMap((query) => {
-          return this.addressService.getAddresses(
-            query,
-            this.searchLayers
-          );
+          return this.addressService.getAddresses(query, this.searchLayers);
         })
       )
       .subscribe((res) => {
@@ -88,20 +116,11 @@ export class InputAddressDropdownComponent
       });
   }
 
-  ngAfterViewInit(): void {
-    this.searchLayers =
-      this.placeholderType == 'longAddress'
-        ? ['Address']
-        : this.placeholderType == 'shortAddress'
-        ? ['Locality']
-        : [];
-  }
-
   get getSuperControl() {
     return this.superControl.control;
   }
 
-  public onCloseDropdown(e){
+  public onCloseDropdown(e) {
     this.closeDropdown.emit(e);
   }
 
@@ -110,13 +129,16 @@ export class InputAddressDropdownComponent
       case 'address': {
         this.activeAddress = event;
         if (event?.address) {
-          this.selectedAddress.emit({
+          this.currentAddressData = {
             address: event.address,
             valid: true,
-            longLat: event.longLat
-          });
+            longLat: event.longLat,
+          };
+          this.selectedAddress.emit(this.currentAddressData);
           this.getSuperControl.setValue(event.address.address);
+          this.chosenFromDropdown = true;
         } else {
+          this.currentAddressData = null;
           this.addresList = [];
           this.getSuperControl.setValue(null);
         }
@@ -125,6 +147,59 @@ export class InputAddressDropdownComponent
       default: {
         break;
       }
+    }
+  }
+
+  onCommands(e, type) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if ((type == 'confirm' && this.currentAddressData) || type == 'cancel') {
+      if (type == 'confirm') {
+        this.commandEvent.emit(this.currentAddressData);
+      }
+
+      this.currentAddressData = null;
+      this.addressExpanded = false;
+      this.addresList = [];
+      this.getSuperControl.setValue(null);
+      this.activeAddress = null;
+      this.inputDropdown?.inputRef?.clearInput(e);
+      this.chosenFromDropdown = false;
+    }
+  }
+
+  addressExpand() {
+    if (!this.addressExpanded) {
+      this.addressExpanded = true;
+    }
+  }
+
+  checkSearchLayers(value) {
+    this.searchLayers =
+      value == 'longAddress'
+        ? ['Address']
+        : value == 'shortAddress'
+        ? ['Locality']
+        : [];
+  }
+
+  changeStopType() {
+    let flag = false;
+    if (this.stopType == 'EMPTY') {
+      this.stopType = 'LOADED';
+      flag = true;
+    } else {
+      this.stopType = 'EMPTY';
+    }
+
+    this.changeFlag.emit(flag);
+
+    if (!this.chosenFromDropdown) {
+      this.inputDropdown?.inputRef?.input.nativeElement.focus();
+      setTimeout(()=>{
+        this.inputDropdown.inputRef.focusInput = true;
+      }, 500);
     }
   }
 
