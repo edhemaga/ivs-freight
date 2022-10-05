@@ -411,7 +411,8 @@
             'add-new': option.name === 'Add New',
             'add-new-divider': option.name === 'Add New' && options.length > 1,
             active: option.id === activeItem?.id,
-            'active-repair-truck-trailer': option?.status === 1
+            'active-repair-truck-trailer': option?.status === 1,
+            'routing_dropdown': inputConfig.name == 'RoutingAddress'
           }"
           (click)="onActiveItem(option)"
           [innerHtml]="
