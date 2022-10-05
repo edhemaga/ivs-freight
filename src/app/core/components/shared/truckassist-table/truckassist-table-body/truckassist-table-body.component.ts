@@ -504,7 +504,7 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  // 
+  // Show Insurance
   onShowInsurance(row: any){
     if (this.activeInsurance !== row.id) {
       this.activeInsurance = row.id;

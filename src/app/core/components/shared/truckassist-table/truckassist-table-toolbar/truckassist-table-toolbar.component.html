@@ -1,5 +1,6 @@
 <div
   class="toolbar-container"
+  [ngClass]="{'mapToolbarStyle': isMapShowning}"
   [ngStyle]="{ width: toolbarWidth, 'max-width.px': maxToolbarWidth }"
 >
   <!-- LIST NAME -->
