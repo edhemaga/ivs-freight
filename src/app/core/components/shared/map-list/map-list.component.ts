@@ -12,6 +12,7 @@ import {
   ContentChildren,
   QueryList,
   SecurityContext,
+  ViewEncapsulation
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MapsService } from '../../../services/shared/maps.service';
@@ -23,6 +24,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   selector: 'app-map-list',
   templateUrl: './map-list.component.html',
   styleUrls: ['./map-list.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MapListComponent implements OnInit, OnChanges, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -61,6 +63,19 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.mapListContent) {
       this.checkResizeButton();
+
+      console.log('changes mapListContent', changes.mapListContent);
+
+      this.mapListContent.map((data, index) => {
+        console.log('data.actionAnimation', data.actionAnimation);
+
+        if (
+          (data.actionAnimation == 'delete')
+        ) {
+          this.deleteAnimation(data.id);
+          console.log('delete shipper animation', data);
+        }
+      });
 
       //console.log('changes.mapListContent');
       // if ( this.searchForm?.get('search').value ) {
@@ -104,16 +119,23 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
     var mapListElement =
       document.querySelectorAll<HTMLElement>('.map-list-body')[0];
 
+    var mapListContainer = document.querySelectorAll<HTMLElement>(
+      '.map-list-container'
+    )[0];
+
+    var containerHeight = mapListContainer.clientHeight; // total height - padding
+
     var mapListHeight = mapListElement.clientHeight;
+    var expandedHeight = mapListElement.scrollHeight;
     mapListElement.style.height = mapListHeight + 'px';
 
     if (this.mapListExpanded) {
       setTimeout(() => {
-        mapListElement.style.height = mapListHeight * 2 + 'px';
+        mapListElement.style.height = expandedHeight + 'px';
       }, 10);
     } else {
       setTimeout(() => {
-        mapListElement.style.height = mapListHeight / 2 + 'px';
+        mapListElement.style.height = ((containerHeight / 2) - 110) + 'px';
       }, 10);
     }
   }
@@ -190,11 +212,15 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
       '.map-list-container'
     )[0];
     var mapListElement =
+      document.querySelectorAll<HTMLElement>('.map-list')[0];
+    var mapListScrollElement =
       document.querySelectorAll<HTMLElement>('.map-list-body')[0];
 
-    if (mapListElement.clientHeight > mapListContainer.clientHeight / 2) {
+    var mapListHeight = mapListContainer.clientHeight - 80; // total height - padding
+
+    if (mapListElement.clientHeight > mapListHeight / 2) {
       this.showExpandButton = true;
-      mapListElement.style.height = 'max-content';
+      mapListScrollElement.style.height = 'max-content';
     } else {
       this.showExpandButton = false;
     }
@@ -333,6 +359,29 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
           title.innerHTML = sanitzed;
         });
     }
+  }
+
+  deleteAnimation(id) {
+    const mapListCard: HTMLElement = document.querySelector(
+      '[data-id="map-list-card-' + id + '"]'
+    );
+
+    if ( mapListCard ) {
+      var cardHeight = mapListCard.clientHeight;
+
+      mapListCard.classList.add('delete-animation');
+
+      // mapListCard.style.height = cardHeight + 'px';
+
+      // setTimeout(() => {
+      //   mapListCard.style.height = '0px';
+      //   mapListCard.style.width = '0%';
+      //   mapListCard.style.padding = '0px 6px';
+      //   mapListCard.style.border = '0px';
+      // }, 10);
+    }
+
+    console.log('delete animation', mapListCard);
   }
 
   ngOnDestroy(): void {

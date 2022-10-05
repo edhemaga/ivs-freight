@@ -7,6 +7,9 @@
     border-bottom: 1px solid $ta-light-grey-4;
     cursor: pointer;
 
+    overflow: hidden;
+    transition: 0.2s ease-in-out;
+
     &:hover {
         background: #F7F7F7;
     }
@@ -248,3 +251,60 @@
     background: none;
     padding: 0;
 }
+
+.delete-animation {
+    overflow: hidden !important;
+    min-height: unset !important;
+  
+    animation: deleting-row-decrease-size 0.3s ease-in 0.3s,
+      deleting-row-visibility 0.3s ease-in 0.3s,
+      deleting-row-decrease-height 0.3s ease-in 0.6s;
+  
+    .columns-container {
+      animation: deleting-row-add-color 0.3s ease-in;
+    }
+  }
+  
+  @keyframes deleting-row-add-color {
+    0% {
+      background: #ffffff;
+    }
+    100% {
+      background: #ffebee;
+    }
+  }
+  
+  // 2
+  @keyframes deleting-row-decrease-size {
+    0% {
+      background: #ffebee;
+      transform: scaleX(1);
+    }
+    100% {
+      background: #ffebee;
+      transform: scaleX(0.7);
+    }
+  }
+  
+  @keyframes deleting-row-visibility {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
+  // 3
+  @keyframes deleting-row-decrease-height {
+    0% {
+      opacity: 0;
+      min-height: 65px;
+      height: 65px;
+    }
+    100% {
+      opacity: 0;
+      min-height: 0px;
+      height: 0px;
+    }
+  }

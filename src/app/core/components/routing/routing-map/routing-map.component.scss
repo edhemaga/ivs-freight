@@ -1002,6 +1002,11 @@
     animation-name: stop-picker-animation;
 }
 
+.stop-picker-marker-animation-backwards {
+    animation-duration: 200ms;
+    animation-name: stop-picker-animation-backwards;
+}
+
 @-webkit-keyframes stop-picker-animation {
     from {
       transform: translate(-22px, 5px) scale(0.7);
@@ -1017,6 +1022,24 @@
     }
     to {
       transform: translate(-22px, 0px) scale(1);
+    }
+}
+
+@-webkit-keyframes stop-picker-animation-backwards {
+    from {
+      transform: translate(-22px, 0px) scale(1);
+    }
+    to {
+      transform: translate(-22px, 5px) scale(0.7);
+    }
+}
+  
+@keyframes stop-picker-animation-backwards {
+    from {
+      transform: translate(-22px, 0px) scale(1);
+    }
+    to {
+      transform: translate(-22px, 5px) scale(0.7);
     }
 }
 

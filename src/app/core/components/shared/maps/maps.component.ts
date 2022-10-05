@@ -98,6 +98,8 @@ export class MapsComponent implements OnInit {
     '#A1887F',
   ];
 
+  public mapZoomTime: number = 0;
+
   constructor(
     private ref: ChangeDetectorRef,
     private formBuilder: FormBuilder,
@@ -198,6 +200,14 @@ export class MapsComponent implements OnInit {
   }
 
   markerZoom(e, item) {
+    var currentTime = new Date().getTime();
+
+    if ( !this.mapZoomTime || (currentTime - this.mapZoomTime > 200 ) ) {
+      this.mapZoomTime = currentTime;
+    } else {
+      return;
+    }
+    
     if (e.wheelDeltaY > 0) {
       // The user scrolled up.
       this.zoomChange(this.mapZoom + 1);

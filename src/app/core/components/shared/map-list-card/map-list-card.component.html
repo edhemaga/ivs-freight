@@ -1,6 +1,7 @@
 <div
   class="map-list-card-container"
   [ngClass]="{ 'map-list-card-selected': isSelected }"
+  [attr.data-id]="'map-list-card-'+item.id"
   (click)="selectCard()"
 >
   <div class="map-list-card-info">
@@ -42,6 +43,7 @@
             [placement]="'right-top'"
             [hasVericalDots]="true"
             [id]="item?.id"
+            [data]="item"
             [customClassDropDown]="'map-list-card-dropdown'"
             (dropDownActions)="callBodyAction($event)"
           ></app-details-page-dropdown>

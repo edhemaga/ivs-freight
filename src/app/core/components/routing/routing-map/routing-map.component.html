@@ -1089,7 +1089,8 @@
                     [ngStyle]="{
                       visibility:
                         focusedRouteIndex == i &&
-                        stopPickerLocation.editIndex == j
+                        (stopPickerLocation.editIndex == j ||
+                         (stopPickerLocation.lat == route.stops[j].lat && stopPickerLocation.long == route.stops[j].long))
                           ? 'hidden'
                           : 'visible'
                     }"
@@ -1497,6 +1498,8 @@
                       {{
                         stopPickerLocation.editIndex != null
                           ? stopPickerLocation.editIndex + 1
+                          : stopPickerLocation.animation
+                          ? stopPickerLocation.animation
                           : focusedStopIndex != null
                           ? focusedStopIndex + 2
                           : tableData[selectedMapIndex].routes[

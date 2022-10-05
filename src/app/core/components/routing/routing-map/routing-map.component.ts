@@ -428,6 +428,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   filtercond2 = false;
   changedFreeMoveTime: any;
 
+  mapZoomTime: number = 0;
+
   constructor(
     private mapsService: MapsService,
     private formBuilder: FormBuilder,
@@ -1362,6 +1364,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
     this.tableData[this.selectedMapIndex].length =
       this.tableData[this.selectedMapIndex].routes.length;
+
+    this.mapToolbar.getSelectedTabTableData();
+    this.mapToolbar.resetRouteForm();
+
     this.showHideDuplicate();
   }
 
@@ -1718,6 +1724,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         showLoaded: showLoaded
       });
 
+      this.stopPickerLocation.animation = insertIndex+1;
+
       this.focusStop(
         event,
         this.focusedRouteIndex,
@@ -1731,7 +1739,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       );
     }
 
+    if ( mapClick ) {
     this.stopPickerLocation = {};
+    } else {
+      this.stopPickerAnimation(true);
+    }
+    
     //this.stopJustAdded = true;
 
     this.ref.detectChanges();
@@ -2087,6 +2100,14 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   }
 
   markerZoom(e, item) {
+    var currentTime = new Date().getTime();
+
+    if ( !this.mapZoomTime || (currentTime - this.mapZoomTime > 200 ) ) {
+      this.mapZoomTime = currentTime;
+    } else {
+      return;
+    }
+
     if (e.wheelDeltaY > 0) {
       // The user scrolled up.
       this.zoomChange(this.mapZoom + 1);
@@ -2258,15 +2279,20 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     return { x: Math.floor(x / 12) * 12, y: Math.floor(y / 6) * 6 }; // will render the element every 12 pixels horizontally
   }
 
-  stopPickerAnimation() {
+  stopPickerAnimation(hide?) {
     let stopPickerElement: HTMLElement =
       document.querySelector('.stop-picker-icon');
 
+    var animationClass = hide ? 'stop-picker-marker-animation-backwards' : 'stop-picker-marker-animation';
+
     if (stopPickerElement) {
-      stopPickerElement.classList.add('stop-picker-marker-animation');
+      stopPickerElement.classList.add(animationClass);
 
       setTimeout(() => {
-        stopPickerElement.classList.remove('stop-picker-marker-animation');
+        stopPickerElement.classList.remove(animationClass);
+
+        if ( hide ) this.stopPickerLocation = {};
+        this.ref.detectChanges();
       }, 200);
     }
   }

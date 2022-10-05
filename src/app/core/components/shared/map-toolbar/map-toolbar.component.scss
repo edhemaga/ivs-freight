@@ -65,6 +65,7 @@
       width: fit-content;
       border-radius: 3px;
       margin-right: 4px;
+      transition: 0.2s;
 
       &:last-child {
         margin-right: 0px;
@@ -97,6 +98,7 @@
           justify-content: center;
           align-items: center;
           margin-right: 6px;
+          transition: 0.2s;
         }
 
         .tab-title {
