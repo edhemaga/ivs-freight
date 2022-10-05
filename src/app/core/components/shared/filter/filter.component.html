@@ -119,21 +119,31 @@
           class="user-main-holder"
         >
           <div class="user-profile-img" *ngIf="type == 'userFilter'">
-            <app-profile-images
+            <app-profile-images *ngIf="!item.avatar"
               [indx]="indx"
               [size]="'small'"
               [type]="'user'"
               [name]="item.name"
             ></app-profile-images>
+            <div
+              class="user_avatar"
+              *ngIf="item.avatar"
+              [ngStyle]="item.avatar && { 'background-image': 'url(' + item.avatar + ')' }"
+            ></div>
           </div>
           <div class="user-profile-img" *ngIf="type == 'driverFilter'">
-            <app-profile-images
+            <app-profile-images *ngIf="!item.avatar"
               [indx]="indx"
               [size]="'small'"
               [type]="'driver'"
               [name]="item.name"
             >
             </app-profile-images>
+            <div
+              class="user_avatar driver_avatar"
+              *ngIf="item.avatar"
+              [ngStyle]="item.avatar && { 'background-image': 'url(' + item.avatar + ')' }"
+            ></div>
           </div>
           <div class="user-profile-img" *ngIf="type == 'statusFilter'">
             <div
@@ -258,13 +268,18 @@
             class="user-main-holder"
           >
             <div class="user-profile-img">
-              <app-profile-images
+              <app-profile-images *ngIf="!item.avatar"
                 [indx]="indx"
                 [size]="'small'"
                 [type]="'user'"
                 [name]="item.name"
               >
               </app-profile-images>
+              <div
+                class="user_avatar"
+                *ngIf="item.avatar"
+                [ngStyle]="item.avatar && { 'background-image': 'url(' + item.avatar + ')' }"
+              ></div>
             </div>
             <div class="user-frame">
               <div class="selected-name-text">
@@ -518,13 +533,18 @@
             class="user-main-holder"
           >
             <div class="user-profile-img">
-              <app-profile-images
+              <app-profile-images *ngIf="!item.avatar"
                 [indx]="indx"
                 [size]="'small'"
                 [type]="'driver'"
                 [name]="item.name"
               >
               </app-profile-images>
+              <div
+                class="user_avatar driver_avatar"
+                *ngIf="item.avatar"
+                [ngStyle]="item.avatar && { 'background-image': 'url(' + item.avatar + ')' }"
+              ></div>
             </div>
             <div class="user-frame">
               <div class="selected-name-text">

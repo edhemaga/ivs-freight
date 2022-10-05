@@ -23,7 +23,7 @@
               [type]="'timeFilter'" 
               [filterTitle]="'Time Filter'" 
               [icon]="'pending'"
-              [toDoSubType]="'to-do'"
+              [toDoSubType]="'Todo'"
               (setFilter)="setFilterEvent($event)"
               > 
             </app-filter>
@@ -35,7 +35,7 @@
               [searchState]="true"
               [filterTitle]="'User Filter'"
               [defFilterHolder]="true"
-              [toDoSubType]="'to-do'"
+              [toDoSubType]="'Todo'"
               (setFilter)="setFilterEvent($event)"
             >
             </app-filter>
@@ -48,7 +48,7 @@
               [filterTitle]="'Department Filter'"
               [defFilterHolder]="true"
               [noLeftIcon]="true"
-              [toDoSubType]="'to-do'"
+              [toDoSubType]="'Todo'"
               (setFilter)="setFilterEvent($event)"
             >
             </app-filter>
@@ -94,7 +94,7 @@
             <app-filter 
               [type]="'timeFilter'" 
               [icon]="'pending'"
-              [toDoSubType]="'ongoing'"
+              [toDoSubType]="'InProgress'"
               (setFilter)="setFilterEvent($event)"> 
             </app-filter>
           </div>
@@ -105,7 +105,7 @@
               [searchState]="true"
               [filterTitle]="'User Filter'"
               [defFilterHolder]="true"
-              [toDoSubType]="'ongoing'"
+              [toDoSubType]="'InProgress'"
               (setFilter)="setFilterEvent($event)"
             >
             </app-filter>
@@ -118,7 +118,7 @@
               [filterTitle]="'Department Filter'"
               [defFilterHolder]="true"
               [noLeftIcon]="true"
-              [toDoSubType]="'ongoing'"
+              [toDoSubType]="'InProgress'"
               (setFilter)="setFilterEvent($event)"
             >
             </app-filter>
@@ -148,7 +148,7 @@
             <app-filter 
               [type]="'timeFilter'" 
               [icon]="'pending'"
-              [toDoSubType]="'done'"
+              [toDoSubType]="'Done'"
               (setFilter)="setFilterEvent($event)"> 
             </app-filter>
           </div>
@@ -159,7 +159,7 @@
               [searchState]="true"
               [filterTitle]="'User Filter'"
               [defFilterHolder]="true"
-              [toDoSubType]="'done'"
+              [toDoSubType]="'Done'"
               (setFilter)="setFilterEvent($event)"
             >
             </app-filter>
@@ -172,7 +172,7 @@
               [filterTitle]="'Department Filter'"
               [defFilterHolder]="true"
               [noLeftIcon]="true"
-              [toDoSubType]="'done'"
+              [toDoSubType]="'Done'"
               (setFilter)="setFilterEvent($event)"
             >
             </app-filter>

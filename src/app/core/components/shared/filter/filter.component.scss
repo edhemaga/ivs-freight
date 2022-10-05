@@ -395,6 +395,24 @@
         align-items: center;
         height: 26px;
         width: 18px;
+
+        .user_avatar{
+          width: 18px;
+          height: 18px;
+
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: cover;
+          border-radius: 100%;
+
+          &.driver_avatar{
+            height: 18px;
+            width: 15px;
+
+            border-radius: 2px;
+          }
+
+        }
       }
     }
 
@@ -598,6 +616,24 @@
         width: 18px;
         display: flex;
         align-items: center;
+
+        .user_avatar{
+          width: 18px;
+          height: 18px;
+
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: cover;
+          border-radius: 100%;
+
+          &.driver_avatar{
+            height: 18px;
+            width: 15px;
+
+            border-radius: 2px;
+          }
+
+        }
       }
     }
   }

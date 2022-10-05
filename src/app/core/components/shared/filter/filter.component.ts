@@ -47,6 +47,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     {
       name: 'Aleksandar Djordjevic',
       id: 1,
+      avatar: 'https://www.gradprijepolje.com/wp-content/uploads/2021/09/Divac.jpg'
     },
     {
       name: 'Denis Rodman',
