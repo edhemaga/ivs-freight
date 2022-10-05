@@ -4,6 +4,7 @@ import { SelectedMode } from '../state/enum/selected-mode.enum';
 import { Subject, takeUntil } from 'rxjs';
 
 import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
+import { ApplicantListsService } from 'src/app/core/components/applicant/state/services/applicant-lists.service';
 
 import { INavigation } from '../state/model/navigation.model';
 
@@ -117,9 +118,17 @@ export class ApplicantComponent implements OnInit, OnDestroy {
     { id: 7, hasIncorrectAnswer: false, sentToReview: false },
   ];
 
-  constructor(private applicantActionsService: ApplicantActionsService) {}
+  constructor(
+    private applicantActionsService: ApplicantActionsService,
+    private applicantListsService: ApplicantListsService
+  ) {}
 
   ngOnInit(): void {
+    this.applicantListsService
+      .getDropdownLists()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
+
     if (this.selectedMode === SelectedMode.REVIEW) {
       this.applicantActionsService
         .getApplicantById(1)

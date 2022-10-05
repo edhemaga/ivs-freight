@@ -19,10 +19,10 @@ import {
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
-import { ApplicantListsService } from '../../state/services/applicant-lists.service';
 
 import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
+import { ApplicantListsQuery } from '../../state/store/applicant-lists-store/applicant-lists.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
@@ -132,9 +132,9 @@ export class Step3Component implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private router: Router,
     private applicantActionsService: ApplicantActionsService,
-    private applicantListsService: ApplicantListsService,
     private applicantStore: ApplicantStore,
-    private applicantQuery: ApplicantQuery
+    private applicantQuery: ApplicantQuery,
+    private applicantListsQuery: ApplicantListsQuery
   ) {}
 
   ngOnInit(): void {
@@ -442,11 +442,10 @@ export class Step3Component implements OnInit, OnDestroy {
   }
 
   public getDropdownLists(): void {
-    this.applicantListsService
-      .getDropdownLists()
+    this.applicantListsQuery.dropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.usStates = data.usStates.map((item) => {
+      .subscribe((res) => {
+        this.usStates = res.usStates.map((item) => {
           return {
             id: item.id,
             name: item.stateShortName,
@@ -454,7 +453,7 @@ export class Step3Component implements OnInit, OnDestroy {
           };
         });
 
-        this.canadaStates = data.canadaStates.map((item) => {
+        this.canadaStates = res.canadaStates.map((item) => {
           return {
             id: item.id,
             name: item.stateShortName,

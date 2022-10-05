@@ -15,7 +15,7 @@
           maxLength: 256,
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
         (incorrectEvent)="incorrectInput($event, 0, 10)"
         [activeAddress]="selectedAddress"
         (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
@@ -33,7 +33,7 @@
           customClass: 'datetimeclass',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[10].lineInputs[1]"
         (incorrectEvent)="incorrectInput($event, 1, 10)"
       ></app-ta-input>
     </div>
@@ -165,7 +165,7 @@
         }"
         [activeItem]="selectedVehicleType"
         [options]="vehicleType"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[11].lineInputs[0]"
         (incorrectEvent)="incorrectInput($event, 0, 11)"
         (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
       ></app-ta-input-dropdown>
@@ -183,7 +183,7 @@
           isRequired: true,
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[11].lineInputs[1]"
         (incorrectEvent)="incorrectInput($event, 1, 11)"
       ></app-ta-input>
     </div>

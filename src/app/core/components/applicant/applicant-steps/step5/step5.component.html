@@ -26,6 +26,7 @@
         [customClass]="
           selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
         "
+        [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
       ></app-ta-checkbox>
     </div>
 
@@ -50,6 +51,7 @@
           [customClass]="
             selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
           "
+          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         >
         </app-ta-checkbox>
         <p
@@ -58,8 +60,9 @@
             color:
               !notBeenConvictedForm.get('notBeenConvicted').value ||
               selectedMode === 'FEEDBACK_MODE'
-                ? '#919191'
-                : '#6c6c6c'
+                ? '#6c6c6c'
+                : '#2f2f2f',
+            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('notBeenConvicted')"
         >
@@ -104,26 +107,22 @@
         >
           <div class="d-flex align-items-center license-box">
             <p class="m-0 ta-font-regular">
-              <!--  {{ license.license }} -->
-              d263-540-92-166-0
+              {{ lastValidLicense?.license }}
             </p>
           </div>
           <div class="d-flex align-items-center state-box">
             <p class="m-0 ta-font-regular">
-              <!--     {{ license.stateId }} -->
-              al
+              {{ lastValidLicense?.state }}
             </p>
           </div>
           <div class="d-flex align-items-center class-box">
             <p class="m-0 ta-font-regular">
-              <!-- {{ license.classType }} -->
-              1234
+              {{ lastValidLicense?.classType }}
             </p>
           </div>
           <div class="d-flex align-items-center date-box">
             <p class="m-0 ta-font-regular">
-              <!--    {{ license.expDate }} -->
-              01/19/20
+              {{ lastValidLicense?.expDate }}
             </p>
           </div>
         </div>
@@ -144,6 +143,7 @@
           [customClass]="
             selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
           "
+          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         >
         </app-ta-checkbox>
       </div>
@@ -195,47 +195,55 @@
             *ngIf="!violation.isEditingViolation"
           >
             <div class="d-flex align-items-center info-btn-container">
-              <div class="d-flex align-items-center date-box">
-                <p class="m-0 ta-font-regular">
-                  {{ violation.date }}
-                </p>
-              </div>
-
-              <div class="d-flex align-items-center vehicle-box">
-                <p class="m-0 ta-font-regular">
-                  {{ violation.vehicleType }}
-                </p>
-              </div>
-
-              <div class="d-flex align-items-center location-box">
-                <p
-                  class="m-0 ta-font-regular d-inline-block text-truncate"
-                  style="max-width: 123px"
-                  ngbTooltip
-                  [mainTooltip]="violation.location.address"
-                  tooltipBackground="#6C6C6C"
-                  position="bottom-left"
-                >
-                  {{ violation.location.address }}
-                </p>
-              </div>
-
               <div
-                class="d-flex align-items-center description-box"
+                class="d-flex align-items-center"
                 [ngStyle]="{
-                  width: selectedMode === 'FEEDBACK_MODE' ? '168px' : '187px'
+                  cursor: selectedMode === 'REVIEW_MODE' ? 'pointer' : 'auto'
                 }"
+                (click)="onCardReview(i)"
               >
-                <p
-                  class="m-0 ta-font-regular d-inline-block text-truncate"
-                  style="max-width: 185px"
-                  ngbTooltip
-                  [mainTooltip]="violation.description"
-                  tooltipBackground="#6C6C6C"
-                  position="bottom-left"
+                <div class="d-flex align-items-center date-box">
+                  <p class="m-0 ta-font-regular">
+                    {{ violation.date }}
+                  </p>
+                </div>
+
+                <div class="d-flex align-items-center vehicle-box">
+                  <p class="m-0 ta-font-regular">
+                    {{ violation.vehicleType }}
+                  </p>
+                </div>
+
+                <div class="d-flex align-items-center location-box">
+                  <p
+                    class="m-0 ta-font-regular d-inline-block text-truncate"
+                    style="max-width: 123px"
+                    ngbTooltip
+                    [mainTooltip]="violation.location"
+                    tooltipBackground="#6C6C6C"
+                    position="bottom-left"
+                  >
+                    {{ violation.location }}
+                  </p>
+                </div>
+
+                <div
+                  class="d-flex align-items-center description-box"
+                  [ngStyle]="{
+                    width: selectedMode === 'FEEDBACK_MODE' ? '168px' : '187px'
+                  }"
                 >
-                  {{ violation.description }}
-                </p>
+                  <p
+                    class="m-0 ta-font-regular d-inline-block text-truncate"
+                    style="max-width: 185px"
+                    ngbTooltip
+                    [mainTooltip]="violation.description"
+                    tooltipBackground="#6C6C6C"
+                    position="bottom-left"
+                  >
+                    {{ violation.description }}
+                  </p>
+                </div>
               </div>
 
               <div
@@ -298,7 +306,11 @@
                         'width.px': 18,
                         'height.px': 18
                       }"
-                      (click)="incorrectInput($event, 0, i, 'card')"
+                      (click)="
+                        openAnnotationArray[i].lineInputs[0]
+                          ? incorrectInput($event, 0, i, 'card')
+                          : onCardReview(i)
+                      "
                     ></svg-icon>
                   </div>
                 </div>
@@ -356,11 +368,17 @@
             *ngIf="violation.isEditingViolation"
           >
             <app-step5-form
+              [mode]="selectedMode"
               [isEditing]="isEditing"
               [formValuesToPatch]="formValuesToPatch"
+              [isReviewingCard]="isReviewingCard"
               (formValuesEmitter)="getViolationFormValues($event)"
               (cancelFormEditingEmitter)="cancelViolationEditing($event)"
               (saveFormEditingEmitter)="saveEditedViolation($event)"
+              (cancelFormReviewingEmitter)="cancelViolationReview($event)"
+              (cardOpenAnnotationArrayValuesEmitter)="
+                onGetCardOpenAnnotationArrayValues($event)
+              "
             ></app-step5-form>
           </div>
         </div>
@@ -368,14 +386,26 @@
 
       <!-- DATE, VEHICLE TYPE, LOCATION -->
 
-      <form *ngIf="!isEditing">
+      <form
+        *ngIf="
+          (selectedMode === 'APPLICANT_MODE' && !isEditing) ||
+          (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
+        "
+      >
         <app-step5-form
+          [mode]="selectedMode"
           [isEditing]="isEditing"
           [markFormInvalid]="markFormInvalid"
+          [formValuesToPatch]="formValuesToPatch"
+          [isReviewingCard]="isReviewingCard"
           (formValuesEmitter)="getViolationFormValues($event)"
           (formStatusEmitter)="onGetFormStatus($event)"
           (markInvalidEmitter)="onMarkInvalidEmit($event)"
           (lastFormValuesEmitter)="onGetLastFormValues($event)"
+          (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
+          (openAnnotationArrayValuesEmitter)="
+            onGetOpenAnnotationArrayValues($event)
+          "
         ></app-step5-form>
       </form>
 
@@ -397,6 +427,7 @@
           [customClass]="
             selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
           "
+          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         >
         </app-ta-checkbox>
         <p
@@ -405,8 +436,9 @@
             color:
               !certifyForm.get('certify').value ||
               selectedMode === 'FEEDBACK_MODE'
-                ? '#919191'
-                : '#6c6c6c'
+                ? '#6c6c6c'
+                : '#2f2f2f',
+            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('certify')"
         >
@@ -426,10 +458,15 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [filledCorrectly]="
+      selectedMode === 'APPLICANT_MODE' &&
       notBeenConvictedForm.valid &&
       onlyOneHoldLicenseForm.valid &&
       certifyForm.valid &&
       formStatus === 'VALID'
+    "
+    [hasIncorrectFields]="
+      selectedMode === 'REVIEW_MODE' &&
+      (hasIncorrectFields || cardsWithIncorrectFields)
     "
     [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"

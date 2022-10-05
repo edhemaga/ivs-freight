@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 import { BankService } from './../../../../../../../appcoretruckassist/api/bank.service';
 import { ApplicantService } from './../../../../../../../appcoretruckassist/api/applicant.service';
+
+import { ApplicantListsStore } from '../store/applicant-lists-store/applicant-lists.store';
 
 import { BankResponse } from 'appcoretruckassist/model/bankResponse';
 import { ApplicantModalResponse } from 'appcoretruckassist/model/models';
@@ -14,7 +16,8 @@ import { ApplicantModalResponse } from 'appcoretruckassist/model/models';
 export class ApplicantListsService {
   constructor(
     private bankService: BankService,
-    private applicantService: ApplicantService
+    private applicantService: ApplicantService,
+    private applicantListsStore: ApplicantListsStore
   ) {}
 
   public getBanksDropdownList(): Observable<Array<BankResponse>> {
@@ -22,6 +25,10 @@ export class ApplicantListsService {
   }
 
   public getDropdownLists(): Observable<ApplicantModalResponse> {
-    return this.applicantService.apiApplicantModalGet();
+    return this.applicantService.apiApplicantModalGet().pipe(
+      tap((res: ApplicantModalResponse) => {
+        this.applicantListsStore.set({ 1: res });
+      })
+    );
   }
 }

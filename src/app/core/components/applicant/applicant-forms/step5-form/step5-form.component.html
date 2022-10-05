@@ -182,5 +182,28 @@
         Save Changes
       </button>
     </div>
+
+    <div
+      class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
+      *ngIf="isReviewingCard"
+    >
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+        (click)="onCancelReviewViolation()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+        [ngClass]="{
+          disabled: !isCardReviewedIncorrect
+        }"
+        (click)="onAddAnnotation()"
+      >
+        Add Annotation
+      </button>
+    </div>
   </div>
 </div>

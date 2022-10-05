@@ -32,7 +32,8 @@ import { AccidentModel } from '../../state/model/accident.model';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { FormService } from './../../../../services/form/form.service';
-import { ApplicantListsService } from '../../state/services/applicant-lists.service';
+
+import { ApplicantListsQuery } from '../../state/store/applicant-lists-store/applicant-lists.query';
 
 import { TaInputRadiobuttonsComponent } from '../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
 
@@ -135,7 +136,7 @@ export class Step4FormComponent
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private formService: FormService,
-    private applicantListsService: ApplicantListsService
+    private applicantListsQuery: ApplicantListsQuery
   ) {}
 
   ngOnInit(): void {
@@ -227,49 +228,25 @@ export class Step4FormComponent
   }
 
   public patchForm(formValue: any): void {
-    /* if (this.selectedMode === SelectedMode.REVIEW) {
-      if (formValue.workExperienceItemReview) {
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      if (formValue.accidentRecordReview) {
         const {
-          isEmployerValid,
-          isJobDescriptionValid,
-          isFromValid,
-          isToValid,
-          isPhoneValid,
-          isEmailValid,
-          isFaxValid,
-          isAddressValid,
-          isAddressUnitValid,
-          isReasonForLeavingValid,
-          isAccountForPeriodBetweenValid,
-        } = formValue.workExperienceItemReview;
+          isLocationValid,
+          isDateValid,
+          isVehicleTypeValid,
+          isDescriptionValid,
+        } = formValue.accidentRecordReview;
 
-        this.openAnnotationArray[20] = {
-          ...this.openAnnotationArray[20],
-          lineInputs: [!isEmployerValid],
+        this.openAnnotationArray[10] = {
+          ...this.openAnnotationArray[10],
+          lineInputs: [!isLocationValid, !isDateValid],
         };
-        this.openAnnotationArray[21] = {
-          ...this.openAnnotationArray[21],
-          lineInputs: [!isJobDescriptionValid, !isFromValid, !isToValid],
-        };
-        this.openAnnotationArray[22] = {
-          ...this.openAnnotationArray[22],
-          lineInputs: [!isPhoneValid, !isEmailValid, !isFaxValid],
-        };
-        this.openAnnotationArray[23] = {
-          ...this.openAnnotationArray[23],
-          lineInputs: [!isAddressValid, !isAddressUnitValid],
-        };
-        this.openAnnotationArray[25] = {
-          ...this.openAnnotationArray[25],
-          lineInputs: [!isReasonForLeavingValid],
-        };
-        this.openAnnotationArray[26] = {
-          ...this.openAnnotationArray[26],
-          lineInputs: [!isAccountForPeriodBetweenValid],
+        this.openAnnotationArray[11] = {
+          ...this.openAnnotationArray[11],
+          lineInputs: [!isVehicleTypeValid, !isDescriptionValid],
         };
       }
     }
-     */
 
     this.accidentForm.patchValue({
       location: formValue.location.address,
@@ -435,11 +412,10 @@ export class Step4FormComponent
   }
 
   public getDropdownLists(): void {
-    this.applicantListsService
-      .getDropdownLists()
+    this.applicantListsQuery.dropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.vehicleType = data.truckTypes.map((item) => {
+      .subscribe((res) => {
+        this.vehicleType = res.truckTypes.map((item) => {
           return {
             ...item,
             folder: 'common',

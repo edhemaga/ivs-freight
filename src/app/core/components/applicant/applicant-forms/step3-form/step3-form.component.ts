@@ -15,7 +15,8 @@ import { Subscription, Subject, takeUntil } from 'rxjs';
 
 import { FormService } from './../../../../services/form/form.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { ApplicantListsService } from '../../state/services/applicant-lists.service';
+
+import { ApplicantListsQuery } from '../../state/store/applicant-lists-store/applicant-lists.query';
 
 import {
   anyInputInLineIncorrect,
@@ -128,7 +129,7 @@ export class Step3FormComponent
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private formService: FormService,
-    private applicantListsService: ApplicantListsService
+    private applicantListsQuery: ApplicantListsQuery
   ) {}
 
   ngOnInit(): void {
@@ -488,13 +489,12 @@ export class Step3FormComponent
   }
 
   public getDropdownLists(): void {
-    this.applicantListsService
-      .getDropdownLists()
+    this.applicantListsQuery.dropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.countryTypes = data.countryTypes;
+      .subscribe((res) => {
+        this.countryTypes = res.countryTypes;
 
-        this.usStates = data.usStates.map((item) => {
+        this.usStates = res.usStates.map((item) => {
           return {
             id: item.id,
             name: item.stateShortName,
@@ -502,7 +502,7 @@ export class Step3FormComponent
           };
         });
 
-        this.canadaStates = data.canadaStates.map((item) => {
+        this.canadaStates = res.canadaStates.map((item) => {
           return {
             id: item.id,
             name: item.stateShortName,
@@ -510,10 +510,10 @@ export class Step3FormComponent
           };
         });
 
-        this.classTypes = data.classTypes;
+        this.classTypes = res.classTypes;
 
-        this.restrictionsList = data.restrictions;
-        this.endorsmentsList = data.endorsements;
+        this.restrictionsList = res.restrictions;
+        this.endorsmentsList = res.endorsements;
       });
   }
 

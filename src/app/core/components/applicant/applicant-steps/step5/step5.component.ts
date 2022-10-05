@@ -6,16 +6,23 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
-import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+  convertDateToBackend,
+  convertDateFromBackend,
+} from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
-import { ApplicantListsService } from '../../state/services/applicant-lists.service';
+
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
+import { ApplicantListsQuery } from '../../state/store/applicant-lists-store/applicant-lists.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { ViolationModel } from '../../state/model/violations.model';
 import {
   CreateTrafficViolationCommand,
+  CreateTrafficViolationReviewCommand,
   TruckTypeResponse,
 } from 'appcoretruckassist/model/models';
 
@@ -27,7 +34,7 @@ import {
 export class Step5Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public applicantId: number;
 
@@ -42,6 +49,8 @@ export class Step5Component implements OnInit, OnDestroy {
 
   public violationsArray: ViolationModel[] = [];
 
+  public lastValidLicense: any;
+
   public lastViolationsCard: any;
 
   public vehicleType: TruckTypeResponse[] = [];
@@ -51,6 +60,7 @@ export class Step5Component implements OnInit, OnDestroy {
   public helperIndex: number = 2;
 
   public isEditing: boolean = false;
+  public isReviewingCard: boolean = false;
 
   public formValuesToPatch: any;
 
@@ -91,13 +101,18 @@ export class Step5Component implements OnInit, OnDestroy {
     {},
     {},
   ];
+  public hasIncorrectFields: boolean = false;
+  public cardsWithIncorrectFields: boolean = false;
+  public previousFormValuesOnReview: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private router: Router,
     private applicantActionsService: ApplicantActionsService,
-    private applicantListsService: ApplicantListsService
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery,
+    private applicantListsQuery: ApplicantListsQuery
   ) {}
 
   ngOnInit(): void {
@@ -107,11 +122,38 @@ export class Step5Component implements OnInit, OnDestroy {
 
     this.hasNoTrafficViolations();
 
-    this.applicantActionsService.getApplicantInfo$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res.personalInfo.applicantId;
-      });
+    if (this.selectedMode === SelectedMode.APPLICANT) {
+      this.applicantActionsService.getApplicantInfo$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          this.applicantId = res.personalInfo.applicantId;
+        });
+    }
+
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      let stepValuesResponse: any;
+
+      this.applicantQuery.trafficViolationsList$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          stepValuesResponse = res;
+        });
+
+      this.patchStepValues(stepValuesResponse);
+
+      this.applicantQuery.cdlInformationList$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          const lastLicenseAdded = res.licences[res.licences.length - 1];
+
+          this.lastValidLicense = {
+            license: lastLicenseAdded.licenseNumber,
+            state: lastLicenseAdded.state.stateShortName,
+            /*  classType: lastLicenseAdded._class.name, */
+            expDate: convertDateFromBackend(lastLicenseAdded.expDate),
+          };
+        });
+    }
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -145,6 +187,88 @@ export class Step5Component implements OnInit, OnDestroy {
       cardReview9: [null],
       cardReview10: [null],
     });
+  }
+
+  public patchStepValues(stepValues: any) {
+    const {
+      noViolationsForPastTwelveMonths,
+      notBeenConvicted,
+      onlyOneHoldLicense,
+      certifyViolations,
+      trafficViolationItems,
+    } = stepValues;
+
+    this.trafficViolationsForm
+      .get('noViolationsForPastTwelveMonths')
+      .patchValue(noViolationsForPastTwelveMonths);
+
+    this.notBeenConvictedForm
+      .get('notBeenConvicted')
+      .patchValue(notBeenConvicted);
+
+    this.onlyOneHoldLicenseForm
+      .get('onlyOneHoldLicense')
+      .patchValue(onlyOneHoldLicense);
+
+    this.certifyForm.get('certify').patchValue(certifyViolations);
+
+    if (!noViolationsForPastTwelveMonths) {
+      const lastItemInViolationsArray =
+        trafficViolationItems[trafficViolationItems.length - 1];
+
+      const restOfTheItemsInViolationsArray = [...trafficViolationItems];
+
+      restOfTheItemsInViolationsArray.pop();
+
+      const filteredViolationsArray = restOfTheItemsInViolationsArray.map(
+        (item) => {
+          return {
+            isEditingViolation: false,
+            date: convertDateFromBackend(item.date),
+            vehicleType: item.vehicleType.name,
+            location: item.location,
+            description: item.description,
+            trafficViolationItemReview: item.trafficViolationItemReview
+              ? item.trafficViolationItemReview
+              : null,
+          };
+        }
+      );
+
+      const filteredLastItemInViolationsArray = {
+        isEditingViolation: false,
+        date: convertDateFromBackend(lastItemInViolationsArray.date),
+        vehicleType: lastItemInViolationsArray.vehicleType.name,
+        location: lastItemInViolationsArray.location,
+        description: lastItemInViolationsArray.description,
+        trafficViolationItemReview:
+          lastItemInViolationsArray.trafficViolationItemReview
+            ? lastItemInViolationsArray.trafficViolationItemReview
+            : null,
+      };
+
+      this.violationsArray = [...filteredViolationsArray];
+
+      this.formValuesToPatch = filteredLastItemInViolationsArray;
+      this.previousFormValuesOnReview = filteredLastItemInViolationsArray;
+
+      for (let i = 0; i < filteredViolationsArray.length; i++) {
+        const firstEmptyObjectInList = this.openAnnotationArray.find(
+          (item) => Object.keys(item).length === 0
+        );
+
+        const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+          firstEmptyObjectInList
+        );
+
+        this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+          lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+          lineInputs: [false],
+          displayAnnotationButton: false,
+          displayAnnotationTextArea: false,
+        };
+      }
+    }
   }
 
   private hasNoTrafficViolations(): void {
@@ -197,7 +321,10 @@ export class Step5Component implements OnInit, OnDestroy {
   }
 
   public handleCheckboxParagraphClick(type: string): void {
-    if (this.selectedMode === 'FEEDBACK_MODE') {
+    if (
+      this.selectedMode === SelectedMode.FEEDBACK ||
+      this.selectedMode === SelectedMode.REVIEW
+    ) {
       return;
     }
 
@@ -294,6 +421,84 @@ export class Step5Component implements OnInit, OnDestroy {
     this.lastViolationsCard = event;
   }
 
+  public onHasIncorrectFields(event: any): void {
+    if (event) {
+      this.hasIncorrectFields = true;
+    } else {
+      this.hasIncorrectFields = false;
+    }
+  }
+
+  public onGetOpenAnnotationArrayValues(event: any): void {
+    this.previousFormValuesOnReview.trafficViolationItemReview = {
+      isDateValid: !event[0].lineInputs[0],
+      isLocationValid: !event[0].lineInputs[2],
+      isDescriptionValid: !event[1].lineInputs[0],
+    };
+  }
+
+  public onGetCardOpenAnnotationArrayValues(event: any): void {
+    this.isReviewingCard = false;
+
+    this.violationsArray[this.selectedViolationIndex].isEditingViolation =
+      false;
+
+    this.violationsArray[
+      this.selectedViolationIndex
+    ].trafficViolationItemReview = {
+      isDateValid: !event[0].lineInputs[0],
+      isLocationValid: !event[0].lineInputs[2],
+      isDescriptionValid: !event[1].lineInputs[0],
+    };
+
+    const hasInvalidFields = JSON.stringify(
+      this.violationsArray[this.selectedViolationIndex]
+        .trafficViolationItemReview
+    );
+
+    if (hasInvalidFields.includes('false')) {
+      this.openAnnotationArray[
+        this.selectedViolationIndex
+      ].displayAnnotationButton = true;
+
+      this.openAnnotationArray[this.selectedViolationIndex].lineInputs[0] =
+        true;
+
+      this.cardsWithIncorrectFields = true;
+    } else {
+      this.openAnnotationArray[
+        this.selectedViolationIndex
+      ].displayAnnotationButton = false;
+
+      this.hasIncorrectFields = false;
+    }
+
+    this.helperIndex = 2;
+    this.selectedViolationIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnReview;
+  }
+
+  public cancelViolationReview(event: any): void {
+    this.isReviewingCard = false;
+
+    this.violationsArray[this.selectedViolationIndex].isEditingViolation =
+      false;
+
+    this.helperIndex = 2;
+    this.selectedViolationIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnReview;
+  }
+
+  public getDropdownLists(): void {
+    this.applicantListsQuery.dropdownLists$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.vehicleType = res.truckTypes;
+      });
+  }
+
   public incorrectInput(
     event: any,
     inputIndex: number,
@@ -305,15 +510,32 @@ export class Step5Component implements OnInit, OnDestroy {
     );
 
     if (type === 'card') {
-      selectedInputsLine.lineInputs[inputIndex] =
-        !selectedInputsLine.lineInputs[inputIndex];
-
-      selectedInputsLine.displayAnnotationButton =
-        !selectedInputsLine.displayAnnotationButton;
+      if (selectedInputsLine.displayAnnotationButton) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+        selectedInputsLine.displayAnnotationButton = false;
+      }
 
       if (selectedInputsLine.displayAnnotationTextArea) {
         selectedInputsLine.displayAnnotationButton = false;
         selectedInputsLine.displayAnnotationTextArea = false;
+      }
+
+      Object.keys(
+        this.violationsArray[lineIndex].trafficViolationItemReview
+      ).forEach((key) => {
+        this.violationsArray[lineIndex].trafficViolationItemReview[key] = true;
+      });
+
+      const inputFieldsArray = JSON.stringify(
+        this.openAnnotationArray
+          .filter((item) => Object.keys(item).length !== 0)
+          .map((item) => item.lineInputs)
+      );
+
+      if (inputFieldsArray.includes('true')) {
+        this.cardsWithIncorrectFields = true;
+      } else {
+        this.cardsWithIncorrectFields = false;
       }
     } else {
       if (event) {
@@ -352,18 +574,32 @@ export class Step5Component implements OnInit, OnDestroy {
     }
   }
 
-  public getDropdownLists(): void {
-    this.applicantListsService
-      .getDropdownLists()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.vehicleType = data.truckTypes;
-      });
+  public onCardReview(index: number) {
+    if (this.isReviewingCard) {
+      return;
+    }
+
+    this.helperIndex = index;
+    this.selectedViolationIndex = index;
+
+    this.violationsArray[index].isEditingViolation = true;
+
+    this.isReviewingCard = true;
+
+    const selectedViolation = this.violationsArray[index];
+
+    this.formValuesToPatch = selectedViolation;
   }
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
 
     if (event.action === 'back-step') {
@@ -454,7 +690,27 @@ export class Step5Component implements OnInit, OnDestroy {
       });
   }
 
-  /* public onSubmitReview(data: any): void {} */
+  public onSubmitReview(): void {
+    const lastItemReview =
+      this.previousFormValuesOnReview.trafficViolationItemReview;
+
+    const lastReviewedItemIViolationsArray = {
+      isDateValid: lastItemReview ? lastItemReview.isDateValid : true,
+      isLocationValid: lastItemReview ? lastItemReview.isLocationValid : true,
+      vehicleTypeLocationMessage: this.lastViolationsCard.firstRowReview,
+      isDescriptionValid: lastItemReview
+        ? lastItemReview.isDescriptionValid
+        : true,
+      descriptionMessage: this.lastViolationsCard.secondRowReview,
+    };
+
+    const saveData: CreateTrafficViolationReviewCommand = {
+      applicantId: 1,
+      trafficViolationReviews: [lastReviewedItemIViolationsArray],
+    };
+
+    console.log('saveData', saveData.trafficViolationReviews[0]);
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

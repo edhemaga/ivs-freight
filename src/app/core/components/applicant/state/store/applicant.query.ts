@@ -21,6 +21,10 @@ export class ApplicantQuery extends QueryEntity<ApplicantState> {
     (state) => state.entities[1].accidentRecords
   );
 
+  public trafficViolationsList$ = this.select(
+    (state) => state.entities[1].trafficViolation
+  );
+
   constructor(protected applicantStore: ApplicantStore) {
     super(applicantStore);
   }

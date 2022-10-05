@@ -12,10 +12,10 @@ import {
 } from 'src/app/core/utils/methods.calculations';
 
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
-import { ApplicantListsService } from '../../state/services/applicant-lists.service';
 
 import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
+import { ApplicantListsQuery } from '../../state/store/applicant-lists-store/applicant-lists.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { WorkHistoryModel } from '../../state/model/work-history.model';
@@ -79,9 +79,9 @@ export class Step2Component implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private router: Router,
     private applicantActionsService: ApplicantActionsService,
-    private applicantListsService: ApplicantListsService,
     private applicantStore: ApplicantStore,
-    private applicantQuery: ApplicantQuery
+    private applicantQuery: ApplicantQuery,
+    private applicantListsQuery: ApplicantListsQuery
   ) {}
 
   ngOnInit(): void {
@@ -459,17 +459,16 @@ export class Step2Component implements OnInit, OnDestroy {
   }
 
   public getDropdownLists(): void {
-    this.applicantListsService
-      .getDropdownLists()
+    this.applicantListsQuery.dropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.vehicleType = data.truckTypes;
+      .subscribe((res) => {
+        this.vehicleType = res.truckTypes;
 
-        this.trailerType = data.trailerTypes;
+        this.trailerType = res.trailerTypes;
 
-        this.trailerLengthType = data.trailerLenghts;
+        this.trailerLengthType = res.trailerLenghts;
 
-        this.reasonsForLeaving = data.reasonsForLeave;
+        this.reasonsForLeaving = res.reasonsForLeave;
       });
   }
 

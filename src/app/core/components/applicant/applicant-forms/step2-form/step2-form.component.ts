@@ -28,7 +28,8 @@ import {
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { FormService } from './../../../../services/form/form.service';
-import { ApplicantListsService } from '../../state/services/applicant-lists.service';
+
+import { ApplicantListsQuery } from '../../state/store/applicant-lists-store/applicant-lists.query';
 
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
@@ -248,7 +249,7 @@ export class Step2FormComponent
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private formService: FormService,
-    private applicantListsService: ApplicantListsService
+    private applicantListsQuery: ApplicantListsQuery
   ) {}
 
   ngOnInit(): void {
@@ -1258,11 +1259,10 @@ export class Step2FormComponent
   }
 
   public getDropdownLists(): void {
-    this.applicantListsService
-      .getDropdownLists()
+    this.applicantListsQuery.dropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.vehicleType = data.truckTypes.map((item) => {
+      .subscribe((res) => {
+        this.vehicleType = res.truckTypes.map((item) => {
           return {
             ...item,
             folder: 'common',
@@ -1270,7 +1270,7 @@ export class Step2FormComponent
           };
         });
 
-        this.trailerType = data.trailerTypes.map((item) => {
+        this.trailerType = res.trailerTypes.map((item) => {
           return {
             ...item,
             folder: 'common',
@@ -1278,9 +1278,9 @@ export class Step2FormComponent
           };
         });
 
-        this.trailerLengthType = data.trailerLenghts;
+        this.trailerLengthType = res.trailerLenghts;
 
-        this.reasonsForLeaving = data.reasonsForLeave;
+        this.reasonsForLeaving = res.reasonsForLeave;
       });
   }
 

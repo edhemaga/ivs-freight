@@ -26,7 +26,8 @@ import {
 
 import { FormService } from './../../../../services/form/form.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { ApplicantListsService } from '../../state/services/applicant-lists.service';
+
+import { ApplicantListsQuery } from '../../state/store/applicant-lists-store/applicant-lists.query';
 
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
@@ -44,9 +45,11 @@ import {
 export class Step5FormComponent
   implements OnInit, OnDestroy, OnChanges, AfterViewInit
 {
+  @Input() mode: string;
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
   @Input() markFormInvalid?: boolean;
+  @Input() isReviewingCard: boolean;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
@@ -54,6 +57,10 @@ export class Step5FormComponent
   @Output() formStatusEmitter = new EventEmitter<any>();
   @Output() markInvalidEmitter = new EventEmitter<any>();
   @Output() lastFormValuesEmitter = new EventEmitter<any>();
+  @Output() hasIncorrectFieldsEmitter = new EventEmitter<any>();
+  @Output() openAnnotationArrayValuesEmitter = new EventEmitter<any>();
+  @Output() cardOpenAnnotationArrayValuesEmitter = new EventEmitter<any>();
+  @Output() cancelFormReviewingEmitter = new EventEmitter<any>();
 
   private destroy$ = new Subject<void>();
 
@@ -101,12 +108,13 @@ export class Step5FormComponent
       displayAnnotationTextArea: false,
     },
   ];
+  public isCardReviewedIncorrect: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private formService: FormService,
-    private applicantListsService: ApplicantListsService
+    private applicantListsQuery: ApplicantListsQuery
   ) {}
 
   ngOnInit(): void {
@@ -114,50 +122,68 @@ export class Step5FormComponent
 
     this.getDropdownLists();
 
-    if (this.formValuesToPatch) {
-      this.patchForm();
+    if (this.selectedMode === SelectedMode.APPLICANT) {
+      if (this.formValuesToPatch) {
+        this.patchForm(this.formValuesToPatch);
 
-      this.subscription = this.violationsForm.valueChanges
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((updatedFormValues) => {
-          const { id, location, isEditingViolation, ...previousFormValues } =
-            this.formValuesToPatch;
-
-          previousFormValues.location = location.address;
-
-          this.editingCardAddress = location;
-
-          const { firstRowReview, secondRowReview, ...newFormValues } =
-            updatedFormValues;
-
-          if (isFormValueEqual(previousFormValues, newFormValues)) {
-            this.isViolationEdited = false;
-          } else {
-            this.isViolationEdited = true;
-          }
-        });
+        this.startValueChangesMonitoring();
+      }
     }
   }
 
   ngAfterViewInit(): void {
-    this.violationsForm.statusChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.formStatusEmitter.emit(res);
-      });
+    if (this.selectedMode === SelectedMode.APPLICANT) {
+      this.violationsForm.statusChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          this.formStatusEmitter.emit(res);
+        });
 
-    this.violationsForm.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.lastFormValuesEmitter.emit(res);
-      });
+      this.violationsForm.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          this.lastFormValuesEmitter.emit(res);
+        });
+    }
+
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      this.violationsForm.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          const reviewMessages = {
+            firstRowReview: res.firstRowReview,
+            secondRowReview: res.secondRowReview,
+          };
+
+          this.lastFormValuesEmitter.emit(reviewMessages);
+        });
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.markFormInvalid?.currentValue) {
-      this.inputService.markInvalid(this.violationsForm);
+    if (changes.mode?.previousValue !== changes.mode?.currentValue) {
+      this.selectedMode = changes.mode?.currentValue;
 
-      this.markInvalidEmitter.emit(false);
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        if (
+          changes.markFormInvalid?.previousValue !==
+          changes.markFormInvalid?.currentValue
+        ) {
+          this.inputService.markInvalid(this.violationsForm);
+          this.markInvalidEmitter.emit(false);
+        }
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        if (
+          changes.formValuesToPatch?.previousValue !==
+          changes.formValuesToPatch?.currentValue
+        ) {
+          setTimeout(() => {
+            this.patchForm(changes.formValuesToPatch.currentValue);
+          }, 100);
+        }
+      }
     }
   }
 
@@ -173,19 +199,41 @@ export class Step5FormComponent
     });
   }
 
-  public patchForm(): void {
+  public patchForm(formValue: any): void {
     this.violationsForm.patchValue({
-      date: this.formValuesToPatch.date,
-      vehicleType: this.formValuesToPatch.vehicleType,
-      location: this.formValuesToPatch.location.address,
-      description: this.formValuesToPatch.description,
+      date: formValue.date,
+      vehicleType: formValue.vehicleType,
+      location: formValue.location,
+      description: formValue.description,
     });
 
     setTimeout(() => {
       this.selectedVehicleType = this.vehicleType.find(
-        (item) => item.name === this.formValuesToPatch.vehicleType
+        (item) => item.name === formValue.vehicleType
       );
     }, 150);
+  }
+
+  public startValueChangesMonitoring() {
+    this.subscription = this.violationsForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((updatedFormValues) => {
+        const { id, location, isEditingViolation, ...previousFormValues } =
+          this.formValuesToPatch;
+
+        previousFormValues.location = location.address;
+
+        this.editingCardAddress = location;
+
+        const { firstRowReview, secondRowReview, ...newFormValues } =
+          updatedFormValues;
+
+        if (isFormValueEqual(previousFormValues, newFormValues)) {
+          this.isViolationEdited = false;
+        } else {
+          this.isViolationEdited = true;
+        }
+      });
   }
 
   public handleInputSelect(event: any, action: string): void {
@@ -219,7 +267,7 @@ export class Step5FormComponent
     const saveData: ViolationModel = {
       ...violationsForm,
       isEditingViolation: false,
-      location: this.selectedAddress,
+      location: this.selectedAddress.address,
     };
 
     this.formValuesEmitter.emit(saveData);
@@ -271,70 +319,11 @@ export class Step5FormComponent
     this.subscription.unsubscribe();
   }
 
-  public incorrectInput(
-    event: any,
-    inputIndex: number,
-    lineIndex: number,
-    type?: string
-  ): void {
-    const selectedInputsLine = this.openAnnotationArray.find(
-      (item) => item.lineIndex === lineIndex
-    );
-
-    if (type === 'card') {
-      selectedInputsLine.lineInputs[inputIndex] =
-        !selectedInputsLine.lineInputs[inputIndex];
-
-      selectedInputsLine.displayAnnotationButton =
-        !selectedInputsLine.displayAnnotationButton;
-
-      if (selectedInputsLine.displayAnnotationTextArea) {
-        selectedInputsLine.displayAnnotationButton = false;
-        selectedInputsLine.displayAnnotationTextArea = false;
-      }
-    } else {
-      if (event) {
-        selectedInputsLine.lineInputs[inputIndex] = true;
-
-        if (!selectedInputsLine.displayAnnotationTextArea) {
-          selectedInputsLine.displayAnnotationButton = true;
-          selectedInputsLine.displayAnnotationTextArea = false;
-        }
-      }
-
-      if (!event) {
-        selectedInputsLine.lineInputs[inputIndex] = false;
-
-        const lineInputItems = selectedInputsLine.lineInputs;
-        const isAnyInputInLineIncorrect =
-          anyInputInLineIncorrect(lineInputItems);
-
-        if (!isAnyInputInLineIncorrect) {
-          selectedInputsLine.displayAnnotationButton = false;
-          selectedInputsLine.displayAnnotationTextArea = false;
-        }
-      }
-    }
-  }
-
-  public getAnnotationBtnClickValue(event: any): void {
-    if (event.type === 'open') {
-      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
-      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
-        true;
-    } else {
-      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
-      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
-        false;
-    }
-  }
-
   public getDropdownLists(): void {
-    this.applicantListsService
-      .getDropdownLists()
+    this.applicantListsQuery.dropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.vehicleType = data.truckTypes.map((item) => {
+      .subscribe((res) => {
+        this.vehicleType = res.truckTypes.map((item) => {
           if (item.id === 3) {
             return {
               ...item,
@@ -369,6 +358,125 @@ export class Step5FormComponent
           };
         });
       });
+  }
+
+  public incorrectInput(
+    event: any,
+    inputIndex: number,
+    lineIndex: number
+  ): void {
+    const selectedInputsLine = this.openAnnotationArray.find(
+      (item) => item.lineIndex === lineIndex
+    );
+
+    if (this.isReviewingCard) {
+      if (event) {
+        selectedInputsLine.lineInputs[inputIndex] = true;
+      }
+
+      if (!event) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+      }
+
+      const inputFieldsArray = JSON.stringify(
+        this.openAnnotationArray
+          .filter((item) => Object.keys(item).length !== 0)
+          .map((item) => item.lineInputs)
+      );
+
+      if (inputFieldsArray.includes('true')) {
+        this.isCardReviewedIncorrect = true;
+      } else {
+        this.isCardReviewedIncorrect = false;
+      }
+    } else {
+      if (event) {
+        selectedInputsLine.lineInputs[inputIndex] = true;
+
+        if (!selectedInputsLine.displayAnnotationTextArea) {
+          selectedInputsLine.displayAnnotationButton = true;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+
+      if (!event) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+
+        const lineInputItems = selectedInputsLine.lineInputs;
+        const isAnyInputInLineIncorrect =
+          anyInputInLineIncorrect(lineInputItems);
+
+        if (!isAnyInputInLineIncorrect) {
+          selectedInputsLine.displayAnnotationButton = false;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+
+        switch (lineIndex) {
+          case 10:
+            this.violationsForm.get('firstRowReview').patchValue(null);
+
+            break;
+
+          case 11:
+            this.violationsForm.get('secondRowReview').patchValue(null);
+
+            break;
+
+          default:
+            break;
+        }
+      }
+    }
+
+    const inputFieldsArray = JSON.stringify(
+      this.openAnnotationArray
+        .filter((item) => Object.keys(item).length !== 0)
+        .map((item) => item.lineInputs)
+    );
+
+    if (inputFieldsArray.includes('true')) {
+      this.hasIncorrectFieldsEmitter.emit(true);
+    } else {
+      this.hasIncorrectFieldsEmitter.emit(false);
+    }
+
+    const filteredOpenAnnotationArray = this.openAnnotationArray.filter(
+      (item) => Object.keys(item).length !== 0
+    );
+
+    this.openAnnotationArrayValuesEmitter.emit(filteredOpenAnnotationArray);
+  }
+
+  public getAnnotationBtnClickValue(event: any): void {
+    if (event.type === 'open') {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        true;
+    } else {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        false;
+    }
+  }
+
+  public onCancelReviewViolation(): void {
+    this.cancelFormReviewingEmitter.emit(1);
+
+    this.isCardReviewedIncorrect = false;
+  }
+
+  public onAddAnnotation(): void {
+    if (!this.isCardReviewedIncorrect) {
+      return;
+    }
+
+    const filteredOpenAnnotationArray = this.openAnnotationArray.filter(
+      (item) => Object.keys(item).length !== 0
+    );
+
+    this.cardOpenAnnotationArrayValuesEmitter.emit(filteredOpenAnnotationArray);
+
+    this.isCardReviewedIncorrect = false;
   }
 
   ngOnDestroy(): void {
