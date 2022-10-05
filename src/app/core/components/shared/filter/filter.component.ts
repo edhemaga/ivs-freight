@@ -15,7 +15,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
-import { addressValidation } from '../ta-input/ta-input.regex-validations';
+import { addressValidation, combinedSingleLimitValidation } from '../ta-input/ta-input.regex-validations';
 import { card_component_animation } from '../animations/card-component.animations';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
@@ -333,17 +333,18 @@ export class FilterComponent implements OnInit, AfterViewInit {
     {
       id: 2,
       name: 'Shop',
-      icon: 'assets/svg/truckassist-table/repair/ic_shop.svg',
+      icon: 'assets/svg/common/repair-services/ic_shop.svg',
+      activeIcon: 'assets/svg/common/ic_shop_cart.svg'
     },
     {
       id: 3,
       name: 'Towing',
-      icon: 'assets/svg/truckassist-table/repair/ic_towing.svg',
+      icon: 'assets/svg/common/ic_towing.svg',
     },
     {
       id: 4,
       name: 'Parts',
-      icon: 'assets/svg/truckassist-table/repair/active-shop-types/Parts.svg',
+      icon: 'assets/svg/common/repair-services/ic_parts.svg',
     },
     {
       id: 5,
@@ -1067,6 +1068,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
   longValueSet: any = 0;
   latValSet: any = 0;
   locationRangeSet: any = 50;
+  loactionNameSet: any = '';
+
+  activeFormNum: any = 0;
 
   @Input() type: string = 'userFilter';
   @Input() icon: string = 'user';
@@ -1083,6 +1087,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   @Input() locationDefType: boolean = false;
   @Input() legendView: boolean = false;
   @Input() toDoSubType: string = '';
+  @Input() dataArray: any;
 
   @Output() setFilter = new EventEmitter<any>();
 
@@ -1173,7 +1178,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         if (changes.singleTo) {
           let to = parseInt(changes.singleTo);
           let from = parseInt(changes.singleFrom);
-          if (from > to || from == to) {
+          if ( from > to || from == to ) {
             this.singleFormError = true;
           } else {
             this.singleFormError = false;
@@ -1181,6 +1186,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
         } else {
           this.singleFormError = false;
         }
+      } else {
+        this.singleFormError = false;
       }
 
       if (changes.multiFromFirstFrom || changes.multiFromFirstTo) {
@@ -1196,6 +1203,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
         } else {
           this.multiFormFirstError = false;
         }
+      } else {
+        this.multiFormFirstError = false;
       }
 
       if (changes.multiFormSecondFrom || changes.multiFormSecondTo) {
@@ -1230,40 +1239,45 @@ export class FilterComponent implements OnInit, AfterViewInit {
       if (this.subType != 'all') {
         let toValueChanged = true;
         let fromValueChanged = true;
+        
+        let fromActive = this.singleFromActive && this.singleFromActive != 'null' ? this.singleFromActive : 0;
+        let toActive = this.singleToActive && this.singleToActive != 'null' ? this.singleToActive : 0;
 
-        if (parseInt(this.singleToActive) == parseInt(changes.singleTo)) {
+        let to = 0;
+        if ( changes.singleTo ) {
+          to = parseInt(changes.singleTo);
+        } 
+        
+        let from = 0;
+        if ( changes.singleFrom ) {
+          from = parseInt(changes.singleFrom);
+        }
+        
+      
+        if (toActive == to) {
           toValueChanged = false;
         }
 
-        if (parseInt(this.singleFromActive) == parseInt(changes.singleFrom)) {
+        if (fromActive == from) {
           fromValueChanged = false;
         }
 
-        if (changes.singleFrom && changes.singleTo && !this.singleFormError) {
+        if ( toValueChanged || fromValueChanged ) {
+          this.setButtonAvailable = true;
           this.moneyFilterStatus = true;
-          if (toValueChanged || fromValueChanged) {
-            this.setButtonAvailable = true;
-          } else {
-            this.setButtonAvailable = false;
-          }
         } else {
-          this.moneyFilterStatus = false;
           this.setButtonAvailable = false;
+          if ( to == 0 && from == 0 ) {
+            this.moneyFilterStatus = false;
+          }
         }
+
       } else {
-        if (
-          (changes.multiFromFirstFrom &&
-            changes.multiFromFirstTo &&
-            !this.multiFormFirstError) ||
-          (changes.multiFormSecondFrom &&
-            changes.multiFormSecondTo &&
-            !this.multiFormSecondError) ||
-          (changes.multiFormThirdFrom &&
-            changes.multiFormThirdTo &&
-            !this.multiFormThirdError)
-        ) {
+        if ( !this.multiFormFirstError && !this.multiFormSecondError && !this.multiFormThirdError ) {
           this.moneyFilterStatus = true;
           this.checkMoneyMultiForm(changes);
+        } else {
+          this.setButtonAvailable = false;
         }
 
         if (
@@ -1298,10 +1312,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
       } else {
         this.moneyForm.get('multiFormThirdTo')?.setErrors(null);
       }
-
-      //console.log('---moneyFilterStatus', this.moneyFilterStatus);
-      if (this.moneyFilterStatus) {
-      }
+      
     });
 
     this.searchForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
@@ -1463,6 +1474,95 @@ export class FilterComponent implements OnInit, AfterViewInit {
           this.activeFilter = true;
         } else {
           this.activeFilter = false;
+          if ( this.defFilterHolder ){
+            
+            let mainArray: any[] = [];
+            switch (this.type) {
+              case 'departmentFilter':
+                mainArray = this.departmentArray;
+              break;
+              case 'pmFilter':
+                mainArray = this.pmFilterArray;
+              break;
+              case 'categoryFuelFilter':
+                mainArray = this.categoryFuelArray;
+              break;
+              case 'categoryRepairFilter':
+                mainArray = this.categoryRepairArray;
+              break;
+              case 'truckFilter':
+                mainArray = this.truckArray;
+              break;
+              case 'trailerFilter':
+                mainArray = this.trailerArray;
+              break;
+              case 'brokerFilter':
+                mainArray = this.brokerArray;
+              break;
+              case 'driverFilter':
+                mainArray = this.driverArray;
+              break;
+              case 'truckTypeFilter':
+                mainArray = this.truckTypeArray;
+              break;
+              case 'trailerTypeFilter':
+                mainArray = this.trailerTypeArray;
+              break;
+              case 'userFilter':
+                mainArray = this.unselectedUser;
+              break;
+            }
+
+            mainArray.map((item) => {
+              if ( ( item.isSelected && !item.currentSet ) || ( !item.isSelected && item.currentSet ) ){
+                let indexNum = this.selectedUser.indexOf(item);
+                if ( indexNum > -1 ) {
+                  this.removeFromSelectedUser(item, indexNum);
+                } else {
+                  let inactiveIndexNum = mainArray.indexOf(item);
+                  this.addToSelectedUser(item, inactiveIndexNum);
+                }
+              }
+            })
+          } else if ( this.type == 'timeFilter' ) {
+            this.selectedTimeValue = this.filterActiveTime;
+          } else if ( this.type == 'moneyFilter' ) {
+            if ( this.subType != 'all' ) {
+                let setFromValue = this.singleFromActive != 'null' && this.singleFromActive ? this.singleFromActive : '';
+                this.moneyForm.get('singleFrom')?.setValue(setFromValue);
+
+                let setToValue = this.singleToActive != 'null' && this.singleToActive ? this.singleToActive : '';
+                this.moneyForm.get('singleTo')?.setValue(setToValue);
+                if ( !setFromValue ) {
+                  this.setButtonAvailable = false;
+                } 
+            } else {
+              let firstFromActive = this.multiFromFirstFromActive && this.multiFromFirstFromActive != 'null' ? this.multiFromFirstFromActive : '';
+              let firstToActive = this.multiFromFirstToActive && this.multiFromFirstToActive != 'null' ? this.multiFromFirstToActive : '';
+
+              this.moneyForm.get('multiFromFirstTo')?.setValue(firstToActive);
+              this.moneyForm.get('multiFromFirstFrom')?.setValue(firstFromActive);
+
+              let secFromActive = this.multiFormSecondFromActive && this.multiFormSecondFromActive != 'null' ? this.multiFormSecondFromActive : '';
+              let secToActive = this.multiFormSecondToActive && this.multiFormSecondToActive != 'null' ? this.multiFormSecondToActive : '';
+
+              this.moneyForm.get('multiFormSecondFrom')?.setValue(secFromActive);
+              this.moneyForm.get('multiFormSecondTo')?.setValue(secToActive);
+              
+              let thirdFromActive = this.multiFormThirdFromActive && this.multiFormThirdFromActive != 'null' ? this.multiFormThirdFromActive : '';
+              let thirdToActive = this.multiFormThirdToActive && this.multiFormThirdToActive != 'null' ? this.multiFormThirdToActive : '';
+
+              this.moneyForm.get('multiFormThirdFrom')?.setValue(thirdFromActive);
+              this.moneyForm.get('multiFormThirdTo')?.setValue(thirdToActive);
+            }
+            
+          } else if ( this.type == 'locationFilter' ) {
+
+            this.locationForm.setValue({address: this.loactionNameSet});
+            this.longVal = this.longValueSet;
+            this.latVal = this.latValSet;
+            this.locationRange = this.locationRangeSet;
+          }
           this.cdRef.detectChanges();
         }
       });
@@ -1527,7 +1627,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   removeFromSelectedUser(item, indx, subType?) {
-    this.selectedUser.splice(indx, 1);
+    this.selectedUser.splice(indx, 1); 
 
     if (this.type == 'stateFilter') {
       if (subType == 'canada') {
@@ -1679,73 +1779,88 @@ export class FilterComponent implements OnInit, AfterViewInit {
         case 'departmentFilter':
           this.departmentArray.map((item) => {
             item.isSelected = false;
+            item.currentSet = false;
           });
         break;
         case 'statusFilter':
           this.pendingStatusArray.map((item) => {
             item.isSelected = false;
+            item.currentSet = false;
           });
   
           this.activeStatusArray.map((item) => {
             item.isSelected = false;
+            item.currentSet = false;
           });
   
           this.closedStatusArray.map((item) => {
             item.isSelected = false;
+            item.currentSet = false;
           });
         break;
         case 'pmFilter':
           this.pmFilterArray.map((item) => {
             item.isSelected = false;
+            item.currentSet = false;
           });
         break;
         case 'categoryFuelFilter':
           this.categoryFuelArray.map((item) => {
             item.isSelected = false;
+            item.currentSet = false;
           });
         break;
         case 'categoryRepairFilter':
           this.categoryRepairArray.map((item) => {
             item.isSelected = false;
+            item.currentSet = false;
           });
         break;
         case 'truckFilter':
           this.truckArray.map((item) => {
             item.isSelected = false;
+            item.currentSet = false;
           });
         break;
         case 'trailerFilter':
           this.trailerArray.map((item) => {
             item.isSelected = false;
+            item.currentSet = false;
           });
         break;
         case 'brokerFilter':
           this.brokerArray.map((item) => {
             item.isSelected = false;
+            item.currentSet = false;
           });
         break;
         case 'driverFilter':
           this.driverArray.map((item) => {
             item.isSelected = false;
+            item.currentSet = false;
           });
         break;
         case 'truckTypeFilter':
           this.truckTypeArray.map((item) => {
             item.isSelected = false;
+            item.currentSet = false;
           });
         break;
         case 'userFilter':
           this.unselectedUser.map((item) => {
             item.isSelected = false;
+            item.currentSet = false;
           });
         break;
         case 'stateFilter':
           this.usaStates.map((item) => {
             item.isSelected = false;
+            item.currentSet = false;
           });
   
           this.canadaStates.map((item) => {
             item.isSelected = false;
+            item.currentSet = false;
           });
         break;
         case 'injuryFilter':
@@ -1761,6 +1876,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
           this.locationState = '';
           this.longVal = 0;
           this.latVal = 0;
+          this.loactionNameSet = '';
 
           this.longValueSet = this.longVal;
           this.latValSet = this.latVal;
@@ -1772,6 +1888,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
           } else {
             this.clearForm('clearAll');
           }
+          this.activeFormNum = 0;
         break;
         case 'milesFilter':
           case 'payFilter':
@@ -1871,35 +1988,40 @@ export class FilterComponent implements OnInit, AfterViewInit {
   clearForm(mod) {
     switch (mod) {
       case 'singleForm':
-        this.singleFormError = false;
-        this.moneyFilterStatus = false;
-        this.singleToActive = false;
-        this.singleFromActive = false;
         this.moneyForm.get('singleFrom')?.setValue('');
         this.moneyForm.get('singleTo')?.setValue('');
-
+        this.singleFormError = false;
+        this.moneyFilterStatus = false;
+        this.singleToActive = 0;
+        this.singleFromActive = 0;
+        this.setButtonAvailable = false;
         break;
       case 'multiFromFirst':
-        this.multiFormFirstError = false;
         this.moneyForm.get('multiFromFirstFrom')?.setValue('');
         this.moneyForm.get('multiFromFirstTo')?.setValue('');
-
+        this.multiFormFirstError = false;
         break;
       case 'multiFormSecond':
-        this.multiFormSecondError = false;
         this.moneyForm.get('multiFormSecondFrom')?.setValue('');
         this.moneyForm.get('multiFormSecondTo')?.setValue('');
+        this.multiFormSecondError = false;
         break;
       case 'multiFormThird':
-        this.multiFormThirdError = false;
         this.moneyForm.get('multiFormThirdFrom')?.setValue('');
         this.moneyForm.get('multiFormThirdTo')?.setValue('');
+        this.multiFormThirdError = false;
         break;
       case 'clearAll':
+        this.multiFromFirstFromActive = 0;
+        this.multiFromFirstToActive = 0;
+        this.multiFormSecondFromActive = 0;
+        this.multiFormSecondToActive = 0;
+        this.multiFormThirdFromActive = 0;
+        this.multiFormThirdToActive = 0;
+        this.moneyForm.reset();
         this.multiFormFirstError = false;
         this.multiFormSecondError = false;
         this.multiFormThirdError = false;
-        this.moneyForm.reset();
         break;
     }
   }
@@ -1915,6 +2037,15 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
       if (this.type == 'timeFilter') {
         this.filterActiveTime = this.selectedTimeValue;
+
+        if ( !this.selectedTimeValue ) {
+          this.clearAll(e);
+          return false;
+        }
+
+        queryParams = {
+          'timeSelected' : this.filterActiveTime,
+        }
       } else if (this.swipeFilter) {
         this.swipeActiveRange = this.rangeValue;
       } else if (this.type == 'stateFilter') {
@@ -1922,6 +2053,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.filterCanadaActiveArray = [...this.canadaSelectedStates];
       } else if (this.type == 'moneyFilter') {
         if (this.subType == 'all') {
+
+          let formActive = 0;
+
           this.multiFromFirstFromActive = (
             ' ' + this.moneyForm.get('multiFromFirstFrom')?.value
           ).slice(1);
@@ -1940,6 +2074,31 @@ export class FilterComponent implements OnInit, AfterViewInit {
           this.multiFormThirdToActive = (
             ' ' + this.moneyForm.get('multiFormThirdTo')?.value
           ).slice(1);
+
+          /*
+          if ( parseInt(this.multiFromFirstToActive) > 0 ) {
+            formActive = formActive + 1;
+          }
+
+          if ( parseInt(this.multiFormSecondToActive) > 0 ) {
+            formActive = formActive + 1;
+          }
+
+          if ( parseInt(this.multiFormThirdToActive) > 0 ) {
+            formActive = formActive + 1;
+          }
+
+          this.activeFormNum = formActive;
+          */
+          queryParams = {
+            'firstFormFrom' : this.moneyForm.get('multiFromFirstFrom')?.value,
+            'firstFormFTo' : this.moneyForm.get('multiFromFirstTo')?.value,
+            'secondFormFrom' : this.moneyForm.get('multiFormSecondFrom')?.value,
+            'secondFormTo' : this.moneyForm.get('multiFormSecondTo')?.value,
+            'thirdFormFrom' : this.moneyForm.get('multiFormThirdFrom')?.value,
+            'thirdFormTo' : this.moneyForm.get('multiFormThirdTo')?.value,
+          }  
+
         } else {
           this.singleFromActive = (
             ' ' + this.moneyForm.get('singleFrom')?.value
@@ -1947,6 +2106,17 @@ export class FilterComponent implements OnInit, AfterViewInit {
           this.singleToActive = (
             ' ' + this.moneyForm.get('singleTo')?.value
           ).slice(1);
+
+          if ( !this.moneyForm.get('singleFrom')?.value && !this.moneyForm.get('singleTo')?.value ) {
+            this.clearAll(e);
+            return false;
+          }   
+
+          queryParams = {
+            'singleFrom' : this.moneyForm.get('singleFrom')?.value ? parseInt(this.moneyForm.get('singleFrom')?.value) : '',
+            'singleTo' : this.moneyForm.get('singleTo')?.value ? parseInt(this.moneyForm.get('singleTo')?.value) : '',
+          }
+
         }
       } else if ( this.type == 'milesFilter' || this.type == 'payFilter' ) {
         this.maxValueSet = this.rangeForm.get('rangeTo')?.value;
@@ -1962,13 +2132,75 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.longValueSet = this.longVal;
         this.latValSet = this.latVal;
         this.locationRangeSet = this.locationRange;
+        this.loactionNameSet = this.locationForm.get('address')?.value;
 
       } else {
         this.filterActiveArray = [...this.selectedUser];
         let selectedUsersIdArray: any = [];
-        this.filterActiveArray.map((data) => {
-          selectedUsersIdArray.push(data.id);
+
+        console.log('---this.type', this.type);
+        let mainArray: any[] = [];
+            switch (this.type) {
+              case 'departmentFilter':
+                mainArray = this.departmentArray;
+              break;
+              case 'pmFilter':
+                mainArray = this.pmFilterArray;
+              break;
+              case 'categoryFuelFilter':
+                mainArray = this.categoryFuelArray;
+              break;
+              case 'categoryRepairFilter':
+                mainArray = this.categoryRepairArray;
+              break;
+              case 'truckFilter':
+                mainArray = this.truckArray;
+              break;
+              case 'trailerFilter':
+                mainArray = this.trailerArray;
+              break;
+              case 'brokerFilter':
+                mainArray = this.brokerArray;
+              break;
+              case 'driverFilter':
+                mainArray = this.driverArray;
+              break;
+              case 'truckTypeFilter':
+                mainArray = this.truckTypeArray;
+              break;
+              case 'trailerTypeFilter':
+                mainArray = this.trailerTypeArray;
+              break;
+              case 'userFilter':
+                mainArray = this.unselectedUser;
+              break;
+            }
+
+
+          mainArray.map((item) => {
+          if ( item.isSelected ) {
+            item['currentSet'] = true;
+          } else {
+            item['currentSet'] = false;
+          }
         })
+
+
+        if ( this.type == 'pmFilter' ) {
+          this.filterActiveArray.map((data) => {
+            selectedUsersIdArray.push(data.name);
+          })
+        } else {
+          this.filterActiveArray.map((data) => {
+            selectedUsersIdArray.push(data.id);
+          })
+        }
+
+        if ( selectedUsersIdArray.length == 0 ) {
+          this.clearAll(e);
+          return false;
+        }
+        
         queryParams = selectedUsersIdArray;
         subType = this.toDoSubType ? this.toDoSubType : '';
       }
@@ -2043,6 +2275,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     } else {
       let array1 = [...this.selectedUser];
       let array2 = [...this.filterActiveArray];
+
       array1.sort((a, b) => {
         return a.id - b.id;
       });
@@ -2067,73 +2300,63 @@ export class FilterComponent implements OnInit, AfterViewInit {
     let secondFormChanged = 'none';
     let thirdFormChanged = 'none';
 
-    if (
-      (parseInt(this.multiFromFirstFromActive) !=
-        parseInt(data.multiFromFirstFrom) &&
-        data.multiFromFirstFrom != '') ||
-      (parseInt(this.multiFromFirstToActive) != data.multiFromFirstTo &&
-        data.multiFromFirstTo != '')
-    ) {
-      firstFormChanged = 'true';
+    let firstFromActive = this.multiFromFirstFromActive && this.multiFromFirstFromActive != 'null' ? this.multiFromFirstFromActive : 0;
+    let firstToActive = this.multiFromFirstToActive && this.multiFromFirstToActive != 'null' ? this.multiFromFirstToActive : 0;
+
+    let secFromActive = this.multiFormSecondFromActive && this.multiFormSecondFromActive != 'null' ? this.multiFormSecondFromActive : 0;
+    let secToActive = this.multiFormSecondToActive && this.multiFormSecondToActive != 'null' ? this.multiFormSecondToActive : 0;
+
+    let thirdFromActive = this.multiFormThirdFromActive && this.multiFormThirdFromActive != 'null' ? this.multiFormThirdFromActive : 0;
+    let thirdToActive = this.multiFormThirdToActive && this.multiFormThirdToActive != 'null' ? this.multiFormThirdToActive : 0;
+
+    let firstFrom = data.multiFromFirstFrom && data.multiFromFirstFrom != 'null' ? parseInt(data.multiFromFirstFrom) : 0;
+    let firstTo = data.multiFromFirstTo && data.multiFromFirstTo != 'null' ? parseInt(data.multiFromFirstTo) : 0;
+    
+
+    let secFrom = data.multiFormSecondFrom && data.multiFormSecondFrom != 'null' ? parseInt(data.multiFormSecondFrom) : 0;
+    let secTo = data.multiFormSecondTo && data.multiFormSecondTo != 'null' ? parseInt(data.multiFormSecondTo) : 0;
+
+    let thirdFrom = data.multiFormThirdFrom && data.multiFormThirdFrom != 'null' ? parseInt(data.multiFormThirdFrom) : 0;
+    let thirdTo = data.multiFormThirdTo && data.multiFormThirdTo != 'null' ? parseInt(data.multiFormThirdTo) : 0;
+   
+    if (firstFrom != firstFromActive || firstTo != firstToActive) {
+      firstFormChanged = 'changed';
     }
 
-    if (
-      (parseInt(this.multiFormSecondFromActive) !=
-        parseInt(data.multiFormSecondFrom) &&
-        data.multiFormSecondFrom != '') ||
-      (parseInt(this.multiFormSecondToActive) !=
-        parseInt(data.multiFormSecondTo) &&
-        data.multiFormSecondTo != '')
-    ) {
-      secondFormChanged = 'true';
+    if ( secFrom != secFromActive || secTo != secToActive) {
+      secondFormChanged = 'changed';
     }
 
-    if (
-      (parseInt(this.multiFormThirdFromActive) !=
-        parseInt(data.multiFormThirdFrom) &&
-        data.multiFormThirdFrom != '') ||
-      (parseInt(this.multiFormThirdToActive) !=
-        parseInt(data.multiFormThirdTo) &&
-        data.multiFormThirdTo != '')
-    ) {
-      thirdFormChanged = 'true';
+    if ( thirdFrom != thirdFromActive || thirdTo != thirdToActive ) {
+      thirdFormChanged = 'changed';
     }
 
-    if (
-      (data.multiFromFirstFrom && !data.multiFromFirstTo) ||
-      (!data.multiFromFirstFrom && data.multiFromFirstTo)
-    ) {
-      firstFormChanged = 'error';
+
+    let formsActive = 0;
+
+    if ( firstFrom || firstTo) {
+      formsActive = formsActive + 1;
     }
 
-    if (
-      (data.multiFormSecondFrom && !data.multiFormSecondTo) ||
-      (!data.multiFormSecondFrom && data.multiFormSecondTo)
-    ) {
-      secondFormChanged = 'error';
+    if ( secFrom || secTo ) {
+      formsActive = formsActive + 1;
     }
 
-    if (
-      (data.multiFormThirdFrom && !data.multiFormThirdTo) ||
-      (!data.multiFormThirdFrom && data.multiFormThirdTo)
-    ) {
-      thirdFormChanged = 'error';
+    if ( thirdFrom || thirdTo ) {
+      formsActive = formsActive + 1;
     }
 
-    if (
-      (firstFormChanged == 'true' &&
-        secondFormChanged != 'error' &&
-        thirdFormChanged != 'error') ||
-      (secondFormChanged == 'true' &&
-        firstFormChanged != 'error' &&
-        thirdFormChanged != 'error') ||
-      (thirdFormChanged == 'true' &&
-        firstFormChanged != 'error' &&
-        secondFormChanged != 'error')
-    ) {
+    this.activeFormNum = formsActive;
+
+    if ( firstFormChanged == 'changed' || secondFormChanged == 'changed' || thirdFormChanged == 'changed' ) {
       this.setButtonAvailable = true;
     } else {
       this.setButtonAvailable = false;
+      if ( firstFrom || firstTo || secFrom || secTo || thirdFrom || thirdTo ){
+        this.moneyFilterStatus = true;
+      } else {
+        this.moneyFilterStatus = false;
+      }
     }
   }
 
