@@ -47,7 +47,7 @@ export class FormService implements OnDestroy {
       )
       .subscribe(() => {
         let current_value = form.value;
-
+        console.log('changes: ', diff(this.originalValue, current_value));
         if (Object.keys(diff(this.originalValue, current_value)).length !== 0) {
           this.formValueChange$.next(true);
         } else {
