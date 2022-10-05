@@ -75,6 +75,7 @@ export class TruckassistTableToolbarComponent
   inactiveTimeOutInterval: any;
   timeOutToaggleColumn: any;
   columnsOptions: any[] = [];
+  isMapShowning: boolean = false;
 
   constructor(private tableService: TruckassistTableService) {}
 
@@ -116,6 +117,9 @@ export class TruckassistTableToolbarComponent
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.options?.firstChange && changes?.options) {
       this.options = changes.options.currentValue;
+
+      console.log('Otpions');
+      console.log(this.options);
     }
 
     if (
@@ -209,6 +213,8 @@ export class TruckassistTableToolbarComponent
       action: 'view-mode',
       mode: modeView.mode,
     });
+
+    this.isMapShowning = modeView.mode === 'Map';
   }
 
   // Delete Selected Rows

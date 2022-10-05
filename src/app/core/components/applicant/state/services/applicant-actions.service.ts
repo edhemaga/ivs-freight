@@ -12,7 +12,7 @@ import {
   CreateSevenDaysHosCommand,
   CreateDrugAndAlcoholCommand,
   UpdateDriverRightsCommand,
-  CreateDisclosureReleaseCommand,
+  /* CreateDisclosureReleaseCommand, */
   CreateAuthorizationCommand,
   CreateResponse,
   CreateEducationCommand,
@@ -95,9 +95,10 @@ export class ApplicantActionsService {
   }
 
   public createDisclosureAndRelease(
-    data: CreateDisclosureReleaseCommand
+    data: /* CreateDisclosureReleaseCommand */ any
   ): Observable<CreateResponse> {
-    return this.applicantService.apiApplicantDisclosurereleasePost(data);
+   /*  return this.applicantService.apiApplicantDisclosurereleasePost(data); */
+   return;
   }
 
   public createAuthorization(

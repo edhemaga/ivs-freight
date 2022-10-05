@@ -73,7 +73,7 @@
         display: flex;
         align-items: center;
 
-        svg-icon{
+        svg-icon {
           display: flex;
           align-items: center;
           margin: 0px 6px 0px 2px;
@@ -211,6 +211,13 @@
 }
 
 /* Ng Class */
+
+// Map Style
+.mapToolbarStyle {
+  position: relative;
+  z-index: 2;
+}
+
 // Tabs
 .tab-margin {
   margin-right: 4px;
@@ -232,10 +239,10 @@
   background: #919191 !important;
   transition: 0.25s;
 
-  svg-icon{
-    svg{
-      path{
-        fill: #EEEEEE;
+  svg-icon {
+    svg {
+      path {
+        fill: #eeeeee;
       }
     }
   }

@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ClassOfEquipmentReviewCommand } from './classOfEquipmentReviewCommand';
 
 
 export interface WorkExperienceItemReviewCommand { 
@@ -25,14 +24,13 @@ export interface WorkExperienceItemReviewCommand {
     isEmailValid?: boolean;
     contactMessage?: string | null;
     isAddressValid?: boolean;
+    isAddressUnitValid?: boolean;
     addressMessage?: string | null;
-    isCfrPartValid?: boolean;
-    isFmcsaValid?: boolean;
-    cfrFmcsaMessage?: string | null;
     isReasonForLeavingValid?: boolean;
     reasonForLeavingMessage?: string | null;
     isAccountForPeriodBetweenValid?: boolean;
     accountForPeriodBetweenMessage?: string | null;
-    classOfEquipmentReviews?: Array<ClassOfEquipmentReviewCommand> | null;
+    isPrimary?: boolean;
+    commonMessage?: string | null;
 }
 

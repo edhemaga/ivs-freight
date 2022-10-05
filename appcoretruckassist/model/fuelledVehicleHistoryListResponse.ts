@@ -9,17 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { FuelledVehicleResponse } from './fuelledVehicleResponse';
 
 
-export interface AccidentItemCommand { 
-    id?: number | null;
-    location?: AddressEntity;
-    date?: string;
-    fatalities?: number | null;
-    injuries?: number | null;
-    hazmatSpill?: boolean;
-    vehicleTypeId?: number;
-    description?: string | null;
+export interface FuelledVehicleHistoryListResponse { 
+    fuelledVehicleResponses?: Array<FuelledVehicleResponse> | null;
 }
 

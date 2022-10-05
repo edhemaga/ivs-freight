@@ -21,8 +21,8 @@ export class TodoTService {
 
   public getTodoList(
     status?: TodoStatus,
-    companyUserId?: number,
-    departmentId?: number,
+    companyUserId?: Array<any>,
+    departmentId?: Array<any>,
     dateFrom?: string,
     dateTo?: string,
     pageIndex?: number,
