@@ -23,11 +23,13 @@ import { ConfirmationService } from '../../modals/confirmation-modal/confirmatio
 import { NotificationService } from '../../../services/notification/notification.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { card_component_animation } from '../../shared/animations/card-component.animations';
 
 @Component({
   selector: 'app-to-do-list-card',
   templateUrl: './to-do-list-card.component.html',
   styleUrls: ['./to-do-list-card.component.scss'],
+  animations: [card_component_animation('showHideCardBody')],
   encapsulation: ViewEncapsulation.None,
 })
 export class ToDoListCardComponent implements OnInit, OnDestroy {
@@ -241,15 +243,6 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
       };
       this.updateStatus(this.updatedStatusData);
     }
-  }
-
-  private getTodoList() {
-    this.todoTService
-      .getTodoList()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((resp: TodoListResponse) => {
-        this.updateTodosList(resp.pagination.data);
-      });
   }
 
   public openModalTodo() {
@@ -539,6 +532,8 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
           this.currentChildIndex
         ].id
       );
+      this.newComment = false;
+    } else if (ev['action'] == 'cancel') {
       this.newComment = false;
     }
   }

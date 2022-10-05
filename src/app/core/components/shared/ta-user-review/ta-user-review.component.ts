@@ -132,6 +132,11 @@ export class TaUserReviewComponent implements OnChanges {
         review.isEditMode = false;
 
         this.reviewData[0].isNewReview = false;
+        this.changeReviewsEvent.emit({
+          sortData: this.reviewData,
+          data: review,
+          action: type,
+        });
         break;
       }
       default: {
