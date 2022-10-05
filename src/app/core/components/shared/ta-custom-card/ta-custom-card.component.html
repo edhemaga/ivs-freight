@@ -64,9 +64,7 @@
       }"
     >
       <!-- Like & Dislike -->
-      <app-ta-like-dislike
-        *ngIf="hasLikeDislike && hasBodyData"
-      ></app-ta-like-dislike>
+      <app-ta-like-dislike *ngIf="hasLikeDislike"></app-ta-like-dislike>
 
       <div
         *ngIf="customTextAction"

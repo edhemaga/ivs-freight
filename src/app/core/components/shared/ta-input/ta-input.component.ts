@@ -556,6 +556,10 @@ export class TaInputComponent
         this.input.nativeElement.value = value;
         this.inputSelection = false;
       }
+
+      // Delete spaces on begin and end
+      this.input.nativeElement.value = this.input.nativeElement.value.trim();
+      this.getSuperControl.patchValue(this.input.nativeElement.value);
     } else {
       this.input.nativeElement.value = value;
     }
@@ -615,10 +619,6 @@ export class TaInputComponent
         this.getSuperControl.setErrors(null);
       }
     }
-
-    // Delete spaces on begin and end
-    this.input.nativeElement.value = this.input.nativeElement.value.trim();
-    this.getSuperControl.patchValue(this.input.nativeElement.value);
   }
 
   public selectionChange(event: any) {
@@ -888,6 +888,17 @@ export class TaInputComponent
       }
       event.preventDefault();
       return false;
+    }
+
+    if (['address'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z0-9\s.&/,_-]*$/.test(String.fromCharCode(event.charCode))) {
+        console.log('address');
+        this.disableConsecutivelySpaces(event);
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
     }
 
     if (

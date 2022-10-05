@@ -31,5 +31,6 @@ export interface GetTrailerModalResponse {
     reeferUnits?: Array<EnumValue> | null;
     countryTypes?: Array<EnumValue> | null;
     states?: Array<StateResponse> | null;
+    fhwaExp?: number;
 }
 

@@ -359,8 +359,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
               ? res.truckGrossWeight.name
               : null,
             emptyWeight: res.emptyWeight,
-            engineModelId: res.truckEngineType
-              ? res.truckEngineType.name
+            engineModelId: res.truckEngineModel
+              ? res.truckEngineModel.name
               : null,
             tireSizeId: res.tireSize ? res.tireSize.name : null,
             axles: res.axles,
@@ -376,8 +376,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           this.selectedTruckGrossWeight = res.truckGrossWeight
             ? res.truckGrossWeight
             : null;
-          this.selectedEngineModelId = res.truckEngineType
-            ? res.truckEngineType
+          this.selectedEngineModelId = res.truckEngineModel
+            ? res.truckEngineModel
             : null;
           this.selectedTireSize = res.tireSize ? res.tireSize : null;
           this.truckStatus = res.status !== 1;
@@ -554,13 +554,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                   model: res?.model ? res.model : null,
                   year: res?.year ? res.year.toString() : null,
                   truckMakeId: res.truckMake ? res.truckMake.name : null,
-                  engineModel: res.engineType?.name
-                    ? res.engineType.name
+                  engineModel: res.engineModel?.name
+                    ? res.engineModel.name
                     : null,
                 });
                 this.loadingVinDecoder = false;
                 this.selectedTruckMake = res.truckMake;
-                this.selectedEngineModelId = res.engineType;
+                this.selectedEngineModelId = res.engineModel;
               },
               error: () => {
                 this.notificationService.error(
@@ -597,7 +597,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           });
           this.ownerType = res.owners;
           this.grossWeight = res.truckGrossWeights;
-          this.engineModels = res.truckEngineTypes;
+          this.engineModels = res.truckEngineModels;
           this.tireSize = res.tireSizes;
           this.shifters = res.shifters;
         },

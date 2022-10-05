@@ -11,9 +11,9 @@
  */
 import { DispatchShortResponse } from './dispatchShortResponse';
 import { EnumValue } from './enumValue';
-import { TruckEngineTypeResponse } from './truckEngineTypeResponse';
 import { TruckGrossWeightResponse } from './truckGrossWeightResponse';
 import { ColorResponse } from './colorResponse';
+import { TruckEngineModelResponse } from './truckEngineModelResponse';
 import { OwnerDetailsResponse } from './ownerDetailsResponse';
 import { TireSizeResponse } from './tireSizeResponse';
 import { TruckTypeResponse } from './truckTypeResponse';
@@ -42,7 +42,7 @@ export interface TruckResponse {
     purchasePrice?: number | null;
     truckGrossWeight?: TruckGrossWeightResponse;
     emptyWeight?: number | null;
-    truckEngineType?: TruckEngineTypeResponse;
+    truckEngineModel?: TruckEngineModelResponse;
     tireSize?: TireSizeResponse;
     fuelTankSize?: number | null;
     brakes?: EnumValue;
@@ -53,11 +53,12 @@ export interface TruckResponse {
     axles?: number | null;
     insurancePolicy?: string | null;
     mileage?: number | null;
-    ipasEzpass?: string | null;
+    fhwaExp?: number;
     engineOilType?: EnumValue;
     gearRatio?: EnumValue;
     apUnit?: EnumValue;
     tollTransponder?: EnumValue;
+    tollTransponderDeviceNo?: string | null;
     doubleBunk?: boolean | null;
     refrigerator?: boolean | null;
     dcInventer?: boolean | null;
