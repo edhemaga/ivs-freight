@@ -316,9 +316,6 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return this.mapAccountData(data);
       });
 
-      console.log('Account Data');
-      console.log(this.viewData);
-
       // For Testing
       // for (let i = 0; i < 300; i++) {
       //   this.viewData.push(this.viewData[0]);

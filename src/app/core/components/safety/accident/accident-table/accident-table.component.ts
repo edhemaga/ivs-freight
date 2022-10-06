@@ -407,9 +407,6 @@ export class AccidentTableComponent
       /* for(let i = 0; i < 100; i++){
         this.viewData.push(this.viewData[2]);
       } */
-
-      console.log('viewData');
-      console.log(this.viewData);
     } else {
       this.viewData = [];
     }

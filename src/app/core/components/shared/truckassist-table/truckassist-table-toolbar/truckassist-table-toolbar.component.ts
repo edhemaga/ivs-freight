@@ -117,9 +117,6 @@ export class TruckassistTableToolbarComponent
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.options?.firstChange && changes?.options) {
       this.options = changes.options.currentValue;
-
-      console.log('Otpions');
-      console.log(this.options);
     }
 
     if (

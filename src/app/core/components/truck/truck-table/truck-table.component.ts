@@ -405,9 +405,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.viewData = this.viewData.map((data) => {
         return this.mapTruckData(data);
       });
-
-      console.log('Truck Data');
-      console.log(this.viewData);
     } else {
       this.viewData = [];
     }

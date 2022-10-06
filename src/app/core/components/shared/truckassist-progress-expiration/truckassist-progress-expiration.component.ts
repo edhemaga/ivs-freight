@@ -52,7 +52,6 @@ export class TruckassistProgressExpirationComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('driver onChanges progress', changes);
     if (!changes?.expireDate?.firstChange && changes?.expireDate) {
       this.expireDate = changes.expireDate.currentValue;
     }
@@ -135,7 +134,6 @@ export class TruckassistProgressExpirationComponent implements OnInit {
           var daysProgress = this.totalDays !== undefined
           ? (1 / this.totalDays) * 100
           : (1 / 365) * 100;
-          console.log('daysProgress', daysProgress);
 
           return daysProgress / (24 / this.timeDifference);
         } else {

@@ -338,9 +338,6 @@ export class ContactsTableComponent
         return this.mapContactData(data);
       });
 
-      console.log('Contact Data');
-      console.log(this.viewData);
-
       // For Testing
       // for (let i = 0; i < 300; i++) {
       //   this.viewData.push(this.viewData[0]);

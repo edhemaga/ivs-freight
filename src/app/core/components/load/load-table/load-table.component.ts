@@ -404,9 +404,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.viewData = this.viewData.map((data) => {
         return this.mapLoadData(data);
       });
-
-      console.log('Load Data');
-      console.log(this.viewData);
     } else {
       this.viewData = [];
     }

@@ -4,7 +4,7 @@ import {
   CdlResponse,
   /* CreateCdlCommand, */
   DriverResponse,
- /*  EditCdlCommand, */
+  /* EditCdlCommand, */
   GetCdlModalResponse,
 } from 'appcoretruckassist';
 import { CdlTService } from '../../../state/cdl.service';

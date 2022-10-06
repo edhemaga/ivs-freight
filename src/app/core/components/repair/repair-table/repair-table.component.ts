@@ -455,9 +455,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       });
 
-      console.log('View Data');
-      console.log(this.viewData);
-
       // For Testing
       // for (let i = 0; i < 300; i++) {
       //   this.viewData.push(this.viewData[0]);

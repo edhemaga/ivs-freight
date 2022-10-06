@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { DriverListResponse } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
+import { DriverListResponse, TableConfigResponse } from 'appcoretruckassist';
+import { nextTick } from 'process';
+import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriverTService } from '../driver.service';
 import { DriversActiveState, DriversActiveStore } from './driver-active.store';
 
@@ -12,15 +14,30 @@ import { DriversActiveState, DriversActiveStore } from './driver-active.store';
 export class DriverActiveResolver implements Resolve<DriversActiveState> {
   constructor(
     private driverService: DriverTService,
-    private driversStore: DriversActiveStore
+    private store: DriversActiveStore,
+    private tableService: TruckassistTableService
   ) {}
+
   resolve(): Observable<DriversActiveState | boolean> {
-    console.log('Poziva se DriverActiveResolver ')
-    return this.driverService.getDrivers(1, undefined, undefined, undefined, 1, 25).pipe(
-      catchError(() => {
-        return of('No drivers data...');
-      }),
-      tap((driverPagination: DriverListResponse) => {
+    const drivers$ = this.driverService.getDrivers(
+      1,
+      undefined,
+      undefined,
+      undefined,
+      1,
+      25
+    );
+    const driversColumnsConfig$ = this.tableService.getTableConfig('DRIVER');
+
+    let driverStore = this.store;
+    let tableScopeSerice = this.tableService;
+
+    forkJoin([drivers$, driversColumnsConfig$]).subscribe({
+      next([driverPagination, driversColumnsConfig]: [
+        DriverListResponse,
+        TableConfigResponse
+      ]) {
+        // Set Driver Count In LocalStorage
         localStorage.setItem(
           'driverTableCount',
           JSON.stringify({
@@ -29,10 +46,36 @@ export class DriverActiveResolver implements Resolve<DriversActiveState> {
           })
         );
 
-        console.log(driverPagination)
+        // Get Table Config From Local Storage
+        const localStorageColumnsConfig = JSON.parse(
+          localStorage.getItem('driverColumnsConfig')
+        );
 
-        this.driversStore.set(driverPagination.pagination.data);
-      })
-    );
+        // If There Is No Table Configuration In Local Storage
+        if (!localStorageColumnsConfig) {
+          // If There Is Back Table Configuration Set It In Local Storage
+          if (driversColumnsConfig.config) {
+            localStorage.setItem(
+              'driverColumnsConfig',
+              driversColumnsConfig.config
+            );
+          }
+        }
+        // If There Is A Table Configuration In Local Storage
+        else {
+          tableScopeSerice
+            .sendTableConfig({
+              tableType: 'DRIVER',
+              config: JSON.stringify(localStorageColumnsConfig),
+            })
+            .subscribe();
+        }
+
+        // Set Driver Data In Store
+        driverStore.set(driverPagination.pagination.data);
+      }
+    });
+
+    return;
   }
 }

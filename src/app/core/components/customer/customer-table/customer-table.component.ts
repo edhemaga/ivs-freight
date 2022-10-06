@@ -135,9 +135,6 @@ export class CustomerTableComponent
         if (res.animation === 'add' && res.tab === 'broker') {
           this.viewData.push(this.mapBrokerData(res.data));
 
-          console.log('Radi Se Dodavanje Broker-a');
-          console.log(this.viewData);
-
           this.addData(res.id);
         }
         // Update Broker
@@ -151,9 +148,6 @@ export class CustomerTableComponent
         // Add Shipper
         else if (res.animation === 'add' && res.tab === 'shipper') {
           this.viewData.push(this.mapShipperData(res.data));
-
-          console.log('Radi Se Dodavanje Shipper-a');
-          console.log(this.viewData);
 
           this.addData(res.id);
         }
@@ -183,7 +177,6 @@ export class CustomerTableComponent
                 this.viewData.map((data: any) => {
                   response.map((r: any) => {
                     if (data.id === r.id) {
-                      console.log(data);
                       if (!brokerName) {
                         brokerName = data.businessName;
                       } else {
@@ -209,7 +202,6 @@ export class CustomerTableComponent
             this.viewData.map((data: any) => {
               response.map((r: any) => {
                 if (data.id === r.id) {
-                  console.log(data);
                   if (!shipperName) {
                     shipperName = data.businessName;
                   } else {
@@ -393,9 +385,6 @@ export class CustomerTableComponent
           return this.mapShipperData(data);
         }
       });
-
-      console.log('Customer Data');
-      console.log(this.viewData);
 
       // For Testing
       // for (let i = 0; i < 100; i++) {
@@ -610,9 +599,6 @@ export class CustomerTableComponent
   // Table Body Actions
   onTableBodyActions(event: any) {
     let businessName = '';
-
-    console.log('onTableBodyActions');
-    console.log(event);
 
     // Edit Call
     if (event.type === 'show-more') {

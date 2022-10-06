@@ -439,7 +439,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         extended: true,
         gridNameTitle: 'Driver',
         stateName: 'applicants',
-        gridColumns: this.getGridColumns('applicants', this.resetColumns),
+        gridColumns: this.getGridColumns(this.resetColumns),
       },
       {
         title: 'Active',
@@ -449,7 +449,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
-        gridColumns: this.getGridColumns('drivers', this.resetColumns),
+        gridColumns: this.getGridColumns(this.resetColumns),
       },
       {
         title: 'Inactive',
@@ -459,7 +459,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
-        gridColumns: this.getGridColumns('drivers', this.resetColumns),
+        gridColumns: this.getGridColumns(this.resetColumns),
       },
     ];
 
@@ -488,30 +488,17 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  getGridColumns(stateName: string, resetColumns: boolean) {
-    /* this.tableService
-      .getTableConfig('DRIVER')
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((configResponse: TableConfigResponse) => {
-        const config = JSON.parse(configResponse.config);
-        console.log('Driver Table Config');
-        console.log(JSON.parse(configResponse.config));
-
-        if(config){
-          return config;
-        }else{
-          if (stateName === 'applicants') {
-            return getApplicantColumnsDefinition();
-          } else {
-            return getDriverColumnsDefinition();
-          }
-        }
-      }); */
-
-    if (stateName === 'applicants') {
+  getGridColumns(resetColumns: boolean) {
+    if (this.selectedTab === 'applicants') {
       return getApplicantColumnsDefinition();
     } else {
-      return getDriverColumnsDefinition();
+      const driverColumnsConfig = JSON.parse(
+        localStorage.getItem('driverColumnsConfig')
+      );
+
+      return driverColumnsConfig
+        ? driverColumnsConfig
+        : getDriverColumnsDefinition();
     }
   }
 
@@ -526,9 +513,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
           ? this.mapApplicantsData(data, index)
           : this.mapDriverData(data);
       });
-
-      console.log('Driver Data');
-      console.log(this.viewData);
 
       // For Testing
       // if (this.selectedTab !== 'applicants') {
@@ -887,16 +871,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.backFilterQuery.pageIndex = 1;
 
-      /* this.tableService
-        .sendTableConfig({
-          tableType: 'DRIVER',
-          config: JSON.stringify(this.columns),
-        })
-        .subscribe((res: any) => {
-          console.log('sendTableConfig');
-          console.log(res);
-        }); */
-
       this.sendDriverData();
     } else if (event.action === 'view-mode') {
       this.mapingIndex = 0;
@@ -1092,11 +1066,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    /*  this.tableService.sendTableConfig({
-      tableType: 'DRIVER',
-      config: JSON.stringify(this.columns),
-    }); */
-
     this.destroy$.next();
     this.destroy$.complete();
     this.tableService.sendActionAnimation({});
