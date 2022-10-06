@@ -229,6 +229,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'gpstracking',
+    loadChildren: () =>
+      import('./core/components/telematic/telematic.module').then(
+        (m) => m.TelematicModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'tools/calendar',
     loadChildren: () =>
       import('./core/components/calendar/calendar.module').then(
