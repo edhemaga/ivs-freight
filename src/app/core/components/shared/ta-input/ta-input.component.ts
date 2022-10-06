@@ -622,7 +622,9 @@ export class TaInputComponent
   }
 
   public selectionChange(event: any) {
-    this.inputSelection = true;
+    if (event) {
+      this.inputSelection = true;
+    }
   }
 
   public onEditInput(event: Event) {
@@ -894,7 +896,6 @@ export class TaInputComponent
 
     if (['address'].includes(this.inputConfig.name.toLowerCase())) {
       if (/^[A-Za-z0-9\s.&/,_-]*$/.test(String.fromCharCode(event.charCode))) {
-        console.log('address');
         this.disableConsecutivelySpaces(event);
         return true;
       } else {
@@ -1365,6 +1366,7 @@ export class TaInputComponent
 
   public onPaste(event?: any) {
     event.preventDefault();
+
     this.pasteCheck(
       event.clipboardData.getData('text'),
       this.inputService.getInputRegexPattern(
