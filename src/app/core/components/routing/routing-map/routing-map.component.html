@@ -437,7 +437,8 @@
                       maxLength: 256,
                       blackInput: true,
                       placeholderInsteadOfLabel: true,
-                      routingAddress: true
+                      routingAddress: true,
+                      isDropdown: true
                     }"
                     [placeholderType]="this.tableData[this.selectedMapIndex].addressType == 'address' ? 'longAddress' : 'shortAddress'"
                     [closedBorder]="this.tableData[this.selectedMapIndex].borderType == 'closed' ? 'true' : 'false'"
@@ -909,19 +910,25 @@
                   }"
                 >
                   <!-- Add New Stop -->
-                  <app-ta-input-address
+                  <app-input-address-dropdown
                     formControlName="address"
                     [inputConfig]="{
-                      name: 'Address',
+                      name: 'RoutingAddress',
                       type: 'text',
                       label: 'Add New Stop',
+                      placeholder: 'Add New Stop',
                       textTransform: 'capitalize',
-                      addressFlag: addressFlag,
-                      minLength: 12,
+                      dropdownWidthClass: dropdownWidth,
+                      minLength: 6,
                       maxLength: 256,
                       blackInput: true,
-                      hideErrorMessage: true,
-                      customClass: 'input-22',
+                      placeholderInsteadOfLabel: true,
+                      routingAddress: true,
+                      isDropdown: true
+                    }"
+                    [placeholderType]="this.tableData[this.selectedMapIndex].addressType == 'address' ? 'longAddress' : 'shortAddress'"
+                    [closedBorder]="this.tableData[this.selectedMapIndex].borderType == 'closed' ? 'true' : 'false'"
+                    [commandHandler]="{
                       commands: {
                         active: true,
                         type: 'confirm-cancel',
@@ -943,13 +950,14 @@
                         }
                       }
                     }"
-                    (commandEvent)="onHandleAddress($event, route, i)"
+                    [isRouting]="true"
                     (changeFlag)="
                       $event === true
                         ? (addressFlag = 'Loaded')
                         : (addressFlag = 'Empty')
                     "
-                  ></app-ta-input-address>
+                    (commandEvent)="onHandleAddress($event, route, i)"
+                  ></app-input-address-dropdown>
                 </div>
               </div>
             </div>

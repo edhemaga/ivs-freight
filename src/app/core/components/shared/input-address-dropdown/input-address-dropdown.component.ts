@@ -96,11 +96,17 @@ export class InputAddressDropdownComponent
           if (!term) {
             this.addresList = [];
           }
-          this.getSuperControl.setErrors({invalid:true})
+          if (this.inputConfig.name != 'RoutingAddress') {
+            this.getSuperControl.setErrors({ invalid: true });
+          }
           return term?.length >= 3;
         }),
         switchMap((query) => {
-          return this.addressService.getAddresses(query, this.searchLayers, this.closedBorder);
+          return this.addressService.getAddresses(
+            query,
+            this.searchLayers,
+            this.closedBorder
+          );
         })
       )
       .subscribe((res) => {
@@ -134,7 +140,7 @@ export class InputAddressDropdownComponent
           };
           this.selectedAddress.emit(this.currentAddressData);
           this.getSuperControl.setValue(event.address.address);
-          this.getSuperControl.setErrors(null)
+          this.getSuperControl.setErrors(null);
           this.chosenFromDropdown = true;
         } else {
           this.currentAddressData = null;
@@ -196,7 +202,7 @@ export class InputAddressDropdownComponent
 
     if (!this.chosenFromDropdown) {
       this.inputDropdown?.inputRef?.input.nativeElement.focus();
-      setTimeout(()=>{
+      setTimeout(() => {
         this.inputDropdown.inputRef.focusInput = true;
       }, 500);
     }
