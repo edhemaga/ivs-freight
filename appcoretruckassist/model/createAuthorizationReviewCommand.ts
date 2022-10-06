@@ -12,14 +12,6 @@
 
 
 export interface CreateAuthorizationReviewCommand { 
-    isFirstAuthorizationValid?: boolean;
-    firstAuthorizationMessage?: string | null;
-    isSecondAuthorizationValid?: boolean;
-    secondAuthorizationMessage?: string | null;
-    isThirdAuthorizationValid?: boolean;
-    thirdAuthorizationMessage?: string | null;
-    isFourthAuthorizationValid?: boolean;
-    fourthAuthorizationMessage?: string | null;
     isSignatureValid?: boolean;
     signatureMessage?: string | null;
     authorizationId?: number;

@@ -65,8 +65,8 @@ export class RepairTService implements OnDestroy {
                 ({ id }) => id === data.repairShopId
               );
               this.shopMinimalStore.add(shop);
-              this.sdls.update(shop.id, { repairs: shop.repairs });
-              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit });
+             /*  this.sdls.update(shop.id, { repairs: shop.repairs });
+              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit }); */
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 tab: 'repair-shop',
@@ -124,8 +124,8 @@ export class RepairTService implements OnDestroy {
                 ({ id }) => id === data.repairShopId
               );
               this.shopMinimalStore.add(shop);
-              this.sdls.update(shop.id, { repairs: shop.repairs });
-              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit });
+             /*  this.sdls.update(shop.id, { repairs: shop.repairs });
+              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit }); */
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 tab: 'repair-shop',
@@ -221,8 +221,8 @@ export class RepairTService implements OnDestroy {
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (shop: RepairShopResponse | any) => {
-              this.sdls.update(shop.id, { repairs: shop.repairs });
-              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit });
+              /* this.sdls.update(shop.id, { repairs: shop.repairs });
+              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit }); */
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 tab: 'repair-shop',
@@ -348,7 +348,7 @@ export class RepairTService implements OnDestroy {
     search1?: string,
     search2?: string
   ): Observable<RepairShopListResponse> {
-    return this.shopServices.apiRepairshopListGet(
+    /* return this.shopServices.apiRepairshopListGet(
       active,
       pinned,
       companyOwned,
@@ -359,7 +359,9 @@ export class RepairTService implements OnDestroy {
       search,
       search1,
       search2
-    );
+    ); */
+
+    return;
   }
 
   // Get Repair Minimal List

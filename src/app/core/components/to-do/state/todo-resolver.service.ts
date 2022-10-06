@@ -1,8 +1,8 @@
 import { TodoQuery } from './todo.query';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { forkJoin, Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { TodoTService } from './todo.service';
 
 @Injectable({
@@ -17,11 +17,18 @@ export class TodoResolverService implements Resolve<any> {
     if (this.todoQuery.todoGetTodoList.todayObject) {
       return this.todoQuery.todoGetTodoList;
     } else {
-      return this.todoService.getTodoList().pipe(
-        tap((products) => {
-          this.todoService.setTodoList = products;
+      const todoList = this.todoService.getTodoList('Todo');
+      const ongoingList = this.todoService.getTodoList('InProgres');
+      const doneList = this.todoService.getTodoList('Done');
+
+      let todo = forkJoin([todoList, ongoingList, doneList]).pipe(
+        map((list: any) => {
+          this.todoService.setTodoList = list;
+          return list;
         })
       );
+
+      return todo;
     }
   }
 }

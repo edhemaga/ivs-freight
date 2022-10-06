@@ -94,7 +94,7 @@
 
           <div class="d-flex">
             <div class="group address-group">
-              <app-ta-input-address
+              <app-input-address-dropdown
                 formControlName="address"
                 [inputConfig]="{
                   name: 'Address',
@@ -102,13 +102,17 @@
                   label: 'Address, City, State Zip',
                   isRequired: true,
                   placeholderIcon: 'address',
+                  placeholder: 'Address, City, State Zip',
+                  textTransform: 'capitalize',
+                  dropdownWidthClass: 'w-col-503',
                   minLength: 6,
                   maxLength: 256,
-                  textTransform: 'capitalize'
+                  isDropdown: true
                 }"
+                [placeholderType]="'longAddress'"
                 [activeAddress]="selectedAddress"
                 (selectedAddress)="handleAddressChange($event)"
-              ></app-ta-input-address>
+              ></app-input-address-dropdown>
             </div>
             <div class="group address-unit-group">
               <app-ta-input

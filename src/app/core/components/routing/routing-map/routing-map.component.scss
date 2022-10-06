@@ -399,10 +399,6 @@
 
         .route-row-location {
             &.add-new-stop {
-                input {
-                    background-color: #00000000 !important;
-                }
-
                 label {
                     color: #6C6C6C !important;
                 }
@@ -567,10 +563,7 @@
         &.add-new-stop {
             width: 100%;
             margin-right: 0px;
-
-            input {
-                background-color: #fff !important;
-            }
+            overflow: visible;
 
             label {
                 color: #B7B7B7 !important;

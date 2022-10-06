@@ -11,9 +11,9 @@
  */
 import { TruckMakeResponse } from './truckMakeResponse';
 import { EnumValue } from './enumValue';
-import { TruckEngineTypeResponse } from './truckEngineTypeResponse';
 import { TruckGrossWeightResponse } from './truckGrossWeightResponse';
 import { ColorResponse } from './colorResponse';
+import { TruckEngineModelResponse } from './truckEngineModelResponse';
 import { TireSizeResponse } from './tireSizeResponse';
 import { TruckTypeResponse } from './truckTypeResponse';
 import { OwnerShortResponse } from './ownerShortResponse';
@@ -37,7 +37,7 @@ export interface TruckShortResponse {
     purchasePrice?: number | null;
     truckGrossWeight?: TruckGrossWeightResponse;
     emptyWeight?: number | null;
-    truckEngineType?: TruckEngineTypeResponse;
+    truckEngineModel?: TruckEngineModelResponse;
     tireSize?: TireSizeResponse;
     fuelTankSize?: number | null;
     brakes?: EnumValue;
@@ -48,16 +48,16 @@ export interface TruckShortResponse {
     axles?: number | null;
     insurancePolicy?: string | null;
     mileage?: number | null;
-    ipasEzpass?: string | null;
     licensePlate?: string | null;
-    fhwaInspection?: string | null;
+    fhwaExp?: number;
     engineOilType?: EnumValue;
     gearRatio?: EnumValue;
     apUnit?: EnumValue;
     tollTransponder?: EnumValue;
+    tollTransponderDeviceNo?: string | null;
     doubleBunk?: boolean | null;
     refrigerator?: boolean | null;
-    dcInventer?: boolean | null;
+    dcInverter?: boolean | null;
     blower?: boolean | null;
     pto?: boolean | null;
     createdAt?: string;

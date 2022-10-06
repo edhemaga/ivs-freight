@@ -10,12 +10,13 @@
             !negative && 
             expire >= 1 && 
             expiresSettings !== 'details' && 
-            expiresSettings !== 'todo-list'" 
+            expiresSettings !== 'settings-insurance-policy' &&
+            expiresSettings !== 'todo-list'"
           [ngClass]="{ 'd-none': expire !== expire }"
       class="progress-text">
-      <span *ngIf="expiresSettings === 'settings-insurance-policy' || expiresSettings === 'settings-parking'"
+      <span *ngIf="expiresSettings === 'settings-parking'"
         class="expires-settings">{{ customText }}</span>
-      <span *ngIf="expiresSettings !== 'settings-parking'"
+      <span *ngIf="expiresSettings !== 'settings-parking' && expiresSettings !== 'settings-insurance-policy'"
         [ngClass]="{ 'expires-settings-bold': expiresSettings }">  {{ progresDay > 1 ? "days" :"day" }}</span>
     </span>
 
@@ -39,10 +40,10 @@
     <span *ngIf="
             !negative && 
             (daysDiff > 0 || timeDifference > 0) && 
-            (expiresSettings === 'details' || expiresSettings === 'todo-list')" 
+            (expiresSettings === 'details' || expiresSettings === 'todo-list' || expiresSettings === 'settings-insurance-policy')" 
           class="progress-days">
       <span>
-          {{ expiresSettings !== 'todo-list' ? 'Exp. in' : 'Deadline in' }}
+          {{ expiresSettings !== 'todo-list' ? 'Expires in' : 'Deadline in' }}
           <span [ngClass]="{ 'progress-days-bold': expiresSettings !== 'todo-list' }" 
                 *ngIf="daysDiff !== 0">{{ daysDiff }} {{ daysDiff > 1 ? "days" :"day" }}</span>
           <span [ngClass]="{ 'progress-days-bold': expiresSettings !== 'todo-list' }" 
@@ -52,7 +53,7 @@
 
     <!-- DAYS TO GO -->
     <span *ngIf="!negative && expiresSettings === 'settings-parking'" class="progress-days-to-go">
-      <span>{{ days }} days to go</span>
+      <span>{{ totalDays == 1 ? totalDays+ ' days' : totalDays+ ' days' }} to go</span>
     </span>
 
     <!-- EXPIRED DATE - MM-DD-YYYY -->
