@@ -23,6 +23,8 @@ export interface CdlLicenseReviewCommand {
     endorsmentsMessage?: string | null;
     isRestrictionsValid?: boolean;
     restrictionsMessage?: string | null;
+    isPrimary?: boolean;
+    commonMessage?: string | null;
     licenceId?: number;
 }
 

@@ -12,6 +12,7 @@
 import { TruckMinimalResponse } from './truckMinimalResponse';
 import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { EnumValue } from './enumValue';
+import { DispatchHosResponse } from './dispatchHosResponse';
 import { DriverMinimalResponse } from './driverMinimalResponse';
 import { LoadShortResponse } from './loadShortResponse';
 import { AddressEntity } from './addressEntity';
@@ -36,7 +37,7 @@ export interface DispatchResponse {
     currentStopType?: EnumValue;
     nextStopType?: EnumValue;
     possibleNextStatuses?: Array<DispatchStatusResponse> | null;
-    hoursOfService?: number | null;
+    hoursOfService?: Array<DispatchHosResponse> | null;
     note?: string | null;
     activeLoad?: LoadShortResponse;
     assignedLoads?: Array<LoadShortResponse> | null;

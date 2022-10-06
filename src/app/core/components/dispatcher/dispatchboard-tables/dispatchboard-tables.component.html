@@ -89,9 +89,7 @@
                     <div
                       *ngIf="
                         item.truck !== null &&
-                        !__isBoardLocked &&
-                        item.pickup === null &&
-                        item.delivery === null
+                        !__isBoardLocked
                       "
                       [mainTooltip]="'remove'"
                       [tooltipBackground]="'#6C6C6C'"
@@ -573,27 +571,31 @@
             </div>
           </td>
           <td class="location-field">
-            <app-ta-input-address
+            <app-input-address-dropdown
               *ngIf="showAddAddressField == rowIndex"
               [formControl]="truckAddress"
               [inputConfig]="{
                 name: 'Address',
                 type: 'text',
-                label: 'Truck Address',
+                label: 'Location',
                 isRequired: true,
                 placeholderIcon: 'address',
+                placeholder: 'Location',
                 textTransform: 'capitalize',
                 incorrectInput: selectedMode === 'REVIEW_MODE',
+                dropdownWidthClass: 'w-col-134',
                 minLength: 12,
                 maxLength: 256,
                 autoFocus: true,
                 placeholderInsteadOfLabel: true
               }"
               [incorrectValue]="false"
+              [placeholderType]="'longAddress'"
               (incorrectEvent)="incorrectInput($event, 0, 18)"
               [activeAddress]="selectedAddress"
               (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-            ></app-ta-input-address>
+              (closeDropdown)="onHideDropdown($event)"
+            ></app-input-address-dropdown>
             <div
               class="full-loc-hold"
               *ngIf="showAddAddressField != rowIndex"
@@ -778,9 +780,7 @@
             <div
               #t1="ngbPopover"
               (click)="toggleHos(t1, item.hoursOfService, item.id)"
-              (hidden)="
-                saveHosData(item.hoursOfService, rowIndex)
-              "
+              (hidden)="saveHosData(item.hoursOfService, rowIndex)"
               [class.statusOpened]="statusOpenedIndex > -1"
               [class.empty-box-field]="true"
               [ngbPopover]="hos"
@@ -1090,16 +1090,18 @@
           </td>
           <td class="location-field">
             <div class="full-loc-hold empty-box-field">
-              <app-ta-input-address
+              <app-input-address-dropdown
                 *ngIf="showAddAddressField == -2"
                 [formControl]="truckAddress"
                 [inputConfig]="{
                   name: 'Address',
                   type: 'text',
-                  label: 'Truck Address',
+                  label: 'Location',
+                  placeholder: 'Location',
                   isRequired: true,
                   placeholderIcon: 'address',
                   textTransform: 'capitalize',
+                  dropdownWidthClass: 'w-col-134',
                   incorrectInput: selectedMode === 'REVIEW_MODE',
                   minLength: 12,
                   maxLength: 256,
@@ -1109,8 +1111,10 @@
                 [incorrectValue]="false"
                 (incorrectEvent)="incorrectInput($event, 0, 18)"
                 [activeAddress]="selectedAddress"
+                [placeholderType]="'longAddress'"
                 (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-              ></app-ta-input-address>
+                (closeDropdown)="onHideDropdown($event)"
+              ></app-input-address-dropdown>
             </div>
           </td>
           <td class="status-field">

@@ -18,9 +18,8 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { CdlResponse } from '../model/models';
-import { CreateCdlCommand } from '../model/models';
+import { ClassType } from '../model/models';
 import { CreateResponse } from '../model/models';
-import { EditCdlCommand } from '../model/models';
 import { GetCdlModalResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { RenewCdlCommand } from '../model/models';
@@ -53,6 +52,19 @@ export class CdlService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         if (typeof value === "object" && value instanceof Date === false) {
@@ -411,14 +423,23 @@ export class CdlService {
     }
 
     /**
-     * @param createCdlCommand 
+     * @param driverId 
+     * @param cdlNumber 
+     * @param issueDate 
+     * @param expDate 
+     * @param classType 
+     * @param restrictions 
+     * @param endorsements 
+     * @param stateId 
+     * @param note 
+     * @param file 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCdlPost(createCdlCommand?: CreateCdlCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiCdlPost(createCdlCommand?: CreateCdlCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiCdlPost(createCdlCommand?: CreateCdlCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiCdlPost(createCdlCommand?: CreateCdlCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiCdlPost(driverId?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, file?: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
+    public apiCdlPost(driverId?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, file?: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
+    public apiCdlPost(driverId?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, file?: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
+    public apiCdlPost(driverId?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, file?: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -443,16 +464,66 @@ export class CdlService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (driverId !== undefined) {
+            formParams = formParams.append('DriverId', <any>driverId) as any || formParams;
+        }
+        if (cdlNumber !== undefined) {
+            formParams = formParams.append('CdlNumber', <any>cdlNumber) as any || formParams;
+        }
+        if (issueDate !== undefined) {
+            formParams = formParams.append('IssueDate', <any>issueDate) as any || formParams;
+        }
+        if (expDate !== undefined) {
+            formParams = formParams.append('ExpDate', <any>expDate) as any || formParams;
+        }
+        if (classType !== undefined) {
+            formParams = formParams.append('ClassType', <any>classType) as any || formParams;
+        }
+        if (restrictions) {
+            if (useForm) {
+                restrictions.forEach((element) => {
+                    formParams = formParams.append('Restrictions', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Restrictions', restrictions.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (endorsements) {
+            if (useForm) {
+                endorsements.forEach((element) => {
+                    formParams = formParams.append('Endorsements', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Endorsements', endorsements.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (stateId !== undefined) {
+            formParams = formParams.append('StateId', <any>stateId) as any || formParams;
+        }
+        if (note !== undefined) {
+            formParams = formParams.append('Note', <any>note) as any || formParams;
+        }
+        if (file !== undefined) {
+            formParams = formParams.append('File', <any>file) as any || formParams;
         }
 
         let responseType: 'text' | 'json' = 'json';
@@ -461,7 +532,7 @@ export class CdlService {
         }
 
         return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/cdl`,
-            createCdlCommand,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -473,14 +544,24 @@ export class CdlService {
     }
 
     /**
-     * @param editCdlCommand 
+     * @param id 
+     * @param cdlNumber 
+     * @param issueDate 
+     * @param expDate 
+     * @param classType 
+     * @param restrictions 
+     * @param endorsements 
+     * @param stateId 
+     * @param note 
+     * @param file 
+     * @param fileModified 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCdlPut(editCdlCommand?: EditCdlCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
-    public apiCdlPut(editCdlCommand?: EditCdlCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
-    public apiCdlPut(editCdlCommand?: EditCdlCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
-    public apiCdlPut(editCdlCommand?: EditCdlCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiCdlPut(id?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, file?: Blob, fileModified?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
+    public apiCdlPut(id?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, file?: Blob, fileModified?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
+    public apiCdlPut(id?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, file?: Blob, fileModified?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
+    public apiCdlPut(id?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, file?: Blob, fileModified?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -505,16 +586,69 @@ export class CdlService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            formParams = formParams.append('Id', <any>id) as any || formParams;
+        }
+        if (cdlNumber !== undefined) {
+            formParams = formParams.append('CdlNumber', <any>cdlNumber) as any || formParams;
+        }
+        if (issueDate !== undefined) {
+            formParams = formParams.append('IssueDate', <any>issueDate) as any || formParams;
+        }
+        if (expDate !== undefined) {
+            formParams = formParams.append('ExpDate', <any>expDate) as any || formParams;
+        }
+        if (classType !== undefined) {
+            formParams = formParams.append('ClassType', <any>classType) as any || formParams;
+        }
+        if (restrictions) {
+            if (useForm) {
+                restrictions.forEach((element) => {
+                    formParams = formParams.append('Restrictions', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Restrictions', restrictions.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (endorsements) {
+            if (useForm) {
+                endorsements.forEach((element) => {
+                    formParams = formParams.append('Endorsements', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Endorsements', endorsements.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (stateId !== undefined) {
+            formParams = formParams.append('StateId', <any>stateId) as any || formParams;
+        }
+        if (note !== undefined) {
+            formParams = formParams.append('Note', <any>note) as any || formParams;
+        }
+        if (file !== undefined) {
+            formParams = formParams.append('File', <any>file) as any || formParams;
+        }
+        if (fileModified !== undefined) {
+            formParams = formParams.append('FileModified', <any>fileModified) as any || formParams;
         }
 
         let responseType: 'text' | 'json' = 'json';
@@ -523,7 +657,7 @@ export class CdlService {
         }
 
         return this.httpClient.put<object>(`${this.configuration.basePath}/api/cdl`,
-            editCdlCommand,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

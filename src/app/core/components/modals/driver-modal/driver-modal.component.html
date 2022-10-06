@@ -4,7 +4,7 @@
   [editData]="editData"
   [saveAndAddNew]="editData?.type !== 'edit'"
   [customClass]="'modal-container-M'"
-  [isModalValid]="driverForm.valid"
+  [isModalValid]="driverForm.valid && isFormDirty"
   [dropZoneConfig]="dropZoneConfig"
   (action)="onModalAction($event)"
 >
@@ -75,7 +75,8 @@
               label: 'Phone',
               isRequired: true,
               placeholderIcon: 'phone',
-              mask: '(000) 000-0000'
+              mask: '(000) 000-0000',
+              maxLength: 14
             }"
           ></app-ta-input>
           <app-ta-input
@@ -98,13 +99,14 @@
               type: 'text',
               label: 'SSN',
               isRequired: true,
-              mask: '000-00-0000'
+              mask: '000-00-0000',
+              maxLength: 11
             }"
           ></app-ta-input>
         </div>
         <div class="row last-row">
           <div class="col-10">
-            <app-ta-input-address
+            <app-input-address-dropdown
               formControlName="address"
               [inputConfig]="{
                 name: 'Address',
@@ -112,13 +114,18 @@
                 label: 'Address, City, State Zip',
                 isRequired: true,
                 placeholderIcon: 'address',
+                placeholder: 'Address, City, State Zip',
+                textTransform: 'capitalize',
+                dropdownWidthClass: 'w-col-512',
                 minLength: 6,
                 maxLength: 256,
-                textTransform: 'capitalize'
+                isDropdown: true
               }"
+              [incorrectValue]="false"
+              [placeholderType]="'longAddress'"
               [activeAddress]="selectedAddress"
               (selectedAddress)="onHandleAddress($event)"
-            ></app-ta-input-address>
+            ></app-input-address-dropdown>
           </div>
           <div class="col-2">
             <app-ta-input
@@ -158,7 +165,7 @@
             <app-ta-input-dropdown
               formControlName="payType"
               [inputConfig]="{
-                name: 'Input Dropdown', 
+                name: 'Input Dropdown',
                 type: 'text',
                 label: 'Pay type',
                 isRequired: true,
@@ -514,6 +521,7 @@
                       label: 'EIN #',
                       isRequired: true,
                       mask: '00-0000000',
+                      maxLength: 10,
                       loadingSpinner: {
                         size: 'small',
                         color: 'white',
@@ -656,6 +664,7 @@
                 isRequired: true,
                 placeholderIcon: 'phone',
                 mask: '(000) 000-0000',
+                maxLength: 14,
                 customClass: 'line-input-26-in-card'
               }"
             ></app-ta-input>

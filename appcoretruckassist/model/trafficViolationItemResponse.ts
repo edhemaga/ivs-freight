@@ -11,13 +11,14 @@
  */
 import { TrafficViolationItemReviewResponse } from './trafficViolationItemReviewResponse';
 import { TruckTypeResponse } from './truckTypeResponse';
+import { AddressEntity } from './addressEntity';
 
 
 export interface TrafficViolationItemResponse { 
     id?: number;
     date?: string;
     vehicleType?: TruckTypeResponse;
-    location?: string | null;
+    location?: AddressEntity;
     description?: string | null;
     trafficViolationItemReview?: TrafficViolationItemReviewResponse;
 }

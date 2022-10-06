@@ -55,6 +55,9 @@ export class TaInputComponent
   @Output('incorrectEvent') incorrectInput: EventEmitter<any> =
     new EventEmitter<any>();
 
+  @Output('blurInput') blurInput: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
+
   @Output('change') changeInput: EventEmitter<any> = new EventEmitter<any>();
   @Output('commandEvent') commandEvent: EventEmitter<any> =
     new EventEmitter<any>();
@@ -66,6 +69,9 @@ export class TaInputComponent
   public isVisiblePasswordEye: boolean = false;
 
   public showDateInput: boolean = false;
+
+  public newInputChanged: boolean = false;
+
   public dateTimeInputDate: Date = new Date();
 
   public timeout = null;
@@ -75,6 +81,7 @@ export class TaInputComponent
   public oneSpaceOnlyCounter: number = 0;
 
   // Number of points
+  public numberOfConsecutivelyPoints: number = 0;
   public numberOfPoints: number = 0;
 
   // Dropdown
@@ -92,6 +99,9 @@ export class TaInputComponent
 
   // Edit Input
   public editInputMode: boolean = false;
+
+  // Input Selection
+  public inputSelection: boolean = false;
 
   constructor(
     @Self() public superControl: NgControl,
@@ -160,11 +170,7 @@ export class TaInputComponent
       .pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
-          this.touchedInput = false;
-          this.getSuperControl.patchValue(null);
-          this.inputResetService.resetInputSubject.next(false);
-
-          this.resetDateTimeInputs();
+          this.resetForms();
         }
       });
 
@@ -178,6 +184,14 @@ export class TaInputComponent
           this.resetDateTimeInputs();
         }
       });
+  }
+
+  resetForms() {
+    this.touchedInput = false;
+    this.getSuperControl.patchValue(null);
+    this.inputResetService.resetInputSubject.next(false);
+
+    this.resetDateTimeInputs();
   }
 
   ngAfterViewInit() {
@@ -252,7 +266,7 @@ export class TaInputComponent
     this.inputConfig.isDisabled = isDisabled;
   }
 
-  public onFocus(): void {
+  public onFocus(e?): void {
     // Password
     if (this.inputConfig.type === 'password') {
       this.isVisiblePasswordEye = true;
@@ -275,16 +289,20 @@ export class TaInputComponent
       !this.inputConfig.isDisabled
     ) {
       clearTimeout(this.dateTimeMainTimer);
+      clearTimeout(this.focusBlur);
       this.showDateInput = true;
       const elem =
         this.selectionInput == -1
           ? this.holder1.nativeElement
           : this.span1.nativeElement;
 
-      this.preventBlur = true;
-      elem.focus();
+      if (e && this.selectionInput == -1) {
+        this.preventBlur = true;
+        elem.focus();
+        this.setSpanSelection(elem);
+      }
+
       this.selectionInput = -1;
-      this.setSpanSelection(elem);
     }
 
     // Dropdown
@@ -295,6 +313,8 @@ export class TaInputComponent
 
     this.focusInput = true;
   }
+
+  focusBlur: any;
 
   public onBlur(): void {
     // DropDown Label
@@ -313,6 +333,7 @@ export class TaInputComponent
       this.preventBlur = false;
       return;
     }
+
     // Dropdown
     if (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) {
       if (
@@ -321,15 +342,18 @@ export class TaInputComponent
         !this.inputConfig.isDisabled
       ) {
         // Datepicker
-        if (this.inputConfig.name === 'datepicker') {
+        if (
+          this.inputConfig.name === 'datepicker' ||
+          this.inputConfig.name === 'timepicker'
+        ) {
           if (!this.getSuperControl.value) {
             this.inputConfig.type = 'text';
             this.blurOnDateTime();
-          }
-        } else if (this.inputConfig.name === 'timepicker') {
-          if (!this.getSuperControl.value) {
-            this.inputConfig.type = 'text';
-            this.blurOnDateTime();
+          } else {
+            this.focusBlur = setTimeout(() => {
+              this.focusInput = false;
+              this.blurOnDateTime();
+            }, 100);
           }
         } else {
           this.focusInput = false;
@@ -353,6 +377,8 @@ export class TaInputComponent
 
       this.focusInput = false;
     }
+
+    this.blurInput.emit(true);
 
     this.inputService.onFocusOutInput$.next(true);
     this.touchedInput = true;
@@ -397,6 +423,8 @@ export class TaInputComponent
       this.input.nativeElement.value = null;
       this.getSuperControl.setValue(null);
       this.numberOfConsecutivelySpaces = 0;
+      this.numberOfConsecutivelyPoints = 0;
+      this.numberOfPoints = 0;
       this.oneSpaceOnlyCounter = 0;
       this.inputConfig.dropdownImageInput = null;
       this.touchedInput = true;
@@ -422,6 +450,7 @@ export class TaInputComponent
       }
     }
 
+    this.newInputChanged = true;
     this.focusInput = false;
     this.showDateInput = false;
   }
@@ -479,7 +508,7 @@ export class TaInputComponent
       this.numberOfConsecutivelySpaces = 0;
 
       // Reset One Space Only
-      if (!this.getSuperControl.value.includes(' ')) {
+      if (!this.getSuperControl.value?.includes(' ')) {
         this.oneSpaceOnlyCounter = 0;
       }
 
@@ -511,14 +540,21 @@ export class TaInputComponent
 
   public transformText(value: string, paste?: boolean) {
     if (paste) {
-      this.input.nativeElement.value += value;
+      if (!this.inputSelection) {
+        this.input.nativeElement.value += value;
 
-      if (this.input.nativeElement.value.length > this.inputConfig.maxLength) {
-        this.input.nativeElement.value =
-          this.input.nativeElement.value.substring(
-            0,
-            this.inputConfig.maxLength
-          );
+        if (
+          this.input.nativeElement.value.length > this.inputConfig.maxLength
+        ) {
+          this.input.nativeElement.value =
+            this.input.nativeElement.value.substring(
+              0,
+              this.inputConfig.maxLength
+            );
+        }
+      } else {
+        this.input.nativeElement.value = value;
+        this.inputSelection = false;
       }
     } else {
       this.input.nativeElement.value = value;
@@ -579,6 +615,14 @@ export class TaInputComponent
         this.getSuperControl.setErrors(null);
       }
     }
+
+    // Delete spaces on begin and end
+    this.input.nativeElement.value = this.input.nativeElement.value.trim();
+    this.getSuperControl.patchValue(this.input.nativeElement.value);
+  }
+
+  public selectionChange(event: any) {
+    this.inputSelection = true;
   }
 
   public onEditInput(event: Event) {
@@ -827,7 +871,7 @@ export class TaInputComponent
           .getInputRegexPattern('email')
           .test(String.fromCharCode(event.charCode))
       ) {
-        this.disableMultiplePoints(event);
+        this.disableConsecutivelyPoints(event);
         return true;
       }
       event.preventDefault();
@@ -863,7 +907,6 @@ export class TaInputComponent
     }
 
     if (['first name'].includes(this.inputConfig.name.toLowerCase())) {
-      let space = this.input.nativeElement.value.split(' ').length;
       if (
         this.inputService
           .getInputRegexPattern('first name')
@@ -878,7 +921,6 @@ export class TaInputComponent
     }
 
     if (['last name'].includes(this.inputConfig.name.toLowerCase())) {
-      let space = this.input.nativeElement.value.split(' ').length;
       if (
         this.inputService
           .getInputRegexPattern('last name')
@@ -892,7 +934,6 @@ export class TaInputComponent
     }
 
     if (['bank name'].includes(this.inputConfig.name.toLowerCase())) {
-      let space = this.input.nativeElement.value.split(' ').length;
       if (
         this.inputService
           .getInputRegexPattern('bank name')
@@ -923,7 +964,6 @@ export class TaInputComponent
     }
 
     if (['truck-trailer-model'].includes(this.inputConfig.name.toLowerCase())) {
-      let space = this.input.nativeElement.value.split(' ').length;
       if (
         this.inputService
           .getInputRegexPattern('truck-trailer-model')
@@ -1124,7 +1164,6 @@ export class TaInputComponent
     }
 
     if (['cdl-number'].includes(this.inputConfig.name.toLowerCase())) {
-      let space = this.input.nativeElement.value.split(' ').length;
       if (
         this.inputService
           .getInputRegexPattern('cdl-number')
@@ -1158,7 +1197,6 @@ export class TaInputComponent
     }
 
     if (['full name'].includes(this.inputConfig.name.toLowerCase())) {
-      let space = this.input.nativeElement.value.split(' ').length;
       if (
         this.inputService
           .getInputRegexPattern('full name')
@@ -1271,6 +1309,18 @@ export class TaInputComponent
     }
   }
 
+  private disableConsecutivelyPoints(event: any) {
+    if (/^[.]*$/.test(String.fromCharCode(event.charCode))) {
+      this.numberOfConsecutivelyPoints++;
+      if (this.numberOfConsecutivelyPoints > 1) {
+        event.preventDefault();
+        return false;
+      }
+    } else {
+      this.numberOfConsecutivelyPoints = 0;
+    }
+  }
+
   private disableMultiplePoints(event: any) {
     if (/^[.]*$/.test(String.fromCharCode(event.charCode))) {
       if (!this.getSuperControl.value) {
@@ -1293,7 +1343,7 @@ export class TaInputComponent
     }
   }
 
-  public onPaste(event: any) {
+  public onPaste(event?: any) {
     event.preventDefault();
     this.pasteCheck(
       event.clipboardData.getData('text'),
@@ -1405,6 +1455,8 @@ export class TaInputComponent
         this.span1.nativeElement.focus();
         this.selectionInput = 0;
         this.setSpanSelection(this.span1.nativeElement);
+      } else {
+        this.selectSpanByTabIndex(this.selectionInput);
       }
     }
   }
@@ -1450,12 +1502,12 @@ export class TaInputComponent
       if (e.keyCode == 37) {
         if (this.selectionInput != 0) {
           this.selectionInput = this.selectionInput - 1;
-          this.selectSpanByTabIndex(this.selectionInput);
+          this.selectSpanByTabIndex(this.selectionInput, true);
         }
       } else if (e.keyCode == 39 || e.keyCode == 9) {
         if (this.selectionInput != 2 && !e.shiftKey) {
           this.selectionInput = this.selectionInput + 1;
-          this.selectSpanByTabIndex(this.selectionInput);
+          this.selectSpanByTabIndex(this.selectionInput, true);
         } else if (e.keyCode == 9 && !e.shiftKey) {
           let allInputs = document.querySelectorAll('input');
           [...(allInputs as any)].map((item, indx) => {
@@ -1487,6 +1539,8 @@ export class TaInputComponent
         this.setDateTimeModel('up');
       } else if (e.keyCode == 40) {
         this.setDateTimeModel('down');
+      } else if (e.keyCode == 8) {
+        this.handleKeyboardInputs(e, true);
       }
     } else if (!this.isNumber(e)) {
       if (!noPreventDefault) {
@@ -1503,25 +1557,34 @@ export class TaInputComponent
     }
   }
 
-  handleKeyboardInputs(e: KeyboardEvent) {
-    const span1Value = isNaN(this.span1.nativeElement.innerHTML)
-      ? undefined
-      : parseInt(this.span1.nativeElement.innerHTML);
-    const span2Value = isNaN(this.span2.nativeElement.innerHTML)
-      ? undefined
-      : parseInt(this.span2.nativeElement.innerHTML);
-    const span3Value = isNaN(this.span3.nativeElement.innerHTML)
-      ? ''
-      : parseInt(this.span3.nativeElement.innerHTML);
+  handleKeyboardInputs(e: KeyboardEvent, isRestart?: boolean) {
+    const span1Value =
+      isNaN(this.span1.nativeElement.innerHTML) || this.newInputChanged
+        ? undefined
+        : parseInt(this.span1.nativeElement.innerHTML);
+    const span2Value =
+      isNaN(this.span2.nativeElement.innerHTML) || this.newInputChanged
+        ? undefined
+        : parseInt(this.span2.nativeElement.innerHTML);
+    const span3Value =
+      isNaN(this.span3.nativeElement.innerHTML) || this.newInputChanged
+        ? ''
+        : parseInt(this.span3.nativeElement.innerHTML);
+
+    this.newInputChanged = false;
     if (this.inputConfig.name === 'datepicker') {
       if (this.selectionInput == 0) {
-        if (span1Value) {
+        if (isRestart) {
+          this.span1.nativeElement.innerHTML = 'mm';
+          this.selectionInput = 0;
+          this.selectSpanByTabIndex(0);
+        } else if (span1Value) {
           if (parseInt(`${span1Value}${e.key}`) > 12) {
             this.span2.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
               -2
             );
             this.selectionInput = 1;
-            this.selectSpanByTabIndex(1);
+            this.selectSpanByTabIndex(1, true);
           } else {
             this.dateTimeInputDate = new Date(
               this.dateTimeInputDate.setMonth(
@@ -1534,7 +1597,7 @@ export class TaInputComponent
               this.span1.nativeElement.innerHTML + parseInt(e.key)
             ).slice(-2);
             this.selectionInput = 1;
-            this.selectSpanByTabIndex(1);
+            this.selectSpanByTabIndex(1, true);
           }
         } else {
           this.dateTimeInputDate = new Date(
@@ -1547,19 +1610,23 @@ export class TaInputComponent
 
           if (parseInt(`1${e.key}`) > 12) {
             this.selectionInput = 1;
-            this.selectSpanByTabIndex(1);
+            this.selectSpanByTabIndex(1, true);
           } else {
             this.selectSpanByTabIndex(0);
           }
         }
       } else if (this.selectionInput == 1) {
-        if (span2Value) {
+        if (isRestart) {
+          this.span2.nativeElement.innerHTML = 'dd';
+          this.selectionInput = 0;
+          this.selectSpanByTabIndex(0, true);
+        } else if (span2Value) {
           if (parseInt(`${span2Value}${e.key}`) > 31) {
             this.span3.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
               -2
             );
             this.selectionInput = 2;
-            this.selectSpanByTabIndex(2);
+            this.selectSpanByTabIndex(2, true);
           } else {
             this.dateTimeInputDate = new Date(
               this.dateTimeInputDate.setDate(
@@ -1569,8 +1636,8 @@ export class TaInputComponent
             this.span2.nativeElement.innerHTML = (
               this.span2.nativeElement.innerHTML + parseInt(e.key)
             ).slice(-2);
-            this.selectionInput = 3;
-            this.selectSpanByTabIndex(3);
+            this.selectionInput = 2;
+            this.selectSpanByTabIndex(2, true);
           }
         } else {
           this.dateTimeInputDate = new Date(
@@ -1581,14 +1648,18 @@ export class TaInputComponent
           );
 
           if (parseInt(`1${e.key}`) > 31) {
-            this.selectionInput = 3;
-            this.selectSpanByTabIndex(3);
+            this.selectionInput = 2;
+            this.selectSpanByTabIndex(2, true);
           } else {
             this.selectSpanByTabIndex(1);
           }
         }
       } else {
-        if (!span3Value || span3Value.toString().length == 2) {
+        if (isRestart) {
+          this.span3.nativeElement.innerHTML = 'yy';
+          this.selectionInput = 1;
+          this.selectSpanByTabIndex(1, true);
+        } else if (!span3Value || span3Value.toString().length == 2) {
           this.span3.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
             -2
           );
@@ -1598,7 +1669,7 @@ export class TaInputComponent
             )
           );
 
-          this.selectSpanByTabIndex(3);
+          this.selectSpanByTabIndex(2);
         } else {
           this.dateTimeInputDate = new Date(
             this.dateTimeInputDate.setFullYear(
@@ -1610,14 +1681,14 @@ export class TaInputComponent
           this.span3.nativeElement.innerHTML = (
             this.span3.nativeElement.innerHTML + parseInt(e.key)
           ).slice(-2);
-          this.selectSpanByTabIndex(3);
+          this.selectSpanByTabIndex(2);
         }
       }
     } else {
     }
   }
 
-  selectSpanByTabIndex(indx) {
+  selectSpanByTabIndex(indx, changeTab?: boolean) {
     switch (indx) {
       case 0:
         this.setSpanSelection(this.span1.nativeElement);
@@ -1626,12 +1697,13 @@ export class TaInputComponent
         this.setSpanSelection(this.span2.nativeElement);
         break;
       case 2:
-      case 3:
         this.setSpanSelection(this.span3.nativeElement);
         break;
       default:
         this.setSpanSelection(this.holder1.nativeElement);
     }
+
+    if (changeTab) this.newInputChanged = true;
   }
 
   setDateTimeModel(direction: string) {
@@ -1829,6 +1901,7 @@ export class TaInputComponent
           this.span3.nativeElement.innerHTML = 'yy';
           this.dateTimeInputDate = new Date();
           this.showDateInput = false;
+          this.resetForms();
         }
       } else {
         if (
@@ -1841,12 +1914,14 @@ export class TaInputComponent
           this.span2.nativeElement.innerHTML = 'MM';
           this.dateTimeInputDate = new Date();
           this.showDateInput = false;
+          this.resetForms();
         }
       }
 
       clearTimeout(this.dateTimeMainTimer);
       this.focusInput = false;
       this.selectionInput = -1;
+      this.newInputChanged = true;
       this.refChange.detectChanges();
     }, 100);
   }

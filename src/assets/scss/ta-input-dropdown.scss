@@ -382,20 +382,53 @@
             }
           }
         }
+
+        &.routing_dropdown{
+          font-size: 11px;
+          height: 22px;
+        }
       }
 
       //------------------------ Custom width dependent on 'col' bootstrap ------------------------
 
+      &.w-col-709 {
+        width: 709px;
+      }
+
       &.w-col-686 {
         width: 686px;
+      }
+
+      &.w-col-629 {
+        width: 629px;
       }
 
       &.w-col-616 {
         width: 616px;
       }
 
+      &.w-col-582 {
+        width: 582px;
+      }
+
+      &.w-col-557 {
+        width: 557px;
+      }
+
       &.w-col-512 {
         width: 512px;
+      }
+
+      &.w-col-503 {
+        width: 503px;
+      }
+
+      &.w-col-501 {
+        width: 501px;
+      }
+
+      &.w-col-477 {
+        width: 477px;
       }
 
       &.w-col-456 {
@@ -410,6 +443,10 @@
         width: 439px;
       }
 
+      &.w-col-429 {
+        width: 429px;
+      }
+
       &.w-col-422 {
         width: 422px;
       }
@@ -422,12 +459,20 @@
         width: 414px;
       }
 
+      &.w-col-405 {
+        width: 405px;
+      }
+
       &.w-col-403 {
         width: 403px;
       }
 
       &.w-col-402 {
         width: 402px;
+      }
+
+      &.w-col-376 {
+        width: 376px;
       }
 
       &.w-col-366 {
@@ -440,6 +485,10 @@
 
       &.w-col-332 {
         width: 332px;
+      }
+
+      &.w-col-310 {
+        width: 310px;
       }
 
       &.w-col-308 {
@@ -456,6 +505,10 @@
 
       &.w-col-291 {
         width: 291px;
+      }
+
+      &.w-col-288 {
+        width: 288px;
       }
 
       &.w-col-280 {

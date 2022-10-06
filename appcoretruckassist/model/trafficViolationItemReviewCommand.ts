@@ -18,6 +18,8 @@ export interface TrafficViolationItemReviewCommand {
     vehicleTypeLocationMessage?: string | null;
     isDescriptionValid?: boolean;
     descriptionMessage?: string | null;
+    isPrimary?: boolean;
+    commonMessage?: string | null;
     trafficViolationId?: number;
 }
 

@@ -14,6 +14,7 @@ import { TestTService } from '../../../state/test.service';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
+import { FormService } from '../../../../../services/form/form.service';
 import {
   convertDateToBackend,
   convertDateFromBackend,
@@ -23,7 +24,7 @@ import {
   selector: 'app-driver-drugAlcohol-modal',
   templateUrl: './driver-drugAlcohol-modal.component.html',
   styleUrls: ['./driver-drugAlcohol-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -43,7 +44,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   public selectedTestType: any = null;
   public selectedReasonType: any = null;
 
-  public isDirty: boolean;
+  public isFormDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,7 +52,8 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     private testService: TestTService,
     private inputService: TaInputService,
     private notificationService: NotificationService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -71,12 +73,18 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       testingDate: [null, Validators.required],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.drugForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.drugForm.reset();
         break;
       }
       case 'save': {
@@ -86,8 +94,10 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData.type === 'edit-drug') {
-          this.updateTest();
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateTest();
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addTest();
           this.modalService.setModalSpinner({ action: null, status: true });

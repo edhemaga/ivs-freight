@@ -41,6 +41,7 @@ export class AccidentTableComponent
   viewData: any[] = [];
   columns: any[] = [];
   selectedTab = 'active';
+  activeViewMode: string = 'List';
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
@@ -277,19 +278,19 @@ export class AccidentTableComponent
   // Table Options
   initTableOptions(): void {
     this.tableOptions = {
-      disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        hideViewMode: false,
-        showMapView: true,
-        viewModeActive: 'List',
-      },
-      config: {
-        showSort: true,
-        sortBy: '',
-        sortDirection: '',
-        disabledColumns: [0],
-        minWidth: 60,
+        showTimeFilter: this.selectedTab === 'active',
+        showLocationFilter: this.selectedTab === 'active',
+        showDriverFilter: this.selectedTab === 'active',
+        showTruckFilter: this.selectedTab === 'active',
+        showTrailerFilter: this.selectedTab === 'active',
+        showInjuryFilter: this.selectedTab === 'active',
+        showTowingFilter: this.selectedTab === 'active',
+        viewModeOptions: [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+          { name: 'Map', active: this.activeViewMode === 'Map' },
+        ],
       },
       actions: [
         {
@@ -312,7 +313,6 @@ export class AccidentTableComponent
           svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
         },
       ],
-      export: true,
     };
   }
 
@@ -438,12 +438,10 @@ export class AccidentTableComponent
       this.modalService.openModal(AccidentModalComponent, { size: 'large-xl' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
-      this.setAccidentData(event.tabData);
+      
+      this.sendAccidentData();
     } else if (event.action === 'view-mode') {
-      this.tableOptions.toolbarActions.viewModeActive = event.mode;
-      if (event.mode == 'Map') {
-        //this.mapsComponent.markersDropAnimation();
-      }
+      this.activeViewMode = event.mode;
     }
   }
 

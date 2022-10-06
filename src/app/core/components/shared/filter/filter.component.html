@@ -3,19 +3,18 @@
   app-autoclose-popover
   [customClass]="'filterpopovermain'"
   [placement]="'bottom-left'"
-  #t2="ngbPopover"
-  [ngbPopover]="mainFilter"
   autoClose="outside"
   [ngClass]="{
-    'active-options': t2?.isOpen(),
+    'active-options': activeFilter,
     'filter-active-colors':
       selectedUser.length > 0 ||
+      filterActiveArray.length > 0 ||
       selectedTimeValue != '' ||
       canadaSelectedStates.length > 0 ||
       usaSelectedStates.length ||
       rangeValue > 0 ||
       moneyFilterStatus ||
-      locationState != ''
+      longVal != 0
   }"
 >
   <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
@@ -23,11 +22,14 @@
     ngbTooltip
     mainTooltip="{{ !hoverClose ? filterTitle : 'Clear' }}"
     position="bottom"
-    tooltipBackground="#6C6C6C"
+    tooltipBackground= "#6C6C6C"
   >
     <svg-icon [src]="icon | taSvg: 'common'"></svg-icon>
     <div *ngIf="selectedUser.length > 0" class="active-filter-num">
       {{ selectedUser.length }}
+    </div>
+    <div *ngIf=" activeFormNum > 0 " class="active-filter-num">
+      {{activeFormNum}}
     </div>
     <div
       *ngIf="canadaSelectedStates.length > 0 || usaSelectedStates.length > 0"
@@ -42,7 +44,8 @@
         canadaSelectedStates.length > 0 ||
         usaSelectedStates.length > 0 ||
         rangeValue > 0 ||
-        moneyFilterStatus
+        moneyFilterStatus ||
+        longVal != 0
       "
       class="active-filter-num clear-filter"
       (mouseenter)="hoverClose = true"
@@ -52,9 +55,7 @@
       <svg-icon src="assets/svg/common/ic_cancel_violation.svg"></svg-icon>
     </div>
   </div>
-</div>
-
-<ng-template #mainFilter>
+  <div popoverContent class="main-popover-body" #pop1>
     <div
       *ngIf="defFilterHolder"
       class="filter-holder"
@@ -71,7 +72,7 @@
         <div class="user-filter-box" *ngIf="type == 'stateFilter'">
           {{ canadaSelectedStates.length + usaSelectedStates.length }}
         </div>
-        <div class="user-title-text">{{ filterTitle }}</div>
+        <div class="user-title-text counter-padd-title">{{ filterTitle }}</div>
         <div
           class="search-icon-holder"
           *ngIf="searchState"
@@ -144,10 +145,12 @@
             class="user-profile-img selected-filter-icon"
             *ngIf="leftSideIcon"
           >
-            <svg-icon src="{{ item.icon }}"></svg-icon>
+            <svg-icon src="{{ item.activeIcon ? item.activeIcon : item.icon }}"></svg-icon>
           </div>
           <div class="selected-user-frame">
-            <div class="selected-name-text">{{ item.name }}</div>
+            <div class="selected-name-text">
+              <span> {{ item.name }} </span> 
+            </div>
             <div class="selected-icon">
               <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
             </div>
@@ -181,7 +184,9 @@
               <div class="state-short-holder">{{ item.short }}</div>
             </div>
             <div class="selected-user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
               <div class="selected-icon">
                 <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
               </div>
@@ -210,7 +215,9 @@
               <div class="state-short-holder">{{ item.short }}</div>
             </div>
             <div class="selected-user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
               <div class="selected-icon">
                 <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
               </div>
@@ -260,7 +267,9 @@
               </app-profile-images>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
             </div>
           </div>
         </div>
@@ -277,7 +286,9 @@
           >
             <div class="user-frame">
               <div class="selected-name-text">
-                <div class="selected-name-text">{{ item.name }}</div>
+                <div class="selected-name-text">
+                  <span> {{ item.name }} </span>
+                </div>
               </div>
             </div>
           </div>
@@ -304,7 +315,9 @@
                 ></div>
               </div>
               <div class="user-frame">
-                <div class="selected-name-text">{{ item.name }}</div>
+                <div class="selected-name-text">
+                  <span> {{ item.name }} </span>
+                </div>
               </div>
             </div>
           </div>
@@ -328,7 +341,9 @@
                 [ngStyle]="{ backgroundColor: item.color }"
               ></div>
               <div class="user-frame">
-                <div class="selected-name-text">{{ item.name }}</div>
+                <div class="selected-name-text">
+                  <span>  {{ item.name }} </span>
+                </div>
               </div>
             </div>
           </div>
@@ -352,7 +367,9 @@
                 [ngStyle]="{ backgroundColor: item.color }"
               ></div>
               <div class="user-frame">
-                <div class="selected-name-text">{{ item.name }}</div>
+                <div class="selected-name-text">
+                  <span> {{ item.name }} </span>
+                </div>
               </div>
             </div>
           </div>
@@ -372,7 +389,9 @@
               <svg-icon src="{{ item.icon }}"></svg-icon>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
             </div>
           </div>
         </div>
@@ -388,7 +407,9 @@
             class="user-main-holder"
           >
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
             </div>
           </div>
         </div>
@@ -407,7 +428,9 @@
               <svg-icon src="{{ item.icon }}"></svg-icon>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                  <span> {{ item.name }} </span>
+                </div>
             </div>
           </div>
         </div>
@@ -423,7 +446,9 @@
             class="user-main-holder"
           >
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -439,7 +464,9 @@
             class="user-main-holder"
           >
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -455,7 +482,9 @@
             class="user-main-holder"
           >
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -471,7 +500,9 @@
             class="user-main-holder"
           >
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -496,7 +527,9 @@
               </app-profile-images>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -515,7 +548,9 @@
               <svg-icon src="{{ item.icon }}"></svg-icon>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
@@ -534,13 +569,15 @@
               <svg-icon src="{{ item.icon }}"></svg-icon>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="user-holder" *ngIf="type == 'stateFilter'">
-        <div class="state-name-holder">UNITED STATES</div>
+        <div class="state-name-holder sticky-head-title">UNITED STATES</div>
         <div
           *ngFor="let item of usaStates; let indx = index"
           class="user-frame-holder"
@@ -554,11 +591,13 @@
               <div class="state-short-holder">{{ item.short }}</div>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
-        <div class="state-name-holder">CANADA</div>
+        <div class="state-name-holder canada-sticky-head-title">CANADA</div>
         <div
           *ngFor="let item of canadaStates; let indx = index"
           class="user-frame-holder"
@@ -572,21 +611,24 @@
               <div class="state-short-holder">{{ item.short }}</div>
             </div>
             <div class="user-frame">
-              <div class="selected-name-text">{{ item.name }}</div>
+              <div class="selected-name-text">
+               <span> {{ item.name }} </span> 
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div
         class="border-filter"
-        *ngIf="pmFilterArray.length > selectedUser.length"
+        *ngIf="!legendView && pmFilterArray.length > selectedUser.length"
       ></div>
-      <div class="buttons-holder">
+      <div class="buttons-holder" *ngIf="!legendView">
         <div
           (click)="clearAll($event)"
           class="button-clear"
           [class.active]="
             selectedUser.length > 0 ||
+            filterActiveArray.length > 0 ||
             canadaSelectedStates.length > 0 ||
             usaSelectedStates.length > 0
           "
@@ -594,10 +636,11 @@
           Clear All
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
           [class.active]="
             (selectedUser.length > 0 ||
+              filterActiveArray.length > 0 ||
               canadaSelectedStates.length > 0 ||
               usaSelectedStates.length > 0) &&
             setButtonAvailable
@@ -952,14 +995,14 @@
         <div
           (click)="clearAll($event)"
           class="button-clear"
-          [class.active]="selectedTimeValue != ''"
+          [class.active]="selectedTimeValue != filterActiveTime || selectedTimeValue != '' "
         >
-          Clear All
+          Clear
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
-          [class.active]="selectedTimeValue != '' && setButtonAvailable"
+          [class.active]="selectedTimeValue != filterActiveTime"
         >
           Set
         </div>
@@ -1182,7 +1225,7 @@
         class="border-filter money-bottom-border-magin form-border"
         [class.hiddenFormBorder]="!showPart3"
       ></div>
-      <div class="buttons-holder">
+      <div class="buttons-holder" *ngIf="subType == 'all'">
         <div
           (click)="clearAll($event)"
           class="button-clear"
@@ -1191,9 +1234,25 @@
           Clear All
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
           [class.active]="moneyFilterStatus && setButtonAvailable"
+        >
+          Set
+        </div>
+      </div>
+      <div class="buttons-holder" *ngIf="subType != 'all'">
+        <div
+          (click)="clearAll($event)"
+          class="button-clear"
+          [class.active]="moneyFilterStatus"
+        >
+          Clear All
+        </div>
+        <div
+          (click)="setFilterValue($event)"
+          class="button-set"
+          [class.active]="moneyFilterStatus && setButtonAvailable && !singleFormError"
         >
           Set
         </div>
@@ -1230,7 +1289,7 @@
           Clear All
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
           [class.active]="rangeValue != swipeActiveRange"
         >
@@ -1248,23 +1307,27 @@
         [formGroup]="locationForm"
         *ngIf="type == 'locationFilter'"
       >
-        <app-ta-input-address
+          <app-input-address-dropdown
           formControlName="address"
-          [inputConfig]="{
-            name: 'Address',
-            type: 'text',
-            label: 'Location',
-            minLength: 6,
-            maxLength: 256,
-            placeholderIcon: 'address',
-            textTransform: 'capitalize',
-            customClass: 'line-input-26'
-          }"
-          [incorrectValue]="false"
-          (incorrectEvent)="incorrectInput($event, 0, 18)"
-          [activeAddress]="selectedAddress"
-          (selectedAddress)="handleInputSelect($event)"
-        ></app-ta-input-address>
+            [inputConfig]="{
+              name: 'Address',
+              type: 'text',
+              label: 'Location',
+              placeholderIcon: 'address',
+              placeholder: 'Location',
+              textTransform: 'capitalize',
+              dropdownWidthClass: 'w-col-288',
+              minLength: 6,
+              maxLength: 256,
+              placeholderInsteadOfLabel: true,
+              customClass: 'line-input-26'
+            }"
+            [incorrectValue]="false"
+            [placeholderType]="'longAddress'"
+            (incorrectEvent)="incorrectInput($event, 0, 18)"
+            [activeAddress]="selectedAddress"
+            (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+          ></app-input-address-dropdown>
       </div>
       <div class="filter-middle-holder location-slider-middle-padding" *ngIf="type == 'locationFilter'">
         <app-ta-ngx-slider
@@ -1332,7 +1395,7 @@
           Clear All
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
           [class.active]="rangeForm.get('rangeTo').value != maxValueSet || ( rangeForm.get('rangeFrom').value && rangeForm.get('rangeFrom').value != minValueSet )"
         >
@@ -1343,17 +1406,20 @@
         <div
           (click)="clearAll($event)"
           class="button-clear"
-          [class.active]="locationState != ''"
+          [class.active]=" longVal != 0 || latVal != 0 || locationRange != 50"
         >
           Clear All
         </div>
         <div
-          (click)="setFilter($event)"
+          (click)="setFilterValue($event)"
           class="button-set"
-          [class.active]="locationState != ''"
+          [class.active]="longValueSet != longVal || latValSet != latVal || ( locationRange != locationRangeSet && longVal != 0 && latVal != 0 ) "
         >
           Set
         </div>
       </div>
     </div>
-</ng-template>
+  </div>
+</div>
+
+

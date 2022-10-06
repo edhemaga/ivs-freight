@@ -87,7 +87,7 @@
                 display: flex;
 
                 path {
-                  fill: #aaaaaa;
+                  fill: #AAAAAA;
                 }
               }
             }
@@ -157,6 +157,7 @@
     }
 
     .smooth-dnd-drop-preview-constant-class {
+      margin-top: 8px;
       background-color: #eeeeee;
       border-radius: 3px;
       box-shadow: inset 0px 0px 6px #0000001f;
@@ -172,6 +173,14 @@
           box-shadow: 0 0 4px rgb(112 112 112 / 50%);
           border-radius: 4px;
           cursor: grabbing !important;
+
+          .list-top-holder {
+            .assigned_user_hold {
+              .assigned_user_hold_inner {
+                position: static;
+              }
+            }
+          }
         }
       }
 
@@ -469,6 +478,8 @@
         user-select: none;
         .assigned_user_hold_inner {
           display: flex;
+          position: relative;
+          align-items: center;
           margin-right: 4px;
           cursor: pointer;
 
@@ -477,6 +488,40 @@
             height: 28px;
             background-size: contain;
             border-radius: 100%;
+          }
+
+          .user_tooltip_name_hold {
+            position: absolute;
+            left: 32px;
+
+            height: 18px;
+            width: 0px;
+
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.2s ease-in-out;
+            pointer-events: none;
+            z-index: 2;
+            .user_tooltip_name {
+              padding: 0px 2px;
+              width: max-content;
+
+              font-size: 11px;
+              line-height: 18px;
+              font-weight: 700;
+              color: #fff;
+              text-align: center;
+
+              border-radius: 2px;
+              background-color: #616161;
+            }
+          }
+
+          &:hover {
+            .user_tooltip_name_hold {
+              width: 100px;
+              opacity: 1;
+            }
           }
         }
       }
@@ -527,17 +572,8 @@
       }
 
       .comment_main_holder {
-        transition: all 0.3s ease-in-out;
-        opacity: 1;
-        max-height: 1000px;
         width: 100%;
         cursor: default;
-
-        &.closed {
-          max-height: 0px;
-          overflow: hidden;
-          opacity: 0;
-        }
         .comment-holder {
           width: 100%;
           flex: 1;
@@ -652,6 +688,14 @@
                 &::selection {
                   color: $bw6-2;
                   background: rgb(108, 108, 108, 0.2);
+                }
+              }
+
+              &:hover{
+                background-color: #3074d3;
+
+                .todo_list_add_comment_text {
+                  color: #fff;
                 }
               }
             }

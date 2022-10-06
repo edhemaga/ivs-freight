@@ -25,19 +25,25 @@ import { getOwnerColumnDefinition } from '../../../../../assets/utils/settings/o
 export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public tableOptions: any = {};
-  public tableData: any[] = [];
-  public viewData: any[] = [];
-  public columns: any[] = [];
-  public selectedTab = 'active';
+  tableOptions: any = {};
+  tableData: any[] = [];
+  viewData: any[] = [];
+  columns: any[] = [];
+  selectedTab = 'active';
+  activeViewMode: string = 'List';
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
-  public ownerActive: OwnerActiveState[] = [];
-  public ownerInactive: OwnerInactiveState[] = [];
+  ownerActive: OwnerActiveState[] = [];
+  ownerInactive: OwnerInactiveState[] = [];
   backFilterQuery = {
     active: 1,
     companyOwnerId: undefined,
+    long: undefined,
+    lat: undefined,
+    distance: undefined,
+    truckTypeIds: undefined,
+    trailerTypeIds: undefined,
     pageIndex: 1,
     pageSize: 25,
     companyId: undefined,
@@ -242,17 +248,15 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   initTableOptions(): void {
     this.tableOptions = {
-      disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        viewModeActive: 'List',
-      },
-      config: {
-        showSort: true,
-        sortBy: '',
-        sortDirection: '',
-        disabledColumns: [0],
-        minWidth: 60,
+        showMoneyFilter: true,
+        showLocationFilter: true,
+        showTruckTypeFilter: true,
+        showTrailerTypeFilter: true,
+        viewModeOptions: [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+        ],
       },
       actions: [
         {
@@ -270,7 +274,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
           contentType: 'delete',
         },
       ],
-      export: true,
     };
   }
 
@@ -382,6 +385,11 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     filter: {
       active: number;
       companyOwnerId: number | undefined;
+      long: number | undefined;
+      lat: number | undefined;
+      distance: number | undefined;
+      truckTypeIds: Array<number> | undefined;
+      trailerTypeIds: Array<number> | undefined;
       pageIndex: number;
       pageSize: number;
       companyId: number | undefined;
@@ -397,6 +405,11 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .getOwner(
         filter.active,
         filter.companyOwnerId,
+        filter.long,
+        filter.lat,
+        filter.distance,
+        filter.truckTypeIds,
+        filter.trailerTypeIds,
         filter.pageIndex,
         filter.pageSize,
         filter.companyId,
@@ -440,7 +453,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.sendOwnerData();
     } else if (event.action === 'view-mode') {
-      this.tableOptions.toolbarActions.viewModeActive = event.mode;
+      this.activeViewMode = event.mode;
     }
   }
 

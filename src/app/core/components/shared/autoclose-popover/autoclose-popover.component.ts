@@ -21,8 +21,13 @@ export class AutoclosePopoverComponent implements OnInit {
   ngOnInit(): void {}
 
   switchTab(e, t2) {
-    t2.open();
-    this.tooltip = t2;
+   if ( t2.isOpen() ){
+    this.tooltip.close();
+   }else{
+      t2.open();
+      this.tooltip = t2;
+   }
+    
   }
 
   closeCustomPopover() {
@@ -38,8 +43,9 @@ export class AutoclosePopoverComponent implements OnInit {
       event.target.closest('.selected-name-text') ||
       event.target.closest('.icon-delete') ||
       event.target.closest('.clear-money-form') ||
-      event.target.closest('.user-frame')
-      
+      event.target.closest('.user-frame') ||
+      event.target.closest('.highlight-text-45632') ||
+      event.target.closest('.user-main-holder')
     ) {
     } else {
       this.tooltip && this.tooltip.close();

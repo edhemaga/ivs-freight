@@ -21,8 +21,8 @@ export class TodoTService {
 
   public getTodoList(
     status?: TodoStatus,
-    companyUserId?: number,
-    departmentId?: number,
+    companyUserId?: Array<any>,
+    departmentId?: Array<any>,
     dateFrom?: string,
     dateTo?: string,
     pageIndex?: number,
@@ -96,13 +96,13 @@ export class TodoTService {
   set updateTodoList(todo) {
     this.todoStore.update((store) => ({
       ...store,
-      todoList: {
-        ...store.todoList,
-        pagination: {
-          ...store.todoList.pagination,
-          data: [...store.todoList.pagination.data, todo],
-        },
-      },
+      todoList: [
+        ...store.todoList.slice(0, todo.status.id).map((item) => {
+          item.pagination.data.push(todo);
+          return item;
+        }),
+        ...store.todoList.slice(todo.status.id),
+      ],
     }));
   }
 

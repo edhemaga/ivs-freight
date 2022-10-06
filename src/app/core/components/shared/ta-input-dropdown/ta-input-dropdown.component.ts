@@ -61,6 +61,7 @@ export class TaInputDropdownComponent
 
   @Output() selectedItemColor: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectedLabelMode: EventEmitter<any> = new EventEmitter<any>();
+  @Output() closeDropdown: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Output() saveItem: EventEmitter<{ data: any; action: string }> =
     new EventEmitter<{ data: any; action: string }>();
@@ -156,6 +157,14 @@ export class TaInputDropdownComponent
         clearTimeout(timeout);
       });
     }
+
+    if (this.inputConfig.name === 'Address' || this.inputConfig.name === 'RoutingAddress') {
+      if (this.getSuperControl.value && this.inputRef.focusInput) {
+        this.popoverRef?.open();
+      } else {
+        this.popoverRef?.close();
+      }
+    }
   }
 
   ngAfterViewInit() {
@@ -215,13 +224,9 @@ export class TaInputDropdownComponent
     return this.superControl.control;
   }
 
-  writeValue(obj: any): void {
-
-  }
-  registerOnChange(fn: any): void {
-  }
-  registerOnTouched(fn: any): void {
-  }
+  writeValue(obj: any): void {}
+  registerOnChange(fn: any): void {}
+  registerOnTouched(fn: any): void {}
 
   private dropDownShowHideEvent() {
     this.inputService.dropDownShowHide$
@@ -239,19 +244,8 @@ export class TaInputDropdownComponent
 
             // Prevent user to typing dummmy data if activeItem doesn't exist
             if (this.activeItem) {
-              // Dropdown image selection
-              if (
-                !this.inputConfig?.dropdownImageInput?.withText &&
-                this.inputConfig?.dropdownImageInput?.url
-              ) {
-                this.getSuperControl.patchValue(null);
-                this.getSuperControl.setErrors(null);
-              }
-              // Native dropdown
-              else {
-                this.getSuperControl.setValue(this.activeItem.name);
-                this.changeDetectionRef.detectChanges();
-              }
+              this.getSuperControl.setValue(this.activeItem.name);
+              this.changeDetectionRef.detectChanges();
             } else {
               const index = this.originalOptions.findIndex(
                 (item) => item.name === this.getSuperControl.value
@@ -307,16 +301,29 @@ export class TaInputDropdownComponent
         }
         // Press 'enter'
         if (keyCode === 13) {
-          const selectedItem = $('.dropdown-option-hovered').text().trim();
+          let selectedItem = $('.dropdown-option-hovered').text().trim();
+          if (
+            (this.inputConfig.name == 'Address' || this.inputConfig.name == 'RoutingAddress') &&
+            (!selectedItem || selectedItem == '')
+          ) {
+            selectedItem = this.options[0].name;
+          }
           if (selectedItem === 'Add New') {
             this.addNewConfig();
           } else {
             const existItem = this.options
               .map((item) => {
-                if (item.name) {
+                if (item.name && this.inputConfig.name != 'Address' && this.inputConfig.name != 'RoutingAddress') {
                   return {
                     id: item.id,
                     name: item.name,
+                  };
+                } else if (item.name && (this.inputConfig.name == 'Address' || this.inputConfig.name == 'RoutingAddress')) {
+                  return {
+                    id: item.id,
+                    name: item.name,
+                    address: item.address,
+                    longLat: item.longLat,
                   };
                 } else if (item.code) {
                   return {
@@ -490,15 +497,16 @@ export class TaInputDropdownComponent
         this.getSuperControl.setValue(option.name);
         this.options = this.originalOptions;
         this.selectedItem.emit(option);
-
-        const timeout = setTimeout(() => {
-          this.inputConfig = {
-            ...this.inputConfig,
-            blackInput: false,
-          };
-          this.changeDetectionRef.detectChanges();
-          clearTimeout(timeout);
-        }, 100);
+        if (this.inputConfig.name != 'RoutingAddress') {
+          const timeout = setTimeout(() => {
+            this.inputConfig = {
+              ...this.inputConfig,
+              blackInput: false,
+            };
+            this.changeDetectionRef.detectChanges();
+            clearTimeout(timeout);
+          }, 100);
+        }
       }
     }
   }
@@ -848,6 +856,10 @@ export class TaInputDropdownComponent
       this.inputRef.focusInput = false;
       this.popoverRef.close();
     }
+  }
+
+  onBlurInput(e) {
+    this.closeDropdown.emit(e);
   }
 
   ngOnDestroy(): void {

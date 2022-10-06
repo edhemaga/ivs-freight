@@ -12,6 +12,7 @@ import {
 
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../../services/notification/notification.service';
+import { FormService } from '../../../../services/form/form.service';
 import {
   convertDateToBackend,
   convertDateFromBackend,
@@ -21,6 +22,7 @@ import {
   selector: 'app-tt-title-modal',
   templateUrl: './tt-title-modal.component.html',
   styleUrls: ['./tt-title-modal.component.scss'],
+  providers: [FormService],
 })
 export class TtTitleModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -33,12 +35,15 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
   public stateTypes: any[] = [];
   public selectedStateType: any = null;
 
+  public isFormDirty: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private commonTruckTrailerService: CommonTruckTrailerService
+    private commonTruckTrailerService: CommonTruckTrailerService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -58,12 +63,18 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
       issueDate: [null, Validators.required],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.ttTitleForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
-        this.ttTitleForm.reset();
         break;
       }
       case 'save': {
@@ -73,8 +84,10 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData.type === 'edit-title') {
-          this.updateTitle();
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.isFormDirty) {
+            this.updateTitle();
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addTitle();
           this.modalService.setModalSpinner({ action: null, status: true });

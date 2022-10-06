@@ -7,7 +7,6 @@ import { TruckassistTableHeadComponent } from './truckassist-table-head/truckass
 import { TruckassistTableToolbarComponent } from './truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { TruckassistSearchModule } from '../truckassist-search/truckassist-search.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { TruckassistProgressExpirationModule } from '../truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { TruckassistReveiwModule } from '../truckassist-reveiw/truckassist-reveiw.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TaNoteModule } from '../ta-note/ta-note.module';
@@ -18,6 +17,8 @@ import { GetExpireDataPipe } from '../../../pipes/get-expire-data.pipe';
 import { ResizeColumnDirective } from '../../../directives/resize-column.directive';
 import { DirectivesModule } from '../../../directives/directives.module';
 import { PipesModule } from '../../../pipes/pipes.module';
+import { SharedModule } from '../shared.module';
+import { ToolbarFiltersComponent } from './truckassist-table-toolbar/toolbar-filters/toolbar-filters.component';
 
 @NgModule({
   declarations: [
@@ -26,12 +27,12 @@ import { PipesModule } from '../../../pipes/pipes.module';
     TruckassistTableToolbarComponent,
     GetExpireDataPipe,
     ResizeColumnDirective,
+    ToolbarFiltersComponent,
   ],
   imports: [
     CommonModule,
     TruckassistSearchModule,
     AngularSvgIconModule,
-    TruckassistProgressExpirationModule,
     TruckassistReveiwModule,
     NgbModule,
     TaNoteModule,
@@ -42,6 +43,9 @@ import { PipesModule } from '../../../pipes/pipes.module';
     PipesModule,
     VirtualScrollerModule,
     ScrollingModule,
+
+    // Veliki problem, ima dosta stvari u njemu, ubacen je zbog filter componente.
+    SharedModule
   ],
   exports: [
     TruckassistTableBodyComponent,

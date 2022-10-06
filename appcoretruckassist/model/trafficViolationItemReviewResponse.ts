@@ -19,6 +19,8 @@ export interface TrafficViolationItemReviewResponse {
     vehicleTypeLocationMessage?: string | null;
     isDescriptionValid?: boolean;
     descriptionMessage?: string | null;
+    isPrimary?: boolean;
+    commonMessage?: string | null;
     trafficViolationItemId?: number;
 }
 

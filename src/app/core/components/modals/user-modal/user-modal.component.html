@@ -49,20 +49,25 @@
         </div>
         <div class="row">
           <div class="col-10">
-            <app-ta-input-address
+            <app-input-address-dropdown
               formControlName="address"
               [inputConfig]="{
                 name: 'Address',
                 type: 'text',
                 label: 'Address, City, State Zip',
                 placeholderIcon: 'address',
+                placeholder: 'Address, City, State Zip',
+                textTransform: 'capitalize',
+                dropdownWidthClass: 'w-col-512',
                 minLength: 6,
                 maxLength: 256,
-                textTransform: 'capitalize'
+                isDropdown: true
               }"
+              [incorrectValue]="false"
+              [placeholderType]="'longAddress'"
               [activeAddress]="selectedAddress"
               (selectedAddress)="onHandleAddress($event)"
-            ></app-ta-input-address>
+            ></app-input-address-dropdown>
           </div>
           <div class="col-2">
             <app-ta-input
@@ -88,7 +93,8 @@
                 label: 'Phone',
                 isRequired: true,
                 placeholderIcon: 'phone',
-                mask: '(000) 000-0000'
+                mask: '(000) 000-0000',
+                maxLength: 14
               }"
             ></app-ta-input>
           </div>
@@ -171,7 +177,8 @@
                     label: 'Phone',
                     isRequired: true,
                     placeholderIcon: 'phone',
-                    mask: '(000) 000-0000'
+                    mask: '(000) 000-0000',
+                    maxLength: 14
                   }"
                 ></app-ta-input>
               </div>

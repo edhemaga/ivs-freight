@@ -21,11 +21,12 @@ import {
 export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public tableOptions: any = {};
-  public tableData: any[] = [];
-  public viewData: any[] = [];
-  public columns: any[] = [];
-  public selectedTab = 'active';
+  tableOptions: any = {};
+  tableData: any[] = [];
+  viewData: any[] = [];
+  columns: any[] = [];
+  selectedTab = 'active';
+  activeViewMode: string = 'List';
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
@@ -230,17 +231,12 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public initTableOptions(): void {
     this.tableOptions = {
-      disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        viewModeActive: 'List',
-      },
-      config: {
-        showSort: true,
-        sortBy: '',
-        sortDirection: '',
-        disabledColumns: [0],
-        minWidth: 60,
+        showLabelFilter: true,
+        viewModeOptions: [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+        ],
       },
       actions: [
         {
@@ -258,7 +254,6 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
           contentType: 'delete',
         },
       ],
-      export: true,
     };
   }
 
@@ -426,7 +421,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.setAccountData(event.tabData);
     } else if (event.action === 'view-mode') {
-      this.tableOptions.toolbarActions.viewModeActive = event.mode;
+      this.activeViewMode = event.mode;
     }
   }
 

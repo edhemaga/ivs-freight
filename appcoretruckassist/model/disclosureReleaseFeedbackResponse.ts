@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DisclosureReleaseReviewResponse } from './disclosureReleaseReviewResponse';
 
 
 export interface DisclosureReleaseFeedbackResponse { 
@@ -22,7 +21,6 @@ export interface DisclosureReleaseFeedbackResponse {
     isSixDisclosure?: boolean;
     reviewed?: boolean | null;
     approved?: boolean | null;
-    disclosureReleaseReview?: DisclosureReleaseReviewResponse;
     applicantId?: number;
 }
 

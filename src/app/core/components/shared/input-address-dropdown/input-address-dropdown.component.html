@@ -1,0 +1,65 @@
+<div class="address_holder" (click)="addressExpand()">
+  <div
+    class="main_address_holder"
+    [ngClass]="{
+      input_for_routing: isRouting,
+      not_expanded: isRouting && !addressExpanded,
+      expanded_address: isRouting && addressExpanded
+    }"
+  >
+    <app-ta-input-dropdown
+      #inputDropdown
+      [formControl]="getSuperControl"
+      [inputConfig]="inputConfig"
+      [options]="addresList"
+      [activeItem]="activeAddress"
+      (selectedItem)="onSelectDropdown($event, 'address')"
+      (closeDropdown)="onCloseDropdown($event)"
+    ></app-ta-input-dropdown>
+    <div
+      class="stop_hold"
+      *ngIf="isRouting && addressExpanded"
+      (click)="changeStopType()"
+    >
+      <div class="stop_text">{{ stopType }}</div>
+    </div>
+  </div>
+  <div
+    class="ta-input-commands address-flag"
+    *ngIf="isRouting && addressExpanded"
+  >
+    <div
+      class="main-commands ta-input-command-first"
+      ngbTooltip
+      [mainTooltip]="commandHandler.commands?.firstCommand?.popup?.name"
+      [tooltipBackground]="
+        commandHandler.commands?.firstCommand?.popup?.backgroundColor
+      "
+      [disableTooltip]="!commandHandler.commands?.firstCommand?.popup"
+      position="top"
+    >
+      <svg-icon
+        class="ta-input-command-svg-first"
+        [class.allow_confirm]="chosenFromDropdown"
+        [src]="commandHandler.commands.firstCommand.svg"
+        (click)="onCommands($event, 'confirm')"
+      ></svg-icon>
+    </div>
+    <div
+      class="main-commands ta-input-command-second"
+      ngbTooltip
+      [mainTooltip]="commandHandler.commands?.secondCommand?.popup?.name"
+      [tooltipBackground]="
+        commandHandler.commands?.secondCommand?.popup?.backgroundColor
+      "
+      [disableTooltip]="!commandHandler.commands?.secondCommand?.popup"
+      position="top"
+    >
+      <svg-icon
+        class="ta-input-command-svg-second"
+        [src]="commandHandler.commands.secondCommand.svg"
+        (click)="onCommands($event, 'cancel')"
+      ></svg-icon>
+    </div>
+  </div>
+</div>

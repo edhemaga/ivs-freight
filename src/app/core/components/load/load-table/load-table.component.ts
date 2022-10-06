@@ -27,11 +27,13 @@ import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe
 })
 export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$ = new Subject<void>();
+
   tableOptions: any = {};
   tableData: any[] = [];
   viewData: any[] = [];
   columns: any[] = [];
   selectedTab = 'pending';
+  activeViewMode: string = 'List';
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
@@ -224,7 +226,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
           this.viewData = this.viewData.map((driver: any, index: number) => {
             if (driver.id === res.id) {
-              driver.actionAnimation = 'update';
+              driver.actionAnimation = this.selectedTab === 'active' ? 'deactivate' : 'activate';;
               driverIndex = index;
             }
 
@@ -238,7 +240,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.viewData.splice(driverIndex, 1);
             clearInterval(inetval);
-          }, 1000); */
+          }, 900); */
         }
         // On Delete Driver
         else if (res.animation === 'delete') {
@@ -284,19 +286,16 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   initTableOptions(): void {
     this.tableOptions = {
-      disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        showMoneyCount: true,
-        hideViewMode: false,
-        viewModeActive: 'List',
-      },
-      config: {
-        showSort: true,
-        sortBy: '',
-        sortDirection: '',
-        disabledColumns: [0],
-        minWidth: 60,
+        showTimeFilter: this.selectedTab !== 'template',
+        showDispatcherFilter: this.selectedTab !== 'template',
+        showStatusFilter: this.selectedTab !== 'template',
+        showLtlFilter: true,
+        showMoneyFilter: true,
+        viewModeOptions: [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+        ],
       },
       actions: [
         {
@@ -314,7 +313,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
           contentType: 'delete',
         },
       ],
-      export: true,
     };
   }
 
@@ -524,6 +522,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.selectedTab = event.tabData.field;
 
       this.sendLoadData();
+    }else if (event.action === 'view-mode') {
+      this.activeViewMode = event.mode;
     }
   }
 

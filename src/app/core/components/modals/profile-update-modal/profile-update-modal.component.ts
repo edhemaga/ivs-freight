@@ -22,12 +22,14 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { TaUserService } from '../../../services/user/user.service';
 import Croppie from 'croppie';
+import { FormService } from '../../../services/form/form.service';
 
 @Component({
   selector: 'app-profile-update-modal',
   templateUrl: './profile-update-modal.component.html',
   styleUrls: ['./profile-update-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
+  providers: [FormService, ModalService],
 })
 export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -67,12 +69,15 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
   public setNewPassword: boolean = false;
   public loadingOldPassword: boolean = false;
 
+  public isFormDirty: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private userService: TaUserService,
     private notificationService: NotificationService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -117,11 +122,18 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       'email',
       this.destroy$
     );
+
+    this.formService.checkFormChange(this.profileUserForm);
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {
     if (data.action === 'close') {
-      this.profileUserForm.reset();
+      return;
     }
 
     if (data.action === 'save') {
