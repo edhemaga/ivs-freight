@@ -9,24 +9,28 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BrokerMinimalResponse } from './brokerMinimalResponse';
+import { EnumValue } from './enumValue';
 import { TrailerAccidentResponse } from './trailerAccidentResponse';
 import { StateResponse } from './stateResponse';
 import { DriverMinimalResponse } from './driverMinimalResponse';
 import { TruckAccidentResponse } from './truckAccidentResponse';
 import { ViolationResponse } from './violationResponse';
 import { AddressEntity } from './addressEntity';
+import { RoadsideInspectionSpecialCheckResponse } from './roadsideInspectionSpecialCheckResponse';
 
 
 export interface RoadsideInspectionResponse { 
     id?: number;
     report?: string | null;
+    categoryReport?: EnumValue;
     inspectionLevel?: string | null;
     hmInspectionType?: string | null;
     country?: string | null;
     state?: StateResponse;
     startTime?: string | null;
     endTime?: string | null;
-    date?: string;
+    date?: string | null;
     driver?: DriverMinimalResponse;
     driver_FullName?: string | null;
     driver_LicenceNo?: string | null;
@@ -61,23 +65,16 @@ export interface RoadsideInspectionResponse {
     facility?: string | null;
     highway?: string | null;
     milePost?: string | null;
-    location?: string | null;
-    destination?: string | null;
-    customer?: string | null;
+    origin?: AddressEntity;
+    destination?: AddressEntity;
+    broker?: BrokerMinimalResponse;
     boL?: string | null;
     cargo?: string | null;
     severityWeight?: number | null;
     timeWeight?: number | null;
     totalWeight?: number | null;
-    alcContSubCheck?: boolean;
-    condByLocalJuris?: boolean;
-    sizeAndWeightEnf?: boolean;
-    eScreenInspection?: boolean;
-    trafficEnforcment?: boolean;
-    pasaConditionInsp?: boolean;
-    drugInterdSearch?: boolean;
-    borderEnfInspection?: boolean;
-    postCrashInspection?: boolean;
-    pbbtInspection?: boolean;
+    specialChecks?: Array<RoadsideInspectionSpecialCheckResponse> | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
