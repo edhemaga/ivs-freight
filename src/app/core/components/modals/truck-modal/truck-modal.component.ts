@@ -590,7 +590,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             tollTransponderDeviceNo: res.tollTransponderDeviceNo,
             doubleBunk: res.doubleBunk,
             refrigerator: res.refrigerator,
-            dcInverter: res.dcInventer,
+            dcInverter: res.dcInverter,
             blower: res.blower,
             pto: res.pto,
           });
@@ -670,7 +670,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         tollTransponderDeviceNo: res.tollTransponderDeviceNo,
         doubleBunk: res.doubleBunk,
         refrigerator: res.refrigerator,
-        dcInverter: res.dcInventer,
+        dcInverter: res.dcInverter,
         blower: res.blower,
         pto: res.pto,
       });
