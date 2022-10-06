@@ -877,6 +877,11 @@
 
   .filter-header {
     padding-left: 4px;
+
+    .user-title-text{
+      padding-left: 0px;
+    }
+
   }
 
   .money-main-holder {
@@ -949,6 +954,7 @@
     margin-bottom: 24px;
 
     .form-name {
+      padding-left: 2px;
       font-size: 14px;
       font-weight: 800;
       color: #FFF;
