@@ -165,7 +165,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.isCompanyOwned();
-    this.getTruckDropdowns();
 
     if (this.editData?.id) {
       this.skipVinDecocerEdit = true;
@@ -175,6 +174,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     if (this.editData?.storageData) {
       this.skipVinDecocerEdit = true;
       this.populateStorageData(this.editData.storageData);
+    } else {
+      this.getTruckDropdowns();
     }
 
     this.vinDecoder();
@@ -632,6 +633,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
   private populateStorageData(res: any) {
     const timeout = setTimeout(() => {
+      this.getTruckDropdowns();
       this.truckForm.patchValue({
         companyOwned: res.companyOwned,
         truckNumber: res.truckNumber,

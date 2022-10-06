@@ -117,7 +117,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.isCompanyOwned();
-    this.getTrailerDropdowns();
 
     if (this.editData?.id) {
       this.skipVinDecocerEdit = true;
@@ -125,7 +124,10 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     if (this.editData?.storageData) {
+      this.skipVinDecocerEdit = true;
       this.populateStorageData(this.editData.storageData);
+    } else {
+      this.getTrailerDropdowns();
     }
 
     this.vinDecoder();
@@ -480,6 +482,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
   private populateStorageData(res) {
     const timeout = setTimeout(() => {
+      this.getTrailerDropdowns();
       this.trailerForm.patchValue({
         companyOwned: res.companyOwned,
         trailerNumber: res.trailerNumber,
