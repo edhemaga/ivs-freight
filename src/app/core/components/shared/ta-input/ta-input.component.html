@@ -40,7 +40,8 @@
         !inputConfig.commands?.active &&
         !inputConfig?.loadingSpinner?.isLoading) ||
       (inputConfig.commands?.active &&
-        inputConfig.commands.type !== 'pm-increment-decrement')
+        inputConfig.commands.type !== 'pm-increment-decrement') ||
+      inputConfig.incorrectInput
     "
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
