@@ -36,6 +36,28 @@ export class RoadsideService {
     );
   }
 
+  // Get Roadside List
+  // public getRoadsideMinimalList(
+  //   active?: boolean,
+  //   pageIndex?: number,
+  //   pageSize?: number,
+  //   companyId?: number,
+  //   sort?: string,
+  //   search?: string,
+  //   search1?: string,
+  //   search2?: string
+  // ): Observable<any> {
+  //   return this.roadsideServis.apiViolationListGet(
+  //     active,
+  //     pageIndex,
+  //     pageSize,
+  //     companyId,
+  //     sort,
+  //     search,
+  //     search1,
+  //     search2
+  //   );
+  // }
   public updateRoadside(
     data: UpdateRoadsideInspectionCommand
   ): Observable<any> {

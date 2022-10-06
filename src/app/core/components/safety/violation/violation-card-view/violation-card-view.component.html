@@ -1,6 +1,6 @@
 <div class="cards-item-wrapper-1">
   <app-ta-details-header-card
-    [cardDetailsDate]="violationCardData?.date | formatDateP"
+    [cardDetailsDate]="violationCardData?.createdAt | formatDateP"
     [tooltipNext]="'Next Violation'"
     [tooltipPrevious]="'Previous Violation'"
     [searchInputName]="'Search Violation'"
@@ -22,7 +22,7 @@
     >
       <div class="violation-template-items">
         <svg-icon class="state" src="assets/svg/common/ic_state.svg"></svg-icon>
-        <div class="value">Alabama ({{ violationCardData?.state }})</div>
+        <div class="value">{{violationCardData?.state?.stateName}} ({{ violationCardData?.state?.stateShortName }})</div>
       </div>
       </span>
       <div class="violation-template-items"></div>
@@ -169,7 +169,7 @@
         <div class="violation-template-cards-data">
           <div class="violation-card-items">
             <span class="name">Customer</span>
-            <span class="value">{{ violationCardData?.customer }}</span>
+            <span class="value">{{ violationCardData?.broker?.businessName }}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">BoL</span>
@@ -177,11 +177,11 @@
           </div>
           <div class="violation-card-items">
             <span class="name">Origin</span>
-            <span class="value">Plainfield, IN, USA</span>
+            <span class="value">{{violationCardData?.origin?.address}}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">Destination</span>
-            <span class="value">{{ violationCardData?.destination }}</span>
+            <span class="value">{{ violationCardData?.destination?.address }}</span>
           </div>
           <div class="violation-card-items">
             <span class="name">Cargo</span>
