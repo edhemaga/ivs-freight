@@ -35,7 +35,7 @@ export class CdlTService implements OnDestroy {
 
   /* Observable<CreateCdlResponse> */
   public addCdl(data: /* CreateCdlCommand */ any): Observable<CreateResponse> {
-    return this.cdlService.apiCdlPost(data).pipe(
+    return this.cdlService.apiCdlPost(...data).pipe(
       tap((res: CreateResponse) => {
         const subDriver = this.driverService
           .getDriverById(data.driverId)

@@ -274,7 +274,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   public addCdl() {
     const { issueDate, expDate } = this.cdlForm.value;
 
-    const newData: /* CreateCdlCommand */ any = {
+    const newData2: /* CreateCdlCommand */ any = {
       driverId: this.editData.id,
       ...this.cdlForm.value,
       issueDate: convertDateToBackend(issueDate),
@@ -289,6 +289,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         : [],
     };
 
+
+console.log(newData2);
+
+    const newData: /* CreateCdlCommand */ any = [this.editData.id, this.cdlForm.value.cdlNumber, this.cdlForm.value.issueDate, this.cdlForm.value.expDate, this.selectedClassType ? this.selectedClassType.name : null, this.selectedRestrictions ? this.selectedRestrictions.map((item) => item.id): [], this.selectedEndorsment ? this.selectedEndorsment.map((item) => item.id) : [], this.selectedStateType ? this.selectedStateType.id : null, this.cdlForm.value.note, this.documents[0].realFile ];
     if (this.editData.type === 'renew-licence') {
       const { driverId, ...renewData } = newData;
       this.cdlService
@@ -325,6 +329,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
   public onFilesEvent(event: any) {
     this.documents = event.files;
+    console.log("ON ADDING FILES");
+    console.log(event);
   }
 
   ngOnDestroy(): void {
