@@ -20,6 +20,7 @@ import { GetBrokerListResponse, ShipperListResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import {
   tableSearch,
   closeAnimationAction,
@@ -79,7 +80,8 @@ export class CustomerTableComponent
     private shipperService: ShipperTService,
     private notificationService: NotificationService,
     private thousandSeparator: TaThousandSeparatorPipe,
-    private reviewRatingService: ReviewsRatingService
+    private reviewRatingService: ReviewsRatingService,
+    private DetailsDataService: DetailsDataService,
   ) {}
 
   ngOnInit(): void {
@@ -613,7 +615,7 @@ export class CustomerTableComponent
 
     console.log('onTableBodyActions');
     console.log(event);
-
+    this.DetailsDataService.setNewData(event.data);
     // Edit Call
     if (event.type === 'show-more') {
       this.backFilterQuery.pageIndex++;

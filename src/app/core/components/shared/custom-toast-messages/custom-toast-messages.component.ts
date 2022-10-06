@@ -256,14 +256,17 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         
       let bodyName = this.httpRequest.body?.firstName ? this.httpRequest.body?.firstName : '';
       let bodyLastName = this.httpRequest.body?.lastName ? this.httpRequest.body?.lastName : '';
-      let driverNameFull = bodyName + ' ' + bodyLastName;
+      let driverNameFull = '';
+
+      if (bodyName && bodyLastName) {
+        driverNameFull = bodyName + ' ' + bodyLastName;
+      }
 
       let active = this.DetailsDataService.mainData?.status ? 1 : 0;
-      
       if (!driverNameFull){
-          driverNameFull = this.DetailsDataService.mainData?.fullName ? this.DetailsDataService.mainData?.fullName : '';
+          driverNameFull = this.DetailsDataService.mainData?.fullName ? this.DetailsDataService.mainData?.fullName : this.DetailsDataService.mainData?.firstName + ' ' + this.DetailsDataService.mainData?.lastName;
         }
-      
+
       if ( this.httpRequest.method == 'PUT' ){
         if ( apiEndPoint.indexOf('status') > -1 ) {
 
@@ -278,8 +281,17 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
       break;
       case 'RATE':
-        this.actionTitle = this.toastrType == 'toast-error' ? 'RATE' : 'RATED';
-        console.log(this.DetailsDataService.mainData);
+
+        let likedStatus = this.DetailsDataService.mainData.raiting.hasLiked;
+        let dislikedStatus = this.DetailsDataService.mainData.raiting.hasDislike;
+ 
+        if ( !likedStatus && !dislikedStatus ){   
+          this.actionTitle = this.toastrType == 'toast-error' ? 'REMOVE RATE' : 'REMOVED RATE';
+        }
+        if ( likedStatus || dislikedStatus ) {
+          this.actionTitle = this.toastrType == 'toast-error' ? 'RATE' : 'RATED';
+        }
+
         switch (this.httpRequest.body?.entityTypeRatingId) {
           case 1:
             this.actionType = 'BROKER';
@@ -289,7 +301,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             this.message = this.httpRequest.body?.tableData.name ? this.httpRequest.body.tableData.name : '';
             this.actionType = 'REPAIR SHOP';
           break;
-          case 3:
+         case 3:
             this.actionType = 'SHIPPER';
             this.message = this.httpRequest.body?.tableData.businessName ? this.httpRequest.body.tableData.businessName : '';
           break;
