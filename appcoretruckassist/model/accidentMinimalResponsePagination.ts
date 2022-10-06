@@ -9,14 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RoadsideInspectionResponsePagination } from './roadsideInspectionResponsePagination';
+import { AccidentMinimalResponse } from './accidentMinimalResponse';
 
 
-export interface RoadsideInspectionListResponse { 
-    pagination?: RoadsideInspectionResponsePagination;
+export interface AccidentMinimalResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
     count?: number;
-    active?: number;
-    inactive?: number;
-    categoryReport?: number;
+    data?: Array<AccidentMinimalResponse> | null;
 }
 

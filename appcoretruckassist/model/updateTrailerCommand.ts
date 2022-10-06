@@ -35,5 +35,6 @@ export interface UpdateTrailerCommand {
     mileage?: number | null;
     volume?: number | null;
     insurancePolicy?: string | null;
+    fhwaExp?: number;
 }
 
