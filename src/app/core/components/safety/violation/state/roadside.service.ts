@@ -28,11 +28,11 @@ export class RoadsideService {
       active,
       pageIndex,
       pageSize,
-      companyId,
-      sort,
-      search,
-      search1,
-      search2
+      companyId
+      // sort,
+      // search,
+      // search1,
+      // search2
     );
   }
 

@@ -339,53 +339,54 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: TruckResponse) => {
-          this.truckForm.patchValue({
-            truckNumber: res.truckNumber,
-            truckTypeId: res.truckType ? res.truckType.name : null,
-            truckMakeId: res.truckMake ? res.truckMake.name : null,
-            model: res.model,
-            year: res.year.toString(),
-            vin: res.vin,
-            colorId: res.color ? res.color.name : null,
-            companyOwned: res.companyOwned,
-            ownerId: res.companyOwned
-              ? null
-              : res.owner
-              ? res.owner.name
-              : null,
-            commission: res.commission,
-            note: res.note,
-            truckGrossWeightId: res.truckGrossWeight
-              ? res.truckGrossWeight.name
-              : null,
-            emptyWeight: res.emptyWeight,
-            engineModelId: res.truckEngineType
-              ? res.truckEngineType.name
-              : null,
-            tireSizeId: res.tireSize ? res.tireSize.name : null,
-            axles: res.axles,
-            insurancePolicy: res.insurancePolicy,
-            mileage: res.mileage,
-          });
 
-          this.selectedTruckType = res.truckType ? res.truckType : null;
-          this.selectedTruckMake = res.truckMake ? res.truckMake : null;
-          this.selectedColor = res.color ? res.color : null;
-          this.selectedOwner = res.owner ? res.owner : null;
+          // this.truckForm.patchValue({
+          //   truckNumber: res.truckNumber,
+          //   truckTypeId: res.truckType ? res.truckType.name : null,
+          //   truckMakeId: res.truckMake ? res.truckMake.name : null,
+          //   model: res.model,
+          //   year: res.year.toString(),
+          //   vin: res.vin,
+          //   colorId: res.color ? res.color.name : null,
+          //   companyOwned: res.companyOwned,
+          //   ownerId: res.companyOwned
+          //     ? null
+          //     : res.owner
+          //     ? res.owner.name
+          //     : null,
+          //   commission: res.commission,
+          //   note: res.note,
+          //   truckGrossWeightId: res.truckGrossWeight
+          //     ? res.truckGrossWeight.name
+          //     : null,
+          //   emptyWeight: res.emptyWeight,
+          //   engineModelId: res.truckEngineType
+          //     ? res.truckEngineType.name
+          //     : null,
+          //   tireSizeId: res.tireSize ? res.tireSize.name : null,
+          //   axles: res.axles,
+          //   insurancePolicy: res.insurancePolicy,
+          //   mileage: res.mileage,
+          // });
 
-          this.selectedTruckGrossWeight = res.truckGrossWeight
-            ? res.truckGrossWeight
-            : null;
-          this.selectedEngineModelId = res.truckEngineType
-            ? res.truckEngineType
-            : null;
-          this.selectedTireSize = res.tireSize ? res.tireSize : null;
-          this.truckStatus = res.status !== 1;
+          // this.selectedTruckType = res.truckType ? res.truckType : null;
+          // this.selectedTruckMake = res.truckMake ? res.truckMake : null;
+          // this.selectedColor = res.color ? res.color : null;
+          // this.selectedOwner = res.owner ? res.owner : null;
 
-          this.modalService.changeModalStatus({
-            name: 'deactivate',
-            status: this.truckStatus,
-          });
+          // this.selectedTruckGrossWeight = res.truckGrossWeight
+          //   ? res.truckGrossWeight
+          //   : null;
+          // this.selectedEngineModelId = res.truckEngineType
+          //   ? res.truckEngineType
+          //   : null;
+          // this.selectedTireSize = res.tireSize ? res.tireSize : null;
+          // this.truckStatus = res.status !== 1;
+
+          // this.modalService.changeModalStatus({
+          //   name: 'deactivate',
+          //   status: this.truckStatus,
+          // });
         },
         error: () => {
           this.notificationService.error("Cant't get truck.", 'Error:');
@@ -550,17 +551,17 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
               next: (res: VinDecodeResponse) => {
-                this.truckForm.patchValue({
-                  model: res?.model ? res.model : null,
-                  year: res?.year ? res.year.toString() : null,
-                  truckMakeId: res.truckMake ? res.truckMake.name : null,
-                  engineModel: res.engineType?.name
-                    ? res.engineType.name
-                    : null,
-                });
-                this.loadingVinDecoder = false;
-                this.selectedTruckMake = res.truckMake;
-                this.selectedEngineModelId = res.engineType;
+                // this.truckForm.patchValue({
+                //   model: res?.model ? res.model : null,
+                //   year: res?.year ? res.year.toString() : null,
+                //   truckMakeId: res.truckMake ? res.truckMake.name : null,
+                //   engineModel: res.engineType?.name
+                //     ? res.engineType.name
+                //     : null,
+                // });
+                // this.loadingVinDecoder = false;
+                // this.selectedTruckMake = res.truckMake;
+                // this.selectedEngineModelId = res.engineType;
               },
               error: () => {
                 this.notificationService.error(
@@ -597,7 +598,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           });
           this.ownerType = res.owners;
           this.grossWeight = res.truckGrossWeights;
-          this.engineModels = res.truckEngineTypes;
+          //this.engineModels = res.truckEngineTypes;
           this.tireSize = res.tireSizes;
           this.shifters = res.shifters;
         },
