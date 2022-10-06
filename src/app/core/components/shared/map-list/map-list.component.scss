@@ -179,7 +179,10 @@
     position: absolute;
     left: 0;
     top: 0;
+    //height: fit-content;
+    max-height: 100vh;
     height: 100vh;
+    pointer-events: none;
 
     padding: 62px 0px 18px 74px;
 
@@ -197,6 +200,7 @@
         border-radius: 3px;
         transition: 0.2s;
         opacity: 0.9;
+        pointer-events: all;
 
         &:hover {
             opacity: 1;
@@ -205,6 +209,12 @@
         .map-list-header {
             width: 100%;
             padding: 8px 6px 0px 6px;
+
+            .map-list-search {
+                .input-custom-group .input-icon {
+                    pointer-events: none;
+                }
+            }
 
             .map-list-sort-container {
                 display: flex;
@@ -220,6 +230,15 @@
                     line-height: 18px;
                     color: $bw5;
                     padding-left: 4px;
+
+                    &.search-results-text {
+                        color: #536BC2;
+                        font-weight: 400;
+                    }
+
+                    div {
+                        display: inline-block;
+                    }
                 }
 
                 .map-list-sort {
