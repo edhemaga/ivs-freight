@@ -16,7 +16,7 @@
     }
   }
 
-  &.datetimeclass{
+  &.datetimeclass {
     z-index: 21;
   }
 
@@ -167,6 +167,14 @@
     &::after {
       background: $input-placeholder-icon-normal-after;
       top: 4px;
+    }
+  }
+
+  &.discolor-placeholder {
+    svg {
+      path {
+        fill: $input-placeholder-icon-normal !important;
+      }
     }
   }
 

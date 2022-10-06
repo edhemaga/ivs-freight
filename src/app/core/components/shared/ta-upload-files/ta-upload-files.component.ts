@@ -20,7 +20,7 @@ import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-up
 })
 export class TaUploadFilesComponent implements OnInit {
   private destroy$ = new Subject<void>();
-  @ViewChild(TaUploadFilesCarouselComponent)
+  @ViewChild(TaUploadFilesCarouselComponent) 
   modalCarousel: TaUploadFilesCarouselComponent;
 
   @Input() customClassName: string;

@@ -1117,15 +1117,27 @@ export class TaInputComponent
     }
 
     if (
-      ['emergency name', 'relationship', 'scac'].includes(
-        this.inputConfig.name.toLowerCase()
-      )
+      ['relationship', 'scac'].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (
         this.inputService
           .getInputRegexPattern('emergency name')
           .test(String.fromCharCode(event.charCode))
       ) {
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
+
+    if (['emergency name'].includes(this.inputConfig.name.toLowerCase())) {
+      if (
+        this.inputService
+          .getInputRegexPattern('emergency name')
+          .test(String.fromCharCode(event.charCode))
+      ) {
+        this.disableConsecutivelySpaces(event);
+        this.enableOneSpaceOnly(event);
         return true;
       }
       event.preventDefault();
@@ -1412,38 +1424,55 @@ export class TaInputComponent
     }
 
     if (['phone', 'ein', 'ssn'].includes(this.inputConfig.name.toLowerCase())) {
-      if (
-        'phone' === this.inputConfig.name.toLowerCase() &&
-        newText.length === 10
-      ) {
+      if ('phone' === this.inputConfig.name.toLowerCase()) {
         const timeout = setTimeout(() => {
           this.getSuperControl.setErrors(null);
+          this.input.nativeElement.value = newText.substring(0, 10);
+          this.getSuperControl.setValue(
+            '(' +
+              this.input.nativeElement.value.substring(0, 3) +
+              ') ' +
+              this.input.nativeElement.value.substring(3, 6) +
+              '-' +
+              this.input.nativeElement.value.substring(6)
+          );
+
           clearTimeout(timeout);
         }, 0);
       }
 
-      if (
-        'ein' === this.inputConfig.name.toLowerCase() &&
-        newText.length === 10
-      ) {
+      if ('ein' === this.inputConfig.name.toLowerCase()) {
         const timeout = setTimeout(() => {
           this.getSuperControl.setErrors(null);
+          this.input.nativeElement.value = newText.substring(0, 9);
+          this.getSuperControl.patchValue(
+            this.input.nativeElement.value.substring(0, 2) +
+              '-' +
+              this.input.nativeElement.value.substring(2)
+          );
           clearTimeout(timeout);
         }, 0);
       }
 
-      if (
-        'ssn' === this.inputConfig.name.toLowerCase() &&
-        newText.length === 10
-      ) {
+      if ('ssn' === this.inputConfig.name.toLowerCase()) {
         const timeout = setTimeout(() => {
           this.getSuperControl.setErrors(null);
+          this.input.nativeElement.value = newText.substring(0, 9);
+          this.getSuperControl.patchValue(
+            this.input.nativeElement.value.substring(0, 3) +
+              '-' +
+              this.input.nativeElement.value.substring(3, 5) +
+              '-' +
+              this.input.nativeElement.value.substring(5)
+          );
+
           clearTimeout(timeout);
         }, 0);
       }
     }
 
     // Text Transform Format
+
     this.transformText(newText, true);
   }
 
