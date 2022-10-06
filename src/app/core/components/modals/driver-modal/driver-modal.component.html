@@ -534,12 +534,14 @@
                   <app-ta-input
                     formControlName="bussinesName"
                     [inputConfig]="{
-                      name: 'Bussines Name',
+                      name: 'Business Name',
                       type: 'text',
-                      label: 'Bussines Name',
+                      label: 'Business Name',
                       isRequired: !!owner,
-                      textTransform: 'capitalize',
-                      isDisabled: !!(!driverForm.get('ein').value || owner)
+                      textTransform: 'uppercase',
+                      isDisabled: !!(!driverForm.get('ein').value || owner),
+                      minLength: 2,
+                      maxLength: 64
                     }"
                   ></app-ta-input>
                 </div>
