@@ -184,7 +184,7 @@ export class TruckassistTableBodyComponent
       }
 
       if (changes.viewData.currentValue[0]) {
-        this.detailsDataService.setNewData(changes.viewData.currentValue[0]);
+        //this.detailsDataService.setNewData(changes.viewData.currentValue[0]);
       }
     }
 

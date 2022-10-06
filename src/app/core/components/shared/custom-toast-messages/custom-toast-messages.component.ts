@@ -255,14 +255,14 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         
       let bodyName = this.httpRequest.body?.firstName ? this.httpRequest.body?.firstName : '';
       let bodyLastName = this.httpRequest.body?.lastName ? this.httpRequest.body?.lastName : '';
-      console.log('--this.httpRequest.body--', this.httpRequest.body);
       let driverNameFull = bodyName + ' ' + bodyLastName;
+
       let active = this.DetailsDataService.mainData?.status ? 1 : 0;
       
       if (!driverNameFull){
-          driverNameFull = this.DetailsDataService.mainData?.fullName;
+          driverNameFull = this.DetailsDataService.mainData?.fullName ? this.DetailsDataService.mainData?.fullName : '';
         }
-
+      
       if ( this.httpRequest.method == 'PUT' ){
         if ( apiEndPoint.indexOf('status') > -1 ) {
 
@@ -326,12 +326,12 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
       break;
       case 'CDL':
-        let driverFullName = this.DetailsDataService.mainData?.fullName.toUpperCase();
+        let driverFullName =  this.DetailsDataService.mainData?.fullName ? this.DetailsDataService.mainData?.fullName.toUpperCase() : this.DetailsDataService.mainData?.firstName.toUpperCase() + ' ' + this.DetailsDataService.mainData?.lastName.toUpperCase();
         let cdlNum = this.httpRequest.body?.cdlNumber ? this.httpRequest.body?.cdlNumber : ''; 
-        
+        console.log('--this.httpRequest.body---', this.httpRequest.body);
         if ( !cdlNum ){
           let cdlId = lastVal;
-          this.DetailsDataService.mainData?.cdls.map((item: any) => {
+          this.DetailsDataService.mainData?.cdls?.map((item: any) => {
             if (item.id == cdlId){
               cdlNum = item.cdlNumber;
             }
@@ -518,7 +518,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
          this.message = 'Issued: ' + inspectionDate;
       break;
       case 'TEST' :
-        let testName = this.DetailsDataService.mainData.fullName;
+        let testName = this.DetailsDataService.mainData.fullName ? this.DetailsDataService.mainData.fullName : this.DetailsDataService.mainData.firstName + ' ' + this.DetailsDataService.mainData.lastName;
         this.message = testName;   
       break;
       case 'TO-DO':
