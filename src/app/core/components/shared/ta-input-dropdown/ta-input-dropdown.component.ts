@@ -3,7 +3,6 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import {
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -88,8 +87,7 @@ export class TaInputDropdownComponent
   constructor(
     @Self() public superControl: NgControl,
     private inputService: TaInputService,
-    private inputResetService: TaInputResetService,
-    private changeDetectionRef: ChangeDetectorRef
+    private inputResetService: TaInputResetService
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -158,7 +156,10 @@ export class TaInputDropdownComponent
       });
     }
 
-    if (this.inputConfig.name === 'Address' || this.inputConfig.name === 'RoutingAddress') {
+    if (
+      this.inputConfig.name === 'Address' ||
+      this.inputConfig.name === 'RoutingAddress'
+    ) {
       if (this.getSuperControl.value && this.inputRef.focusInput) {
         this.popoverRef?.open();
       } else {
@@ -245,7 +246,6 @@ export class TaInputDropdownComponent
             // Prevent user to typing dummmy data if activeItem doesn't exist
             if (this.activeItem) {
               this.getSuperControl.setValue(this.activeItem.name);
-              this.changeDetectionRef.detectChanges();
             } else {
               const index = this.originalOptions.findIndex(
                 (item) => item.name === this.getSuperControl.value
@@ -257,7 +257,6 @@ export class TaInputDropdownComponent
             this.popoverRef.close();
           }
           // Focus In
-          // remove 'value' and store in 'placeholder'
           else {
             this.inputConfig = {
               ...this.inputConfig,
@@ -302,47 +301,85 @@ export class TaInputDropdownComponent
         // Press 'enter'
         if (keyCode === 13) {
           let selectedItem = $('.dropdown-option-hovered').text().trim();
+
+          // Address Select
           if (
-            (this.inputConfig.name == 'Address' || this.inputConfig.name == 'RoutingAddress') &&
+            (this.inputConfig.name == 'Address' ||
+              this.inputConfig.name == 'RoutingAddress') &&
             (!selectedItem || selectedItem == '')
           ) {
             selectedItem = this.options[0].name;
           }
+          // Add New Option
           if (selectedItem === 'Add New') {
             this.addNewConfig();
-          } else {
+          }
+          // Normal Pick Dropdown
+          else {
             const existItem = this.options
               .map((item) => {
-                if (item.name && this.inputConfig.name != 'Address' && this.inputConfig.name != 'RoutingAddress') {
-                  return {
-                    id: item.id,
-                    name: item.name,
-                  };
-                } else if (item.name && (this.inputConfig.name == 'Address' || this.inputConfig.name == 'RoutingAddress')) {
+                // Address
+                if (
+                  item.name &&
+                  (this.inputConfig.name == 'Address' ||
+                    this.inputConfig.name == 'RoutingAddress')
+                ) {
                   return {
                     id: item.id,
                     name: item.name,
                     address: item.address,
                     longLat: item.longLat,
                   };
-                } else if (item.code) {
+                }
+                // Image (must be before type code, because color has same prop like other dropdown pop)
+                else if (item.logoName) {
+                  return { ...item };
+                }
+                // Code
+                else if (item.code) {
                   return {
                     id: item.id,
                     name: item.code.concat(' - ', item.description),
                   };
                 }
+                // Default
+                else {
+                  if (item.name) {
+                    return {
+                      id: item.id,
+                      name: item.name,
+                    };
+                  }
+                }
               })
               .find(
                 (item) => item.name.toLowerCase() === selectedItem.toLowerCase()
               );
-
+            // MultiSelect Dropdown
             if (this.inputConfig.multiselectDropdown) {
               this.onMultiselectSelect(existItem, this.template);
-            } else {
+            }
+            // Normal Dropdown
+            else {
+              this.inputConfig = {
+                ...this.inputConfig,
+                blackInput: true,
+              };
+
               this.getSuperControl.setValue(existItem.name);
               this.selectedItem.emit(existItem);
               this.activeItem = existItem;
               this.inputService.dropDownItemSelectedOnEnter$.next(true);
+
+              if (this.inputConfig.name != 'RoutingAddress') {
+                const timeout = setTimeout(() => {
+                  this.inputConfig = {
+                    ...this.inputConfig,
+                    blackInput: false,
+                  };
+                  clearTimeout(timeout);
+                }, 150);
+              }
             }
             this.popoverRef.close();
           }
@@ -497,13 +534,13 @@ export class TaInputDropdownComponent
         this.getSuperControl.setValue(option.name);
         this.options = this.originalOptions;
         this.selectedItem.emit(option);
+
         if (this.inputConfig.name != 'RoutingAddress') {
           const timeout = setTimeout(() => {
             this.inputConfig = {
               ...this.inputConfig,
               blackInput: false,
             };
-            this.changeDetectionRef.detectChanges();
             clearTimeout(timeout);
           }, 100);
         }
