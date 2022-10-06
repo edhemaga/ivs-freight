@@ -252,7 +252,11 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         this.wideMessage = true;
       break;
       case 'DRIVER':
-      let driverNameFull = this.httpRequest.body?.firstName ? this.httpRequest.body?.firstName : '' + ' ' + this.httpRequest.body?.lastName ? this.httpRequest.body?.lastName : '';
+        
+      let bodyName = this.httpRequest.body?.firstName ? this.httpRequest.body?.firstName : '';
+      let bodyLastName = this.httpRequest.body?.lastName ? this.httpRequest.body?.lastName : '';
+      console.log('--this.httpRequest.body--', this.httpRequest.body);
+      let driverNameFull = bodyName + ' ' + bodyLastName;
       let active = this.DetailsDataService.mainData?.status ? 1 : 0;
       
       if (!driverNameFull){
