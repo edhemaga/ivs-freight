@@ -24,6 +24,7 @@ export class TaNoteContainerComponent implements OnInit {
   @Input() selectedEditor: any;
   @Input() isExpanded: boolean;
   @Input() parking: boolean = false;
+  @Input() popoverNote: boolean = false;
   selectedPaternColor = '#6c6c6c';
   showCollorPattern: boolean;
   activeOptions: any = {
@@ -71,12 +72,48 @@ export class TaNoteContainerComponent implements OnInit {
       });
   }
 
+  ngAfterViewInit(): void {
+    if (this.popoverNote) {
+      this.containerColors = [
+        {
+          color: '#6C6C6C',
+          name: 'Gray',
+        },
+        {
+          color: '#26A690',
+          name: 'Dark Green',
+        },
+        {
+          color: '#536BC2',
+          name: 'Blue',
+        },
+        {
+          color: '#FFA726',
+          name: 'Yellow',
+        },
+        {
+          color: '#EF5350',
+          name: 'Red',
+        },
+      ];
+    }
+  }
+
   filterContainersColor() {
     this.containerColors.sort((a, b) => {
-      if (a['color'] != this.selectedColorName.color) {
+      if(this.popoverNote){
+        if (b['color'] != this.selectedColorName.color) {
+          return 1;
+        }
         return -1;
       }
-      return 1;
+      else{
+        if (a['color'] != this.selectedColorName.color) {
+          return -1;
+        }
+        return 1;
+      }
+      
     });
   }
 

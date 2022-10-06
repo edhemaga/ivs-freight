@@ -316,7 +316,7 @@
       font-size: 11px;
       margin: 0 0 0 auto;
       line-height: 15px;
-      padding: 2px 5px;
+      padding: 3px 6px;
 
       &.opened_all_editor{
         width: 100%;
@@ -428,5 +428,11 @@
         }
       }
     }
+  }
+
+  &.closed_note_hold{
+    position: relative;
+    top: 1px;
+    right: 5px;
   }
 }
