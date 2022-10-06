@@ -30,7 +30,7 @@ export interface CreateTruckCommand {
     purchasePrice?: number | null;
     truckGrossWeightId?: number | null;
     emptyWeight?: number | null;
-    truckEngineTypeId?: number | null;
+    truckEngineModelId?: number | null;
     tireSizeId?: number | null;
     fuelTankSize?: number | null;
     brakes?: Brakes;
@@ -39,13 +39,14 @@ export interface CreateTruckCommand {
     transmissionModel?: string | null;
     shifter?: number | null;
     axles?: number | null;
+    fhwaExp?: number;
     insurancePolicy?: string | null;
     mileage?: number | null;
-    ipasEzpass?: string | null;
     engineOilType?: number | null;
     gearRatio?: number | null;
     apUnit?: ApUnit;
     tollTransponder?: number | null;
+    tollTransponderDeviceNo?: string | null;
     doubleBunk?: boolean | null;
     refrigerator?: boolean | null;
     dcInventer?: boolean | null;
