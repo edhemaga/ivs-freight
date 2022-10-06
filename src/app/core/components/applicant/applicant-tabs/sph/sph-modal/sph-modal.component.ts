@@ -10,7 +10,7 @@ import {
   descriptionValidation,
 } from '../../../../shared/ta-input/ta-input.regex-validations';
 
-import { ApplicantListsService } from '../../../state/services/applicant-lists.service';
+import { ApplicantListsQuery } from '../../../state/store/applicant-lists-store/applicant-lists.query';
 
 import {
   AnswerChoices,
@@ -269,7 +269,7 @@ export class SphModalComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private applicantListsService: ApplicantListsService
+    private applicantListsQuery: ApplicantListsQuery
   ) {}
 
   ngOnInit(): void {
@@ -347,11 +347,10 @@ export class SphModalComponent implements OnInit, OnDestroy {
   }
 
   public getDropdownLists(): void {
-    this.applicantListsService
-      .getDropdownLists()
+    this.applicantListsQuery.dropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.reasonsForLeaving = data.reasonsForLeave;
+      .subscribe((res) => {
+        this.reasonsForLeaving = res.reasonsForLeave;
       });
   }
 

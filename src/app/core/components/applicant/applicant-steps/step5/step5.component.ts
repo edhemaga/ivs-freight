@@ -69,38 +69,7 @@ export class Step5Component implements OnInit, OnDestroy {
     lineInputs?: boolean[];
     displayAnnotationButton?: boolean;
     displayAnnotationTextArea?: boolean;
-  }[] = [
-    {
-      lineIndex: 0,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 1,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 2,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 3,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-  ];
+  }[] = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
   public hasIncorrectFields: boolean = false;
   public cardsWithIncorrectFields: boolean = false;
   public previousFormValuesOnReview: any;

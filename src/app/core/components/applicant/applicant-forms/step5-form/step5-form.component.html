@@ -12,7 +12,7 @@
           customClass: 'datetimeclass',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
         (incorrectEvent)="incorrectInput($event, 0, 10)"
       ></app-ta-input>
     </div>
@@ -61,7 +61,7 @@
           maxLength: 256,
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[10].lineInputs[2]"
         (incorrectEvent)="incorrectInput($event, 2, 10)"
         [activeAddress]="selectedAddress"
         (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
@@ -106,7 +106,7 @@
           textTransform: 'capitalize',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[11].lineInputs[0]"
         (incorrectEvent)="incorrectInput($event, 0, 11)"
       ></app-ta-input>
     </div>

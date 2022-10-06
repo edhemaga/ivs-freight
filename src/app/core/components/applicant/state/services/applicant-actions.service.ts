@@ -28,6 +28,7 @@ import {
   CreateApplicantCdlReviewCommand,
   CreateAccidentRecordReviewCommand,
   CreateTrafficViolationReviewCommand,
+  CreateEducationReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -108,8 +109,8 @@ export class ApplicantActionsService {
   public createDisclosureAndRelease(
     data: /* CreateDisclosureReleaseCommand */ any
   ): Observable<CreateResponse> {
-   /*  return this.applicantService.apiApplicantDisclosurereleasePost(data); */
-   return;
+    /*  return this.applicantService.apiApplicantDisclosurereleasePost(data); */
+    return;
   }
 
   public createAuthorization(
@@ -162,6 +163,12 @@ export class ApplicantActionsService {
     data: CreateTrafficViolationReviewCommand
   ): Observable<object> {
     return this.applicantService.apiApplicantTrafficviolationReviewPost(data);
+  }
+
+  public createEducationReview(
+    data: CreateEducationReviewCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantEducationReviewPost(data);
   }
 
   public createAuthorizationReview(

@@ -200,6 +200,22 @@ export class Step5FormComponent
   }
 
   public patchForm(formValue: any): void {
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      if (formValue.trafficViolationItemReview) {
+        const { isDateValid, isLocationValid, isDescriptionValid } =
+          formValue.trafficViolationItemReview;
+
+        this.openAnnotationArray[10] = {
+          ...this.openAnnotationArray[10],
+          lineInputs: [!isDateValid, false, !isLocationValid],
+        };
+        this.openAnnotationArray[11] = {
+          ...this.openAnnotationArray[11],
+          lineInputs: [!isDescriptionValid],
+        };
+      }
+    }
+
     this.violationsForm.patchValue({
       date: formValue.date,
       vehicleType: formValue.vehicleType,
@@ -295,8 +311,8 @@ export class Step5FormComponent
     const saveData: ViolationModel = {
       ...violationsForm,
       location: this.selectedAddress
-        ? this.selectedAddress
-        : this.editingCardAddress,
+        ? this.selectedAddress.address
+        : this.editingCardAddress.address,
       isEditingViolation: false,
     };
 
@@ -413,7 +429,9 @@ export class Step5FormComponent
 
         switch (lineIndex) {
           case 10:
-            this.violationsForm.get('firstRowReview').patchValue(null);
+            if (!isAnyInputInLineIncorrect) {
+              this.violationsForm.get('firstRowReview').patchValue(null);
+            }
 
             break;
 

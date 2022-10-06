@@ -478,11 +478,15 @@ export class Step4FormComponent
 
         switch (lineIndex) {
           case 10:
-            this.accidentForm.get('firstRowReview').patchValue(null);
+            if (!isAnyInputInLineIncorrect) {
+              this.accidentForm.get('firstRowReview').patchValue(null);
+            }
 
             break;
           case 11:
-            this.accidentForm.get('secondRowReview').patchValue(null);
+            if (!isAnyInputInLineIncorrect) {
+              this.accidentForm.get('secondRowReview').patchValue(null);
+            }
 
             break;
           default:

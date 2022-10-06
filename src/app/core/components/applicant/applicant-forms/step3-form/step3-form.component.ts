@@ -570,11 +570,15 @@ export class Step3FormComponent
 
         switch (lineIndex) {
           case 10:
-            this.licenseForm.get('firstRowReview').patchValue(null);
+            if (!isAnyInputInLineIncorrect) {
+              this.licenseForm.get('firstRowReview').patchValue(null);
+            }
 
             break;
           case 11:
-            this.licenseForm.get('secondRowReview').patchValue(null);
+            if (!isAnyInputInLineIncorrect) {
+              this.licenseForm.get('secondRowReview').patchValue(null);
+            }
 
             break;
           case 12:
