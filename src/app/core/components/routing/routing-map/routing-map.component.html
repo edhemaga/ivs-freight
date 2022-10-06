@@ -385,20 +385,17 @@
                   [ngStyle]="{
                     height:
                       b >= route.stops.length - 1 ||
-                      !route.stops[b + 1] || route.stops[b + 1].empty
+                      !route.stops[b + 1] ||
+                      route.stops[b + 1].empty
                         ? '18px'
                         : '24px',
                     background: route.isFocused
                       ? '#ffffff4d'
                       : route.color + '33',
                     'border-top-left-radius':
-                      b == 0 || stop.empty
-                        ? '2px'
-                        : '0px',
+                      b == 0 || stop.empty ? '2px' : '0px',
                     'border-top-right-radius':
-                      b == 0 || stop.empty
-                        ? '2px'
-                        : '0px',
+                      b == 0 || stop.empty ? '2px' : '0px',
                     'border-bottom-right-radius':
                       !route.stops[b + 1] || route.stops[b + 1].empty
                         ? '2px'
@@ -466,7 +463,12 @@
                       placeholderInsteadOfLabel: true,
                       routingAddress: true
                     }"
-                    [placeholderType]="this.tableData[this.selectedMapIndex].addressType == 'address' ? 'longAddress' : 'shortAddress'"
+                    [placeholderType]="
+                      this.tableData[this.selectedMapIndex].addressType ==
+                      'address'
+                        ? 'longAddress'
+                        : 'shortAddress'
+                    "
                     [commandHandler]="{
                       commands: {
                         active: true,
@@ -894,7 +896,8 @@
                   [ngStyle]="{
                     height:
                       b >= route.stops.length - 1 ||
-                      !route.stops[b + 1] || route.stops[b + 1].empty
+                      !route.stops[b + 1] ||
+                      route.stops[b + 1].empty
                         ? '22px'
                         : '24px',
                     background: route.isFocused
@@ -1027,23 +1030,6 @@
       </div>
     </div>
 
-    <!-- <div class="map-zoom-controls">
-      <div class="map-zoom-container">
-        <div class="map-zoom-button" (click)="zoomMap('plus')">
-          <svg-icon
-            src="assets/svg/common/ic_plus.svg"
-            [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
-          ></svg-icon>
-        </div>
-        <div class="map-zoom-button" (click)="zoomMap('minus')">
-          <svg-icon
-            src="assets/svg/common/ic_zoom_minus.svg"
-            [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
-          ></svg-icon>
-        </div>
-      </div>
-    </div> -->
-
     <agm-map
       [latitude]="mapLatitude"
       [longitude]="mapLongitude"
@@ -1096,82 +1082,16 @@
                       visibility:
                         focusedRouteIndex == i &&
                         (stopPickerLocation.editIndex == j ||
-                         (stopPickerLocation.lat == route.stops[j].lat && stopPickerLocation.long == route.stops[j].long))
+                          (stopPickerLocation.lat == route.stops[j].lat &&
+                            stopPickerLocation.long == route.stops[j].long))
                           ? 'hidden'
                           : 'visible'
                     }"
                     (click)="stopMarkerClick($event, i, j)"
                     (mousewheel)="markerZoom($event, route.stops[j])"
                   >
-                  <svg
-                    [tooltipBackground]="route.color"
-                    xmlns="http://www.w3.org/2000/svg" 
-                    xmlns:xlink="http://www.w3.org/1999/xlink" 
-                    width="34" 
-                    height="37" 
-                    viewBox="0 0 34 37"
-                  >
-                    <defs>
-                      <filter id="Path_33651" x="0" y="0" width="34" height="37" filterUnits="userSpaceOnUse">
-                        <feOffset input="SourceAlpha"/>
-                        <feGaussianBlur stdDeviation="2" result="blur"/>
-                        <feFlood flood-opacity="0.149"/>
-                        <feComposite operator="in" in2="blur"/>
-                        <feComposite in="SourceGraphic"/>
-                      </filter>
-                    </defs>
-                    <g id="Group_98568" data-name="Group 98568" transform="translate(-1100 -955.999)">
-                      <circle id="Ellipse_6245" data-name="Ellipse 6245" cx="4" cy="4" r="4" transform="translate(1113 983)" [ngStyle]="{ fill: route.color }" />
-                      <circle id="Ellipse_6246" data-name="Ellipse 6246" cx="2" cy="2" r="2" transform="translate(1115 985)" fill="#fff" *ngIf="j > 0 && j < route.stops.length - 1" />
-                    </g>
-                    <g id="Group_98569" data-name="Group 98569" transform="translate(-630 -2283.999)">
-                      <g [ngStyle]="{ filter: 'drop-shadow(0px 0px 4px #00000026)' }" transform="matrix(1, 0, 0, 1, 630, 2284)">
-                        <path id="Path_33651-2" data-name="Path 33651" d="M22,10.974a10.97,10.97,0,0,1-4.852,9.1c-.024.018-.379.237-.519.329-3.367,2.14-4.718,3.585-5.262,4.4a.441.441,0,0,1-.609.124.457.457,0,0,1-.124-.124c-.544-.811-1.9-2.256-5.262-4.4-.153-.095-.494-.311-.519-.329A10.983,10.983,0,1,1,22,10.974" transform="translate(6 6)" fill="#fff"/>
-                      </g>
-                      <circle id="Ellipse_6005" data-name="Ellipse 6005" cx="9" cy="9" r="9" transform="translate(638 2292)" [ngStyle]="{ fill: route.color }" />
-                      <text 
-                        y="-8%"
-                        dominant-baseline="middle"
-                        text-anchor="middle"
-                        id="_1" 
-                        data-name="1" 
-                        transform="translate(647 2305)" 
-                        fill="#fff" 
-                        font-size="11" 
-                        font-family="Montserrat-Bold, Montserrat" 
-                        font-weight="700">
-                          <tspan>{{ j + 1 }}</tspan>
-                      </text>
-
-                      <!-- <text
-                        x="50%"
-                        y="48.5%"
-                        dominant-baseline="middle"
-                        text-anchor="middle"
-                        id="_1"
-                        data-name="1"
-                        fill="#fff"
-                        font-size="11"
-                        font-family="Montserrat-Bold, Montserrat"
-                        font-weight="700"
-                      >
-                        <tspan>{{ j + 1 }}</tspan>
-                      </text> -->
-                    </g>
-                  </svg>
-                  
-
-                    <!-- <svg
+                    <svg
                       [tooltipBackground]="route.color"
-                      ngbTooltip
-                      [disableTooltip]="true"
-                      [mainTooltip]="
-                        tableData[selectedMapIndex].addressType == 'address' &&
-                        route.stops[j].address.address
-                          ? route.stops[j].address.address
-                          : route.stops[j].cityAddress
-                      "
-                      position="right"
                       xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
                       width="34"
@@ -1195,48 +1115,78 @@
                         </filter>
                       </defs>
                       <g
-                        transform="matrix(1, 0, 0, 1, 0, 0)"
-                        filter="url(#Path_33651)"
+                        id="Group_98568"
+                        data-name="Group 98568"
+                        transform="translate(-1100 -955.999)"
                       >
-                        <path
-                          id="Path_33651-2"
-                          data-name="Path 33651"
-                          d="M22,10.974a10.97,10.97,0,0,1-4.852,9.1c-.024.018-.379.237-.519.329-3.367,2.14-4.718,3.585-5.262,4.4a.441.441,0,0,1-.609.124.457.457,0,0,1-.124-.124c-.544-.811-1.9-2.256-5.262-4.4-.153-.095-.494-.311-.519-.329A10.983,10.983,0,1,1,22,10.974"
-                          transform="translate(6 6)"
+                        <circle
+                          id="Ellipse_6245"
+                          data-name="Ellipse 6245"
+                          cx="4"
+                          cy="4"
+                          r="4"
+                          transform="translate(1113 983)"
+                          [ngStyle]="{ fill: route.color }"
+                        />
+                        <circle
+                          id="Ellipse_6246"
+                          data-name="Ellipse 6246"
+                          cx="2"
+                          cy="2"
+                          r="2"
+                          transform="translate(1115 985)"
                           fill="#fff"
+                          *ngIf="j > 0 && j < route.stops.length - 1"
                         />
                       </g>
-                      <circle
-                        id="Ellipse_6005"
-                        data-name="Ellipse 6005"
-                        cx="9"
-                        cy="9"
-                        r="9"
-                        transform="translate(8 8)"
-                        [ngStyle]="{ fill: route.color }"
-                      />
-                      <text
-                        x="50%"
-                        y="48.5%"
-                        dominant-baseline="middle"
-                        text-anchor="middle"
-                        id="_1"
-                        data-name="1"
-                        fill="#fff"
-                        font-size="11"
-                        font-family="Montserrat-Bold, Montserrat"
-                        font-weight="700"
+                      <g
+                        id="Group_98569"
+                        data-name="Group 98569"
+                        transform="translate(-630 -2283.999)"
                       >
-                        <tspan>{{ j + 1 }}</tspan>
-                      </text>
-                    </svg> -->
+                        <g
+                          [ngStyle]="{
+                            filter: 'drop-shadow(0px 0px 4px #00000026)'
+                          }"
+                          transform="matrix(1, 0, 0, 1, 630, 2284)"
+                        >
+                          <path
+                            id="Path_33651-2"
+                            data-name="Path 33651"
+                            d="M22,10.974a10.97,10.97,0,0,1-4.852,9.1c-.024.018-.379.237-.519.329-3.367,2.14-4.718,3.585-5.262,4.4a.441.441,0,0,1-.609.124.457.457,0,0,1-.124-.124c-.544-.811-1.9-2.256-5.262-4.4-.153-.095-.494-.311-.519-.329A10.983,10.983,0,1,1,22,10.974"
+                            transform="translate(6 6)"
+                            fill="#fff"
+                          />
+                        </g>
+                        <circle
+                          id="Ellipse_6005"
+                          data-name="Ellipse 6005"
+                          cx="9"
+                          cy="9"
+                          r="9"
+                          transform="translate(638 2292)"
+                          [ngStyle]="{ fill: route.color }"
+                        />
+                        <text
+                          y="-8%"
+                          dominant-baseline="middle"
+                          text-anchor="middle"
+                          id="_1"
+                          data-name="1"
+                          transform="translate(647 2305)"
+                          fill="#fff"
+                          font-size="11"
+                          font-family="Montserrat-Bold, Montserrat"
+                          font-weight="700"
+                        >
+                          <tspan>{{ j + 1 }}</tspan>
+                        </text>
+                      </g>
+                    </svg>
                   </div>
                   <div
                     [ngStyle]="{
-                      visibility:
-                        focusedRouteIndex == i
-                          ? 'hidden'
-                          : 'visible'
+                      visibility: focusedRouteIndex == i ? 'hidden' : 'visible'
                     }"
                     class="marker-container circle-marker"
                     (click)="stopMarkerClick($event, i, j)"
@@ -1525,7 +1475,10 @@
                 "
                 class="stop-picker-window"
               >
-                <div class="stop-picker-button" (click)="changeEmptyLoaded($event)">
+                <div
+                  class="stop-picker-button"
+                  (click)="changeEmptyLoaded($event)"
+                >
                   <div class="stop-picker-button-text">
                     {{ stopPickerLocation.empty ? "Empty" : "Loaded" }}
                   </div>

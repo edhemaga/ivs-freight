@@ -64,25 +64,13 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
     if (changes.mapListContent) {
       this.checkResizeButton();
 
-      console.log('changes mapListContent', changes.mapListContent);
-
       this.mapListContent.map((data, index) => {
-        console.log('data.actionAnimation', data.actionAnimation);
-
         if (
           (data.actionAnimation == 'delete')
         ) {
           this.deleteAnimation(data.id);
-          console.log('delete shipper animation', data);
         }
       });
-
-      //console.log('changes.mapListContent');
-      // if ( this.searchForm?.get('search').value ) {
-      //   setTimeout(() => {
-      //     this.highlightSearchedText();
-      //   }, 100);
-      // }
     }
   }
 
@@ -370,18 +358,7 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
       var cardHeight = mapListCard.clientHeight;
 
       mapListCard.classList.add('delete-animation');
-
-      // mapListCard.style.height = cardHeight + 'px';
-
-      // setTimeout(() => {
-      //   mapListCard.style.height = '0px';
-      //   mapListCard.style.width = '0%';
-      //   mapListCard.style.padding = '0px 6px';
-      //   mapListCard.style.border = '0px';
-      // }, 10);
     }
-
-    console.log('delete animation', mapListCard);
   }
 
   ngOnDestroy(): void {
