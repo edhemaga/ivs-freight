@@ -1342,6 +1342,7 @@ export class FuelService {
     }
 
     /**
+     * @param fuelTransactionSpecParamsFuelStopStoreId 
      * @param fuelTransactionSpecParamsPageIndex 
      * @param fuelTransactionSpecParamsPageSize 
      * @param fuelTransactionSpecParamsCompanyId 
@@ -1352,12 +1353,16 @@ export class FuelService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelTransactionListGet(fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<FuelTransactionListResponse>;
-    public apiFuelTransactionListGet(fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<FuelTransactionListResponse>>;
-    public apiFuelTransactionListGet(fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<FuelTransactionListResponse>>;
-    public apiFuelTransactionListGet(fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiFuelTransactionListGet(fuelTransactionSpecParamsFuelStopStoreId?: number, fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<FuelTransactionListResponse>;
+    public apiFuelTransactionListGet(fuelTransactionSpecParamsFuelStopStoreId?: number, fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<FuelTransactionListResponse>>;
+    public apiFuelTransactionListGet(fuelTransactionSpecParamsFuelStopStoreId?: number, fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<FuelTransactionListResponse>>;
+    public apiFuelTransactionListGet(fuelTransactionSpecParamsFuelStopStoreId?: number, fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
+        if (fuelTransactionSpecParamsFuelStopStoreId !== undefined && fuelTransactionSpecParamsFuelStopStoreId !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>fuelTransactionSpecParamsFuelStopStoreId, 'FuelTransactionSpecParams.FuelStopStoreId');
+        }
         if (fuelTransactionSpecParamsPageIndex !== undefined && fuelTransactionSpecParamsPageIndex !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>fuelTransactionSpecParamsPageIndex, 'FuelTransactionSpecParams.PageIndex');

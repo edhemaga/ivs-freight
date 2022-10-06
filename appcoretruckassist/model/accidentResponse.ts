@@ -74,5 +74,7 @@ export interface AccidentResponse {
     cargo?: string | null;
     timeWeight?: number | null;
     totalWeight?: number | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
