@@ -435,12 +435,12 @@
                       dropdownWidthClass: dropdownWidth,
                       minLength: 6,
                       maxLength: 256,
-                      isDropdown: true,
                       blackInput: true,
                       placeholderInsteadOfLabel: true,
                       routingAddress: true
                     }"
                     [placeholderType]="this.tableData[this.selectedMapIndex].addressType == 'address' ? 'longAddress' : 'shortAddress'"
+                    [closedBorder]="this.tableData[this.selectedMapIndex].borderType == 'closed' ? 'true' : 'false'"
                     [commandHandler]="{
                       commands: {
                         active: true,

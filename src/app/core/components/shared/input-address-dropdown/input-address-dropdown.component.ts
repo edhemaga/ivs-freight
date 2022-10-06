@@ -35,11 +35,7 @@ export class InputAddressDropdownComponent
   private destroy$ = new Subject<void>();
   public addressForm!: FormGroup;
   @ViewChild('inputDropdown') inputDropdown: any;
-  @Input() set activeAddress(value) {
-    if (this.addressForm && value?.address) {
-      this.addressForm.controls['address'].setValue(value.address);
-    }
-  }
+  @Input() activeAddress: any;
   addresList: any[] = [];
   currentAddress: any;
   searchLayers: any[] = [];
@@ -50,6 +46,7 @@ export class InputAddressDropdownComponent
   }
   @Input() commandHandler: any;
   @Input() isRouting: boolean = false;
+  @Input() closedBorder: boolean = false;
   addressExpanded: boolean = false;
   chosenFromDropdown: boolean = false;
   stopType: string = 'EMPTY';
@@ -99,10 +96,11 @@ export class InputAddressDropdownComponent
           if (!term) {
             this.addresList = [];
           }
+          this.getSuperControl.setErrors({invalid:true})
           return term?.length >= 3;
         }),
         switchMap((query) => {
-          return this.addressService.getAddresses(query, this.searchLayers);
+          return this.addressService.getAddresses(query, this.searchLayers, this.closedBorder);
         })
       )
       .subscribe((res) => {
@@ -136,6 +134,7 @@ export class InputAddressDropdownComponent
           };
           this.selectedAddress.emit(this.currentAddressData);
           this.getSuperControl.setValue(event.address.address);
+          this.getSuperControl.setErrors(null)
           this.chosenFromDropdown = true;
         } else {
           this.currentAddressData = null;

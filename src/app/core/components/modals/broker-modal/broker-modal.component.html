@@ -148,10 +148,8 @@
                   textTransform: 'capitalize',
                   dropdownWidthClass: 'w-col-512',
                   minLength: 6,
-                  maxLength: 256,
-                  isDropdown: true
+                  maxLength: 256
                 }"
-                [incorrectValue]="false"
                 [placeholderType]="'longAddress'"
                 [activeAddress]="selectedPhysicalAddress"
                 (selectedAddress)="onHandleAddress($event, 'physical-address')"
@@ -211,10 +209,8 @@
                   textTransform: 'capitalize',
                   dropdownWidthClass: 'w-col-414',
                   minLength: 6,
-                  maxLength: 256,
-                  isDropdown: true
+                  maxLength: 256
                 }"
-                [incorrectValue]="false"
                 [placeholderType]="'shortAddress'"
                 [activeAddress]="selectedPhysicalPoBox"
                 (selectedAddress)="onHandleAddress($event, 'physical-pobox')"
@@ -267,10 +263,8 @@
                     textTransform: 'capitalize',
                     dropdownWidthClass: 'w-col-512',
                     minLength: 6,
-                    maxLength: 256,
-                    isDropdown: true
+                    maxLength: 256
                   }"
-                  [incorrectValue]="false"
                   [placeholderType]="'longAddress'"
                   [activeAddress]="selectedBillingAddress"
                   (selectedAddress)="onHandleAddress($event, 'billing-address')"
@@ -330,10 +324,8 @@
                     textTransform: 'capitalize',
                     dropdownWidthClass: 'w-col-414',
                     minLength: 6,
-                    maxLength: 256,
-                    isDropdown: true
+                    maxLength: 256
                   }"
-                  [incorrectValue]="false"
                   [placeholderType]="'shortAddress'"
                   [activeAddress]="selectedBillingPoBox"
                   (selectedAddress)="onHandleAddress($event, 'billing-pobox')"
