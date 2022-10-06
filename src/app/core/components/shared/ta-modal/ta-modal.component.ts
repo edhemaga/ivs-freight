@@ -165,10 +165,14 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
           if (!['save and add new'].includes(data.action)) {
             if (data.clearTimeout) {
-              this.onAction('close');
+              const timeout = setTimeout(() => {
+                this.onAction('close');
+                clearTimeout(timeout);
+              }, 200);
             } else {
               const timeout = setTimeout(() => {
                 this.onAction('close');
+                clearTimeout(timeout);
               }, 2000);
             }
           }

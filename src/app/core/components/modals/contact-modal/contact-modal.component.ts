@@ -104,8 +104,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     this.contactForm = this.formBuilder.group({
       name: [null, [Validators.required, ...fullNameValidation]],
       companyContactLabelId: [null],
-      phone: [null, [phoneFaxRegex, Validators.required]],
-      email: [null, [Validators.required]],
+      phone: [null, [phoneFaxRegex]],
+      email: [null],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       shared: [true],

@@ -4,7 +4,7 @@
   flex-direction: column;
   justify-items: center;
   border-radius: 2px;
-  background-color: #f3f3f3;
+  background-color: #eeeeee;
   position: relative;
 
   .multiselect-label {
@@ -14,7 +14,7 @@
     font-size: 11px;
     font-weight: 600;
     transition: all 0.3s ease-in-out;
-    color: #6c6c6c;
+    color: #2f2f2f;
     -webkit-user-select: auto !important;
     -moz-user-select: auto !important;
     -ms-user-select: auto !important;
@@ -22,13 +22,13 @@
     pointer-events: all !important;
 
     &::-moz-selection {
-      background-color: rgb(108, 108, 108, 0.2);
-      color: #6c6c6c;
+      background-color: rgb(47, 47, 47, 0.2);
+      color: #2f2f2f;
     }
 
     &::selection {
-      background-color: rgb(108, 108, 108, 0.2);
-      color: #6c6c6c;
+      background-color: rgb(47, 47, 47, 0.2);
+      color: #2f2f2f;
     }
 
     .required-label-multiselect {
@@ -49,7 +49,7 @@
       transition: all 0.3s ease-in-out;
       svg {
         path {
-          fill: #6c6c6c !important;
+          fill: #2f2f2f !important;
         }
       }
     }
@@ -80,7 +80,7 @@
       height: 22px;
       border-radius: 1px;
       background-color: #f9f9f9;
-      color: #6c6c6c;
+      color: #2f2f2f;
       padding: 2px 4px;
       font-size: 14px;
       font-weight: 400;
@@ -115,7 +115,7 @@
             transition: transform 0.3s;
             transform: scale(1);
             transform-origin: center;
-            fill: #b7b7b7;
+            fill: #919191;
           }
         }
 
@@ -126,7 +126,7 @@
               transform: scale(1.2);
               transform-origin: center;
               transition: transform 0.3s;
-              fill: #6c6c6c !important;
+              fill: #2f2f2f !important;
             }
           }
         }
@@ -170,7 +170,7 @@
           &:hover {
             svg {
               rect {
-                fill: #6c6c6c !important;
+                fill: #2f2f2f !important;
               }
             }
           }
@@ -180,7 +180,7 @@
 
     .multiselect-items {
       .multiselect-item {
-        color: #3c3c3c;
+        color: #1d1d1d;
       }
     }
     // Ovveride input class
@@ -191,7 +191,7 @@
 
   // Focused Multiple Dropdowns
   &.focus {
-    background-color: #536bc2;
+    background-color: #255bb9;
     transition: all 0.3s ease-in-out;
     .multiselect-arrow {
       svg {
@@ -213,7 +213,7 @@
         .input-clear-x {
           svg {
             path {
-              fill: #536bc2 !important;
+              fill: #255bb9 !important;
             }
           }
           &:hover {
@@ -243,7 +243,7 @@
         &-clear {
           svg {
             path {
-              fill: #536bc2;
+              fill: #255bb9;
             }
             rect {
               fill: #bdcaeb;
@@ -271,7 +271,7 @@
     }
 
     &:hover {
-      background-color: #536bc2 !important;
+      background-color: #255bb9 !important;
       .multiselect-items {
         .multiselect-item {
           color: #ffffff !important;
@@ -281,7 +281,7 @@
       // Ovveride input class
       .input-custom-group .input-control {
         transition: all 0.3s ease-in-out;
-        background-color: #536bc2 !important;
+        background-color: #255bb9 !important;
       }
     }
   }
