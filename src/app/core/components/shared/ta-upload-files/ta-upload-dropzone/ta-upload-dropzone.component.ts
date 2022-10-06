@@ -99,6 +99,8 @@ export class TaUploadDropzoneComponent {
    * Mapped file object
    */
   private async addFile(file: any) {
+    console.log("ADD FILE");
+    console.log(file);
     try {
       const base64Content = await this.getBase64(file);
       const fileNameArray = file.name.split('.');
@@ -127,6 +129,7 @@ export class TaUploadDropzoneComponent {
           extension: fileNameArray[fileNameArray.length - 1],
           guid: null,
           size: file.size,
+          realFile: file
         },
       ];
       this.onFileEvent.emit({ files: this.files, action: 'add' });

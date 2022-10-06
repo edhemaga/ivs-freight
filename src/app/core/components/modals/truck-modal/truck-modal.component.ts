@@ -1,4 +1,8 @@
-import { convertDateToBackend } from '../../../utils/methods.calculations';
+import {
+  convertDateToBackend,
+  convertDateFromBackend,
+  convertNumberInThousandSep,
+} from '../../../utils/methods.calculations';
 import { Options } from '@angular-slider/ngx-slider';
 import { HttpResponseBase } from '@angular/common/http';
 import {
@@ -108,7 +112,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public selectedTruckGrossWeight: any = null;
 
   public selectedTireSize: any = null;
-  public selectedEngineModelId: any = null;
+  public selectedtruckEngineModelId: any = null;
   public selectedEngineOilType: any = null;
   public selectedAPUnit: any = null;
   public selectedGearRatio: any = null;
@@ -161,7 +165,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.isCompanyOwned();
-    this.getTruckDropdowns();
 
     if (this.editData?.id) {
       this.skipVinDecocerEdit = true;
@@ -169,7 +172,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     }
 
     if (this.editData?.storageData) {
+      this.skipVinDecocerEdit = true;
       this.populateStorageData(this.editData.storageData);
+    } else {
+      this.getTruckDropdowns();
     }
 
     this.vinDecoder();
@@ -194,7 +200,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       purchasePrice: [null],
       truckGrossWeightId: [null],
       emptyWeight: [null, emptyWeightValidation],
-      engineModelId: [null],
+      truckEngineModelId: [null],
       tireSizeId: [null],
       fuelTankSize: [null],
       brakes: [null],
@@ -203,15 +209,15 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       transmissionModel: [null],
       shifter: [null],
       axles: [null, axlesValidation],
+      fhwaExp: [12, Validators.required],
       insurancePolicy: [null, insurancePolicyValidation],
       mileage: [null, mileageValidation],
-      fhwaexp: [12, Validators.required],
       engineOilType: [null],
       gearRatio: [null],
       apUnit: [null],
       tollTransponder: [null],
-      deviceNo: [null],
-      doubleBank: [false],
+      tollTransponderDeviceNo: [null],
+      doubleBunk: [false],
       refrigerator: [false],
       dcInverter: [false],
       blower: [false],
@@ -333,110 +339,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public editTruckById(id: number) {
-    this.truckModalService
-      .getTruckById(id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (res: TruckResponse) => {
-          this.truckForm.patchValue({
-            truckNumber: res.truckNumber,
-            truckTypeId: res.truckType ? res.truckType.name : null,
-            truckMakeId: res.truckMake ? res.truckMake.name : null,
-            model: res.model,
-            year: res.year.toString(),
-            vin: res.vin,
-            colorId: res.color ? res.color.name : null,
-            companyOwned: res.companyOwned,
-            ownerId: res.companyOwned
-              ? null
-              : res.owner
-              ? res.owner.name
-              : null,
-            commission: res.commission,
-            note: res.note,
-            truckGrossWeightId: res.truckGrossWeight
-              ? res.truckGrossWeight.name
-              : null,
-            emptyWeight: res.emptyWeight,
-            // engineModelId: res.truckEngineType
-            //   ? res.truckEngineType.name
-            //   : null,
-            tireSizeId: res.tireSize ? res.tireSize.name : null,
-            axles: res.axles,
-            insurancePolicy: res.insurancePolicy,
-            mileage: res.mileage,
-          });
-
-          this.selectedTruckType = res.truckType ? res.truckType : null;
-          this.selectedTruckMake = res.truckMake ? res.truckMake : null;
-          this.selectedColor = res.color ? res.color : null;
-          this.selectedOwner = res.owner ? res.owner : null;
-
-          this.selectedTruckGrossWeight = res.truckGrossWeight
-            ? res.truckGrossWeight
-            : null;
-          // this.selectedEngineModelId = res.truckEngineType
-          //   ? res.truckEngineType
-          //   : null;
-          this.selectedTireSize = res.tireSize ? res.tireSize : null;
-          this.truckStatus = res.status !== 1;
-
-          this.modalService.changeModalStatus({
-            name: 'deactivate',
-            status: this.truckStatus,
-          });
-        },
-        error: () => {
-          this.notificationService.error("Cant't get truck.", 'Error:');
-        },
-      });
-  }
-
-  private populateStorageData(res: any) {
-    const timeout = setTimeout(() => {
-      this.truckForm.patchValue({
-        truckNumber: res.truckNumber,
-        truckTypeId: res.truckTypeId,
-        truckMakeId: res.truckMake.name,
-        model: res.model,
-        year: res.year.toString(),
-        colorId: res.colorId,
-        companyOwned: res.companyOwned,
-        ownerId: res.ownerId,
-        commission: res.commission,
-        note: res.note,
-        truckGrossWeightId: res.truckGrossWeightId,
-        emptyWeight: res.emptyWeight,
-        engineModelId: res.engineModel,
-        tireSizeId: res.tireSizeId,
-        axles: res.axles,
-        insurancePolicy: res.insurancePolicy,
-        mileage: res.mileage,
-      });
-      if (res.id) {
-        this.editData = { ...this.editData, id: res.id };
-      }
-      this.truckForm.get('vin').patchValue(res.vin, { emitEvent: false });
-      this.selectedTruckType = res.selectedTruckType;
-      this.selectedTruckMake = res.selectedTruckMake;
-      this.selectedColor = res.selectedColor;
-      this.selectedOwner = res.selectedOwner;
-
-      this.selectedTruckGrossWeight = res.selectedTruckGrossWeight;
-      this.selectedEngineModelId = res.selectedEngineModel;
-      this.selectedTireSize = res.selectedTireSize;
-      this.truckStatus = res.truckStatus;
-
-      this.modalService.changeModalStatus({
-        name: 'deactivate',
-        status: this.truckStatus,
-      });
-
-      clearTimeout(timeout);
-    }, 50);
-  }
-
   public onSelectDropdown(event: any, action: string) {
     switch (action) {
       case 'truck-type': {
@@ -461,13 +363,21 @@ export class TruckModalComponent implements OnInit, OnDestroy {
               key: 'truck-modal',
               value: {
                 ...this.truckForm.value,
-                selectedTruckType: this.selectedTruckType,
-                selectedTruckMake: this.selectedTruckMake,
+                selectedAPUnit: this.selectedAPUnit,
+                selectedBrakes: this.selectedBrakes,
                 selectedColor: this.selectedColor,
+                selectedEngineOilType: this.selectedEngineOilType,
+                selectedFrontWheels: this.selectedFrontWheels,
+                selectedGearRatio: this.selectedGearRatio,
                 selectedOwner: this.selectedOwner,
-                selectedTruckGrossWeight: this.selectedTruckGrossWeight,
-                selectedEngineModel: this.selectedEngineModelId,
+                selectedRearWheels: this.selectedRearWheels,
+                selectedShifter: this.selectedShifter,
                 selectedTireSize: this.selectedTireSize,
+                selectedTollTransponders: this.selectedTollTransponders,
+                selectedTruckGrossWeight: this.selectedTruckGrossWeight,
+                selectedTruckMake: this.selectedTruckMake,
+                selectedTruckType: this.selectedTruckType,
+                selectedtruckEngineModelId: this.selectedtruckEngineModelId,
                 truckStatus: this.truckStatus,
                 id: this.editData?.id,
               },
@@ -493,7 +403,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'engine-model': {
-        this.selectedEngineModelId = event;
+        this.selectedtruckEngineModelId = event;
         break;
       }
       case 'engine-oil-type': {
@@ -554,13 +464,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                   model: res?.model ? res.model : null,
                   year: res?.year ? res.year.toString() : null,
                   truckMakeId: res.truckMake ? res.truckMake.name : null,
-                  // engineModel: res.engineType?.name
-                  //   ? res.engineType.name
-                  //   : null,
+                  truckEngineModelId: res.engineModel?.name
+                    ? res.engineModel.name
+                    : null,
                 });
                 this.loadingVinDecoder = false;
                 this.selectedTruckMake = res.truckMake;
-                //this.selectedEngineModelId = res.engineType;
+                this.selectedtruckEngineModelId = res.engineModel;
               },
               error: () => {
                 this.notificationService.error(
@@ -579,14 +489,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: GetTruckModalResponse) => {
-          this.truckType = res.truckTypes.map((item) => {
-            return {
-              ...item,
-              folder: 'common',
-              subFolder: 'trucks',
-            };
-          });
-          this.truckMakeType = res.truckMakes;
+          this.apUnits = res.apUnits;
+          this.brakes = res.brakes;
           this.colorType = res.colors.map((item) => {
             return {
               ...item,
@@ -595,11 +499,28 @@ export class TruckModalComponent implements OnInit, OnDestroy {
               logoName: 'ic_color.svg',
             };
           });
+          this.engineOilTypes = res.engineOilTypes;
+          this.tollTransponders = res.ezPass.map((item) => {
+            return {
+              ...item,
+              items: item.tollTransponders,
+            };
+          });
+          this.gearRatios = res.gearRatios;
           this.ownerType = res.owners;
-          this.grossWeight = res.truckGrossWeights;
-          //this.engineModels = res.truckEngineTypes;
-          this.tireSize = res.tireSizes;
           this.shifters = res.shifters;
+          this.tireSize = res.tireSizes;
+          this.engineModels = res.truckEngineModels;
+          this.grossWeight = res.truckGrossWeights;
+          this.truckMakeType = res.truckMakes;
+          this.truckType = res.truckTypes.map((item) => {
+            return {
+              ...item,
+              folder: 'common',
+              subFolder: 'trucks',
+            };
+          });
+          this.rearWheels = this.frontWheels = res.wheelsTypes;
         },
         error: () => {
           this.notificationService.error(
@@ -610,20 +531,212 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  public editTruckById(id: number) {
+    this.truckModalService
+      .getTruckById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: TruckResponse) => {
+          this.truckForm.patchValue({
+            // Basic Tab
+            companyOwned: res.companyOwned,
+            truckNumber: res.truckNumber,
+            truckTypeId: res.truckType ? res.truckType.name : null,
+            vin: res.vin,
+            truckMakeId: res.truckMake ? res.truckMake.name : null,
+            model: res.model,
+            year: res.year.toString(),
+            colorId: res.color ? res.color.name : null,
+            ownerId: res.owner ? res.owner.name : null,
+            commission: res.commission,
+            note: res.note,
+            // Additional Tab
+            purchaseDate: res.purchaseDate
+              ? convertDateFromBackend(res.purchaseDate)
+              : null,
+            purchasePrice: res.purchasePrice
+              ? convertNumberInThousandSep(res.purchasePrice)
+              : null,
+            truckGrossWeightId: res.truckGrossWeight
+              ? res.truckGrossWeight.name
+              : null,
+            emptyWeight: res.emptyWeight
+              ? convertNumberInThousandSep(res.emptyWeight)
+              : null,
+            truckEngineModelId: res.truckEngineModel
+              ? res.truckEngineModel.name
+              : null,
+            tireSizeId: res.tireSize ? res.tireSize.name : null,
+            fuelTankSize: res.fuelTankSize
+              ? convertNumberInThousandSep(res.fuelTankSize)
+              : null,
+            brakes: res.brakes ? res.brakes.name : null,
+            frontWheels: res.frontWheels ? res.frontWheels.name : null,
+            rearWheels: res.rearWheels ? res.rearWheels.name : null,
+            transmissionModel: res.transmissionModel,
+            shifter: res.shifter ? res.shifter.name : null,
+            axles: res.axles,
+            fhwaExp: res.fhwaExp,
+            insurancePolicy: res.insurancePolicy,
+            mileage: res.mileage
+              ? convertNumberInThousandSep(res.mileage)
+              : null,
+            engineOilType: res.engineOilType ? res.engineOilType.name : null,
+            gearRatio: res.gearRatio ? res.gearRatio.name : null,
+            apUnit: res.apUnit ? res.apUnit.name : null,
+            tollTransponder: res.tollTransponder
+              ? res.tollTransponder.name
+              : null,
+            tollTransponderDeviceNo: res.tollTransponderDeviceNo,
+            doubleBunk: res.doubleBunk,
+            refrigerator: res.refrigerator,
+            dcInverter: res.dcInverter,
+            blower: res.blower,
+            pto: res.pto,
+          });
+
+          this.selectedAPUnit = res.apUnit ? res.apUnit : null;
+          this.selectedBrakes = res.brakes ? res.brakes : null;
+          this.selectedColor = res.color ? res.color : null;
+          this.selectedEngineOilType = res.engineOilType
+            ? res.engineOilType
+            : null;
+          this.selectedFrontWheels = res.frontWheels ? res.frontWheels : null;
+          this.selectedGearRatio = res.gearRatio ? res.gearRatio : null;
+          this.selectedOwner = res.owner ? res.owner : null;
+          this.selectedRearWheels = res.rearWheels ? res.rearWheels : null;
+          this.selectedShifter = res.shifter ? res.shifter : null;
+          this.selectedTireSize = res.tireSize ? res.tireSize : null;
+          this.selectedTollTransponders = res.tollTransponder
+            ? res.tollTransponder
+            : null;
+          this.selectedTruckGrossWeight = res.truckGrossWeight
+            ? res.truckGrossWeight
+            : null;
+          this.selectedTruckMake = res.truckMake ? res.truckMake : null;
+          this.selectedTruckType = res.truckType ? res.truckType : null;
+          this.selectedtruckEngineModelId = res.truckEngineModel
+            ? res.truckEngineModel
+            : null;
+          this.truckStatus = res.status !== 1;
+
+          this.modalService.changeModalStatus({
+            name: 'deactivate',
+            status: this.truckStatus,
+          });
+        },
+        error: () => {
+          this.notificationService.error("Cant't get truck.", 'Error:');
+        },
+      });
+  }
+
+  private populateStorageData(res: any) {
+    const timeout = setTimeout(() => {
+      this.getTruckDropdowns();
+      this.truckForm.patchValue({
+        companyOwned: res.companyOwned,
+        truckNumber: res.truckNumber,
+        truckTypeId: res.truckTypeId,
+        vin: res.vin,
+        truckMakeId: res.truckMakeId,
+        model: res.model,
+        year: res.year,
+        colorId: res.colorId,
+        ownerId: res.ownerId,
+        commission: res.commission,
+        note: res.note,
+        // Additional Tab
+        purchaseDate: res.purchaseDate,
+        purchasePrice: res.purchasePrice,
+        truckGrossWeightId: res.truckGrossWeightId,
+        emptyWeight: res.emptyWeight,
+        truckEngineModelId: res.truckEngineModelId,
+        tireSizeId: res.tireSizeId,
+        fuelTankSize: res.fuelTankSize,
+        brakes: res.brakes,
+        frontWheels: res.frontWheels,
+        rearWheels: res.rearWheels,
+        transmissionModel: res.transmissionModel,
+        shifter: res.shifter,
+        axles: res.axles,
+        fhwaExp: res.fhwaExp,
+        insurancePolicy: res.insurancePolicy,
+        mileage: res.mileage,
+        engineOilType: res.engineOilType,
+        gearRatio: res.gearRatio,
+        apUnit: res.apUnit,
+        tollTransponder: res.tollTransponder,
+        tollTransponderDeviceNo: res.tollTransponderDeviceNo,
+        doubleBunk: res.doubleBunk,
+        refrigerator: res.refrigerator,
+        dcInverter: res.dcInverter,
+        blower: res.blower,
+        pto: res.pto,
+      });
+
+      if (res.id) {
+        this.editData = { ...this.editData, id: res.id };
+      }
+
+      this.selectedAPUnit = res.selectedAPUnit;
+      this.selectedBrakes = res.selectedBrakes;
+      this.selectedColor = res.selectedColor;
+      this.selectedEngineOilType = res.selectedEngineOilType;
+      this.selectedFrontWheels = res.selectedFrontWheels;
+      this.selectedGearRatio = res.selectedGearRatio;
+      this.selectedOwner = res.selectedOwner;
+      this.selectedRearWheels = res.selectedRearWheels;
+      this.selectedShifter = res.selectedShifter;
+      this.selectedTireSize = res.selectedTireSize;
+      this.selectedTollTransponders = res.selectedTollTransponders;
+      this.selectedTruckGrossWeight = res.selectedTruckGrossWeight;
+      this.selectedTruckMake = res.selectedTruckMake;
+      this.selectedTruckType = res.selectedTruckType;
+      this.selectedtruckEngineModelId = res.selectedtruckEngineModelId;
+      this.truckStatus = res.truckStatus;
+
+      this.modalService.changeModalStatus({
+        name: 'deactivate',
+        status: this.truckStatus,
+      });
+
+      clearTimeout(timeout);
+    }, 150);
+  }
+
   public addTruck() {
     const newData: CreateTruckCommand = {
       ...this.truckForm.value,
+
+      apUnit: this.selectedAPUnit ? this.selectedAPUnit.name : null,
+      brakes: this.selectedBrakes ? this.selectedBrakes.name : null,
+      colorId: this.selectedColor ? this.selectedColor.id : null,
+      engineOilType: this.selectedEngineOilType
+        ? this.selectedEngineOilType.id
+        : null,
       truckTypeId: this.selectedTruckType ? this.selectedTruckType.id : null,
       truckMakeId: this.selectedTruckMake ? this.selectedTruckMake.id : null,
-      colorId: this.selectedColor ? this.selectedColor.id : null,
+      tollTransponder: this.selectedTollTransponders
+        ? this.selectedTollTransponders.id
+        : null,
       ownerId: this.selectedOwner ? this.selectedOwner.id : null,
+      gearRatio: this.selectedGearRatio ? this.selectedGearRatio.id : null,
+      shifter: this.selectedShifter ? this.selectedShifter.id : null,
+      tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
+      truckEngineModelId: this.selectedtruckEngineModelId
+        ? this.selectedtruckEngineModelId.id
+        : null,
       truckGrossWeightId: this.selectedTruckGrossWeight
         ? this.selectedTruckGrossWeight.id
         : null,
-      engineModel: this.selectedEngineModelId
-        ? this.selectedEngineModelId.id
+      frontWheels: this.selectedFrontWheels
+        ? this.selectedFrontWheels.name
         : null,
-      tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
+      rearWheels: this.selectedRearWheels ? this.selectedRearWheels.name : null,
+      fuelTankSize: this.truckForm.get('fuelTankSize').value
+        ? convertThousanSepInNumber(this.truckForm.get('fuelTankSize').value)
+        : null,
       mileage: this.truckForm.get('mileage').value
         ? convertThousanSepInNumber(this.truckForm.get('mileage').value)
         : null,
@@ -639,7 +752,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           )
         : null,
       year: parseInt(this.truckForm.get('year').value),
-      shifter: this.selectedShifter ? this.selectedShifter.id : null,
       purchaseDate: this.truckForm.get('companyOwned').value
         ? this.truckForm.get('purchaseDate').value
           ? convertDateToBackend(this.truckForm.get('purchaseDate').value)
@@ -671,28 +783,37 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     const newData: UpdateTruckCommand = {
       id: id,
       ...this.truckForm.value,
+      apUnit: this.selectedAPUnit ? this.selectedAPUnit.name : null,
+      brakes: this.selectedBrakes ? this.selectedBrakes.name : null,
+      colorId: this.selectedColor ? this.selectedColor.id : null,
+      engineOilType: this.selectedEngineOilType
+        ? this.selectedEngineOilType.id
+        : null,
       truckTypeId: this.selectedTruckType ? this.selectedTruckType.id : null,
       truckMakeId: this.selectedTruckMake ? this.selectedTruckMake.id : null,
-      colorId: this.selectedColor ? this.selectedColor.id : null,
+      tollTransponder: this.selectedTollTransponders
+        ? this.selectedTollTransponders.id
+        : null,
       ownerId: this.truckForm.get('companyOwned').value
         ? null
         : this.selectedOwner
         ? this.selectedOwner.id
         : null,
+      gearRatio: this.selectedGearRatio ? this.selectedGearRatio.id : null,
+      shifter: this.selectedShifter ? this.selectedShifter.id : null,
+      tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
+      truckEngineModelId: this.selectedtruckEngineModelId
+        ? this.selectedtruckEngineModelId.id
+        : null,
       truckGrossWeightId: this.selectedTruckGrossWeight
-        ? this.selectedTruckGrossWeight.id != 0
-          ? this.selectedTruckGrossWeight.id
-          : null
+        ? this.selectedTruckGrossWeight.id
         : null,
-      engineModel: this.selectedEngineModelId
-        ? this.selectedEngineModelId.id != 0
-          ? this.selectedEngineModelId.id
-          : null
+      frontWheels: this.selectedFrontWheels
+        ? this.selectedFrontWheels.name
         : null,
-      tireSizeId: this.selectedTireSize
-        ? this.selectedTireSize.id != 0
-          ? this.selectedTireSize.id
-          : null
+      rearWheels: this.selectedRearWheels ? this.selectedRearWheels.name : null,
+      fuelTankSize: this.truckForm.get('fuelTankSize').value
+        ? convertThousanSepInNumber(this.truckForm.get('fuelTankSize').value)
         : null,
       mileage: this.truckForm.get('mileage').value
         ? convertThousanSepInNumber(this.truckForm.get('mileage').value)
@@ -709,7 +830,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           )
         : null,
       year: parseInt(this.truckForm.get('year').value),
-      shifter: this.selectedShifter ? this.selectedShifter.id : null,
       purchaseDate: this.truckForm.get('companyOwned').value
         ? this.truckForm.get('purchaseDate').value
           ? convertDateToBackend(this.truckForm.get('purchaseDate').value)

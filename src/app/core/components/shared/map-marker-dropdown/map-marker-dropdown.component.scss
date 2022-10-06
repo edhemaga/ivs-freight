@@ -104,7 +104,8 @@
 
             svg {
                 path {
-                    fill: $bc1;
+                    //fill: $bc1;
+                    fill: #3074d3;
                 }
             }
 
@@ -155,10 +156,14 @@
     margin-right: 6px;
 }
 
+.tooltip-copy {
+  margin-left: 6px;
+}
+
 .copy-icon {
     display: none;
     position: relative;
-    margin-left: 6px;
+    //margin-left: 6px;
     bottom: 1px;
     height: 18px;
     cursor: pointer;

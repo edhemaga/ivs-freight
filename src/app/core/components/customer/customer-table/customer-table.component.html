@@ -51,7 +51,8 @@
         (clickedMarker)="selectItem(latlong.id)"
         [ngStyle]="{
           display:
-            locationFilterOn && latlong?.isShown == false ? 'none' : 'block'
+            locationFilterOn && latlong?.isShown == false ? 'none' : 'flex',
+          'justify-content': 'center'
         }"
       ></app-map-list-card>
     </app-map-list>

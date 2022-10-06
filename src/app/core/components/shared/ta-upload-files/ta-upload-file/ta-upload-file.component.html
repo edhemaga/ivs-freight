@@ -118,7 +118,7 @@
     >
       {{ file?.extension | uppercase }}
     </div>
-    <p *ngIf="!editFile" class="ta-upload-file-name">{{ file?.name }}</p>
+    <p *ngIf="!editFile" class="ta-upload-file-name">{{ file?.fileName }}</p>
     <!-- Edit mode -->
     <app-ta-input
       *ngIf="editFile"

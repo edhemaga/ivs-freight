@@ -34,9 +34,10 @@ import {
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { OwnerTService } from '../../owner/state/owner.service';
 import { TrailerModalComponent } from '../trailer-modal/trailer-modal.component';
-import { Subject, takeUntil } from 'rxjs';
+import { forkJoin, Subject, takeUntil, merge } from 'rxjs';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { FormService } from '../../../services/form/form.service';
+import { first, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-owner-modal',
@@ -129,38 +130,70 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   public tabChange(event: any): void {
     this.selectedTab = event.id;
 
+    this.tabs = this.tabs.map((item) => {
+      return {
+        ...item,
+        checked: item.id === event.id,
+      };
+    });
+
+    this.manipulateWithOwnerInputs();
+  }
+
+  private manipulateWithOwnerInputs() {
+    console.log(this.selectedTab);
     if (this.selectedTab === 1) {
-      this.inputService.changeValidators(
-        this.ownerForm.get('bussinesName'),
-        true
-      );
+      this.inputService.changeValidators(this.ownerForm.get('bussinesName'));
       this.inputService.changeValidators(this.ownerForm.get('ein'), true, [
         einNumberRegex,
       ]);
-      this.inputService.changeValidators(
-        this.ownerForm.get('firstName'),
-        false
-      );
-      this.inputService.changeValidators(this.ownerForm.get('lastName'), false);
-      this.inputService.changeValidators(this.ownerForm.get('ssn'), false);
+
+      merge(
+        this.ownerForm.get('bussinesName').valueChanges,
+        this.ownerForm.get('ein').valueChanges
+      )
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((val: string) => {
+          if (val) {
+            this.inputService.changeValidators(
+              this.ownerForm.get('firstName'),
+              false
+            );
+            this.inputService.changeValidators(
+              this.ownerForm.get('lastName'),
+              false
+            );
+            this.inputService.changeValidators(
+              this.ownerForm.get('ssn'),
+              false
+            );
+          }
+        });
     } else {
-      this.inputService.changeValidators(
-        this.ownerForm.get('bussinesName'),
-        false
-      );
-      this.inputService.changeValidators(this.ownerForm.get('ein'), false);
-      this.inputService.changeValidators(this.ownerForm.get('firstName'), true);
-      this.inputService.changeValidators(this.ownerForm.get('lastName'), true);
+      this.inputService.changeValidators(this.ownerForm.get('firstName'));
+      this.inputService.changeValidators(this.ownerForm.get('lastName'));
       this.inputService.changeValidators(this.ownerForm.get('ssn'), true, [
         ssnNumberRegex,
       ]);
 
-      this.tabs = this.tabs.map((item) => {
-        return {
-          ...item,
-          checked: item.id === event.id,
-        };
-      });
+      merge(
+        this.ownerForm.get('firstName').valueChanges,
+        this.ownerForm.get('lastName').valueChanges,
+        this.ownerForm.get('ssn').valueChanges
+      )
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((val: string) => {
+          if (val) {
+            this.inputService.changeValidators(
+              this.ownerForm.get('bussinesName'),
+              false
+            );
+            this.inputService.changeValidators(
+              this.ownerForm.get('ein'),
+              false
+            );
+          }
+        });
     }
   }
 
