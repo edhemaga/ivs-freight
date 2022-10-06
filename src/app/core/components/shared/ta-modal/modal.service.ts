@@ -58,7 +58,6 @@ export class ModalService {
     size: string;
     type?: string;
   }) {
-    console.log('Projection modal data: ', data);
     const timeout = setTimeout(() => {
       // Closing Modal and Open New One
       if (data.action === 'open') {
@@ -94,7 +93,7 @@ export class ModalService {
       }
 
       clearTimeout(timeout);
-    }, 250);
+    }, 500);
   }
 
   public openModal(

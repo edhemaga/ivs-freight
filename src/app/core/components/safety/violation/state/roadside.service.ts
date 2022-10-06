@@ -3,7 +3,7 @@ import {
   RoadsideInspectionListResponse,
   ViolationService,
 } from 'appcoretruckassist';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { UpdateRoadsideInspectionCommand } from '../../../../../../../appcoretruckassist/model/updateRoadsideInspectionCommand';
 import { RoadsideInspectionResponse } from '../../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
 
@@ -24,16 +24,17 @@ export class RoadsideService {
     search1?: string,
     search2?: string
   ): Observable<RoadsideInspectionListResponse> {
-    return this.roadsideServis.apiViolationListGet(
-      active,
-      pageIndex,
-      pageSize,
-      companyId,
-      sort,
-      search,
-      search1,
-      search2
-    );
+    // return this.roadsideServis.apiViolationListGet(
+    //   active,
+    //   pageIndex,
+    //   pageSize,
+    //   companyId,
+    //   sort,
+    //   search,
+    //   search1,
+    //   search2
+    // );
+    return of();
   }
 
   // Get Roadside List

@@ -334,7 +334,7 @@ export class TaInputAddressComponent
       this.isVisibleAddressFlag = true;
       this.isVisibleCommands = true;
       this.forceVisibilityOfCommands = true;
-      clearTimeout(timeout)
+      clearTimeout(timeout);
     }, 30);
   }
 

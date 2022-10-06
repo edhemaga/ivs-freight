@@ -9,6 +9,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ViolationCategory } from './violationCategory';
+import { RoadsideInspectionSpecialCheckCommand } from './roadsideInspectionSpecialCheckCommand';
 import { ViolationCommand } from './violationCommand';
 import { AddressEntity } from './addressEntity';
 
@@ -16,13 +18,23 @@ import { AddressEntity } from './addressEntity';
 export interface UpdateRoadsideInspectionCommand { 
     id?: number;
     report?: string | null;
+    categoryReport?: ViolationCategory;
     inspectionLevel?: string | null;
     hmInspectionType?: string | null;
     country?: string | null;
     state?: string | null;
     startTime?: string | null;
     endTime?: string | null;
-    date?: string | null;
+    date?: string;
+    driverId?: number | null;
+    driver_FullName?: string | null;
+    driver_LicenceNo?: string | null;
+    driver_State?: string | null;
+    driver_DateOfBirth?: string | null;
+    coDriver_FullName?: string | null;
+    coDriver_LicenceNo?: string | null;
+    coDriver_State?: string | null;
+    coDriver_DateOfBirth?: string | null;
     truck_Unit?: number | null;
     truck_Type?: string | null;
     truck_Make?: string | null;
@@ -46,20 +58,11 @@ export interface UpdateRoadsideInspectionCommand {
     facility?: string | null;
     highway?: string | null;
     milePost?: string | null;
-    location?: string | null;
-    destination?: string | null;
-    customer?: string | null;
+    origin?: AddressEntity;
+    destination?: AddressEntity;
+    brokerId?: number | null;
     boL?: string | null;
     cargo?: string | null;
-    alcContSubCheck?: boolean;
-    condByLocalJuris?: boolean;
-    sizeAndWeightEnf?: boolean;
-    eScreenInspection?: boolean;
-    trafficEnforcment?: boolean;
-    pasaConditionInsp?: boolean;
-    drugInterdSearch?: boolean;
-    borderEnfInspection?: boolean;
-    postCrashInspection?: boolean;
-    pbbtInspection?: boolean;
+    specialChecks?: Array<RoadsideInspectionSpecialCheckCommand> | null;
 }
 
