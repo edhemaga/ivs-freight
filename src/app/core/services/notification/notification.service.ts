@@ -22,18 +22,18 @@ export class NotificationService {
   constructor(public toastr: ToastrService) {
   } 
 
-  public errorToastr(httpRequest: HttpRequest<any>, next: HttpHandler){
+  public errorToastr(httpRequest: HttpRequest<any>, next: HttpHandler, error?){
     
     if ( httpRequest.url.indexOf('applicant') > -1 || httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 || httpRequest.url.indexOf('division') > -1 ) {
       return false;
     }
 
-    this.toastr.error("", "", {...notificationOptions, payload: { httpRequest, next }});
+    this.toastr.error("", "", {...notificationOptions, payload: { httpRequest, next, error}});
   }
 
   public successToastr(httpRequest: HttpRequest<any>, next: HttpHandler){
     
-    if ( httpRequest.url.indexOf('applicant') > -1 || httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 || httpRequest.url.indexOf('division') > -1 ) {
+    if ( httpRequest.url.indexOf('login') > -1 || httpRequest.url.indexOf('applicant') > -1 || httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 || httpRequest.url.indexOf('division') > -1 ) {
       return false;
     }
 

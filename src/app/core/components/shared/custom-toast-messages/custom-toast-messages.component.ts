@@ -76,6 +76,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
   httpRequest: HttpRequest<any>;
   next: HttpHandler;
+  errorData: any;
 
   mainTitle: string = "";
   method: string = "";
@@ -172,7 +173,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     },
     {
       'api' : 'todo',
-      'value' : 'TO-DO'
+      'value' : 'TASK'
     },
     {
       'api' : 'Comment',
@@ -189,7 +190,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     super(toastrService, toastPackage);
     this.httpRequest = this.toastPackage.config.payload ? this.toastPackage.config.payload?.httpRequest : '';
     this.next =  this.toastPackage.config.payload ? this.toastPackage.config.payload.next : '';
-    this.toastrType = this.toastPackage.toastType;
+    this.errorData =  this.toastPackage.config.payload?.error ? this.toastPackage.config.payload.error : '';
+    this.toastrType = this.toastPackage.toastType; 
   }
 
   ngOnInit(): void {
@@ -206,8 +208,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
   createTitleBasedOnHttpRequest() {
     console.log(this.httpRequest);
-    
-
+   
     let url = this.httpRequest.url.split('/api/');
     let apiEndPoint = url[1];
    
@@ -278,6 +279,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       break;
       case 'RATE':
         this.actionTitle = this.toastrType == 'toast-error' ? 'RATE' : 'RATED';
+        console.log(this.DetailsDataService.mainData);
         switch (this.httpRequest.body?.entityTypeRatingId) {
           case 1:
             this.actionType = 'BROKER';
@@ -414,11 +416,15 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         this.message = messageValue;
       break;
       case 'LOGIN':
+        
         this.actionType = this.toastrType == 'toast-error' ? 'LOGIN' : 'LOGGED IN';
-        this.message = this.httpRequest.body?.email ? this.httpRequest.body.email : '';
+        let errorMessage = this.errorData.error.error ? this.errorData.error.error : '';
+        this.message = errorMessage;
         this.leftSideMove = false;
+
       break;
       case 'TRAILER':
+        console.log('--this.httpRequest---', this.httpRequest);
         let trailerNum = this.httpRequest.body?.trailerNumber ? this.httpRequest.body.trailerNumber : '';
         let activeTrailer = this.DetailsDataService.mainData?.status ? true : false;
         if (!trailerNum){
@@ -521,7 +527,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         let testName = this.DetailsDataService.mainData.fullName ? this.DetailsDataService.mainData.fullName : this.DetailsDataService.mainData.firstName + ' ' + this.DetailsDataService.mainData.lastName;
         this.message = testName;   
       break;
-      case 'TO-DO':
+      case 'TASK':
         let toDoName = this.httpRequest.body?.title ? this.httpRequest.body?.title : '';
         if (!toDoName){
           toDoName = this.DetailsDataService.mainData?.title;

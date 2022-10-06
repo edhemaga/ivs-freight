@@ -29,10 +29,10 @@ export class RoadsideService {
       pageIndex,
       pageSize,
       companyId,
-      sort,
-      search,
-      search1,
-      search2
+      //sort,
+      //search,
+      //search1,
+      //search2
     );
   }
 

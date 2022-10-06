@@ -388,6 +388,7 @@ export class TruckassistTableBodyComponent
       type: 'raiting',
       subType: 'like',
     });
+    this.detailsDataService.setNewData(row);
   }
 
   onDislike(row: any) {
