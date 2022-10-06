@@ -1,14 +1,8 @@
 import { Subject, takeUntil } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  first,
-  skip,
-  take,
-} from 'rxjs/operators';
-import { updatedDiff, diff } from 'deep-object-diff';
+import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
+import { diff } from 'deep-object-diff';
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +33,6 @@ export class FormService implements OnDestroy {
 
           this.formValueChange$.next(false);
         }
-        console.log('statusL: ', this.originalValue);
       });
     // // Every time the form changes, we compare it with the original value.
     // // If it is different, we emit a value to the Subject (if one was provided)
@@ -54,9 +47,7 @@ export class FormService implements OnDestroy {
       )
       .subscribe(() => {
         let current_value = form.value;
-
-        console.log('value: ', diff(this.originalValue, current_value));
-
+        console.log('changes: ', diff(this.originalValue, current_value));
         if (Object.keys(diff(this.originalValue, current_value)).length !== 0) {
           this.formValueChange$.next(true);
         } else {

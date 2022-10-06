@@ -556,6 +556,10 @@ export class TaInputComponent
         this.input.nativeElement.value = value;
         this.inputSelection = false;
       }
+
+      // Delete spaces on begin and end
+      this.input.nativeElement.value = this.input.nativeElement.value.trim();
+      this.getSuperControl.patchValue(this.input.nativeElement.value);
     } else {
       this.input.nativeElement.value = value;
     }
@@ -615,14 +619,12 @@ export class TaInputComponent
         this.getSuperControl.setErrors(null);
       }
     }
-
-    // Delete spaces on begin and end
-    this.input.nativeElement.value = this.input.nativeElement.value.trim();
-    this.getSuperControl.patchValue(this.input.nativeElement.value);
   }
 
   public selectionChange(event: any) {
-    this.inputSelection = true;
+    if (event) {
+      this.inputSelection = true;
+    }
   }
 
   public onEditInput(event: Event) {
@@ -852,6 +854,8 @@ export class TaInputComponent
         'empty weight',
         'qty',
         'purchase price',
+        'fuel tank size',
+        'device no',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (
@@ -888,6 +892,16 @@ export class TaInputComponent
       }
       event.preventDefault();
       return false;
+    }
+
+    if (['address'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z0-9\s.&/,_-]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
     }
 
     if (
@@ -1275,6 +1289,13 @@ export class TaInputComponent
       }
     }
 
+    if (
+      ['input dropdown label'].includes(this.inputConfig.name.toLowerCase())
+    ) {
+      this.disableConsecutivelySpaces(event);
+      this.disableConsecutivelyPoints(event);
+    }
+
     this.input.nativeElement.value.trim();
   }
 
@@ -1345,6 +1366,7 @@ export class TaInputComponent
 
   public onPaste(event?: any) {
     event.preventDefault();
+
     this.pasteCheck(
       event.clipboardData.getData('text'),
       this.inputService.getInputRegexPattern(

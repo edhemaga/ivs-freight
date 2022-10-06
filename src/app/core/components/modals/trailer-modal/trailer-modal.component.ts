@@ -39,6 +39,10 @@ import { NotificationService } from '../../../services/notification/notification
 import { trailerVolumeValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../services/form/form.service';
 import {
+  convertDateToBackend,
+  convertDateFromBackend,
+} from '../../../utils/methods.calculations';
+import {
   convertThousanSepInNumber,
   convertNumberInThousandSep,
 } from '../../../utils/methods.calculations';
@@ -113,7 +117,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.isCompanyOwned();
-    this.getTrailerDropdowns();
 
     if (this.editData?.id) {
       this.skipVinDecocerEdit = true;
@@ -121,7 +124,10 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     if (this.editData?.storageData) {
+      this.skipVinDecocerEdit = true;
       this.populateStorageData(this.editData.storageData);
+    } else {
+      this.getTrailerDropdowns();
     }
 
     this.vinDecoder();
@@ -149,6 +155,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       mileage: [null, mileageValidation],
       volume: [null, trailerVolumeValidation],
       insurancePolicy: [null, insurancePolicyValidation],
+      purchaseDate: [null],
+      purchasePrice: [null],
+      fhwaExp: [12, Validators.required],
     });
 
     this.formService.checkFormChange(this.trailerForm);
@@ -337,6 +346,18 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       volume: this.trailerForm.get('volume').value
         ? convertThousanSepInNumber(this.trailerForm.get('volume').value)
         : null,
+      purchaseDate: this.trailerForm.get('companyOwned').value
+        ? this.trailerForm.get('purchaseDate').value
+          ? convertDateToBackend(this.trailerForm.get('purchaseDate').value)
+          : null
+        : null,
+      purchasePrice: this.trailerForm.get('companyOwned').value
+        ? this.trailerForm.get('purchasePrice').value
+          ? convertThousanSepInNumber(
+              this.trailerForm.get('purchasePrice').value
+            )
+          : null
+        : null,
     };
 
     let trailerUnit = this.trailerForm.get('trailerNumber').value;
@@ -424,6 +445,18 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       volume: this.trailerForm.get('volume').value
         ? convertThousanSepInNumber(this.trailerForm.get('volume').value)
         : null,
+      purchaseDate: this.trailerForm.get('companyOwned').value
+        ? this.trailerForm.get('purchaseDate').value
+          ? convertDateToBackend(this.trailerForm.get('purchaseDate').value)
+          : null
+        : null,
+      purchasePrice: this.trailerForm.get('companyOwned').value
+        ? this.trailerForm.get('purchasePrice').value
+          ? convertThousanSepInNumber(
+              this.trailerForm.get('purchasePrice').value
+            )
+          : null
+        : null,
     };
 
     let trailerUnit = this.trailerForm.get('trailerNumber').value;
@@ -449,14 +482,15 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
   private populateStorageData(res) {
     const timeout = setTimeout(() => {
+      this.getTrailerDropdowns();
       this.trailerForm.patchValue({
         companyOwned: res.companyOwned,
         trailerNumber: res.trailerNumber,
         trailerTypeId: res.trailerTypeId,
-        trailerMakeId: res.trailerMake.name,
+        trailerMakeId: res.trailerMakeId,
         model: res.model,
         colorId: res.colorId,
-        year: res.year.toString(),
+        year: res.year,
         trailerLengthId: res.trailerLengthId,
         ownerId: res.ownerId,
         note: res.note,
@@ -469,6 +503,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         mileage: res.mileage,
         volume: res.volume,
         insurancePolicy: res.insurancePolicy,
+        fhwaExp: res.fhwaExp,
+        purchaseDate: res.purchaseDate,
+        purchasePrice: res.purchasePrice,
       });
 
       if (res.id) {
@@ -531,6 +568,12 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
               : null,
             volume: res.volume ? convertNumberInThousandSep(res.volume) : null,
             insurancePolicy: res.insurancePolicy,
+            purchaseDate: res.purchaseDate
+              ? convertDateFromBackend(res.purchaseDate)
+              : null,
+            purchasePrice: res.purchasePrice
+              ? convertNumberInThousandSep(res.purchasePrice)
+              : null,
           });
 
           this.selectedTrailerType = res.trailerType ? res.trailerType : null;
