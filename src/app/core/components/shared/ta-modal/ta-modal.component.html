@@ -40,9 +40,39 @@
         >
           {{ editName }}
         </h5>
+        <h5 *ngIf="loadModalTitle" class="edit-name">
+          {{ loadModalTitle }}
+          <span class="edit-name-date">| {{ dateNow }}</span>
+        </h5>
+      </div>
+      <!-- Load Modal Header Bill -->
+      <div *ngIf="loadModalBill" class="load-modal-bill">
+        <!-- Billing Info -->
+        <div class="load-modal-bill-rate">
+          <p>Rate</p>
+          <div class="load-modal-bill-rate-price-container">
+            <p class="load-modal-base-rate">
+              $ {{ 2600 | taThousandSeparator }}
+            </p>
+            <p class="load-modal-adjusted-rate">
+              $ {{ 2300 | taThousandSeparator }}
+            </p>
+          </div>
+        </div>
+        <div class="load-modal-bill-due">
+          <p>Due</p>
+          <p class="load-modal-base-due">$ {{ 1900 | taThousandSeparator }}</p>
+        </div>
+        <!-- Header Load close -->
+        <svg-icon
+          class="modal-close"
+          src="assets/svg/common/ic_x.svg"
+          (click)="onAction('close')"
+        ></svg-icon>
       </div>
       <!-- Header close -->
       <svg-icon
+        *ngIf="!loadModalBill"
         class="modal-close"
         src="assets/svg/common/ic_x.svg"
         (click)="onAction('close')"
@@ -302,9 +332,9 @@
   </div>
   <!-- Modal Map -->
   <div
-    *ngIf="map"
-    [ngClass]="{ 'load-modal-map': customClass?.includes('load') }"
+    *ngIf="modalAdditionalPart"
+    [ngClass]="{ 'load-modal-additional-part': customClass?.includes('load') }"
   >
-    MAPA
+    MAPA / Hazard
   </div>
 </div>

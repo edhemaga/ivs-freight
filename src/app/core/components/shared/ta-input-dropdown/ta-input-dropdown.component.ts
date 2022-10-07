@@ -114,7 +114,7 @@ export class TaInputDropdownComponent
               name: 'Add New',
             });
           }
-          this.originalOptions = [...this.options];
+          this.originalOptions = this.options;
           break;
         }
       }

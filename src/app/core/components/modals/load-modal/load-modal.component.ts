@@ -4,13 +4,18 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../services/form/form.service';
+import { LoadTService } from '../../load/state/load.service';
+import { LoadModalResponse } from '../../../../../../appcoretruckassist/model/loadModalResponse';
+import { NotificationService } from '../../../services/notification/notification.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-load-modal',
   templateUrl: './load-modal.component.html',
   styleUrls: ['./load-modal.component.scss'],
-  providers: [ModalService],
+  providers: [ModalService, FormService],
 })
 export class LoadModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -18,84 +23,78 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
   public loadForm: FormGroup;
 
-  public isDirty: boolean = true;
+  public isFormDirty: boolean;
 
   public selectedTab: number = 1;
   public headerTabs = [
     {
       id: 1,
-      label: 'headerTab',
-      value: 'FTL',
       name: 'FTL',
       checked: true,
     },
     {
       id: 2,
-      label: 'headerTab',
-      value: 'LTL',
       name: 'LTL',
       checked: false,
     },
   ];
 
+  public selectedStopTab: number = 3;
   public stopTabs = [
     {
       id: 3,
-      label: 'stopTab',
-      value: 'Pickup',
       name: 'Pickup',
       checked: true,
     },
     {
       id: 4,
-      label: 'stopTab',
-      value: 'Delivery',
       name: 'Delivery',
       checked: false,
     },
   ];
 
+  public selectedStopTime: number = 5;
   public stopTimeTabs = [
     {
       id: 5,
-      label: 'stopTimeTab',
-      value: 'Open',
       name: 'Open',
       checked: true,
     },
     {
       id: 6,
-      label: 'stopTimeTab',
-      value: 'APPT',
       name: 'APPT',
       checked: false,
     },
   ];
 
+  public loadModalTitle: string = '1546';
+  public loadModalBill: any = null;
+
   public labelsTemplate: any[] = [];
   public labelsDispatcher: any[] = [];
+  public labelsCompanies: any[] = [];
+  public labelsTruckTrailerDriver: any[] = [];
   public labelsGeneralCommodity: any[] = [];
   public labelsBroker: any[] = [];
   public labelsTruckReq: any[] = [];
   public labelsTrailerReq: any[] = [];
   public labelsDoorType: any[] = [];
   public labelsSuspension: any[] = [];
-  public labelsLength: any[] = [];
+  public labelsTrailerLength: any[] = [];
   public labelsYear: any[] = [];
 
   public selectedTemplate: any = null;
   public selectedDispatcher: any = null;
+  public selectedCompany: any = null;
+  public selectedTruckTrailerDriver: any = null;
   public selectedGeneralCommodity: any = null;
   public selectedBroker: any = null;
   public selectedTruckReq: any = null;
   public selectedTrailerReq: any = null;
   public selectedDoorType: any = null;
   public selectedSuspension: any = null;
-  public selectedLength: any = null;
+  public selectedTrailerLength: any = null;
   public selectedYear: any = null;
-
-  public selectedStopTab: number = 3;
-  public selectedStopTime: number = 5;
 
   public isAvailableAdjustedRate: boolean = false;
   public isAvailableAdvanceRate: boolean = false;
@@ -110,20 +109,28 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private modalService: ModalService,
-    private inputService: TaInputService
+    private inputService: TaInputService,
+    private formService: FormService,
+    private loadService: LoadTService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
-    this.createForm();
-
     this.companyUser = JSON.parse(localStorage.getItem('user'));
+    this.createForm();
+    this.getLoadDropdowns();
+    this.loadModalBill = {
+      rate: 0,
+      adjusted: 0,
+      due: 0,
+    };
   }
 
   private createForm() {
     this.loadForm = this.formBuilder.group({
       selectTemplate: [null],
       dispatcher: [null],
-      company: [null, Validators.required],
+      company: [this.companyUser.companyName, Validators.required],
       refNumber: [null, Validators.required],
       generalCommodity: [null],
       weight: [null],
@@ -151,10 +158,39 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       lingPaymentAdvanceRate: [null],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.loadForm);
+
+    this.formService.formValueChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isFormChange: boolean) => {
+        this.isFormDirty = isFormChange;
+      });
   }
 
   public onModalHeaderTabChange(event: any): void {
     this.selectedTab = event.id;
+  }
+
+  public onTabChange(event: any, action: string) {
+    switch (action) {
+      case 'stop-tab': {
+        this.selectedStopTab = event.id;
+        break;
+      }
+      case 'stop-time': {
+        this.selectedStopTime = event.id;
+        if (this.selectedStopTime === 6) {
+          this.inputService.changeValidators(
+            this.loadForm.get('toTime'),
+            false
+          );
+        } else {
+          this.inputService.changeValidators(this.loadForm.get('toTime'));
+        }
+        break;
+      }
+    }
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {}
@@ -167,6 +203,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       }
       case 'dispatcher': {
         this.selectedDispatcher = event;
+        break;
+      }
+      case 'company': {
+        this.selectedCompany = event;
         break;
       }
       case 'general-commodity': {
@@ -194,7 +234,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'length': {
-        this.selectedLength = event;
+        this.selectedTrailerLength = event;
         break;
       }
       case 'year': {
@@ -202,27 +242,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         break;
       }
       default: {
-        break;
-      }
-    }
-  }
-
-  public onTabChange(event: any, action: string) {
-    switch (action) {
-      case 'stop-tab': {
-        this.selectedStopTab = event.id;
-        break;
-      }
-      case 'stop-time': {
-        this.selectedStopTime = event.id;
-        if (this.selectedStopTime === 6) {
-          this.inputService.changeValidators(
-            this.loadForm.get('toTime'),
-            false
-          );
-        } else {
-          this.inputService.changeValidators(this.loadForm.get('toTime'));
-        }
         break;
       }
     }
@@ -286,6 +305,62 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public deleteComment(comments: any) {}
   public addComment(comments: any) {}
   public updateComment(comments: any) {}
+
+  private getLoadDropdowns(id?: number) {
+    this.loadService
+      .getLoadDropdowns(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: LoadModalResponse) => {
+          console.log(res);
+          this.labelsBroker = res.brokers;
+          this.labelsDispatcher = res.dispatchers.map((item) => {
+            return {
+              id: item.id,
+              name: item.fullName,
+            };
+          });
+          // Initial Dispatcher Name
+          const initialDispatcher = this.labelsDispatcher.find(
+            (item) =>
+              item.name ===
+              this.companyUser.firstName.concat(' ', this.companyUser.lastName)
+          );
+          this.loadForm.get('dispatcher').patchValue(initialDispatcher.name);
+          this.selectedDispatcher = initialDispatcher;
+          // -----------------------
+          // Multiple Companies
+          this.labelsCompanies = res.companies.map((item) => {
+            return {
+              id: item.id,
+              name: item.companyName,
+              isDivision: item.isDivision,
+              isActive: item.isActive,
+              logo: item.logo,
+            };
+          });
+
+          if (this.labelsCompanies.length > 1) {
+            this.selectedCompany = this.labelsCompanies.find(
+              (item) => item.name === this.companyUser.companyName
+            );
+          }
+          // -----------------------
+          this.labelsDoorType = res.doorTypes;
+          this.labelsGeneralCommodity = res.generalCommodities;
+          this.labelsSuspension = res.suspensions;
+          this.labelsTemplate = res.templates;
+
+          this.labelsTrailerLength = res.trailerLengths;
+          this.labelsTrailerReq = res.trailerTypes;
+          this.labelsTruckReq = res.truckTypes;
+          this.labelsYear = null;
+        },
+        error: (error: any) => {
+          this.notificationService.error(error, 'Error');
+        },
+      });
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

@@ -856,6 +856,7 @@ export class TaInputComponent
         'purchase price',
         'fuel tank size',
         'device no',
+        'weight',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (

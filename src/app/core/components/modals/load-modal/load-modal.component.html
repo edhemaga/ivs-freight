@@ -1,11 +1,12 @@
 <app-ta-modal
   [modalTitle]="!editData?.type?.includes('edit') ? 'Create Load' : 'Edit Load'"
   [editData]="editData"
-  [editName]="editData?.id"
-  [isModalValid]="loadForm.valid"
+  [loadModalTitle]="loadModalTitle"
+  [loadModalBill]="loadModalBill"
+  [isModalValid]="loadForm.valid && isFormDirty"
   [tabChange]="headerTabs"
   [customClass]="'modal-container-load'"
-  [map]="true"
+  [modalAdditionalPart]="true"
   (onTabHeaderChange)="onModalHeaderTabChange($event)"
   (action)="onModalAction($event)"
 >
@@ -39,16 +40,33 @@
           [activeItem]="selectedDispatcher"
           (selectedItem)="onSelectDropdown($event, 'dispatcher')"
         ></app-ta-input-dropdown>
+        <!-- Only One Company -->
         <app-ta-input
+          *ngIf="labelsCompanies.length === 1"
           formControlName="company"
           [inputConfig]="{
             name: 'Company',
             type: 'text',
             label: 'Company',
             isRequired: true,
-            textTransform: 'capitalize'
+            textTransform: 'uppercase'
           }"
         ></app-ta-input>
+        <!-- Multiple Companies -->
+        <app-ta-input-dropdown
+          *ngIf="labelsCompanies.length > 1"
+          formControlName="company"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Company',
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-226'
+          }"
+          [options]="labelsCompanies"
+          [activeItem]="selectedCompany"
+          (selectedItem)="onSelectDropdown($event, 'company')"
+        ></app-ta-input-dropdown>
       </div>
       <div class="load-ftl-second-row">
         Novi Dropdown
@@ -202,7 +220,7 @@
               isDropdown: true,
               dropdownWidthClass: 'w-col-88'
             }"
-            [options]="labelsLength"
+            [options]="labelsTrailerLength"
             [activeItem]="selectedLength"
             (selectedItem)="onSelectDropdown($event, 'length')"
           ></app-ta-input-dropdown>
@@ -326,7 +344,7 @@
       <app-ta-custom-card [cardName]="'Billing & Payment'" [isCardOpen]="true">
         <div class="billing-payment-load">
           <!-- Base Rate -->
-          <div class="billing-payment-rate">
+          <div class="billing-payment-field">
             <app-ta-input
               formControlName="billingPaymentBaseRate"
               [inputConfig]="{
@@ -356,7 +374,7 @@
               src="assets/svg/common/ic_plus.svg"
             ></svg-icon>
           </div>
-          <div *ngIf="isAvailableAdjustedRate" class="billing-payment-rate">
+          <div *ngIf="isAvailableAdjustedRate" class="billing-payment-field">
             <app-ta-input
               formControlName="billingPaymentAdjustedRate"
               [inputConfig]="{
@@ -385,7 +403,7 @@
               src="assets/svg/common/ic_plus.svg"
             ></svg-icon>
           </div>
-          <div *ngIf="isAvailableAdvanceRate" class="billing-payment-rate">
+          <div *ngIf="isAvailableAdvanceRate" class="billing-payment-field">
             <app-ta-input
               formControlName="lingPaymentAdvanceRate"
               [inputConfig]="{
@@ -419,7 +437,6 @@
         [cardName]="'Comments'"
         [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
         [hasArrow]="false"
-        [hasLikeDislike]="true"
         [isCardOpen]="false"
         [isCommentData]="true"
         [hasBodyData]="comments.length > 0"
