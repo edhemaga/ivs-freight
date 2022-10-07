@@ -52,7 +52,6 @@ export class TruckassistProgressExpirationComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('driver onChanges progress', changes);
     if (!changes?.expireDate?.firstChange && changes?.expireDate) {
       this.expireDate = changes.expireDate.currentValue;
     }

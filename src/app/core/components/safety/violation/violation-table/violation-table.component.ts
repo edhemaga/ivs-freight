@@ -2,13 +2,13 @@ import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { ViolationModalComponent } from '../violation-modal/violation-modal.component';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
-import { getViolationsColums } from '../../../../../../assets/utils/settings/safety-columns';
 import { Subject, takeUntil } from 'rxjs';
 import { RoadsideInactiveState } from '../state/roadside-state/roadside-inactive/roadside-inactive.store';
 import { RoadsideActiveState } from '../state/roadside-state/roadside-active/roadside-active.store';
 import { RoadsideActiveQuery } from '../state/roadside-state/roadside-active/roadside-active.query';
 import { RoadsideInactiveQuery } from '../state/roadside-state/roadside-inactive/roadside-inactive.query';
 import { DatePipe } from '@angular/common';
+import { getRoadsideInspectionColums } from 'src/assets/utils/settings/safety-columns';
 
 @Component({
   selector: 'app-violation-table',
@@ -27,7 +27,6 @@ export class ViolationTableComponent
   columns: any[] = [];
   selectedTab = 'active';
   activeViewMode: string = 'List';
-  resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
   roadsideActive: RoadsideActiveState[] = [];
@@ -50,8 +49,6 @@ export class ViolationTableComponent
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
-          this.resetColumns = response;
-
           this.sendViolationData();
         }
       });
@@ -278,7 +275,9 @@ export class ViolationTableComponent
         length: roadsideCount.active,
         data: roadsideActiveData,
         gridNameTitle: 'Roadside Inspection',
-        gridColumns: this.getGridColumns('violation', this.resetColumns),
+        tableConfiguration: 'ROADSIDE_INSPECTION',
+        isActive: this.selectedTab === 'active',
+        gridColumns: this.getGridColumns('ROADSIDE_INSPECTION'),
       },
       {
         title: 'Inactive',
@@ -286,7 +285,9 @@ export class ViolationTableComponent
         length: roadsideCount.inactive,
         data: roadsideInactiveData,
         gridNameTitle: 'Roadside Inspection',
-        gridColumns: this.getGridColumns('violation', this.resetColumns),
+        tableConfiguration: 'ROADSIDE_INSPECTION',
+        isActive: this.selectedTab === 'inactive',
+        gridColumns: this.getGridColumns('ROADSIDE_INSPECTION'),
       },
       {
         title: 'Violation Summary',
@@ -294,7 +295,9 @@ export class ViolationTableComponent
         length: 0,
         data: [],
         gridNameTitle: 'Roadside Inspection',
-        gridColumns: this.getGridColumns('summary', this.resetColumns),
+        tableConfiguration: 'ROADSIDE_INSPECTION',
+        isActive: this.selectedTab === 'summary',
+        gridColumns: this.getGridColumns('ROADSIDE_INSPECTION'),
       },
     ];
 
@@ -317,16 +320,14 @@ export class ViolationTableComponent
   }
 
   // Get Roadside Inspection Table Columns Configurations
-  getGridColumns(stateName: string, resetColumns: boolean) {
-    const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
+  getGridColumns(configType: string) {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
     );
 
-    if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
-    } else {
-      return getViolationsColums();
-    }
+    return tableColumnsConfig
+        ? tableColumnsConfig
+        : getRoadsideInspectionColums();
   }
 
   // Set Roadside Inspection Table Data
@@ -345,9 +346,6 @@ export class ViolationTableComponent
       /* for(let i = 0; i < 100; i++){
         this.viewData.push(this.viewData[2]);
       } */
-
-      console.log('viewData');
-      console.log(this.viewData);
     } else {
       this.viewData = [];
     }

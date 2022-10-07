@@ -214,7 +214,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     this.onIncludeDuration();
     this.onIncludeFuelCost();
-    this.getTrucks();
+    //this.getTrucks();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -261,25 +261,25 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
   createMapForm() {
     this.mapForm = this.formBuilder.group({
-      mapName: [this.tableData[0].title, Validators.required],
-      distanceUnit: this.tableData[0].distanceUnit,
-      addressType: this.tableData[0].addressType,
-      borderType: this.tableData[0].borderType,
+      mapName: [this.activeTableData.title, Validators.required],
+      distanceUnit: this.activeTableData.distanceUnit,
+      addressType: this.activeTableData.addressType,
+      borderType: this.activeTableData.borderType,
     });
 
-    if (this.tableData[0].distanceUnit == 'mi') {
+    if (this.activeTableData.distanceUnit == 'mi') {
       this.distanceTabs[0].checked = true;
     } else {
       this.distanceTabs[1].checked = true;
     }
 
-    if (this.tableData[0].addressType == 'city') {
+    if (this.activeTableData.addressType == 'city') {
       this.addressTabs[0].checked = true;
     } else {
       this.addressTabs[1].checked = true;
     }
 
-    if (this.tableData[0].borderType == 'open') {
+    if (this.activeTableData.borderType == 'open') {
       this.borderTabs[0].checked = false;
     } else {
       this.borderTabs[1].checked = false;
@@ -289,10 +289,10 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
       .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((formChanges) => {
         if (
-          formChanges.mapName != this.tableData[0].title ||
-          formChanges.distanceUnit != this.tableData[0].distanceUnit ||
-          formChanges.addressType != this.tableData[0].addressType ||
-          formChanges.borderType != this.tableData[0].borderType
+          formChanges.mapName != this.activeTableData.title ||
+          formChanges.distanceUnit != this.activeTableData.distanceUnit ||
+          formChanges.addressType != this.activeTableData.addressType ||
+          formChanges.borderType != this.activeTableData.borderType
         ) {
           this.mapFormChanged = true;
         } else {
@@ -574,10 +574,10 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
   resetMapForm() {
     this.mapForm.patchValue({
-      mapName: this.tableData[0].title,
-      distanceUnit: this.tableData[0].distanceUnit,
-      addressType: this.tableData[0].addressType,
-      borderType: this.tableData[0].borderType,
+      mapName: this.activeTableData.title,
+      distanceUnit: this.activeTableData.distanceUnit,
+      addressType: this.activeTableData.addressType,
+      borderType: this.activeTableData.borderType,
     });
 
     this.mapFormChanged = false;
@@ -586,12 +586,12 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
       {
         id: 1,
         name: 'Miles',
-        checked: this.tableData[0].distanceUnit == 'mi',
+        checked: this.activeTableData.distanceUnit == 'mi',
       },
       {
         id: 2,
         name: 'Km',
-        checked: this.tableData[0].distanceUnit == 'km',
+        checked: this.activeTableData.distanceUnit == 'km',
       },
     ];
 
@@ -599,12 +599,12 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
       {
         id: 1,
         name: 'City',
-        checked: this.tableData[0].addressType == 'city',
+        checked: this.activeTableData.addressType == 'city',
       },
       {
         id: 2,
         name: 'Address',
-        checked: this.tableData[0].addressType == 'address',
+        checked: this.activeTableData.addressType == 'address',
       },
     ];
 
@@ -612,12 +612,12 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
       {
         id: 1,
         name: 'Open Border',
-        checked: this.tableData[0].borderType == 'open',
+        checked: this.activeTableData.borderType == 'open',
       },
       {
         id: 2,
         name: 'Closed Border',
-        checked: this.tableData[0].borderType == 'closed',
+        checked: this.activeTableData.borderType == 'closed',
       },
     ];
   }

@@ -22,7 +22,6 @@ export class PmTruckTrailerComponent implements OnInit {
   columns: any[] = [];
   selectedTab = 'active';
   activeViewMode: string = 'List';
-  resetColumns: boolean;
 
   constructor(
     private modalService: ModalService,
@@ -37,8 +36,6 @@ export class PmTruckTrailerComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
-          this.resetColumns = response;
-
           this.sendPMData();
         }
       });
@@ -83,7 +80,9 @@ export class PmTruckTrailerComponent implements OnInit {
         selectTab: true,
         gridNameTitle: 'PM',
         stateName: 'pm_trucks',
-        gridColumns: this.getGridColumns('pm_trucks', this.resetColumns),
+        tableConfiguration: 'PM_TRUCK',
+        isActive: this.selectedTab === 'active',
+        gridColumns: this.getGridColumns('PM_TRUCK'),
       },
       {
         title: 'Trailer',
@@ -94,7 +93,9 @@ export class PmTruckTrailerComponent implements OnInit {
         selectTab: true,
         gridNameTitle: 'PM',
         stateName: 'pm_trailers',
-        gridColumns: this.getGridColumns('pm_trailers', this.resetColumns),
+        tableConfiguration: 'PM_TRAILER',
+        isActive: this.selectedTab === 'inactive',
+        gridColumns: this.getGridColumns('PM_TRAILER'),
       },
     ];
 
@@ -103,19 +104,19 @@ export class PmTruckTrailerComponent implements OnInit {
     this.setPmData(td);
   }
 
-  getGridColumns(stateName: string, resetColumns: boolean) {
-    const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
+  getGridColumns(configType: string) {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
     );
 
-    if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
+    if (configType === 'PM_TRUCK') {
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getTruckPMColumnDefinition();
     } else {
-      if (stateName === 'pm_trucks') {
-        return getTruckPMColumnDefinition();
-      } else {
-        return getTrailerPMColumnDefinition();
-      }
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getTrailerPMColumnDefinition();
     }
   }
 
