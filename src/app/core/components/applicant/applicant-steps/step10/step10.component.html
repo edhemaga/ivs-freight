@@ -21,6 +21,7 @@
               ? 'applicant-disclosure-release-feedback'
               : 'disclosure-release'
           "
+          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         >
         </app-ta-checkbox>
 
@@ -33,7 +34,8 @@
                 ? '#3c3c3c'
                 : selectedMode === 'FEEDBACK_MODE'
                 ? '#919191'
-                : '#6c6c6c'
+                : '#6c6c6c',
+            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isFirstDisclosure')"
         >
@@ -58,6 +60,7 @@
               ? 'applicant-disclosure-release-feedback'
               : 'disclosure-release'
           "
+          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         >
         </app-ta-checkbox>
 
@@ -70,7 +73,8 @@
                 ? '#3c3c3c'
                 : selectedMode === 'FEEDBACK_MODE'
                 ? '#919191'
-                : '#6c6c6c'
+                : '#6c6c6c',
+            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isSecondDisclosure')"
         >
@@ -92,6 +96,7 @@
               ? 'applicant-disclosure-release-feedback'
               : 'disclosure-release'
           "
+          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         >
         </app-ta-checkbox>
 
@@ -104,7 +109,8 @@
                 ? '#3c3c3c'
                 : selectedMode === 'FEEDBACK_MODE'
                 ? '#919191'
-                : '#6c6c6c'
+                : '#6c6c6c',
+            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isThirdDisclosure')"
         >
@@ -126,6 +132,7 @@
               ? 'applicant-disclosure-release-feedback'
               : 'disclosure-release'
           "
+          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         >
         </app-ta-checkbox>
 
@@ -138,7 +145,8 @@
                 ? '#3c3c3c'
                 : selectedMode === 'FEEDBACK_MODE'
                 ? '#919191'
-                : '#6c6c6c'
+                : '#6c6c6c',
+            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isFourthDisclosure')"
         >
@@ -160,6 +168,7 @@
               ? 'applicant-disclosure-release-feedback'
               : 'disclosure-release'
           "
+          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         >
         </app-ta-checkbox>
 
@@ -172,7 +181,8 @@
                 ? '#3c3c3c'
                 : selectedMode === 'FEEDBACK_MODE'
                 ? '#919191'
-                : '#6c6c6c'
+                : '#6c6c6c',
+            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isFifthDisclosure')"
         >
@@ -195,6 +205,7 @@
               ? 'applicant-disclosure-release-feedback'
               : 'disclosure-release'
           "
+          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         >
         </app-ta-checkbox>
 
@@ -207,7 +218,8 @@
                 ? '#3c3c3c'
                 : selectedMode === 'FEEDBACK_MODE'
                 ? '#919191'
-                : '#6c6c6c'
+                : '#6c6c6c',
+            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isSixthDisclosure')"
         >
@@ -261,7 +273,9 @@
 >
   <app-applicant-next-back-btn
     [nextStep]="true"
-    [filledCorrectly]="disclosureReleaseForm.valid"
+    [filledCorrectly]="
+      selectedMode === 'APPLICANT_MODE' && disclosureReleaseForm.valid
+    "
     [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>

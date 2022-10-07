@@ -122,7 +122,7 @@ export class Step4Component implements OnInit, OnDestroy {
     });
   }
 
-  public patchStepValues(stepValues: any) {
+  public patchStepValues(stepValues: any): void {
     const { noAccidentInThreeYears, accidents } = stepValues;
 
     this.accidentForm.get('hasPastAccident').patchValue(noAccidentInThreeYears);

@@ -7,6 +7,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
+
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { CreateAuthorizationCommand } from 'appcoretruckassist/model/models';
@@ -26,11 +29,14 @@ export class Step11Component implements OnInit, OnDestroy {
   public applicantId: number;
 
   public signature: any;
+  public signatureImgSrc: string;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private router: Router,
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery,
     private applicantActionsService: ApplicantActionsService
   ) {}
 
@@ -44,6 +50,18 @@ export class Step11Component implements OnInit, OnDestroy {
           this.applicantId = res.personalInfo.applicantId;
         });
     }
+
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      let stepValuesResponse: any;
+
+      this.applicantQuery.authorizationList$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          stepValuesResponse = res;
+        });
+
+      this.patchStepValues(stepValuesResponse);
+    }
   }
 
   public createForm(): void {
@@ -55,8 +73,30 @@ export class Step11Component implements OnInit, OnDestroy {
     });
   }
 
+  public patchStepValues(stepValues: any): void {
+    const {
+      isFirstAuthorization,
+      isSecondAuthorization,
+      isThirdAuthorization,
+      isFourthAuthorization,
+      signature,
+    } = stepValues;
+
+    this.authorizationForm.patchValue({
+      isFirstAuthorization,
+      isSecondAuthorization,
+      isThirdAuthorization,
+      isFourthAuthorization,
+    });
+
+    this.signatureImgSrc = signature;
+  }
+
   public handleCheckboxParagraphClick(type: string): void {
-    if (this.selectedMode === 'FEEDBACK_MODE') {
+    if (
+      this.selectedMode === 'FEEDBACK_MODE' ||
+      this.selectedMode === 'REVIEW_MODE'
+    ) {
       return;
     }
 
@@ -100,6 +140,7 @@ export class Step11Component implements OnInit, OnDestroy {
   }
 
   public onSignatureAction(event: any): void {
+    this.signatureImgSrc = event;
     this.signature = event;
 
     this.signature = this.signature.slice(22);
@@ -107,7 +148,13 @@ export class Step11Component implements OnInit, OnDestroy {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
 
     if (event.action === 'back-step') {
@@ -142,7 +189,9 @@ export class Step11Component implements OnInit, OnDestroy {
       });
   }
 
-  /* public onSubmitReview(data: any): void {} */
+  public onSubmitReview(): void {
+    this.router.navigate([`/medical-certificate/${this.applicantId}`]);
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

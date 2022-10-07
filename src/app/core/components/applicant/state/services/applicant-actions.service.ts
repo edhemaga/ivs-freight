@@ -29,6 +29,8 @@ import {
   CreateAccidentRecordReviewCommand,
   CreateTrafficViolationReviewCommand,
   CreateEducationReviewCommand,
+  CreateSevenDaysHosReviewCommand,
+  CreateDrugAndAlcoholReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -169,6 +171,18 @@ export class ApplicantActionsService {
     data: CreateEducationReviewCommand
   ): Observable<object> {
     return this.applicantService.apiApplicantEducationReviewPost(data);
+  }
+
+  public createSevenDaysHosReview(
+    data: CreateSevenDaysHosReviewCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantSevendayshosReviewPost(data);
+  }
+
+  public createDrugAndAcoholReview(
+    data: CreateDrugAndAlcoholReviewCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantDrugandalcoholReviewPost(data);
   }
 
   public createAuthorizationReview(

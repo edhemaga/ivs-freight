@@ -335,6 +335,7 @@
                 ? 'applicant-feedback'
                 : 'bold-12'
             "
+            [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
           >
           </app-ta-checkbox>
         </div>
@@ -350,7 +351,12 @@
 >
   <app-applicant-next-back-btn
     [nextStep]="true"
-    [filledCorrectly]="drugTestForm.valid && drugAlcoholStatementForm.valid"
+    [filledCorrectly]="
+      selectedMode === 'APPLICANT_MODE' &&
+      drugTestForm.valid &&
+      drugAlcoholStatementForm.valid
+    "
+    [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && hasIncorrectFields"
     [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>

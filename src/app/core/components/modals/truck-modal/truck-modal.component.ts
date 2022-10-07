@@ -359,9 +359,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
               ? res.truckGrossWeight.name
               : null,
             emptyWeight: res.emptyWeight,
-            engineModelId: res.truckEngineType
+            /*    engineModelId: res.truckEngineType
               ? res.truckEngineType.name
-              : null,
+              : null, */
             tireSizeId: res.tireSize ? res.tireSize.name : null,
             axles: res.axles,
             insurancePolicy: res.insurancePolicy,
@@ -376,9 +376,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           this.selectedTruckGrossWeight = res.truckGrossWeight
             ? res.truckGrossWeight
             : null;
-          this.selectedEngineModelId = res.truckEngineType
+          /*  this.selectedEngineModelId = res.truckEngineType
             ? res.truckEngineType
-            : null;
+            : null; */
           this.selectedTireSize = res.tireSize ? res.tireSize : null;
           this.truckStatus = res.status !== 1;
 
@@ -554,13 +554,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                   model: res?.model ? res.model : null,
                   year: res?.year ? res.year.toString() : null,
                   truckMakeId: res.truckMake ? res.truckMake.name : null,
-                  engineModel: res.engineType?.name
+                  /*  engineModel: res.engineType?.name
                     ? res.engineType.name
-                    : null,
+                    : null, */
                 });
                 this.loadingVinDecoder = false;
                 this.selectedTruckMake = res.truckMake;
-                this.selectedEngineModelId = res.engineType;
+                /*  this.selectedEngineModelId = res.engineType; */
               },
               error: () => {
                 this.notificationService.error(
@@ -597,7 +597,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           });
           this.ownerType = res.owners;
           this.grossWeight = res.truckGrossWeights;
-          this.engineModels = res.truckEngineTypes;
+          /*   this.engineModels = res.truckEngineTypes; */
           this.tireSize = res.tireSizes;
           this.shifters = res.shifters;
         },

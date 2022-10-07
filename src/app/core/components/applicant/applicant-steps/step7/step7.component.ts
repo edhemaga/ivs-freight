@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -8,10 +14,16 @@ import { addressValidation } from '../../../shared/ta-input/ta-input.regex-valid
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
-import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+  convertDateToBackend,
+  convertDateFromBackend,
+} from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
+
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
@@ -19,6 +31,7 @@ import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import {
   AddressEntity,
   CreateSevenDaysHosCommand,
+  CreateSevenDaysHosReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Component({
@@ -27,13 +40,28 @@ import {
   styleUrls: ['./step7.component.scss'],
 })
 export class Step7Component implements OnInit, OnDestroy {
+  @ViewChildren('cmp') set content(content: QueryList<any>) {
+    if (content) {
+      const radioButtonsArray = content.toArray();
+
+      this.anotherEmployerRadios = radioButtonsArray[0]
+        ? radioButtonsArray[0].buttons
+        : null;
+
+      this.intendToWorkForAnotherEmployerRadios = radioButtonsArray[1]
+        ? radioButtonsArray[1].buttons
+        : null;
+    }
+  }
+
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public sevenDaysHosForm: FormGroup;
 
   public applicantId: number;
+  public sevenDaysHosId: number;
 
   public selectedAddress: AddressEntity = null;
 
@@ -59,6 +87,7 @@ export class Step7Component implements OnInit, OnDestroy {
     '01/16/21',
   ];
 
+  public totalHoursInt: number;
   public totalHours: { id: number; value: number }[] = [];
   public totalHoursCounter: number = 0;
 
@@ -110,6 +139,9 @@ export class Step7Component implements OnInit, OnDestroy {
     },
   ];
 
+  private anotherEmployerRadios: any;
+  private intendToWorkForAnotherEmployerRadios: any;
+
   public openAnnotationArray: {
     lineIndex?: number;
     lineInputs?: boolean[];
@@ -123,11 +155,14 @@ export class Step7Component implements OnInit, OnDestroy {
       displayAnnotationTextArea: false,
     },
   ];
+  public hasIncorrectFields: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private router: Router,
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery,
     private applicantActionsService: ApplicantActionsService
   ) {}
 
@@ -136,11 +171,25 @@ export class Step7Component implements OnInit, OnDestroy {
 
     this.createSevenDaysHos();
 
-    this.applicantActionsService.getApplicantInfo$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res.personalInfo.applicantId;
-      });
+    if (this.selectedMode === SelectedMode.APPLICANT) {
+      this.applicantActionsService.getApplicantInfo$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          this.applicantId = res.personalInfo.applicantId;
+        });
+    }
+
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      let stepValuesResponse: any;
+
+      this.applicantQuery.sevenDaysHosList$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          stepValuesResponse = res;
+        });
+
+      this.patchStepValues(stepValuesResponse);
+    }
   }
 
   public get hosArray(): FormArray {
@@ -163,8 +212,66 @@ export class Step7Component implements OnInit, OnDestroy {
     });
   }
 
+  public patchStepValues(stepValues: any): void {
+    const {
+      hos,
+      totalHours,
+      releasedFromWork,
+      releasedDate,
+      location,
+      workingForAnotherEmployer,
+      intendToWorkForAnotherEmployer,
+      certifyInfomation,
+      id,
+    } = stepValues;
+
+    for (let i = 0; i < hos.length; i++) {
+      this.hosArray.at(i).patchValue({
+        hos: hos[i].hours,
+      });
+
+      this.sevenDaysHosDateData[i + 1] = convertDateFromBackend(hos[i].date);
+    }
+
+    this.totalHoursInt = totalHours;
+
+    this.sevenDaysHosId = id;
+
+    this.sevenDaysHosForm.patchValue({
+      isValidHos: releasedFromWork,
+      startDate: convertDateFromBackend(releasedDate),
+      address: location,
+      anotherEmployer: workingForAnotherEmployer,
+      intendToWorkAnotherEmployer: intendToWorkForAnotherEmployer,
+      isValidAnotherEmployer: certifyInfomation,
+    });
+
+    setTimeout(() => {
+      const anotherEmployerValue =
+        this.sevenDaysHosForm.get('anotherEmployer').value;
+      const intendToWorkAnotherEmployerValue = this.sevenDaysHosForm.get(
+        'intendToWorkAnotherEmployer'
+      ).value;
+
+      if (anotherEmployerValue) {
+        this.anotherEmployerRadios[0].checked = true;
+      } else {
+        this.anotherEmployerRadios[1].checked = true;
+      }
+
+      if (intendToWorkAnotherEmployerValue) {
+        this.intendToWorkForAnotherEmployerRadios[0].checked = true;
+      } else {
+        this.intendToWorkForAnotherEmployerRadios[1].checked = true;
+      }
+    });
+  }
+
   public handleCheckboxParagraphClick(type: string): void {
-    if (this.selectedMode === 'FEEDBACK_MODE') {
+    if (
+      this.selectedMode === 'FEEDBACK_MODE' ||
+      this.selectedMode === SelectedMode.REVIEW
+    ) {
       return;
     }
 
@@ -250,46 +357,45 @@ export class Step7Component implements OnInit, OnDestroy {
   public incorrectInput(
     event: any,
     inputIndex: number,
-    lineIndex: number,
-    type?: string
+    lineIndex: number
   ): void {
     const selectedInputsLine = this.openAnnotationArray.find(
       (item) => item.lineIndex === lineIndex
     );
 
-    if (type === 'card') {
-      selectedInputsLine.lineInputs[inputIndex] =
-        !selectedInputsLine.lineInputs[inputIndex];
+    if (event) {
+      selectedInputsLine.lineInputs[inputIndex] = true;
 
-      selectedInputsLine.displayAnnotationButton =
-        !selectedInputsLine.displayAnnotationButton;
-
-      if (selectedInputsLine.displayAnnotationTextArea) {
-        selectedInputsLine.displayAnnotationButton = false;
+      if (!selectedInputsLine.displayAnnotationTextArea) {
+        selectedInputsLine.displayAnnotationButton = true;
         selectedInputsLine.displayAnnotationTextArea = false;
       }
+    }
+
+    if (!event) {
+      selectedInputsLine.lineInputs[inputIndex] = false;
+
+      const lineInputItems = selectedInputsLine.lineInputs;
+      const isAnyInputInLineIncorrect = anyInputInLineIncorrect(lineInputItems);
+
+      if (!isAnyInputInLineIncorrect) {
+        selectedInputsLine.displayAnnotationButton = false;
+        selectedInputsLine.displayAnnotationTextArea = false;
+
+        this.sevenDaysHosForm.get('firstRowReview').patchValue(null);
+      }
+    }
+
+    const inputFieldsArray = JSON.stringify(
+      this.openAnnotationArray
+        .filter((item) => Object.keys(item).length !== 0)
+        .map((item) => item.lineInputs)
+    );
+
+    if (inputFieldsArray.includes('true')) {
+      this.hasIncorrectFields = true;
     } else {
-      if (event) {
-        selectedInputsLine.lineInputs[inputIndex] = true;
-
-        if (!selectedInputsLine.displayAnnotationTextArea) {
-          selectedInputsLine.displayAnnotationButton = true;
-          selectedInputsLine.displayAnnotationTextArea = false;
-        }
-      }
-
-      if (!event) {
-        selectedInputsLine.lineInputs[inputIndex] = false;
-
-        const lineInputItems = selectedInputsLine.lineInputs;
-        const isAnyInputInLineIncorrect =
-          anyInputInLineIncorrect(lineInputItems);
-
-        if (!isAnyInputInLineIncorrect) {
-          selectedInputsLine.displayAnnotationButton = false;
-          selectedInputsLine.displayAnnotationTextArea = false;
-        }
-      }
+      this.hasIncorrectFields = false;
     }
   }
 
@@ -307,7 +413,13 @@ export class Step7Component implements OnInit, OnDestroy {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
 
     if (event.action === 'back-step') {
@@ -367,7 +479,18 @@ export class Step7Component implements OnInit, OnDestroy {
       });
   }
 
-  /* public onSubmitReview(data: any): void {} */
+  public onSubmitReview(): void {
+    const saveData: CreateSevenDaysHosReviewCommand = {
+      applicantId: 1,
+      sevenDaysHosId: this.sevenDaysHosId,
+      isReleaseDateValid: !this.openAnnotationArray[0].lineInputs[0],
+      isLocationValid: !this.openAnnotationArray[0].lineInputs[1],
+      releaseDateLocationMessage:
+        this.sevenDaysHosForm.get('firstRowReview').value,
+    };
+
+    console.log('saveData', saveData);
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

@@ -14,7 +14,7 @@ export class RoadsideService {
   constructor(private roadsideServis: ViolationService) {}
 
   // Get Roadside List
-  public getRoadsideList(
+  /*  public getRoadsideList(
     active?: boolean,
     pageIndex?: number,
     pageSize?: number,
@@ -34,7 +34,7 @@ export class RoadsideService {
       search1,
       search2
     );
-  }
+  } */
 
   public updateRoadside(
     data: UpdateRoadsideInspectionCommand

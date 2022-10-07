@@ -9,6 +9,9 @@ import { anyInputInLineIncorrect } from '../../state/utils/utils';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
+
 import {
   addressUnitValidation,
   addressValidation,
@@ -20,6 +23,7 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import {
   AddressEntity,
   CreateDrugAndAlcoholCommand,
+  CreateDrugAndAlcoholReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Component({
@@ -30,12 +34,13 @@ import {
 export class Step8Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public drugTestForm: FormGroup;
   public drugAlcoholStatementForm: FormGroup;
 
   public applicantId: number;
+  public drugAndAlcoholId: number;
 
   public selectedAddress: AddressEntity = null;
   public selectedSapAddress: AddressEntity = null;
@@ -93,11 +98,14 @@ export class Step8Component implements OnInit, OnDestroy {
       displayAnnotationTextArea: false,
     },
   ];
+  public hasIncorrectFields: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private router: Router,
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery,
     private applicantActionsService: ApplicantActionsService
   ) {}
 
@@ -106,11 +114,25 @@ export class Step8Component implements OnInit, OnDestroy {
 
     this.isTestedNegative();
 
-    this.applicantActionsService.getApplicantInfo$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res.personalInfo.applicantId;
-      });
+    if (this.selectedMode === SelectedMode.APPLICANT) {
+      this.applicantActionsService.getApplicantInfo$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          this.applicantId = res.personalInfo.applicantId;
+        });
+    }
+
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      let stepValuesResponse: any;
+
+      this.applicantQuery.drugAndAlcoholList$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          stepValuesResponse = res;
+        });
+
+      this.patchStepValues(stepValuesResponse);
+    }
   }
 
   public createForm(): void {
@@ -134,6 +156,41 @@ export class Step8Component implements OnInit, OnDestroy {
       thirdRowReview: [null],
       fourthRowReview: [null],
     });
+  }
+
+  public patchStepValues(stepValues: any): void {
+    const {
+      positiveTest,
+      motorCarrier,
+      phone,
+      address,
+      sapName,
+      sapPhone,
+      sapAddress,
+      certifyInfomation,
+      id,
+    } = stepValues;
+
+    this.drugTestForm.get('drugTest').patchValue(positiveTest);
+
+    this.drugAndAlcoholId = id;
+
+    if (positiveTest) {
+      this.drugAlcoholStatementForm.patchValue({
+        motorCarrier,
+        phone,
+        address: address.address,
+        addressUnit: address.addressUnit,
+        sapName,
+        sapPhone,
+        sapAddress: sapAddress.address,
+        sapAddressUnit: sapAddress.addressUnit,
+        isAgreement: certifyInfomation,
+      });
+
+      this.selectedAddress = address;
+      this.selectedSapAddress = sapAddress;
+    }
   }
 
   public handleInputSelect(
@@ -261,25 +318,12 @@ export class Step8Component implements OnInit, OnDestroy {
   public incorrectInput(
     event: any,
     inputIndex: number,
-    lineIndex: number,
-    type?: string
+    lineIndex: number
   ): void {
     const selectedInputsLine = this.openAnnotationArray.find(
       (item) => item.lineIndex === lineIndex
     );
-
-    if (type === 'card') {
-      selectedInputsLine.lineInputs[inputIndex] =
-        !selectedInputsLine.lineInputs[inputIndex];
-
-      selectedInputsLine.displayAnnotationButton =
-        !selectedInputsLine.displayAnnotationButton;
-
-      if (selectedInputsLine.displayAnnotationTextArea) {
-        selectedInputsLine.displayAnnotationButton = false;
-        selectedInputsLine.displayAnnotationTextArea = false;
-      }
-    } else {
+    {
       if (event) {
         selectedInputsLine.lineInputs[inputIndex] = true;
 
@@ -300,6 +344,51 @@ export class Step8Component implements OnInit, OnDestroy {
           selectedInputsLine.displayAnnotationButton = false;
           selectedInputsLine.displayAnnotationTextArea = false;
         }
+
+        switch (lineIndex) {
+          case 0:
+            if (!isAnyInputInLineIncorrect) {
+              this.drugAlcoholStatementForm
+                .get('firstRowReview')
+                .patchValue(null);
+            }
+            break;
+          case 1:
+            if (!isAnyInputInLineIncorrect) {
+              this.drugAlcoholStatementForm
+                .get('secondRowReview')
+                .patchValue(null);
+            }
+            break;
+          case 2:
+            if (!isAnyInputInLineIncorrect) {
+              this.drugAlcoholStatementForm
+                .get('thirdRowReview')
+                .patchValue(null);
+            }
+            break;
+          case 3:
+            if (!isAnyInputInLineIncorrect) {
+              this.drugAlcoholStatementForm
+                .get('fourthRowReview')
+                .patchValue(null);
+            }
+            break;
+          default:
+            break;
+        }
+      }
+
+      const inputFieldsArray = JSON.stringify(
+        this.openAnnotationArray
+          .filter((item) => Object.keys(item).length !== 0)
+          .map((item) => item.lineInputs)
+      );
+
+      if (inputFieldsArray.includes('true')) {
+        this.hasIncorrectFields = true;
+      } else {
+        this.hasIncorrectFields = false;
       }
     }
   }
@@ -318,7 +407,13 @@ export class Step8Component implements OnInit, OnDestroy {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
 
     if (event.action === 'back-step') {
@@ -392,7 +487,27 @@ export class Step8Component implements OnInit, OnDestroy {
       });
   }
 
-  /* public onSubmitReview(data: any): void {} */
+  public onSubmitReview(): void {
+    const { firstRowReview, secondRowReview, thirdRowReview, fourthRowReview } =
+      this.drugAlcoholStatementForm.value;
+
+    const saveData: CreateDrugAndAlcoholReviewCommand = {
+      applicantId: 1,
+      drugAndAlcoholId: this.drugAndAlcoholId,
+      isCarrierValid: !this.openAnnotationArray[0].lineInputs[0],
+      isPhoneValid: !this.openAnnotationArray[0].lineInputs[1],
+      carrierPhoneMessage: firstRowReview,
+      isAddressValid: !this.openAnnotationArray[1].lineInputs[0],
+      addressMessage: secondRowReview,
+      isSapValid: !this.openAnnotationArray[2].lineInputs[0],
+      isSapPhoneValid: !this.openAnnotationArray[2].lineInputs[1],
+      sapPhoneMessage: thirdRowReview,
+      isSapAddressValid: !this.openAnnotationArray[3].lineInputs[0],
+      sapAddressMessage: fourthRowReview,
+    };
+
+    console.log('saveData', saveData);
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

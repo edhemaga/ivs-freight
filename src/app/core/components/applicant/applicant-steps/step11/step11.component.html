@@ -21,6 +21,7 @@
               ? 'applicant-disclosure-release-feedback'
               : 'disclosure-release'
           "
+          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         >
         </app-ta-checkbox>
         <p
@@ -32,7 +33,8 @@
                 ? '#3c3c3c'
                 : selectedMode === 'FEEDBACK_MODE'
                 ? '#919191'
-                : '#6c6c6c'
+                : '#6c6c6c',
+            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isFirstAuthorization')"
         >
@@ -73,6 +75,7 @@
               ? 'applicant-disclosure-release-feedback'
               : 'disclosure-release'
           "
+          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         >
         </app-ta-checkbox>
         <p
@@ -84,7 +87,8 @@
                 ? '#3c3c3c'
                 : selectedMode === 'FEEDBACK_MODE'
                 ? '#919191'
-                : '#6c6c6c'
+                : '#6c6c6c',
+            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isSecondAuthorization')"
         >
@@ -112,6 +116,7 @@
               ? 'applicant-disclosure-release-feedback'
               : 'disclosure-release'
           "
+          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         >
         </app-ta-checkbox>
         <p
@@ -123,7 +128,8 @@
                 ? '#3c3c3c'
                 : selectedMode === 'FEEDBACK_MODE'
                 ? '#919191'
-                : '#6c6c6c'
+                : '#6c6c6c',
+            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isThirdAuthorization')"
         >
@@ -149,6 +155,7 @@
               ? 'applicant-disclosure-release-feedback'
               : 'disclosure-release'
           "
+          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         >
         </app-ta-checkbox>
         <p
@@ -160,7 +167,8 @@
                 ? '#3c3c3c'
                 : selectedMode === 'FEEDBACK_MODE'
                 ? '#919191'
-                : '#6c6c6c'
+                : '#6c6c6c',
+            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isFourthAuthorization')"
         >
@@ -177,13 +185,18 @@
         <app-applicant-signature-pad
           (signatureEmitter)="onSignatureAction($event)"
         ></app-applicant-signature-pad>
+
+        <img src="{{ signatureImgSrc }}" alt="signature" />
       </div>
 
       <div
         class="d-flex justify-content-center align-items-center signature-image-container"
         *ngIf="selectedMode !== 'APPLICANT_MODE'"
       >
-        <img src="" alt="signature" />
+        <img
+          src="{{ 'data:image/png;base64,' + signatureImgSrc }}"
+          alt="signature"
+        />
       </div>
     </form>
   </div>
@@ -197,7 +210,9 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [lastStep]="true"
-    [filledCorrectly]="authorizationForm.valid && signature"
+    [filledCorrectly]="
+      selectedMode === 'APPLICANT_MODE' && authorizationForm.valid && signature
+    "
     [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>

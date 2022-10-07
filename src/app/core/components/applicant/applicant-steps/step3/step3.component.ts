@@ -186,7 +186,7 @@ export class Step3Component implements OnInit, OnDestroy {
     });
   }
 
-  public patchStepValues(stepValues: any) {
+  public patchStepValues(stepValues: any): void {
     const { cdlDenied, cdlDeniedExplanation, licences } = stepValues;
 
     const lastItemInLicenseArray = licences[licences.length - 1];

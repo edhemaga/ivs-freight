@@ -351,7 +351,7 @@ export class Step6Component implements OnInit, OnDestroy {
     });
   }
 
-  public patchStepValues(stepValues: any) {
+  public patchStepValues(stepValues: any): void {
     const {
       highestGrade,
       collegeGrade,
@@ -756,8 +756,6 @@ export class Step6Component implements OnInit, OnDestroy {
           selectedInputsLine.displayAnnotationButton = false;
           selectedInputsLine.displayAnnotationTextArea = false;
         }
-
-        console.log('index', lineIndex);
 
         switch (lineIndex) {
           case 0:

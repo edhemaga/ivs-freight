@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+/* import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { RoadsideInspectionListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
@@ -35,3 +35,4 @@ export class RoadsideActiveResolver implements Resolve<RoadsideActiveState> {
     );
   }
 }
+ */

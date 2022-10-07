@@ -7,6 +7,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { UpdateDriverRightsCommand } from 'appcoretruckassist/model/models';
 
@@ -18,7 +21,7 @@ import { UpdateDriverRightsCommand } from 'appcoretruckassist/model/models';
 export class Step9Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public applicantId: number;
 
@@ -28,17 +31,33 @@ export class Step9Component implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private router: Router,
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery,
     private applicantActionsService: ApplicantActionsService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
 
-    this.applicantActionsService.getApplicantInfo$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res.personalInfo.applicantId;
-      });
+    if (this.selectedMode === SelectedMode.APPLICANT) {
+      this.applicantActionsService.getApplicantInfo$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          this.applicantId = res.personalInfo.applicantId;
+        });
+    }
+
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      let stepValuesResponse: any;
+
+      this.applicantQuery.driverRightsList$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          stepValuesResponse = res;
+        });
+
+      this.patchStepValues(stepValuesResponse);
+    }
   }
 
   public createForm(): void {
@@ -47,9 +66,23 @@ export class Step9Component implements OnInit, OnDestroy {
     });
   }
 
+  public patchStepValues(stepValues: any): void {
+    const { understandDriverRights } = stepValues;
+
+    this.driverRightsForm
+      .get('understandYourRights')
+      .patchValue(understandDriverRights);
+  }
+
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
 
     if (event.action === 'back-step') {
@@ -81,6 +114,10 @@ export class Step9Component implements OnInit, OnDestroy {
           console.log(err);
         },
       });
+  }
+
+  public onSubmitReview(): void {
+    this.router.navigate([`/application/${this.applicantId}/10`]);
   }
 
   ngOnDestroy(): void {

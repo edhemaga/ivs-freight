@@ -158,7 +158,7 @@ export class Step5Component implements OnInit, OnDestroy {
     });
   }
 
-  public patchStepValues(stepValues: any) {
+  public patchStepValues(stepValues: any): void {
     const {
       noViolationsForPastTwelveMonths,
       notBeenConvicted,

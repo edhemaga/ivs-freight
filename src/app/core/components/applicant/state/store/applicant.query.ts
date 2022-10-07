@@ -27,6 +27,26 @@ export class ApplicantQuery extends QueryEntity<ApplicantState> {
 
   public educationList$ = this.select((state) => state.entities[1].education);
 
+  public sevenDaysHosList$ = this.select(
+    (state) => state.entities[1].sevenDaysHos
+  );
+
+  public drugAndAlcoholList$ = this.select(
+    (state) => state.entities[1].drugAndAlcohol
+  );
+
+  public driverRightsList$ = this.select(
+    (state) => state.entities[1].driverRight
+  );
+
+  public disclosureAndReleaseList$ = this.select(
+    (state) => state.entities[1].disclosureRelease
+  );
+
+  public authorizationList$ = this.select(
+    (state) => state.entities[1].authorization
+  );
+
   constructor(protected applicantStore: ApplicantStore) {
     super(applicantStore);
   }

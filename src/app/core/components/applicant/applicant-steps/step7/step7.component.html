@@ -142,7 +142,8 @@
                         textAlign: 'center',
                         max: 24,
                         hideErrorMessage: true,
-                        hideRequiredCheck: true
+                        hideRequiredCheck: true,
+                        isDisabled: selectedMode === 'REVIEW_MODE'
                       }"
                       (change)="countTotalHours(i)"
                     ></app-ta-input>
@@ -160,7 +161,12 @@
                     selectedMode === 'FEEDBACK_MODE' ? '#97A8DC' : '#6d82c7'
                 }"
               >
-                Total Hours: {{ totalHours | sumArrays }}
+                Total Hours:
+                {{
+                  selectedMode === 'APPLICANT_MODE'
+                    ? (totalHours | sumArrays)
+                    : totalHoursInt
+                }}
               </p>
             </div>
           </tr>
@@ -181,6 +187,7 @@
           [customClass]="
             selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
           "
+          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         >
         </app-ta-checkbox>
         <p
@@ -189,8 +196,9 @@
             color:
               !sevenDaysHosForm.get('isValidHos').value ||
               selectedMode === 'FEEDBACK_MODE'
-                ? '#919191'
-                : '#6c6c6c'
+                ? '#6c6c6c'
+                : '#2f2f2f',
+            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isValidHos')"
         >
@@ -322,7 +330,9 @@
 
           <div class="radios-box">
             <app-ta-input-radiobuttons
+              #cmp
               [buttons]="question.answerChoices"
+              [disabled]="selectedMode === 'REVIEW_MODE'"
               (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
             ></app-ta-input-radiobuttons>
           </div>
@@ -343,6 +353,7 @@
           [customClass]="
             selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
           "
+          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         >
         </app-ta-checkbox>
         <p
@@ -351,8 +362,9 @@
             color:
               !sevenDaysHosForm.get('isValidAnotherEmployer').value ||
               selectedMode === 'FEEDBACK_MODE'
-                ? '#919191'
-                : '#6c6c6c'
+                ? '#6c6c6c'
+                : '#2f2f2f',
+            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isValidAnotherEmployer')"
         >
@@ -372,7 +384,10 @@
 >
   <app-applicant-next-back-btn
     [nextStep]="true"
-    [filledCorrectly]="sevenDaysHosForm.valid"
+    [filledCorrectly]="
+      selectedMode === 'APPLICANT_MODE' && sevenDaysHosForm.valid
+    "
+    [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && hasIncorrectFields"
     [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>

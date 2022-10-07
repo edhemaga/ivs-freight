@@ -213,6 +213,7 @@
         [customClass]="
           selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
         "
+        [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
       >
       </app-ta-checkbox>
     </form>
@@ -226,7 +227,9 @@
 >
   <app-applicant-next-back-btn
     [nextStep]="true"
-    [filledCorrectly]="driverRightsForm.valid"
+    [filledCorrectly]="
+      selectedMode === 'APPLICANT_MODE' && driverRightsForm.valid
+    "
     [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>

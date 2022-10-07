@@ -7,6 +7,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
+
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 /* import { CreateDisclosureReleaseCommand } from 'appcoretruckassist/model/models'; */
@@ -19,7 +22,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 export class Step10Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public disclosureReleaseForm: FormGroup;
 
@@ -29,17 +32,33 @@ export class Step10Component implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private router: Router,
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery,
     private applicantActionsService: ApplicantActionsService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
 
-    this.applicantActionsService.getApplicantInfo$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res.personalInfo.applicantId;
-      });
+    if (this.selectedMode === SelectedMode.APPLICANT) {
+      this.applicantActionsService.getApplicantInfo$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          this.applicantId = res.personalInfo.applicantId;
+        });
+    }
+
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      let stepValuesResponse: any;
+
+      this.applicantQuery.disclosureAndReleaseList$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          stepValuesResponse = res;
+        });
+
+      this.patchStepValues(stepValuesResponse);
+    }
   }
 
   public createForm(): void {
@@ -53,8 +72,31 @@ export class Step10Component implements OnInit, OnDestroy {
     });
   }
 
+  public patchStepValues(stepValues: any) {
+    const {
+      isFirstDisclosure,
+      isSecondDisclosure,
+      isThirdDisclosure,
+      isFourthDisclosure,
+      isFifthDisclosure,
+      isSixDisclosure,
+    } = stepValues;
+
+    this.disclosureReleaseForm.patchValue({
+      isFirstDisclosure,
+      isSecondDisclosure,
+      isThirdDisclosure,
+      isFourthDisclosure,
+      isFifthDisclosure,
+      isSixthDisclosure: isSixDisclosure,
+    });
+  }
+
   public handleCheckboxParagraphClick(type: string): void {
-    if (this.selectedMode === 'FEEDBACK_MODE') {
+    if (
+      this.selectedMode === 'FEEDBACK_MODE' ||
+      this.selectedMode === 'REVIEW_MODE'
+    ) {
       return;
     }
 
@@ -108,7 +150,13 @@ export class Step10Component implements OnInit, OnDestroy {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
 
     if (event.action === 'back-step') {
@@ -142,6 +190,10 @@ export class Step10Component implements OnInit, OnDestroy {
           console.log(err);
         },
       });
+  }
+
+  public onSubmitReview(): void {
+    this.router.navigate([`/application/${this.applicantId}/11`]);
   }
 
   ngOnDestroy(): void {
