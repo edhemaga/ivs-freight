@@ -37,6 +37,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
   @Input() customClassName: string;
   @Input() file: UploadFile;
   @Input() hasTag: boolean = false;
+  @Input() isReview: boolean = false;
   @Input() hasNumberOfPages: boolean = false;
   @Input() activePage: number = 1;
 
@@ -45,12 +46,13 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
   public editFile: boolean = false;
   public fileNewName: FormControl = new FormControl();
-
-  constructor(private inputService: TaInputService) {}
-
   public numberOfFilePages: string = '0';
 
   public isFileDelete: boolean = false;
+
+  public isIncorrectMarkHover: boolean = false;
+
+  constructor(private inputService: TaInputService) {}
 
   ngOnInit(): void {
     this.inputService.onFocusOutInput$
@@ -78,7 +80,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
   public onAction(action: string) {
     switch (action) {
       case 'tag': {
-        this.fileAction.emit({ file: this.file, action: 'tag' });
+        this.fileAction.emit({ file: this.file, action });
         break;
       }
       case 'download': {
@@ -86,11 +88,19 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
         break;
       }
       case 'delete': {
-        this.fileAction.emit({ file: this.file, action: 'delete' });
+        this.fileAction.emit({ file: this.file, action });
         break;
       }
       case 'cancel': {
         this.isFileDelete = false;
+        break;
+      }
+      case 'mark-incorrect': {
+        this.fileAction.emit({ file: this.file, action });
+        break;
+      }
+      case 'mark-correct': {
+        this.fileAction.emit({ file: this.file, action });
         break;
       }
       default: {

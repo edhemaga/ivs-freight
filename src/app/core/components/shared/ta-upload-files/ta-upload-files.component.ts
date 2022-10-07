@@ -20,18 +20,24 @@ import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-up
 })
 export class TaUploadFilesComponent implements OnInit {
   private destroy$ = new Subject<void>();
-  @ViewChild(TaUploadFilesCarouselComponent) 
+  @ViewChild(TaUploadFilesCarouselComponent)
   modalCarousel: TaUploadFilesCarouselComponent;
 
   @Input() customClassName: string;
   @Input() files: UploadFile[] = [];
   @Input() hasTag: boolean = false;
+  @Input() isReview: boolean = false;
   @Input() hasNumberOfPages: boolean = false;
   @Input() size: string = 'small'; // small | medium | large
   @Input() hasCarouselBottomTabs: boolean;
 
-  @Output() onFileEvent: EventEmitter<{ files: UploadFile[]; action: string }> =
-    new EventEmitter<{ files: UploadFile[]; action: string }>(null);
+  @Output() onFileEvent: EventEmitter<{
+    files: UploadFile[] | UploadFile | any;
+    action: string;
+  }> = new EventEmitter<{
+    files: UploadFile[] | UploadFile | any;
+    action: string;
+  }>(null);
 
   public currentSlide: number = 0;
 
@@ -49,17 +55,17 @@ export class TaUploadFilesComponent implements OnInit {
 
   /**
    *
-   * @param data - returned data from file action
+   * @param data - returned data from file action (one or multiple)
    */
   public onFileAction(data: { file: UploadFile; action: string }) {
     switch (data.action) {
       case 'tag': {
-        this.onFileEvent.emit({ files: this.files, action: 'tag' });
+        this.onFileEvent.emit({ files: data.file, action: data.action });
         break;
       }
       case 'delete': {
         this.files = this.files.filter((item) => item.name !== data.file.name);
-        this.onFileEvent.emit({ files: this.files, action: 'delete' });
+        this.onFileEvent.emit({ files: this.files, action: data.action });
         this.currentSlide = this.files.length - 1;
 
         if (
@@ -76,6 +82,14 @@ export class TaUploadFilesComponent implements OnInit {
         }
         break;
       }
+      case 'mark-incorrect': {
+        this.onFileEvent.emit({ files: data.file, action: data.action });
+        break;
+      }
+      case 'mark-correct': {
+        this.onFileEvent.emit({ files: data.file, action: data.action });
+        break;
+      }
       default: {
         break;
       }
@@ -85,7 +99,8 @@ export class TaUploadFilesComponent implements OnInit {
   public onUploadFiles(data: { files: UploadFile[]; action: string }) {
     switch (data.action) {
       case 'add': {
-        this.files = [...this.files, ...data.files];
+        const oldFiles = this.files.length ? this.files : [];
+        this.files = [...oldFiles, ...data.files];
         this.onFileEvent.emit({ files: this.files, action: 'add' });
         break;
       }

@@ -33,6 +33,7 @@
             *ngIf="currentSlide === ind"
             [file]="file"
             [hasTag]="hasTag"
+            [isReview]="isReview"
             [hasNumberOfPages]="hasNumberOfPages"
             [customClassName]="customClassName"
             (fileAction)="onFileAction($event)"
@@ -42,6 +43,7 @@
           <app-ta-upload-file
             [file]="file"
             [hasTag]="hasTag"
+            [isReview]="isReview"
             [hasNumberOfPages]="hasNumberOfPages"
             [customClassName]="customClassName"
             (fileAction)="onFileAction($event)"

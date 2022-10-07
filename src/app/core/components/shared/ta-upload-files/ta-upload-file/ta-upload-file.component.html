@@ -1,6 +1,57 @@
 <div class="ta-upload-file-container {{ customClassName }}">
   <!-- File Header Actions -->
-  <div *ngIf="!isFileDelete" class="ta-upload-file-header">
+
+  <!-- Review Actions -->
+  <div *ngIf="isReview" class="ta-upload-file-header-review">
+    <div
+      ngbTooltip
+      mainTooltip="Download"
+      tooltipBackground="#6c6c6c"
+      position="top"
+      class="ta-upload-action-download-review"
+      (click)="onAction('download')"
+    >
+      <svg-icon src="assets/svg/common/ic_download.svg"></svg-icon>
+    </div>
+
+    <div
+      ngbTooltip
+      [mainTooltip]="
+        file?.incorrect && isIncorrectMarkHover ? 'Unmark' : 'Mark Incorrect'
+      "
+      [tooltipBackground]="
+        file?.incorrect && isIncorrectMarkHover ? '#6c6c6c' : '#EF5350'
+      "
+      position="top"
+      class=" {{
+        file?.incorrect && isIncorrectMarkHover
+          ? 'ta-upload-action-mark-correct'
+          : 'ta-upload-action-mark-incorrect'
+      }}"
+      [ngClass]="{ incorrect: file?.incorrect }"
+      (click)="
+        onAction(
+          file?.incorrect && isIncorrectMarkHover
+            ? 'mark-correct'
+            : 'mark-incorrect'
+        )
+      "
+      (mouseenter)="isIncorrectMarkHover = true"
+      (mouseleave)="isIncorrectMarkHover = false"
+    >
+      <svg-icon
+        src="{{
+          file?.incorrect && isIncorrectMarkHover
+            ? 'assets/svg/common/ic_confirm.svg'
+            : 'assets/svg/ic_x.svg'
+        }}"
+      ></svg-icon>
+    </div>
+  </div>
+
+  <!-- No Review Actions -->
+  <div *ngIf="!isFileDelete && !isReview" class="ta-upload-file-header">
+    <!-- Left Side -->
     <div
       class="ta-upload-file-action-leftside"
       [ngClass]="{ 'no-action-tag': !hasTag }"
@@ -16,6 +67,7 @@
         <svg-icon src="assets/svg/common/ic_tag.svg"></svg-icon>
       </div>
     </div>
+    <!-- Right Side -->
     <div class="ta-upload-file-action-rightside">
       <div
         ngbTooltip
