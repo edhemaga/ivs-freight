@@ -39,7 +39,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   columns: any[] = [];
   selectedTab = 'active';
   activeViewMode: string = 'List';
-  resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
   public trailerActive: TrailerActiveState[] = [];
@@ -103,8 +102,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
-          this.resetColumns = response;
-
           this.sendTrailerData();
         }
       });
@@ -341,7 +338,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         extended: false,
         gridNameTitle: 'Trailer',
         stateName: 'trailers',
-        gridColumns: this.getGridColumns('trailers', this.resetColumns),
+        tableConfiguration: 'TRAILER',
+        isActive: this.selectedTab === 'active',
+        gridColumns: this.getGridColumns('TRAILER'),
       },
       {
         title: 'Inactive',
@@ -351,7 +350,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         extended: false,
         gridNameTitle: 'Trailer',
         stateName: 'trailers',
-        gridColumns: this.getGridColumns('trailers', this.resetColumns),
+        tableConfiguration: 'TRAILER',
+        isActive: this.selectedTab === 'inactive',
+        gridColumns: this.getGridColumns('TRAILER'),
       },
     ];
 
@@ -360,16 +361,14 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setTrailerData(td);
   }
 
-  private getGridColumns(stateName: string, resetColumns: boolean): any[] {
-    const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
+  private getGridColumns(configType: string): any[] {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
     );
 
-    if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
-    } else {
-      return getTrailerColumnDefinition();
-    }
+    return tableColumnsConfig
+    ? tableColumnsConfig
+    : getTrailerColumnDefinition();
   }
 
   setTrailerData(td: any) {

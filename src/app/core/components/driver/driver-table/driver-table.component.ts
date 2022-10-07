@@ -51,7 +51,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   activeViewMode: string = 'List';
   driversActive: DriversActiveState[] = [];
   driversInactive: DriversInactiveState[] = [];
-  resetColumns: boolean;
   loadingPage: boolean = true;
   backFilterQuery = {
     active: 1,
@@ -123,8 +122,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response && !this.loadingPage) {
-          this.resetColumns = response;
-
           this.sendDriverData();
         }
       });
@@ -439,7 +436,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         extended: true,
         gridNameTitle: 'Driver',
         stateName: 'applicants',
-        gridColumns: this.getGridColumns(this.resetColumns),
+        tableConfiguration: 'APPLICANT',
+        isActive: this.selectedTab === 'applicants',
+        gridColumns: this.getGridColumns('applicants', 'APPLICANT'),
       },
       {
         title: 'Active',
@@ -449,7 +448,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
-        gridColumns: this.getGridColumns(this.resetColumns),
+        tableConfiguration: 'DRIVER',
+        isActive: this.selectedTab === 'active',
+        gridColumns: this.getGridColumns('drivers', 'DRIVER'),
       },
       {
         title: 'Inactive',
@@ -459,7 +460,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
-        gridColumns: this.getGridColumns(this.resetColumns),
+        tableConfiguration: 'DRIVER',
+        isActive: this.selectedTab === 'inactive',
+        gridColumns: this.getGridColumns('drivers', 'DRIVER'),
       },
     ];
 
@@ -488,16 +491,18 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  getGridColumns(resetColumns: boolean) {
-    if (this.selectedTab === 'applicants') {
-      return getApplicantColumnsDefinition();
-    } else {
-      const driverColumnsConfig = JSON.parse(
-        localStorage.getItem('driverColumnsConfig')
-      );
+  getGridColumns(activeTab: string, configType: string) {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
+    );
 
-      return driverColumnsConfig
-        ? driverColumnsConfig
+    if (activeTab === 'applicants') {
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getApplicantColumnsDefinition();
+    } else {
+      return tableColumnsConfig
+        ? tableColumnsConfig
         : getDriverColumnsDefinition();
     }
   }

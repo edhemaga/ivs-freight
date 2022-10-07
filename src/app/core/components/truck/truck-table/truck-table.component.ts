@@ -41,7 +41,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   activeViewMode: string = 'List';
   trucksActive: TruckActiveState[] = [];
   trucksInactive: TruckInactiveState[] = [];
-  resetColumns: boolean;
   loadingPage: boolean = true;
   tableContainerWidth: number = 0;
   backFilterQuery = {
@@ -104,8 +103,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response && !this.loadingPage) {
-          this.resetColumns = response;
-
           this.sendTruckData();
         }
       });
@@ -363,20 +360,22 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         field: 'active',
         length: truckCount.active,
         data: truckActiveData,
-        extended: false,
         gridNameTitle: 'Truck',
         stateName: 'trucks',
-        gridColumns: this.getGridColumns('trucks', this.resetColumns),
+        tableConfiguration: 'TRUCK',
+        isActive: this.selectedTab === 'active',
+        gridColumns: this.getGridColumns('TRUCK'),
       },
       {
         title: 'Inactive',
         field: 'inactive',
         length: truckCount.inactive,
         data: truckInactiveData,
-        extended: false,
         gridNameTitle: 'Truck',
         stateName: 'trucks',
-        gridColumns: this.getGridColumns('trucks', this.resetColumns),
+        tableConfiguration: 'TRUCK',
+        isActive: this.selectedTab === 'inactive',
+        gridColumns: this.getGridColumns('TRUCK'),
       },
     ];
 
@@ -385,15 +384,14 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setTruckData(td);
   }
 
-  getGridColumns(stateName: string, resetColumns: boolean): any[] {
-    const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
+  getGridColumns(configType: string): any[] {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
     );
-    if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
-    } else {
-      return getTruckColumnDefinition();
-    }
+
+    return tableColumnsConfig
+    ? tableColumnsConfig
+    : getTruckColumnDefinition();
   }
 
   setTruckData(td: any) {

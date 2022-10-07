@@ -19,25 +19,11 @@ export class DriverActiveResolver implements Resolve<DriversActiveState> {
   ) {}
 
   resolve(): Observable<DriversActiveState | boolean> {
-    const drivers$ = this.driverService.getDrivers(
-      1,
-      undefined,
-      undefined,
-      undefined,
-      1,
-      25
-    );
-    const driversColumnsConfig$ = this.tableService.getTableConfig('DRIVER');
-
-    let driverStore = this.store;
-    let tableScopeSerice = this.tableService;
-
-    forkJoin([drivers$, driversColumnsConfig$]).subscribe({
-      next([driverPagination, driversColumnsConfig]: [
-        DriverListResponse,
-        TableConfigResponse
-      ]) {
-        // Set Driver Count In LocalStorage
+    return this.driverService.getDrivers(1, undefined, undefined, undefined, 1, 25).pipe(
+      catchError(() => {
+        return of('No drivers data...');
+      }),
+      tap((driverPagination: DriverListResponse) => {
         localStorage.setItem(
           'driverTableCount',
           JSON.stringify({
@@ -46,36 +32,41 @@ export class DriverActiveResolver implements Resolve<DriversActiveState> {
           })
         );
 
-        // Get Table Config From Local Storage
-        const localStorageColumnsConfig = JSON.parse(
-          localStorage.getItem('driverColumnsConfig')
-        );
+        this.store.set(driverPagination.pagination.data);
+      })
+    );
+    // const drivers$ = this.driverService.getDrivers(
+    //   1,
+    //   undefined,
+    //   undefined,
+    //   undefined,
+    //   1,
+    //   25
+    // );
+    // const driversColumnsConfig$ = this.tableService.getTableConfig('DRIVER');
 
-        // If There Is No Table Configuration In Local Storage
-        if (!localStorageColumnsConfig) {
-          // If There Is Back Table Configuration Set It In Local Storage
-          if (driversColumnsConfig.config) {
-            localStorage.setItem(
-              'driverColumnsConfig',
-              driversColumnsConfig.config
-            );
-          }
-        }
-        // If There Is A Table Configuration In Local Storage
-        else {
-          tableScopeSerice
-            .sendTableConfig({
-              tableType: 'DRIVER',
-              config: JSON.stringify(localStorageColumnsConfig),
-            })
-            .subscribe();
-        }
+    // let driverStore = this.store;
+    // let tableScopeSerice = this.tableService;
 
-        // Set Driver Data In Store
-        driverStore.set(driverPagination.pagination.data);
-      }
-    });
+    // forkJoin([drivers$, driversColumnsConfig$]).subscribe({
+    //   next([driverPagination, driversColumnsConfig]: [
+    //     DriverListResponse,
+    //     TableConfigResponse
+    //   ]) {
+    //     // Set Driver Count In LocalStorage
+    //     localStorage.setItem(
+    //       'driverTableCount',
+    //       JSON.stringify({
+    //         active: driverPagination.activeCount,
+    //         inactive: driverPagination.inactiveCount,
+    //       })
+    //     );
 
-    return;
+    //     // Set Driver Data In Store
+    //     driverStore.set(driverPagination.pagination.data);
+    //   }
+    // });
+
+    // return;
   }
 }

@@ -24,7 +24,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
   columns: any[] = [];
   selectedTab = 'active';
   activeViewMode: string = 'List';
-  resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
   mapingIndex: number = 0;
@@ -47,8 +46,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
-          this.resetColumns = response;
-
           this.sendUserData();
         }
       });
@@ -264,12 +261,14 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Get Columns Definition
-  getGridColumns(stateName: string, resetColumns: boolean) {
-    /*  const userState: any = JSON.parse(
-       localStorage.getItem(stateName + '_user_columns_state')
-     ); */
+  getGridColumns(configType: string) {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
+    );
 
-    return getUsersColumnDefinition();
+    return tableColumnsConfig
+        ? tableColumnsConfig
+        : getUsersColumnDefinition();
   }
 
   // Send User Data
@@ -288,7 +287,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         data: userData,
         gridNameTitle: 'User',
         stateName: 'users',
-        gridColumns: this.getGridColumns('users', this.resetColumns),
+        tableConfiguration: 'USER',
+        isActive: true,
+        gridColumns: this.getGridColumns('USER'),
       },
     ];
 

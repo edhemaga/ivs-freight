@@ -56,7 +56,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
   repairTrucks: RepairTruckState[] = [];
   repairTrailers: RepairTrailerState[] = [];
   repairShops: ShopState[] = [];
-  resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
   backFilterQuery = {
@@ -118,8 +117,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
-          this.resetColumns = response;
-
           this.sendRepairData();
         }
       });
@@ -372,33 +369,33 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         field: 'active',
         length: repairTruckTrailerCount.repairTrucks,
         data: repairTruckData,
-        extended: false,
-        selectTab: true,
         gridNameTitle: 'Repair',
         stateName: 'repair_trucks',
-        gridColumns: this.getGridColumns('repair_trucks', this.resetColumns),
+        tableConfiguration: 'REPAIR_TRUCK',
+        isActive: this.selectedTab === 'active',
+        gridColumns: this.getGridColumns('REPAIR_TRUCK'),
       },
       {
         title: 'Trailer',
         field: 'inactive',
         length: repairTruckTrailerCount.repairTrailers,
         data: repairTrailerData,
-        extended: false,
-        selectTab: true,
         gridNameTitle: 'Repair',
         stateName: 'repair_trailers',
-        gridColumns: this.getGridColumns('repair_trailers', this.resetColumns),
+        tableConfiguration: 'REPAIR_TRAILER',
+        isActive: this.selectedTab === 'inactive',
+        gridColumns: this.getGridColumns('REPAIR_TRAILER'),
       },
       {
         title: 'Shop',
         field: 'repair-shop',
         length: repairShopCount.repairShops,
         data: repairShopData,
-        extended: false,
-        checkPinned: true,
         gridNameTitle: 'Repair',
         stateName: 'repair_shops',
-        gridColumns: this.getGridColumns('repair_shops', this.resetColumns),
+        tableConfiguration: 'REPAIR_SHOP',
+        isActive: this.selectedTab === 'repair-shop',
+        gridColumns: this.getGridColumns('REPAIR_SHOP'),
       },
     ];
 
@@ -424,17 +421,23 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // Get Repair Columns
-  getGridColumns(stateName: string, resetColumns: boolean) {
-    /*  const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
-    ); */
+  getGridColumns(configType: string) {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
+    );
 
-    if (stateName === 'repair_trucks') {
-      return getRepairTruckColumnDefinition();
-    } else if (stateName === 'repair_trailers') {
-      return getRepairTrailerColumnDefinition();
-    } else if (stateName === 'repair_shops') {
-      return getRepairsShopColumnDefinition();
+    if (configType === 'REPAIR_TRUCK') {
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getRepairTrailerColumnDefinition();
+    } else if(configType === 'REPAIR_TRAILER') {
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getRepairTrailerColumnDefinition();
+    }else{
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getRepairsShopColumnDefinition();
     }
   }
 

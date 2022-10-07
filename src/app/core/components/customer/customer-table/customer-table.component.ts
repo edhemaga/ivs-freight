@@ -55,7 +55,6 @@ export class CustomerTableComponent
   shipper: ShipperState[] = [];
   selectedTab = 'active';
   activeViewMode: string = 'List';
-  resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
   backFilterQuery = {
@@ -90,8 +89,6 @@ export class CustomerTableComponent
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
-          this.resetColumns = response;
-
           this.sendCustomerData();
         }
       });
@@ -338,7 +335,9 @@ export class CustomerTableComponent
         isCustomer: true,
         gridNameTitle: 'Customer',
         stateName: 'brokers',
-        gridColumns: this.getGridColumns('brokers', this.resetColumns),
+        tableConfiguration: 'BROKER',
+        isActive: this.selectedTab === 'active',
+        gridColumns: this.getGridColumns('BROKER'),
       },
       {
         title: 'Shipper',
@@ -349,7 +348,9 @@ export class CustomerTableComponent
         isCustomer: true,
         gridNameTitle: 'Customer',
         stateName: 'shippers',
-        gridColumns: this.getGridColumns('shippers', this.resetColumns),
+        tableConfiguration: 'SHIPPER',
+        isActive: this.selectedTab === 'inactive',
+        gridColumns: this.getGridColumns('SHIPPER'),
       },
     ];
 
@@ -358,16 +359,18 @@ export class CustomerTableComponent
     this.setCustomerData(td);
   }
 
-  getGridColumns(stateName: string, resetColumns: boolean) {
-    const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
+  getGridColumns(configType: string) {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
     );
 
-    if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
+    if (configType === 'BROKER') {
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getBrokerColumnDefinition();
     } else {
-      return stateName === 'brokers'
-        ? getBrokerColumnDefinition()
+      return tableColumnsConfig
+        ? tableColumnsConfig
         : getShipperColumnDefinition();
     }
   }
