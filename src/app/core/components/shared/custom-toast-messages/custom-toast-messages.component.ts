@@ -342,7 +342,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       case 'CDL':
         let driverFullName =  this.DetailsDataService.mainData?.fullName ? this.DetailsDataService.mainData?.fullName.toUpperCase() : this.DetailsDataService.mainData?.firstName.toUpperCase() + ' ' + this.DetailsDataService.mainData?.lastName.toUpperCase();
         let cdlNum = this.httpRequest.body?.cdlNumber ? this.httpRequest.body?.cdlNumber : ''; 
-        console.log('--this.httpRequest.body---', this.httpRequest.body);
+        //console.log('--this.httpRequest.body---', this.httpRequest.body);
         if ( !cdlNum ){
           let cdlId = lastVal;
           this.DetailsDataService.mainData?.cdls?.map((item: any) => {
@@ -360,6 +360,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
         this.actionType = 'CDL - ' + driverFullName;
         this.wideMessage = true;
+        console.log('--cdlNum---', cdlNum);
         this.message = cdlNum;
       break;
       case 'MVR':
