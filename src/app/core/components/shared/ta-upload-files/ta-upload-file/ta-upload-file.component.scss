@@ -9,6 +9,91 @@
   align-items: center;
   position: relative;
 
+  // ----------------- File Header Actions Review ----------
+  .ta-upload-file-header-review {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 160px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    // Review Actions
+    .ta-upload-action-download-review,
+    .ta-upload-action-mark-incorrect,
+    .ta-upload-action-mark-correct {
+      width: 30px;
+      height: 30px;
+      line-height: 15px;
+      background-color: rgb(108, 108, 108, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+      position: absolute;
+      top: 4px;
+      right: 38px;
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+
+      svg {
+        height: 18px;
+        width: 18px;
+        path {
+          fill: #dadada;
+        }
+      }
+
+      &:hover {
+        background-color: #6c6c6c;
+        svg {
+          path {
+            fill: #ffffff;
+          }
+        }
+      }
+    }
+
+    .ta-upload-action-mark-incorrect {
+      right: 4px;
+
+      svg {
+        height: 24px;
+        width: 24px;
+
+        rect {
+          fill: transparent !important;
+        }
+      }
+
+      &.incorrect {
+        background-color: #ef5350;
+        svg {
+          path {
+            fill: #ffffff;
+          }
+        }
+      }
+    }
+
+    .ta-upload-action-mark-correct {
+      right: 4px;
+    }
+
+    .review-feedback-container {
+      position: absolute;
+      left: 170px;
+      top: 8px;
+    }
+  }
+
   //------------------ File Header Actions ------------------
   .ta-upload-file-header {
     position: absolute;
@@ -26,6 +111,7 @@
     -ms-user-select: none;
     user-select: none;
 
+    // No Review Actions
     .ta-upload-file-action-leftside {
       width: 30px;
       height: 30px;
