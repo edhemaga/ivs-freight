@@ -85,16 +85,16 @@ export class TaNoteContainerComponent implements OnInit {
           name: 'Dark Green',
         },
         {
-          color: '#536BC2',
-          name: 'Blue',
+          color: '#EF5350',
+          name: 'Red',
         },
         {
           color: '#FFA726',
           name: 'Yellow',
         },
         {
-          color: '#EF5350',
-          name: 'Red',
+          color: '#536BC2',
+          name: 'Blue',
         },
       ];
     }
@@ -102,19 +102,17 @@ export class TaNoteContainerComponent implements OnInit {
 
   filterContainersColor() {
     this.containerColors.sort((a, b) => {
-      if(this.popoverNote){
-        if (b['color'] != this.selectedColorName.color) {
-          return -1;
+      if (this.popoverNote) {
+        if (a['color'] != this.selectedColorName.color) {
+          return 1;
         }
-        return 1;
-      }
-      else{
+        return -1;
+      } else {
         if (a['color'] != this.selectedColorName.color) {
           return -1;
         }
         return 1;
       }
-      
     });
   }
 
@@ -142,7 +140,7 @@ export class TaNoteContainerComponent implements OnInit {
         document.execCommand(action, false, null);
       }
     } else {
-      if(this.lastSavedIndex != indx){
+      if (this.lastSavedIndex != indx) {
         this.filterContainersColor();
       }
       this.lastSavedIndex = indx;
