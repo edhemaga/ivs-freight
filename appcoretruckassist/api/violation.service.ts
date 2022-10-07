@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { ProblemDetails } from '../model/models';
 import { RoadsideInspectionListResponse } from '../model/models';
+import { RoadsideInspectionMinimalListResponse } from '../model/models';
 import { RoadsideInspectionResponse } from '../model/models';
 import { UpdateRoadsideInspectionCommand } from '../model/models';
 
@@ -254,6 +255,7 @@ export class ViolationService {
 
     /**
      * @param active 
+     * @param categoryReport 
      * @param pageIndex 
      * @param pageSize 
      * @param companyId 
@@ -264,15 +266,19 @@ export class ViolationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiViolationListGet(active?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<RoadsideInspectionListResponse>;
-    public apiViolationListGet(active?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<RoadsideInspectionListResponse>>;
-    public apiViolationListGet(active?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<RoadsideInspectionListResponse>>;
-    public apiViolationListGet(active?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiViolationListGet(active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<RoadsideInspectionListResponse>;
+    public apiViolationListGet(active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<RoadsideInspectionListResponse>>;
+    public apiViolationListGet(active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<RoadsideInspectionListResponse>>;
+    public apiViolationListGet(active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (active !== undefined && active !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>active, 'Active');
+        }
+        if (categoryReport !== undefined && categoryReport !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>categoryReport, 'CategoryReport');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
@@ -333,6 +339,93 @@ export class ViolationService {
         }
 
         return this.httpClient.get<RoadsideInspectionListResponse>(`${this.configuration.basePath}/api/violation/list`,
+            {
+                params: queryParameters,
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param pageIndex 
+     * @param pageSize 
+     * @param companyId 
+     * @param sort 
+     * @param search 
+     * @param search1 
+     * @param search2 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<RoadsideInspectionMinimalListResponse>;
+    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<RoadsideInspectionMinimalListResponse>>;
+    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<RoadsideInspectionMinimalListResponse>>;
+    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (pageIndex !== undefined && pageIndex !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (companyId !== undefined && companyId !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>companyId, 'CompanyId');
+        }
+        if (sort !== undefined && sort !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>sort, 'Sort');
+        }
+        if (search !== undefined && search !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>search, 'Search');
+        }
+        if (search1 !== undefined && search1 !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>search1, 'Search1');
+        }
+        if (search2 !== undefined && search2 !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>search2, 'Search2');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.get<RoadsideInspectionMinimalListResponse>(`${this.configuration.basePath}/api/violation/list/minimal`,
             {
                 params: queryParameters,
                 responseType: <any>responseType,

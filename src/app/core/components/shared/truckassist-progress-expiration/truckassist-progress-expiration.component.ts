@@ -114,9 +114,7 @@ export class TruckassistProgressExpirationComponent implements OnInit {
     this.progressbarColor = this.setProgressbarColor();
     this.calculatedProgress = this.calculateProgress();
 
-    if ( this.expiresSettings == 'todo-list' ) {
-      this.progressBarLength = this.setProgressbarColorToDo();
-    }
+    this.progressBarLength = this.setProgressbarColorToDo();
 
     this.progresDay = new Intl.NumberFormat('en-us', {minimumFractionDigits: 0}).format(this.expire);
   }

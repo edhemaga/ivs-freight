@@ -2,9 +2,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   CdlResponse,
-  /* CreateCdlCommand, */
   DriverResponse,
-  /* EditCdlCommand, */
   GetCdlModalResponse,
 } from 'appcoretruckassist';
 import { CdlTService } from '../../../state/cdl.service';
@@ -22,6 +20,8 @@ import {
   cdlCANADAValidation,
   cdlUSValidation,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+//import { CreateCdlCommand } from 'appcoretruckassist/model/createCdlCommand';
+//import { EditCdlCommand } from 'appcoretruckassist/model/editCdlCommand';
 
 @Component({
   selector: 'app-driver-cdl-modal',
@@ -53,6 +53,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   public documents: any[] = [];
 
   public isFormDirty: boolean;
+
+  fileModified: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -90,6 +92,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       restrictions: [null],
       endorsements: [null],
       note: [null],
+      file: [null],
     });
 
     this.formService.checkFormChange(this.cdlForm);
@@ -202,7 +205,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       restrictions: null,
       endorsements: null,
       note: res.note,
+      file: res.file ? res.file : null,
     });
+
+    this.documents = res.file ? ([res.file] as any) : [];
     this.selectedEndorsment = res.cdlEndorsements;
     this.selectedRestrictions = res.cdlRestrictions;
     this.selectedClassType = res.classType;
@@ -217,14 +223,18 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         next: (res: CdlResponse) => {
           this.cdlForm.patchValue({
             cdlNumber: res.cdlNumber,
-            issueDate: convertDateFromBackend(res.issueDate),
-            expDate: convertDateFromBackend(res.expDate),
+            issueDate: '09/08/22', // convertDateFromBackend(res.issueDate),
+            expDate: '09/29/22', //convertDateFromBackend(res.expDate),
             classType: res.classType.name,
             stateId: res.state.stateName,
             restrictions: null,
             endorsements: null,
             note: res.note,
+            file: res.file ? res.file : null,
           });
+
+          this.documents = res.file ? ([res.file] as any) : [];
+
           this.selectedEndorsment = res.cdlEndorsements;
           this.selectedRestrictions = res.cdlRestrictions;
           this.selectedClassType = res.classType;
@@ -238,8 +248,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
   public updateCdl() {
     const { issueDate, expDate } = this.cdlForm.value;
-
-    const newData: /* EditCdlCommand */ any = {
+    const newData: any = {
       driverId: this.editData.id,
       id: this.editData.file_id,
       ...this.cdlForm.value,
@@ -253,6 +262,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       endorsements: this.selectedEndorsment
         ? this.selectedEndorsment.map((item) => item.id)
         : [],
+      file: this.documents[0]?.realFile
+        ? this.documents[0]?.realFile
+        : JSON.stringify(this.cdlForm.value.file),
+      fileModified: this.fileModified,
     };
 
     this.cdlService
@@ -287,6 +300,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       endorsements: this.selectedEndorsment
         ? this.selectedEndorsment.map((item) => item.id)
         : [],
+      file: this.documents[0]?.realFile,
     };
 
     if (this.editData.type === 'renew-licence') {
@@ -325,6 +339,14 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
   public onFilesEvent(event: any) {
     this.documents = event.files;
+
+    if (event.action == 'delete') {
+      this.cdlForm.patchValue({
+        file: null,
+      });
+
+      this.fileModified = true;
+    }
   }
 
   ngOnDestroy(): void {

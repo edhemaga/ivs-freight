@@ -91,13 +91,14 @@ export class GeolocationService {
     /**
      * @param text 
      * @param layers 
+     * @param closedBorders 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiGeolocationAutocompleteGet(text?: string, layers?: Array<AutocompleteSearchLayer>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<AddressListResponse>;
-    public apiGeolocationAutocompleteGet(text?: string, layers?: Array<AutocompleteSearchLayer>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<AddressListResponse>>;
-    public apiGeolocationAutocompleteGet(text?: string, layers?: Array<AutocompleteSearchLayer>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<AddressListResponse>>;
-    public apiGeolocationAutocompleteGet(text?: string, layers?: Array<AutocompleteSearchLayer>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiGeolocationAutocompleteGet(text?: string, layers?: Array<AutocompleteSearchLayer>, closedBorders?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<AddressListResponse>;
+    public apiGeolocationAutocompleteGet(text?: string, layers?: Array<AutocompleteSearchLayer>, closedBorders?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<AddressListResponse>>;
+    public apiGeolocationAutocompleteGet(text?: string, layers?: Array<AutocompleteSearchLayer>, closedBorders?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<AddressListResponse>>;
+    public apiGeolocationAutocompleteGet(text?: string, layers?: Array<AutocompleteSearchLayer>, closedBorders?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (text !== undefined && text !== null) {
@@ -109,6 +110,10 @@ export class GeolocationService {
                 queryParameters = this.addToHttpParams(queryParameters,
                   <any>element, 'Layers');
             })
+        }
+        if (closedBorders !== undefined && closedBorders !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>closedBorders, 'ClosedBorders');
         }
 
         let headers = this.defaultHeaders;

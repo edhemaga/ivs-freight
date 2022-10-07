@@ -21,8 +21,8 @@ export class TodoTService {
 
   public getTodoList(
     status?: TodoStatus,
-    companyUserId?: number,
-    departmentId?: number,
+    companyUserId?: Array<any>,
+    departmentId?: Array<any>,
     dateFrom?: string,
     dateTo?: string,
     pageIndex?: number,
@@ -33,7 +33,7 @@ export class TodoTService {
     search1?: string,
     search2?: string
   ): Observable<TodoListResponse> {
-    /* return this.todoService.apiTodoListGet(
+    return this.todoService.apiTodoListGet(
       status,
       companyUserId,
       departmentId,
@@ -46,9 +46,7 @@ export class TodoTService {
       search,
       search1,
       search2
-    ); */
-
-    return;
+    );
   }
 
   public updateTodoItem(
@@ -98,13 +96,13 @@ export class TodoTService {
   set updateTodoList(todo) {
     this.todoStore.update((store) => ({
       ...store,
-      todoList: {
-        ...store.todoList,
-        pagination: {
-          ...store.todoList.pagination,
-          data: [...store.todoList.pagination.data, todo],
-        },
-      },
+      todoList: [
+        ...store.todoList.slice(0, todo.status.id).map((item) => {
+          item.pagination.data.push(todo);
+          return item;
+        }),
+        ...store.todoList.slice(todo.status.id),
+      ],
     }));
   }
 

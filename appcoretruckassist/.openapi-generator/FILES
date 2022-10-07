@@ -58,6 +58,9 @@ model/acceptApplicationCommand.ts
 model/accidentItemCommand.ts
 model/accidentItemReviewCommand.ts
 model/accidentListResponse.ts
+model/accidentMinimalListResponse.ts
+model/accidentMinimalResponse.ts
+model/accidentMinimalResponsePagination.ts
 model/accidentModalResponse.ts
 model/accidentRecordFeedbackResponse.ts
 model/accidentRecordItemResponse.ts
@@ -466,8 +469,13 @@ model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
 model/reviewResponsePagination.ts
 model/roadsideInspectionListResponse.ts
+model/roadsideInspectionMinimalListResponse.ts
+model/roadsideInspectionMinimalResponse.ts
+model/roadsideInspectionMinimalResponsePagination.ts
 model/roadsideInspectionResponse.ts
 model/roadsideInspectionResponsePagination.ts
+model/roadsideInspectionSpecialCheckCommand.ts
+model/roadsideInspectionSpecialCheckResponse.ts
 model/routeResponse.ts
 model/routeResponsePagination.ts
 model/routingResponse.ts
@@ -495,6 +503,7 @@ model/signInResponse.ts
 model/signUpCompanyCommand.ts
 model/signUpDriverMobileCommand.ts
 model/signupUserCommand.ts
+model/specialCheck.ts
 model/splitLoadCommand.ts
 model/splitLoadResponse.ts
 model/stateResponse.ts
@@ -544,7 +553,7 @@ model/trailerTypeResponse.ts
 model/transponderGroup.ts
 model/truckAccidentResponse.ts
 model/truckAutocompleteModelResponse.ts
-model/truckEngineTypeResponse.ts
+model/truckEngineModelResponse.ts
 model/truckGrossWeightResponse.ts
 model/truckListResponse.ts
 model/truckMakeResponse.ts
@@ -635,6 +644,7 @@ model/verifyOwnerCommand.ts
 model/verifyPreviousEmployerCommand.ts
 model/verifyUserCommand.ts
 model/vinDecodeResponse.ts
+model/violationCategory.ts
 model/violationCommand.ts
 model/violationResponse.ts
 model/weatherDataResponse.ts

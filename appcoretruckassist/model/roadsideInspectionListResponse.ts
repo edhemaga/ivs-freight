@@ -17,5 +17,6 @@ export interface RoadsideInspectionListResponse {
     count?: number;
     active?: number;
     inactive?: number;
+    categoryReport?: number;
 }
 
