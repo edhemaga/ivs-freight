@@ -6,8 +6,8 @@
   autoClose="outside"
   [ngClass]="{
     'active-options': activeFilter,
+    'clear-colors': hoverClose,
     'filter-active-colors':
-      selectedUser.length > 0 ||
       filterActiveArray.length > 0 ||
       selectedTimeValue != '' ||
       canadaSelectedStates.length > 0 ||
@@ -23,10 +23,11 @@
     mainTooltip="{{ !hoverClose ? filterTitle : 'Clear' }}"
     position="bottom"
     tooltipBackground= "#6C6C6C"
+    class="main-icon-holder"
   >
     <svg-icon [src]="icon | taSvg: 'common'"></svg-icon>
-    <div *ngIf="selectedUser.length > 0" class="active-filter-num">
-      {{ selectedUser.length }}
+    <div *ngIf="filterActiveArray.length > 0" class="active-filter-num">
+      {{ filterActiveArray.length }}
     </div>
     <div *ngIf=" activeFormNum > 0 " class="active-filter-num">
       {{activeFormNum}}
@@ -39,7 +40,7 @@
     </div>
     <div
       *ngIf="
-        selectedUser.length > 0 ||
+        filterActiveArray.length > 0 ||
         selectedTimeValue != '' ||
         canadaSelectedStates.length > 0 ||
         usaSelectedStates.length > 0 ||
