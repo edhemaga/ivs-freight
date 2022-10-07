@@ -1,6 +1,7 @@
 import { HttpHandler, HttpRequest } from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {ToastrService, IndividualConfig} from 'ngx-toastr';
+import {ActivatedRoute, Router } from '@angular/router';
 
 const notificationOptions: Partial<IndividualConfig> = {
   progressBar: false, 
@@ -8,8 +9,8 @@ const notificationOptions: Partial<IndividualConfig> = {
   positionClass: 'toast-bottom-left',
   tapToDismiss: false,
   timeOut: 3000,
-  extendedTimeOut: 3000,
-  easeTime: 100,
+  extendedTimeOut: 1500,
+  easeTime: 145,
   enableHtml: true,
   toastClass: ''
 }
@@ -19,13 +20,17 @@ const notificationOptions: Partial<IndividualConfig> = {
 })
 export class NotificationService {
 
-  constructor(public toastr: ToastrService) {
+  constructor(public toastr: ToastrService, private router: Router, private activated_route: ActivatedRoute,) {
   } 
 
   public errorToastr(httpRequest: HttpRequest<any>, next: HttpHandler, error?){
-    
     if ( httpRequest.url.indexOf('applicant') > -1 || httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 || httpRequest.url.indexOf('division') > -1 ) {
       return false;
+    }
+
+    let currentUrl = this.activated_route.snapshot['_routerState']['url'];
+    if ( currentUrl.indexOf('auth') > -1 ) {
+      notificationOptions.positionClass = 'toast-bottom-left-login';
     }
 
     this.toastr.error("", "", {...notificationOptions, payload: { httpRequest, next, error}});
@@ -35,6 +40,11 @@ export class NotificationService {
     
     if ( httpRequest.url.indexOf('login') > -1 || httpRequest.url.indexOf('applicant') > -1 || httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 || httpRequest.url.indexOf('division') > -1 ) {
       return false;
+    }
+
+    let currentUrl = this.activated_route.snapshot['_routerState']['url'];
+    if ( currentUrl.indexOf('auth') > -1 ) {
+      notificationOptions.positionClass = 'toast-bottom-left-login';
     }
 
     this.toastr.success("", "", {...notificationOptions, payload: { httpRequest, next }});

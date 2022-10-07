@@ -29,22 +29,21 @@ const routeSpecify = {
       state(
         'inactive',
         style({
-          display: 'flex',
           position: 'relative',
           top: '100px',
-          opacity: 1,
-          transform: 'scale(1)',
         })
       ),
       transition(
         'inactive => active',
         animate(
-          '150ms ease-in-out',
+          '150ms ease-out',
           keyframes([
             style({
+              position: 'relative',
               top: '100px',
             }),
             style({
+              position: 'relative',
               top: '0px',
             }),
           ])
@@ -54,13 +53,17 @@ const routeSpecify = {
       transition(
         'active => removed',
         animate(
-          '150ms ease',
+          '150ms ease-out',
           keyframes([
             style({
               opacity: 1,
+              position: 'relative',
+              top: '0px',
             }),
             style({
               opacity: 0,
+              position: 'relative',
+              top: '100px',
             }),
           ])
         )
@@ -201,7 +204,9 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if ( this.actionType != 'LOGIN' && this.actionType != 'LOGGED IN' ){
-          this.leftSideMove = response;
+          setTimeout(()=>{
+            this.leftSideMove = response;
+          }, 50);
         }
       });
   }
@@ -565,12 +570,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
   }
 
   closeToast(): void {
-    let mainToastElement = document.querySelectorAll('.main-toast-holder')[0];
-    mainToastElement?.classList.add('closeToastAction');
-    setTimeout(()=>{
-      this.toastPackage.toastRef.close();
-    },150)
-    
+    this.toastrService.clear(this.toastPackage.toastId);
   }
 
   clickOnRetry() {
