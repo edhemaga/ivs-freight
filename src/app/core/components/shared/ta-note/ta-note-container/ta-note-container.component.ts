@@ -60,6 +60,7 @@ export class TaNoteContainerComponent implements OnInit {
     name: 'Gray',
   };
   slowTimeout: any;
+  lastSavedIndex: number = -1;
   private destroy$ = new Subject<void>();
 
   constructor(private sharedService: SharedService) {}
@@ -103,9 +104,9 @@ export class TaNoteContainerComponent implements OnInit {
     this.containerColors.sort((a, b) => {
       if(this.popoverNote){
         if (b['color'] != this.selectedColorName.color) {
-          return 1;
+          return -1;
         }
-        return -1;
+        return 1;
       }
       else{
         if (a['color'] != this.selectedColorName.color) {
@@ -141,7 +142,10 @@ export class TaNoteContainerComponent implements OnInit {
         document.execCommand(action, false, null);
       }
     } else {
-      this.filterContainersColor();
+      if(this.lastSavedIndex != indx){
+        this.filterContainersColor();
+      }
+      this.lastSavedIndex = indx;
       setTimeout(() => {
         this.focusElement();
         setTimeout(() => {

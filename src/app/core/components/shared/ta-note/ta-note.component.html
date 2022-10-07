@@ -27,9 +27,11 @@
     position="bottom"
   >
     <svg-icon
+      (mouseenter)="allowAutoClose = false"
+      (mouseleave)="allowAutoClose = 'outside'"
       #t2="ngbPopover"
       [ngbPopover]="note_popover"
-      [autoClose]="false"
+      [autoClose]="allowAutoClose"
       class="note-btn"
       [container]="'body'"
       [placement]="'left-top'"

@@ -81,6 +81,10 @@
         justify-content: flex-end;
       }
 
+      &.popover_text_color{
+        justify-content: flex-start;
+      }
+
       &:hover,
       &.active {
         background-color: #F3F3F3;
@@ -188,9 +192,18 @@
               background-color: #6C6C6C;
             }
 
-            &:hover:not(:last-child) {
-              transform: scale(1.1);
-              transform-origin: center;
+            &.input_note_container{
+              &:hover:not(:last-child) {
+                transform: scale(1.1);
+                transform-origin: center;
+              }
+            }
+
+            &.popover_text_color{
+              &:hover:not(:first-child) {
+                transform: scale(1.1);
+                transform-origin: center;
+              }
             }
 
             svg-icon {
