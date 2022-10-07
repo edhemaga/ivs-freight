@@ -68,12 +68,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   ];
 
   public loadModalTitle: string = '1546';
-  public loadModalBill: any = null;
+  public loadModalBill: { rate: number; adjusted: number; due: number } = null;
 
   public labelsTemplate: any[] = [];
   public labelsDispatcher: any[] = [];
   public labelsCompanies: any[] = [];
-  public labelsTruckTrailerDriver: any[] = [];
+  public labelsDispatches: any[] = [];
   public labelsGeneralCommodity: any[] = [];
   public labelsBroker: any[] = [];
   public labelsTruckReq: any[] = [];
@@ -86,7 +86,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public selectedTemplate: any = null;
   public selectedDispatcher: any = null;
   public selectedCompany: any = null;
-  public selectedTruckTrailerDriver: any = null;
+  public selectedDispatches: any = null;
   public selectedGeneralCommodity: any = null;
   public selectedBroker: any = null;
   public selectedTruckReq: any = null;
@@ -215,6 +215,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       }
       case 'selectedBroker': {
         this.selectedBroker = event;
+        break;
+      }
+      case 'dispatches': {
+        this.selectedDispatches = event;
         break;
       }
       case 'truck-req': {
@@ -346,15 +350,46 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             );
           }
           // -----------------------
+          this.labelsDispatches = res.dispatches.map((item) => {
+            return {
+              dispatchBoardId: item.dispatchBoardId,
+              id: item.id,
+              driver: {
+                id: item.driver.id,
+                name: item.driver.firstName.concat(' ', item.driver.lastName),
+              },
+              coDriver: item.coDriver,
+              truck: {
+                id: item.truck.id,
+                name: item.truck.truckNumber,
+              },
+              trailer: {
+                id: item.trailer.id,
+                name: item.trailer.trailerNumber,
+              },
+            };
+          });
           this.labelsDoorType = res.doorTypes;
           this.labelsGeneralCommodity = res.generalCommodities;
           this.labelsSuspension = res.suspensions;
           this.labelsTemplate = res.templates;
 
           this.labelsTrailerLength = res.trailerLengths;
-          this.labelsTrailerReq = res.trailerTypes;
-          this.labelsTruckReq = res.truckTypes;
-          this.labelsYear = null;
+          this.labelsTrailerReq = res.trailerTypes.map((item) => {
+            return {
+              ...item,
+              folder: 'common',
+              subFolder: 'trailers',
+            };
+          });
+          this.labelsTruckReq = res.truckTypes.map((item) => {
+            return {
+              ...item,
+              folder: 'common',
+              subFolder: 'trucks',
+            };
+          });
+          this.labelsYear = [];
         },
         error: (error: any) => {
           this.notificationService.error(error, 'Error');

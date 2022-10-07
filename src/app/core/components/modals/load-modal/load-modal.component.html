@@ -153,16 +153,30 @@
           ></app-ta-input>
         </div>
       </div>
-      <app-ta-custom-card [cardName]="'Load Requirements'">
+      <app-ta-custom-card
+        [cardName]="'Load Requirements'"
+        [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+      >
         <div class="load-requirements-load">
           <app-ta-input-dropdown
             formControlName="truckReq"
+            [template]="'svgtext-template'"
             [inputConfig]="{
               name: 'Input Dropdown',
               type: 'text',
               label: 'Truck Req.',
               isDropdown: true,
-              dropdownWidthClass: 'w-col-164'
+              dropdownImageInput: {
+                withText: true,
+                url: selectedTruckReq?.logoName,
+                template: 'truck',
+                class: selectedTruckReq?.name
+                  ?.trim()
+                  .replace(' ', '')
+                  .toLowerCase()
+              },
+              dropdownWidthClass: 'w-col-164',
+              customClass: 'truck-trailer-dropdown'
             }"
             [options]="labelsTruckReq"
             [activeItem]="selectedTruckReq"
@@ -171,12 +185,29 @@
 
           <app-ta-input-dropdown
             formControlName="trailerReq"
+            [template]="'svgtext-template'"
             [inputConfig]="{
               name: 'Input Dropdown',
               type: 'text',
               label: 'Trailer Req.',
               isDropdown: true,
-              dropdownWidthClass: 'w-col-164'
+              dropdownImageInput: {
+                withText: true,
+                url: labelsTrailerReq?.logoName,
+                template: 'trailer',
+                class: labelsTrailerReq?.name?.toLowerCase().includes('liquid')
+                  ? 'tanker-liquid'
+                  : labelsTrailerReq?.name?.toLowerCase()?.includes('rgn')
+                  ? 'low-boy-rgn'
+                  : labelsTrailerReq?.name?.toLowerCase().includes('dry-bulk')
+                  ? 'tanker-dry-bulk'
+                  : labelsTrailerReq?.name
+                      ?.trim()
+                      .replace(' ', '')
+                      .toLowerCase()
+              },
+              dropdownWidthClass: 'w-col-164',
+              customClass: 'truck-trailer-dropdown'
             }"
             [options]="labelsTrailerReq"
             [activeItem]="selectedTrailerReq"
