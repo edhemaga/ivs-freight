@@ -14,24 +14,24 @@
 export type TableType = 'LOAD' | 'CUSTOMER' | 'DRIVER' | 'APPLICANT' | 'TRUCK' | 'TRAILER' | 'REPAIR_TRUCK' | 'REPAIR_TRAILER' | 'REPAIR_SHOP' | 'PM_TRUCK' | 'PM_TRAILER' | 'FUEL_TRANSACTION' | 'FUEL_STOP' | 'OWNER' | 'ACCOUNT' | 'CONTACT' | 'VIOLATION' | 'ACCIDENT' | 'USER';
 
 export const TableType = {
-    Load: 'LOAD' as TableType,
-    Customer: 'CUSTOMER' as TableType,
-    Driver: 'DRIVER' as TableType,
-    Applicant: 'APPLICANT' as TableType,
-    Truck: 'TRUCK' as TableType,
-    Trailer: 'TRAILER' as TableType,
-    RepairTruck: 'REPAIR_TRUCK' as TableType,
-    RepairTrailer: 'REPAIR_TRAILER' as TableType,
-    RepairShop: 'REPAIR_SHOP' as TableType,
-    PmTruck: 'PM_TRUCK' as TableType,
-    PmTrailer: 'PM_TRAILER' as TableType,
-    FuelTransaction: 'FUEL_TRANSACTION' as TableType,
-    FuelStop: 'FUEL_STOP' as TableType,
-    Owner: 'OWNER' as TableType,
-    Account: 'ACCOUNT' as TableType,
-    Contact: 'CONTACT' as TableType,
-    Violation: 'VIOLATION' as TableType,
-    Accident: 'ACCIDENT' as TableType,
-    User: 'USER' as TableType
+    Load: 'LOAD' as TableType, // Mora se ispravlja, imamo load-template, load-closed i load-regular(active i panding tab) 
+    Customer: 'CUSTOMER' as TableType, // Mora se ispravlja, imamo broker i shipper konfiguraciju ovde.
+    Driver: 'DRIVER' as TableType, // Done
+    Applicant: 'APPLICANT' as TableType, // Done
+    Truck: 'TRUCK' as TableType, // Done
+    Trailer: 'TRAILER' as TableType, // Done
+    RepairTruck: 'REPAIR_TRUCK' as TableType, // Done
+    RepairTrailer: 'REPAIR_TRAILER' as TableType, // Done
+    RepairShop: 'REPAIR_SHOP' as TableType, // Done
+    PmTruck: 'PM_TRUCK' as TableType, // Done
+    PmTrailer: 'PM_TRAILER' as TableType, // Done
+    FuelTransaction: 'FUEL_TRANSACTION' as TableType, // Done
+    FuelStop: 'FUEL_STOP' as TableType, // Done
+    Owner: 'OWNER' as TableType, // Done
+    Account: 'ACCOUNT' as TableType, // Done
+    Contact: 'CONTACT' as TableType, // Done
+    Violation: 'VIOLATION' as TableType, // Promeni iz VIOLATION u ROADSIDE_INSPECTION
+    Accident: 'ACCIDENT' as TableType, // Done
+    User: 'USER' as TableType // Done
 };
 

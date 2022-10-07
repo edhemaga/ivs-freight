@@ -59,6 +59,12 @@
     transition: all 0.3s ease-in-out;
   }
 
+  &-review-mode {
+    grid-template-columns: 1fr;
+    align-items: center;
+    justify-content: center;
+  }
+
   &.driver-details-pdf {
     grid-template-columns: 1fr;
     grid-template-rows: 343px;
