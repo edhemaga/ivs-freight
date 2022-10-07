@@ -42,7 +42,6 @@ export class AccidentTableComponent
   columns: any[] = [];
   selectedTab = 'active';
   activeViewMode: string = 'List';
-  resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
   accidentActive: AccidentActiveState[] = [];
@@ -95,8 +94,6 @@ export class AccidentTableComponent
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
-          this.resetColumns = response;
-
           this.sendAccidentData();
         }
       });
@@ -335,27 +332,29 @@ export class AccidentTableComponent
         field: 'active',
         length: accidentCount.active,
         data: roadsideActiveData,
-        extended: false,
-        gridNameTitle: 'Accident',
-        gridColumns: this.getGridColumns('accidents', this.resetColumns),
+        tableConfiguration: 'ACCIDENT',
+        isActive: this.selectedTab === 'active',
+        gridColumns: this.getGridColumns('ACCIDENT'),
       },
       {
         title: 'Inactive',
         field: 'inactive',
         length: accidentCount.inactive,
         data: roadsideInactiveData,
-        extended: false,
         gridNameTitle: 'Accident',
-        gridColumns: this.getGridColumns('accidents', this.resetColumns),
+        tableConfiguration: 'ACCIDENT',
+        isActive: this.selectedTab === 'inactive',
+        gridColumns: this.getGridColumns('ACCIDENT'),
       },
       {
         title: 'Non-Reportable',
         field: 'non-reportable',
         length: accidentCount.nonReportableCount,
         data: roadsideNonReportableData,
-        extended: false,
         gridNameTitle: 'Accident',
-        gridColumns: this.getGridColumns('accidents', this.resetColumns),
+        tableConfiguration: 'ACCIDENT',
+        isActive: this.selectedTab === 'non-reportable',
+        gridColumns: this.getGridColumns('ACCIDENT'),
       },
     ];
 
@@ -381,16 +380,14 @@ export class AccidentTableComponent
     }
   }
 
-  getGridColumns(stateName: string, resetColumns: boolean) {
-    const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
+  getGridColumns(configType: string) {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
     );
 
-    if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
-    } else {
-      return getAccidentColumns();
-    }
+    return tableColumnsConfig
+        ? tableColumnsConfig
+        : getAccidentColumns();
   }
 
   // Set Accident Data
@@ -407,9 +404,6 @@ export class AccidentTableComponent
       /* for(let i = 0; i < 100; i++){
         this.viewData.push(this.viewData[2]);
       } */
-
-      console.log('viewData');
-      console.log(this.viewData);
     } else {
       this.viewData = [];
     }

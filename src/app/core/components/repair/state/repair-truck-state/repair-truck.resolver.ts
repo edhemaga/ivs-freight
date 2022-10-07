@@ -23,10 +23,6 @@ export class RepairTruckResolver implements Resolve<RepairTruckState> {
           return of('No repair trucks data...');
         }),
         tap((repairTruckPagination: RepairListResponse) => {
-
-          console.log('RepairTruckResolver');
-          console.log(repairTruckPagination);
-          
           localStorage.setItem(
             'repairTruckTrailerTableCount',
             JSON.stringify({

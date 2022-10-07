@@ -344,8 +344,8 @@ export function getAccidentColumns() {
   ];
 }
 
-/* VIOLATION COLUMN DEFINITION */
-export function getViolationsColums() {
+/* ROADSIDE INSPECTION COLUMN DEFINITION */
+export function getRoadsideInspectionColums() {
   return [
     {
       ngTemplate: 'checkbox',
