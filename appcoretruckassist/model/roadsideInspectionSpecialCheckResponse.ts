@@ -9,14 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RoadsideInspectionResponsePagination } from './roadsideInspectionResponsePagination';
+import { EnumValue } from './enumValue';
 
 
-export interface RoadsideInspectionListResponse { 
-    pagination?: RoadsideInspectionResponsePagination;
-    count?: number;
-    active?: number;
-    inactive?: number;
-    categoryReport?: number;
+export interface RoadsideInspectionSpecialCheckResponse { 
+    specialChecks?: EnumValue;
+    active?: boolean;
 }
 

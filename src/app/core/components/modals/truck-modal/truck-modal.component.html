@@ -252,7 +252,7 @@
           ></app-ta-input-dropdown>
 
           <app-ta-input-dropdown
-            formControlName="engineModelId"
+            formControlName="truckEngineModelId"
             [inputConfig]="{
               name: 'Input Dropdown',
               type: 'text',
@@ -329,7 +329,8 @@
             [inputConfig]="{
               name: 'Fuel Tank Size',
               type: 'text',
-              label: 'Fuel Tank Size'
+              label: 'Fuel Tank Size',
+              thousandSeparator: true
             }"
           ></app-ta-input>
           <app-ta-input
@@ -432,9 +433,9 @@
 
           <div class="double-bank-checkbox">
             <app-ta-checkbox
-              formControlName="doubleBank"
-              [name]="'Double Bank'"
-              [label]="'Double Bank'"
+              formControlName="doubleBunk"
+              [name]="'Double Bunk'"
+              [label]="'Double Bunk'"
               [customClass]="'regular'"
             ></app-ta-checkbox>
           </div>
@@ -489,12 +490,13 @@
             (selectedItem)="onSelectDropdown($event, 'toll-transponder')"
           ></app-ta-input-dropdown>
           <app-ta-input
-            formControlName="deviceNo"
+            formControlName="tollTransponderDeviceNo"
             [inputConfig]="{
               name: 'Device No',
               type: 'number',
               label: 'Device No.',
-              isDisabled: true
+              isDisabled: !selectedTollTransponders?.id,
+              thousandSeparator: true
             }"
           ></app-ta-input>
         </div>
@@ -530,7 +532,7 @@
           ></app-ta-input>
 
           <app-ta-input
-            formControlName="fhwaexp"
+            formControlName="fhwaExp"
             [inputConfig]="{
               name: 'months',
               type: 'text',

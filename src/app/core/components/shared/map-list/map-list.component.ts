@@ -8,16 +8,23 @@ import {
   OnChanges,
   SimpleChanges,
   OnDestroy,
+  ElementRef,
+  ContentChildren,
+  QueryList,
+  SecurityContext,
+  ViewEncapsulation
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MapsService } from '../../../services/shared/maps.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { Subject, takeUntil } from 'rxjs';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-map-list',
   templateUrl: './map-list.component.html',
   styleUrls: ['./map-list.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MapListComponent implements OnInit, OnChanges, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -30,6 +37,7 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
   @Output() changeSortDirection: EventEmitter<any> = new EventEmitter<any>();
   @Output() searchData: EventEmitter<any> = new EventEmitter<any>();
   @Output() headActions: EventEmitter<any> = new EventEmitter();
+  @ContentChildren('listCard') listCards!: QueryList<any>;
   public mapListExpanded: boolean = true;
   public searchForm!: FormGroup;
   public sortDirection: string = 'asc';
@@ -47,12 +55,22 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
     private formBuilder: FormBuilder,
     private ref: ChangeDetectorRef,
     private mapsService: MapsService,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private sanitizer: DomSanitizer,
+    private elementRef: ElementRef
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.mapListContent) {
       this.checkResizeButton();
+
+      this.mapListContent.map((data, index) => {
+        if (
+          (data.actionAnimation == 'delete')
+        ) {
+          this.deleteAnimation(data.id);
+        }
+      });
     }
   }
 
@@ -77,22 +95,35 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
     }, 100);
   }
 
+  ngAfterContentInit() {
+    this.listCards.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.highlightSearchedText();
+    });
+  }
+
   resizeMapList() {
     this.mapListExpanded = !this.mapListExpanded;
 
     var mapListElement =
       document.querySelectorAll<HTMLElement>('.map-list-body')[0];
 
+    var mapListContainer = document.querySelectorAll<HTMLElement>(
+      '.map-list-container'
+    )[0];
+
+    var containerHeight = mapListContainer.clientHeight; // total height - padding
+
     var mapListHeight = mapListElement.clientHeight;
+    var expandedHeight = mapListElement.scrollHeight;
     mapListElement.style.height = mapListHeight + 'px';
 
     if (this.mapListExpanded) {
       setTimeout(() => {
-        mapListElement.style.height = mapListHeight * 2 + 'px';
+        mapListElement.style.height = expandedHeight + 'px';
       }, 10);
     } else {
       setTimeout(() => {
-        mapListElement.style.height = mapListHeight / 2 + 'px';
+        mapListElement.style.height = ((containerHeight / 2) - 110) + 'px';
       }, 10);
     }
   }
@@ -169,11 +200,15 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
       '.map-list-container'
     )[0];
     var mapListElement =
+      document.querySelectorAll<HTMLElement>('.map-list')[0];
+    var mapListScrollElement =
       document.querySelectorAll<HTMLElement>('.map-list-body')[0];
 
-    if (mapListElement.clientHeight > mapListContainer.clientHeight / 2) {
+    var mapListHeight = mapListContainer.clientHeight - 80; // total height - padding
+
+    if (mapListElement.clientHeight > mapListHeight / 2) {
       this.showExpandButton = true;
-      mapListElement.style.height = 'max-content';
+      mapListScrollElement.style.height = 'max-content';
     } else {
       this.showExpandButton = false;
     }
@@ -181,6 +216,11 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
 
   sortData() {
     var sortType = this.sortTypes.find((b) => b.isActive === true);
+    if (!sortType) {
+      this.sortTypes[0].isActive = true;
+      this.activeSortType = this.sortTypes[0];
+      sortType = this.sortTypes[0];
+    }
 
     const directionSort = this.sortDirection
       ? sortType.sortName +
@@ -264,7 +304,7 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onSearch() {
-    if (this.searchText.length >= 3) {
+    if (this.searchText?.length >= 3) {
       this.searchIsActive = true;
 
       this.tableService.sendCurrentSearchTableData({
@@ -275,12 +315,49 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
     } else if (this.searchIsActive && this.searchText.length < 3) {
       this.searchIsActive = false;
 
+      this.highlightSearchedText();
+
       this.tableService.sendCurrentSearchTableData({
         chip: 'searchOne',
         doReset: true,
         //all: true, - Returns to Table view
         searchType: 'tabel',
       });
+    }
+  }
+
+  highlightSearchedText() {
+    if (this.searchText?.length >= 3) {
+      document
+        .querySelectorAll<HTMLElement>(
+          '.map-list-card-container .title-text, .map-list-card-container .address-text'
+        )
+        .forEach((title: HTMLElement, i) => {
+          var text = title.textContent;
+
+          const regex = new RegExp(this.searchText, 'gi');
+          const newText = text.replace(regex, (match: string) => {
+            return `<mark class='highlighted-text'>${match}</mark>`;
+          });
+          const sanitzed = this.sanitizer.sanitize(
+            SecurityContext.HTML,
+            newText
+          );
+
+          title.innerHTML = sanitzed;
+        });
+    }
+  }
+
+  deleteAnimation(id) {
+    const mapListCard: HTMLElement = document.querySelector(
+      '[data-id="map-list-card-' + id + '"]'
+    );
+
+    if ( mapListCard ) {
+      var cardHeight = mapListCard.clientHeight;
+
+      mapListCard.classList.add('delete-animation');
     }
   }
 

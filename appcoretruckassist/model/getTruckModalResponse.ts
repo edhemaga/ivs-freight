@@ -12,10 +12,9 @@
 import { TransponderGroup } from './transponderGroup';
 import { TruckMakeResponse } from './truckMakeResponse';
 import { EnumValue } from './enumValue';
-import { TruckEngineTypeResponse } from './truckEngineTypeResponse';
-import { StateResponse } from './stateResponse';
 import { TruckGrossWeightResponse } from './truckGrossWeightResponse';
 import { ColorResponse } from './colorResponse';
+import { TruckEngineModelResponse } from './truckEngineModelResponse';
 import { TireSizeResponse } from './tireSizeResponse';
 import { TruckTypeResponse } from './truckTypeResponse';
 import { OwnerShortResponse } from './ownerShortResponse';
@@ -28,10 +27,7 @@ export interface GetTruckModalResponse {
     colors?: Array<ColorResponse> | null;
     owners?: Array<OwnerShortResponse> | null;
     truckGrossWeights?: Array<TruckGrossWeightResponse> | null;
-    truckEngineTypes?: Array<TruckEngineTypeResponse> | null;
-    country?: EnumValue;
-    usStates?: Array<StateResponse> | null;
-    canadaStates?: Array<StateResponse> | null;
+    truckEngineModels?: Array<TruckEngineModelResponse> | null;
     shifters?: Array<EnumValue> | null;
     gearRatios?: Array<EnumValue> | null;
     engineOilTypes?: Array<EnumValue> | null;
@@ -39,5 +35,6 @@ export interface GetTruckModalResponse {
     ezPass?: Array<TransponderGroup> | null;
     wheelsTypes?: Array<EnumValue> | null;
     brakes?: Array<EnumValue> | null;
+    fhwaExp?: number;
 }
 

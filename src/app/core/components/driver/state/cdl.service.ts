@@ -9,7 +9,7 @@ import {
   GetCdlModalResponse,
 } from 'appcoretruckassist';
 /* import { CreateCdlResponse } from 'appcoretruckassist/model/createCdlResponse'; */
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
+import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
@@ -17,6 +17,7 @@ import { DriversDetailsListStore } from './driver-details-list-state/driver-deta
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { DriverTService } from './driver.service';
 import { RenewCdlCommand } from '../../../../../../appcoretruckassist/model/renewCdlCommand';
+import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
   providedIn: 'root',
@@ -34,8 +35,9 @@ export class CdlTService implements OnDestroy {
   ) {}
 
   /* Observable<CreateCdlResponse> */
-  public addCdl(data: /* CreateCdlCommand */ any): Observable<CreateResponse> {
-    return this.cdlService.apiCdlPost(data).pipe(
+  public addCdl(data: /* CreateCdlCommand */ any): Observable<any> {
+    const sortedParams = getFunctionParams(this.cdlService.apiCdlPost, data);
+    return this.cdlService.apiCdlPost(...sortedParams).pipe(
       tap((res: CreateResponse) => {
         const subDriver = this.driverService
           .getDriverById(data.driverId)
@@ -72,8 +74,9 @@ export class CdlTService implements OnDestroy {
     );
   }
 
-  public updateCdl(data: any): Observable<object> {
-    return this.cdlService.apiCdlPut(data).pipe(
+  public updateCdl(data: any): Observable<any> { 
+    const sortedParams = getFunctionParams(this.cdlService.apiCdlPut, data);
+    return this.cdlService.apiCdlPut(...sortedParams).pipe(
       tap((res: any) => {
         const subDriver = this.driverService
           .getDriverById(data.driverId)
