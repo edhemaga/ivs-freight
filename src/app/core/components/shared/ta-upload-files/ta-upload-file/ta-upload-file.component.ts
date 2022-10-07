@@ -22,6 +22,7 @@ export interface UploadFile {
   guid?: string;
   size?: number | string;
   tag?: string;
+  realFile?: File;
 }
 @Component({
   selector: 'app-ta-upload-file',

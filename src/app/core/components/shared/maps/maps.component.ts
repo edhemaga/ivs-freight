@@ -5,6 +5,7 @@ import {
   Output,
   EventEmitter,
   ChangeDetectorRef,
+  ViewEncapsulation
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
@@ -16,6 +17,7 @@ import { UpdatedData } from '../model/shared/enums';
   selector: 'app-maps',
   templateUrl: './maps.component.html',
   styleUrls: ['./maps.component.scss', '../../../../../assets/scss/maps.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class MapsComponent implements OnInit {
   viewData = [];
@@ -95,6 +97,8 @@ export class MapsComponent implements OnInit {
     '#F69FF3',
     '#A1887F',
   ];
+
+  public mapZoomTime: number = 0;
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -196,6 +200,14 @@ export class MapsComponent implements OnInit {
   }
 
   markerZoom(e, item) {
+    var currentTime = new Date().getTime();
+
+    if ( !this.mapZoomTime || (currentTime - this.mapZoomTime > 200 ) ) {
+      this.mapZoomTime = currentTime;
+    } else {
+      return;
+    }
+    
     if (e.wheelDeltaY > 0) {
       // The user scrolled up.
       this.zoomChange(this.mapZoom + 1);
