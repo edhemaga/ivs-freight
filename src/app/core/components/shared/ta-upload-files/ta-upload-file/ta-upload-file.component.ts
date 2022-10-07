@@ -11,7 +11,13 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PDFDocumentProxy } from 'ng2-pdf-viewer';
-import { Subject, takeUntil } from 'rxjs';
+import {
+  Subject,
+  takeUntil,
+  debounceTime,
+  distinct,
+  distinctUntilChanged,
+} from 'rxjs';
 import { TaInputComponent } from '../../ta-input/ta-input.component';
 import { TaInputService } from '../../ta-input/ta-input.service';
 
@@ -43,14 +49,27 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
   @Output() fileAction: EventEmitter<{ file: UploadFile; action: string }> =
     new EventEmitter<{ file: UploadFile; action: string }>(null);
 
+  // Review
+  @Input() isReview: boolean;
+  @Input() reviewMode: string;
+  @Input() feedbackText: string;
+
+  public documentReviewInputControl: FormControl = new FormControl(null);
+  public documentReviewInputVisible: boolean = false;
+  @Output() documentReviewInputEvent: EventEmitter<{
+    file: UploadFile;
+    message: string;
+  }> = new EventEmitter<{ file: UploadFile; message: string }>(null);
+
   public editFile: boolean = false;
   public fileNewName: FormControl = new FormControl();
-
-  constructor(private inputService: TaInputService) {}
-
   public numberOfFilePages: string = '0';
 
   public isFileDelete: boolean = false;
+
+  public isIncorrectMarkHover: boolean = false;
+
+  constructor(private inputService: TaInputService) {}
 
   ngOnInit(): void {
     this.inputService.onFocusOutInput$
@@ -66,6 +85,10 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
           }
         }
       });
+
+    if (this.isReview) {
+      this.reviewInputControlChange();
+    }
   }
 
   public afterLoadComplete(pdf: PDFDocumentProxy) {
@@ -78,7 +101,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
   public onAction(action: string) {
     switch (action) {
       case 'tag': {
-        this.fileAction.emit({ file: this.file, action: 'tag' });
+        this.fileAction.emit({ file: this.file, action });
         break;
       }
       case 'download': {
@@ -86,11 +109,20 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
         break;
       }
       case 'delete': {
-        this.fileAction.emit({ file: this.file, action: 'delete' });
+        this.fileAction.emit({ file: this.file, action });
         break;
       }
       case 'cancel': {
         this.isFileDelete = false;
+        break;
+      }
+      case 'mark-incorrect': {
+        this.fileAction.emit({ file: this.file, action });
+        break;
+      }
+      case 'mark-correct': {
+        this.fileAction.emit({ file: this.file, action });
+        this.documentReviewInputVisible = false;
         break;
       }
       default: {
@@ -119,6 +151,18 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
         clearTimeout(timeout);
       }, 300);
     }
+  }
+
+  private reviewInputControlChange() {
+    this.documentReviewInputControl.valueChanges
+      .pipe(debounceTime(1500), distinctUntilChanged())
+      .subscribe((value) => {
+        this.documentReviewInputEvent.emit({ file: this.file, message: value });
+      });
+  }
+
+  public getAnnotationReviewEvent(event: any) {
+    this.documentReviewInputVisible = event.type === 'open';
   }
 
   ngOnDestroy(): void {
