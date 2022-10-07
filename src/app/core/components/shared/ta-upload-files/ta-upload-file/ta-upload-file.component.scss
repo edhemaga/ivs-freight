@@ -183,6 +183,33 @@
           }
         }
       }
+
+      &.feedback-mode {
+        position: relative;
+        left: 15px;
+      }
+    }
+
+    .ta-upload-action-feedback-incorrect-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+      background-color: rgb(239, 83, 80, 0.9);
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+
+      svg-icon {
+        width: 18px;
+        height: 24px;
+      }
+
+      &:hover {
+        background-color: #ef5350;
+      }
     }
   }
   //------------------ File Content ------------------
