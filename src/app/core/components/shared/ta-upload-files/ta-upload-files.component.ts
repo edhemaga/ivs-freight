@@ -26,7 +26,6 @@ export class TaUploadFilesComponent implements OnInit {
   @Input() customClassName: string;
   @Input() files: UploadFile[] = [];
   @Input() hasTag: boolean = false;
-  @Input() isReview: boolean = false;
   @Input() hasNumberOfPages: boolean = false;
   @Input() size: string = 'small'; // small | medium | large
   @Input() hasCarouselBottomTabs: boolean;
@@ -38,6 +37,15 @@ export class TaUploadFilesComponent implements OnInit {
     files: UploadFile[] | UploadFile | any;
     action: string;
   }>(null);
+
+  // Review
+  @Input() isReview: boolean;
+  @Input() reviewMode: string;
+  @Input() feedbackText: string;
+  @Output() documentReviewInputEvent: EventEmitter<{
+    file: UploadFile;
+    message: string;
+  }> = new EventEmitter<{ file: UploadFile; message: string }>(null);
 
   public currentSlide: number = 0;
 
@@ -105,6 +113,16 @@ export class TaUploadFilesComponent implements OnInit {
         break;
       }
     }
+  }
+
+  public documentReviewInputEventMethod(data: {
+    file: UploadFile;
+    message: string;
+  }) {
+    this.documentReviewInputEvent.emit({
+      file: data.file,
+      message: data.message,
+    });
   }
 
   // TruckBy ngFor files changes

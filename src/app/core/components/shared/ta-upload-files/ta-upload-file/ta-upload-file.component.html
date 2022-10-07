@@ -47,6 +47,25 @@
         }}"
       ></svg-icon>
     </div>
+
+    <!-- Review Message -->
+    <div
+      class="review-feedback-container"
+      *ngIf="reviewMode === 'REVIEW_MODE' || reviewMode === 'FEEDBACK_MODE'"
+    >
+      <app-applicant-review-feedback
+        [formControl]="documentReviewInputControl"
+        [displayAnnotationButton]="
+          file?.incorrect && !documentReviewInputVisible
+        "
+        [displayAnnotationTextArea]="
+          file?.incorrect && documentReviewInputVisible
+        "
+        [isFeedback]="reviewMode === 'FEEDBACK_MODE'"
+        [feedbackText]="feedbackText"
+        (annotationBtnClickEvent)="getAnnotationReviewEvent($event)"
+      ></app-applicant-review-feedback>
+    </div>
   </div>
 
   <!-- No Review Actions -->
