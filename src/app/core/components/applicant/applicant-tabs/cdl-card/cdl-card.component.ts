@@ -7,6 +7,9 @@ import { anyInputInLineIncorrect } from '../../state/utils/utils';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
 @Component({
@@ -15,7 +18,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
   styleUrls: ['./cdl-card.component.scss'],
 })
 export class CdlCardComponent implements OnInit {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public cdlCardForm: FormGroup;
 
@@ -40,11 +43,14 @@ export class CdlCardComponent implements OnInit {
       displayAnnotationTextArea: false,
     },
   ];
+  public hasIncorrectFields: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private router: Router,
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery,
     private applicantActionsService: ApplicantActionsService
   ) {}
 
@@ -94,6 +100,36 @@ export class CdlCardComponent implements OnInit {
         selectedInputsLine.displayAnnotationButton = false;
         selectedInputsLine.displayAnnotationTextArea = false;
       }
+
+      switch (lineIndex) {
+        case 0:
+          if (!isAnyInputInLineIncorrect) {
+            this.cdlCardForm.get('firstRowReview').patchValue(null);
+          }
+
+          break;
+        case 1:
+          if (!isAnyInputInLineIncorrect) {
+            this.cdlCardForm.get('secondRowReview').patchValue(null);
+          }
+
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    const inputFieldsArray = JSON.stringify(
+      this.openAnnotationArray
+        .filter((item) => Object.keys(item).length !== 0)
+        .map((item) => item.lineInputs)
+    );
+
+    if (inputFieldsArray.includes('true')) {
+      this.hasIncorrectFields = true;
+    } else {
+      this.hasIncorrectFields = false;
     }
   }
 
@@ -111,7 +147,13 @@ export class CdlCardComponent implements OnInit {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
   }
 
@@ -122,5 +164,5 @@ export class CdlCardComponent implements OnInit {
     }
   }
 
-  public onSubmitReview(data: any): void {}
+  public onSubmitReview(): void {}
 }

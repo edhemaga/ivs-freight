@@ -4,7 +4,7 @@
       class="container-fluid d-flex flex-column justify-content-between mvr-authorization-container"
     >
       <div class="d-flex flex-column align-items-center">
-        <app-applicant-header></app-applicant-header>
+        <app-applicant-header [mode]="selectedMode"></app-applicant-header>
 
         <h1 class="m-0 text-center title ta-font-bold">
           Authorization to Obtain Motor Vehicle Record
@@ -39,6 +39,7 @@
                   ? 'applicant-disclosure-release-feedback'
                   : 'disclosure-release'
               "
+              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
             >
             </app-ta-checkbox>
 
@@ -51,7 +52,8 @@
                     ? '#3c3c3c'
                     : selectedMode === 'FEEDBACK_MODE'
                     ? '#919191'
-                    : '#6c6c6c'
+                    : '#6c6c6c',
+                cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
               }"
               (click)="handleCheckboxParagraphClick('isConsentRelease')"
             >
@@ -75,6 +77,7 @@
                   ? 'applicant-disclosure-release-feedback'
                   : 'disclosure-release'
               "
+              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
             >
             </app-ta-checkbox>
 
@@ -87,7 +90,8 @@
                     ? '#3c3c3c'
                     : selectedMode === 'FEEDBACK_MODE'
                     ? '#919191'
-                    : '#6c6c6c'
+                    : '#6c6c6c',
+                cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
               }"
               (click)="handleCheckboxParagraphClick('isPeriodicallyObtained')"
             >
@@ -109,6 +113,7 @@
                   ? 'applicant-disclosure-release-feedback'
                   : 'disclosure-release'
               "
+              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
             >
             </app-ta-checkbox>
 
@@ -121,7 +126,8 @@
                     ? '#3c3c3c'
                     : selectedMode === 'FEEDBACK_MODE'
                     ? '#919191'
-                    : '#6c6c6c'
+                    : '#6c6c6c',
+                cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
               }"
               (click)="handleCheckboxParagraphClick('isInformationCorrect')"
             >
@@ -175,33 +181,28 @@
             >
               <div class="d-flex align-items-center driver-box">
                 <p class="m-0 ta-font-regular">
-                  <!--  {{ license.name }} -->
-                  aleksandar djordjevic
+                  {{ lastValidLicense.name }}
                 </p>
               </div>
               <div class="d-flex align-items-center license-box">
                 <p class="m-0 ta-font-regular">
-                  <!--  {{ license.license }} -->
-                  D263-540-92-166-0
+                  {{ lastValidLicense.license }}
                 </p>
               </div>
               <div class="d-flex align-items-center state-box">
                 <p class="m-0 ta-font-regular">
-                  <!--     {{ license.stateId }} -->
-                  al
+                  {{ lastValidLicense.state }}
                 </p>
               </div>
               <div class="d-flex align-items-center class-box">
                 <p class="m-0 ta-font-regular">
-                  <!-- {{ license.classType }} -->
-                  1234
+                  {{ lastValidLicense.classType }}
                 </p>
               </div>
 
               <div class="d-flex align-items-center date-box">
                 <p class="m-0 ta-font-regular">
-                  <!--    {{ license.expDate }} -->
-                  01/19/20
+                  {{ lastValidLicense.expDate }}
                 </p>
               </div>
             </div>
@@ -340,6 +341,7 @@
                   ? 'applicant-feedback'
                   : 'bold-12'
               "
+              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
             >
             </app-ta-checkbox>
           </div>
@@ -366,7 +368,7 @@
 
       <!-- FOOTER -->
 
-      <app-applicant-footer></app-applicant-footer>
+      <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
     </div>
   </div>
 </div>
@@ -379,7 +381,12 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [lastStep]="true"
-    [filledCorrectly]="mvrAuthorizationForm.valid && signature"
+    [filledCorrectly]="
+      selectedMode === 'APPLICANT_MODE' &&
+      mvrAuthorizationForm.valid &&
+      signature
+    "
+    [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && hasIncorrectFields"
     [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>

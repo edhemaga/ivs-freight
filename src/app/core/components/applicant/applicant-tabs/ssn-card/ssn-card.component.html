@@ -4,7 +4,7 @@
       class="container-fluid d-flex flex-column justify-content-between ssn-card-container"
     >
       <div class="d-flex flex-column align-items-center">
-        <app-applicant-header></app-applicant-header>
+        <app-applicant-header [mode]="selectedMode"></app-applicant-header>
 
         <h1 class="m-0 text-center title ta-font-bold">Upload SSN</h1>
 
@@ -119,7 +119,7 @@
 
       <!-- FOOTER -->
 
-      <app-applicant-footer></app-applicant-footer>
+      <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
     </div>
   </div>
 </div>
@@ -132,7 +132,8 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [lastStep]="true"
-    [filledCorrectly]="true"
+    [filledCorrectly]="selectedMode === 'APPLICANT_MODE' && true"
+    [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && hasIncorrectFields"
     [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>

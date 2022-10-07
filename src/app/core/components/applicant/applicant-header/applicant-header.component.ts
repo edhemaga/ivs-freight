@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { SelectedMode } from '../state/enum/selected-mode.enum';
 import { INavigation } from '../state/model/navigation.model';
 
@@ -7,10 +13,10 @@ import { INavigation } from '../state/model/navigation.model';
   templateUrl: './applicant-header.component.html',
   styleUrls: ['./applicant-header.component.scss'],
 })
-export class ApplicantHeaderComponent implements OnInit {
+export class ApplicantHeaderComponent implements OnInit, OnChanges {
   @Input() mode: string;
 
-  public selectedMode: string;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public menuItems: INavigation[] = [
     {
@@ -90,13 +96,11 @@ export class ApplicantHeaderComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {
-    if (this.mode === SelectedMode.FEEDBACK) {
-      this.selectedMode = SelectedMode.FEEDBACK;
-    } else if (this.mode === SelectedMode.REVIEW) {
-      this.selectedMode = SelectedMode.REVIEW;
-    } else {
-      this.selectedMode = SelectedMode.APPLICANT;
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.mode?.previousValue !== changes.mode?.currentValue) {
+      this.selectedMode = changes.mode?.currentValue;
     }
   }
 

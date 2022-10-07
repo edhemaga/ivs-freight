@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
 @Component({
@@ -13,7 +16,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
   styleUrls: ['./hos-rules.component.scss'],
 })
 export class HosRulesComponent implements OnInit {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public hosRulesForm: FormGroup;
 
@@ -21,6 +24,8 @@ export class HosRulesComponent implements OnInit {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private router: Router,
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery,
     private applicantActionsService: ApplicantActionsService
   ) {}
 
@@ -36,7 +41,13 @@ export class HosRulesComponent implements OnInit {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
   }
 
@@ -46,4 +57,6 @@ export class HosRulesComponent implements OnInit {
       return;
     }
   }
+
+  public onSubmitReview(): void {}
 }

@@ -4,7 +4,7 @@
       class="container-fluid d-flex flex-column justify-content-between sph-container"
     >
       <div class="d-flex flex-column align-items-center">
-        <app-applicant-header></app-applicant-header>
+        <app-applicant-header [mode]="selectedMode"></app-applicant-header>
 
         <h1 class="m-0 text-center title ta-font-bold">
           Safety Performance History
@@ -44,20 +44,17 @@
           >
             <div class="d-flex align-items-center driver-box">
               <p class="m-0 ta-font-regular">
-                <!--  {{ license.name }} -->
-                aleksandar djordjevic
+                {{ applicantCardInfo.name }}
               </p>
             </div>
             <div class="d-flex align-items-center ssn-box">
               <p class="m-0 ta-font-regular">
-                <!--  {{ license.license }} -->
-                123-45-6789
+                {{ applicantCardInfo.ssn }}
               </p>
             </div>
             <div class="d-flex align-items-center date-box">
               <p class="m-0 ta-font-regular">
-                <!--    {{ license.expDate }} -->
-                01/19/20
+                {{ applicantCardInfo.dob }}
               </p>
             </div>
           </div>
@@ -80,6 +77,7 @@
                 ? 'applicant-feedback'
                 : 'bold-12'
             "
+            [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
           >
           </app-ta-checkbox>
 
@@ -89,8 +87,9 @@
               color:
                 selectedMode !== 'FEEDBACK_MODE' &&
                 sphForm.get('isTested').value
-                  ? '#6c6c6c'
-                  : '#919191'
+                  ? '#2f2f2f'
+                  : '#6c6c6c',
+              cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
             }"
             (click)="handleCheckboxParagraphClick('isTested')"
           >
@@ -152,6 +151,7 @@
                 ? 'applicant-feedback'
                 : 'bold-12'
             "
+            [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
           >
           </app-ta-checkbox>
         </div>
@@ -159,7 +159,7 @@
 
       <!-- FOOTER -->
 
-      <app-applicant-footer></app-applicant-footer>
+      <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
     </div>
   </div>
 </div>
@@ -172,7 +172,9 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [lastStep]="true"
-    [filledCorrectly]="sphForm.valid && signature"
+    [filledCorrectly]="
+      selectedMode === 'APPLICANT_MODE' && sphForm.valid && signature
+    "
     [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>

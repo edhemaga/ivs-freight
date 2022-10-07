@@ -35,8 +35,8 @@ import { LoadClosedResolver } from './core/components/load/state/load-closed-sta
 import { LoadActiveResolver } from './core/components/load/state/load-active-state/load-active.resolver';
 import { LoadTemplateResolver } from './core/components/load/state/load-template-state/load-template.resolver';
 import { UserResolver } from './core/components/user/state/user-state/user.resolver';
-/* import { RoadsideActiveResolver } from './core/components/safety/violation/state/roadside-state/roadside-active/roadside-active.resolver';
-import { RoadsideInactiveResolver } from './core/components/safety/violation/state/roadside-state/roadside-inactive/roadside-inactive.resolver'; */
+import { RoadsideActiveResolver } from './core/components/safety/violation/state/roadside-state/roadside-active/roadside-active.resolver';
+import { RoadsideInactiveResolver } from './core/components/safety/violation/state/roadside-state/roadside-inactive/roadside-inactive.resolver';
 import { AccidentActiveResolver } from './core/components/safety/accident/state/accident-state/accident-active/accident-active.resolver';
 import { AccidentInactiveResolver } from './core/components/safety/accident/state/accident-state/accident-inactive/accident-inactive.resolver';
 import { AccidentNonReportedResolver } from './core/components/safety/accident/state/accident-state/accident-non-reported/accident-non-reported.resolver';
@@ -241,10 +241,10 @@ const routes: Routes = [
         (m) => m.ViolationModule
       ),
     canActivate: [AuthGuard],
-    /*    resolve: {
+    resolve: {
       roadsideActive: RoadsideActiveResolver,
       roadsideInactive: RoadsideInactiveResolver,
-    }, */
+    },
   },
   {
     path: 'safety/accident',

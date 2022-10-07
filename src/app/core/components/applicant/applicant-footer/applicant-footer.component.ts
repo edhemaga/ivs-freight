@@ -6,6 +6,8 @@ import {
   ElementRef,
   NgZone,
   Input,
+  SimpleChanges,
+  OnChanges,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -28,7 +30,7 @@ import { ApplicantActionsService } from './../state/services/applicant-actions.s
   templateUrl: './applicant-footer.component.html',
   styleUrls: ['./applicant-footer.component.scss'],
 })
-export class ApplicantFooterComponent implements OnInit, OnDestroy {
+export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('requestsBox')
   requestsBox: ElementRef;
 
@@ -39,7 +41,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public sphTabForm: FormGroup;
 
@@ -122,14 +124,6 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    if (this.mode === SelectedMode.FEEDBACK) {
-      this.selectedMode = SelectedMode.FEEDBACK;
-    } else if (this.mode === SelectedMode.REVIEW) {
-      this.selectedMode = SelectedMode.REVIEW;
-    } else {
-      this.selectedMode = SelectedMode.APPLICANT;
-    }
-
     if (this.selectedMode === SelectedMode.APPLICANT) {
       this.getCompanyInfo();
     }
@@ -142,6 +136,12 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
     }
 
     this.copyrightYear = moment().format('YYYY');
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.mode?.previousValue !== changes.mode?.currentValue) {
+      this.selectedMode = changes.mode?.currentValue;
+    }
   }
 
   public get previousRequests(): FormArray {

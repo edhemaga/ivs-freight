@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 
 import { SelectedMode } from '../state/enum/selected-mode.enum';
 
@@ -7,7 +15,7 @@ import { SelectedMode } from '../state/enum/selected-mode.enum';
   templateUrl: './applicant-next-back-btn.component.html',
   styleUrls: ['./applicant-next-back-btn.component.scss'],
 })
-export class ApplicantNextBackBtnComponent implements OnInit {
+export class ApplicantNextBackBtnComponent implements OnInit, OnChanges {
   @Input() mode?: string;
   @Input() disabledStep?: boolean;
   @Input() nextStep?: boolean;
@@ -20,17 +28,15 @@ export class ApplicantNextBackBtnComponent implements OnInit {
 
   @Output() stepEvent: EventEmitter<{ action: string }> = new EventEmitter();
 
-  public selectedMode: string;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   constructor() {}
 
-  ngOnInit(): void {
-    if (this.mode === SelectedMode.FEEDBACK) {
-      this.selectedMode = SelectedMode.FEEDBACK;
-    } else if (this.mode === SelectedMode.REVIEW) {
-      this.selectedMode = SelectedMode.REVIEW;
-    } else {
-      this.selectedMode = SelectedMode.APPLICANT;
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.mode?.previousValue !== changes.mode?.currentValue) {
+      this.selectedMode = changes.mode?.currentValue;
     }
   }
 

@@ -1,9 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { Subject, takeUntil } from 'rxjs';
+
+import { convertDateFromBackend } from './../../../../utils/methods.calculations';
+
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
+
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
@@ -13,22 +20,40 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
   templateUrl: './psp-authorization.component.html',
   styleUrls: ['./psp-authorization.component.scss'],
 })
-export class PspAuthorizationComponent implements OnInit {
-  public selectedMode: string = SelectedMode.APPLICANT;
+export class PspAuthorizationComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public pspAuthorizationForm: FormGroup;
 
   public signature: any;
 
+  public applicantCardInfo: any;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private router: Router,
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery,
     private applicantActionsService: ApplicantActionsService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
+
+    this.applicantQuery.personalInfoList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        console.log(res);
+
+        this.applicantCardInfo = {
+          name: res.fullName,
+          ssn: res.ssn,
+          dob: convertDateFromBackend(res.doB),
+        };
+      });
   }
 
   public createForm(): void {
@@ -42,7 +67,10 @@ export class PspAuthorizationComponent implements OnInit {
   }
 
   public handleCheckboxParagraphClick(type: string): void {
-    if (this.selectedMode === 'FEEDBACK_MODE') {
+    if (
+      this.selectedMode === SelectedMode.FEEDBACK ||
+      this.selectedMode === SelectedMode.REVIEW
+    ) {
       return;
     }
 
@@ -86,7 +114,13 @@ export class PspAuthorizationComponent implements OnInit {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
   }
 
@@ -95,5 +129,12 @@ export class PspAuthorizationComponent implements OnInit {
       this.inputService.markInvalid(this.pspAuthorizationForm);
       return;
     }
+  }
+
+  public onSubmitReview(): void {}
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

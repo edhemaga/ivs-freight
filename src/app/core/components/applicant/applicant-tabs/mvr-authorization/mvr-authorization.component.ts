@@ -1,11 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { Subject, takeUntil } from 'rxjs';
+
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
+
+import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
+
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
@@ -15,11 +22,15 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
   templateUrl: './mvr-authorization.component.html',
   styleUrls: ['./mvr-authorization.component.scss'],
 })
-export class MvrAuthorizationComponent implements OnInit {
-  public selectedMode: string = SelectedMode.APPLICANT;
+export class MvrAuthorizationComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public mvrAuthorizationForm: FormGroup;
   public dontHaveMvrForm: FormGroup;
+
+  public lastValidLicense: any;
 
   public documents: any[] = [];
 
@@ -38,16 +49,38 @@ export class MvrAuthorizationComponent implements OnInit {
       displayAnnotationTextArea: false,
     },
   ];
+  public hasIncorrectFields: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private router: Router,
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery,
     private applicantActionsService: ApplicantActionsService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
+
+    this.applicantQuery.cdlInformationList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        const lastLicenseAdded = res.licences[res.licences.length - 1];
+
+        this.lastValidLicense = {
+          license: lastLicenseAdded.licenseNumber,
+          state: lastLicenseAdded.state.stateShortName,
+          /*  classType: lastLicenseAdded._class.name, */
+          expDate: convertDateFromBackend(lastLicenseAdded.expDate),
+        };
+      });
+
+    this.applicantQuery.personalInfoList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.lastValidLicense.name = res.fullName;
+      });
   }
 
   private createForm(): void {
@@ -66,7 +99,10 @@ export class MvrAuthorizationComponent implements OnInit {
   }
 
   public handleCheckboxParagraphClick(type: string): void {
-    if (this.selectedMode === 'FEEDBACK_MODE') {
+    if (
+      this.selectedMode === SelectedMode.FEEDBACK ||
+      this.selectedMode === SelectedMode.REVIEW
+    ) {
       return;
     }
 
@@ -136,6 +172,18 @@ export class MvrAuthorizationComponent implements OnInit {
         selectedInputsLine.displayAnnotationTextArea = false;
       }
     }
+
+    const inputFieldsArray = JSON.stringify(
+      this.openAnnotationArray
+        .filter((item) => Object.keys(item).length !== 0)
+        .map((item) => item.lineInputs)
+    );
+
+    if (inputFieldsArray.includes('true')) {
+      this.hasIncorrectFields = true;
+    } else {
+      this.hasIncorrectFields = false;
+    }
   }
 
   public getAnnotationBtnClickValue(event: any): void {
@@ -152,7 +200,13 @@ export class MvrAuthorizationComponent implements OnInit {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
   }
 
@@ -163,5 +217,10 @@ export class MvrAuthorizationComponent implements OnInit {
     }
   }
 
-  public onSubmitReview(data: any): void {}
+  public onSubmitReview(): void {}
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

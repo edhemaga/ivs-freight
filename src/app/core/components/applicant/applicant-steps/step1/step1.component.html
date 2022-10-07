@@ -95,7 +95,8 @@
               maxLength: 26,
               textTransform: 'capitalize',
               autoFocus: true,
-              incorrectInput: selectedMode === 'REVIEW_MODE'
+              incorrectInput: selectedMode === 'REVIEW_MODE',
+              isDisabled: true
             }"
             [incorrectValue]="openAnnotationArray[0].lineInputs[0]"
             (incorrectEvent)="incorrectInput($event, 0, 0)"
