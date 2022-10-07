@@ -18,16 +18,16 @@
     <agm-marker
       *ngFor="let location of driverLocations; let i = index"
       [agmFitBounds]="true"
-      [latitude]="location.lat"
-      [longitude]="location.long"
+      [latitude]="location.latitude"
+      [longitude]="location.longitude"
       [visible]="false"
     >
       <agm-snazzy-info-window
         [closeOnMapClick]="false"
         [closeWhenOthersOpen]="false"
         [isOpen]="true"
-        [latitude]="location.lat"
-        [longitude]="location.long"
+        [latitude]="location.latitude"
+        [longitude]="location.longitude"
         [maxHeight]="32"
         [maxWidth]="26"
         [openOnMarkerClick]="false"
@@ -36,8 +36,46 @@
         [pointer]="false"
       >
         <ng-template>
-          <div class="marker-container marker-icon">
-            <svg
+          <div class="gps-marker-container marker-icon" [ngClass]="{ 'selected-marker': location.isFocused }" (click)="markerClick(i)">
+            <svg [ngStyle]="{ 'transform': 'rotate('+location.heading+'deg)' }" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="34" height="45" viewBox="0 0 34 45">
+              <defs>
+                <linearGradient id="gradient1" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+                  <stop offset="0" stop-color="#536bc2" stop-opacity="0"/>
+                  <stop offset="1" stop-color="#536bc2"/>
+                </linearGradient>
+                <filter id="Ellipse_7908" x="0" y="11" width="34" height="34" filterUnits="userSpaceOnUse">
+                  <feOffset input="SourceAlpha"/>
+                  <feGaussianBlur stdDeviation="2" result="blur"/>
+                  <feFlood flood-opacity="0.149"/>
+                  <feComposite operator="in" in2="blur"/>
+                  <feComposite in="SourceGraphic"/>
+                </filter>
+              </defs>
+              <g id="Group_97179" data-name="Group 97179" transform="translate(-7 19)">
+                <path id="Path_39129" data-name="Path 39129" d="M0,0H18L14,28H4Z" transform="translate(15 -19)" fill="url(#gradient1)"/>
+                <g transform="matrix(1, 0, 0, 1, 7, -19)" filter="url(#Ellipse_7908)">
+                  <circle id="Ellipse_7908-2" data-name="Ellipse 7908" cx="11" cy="11" r="11" transform="translate(28 39) rotate(180)" fill="#fff"/>
+                </g>
+                <circle id="Ellipse_7909" data-name="Ellipse 7909" cx="8" cy="8" r="8" transform="translate(16 1)" fill="#536bc2"/>
+                <path id="Path_33426" data-name="Path 33426" d="M4.726.208,1.816,5.981a.378.378,0,0,0,.55.483L4.638,4.92a.756.756,0,0,1,.85,0L7.762,6.465a.378.378,0,0,0,.55-.483L5.4.208a.378.378,0,0,0-.675,0" transform="translate(19 5)" fill="#fff"/>
+              </g>
+            </svg>
+          </div>
+          <div
+            class="gps-marker-dropdown marker-dropdown"
+            [ngClass]="{
+              'show-marker-dropdown marker-dropdown-animation':
+                location.isFocused
+            }"
+          >
+            <app-map-marker-dropdown
+              [title]="'Job Gaston'"
+              [item]="location"
+              [type]="'gps'"
+            ></app-map-marker-dropdown>
+          </div>
+            
+            <!-- <svg
               xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink"
               width="56"
@@ -89,7 +127,7 @@
                 <g
                   id="Group_93423"
                   data-name="Group 93423"
-                  transform="translate(10404.979 -4892.073) rotate(45)"
+                  transform="translate(3628 -10432.999)"
                 >
                   <path
                     id="Path_33425"
@@ -105,11 +143,14 @@
                     d="M8.416.468,1.869,13.458a.85.85,0,0,0,1.237,1.086l5.112-3.475a1.7,1.7,0,0,1,1.912,0l5.117,3.476a.85.85,0,0,0,1.238-1.086L9.935.468a.851.851,0,0,0-1.519,0"
                     transform="translate(-3309.177 10942)"
                     fill="#fff"
+                    [ngStyle]="{
+                      'transform-origin': '16% 15%',
+                      transform: location.transform
+                    }"
                   />
                 </g>
               </g>
-            </svg>
-          </div>
+            </svg> -->
         </ng-template>
       </agm-snazzy-info-window>
     </agm-marker>
@@ -117,16 +158,16 @@
     <agm-marker
       *ngFor="let destination of driverDestinations; let i = index"
       [agmFitBounds]="true"
-      [latitude]="destination.lat"
-      [longitude]="destination.long"
+      [latitude]="destination.latitude"
+      [longitude]="destination.longitude"
       [visible]="false"
     >
       <agm-snazzy-info-window
         [closeOnMapClick]="false"
         [closeWhenOthersOpen]="false"
         [isOpen]="true"
-        [latitude]="destination.lat"
-        [longitude]="destination.long"
+        [latitude]="destination.latitude"
+        [longitude]="destination.longitude"
         [maxHeight]="32"
         [maxWidth]="26"
         [openOnMarkerClick]="false"
@@ -228,7 +269,7 @@
       </agm-snazzy-info-window>
     </agm-marker>
 
-    <div *ngFor="let route of driverDestinations; let i = index">
+    <!-- <div *ngFor="let route of driverDestinations; let i = index">
       <agm-direction
         [renderOptions]="{
           preserveViewport: true,
@@ -236,13 +277,20 @@
           suppressMarkers: true
         }"
         [optimizeWaypoints]="false"
-        [origin]="{ lat: driverLocations[i].lat, lng: driverLocations[i].long }"
+        [origin]="{ lat: driverLocations[i].latitude, lng: driverLocations[i].longitude }"
         [destination]="{
-          lat: route.lat,
-          lng: route.long
+          lat: route.latitude,
+          lng: route.longitude
         }"
         [visible]="!route.hidden"
       ></agm-direction>
-    </div>
+    </div> -->
   </agm-map>
+
+  <div class="gps-locations-list" *ngIf="driverLocations?.length">
+    <div *ngFor="let location of driverLocations; let i = index" class="gps-list-row" (click)="markerClick(i)" [ngClass]="{ 'selected-row': location.isFocused }">
+      <div class="row-info">Device ID: <span class="marker-bold-text">{{ location.deviceId }}</span></div>
+      <div class="row-info">Speed: <span class="marker-bold-text">{{ location.speed }} mph</span></div>
+    </div>
+  </div>
 </div>

@@ -79,7 +79,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
   mainTitle: string = "";
   method: string = "";
-  actionTitle: string = "";
+  actionTitle: string = "CONNECT GPS";
   actionType: string = "";
   wideMessage: any = false;
   storesArray: any = JSON.parse(localStorage.getItem('AkitaStores'));
@@ -205,6 +205,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
   }
 
   createTitleBasedOnHttpRequest() {
+    if ( !this.httpRequest ) return false;
+    
     console.log(this.httpRequest);
     
 

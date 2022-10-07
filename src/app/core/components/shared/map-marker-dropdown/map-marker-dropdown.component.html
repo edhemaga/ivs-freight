@@ -151,7 +151,7 @@
     </div>
     <div
       class="marker-rating-container mg-top-4"
-      *ngIf="type != 'accident' && type != 'fuelStop' && type != 'inspection'"
+      *ngIf="type != 'accident' && type != 'fuelStop' && type != 'inspection' && type != 'gps'"
     >
       <span class="marker-rating">
         <svg-icon
@@ -255,6 +255,12 @@
   </div>
   <div class="marker-divider"></div>
   <div class="marker-info-container-all">
+    <div class="marker-info-container" *ngIf="type == 'gps'">
+      <span class="marker-info-text">Device ID <span class="marker-bold-text">{{ item?.deviceId }}</span></span>
+    </div>
+    <div class="marker-info-container" *ngIf="type == 'gps'">
+      <span class="marker-info-text">Speed <span class="marker-bold-text">{{ item?.speed }} mph</span></span>
+    </div>
     <div
       class="marker-info-container"
       *ngIf="item?.phone"
@@ -335,7 +341,7 @@
         </div>
       </div>
     </div>
-    <div class="marker-info-container" [ngClass]="{ copied: copiedAddress }">
+    <div class="marker-info-container" [ngClass]="{ copied: copiedAddress }" *ngIf="type != 'gps'">
       <div>
         <svg-icon
           class="marker-info-svg"
@@ -661,7 +667,7 @@
       </div>
     </div>
   </div>
-  <div class="marker-container-expand" (click)="expandInfo()">
+  <div class="marker-container-expand" (click)="expandInfo()" *ngIf="type != 'gps'">
     <svg-icon
       src="assets/svg/common/resize-arrow.svg"
       class="marker-expand-svg"

@@ -42,12 +42,16 @@ export class NotificationService {
 
   public success(message: string, title?: string) {
     console.log('--old success toast message')
-    //this.toastr.success(message, title, notificationOptions);
+    if ( title === 'gpssuccess' ) {
+      this.toastr.success(message, title, notificationOptions);
+    }
   }
 
   public error(message: string, title?: string, retryStatus?: boolean) {
     console.log('--old error toast message')
-    //this.toastr.error(message, title, notificationOptions);
+    if ( title === 'gpserror' ) {
+      this.toastr.error(message, title, notificationOptions);
+    }
   }
 
   public warning(message: string, title?: string) {

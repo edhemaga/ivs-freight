@@ -17,14 +17,117 @@
     display: none!important;
 }
 
-.marker-icon {
-    transition: none !important;
+.gps-marker-container {
+    position: absolute;
+    left: 50%;
+    top: -30px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    pointer-events: auto;
+    transform: translateX(-16px);
 
     svg {
+        width: 29px;
         outline: none;
+        //transform-origin: 17px 28px;
+        transform-origin: 14.5px 27px;
+
+        #Path_39129 {
+            opacity: 1;
+            transition: opacity 0.15s;
+        }
+
+        #Path_33426 {
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        #Ellipse_7909 {
+            transition: opacity 0.15s;
+        }
     }
 
     &.selected-marker {
-        transform: translate(-50%, -35%) scale(2) !important;
+        transform: translate(-55%, -15%) scale(2) !important;
+
+        svg {
+            #Path_39129 {
+                opacity: 0;
+                transition: opacity 0.15s;
+            }
+
+            #Path_33426 {
+                opacity: 1;
+            }
+
+            #Ellipse_7909 {
+                transform: translate(15px, 0px) scale(1.125);
+            }
+        }
     }
+
+    &.smaller-marker {
+        transform: translate(-50%, 0%) scale(0.5) !important;
+    }
+}
+
+.gps-marker-info-container {
+    width: 360px;
+    padding: 8px;
+
+    background: #ffffff;
+
+    border-radius: 3px;
+}
+
+.gps-locations-list {
+    position: fixed;
+    left: 74px;
+    top: 62px;
+
+    min-width: 355px;
+    padding: 6px;
+
+    background: #fff;
+
+    .gps-list-row {
+        display: flex;
+        align-items: center;
+
+        padding: 6px;
+
+        background: #fff;
+
+        border-bottom: 1px solid #F3F3F3;
+        border-radius: 2px;
+
+        transition: 0.2s ease-in-out;
+
+        &:hover {
+            background: #F7F7F7;
+            cursor: pointer;
+        }
+
+        &.selected-row {
+            background: #E5E5E5;
+        }
+
+        .row-info {
+            display: inline-block;
+            width: 50%;
+            padding-right: 5px;
+
+            font-size: 14px;
+            color: #6C6C6C;
+            line-height: 18px;
+            text-align: left;
+        }
+    }
+}
+
+.gps-marker-dropdown {
+    padding-top: 18px;
 }
