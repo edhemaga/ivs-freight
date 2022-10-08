@@ -97,7 +97,6 @@ export class TableStrategy implements VirtualScrollStrategy {
 
     const {start, end} = viewport.getRenderedRange();
     const viewportSize = window.innerHeight;
-    console.log(viewportSize);
 
     const dataLength = viewport.getDataLength();
   

@@ -220,9 +220,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     let splitLength = splitUrl.length;
     let lastPlace = splitLength - 1;
     let lastVal = parseInt(splitUrl[lastPlace]);
-
-    console.log('---item--', item);
-    console.log('---actionType--', this.actionType);
+    
     if (this.actionType == 'LOGIN' || this.actionType == 'COMPANY') {
       this.leftSideMove = false;
     }

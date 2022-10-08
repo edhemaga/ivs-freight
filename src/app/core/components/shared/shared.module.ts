@@ -110,6 +110,7 @@ import { CustomToastMessagesComponent } from './custom-toast-messages/custom-toa
 import { SvgDefinitionsComponent } from '../../../svg-definitions/svg-definitions.component';
 import { TaCustomCardV2Component } from './ta-custom-card-v2/ta-custom-card-v2.component';
 import { InputAddressDropdownComponent } from './input-address-dropdown/input-address-dropdown.component';
+import { ApplicantReviewFeedbackComponent } from './applicant-review-feedback/applicant-review-feedback.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -160,6 +161,7 @@ export function playerFactory() {
     TaUploadFileComponent,
     TaInputDropdownLabelComponent,
     TaUploadFilesComponent,
+    ApplicantReviewFeedbackComponent,
 
     // Modals Components
     ApplicantModalComponent,
@@ -263,6 +265,7 @@ export function playerFactory() {
     ProfileImagesModule,
     AgmSnazzyInfoWindowModule,
     AgmDirectionModule,
+    ApplicantReviewFeedbackComponent,
 
     // Components
     TabSwitcherComponent,
@@ -348,7 +351,7 @@ export function playerFactory() {
     AutoclosePopoverComponent,
     TtTitleModalComponent,
     ConfirmationModalComponent,
-    InputAddressDropdownComponent
+    InputAddressDropdownComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

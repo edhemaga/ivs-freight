@@ -223,8 +223,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         next: (res: CdlResponse) => {
           this.cdlForm.patchValue({
             cdlNumber: res.cdlNumber,
-            issueDate: '09/08/22', // convertDateFromBackend(res.issueDate),
-            expDate: '09/29/22', //convertDateFromBackend(res.expDate),
+            issueDate: convertDateFromBackend(res.issueDate),
+            expDate: convertDateFromBackend(res.expDate),
             classType: res.classType.name,
             stateId: res.state.stateName,
             restrictions: null,
