@@ -11,21 +11,42 @@ export class CompanyRepairShopService {
   constructor(private companyRepairShop: RepairShopService) {}
 
   // Get RepairShopList List
-  public getCompanyRepairShopList(
+  // Get Repair List
+  public getRepairShopList(
+    active?: number,
+    pinned?: boolean,
     companyOwned?: boolean,
+    categoryIds?: Array<number>,
+    _long?: number,
+    lat?: number,
+    distance?: number,
+    costFrom?: number,
+    costTo?: number,
     pageIndex?: number,
     pageSize?: number,
-    companyId?: number
+    companyId?: number,
+    sort?: string,
+    search?: string,
+    search1?: string,
+    search2?: string
   ): Observable<RepairShopListResponse> {
-    /* return this.companyRepairShop.apiRepairshopListGet(
-      null,
-      null,
-      true,
+    return this.companyRepairShop.apiRepairshopListGet(
+      active,
+      pinned,
+      companyOwned,
+      categoryIds,
+      _long,
+      lat,
+      distance,
+      costFrom,
+      costTo,
       pageIndex,
       pageSize,
-      companyId
-    ); */
-
-    return;
+      companyId,
+      sort,
+      search,
+      search1,
+      search2
+    );
   }
 }

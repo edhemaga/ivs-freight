@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,7 +9,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { RepairListResponse, RepairShopResponse } from 'appcoretruckassist';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, forkJoin } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
 import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
@@ -19,6 +19,7 @@ import { card_component_animation } from '../../../shared/animations/card-compon
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairTService } from '../../state/repair.service';
 import { RepairDetailsQuery } from '../../state/repair-details-state/repair-details.query';
+import { ShopItemStore } from '../../state/shop-details-state/shop-detail.store';
 
 @Component({
   selector: 'app-shop-repair-details-item',
@@ -30,7 +31,7 @@ import { RepairDetailsQuery } from '../../state/repair-details-state/repair-deta
 })
 export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
   @Input() shopData: RepairShopResponse | any = null;
-  @Input() repairsData: RepairListResponse | any;
+  public repairsData: any;
   public data;
   public dummyData: any;
   public reviewsRepair: any = [];
@@ -39,11 +40,13 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
   public showRepairItems: boolean[] = [];
   private destroy$ = new Subject<void>();
   public repairsTest: any;
+  public id: number;
   constructor(
     private dropDownService: DropDownService,
     private modalService: ModalService,
     private confirmationService: ConfirmationService,
-    private shopService: RepairTService
+    private shopService: RepairTService,
+    private shItem: ShopItemStore
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.shopData?.currentValue != changes.shopData?.previousValue) {
@@ -52,12 +55,17 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
       this.repairShopDislike =
         changes.shopData.currentValue.data.downRatingCount;
       this.getReviews(changes.shopData.currentValue.data);
-      changes?.repairsData?.currentValue?.map((item) => {
-        this.showRepairItems[item.id] = false;
-      });
+      // this.repairsData?.data.map((item) => {
+
+      //   this.showRepairItems[item.id] = false;
+      // });
     }
-    this.repairsData = changes?.repairsData?.currentValue;
-    console.log(changes?.repairsData?.currentValue);
+    this.id = changes.shopData?.currentValue.data.id;
+    // this.getRepairsList(this.id);
+    // setTimeout(() => {
+    //   this.repairsData =
+    //     this.act_route.snapshot.data.shop.repairs.pagination.data;
+    // }, 100);
   }
   ngOnInit(): void {
     // Confirmation Subscribe
@@ -81,7 +89,11 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
 
     this.initTableOptions();
   }
-
+  // getRepairsList(id: number) {
+  //   this.shopService.getRepairList(id).subscribe((item) => {
+  //     this.repairsData = item.pagination;
+  //   });
+  // }
   public deleteRepairByIdFunction(id: number) {
     this.shopService
       .deleteRepairById(id)

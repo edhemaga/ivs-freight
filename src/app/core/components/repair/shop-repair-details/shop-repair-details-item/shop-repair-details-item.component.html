@@ -6,7 +6,7 @@
       </app-shop-repair-card-view>
     </div>
     <div *ngSwitchCase="'repair'">
-      <div class="repair-container" *ngIf="repairsData?.length">
+      <div class="repair-container" >
         <div class="repair-header">
           <span class="repaier-headers">UNIT</span>
           <span class="repaier-headers">DATE</span>
@@ -17,7 +17,7 @@
         <div class="divider"></div>
         <div class="repair-items-wrapper">
           <span
-            *ngFor="let repairs of repairsData; let i = index"
+            *ngFor="let repairs of repairsData?.data; let i = index"
             (click)="showRepairItems[repairs?.id]=!showRepairItems[repairs?.id]"
             class="item-shop-wrapper"
             [ngClass]="{

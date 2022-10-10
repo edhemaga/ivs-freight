@@ -62,9 +62,6 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     this.currentIndex = this.repairList.findIndex(
       (shop) => shop.id === this.act_route.snapshot.data.shop.id
     );
-    this.repairsQ.selectAll().subscribe((item) => {
-      this.repairsDataCmp = item[0].data;
-    });
     this.initTableOptions();
     this.shopConf(this.act_route.snapshot.data.shop);
     this.tableService.currentActionAnimation
@@ -249,7 +246,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         template: 'repair',
         icon: true,
         repairOpen: data?.openHoursToday === 'Closed' ? false : true,
-        length: this.repairsDataCmp?.length,
+        length: 2,
         customText: 'Date',
         total: total,
         icons: [

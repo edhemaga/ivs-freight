@@ -50,7 +50,8 @@ export class ShopRepairCardViewComponent
       this.shopResponse = changes.shopResponse?.currentValue;
       this.noteControl.patchValue(changes.shopResponse.currentValue.note);
     }
-    this.getRepairShopById(changes.shopResponse.currentValue.id);
+    this.getRepairShopById(changes?.shopResponse?.currentValue?.id);
+
     this.repairShopMinimalQuery
       .selectAll()
       .pipe(takeUntil(this.destroy$))
@@ -138,8 +139,8 @@ export class ShopRepairCardViewComponent
   }
 
   public getActiveServices(data: RepairShopResponse) {
-    let res = data.serviceTypes.filter((item) => item.active);
-    this.count = res.length;
+    let res = data?.serviceTypes?.filter((item) => item.active);
+    this.count = res?.length;
     return this.count;
   }
   public tabsSwitcher() {

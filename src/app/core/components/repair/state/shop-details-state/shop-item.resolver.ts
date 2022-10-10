@@ -32,6 +32,48 @@ export class ShopRepairItemResolver implements Resolve<ShopItemState> {
   ): Observable<ShopItemState> | Observable<any> {
     const shop_id = route.paramMap.get('id');
     let id = parseInt(shop_id);
+
+    // const data = forkJoin({
+    //   repairShop: this.shopService.getRepairShopById(id).pipe(
+    //     catchError(() => {
+    //       this.router.navigate(['/repair']);
+    //       return of('No shop data for...' + id);
+    //     }),
+    //     tap((shopRespon: RepairShopResponse) => {
+    //       // this.sdls.add(shopRespon);
+    //       this.shopDetailStore.set([shopRespon]);
+    //     })
+    //   ),
+    //   repairs: this.shopService
+    //     .getRepairList(
+    //       id,
+    //       null,
+    //       null,
+    //       null,
+    //       null,
+    //       null,
+    //       null,
+    //       null,
+    //       null,
+    //       null,
+    //       null,
+    //       null,
+    //       null,
+    //       null,
+    //       null,
+    //       null
+    //     )
+    //     .pipe(
+    //       catchError(() => {
+    //         return of('No repair data...');
+    //       }),
+    //       tap((repair: RepairListResponse) => {
+    //         this.repairDetailsStore.set([repair.pagination]);
+    //       })
+    //     ),
+    // });
+
+    // return data;
     if (this.sdlq.hasEntity(id)) {
       return this.sdlq.selectEntity(id).pipe(
         tap((shopResponse: RepairShopResponse) => {

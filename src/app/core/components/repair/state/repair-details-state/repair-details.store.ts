@@ -4,7 +4,7 @@ import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { RepairResponsePagination } from 'appcoretruckassist';
 
 export interface RepairDetailsState
-  extends EntityState<RepairResponsePagination, number> {}
+  extends EntityState<RepairResponsePagination, any> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'repairDetails' })
