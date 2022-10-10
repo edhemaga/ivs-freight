@@ -31,7 +31,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   columns: any[] = [];
   selectedTab = 'active';
   activeViewMode: string = 'List';
-  resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
   ownerActive: OwnerActiveState[] = [];
@@ -69,8 +68,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
-          this.resetColumns = response;
-
           this.sendOwnerData();
         }
       });
@@ -297,7 +294,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         extended: false,
         gridNameTitle: 'Owner',
         stateName: 'owners',
-        gridColumns: this.getGridColumns('owners', this.resetColumns),
+        tableConfiguration: 'OWNER',
+        isActive: this.selectedTab === 'active',
+        gridColumns: this.getGridColumns('OWNER'),
       },
       {
         title: 'Inactive',
@@ -307,7 +306,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         extended: false,
         gridNameTitle: 'Owner',
         stateName: 'owners',
-        gridColumns: this.getGridColumns('owners', this.resetColumns),
+        tableConfiguration: 'OWNER',
+        isActive: this.selectedTab === 'inactive',
+        gridColumns: this.getGridColumns('OWNER'),
       },
     ];
 
@@ -323,16 +324,14 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tableData[1].length = ownerCount.inactive;
   }
 
-  getGridColumns(stateName: string, resetColumns: boolean) {
-    const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
+  getGridColumns(configType: string) {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
     );
 
-    if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
-    } else {
-      return getOwnerColumnDefinition();
-    }
+    return tableColumnsConfig
+        ? tableColumnsConfig
+        : getOwnerColumnDefinition();
   }
 
   setOwnerData(td: any) {
@@ -344,9 +343,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.viewData = this.viewData.map((data: any) => {
         return this.mapOwnerData(data);
       });
-
-      console.log('Owner Data');
-      console.log(this.viewData);
 
       // For Testing
       // for (let i = 0; i < 300; i++) {

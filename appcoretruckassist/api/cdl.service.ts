@@ -431,7 +431,7 @@ export class CdlService {
      * @param restrictions 
      * @param endorsements 
      * @param stateId 
-     * @param note
+     * @param note 
      * @param file 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.

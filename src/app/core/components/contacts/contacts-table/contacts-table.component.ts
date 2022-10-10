@@ -33,7 +33,6 @@ export class ContactsTableComponent
   columns: any[] = [];
   selectedTab = 'active';
   activeViewMode: string = 'List';
-  resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
   contacts: ContactState[] = [];
@@ -66,8 +65,6 @@ export class ContactsTableComponent
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
-          this.resetColumns = response;
-
           this.sendContactData();
         }
       });
@@ -289,7 +286,9 @@ export class ContactsTableComponent
         extended: false,
         gridNameTitle: 'Contact',
         stateName: 'contacts',
-        gridColumns: this.getGridColumns('contacts', this.resetColumns),
+        tableConfiguration: 'CONTACT',
+        isActive: true,
+        gridColumns: this.getGridColumns('CONTACT'),
       },
     ];
 
@@ -313,18 +312,14 @@ export class ContactsTableComponent
   }
 
   // Get Columns Definition
-  getGridColumns(stateName: string, resetColumns: boolean) {
-    return getToolsContactsColumnDefinition();
+  getGridColumns(configType: string) {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
+    );
 
-    /* const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
-    ); */
-
-    /* if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
-    } else {
-      return getToolsContactsColumnDefinition();
-    } */
+    return tableColumnsConfig
+    ? tableColumnsConfig
+    : getToolsContactsColumnDefinition();
   }
 
   // Set Countact Data
@@ -337,9 +332,6 @@ export class ContactsTableComponent
       this.viewData = this.viewData.map((data: any) => {
         return this.mapContactData(data);
       });
-
-      console.log('Contact Data');
-      console.log(this.viewData);
 
       // For Testing
       // for (let i = 0; i < 300; i++) {

@@ -340,28 +340,30 @@ export class RepairTService implements OnDestroy {
     active?: number,
     pinned?: boolean,
     companyOwned?: boolean,
-    categoryIds?: any,
-    long?: any,
-    lat?: any,
-    costTo?: any,
-    costFrom?: any,
-    pageIndex?: any,
-    pageSize?: any,
-    companyId?: any,
-    sort?: any,
-    search?: any,
-    search1?: any,
-    search2?: any
+    categoryIds?: Array<number>,
+    _long?: number,
+    lat?: number,
+    distance?: number,
+    costFrom?: number,
+    costTo?: number,
+    pageIndex?: number,
+    pageSize?: number,
+    companyId?: number,
+    sort?: string,
+    search?: string,
+    search1?: string,
+    search2?: string
   ): Observable<RepairShopListResponse> {
     return this.shopServices.apiRepairshopListGet(
       active,
       pinned,
       companyOwned,
       categoryIds,
-      null,
-      null,
-      null,
-      null,
+      _long,
+      lat,
+      distance,
+      costFrom,
+      costTo,
       pageIndex,
       pageSize,
       companyId,
@@ -370,8 +372,6 @@ export class RepairTService implements OnDestroy {
       search1,
       search2
     );
-
-    return;
   }
 
   // Get Repair Minimal List

@@ -27,7 +27,6 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
   columns: any[] = [];
   selectedTab = 'active';
   activeViewMode: string = 'List';
-  resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
   accounts: AccountState[] = [];
@@ -57,8 +56,6 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
-          this.resetColumns = response;
-
           this.sendAccountData();
         }
       });
@@ -273,7 +270,9 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         data: accountData,
         gridNameTitle: 'Account',
         stateName: 'accounts',
-        gridColumns: this.getGridColumns('accounts', this.resetColumns),
+        tableConfiguration: 'ACCOUNT',
+        isActive: true,
+        gridColumns: this.getGridColumns('ACCOUNT'),
       },
     ];
 
@@ -294,16 +293,14 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.accounts?.length ? this.accounts : [];
   }
 
-  getGridColumns(stateName: string, resetColumns: boolean) {
-    const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
+  getGridColumns(configType: string) {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
     );
 
-    if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
-    } else {
-      return getToolsAccountsColumnDefinition();
-    }
+    return tableColumnsConfig
+        ? tableColumnsConfig
+        : getToolsAccountsColumnDefinition();
   }
 
   setAccountData(td: any) {
@@ -315,9 +312,6 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.viewData = this.viewData.map((data: any) => {
         return this.mapAccountData(data);
       });
-
-      console.log('Account Data');
-      console.log(this.viewData);
 
       // For Testing
       // for (let i = 0; i < 300; i++) {
