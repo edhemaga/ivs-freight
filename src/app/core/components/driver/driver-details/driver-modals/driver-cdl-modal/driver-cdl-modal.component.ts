@@ -20,8 +20,8 @@ import {
   cdlCANADAValidation,
   cdlUSValidation,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
-import { CreateCdlCommand } from 'appcoretruckassist/model/createCdlCommand';
-import { EditCdlCommand } from 'appcoretruckassist/model/editCdlCommand';
+//import { CreateCdlCommand } from 'appcoretruckassist/model/createCdlCommand';
+//import { EditCdlCommand } from 'appcoretruckassist/model/editCdlCommand';
 
 @Component({
   selector: 'app-driver-cdl-modal',
@@ -223,8 +223,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         next: (res: CdlResponse) => {
           this.cdlForm.patchValue({
             cdlNumber: res.cdlNumber,
-            issueDate: '09/08/22', // convertDateFromBackend(res.issueDate),
-            expDate: '09/29/22', //convertDateFromBackend(res.expDate),
+            issueDate: convertDateFromBackend(res.issueDate),
+            expDate: convertDateFromBackend(res.expDate),
             classType: res.classType.name,
             stateId: res.state.stateName,
             restrictions: null,
@@ -287,7 +287,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   public addCdl() {
     const { issueDate, expDate } = this.cdlForm.value;
 
-    const newData: CreateCdlCommand = {
+    const newData: /* CreateCdlCommand */ any = {
       driverId: this.editData.id,
       ...this.cdlForm.value,
       issueDate: convertDateToBackend(issueDate),

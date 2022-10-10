@@ -69,6 +69,5 @@ export class MapListCardComponent implements OnInit {
 
   setSortCategory(category) {
     this.sortCategory = category;
-    console.log('setSortCategory this', this);
   }
 }

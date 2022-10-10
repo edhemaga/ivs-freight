@@ -16,6 +16,10 @@
     position: absolute;
     top: 0;
 
+    .table-toolbar-container {
+        padding-right: 2px;
+    }
+
     .customer-map-container {
         position: fixed;
         left: 0;
@@ -46,9 +50,7 @@
             .route-card-scroll {
                 width: fit-content;
                 max-height: 100%;
-                margin-right: -13px;
-                padding-right: 13px;
-                padding-bottom: 113px;
+                padding-right: 15px;
 
                 overflow-y: auto;
                 pointer-events: all;
@@ -108,8 +110,8 @@
         }
     
         &.stop-picker-icon {
-            top: -50px !important;
-            transform: translateX(-28px);
+            top: -36px !important;
+            transform: translateX(-22px);
         }
     }
     
@@ -144,7 +146,7 @@
     max-height: 500px;
     max-width: 500px;
 
-    transition: width 0.2s, height 0.2s, padding-right 0.2s;
+    transition: width 0.2s, height 0.2s, padding-right 0.2s, max-height 0.2s;
 
     pointer-events: all;
     cursor: pointer;
@@ -161,12 +163,6 @@
 
         .route-type-text {
             background: #CCCCCC !important;
-        }
-
-        .marker-info-text {
-            &:hover {
-                //color: #6C6C6C !important;
-            }
         }
     }
 
@@ -312,6 +308,7 @@
 
 .route-card-content {
     position: relative;
+    display: grid;
     margin-top: 8px;
 
     .empty-miles {
@@ -329,6 +326,7 @@
 
 .route-card-row {
     position: relative;
+    top: 0px;
     display: flex;
     align-items: center;
     height: 22px;
@@ -405,6 +403,10 @@
                     color: #6C6C6C !important;
                 }
             }
+        }
+
+        .loaded-stop-background {
+            //display: none;
         }
     }
 
@@ -527,10 +529,6 @@
         transition: all 0.2s ease-in-out;
     }
 
-    .delete-button:hover + .delete-stop-text {
-        //display: flex!important;
-    }
-
     .route-row-number {
         position: relative;
         display: flex;
@@ -546,6 +544,8 @@
     }
 
     .route-row-location {
+        position: relative;
+        top: 0px;
         width: 140px;
         min-width: 140px;
         margin-right: 18px;
@@ -553,7 +553,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
-        transition: width 0.2s ease-in-out, min-width 0.2s ease-in-out;
+        transition: width 0.2s ease-in-out, min-width 0.2s ease-in-out, top 0.2s ease-in-out;
 
         &.full-address {
             width: 220px;
@@ -677,14 +677,6 @@
     }
   }
 
-  .cdk-drag-animating {
-    //transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
-
-  .route-card-container.cdk-drop-list-dragging .route-info-card:not(.cdk-drag-placeholder) {
-    //transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
-
 .pink-text {
     color: #F27B8E !important;
 
@@ -784,18 +776,18 @@
 
 .stop-picker-window {
     position: absolute;
-    top: -37px;
-    left: 16px;
+    top: -27px;
+    left: 91px;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    width: 164px;
-    height: 30px;
-    padding: 4px 26px 4px 4px;
+    width: 70px;
+    height: 26px;
+    padding: 4px;
 
-    background: #fff;
+    background: #2F2F2F;
     border-radius: 3px;
     box-shadow: $box-shadow;
 
@@ -809,9 +801,9 @@
         width: 62px;
         height: 18px;
 
-        background: #DADADA;
+        background: #6C6C6C;
 
-        border-radius: 1px;
+        border-radius: 2px;
         cursor: pointer;
 
         transition: all 0.15s;
@@ -833,12 +825,12 @@
         }
 
         &:hover {
-            width: 66px;
-            height: 22px;
+            //width: 66px;
+            //height: 22px;
             margin-left: 0px;
             margin-right: 0px;
 
-            background: #B7B7B7;
+            background: #1D1D1D;
         }
 
         &.active {
@@ -849,14 +841,14 @@
 
 .stop-picker-address {
     position: absolute;
-    top: -31px;
-    left: 50%;
+    top: -25px;
+    left: calc( 50% - 5px );
 
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 
-    height: 18px;
+    height: 22px;
     padding: 2px 6px;
 
     border-radius: 2px;
@@ -868,15 +860,23 @@
     &.smaller-marker-address {
         top: -17px;
 
-        transform: translateX(15px);
+        transform: translateX(20px);
     }
 
     &.stop-picker-delete {
-        left: auto;
-        right: 50%;
+        top: 2px;
+        left: calc( 100% + 30px );
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 18px;
+        width: 0px;
+        padding: 0px;
 
         background: #EF5350 !important;
         transform: translateX(-26px);
+        transition: 0.2s ease-in-out;
     }
 
     &.small-marker-tooltip {
@@ -897,6 +897,38 @@
         overflow: hidden;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
+    }
+
+    .delete-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 2px;
+
+        height: 22px;
+        width: 22px;
+
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.15s ease-in-out;
+
+        svg {
+            transition: all 0.15s ease-in-out;
+            
+            path {
+                fill: rgb(255, 255, 255, 0.7);
+            }
+        }
+
+        &:hover {
+            background: rgb(255, 255, 255, 0.2);
+
+            svg {
+                path {
+                    fill: rgb(255, 255, 255);
+                }
+            }
+        }
     }
 }
 
@@ -956,4 +988,64 @@
 
 .route-card-scroll .cdk-drag-animating {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.stop-picker-marker-animation {
+    animation-duration: 200ms;
+    animation-name: stop-picker-animation;
+}
+
+.stop-picker-marker-animation-backwards {
+    animation-duration: 200ms;
+    animation-name: stop-picker-animation-backwards;
+}
+
+@-webkit-keyframes stop-picker-animation {
+    from {
+      transform: translate(-22px, 5px) scale(0.7);
+    }
+    to {
+      transform: translate(-22px, 0px) scale(1);
+    }
+}
+  
+@keyframes stop-picker-animation {
+    from {
+      transform: translate(-22px, 5px) scale(0.7);
+    }
+    to {
+      transform: translate(-22px, 0px) scale(1);
+    }
+}
+
+@-webkit-keyframes stop-picker-animation-backwards {
+    from {
+      transform: translate(-22px, 0px) scale(1);
+    }
+    to {
+      transform: translate(-22px, 5px) scale(0.7);
+    }
+}
+  
+@keyframes stop-picker-animation-backwards {
+    from {
+      transform: translate(-22px, 0px) scale(1);
+    }
+    to {
+      transform: translate(-22px, 5px) scale(0.7);
+    }
+}
+
+.loaded-stop-background {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+
+    height: 24px;
+    width: 18px;
+
+    background: rgb(48, 116, 211, 0.2);
+
+    pointer-events: none;
+    z-index: 999;
 }
