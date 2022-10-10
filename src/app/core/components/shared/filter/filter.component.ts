@@ -1144,7 +1144,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
     this.rangeForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       if (changes){
-        //console.log('--changes--', changes);
 
         var rangeFromNum = 0;
         var rangeToNum = parseInt(this.maxValueRange.replace(/,/g, ''), 10);
@@ -1313,6 +1312,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
       } else {
         this.moneyForm.get('multiFormThirdTo')?.setErrors(null);
       }
+
+      if (this.moneyFilterStatus) {}
       
     });
 
@@ -1765,8 +1766,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
       return false;
     }
 
-    console.log('--type--', this.type);
-
     if (this.type == 'timeFilter') {
       this.selectedTimeValue = '';
       this.filterActiveTime = '';
@@ -1915,7 +1914,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
       'type' : this.type
     }
 
-    console.log('--data---', data);
     if ( this.setFilter ) {
       this.setFilter.emit(data);
     }
@@ -1966,7 +1964,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   setRangeValue(mod) {
-    console.log(mod);
     if (this.type != 'locationFilter') {
       this.rangeValue = mod;
     } else {
@@ -2214,7 +2211,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
           
         }
 
-      console.log('--data---', data);
       if ( this.setFilter ) {
         this.setFilter.emit(data);
       }
