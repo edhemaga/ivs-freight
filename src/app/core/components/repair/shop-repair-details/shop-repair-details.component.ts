@@ -21,6 +21,7 @@ import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal
 import { RepairShopMinimalListStore } from '../state/shop-details-state/shop-minimal-list-state/shop-minimal.store';
 import { RepairShopMinimalListQuery } from '../state/shop-details-state/shop-minimal-list-state/shop-minimal.query';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { RepairDetailsQuery } from '../state/repair-details-state/repair-details.query';
 
 @Component({
   selector: 'app-shop-repair-details',
@@ -38,7 +39,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
   public currentIndex: number = 0;
   public repairObject: any;
   public togglerWorkTime: boolean;
-  public repairsData: any;
+  public repairsDataCmp: any;
   constructor(
     private act_route: ActivatedRoute,
     private detailsPageDriverService: DetailsPageService,
@@ -53,14 +54,17 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     private DetailsDataService: DetailsDataService,
     private sdlq: ShopDetailsListQuery,
     private dropDownService: DropDownService,
-    private rsmlist: RepairShopMinimalListStore
+    private rsmlist: RepairShopMinimalListStore,
+    private repairsQ: RepairDetailsQuery
   ) {}
 
   ngOnInit(): void {
-    this.repairsData = this.act_route.snapshot.data.repairs.pagination.data;
     this.currentIndex = this.repairList.findIndex(
       (shop) => shop.id === this.act_route.snapshot.data.shop.id
     );
+    this.repairsQ.selectAll().subscribe((item) => {
+      this.repairsDataCmp = item[0].data;
+    });
     this.initTableOptions();
     this.shopConf(this.act_route.snapshot.data.shop);
     this.tableService.currentActionAnimation
@@ -104,8 +108,6 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         query.pipe(takeUntil(this.destroy$)).subscribe({
           next: (res: RepairShopResponse) => {
             this.shopConf(res);
-            this.repairsData =
-              this.act_route.snapshot.data.repairs.pagination.data;
             if (this.router.url.includes('shop-details')) {
               this.router.navigate([`/repair/${res.id}/shop-details`]);
             }
@@ -247,7 +249,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         template: 'repair',
         icon: true,
         repairOpen: data?.openHoursToday === 'Closed' ? false : true,
-        length: this.repairsData.length,
+        length: this.repairsDataCmp?.length,
         customText: 'Date',
         total: total,
         icons: [

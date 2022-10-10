@@ -24,7 +24,7 @@
     <app-shop-repair-details-item
       *ngFor="let item of shopRepairConfig; trackBy: identity"
       [shopData]="item"
-      [repairsData]="repairsData"
+      [repairsData]="item.dataRepair"
     >
     </app-shop-repair-details-item>
   </div>

@@ -17,7 +17,7 @@ export class ShopResolver implements Resolve<ShopState> {
 
   resolve(): Observable<ShopState | boolean> {
     return this.repairService
-      .getRepairShopList(1, undefined, undefined, 1, 25)
+      .getRepairShopList(1, undefined, undefined, null, 1, 25)
       .pipe(
         catchError(() => {
           return of('No shops data...');

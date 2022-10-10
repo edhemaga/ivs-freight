@@ -65,7 +65,7 @@ export class RepairTService implements OnDestroy {
                 ({ id }) => id === data.repairShopId
               );
               this.shopMinimalStore.add(shop);
-             /*  this.sdls.update(shop.id, { repairs: shop.repairs });
+              /*  this.sdls.update(shop.id, { repairs: shop.repairs });
               this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit }); */
               this.tableService.sendActionAnimation({
                 animation: 'update',
@@ -124,7 +124,7 @@ export class RepairTService implements OnDestroy {
                 ({ id }) => id === data.repairShopId
               );
               this.shopMinimalStore.add(shop);
-             /*  this.sdls.update(shop.id, { repairs: shop.repairs });
+              /*  this.sdls.update(shop.id, { repairs: shop.repairs });
               this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit }); */
               this.tableService.sendActionAnimation({
                 animation: 'update',
@@ -163,45 +163,6 @@ export class RepairTService implements OnDestroy {
 
   // Get Repair List
   public getRepairList(
-    repairShopId?: number,
-    unitType?: number,
-    dateFrom?: string,
-    dateTo?: string,
-    isPM?: number,
-    categoryIds?: Array<number>,
-    pmTruckTitles?: Array<string>,
-    pmTrailerTitles?: Array<string>,
-    isOrder?: boolean,
-    pageIndex?: number,
-    pageSize?: number,
-    companyId?: number,
-    sort?: string,
-    search?: string,
-    search1?: string,
-    search2?: string
-  ): Observable<RepairListResponse> {
-    return this.repairService.apiRepairListGet(
-      repairShopId,
-      unitType,
-      dateFrom,
-      dateTo,
-      isPM,
-      categoryIds,
-      pmTruckTitles,
-      pmTrailerTitles,
-      isOrder,
-      pageIndex,
-      pageSize,
-      companyId,
-      sort,
-      search,
-      search1,
-      search2
-    );
-  }
-
-  // Get Repair List Details
-  public getRepairListDetails(
     repairShopId?: number,
     unitType?: number,
     dateFrom?: string,
@@ -379,18 +340,28 @@ export class RepairTService implements OnDestroy {
     active?: number,
     pinned?: boolean,
     companyOwned?: boolean,
-    pageIndex?: number,
-    pageSize?: number,
-    companyId?: number,
-    sort?: string,
-    search?: string,
-    search1?: string,
-    search2?: string
+    categoryIds?: any,
+    long?: any,
+    lat?: any,
+    costTo?: any,
+    costFrom?: any,
+    pageIndex?: any,
+    pageSize?: any,
+    companyId?: any,
+    sort?: any,
+    search?: any,
+    search1?: any,
+    search2?: any
   ): Observable<RepairShopListResponse> {
-    /* return this.shopServices.apiRepairshopListGet(
+    return this.shopServices.apiRepairshopListGet(
       active,
       pinned,
       companyOwned,
+      categoryIds,
+      null,
+      null,
+      null,
+      null,
       pageIndex,
       pageSize,
       companyId,
@@ -398,7 +369,7 @@ export class RepairTService implements OnDestroy {
       search,
       search1,
       search2
-    ); */
+    );
 
     return;
   }

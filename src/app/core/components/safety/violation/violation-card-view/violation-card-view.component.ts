@@ -10,6 +10,7 @@ import { FormControl } from '@angular/forms';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { RoadsideActiveQuery } from '../state/roadside-state/roadside-active/roadside-active.query';
 import { RoadsideInspectionResponse } from 'appcoretruckassist';
+import { RoadsideMinimalListQuery } from '../state/roadside-details-state/roadside-minimal-list-state/roadside-minimal.query';
 
 @Component({
   selector: 'app-violation-card-view',
@@ -23,14 +24,13 @@ export class ViolationCardViewComponent implements OnInit, OnChanges {
   public violationDropdown: any;
   public noteControl: FormControl = new FormControl();
   public dummyDataSpecial: any;
-  public violationList: any[] = this.violationActiveQuery.getAll();
+  public violationList: any[] = this.violationMinimalQuery.getAll();
   public specialChecksCounter: number = 0;
   constructor(
-    private violationActiveQuery: RoadsideActiveQuery,
+    private violationMinimalQuery: RoadsideMinimalListQuery,
     private detailsPageDriverSer: DetailsPageService
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    this.countSpecialChecks(changes?.violationCardData?.currentValue);
     this.getViolationDropdown();
   }
   ngOnInit(): void {
@@ -39,42 +39,42 @@ export class ViolationCardViewComponent implements OnInit, OnChanges {
     );
   }
 
-  public countSpecialChecks(violDate: RoadsideInspectionResponse) {
-    this.specialChecksCounter = 0;
-    if (violDate?.alcContSubCheck) {
-      this.specialChecksCounter++;
-    }
-    if (violDate?.condByLocalJuris) {
-      this.specialChecksCounter++;
-    }
-    if (violDate?.sizeAndWeightEnf) {
-      this.specialChecksCounter++;
-    }
-    if (violDate?.eScreenInspection) {
-      this.specialChecksCounter++;
-    }
-    if (violDate?.trafficEnforcment) {
-      this.specialChecksCounter++;
-    }
-    if (violDate?.pasaConditionInsp) {
-      this.specialChecksCounter++;
-    }
-    if (violDate?.drugInterdSearch) {
-      this.specialChecksCounter++;
-    }
-    if (violDate?.borderEnfInspection) {
-      this.specialChecksCounter++;
-    }
-    if (violDate?.postCrashInspection) {
-      this.specialChecksCounter++;
-    }
-    if (violDate?.pbbtInspection) {
-      this.specialChecksCounter++;
-    }
-  }
+  // public countSpecialChecks(violDate: RoadsideInspectionResponse) {
+  //   this.specialChecksCounter = 0;
+  //   if (violDate?.alcContSubCheck) {
+  //     this.specialChecksCounter++;
+  //   }
+  //   if (violDate?.condByLocalJuris) {
+  //     this.specialChecksCounter++;
+  //   }
+  //   if (violDate?.sizeAndWeightEnf) {
+  //     this.specialChecksCounter++;
+  //   }
+  //   if (violDate?.eScreenInspection) {
+  //     this.specialChecksCounter++;
+  //   }
+  //   if (violDate?.trafficEnforcment) {
+  //     this.specialChecksCounter++;
+  //   }
+  //   if (violDate?.pasaConditionInsp) {
+  //     this.specialChecksCounter++;
+  //   }
+  //   if (violDate?.drugInterdSearch) {
+  //     this.specialChecksCounter++;
+  //   }
+  //   if (violDate?.borderEnfInspection) {
+  //     this.specialChecksCounter++;
+  //   }
+  //   if (violDate?.postCrashInspection) {
+  //     this.specialChecksCounter++;
+  //   }
+  //   if (violDate?.pbbtInspection) {
+  //     this.specialChecksCounter++;
+  //   }
+  // }
 
   public getViolationDropdown() {
-    this.violationDropdown = this.violationActiveQuery.getAll().map((item) => {
+    this.violationDropdown = this.violationMinimalQuery.getAll().map((item) => {
       return {
         id: item.id,
         name: item.report,
@@ -85,7 +85,7 @@ export class ViolationCardViewComponent implements OnInit, OnChanges {
 
   public onSelectViolation(event: any) {
     if (event.id !== this.violationCardData.id) {
-      this.violationList = this.violationActiveQuery.getAll().map((item) => {
+      this.violationList = this.violationMinimalQuery.getAll().map((item) => {
         return {
           id: item.id,
           name: item.report,

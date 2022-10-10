@@ -3,10 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { RepairTService } from '../repair.service';
-import {
-  RepairListResponse,
-  RepairResponsePagination,
-} from 'appcoretruckassist';
+import { RepairListResponse } from 'appcoretruckassist';
 import { RepairDetailsState, RepairDetailsStore } from './repair-details.store';
 
 @Injectable({
@@ -24,15 +21,13 @@ export class repairDetailsResolver implements Resolve<RepairDetailsState> {
   ): Observable<RepairDetailsState | boolean> {
     const shop_id = route.paramMap.get('id');
     let id = parseInt(shop_id);
-    return this.repairService
-      .getRepairListDetails(id, null, null, null, null)
-      .pipe(
-        catchError(() => {
-          return of('No repair data...');
-        }),
-        tap((repairPagination: RepairListResponse) => {
-          this.repairDetailsStore.set({ repairs: repairPagination.pagination });
-        })
-      );
+    return this.repairService.getRepairList(id).pipe(
+      catchError(() => {
+        return of('No repair data...');
+      }),
+      tap((repair: RepairListResponse) => {
+        this.repairDetailsStore.set([repair.pagination]);
+      })
+    );
   }
 }

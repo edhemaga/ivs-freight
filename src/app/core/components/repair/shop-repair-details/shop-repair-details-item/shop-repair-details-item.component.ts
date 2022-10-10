@@ -8,7 +8,7 @@ import {
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
-import { RepairShopResponse } from 'appcoretruckassist';
+import { RepairListResponse, RepairShopResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
@@ -18,6 +18,7 @@ import { RepairOrderModalComponent } from '../../../modals/repair-modals/repair-
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairTService } from '../../state/repair.service';
+import { RepairDetailsQuery } from '../../state/repair-details-state/repair-details.query';
 
 @Component({
   selector: 'app-shop-repair-details-item',
@@ -29,7 +30,7 @@ import { RepairTService } from '../../state/repair.service';
 })
 export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
   @Input() shopData: RepairShopResponse | any = null;
-  @Input() repairsData: any;
+  @Input() repairsData: RepairListResponse | any;
   public data;
   public dummyData: any;
   public reviewsRepair: any = [];
@@ -37,13 +38,12 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
   public repairShopDislike: number;
   public showRepairItems: boolean[] = [];
   private destroy$ = new Subject<void>();
-
+  public repairsTest: any;
   constructor(
     private dropDownService: DropDownService,
     private modalService: ModalService,
     private confirmationService: ConfirmationService,
-    private shopService: RepairTService,
-    private act_route: ActivatedRoute
+    private shopService: RepairTService
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.shopData?.currentValue != changes.shopData?.previousValue) {
@@ -56,6 +56,8 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
         this.showRepairItems[item.id] = false;
       });
     }
+    this.repairsData = changes?.repairsData?.currentValue;
+    console.log(changes?.repairsData?.currentValue);
   }
   ngOnInit(): void {
     // Confirmation Subscribe

@@ -28,8 +28,8 @@ export class RoadItemResolver implements Resolve<RoadItemState> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<RoadItemState> | Observable<any> {
-    const truck_id = route.paramMap.get('id');
-    let id = parseInt(truck_id);
+    const rs_id = route.paramMap.get('id');
+    let id = parseInt(rs_id);
     // if (this.rsdlq.hasEntity(id)) {
     //   return this.rsdlq.selectEntity(id).pipe(
     //     tap((roadResponse: RoadsideInspectionResponse) => {
