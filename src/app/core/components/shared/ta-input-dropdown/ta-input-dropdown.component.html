@@ -170,7 +170,7 @@
       <div *ngSwitchCase="'svgtext-template'">
         <div
           *ngFor="let option of options; trackBy: identity"
-          class="dropdown-option svg-text-template {{ option.subFolder }} {{
+          class="dropdown-option svg-text-template {{ option?.subFolder }} {{
             option.name.trim().replace(' ', '').toLowerCase()
           }}"
           [ngClass]="{
@@ -193,17 +193,17 @@
             [ngClass]="{
               active: option.id === activeItem?.id,
               'hide-hover-icons':
-                inputConfig.customClass === 'truck-trailer-dropdown' &&
+                inputConfig?.customClass === 'truck-trailer-dropdown' &&
                 !['No Results', 'Add New'].includes(option.name)
             }"
-            [src]="option.logoName"
+            [src]="option?.logoName | taSvg: option?.folder:option?.subFolder"
           ></svg-icon>
           <div
             class="svgtext-template-text"
             [ngClass]="{
-              'truck-text': option.subFolder === 'trucks',
+              'truck-text': option?.subFolder === 'trucks',
               'move-hover-text':
-                inputConfig.customClass === 'truck-trailer-dropdown' &&
+                inputConfig?.customClass === 'truck-trailer-dropdown' &&
                 !['No Results', 'Add New'].includes(option.name)
             }"
             [innerHtml]="
@@ -412,7 +412,7 @@
             'add-new-divider': option.name === 'Add New' && options.length > 1,
             active: option.id === activeItem?.id,
             'active-repair-truck-trailer': option?.status === 1,
-            'routing_dropdown': inputConfig.name == 'RoutingAddress'
+            routing_dropdown: inputConfig.name == 'RoutingAddress'
           }"
           (click)="onActiveItem(option)"
           [innerHtml]="
