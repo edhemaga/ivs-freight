@@ -232,6 +232,14 @@
               opacity: 0;
               transform: translateX(-30px);
             }
+
+            &.no-svg {
+              margin-right: 0px !important;
+            }
+
+            &.hazardous-svg {
+              line-height: 14px;
+            }
           }
 
           .svgtext-template-text {

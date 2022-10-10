@@ -1,5 +1,5 @@
 <div cdkDrag class="modal-container {{ customClass }}" ngBAutofocus>
-  <div [ngClass]="{ 'load-modal-content': customClass?.includes('load') }">
+  <div class="modal-original-part">
     <!-- Modal Header -->
     <div cdkDragHandle class="modal-header">
       <div
@@ -83,7 +83,7 @@
     <!-- Modal body -->
     <div class="modal-body">
       <!-- Modal content -->
-      <ng-content></ng-content>
+      <ng-content select="[origin]"></ng-content>
       <!-- Divider bottom -->
       <div *ngIf="bottomDivider" class="divider"></div>
     </div>
@@ -331,10 +331,7 @@
     </div>
   </div>
   <!-- Modal Map -->
-  <div
-    *ngIf="modalAdditionalPart"
-    [ngClass]="{ 'load-modal-additional-part': customClass?.includes('load') }"
-  >
-    MAPA / Hazard
+  <div *ngIf="modalAdditionalPart" class="modal-additional-part">
+    <ng-content select="[additional]"></ng-content>
   </div>
 </div>

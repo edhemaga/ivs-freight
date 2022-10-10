@@ -9,7 +9,6 @@ import { FormService } from '../../../services/form/form.service';
 import { LoadTService } from '../../load/state/load.service';
 import { LoadModalResponse } from '../../../../../../appcoretruckassist/model/loadModalResponse';
 import { NotificationService } from '../../../services/notification/notification.service';
-import moment from 'moment';
 
 @Component({
   selector: 'app-load-modal',
@@ -105,6 +104,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public companyUser: SignInResponse = null;
 
   public isDateRange: boolean = false;
+
+  public isHazardousPicked: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -211,6 +212,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       }
       case 'general-commodity': {
         this.selectedGeneralCommodity = event;
+        console.log(event);
+
+        this.isHazardousPicked = event.name.toLowerCase() === 'hazardous';
+
         break;
       }
       case 'selectedBroker': {
@@ -370,7 +375,18 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             };
           });
           this.labelsDoorType = res.doorTypes;
-          this.labelsGeneralCommodity = res.generalCommodities;
+          this.labelsGeneralCommodity = res.generalCommodities.map((item) => {
+            if (item.name.toLowerCase() === 'hazardous') {
+              return {
+                ...item,
+                logoName: 'ic_hazardous.svg',
+                folder: 'common',
+                subFolder: 'load',
+              };
+            }
+            return { ...item };
+          });
+
           this.labelsSuspension = res.suspensions;
           this.labelsTemplate = res.templates;
 

@@ -10,7 +10,11 @@
   (onTabHeaderChange)="onModalHeaderTabChange($event)"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="loadForm" class="form-container form-container-without-mb">
+  <form
+    origin
+    [formGroup]="loadForm"
+    class="form-container form-container-without-mb"
+  >
     <div *ngIf="selectedTab === 1" class="m-tab">
       <div class="load-ftl-first-row">
         <div class="ftl-load-status">UNASSIGNED</div>
@@ -82,12 +86,14 @@
         ></app-ta-input>
         <app-ta-input-dropdown
           formControlName="generalCommodity"
+          [template]="'svgtext-template'"
           [inputConfig]="{
             name: 'Input Dropdown',
             type: 'text',
             label: 'General Commodity',
             isDropdown: true,
-            dropdownWidthClass: 'w-col-178'
+            dropdownWidthClass: 'w-col-178',
+            placeholderIcon: isHazardousPicked ? 'hazardous-info' : null
           }"
           [options]="labelsGeneralCommodity"
           [activeItem]="selectedGeneralCommodity"
@@ -507,4 +513,5 @@
       <div class="row">LTL</div>
     </div>
   </form>
+  <div additional>Additional Succesfully</div>
 </app-ta-modal>

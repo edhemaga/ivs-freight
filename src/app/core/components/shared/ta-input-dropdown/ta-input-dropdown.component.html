@@ -194,7 +194,9 @@
               active: option.id === activeItem?.id,
               'hide-hover-icons':
                 inputConfig?.customClass === 'truck-trailer-dropdown' &&
-                !['No Results', 'Add New'].includes(option.name)
+                !['No Results', 'Add New'].includes(option.name),
+              'no-svg': !option?.logoName,
+              'hazardous-svg': option?.logoName?.includes('hazardous')
             }"
             [src]="option?.logoName | taSvg: option?.folder:option?.subFolder"
           ></svg-icon>
