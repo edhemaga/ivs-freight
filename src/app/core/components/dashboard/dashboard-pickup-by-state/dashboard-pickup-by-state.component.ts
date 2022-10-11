@@ -65,7 +65,7 @@ export class DashboardPickupByStateComponent implements OnInit, OnDestroy {
     hasPercentage: true,
     allowAnimation: true,
     offset: true,
-    tooltipOffset: {min: 105, max: 279},
+    tooltipOffset: { min: 105, max: 279 },
     dataLabels: [
       [20, 'MON'],
       [21, 'TUE'],
@@ -275,7 +275,7 @@ export class DashboardPickupByStateComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.timePeriod.changeTimePeriod('WTD');
+    this.timePeriod?.changeTimePeriod('WTD');
   }
 
   changeStateSwitchTabs(ev, useLast?) {
