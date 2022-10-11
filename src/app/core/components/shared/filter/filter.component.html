@@ -66,7 +66,10 @@
       [class.pm-filter]="leftSideIcon"
       [class.truck-icon-holder]="largeLeftIcon"
     >
-      <div class="filter-header" *ngIf="!expandSearch">
+      <div class="filter-header" 
+        [class.inactiveHeader]="expandSearch"
+        [class.activeHeader]="!expandSearch"
+      >
         <div class="user-filter-box" *ngIf="type != 'stateFilter'">
           {{ selectedUser.length }}
         </div>
@@ -85,7 +88,8 @@
       <div
         class="filter-header search-input-header"
         [class.activeSearch]="expandSearch"
-        *ngIf="expandSearch"
+        [class.inactiveSearch]="!expandSearch"
+        
         [formGroup]="searchForm"
       >
         <app-ta-input

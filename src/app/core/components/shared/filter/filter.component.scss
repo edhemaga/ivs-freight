@@ -56,7 +56,7 @@
     }
 
     &.filter-active-colors {
-      background-color: #536bc2 !important;
+      background-color: #536bc220 !important;
 
       .active-filter-num {
         background-color: #536bc2 !important;
@@ -174,6 +174,7 @@
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
+  overflow: hidden;
 
   .filter-header {
     position: relative;
@@ -184,6 +185,46 @@
     justify-content: flex-start;
     align-items: center;
     user-select: none;
+    
+
+    &.activeHeader{
+      
+      display: flex;
+
+      animation-name: showHeaderAnimation;
+      animation-delay: 0s;
+      animation-duration: 0.2s;
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards; 
+    }
+
+    &.inactiveHeader{
+      display: flex;
+
+      animation-name: hideHeaderAnimation;
+      animation-delay: 0s;
+      animation-duration: 0.2s;
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes showHeaderAnimation {
+      from {
+        right: 300px;
+      }
+      to {
+        right: 0px;
+      }
+    }
+
+    @keyframes hideHeaderAnimation {
+      from {
+       right: 0px;
+      }
+      to {
+        right: 300px;
+      }
+    }
 
     .user-filter-box {
       width: 24px;
@@ -285,8 +326,9 @@
     }
 
     &.search-input-header {
-      position: relative;
-      display: none;
+      position: absolute;
+      width: 248px;
+      //display: none;
       transition: 0.3s all;
       .input-form-holder {
         .input-custom-group {
@@ -301,23 +343,43 @@
 
         animation-name: showAnimationClass;
         animation-delay: 0s;
-        animation-duration: 0.3s;
+        animation-duration: 0.2s;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+      }
+
+      &.inactiveSearch{
+        display: flex;
+
+        animation-name: hideAnimation;
+        animation-delay: 0s;
+        animation-duration: 0.2s;
         animation-iteration-count: 1;
         animation-fill-mode: forwards;
       }
 
       @keyframes showAnimationClass {
         from {
-          //right: -260px;
-          //width: 0%;
-          margin-left: 100%;
-          //width: 300%;
+          margin-left: 95%;
+          width: 0px;
+          overflow: hidden;
         }
         to {
-          //right: 0px;
-          //width: 100%;
           margin-left: 0%;
-          width: 100%;
+          width: 248px;
+        }
+      }
+
+      @keyframes hideAnimation {
+        from {
+          margin-left: 0%;
+          width: 248px;
+        }
+        to {
+          margin-left: 95%;
+          width: 0px;
+          overflow: hidden;
+          display: none;
         }
       }
 
