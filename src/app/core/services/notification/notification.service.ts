@@ -24,7 +24,8 @@ export class NotificationService {
   } 
 
   public errorToastr(httpRequest: HttpRequest<any>, next: HttpHandler, error?){
-    if ( httpRequest.url.indexOf('applicant') > -1 || httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 || httpRequest.url.indexOf('division') > -1 ) {
+    
+    if ( ( error && error.status == 401 ) || httpRequest.url.indexOf('applicant') > -1 || httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 || httpRequest.url.indexOf('division') > -1 ) {
       return false;
     }
 

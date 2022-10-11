@@ -345,6 +345,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       case 'CDL':
         let driverFullName =  this.DetailsDataService.mainData?.fullName ? this.DetailsDataService.mainData?.fullName.toUpperCase() : this.DetailsDataService.mainData?.firstName.toUpperCase() + ' ' + this.DetailsDataService.mainData?.lastName.toUpperCase();
         let cdlNum = this.httpRequest.body?.cdlNumber ? this.httpRequest.body?.cdlNumber : ''; 
+        
+        console.log('cdl nummmmmm', this.httpRequest.body.formData);
+        console.log('cdl nummmmmm', this.httpRequest.body);
+
         //console.log('--this.httpRequest.body---', this.httpRequest.body);
         if ( !cdlNum ){
           let cdlId = lastVal;
