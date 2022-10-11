@@ -157,11 +157,8 @@ export class TruckassistTableBodyComponent
       .pipe(takeUntil(this.destroy$))
       .subscribe((offSet: any) => {
         if (offSet < 84) {
-          /* console.log('Postavlja se Virtual Scroll na 0'); */
           this.virtualScrollViewport.scrollToOffset(0);
         } else if (offSet > 84) {
-          /* console.log('Radi Virtual Skroll Gasi Se Skroll Za Page');
-          document.body.style.overflow = 'hidden'; */
           this.virtualScrollViewport.scrollToOffset(offSet);
         }
       });
@@ -504,7 +501,7 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  // 
+  // Show Insurance
   onShowInsurance(row: any){
     if (this.activeInsurance !== row.id) {
       this.activeInsurance = row.id;
@@ -514,9 +511,7 @@ export class TruckassistTableBodyComponent
   }
 
   // Save Inspectin Description
-  onSaveInspectinDescription() {
-    console.log('Poziva se onSaveInspectinDescription');
-  }
+  onSaveInspectinDescription() {}
 
   // Finish Order
   onFinishOrder(row: any) {

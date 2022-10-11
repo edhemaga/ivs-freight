@@ -24,14 +24,14 @@ export interface WorkExperienceItemReviewResponse {
     isEmailValid?: boolean;
     contactMessage?: string | null;
     isAddressValid?: boolean;
+    isAddressUnitValid?: boolean;
     addressMessage?: string | null;
-    isCfrPartValid?: boolean;
-    isFmcsaValid?: boolean;
-    cfrFmcsaMessage?: string | null;
     isReasonForLeavingValid?: boolean | null;
     reasonForLeavingMessage?: string | null;
     isAccountForPeriodBetweenValid?: boolean | null;
     accountForPeriodBetweenMessage?: string | null;
+    isPrimary?: boolean;
+    commonMessage?: string | null;
     workExperienceId?: number;
 }
 

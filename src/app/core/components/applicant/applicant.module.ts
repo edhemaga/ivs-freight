@@ -11,7 +11,6 @@ import { ReviewFeedbackService } from './state/services/review-feedback.service'
 import { ApplicantComponent } from './applicant/applicant.component';
 import { ApplicantHeaderComponent } from './applicant-header/applicant-header.component';
 import { ApplicantFooterComponent } from './applicant-footer/applicant-footer.component';
-import { ApplicantReviewFeedbackComponent } from './applicant-review-feedback/applicant-review-feedback.component';
 import { ApplicantSignaturePadComponent } from './applicant-signature-pad/applicant-signature-pad.component';
 import { ApplicantWelcomeScreenComponent } from './applicant-welcome-screen/applicant-welcome-screen.component';
 import { ApplicantEndScreenComponent } from './applicant-end-screen/applicant-end-screen.component';
@@ -43,7 +42,6 @@ import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
     ApplicantComponent,
     ApplicantHeaderComponent,
     ApplicantFooterComponent,
-    ApplicantReviewFeedbackComponent,
     ApplicantSignaturePadComponent,
     ApplicantNextBackBtnComponent,
     ApplicantWelcomeScreenComponent,
@@ -82,7 +80,6 @@ import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
     ApplicantHeaderComponent,
     ApplicantFooterComponent,
     ApplicantSignaturePadComponent,
-    ApplicantReviewFeedbackComponent,
   ],
   providers: [ReviewFeedbackService],
 })

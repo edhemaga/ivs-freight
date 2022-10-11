@@ -114,14 +114,11 @@
                 label: 'Address, City, State Zip',
                 isRequired: true,
                 placeholderIcon: 'address',
-                placeholder: 'Address, City, State Zip',
                 textTransform: 'capitalize',
-                dropdownWidthClass: 'w-col-512',
-                minLength: 12,
-                maxLength: 256,
-                isDropdown: true
+                dropdownWidthClass: 'w-col-510',
+                minLength: 6,
+                maxLength: 256
               }"
-              [incorrectValue]="false"
               [placeholderType]="'longAddress'"
               [activeAddress]="selectedAddress"
               (selectedAddress)="onHandleAddress($event)"
@@ -534,12 +531,14 @@
                   <app-ta-input
                     formControlName="bussinesName"
                     [inputConfig]="{
-                      name: 'Bussines Name',
+                      name: 'Business Name',
                       type: 'text',
-                      label: 'Bussines Name',
+                      label: 'Business Name',
                       isRequired: !!owner,
-                      textTransform: 'capitalize',
-                      isDisabled: !!(!driverForm.get('ein').value || owner)
+                      textTransform: 'uppercase',
+                      isDisabled: !!(!driverForm.get('ein').value || owner),
+                      minLength: 2,
+                      maxLength: 64
                     }"
                   ></app-ta-input>
                 </div>

@@ -48,7 +48,8 @@ export class TaCustomCardComponent implements OnChanges {
   noActive: string;
 
   @Input() set isCardOpen(value: boolean) {
-    this.noActive = value ? "active" : "innactive";
+    this.noActive = value ? 'active' : 'innactive';
+    this._isCardOpen = value;
   }
 
   @Input() isCommentData: boolean = false;
@@ -76,19 +77,19 @@ export class TaCustomCardComponent implements OnChanges {
 
   constructor(private uploadFileService: TaUploadFileService) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
 
   public isCardOpenEvent(event: any) {
     if (!this.disabledCard) {
       event.preventDefault();
       event.stopPropagation();
-      if (this.hasBodyData) {
-        const oldNoActive = this.noActive;
-        this.noActive = "";
-        this._isCardOpen = oldNoActive == 'innactive' ? true : !this._isCardOpen;
-        
-      }
+      // if (this.hasBodyData) {
+
+      // }
+
+      const oldNoActive = this.noActive;
+      this.noActive = '';
+      this._isCardOpen = oldNoActive == 'innactive' ? true : !this._isCardOpen;
       this.zoneTriger = !this.zoneTriger;
       this.uploadFileService.visibilityDropZone(this.zoneTriger);
       this.onOpenCard.emit(this._isCardOpen);

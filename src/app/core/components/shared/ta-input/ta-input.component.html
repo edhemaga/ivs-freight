@@ -40,7 +40,8 @@
         !inputConfig.commands?.active &&
         !inputConfig?.loadingSpinner?.isLoading) ||
       (inputConfig.commands?.active &&
-        inputConfig.commands.type !== 'pm-increment-decrement')
+        inputConfig.commands.type !== 'pm-increment-decrement') ||
+      inputConfig.incorrectInput
     "
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
@@ -406,9 +407,13 @@
   <!-- Input Placeholder Text -->
   <svg-icon
     *ngIf="inputConfig.placeholderText && getSuperControl.value"
-    class="placeholder-text"
+    class="placeholder-text {{ inputConfig.customClass }}"
     [class.focused]="focusInput"
-    [style.left]="11 + getSuperControl.value.toString().length * 7 + 'px'"
+    [style.left]="
+      (inputConfig.placeholderIcon ? 42 : 11) +
+      getSuperControl.value.toString().length * 7 +
+      'px'
+    "
     [src]="inputConfig.placeholderText?.toLowerCase() | taSvg: 'common'"
   >
   </svg-icon>

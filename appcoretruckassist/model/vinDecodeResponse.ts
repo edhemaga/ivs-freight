@@ -11,7 +11,7 @@
  */
 import { TruckMakeResponse } from './truckMakeResponse';
 import { TrailerMakeResponse } from './trailerMakeResponse';
-import { TruckEngineTypeResponse } from './truckEngineTypeResponse';
+import { TruckEngineModelResponse } from './truckEngineModelResponse';
 
 
 export interface VinDecodeResponse { 
@@ -19,6 +19,6 @@ export interface VinDecodeResponse {
     year?: number | null;
     truckMake?: TruckMakeResponse;
     trailerMake?: TrailerMakeResponse;
-    engineType?: TruckEngineTypeResponse;
+    engineModel?: TruckEngineModelResponse;
 }
 

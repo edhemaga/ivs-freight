@@ -31,9 +31,14 @@ export const card_modal_animation = (type: string) =>
         overflow: 'hidden',
         opacity: '0',
         'margin-top': '0px',
-        'margin-bottom': '0px',
+      })
+    ),
+    state(
+      'null',
+      style({
+        height: '*',
       })
     ),
     transition('false <=> true', [animate('.3s ease-in-out')]),
-    transition('null <=> false', [animate('.3s ease-in-out')]),
+    transition('true <=> false', [animate('.3s ease-in-out')])
   ]);

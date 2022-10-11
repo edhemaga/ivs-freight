@@ -200,8 +200,8 @@ export class TodoService {
 
     /**
      * @param status 
-     * @param companyUserId 
-     * @param departmentId 
+     * @param companyUserIds 
+     * @param departmentIds 
      * @param dateFrom 
      * @param dateTo 
      * @param pageIndex 
@@ -214,23 +214,27 @@ export class TodoService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTodoListGet(status?: TodoStatus, companyUserId?: number, departmentId?: number, dateFrom?: string, dateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<TodoListResponse>;
-    public apiTodoListGet(status?: TodoStatus, companyUserId?: number, departmentId?: number, dateFrom?: string, dateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<TodoListResponse>>;
-    public apiTodoListGet(status?: TodoStatus, companyUserId?: number, departmentId?: number, dateFrom?: string, dateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<TodoListResponse>>;
-    public apiTodoListGet(status?: TodoStatus, companyUserId?: number, departmentId?: number, dateFrom?: string, dateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiTodoListGet(status?: TodoStatus, companyUserIds?: Array<number>, departmentIds?: Array<number>, dateFrom?: string, dateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<TodoListResponse>;
+    public apiTodoListGet(status?: TodoStatus, companyUserIds?: Array<number>, departmentIds?: Array<number>, dateFrom?: string, dateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<TodoListResponse>>;
+    public apiTodoListGet(status?: TodoStatus, companyUserIds?: Array<number>, departmentIds?: Array<number>, dateFrom?: string, dateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<TodoListResponse>>;
+    public apiTodoListGet(status?: TodoStatus, companyUserIds?: Array<number>, departmentIds?: Array<number>, dateFrom?: string, dateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (status !== undefined && status !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>status, 'Status');
         }
-        if (companyUserId !== undefined && companyUserId !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>companyUserId, 'CompanyUserId');
+        if (companyUserIds) {
+            companyUserIds.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'CompanyUserIds');
+            })
         }
-        if (departmentId !== undefined && departmentId !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>departmentId, 'DepartmentId');
+        if (departmentIds) {
+            departmentIds.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'DepartmentIds');
+            })
         }
         if (dateFrom !== undefined && dateFrom !== null) {
           queryParameters = this.addToHttpParams(queryParameters,

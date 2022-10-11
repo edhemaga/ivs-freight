@@ -75,6 +75,8 @@ export class TruckassistTableToolbarComponent
   inactiveTimeOutInterval: any;
   timeOutToaggleColumn: any;
   columnsOptions: any[] = [];
+  isMapShowning: boolean = false;
+  tableConfigurationType: string = '';
 
   constructor(private tableService: TruckassistTableService) {}
 
@@ -83,6 +85,8 @@ export class TruckassistTableToolbarComponent
     this.getSelectedTabTableData();
 
     this.getToolbarWidth();
+
+    this.getActiveTableData();
 
     // Columns Reorder
     this.tableService.currentColumnsOrder
@@ -128,6 +132,8 @@ export class TruckassistTableToolbarComponent
     if (!changes?.tableData?.firstChange && changes?.tableData) {
       this.tableData = changes.tableData.currentValue;
 
+      this.getActiveTableData();
+
       this.getSelectedTabTableData();
     }
 
@@ -144,6 +150,13 @@ export class TruckassistTableToolbarComponent
 
       this.listName = td.gridNameTitle;
     }
+  }
+
+  // Get Active Table Data
+  getActiveTableData(){
+    const td = this.tableData.find((t) => t.isActive);
+
+    this.tableConfigurationType = td.tableConfiguration;
   }
 
   // Get Toolbar Width
@@ -209,6 +222,8 @@ export class TruckassistTableToolbarComponent
       action: 'view-mode',
       mode: modeView.mode,
     });
+
+    this.isMapShowning = modeView.mode === 'Map';
   }
 
   // Delete Selected Rows
@@ -264,6 +279,8 @@ export class TruckassistTableToolbarComponent
     } else if (action.text === 'Columns') {
       action.active = !action.active;
     } else if (action.text === 'Reset Columns') {
+      localStorage.removeItem(`table-${this.tableConfigurationType}-Configuration`);
+
       this.tableService.sendResetColumns(true);
     } else {
       alert('Treba da se odradi!');
@@ -305,6 +322,13 @@ export class TruckassistTableToolbarComponent
     this.timeOutToaggleColumn = setTimeout(() => {
       if (!column.isPined) {
         column.hidden = !column.hidden;
+
+        console.log('Sakrila se ili se dodala kolona');
+
+        localStorage.setItem(
+          `table-${this.tableConfigurationType}-Configuration`,
+          JSON.stringify(this.columns)
+        );
 
         this.tableService.sendToaggleColumn({
           column: column,

@@ -382,20 +382,53 @@
             }
           }
         }
+
+        &.routing_dropdown {
+          font-size: 11px;
+          height: 22px;
+        }
       }
 
       //------------------------ Custom width dependent on 'col' bootstrap ------------------------
 
+      &.w-col-709 {
+        width: 709px;
+      }
+
       &.w-col-686 {
         width: 686px;
+      }
+
+      &.w-col-629 {
+        width: 629px;
       }
 
       &.w-col-616 {
         width: 616px;
       }
 
-      &.w-col-512 {
-        width: 512px;
+      &.w-col-582 {
+        width: 582px;
+      }
+
+      &.w-col-557 {
+        width: 557px;
+      }
+
+      &.w-col-510 {
+        width: 510px;
+      }
+
+      &.w-col-503 {
+        width: 503px;
+      }
+
+      &.w-col-501 {
+        width: 501px;
+      }
+
+      &.w-col-477 {
+        width: 477px;
       }
 
       &.w-col-456 {
@@ -406,12 +439,24 @@
         width: 455px;
       }
 
+      &.w-col-452 {
+        width: 452px;
+      }
+
       &.w-col-439 {
         width: 439px;
       }
 
+      &.w-col-429 {
+        width: 429px;
+      }
+
       &.w-col-422 {
         width: 422px;
+      }
+
+      &.w-col-418 {
+        width: 418px;
       }
 
       &.w-col-416 {
@@ -420,6 +465,14 @@
 
       &.w-col-414 {
         width: 414px;
+      }
+
+      &.w-col-407 {
+        width: 407px;
+      }
+
+      &.w-col-405 {
+        width: 405px;
       }
 
       &.w-col-403 {
@@ -444,6 +497,10 @@
 
       &.w-col-332 {
         width: 332px;
+      }
+
+      &.w-col-310 {
+        width: 310px;
       }
 
       &.w-col-308 {
@@ -694,7 +751,8 @@
 
       // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------
       &.dropdown-options-groups {
-        max-height: 495px;
+        max-height: 198px;
+        overflow-y: scroll;
 
         .dropdown-groups {
           display: flex;
@@ -719,14 +777,19 @@
             padding: 0 6px;
             margin-bottom: 8px;
 
+            &::-moz-selection {
+              background-color: rgb(204, 204, 204, 0.2) !important;
+              color: #cccccc !important;
+            }
+
             &::selection {
-              background-color: rgb(204, 204, 204, 0.2);
-              color: #cccccc;
+              background-color: rgb(204, 204, 204, 0.2) !important;
+              color: #cccccc !important;
             }
 
             &::-moz-selection {
-              background-color: rgb(204, 204, 204, 0.2);
-              color: #cccccc;
+              background-color: rgb(204, 204, 204, 0.2) !important;
+              color: #cccccc !important;
             }
           }
 
@@ -748,14 +811,19 @@
                 color: #3c3c3c;
                 transition: all 0.3s ease-in-out;
 
+                &::-moz-selection {
+                  background-color: rgb(60, 60, 60, 0.2) !important;
+                  color: #3c3c3c !important;
+                }
+
                 &::selection {
-                  background-color: rgb(60, 60, 60, 0.2);
-                  color: #3c3c3c;
+                  background-color: rgb(60, 60, 60, 0.2) !important;
+                  color: #3c3c3c !important;
                 }
 
                 &::-moz-selection {
-                  background-color: rgb(60, 60, 60, 0.2);
-                  color: #3c3c3c;
+                  background-color: rgb(60, 60, 60, 0.2) !important;
+                  color: #3c3c3c !important;
                 }
 
                 &.active {
@@ -904,6 +972,11 @@
         color: #6c6c6c;
         display: flex;
         gap: 4px;
+
+        &::-moz-selection {
+          color: #6c6c6c;
+          background-color: rgb(108, 108, 108, 0.2);
+        }
 
         &:nth-last-child(1) {
           margin-bottom: 0px;

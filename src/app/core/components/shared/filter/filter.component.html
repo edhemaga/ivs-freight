@@ -8,12 +8,13 @@
     'active-options': activeFilter,
     'filter-active-colors':
       selectedUser.length > 0 ||
+      filterActiveArray.length > 0 ||
       selectedTimeValue != '' ||
       canadaSelectedStates.length > 0 ||
       usaSelectedStates.length ||
       rangeValue > 0 ||
       moneyFilterStatus ||
-      locationState != ''
+      longVal != 0
   }"
 >
   <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
@@ -26,6 +27,9 @@
     <svg-icon [src]="icon | taSvg: 'common'"></svg-icon>
     <div *ngIf="selectedUser.length > 0" class="active-filter-num">
       {{ selectedUser.length }}
+    </div>
+    <div *ngIf=" activeFormNum > 0 " class="active-filter-num">
+      {{activeFormNum}}
     </div>
     <div
       *ngIf="canadaSelectedStates.length > 0 || usaSelectedStates.length > 0"
@@ -40,7 +44,8 @@
         canadaSelectedStates.length > 0 ||
         usaSelectedStates.length > 0 ||
         rangeValue > 0 ||
-        moneyFilterStatus
+        moneyFilterStatus ||
+        longVal != 0
       "
       class="active-filter-num clear-filter"
       (mouseenter)="hoverClose = true"
@@ -140,7 +145,7 @@
             class="user-profile-img selected-filter-icon"
             *ngIf="leftSideIcon"
           >
-            <svg-icon src="{{ item.icon }}"></svg-icon>
+            <svg-icon src="{{ item.activeIcon ? item.activeIcon : item.icon }}"></svg-icon>
           </div>
           <div class="selected-user-frame">
             <div class="selected-name-text">
@@ -623,6 +628,7 @@
           class="button-clear"
           [class.active]="
             selectedUser.length > 0 ||
+            filterActiveArray.length > 0 ||
             canadaSelectedStates.length > 0 ||
             usaSelectedStates.length > 0
           "
@@ -634,6 +640,7 @@
           class="button-set"
           [class.active]="
             (selectedUser.length > 0 ||
+              filterActiveArray.length > 0 ||
               canadaSelectedStates.length > 0 ||
               usaSelectedStates.length > 0) &&
             setButtonAvailable
@@ -988,14 +995,14 @@
         <div
           (click)="clearAll($event)"
           class="button-clear"
-          [class.active]="selectedTimeValue != ''"
+          [class.active]="selectedTimeValue != filterActiveTime || selectedTimeValue != '' "
         >
           Clear
         </div>
         <div
           (click)="setFilterValue($event)"
           class="button-set"
-          [class.active]="selectedTimeValue != '' && setButtonAvailable"
+          [class.active]="selectedTimeValue != filterActiveTime"
         >
           Set
         </div>
@@ -1218,7 +1225,7 @@
         class="border-filter money-bottom-border-magin form-border"
         [class.hiddenFormBorder]="!showPart3"
       ></div>
-      <div class="buttons-holder">
+      <div class="buttons-holder" *ngIf="subType == 'all'">
         <div
           (click)="clearAll($event)"
           class="button-clear"
@@ -1230,6 +1237,22 @@
           (click)="setFilterValue($event)"
           class="button-set"
           [class.active]="moneyFilterStatus && setButtonAvailable"
+        >
+          Set
+        </div>
+      </div>
+      <div class="buttons-holder" *ngIf="subType != 'all'">
+        <div
+          (click)="clearAll($event)"
+          class="button-clear"
+          [class.active]="moneyFilterStatus"
+        >
+          Clear All
+        </div>
+        <div
+          (click)="setFilterValue($event)"
+          class="button-set"
+          [class.active]="moneyFilterStatus && setButtonAvailable && !singleFormError"
         >
           Set
         </div>
@@ -1299,7 +1322,6 @@
               placeholderInsteadOfLabel: true,
               customClass: 'line-input-26'
             }"
-            [incorrectValue]="false"
             [placeholderType]="'longAddress'"
             (incorrectEvent)="incorrectInput($event, 0, 18)"
             [activeAddress]="selectedAddress"

@@ -18,19 +18,19 @@
             ></app-truckassist-search>
           </div>
           <div class="border-right"></div>
-          <div class="box-icons" >
-            <app-filter 
-              [type]="'timeFilter'" 
-              [filterTitle]="'Time Filter'" 
+          <div class="box-icons">
+            <app-filter
+              [type]="'timeFilter'"
+              [filterTitle]="'Time Filter'"
               [icon]="'pending'"
               [toDoSubType]="'to-do'"
               (setFilter)="setFilterEvent($event)"
-              > 
+            >
             </app-filter>
           </div>
           <div class="border-right"></div>
           <div class="box-icons">
-            <app-filter 
+            <app-filter
               [type]="'userFilter'"
               [searchState]="true"
               [filterTitle]="'User Filter'"
@@ -41,7 +41,7 @@
             </app-filter>
           </div>
           <div class="border-right"></div>
-          <div class="box-icons" >
+          <div class="box-icons">
             <app-filter
               [type]="'departmentFilter'"
               [icon]="'tab'"
@@ -90,12 +90,13 @@
             ></app-truckassist-search>
           </div>
           <div class="border-right"></div>
-          <div class="box-icons" >
-            <app-filter 
-              [type]="'timeFilter'" 
+          <div class="box-icons">
+            <app-filter
+              [type]="'timeFilter'"
               [icon]="'pending'"
               [toDoSubType]="'ongoing'"
-              (setFilter)="setFilterEvent($event)"> 
+              (setFilter)="setFilterEvent($event)"
+            >
             </app-filter>
           </div>
           <div class="border-right"></div>
@@ -111,7 +112,7 @@
             </app-filter>
           </div>
           <div class="border-right"></div>
-          <div class="box-icons" >
+          <div class="box-icons">
             <app-filter
               [type]="'departmentFilter'"
               [icon]="'tab'"
@@ -145,11 +146,12 @@
           </div>
           <div class="border-right"></div>
           <div class="box-icons">
-            <app-filter 
-              [type]="'timeFilter'" 
+            <app-filter
+              [type]="'timeFilter'"
               [icon]="'pending'"
               [toDoSubType]="'done'"
-              (setFilter)="setFilterEvent($event)"> 
+              (setFilter)="setFilterEvent($event)"
+            >
             </app-filter>
           </div>
           <div class="border-right"></div>
@@ -165,7 +167,7 @@
             </app-filter>
           </div>
           <div class="border-right"></div>
-          <div class="box-icons" >
+          <div class="box-icons">
             <app-filter
               [type]="'departmentFilter'"
               [icon]="'tab'"
@@ -318,27 +320,34 @@
                   >
                     <div class="dispatch-box everybody">Everybody</div>
                   </div>
-                  <div
-                    class="assigned_user_hold"
-                    *ngIf="item.todoUsers?.length"
-                  >
+                  <div class="main_users_hold">
                     <div
-                      class="assigned_user_hold_inner"
-                      *ngFor="let user of item.todoUsers; let indx = index"
+                      class="assigned_user_hold"
+                      *ngIf="item.todoUsers?.length"
                     >
-                      <img
-                        *ngIf="user?.avatar"
-                        class="user_avatar"
-                        [src]="imageBase64Service.sanitizer(user?.avatar)"
-                      />
-                      <div class="user_profile_image" *ngIf="!user.avatar">
-                        <app-profile-images
-                          [indx]="indx"
-                          [name]="user.firstName + ' ' + user.lastName"
-                          [size]="'medium'"
-                          [type]="'user'"
-                        >
-                        </app-profile-images>
+                      <div
+                        class="assigned_user_hold_inner"
+                        *ngFor="let user of item.todoUsers; let indx = index"
+                      >
+                        <img
+                          *ngIf="user?.avatar"
+                          class="user_avatar"
+                          [src]="imageBase64Service.sanitizer(user?.avatar)"
+                        />
+                        <div class="user_profile_image" *ngIf="!user.avatar">
+                          <app-profile-images
+                            [indx]="indx"
+                            [name]="user.firstName + ' ' + user.lastName"
+                            [size]="'medium'"
+                            [type]="'user'"
+                          >
+                          </app-profile-images>
+                        </div>
+                        <div class="user_tooltip_name_hold">
+                          <div class="user_tooltip_name">
+                            {{ user.firstName + " " + user.lastName }}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -351,9 +360,13 @@
                 </div>
                 <div
                   class="comment_main_holder"
-                  [class.closed]="!item.commentActive"
+                  [@showHideCardBody]="item.commentActive ? 'true' : 'false'"
                 >
-                  <div class="comment-holder">
+                  <div
+                    class="comment-holder"
+                    [class.no_comments]="!item.comments?.length"
+                    [class.show_border]="item.deadline"
+                  >
                     <div
                       class="todo_list_holder"
                       [class.expand]="newComment || item.comments?.length"
@@ -421,7 +434,7 @@
     </smooth-dnd-container>
   </div>
 
-  <div class="widgets-holder">
+  <!-- <div class="widgets-holder">
     <div class="widgets-title-holder">
       <div class="widgets-title-frame">
         <div class="widgets-title">Widgets</div>
@@ -725,5 +738,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>

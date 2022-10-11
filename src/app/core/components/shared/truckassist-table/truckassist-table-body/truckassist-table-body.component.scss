@@ -2664,7 +2664,7 @@ table {
   z-index: -1;
   animation: drop-new-row 0.3s ease-out, show-new-row 0.25s ease-out;
 
-  .columns-container{
+  .columns-container {
     animation: hide-new-row-background 2s ease-in 0.3s;
   }
 }
@@ -2684,17 +2684,17 @@ table {
     opacity: 0;
   }
   100% {
-    opacity: 1
+    opacity: 1;
   }
 }
 
 // 2
 @keyframes hide-new-row-background {
   0% {
-    background: #E0EAF8;
+    background: #e0eaf8;
   }
   100% {
-    background: #ffffff
+    background: #ffffff;
   }
 }
 
@@ -2705,22 +2705,26 @@ table {
 }
 
 // Deactivate Animation
-.deactivate-animation{
+.deactivate-animation {
   position: relative;
 
-  animation: deactivate-row-move-right 0.3s ease-in 0.3s, deactivate-row-visibility 0.25s ease-in 0.3s, deactivate-row-decrease-height 0.3s ease-in 0.6s;
+  animation: deactivate-row-move-right 0.3s ease-in 0.3s,
+    deactivate-row-visibility 0.25s ease-in 0.3s,
+    deactivate-row-decrease-height 0.3s ease-in 0.6s;
 
-  .columns-container{
+  .columns-container {
     animation: deactivate-row-add-color 0.3s ease-in;
   }
 }
 
-.multiple-deactivate-animation{
+.multiple-deactivate-animation {
   position: relative;
 
-  animation: deactivate-row-move-right 0.3s ease-in 0.3s, deactivate-row-visibility 0.25s ease-in 0.3s, deactivate-row-decrease-height 0.3s ease-in 0.6s;
+  animation: deactivate-row-move-right 0.3s ease-in 0.3s,
+    deactivate-row-visibility 0.25s ease-in 0.3s,
+    deactivate-row-decrease-height 0.3s ease-in 0.6s;
 
-  .columns-container{
+  .columns-container {
     animation: multiple-deactivate-row-add-color 0.3s ease-in;
   }
 }
@@ -2731,28 +2735,28 @@ table {
     background: #ffffff;
   }
   100% {
-    background: #FFF3E0;
+    background: #fff3e0;
   }
 }
 
 @keyframes multiple-deactivate-row-add-color {
   0% {
-    background: #E5E5E5;
+    background: #e5e5e5;
   }
   100% {
-    background: #FFF3E0;
+    background: #fff3e0;
   }
 }
 
 // 2
 @keyframes deactivate-row-move-right {
   0% {
-    background: #FFF3E0;
+    background: #fff3e0;
     right: 0;
     opacity: 1;
   }
   100% {
-    background: #FFF3E0;
+    background: #fff3e0;
     right: -40px;
     opacity: 0;
   }
@@ -2760,11 +2764,11 @@ table {
 
 @keyframes deactivate-row-visibility {
   0% {
-    background: #FFF3E0;
+    background: #fff3e0;
     opacity: 1;
   }
   100% {
-    background: #FFF3E0;
+    background: #fff3e0;
     opacity: 0;
   }
 }
@@ -2784,22 +2788,26 @@ table {
 }
 
 // Activate Animation
-.activate-animation{
+.activate-animation {
   position: relative;
 
-  animation: activate-row-move-right 0.3s ease-in 0.3s, activate-row-visibility 0.25s ease-in 0.3s, activate-row-decrease-height 0.3s ease-in 0.6s;
+  animation: activate-row-move-right 0.3s ease-in 0.3s,
+    activate-row-visibility 0.25s cubic-bezier(0.5, 1, 0.89, 1), 0.3s,
+    activate-row-decrease-height 0.3s ease-in 0.6s;
 
-  .columns-container{
+  .columns-container {
     animation: activate-row-add-color 0.3s ease-in;
   }
 }
 
-.multiple-activate-animation{
+.multiple-activate-animation {
   position: relative;
 
-  animation: activate-row-move-right 0.3s ease-in 0.3s, activate-row-visibility 0.25s ease-in 0.3s, activate-row-decrease-height 0.3s ease-in 0.6s;
+  animation: activate-row-move-right 0.3s ease-in 0.3s,
+    activate-row-visibility 0.25s ease-in 0.3s,
+    activate-row-decrease-height 0.3s ease-in 0.6s;
 
-  .columns-container{
+  .columns-container {
     animation: multiple-activate-row-add-color 0.3s ease-in;
   }
 }
@@ -2810,28 +2818,28 @@ table {
     background: #ffffff;
   }
   100% {
-    background: #E0EAF8;
+    background: #e0eaf8;
   }
 }
 
 @keyframes multiple-activate-row-add-color {
   0% {
-    background: #E5E5E5;
+    background: #e5e5e5;
   }
   100% {
-    background: #E0EAF8;
+    background: #e0eaf8;
   }
 }
 
 // 2
 @keyframes activate-row-move-right {
   0% {
-    background: #E0EAF8;
+    background: #e0eaf8;
     right: 0;
     opacity: 1;
   }
   100% {
-    background: #E0EAF8;
+    background: #e0eaf8;
     right: 40px;
     opacity: 0;
   }
@@ -2839,11 +2847,11 @@ table {
 
 @keyframes activate-row-visibility {
   0% {
-    background: #E0EAF8;
+    background: #e0eaf8;
     opacity: 1;
   }
   100% {
-    background: #E0EAF8;
+    background: #e0eaf8;
     opacity: 0;
   }
 }
@@ -2867,20 +2875,24 @@ table {
   overflow: hidden !important;
   min-height: unset !important;
 
-  animation: deleting-row-decrease-size 0.3s ease-in 0.3s, deleting-row-visibility 0.3s ease-in 0.3s, deleting-row-decrease-height 0.3s ease-in 0.6s;
+  animation: deleting-row-decrease-size 0.3s ease-in 0.3s,
+    deleting-row-visibility 0.3s ease-in 0.3s,
+    deleting-row-decrease-height 0.3s ease-in 0.6s;
 
-  .columns-container{
+  .columns-container {
     animation: deleting-row-add-color 0.3s ease-in;
   }
 }
 
-.multiple-delete-animation{
+.multiple-delete-animation {
   overflow: hidden !important;
   min-height: unset !important;
 
-  animation: deleting-row-decrease-size 0.3s ease-in 0.3s, deleting-row-visibility 0.3s ease-in 0.3s, deleting-row-decrease-height 0.3s ease-in 0.6s;
+  animation: deleting-row-decrease-size 0.3s ease-in 0.3s,
+    deleting-row-visibility 0.3s ease-in 0.3s,
+    deleting-row-decrease-height 0.3s ease-in 0.6s;
 
-  .columns-container{
+  .columns-container {
     animation: multiple-deleting-row-add-color 0.3s ease-in;
   }
 }
@@ -2888,10 +2900,10 @@ table {
 // 1
 @keyframes multiple-deleting-row-add-color {
   0% {
-    background: #E5E5E5;
+    background: #e5e5e5;
   }
   100% {
-    background: #FFEBEE;
+    background: #ffebee;
   }
 }
 
@@ -2900,18 +2912,18 @@ table {
     background: #ffffff;
   }
   100% {
-    background: #FFEBEE;
+    background: #ffebee;
   }
 }
 
 // 2
 @keyframes deleting-row-decrease-size {
   0% {
-    background: #FFEBEE;
+    background: #ffebee;
     transform: scaleX(1);
   }
   100% {
-    background: #FFEBEE;
+    background: #ffebee;
     transform: scaleX(0.7);
   }
 }

@@ -9,7 +9,7 @@ import { ApplicantActionsService } from '../../state/services/applicant-actions.
 
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { CreateDisclosureReleaseCommand } from 'appcoretruckassist/model/models';
+/* import { CreateDisclosureReleaseCommand } from 'appcoretruckassist/model/models'; */
 
 @Component({
   selector: 'app-step10',
@@ -125,7 +125,7 @@ export class Step10Component implements OnInit, OnDestroy {
     const { isSixthDisclosure, ...disclosureReleaseForm } =
       this.disclosureReleaseForm.value;
 
-    const saveData: CreateDisclosureReleaseCommand = {
+    const saveData: /* CreateDisclosureReleaseCommand */ any = {
       ...disclosureReleaseForm,
       applicantId: this.applicantId,
       isSixDisclosure: isSixthDisclosure,

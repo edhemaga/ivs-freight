@@ -31,9 +31,6 @@ export class ReviewsRatingService {
   public addRating(data: CreateRatingCommand): Observable<any> {
     return this.reviewRatingService.apiRatingReviewRatingPost(data).pipe(
       tap((rating: any) => {
-        console.log('addRating');
-        console.log(rating);
-
         if (rating.entityType.name === 'Broker') {
           this.brokerStore.update(({ id }) => id === rating.entityId, {
             upCount: rating.upCount,
