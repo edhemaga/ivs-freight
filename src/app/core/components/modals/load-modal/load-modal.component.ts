@@ -1,4 +1,8 @@
-import { SignInResponse } from 'appcoretruckassist';
+import {
+  CreateCommentCommand,
+  SignInResponse,
+  UpdateCommentCommand,
+} from 'appcoretruckassist';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -9,6 +13,8 @@ import { FormService } from '../../../services/form/form.service';
 import { LoadTService } from '../../load/state/load.service';
 import { LoadModalResponse } from '../../../../../../appcoretruckassist';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { CommentsService } from '../../../services/comments/comments.service';
+import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
 
 @Component({
   selector: 'app-load-modal',
@@ -118,7 +124,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private formService: FormService,
     private loadService: LoadTService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private commentsService: CommentsService
   ) {}
 
   ngOnInit() {
@@ -281,6 +288,26 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     this.documents = event.files;
   }
 
+  public changeCommentsEvent(comments: ReviewCommentModal) {
+    switch (comments.action) {
+      case 'delete': {
+        this.deleteComment(comments);
+        break;
+      }
+      case 'add': {
+        this.addComment(comments);
+        break;
+      }
+      case 'update': {
+        this.updateComment(comments);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
   public createComment() {
     if (this.comments.some((item) => item.isNewReview)) {
       return;
@@ -312,29 +339,85 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public changeCommentsEvent(comments: any) {
-    switch (comments.action) {
-      case 'delete': {
-        this.deleteComment(comments);
-        break;
-      }
-      case 'add': {
-        this.addComment(comments);
-        break;
-      }
-      case 'update': {
-        this.updateComment(comments);
-        break;
-      }
-      default: {
-        break;
-      }
-    }
+  public addComment(comments: ReviewCommentModal) {
+    const comment: CreateCommentCommand = {
+      entityTypeCommentId: 2,
+      entityTypeId: this.editData.id,
+      commentContent: comments.data.commentContent,
+    };
+
+    this.commentsService
+      .createComment(comment)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          this.comments = comments.sortData.map((item, index) => {
+            if (index === 0) {
+              return {
+                ...item,
+                id: res.id,
+              };
+            }
+            return item;
+          });
+          this.notificationService.success(
+            'Comment successfully created.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Comment can't be created.", 'Error:');
+        },
+      });
   }
 
-  public deleteComment(comments: any) {}
-  public addComment(comments: any) {}
-  public updateComment(comments: any) {}
+  public deleteComment(comments: ReviewCommentModal) {
+    this.comments = comments.sortData;
+    this.commentsService
+      .deleteCommentById(comments.data)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Comment successfully deleted.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Comment cant't be deleted.",
+            'Error:'
+          );
+        },
+      });
+  }
+
+  public updateComment(comments: ReviewCommentModal) {
+    this.comments = comments.sortData;
+
+    const comment: UpdateCommentCommand = {
+      id: comments.data.id,
+      commentContent: comments.data.commentContent,
+    };
+
+    this.commentsService
+      .updateComment(comment)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Comment successfully updated.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Comment cant't be updated.",
+            'Error:'
+          );
+        },
+      });
+  }
 
   private getLoadDropdowns(id?: number) {
     this.loadService
@@ -342,7 +425,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: LoadModalResponse) => {
-          // console.log(res);
+          console.log(res);
           // Brokers
           this.labelsBroker = res.brokers.map((item) => {
             return {

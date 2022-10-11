@@ -16,6 +16,7 @@
     [formGroup]="loadForm"
     class="form-container form-container-without-mb"
   >
+    <!-------------------------------- FTL Tab -------------------------------->
     <div *ngIf="selectedTab === 1" class="m-tab">
       <div class="load-ftl-first-row">
         <div class="ftl-load-status">UNASSIGNED</div>
@@ -398,7 +399,11 @@
       <app-ta-custom-card [cardName]="'Stops'" [hasCounter]="0">
       </app-ta-custom-card>
 
-      <app-ta-custom-card [cardName]="'Billing & Payment'" [isCardOpen]="true">
+      <app-ta-custom-card
+        [cardName]="'Billing & Payment'"
+        [isCardOpen]="true"
+        [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+      >
         <div class="billing-payment-load">
           <!-- Base Rate -->
           <div class="billing-payment-field">
@@ -489,23 +494,21 @@
           </div>
         </div>
       </app-ta-custom-card>
+      <!-- Comments -->
       <app-ta-custom-card
         [hasCounter]="comments.length ? comments.length : 0"
-        [cardName]="'Comments'"
-        [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-        [hasArrow]="false"
-        [isCardOpen]="false"
+        [cardName]="'Comment'"
+        [isCardOpen]="comments.length > 0"
         [isCommentData]="true"
         [hasBodyData]="comments.length > 0"
-        [hasScrollBody]="comments.length > 6"
+        [hasScrollBody]="comments.length > 4"
+        [disabledCard]="editData?.type !== 'edit'"
+        [hasActionSvg]="
+          editData?.type === 'edit' ? 'assets/svg/common/ic_plus.svg' : ''
+        "
         (onActionEvent)="createComment()"
+        [animationMarginParams]="{ marginTop: '10px', marginBottom: '12px' }"
       >
-        <div class="no-review-broker" *ngIf="!comments.length">
-          <svg-icon
-            class="no-review-svg"
-            src="assets/svg/common/ic_no_review.svg"
-          ></svg-icon>
-        </div>
         <app-ta-user-review
           *ngIf="comments.length"
           [reviewData]="comments"
@@ -513,6 +516,7 @@
           (changeReviewsEvent)="changeCommentsEvent($event)"
         ></app-ta-user-review>
       </app-ta-custom-card>
+      <!-- Documents -->
       <app-ta-custom-card
         [hasCounter]="documents.length ? documents.length : 0"
         [cardName]="'Documents'"
@@ -524,16 +528,18 @@
           (onFileEvent)="onFilesEvent($event)"
         ></app-ta-upload-files>
       </app-ta-custom-card>
+      <!-- Note -->
       <app-ta-input-note
         formControlName="note"
         [isVisibleNote]="loadForm.get('note').value"
       ></app-ta-input-note>
     </div>
+    <!-------------------------------- LTL Tab -------------------------------->
     <div *ngIf="selectedTab === 2" class="m-tab">
       <div class="row">LTL</div>
     </div>
   </form>
-  <!-- Additional Tab -->
+  <!-------------------------------- Additional Tab Part -------------------------------->
   <div additional>
     <app-load-modal-hazardous
       *ngIf="isHazardousVisible"
