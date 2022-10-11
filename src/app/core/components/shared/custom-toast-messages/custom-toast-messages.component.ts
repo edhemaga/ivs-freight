@@ -344,13 +344,9 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       break;
       case 'CDL':
         let driverFullName =  this.DetailsDataService.mainData?.fullName ? this.DetailsDataService.mainData?.fullName.toUpperCase() : this.DetailsDataService.mainData?.firstName.toUpperCase() + ' ' + this.DetailsDataService.mainData?.lastName.toUpperCase();
-        let cdlNum = this.httpRequest.body?.cdlNumber ? this.httpRequest.body?.cdlNumber : ''; 
+        let cdlNum = this.httpRequest.body?.cdlNumber ? this.httpRequest.body?.cdlNumber : this.DetailsDataService.cdlNum; 
         
-        console.log('cdl nummmmmm', this.httpRequest.body.formData);
-        console.log('cdl nummmmmm', this.httpRequest.body);
-
-        //console.log('--this.httpRequest.body---', this.httpRequest.body);
-        if ( !cdlNum ){
+        if ( !this.httpRequest.body?.cdlNumber ){
           let cdlId = lastVal;
           this.DetailsDataService.mainData?.cdls?.map((item: any) => {
             if (item.id == cdlId){
@@ -363,6 +359,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
           this.actionTitle = this.toastrType == 'toast-error' ? 'ADD NEW' : 'ADDED NEW';
         } else if ( this.httpRequest.method == 'PUT') {
           this.actionTitle = this.toastrType == 'toast-error' ? 'ACTIVATE' : 'ACTIVATED';
+        }
+
+        if ( apiEndPoint.indexOf('deactivate') > -1 ) {
+          this.actionTitle = this.toastrType == 'toast-error' ? 'VOID' : 'VOIDED';
         }
 
         this.actionType = 'CDL - ' + driverFullName;

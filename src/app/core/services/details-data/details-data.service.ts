@@ -10,6 +10,7 @@ export class DetailsDataService {
   public leftSideMenuChanges = this.leftSideMenuStatus.asObservable();
 
   public mainData: any;
+  public cdlNum: any;
   public leftMenuOpened: any = false;
 
   constructor() { }
@@ -31,5 +32,9 @@ export class DetailsDataService {
     } else if ( type == 'status' ) {
       this.mainData.status = status;
     }
+  }
+
+  setCdlNum(mod){
+    this.cdlNum = mod;
   }
 }

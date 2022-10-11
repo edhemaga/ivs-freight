@@ -20,6 +20,7 @@ import {
   cdlCANADAValidation,
   cdlUSValidation,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+import { DetailsDataService } from '../../../../../services/details-data/details-data.service';
 //import { CreateCdlCommand } from 'appcoretruckassist/model/createCdlCommand';
 //import { EditCdlCommand } from 'appcoretruckassist/model/editCdlCommand';
 
@@ -63,7 +64,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService
+    private formService: FormService,
+    private DetailsDataService: DetailsDataService,
   ) {}
 
   ngOnInit(): void {
@@ -113,6 +115,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.cdlForm);
           return;
         }
+        this.DetailsDataService.setCdlNum(this.cdlForm.get('cdlNumber')?.value);
         if (this.editData.type === 'edit-licence') {
           if (this.isFormDirty) {
             this.updateCdl();

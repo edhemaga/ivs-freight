@@ -1,5 +1,6 @@
 .main-toast-holder{
     position: relative;
+    width: max-content;
     min-width: 200px;
     height: 48px;
     padding: 8px;
@@ -15,7 +16,7 @@
     flex-wrap: nowrap;
     
     &.wide-toast-message{
-        width: 340px;
+        //width: 340px;
     }
 
     &.movedLeft{
