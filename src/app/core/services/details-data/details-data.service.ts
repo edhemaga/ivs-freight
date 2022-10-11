@@ -37,4 +37,12 @@ export class DetailsDataService {
   setCdlNum(mod){
     this.cdlNum = mod;
   }
+
+  changeRateStatus(type, mod){
+    if ( type == 'like' ){
+      this.mainData.raiting.hasLiked = mod;
+    }else {
+      this.mainData.raiting.hasDislike = mod;
+    }
+  }
 }

@@ -287,7 +287,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
         let likedStatus = this.DetailsDataService.mainData.raiting.hasLiked;
         let dislikedStatus = this.DetailsDataService.mainData.raiting.hasDislike;
- 
+       
         if ( !likedStatus && !dislikedStatus ){   
           this.actionTitle = this.toastrType == 'toast-error' ? 'REMOVE RATE' : 'REMOVED RATE';
         }
@@ -298,15 +298,21 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         switch (this.httpRequest.body?.entityTypeRatingId) {
           case 1:
             this.actionType = 'BROKER';
-            this.message = this.httpRequest.body?.tableData.dbaName ? this.httpRequest.body.tableData.dbaName : this.httpRequest.body.tableData.businessName;
+            this.message = this.httpRequest.body?.tableData?.dbaName ? this.httpRequest.body.tableData.dbaName : '';
+            if ( this.httpRequest.body?.tableData ){
+              this.message = this.httpRequest.body?.tableData?.businessName ? this.httpRequest.body.tableData.businessName : '';
+            } else {
+              this.message = this.httpRequest.body?.tableData?.dbaName ? this.httpRequest.body?.tableData?.dbaName : this.httpRequest.body?.tableData?.businessName;
+            }
+
           break;
           case 2:
-            this.message = this.httpRequest.body?.tableData.name ? this.httpRequest.body.tableData.name : '';
+            this.message = this.httpRequest.body?.tableData?.name ? this.httpRequest.body.tableData.name : this.DetailsDataService.mainData?.name;
             this.actionType = 'REPAIR SHOP';
           break;
          case 3:
             this.actionType = 'SHIPPER';
-            this.message = this.httpRequest.body?.tableData.businessName ? this.httpRequest.body.tableData.businessName : '';
+            this.message = this.httpRequest.body?.tableData?.businessName ? this.httpRequest.body.tableData.businessName : this.DetailsDataService.mainData?.businessName;
           break;
         }
       break;
