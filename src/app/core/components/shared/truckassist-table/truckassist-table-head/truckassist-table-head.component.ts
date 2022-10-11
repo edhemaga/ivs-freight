@@ -32,6 +32,7 @@ export class TruckassistTableHeadComponent
   private destroy$ = new Subject<void>();
   @Input() columns: any[];
   @Input() options: any;
+  @Input() tableData: any[];
   @Input() viewData: any[];
   @Input() tableContainerWidth: number;
   @Output() headActions: EventEmitter<any> = new EventEmitter();
@@ -49,6 +50,7 @@ export class TruckassistTableHeadComponent
   resizeHitLimit: number = -1;
   resizeIsPined: boolean;
   notPinedMaxWidth: number = 0;
+  tableConfigurationType: string = '';
 
   constructor(
     private tableService: TruckassistTableService,
@@ -58,6 +60,7 @@ export class TruckassistTableHeadComponent
   // --------------------------------NgOnInit---------------------------------
   ngOnInit(): void {
     this.setVisibleColumns();
+    this.getActiveTableData();
 
     // Scroll
     this.tableService.currentScroll
@@ -102,6 +105,12 @@ export class TruckassistTableHeadComponent
       this.setVisibleColumns(true);
     }
 
+    if (changes?.tableData && !changes?.tableData?.firstChange) {
+      this.tableData = changes.tableData.currentValue;
+
+      this.getActiveTableData();
+    }
+
     if (
       !changes?.tableContainerWidth?.firstChange &&
       changes?.tableContainerWidth
@@ -120,6 +129,13 @@ export class TruckassistTableHeadComponent
 
       this.changeDetectorRef.detectChanges();
     }
+  }
+
+  // Get Active Table Data
+  getActiveTableData(){
+    const td = this.tableData.find((t) => t.isActive);
+
+    this.tableConfigurationType = td.tableConfiguration;
   }
 
   // Set Visible Column
@@ -248,6 +264,11 @@ export class TruckassistTableHeadComponent
 
     this.columns.splice(currentIndex, 0, column[0]);
 
+    localStorage.setItem(
+      `table-${this.tableConfigurationType}-Configuration`,
+      JSON.stringify(this.columns)
+    );
+
     this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
 
     this.setVisibleColumns();
@@ -277,6 +298,13 @@ export class TruckassistTableHeadComponent
         this.resizeHitLimit = -1;
       }, 1000);
     }
+
+    if(!event.isResizeing){
+      localStorage.setItem(
+        `table-${this.tableConfigurationType}-Configuration`,
+        JSON.stringify(this.columns)
+      );
+    }
   }
 
   // Open Row Select Popup
@@ -303,6 +331,11 @@ export class TruckassistTableHeadComponent
       }
     });
 
+    localStorage.setItem(
+      `table-${this.tableConfigurationType}-Configuration`,
+      JSON.stringify(this.columns)
+    );
+
     this.setVisibleColumns();
 
     this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
@@ -311,6 +344,11 @@ export class TruckassistTableHeadComponent
   // Pin Column
   onPinColumn(column: any) {
     column.isPined = !column.isPined;
+
+    localStorage.setItem(
+      `table-${this.tableConfigurationType}-Configuration`,
+      JSON.stringify(this.columns)
+    );
 
     this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
 

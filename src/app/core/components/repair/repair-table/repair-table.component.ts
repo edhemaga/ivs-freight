@@ -56,7 +56,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
   repairTrucks: RepairTruckState[] = [];
   repairTrailers: RepairTrailerState[] = [];
   repairShops: ShopState[] = [];
-  resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
   backFilterQuery = {
@@ -82,6 +81,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     active: 1,
     pinned: undefined,
     companyOwned: undefined,
+    categoryIds: undefined,
+    long: undefined,
+    lat: undefined,
+    distance: undefined,
+    costFrom: undefined,
+    costTo: undefined,
     pageIndex: 1,
     pageSize: 25,
     companyId: undefined,
@@ -112,8 +117,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
-          this.resetColumns = response;
-
           this.sendRepairData();
         }
       });
@@ -366,33 +369,33 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         field: 'active',
         length: repairTruckTrailerCount.repairTrucks,
         data: repairTruckData,
-        extended: false,
-        selectTab: true,
         gridNameTitle: 'Repair',
         stateName: 'repair_trucks',
-        gridColumns: this.getGridColumns('repair_trucks', this.resetColumns),
+        tableConfiguration: 'REPAIR_TRUCK',
+        isActive: this.selectedTab === 'active',
+        gridColumns: this.getGridColumns('REPAIR_TRUCK'),
       },
       {
         title: 'Trailer',
         field: 'inactive',
         length: repairTruckTrailerCount.repairTrailers,
         data: repairTrailerData,
-        extended: false,
-        selectTab: true,
         gridNameTitle: 'Repair',
         stateName: 'repair_trailers',
-        gridColumns: this.getGridColumns('repair_trailers', this.resetColumns),
+        tableConfiguration: 'REPAIR_TRAILER',
+        isActive: this.selectedTab === 'inactive',
+        gridColumns: this.getGridColumns('REPAIR_TRAILER'),
       },
       {
         title: 'Shop',
         field: 'repair-shop',
         length: repairShopCount.repairShops,
         data: repairShopData,
-        extended: false,
-        checkPinned: true,
         gridNameTitle: 'Repair',
         stateName: 'repair_shops',
-        gridColumns: this.getGridColumns('repair_shops', this.resetColumns),
+        tableConfiguration: 'REPAIR_SHOP',
+        isActive: this.selectedTab === 'repair-shop',
+        gridColumns: this.getGridColumns('REPAIR_SHOP'),
       },
     ];
 
@@ -418,17 +421,23 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // Get Repair Columns
-  getGridColumns(stateName: string, resetColumns: boolean) {
-    /*  const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
-    ); */
+  getGridColumns(configType: string) {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
+    );
 
-    if (stateName === 'repair_trucks') {
-      return getRepairTruckColumnDefinition();
-    } else if (stateName === 'repair_trailers') {
-      return getRepairTrailerColumnDefinition();
-    } else if (stateName === 'repair_shops') {
-      return getRepairsShopColumnDefinition();
+    if (configType === 'REPAIR_TRUCK') {
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getRepairTrailerColumnDefinition();
+    } else if(configType === 'REPAIR_TRAILER') {
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getRepairTrailerColumnDefinition();
+    }else{
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getRepairsShopColumnDefinition();
     }
   }
 
@@ -448,9 +457,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
           return this.mapShopData(data);
         }
       });
-
-      console.log('View Data');
-      console.log(this.viewData);
 
       // For Testing
       // for (let i = 0; i < 300; i++) {
@@ -593,7 +599,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         filter.sort,
         filter.searchOne,
         filter.searchTwo,
-        filter.searchThree,
+        filter.searchThree
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe((repair: RepairListResponse) => {
@@ -630,15 +636,21 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
   shopBackFilter(
     filter: {
       active?: number;
-      pinned?: boolean;
-      companyOwned?: boolean;
+      pinned?: boolean | undefined;
+      companyOwned?: boolean | undefined;
+      categoryIds?: Array<number> | undefined;
+      long?: number | undefined;
+      lat?: number | undefined;
+      distance?: number | undefined;
+      costFrom?: number | undefined;
+      costTo?: number | undefined;
       pageIndex?: number;
       pageSize?: number;
-      companyId?: number;
-      sort?: string;
-      searchOne?: string | undefined;
-      searchTwo?: string | undefined;
-      searchThree?: string | undefined;
+      companyId?: number | undefined;
+      sort?: string | undefined;
+      search?: string | undefined;
+      search1?: string | undefined;
+      search2?: string | undefined;
     },
     isSearch?: boolean,
     isShowMore?: boolean
@@ -648,13 +660,19 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         filter.active,
         filter.pinned,
         filter.companyOwned,
+        filter.categoryIds,
+        filter.long,
+        filter.lat,
+        filter.distance,
+        filter.costFrom,
+        filter.costTo,
         filter.pageIndex,
         filter.pageSize,
         filter.companyId,
         filter.sort,
-        filter.searchOne,
-        filter.searchTwo,
-        filter.searchThree
+        filter.search,
+        filter.search1,
+        filter.search2
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe((shop: RepairShopListResponse) => {

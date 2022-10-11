@@ -127,7 +127,7 @@ export class TaInputService {
     } else if ('per stop' === inputName) {
       return /^[0-9]*$/;
     } else if (['emergency name', 'relationship', 'scac'].includes(inputName)) {
-      return /^[A-Za-z]*$/;
+      return /^[A-Za-z\s]*$/;
     } else if ('fuel store' === inputName) {
       return /^[A-Za-z0-9-]*$/;
     } else if ('hos' === inputName) {

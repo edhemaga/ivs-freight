@@ -1,6 +1,81 @@
 <div class="ta-upload-file-container {{ customClassName }}">
   <!-- File Header Actions -->
-  <div *ngIf="!isFileDelete" class="ta-upload-file-header">
+
+  <!-- Review Actions -->
+  <div *ngIf="isReview" class="ta-upload-file-header-review">
+    <div
+      *ngIf="reviewMode === 'REVIEW_MODE'"
+      ngbTooltip
+      mainTooltip="Download"
+      tooltipBackground="#6c6c6c"
+      position="top"
+      class="ta-upload-action-download-review"
+      (click)="onAction('download')"
+    >
+      <svg-icon src="assets/svg/common/ic_download.svg"></svg-icon>
+    </div>
+
+    <div
+      *ngIf="reviewMode === 'REVIEW_MODE'"
+      ngbTooltip
+      [mainTooltip]="
+        file?.incorrect && isIncorrectMarkHover ? 'Unmark' : 'Mark Incorrect'
+      "
+      [tooltipBackground]="
+        file?.incorrect && isIncorrectMarkHover ? '#6c6c6c' : '#EF5350'
+      "
+      position="top"
+      class=" {{
+        file?.incorrect && isIncorrectMarkHover
+          ? 'ta-upload-action-mark-correct'
+          : 'ta-upload-action-mark-incorrect'
+      }}"
+      [ngClass]="{ incorrect: file?.incorrect }"
+      (click)="
+        onAction(
+          file?.incorrect && isIncorrectMarkHover
+            ? 'mark-correct'
+            : 'mark-incorrect'
+        )
+      "
+      (mouseenter)="isIncorrectMarkHover = true"
+      (mouseleave)="isIncorrectMarkHover = false"
+    >
+      <svg-icon
+        src="{{
+          file?.incorrect && isIncorrectMarkHover
+            ? 'assets/svg/common/ic_confirm.svg'
+            : 'assets/svg/ic_x.svg'
+        }}"
+      ></svg-icon>
+    </div>
+
+    <!-- Review Message -->
+    <div
+      class="review-feedback-container"
+      *ngIf="reviewMode === 'REVIEW_MODE' || reviewMode === 'FEEDBACK_MODE'"
+    >
+      <app-applicant-review-feedback
+        [formControl]="documentReviewInputControl"
+        [displayAnnotationButton]="
+          file?.incorrect && !documentReviewInputVisible
+        "
+        [displayAnnotationTextArea]="
+          file?.incorrect && documentReviewInputVisible
+        "
+        [isFeedback]="reviewMode === 'FEEDBACK_MODE'"
+        [feedbackText]="feedbackText"
+        (annotationBtnClickEvent)="getAnnotationReviewEvent($event)"
+      ></app-applicant-review-feedback>
+    </div>
+  </div>
+
+  <!-- No Review Actions -->
+  <div
+    *ngIf="!isFileDelete || (isReview && reviewMode === 'FEEDBACK_MODE')"
+    class="ta-upload-file-header"
+  >
+    <!-- Left Side -->
     <div
       class="ta-upload-file-action-leftside"
       [ngClass]="{ 'no-action-tag': !hasTag }"
@@ -16,7 +91,13 @@
         <svg-icon src="assets/svg/common/ic_tag.svg"></svg-icon>
       </div>
     </div>
-    <div class="ta-upload-file-action-rightside">
+    <!-- Right Side -->
+    <div
+      class="ta-upload-file-action-rightside"
+      [ngClass]="{
+        'feedback-mode': isReview && reviewMode === 'FEEDBACK_MODE'
+      }"
+    >
       <div
         ngbTooltip
         mainTooltip="Download"
@@ -37,6 +118,19 @@
       >
         <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
       </div>
+    </div>
+    <div
+      *ngIf="isReview && reviewMode === 'FEEDBACK_MODE'"
+      ngbTooltip
+      mainTooltip="Marked Incorrect"
+      tooltipBackground="#EF5350"
+      position="top"
+      class="ta-upload-action-feedback-incorrect-mark"
+      (click)="onAction('feedback-mark-incorrect')"
+    >
+      <svg-icon
+        src="assets/svg/common/ic_feedback_mark_incorrect.svg"
+      ></svg-icon>
     </div>
   </div>
 
@@ -118,7 +212,7 @@
     >
       {{ file?.extension | uppercase }}
     </div>
-    <p *ngIf="!editFile" class="ta-upload-file-name">{{ file?.name }}</p>
+    <p *ngIf="!editFile" class="ta-upload-file-name">{{ file?.fileName }}</p>
     <!-- Edit mode -->
     <app-ta-input
       *ngIf="editFile"

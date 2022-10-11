@@ -57,7 +57,7 @@ export interface TruckShortResponse {
     tollTransponderDeviceNo?: string | null;
     doubleBunk?: boolean | null;
     refrigerator?: boolean | null;
-    dcInventer?: boolean | null;
+    dcInverter?: boolean | null;
     blower?: boolean | null;
     pto?: boolean | null;
     createdAt?: string;
