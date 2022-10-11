@@ -81,7 +81,7 @@ export class DashboardTopDriverComponent implements OnInit, OnDestroy {
     hasPercentage: true,
     allowAnimation: true,
     offset: true,
-    tooltipOffset: {min: 105, max: 279},
+    tooltipOffset: { min: 105, max: 279 },
     dataLabels: [
       'MAR',
       '',
@@ -358,7 +358,7 @@ export class DashboardTopDriverComponent implements OnInit, OnDestroy {
       driversList: drivers,
       allowAnimation: true,
       noChartImage: 'assets/svg/common/no_data_pay.svg',
-      dontUseResponsive: true
+      dontUseResponsive: true,
     };
 
     if (this.doughnutChart) {
@@ -412,7 +412,7 @@ export class DashboardTopDriverComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.timePeriod.changeTimePeriod('All Time');
+    this.timePeriod?.changeTimePeriod('All Time');
   }
 
   changeDriverSwitchTabs(ev, useLast?) {
