@@ -45,7 +45,9 @@ export class AutoclosePopoverComponent implements OnInit {
       event.target.closest('.clear-money-form') ||
       event.target.closest('.user-frame') ||
       event.target.closest('.highlight-text-45632') ||
-      event.target.closest('.user-main-holder')
+      event.target.closest('.user-main-holder') ||
+      event.target.closest('.search-icon-holder') ||
+      event.target.closest('.close-input-search')
     ) {
     } else {
       this.tooltip && this.tooltip.close();

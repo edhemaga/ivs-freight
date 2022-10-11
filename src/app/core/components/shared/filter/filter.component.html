@@ -20,9 +20,9 @@
   <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
   <div mainContent 
     ngbTooltip
-    mainTooltip="{{ !hoverClose ? filterTitle : 'Clear' }}"
+    mainTooltip="{{ !hoverClose ? filterActiveArray.length > 0  ? filterTitle + ' ' + filterActiveArray.length + ' Selected' : filterTitle  : 'Clear ' + filterTitle }}"
     position="bottom"
-    tooltipBackground= "#6C6C6C"
+    tooltipBackground= "{{ !hoverClose ? '#6C6C6C' : '#EF5350' }}"
     class="main-icon-holder"
   >
     <svg-icon [src]="icon | taSvg: 'common'"></svg-icon>
@@ -84,6 +84,7 @@
       </div>
       <div
         class="filter-header search-input-header"
+        [class.activeSearch]="expandSearch"
         *ngIf="expandSearch"
         [formGroup]="searchForm"
       >
@@ -95,7 +96,7 @@
             type: 'text',
             label: 'Search ' + filterTitle.split(' ')[0] + ' ',
             placeholderIcon: 'ic_search',
-            customClass: 'filter-search-input',
+            customClass: 'filter-search-input line-input-26',
             placeholderInsteadOfLabel: true,
             blackInput: true
           }"

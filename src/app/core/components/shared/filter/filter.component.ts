@@ -1024,7 +1024,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   public locationSliderData: Options = {
     floor: 50,
     ceil: 350,
-    step: 0,
+    step: 5,
     showSelectionBar: true,
     hideLimitLabels: true,
   };
