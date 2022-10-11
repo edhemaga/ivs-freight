@@ -7,7 +7,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
 import { LoadTService } from '../../load/state/load.service';
-import { LoadModalResponse } from '../../../../../../appcoretruckassist/model/loadModalResponse';
+import { LoadModalResponse } from '../../../../../../appcoretruckassist';
 import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
@@ -75,12 +75,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public labelsDispatches: any[] = [];
   public labelsGeneralCommodity: any[] = [];
   public labelsBroker: any[] = [];
+  public labelsBrokerContacts: any[] = [];
   public labelsTruckReq: any[] = [];
   public labelsTrailerReq: any[] = [];
   public labelsDoorType: any[] = [];
   public labelsSuspension: any[] = [];
   public labelsTrailerLength: any[] = [];
   public labelsYear: any[] = [];
+  public labelsShippers: any[] = [];
 
   public selectedTemplate: any = null;
   public selectedDispatcher: any = null;
@@ -88,12 +90,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public selectedDispatches: any = null;
   public selectedGeneralCommodity: any = null;
   public selectedBroker: any = null;
+  public selectedBrokerContact: any = null;
   public selectedTruckReq: any = null;
   public selectedTrailerReq: any = null;
   public selectedDoorType: any = null;
   public selectedSuspension: any = null;
   public selectedTrailerLength: any = null;
   public selectedYear: any = null;
+  public selectedShipper: any = null;
 
   public isAvailableAdjustedRate: boolean = false;
   public isAvailableAdvanceRate: boolean = false;
@@ -106,6 +110,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public isDateRange: boolean = false;
 
   public isHazardousPicked: boolean = false;
+  public isHazardousVisible: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -132,13 +137,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       selectTemplate: [null],
       dispatcher: [null],
       company: [this.companyUser.companyName, Validators.required],
+      dispatchesId: [null],
       refNumber: [null, Validators.required],
       generalCommodity: [null],
       weight: [null],
       broker: [null, Validators.required],
       brokerContact: [null],
-      brokerPhone: [null, phoneFaxRegex],
-      brokerPhoneExt: [null, Validators.maxLength(3)],
       truckReq: [null],
       trailerReq: [null],
       doorType: [null],
@@ -148,7 +152,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       lifgate: [null],
       stopMode: ['Pickup'],
       shipper: [null, Validators.required],
-      location: [null],
       date: [null, Validators.required],
       dateRange: [null],
       timeMode: ['Open'],
@@ -204,6 +207,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       }
       case 'dispatcher': {
         this.selectedDispatcher = event;
+        if (this.selectedDispatcher) {
+          this.labelsDispatcher = this.labelsDispatcher.filter((item) => item); // hvalid dispatcherId
+        }
         break;
       }
       case 'company': {
@@ -212,14 +218,21 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       }
       case 'general-commodity': {
         this.selectedGeneralCommodity = event;
-        console.log(event);
-
-        this.isHazardousPicked = event.name.toLowerCase() === 'hazardous';
+        this.isHazardousPicked = event?.name?.toLowerCase() === 'hazardous';
+        break;
+      }
+      case 'broker': {
+        this.selectedBroker = event;
+        if (this.selectedBroker) {
+          this.labelsBrokerContacts = this.labelsBrokerContacts.filter(
+            (item) => item.brokerId === this.selectedBroker.id
+          );
+        }
 
         break;
       }
-      case 'selectedBroker': {
-        this.selectedBroker = event;
+      case 'broker-contact': {
+        this.selectedBrokerContact = event;
         break;
       }
       case 'dispatches': {
@@ -250,10 +263,18 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.selectedYear = event;
         break;
       }
+      case 'shipper': {
+        this.selectedShipper = event;
+        break;
+      }
       default: {
         break;
       }
     }
+  }
+
+  public commandEvent(event: boolean) {
+    this.isHazardousVisible = !this.isHazardousVisible;
   }
 
   public onFilesEvent(event: any) {
@@ -321,15 +342,33 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: LoadModalResponse) => {
-          console.log(res);
-          this.labelsBroker = res.brokers;
+          // console.log(res);
+          // Brokers
+          this.labelsBroker = res.brokers.map((item) => {
+            return {
+              id: item.id,
+              name: item.businessName,
+              ban: item.ban,
+              dnu: item.dnu,
+              status: 'High',
+            };
+          });
+          this.labelsBrokerContacts = res.brokerContacts.map((item) => {
+            return {
+              ...item,
+              name: item.contactName,
+              extensionPhone: '312',
+            };
+          });
+          // -----------------------
+          // Dispatcher
           this.labelsDispatcher = res.dispatchers.map((item) => {
             return {
               id: item.id,
               name: item.fullName,
+              logoName: item.avatar,
             };
           });
-          // Initial Dispatcher Name
           const initialDispatcher = this.labelsDispatcher.find(
             (item) =>
               item.name ===
@@ -338,7 +377,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.loadForm.get('dispatcher').patchValue(initialDispatcher.name);
           this.selectedDispatcher = initialDispatcher;
           // -----------------------
-          // Multiple Companies
+          // Division Companies
           this.labelsCompanies = res.companies.map((item) => {
             return {
               id: item.id,
@@ -355,6 +394,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             );
           }
           // -----------------------
+          // Dispatches
           this.labelsDispatches = res.dispatches.map((item) => {
             return {
               dispatchBoardId: item.dispatchBoardId,
@@ -362,18 +402,27 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               driver: {
                 id: item.driver.id,
                 name: item.driver.firstName.concat(' ', item.driver.lastName),
+                logoName: item.driver.avatar,
               },
-              coDriver: item.coDriver,
+              coDriver: {
+                id: item?.coDriver?.id,
+                name: item?.coDriver?.firstName?.concat(
+                  ' ',
+                  item?.coDriver?.lastName
+                ),
+                logoName: item?.coDriver?.avatar,
+              },
               truck: {
                 id: item.truck.id,
-                name: item.truck.truckNumber,
+                name: `# ${item.truck.truckNumber}`,
               },
               trailer: {
                 id: item.trailer.id,
-                name: item.trailer.trailerNumber,
+                name: `# ${item.trailer.trailerNumber}`,
               },
             };
           });
+          // -----------------------
           this.labelsDoorType = res.doorTypes;
           this.labelsGeneralCommodity = res.generalCommodities.map((item) => {
             if (item.name.toLowerCase() === 'hazardous') {
@@ -406,6 +455,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             };
           });
           this.labelsYear = [];
+          // Shipper
+          this.labelsShippers = res.shippers.map((item) => {
+            return {
+              id: item.id,
+              name: item.businessName,
+              address: item.address.address,
+            };
+          });
         },
         error: (error: any) => {
           this.notificationService.error(error, 'Error');

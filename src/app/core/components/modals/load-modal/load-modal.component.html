@@ -10,6 +10,7 @@
   (onTabHeaderChange)="onModalHeaderTabChange($event)"
   (action)="onModalAction($event)"
 >
+  <!-- Origin Tab -->
   <form
     origin
     [formGroup]="loadForm"
@@ -33,6 +34,7 @@
         ></app-ta-input-dropdown>
         <app-ta-input-dropdown
           formControlName="dispatcher"
+          [template]="'load-dispatcher'"
           [inputConfig]="{
             name: 'Input Dropdown',
             type: 'text',
@@ -73,7 +75,19 @@
         ></app-ta-input-dropdown>
       </div>
       <div class="load-ftl-second-row">
-        Novi Dropdown
+        <app-ta-input-dropdown
+          formControlName="dispatchesId"
+          [template]="'load-dispatches-ttd'"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-397'
+          }"
+          [options]="labelsDispatches"
+          [activeItem]="selectedDispatches"
+          (selectedItem)="onSelectDropdown($event, 'dispatches')"
+        ></app-ta-input-dropdown>
         <app-ta-input
           formControlName="refNumber"
           [inputConfig]="{
@@ -97,6 +111,7 @@
           }"
           [options]="labelsGeneralCommodity"
           [activeItem]="selectedGeneralCommodity"
+          (placeholderIconEvent)="commandEvent($event)"
           (selectedItem)="onSelectDropdown($event, 'general-commodity')"
         ></app-ta-input-dropdown>
         <app-ta-input
@@ -113,6 +128,7 @@
       <div class="load-ftl-third-row">
         <app-ta-input-dropdown
           formControlName="broker"
+          [template]="'load-broker'"
           [inputConfig]="{
             name: 'Input Dropdown',
             type: 'text',
@@ -121,43 +137,29 @@
             isRequired: true,
             dropdownWidthClass: 'w-col-439'
           }"
+          [canAddNew]="true"
+          [canOpenModal]="true"
           [options]="labelsBroker"
           [activeItem]="selectedBroker"
           (selectedItem)="onSelectDropdown($event, 'broker')"
         ></app-ta-input-dropdown>
-        <div class="broker-load-information">
-          <app-ta-input
-            formControlName="brokerContact"
-            [inputConfig]="{
-              name: 'Contact Name',
-              type: 'text',
-              label: 'Contact',
-              isDisabled: true
-            }"
-          ></app-ta-input>
-          <app-ta-input
-            formControlName="brokerPhone"
-            [inputConfig]="{
-              name: 'Phone',
-              type: 'text',
-              label: 'Phone',
-              mask: '(000) 000-0000',
-              maxLength: 14,
-              maxLength: 14,
-              isDisabled: true
-            }"
-          ></app-ta-input>
-          <app-ta-input
-            formControlName="brokerPhoneExt"
-            [inputConfig]="{
-              name: 'Ext',
-              type: 'text',
-              label: 'EXT',
-              isDisabled: true,
-              maxLength: 3
-            }"
-          ></app-ta-input>
-        </div>
+
+        <app-ta-input-dropdown
+          formControlName="brokerContact"
+          [template]="'load-broker-contact'"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Contact Phone Ext',
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-391'
+          }"
+          [canAddNew]="true"
+          [canOpenModal]="true"
+          [options]="labelsBrokerContacts"
+          [activeItem]="selectedBrokerContact"
+          (selectedItem)="onSelectDropdown($event, 'broker-contact')"
+        ></app-ta-input-dropdown>
       </div>
       <app-ta-custom-card
         [cardName]="'Load Requirements'"
@@ -258,7 +260,7 @@
               dropdownWidthClass: 'w-col-88'
             }"
             [options]="labelsTrailerLength"
-            [activeItem]="selectedLength"
+            [activeItem]="selectedTrailerLength"
             (selectedItem)="onSelectDropdown($event, 'length')"
           ></app-ta-input-dropdown>
 
@@ -292,8 +294,25 @@
             [type]="'type2-modal-popup'"
           ></app-ta-tab-switch>
 
-          <span>NEW DROPDOWN</span>
+          <app-ta-input-dropdown
+            formControlName="shipper"
+            [template]="'load-shipper'"
+            [inputConfig]="{
+              name: 'Input Dropdown',
+              type: 'text',
+              label: 'Shipper Location',
+              isDropdown: true,
+              isRequired: true,
+              dropdownWidthClass: 'w-col-696'
+            }"
+            [canAddNew]="true"
+            [canOpenModal]="true"
+            [options]="labelsShippers"
+            [activeItem]="selectedShipper"
+            (selectedItem)="onSelectDropdown($event, 'shipper')"
+          ></app-ta-input-dropdown>
         </div>
+
         <div
           class="stop-load-second-row"
           [ngClass]="{ 'date-range-active': isDateRange }"
@@ -513,5 +532,13 @@
       <div class="row">LTL</div>
     </div>
   </form>
-  <div additional>Additional Succesfully</div>
+  <!-- Additional Tab -->
+  <div additional>
+    <app-load-modal-hazardous
+      *ngIf="isHazardousVisible"
+      (close)="isHazardousVisible = false"
+    ></app-load-modal-hazardous>
+
+    <div *ngIf="!isHazardousVisible">Mapa</div>
+  </div>
 </app-ta-modal>

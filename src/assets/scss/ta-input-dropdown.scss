@@ -361,13 +361,7 @@
           }
           .details-template-logo {
             margin-left: 6px;
-            // width: 14px;
-            // height: 14px;
             line-height: 15px;
-            // svg {
-            //   height: 14px;
-            //   width: 14px;
-            // }
           }
         }
 
@@ -397,10 +391,91 @@
         }
       }
 
+      //------------------------ Load Dispatcher Template ------------------------
+      .load-dispatcher-template {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      //------------------------ Load Dispatches TTD Template ------------------------
+      .load-dispatches-ttd-template {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        align-items: center;
+        -moz-column-gap: 12px;
+        column-gap: 12px;
+
+        .load-dispatches-driver {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+      }
+
+      //------------------------ Load Broker Template ------------------------
+      .load-broker-template {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        .load-broker-status {
+          position: relative;
+          bottom: 1px;
+
+          &.dnu-status {
+            svg {
+              #Path_36450 {
+                fill: #b7b7b7;
+              }
+            }
+          }
+
+          &.low-status {
+            svg {
+              #Path_33564 {
+                fill: #e57373;
+              }
+            }
+          }
+
+          &.medium-status {
+            svg {
+              #Path_33564 {
+                fill: #ffb74d;
+              }
+            }
+          }
+        }
+      }
+
+      //------------------------ Load Broker Contact Template ------------------------
+      .load-broker-contact-template {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        align-items: center;
+        -moz-column-gap: 12px;
+        column-gap: 12px;
+      }
+
+      //------------------------ Load Shipper Contact Template -----------------------
+      .load-shipper-template {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        -moz-column-gap: 12px;
+        column-gap: 12px;
+        padding-right: 25px;
+      }
+
       //------------------------ Custom width dependent on 'col' bootstrap ------------------------
 
       &.w-col-709 {
         width: 709px;
+      }
+
+      &.w-col-696 {
+        width: 696px;
       }
 
       &.w-col-686 {
@@ -477,6 +552,14 @@
 
       &.w-col-402 {
         width: 402px;
+      }
+
+      &.w-col-397 {
+        width: 397px;
+      }
+
+      &.w-col-391 {
+        width: 391px;
       }
 
       &.w-col-376 {

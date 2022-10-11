@@ -780,6 +780,11 @@ export class TaInputComponent
         data: this.getSuperControl.value,
         action: 'Toggle Dropdown',
       });
+    } else {
+      this.commandEvent.emit({
+        data: this.getSuperControl.value,
+        action: 'Placeholder Icon Event',
+      });
     }
   }
 
