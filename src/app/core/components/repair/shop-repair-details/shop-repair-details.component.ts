@@ -55,15 +55,23 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     private sdlq: ShopDetailsListQuery,
     private dropDownService: DropDownService,
     private rsmlist: RepairShopMinimalListStore,
-    private repairsQ: RepairDetailsQuery
+    private repairsQ: RepairDetailsQuery,
+    private shopQ: ShopDetailsListQuery
   ) {}
 
   ngOnInit(): void {
+    console.log(this.act_route.snapshot.data);
     this.currentIndex = this.repairList.findIndex(
       (shop) => shop.id === this.act_route.snapshot.data.shop.id
     );
+    this.shopQ
+      .selectEntity(this.act_route.snapshot.data.shop.id)
+      .subscribe((item) => console.log(item));
+    this.repairsQ
+      .selectEntity(this.act_route.snapshot.data.shop.id)
+      .subscribe((item) => console.log(item));
     this.initTableOptions();
-    this.shopConf(this.act_route.snapshot.data.shop);
+
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {

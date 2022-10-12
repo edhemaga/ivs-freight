@@ -18,7 +18,6 @@ import { RepairOrderModalComponent } from '../../../modals/repair-modals/repair-
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairTService } from '../../state/repair.service';
-import { RepairDetailsQuery } from '../../state/repair-details-state/repair-details.query';
 import { ShopItemStore } from '../../state/shop-details-state/shop-detail.store';
 
 @Component({

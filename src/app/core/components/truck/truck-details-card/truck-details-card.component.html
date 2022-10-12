@@ -130,10 +130,10 @@
               {{ truck?.emptyWeight | taThousandSeparator }} Ibs
             </div>
           </div>
-          <div *ngIf="truck?.truckEngineType?.name" class="common-template-item">
+          <div *ngIf="truck?.truckEngineModel?.name" class="common-template-item">
             <div class="common-template-item-name">Engine Model</div>
             <div class="common-template-item-value">
-              {{ truck?.truckEngineType.name }}
+              {{ truck?.truckEngineModel.name }}
             </div>
           </div>
           <div *ngIf="truck?.engineOilType?.name" class="common-template-item">
@@ -225,10 +225,10 @@
             </div>
           </div>
            
-          <div *ngIf="truck?.ipasEzpass" class="common-template-item">
+          <div *ngIf="truck?.tollTransponderDeviceNo" class="common-template-item">
             <div class="common-template-item-name">Toll Device ID</div>
             <div class="common-template-item-value">
-              {{    truck?.ipasEzpass  }}
+              {{    truck?.tollTransponderDeviceNo  }}
             </div>
           </div>
           <div *ngIf="truck?.insurancePolicy" class="common-template-item">
@@ -240,12 +240,12 @@
          
          
 
-          <!-- <div *ngIf="truck?.insurancePolicy" class="common-template-item">
+          <div *ngIf="truck?.fhwaExp" class="common-template-item">
             <div class="common-template-item-name">FHWA Expiration</div>
             <div class="common-template-item-value">
-              {{ truck?.insurancePolicy }}
+              {{ truck?.fhwaExp +  ' months' }}
             </div>
-          </div> -->
+          </div>
           <div *ngIf="truck?.purchaseDate" class="common-template-item">
             <div class="common-template-item-name">Purchase Date</div>
             <div class="common-template-item-value">
