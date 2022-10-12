@@ -46,7 +46,7 @@ const MONTHS = [
   providers: [
     {
       provide: VIRTUAL_SCROLL_STRATEGY,
-      useClass: MobileCalendarStrategy,
+      useClass: MobileCalendarStrategy
     },
   ],
 })
