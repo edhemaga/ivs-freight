@@ -114,6 +114,31 @@ export class MapsComponent implements OnInit {
 
   public getMapInstance(map) {
     this.agmMap = map;
+
+    map.addListener('idle', (ev) => {
+      // update the coordinates here
+      var bounds = map.getBounds();
+      var ne = bounds.getNorthEast(); // LatLng of the north-east corner
+      var sw = bounds.getSouthWest(); // LatLng of the south-west corder
+      var nw = new google.maps.LatLng(ne.lat(), sw.lng());
+      var se = new google.maps.LatLng(sw.lat(), ne.lng());
+
+      var mapCenter = map.getCenter();
+
+      var clustersZoomLevel = this.mapZoom <= 18 ? this.mapZoom - 3 : 15;
+      
+      var clustersObject = {
+        "northEastLatitude": ne.lat(),
+        "northEastLongitude": ne.lng(),
+        "southWestLatitude": sw.lat(),
+        "southWestLongitude": sw.lng(),
+        "zoomLevel": clustersZoomLevel
+      };
+
+      console.log('clustersObject', clustersObject);
+
+      this.callClusters(clustersObject);
+    });
   }
 
   clickedMarker(id) {
@@ -291,5 +316,9 @@ export class MapsComponent implements OnInit {
     } else if (this.mapZoom < 21) {
       this.mapZoom++;
     }
+  }
+
+  callClusters(obj) {
+    console.log('callClusters');
   }
 }

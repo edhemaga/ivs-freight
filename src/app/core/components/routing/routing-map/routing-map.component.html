@@ -432,7 +432,8 @@
                   [svgStyle]="{
                     'width.px': 14,
                     'height.px': 14,
-                    fill: route.isFocused ? '#fff' : route.color
+                    fill: route.isFocused ? '#fff' : route.color,
+                    opacity: inputAddress?.inputDropdown?.inputRef?.focusInput ? '0' : '1'
                   }"
                 ></svg-icon>
                 <div
@@ -448,6 +449,7 @@
                 >
                   <!-- Add New Stop -->
                   <app-input-address-dropdown
+                    #inputAddress
                     formControlName="address"
                     [inputConfig]="{
                       name: 'RoutingAddress',
@@ -1191,14 +1193,14 @@
                           [ngStyle]="{ fill: route.color }"
                         />
                         <text
-                          y="-8%"
+                          y="-10%"
                           dominant-baseline="middle"
                           text-anchor="middle"
                           id="_1"
                           data-name="1"
                           transform="translate(647 2305)"
                           fill="#fff"
-                          font-size="11"
+                          font-size="10"
                           font-family="Montserrat-Bold, Montserrat"
                           font-weight="700"
                         >

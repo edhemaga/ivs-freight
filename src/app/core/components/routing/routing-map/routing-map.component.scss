@@ -120,10 +120,18 @@
     }
 
     .marker-icon {
-        transition: none !important;
+        transition: 0.2s;
 
         svg {
             outline: none;
+        }
+
+        &.edit-marker {
+            transform: translate(-50%, -10%) scale(1.5) !important;
+
+            #Ellipse_6245 {
+                transform: translate(1113px, 983px) scale(0.75);
+            }
         }
 
         &.selected-marker {

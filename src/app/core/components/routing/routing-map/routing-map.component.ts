@@ -44,6 +44,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   @ViewChild('mapToolbar') mapToolbar: any;
   @ViewChild('t2') t2: any;
+  @ViewChild('inputAddress') inputAddress: any;
   dropdownWidth: string = 'w-col-229';
 
   @HostListener('mousemove', ['$event']) onMouseOver(event) {
@@ -2253,35 +2254,55 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   }
 
   focusOnInput(routeIndex, blur?, event?) {
-    var clickedElement = '';
-
     if (event) {
       event.stopPropagation();
       event.preventDefault();
-      clickedElement = event.target.tagName;
     }
 
+    console.log('focusOnInput', routeIndex, this.tableData[this.selectedMapIndex].routes[routeIndex].isFocused);
     if (!this.tableData[this.selectedMapIndex].routes[routeIndex].isFocused) {
       this.focusRoute(routeIndex);
     }
 
-    var checkInputFocus = this.checkInputFocus(routeIndex);
-
-    if (clickedElement != 'INPUT' && !checkInputFocus) {
-      let route = this.tableData[this.selectedMapIndex].routes[routeIndex];
-
-      const inputContainerElement: HTMLElement = document.querySelector(
-        '[data-id="newStop' + route.id + '"]'
-      );
-
-      const inputElement = inputContainerElement.querySelector('input');
-
-      if (blur) {
-        inputElement.blur();
-      } else {
-        inputElement.focus();
-      }
+    if ( blur ) {
+      this.inputAddress.inputDropdown?.inputRef?.input.nativeElement.blur();
+      this.inputAddress.addressExpanded = false;
+      setTimeout(() => {
+        this.inputAddress.inputDropdown.inputRef.focusInput = false;
+      }, 500);
+    } else {
+      this.inputAddress.addressExpand();
+      this.inputAddress.inputDropdown?.inputRef?.input.nativeElement.focus();
+      setTimeout(() => {
+        this.inputAddress.inputDropdown.inputRef.focusInput = true;
+      }, 500);
     }
+
+    // var clickedElement = '';
+
+    // if (event) {
+    //   event.stopPropagation();
+    //   event.preventDefault();
+    //   clickedElement = event.target.tagName;
+    // }
+
+    // var checkInputFocus = this.checkInputFocus(routeIndex);
+
+    // if (clickedElement != 'INPUT' && !checkInputFocus) {
+    //   let route = this.tableData[this.selectedMapIndex].routes[routeIndex];
+
+    //   const inputContainerElement: HTMLElement = document.querySelector(
+    //     '[data-id="newStop' + route.id + '"]'
+    //   );
+
+    //   const inputElement = inputContainerElement.querySelector('input');
+
+    //   if (blur) {
+    //     inputElement.blur();
+    //   } else {
+    //     inputElement.focus();
+    //   }
+    // }
   }
 
   checkInputFocus(routeIndex) {
