@@ -27,7 +27,7 @@ export class NotificationService {
     
     const user = JSON.parse(localStorage.getItem('user'));
     
-    if ( ( error && error.status == 401 ) || !user || !user?.token || httpRequest.url.indexOf('applicant') > -1 || httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 || httpRequest.url.indexOf('division') > -1 ) {
+    if ( httpRequest.url.indexOf('pm/truck/') > -1 || ( error && error.status == 401 ) || !user || !user?.token || httpRequest.url.indexOf('applicant') > -1 || httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 || httpRequest.url.indexOf('division') > -1 ) {
       return false;
     }
 
@@ -41,7 +41,7 @@ export class NotificationService {
 
   public successToastr(httpRequest: HttpRequest<any>, next: HttpHandler){
     
-    if ( httpRequest.url.indexOf('login') > -1 || httpRequest.url.indexOf('applicant') > -1 || httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 || httpRequest.url.indexOf('division') > -1 ) {
+    if ( httpRequest.url.indexOf('pm/truck/') > -1 || httpRequest.url.indexOf('login') > -1 || httpRequest.url.indexOf('applicant') > -1 || httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 || httpRequest.url.indexOf('division') > -1 ) {
       return false;
     }
 

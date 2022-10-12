@@ -285,8 +285,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       break;
       case 'RATE':
 
-        let likedStatus = this.DetailsDataService.mainData.raiting.hasLiked;
-        let dislikedStatus = this.DetailsDataService.mainData.raiting.hasDislike;
+        let likedStatus = this.DetailsDataService.mainData.raiting ? this.DetailsDataService.mainData.raiting?.hasLiked : this.DetailsDataService.mainData.shopRaiting?.hasLiked;
+        let dislikedStatus = this.DetailsDataService.mainData.raiting  ? this.DetailsDataService.mainData.raiting?.hasDislike : this.DetailsDataService.mainData.shopRaiting?.hasDislike;
        
         if ( !likedStatus && !dislikedStatus ){   
           this.actionTitle = this.toastrType == 'toast-error' ? 'REMOVE RATE' : 'REMOVED RATE';
@@ -301,6 +301,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             this.message = this.DetailsDataService.mainData?.dbaName ? this.DetailsDataService.mainData?.dbaName : this.DetailsDataService.mainData?.businessName; 
           break;
           case 2:
+            console.log('----this.DetailsDataService.mainData', this.DetailsDataService.mainData)
             this.message = this.DetailsDataService.mainData?.name ? this.DetailsDataService.mainData?.name : '';
             this.actionType = 'REPAIR SHOP';
           break;
@@ -367,17 +368,16 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
         this.actionType = 'CDL - ' + driverFullName;
         this.wideMessage = true;
-        console.log('--cdlNum---', cdlNum);
         this.message = cdlNum;
       break;
       case 'MVR':
-      case 'MEDICAL':   
-        let driverName = this.DetailsDataService.mainData?.fullName.toUpperCase(); 
+      case 'MEDICAL':  
+        let driverName = this.DetailsDataService.mainData?.fullName ? this.DetailsDataService.mainData?.fullName.toUpperCase() : this.DetailsDataService.mainData?.firstName.toUpperCase() + ' ' + this.DetailsDataService.mainData?.lastName.toUpperCase() ; 
         
         let issuedDate = this.httpRequest.body?.issueDate ? moment(this.httpRequest.body?.issueDate).format('MM/DD/YY') : '';
         if ( this.httpRequest.method == 'POST' ) {
           this.actionTitle = this.toastrType == 'toast-error' ? 'ADD NEW' : 'ADDED NEW';
-          this.actionType = this.actionType == 'MVR' ? 'MVR - ' : 'MEDICAL - ' + driverName;
+          this.actionType = this.actionType == 'MVR' ? 'MVR - ' + driverName : 'MEDICAL - ' + driverName;
           this.message = 'Issued: ' + issuedDate;
         }
       break;
@@ -541,7 +541,20 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       break;
       case 'INSPECTION': 
          let inspectionDate = this.httpRequest.body?.issueDate ? moment(this.httpRequest.body?.issueDate).format('MM/DD/YY') : '';
-         this.message = 'Issued: ' + inspectionDate;
+        
+         if ( inspectionDate ) {
+          this.message = 'Issued: ' + inspectionDate;
+         } else {
+          if ( this.DetailsDataService.mainData?.truckNumber ){
+            let repairTruckNum = this.DetailsDataService.mainData?.truckNumber;
+            this.message = 'Truck - ' + repairTruckNum;
+         }
+         else if ( this.DetailsDataService.mainData?.trailerNumber ) {
+            let repairTrailerNum = this.DetailsDataService.mainData?.trailerNumber;
+            this.message = 'Trailer - ' + repairTrailerNum;
+         }
+         }
+        
       break;
       case 'TEST' :
         let testName = this.DetailsDataService.mainData.fullName ? this.DetailsDataService.mainData.fullName : this.DetailsDataService.mainData.firstName + ' ' + this.DetailsDataService.mainData.lastName;
