@@ -131,7 +131,7 @@ export class Step2Component implements OnInit, OnDestroy {
     });
   }
 
-  public patchStepValues(stepValues: any):void {
+  public patchStepValues(stepValues: any): void {
     const { haveWorkExperience, workExperienceItems } = stepValues;
 
     this.workExperienceForm

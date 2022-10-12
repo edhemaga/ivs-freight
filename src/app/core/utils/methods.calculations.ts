@@ -90,6 +90,11 @@ export const convertDateFromBackend = (date: string) => {
   return moment(new Date(date)).format('MM/DD/YYYY');
 };
 
+//------------------------------- DATE FROM BACKEND TO TIME -------------------------------
+export const convertDateFromBackendToTime = (date: string) => {
+  return moment(new Date(date)).format('LT');
+};
+
 //------------------------------- Convert thousand separator in number -------------------------------
 export const convertThousanSepInNumber = (value: string) => {
   if (value) return parseFloat(value.toString().replace(/,/g, ''));

@@ -159,6 +159,7 @@ export class Step8Component implements OnInit, OnDestroy {
   }
 
   public patchStepValues(stepValues: any): void {
+    console.log('stepvalues', stepValues);
     const {
       positiveTest,
       motorCarrier,

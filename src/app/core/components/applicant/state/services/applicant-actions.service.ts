@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { ApplicantService } from '../../../../../../../appcoretruckassist';
 
 import { ApplicantStore } from '../store/applicant.store';
+import { ApplicantSphFormStore } from '../store/applicant-sph-form-store/applicant-sph-form.store';
 
 import {
   VerifyApplicantCommand,
@@ -31,6 +32,10 @@ import {
   CreateEducationReviewCommand,
   CreateSevenDaysHosReviewCommand,
   CreateDrugAndAlcoholReviewCommand,
+  InvitePreviousEmployerCommand,
+  VerifyPreviousEmployerCommand,
+  PreviousEmployerProspectResponse,
+  CreatePreviousEmployerAccidentHistoryCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -43,7 +48,8 @@ export class ApplicantActionsService {
 
   constructor(
     private applicantService: ApplicantService,
-    private applicantStore: ApplicantStore
+    private applicantStore: ApplicantStore,
+    private applicantSphFormStore: ApplicantSphFormStore
   ) {}
 
   public getApplicantInfo(data: any) {
@@ -121,7 +127,7 @@ export class ApplicantActionsService {
     return this.applicantService.apiApplicantAuthorizationPost(data);
   }
 
-  /* BACKEND PUT ACTION FUNCTIONS */
+  /* BACKEND PUT ACTION FUNCTIONS - APPLICANT MODE */
 
   public updatePersonalInfo(
     data: UpdatePersonalInfoCommand
@@ -189,6 +195,34 @@ export class ApplicantActionsService {
     data: CreateAuthorizationReviewCommand
   ): Observable<CreateResponse> {
     return this.applicantService.apiApplicantAuthorizationReviewPost(data);
+  }
+
+  public invitePreviousEmployerSphForm(
+    data: InvitePreviousEmployerCommand
+  ): Observable<any> {
+    return this.applicantService.apiApplicantPreviousemployerPost(data);
+  }
+
+  public verifyPreviousEmployerSphForm(
+    data: VerifyPreviousEmployerCommand
+  ): Observable<PreviousEmployerProspectResponse> {
+    return this.applicantService
+      .apiApplicantPreviousemployerInvitePost(data)
+      .pipe(
+        tap((res) => {
+          this.applicantSphFormStore.set({
+            1: { verifyData: null, step1: res, step2: null, step3: null },
+          });
+        })
+      );
+  }
+
+  public createAccidentHistorySphForm(
+    data: CreatePreviousEmployerAccidentHistoryCommand
+  ): Observable<CreateResponse> {
+    return this.applicantService.apiApplicantPreviousemployerAccidenthistoryPost(
+      data
+    );
   }
 
   /* BACKEND GET ACTION FUNCTIONS */

@@ -124,13 +124,13 @@
               <app-ta-input-dropdown
                 *ngIf="hasMultiplePreviousEmployers"
                 formControlName="previousEmployer"
-                [template]="'svgtext-template'"
                 [inputConfig]="{
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Previous Employer',
                   isDropdown: true,
-                  dropdownWidthClass: 'w-col-applicant-previous-employer'
+                  dropdownWidthClass: 'w-col-376',
+                  hideClear: true
                 }"
                 [options]="previousEmployersList"
                 [activeItem]="selectedEmployer"
@@ -281,7 +281,6 @@
                 <div class="received-by-group">
                   <app-ta-input-dropdown
                     formControlName="receivedByRequest"
-                    [template]="'svgtext-template'"
                     [inputConfig]="{
                       name: 'Input Dropdown',
                       type: 'text',

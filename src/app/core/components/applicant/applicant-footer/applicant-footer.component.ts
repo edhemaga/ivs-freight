@@ -14,16 +14,21 @@ import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { convertDateFromBackend } from './../../../utils/methods.calculations';
+import {
+  convertDateFromBackend,
+  convertDateFromBackendToTime,
+} from './../../../utils/methods.calculations';
 
 import moment from 'moment';
+
+import { ApplicantActionsService } from './../state/services/applicant-actions.service';
+
+import { ApplicantQuery } from '../state/store/applicant.query';
 
 import { SelectedMode } from '../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../state/enum/input-switch-actions.enum';
 import { IdNameList } from '../state/model/lists.model';
 import { ApplicantCompanyInfoResponse } from 'appcoretruckassist';
-
-import { ApplicantActionsService } from './../state/services/applicant-actions.service';
 
 @Component({
   selector: 'app-applicant-footer',
@@ -60,7 +65,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
   public selectedEmployer: IdNameList;
 
   public isDocumentsCardOpen: boolean = true;
-  public hasMultiplePreviousEmployers: boolean = true;
+  public hasMultiplePreviousEmployers: boolean = false;
 
   public documents: any[] = [];
 
@@ -111,16 +116,14 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
     { id: 5, name: 'Other' },
   ];
 
-  public previousEmployersList: IdNameList[] = [
-    { id: 1, name: 'JD FREIGHT' },
-    { id: 2, name: 'Dogma Brewery Logistics' },
-  ];
+  public previousEmployersList: any = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private zone: NgZone,
-    private applicantActionsService: ApplicantActionsService,
-    private router: Router
+    private router: Router,
+    private applicantQuery: ApplicantQuery,
+    private applicantActionsService: ApplicantActionsService
   ) {}
 
   ngOnInit(): void {
@@ -133,6 +136,16 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
 
       this.getRequestsBoxHeight();
       this.getDocumentsBoxHeight();
+
+      let requestsBoxResponse: any;
+
+      this.applicantQuery.requestsList$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          requestsBoxResponse = res;
+        });
+
+      this.patchRequestsBoxValues(requestsBoxResponse);
     }
 
     this.copyrightYear = moment().format('YYYY');
@@ -152,8 +165,8 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
 
   private createForm() {
     this.sphTabForm = this.formBuilder.group({
-      previousEmployer: ['JD Freight'],
-      applicantName: ['Aleksandar Djordjevic'],
+      previousEmployer: null,
+      applicantName: null,
 
       requests: this.formBuilder.array([]),
 
@@ -162,10 +175,42 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
+  public patchRequestsBoxValues(requestsBoxValues: any) {
+    requestsBoxValues = requestsBoxValues.map((item) => {
+      return {
+        id: item.workExperienceItemId,
+        name: item.employerName,
+        applicantName: item.applicantName,
+        requests: item.requests,
+      };
+    });
+
+    const firstItemInRequestsBoxValues = requestsBoxValues[0];
+
+    if (requestsBoxValues.length > 1) {
+      this.hasMultiplePreviousEmployers = true;
+
+      this.previousEmployersList = requestsBoxValues;
+    } else {
+      this.hasMultiplePreviousEmployers = false;
+    }
+
+    this.selectedEmployer = firstItemInRequestsBoxValues;
+
+    this.sphTabForm.patchValue({
+      previousEmployer: firstItemInRequestsBoxValues.name,
+      applicantName: firstItemInRequestsBoxValues.applicantName,
+    });
+
+    this.updateRequests(firstItemInRequestsBoxValues);
+  }
+
   public handleInputSelect(event: any, type: string): void {
     switch (type) {
       case InputSwitchActions.PREVIOUS_EMPLOYER:
         this.selectedEmployer = event;
+
+        this.updateRequests(this.selectedEmployer);
 
         break;
       case InputSwitchActions.SPH_RECEIVED_BY:
@@ -186,17 +231,61 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public onCreateNewRequest(): void {
-    const currentDate = moment().format('L');
-    const currentTime = moment().format('LT');
+    const workExperienceItemId = this.selectedEmployer.id;
 
-    this.previousRequests.push(this.createNewRequest());
+    this.applicantActionsService
+      .invitePreviousEmployerSphForm({ workExperienceItemId })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          const inviteDate = convertDateFromBackend(res.inviteDate);
 
-    this.previousRequests.controls[
-      this.previousRequests.controls.length - 1
-    ].patchValue({
-      dateOfRequest: [currentDate ? convertDateFromBackend(currentDate) : null],
-      timeOfRequest: [currentDate, currentTime],
-    });
+          const inviteTime = convertDateFromBackendToTime(res.inviteDate);
+
+          this.previousRequests.push(this.createNewRequest());
+
+          this.previousRequests
+            .at(this.previousRequests.length - 1)
+            .patchValue({
+              dateOfRequest: inviteDate,
+              timeOfRequest: inviteTime,
+            });
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
+  public updateRequests(selectedEmployerRequests: any) {
+    this.previousRequests.clear();
+
+    const selectedRequestsLength = selectedEmployerRequests.requests?.length
+      ? selectedEmployerRequests.requests.length
+      : null;
+
+    setTimeout(() => {
+      if (selectedRequestsLength) {
+        for (let i = 0; i < selectedRequestsLength; i++) {
+          const inviteDate = convertDateFromBackend(
+            selectedEmployerRequests.requests[i].inviteDate
+          );
+
+          const inviteTime = convertDateFromBackendToTime(
+            selectedEmployerRequests.requests[i].inviteDate
+          );
+
+          this.previousRequests.push(this.createNewRequest());
+
+          this.previousRequests
+            .at(this.previousRequests.length - 1)
+            .patchValue({
+              dateOfRequest: inviteDate,
+              timeOfRequest: inviteTime,
+            });
+        }
+      }
+    }, 100);
   }
 
   public onHidePopupBox(type: string): void {
@@ -312,13 +401,17 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
   public getCompanyInfo(): void {
     this.applicantActionsService.getApplicantInfo$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.companyInfo = res.companyInfo;
+      .subscribe({
+        next: (res) => {
+          this.companyInfo = res.companyInfo;
 
-        this.dateOfApplication = convertDateFromBackend(res.inviteDate).replace(
-          /-/g,
-          '/'
-        );
+          this.dateOfApplication = convertDateFromBackend(
+            res.inviteDate
+          ).replace(/-/g, '/');
+        },
+        error: (err) => {
+          console.log(err);
+        },
       });
   }
 
@@ -326,7 +419,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
     this.destroy$.next();
     this.destroy$.complete();
 
-    if (this.selectedMode === 'REVIEW_MODE') {
+    if (this.selectedMode === SelectedMode.REVIEW) {
       this.requestsBoxObserver.unobserve(this.requestsBox.nativeElement);
       this.documentsBoxObserver.unobserve(this.documentsBox.nativeElement);
     }

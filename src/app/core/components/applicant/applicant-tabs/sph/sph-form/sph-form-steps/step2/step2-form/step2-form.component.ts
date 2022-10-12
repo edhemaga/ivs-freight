@@ -137,7 +137,10 @@ export class SphStep2FormComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.markFormInvalid?.currentValue) {
+    if (
+      changes.markFormInvalid?.previousValue !==
+      changes.markFormInvalid?.currentValue
+    ) {
       this.inputService.markInvalid(this.accidentForm);
 
       this.markInvalidEmitter.emit(false);
@@ -175,9 +178,11 @@ export class SphStep2FormComponent
           (radio: { checked: boolean }) => radio.checked
         );
 
-        this.accidentForm
-          .get('hazmatSpill')
-          .patchValue(selectedHazmatCheckbox.label);
+        if (selectedHazmatCheckbox.label === 'YES') {
+          this.accidentForm.get('hazmatSpill').patchValue(true);
+        } else {
+          this.accidentForm.get('hazmatSpill').patchValue(false);
+        }
 
         break;
 

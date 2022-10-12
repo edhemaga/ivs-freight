@@ -179,11 +179,12 @@
         height: 24px;
         transform-origin: right;
 
-        background-color: #f3f3f3;
+        background: #f3f3f3;
         border-radius: 2px;
         transition: all 0.3s ease-in-out;
         cursor: pointer;
         position: relative;
+        transition: background 0.3s ease-in-out;
 
         .header-action-text {
           margin: 0;
@@ -191,6 +192,7 @@
           font-weight: 700;
           line-height: 18px;
           color: #536bc2;
+          transition: color 0.3s ease-in-out;
           -webkit-user-select: none;
           -moz-user-select: none;
           -ms-user-select: none;
@@ -198,8 +200,7 @@
         }
 
         &:hover {
-          transition: all 0.3s ease-in-out;
-          background-color: #536bc2;
+          background: #536bc2;
 
           .header-action-text {
             color: #ffffff;
@@ -454,7 +455,7 @@
         margin-bottom: 0px !important;
       }
 
-      &.active{
+      &.active {
         overflow: visible !important;
         opacity: 1 !important;
       }
