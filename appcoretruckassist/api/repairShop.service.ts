@@ -17,8 +17,10 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { ClusterResponse } from '../model/models';
 import { CreateRepairShopCommand } from '../model/models';
 import { CreateResponse } from '../model/models';
+import { GetRepairShopClustersQuery } from '../model/models';
 import { MapMarkerListResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { RepairShopListResponse } from '../model/models';
@@ -139,6 +141,67 @@ export class RepairShopService {
         }
 
         return this.httpClient.get<boolean>(`${this.configuration.basePath}/api/repairshop/check/name/${encodeURIComponent(String(name))}/${encodeURIComponent(String(phone))}`,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param getRepairShopClustersQuery 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiRepairshopClustersGet(getRepairShopClustersQuery?: GetRepairShopClustersQuery, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<Array<ClusterResponse>>;
+    public apiRepairshopClustersGet(getRepairShopClustersQuery?: GetRepairShopClustersQuery, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<Array<ClusterResponse>>>;
+    public apiRepairshopClustersGet(getRepairShopClustersQuery?: GetRepairShopClustersQuery, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<Array<ClusterResponse>>>;
+    public apiRepairshopClustersGet(getRepairShopClustersQuery?: GetRepairShopClustersQuery, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.get<Array<ClusterResponse>>(`${this.configuration.basePath}/api/repairshop/clusters`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
