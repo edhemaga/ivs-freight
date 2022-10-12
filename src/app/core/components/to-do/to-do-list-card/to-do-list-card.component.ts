@@ -508,7 +508,13 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     if (event.action == 'delete') {
       this.commentsService.deleteCommentById(event.data).subscribe({
         next: () => {
-          console.log('SUCCESS DELETING');
+          let todoCom = this.scene.children[this.currentHoldIndex].children[
+            this.currentChildIndex
+          ].comments.filter((comm) => comm.id != event.data);
+
+          this.scene.children[this.currentHoldIndex].children[
+            this.currentChildIndex
+          ].comments = todoCom;
         },
         error: () => {
           console.log('ERROR WHILE DELETING');
@@ -594,6 +600,11 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
 
   setFilterEvent(event: any) {
     console.log('--here---', event);
+  }
+
+  setIndex(mainIndx, indx) {
+    this.currentHoldIndex = mainIndx;
+    this.currentChildIndex = indx;
   }
 
   ngOnDestroy(): void {
