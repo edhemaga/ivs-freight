@@ -32,6 +32,14 @@ export const card_component_animation = (
         'margin-bottom': '0px',
       })
     ),
+    state(
+      'null',
+      style({
+        height: '*',
+      })
+    ),
     transition('false <=> true', [animate('.3s ease-in-out')]),
-    transition('0 <=> true', [animate('.3s ease-in-out')]),
+    transition('true <=> false', [animate('.3s ease-in-out')]),
+    // transition('null <=> true', [animate('.3s ease-in-out')]),
+    // transition('null <=> false', [animate('.3s ease-in-out')]),
   ]);

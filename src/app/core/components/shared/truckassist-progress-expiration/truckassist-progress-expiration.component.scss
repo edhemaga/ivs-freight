@@ -135,7 +135,7 @@
 
   &.todo-progress {
     .table-progress {
-      transform: scaleX(-1);
+      flex-direction: row-reverse;
     }
 
     .progress-text {

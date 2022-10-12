@@ -1,10 +1,13 @@
 <div class="note-container {{ customClass }}">
   <div *ngIf="isVisibleDivider" class="divider"></div>
-  <div class="note-header" [class.active]="_isVisibleNote">
+  <div class="note-header" [class.active]="_isVisibleNote && _isVisibleNote != 'null' ">
     <div class="note-label" (click)="openNote()">Note</div>
-  <div class="note_tools_container" (click)="!_isVisibleNote ? openNote() : ''">
+    <div
+      class="note_tools_container"
+      (click)="!_isVisibleNote || _isVisibleNote == 'null' ? openNote() : ''"
+    >
       <app-ta-note-container
-        [isExpanded]="_isVisibleNote"
+        [isExpanded]="_isVisibleNote && _isVisibleNote != 'null'"
         [range]="range"
         [selectionTaken]="selectionTaken"
         [value]="value"
@@ -15,7 +18,7 @@
       <svg-icon
         *ngIf="isVisibleArrow"
         class="note-arrow"
-        [ngClass]="{ rotate: _isVisibleNote }"
+        [ngClass]="{ rotate: _isVisibleNote && _isVisibleNote != 'null' }"
         src="assets/svg/common/ic_arrow_down_updated.svg"
         (click)="openNote()"
       ></svg-icon>
@@ -25,7 +28,7 @@
     class="note-body"
     [ngClass]="noActive"
     #noteBody
-    [@showHideCardBody]="_isVisibleNote.toString()"
+    [@showHideCardBody]="_isVisibleNote && _isVisibleNote != 'null' "
   >
     <div
       #main_editor
