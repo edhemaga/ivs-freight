@@ -55,7 +55,6 @@ export class CustomerTableComponent
   shipper: ShipperState[] = [];
   selectedTab = 'active';
   activeViewMode: string = 'List';
-  resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
   backFilterQuery = {
@@ -90,8 +89,6 @@ export class CustomerTableComponent
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
-          this.resetColumns = response;
-
           this.sendCustomerData();
         }
       });
@@ -135,9 +132,6 @@ export class CustomerTableComponent
         if (res.animation === 'add' && res.tab === 'broker') {
           this.viewData.push(this.mapBrokerData(res.data));
 
-          console.log('Radi Se Dodavanje Broker-a');
-          console.log(this.viewData);
-
           this.addData(res.id);
         }
         // Update Broker
@@ -151,9 +145,6 @@ export class CustomerTableComponent
         // Add Shipper
         else if (res.animation === 'add' && res.tab === 'shipper') {
           this.viewData.push(this.mapShipperData(res.data));
-
-          console.log('Radi Se Dodavanje Shipper-a');
-          console.log(this.viewData);
 
           this.addData(res.id);
         }
@@ -183,7 +174,6 @@ export class CustomerTableComponent
                 this.viewData.map((data: any) => {
                   response.map((r: any) => {
                     if (data.id === r.id) {
-                      console.log(data);
                       if (!brokerName) {
                         brokerName = data.businessName;
                       } else {
@@ -209,7 +199,6 @@ export class CustomerTableComponent
             this.viewData.map((data: any) => {
               response.map((r: any) => {
                 if (data.id === r.id) {
-                  console.log(data);
                   if (!shipperName) {
                     shipperName = data.businessName;
                   } else {
@@ -346,7 +335,9 @@ export class CustomerTableComponent
         isCustomer: true,
         gridNameTitle: 'Customer',
         stateName: 'brokers',
-        gridColumns: this.getGridColumns('brokers', this.resetColumns),
+        tableConfiguration: 'BROKER',
+        isActive: this.selectedTab === 'active',
+        gridColumns: this.getGridColumns('BROKER'),
       },
       {
         title: 'Shipper',
@@ -357,7 +348,9 @@ export class CustomerTableComponent
         isCustomer: true,
         gridNameTitle: 'Customer',
         stateName: 'shippers',
-        gridColumns: this.getGridColumns('shippers', this.resetColumns),
+        tableConfiguration: 'SHIPPER',
+        isActive: this.selectedTab === 'inactive',
+        gridColumns: this.getGridColumns('SHIPPER'),
       },
     ];
 
@@ -366,16 +359,18 @@ export class CustomerTableComponent
     this.setCustomerData(td);
   }
 
-  getGridColumns(stateName: string, resetColumns: boolean) {
-    const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
+  getGridColumns(configType: string) {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
     );
 
-    if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
+    if (configType === 'BROKER') {
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getBrokerColumnDefinition();
     } else {
-      return stateName === 'brokers'
-        ? getBrokerColumnDefinition()
+      return tableColumnsConfig
+        ? tableColumnsConfig
         : getShipperColumnDefinition();
     }
   }
@@ -393,9 +388,6 @@ export class CustomerTableComponent
           return this.mapShipperData(data);
         }
       });
-
-      console.log('Customer Data');
-      console.log(this.viewData);
 
       // For Testing
       // for (let i = 0; i < 100; i++) {
@@ -610,9 +602,6 @@ export class CustomerTableComponent
   // Table Body Actions
   onTableBodyActions(event: any) {
     let businessName = '';
-
-    console.log('onTableBodyActions');
-    console.log(event);
 
     // Edit Call
     if (event.type === 'show-more') {

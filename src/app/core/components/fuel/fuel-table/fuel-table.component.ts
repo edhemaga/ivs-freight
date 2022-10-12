@@ -33,7 +33,6 @@ export class FuelTableComponent implements OnInit, OnDestroy {
   columns: any[] = [];
   selectedTab = 'active';
   activeViewMode: string = 'List';
-  resetColumns: boolean;
 
   sortTypes: any[] = [];
   sortDirection: string = 'asc';
@@ -72,6 +71,8 @@ export class FuelTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    alert('Nema jos konfiguracija za FUEL_STOP, koristi se trenutno za FUEL_TRANSACTION');
+
     this.sendFuelData();
 
     // Reset Columns
@@ -79,8 +80,6 @@ export class FuelTableComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
-          this.resetColumns = response;
-
           this.sendFuelData();
         }
       });
@@ -162,7 +161,9 @@ export class FuelTableComponent implements OnInit, OnDestroy {
         length: 8,
         data: this.getDumyData(8),
         gridNameTitle: 'Fuel',
-        gridColumns: this.getGridColumns('fuel', this.resetColumns),
+        tableConfiguration: 'FUEL_TRANSACTION',
+        isActive: this.selectedTab === 'active',
+        gridColumns: this.getGridColumns('FUEL_TRANSACTION'),
       },
       {
         title: 'Stop',
@@ -170,7 +171,9 @@ export class FuelTableComponent implements OnInit, OnDestroy {
         length: 3,
         data: this.getDumyData(3),
         gridNameTitle: 'Fuel',
-        gridColumns: this.getGridColumns('fuel', this.resetColumns),
+        tableConfiguration: 'FUEL_STOP',
+        isActive: this.selectedTab === 'inactive',
+        gridColumns: this.getGridColumns('FUEL_STOP'),
       },
     ];
 
@@ -179,15 +182,19 @@ export class FuelTableComponent implements OnInit, OnDestroy {
     this.setFuelData(td);
   }
 
-  getGridColumns(stateName: string, resetColumns: boolean) {
-    const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
+  getGridColumns(configType: string) {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
     );
 
-    if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
+    if (configType === 'FUEL_TRANSACTION') {
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getAccountingFuelColumnDefinition();
     } else {
-      return getAccountingFuelColumnDefinition();
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getAccountingFuelColumnDefinition();
     }
   }
 

@@ -65,8 +65,8 @@ export class RepairTService implements OnDestroy {
                 ({ id }) => id === data.repairShopId
               );
               this.shopMinimalStore.add(shop);
-             /*  this.sdls.update(shop.id, { repairs: shop.repairs });
-              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit }); */
+             /*  this.sdls.update(shop.id, { repairs: shop.repairs }); */
+              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit });
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 tab: 'repair-shop',
@@ -124,8 +124,8 @@ export class RepairTService implements OnDestroy {
                 ({ id }) => id === data.repairShopId
               );
               this.shopMinimalStore.add(shop);
-             /*  this.sdls.update(shop.id, { repairs: shop.repairs });
-              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit }); */
+              /* this.sdls.update(shop.id, { repairs: shop.repairs }); */
+              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit });
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 tab: 'repair-shop',
@@ -340,6 +340,12 @@ export class RepairTService implements OnDestroy {
     active?: number,
     pinned?: boolean,
     companyOwned?: boolean,
+    categoryIds?: Array<number>,
+    _long?: number,
+    lat?: number,
+    distance?: number,
+    costFrom?: number,
+    costTo?: number,
     pageIndex?: number,
     pageSize?: number,
     companyId?: number,
@@ -348,10 +354,16 @@ export class RepairTService implements OnDestroy {
     search1?: string,
     search2?: string
   ): Observable<RepairShopListResponse> {
-    /* return this.shopServices.apiRepairshopListGet(
+    return this.shopServices.apiRepairshopListGet(
       active,
       pinned,
       companyOwned,
+      categoryIds,
+      _long,
+      lat,
+      distance,
+      costFrom,
+      costTo,
       pageIndex,
       pageSize,
       companyId,
@@ -359,9 +371,7 @@ export class RepairTService implements OnDestroy {
       search,
       search1,
       search2
-    ); */
-
-    return;
+    );
   }
 
   // Get Repair Minimal List

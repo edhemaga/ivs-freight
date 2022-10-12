@@ -34,7 +34,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
   columns: any[] = [];
   selectedTab = 'pending';
   activeViewMode: string = 'List';
-  resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
   loadActive: LoadActiveState[] = [];
@@ -92,8 +91,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
-          this.resetColumns = response;
-
           this.sendLoadData();
         }
       });
@@ -342,7 +339,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         extended: false,
         gridNameTitle: 'Load',
         stateName: 'loads',
-        gridColumns: this.getGridColumns('template', this.resetColumns),
+        tableConfiguration: 'LOAD_TEMPLATE',
+        isActive: this.selectedTab === 'template',
+        gridColumns: this.getGridColumns('template', 'LOAD_TEMPLATE'),
       },
       {
         title: 'Pending',
@@ -352,7 +351,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         extended: false,
         gridNameTitle: 'Load',
         stateName: 'loads',
-        gridColumns: this.getGridColumns('active-panding', this.resetColumns),
+        tableConfiguration: 'LOAD_REGULAR',
+        isActive: this.selectedTab === 'pending',
+        gridColumns: this.getGridColumns('pending', 'LOAD_REGULAR'),
       },
       {
         title: 'Active',
@@ -362,7 +363,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         extended: false,
         gridNameTitle: 'Load',
         stateName: 'loads',
-        gridColumns: this.getGridColumns('active-panding', this.resetColumns),
+        tableConfiguration: 'LOAD_REGULAR',
+        isActive: this.selectedTab === 'active',
+        gridColumns: this.getGridColumns('active', 'LOAD_REGULAR'),
       },
       {
         title: 'Closed',
@@ -372,7 +375,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         extended: false,
         gridNameTitle: 'Load',
         stateName: 'loads',
-        gridColumns: this.getGridColumns('closed', this.resetColumns),
+        tableConfiguration: 'LOAD_CLOSED',
+        isActive: this.selectedTab === 'closed',
+        gridColumns: this.getGridColumns('closed', 'LOAD_CLOSED'),
       },
     ];
 
@@ -381,17 +386,23 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setLoadData(td);
   }
 
-  getGridColumns(stateName: string, resetColumns: boolean) {
-    // const userState: any = JSON.parse(
-    //   localStorage.getItem(stateName + '_user_columns_state')
-    // );
+  getGridColumns(activeTab: string, configType: string) {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
+    );
 
-    if (stateName === 'active-panding') {
-      return getLoadActiveAndPendingColumnDefinition();
-    } else if (stateName === 'closed') {
-      return getLoadClosedColumnDefinition();
+    if (activeTab === 'template') {
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getLoadTemplateColumnDefinition();
+    } else if (activeTab === 'closed') {
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getLoadClosedColumnDefinition();
     } else {
-      return getLoadTemplateColumnDefinition();
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getLoadActiveAndPendingColumnDefinition();
     }
   }
 
@@ -404,9 +415,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.viewData = this.viewData.map((data) => {
         return this.mapLoadData(data);
       });
-
-      console.log('Load Data');
-      console.log(this.viewData);
     } else {
       this.viewData = [];
     }
@@ -463,7 +471,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       loadStatus: {
         status: 'Active',
         color: '',
-        time: '5h. 18m. ago'
+        time: '5h. 18m. ago',
       },
       textMiles: data?.totalMiles ? data.totalMiles : '',
       textCommodity: data?.generalCommodity?.name
@@ -489,8 +497,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textShipper: 'Nije Povezano',
       loadComment: {
         count: data.commentsCount,
-        comments: data.comments
-      }
+        comments: data.comments,
+      },
     };
   }
 
@@ -522,7 +530,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.selectedTab = event.tabData.field;
 
       this.sendLoadData();
-    }else if (event.action === 'view-mode') {
+    } else if (event.action === 'view-mode') {
       this.activeViewMode = event.mode;
     }
   }
