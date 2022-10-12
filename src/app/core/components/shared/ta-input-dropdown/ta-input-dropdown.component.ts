@@ -376,14 +376,14 @@ export class TaInputDropdownComponent
               this.activeItem = existItem;
               this.inputService.dropDownItemSelectedOnEnter$.next(true);
 
-              if (this.inputConfig.name != 'RoutingAddress') {
+              if (this.inputConfig.name !== 'RoutingAddress') {
                 const timeout = setTimeout(() => {
                   this.inputConfig = {
                     ...this.inputConfig,
                     blackInput: false,
                   };
                   clearTimeout(timeout);
-                }, 200);
+                }, 600);
               }
             }
             this.popoverRef.close();

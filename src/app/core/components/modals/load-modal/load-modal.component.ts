@@ -6,7 +6,6 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
@@ -15,6 +14,7 @@ import { LoadModalResponse } from '../../../../../../appcoretruckassist';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { CommentsService } from '../../../services/comments/comments.service';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
+import { ITaInput } from '../../shared/ta-input/ta-input.config';
 
 @Component({
   selector: 'app-load-modal',
@@ -104,6 +104,40 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public selectedTrailerLength: any = null;
   public selectedYear: any = null;
   public selectedShipper: any = null;
+
+  public loadBrokerContactsInputConfig: ITaInput = {
+    name: 'Input Dropdown',
+    type: 'text',
+    multipleLabel: {
+      labels: ['Contact', 'Phone', 'Ext'],
+      customClass: 'load-broker-contact',
+    },
+    isDropdown: true,
+    dropdownWidthClass: 'w-col-391',
+  };
+
+  public loadDispatchesTTDInputConfig: ITaInput = {
+    name: 'Input Dropdown',
+    type: 'text',
+    multipleLabel: {
+      labels: ['Truck #', 'Trailer #', 'Driver'],
+      customClass: 'load-dispatches-ttd',
+    },
+    isDropdown: true,
+    dropdownWidthClass: 'w-col-397',
+  };
+
+  public loadShipperInputConfig: ITaInput = {
+    name: 'Input Dropdown',
+    type: 'text',
+    multipleLabel: {
+      labels: ['Shipper', 'Location'],
+      customClass: 'load-shipper',
+    },
+    isDropdown: true,
+    isRequired: true,
+    dropdownWidthClass: 'w-col-696',
+  };
 
   public isAvailableAdjustedRate: boolean = false;
   public isAvailableAdvanceRate: boolean = false;
@@ -215,7 +249,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       case 'dispatcher': {
         this.selectedDispatcher = event;
         if (this.selectedDispatcher) {
-          this.labelsDispatcher = this.labelsDispatcher.filter((item) => item); // hvalid dispatcherId
+          this.labelsDispatcher = this.labelsDispatcher.filter((item) => item); // valid dispatcherId
         }
         break;
       }
@@ -239,11 +273,72 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'broker-contact': {
-        this.selectedBrokerContact = event;
+        this.selectedBrokerContact = {
+          ...event,
+          name: event?.name
+            ?.concat(' ', event?.phone)
+            .concat(' ', event?.extensionPhone),
+        };
+        if (event) {
+          this.loadBrokerContactsInputConfig = {
+            ...this.loadBrokerContactsInputConfig,
+            multipleInputValues: {
+              options: [
+                {
+                  value: event.name,
+                  logoName: null,
+                },
+                {
+                  value: event.phone,
+                  logoName: null,
+                },
+                {
+                  value: event.extensionPhone,
+                  logoName: null,
+                },
+              ],
+              customClass: 'load-broker-contact',
+            },
+          };
+        } else {
+          this.loadBrokerContactsInputConfig.multipleInputValues = null;
+        }
+
         break;
       }
       case 'dispatches': {
-        this.selectedDispatches = event;
+        this.selectedDispatches = {
+          ...event,
+          name: event?.truck?.name
+            ?.concat(' ', event?.trailer?.name)
+            .concat(' ', event?.driver?.name),
+        };
+        if (event) {
+          this.loadDispatchesTTDInputConfig = {
+            ...this.loadDispatchesTTDInputConfig,
+            multipleInputValues: {
+              options: [
+                {
+                  value: event?.truck?.name,
+                  logoName: null,
+                },
+                {
+                  value: event?.trailer?.name,
+                  logoName: null,
+                },
+                {
+                  value: event?.driver?.name,
+                  logoName: event?.driver?.logoName
+                    ? event?.driver?.logoName
+                    : 'no-url',
+                },
+              ],
+              customClass: 'load-dispatches-ttd',
+            },
+          };
+        } else {
+          this.loadDispatchesTTDInputConfig.multipleInputValues = null;
+        }
         break;
       }
       case 'truck-req': {
@@ -271,7 +366,28 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'shipper': {
-        this.selectedShipper = event;
+        this.selectedShipper = event?.name?.concat(' ', event?.address);
+
+        if (event) {
+          this.loadShipperInputConfig = {
+            ...this.loadShipperInputConfig,
+            multipleInputValues: {
+              options: [
+                {
+                  value: event?.name,
+                  logoName: null,
+                },
+                {
+                  value: event?.address,
+                  logoName: null,
+                },
+              ],
+              customClass: 'load-shipper',
+            },
+          };
+        } else {
+          this.loadShipperInputConfig.multipleInputValues = null;
+        }
         break;
       }
       default: {

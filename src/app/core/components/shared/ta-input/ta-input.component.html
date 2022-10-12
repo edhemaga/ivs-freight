@@ -541,6 +541,38 @@
   </div>
 
   <!-- Input Control -->
+
+  <!-- Multiple Input Values -->
+  <div
+    *ngIf="
+      inputConfig?.multipleInputValues?.options?.length &&
+      getSuperControl.value &&
+      !focusInput
+    "
+    class="input-control {{ inputConfig?.multipleInputValues?.customClass }}"
+    (click)="toggleDropdownOptions()"
+  >
+    <span
+      style="display: flex; gap: 6px; align-items: center"
+      *ngFor="let item of inputConfig.multipleInputValues.options"
+    >
+      <span *ngIf="item?.logoName">
+        <img
+          *ngIf="item?.logoName !== 'no-url'"
+          [src]="this.imageBase64Service.sanitizer(item.logoName)"
+          [alt]="item.value"
+        />
+        <div *ngIf="item.logoName === 'no-url'" class="no-profile-image">
+          <app-profile-images [indx]="0" [size]="'small'" [name]="item.value">
+          </app-profile-images>
+        </div>
+      </span>
+
+      {{ item.value }}
+    </span>
+  </div>
+
+  <!-- Single Input Value -->
   <input
     #input
     [type]="inputConfig.type | inputType: togglePassword"
@@ -648,7 +680,9 @@
       'dropdown-input-image-without-text-transparent':
         inputConfig?.dropdownImageInput &&
         !inputConfig?.dropdownImageInput?.withText &&
-        !focusInput
+        !focusInput,
+      'multiple-input-values':
+        inputConfig?.multipleInputValues?.options?.length && !focusInput
     }"
     (keypress)="manipulateWithInput($event)"
     (keyup)="onKeyUp($event)"
@@ -684,7 +718,20 @@
         (focusInput || getSuperControl.value)
     }"
   >
-    {{ inputConfig.label }}
+    <span *ngIf="inputConfig.label">{{ inputConfig.label }}</span>
+    <div
+      *ngIf="inputConfig.multipleLabel?.labels?.length"
+      [class]="inputConfig.multipleLabel?.customClass"
+    >
+      <span
+        *ngFor="
+          let label of inputConfig.multipleLabel.labels;
+          trackBy: trackIdentity
+        "
+      >
+        {{ label }}
+      </span>
+    </div>
   </label>
 
   <!-- Input Error Message -->

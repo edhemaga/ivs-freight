@@ -79,13 +79,7 @@
         <app-ta-input-dropdown
           formControlName="dispatchesId"
           [template]="'load-dispatches-ttd'"
-          [inputConfig]="{
-            name: 'Input Dropdown',
-            type: 'text',
-            label: 'Truck # Trailer # Driver',
-            isDropdown: true,
-            dropdownWidthClass: 'w-col-397'
-          }"
+          [inputConfig]="loadDispatchesTTDInputConfig"
           [options]="labelsDispatches"
           [activeItem]="selectedDispatches"
           (selectedItem)="onSelectDropdown($event, 'dispatches')"
@@ -149,13 +143,7 @@
         <app-ta-input-dropdown
           formControlName="brokerContact"
           [template]="'load-broker-contact'"
-          [inputConfig]="{
-            name: 'Input Dropdown',
-            type: 'text',
-            label: 'Contact Phone Ext',
-            isDropdown: true,
-            dropdownWidthClass: 'w-col-391'
-          }"
+          [inputConfig]="loadBrokerContactsInputConfig"
           [canAddNew]="true"
           [canOpenModal]="true"
           [options]="labelsBrokerContacts"
@@ -203,15 +191,17 @@
               isDropdown: true,
               dropdownImageInput: {
                 withText: true,
-                url: labelsTrailerReq?.logoName,
+                url: selectedTrailerReq?.logoName,
                 template: 'trailer',
-                class: labelsTrailerReq?.name?.toLowerCase().includes('liquid')
+                class: selectedTrailerReq?.name
+                  ?.toLowerCase()
+                  .includes('liquid')
                   ? 'tanker-liquid'
-                  : labelsTrailerReq?.name?.toLowerCase()?.includes('rgn')
+                  : selectedTrailerReq?.name?.toLowerCase()?.includes('rgn')
                   ? 'low-boy-rgn'
-                  : labelsTrailerReq?.name?.toLowerCase().includes('dry-bulk')
+                  : selectedTrailerReq?.name?.toLowerCase().includes('dry-bulk')
                   ? 'tanker-dry-bulk'
-                  : labelsTrailerReq?.name
+                  : selectedTrailerReq?.name
                       ?.trim()
                       .replace(' ', '')
                       .toLowerCase()
@@ -299,14 +289,7 @@
           <app-ta-input-dropdown
             formControlName="shipper"
             [template]="'load-shipper'"
-            [inputConfig]="{
-              name: 'Input Dropdown',
-              type: 'text',
-              label: 'Shipper Location',
-              isDropdown: true,
-              isRequired: true,
-              dropdownWidthClass: 'w-col-696'
-            }"
+            [inputConfig]="loadShipperInputConfig"
             [canAddNew]="true"
             [canOpenModal]="true"
             [options]="labelsShippers"
@@ -516,6 +499,7 @@
           (changeReviewsEvent)="changeCommentsEvent($event)"
         ></app-ta-user-review>
       </app-ta-custom-card>
+
       <!-- Documents -->
       <app-ta-custom-card
         [hasCounter]="documents.length ? documents.length : 0"
@@ -528,6 +512,7 @@
           (onFileEvent)="onFilesEvent($event)"
         ></app-ta-upload-files>
       </app-ta-custom-card>
+
       <!-- Note -->
       <app-ta-input-note
         formControlName="note"

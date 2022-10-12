@@ -26,6 +26,7 @@ import {
   convertNumberInThousandSep,
 } from '../../../utils/methods.calculations';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { ImageBase64Service } from '../../../utils/base64.image';
 @Component({
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
@@ -110,7 +111,8 @@ export class TaInputComponent
     private calendarService: CalendarScrollService,
     private thousandSeparatorPipe: TaThousandSeparatorPipe,
     private refChange: ChangeDetectorRef,
-    private formService: FormService
+    private formService: FormService,
+    public imageBase64Service: ImageBase64Service
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -1478,9 +1480,13 @@ export class TaInputComponent
     }
 
     // Text Transform Format
-
     this.transformText(newText, true);
   }
+
+  // Optimization for *ngFor
+  public trackIdentity = (index: number, data: any): number => index;
+
+  //------------------- Date & Time Picker -------------------
 
   public onDatePaste(e: any) {
     e.preventDefault();
