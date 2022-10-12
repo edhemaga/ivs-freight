@@ -102,19 +102,25 @@
       overflow: auto;
       line-height: 15px;
       min-height: 15px;
-      padding-bottom: 12px;
-      padding-top: 9px;
+      padding-bottom: 16px;
+      padding-top: 5px;
       max-height: 75px;
       font-size: 12px;
 
       width: 100%;
       resize: none;
       color: #6c6c6c;
+      font-weight: 500;
       border: none;
       box-shadow: none;
       outline: none;
 
       scrollbar-width: none !important; /* Firefox */
+
+      &.details_textarea{
+        padding-left: 4px;
+        padding-bottom: 7px;
+      }
 
       &::-webkit-scrollbar {
         width: 3px;
@@ -152,25 +158,63 @@
         color: #dadada !important;
       }
 
-      &::-moz-selection {
-        color: $bw6-2;
-        background: rgb(108, 108, 108, 0.2);
-      }
-
-      &::selection {
-        color: $bw6-2;
-        background: rgb(108, 108, 108, 0.2);
-      }
-
       span {
         &::-moz-selection {
-          color: $bw6-2 !important;
-          background: rgb(108, 108, 108, 0.2) !important;
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
         }
 
         &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+      }
+
+      span[style*="color: rgb(83, 107, 194)"], span[style*="color: rgb(83, 107, 194)"] span {
+        &::-moz-selection {
           color: $bw6-2 !important;
-          background: rgb(108, 108, 108, 0.2) !important;
+          background: rgb(83, 107, 194, 0.2) !important;
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(83, 107, 194, 0.2) !important;
+        }
+      }
+
+      span[style*="color: rgb(38, 166, 144)"], span[style*="color: rgb(38, 166, 144)"] span {
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(38, 166, 144, 0.2) !important;
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(38, 166, 144, 0.2) !important;
+        }
+      }
+
+      span[style*="color: rgb(239, 83, 80)"], span[style*="color: rgb(239, 83, 80)"] span {
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(239, 83, 80, 0.2) !important;
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(239, 83, 80, 0.2) !important;
+        }
+      }
+
+      span[style*="color: rgb(255, 167, 38)"], span[style*="color: rgb(255, 167, 38)"] span {
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(255, 167, 38, 0.2) !important;
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(255, 167, 38, 0.2) !important;
         }
       }
 

@@ -32,6 +32,7 @@
       id="main_editor"
       placeholder="Write a note..."
       class="note-textarea"
+      [class.details_textarea]="noteType == 'details-card'"
       contenteditable="true"
       (input)="changeValue($event.target.innerHTML)"
       (focus)="checkFocus($event)"

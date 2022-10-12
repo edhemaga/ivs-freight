@@ -32,7 +32,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   saveIntervalStarted: boolean = false;
   @Input() isVisibleDivider: boolean = true;
   @Input() public animationsDisabled = false;
-
+  @Input() noteType: string = '';
 
   noActive: string;
 
