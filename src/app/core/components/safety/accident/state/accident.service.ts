@@ -31,13 +31,13 @@ export class AccidentTService {
     return this.accidentService.apiAccidentListGet(
       active,
       reported,
-      pageIndex,
-      pageSize,
-      companyId,
-      sort,
-      search,
-      search1,
-      search2
+      // pageIndex,
+      // pageSize,
+      // companyId,
+      // sort,
+      // search,
+      // search1,
+      // search2
     );
   }
 

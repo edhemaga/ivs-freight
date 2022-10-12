@@ -9,16 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
+import { BrokerContactShortResponse } from './brokerContactShortResponse';
+import { DepartmentResponse } from './departmentResponse';
 
 
-export interface BrokerShortResponse { 
-    id?: number;
-    businessName?: string | null;
-    availableCredit?: number | null;
-    availableCreditType?: EnumValue;
-    payTerm?: EnumValue;
-    dnu?: boolean;
-    ban?: boolean;
+export interface BrokerContactGroupResponse { 
+    department?: DepartmentResponse;
+    contacts?: Array<BrokerContactShortResponse> | null;
 }
 

@@ -102,7 +102,9 @@ model/bankResponse.ts
 model/bankResponsePagination.ts
 model/brakes.ts
 model/brokerContactCommand.ts
+model/brokerContactGroupResponse.ts
 model/brokerContactResponse.ts
+model/brokerContactShortResponse.ts
 model/brokerMinimalListResponse.ts
 model/brokerMinimalResponse.ts
 model/brokerMinimalResponsePagination.ts
@@ -124,7 +126,6 @@ model/checkOwnerSsnEinResponse.ts
 model/classOfEquipmentCommand.ts
 model/classOfEquipmentResponse.ts
 model/classType.ts
-model/clusterResponse.ts
 model/colorResponse.ts
 model/commentByEntityTypeListResponse.ts
 model/commentResponse.ts
@@ -319,7 +320,6 @@ model/getMapListResponse.ts
 model/getMvrModalResponse.ts
 model/getOwnerListResponse.ts
 model/getRatingReviewModalResponse.ts
-model/getRepairShopClustersQuery.ts
 model/getRouteListResponse.ts
 model/getStopListResponse.ts
 model/getTestModalResponse.ts
