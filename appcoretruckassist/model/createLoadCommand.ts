@@ -17,7 +17,6 @@ import { LoadType } from './loadType';
 
 export interface CreateLoadCommand { 
     type?: LoadType;
-    loadNumber?: string | null;
     loadTemplateId?: number | null;
     dispatcherId?: number | null;
     companyId?: number | null;

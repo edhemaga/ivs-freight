@@ -17,7 +17,6 @@ import { DriverMinimalResponse } from './driverMinimalResponse';
 export interface DispatchShortResponse { 
     id?: number;
     dispatchBoardId?: number;
-    dispatcherId?: number | null;
     truck?: TruckMinimalResponse;
     trailer?: TrailerMinimalResponse;
     driver?: DriverMinimalResponse;

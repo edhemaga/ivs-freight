@@ -259,18 +259,6 @@ export class AccidentService {
     /**
      * @param active 
      * @param reported 
-     * @param dateFrom 
-     * @param dateTo 
-     * @param _long 
-     * @param lat 
-     * @param distance 
-     * @param driverIds 
-     * @param truckIds 
-     * @param trailerIds 
-     * @param injury 
-     * @param fatality 
-     * @param towing 
-     * @param hazMat 
      * @param pageIndex 
      * @param pageSize 
      * @param companyId 
@@ -281,10 +269,10 @@ export class AccidentService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccidentListGet(active?: boolean, reported?: boolean, dateFrom?: string, dateTo?: string, _long?: number, lat?: number, distance?: number, driverIds?: Array<number>, truckIds?: Array<number>, trailerIds?: Array<number>, injury?: number, fatality?: number, towing?: boolean, hazMat?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<AccidentListResponse>;
-    public apiAccidentListGet(active?: boolean, reported?: boolean, dateFrom?: string, dateTo?: string, _long?: number, lat?: number, distance?: number, driverIds?: Array<number>, truckIds?: Array<number>, trailerIds?: Array<number>, injury?: number, fatality?: number, towing?: boolean, hazMat?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<AccidentListResponse>>;
-    public apiAccidentListGet(active?: boolean, reported?: boolean, dateFrom?: string, dateTo?: string, _long?: number, lat?: number, distance?: number, driverIds?: Array<number>, truckIds?: Array<number>, trailerIds?: Array<number>, injury?: number, fatality?: number, towing?: boolean, hazMat?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<AccidentListResponse>>;
-    public apiAccidentListGet(active?: boolean, reported?: boolean, dateFrom?: string, dateTo?: string, _long?: number, lat?: number, distance?: number, driverIds?: Array<number>, truckIds?: Array<number>, trailerIds?: Array<number>, injury?: number, fatality?: number, towing?: boolean, hazMat?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccidentListGet(active?: boolean, reported?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<AccidentListResponse>;
+    public apiAccidentListGet(active?: boolean, reported?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<AccidentListResponse>>;
+    public apiAccidentListGet(active?: boolean, reported?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<AccidentListResponse>>;
+    public apiAccidentListGet(active?: boolean, reported?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (active !== undefined && active !== null) {
@@ -294,60 +282,6 @@ export class AccidentService {
         if (reported !== undefined && reported !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>reported, 'Reported');
-        }
-        if (dateFrom !== undefined && dateFrom !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>dateFrom, 'DateFrom');
-        }
-        if (dateTo !== undefined && dateTo !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>dateTo, 'DateTo');
-        }
-        if (_long !== undefined && _long !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>_long, 'Long');
-        }
-        if (lat !== undefined && lat !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>lat, 'Lat');
-        }
-        if (distance !== undefined && distance !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>distance, 'Distance');
-        }
-        if (driverIds) {
-            driverIds.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'DriverIds');
-            })
-        }
-        if (truckIds) {
-            truckIds.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'TruckIds');
-            })
-        }
-        if (trailerIds) {
-            trailerIds.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'TrailerIds');
-            })
-        }
-        if (injury !== undefined && injury !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>injury, 'Injury');
-        }
-        if (fatality !== undefined && fatality !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>fatality, 'Fatality');
-        }
-        if (towing !== undefined && towing !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>towing, 'Towing');
-        }
-        if (hazMat !== undefined && hazMat !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>hazMat, 'HazMat');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
           queryParameters = this.addToHttpParams(queryParameters,

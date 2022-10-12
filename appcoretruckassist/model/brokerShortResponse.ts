@@ -16,7 +16,6 @@ export interface BrokerShortResponse {
     id?: number;
     businessName?: string | null;
     availableCredit?: number | null;
-    availableCreditType?: EnumValue;
     payTerm?: EnumValue;
     dnu?: boolean;
     ban?: boolean;

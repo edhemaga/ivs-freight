@@ -10,12 +10,12 @@
  * Do not edit the class manually.
  */
 import { TrailerLengthResponse } from './trailerLengthResponse';
+import { BrokerContactResponse } from './brokerContactResponse';
 import { TrailerTypeResponse } from './trailerTypeResponse';
 import { CompanyShortResponse } from './companyShortResponse';
 import { DispatchShortResponse } from './dispatchShortResponse';
 import { EnumValue } from './enumValue';
 import { ShipperShortResponse } from './shipperShortResponse';
-import { BrokerContactGroupResponse } from './brokerContactGroupResponse';
 import { BrokerShortResponse } from './brokerShortResponse';
 import { TruckTypeResponse } from './truckTypeResponse';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
@@ -23,18 +23,16 @@ import { HazardousMaterialResponse } from './hazardousMaterialResponse';
 
 
 export interface LoadModalResponse { 
-    loadNumber?: string | null;
     templates?: Array<EnumValue> | null;
     dispatchers?: Array<CompanyUserShortResponse> | null;
     companies?: Array<CompanyShortResponse> | null;
     dispatches?: Array<DispatchShortResponse> | null;
     brokers?: Array<BrokerShortResponse> | null;
-    brokerContacts?: Array<BrokerContactGroupResponse> | null;
+    brokerContacts?: Array<BrokerContactResponse> | null;
     loadTypes?: Array<EnumValue> | null;
     loadStopTypes?: Array<EnumValue> | null;
     loadItemUnits?: Array<EnumValue> | null;
     trailerLengths?: Array<TrailerLengthResponse> | null;
-    years?: Array<number> | null;
     shippers?: Array<ShipperShortResponse> | null;
     truckTypes?: Array<TruckTypeResponse> | null;
     trailerTypes?: Array<TrailerTypeResponse> | null;
