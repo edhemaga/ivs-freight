@@ -298,21 +298,15 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         switch (this.httpRequest.body?.entityTypeRatingId) {
           case 1:
             this.actionType = 'BROKER';
-            this.message = this.httpRequest.body?.tableData?.dbaName ? this.httpRequest.body.tableData.dbaName : '';
-            if ( this.httpRequest.body?.tableData ){
-              this.message = this.httpRequest.body?.tableData?.businessName ? this.httpRequest.body.tableData.businessName : '';
-            } else {
-              this.message = this.httpRequest.body?.tableData?.dbaName ? this.httpRequest.body?.tableData?.dbaName : this.httpRequest.body?.tableData?.businessName;
-            }
-
+            this.message = this.DetailsDataService.mainData?.dbaName ? this.DetailsDataService.mainData?.dbaName : this.DetailsDataService.mainData?.businessName; 
           break;
           case 2:
-            this.message = this.httpRequest.body?.tableData?.name ? this.httpRequest.body.tableData.name : this.DetailsDataService.mainData?.name;
+            this.message = this.DetailsDataService.mainData?.name ? this.DetailsDataService.mainData?.name : '';
             this.actionType = 'REPAIR SHOP';
           break;
          case 3:
             this.actionType = 'SHIPPER';
-            this.message = this.httpRequest.body?.tableData?.businessName ? this.httpRequest.body.tableData.businessName : this.DetailsDataService.mainData?.businessName;
+            this.message = this.DetailsDataService.mainData?.businessName ? this.DetailsDataService.mainData?.businessName : '';
           break;
         }
       break;
