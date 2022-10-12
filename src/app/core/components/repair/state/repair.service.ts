@@ -391,28 +391,29 @@ export class RepairTService implements OnDestroy {
     repairId: number,
     getIndex?: boolean
   ): Observable<RepairShopResponse> {
-    this.shopDetailsMinimalQuery
-      .selectAll()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((item) => (this.repairShopList = item));
-    if (getIndex) {
-      this.currentIndex = this.repairShopList.findIndex(
-        (driver) => driver.id === repairId
-      );
-      let last = this.repairShopList.at(-1);
+    return of();
+    // this.shopDetailsMinimalQuery
+    //   .selectAll()
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((item) => (this.repairShopList = item));
+    // if (getIndex) {
+    //   this.currentIndex = this.repairShopList.findIndex(
+    //     (driver) => driver.id === repairId
+    //   );
+    //   let last = this.repairShopList.at(-1);
 
-      if (last.id === repairId) {
-        this.currentIndex = --this.currentIndex;
-      } else {
-        this.currentIndex = ++this.currentIndex;
-      }
-      if (this.currentIndex == -1) {
-        this.currentIndex = 0;
-      }
-      this.repairShopId = this.repairShopList[this.currentIndex].id;
-    }
+    //   if (last.id === repairId) {
+    //     this.currentIndex = --this.currentIndex;
+    //   } else {
+    //     this.currentIndex = ++this.currentIndex;
+    //   }
+    //   if (this.currentIndex == -1) {
+    //     this.currentIndex = 0;
+    //   }
+    //   this.repairShopId = this.repairShopList[this.currentIndex].id;
+    // }
 
-    return this.shopServices.apiRepairshopIdGet(repairId);
+    // return this.shopServices.apiRepairshopIdGet(repairId);
   }
 
   public deleteRepairShopByIdDetails(shopId: number): Observable<any> {

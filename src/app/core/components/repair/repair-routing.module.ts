@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RepairCardComponent } from './repair-card/repair-card.component';
 import { RepairTableComponent } from './repair-table/repair-table.component';
-import { ShopRepairItemResolver } from './state/shop-details-state/shop-item.resolver';
-import { RepairShopMinimalResolver } from './state/shop-details-state/shop-minimal-list-state/shop-minimal.resolver';
+import { RepairDResolver } from './state/details-state/repair-d.resolver';
 
 const routes: Routes = [
   {
@@ -17,10 +16,7 @@ const routes: Routes = [
       import('./shop-repair-details/shop-repair-details.module').then(
         (m) => m.ShopRepairDetailsModule
       ),
-    resolve: {
-      shop: ShopRepairItemResolver,
-      repairShopMinimal: RepairShopMinimalResolver,
-    },
+    resolve: { repairShopResolve: RepairDResolver },
     data: { title: 'Shop Repair Details' },
   },
   {

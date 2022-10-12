@@ -11,10 +11,12 @@ import { FormControl } from '@angular/forms';
 import { RepairShopResponse } from 'appcoretruckassist';
 import { ShopQuery } from '../state/shop-state/shop.query';
 import { RepairShopMinimalListQuery } from '../state/shop-details-state/shop-minimal-list-state/shop-minimal.query';
-import { Subject, takeUntil } from 'rxjs';
+import { map, Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 import { RepairTService } from '../state/repair.service';
+import { RepairDQuery } from '../state/details-state/repair-d.query';
+import { RepairShopMinimalListResponse } from '../../../../../../appcoretruckassist/model/repairShopMinimalListResponse';
 
 @Component({
   selector: 'app-shop-repair-card-view',
@@ -25,20 +27,20 @@ export class ShopRepairCardViewComponent
   implements OnInit, OnChanges, OnDestroy
 {
   private destroy$ = new Subject<void>();
-  @Input() shopResponse: any;
+  @Input() shopResponse: RepairShopResponse;
   @Input() templateCard: boolean;
   public noteControl: FormControl = new FormControl();
   public count: number;
   public tabs: any;
   public shopsDropdowns: any[] = [];
-  public shopsList: any[] = this.repairShopMinimalQuery.getAll();
+  public shopsList: any[] = [];
   public repairShopObject: any;
   constructor(
     private shopQuery: ShopQuery,
     private detailsPageDriverSer: DetailsPageService,
     private tableService: TruckassistTableService,
     private cdRef: ChangeDetectorRef,
-    private repairShopMinimalQuery: RepairShopMinimalListQuery,
+    private repairDQuery: RepairDQuery,
     private shopService: RepairTService
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
@@ -50,12 +52,12 @@ export class ShopRepairCardViewComponent
       this.shopResponse = changes.shopResponse?.currentValue;
       this.noteControl.patchValue(changes.shopResponse.currentValue.note);
     }
-    this.getRepairShopById(changes?.shopResponse?.currentValue?.id);
+    // this.getRepairShopById(changes?.shopResponse?.currentValue?.id);
 
-    this.repairShopMinimalQuery
-      .selectAll()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((item) => (this.shopsList = item));
+    // this.repairShopMinimalQuery
+    // .selectAll()
+    // .pipe(takeUntil(this.destroy$))
+    // .subscribe((item) => (this.shopsList = item));
   }
   ngOnInit(): void {
     this.tableService.currentActionAnimation
@@ -79,21 +81,33 @@ export class ShopRepairCardViewComponent
       .subscribe((item) => (this.repairShopObject = item));
   }
   public getShopsDropdown() {
-    this.shopsDropdowns = this.repairShopMinimalQuery.getAll().map((item) => {
-      return {
-        id: item.id,
-        name: item.name,
-        status: item.status,
-        svg: item.pinned ? 'ic_star.svg' : null,
-        folder: 'common',
-        active: item.id === this.shopResponse.id,
-      };
-    });
+    this.repairDQuery.repairShopMinimal$
+      .pipe(
+        takeUntil(this.destroy$),
+        map((data: RepairShopMinimalListResponse) => {
+          return data.pagination.data.map((item) => {
+            return {
+              id: item.id,
+              name: item.name,
+              status: item.status,
+              svg: item.pinned ? 'ic_star.svg' : null,
+              folder: 'common',
+              active: item.id === this.shopResponse.id,
+            };
+          });
+        })
+      )
+      .subscribe((data) => {
+        console.log('minimal list - component: ', data);
+        this.shopsDropdowns = data;
+      });
   }
 
   public onSelectedShop(event: any) {
+    console.log('selected: ', event);
+    console.log('@input shop response: ', this.shopResponse);
     if (event.id !== this.shopResponse.id) {
-      this.shopsList = this.repairShopMinimalQuery.getAll().map((items) => {
+      this.shopsList = this.shopsDropdowns.map((items) => {
         return {
           id: items.id,
           name: items.name,
@@ -108,7 +122,7 @@ export class ShopRepairCardViewComponent
   }
 
   public onChangeShop(action: string) {
-    let currentIndex = this.shopsList.findIndex(
+    let currentIndex = this.shopsDropdowns.findIndex(
       (shop) => shop.id === this.shopResponse.id
     );
     switch (action) {

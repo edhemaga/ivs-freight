@@ -25,6 +25,7 @@ export class ShopRepairItemResolver implements Resolve<ShopItemState> {
     private shopService: RepairTService,
     private shopDetailQuery: ShopDetailsQuery,
     private shopDetailStore: ShopItemStore,
+    private shopDetailsListStore: ShopDetailsListStore,
     private router: Router,
     private sdls: ShopDetailsListStore,
     private sdlq: ShopDetailsListQuery,
@@ -35,11 +36,10 @@ export class ShopRepairItemResolver implements Resolve<ShopItemState> {
     state: RouterStateSnapshot
   ): Observable<ShopItemState> | Observable<any> {
     const shop_id = route.paramMap.get('id');
-    let id = parseInt(shop_id);
-    let resDrp;
+    let id = +shop_id;
+
     forkJoin({
       repairShop: this.shopService.getRepairShopById(id),
-
       repairsList: this.shopService.getRepairList(
         id,
         null,
@@ -63,8 +63,18 @@ export class ShopRepairItemResolver implements Resolve<ShopItemState> {
       .subscribe((res) => {
         console.log(res);
 
-        this.shopDetailStore.set([res.repairShop]);
-        this.repairDetailsStore.set([res.repairsList.pagination]);
+        this.shopDetailsListStore.update((store) => {
+          return {
+            ...store,
+            repairShopDetails: res.repairShop,
+          };
+        });
+        this.repairDetailsStore.update((store) => {
+          return {
+            ...store,
+            repairDetails: res.repairsList.pagination,
+          };
+        });
       });
     return of(id);
     // if (this.sdlq.hasEntity(id)) {

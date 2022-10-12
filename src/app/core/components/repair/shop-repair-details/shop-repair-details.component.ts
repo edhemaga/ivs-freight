@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { RepairShopResponse } from 'appcoretruckassist';
 import { RepairTService } from '../state/repair.service';
-import { ShopDetailsQuery } from '../state/shop-details-state/shop-details.query';
 import { Subject, take, takeUntil } from 'rxjs';
 import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
@@ -21,7 +20,7 @@ import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal
 import { RepairShopMinimalListStore } from '../state/shop-details-state/shop-minimal-list-state/shop-minimal.store';
 import { RepairShopMinimalListQuery } from '../state/shop-details-state/shop-minimal-list-state/shop-minimal.query';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
-import { RepairDetailsQuery } from '../state/repair-details-state/repair-details.query';
+import { RepairDQuery } from '../state/details-state/repair-d.query';
 
 @Component({
   selector: 'app-shop-repair-details',
@@ -55,21 +54,27 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     private sdlq: ShopDetailsListQuery,
     private dropDownService: DropDownService,
     private rsmlist: RepairShopMinimalListStore,
-    private repairsQ: RepairDetailsQuery,
-    private shopQ: ShopDetailsListQuery
+    private repairDQuery: RepairDQuery
   ) {}
 
   ngOnInit(): void {
-    console.log(this.act_route.snapshot.data);
-    this.currentIndex = this.repairList.findIndex(
-      (shop) => shop.id === this.act_route.snapshot.data.shop.id
-    );
-    this.shopQ
-      .selectEntity(this.act_route.snapshot.data.shop.id)
-      .subscribe((item) => console.log(item));
-    this.repairsQ
-      .selectEntity(this.act_route.snapshot.data.shop.id)
-      .subscribe((item) => console.log(item));
+    // this.currentIndex = this.repairList.findIndex(
+    //   (shop) => shop.id === this.act_route.snapshot.data.shop.id
+    // );
+    this.repairDQuery.repairShop$.subscribe((data: RepairShopResponse[]) => {
+      const repairShop = data.find(
+        (item) => item.id === +this.act_route.snapshot.params['id']
+      );
+      console.log('finded repar shop: ', repairShop);
+      this.shopConf(repairShop);
+    });
+    // (this.act_route.snapshot.data.shop.id)
+    // this.shopQ.shopDetails$.subscribe((data) =>
+    //   console.log('shop - component: ', data)
+    // );
+    // this.repairsQ.repairDetails$.subscribe((data) =>
+    //   console.log('repair - component ', data)
+    // );
     this.initTableOptions();
 
     this.tableService.currentActionAnimation
@@ -102,19 +107,23 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
 
     this.detailsPageDriverService.pageDetailChangeId$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((id) => {
-        let query;
-        if (this.sdlq.hasEntity(id)) {
-          query = this.sdlq.selectEntity(id).pipe(take(1));
-        } else {
-          query = this.shopService.getRepairShopById(id);
-        }
+      .subscribe((id: number) => {
+        // let query;
+        // if (this.sdlq.hasEntity(id)) {
+        //   query = this.sdlq.selectEntity(id).pipe(take(1));
+        // } else {
+        //   query = this.shopService.getRepairShopById(id);
+        // }
 
-        query.pipe(takeUntil(this.destroy$)).subscribe({
-          next: (res: RepairShopResponse) => {
-            this.shopConf(res);
+        this.repairDQuery.repairShop$.pipe(takeUntil(this.destroy$)).subscribe({
+          next: (res: RepairShopResponse[]) => {
+            console.log('shop repair list: ', res);
+            console.log('shop repair id: ', id);
+            const repairShop = res.find((item) => item.id === id);
+            console.log('shop repair details: ', repairShop);
+            this.shopConf(repairShop);
             if (this.router.url.includes('shop-details')) {
-              this.router.navigate([`/repair/${res.id}/shop-details`]);
+              this.router.navigate([`/repair/${repairShop.id}/shop-details`]);
             }
             this.notificationService.success(
               'Shop successfully changed',
@@ -222,7 +231,8 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
   }
   /**Function for header names and array of icons */
   shopConf(data: RepairShopResponse) {
-    this.getRepairById(data.id);
+    // this.getRepairById(data.id);
+    console.log('shop conf: ', data);
     let total;
     this.DetailsDataService.setNewData(data);
     /* if (data?.repairs?.length) {

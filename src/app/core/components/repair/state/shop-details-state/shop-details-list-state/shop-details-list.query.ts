@@ -7,6 +7,7 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class ShopDetailsListQuery extends QueryEntity<ShopDetailsListState> {
+  shopDetails$ = this.select('repairShopDetails');
   constructor(protected shopDetailsListStore: ShopDetailsListStore) {
     super(shopDetailsListStore);
   }

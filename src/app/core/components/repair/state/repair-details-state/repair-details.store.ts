@@ -6,10 +6,16 @@ import { RepairResponsePagination } from 'appcoretruckassist';
 export interface RepairDetailsState
   extends EntityState<RepairResponsePagination, any> {}
 
+export const initialState = (): RepairDetailsState => {
+  return {
+    repairDetails: null,
+  };
+};
+
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'repairDetails' })
 export class RepairDetailsStore extends EntityStore<RepairDetailsState> {
   constructor() {
-    super();
+    super(initialState());
   }
 }

@@ -5,10 +5,16 @@ import { RepairShopResponse } from '../../../../../../../../appcoretruckassist/m
 export interface ShopDetailsListState
   extends EntityState<RepairShopResponse, number> {}
 
+export const initialState = (): ShopDetailsListState => {
+  return {
+    repairShopDetails: null,
+  };
+};
+
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'shopDetailsList' })
 export class ShopDetailsListStore extends EntityStore<ShopDetailsListState> {
   constructor() {
-    super();
+    super(initialState());
   }
 }
