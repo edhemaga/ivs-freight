@@ -211,7 +211,7 @@
             <smooth-dnd-draggable
               *ngFor="let item of column.children; let j = index"
             >
-              <div class="list-holder">
+              <div class="list-holder" (mouseenter)="setIndex(i, j)">
                 <div class="list-top-holder">
                   <div class="list-items-frame">
                     <div class="list-title">{{ item.title }}</div>
