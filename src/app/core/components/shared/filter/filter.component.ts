@@ -1931,7 +1931,13 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   setTimeValue(mod) {
-    this.selectedTimeValue = mod;
+    
+    if ( this.selectedTimeValue == mod ){
+      this.selectedTimeValue = '';
+    } else {
+      this.selectedTimeValue = mod;
+    }
+    
 
     if (this.filterActiveTime == mod) {
       this.setButtonAvailable = false;

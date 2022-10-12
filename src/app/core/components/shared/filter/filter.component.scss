@@ -610,7 +610,7 @@
         align-items: center;
         top: 2.5px;
         right: 4px;
-        scale: (0.9);
+        
         border-radius: 1px;
         transition: all 0.2s ease-in-out;
         svg-icon {
@@ -626,8 +626,8 @@
         }
 
         &:hover {
-          scale: (1);
-          top: 3px;
+          
+          //top: 3px;
           svg-icon {
             svg {
               path {
@@ -1721,7 +1721,7 @@
         align-items: center;
         top: 2.5px;
         right: 4px;
-        scale: (0.9);
+        
         transition: all 0.2s ease-in-out;
 
         svg-icon {
@@ -1737,8 +1737,8 @@
         }
 
         &:hover {
-          top: 3px;
-          scale: (1);
+          //top: 3px;
+          
           svg-icon {
             svg {
               path {
