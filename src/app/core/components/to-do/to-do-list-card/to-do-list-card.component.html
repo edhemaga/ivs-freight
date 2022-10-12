@@ -112,6 +112,7 @@
           <div class="box-icons">
             <app-filter
               [type]="'timeFilter'"
+              [filterTitle]="'Time Filter'"
               [icon]="'pending'"
               [toDoSubType]="'InProgress'"
               (setFilter)="setFilterEvent($event)"> 
@@ -166,6 +167,7 @@
           <div class="box-icons">
             <app-filter
               [type]="'timeFilter'"
+              [filterTitle]="'Time Filter'"
               [icon]="'pending'"
               [toDoSubType]="'Done'"
               (setFilter)="setFilterEvent($event)"> 
@@ -228,7 +230,7 @@
             <smooth-dnd-draggable
               *ngFor="let item of column.children; let j = index"
             >
-              <div class="list-holder">
+              <div class="list-holder" (mouseenter)="setIndex(i, j)">
                 <div class="list-top-holder">
                   <div class="list-items-frame">
                     <div class="list-title">{{ item.title }}</div>
