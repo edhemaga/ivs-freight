@@ -1,17 +1,20 @@
 import {
   Component,
   OnInit,
+  OnDestroy,
   Input,
   Output,
   EventEmitter,
   ChangeDetectorRef,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
 import * as AppConst from 'src/app/const';
 import { MapsService } from '../../../services/shared/maps.service';
 import { UpdatedData } from '../model/shared/enums';
+import { RepairTService } from '../../repair/state/repair.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-maps',
@@ -19,7 +22,8 @@ import { UpdatedData } from '../model/shared/enums';
   styleUrls: ['./maps.component.scss', '../../../../../assets/scss/maps.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class MapsComponent implements OnInit {
+export class MapsComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   viewData = [];
   @Input() set _viewData(value) {
     var previousData = JSON.parse(JSON.stringify(this.viewData));
@@ -100,11 +104,15 @@ export class MapsComponent implements OnInit {
 
   public mapZoomTime: number = 0;
 
+  public boundsMarkers: any[] = [];
+  public clusterMarkers: any[] = [];
+
   constructor(
     private ref: ChangeDetectorRef,
     private formBuilder: FormBuilder,
     private mapsAPILoader: MapsAPILoader,
-    private mapsService: MapsService
+    private mapsService: MapsService,
+    private repairShopService: RepairTService
   ) {}
 
   ngOnInit(): void {
@@ -126,16 +134,37 @@ export class MapsComponent implements OnInit {
       var mapCenter = map.getCenter();
 
       var clustersZoomLevel = this.mapZoom <= 18 ? this.mapZoom - 3 : 15;
-      
+
       var clustersObject = {
-        "northEastLatitude": ne.lat(),
-        "northEastLongitude": ne.lng(),
-        "southWestLatitude": sw.lat(),
-        "southWestLongitude": sw.lng(),
-        "zoomLevel": clustersZoomLevel
+        northEastLatitude: ne.lat(),
+        northEastLongitude: ne.lng(),
+        southWestLatitude: sw.lat(),
+        southWestLongitude: sw.lng(),
+        zoomLevel: this.mapZoom,
       };
 
-      console.log('clustersObject', clustersObject);
+      this.boundsMarkers = [
+        {
+          lat: ne.lat(),
+          long: ne.lng(),
+          name: 'NE'
+        },
+        {
+          lat: nw.lat(),
+          long: nw.lng(),
+          name: 'NW'
+        },
+        {
+          lat: sw.lat(),
+          long: sw.lng(),
+          name: 'SW'
+        },
+        {
+          lat: se.lat(),
+          long: se.lng(),
+          name: 'SE'
+        }
+      ];
 
       this.callClusters(clustersObject);
     });
@@ -227,12 +256,12 @@ export class MapsComponent implements OnInit {
   markerZoom(e, item) {
     var currentTime = new Date().getTime();
 
-    if ( !this.mapZoomTime || (currentTime - this.mapZoomTime > 200 ) ) {
+    if (!this.mapZoomTime || currentTime - this.mapZoomTime > 200) {
       this.mapZoomTime = currentTime;
     } else {
       return;
     }
-    
+
     if (e.wheelDeltaY > 0) {
       // The user scrolled up.
       this.zoomChange(this.mapZoom + 1);
@@ -318,7 +347,22 @@ export class MapsComponent implements OnInit {
     }
   }
 
-  callClusters(obj) {
-    console.log('callClusters');
+  callClusters(clustersObj) {
+    if ( this.mapType == "repairShop" ) {
+      console.log('callClusters clustersObj', clustersObj);
+      this.repairShopService
+      .getRepairShopClusters(clustersObj)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((clustersResponse: any) => {
+        console.log('callClusters clustersResponse', clustersResponse);
+        this.clusterMarkers = clustersResponse;
+        this.viewData = [];
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

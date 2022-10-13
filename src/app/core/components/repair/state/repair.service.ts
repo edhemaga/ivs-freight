@@ -15,6 +15,7 @@ import {
   RepairShopService,
   UpdateRepairShopCommand,
   RepairListResponse,
+  ClusterResponse,
 } from 'appcoretruckassist';
 import { RepairShopResponse } from '../../../../../../appcoretruckassist/model/repairShopResponse';
 import { RepairTruckStore } from './repair-truck-state/repair-truck.store';
@@ -28,6 +29,7 @@ import { ShopDetailsListStore } from './shop-details-state/shop-details-list-sta
 import { RepairShopMinimalListStore } from './shop-details-state/shop-minimal-list-state/shop-minimal.store';
 import { ShopItemStore } from './shop-details-state/shop-detail.store';
 import { RepairShopMinimalListQuery } from './shop-details-state/shop-minimal-list-state/shop-minimal.query';
+import { GetRepairShopClustersQuery } from '../../../../../../appcoretruckassist/model/getRepairShopClustersQuery';
 @Injectable({
   providedIn: 'root',
 })
@@ -65,7 +67,7 @@ export class RepairTService implements OnDestroy {
                 ({ id }) => id === data.repairShopId
               );
               this.shopMinimalStore.add(shop);
-             /*  this.sdls.update(shop.id, { repairs: shop.repairs }); */
+              /*  this.sdls.update(shop.id, { repairs: shop.repairs }); */
               this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit });
               this.tableService.sendActionAnimation({
                 animation: 'update',
@@ -519,6 +521,20 @@ export class RepairTService implements OnDestroy {
   public getRepairShopModalDropdowns(): Observable<RepairShopModalResponse> {
     return this.shopServices.apiRepairshopModalGet();
   }
+
+  public getRepairShopClusters(
+    clustersQuery: GetRepairShopClustersQuery
+  ): Observable<Array<ClusterResponse>> {
+    console.log('getRepairShopClusters clustersQuery', clustersQuery);
+    return this.shopServices.apiRepairshopClustersGet(
+      clustersQuery.northEastLatitude,
+      clustersQuery.northEastLongitude,
+      clustersQuery.southWestLatitude,
+      clustersQuery.southWestLongitude,
+      clustersQuery.zoomLevel
+    );
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

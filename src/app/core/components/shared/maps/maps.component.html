@@ -181,6 +181,46 @@
     </agm-snazzy-info-window>
   </agm-marker>
 
+  <agm-marker
+    *ngFor="let latlong of clusterMarkers; let i = index"
+    [label]="
+      latlong.name != null ? latlong.name : ''
+    "
+    [latitude]="latlong.latitude"
+    [longitude]="latlong.longitude"
+    [iconUrl]="{
+      url:
+        latlong?.count > 1
+          ? 'assets/svg/common/ic_marker_selected.svg'
+          : 'assets/svg/common/ic_marker.svg'
+    }"
+  >
+    <agm-snazzy-info-window
+      [latitude]="latlong.latitude"
+      [longitude]="latlong.longitude"
+      [showCloseButton]="false"
+      placement="bottom"
+    >
+      <ng-template>
+        <div class="cluster-list" *ngIf="latlong.count > 1">
+          <div class="cluster-list-item" *ngFor="let name of latlong.names">{{ name }}</div>
+        </div>
+        <div class="cluster-list" *ngIf="latlong.count == 1">
+          <div class="cluster-list-item">{{ latlong.name }}</div>
+        </div>
+      </ng-template>
+    </agm-snazzy-info-window>
+  </agm-marker>
+
+  <agm-marker
+    *ngFor="let bounds of boundsMarkers; let i = index"
+    [label]="bounds.name"
+    [latitude]="bounds.lat"
+    [longitude]="bounds.long"
+  >
+    
+  </agm-marker>
+
   <agm-circle
     *ngIf="locationFilterOn"
     [latitude]="mapCircle.lat"
