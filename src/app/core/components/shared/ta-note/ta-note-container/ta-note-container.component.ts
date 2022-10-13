@@ -2,6 +2,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { SharedService } from '../../../../services/shared/shared.service';
+import { noteColors } from '../../../../../const';
 
 @Component({
   selector: 'app-ta-note-container',
@@ -33,28 +34,7 @@ export class TaNoteContainerComponent implements OnInit {
     foreColor: false,
     underline: false,
   };
-  containerColors: any[] = [
-    {
-      color: '#26A690',
-      name: 'Dark Green',
-    },
-    {
-      color: '#EF5350',
-      name: 'Red',
-    },
-    {
-      color: '#FFA726',
-      name: 'Yellow',
-    },
-    {
-      color: '#536BC2',
-      name: 'Blue',
-    },
-    {
-      color: '#6C6C6C',
-      name: 'Gray',
-    },
-  ];
+  containerColors: any[] = noteColors?.regular;
   selectedColorName: any = {
     color: '#6C6C6C',
     name: 'Gray',
@@ -75,28 +55,7 @@ export class TaNoteContainerComponent implements OnInit {
 
   ngAfterViewInit(): void {
     if (this.popoverNote) {
-      this.containerColors = [
-        {
-          color: '#6C6C6C',
-          name: 'Gray',
-        },
-        {
-          color: '#26A690',
-          name: 'Dark Green',
-        },
-        {
-          color: '#EF5350',
-          name: 'Red',
-        },
-        {
-          color: '#FFA726',
-          name: 'Yellow',
-        },
-        {
-          color: '#536BC2',
-          name: 'Blue',
-        },
-      ];
+      this.containerColors = noteColors?.reversed;
     }
   }
 
