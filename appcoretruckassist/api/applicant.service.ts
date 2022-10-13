@@ -32,8 +32,6 @@ import { CreateAccidentRecordReviewCommand } from '../model/models';
 import { CreateApplicantCdlCommand } from '../model/models';
 import { CreateApplicantCdlReviewCommand } from '../model/models';
 import { CreateApplicantCommand } from '../model/models';
-import { CreateAuthorizationCommand } from '../model/models';
-import { CreateAuthorizationReviewCommand } from '../model/models';
 import { CreateDrugAndAlcoholCommand } from '../model/models';
 import { CreateDrugAndAlcoholReviewCommand } from '../model/models';
 import { CreateEducationCommand } from '../model/models';
@@ -55,16 +53,17 @@ import { EducationFeedbackResponse } from '../model/models';
 import { GetApplicantListQuery } from '../model/models';
 import { GetApplicantListResponse } from '../model/models';
 import { HireApplicantCommand } from '../model/models';
+import { InviteEmployerResponse } from '../model/models';
 import { InvitePreviousEmployerCommand } from '../model/models';
 import { MoveMultipleToApplicantsCommand } from '../model/models';
 import { MoveToApplicantsCommand } from '../model/models';
 import { PersonalInfoFeedbackResponse } from '../model/models';
 import { PreviousEmployerModalResponse } from '../model/models';
-import { PreviousEmployerProspectResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { RemoveApplicantFromFavouriteCommand } from '../model/models';
 import { ResendInviteCommand } from '../model/models';
 import { SevenDaysHosFeedbackResponse } from '../model/models';
+import { SphPreviousEmployerProspectResponse } from '../model/models';
 import { TrafficViolationFeedbackResponse } from '../model/models';
 import { UpdateAccidentRecordCommand } from '../model/models';
 import { UpdateApplicantCdlCommand } from '../model/models';
@@ -1412,68 +1411,6 @@ export class ApplicantService {
     }
 
     /**
-     * @param createAuthorizationCommand 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiApplicantAuthorizationPost(createAuthorizationCommand?: CreateAuthorizationCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiApplicantAuthorizationPost(createAuthorizationCommand?: CreateAuthorizationCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiApplicantAuthorizationPost(createAuthorizationCommand?: CreateAuthorizationCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiApplicantAuthorizationPost(createAuthorizationCommand?: CreateAuthorizationCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        let credential: string | undefined;
-        // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
-        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/applicant/authorization`,
-            createAuthorizationCommand,
-            {
-                responseType: <any>responseType,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
      * @param updateAuthorizationCommand 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -1525,68 +1462,6 @@ export class ApplicantService {
 
         return this.httpClient.put<object>(`${this.configuration.basePath}/api/applicant/authorization`,
             updateAuthorizationCommand,
-            {
-                responseType: <any>responseType,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param createAuthorizationReviewCommand 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiApplicantAuthorizationReviewPost(createAuthorizationReviewCommand?: CreateAuthorizationReviewCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiApplicantAuthorizationReviewPost(createAuthorizationReviewCommand?: CreateAuthorizationReviewCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiApplicantAuthorizationReviewPost(createAuthorizationReviewCommand?: CreateAuthorizationReviewCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiApplicantAuthorizationReviewPost(createAuthorizationReviewCommand?: CreateAuthorizationReviewCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        let credential: string | undefined;
-        // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
-        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/applicant/authorization/review`,
-            createAuthorizationReviewCommand,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -2952,9 +2827,9 @@ export class ApplicantService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiApplicantPreviousemployerIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<PreviousEmployerProspectResponse>;
-    public apiApplicantPreviousemployerIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<PreviousEmployerProspectResponse>>;
-    public apiApplicantPreviousemployerIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<PreviousEmployerProspectResponse>>;
+    public apiApplicantPreviousemployerIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<SphPreviousEmployerProspectResponse>;
+    public apiApplicantPreviousemployerIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<SphPreviousEmployerProspectResponse>>;
+    public apiApplicantPreviousemployerIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<SphPreviousEmployerProspectResponse>>;
     public apiApplicantPreviousemployerIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiApplicantPreviousemployerIdGet.');
@@ -2989,69 +2864,7 @@ export class ApplicantService {
             responseType = 'text';
         }
 
-        return this.httpClient.get<PreviousEmployerProspectResponse>(`${this.configuration.basePath}/api/applicant/previousemployer/${encodeURIComponent(String(id))}`,
-            {
-                responseType: <any>responseType,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param verifyPreviousEmployerCommand 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiApplicantPreviousemployerInvitePost(verifyPreviousEmployerCommand?: VerifyPreviousEmployerCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<PreviousEmployerProspectResponse>;
-    public apiApplicantPreviousemployerInvitePost(verifyPreviousEmployerCommand?: VerifyPreviousEmployerCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<PreviousEmployerProspectResponse>>;
-    public apiApplicantPreviousemployerInvitePost(verifyPreviousEmployerCommand?: VerifyPreviousEmployerCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<PreviousEmployerProspectResponse>>;
-    public apiApplicantPreviousemployerInvitePost(verifyPreviousEmployerCommand?: VerifyPreviousEmployerCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        let credential: string | undefined;
-        // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
-        return this.httpClient.post<PreviousEmployerProspectResponse>(`${this.configuration.basePath}/api/applicant/previousemployer/invite`,
-            verifyPreviousEmployerCommand,
+        return this.httpClient.get<SphPreviousEmployerProspectResponse>(`${this.configuration.basePath}/api/applicant/previousemployer/${encodeURIComponent(String(id))}`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -3116,9 +2929,9 @@ export class ApplicantService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiApplicantPreviousemployerPost(invitePreviousEmployerCommand?: InvitePreviousEmployerCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiApplicantPreviousemployerPost(invitePreviousEmployerCommand?: InvitePreviousEmployerCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiApplicantPreviousemployerPost(invitePreviousEmployerCommand?: InvitePreviousEmployerCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
+    public apiApplicantPreviousemployerPost(invitePreviousEmployerCommand?: InvitePreviousEmployerCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<InviteEmployerResponse>;
+    public apiApplicantPreviousemployerPost(invitePreviousEmployerCommand?: InvitePreviousEmployerCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<InviteEmployerResponse>>;
+    public apiApplicantPreviousemployerPost(invitePreviousEmployerCommand?: InvitePreviousEmployerCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<InviteEmployerResponse>>;
     public apiApplicantPreviousemployerPost(invitePreviousEmployerCommand?: InvitePreviousEmployerCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -3161,8 +2974,70 @@ export class ApplicantService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/applicant/previousemployer`,
+        return this.httpClient.post<InviteEmployerResponse>(`${this.configuration.basePath}/api/applicant/previousemployer`,
             invitePreviousEmployerCommand,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param verifyPreviousEmployerCommand 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantPreviousemployerVerifyPost(verifyPreviousEmployerCommand?: VerifyPreviousEmployerCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<SphPreviousEmployerProspectResponse>;
+    public apiApplicantPreviousemployerVerifyPost(verifyPreviousEmployerCommand?: VerifyPreviousEmployerCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<SphPreviousEmployerProspectResponse>>;
+    public apiApplicantPreviousemployerVerifyPost(verifyPreviousEmployerCommand?: VerifyPreviousEmployerCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<SphPreviousEmployerProspectResponse>>;
+    public apiApplicantPreviousemployerVerifyPost(verifyPreviousEmployerCommand?: VerifyPreviousEmployerCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.post<SphPreviousEmployerProspectResponse>(`${this.configuration.basePath}/api/applicant/previousemployer/verify`,
+            verifyPreviousEmployerCommand,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

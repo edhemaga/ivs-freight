@@ -13,15 +13,9 @@
 
 export interface SevenDaysHosReviewResponse { 
     id?: number;
-    isHosValid?: boolean;
-    hosMessage?: string | null;
     isReleaseDateValid?: boolean;
     isLocationValid?: boolean;
     releaseDateLocationMessage?: string | null;
-    isWorkingForAnotherEmployerValid?: boolean;
-    workingForAnotherEmployerMessage?: string | null;
-    isIntendToWorkForAnotherEmployerValid?: boolean;
-    intendToWorkForAnotherEmployerMessage?: string | null;
     sevenDaysHosId?: number;
 }
 

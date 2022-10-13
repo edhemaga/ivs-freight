@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TestResult } from './testResult';
 import { TestType } from './testType';
 
 
@@ -17,6 +18,7 @@ export interface EditTestCommand {
     testReasonId?: number;
     testType?: TestType;
     testingDate?: string;
+    result?: TestResult;
     note?: string | null;
 }
 

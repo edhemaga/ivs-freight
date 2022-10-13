@@ -1,5 +1,5 @@
 <div cdkDrag class="modal-container {{ customClass }}" ngBAutofocus>
-  <div [ngClass]="{ 'load-modal-content': customClass?.includes('load') }">
+  <div class="modal-original-part">
     <!-- Modal Header -->
     <div cdkDragHandle class="modal-header">
       <div
@@ -40,9 +40,39 @@
         >
           {{ editName }}
         </h5>
+        <h5 *ngIf="loadModalTitle" class="edit-name">
+          {{ loadModalTitle }}
+          <span class="edit-name-date">| {{ dateNow }}</span>
+        </h5>
+      </div>
+      <!-- Load Modal Header Bill -->
+      <div *ngIf="loadModalBill" class="load-modal-bill">
+        <!-- Billing Info -->
+        <div class="load-modal-bill-rate">
+          <p>Rate</p>
+          <div class="load-modal-bill-rate-price-container">
+            <p class="load-modal-base-rate">
+              $ {{ 2600 | taThousandSeparator }}
+            </p>
+            <p class="load-modal-adjusted-rate">
+              $ {{ 2300 | taThousandSeparator }}
+            </p>
+          </div>
+        </div>
+        <div class="load-modal-bill-due">
+          <p>Due</p>
+          <p class="load-modal-base-due">$ {{ 1900 | taThousandSeparator }}</p>
+        </div>
+        <!-- Header Load close -->
+        <svg-icon
+          class="modal-close"
+          src="assets/svg/common/ic_x.svg"
+          (click)="onAction('close')"
+        ></svg-icon>
       </div>
       <!-- Header close -->
       <svg-icon
+        *ngIf="!loadModalBill"
         class="modal-close"
         src="assets/svg/common/ic_x.svg"
         (click)="onAction('close')"
@@ -53,7 +83,7 @@
     <!-- Modal body -->
     <div class="modal-body">
       <!-- Modal content -->
-      <ng-content></ng-content>
+      <ng-content select="[origin]"></ng-content>
       <!-- Divider bottom -->
       <div *ngIf="bottomDivider" class="divider"></div>
     </div>
@@ -301,10 +331,7 @@
     </div>
   </div>
   <!-- Modal Map -->
-  <div
-    *ngIf="map"
-    [ngClass]="{ 'load-modal-map': customClass?.includes('load') }"
-  >
-    MAPA
+  <div *ngIf="modalAdditionalPart" class="modal-additional-part">
+    <ng-content select="[additional]"></ng-content>
   </div>
 </div>

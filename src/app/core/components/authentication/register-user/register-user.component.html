@@ -63,7 +63,7 @@
 
           <div class="d-flex">
             <div class="group address-group">
-              <app-ta-input-address
+              <app-input-address-dropdown
                 formControlName="address"
                 [inputConfig]="{
                   name: 'Address',
@@ -72,11 +72,13 @@
                   isRequired: true,
                   placeholderIcon: 'address',
                   textTransform: 'capitalize',
+                  dropdownWidthClass: 'w-col-503',
                   minLength: 6,
                   maxLength: 256,
                   isDisabled: true
                 }"
-              ></app-ta-input-address>
+                [placeholderType]="'longAddress'"
+              ></app-input-address-dropdown>
             </div>
             <div class="group address-unit-group">
               <app-ta-input
