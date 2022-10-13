@@ -324,7 +324,7 @@
                             : '412px'
                       }"
                     >
-                      <app-ta-input-address
+                      <app-input-address-dropdown
                         formControlName="address"
                         [inputConfig]="{
                           name: 'Address',
@@ -333,16 +333,17 @@
                           isRequired: true,
                           placeholderIcon: 'address',
                           textTransform: 'capitalize',
+                          dropdownWidthClass: 'w-col-480',
                           minLength: 6,
                           maxLength: 256,
                           incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
-                        [incorrectValue]="false"
+                        [placeholderType]="'longAddress'"
                         (incorrectEvent)="incorrectInput($event, 0, i + 2)"
                         (selectedAddress)="
                           handleInputSelect($event, 'PREVIOUS-ADDRESS', i)
                         "
-                      ></app-ta-input-address>
+                      ></app-input-address-dropdown>
                     </div>
 
                     <div class="address-unit-container">
