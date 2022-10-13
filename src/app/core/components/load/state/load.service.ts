@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { LoadMinimalListResponse } from '../../../../../../appcoretruckassist/model/loadMinimalListResponse';
 import { LoadDetailsListQuery } from './load-details-state/load-details-list-state/load-d-list.query';
 import { LoadDetailsListStore } from './load-details-state/load-details-list-state/load-d-list.store';
+import { LoadModalResponse } from '../../../../../../appcoretruckassist/model/loadModalResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -94,7 +95,12 @@ export class LoadTService {
       search2
     );
   }
+
   public getLoadById(loadId: number): Observable<LoadResponse> {
     return this.loadServices.apiLoadIdGet(loadId);
+  }
+
+  public getLoadDropdowns(id?: number): Observable<LoadModalResponse> {
+    return this.loadServices.apiLoadModalGet(id);
   }
 }

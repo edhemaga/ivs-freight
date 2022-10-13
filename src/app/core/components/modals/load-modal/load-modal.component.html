@@ -1,15 +1,22 @@
 <app-ta-modal
   [modalTitle]="!editData?.type?.includes('edit') ? 'Create Load' : 'Edit Load'"
   [editData]="editData"
-  [editName]="editData?.id"
-  [isModalValid]="loadForm.valid"
+  [loadModalTitle]="loadModalTitle"
+  [loadModalBill]="loadModalBill"
+  [isModalValid]="loadForm.valid && isFormDirty"
   [tabChange]="headerTabs"
   [customClass]="'modal-container-load'"
-  [map]="true"
+  [modalAdditionalPart]="true"
   (onTabHeaderChange)="onModalHeaderTabChange($event)"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="loadForm" class="form-container form-container-without-mb">
+  <!-- Origin Tab -->
+  <form
+    origin
+    [formGroup]="loadForm"
+    class="form-container form-container-without-mb"
+  >
+    <!-------------------------------- FTL Tab -------------------------------->
     <div *ngIf="selectedTab === 1" class="m-tab">
       <div class="load-ftl-first-row">
         <div class="ftl-load-status">UNASSIGNED</div>
@@ -28,6 +35,7 @@
         ></app-ta-input-dropdown>
         <app-ta-input-dropdown
           formControlName="dispatcher"
+          [template]="'load-dispatcher'"
           [inputConfig]="{
             name: 'Input Dropdown',
             type: 'text',
@@ -39,19 +47,43 @@
           [activeItem]="selectedDispatcher"
           (selectedItem)="onSelectDropdown($event, 'dispatcher')"
         ></app-ta-input-dropdown>
+        <!-- Only One Company -->
         <app-ta-input
+          *ngIf="labelsCompanies.length === 1"
           formControlName="company"
           [inputConfig]="{
             name: 'Company',
             type: 'text',
             label: 'Company',
             isRequired: true,
-            textTransform: 'capitalize'
+            textTransform: 'uppercase'
           }"
         ></app-ta-input>
+        <!-- Multiple Companies -->
+        <app-ta-input-dropdown
+          *ngIf="labelsCompanies.length > 1"
+          formControlName="company"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Company',
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-226'
+          }"
+          [options]="labelsCompanies"
+          [activeItem]="selectedCompany"
+          (selectedItem)="onSelectDropdown($event, 'company')"
+        ></app-ta-input-dropdown>
       </div>
       <div class="load-ftl-second-row">
-        Novi Dropdown
+        <app-ta-input-dropdown
+          formControlName="dispatchesId"
+          [template]="'load-dispatches-ttd'"
+          [inputConfig]="loadDispatchesTTDInputConfig"
+          [options]="labelsDispatches"
+          [activeItem]="selectedDispatches"
+          (selectedItem)="onSelectDropdown($event, 'dispatches')"
+        ></app-ta-input-dropdown>
         <app-ta-input
           formControlName="refNumber"
           [inputConfig]="{
@@ -64,15 +96,18 @@
         ></app-ta-input>
         <app-ta-input-dropdown
           formControlName="generalCommodity"
+          [template]="'svgtext-template'"
           [inputConfig]="{
             name: 'Input Dropdown',
             type: 'text',
             label: 'General Commodity',
             isDropdown: true,
-            dropdownWidthClass: 'w-col-178'
+            dropdownWidthClass: 'w-col-178',
+            placeholderIcon: isHazardousPicked ? 'hazardous-info' : null
           }"
           [options]="labelsGeneralCommodity"
           [activeItem]="selectedGeneralCommodity"
+          (placeholderIconEvent)="commandEvent($event)"
           (selectedItem)="onSelectDropdown($event, 'general-commodity')"
         ></app-ta-input-dropdown>
         <app-ta-input
@@ -89,6 +124,7 @@
       <div class="load-ftl-third-row">
         <app-ta-input-dropdown
           formControlName="broker"
+          [template]="'load-broker'"
           [inputConfig]="{
             name: 'Input Dropdown',
             type: 'text',
@@ -97,54 +133,48 @@
             isRequired: true,
             dropdownWidthClass: 'w-col-439'
           }"
+          [canAddNew]="true"
+          [canOpenModal]="true"
           [options]="labelsBroker"
           [activeItem]="selectedBroker"
           (selectedItem)="onSelectDropdown($event, 'broker')"
         ></app-ta-input-dropdown>
-        <div class="broker-load-information">
-          <app-ta-input
-            formControlName="brokerContact"
-            [inputConfig]="{
-              name: 'Contact Name',
-              type: 'text',
-              label: 'Contact',
-              isDisabled: true
-            }"
-          ></app-ta-input>
-          <app-ta-input
-            formControlName="brokerPhone"
-            [inputConfig]="{
-              name: 'Phone',
-              type: 'text',
-              label: 'Phone',
-              mask: '(000) 000-0000',
-              maxLength: 14,
-              maxLength: 14,
-              isDisabled: true
-            }"
-          ></app-ta-input>
-          <app-ta-input
-            formControlName="brokerPhoneExt"
-            [inputConfig]="{
-              name: 'Ext',
-              type: 'text',
-              label: 'EXT',
-              isDisabled: true,
-              maxLength: 3
-            }"
-          ></app-ta-input>
-        </div>
+
+        <app-ta-input-dropdown
+          formControlName="brokerContact"
+          [template]="'load-broker-contact'"
+          [inputConfig]="loadBrokerContactsInputConfig"
+          [canAddNew]="true"
+          [canOpenModal]="true"
+          [options]="labelsBrokerContacts"
+          [activeItem]="selectedBrokerContact"
+          (selectedItem)="onSelectDropdown($event, 'broker-contact')"
+        ></app-ta-input-dropdown>
       </div>
-      <app-ta-custom-card [cardName]="'Load Requirements'">
+      <app-ta-custom-card
+        [cardName]="'Load Requirements'"
+        [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+      >
         <div class="load-requirements-load">
           <app-ta-input-dropdown
             formControlName="truckReq"
+            [template]="'svgtext-template'"
             [inputConfig]="{
               name: 'Input Dropdown',
               type: 'text',
               label: 'Truck Req.',
               isDropdown: true,
-              dropdownWidthClass: 'w-col-164'
+              dropdownImageInput: {
+                withText: true,
+                url: selectedTruckReq?.logoName,
+                template: 'truck',
+                class: selectedTruckReq?.name
+                  ?.trim()
+                  .replace(' ', '')
+                  .toLowerCase()
+              },
+              dropdownWidthClass: 'w-col-164',
+              customClass: 'truck-trailer-dropdown'
             }"
             [options]="labelsTruckReq"
             [activeItem]="selectedTruckReq"
@@ -153,12 +183,31 @@
 
           <app-ta-input-dropdown
             formControlName="trailerReq"
+            [template]="'svgtext-template'"
             [inputConfig]="{
               name: 'Input Dropdown',
               type: 'text',
               label: 'Trailer Req.',
               isDropdown: true,
-              dropdownWidthClass: 'w-col-164'
+              dropdownImageInput: {
+                withText: true,
+                url: selectedTrailerReq?.logoName,
+                template: 'trailer',
+                class: selectedTrailerReq?.name
+                  ?.toLowerCase()
+                  .includes('liquid')
+                  ? 'tanker-liquid'
+                  : selectedTrailerReq?.name?.toLowerCase()?.includes('rgn')
+                  ? 'low-boy-rgn'
+                  : selectedTrailerReq?.name?.toLowerCase().includes('dry-bulk')
+                  ? 'tanker-dry-bulk'
+                  : selectedTrailerReq?.name
+                      ?.trim()
+                      .replace(' ', '')
+                      .toLowerCase()
+              },
+              dropdownWidthClass: 'w-col-164',
+              customClass: 'truck-trailer-dropdown'
             }"
             [options]="labelsTrailerReq"
             [activeItem]="selectedTrailerReq"
@@ -202,8 +251,8 @@
               isDropdown: true,
               dropdownWidthClass: 'w-col-88'
             }"
-            [options]="labelsLength"
-            [activeItem]="selectedLength"
+            [options]="labelsTrailerLength"
+            [activeItem]="selectedTrailerLength"
             (selectedItem)="onSelectDropdown($event, 'length')"
           ></app-ta-input-dropdown>
 
@@ -237,8 +286,18 @@
             [type]="'type2-modal-popup'"
           ></app-ta-tab-switch>
 
-          <span>NEW DROPDOWN</span>
+          <app-ta-input-dropdown
+            formControlName="shipper"
+            [template]="'load-shipper'"
+            [inputConfig]="loadShipperInputConfig"
+            [canAddNew]="true"
+            [canOpenModal]="true"
+            [options]="labelsShippers"
+            [activeItem]="selectedShipper"
+            (selectedItem)="onSelectDropdown($event, 'shipper')"
+          ></app-ta-input-dropdown>
         </div>
+
         <div
           class="stop-load-second-row"
           [ngClass]="{ 'date-range-active': isDateRange }"
@@ -323,10 +382,14 @@
       <app-ta-custom-card [cardName]="'Stops'" [hasCounter]="0">
       </app-ta-custom-card>
 
-      <app-ta-custom-card [cardName]="'Billing & Payment'" [isCardOpen]="true">
+      <app-ta-custom-card
+        [cardName]="'Billing & Payment'"
+        [isCardOpen]="true"
+        [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+      >
         <div class="billing-payment-load">
           <!-- Base Rate -->
-          <div class="billing-payment-rate">
+          <div class="billing-payment-field">
             <app-ta-input
               formControlName="billingPaymentBaseRate"
               [inputConfig]="{
@@ -356,7 +419,7 @@
               src="assets/svg/common/ic_plus.svg"
             ></svg-icon>
           </div>
-          <div *ngIf="isAvailableAdjustedRate" class="billing-payment-rate">
+          <div *ngIf="isAvailableAdjustedRate" class="billing-payment-field">
             <app-ta-input
               formControlName="billingPaymentAdjustedRate"
               [inputConfig]="{
@@ -385,7 +448,7 @@
               src="assets/svg/common/ic_plus.svg"
             ></svg-icon>
           </div>
-          <div *ngIf="isAvailableAdvanceRate" class="billing-payment-rate">
+          <div *ngIf="isAvailableAdvanceRate" class="billing-payment-field">
             <app-ta-input
               formControlName="lingPaymentAdvanceRate"
               [inputConfig]="{
@@ -414,24 +477,21 @@
           </div>
         </div>
       </app-ta-custom-card>
+      <!-- Comments -->
       <app-ta-custom-card
         [hasCounter]="comments.length ? comments.length : 0"
-        [cardName]="'Comments'"
-        [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-        [hasArrow]="false"
-        [hasLikeDislike]="true"
-        [isCardOpen]="false"
+        [cardName]="'Comment'"
+        [isCardOpen]="comments.length > 0"
         [isCommentData]="true"
         [hasBodyData]="comments.length > 0"
-        [hasScrollBody]="comments.length > 6"
+        [hasScrollBody]="comments.length > 4"
+        [disabledCard]="editData?.type !== 'edit'"
+        [hasActionSvg]="
+          editData?.type === 'edit' ? 'assets/svg/common/ic_plus.svg' : ''
+        "
         (onActionEvent)="createComment()"
+        [animationMarginParams]="{ marginTop: '10px', marginBottom: '12px' }"
       >
-        <div class="no-review-broker" *ngIf="!comments.length">
-          <svg-icon
-            class="no-review-svg"
-            src="assets/svg/common/ic_no_review.svg"
-          ></svg-icon>
-        </div>
         <app-ta-user-review
           *ngIf="comments.length"
           [reviewData]="comments"
@@ -439,6 +499,8 @@
           (changeReviewsEvent)="changeCommentsEvent($event)"
         ></app-ta-user-review>
       </app-ta-custom-card>
+
+      <!-- Documents -->
       <app-ta-custom-card
         [hasCounter]="documents.length ? documents.length : 0"
         [cardName]="'Documents'"
@@ -450,13 +512,25 @@
           (onFileEvent)="onFilesEvent($event)"
         ></app-ta-upload-files>
       </app-ta-custom-card>
+
+      <!-- Note -->
       <app-ta-input-note
         formControlName="note"
         [isVisibleNote]="loadForm.get('note').value"
       ></app-ta-input-note>
     </div>
+    <!-------------------------------- LTL Tab -------------------------------->
     <div *ngIf="selectedTab === 2" class="m-tab">
       <div class="row">LTL</div>
     </div>
   </form>
+  <!-------------------------------- Additional Tab Part -------------------------------->
+  <div additional>
+    <app-load-modal-hazardous
+      *ngIf="isHazardousVisible"
+      (close)="isHazardousVisible = false"
+    ></app-load-modal-hazardous>
+
+    <div *ngIf="!isHazardousVisible">Mapa</div>
+  </div>
 </app-ta-modal>
