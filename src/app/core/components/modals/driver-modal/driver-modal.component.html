@@ -590,21 +590,23 @@
                       hideErrorMessage: true
                     }"
                   ></app-ta-input>
-                  <app-ta-input-address
+                  <app-input-address-dropdown
                     formControlName="address"
                     [inputConfig]="{
                       id: 'NICKNAME' + ind,
                       name: 'Address',
                       type: 'text',
                       textTransform: 'capitalize',
+                      dropdownWidthClass: 'w-col-455',
                       minLength: 6,
                       maxLength: 256,
                       hideRequiredCheck: true,
                       hideErrorMessage: true
                     }"
+                    [placeholderType]="'longAddress'"
                     [activeAddress]="selectedAddress"
                     (selectedAddress)="onHandleAddressFormArray($event, ind)"
-                  ></app-ta-input-address>
+                  ></app-input-address-dropdown>
                   <div
                     ngbTooltip
                     mainTooltip="Delete"
