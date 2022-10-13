@@ -17,6 +17,7 @@ import { DetailsPageService } from '../../../services/details-page/details-page-
 import { RepairTService } from '../state/repair.service';
 import { RepairDQuery } from '../state/details-state/repair-d.query';
 import { RepairShopMinimalListResponse } from '../../../../../../appcoretruckassist/model/repairShopMinimalListResponse';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-shop-repair-card-view',
@@ -33,7 +34,7 @@ export class ShopRepairCardViewComponent
   public count: number;
   public tabs: any;
   public shopsDropdowns: any[] = [];
-  public shopsList: any[] = [];
+  public shopsList: any;
   public repairShopObject: any;
   constructor(
     private shopQuery: ShopQuery,
@@ -41,23 +42,24 @@ export class ShopRepairCardViewComponent
     private tableService: TruckassistTableService,
     private cdRef: ChangeDetectorRef,
     private repairDQuery: RepairDQuery,
-    private shopService: RepairTService
+    private shopService: RepairTService,
+    private act_route: ActivatedRoute
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+
     if (
       changes.shopResponse?.currentValue != changes.shopResponse?.previousValue
     ) {
       this.getActiveServices(changes.shopResponse.currentValue);
-      this.getShopsDropdown();
-      this.shopResponse = changes.shopResponse?.currentValue;
       this.noteControl.patchValue(changes.shopResponse.currentValue.note);
     }
-    // this.getRepairShopById(changes?.shopResponse?.currentValue?.id);
-
-    // this.repairShopMinimalQuery
-    // .selectAll()
-    // .pipe(takeUntil(this.destroy$))
-    // .subscribe((item) => (this.shopsList = item));
+    // this.shopResponse = changes.shopResponse?.currentValue;
+    this.getShopsDropdown();
+    this.getRepairShopById(changes?.shopResponse?.currentValue?.id);
+    this.repairDQuery.repairShop$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.shopsList = item));
   }
   ngOnInit(): void {
     this.tableService.currentActionAnimation
@@ -92,13 +94,12 @@ export class ShopRepairCardViewComponent
               status: item.status,
               svg: item.pinned ? 'ic_star.svg' : null,
               folder: 'common',
-              active: item.id === this.shopResponse.id,
+              active: item.id === +this.act_route.snapshot.params['id'],
             };
           });
         })
       )
       .subscribe((data) => {
-        console.log('minimal list - component: ', data);
         this.shopsDropdowns = data;
       });
   }
@@ -106,7 +107,8 @@ export class ShopRepairCardViewComponent
   public onSelectedShop(event: any) {
     console.log('selected: ', event);
     console.log('@input shop response: ', this.shopResponse);
-    if (event.id !== this.shopResponse.id) {
+
+    if (event.id !== +this.act_route.snapshot.params['id']) {
       this.shopsList = this.shopsDropdowns.map((items) => {
         return {
           id: items.id,
@@ -117,14 +119,17 @@ export class ShopRepairCardViewComponent
           active: items.id === event.id,
         };
       });
+      console.log(this.shopsList);
       this.detailsPageDriverSer.getDataDetailId(event.id);
     }
   }
 
   public onChangeShop(action: string) {
-    let currentIndex = this.shopsDropdowns.findIndex(
-      (shop) => shop.id === this.shopResponse.id
+    let currentIndex = this.shopsList.findIndex(
+      (shop) => shop.id === +this.act_route.snapshot.params['id']
     );
+    console.log(currentIndex);
+    console.log(this.shopsList);
     switch (action) {
       case 'previous': {
         currentIndex = --currentIndex;
@@ -132,6 +137,7 @@ export class ShopRepairCardViewComponent
           this.detailsPageDriverSer.getDataDetailId(
             this.shopsList[currentIndex].id
           );
+
           this.onSelectedShop({ id: this.shopsList[currentIndex].id });
         }
         break;
@@ -142,6 +148,7 @@ export class ShopRepairCardViewComponent
           this.detailsPageDriverSer.getDataDetailId(
             this.shopsList[currentIndex].id
           );
+
           this.onSelectedShop({ id: this.shopsList[currentIndex].id });
         }
         break;

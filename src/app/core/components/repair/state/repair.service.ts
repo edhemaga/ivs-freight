@@ -28,6 +28,7 @@ import { ShopDetailsListStore } from './shop-details-state/shop-details-list-sta
 import { RepairShopMinimalListStore } from './shop-details-state/shop-minimal-list-state/shop-minimal.store';
 import { ShopItemStore } from './shop-details-state/shop-detail.store';
 import { RepairShopMinimalListQuery } from './shop-details-state/shop-minimal-list-state/shop-minimal.query';
+import { RepairDQuery } from './details-state/repair-d.query';
 @Injectable({
   providedIn: 'root',
 })
@@ -49,7 +50,7 @@ export class RepairTService implements OnDestroy {
     private sdls: ShopDetailsListStore,
     private shopMinimalStore: RepairShopMinimalListStore,
     private shopDetailsMinimalQuery: RepairShopMinimalListQuery,
-
+    private rDq: RepairDQuery,
     private sItemStore: ShopItemStore
   ) {}
 
@@ -391,14 +392,12 @@ export class RepairTService implements OnDestroy {
     repairId: number,
     getIndex?: boolean
   ): Observable<RepairShopResponse> {
-    return of();
-    // this.shopDetailsMinimalQuery
-    //   .selectAll()
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((item) => (this.repairShopList = item));
+    this.rDq.repairList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.repairShopList = item));
     // if (getIndex) {
     //   this.currentIndex = this.repairShopList.findIndex(
-    //     (driver) => driver.id === repairId
+    //     (shop) => shop.id === repairId
     //   );
     //   let last = this.repairShopList.at(-1);
 
@@ -413,7 +412,7 @@ export class RepairTService implements OnDestroy {
     //   this.repairShopId = this.repairShopList[this.currentIndex].id;
     // }
 
-    // return this.shopServices.apiRepairshopIdGet(repairId);
+    return this.shopServices.apiRepairshopIdGet(repairId);
   }
 
   public deleteRepairShopByIdDetails(shopId: number): Observable<any> {

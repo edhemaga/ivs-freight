@@ -17,7 +17,7 @@
         <div class="divider"></div>
         <div class="repair-items-wrapper">
           <span
-            *ngFor="let repairs of repairsData?.data; let i = index"
+            *ngFor="let repairs of repairsData; let i = index"
             (click)="showRepairItems[repairs?.id]=!showRepairItems[repairs?.id]"
             class="item-shop-wrapper"
             [ngClass]="{

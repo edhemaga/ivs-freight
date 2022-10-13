@@ -38,7 +38,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
   public currentIndex: number = 0;
   public repairObject: any;
   public togglerWorkTime: boolean;
-  public repairsDataCmp: any;
+  public repairsDataLength: number;
   constructor(
     private act_route: ActivatedRoute,
     private detailsPageDriverService: DetailsPageService,
@@ -58,23 +58,18 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // this.currentIndex = this.repairList.findIndex(
-    //   (shop) => shop.id === this.act_route.snapshot.data.shop.id
-    // );
-    this.repairDQuery.repairShop$.subscribe((data: RepairShopResponse[]) => {
-      const repairShop = data.find(
+    this.repairDQuery.repairShop$.subscribe((item) => {
+      this.currentIndex = item.findIndex(
         (item) => item.id === +this.act_route.snapshot.params['id']
       );
-      console.log('finded repar shop: ', repairShop);
-      this.shopConf(repairShop);
+      this.shopConf(item[this.currentIndex]);
     });
-    // (this.act_route.snapshot.data.shop.id)
-    // this.shopQ.shopDetails$.subscribe((data) =>
-    //   console.log('shop - component: ', data)
-    // );
-    // this.repairsQ.repairDetails$.subscribe((data) =>
-    //   console.log('repair - component ', data)
-    // );
+    this.repairDQuery.repairList$.subscribe((item) => {
+      console.log(item.pagination.data.length);
+
+      this.repairsDataLength = item.pagination.data.length;
+      console.log(this.repairsDataLength);
+    });
     this.initTableOptions();
 
     this.tableService.currentActionAnimation
@@ -112,29 +107,29 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         // if (this.sdlq.hasEntity(id)) {
         //   query = this.sdlq.selectEntity(id).pipe(take(1));
         // } else {
-        //   query = this.shopService.getRepairShopById(id);
+        //   query =
         // }
 
-        this.repairDQuery.repairShop$.pipe(takeUntil(this.destroy$)).subscribe({
-          next: (res: RepairShopResponse[]) => {
-            console.log('shop repair list: ', res);
-            console.log('shop repair id: ', id);
-            const repairShop = res.find((item) => item.id === id);
-            console.log('shop repair details: ', repairShop);
-            this.shopConf(repairShop);
-            if (this.router.url.includes('shop-details')) {
-              this.router.navigate([`/repair/${repairShop.id}/shop-details`]);
-            }
-            this.notificationService.success(
-              'Shop successfully changed',
-              'Success:'
-            );
-            this.cdRef.detectChanges();
-          },
-          error: () => {
-            this.notificationService.error("Shop can't be loaded", 'Error:');
-          },
-        });
+        this.shopService
+          .getRepairShopById(id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (res: RepairShopResponse) => {
+              console.log('shop repair list: ', res);
+              if (this.router.url.includes('shop-details')) {
+                this.router.navigate([`/repair/${res.id}/shop-details`]);
+              }
+              this.shopConf(res);
+              this.notificationService.success(
+                'Shop successfully changed',
+                'Success:'
+              );
+              this.cdRef.detectChanges();
+            },
+            error: () => {
+              this.notificationService.error("Shop can't be loaded", 'Error:');
+            },
+          });
       });
   }
 
@@ -223,28 +218,14 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         },
       });
   }
-  public getRepairById(id: number) {
-    this.shopService
-      .getRepairShopById(id, true)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((item) => (this.repairObject = item));
-  }
+
   /**Function for header names and array of icons */
-  shopConf(data: RepairShopResponse) {
-    // this.getRepairById(data.id);
+  public shopConf(data: RepairShopResponse) {
+    this.repairObject = data;
     console.log('shop conf: ', data);
     let total;
     this.DetailsDataService.setNewData(data);
-    /* if (data?.repairs?.length) {
-      total = this.sumArr.transform(
-        data.repairs.map((item) => {
-          return {
-            id: item.id,
-            value: item.total,
-          };
-        })
-      );
-    } */
+
     if (data?.openHoursToday === 'Closed') {
       this.togglerWorkTime = false;
     } else {
@@ -264,7 +245,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         template: 'repair',
         icon: true,
         repairOpen: data?.openHoursToday === 'Closed' ? false : true,
-        length: 2,
+        length: this.repairsDataLength ? this.repairsDataLength : 0,
         customText: 'Date',
         total: total,
         icons: [

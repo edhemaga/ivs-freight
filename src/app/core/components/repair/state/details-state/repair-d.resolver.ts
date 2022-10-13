@@ -39,8 +39,10 @@ export class RepairDResolver implements Resolve<RepairDState> {
       null
     );
 
-    const repairShopMinimalList$ =
-      this.repairDService.getRepairShopMinimalList();
+    const repairShopMinimalList$ = this.repairDService.getRepairShopMinimalList(
+      1,
+      25
+    );
 
     return forkJoin({
       repairShop: repairShop$,

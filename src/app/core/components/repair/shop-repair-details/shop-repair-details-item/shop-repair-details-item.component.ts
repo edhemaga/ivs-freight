@@ -19,6 +19,7 @@ import { card_component_animation } from '../../../shared/animations/card-compon
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairTService } from '../../state/repair.service';
 import { ShopItemStore } from '../../state/shop-details-state/shop-detail.store';
+import { RepairDQuery } from '../../state/details-state/repair-d.query';
 
 @Component({
   selector: 'app-shop-repair-details-item',
@@ -39,32 +40,31 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
   public showRepairItems: boolean[] = [];
   private destroy$ = new Subject<void>();
   public repairsTest: any;
-  public id: number;
   constructor(
     private dropDownService: DropDownService,
     private modalService: ModalService,
     private confirmationService: ConfirmationService,
     private shopService: RepairTService,
-    private shItem: ShopItemStore
+    private shItem: ShopItemStore,
+    private repairDQuery: RepairDQuery
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+
     if (changes.shopData?.currentValue != changes.shopData?.previousValue) {
-      this.shopData = changes.shopData.currentValue;
+      // this.shopData = changes.shopData.currentValue.data;
+
       this.repairShopLikes = changes.shopData.currentValue.data.upRatingCount;
       this.repairShopDislike =
         changes.shopData.currentValue.data.downRatingCount;
       this.getReviews(changes.shopData.currentValue.data);
-      // this.repairsData?.data.map((item) => {
-
-      //   this.showRepairItems[item.id] = false;
-      // });
     }
-    this.id = changes.shopData?.currentValue.data.id;
-    // this.getRepairsList(this.id);
-    // setTimeout(() => {
-    //   this.repairsData =
-    //     this.act_route.snapshot.data.shop.repairs.pagination.data;
-    // }, 100);
+    this.repairDQuery.repairList$.subscribe(
+      (item) => (this.repairsData = item.pagination.data)
+    );
+    this.repairsData?.map((item) => {
+      this.showRepairItems[item.id] = false;
+    });
   }
   ngOnInit(): void {
     // Confirmation Subscribe
@@ -88,11 +88,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
 
     this.initTableOptions();
   }
-  // getRepairsList(id: number) {
-  //   this.shopService.getRepairList(id).subscribe((item) => {
-  //     this.repairsData = item.pagination;
-  //   });
-  // }
+
   public deleteRepairByIdFunction(id: number) {
     this.shopService
       .deleteRepairById(id)

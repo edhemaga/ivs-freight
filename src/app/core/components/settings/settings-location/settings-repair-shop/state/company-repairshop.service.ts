@@ -33,7 +33,7 @@ export class CompanyRepairShopService {
     return this.companyRepairShop.apiRepairshopListGet(
       active,
       pinned,
-      companyOwned,
+      true,
       categoryIds,
       _long,
       lat,
