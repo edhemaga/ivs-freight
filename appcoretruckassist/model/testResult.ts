@@ -11,11 +11,10 @@
  */
 
 
-export interface SevenDaysHosReviewResponse { 
-    id?: number;
-    isReleaseDateValid?: boolean;
-    isLocationValid?: boolean;
-    releaseDateLocationMessage?: string | null;
-    sevenDaysHosId?: number;
-}
+export type TestResult = 'Positive' | 'Negative';
+
+export const TestResult = {
+    Positive: 'Positive' as TestResult,
+    Negative: 'Negative' as TestResult
+};
 

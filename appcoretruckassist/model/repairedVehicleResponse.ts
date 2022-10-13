@@ -9,13 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RepairUnitType } from './repairUnitType';
 
 
-export interface SevenDaysHosReviewResponse { 
-    id?: number;
-    isReleaseDateValid?: boolean;
-    isLocationValid?: boolean;
-    releaseDateLocationMessage?: string | null;
-    sevenDaysHosId?: number;
+export interface RepairedVehicleResponse { 
+    unitId?: number | null;
+    unitType?: RepairUnitType;
+    unitNumber?: string | null;
+    totalRepairs?: number | null;
+    logoName?: string | null;
+    totalCost?: number | null;
 }
 

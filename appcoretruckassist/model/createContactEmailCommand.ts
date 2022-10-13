@@ -15,5 +15,6 @@ import { ContactEmailType } from './contactEmailType';
 export interface CreateContactEmailCommand { 
     email?: string | null;
     contactEmailType?: ContactEmailType;
+    primary?: boolean;
 }
 
