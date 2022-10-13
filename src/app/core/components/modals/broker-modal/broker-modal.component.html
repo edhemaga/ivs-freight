@@ -6,7 +6,7 @@
   [customClass]="'modal-container-M'"
   (action)="onModalAction($event)"
 >
-  <div origin class="origin-part-modal">
+  <div origin>
     <app-ta-tab-switch
       [tabs]="tabs"
       (switchClicked)="tabChange($event)"
@@ -145,14 +145,11 @@
                     label: 'Address, City, State Zip',
                     isRequired: true,
                     placeholderIcon: 'address',
-                    placeholder: 'Address, City, State Zip',
                     textTransform: 'capitalize',
-                    dropdownWidthClass: 'w-col-512',
+                    dropdownWidthClass: 'w-col-510',
                     minLength: 6,
-                    maxLength: 256,
-                    isDropdown: true
+                    maxLength: 256
                   }"
-                  [incorrectValue]="false"
                   [placeholderType]="'longAddress'"
                   [activeAddress]="selectedPhysicalAddress"
                   (selectedAddress)="
@@ -211,14 +208,11 @@
                     label: 'City, State Zip',
                     isRequired: true,
                     placeholderIcon: 'address',
-                    placeholder: 'City, State Zip',
                     textTransform: 'capitalize',
                     dropdownWidthClass: 'w-col-414',
                     minLength: 6,
-                    maxLength: 256,
-                    isDropdown: true
+                    maxLength: 256
                   }"
-                  [incorrectValue]="false"
                   [placeholderType]="'shortAddress'"
                   [activeAddress]="selectedPhysicalPoBox"
                   (selectedAddress)="onHandleAddress($event, 'physical-pobox')"
@@ -267,14 +261,11 @@
                       label: 'Address, City, State Zip',
                       isRequired: true,
                       placeholderIcon: 'address',
-                      placeholder: 'Address, City, State Zip',
                       textTransform: 'capitalize',
-                      dropdownWidthClass: 'w-col-512',
+                      dropdownWidthClass: 'w-col-510',
                       minLength: 6,
-                      maxLength: 256,
-                      isDropdown: true
+                      maxLength: 256
                     }"
-                    [incorrectValue]="false"
                     [placeholderType]="'longAddress'"
                     [activeAddress]="selectedBillingAddress"
                     (selectedAddress)="
@@ -333,14 +324,12 @@
                       label: 'City, State Zip',
                       isRequired: true,
                       placeholderIcon: 'address',
-                      placeholder: 'City, State Zip',
+
                       textTransform: 'capitalize',
                       dropdownWidthClass: 'w-col-414',
                       minLength: 6,
-                      maxLength: 256,
-                      isDropdown: true
+                      maxLength: 256
                     }"
-                    [incorrectValue]="false"
                     [placeholderType]="'shortAddress'"
                     [activeAddress]="selectedBillingPoBox"
                     (selectedAddress)="onHandleAddress($event, 'billing-pobox')"

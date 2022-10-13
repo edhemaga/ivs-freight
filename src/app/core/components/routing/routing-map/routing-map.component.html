@@ -23,10 +23,6 @@
         [cdkDropListData]="tableData[selectedMapIndex].routes"
         [cdkDropListConnectedTo]="[routeFreeDrag]"
         (cdkDropListDropped)="dropRoutes($event)"
-        [ngStyle]="{
-          'padding-right': tooltip?.isOpen() ? '126px' : '13px',
-          'padding-bottom': tooltip?.isOpen() ? '120px' : '13px'
-        }"
       >
         <ng-container
           *ngFor="
@@ -127,21 +123,6 @@
                   (mouseleave)="route.nameHover = false"
                 >
                   {{ route.name }}
-
-                  <div
-                    class="route-name-tooltip"
-                    [ngStyle]="{
-                      width: !route.nameHover
-                        ? '0px'
-                        : route.hidden
-                        ? '82px'
-                        : '77px',
-                      'margin-left': route.nameHover ? '12px' : '0px',
-                      opacity: route.nameHover ? '1' : '0'
-                    }"
-                  >
-                    {{ route.hidden ? "Show Route" : "Hide Route" }}
-                  </div>
                 </div>
                 <div class="header-properties-container">
                   <div
@@ -245,6 +226,7 @@
                 [ngClass]="{
                   'active-drop': dropDownActive === route.id && t2.isOpen()
                 }"
+                [container]="'body'"
                 popoverClass="table-dropdown-popover drop-down-route"
                 triggers="manual"
               >
@@ -266,7 +248,13 @@
                 cdkDrag
                 cdkDragBoundary=".route-card-content"
                 [ngClass]="{ 'focused-route': route.isFocused }"
-                [ngStyle]="{ cursor: route.stops.length == 1 ? 'pointer' : '' }"
+                [ngStyle]="{
+                  cursor: route.stops.length == 1 ? 'pointer' : '',
+                  order:
+                    insertBeforeActive > -1 && insertBeforeActive >= b
+                      ? b + 2
+                      : b + 1
+                }"
                 (click)="focusStop($event, i, b)"
               >
                 <div
@@ -390,13 +378,48 @@
                     }}
                   </div>
                 </div>
+
+                <div
+                  *ngIf="stop.showLoaded"
+                  class="loaded-stop-background"
+                  [ngStyle]="{
+                    height:
+                      b >= route.stops.length - 1 ||
+                      !route.stops[b + 1] ||
+                      route.stops[b + 1].empty
+                        ? '18px'
+                        : '24px',
+                    background: route.isFocused
+                      ? '#ffffff4d'
+                      : route.color + '33',
+                    'border-top-left-radius':
+                      b == 0 || stop.empty ? '2px' : '0px',
+                    'border-top-right-radius':
+                      b == 0 || stop.empty ? '2px' : '0px',
+                    'border-bottom-right-radius':
+                      !route.stops[b + 1] || route.stops[b + 1].empty
+                        ? '2px'
+                        : '0px',
+                    'border-bottom-left-radius':
+                      !route.stops[b + 1] || route.stops[b + 1].empty
+                        ? '2px'
+                        : '0px'
+                  }"
+                ></div>
               </div>
 
               <div
                 class="route-card-row m-0"
                 [formGroup]="$any(addressInputs)"
                 [ngClass]="{ 'focused-route': route.isFocused }"
-                (click)="focusStop($event, i, b)"
+                (click)="focusOnInput(i, false, $event)"
+                [attr.data-id]="'newStop' + route.id"
+                [ngStyle]="{
+                  order:
+                    insertBeforeActive > -1
+                      ? insertBeforeActive + 1
+                      : route.stops.length + 1
+                }"
               >
                 <div
                   class="focused-route-number-background"
@@ -435,12 +458,23 @@
                       dropdownWidthClass: dropdownWidth,
                       minLength: 6,
                       maxLength: 256,
-                      isDropdown: true,
                       blackInput: true,
                       placeholderInsteadOfLabel: true,
-                      routingAddress: true
+                      routingAddress: true,
+                      isDropdown: true
                     }"
-                    [placeholderType]="this.tableData[this.selectedMapIndex].addressType == 'address' ? 'longAddress' : 'shortAddress'"
+                    [placeholderType]="
+                      this.tableData[this.selectedMapIndex].addressType ==
+                      'address'
+                        ? 'longAddress'
+                        : 'shortAddress'
+                    "
+                    [closedBorder]="
+                      this.tableData[this.selectedMapIndex].borderType ==
+                      'closed'
+                        ? 'true'
+                        : 'false'
+                    "
                     [commandHandler]="{
                       commands: {
                         active: true,
@@ -612,21 +646,6 @@
                   (mouseleave)="route.nameHover = false"
                 >
                   {{ route.name }}
-
-                  <div
-                    class="route-name-tooltip"
-                    [ngStyle]="{
-                      width: !route.nameHover
-                        ? '0px'
-                        : route.hidden
-                        ? '82px'
-                        : '77px',
-                      'margin-left': route.nameHover ? '12px' : '0px',
-                      opacity: route.nameHover ? '1' : '0'
-                    }"
-                  >
-                    {{ route.hidden ? "Show Route" : "Hide Route" }}
-                  </div>
                 </div>
                 <div class="header-properties-container">
                   <div
@@ -730,6 +749,7 @@
                 [ngClass]="{
                   'active-drop': dropDownActive === route.id && t2.isOpen()
                 }"
+                [container]="'body'"
                 popoverClass="table-dropdown-popover drop-down-route"
                 triggers="manual"
               >
@@ -875,13 +895,45 @@
                     }}
                   </div>
                 </div>
+
+                <div
+                  *ngIf="!stop.empty && b > 0"
+                  class="loaded-stop-background"
+                  [ngStyle]="{
+                    height:
+                      b >= route.stops.length - 1 ||
+                      !route.stops[b + 1] ||
+                      route.stops[b + 1].empty
+                        ? '22px'
+                        : '24px',
+                    background: route.isFocused
+                      ? '#ffffff4d'
+                      : route.color + '33',
+                    'border-top-left-radius':
+                      b == 1 || !route.stops[b - 1] || route.stops[b - 1].empty
+                        ? '2px'
+                        : '0px',
+                    'border-top-right-radius':
+                      b == 1 || !route.stops[b - 1] || route.stops[b - 1].empty
+                        ? '2px'
+                        : '0px',
+                    'border-bottom-right-radius':
+                      !route.stops[b + 1] || route.stops[b + 1].empty
+                        ? '2px'
+                        : '0px',
+                    'border-bottom-left-radius':
+                      !route.stops[b + 1] || route.stops[b + 1].empty
+                        ? '2px'
+                        : '0px'
+                  }"
+                ></div>
               </div>
 
               <div
                 class="route-card-row m-0"
                 [formGroup]="$any(addressInputs)"
                 [ngClass]="{ 'focused-route': route.isFocused }"
-                (click)="focusStop($event, i, b)"
+                (click)="focusOnInput(i, false, $event)"
               >
                 <div
                   class="focused-route-number-background"
@@ -909,19 +961,35 @@
                   }"
                 >
                   <!-- Add New Stop -->
-                  <app-ta-input-address
+                  <app-input-address-dropdown
                     formControlName="address"
                     [inputConfig]="{
-                      name: 'Address',
+                      name: 'RoutingAddress',
                       type: 'text',
                       label: 'Add New Stop',
+                      placeholder: 'Add New Stop',
                       textTransform: 'capitalize',
-                      addressFlag: addressFlag,
-                      minLength: 12,
+                      dropdownWidthClass: dropdownWidth,
+                      minLength: 6,
                       maxLength: 256,
                       blackInput: true,
-                      hideErrorMessage: true,
-                      customClass: 'input-22',
+                      placeholderInsteadOfLabel: true,
+                      routingAddress: true,
+                      isDropdown: true
+                    }"
+                    [placeholderType]="
+                      this.tableData[this.selectedMapIndex].addressType ==
+                      'address'
+                        ? 'longAddress'
+                        : 'shortAddress'
+                    "
+                    [closedBorder]="
+                      this.tableData[this.selectedMapIndex].borderType ==
+                      'closed'
+                        ? 'true'
+                        : 'false'
+                    "
+                    [commandHandler]="{
                       commands: {
                         active: true,
                         type: 'confirm-cancel',
@@ -943,13 +1011,14 @@
                         }
                       }
                     }"
-                    (commandEvent)="onHandleAddress($event, route, i)"
+                    [isRouting]="true"
                     (changeFlag)="
                       $event === true
                         ? (addressFlag = 'Loaded')
                         : (addressFlag = 'Empty')
                     "
-                  ></app-ta-input-address>
+                    (commandEvent)="onHandleAddress($event, route, i)"
+                  ></app-input-address-dropdown>
                 </div>
               </div>
             </div>
@@ -981,23 +1050,6 @@
             </div>
           </div>
         </ng-container>
-      </div>
-    </div>
-
-    <div class="map-zoom-controls">
-      <div class="map-zoom-container">
-        <div class="map-zoom-button" (click)="zoomMap('plus')">
-          <svg-icon
-            src="assets/svg/common/ic_plus.svg"
-            [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
-          ></svg-icon>
-        </div>
-        <div class="map-zoom-button" (click)="zoomMap('minus')">
-          <svg-icon
-            src="assets/svg/common/ic_zoom_minus.svg"
-            [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
-          ></svg-icon>
-        </div>
       </div>
     </div>
 
@@ -1052,7 +1104,9 @@
                     [ngStyle]="{
                       visibility:
                         focusedRouteIndex == i &&
-                        stopPickerLocation.editIndex == j
+                        (stopPickerLocation.editIndex == j ||
+                          (stopPickerLocation.lat == route.stops[j].lat &&
+                            stopPickerLocation.long == route.stops[j].long))
                           ? 'hidden'
                           : 'visible'
                     }"
@@ -1061,15 +1115,6 @@
                   >
                     <svg
                       [tooltipBackground]="route.color"
-                      ngbTooltip
-                      [disableTooltip]="true"
-                      [mainTooltip]="
-                        tableData[selectedMapIndex].addressType == 'address' &&
-                        route.stops[j].address.address
-                          ? route.stops[j].address.address
-                          : route.stops[j].cityAddress
-                      "
-                      position="right"
                       xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
                       width="34"
@@ -1093,49 +1138,78 @@
                         </filter>
                       </defs>
                       <g
-                        transform="matrix(1, 0, 0, 1, 0, 0)"
-                        filter="url(#Path_33651)"
+                        id="Group_98568"
+                        data-name="Group 98568"
+                        transform="translate(-1100 -955.999)"
                       >
-                        <path
-                          id="Path_33651-2"
-                          data-name="Path 33651"
-                          d="M22,10.974a10.97,10.97,0,0,1-4.852,9.1c-.024.018-.379.237-.519.329-3.367,2.14-4.718,3.585-5.262,4.4a.441.441,0,0,1-.609.124.457.457,0,0,1-.124-.124c-.544-.811-1.9-2.256-5.262-4.4-.153-.095-.494-.311-.519-.329A10.983,10.983,0,1,1,22,10.974"
-                          transform="translate(6 6)"
+                        <circle
+                          id="Ellipse_6245"
+                          data-name="Ellipse 6245"
+                          cx="4"
+                          cy="4"
+                          r="4"
+                          transform="translate(1113 983)"
+                          [ngStyle]="{ fill: route.color }"
+                        />
+                        <circle
+                          id="Ellipse_6246"
+                          data-name="Ellipse 6246"
+                          cx="2"
+                          cy="2"
+                          r="2"
+                          transform="translate(1115 985)"
                           fill="#fff"
+                          *ngIf="j > 0 && j < route.stops.length - 1"
                         />
                       </g>
-                      <circle
-                        id="Ellipse_6005"
-                        data-name="Ellipse 6005"
-                        cx="9"
-                        cy="9"
-                        r="9"
-                        transform="translate(8 8)"
-                        [ngStyle]="{ fill: route.color }"
-                      />
-                      <text
-                        x="50%"
-                        y="48.5%"
-                        dominant-baseline="middle"
-                        text-anchor="middle"
-                        id="_1"
-                        data-name="1"
-                        fill="#fff"
-                        font-size="11"
-                        font-family="Montserrat-Bold, Montserrat"
-                        font-weight="700"
+                      <g
+                        id="Group_98569"
+                        data-name="Group 98569"
+                        transform="translate(-630 -2283.999)"
                       >
-                        <tspan>{{ j + 1 }}</tspan>
-                      </text>
+                        <g
+                          [ngStyle]="{
+                            filter: 'drop-shadow(0px 0px 4px #00000026)'
+                          }"
+                          transform="matrix(1, 0, 0, 1, 630, 2284)"
+                        >
+                          <path
+                            id="Path_33651-2"
+                            data-name="Path 33651"
+                            d="M22,10.974a10.97,10.97,0,0,1-4.852,9.1c-.024.018-.379.237-.519.329-3.367,2.14-4.718,3.585-5.262,4.4a.441.441,0,0,1-.609.124.457.457,0,0,1-.124-.124c-.544-.811-1.9-2.256-5.262-4.4-.153-.095-.494-.311-.519-.329A10.983,10.983,0,1,1,22,10.974"
+                            transform="translate(6 6)"
+                            fill="#fff"
+                          />
+                        </g>
+                        <circle
+                          id="Ellipse_6005"
+                          data-name="Ellipse 6005"
+                          cx="9"
+                          cy="9"
+                          r="9"
+                          transform="translate(638 2292)"
+                          [ngStyle]="{ fill: route.color }"
+                        />
+                        <text
+                          y="-8%"
+                          dominant-baseline="middle"
+                          text-anchor="middle"
+                          id="_1"
+                          data-name="1"
+                          transform="translate(647 2305)"
+                          fill="#fff"
+                          font-size="11"
+                          font-family="Montserrat-Bold, Montserrat"
+                          font-weight="700"
+                        >
+                          <tspan>{{ j + 1 }}</tspan>
+                        </text>
+                      </g>
                     </svg>
                   </div>
                   <div
                     [ngStyle]="{
-                      visibility:
-                        focusedRouteIndex == i &&
-                        stopPickerLocation.editIndex == j
-                          ? 'hidden'
-                          : 'visible'
+                      visibility: focusedRouteIndex == i ? 'hidden' : 'visible'
                     }"
                     class="marker-container circle-marker"
                     (click)="stopMarkerClick($event, i, j)"
@@ -1305,21 +1379,25 @@
               (mouseenter)="stopPickerLocation.hover = true"
               (mouseleave)="stopPickerLocation.hover = false"
             >
-              <div class="marker-container marker-icon stop-picker-icon">
+              <div
+                class="marker-container marker-icon stop-picker-icon stop-picker-marker-animation"
+                (click)="addNewStop($event)"
+                (mousewheel)="markerZoom($event, stopPickerLocation)"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   xmlns:xlink="http://www.w3.org/1999/xlink"
-                  width="56"
-                  height="62"
-                  viewBox="0 0 56 62"
+                  width="44"
+                  height="48.364"
+                  viewBox="0 0 44 48.364"
                 >
                   <defs>
                     <filter
-                      id="Path_33651"
+                      id="Path_41824"
                       x="0"
                       y="0"
-                      width="56"
-                      height="62"
+                      width="44"
+                      height="48.364"
                       filterUnits="userSpaceOnUse"
                     >
                       <feOffset input="SourceAlpha" />
@@ -1330,195 +1408,111 @@
                     </filter>
                   </defs>
                   <g
-                    id="Group_99491"
-                    data-name="Group 99491"
-                    transform="translate(-619 -2257.999)"
+                    id="Group_103737"
+                    data-name="Group 103737"
+                    transform="translate(-1095 -945)"
                   >
-                    <g
-                      id="Group_99449"
-                      data-name="Group 99449"
-                      transform="translate(-470 1327)"
-                    >
-                      <circle
-                        id="Ellipse_6245"
-                        data-name="Ellipse 6245"
-                        cx="4"
-                        cy="4"
-                        r="4"
-                        transform="translate(1113 983)"
-                        [ngStyle]="{
-                          fill: tableData[selectedMapIndex].routes[
-                            focusedRouteIndex
-                          ].color
-                        }"
-                      />
-                    </g>
-
-                    <!-- Show stop number -->
-                    <g
-                      *ngIf="!stopPickerLocation.hover"
-                      id="Group_94110"
-                      data-name="Group 94110"
-                      transform="translate(-11 -26)"
-                    >
-                      <g
-                        transform="matrix(1, 0, 0, 1, 630, 2284)"
-                        [ngStyle]="{
-                          filter: 'drop-shadow(0 0 4px rgba(0, 0, 0, 0.15)'
-                        }"
-                      >
-                        <!-- filter="url(#Path_33651)" -->
-                        <path
-                          id="Path_33651-2"
-                          data-name="Path 33651"
-                          d="M44,21.948a21.94,21.94,0,0,1-9.7,18.208c-.048.036-.758.474-1.038.658-6.734,4.28-9.436,7.17-10.524,8.792a.881.881,0,0,1-1.218.248.915.915,0,0,1-.248-.248c-1.088-1.622-3.8-4.512-10.524-8.792-.306-.19-.988-.622-1.038-.658A21.966,21.966,0,1,1,44,21.948"
-                          transform="translate(6 6)"
-                          fill="#fff"
-                        />
-                      </g>
-                      <circle
-                        id="Ellipse_6005"
-                        data-name="Ellipse 6005"
-                        cx="18"
-                        cy="18"
-                        r="18"
-                        transform="translate(640 2294)"
-                        [ngStyle]="{
-                          fill: tableData[selectedMapIndex].routes[
-                            focusedRouteIndex
-                          ].color
-                        }"
-                      />
-                      <text
-                        dominant-baseline="middle"
-                        text-anchor="middle"
-                        id="_5"
-                        data-name="5"
-                        transform="translate(658 2318)"
-                        fill="#fff"
-                        font-size="18"
-                        font-family="Montserrat-Bold, Montserrat"
-                        font-weight="700"
-                      >
-                        <tspan y="-5">
-                          {{
-                            focusedStopIndex != null
-                              ? focusedStopIndex + 2
-                              : stopPickerLocation.editIndex != null
-                              ? stopPickerLocation.editIndex + 1
-                              : tableData[selectedMapIndex].routes[
-                                  focusedRouteIndex
-                                ].stops.length + 1
-                          }}
-                        </tspan>
-                      </text>
-                    </g>
-
-                    <!-- Show delete icon on hover -->
-                    <g
-                      *ngIf="stopPickerLocation.hover"
-                      (click)="deleteStopPickerLocation($event)"
-                      (mouseover)="stopPickerLocation.deleteHover = true"
-                      (mouseleave)="stopPickerLocation.deleteHover = false"
-                      id="Group_94110"
-                      data-name="Group 94110"
-                      transform="translate(-11 -26)"
-                    >
-                      <g
-                        transform="matrix(1, 0, 0, 1, 630, 2284)"
-                        [ngStyle]="{
-                          filter: 'drop-shadow(0 0 4px rgba(0, 0, 0, 0.15)'
-                        }"
-                      >
-                        <!-- filter="url(#Path_33651)" -->
-                        <path
-                          id="Path_33651-2"
-                          data-name="Path 33651"
-                          d="M44,21.948a21.94,21.94,0,0,1-9.7,18.208c-.048.036-.758.474-1.038.658-6.734,4.28-9.436,7.17-10.524,8.792a.881.881,0,0,1-1.218.248.915.915,0,0,1-.248-.248c-1.088-1.622-3.8-4.512-10.524-8.792-.306-.19-.988-.622-1.038-.658A21.966,21.966,0,1,1,44,21.948"
-                          transform="translate(6 6)"
-                          fill="#fff"
-                        />
-                      </g>
-                      <circle
-                        id="Ellipse_6005"
-                        data-name="Ellipse 6005"
-                        cx="18"
-                        cy="18"
-                        r="18"
-                        transform="translate(640 2294)"
-                        [ngStyle]="{
-                          fill: tableData[selectedMapIndex].routes[
-                            focusedRouteIndex
-                          ].color
-                        }"
-                      />
-                      <g
-                        id="Delete"
-                        transform="translate(283 1759)"
-                        [ngStyle]="{
-                          opacity: stopPickerLocation.deleteHover ? '1' : '0.7'
-                        }"
-                      >
-                        <rect
-                          id="Rectangle_55464"
-                          data-name="Rectangle 55464"
-                          width="18"
-                          height="18"
-                          transform="translate(366 544)"
-                          fill="#fff"
-                          opacity="0"
-                        />
-                        <path
-                          id="Path_7317"
-                          data-name="Path 7317"
-                          d="M32.675,106.988,32,96H44.222l-.675,10.988a1.486,1.486,0,0,1-1.525,1.333H34.2a1.486,1.486,0,0,1-1.524-1.333Z"
-                          transform="translate(336.889 452.68)"
-                          fill="#fff"
-                        />
-                        <path
-                          id="Path_7318"
-                          data-name="Path 7318"
-                          d="M0,2.5v-1A.5.5,0,0,1,.508,1h3.81l.3-.585A.754.754,0,0,1,5.3,0H8.924a.763.763,0,0,1,.683.416L9.9,1h3.81a.5.5,0,0,1,.508.5v1a.5.5,0,0,1-.508.5H.508A.5.5,0,0,1,0,2.5Z"
-                          transform="translate(367.889 545)"
-                          fill="#fff"
-                        />
-                      </g>
-                    </g>
+                    <circle
+                      id="Ellipse_9165"
+                      data-name="Ellipse 9165"
+                      cx="4"
+                      cy="4"
+                      r="4"
+                      transform="translate(1113 983)"
+                      [ngStyle]="{
+                        fill: tableData[selectedMapIndex].routes[
+                          focusedRouteIndex
+                        ].color
+                      }"
+                    />
+                    <circle
+                      id="Ellipse_9166"
+                      data-name="Ellipse 9166"
+                      cx="2"
+                      cy="2"
+                      r="2"
+                      transform="translate(1115 985)"
+                      fill="#fff"
+                    />
                   </g>
+                  <g
+                    transform="matrix(1, 0, 0, 1, 0, 0)"
+                    filter="url(#Path_41824)"
+                    [ngStyle]="{ filter: 'drop-shadow(0px 0px 4px #00000026)' }"
+                  >
+                    <path
+                      id="Path_41824-2"
+                      data-name="Path 41824"
+                      d="M32,15.962A15.956,15.956,0,0,1,24.942,29.2c-.035.026-.551.345-.755.479-4.9,3.113-6.863,5.215-7.654,6.394a.641.641,0,0,1-.886.18.665.665,0,0,1-.18-.18c-.791-1.18-2.762-3.281-7.654-6.394-.223-.138-.719-.452-.755-.479A15.975,15.975,0,1,1,32,15.962"
+                      transform="translate(6 6)"
+                      fill="#fff"
+                    />
+                  </g>
+                  <circle
+                    id="Ellipse_9255"
+                    data-name="Ellipse 9255"
+                    cx="13"
+                    cy="13"
+                    r="13"
+                    transform="translate(9 9.001)"
+                    [ngStyle]="{
+                      fill: tableData[selectedMapIndex].routes[
+                        focusedRouteIndex
+                      ].color
+                    }"
+                  />
+
+                  <text
+                    dominant-baseline="middle"
+                    text-anchor="middle"
+                    id="_1"
+                    data-name="1"
+                    transform="translate(22 27.001)"
+                    fill="#fff"
+                    font-size="14"
+                    font-family="Montserrat-Bold, Montserrat"
+                    font-weight="700"
+                  >
+                    <tspan y="-4">
+                      {{
+                        stopPickerLocation.editIndex != null
+                          ? stopPickerLocation.editIndex + 1
+                          : stopPickerLocation.animation
+                          ? stopPickerLocation.animation
+                          : focusedStopIndex != null
+                          ? focusedStopIndex + 2
+                          : tableData[selectedMapIndex].routes[
+                              focusedRouteIndex
+                            ].stops.length + 1
+                      }}
+                    </tspan>
+                  </text>
                 </svg>
               </div>
               <div
+                *ngIf="
+                  tableData[selectedMapIndex].routes[focusedRouteIndex].stops
+                    .length &&
+                  (stopPickerLocation.editIndex == null ||
+                    stopPickerLocation.editIndex > 0)
+                "
                 class="stop-picker-window"
-                *ngIf="!stopPickerLocation.deleteHover"
               >
                 <div
-                  class="stop-picker-button empty-button"
-                  (click)="addNewStop($event, 'empty')"
-                  [ngClass]="{
-                    active: addressFlag == 'Empty'
-                  }"
+                  class="stop-picker-button"
+                  (click)="changeEmptyLoaded($event)"
                 >
-                  <div class="stop-picker-button-text">Empty</div>
+                  <div class="stop-picker-button-text">
+                    {{ stopPickerLocation.empty ? "Empty" : "Loaded" }}
+                  </div>
                 </div>
-                <div
-                  class="stop-picker-button loaded-button"
-                  (click)="addNewStop($event, 'loaded')"
-                  [ngClass]="{ active: addressFlag == 'Loaded' }"
-                >
-                  <div class="stop-picker-button-text">Loaded</div>
-                </div>
-              </div>
-              <div
-                class="stop-picker-address stop-picker-delete"
-                *ngIf="stopPickerLocation.deleteHover"
-              >
-                <div class="stop-picker-address-text">Delete</div>
               </div>
               <div
                 class="stop-picker-address"
                 [ngStyle]="{
                   backgroundColor:
-                    tableData[selectedMapIndex].routes[focusedRouteIndex].color
+                    tableData[selectedMapIndex].routes[focusedRouteIndex].color,
+                  'padding-right': '0px'
                 }"
               >
                 <div class="stop-picker-address-text">
@@ -1527,6 +1521,24 @@
                       ? stopPickerLocation.address.address
                       : stopPickerLocation.cityAddress
                   }}
+                </div>
+                <svg-icon
+                  src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                  class="delete-button"
+                  [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                  (click)="deleteStopPickerLocation($event)"
+                  (mouseover)="stopPickerLocation.deleteHover = true"
+                  (mouseleave)="stopPickerLocation.deleteHover = false"
+                ></svg-icon>
+
+                <div
+                  class="stop-picker-address stop-picker-delete"
+                  [ngStyle]="{
+                    width: stopPickerLocation.deleteHover ? '50px' : '0px',
+                    padding: stopPickerLocation.deleteHover ? '2px 6px' : '0px'
+                  }"
+                >
+                  <div class="stop-picker-address-text">Delete</div>
                 </div>
               </div>
             </div>

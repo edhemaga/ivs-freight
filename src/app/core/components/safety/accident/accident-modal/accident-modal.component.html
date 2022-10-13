@@ -7,7 +7,7 @@
   [disableDelete]="true"
   (action)="onModalAction($event)"
 >
-  <div origin class="origin-part-modal">
+  <div origin>
     <app-ta-tab-switch
       [tabs]="tabs"
       (switchClicked)="tabChange($event)"
@@ -125,12 +125,10 @@
                   label: 'Location',
                   isDisabled: editData?.type === 'edit',
                   placeholderIcon: 'address',
-                  placeholder: 'Location',
                   textTransform: 'capitalize',
                   dropdownWidthClass: 'w-col-405',
                   minLength: 6,
                   maxLength: 256,
-                  isDropdown: true,
                   customClass: 'line-input-26-in-card'
                 }"
                 [placeholderType]="'longAddress'"
@@ -692,21 +690,22 @@
             <div
               class="violation-modal-autority-details-row violation-modal-autority-details-row-second"
             >
-              <app-ta-input-address
+              <app-input-address-dropdown
                 formControlName="authorityAddress"
                 [inputConfig]="{
                   name: 'Address',
                   type: 'text',
                   label: 'Address, City, State Zip',
                   placeholderIcon: 'address',
-                  minLength: 12,
-                  maxLength: 256,
                   textTransform: 'capitalize',
-                  customClass: 'line-input-26-in-card'
+                  dropdownWidthClass: 'w-col-452',
+                  minLength: 6,
+                  maxLength: 256
                 }"
+                [placeholderType]="'longAddress'"
                 [activeAddress]="addressAuthority"
                 (selectedAddress)="onHandleAddress($event, 'address-authority')"
-              ></app-ta-input-address>
+              ></app-input-address-dropdown>
               <app-ta-input
                 formControlName="authorityPhone"
                 [inputConfig]="{
@@ -743,40 +742,42 @@
           >
             <div class="row">
               <div class="col-6">
-                <app-ta-input-address
+                <app-input-address-dropdown
                   formControlName="shippingOriginLocation"
                   [inputConfig]="{
                     name: 'Address',
                     type: 'text',
                     label: 'Origin',
                     placeholderIcon: 'address',
-                    minLength: 12,
-                    maxLength: 256,
                     textTransform: 'capitalize',
-                    customClass: 'line-input-26-in-card'
+                    dropdownWidthClass: 'w-col-407',
+                    minLength: 6,
+                    maxLength: 256
                   }"
+                  [placeholderType]="'longAddress'"
                   [activeAddress]="addressOrigin"
                   (selectedAddress)="onHandleAddress($event, 'address-origin')"
-                ></app-ta-input-address>
+                ></app-input-address-dropdown>
               </div>
               <div class="col-6">
-                <app-ta-input-address
+                <app-input-address-dropdown
                   formControlName="shippingDestinationLocation"
                   [inputConfig]="{
                     name: 'Address',
                     type: 'text',
                     label: 'Destination',
                     placeholderIcon: 'address',
-                    minLength: 12,
-                    maxLength: 256,
                     textTransform: 'capitalize',
-                    customClass: 'line-input-26-in-card'
+                    dropdownWidthClass: 'w-col-418',
+                    minLength: 6,
+                    maxLength: 256
                   }"
+                  [placeholderType]="'longAddress'"
                   [activeAddress]="addressDestination"
                   (selectedAddress)="
                     onHandleAddress($event, 'address-destination')
                   "
-                ></app-ta-input-address>
+                ></app-input-address-dropdown>
               </div>
             </div>
             <div class="violation-modal-location-shipping-row-3">

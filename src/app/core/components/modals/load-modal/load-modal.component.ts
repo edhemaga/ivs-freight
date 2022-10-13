@@ -555,7 +555,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.labelsBrokerContacts = res.brokerContacts.map((item) => {
             return {
               ...item,
-              name: item.contactName,
+              // name: item.contactName,
               extensionPhone: '312',
             };
           });

@@ -14,7 +14,7 @@
   [dropZoneConfig]="dropZoneConfig"
   (action)="onModalAction($event)"
 >
-  <div origin class="origin-part-modal">
+  <div origin>
     <app-ta-tab-switch
       [tabs]="
         editData.type === 'new-division' || editData.type === 'edit-division'
@@ -161,14 +161,11 @@
                   label: 'Address, City, State Zip',
                   isRequired: true,
                   placeholderIcon: 'address',
-                  placeholder: 'Address, City, State Zip',
                   textTransform: 'capitalize',
-                  dropdownWidthClass: 'w-col-512',
+                  dropdownWidthClass: 'w-col-510',
                   minLength: 6,
-                  maxLength: 256,
-                  isDropdown: true
+                  maxLength: 256
                 }"
-                [incorrectValue]="false"
                 [placeholderType]="'longAddress'"
                 [activeAddress]="selectedAddress"
                 (selectedAddress)="onHandleAddress($event)"

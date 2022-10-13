@@ -7,7 +7,7 @@
   [disableDelete]="true"
   (action)="onModalAction($event)"
 >
-  <div origin class="origin-part-modal">
+  <div origin>
     <app-ta-tab-switch
       [tabs]="tabs"
       (switchClicked)="tabChange($event)"
@@ -498,19 +498,22 @@
             <div
               class="violation-modal-autority-details-row violation-modal-autority-details-row-second"
             >
-              <app-ta-input-address
+              <app-input-address-dropdown
                 formControlName="address"
                 [inputConfig]="{
                   name: 'Address',
                   type: 'text',
                   label: 'Address, City, State Zip',
                   placeholderIcon: 'address',
+                  textTransform: 'capitalize',
+                  dropdownWidthClass: 'w-col-452',
                   minLength: 6,
                   maxLength: 256
                 }"
+                [placeholderType]="'longAddress'"
                 [activeAddress]="selectedAuthorityAddress"
                 (selectedAddress)="onHandleAddress($event, 'address-authority')"
-              ></app-ta-input-address>
+              ></app-input-address-dropdown>
               <app-ta-input
                 formControlName="phone"
                 [inputConfig]="{
@@ -577,36 +580,42 @@
             </div>
             <div class="row">
               <div class="col-6">
-                <app-ta-input-address
+                <app-input-address-dropdown
                   formControlName="location"
                   [inputConfig]="{
                     name: 'Address',
                     type: 'text',
                     label: 'Origin',
                     placeholderIcon: 'address',
-                    minLength: 12,
+                    textTransform: 'capitalize',
+                    dropdownWidthClass: 'w-col-407',
+                    minLength: 6,
                     maxLength: 256
                   }"
+                  [placeholderType]="'longAddress'"
                   [activeAddress]="selectedAuthorityOrigin"
                   (selectedAddress)="onHandleAddress($event, 'address-origin')"
-                ></app-ta-input-address>
+                ></app-input-address-dropdown>
               </div>
               <div class="col-6">
-                <app-ta-input-address
+                <app-input-address-dropdown
                   formControlName="destination"
                   [inputConfig]="{
                     name: 'Address',
                     type: 'text',
                     label: 'Destination',
                     placeholderIcon: 'address',
-                    minLength: 12,
+                    textTransform: 'capitalize',
+                    dropdownWidthClass: 'w-col-418',
+                    minLength: 6,
                     maxLength: 256
                   }"
+                  [placeholderType]="'longAddress'"
                   [activeAddress]="selectedAuthorityDestination"
                   (selectedAddress)="
                     onHandleAddress($event, 'address-destination')
                   "
-                ></app-ta-input-address>
+                ></app-input-address-dropdown>
               </div>
             </div>
             <div class="violation-modal-location-shipping-row-3 row-no-mb">
