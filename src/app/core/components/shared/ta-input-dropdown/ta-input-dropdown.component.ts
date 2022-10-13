@@ -21,6 +21,7 @@ import { ITaInput } from '../ta-input/ta-input.config';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputComponent } from '../ta-input/ta-input.component';
 import { TaInputResetService } from '../ta-input/ta-input-reset.service';
+import { ImageBase64Service } from '../../../utils/base64.image';
 
 @Component({
   selector: 'app-ta-input-dropdown',
@@ -67,6 +68,9 @@ export class TaInputDropdownComponent
 
   @Output() incorrectEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  @Output() placeholderIconEvent: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
+
   public originalOptions: any[] = [];
 
   // Multiselect dropdown options
@@ -87,7 +91,8 @@ export class TaInputDropdownComponent
   constructor(
     @Self() public superControl: NgControl,
     private inputService: TaInputService,
-    private inputResetService: TaInputResetService
+    private inputResetService: TaInputResetService,
+    public imageBase64Service: ImageBase64Service
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -114,7 +119,7 @@ export class TaInputDropdownComponent
               name: 'Add New',
             });
           }
-          this.originalOptions = [...this.options];
+          this.originalOptions = this.options;
           break;
         }
       }
@@ -371,14 +376,14 @@ export class TaInputDropdownComponent
               this.activeItem = existItem;
               this.inputService.dropDownItemSelectedOnEnter$.next(true);
 
-              if (this.inputConfig.name != 'RoutingAddress') {
+              if (this.inputConfig.name !== 'RoutingAddress') {
                 const timeout = setTimeout(() => {
                   this.inputConfig = {
                     ...this.inputConfig,
                     blackInput: false,
                   };
                   clearTimeout(timeout);
-                }, 150);
+                }, 600);
               }
             }
             this.popoverRef.close();
@@ -480,6 +485,10 @@ export class TaInputDropdownComponent
   }
 
   public onActiveItem(option: any): void {
+    // Disable to picking banned or dnu user
+    if (option?.dnu || option?.ban) {
+      return;
+    }
     // No Result
     if (option.id === 7654) {
       return;
@@ -577,6 +586,10 @@ export class TaInputDropdownComponent
     }
     if (event.action === 'confirm' && event.mode === 'new') {
       this.addNewItem();
+    }
+
+    if (event.action === 'Placeholder Icon Event') {
+      this.placeholderIconEvent.emit(true);
     }
 
     if (event.action === 'confirm' && event.mode === 'edit') {

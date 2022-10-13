@@ -15,8 +15,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
 
-  &.datetimeclass{
+  &.datetimeclass {
     letter-spacing: 1px;
+    pointer-events: none;
+    opacity: 0;
   }
 
   &::-moz-selection {
@@ -142,6 +144,14 @@
     padding-left: 29px;
   }
 
+  &.valid-focus-in-datepicker{
+    background-color: $input-background-color-valid-focus !important;
+
+    span, span .border-picker{
+      color: $input-text-color-normal-focus !important;
+    }
+  }
+
   &.valid-focus-in,
   &.dropdown-placeholder-active,
   &.multiSelect-dropdown-active {
@@ -183,9 +193,11 @@
     color: $input-text-color-valid-focus-out !important;
   }
 
-  &.valid-focus-out-filled-datepicker {
+  &.valid-focus-out-filled-datepicker  {
     background-color: $input-background-color-valid-focus-out-datepicker !important;
-    color: $input-transparent-color !important;
+    span, span .border-picker{
+      color: $input-text-color-valid-focus-out !important;
+    }
   }
 
   &.invalid-focus-in {
@@ -211,8 +223,38 @@
     color: $input-text-color-blue !important;
   }
 
-  &.dropdown-input-image-without-text-transparent {
+  &.dropdown-input-image-without-text-transparent,
+  &.multiple-input-values {
     color: $input-transparent-color !important;
+  }
+
+  &.load-dispatches-ttd,
+  &.load-broker-contact,
+  &.load-shipper {
+    position: absolute;
+    bottom: 1.5px;
+    background-color: transparent !important;
+    display: grid;
+    align-items: center;
+  }
+
+  &.load-dispatches-ttd {
+    grid-template-columns: repeat(3, 1fr);
+    -moz-column-gap: 11px;
+    column-gap: 11px;
+  }
+
+  &.load-broker-contact {
+    grid-template-columns: repeat(3, 1fr);
+    -moz-column-gap: 10px;
+    column-gap: 10px;
+  }
+
+  &.load-shipper {
+    grid-template-columns: repeat(2, 1fr);
+    -moz-column-gap: 10px;
+    column-gap: 10px;
+    padding-right: 25px;
   }
 
   //------------------------- Custom class -------------------------

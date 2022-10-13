@@ -1,8 +1,16 @@
 export interface ITaInput {
   id?: any; // only for form array to indefier element
   name: string;
+  multipleInputValues?: {
+    options: any[]; // { value: string; logoName?: string; }
+    customClass: string;
+  };
   type: string;
   label?: string;
+  multipleLabel?: {
+    labels: string[]; // ['Driver', 'Truck #', 'Trailer #']
+    customClass: string;
+  };
   placeholder?: string; // only for dropdown, otherwise placeholder is label !!!
   placeholderIcon?: string;
   placeholderText?: string;

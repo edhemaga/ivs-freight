@@ -433,6 +433,46 @@
     {
       "iconName": "ic_file_manager-new.svg",
       "iconPath": "assets/svg/common/ic_file_manager-new.svg"
+    },
+    {
+      "iconName": "ic_hazardous-green-field.svg",
+      "iconPath": "assets/svg/common/load/ic_hazardous-green-field.svg"
+    },
+    {
+      "iconName": "ic_hazardous-x-field.svg",
+      "iconPath": "assets/svg/common/load/ic_hazardous-x-field.svg"
+    },
+    {
+      "iconName": "ic_hazardous-yellow-circle-field.svg",
+      "iconPath": "assets/svg/common/load/ic_hazardous-yellow-circle-field.svg"
+    },
+    {
+      "iconName": "ic_hazardous-yellow-star-field.svg",
+      "iconPath": "assets/svg/common/load/ic_hazardous-yellow-star-field.svg"
+    },
+    {
+      "iconName": "ic_hazardous-a-field.svg",
+      "iconPath": "../../../../../../assets/svg/common/load/ic_hazardous-a-field.svg"
+    },
+    {
+      "iconName": "ic_hazardous-p-field.svg",
+      "iconPath": "assets/svg/common/load/ic_hazardous-p-field.svg"
+    },
+    {
+      "iconName": "ic_segregation_table_hazardous.svg",
+      "iconPath": "assets/svg/common/load/ic_segregation_table_hazardous.svg"
+    },
+    {
+      "iconName": "ic_compatibility_table_hazardous.svg",
+      "iconPath": "assets/svg/common/load/ic_compatibility_table_hazardous.svg"
+    },
+    {
+      "iconName": "ic_load-broker-dnu-ban.svg",
+      "iconPath": "assets/svg/common/load/ic_load-broker-dnu-ban.svg"
+    },
+    {
+      "iconName": "ic_load-broker-credit.svg",
+      "iconPath": "assets/svg/common/load/ic_load-broker-credit.svg"
     }
   ],
   "customIcons": []

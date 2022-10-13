@@ -103,7 +103,7 @@
       line-height: 15px;
       min-height: 15px;
       padding-bottom: 12px;
-      padding-top: 9px;
+      padding-top: 5px;
       max-height: 75px;
       font-size: 12px;
 
@@ -115,6 +115,11 @@
       outline: none;
 
       scrollbar-width: none !important; /* Firefox */
+
+      &.details_textarea{
+        padding-left: 4px;
+        padding-bottom: 7px;
+      }
 
       &::-webkit-scrollbar {
         width: 3px;

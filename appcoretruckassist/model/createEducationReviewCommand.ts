@@ -13,27 +13,13 @@ import { EmergencyContactReviewCommand } from './emergencyContactReviewCommand';
 
 
 export interface CreateEducationReviewCommand { 
-    isHighestGradeValid?: boolean;
-    highestGradeMessage?: string | null;
-    isCollegeGradeValid?: boolean;
-    collegeGradeMessage?: string | null;
-    isSpecialTrainingValid?: boolean;
-    specialTrainingMessage?: string | null;
     isSpecialTrainingDescriptionValid?: boolean;
     specialTrainingDescriptionMessage?: string | null;
-    isOtherTrainingValid?: boolean;
-    otherTrainingMessage?: string | null;
     isOtherTrainingDescriptionValid?: boolean;
     otherTrainingDescriptionMessage?: string | null;
-    isDriverBeforeValid?: boolean;
-    driverBeforeMessage?: string | null;
     isFromValid?: boolean;
     isToValid?: boolean;
     datesMessage?: string | null;
-    isUnableForJobValid?: boolean;
-    unableForJobMessage?: string | null;
-    isKnowledgeOfSafetyRegulationsValid?: boolean;
-    knowledgeOfSafetyRegulationsMessage?: string | null;
     emergencyContactReviews?: Array<EmergencyContactReviewCommand> | null;
     educationId?: number;
     applicantId?: number;

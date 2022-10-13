@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 
 import { ApplicantService } from '../../../../../../../appcoretruckassist';
 
@@ -16,15 +16,15 @@ import {
   CreateDrugAndAlcoholCommand,
   UpdateDriverRightsCommand,
   /* CreateDisclosureReleaseCommand, */
-  CreateAuthorizationCommand,
+  // CreateAuthorizationCommand,
   CreateResponse,
   CreateEducationCommand,
   CreateTrafficViolationCommand,
   CreateAccidentRecordCommand,
   CreateApplicantCdlCommand,
   CreateWorkExperienceCommand,
-  CreatePersonalInfoReviewCommand,
-  CreateAuthorizationReviewCommand,
+  CreatePersonalInfoReviewCommand /* 
+  CreateAuthorizationReviewCommand, */,
   CreateWorkExperienceReviewCommand,
   CreateApplicantCdlReviewCommand,
   CreateAccidentRecordReviewCommand,
@@ -33,8 +33,8 @@ import {
   CreateSevenDaysHosReviewCommand,
   CreateDrugAndAlcoholReviewCommand,
   InvitePreviousEmployerCommand,
-  VerifyPreviousEmployerCommand,
-  PreviousEmployerProspectResponse,
+  VerifyPreviousEmployerCommand /* 
+  PreviousEmployerProspectResponse, */,
   CreatePreviousEmployerAccidentHistoryCommand,
   CreatePreviousEmployerDrugAndAlcoholCommand,
 } from 'appcoretruckassist/model/models';
@@ -123,9 +123,9 @@ export class ApplicantActionsService {
   }
 
   public createAuthorization(
-    data: CreateAuthorizationCommand
+    data: /*CreateAuthorizationCommand*/ any
   ): Observable<CreateResponse> {
-    return this.applicantService.apiApplicantAuthorizationPost(data);
+    return of(); //this.applicantService.apiApplicantAuthorizationPost(data);
   }
 
   /* BACKEND PUT ACTION FUNCTIONS - APPLICANT MODE */
@@ -192,10 +192,9 @@ export class ApplicantActionsService {
     return this.applicantService.apiApplicantDrugandalcoholReviewPost(data);
   }
 
-  public createAuthorizationReview(
-    data: CreateAuthorizationReviewCommand
-  ): Observable<CreateResponse> {
-    return this.applicantService.apiApplicantAuthorizationReviewPost(data);
+  public createAuthorizationReview(): /*  data: CreateAuthorizationReviewCommand */
+  Observable<CreateResponse> {
+    return of(); /*  this.applicantService.apiApplicantAuthorizationReviewPost(data); */
   }
 
   public invitePreviousEmployerSphForm(
@@ -206,8 +205,8 @@ export class ApplicantActionsService {
 
   public verifyPreviousEmployerSphForm(
     data: VerifyPreviousEmployerCommand
-  ): Observable<PreviousEmployerProspectResponse> {
-    return this.applicantService
+  ) /* : Observable<PreviousEmployerProspectResponse> */ {
+    return of(); /* this.applicantService
       .apiApplicantPreviousemployerInvitePost(data)
       .pipe(
         tap((res) => {
@@ -221,7 +220,7 @@ export class ApplicantActionsService {
             },
           });
         })
-      );
+      ); */
   }
 
   public createAccidentHistorySphForm(

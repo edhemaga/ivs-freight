@@ -1,5 +1,5 @@
 <div
-  class="input-custom-group"
+  class="input-custom-group {{ inputConfig.customClass }}"
   [ngClass]="{
     'hover-focus-out':
       !focusInput && !inputConfig.dropdownLabel && !selectedDropdownLabelColor,
@@ -28,7 +28,10 @@
       inputConfig.isDropdown &&
       (touchedInput || getSuperControl.touched) &&
       !focusInput,
-    'dropdown-label-active': selectedDropdownLabelColor && !editInputMode
+    'dropdown-label-active': selectedDropdownLabelColor && !editInputMode,
+    'hazardous-mode': inputConfig.placeholderIcon
+      ?.toLowerCase()
+      ?.includes('hazardous')
   }"
 >
   <!-- Input Clear -->
@@ -374,7 +377,10 @@
         isVisiblePasswordEye &&
         getSuperControl.invalid &&
         getSuperControl.value,
-      'cursor-pointer': editInputMode
+      'cursor-pointer': editInputMode,
+      'hazardous-svg': inputConfig.placeholderIcon
+        ?.toLowerCase()
+        ?.includes('hazardous')
     }"
     ngbTooltip
     [mainTooltip]="'Change Color'"
@@ -455,7 +461,7 @@
   <!-- DateTime Picker -->
   <div
     #holder1
-    class="date_time_holder input-control showDateInput"
+    class="date_time_holder input-control"
     *ngIf="
       (inputConfig.name === 'datepicker' ||
         inputConfig.name === 'timepicker') &&
@@ -463,6 +469,8 @@
     "
     [class.active]="showDateInput"
     tabindex="-1"
+    (focus)="focusMainField($event)"
+    (click)="selectLastDateTimeHold()"
     (paste)="onDatePaste($event)"
     (blur)="onBlur()"
     (keydown)="changeSelection($event, true)"
@@ -489,7 +497,11 @@
           !inputConfig.blackInput) ||
         ((touchedInput || getSuperControl.touched) &&
           getSuperControl.invalid &&
-          !focusInput)
+          !focusInput),
+          'valid-focus-in-datepicker':
+          getSuperControl.value &&
+          getSuperControl.valid &&
+          focusInput
     }"
   >
     <span
@@ -502,11 +514,12 @@
       (blur)="onBlur()"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'mm' : 'HH'"
     ></span>
-    <span
-      (click)="setSelection($event)"
-      [innerHTML]="inputConfig.name === 'datepicker' ? '/' : ':'"
-      >/</span
-    >
+    <span>
+      <div
+        class="border-picker"
+        [innerHTML]="inputConfig.name === 'datepicker' ? '/' : ':'"
+      ></div>
+    </span>
     <span
       #span2
       class="main"
@@ -517,11 +530,12 @@
       (blur)="onBlur()"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
     ></span>
-    <span
-      (click)="setSelection($event)"
-      [innerHTML]="inputConfig.name === 'datepicker' ? '/' : ' '"
-      >/</span
-    >
+    <span>
+      <div
+        class="border-picker"
+        [innerHTML]="inputConfig.name === 'datepicker' ? '/' : ' '"
+      ></div>
+    </span>
     <span
       #span3
       class="main"
@@ -535,6 +549,38 @@
   </div>
 
   <!-- Input Control -->
+
+  <!-- Multiple Input Values -->
+  <div
+    *ngIf="
+      inputConfig?.multipleInputValues?.options?.length &&
+      getSuperControl.value &&
+      !focusInput
+    "
+    class="input-control {{ inputConfig?.multipleInputValues?.customClass }}"
+    (click)="toggleDropdownOptions()"
+  >
+    <span
+      style="display: flex; gap: 6px; align-items: center"
+      *ngFor="let item of inputConfig.multipleInputValues.options"
+    >
+      <span *ngIf="item?.logoName">
+        <img
+          *ngIf="item?.logoName !== 'no-url'"
+          [src]="this.imageBase64Service.sanitizer(item.logoName)"
+          [alt]="item.value"
+        />
+        <div *ngIf="item.logoName === 'no-url'" class="no-profile-image">
+          <app-profile-images [indx]="0" [size]="'small'" [name]="item.value">
+          </app-profile-images>
+        </div>
+      </span>
+
+      {{ item.value }}
+    </span>
+  </div>
+
+  <!-- Single Input Value -->
   <input
     #input
     [type]="inputConfig.type | inputType: togglePassword"
@@ -642,7 +688,9 @@
       'dropdown-input-image-without-text-transparent':
         inputConfig?.dropdownImageInput &&
         !inputConfig?.dropdownImageInput?.withText &&
-        !focusInput
+        !focusInput,
+      'multiple-input-values':
+        inputConfig?.multipleInputValues?.options?.length && !focusInput
     }"
     (keypress)="manipulateWithInput($event)"
     (keyup)="onKeyUp($event)"
@@ -678,7 +726,20 @@
         (focusInput || getSuperControl.value)
     }"
   >
-    {{ inputConfig.label }}
+    <span *ngIf="inputConfig.label">{{ inputConfig.label }}</span>
+    <div
+      *ngIf="inputConfig.multipleLabel?.labels?.length"
+      [class]="inputConfig.multipleLabel?.customClass"
+    >
+      <span
+        *ngFor="
+          let label of inputConfig.multipleLabel.labels;
+          trackBy: trackIdentity
+        "
+      >
+        {{ label }}
+      </span>
+    </div>
   </label>
 
   <!-- Input Error Message -->
