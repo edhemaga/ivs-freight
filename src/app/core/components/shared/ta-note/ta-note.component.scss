@@ -21,25 +21,24 @@
 }
 
 .all_note_holder {
-
   .note_inner_text {
     display: -webkit-box;
     font-size: 11px;
     color: #6c6c6c;
-  
+
     overflow: hidden;
-  
+
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     user-select: none;
   }
 
-  &.opened_main_all_holder{
+  &.opened_main_all_holder {
     display: flex;
     height: 100%;
     align-items: center;
 
-    .note_inner_text{
+    .note_inner_text {
       flex: 1;
     }
   }
@@ -50,7 +49,7 @@
       height: 18px;
       cursor: pointer;
     }
-  
+
     svg-icon {
       svg {
         display: flex;
@@ -59,7 +58,7 @@
         }
       }
     }
-  
+
     &.note-normal-icon,
     &.note-note-empty {
       svg {
@@ -67,7 +66,7 @@
           fill: #aaaaaa;
         }
       }
-  
+
       &:hover {
         svg {
           path {
@@ -76,14 +75,14 @@
         }
       }
     }
-  
+
     &.note-all-expanded {
       svg {
         path {
           fill: #6d82c7;
         }
       }
-  
+
       &:hover {
         svg {
           path {
@@ -94,8 +93,6 @@
     }
   }
 }
-
-
 
 .note-normal-icon,
 .note-note-empty,
@@ -316,9 +313,80 @@
       font-size: 11px;
       margin: 0 0 0 auto;
       line-height: 15px;
-      padding: 2px 5px;
+      padding: 3px 6px;
+      font-weight: 500;
 
-      &.opened_all_editor{
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      span {
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+      }
+
+      span[style*="color: rgb(83, 107, 194)"], span[style*="color: rgb(83, 107, 194)"] span {
+        &::-moz-selection {
+          color: $bw6-2 !important;
+          background: rgb(83, 107, 194, 0.2) !important;
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(83, 107, 194, 0.2) !important;
+        }
+      }
+
+      span[style*="color: rgb(38, 166, 144)"], span[style*="color: rgb(38, 166, 144)"] span {
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(38, 166, 144, 0.2) !important;
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(38, 166, 144, 0.2) !important;
+        }
+      }
+
+      span[style*="color: rgb(239, 83, 80)"], span[style*="color: rgb(239, 83, 80)"] span {
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(239, 83, 80, 0.2) !important;
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(239, 83, 80, 0.2) !important;
+        }
+      }
+
+      span[style*="color: rgb(255, 167, 38)"], span[style*="color: rgb(255, 167, 38)"] span {
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(255, 167, 38, 0.2) !important;
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(255, 167, 38, 0.2) !important;
+        }
+      }
+
+      &.opened_all_editor {
         width: 100%;
       }
 
@@ -328,7 +396,6 @@
         border-radius: 3px;
         box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
         overflow: hidden;
-        padding-top: 2px;
 
         &:hover {
           background-color: #f7f7f7;
@@ -338,46 +405,12 @@
           &:after {
             border-left: 5px solid #6c6c6c;
           }
-
-          span[style*="color: rgb(112, 112, 112);"] {
-            color: rgba(247, 247, 247, 1) !important;
-          }
-
-          span[style*="color: rgb(21, 135, 64);"] {
-            color: rgba(58, 255, 131, 1) !important;
-          }
-
-          span[style*="color: rgb(43, 121, 199);"] {
-            color: rgba(54, 234, 255, 1) !important;
-          }
-
-          span[style*="color: rgb(159, 72, 185);"] {
-            color: rgba(246, 217, 255, 1) !important;
-          }
-
-          span[style*="color: rgb(219, 34, 34);"] {
-            color: rgba(255, 206, 206, 1) !important;
-          }
         }
       }
 
       &.parking_text_hold {
         max-height: 124px;
       }
-
-      // &:after {
-      //   width: 0;
-      //   height: 0;
-      //   border-top: 7px solid transparent;
-      //   border-bottom: 7px solid transparent;
-      //   border-left: 5px solid rgba(255, 255, 255, 0.8);
-      //   filter: drop-shadow(1px 0px 1px rgba(0, 0, 0, 0.1));
-      //   position: absolute;
-      //   top: 10px;
-      //   /* left: calc(50% - 10px); */
-      //   content: '';
-      //   right: -5px;
-      // }
     }
 
     .container_separate {
@@ -390,7 +423,7 @@
       }
     }
 
-    .note_container{
+    .note_container {
       width: 100%;
     }
   }
@@ -428,5 +461,11 @@
         }
       }
     }
+  }
+
+  &.closed_note_hold {
+    position: relative;
+    top: 1px;
+    right: 5px;
   }
 }

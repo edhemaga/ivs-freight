@@ -1490,6 +1490,7 @@ export class TaInputComponent
 
   public onDatePaste(e: any) {
     e.preventDefault();
+    console.log('PASTE DATE');
     const pasteText = e.clipboardData.getData('text');
     const pastedDate = new Date(pasteText);
     if (!isNaN(pastedDate.getTime())) {
@@ -1519,6 +1520,7 @@ export class TaInputComponent
         this.selectionInput = 0;
         this.setSpanSelection(this.span1.nativeElement);
       } else {
+        e.preventDefault();
         this.selectSpanByTabIndex(this.selectionInput);
       }
     }
@@ -1602,7 +1604,7 @@ export class TaInputComponent
         this.setDateTimeModel('up');
       } else if (e.keyCode == 40) {
         this.setDateTimeModel('down');
-      } else if (e.keyCode == 8) {
+      } else if (e.keyCode == 8 || e.keyCode == 46) {
         this.handleKeyboardInputs(e, true);
       }
     } else if (!this.isNumber(e)) {
@@ -1992,5 +1994,24 @@ export class TaInputComponent
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  selectLastDateTimeHold() {
+    console.log('SELECT ON LAST', this.selectionInput);
+
+    // if (this.selectionInput == -1) {
+    //   this.span3.nativeElement.focus();
+    //   this.selectionInput = 2;
+    //   this.setSpanSelection(this.span3.nativeElement);
+    // }
+  }
+
+  focusMainField(e) {
+    console.log('FOCUS HERE');
+    this.selectionInput = -1;
+    this.setSpanSelection(this.holder1.nativeElement);
+    this.showDateInput = true;
+    clearTimeout(this.dateTimeMainTimer);
+    clearTimeout(this.focusBlur);
   }
 }
