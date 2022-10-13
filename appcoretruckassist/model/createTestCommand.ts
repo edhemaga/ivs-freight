@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TestResult } from './testResult';
 import { TestType } from './testType';
 
 
@@ -16,6 +17,7 @@ export interface CreateTestCommand {
     driverId?: number;
     testReasonId?: number;
     testType?: TestType;
+    result?: TestResult;
     testingDate?: string;
     note?: string | null;
 }

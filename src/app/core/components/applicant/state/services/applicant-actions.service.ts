@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 import { ApplicantService } from '../../../../../../../appcoretruckassist';
 
@@ -13,7 +13,7 @@ import {
   CreateDrugAndAlcoholCommand,
   UpdateDriverRightsCommand,
   /* CreateDisclosureReleaseCommand, */
-  CreateAuthorizationCommand,
+  // CreateAuthorizationCommand,
   CreateResponse,
   CreateEducationCommand,
   CreateTrafficViolationCommand,
@@ -97,14 +97,14 @@ export class ApplicantActionsService {
   public createDisclosureAndRelease(
     data: /* CreateDisclosureReleaseCommand */ any
   ): Observable<CreateResponse> {
-   /*  return this.applicantService.apiApplicantDisclosurereleasePost(data); */
-   return;
+    /*  return this.applicantService.apiApplicantDisclosurereleasePost(data); */
+    return;
   }
 
   public createAuthorization(
-    data: CreateAuthorizationCommand
+    data: /*CreateAuthorizationCommand*/ any
   ): Observable<CreateResponse> {
-    return this.applicantService.apiApplicantAuthorizationPost(data);
+    return of(); //this.applicantService.apiApplicantAuthorizationPost(data);
   }
 
   /* BACKEND PUT ACTION FUNCTIONS */
