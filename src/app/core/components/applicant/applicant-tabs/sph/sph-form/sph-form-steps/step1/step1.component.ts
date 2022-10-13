@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { mergeMap, Observable, Subject, takeUntil, forkJoin, take } from 'rxjs';
 
 import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
+import { ApplicantListsService } from 'src/app/core/components/applicant/state/services/applicant-lists.service';
 
 import { ApplicantSphFormStore } from 'src/app/core/components/applicant/state/store/applicant-sph-form-store/applicant-sph-form.store';
 import { ApplicantSphFormQuery } from 'src/app/core/components/applicant/state/store/applicant-sph-form-store/applicant-sph-form.query';
@@ -20,6 +21,7 @@ export class Step1Component implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private applicantActionsService: ApplicantActionsService,
+    private applicantListsService: ApplicantListsService,
     private applicantSphFormStore: ApplicantSphFormStore,
     private applicantSphFormQuery: ApplicantSphFormQuery
   ) {}
@@ -32,6 +34,8 @@ export class Step1Component implements OnInit, OnDestroy {
           this.getQueryParams();
         }
       });
+
+    this.getDropdownLists();
   }
 
   public getQueryParams(): void {
@@ -57,10 +61,18 @@ export class Step1Component implements OnInit, OnDestroy {
         this.applicantSphFormStore.update(1, (entity) => {
           return {
             ...entity,
+            companyInfo: res.verifyEmployer.companyInfo,
             verifyData,
           };
         });
       });
+  }
+
+  public getDropdownLists(): void {
+    this.applicantListsService
+      .getDropdownLists()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
   }
 
   public verifyPreviousEmployer(params: any): Observable<any> {

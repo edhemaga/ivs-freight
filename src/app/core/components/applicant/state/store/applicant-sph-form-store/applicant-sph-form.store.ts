@@ -7,6 +7,7 @@ import { PreviousEmployerProspectResponse } from 'appcoretruckassist/model/model
 export interface ApplicantSphFormState
   extends EntityState<
     {
+      companyInfo: any;
       verifyData: any;
       step1: PreviousEmployerProspectResponse;
       step2: any;

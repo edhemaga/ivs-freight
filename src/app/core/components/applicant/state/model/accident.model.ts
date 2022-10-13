@@ -1,7 +1,7 @@
 export interface SphFormAccidentModel {
   accidentDate: string;
   accidentLocation: any;
-  accidentState: string;
+  accidentState?: string;
   accidentDescription: string;
   hazmatSpill: string;
   fatalities: number;

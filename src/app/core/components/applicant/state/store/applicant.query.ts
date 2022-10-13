@@ -5,6 +5,8 @@ import { ApplicantStore, ApplicantState } from './applicant.store';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicantQuery extends QueryEntity<ApplicantState> {
+  public applicantId$ = this.select((state) => state.entities[1].id);
+
   public personalInfoList$ = this.select(
     (state) => state.entities[1].personalInfo
   );

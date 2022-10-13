@@ -13,7 +13,9 @@
             "
             class="text-center step"
             routerLinkActive="step-active"
-            [ngClass]="{ 'completed-step': storeArr[i].isCompleted }"
+            [ngClass]="{
+              'completed-step': isStepCompletedArray[i].isCompleted
+            }"
           >
             <div
               class="d-inline-flex justify-content-center align-items-center bullet"
@@ -36,7 +38,9 @@
         <router-outlet></router-outlet>
       </div>
 
-      <app-applicant-footer></app-applicant-footer>
+      <app-applicant-footer
+        [companyInfoSph]="companyInfo"
+      ></app-applicant-footer>
     </div>
   </div>
 </div>

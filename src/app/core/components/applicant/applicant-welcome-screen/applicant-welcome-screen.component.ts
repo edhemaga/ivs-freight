@@ -40,13 +40,7 @@ export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.copyrightYear = moment().format('YYYY');
 
-    this.route.queryParams
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((params) => {
-        this.verifyData = {
-          inviteCode: params['InviteCode'].split(' ').join('+'),
-        };
-      });
+    this.getQueryParams();
 
     this.applicantActionsService
       .verifyApplicant(this.verifyData)
@@ -62,12 +56,20 @@ export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
           this.companyInfo = res.companyInfo;
 
           this.applicantId = { id: res.personalInfo.applicantId };
-
-          console.log('res', res);
         },
         error: (err) => {
           console.log(err);
         },
+      });
+  }
+
+  public getQueryParams() {
+    this.route.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((params) => {
+        this.verifyData = {
+          inviteCode: params['InviteCode'].split(' ').join('+'),
+        };
       });
   }
 

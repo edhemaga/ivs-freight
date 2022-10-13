@@ -66,6 +66,8 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
 
   public isEditing: boolean = false;
 
+  public previousFormValuesOnEdit: any;
+
   public workForCompanyRadios: any;
   public motorVehicleForCompanyRadios: any;
   public consideredForEmploymentAgainRadios: any;
@@ -162,17 +164,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
 
     this.hasNoSafetyPerformanceToReport();
 
-    let stepValuesResponse: any;
-
-    this.applicantSphFormQuery.stepTwoList$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        stepValuesResponse = res;
-      });
-
-    if (stepValuesResponse) {
-      this.patchStepValues(stepValuesResponse);
-    }
+    this.getStepValuesFromStore();
   }
 
   ngAfterViewInit(): void {
@@ -199,6 +191,20 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
       consideredForEmploymentAgain: [null, Validators.required],
       noSafetyPerformance: [false],
     });
+  }
+
+  public getStepValuesFromStore(): void {
+    let stepValuesResponse: any;
+
+    this.applicantSphFormQuery.stepTwoList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        stepValuesResponse = res;
+      });
+
+    if (stepValuesResponse) {
+      this.patchStepValues(stepValuesResponse);
+    }
   }
 
   public patchStepValues(stepValues: any): void {
@@ -239,38 +245,34 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
 
       restOfTheItemsInAccidentsArray.pop();
 
-      console.log('jedan', lastItemInAccidentsArray);
-      console.log('ostali', restOfTheItemsInAccidentsArray);
+      const filteredAccidentsArray = restOfTheItemsInAccidentsArray.map(
+        (item) => {
+          return {
+            isEditingAccident: false,
+            accidentDate: convertDateFromBackend(item.date),
+            accidentLocation: item.location,
+            accidentDescription: item.description,
+            hazmatSpill: item.hazmatSpill,
+            fatalities: item.fatalities,
+            injuries: item.injuries,
+          };
+        }
+      );
 
-      /* 
-
-
-    const filteredContactsArray = restOfTheItemsInContactsArray.map((item) => {
-      return {
-        isEditingContact: false,
-        name: item.name,
-        phone: item.phone,
-        relationship: item.relationship,
-        emergencyContactReview: lastItemInContactsArray.emergencyContactReview
-          ? lastItemInContactsArray.emergencyContactReview
-          : null,
+      const filteredLastItemInAccidentArray = {
+        isEditingAccident: false,
+        accidentDate: convertDateFromBackend(lastItemInAccidentsArray.date),
+        accidentLocation: lastItemInAccidentsArray.location,
+        accidentDescription: lastItemInAccidentsArray.description,
+        hazmatSpill: lastItemInAccidentsArray.hazmatSpill,
+        fatalities: lastItemInAccidentsArray.fatalities,
+        injuries: lastItemInAccidentsArray.injuries,
       };
-    });
 
-    const filteredLastItemInContactsArray = {
-      isEditingContact: false,
-      name: lastItemInContactsArray.name,
-      phone: lastItemInContactsArray.phone,
-      relationship: lastItemInContactsArray.relationship,
-      emergencyContactReview: lastItemInContactsArray.emergencyContactReview
-        ? lastItemInContactsArray.emergencyContactReview
-        : null,
-    };
+      this.accidentArray = [...filteredAccidentsArray];
 
-    this.contactsArray = [...filteredContactsArray];
-
-    this.formValuesToPatch = filteredLastItemInContactsArray;
-    this.previousFormValuesOnReview = filteredLastItemInContactsArray; */
+      this.formValuesToPatch = filteredLastItemInAccidentArray;
+      this.previousFormValuesOnEdit = filteredLastItemInAccidentArray;
     }
 
     setTimeout(() => {
@@ -309,13 +311,20 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
       .get('noSafetyPerformance')
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
-        if (!value) {
-          /* this.inputService.changeValidators(
-            this.drugAlcoholStatementForm.get('motorCarrier'),
-            false
-          );
-        */
+        if (value) {
+          this.formStatus = 'VALID';
+
+          this.accidentArray = [];
+          this.formValuesToPatch = {
+            accidentDate: null,
+            accidentLocation: null,
+            accidentDescription: null,
+            hazmatSpill: null,
+            fatalities: 0,
+            injuries: 0,
+          };
         } else {
+          this.formStatus = 'INVALID';
         }
       });
   }
@@ -513,6 +522,8 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
 
     this.helperIndex = 2;
     this.selectedAccidentIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
   }
 
   public saveEditedAccident(event: any): void {
@@ -523,6 +534,8 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
 
     this.helperIndex = 2;
     this.selectedAccidentIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
   }
 
   public onGetFormStatus(status: string): void {

@@ -16,7 +16,7 @@ import { INavigation } from '../state/model/navigation.model';
 export class ApplicantComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode = SelectedMode.REVIEW;
+  public selectedMode = SelectedMode.APPLICANT;
 
   public menuItems: INavigation[] = [
     {
@@ -129,12 +129,10 @@ export class ApplicantComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe();
 
-    if (this.selectedMode === SelectedMode.REVIEW) {
-      this.applicantActionsService
-        .getApplicantById(1)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe();
-    }
+    this.applicantActionsService
+      .getApplicantById(1)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
   }
 
   public trackByIdentity = (index: number, item: any): number => index;

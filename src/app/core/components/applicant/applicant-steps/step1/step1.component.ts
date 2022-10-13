@@ -60,7 +60,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public personalInfoRadios: any;
 
@@ -326,35 +326,11 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     this.getBanksDropdownList();
 
-    if (this.selectedMode === SelectedMode.APPLICANT) {
-      this.createFirstAddress();
+    this.isBankUnselected();
 
-      this.isBankUnselected();
+    this.getStepValuesFromStore();
 
-      this.applicantActionsService.getApplicantInfo$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (res: any) => {
-            this.personalInfoForm.patchValue({
-              email: res.personalInfo.email,
-            });
-
-            this.applicantId = res.personalInfo.applicantId;
-          },
-        });
-    }
-
-    if (this.selectedMode === SelectedMode.REVIEW) {
-      let stepValuesResponse: any;
-
-      this.applicantQuery.personalInfoList$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          stepValuesResponse = res;
-        });
-
-      this.patchStepValues(stepValuesResponse);
-    }
+    this.getApplicantId();
   }
 
   ngAfterViewInit(): void {
@@ -413,6 +389,20 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
+  public getStepValuesFromStore(): void {
+    let stepValuesResponse: any;
+
+    this.applicantQuery.personalInfoList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        stepValuesResponse = res;
+      });
+
+    if (stepValuesResponse) {
+      this.patchStepValues(stepValuesResponse);
+    }
+  }
+
   public patchStepValues(stepValues: any): void {
     const {
       id,
@@ -425,7 +415,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       previousAddresses,
       address,
       ssn,
-      bank: { id: bankId },
+      bank,
       bankName,
       accountNumber,
       routingNumber,
@@ -469,7 +459,18 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       drunkDrivingExplain: drunkDrivingDescription,
     });
 
+    let bankId: any;
+
+    if (bank) {
+      const { id: bankNumberId } = bank;
+
+      bankId = bankNumberId;
+    }
+
     setTimeout(() => {
+      console.log('id', bankId);
+      console.log('banke', this.banksDropdownList);
+
       this.selectedBank = this.banksDropdownList.find(
         (item) => item.id === bankId
       );
@@ -503,6 +504,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       } else {
         this.personalInfoRadios[4].buttons[1].checked = true;
       }
+
       if (drunkDriving) {
         this.personalInfoRadios[5].buttons[0].checked = true;
       } else {
@@ -836,37 +838,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  private createFirstAddress(): void {
-    this.previousAddresses.push(this.createNewAddress());
-
-    this.isEditingId++;
-
-    this.isEditingArray = [
-      ...this.isEditingArray,
-      {
-        id: this.isEditingId,
-        isEditing: true,
-        isEditingAddress: false,
-        isFirstAddress: true,
-      },
-    ];
-
-    const firstEmptyObjectInList = this.openAnnotationArray.find(
-      (item) => Object.keys(item).length === 0
-    );
-
-    const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
-      firstEmptyObjectInList
-    );
-
-    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-      lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
-      lineInputs: [false, false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    };
-  }
-
   public onAddNewAddress(): void {
     if (
       this.previousAddresses.controls.length &&
@@ -1039,6 +1010,14 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
         this.banksDropdownList = data;
+      });
+  }
+
+  public getApplicantId() {
+    this.applicantQuery.applicantId$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res;
       });
   }
 
@@ -1370,7 +1349,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         : null;
 
     const saveData: CreatePersonalInfoReviewCommand = {
-      applicantId: 1,
+      applicantId: this.applicantId,
       personalInfoId: this.personalInfoId,
       isFirstNameValid: !this.openAnnotationArray[0].lineInputs[0],
       isLastNameValid: !this.openAnnotationArray[0].lineInputs[1],

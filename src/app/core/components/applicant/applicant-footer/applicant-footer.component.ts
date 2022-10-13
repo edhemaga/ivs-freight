@@ -43,6 +43,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
   documentsBox: ElementRef;
 
   @Input() mode: string;
+  @Input() companyInfoSph: ApplicantCompanyInfoResponse;
 
   private destroy$ = new Subject<void>();
 
@@ -137,15 +138,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
       this.getRequestsBoxHeight();
       this.getDocumentsBoxHeight();
 
-      let requestsBoxResponse: any;
-
-      this.applicantQuery.requestsList$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          requestsBoxResponse = res;
-        });
-
-      this.patchRequestsBoxValues(requestsBoxResponse);
+      this.getRequestsBoxValuesFromStore();
     }
 
     this.copyrightYear = moment().format('YYYY');
@@ -154,6 +147,13 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.mode?.previousValue !== changes.mode?.currentValue) {
       this.selectedMode = changes.mode?.currentValue;
+    }
+
+    if (
+      changes.companyInfoSph?.previousValue !==
+      changes.companyInfoSph?.currentValue
+    ) {
+      this.companyInfo = changes.companyInfoSph?.currentValue;
     }
   }
 
@@ -173,6 +173,18 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
       dateReceivedRequest: [null],
       receivedByRequest: [null],
     });
+  }
+
+  public getRequestsBoxValuesFromStore() {
+    let requestsBoxResponse: any;
+
+    this.applicantQuery.requestsList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        requestsBoxResponse = res;
+      });
+
+    this.patchRequestsBoxValues(requestsBoxResponse);
   }
 
   public patchRequestsBoxValues(requestsBoxValues: any) {
@@ -403,10 +415,10 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          this.companyInfo = res.companyInfo;
+          this.companyInfo = res?.companyInfo;
 
           this.dateOfApplication = convertDateFromBackend(
-            res.inviteDate
+            res?.inviteDate
           ).replace(/-/g, '/');
         },
         error: (err) => {

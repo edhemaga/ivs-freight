@@ -36,6 +36,7 @@ import {
   VerifyPreviousEmployerCommand,
   PreviousEmployerProspectResponse,
   CreatePreviousEmployerAccidentHistoryCommand,
+  CreatePreviousEmployerDrugAndAlcoholCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -211,7 +212,13 @@ export class ApplicantActionsService {
       .pipe(
         tap((res) => {
           this.applicantSphFormStore.set({
-            1: { verifyData: null, step1: res, step2: null, step3: null },
+            1: {
+              companyInfo: null,
+              verifyData: null,
+              step1: res,
+              step2: null,
+              step3: null,
+            },
           });
         })
       );
@@ -221,6 +228,14 @@ export class ApplicantActionsService {
     data: CreatePreviousEmployerAccidentHistoryCommand
   ): Observable<CreateResponse> {
     return this.applicantService.apiApplicantPreviousemployerAccidenthistoryPost(
+      data
+    );
+  }
+
+  public createDrugAndAlcoholSphForm(
+    data: CreatePreviousEmployerDrugAndAlcoholCommand
+  ): Observable<CreateResponse> {
+    return this.applicantService.apiApplicantPreviousemployerDrugandalcoholPost(
       data
     );
   }

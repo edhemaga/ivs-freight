@@ -465,6 +465,7 @@
         <app-sph-step2-form
           [isEditing]="isEditing"
           [markFormInvalid]="markFormInvalid"
+          [formValuesToPatch]="formValuesToPatch"
           (formValuesEmitter)="getAccidentFormValues($event)"
           (formStatusEmitter)="onGetFormStatus($event)"
           (markInvalidEmitter)="onMarkInvalidEmit($event)"
