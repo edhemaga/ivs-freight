@@ -65,10 +65,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
       this.shopConf(item[this.currentIndex]);
     });
     this.repairDQuery.repairList$.subscribe((item) => {
-      console.log(item.pagination.data.length);
-
       this.repairsDataLength = item.pagination.data.length;
-      console.log(this.repairsDataLength);
     });
     this.initTableOptions();
 
@@ -103,6 +100,8 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     this.detailsPageDriverService.pageDetailChangeId$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id: number) => {
+        console.log('service id', id);
+
         // let query;
         // if (this.sdlq.hasEntity(id)) {
         //   query = this.sdlq.selectEntity(id).pipe(take(1));
