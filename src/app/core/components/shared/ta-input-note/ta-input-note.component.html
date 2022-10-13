@@ -28,7 +28,10 @@
     class="note-body"
     [ngClass]="noActive"
     #noteBody
-    [@showHideCardBody]="_isVisibleNote && _isVisibleNote != 'null' "
+    [@showHideCardBody]="{
+      value: _isVisibleNote.toString(),
+      params: animationMarginParams
+    }"
   >
     <div
       #main_editor
