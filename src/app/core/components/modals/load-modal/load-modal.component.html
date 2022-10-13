@@ -1,7 +1,7 @@
 <app-ta-modal
   [modalTitle]="!editData?.type?.includes('edit') ? 'Create Load' : 'Edit Load'"
   [editData]="editData"
-  [loadModalTitle]="loadModalTitle"
+  [loadModalTitle]="loadNumber"
   [loadModalBill]="loadModalBill"
   [isModalValid]="loadForm.valid && isFormDirty"
   [tabChange]="headerTabs"
@@ -41,6 +41,17 @@
             type: 'text',
             label: 'Dispatcher',
             isDropdown: true,
+            dropdownImageInput: {
+              withText: true,
+              svg: false,
+              image: true,
+              url: selectedDispatcher?.logoName,
+              nameInitialsInsteadUrl: !selectedDispatcher?.logoName
+                ? selectedDispatcher?.name
+                : null,
+              template: 'user'
+            },
+            textTransform: 'capitalize',
             dropdownWidthClass: 'w-col-220'
           }"
           [options]="labelsDispatcher"
@@ -131,6 +142,15 @@
             label: 'Broker',
             isDropdown: true,
             isRequired: true,
+            dropdownImageInput: {
+              withText: true,
+              svg: true,
+              image: false,
+              url: selectedBroker?.logoName,
+              class: 'load-broker',
+              template: 'user'
+            },
+            textTransform: 'capitalize',
             dropdownWidthClass: 'w-col-439'
           }"
           [canAddNew]="true"
@@ -166,6 +186,8 @@
               isDropdown: true,
               dropdownImageInput: {
                 withText: true,
+                svg: true,
+                image: false,
                 url: selectedTruckReq?.logoName,
                 template: 'truck',
                 class: selectedTruckReq?.name
@@ -191,6 +213,8 @@
               isDropdown: true,
               dropdownImageInput: {
                 withText: true,
+                svg: true,
+                image: false,
                 url: selectedTrailerReq?.logoName,
                 template: 'trailer',
                 class: selectedTrailerReq?.name
@@ -464,17 +488,34 @@
           </div>
 
           <div
-            class="billing-plus billing-additional"
+            #t2="ngbPopover"
+            popoverClass="load-additional-options"
+            [ngbPopover]="taInputDropdownPopover"
+            [placement]="['bottom-left']"
+            [container]="'body'"
             ngbTooltip
             mainTooltip="Additional"
             tooltipBackground="#536BC2"
             position="top"
+            class="billing-plus billing-advance"
           >
             <svg-icon
               class="billing-additional-plus"
               src="assets/svg/common/ic_plus.svg"
             ></svg-icon>
           </div>
+
+          <ng-template #taInputDropdownPopover>
+            <div class="load-additional-container">
+              <div
+                *ngFor="let option of additionalOptions; trackBy: identity"
+                class="dropdown-option"
+                (click)="onSelectAdditionalOption(option)"
+              >
+                {{ option.name }}
+              </div>
+            </div>
+          </ng-template>
         </div>
       </app-ta-custom-card>
       <!-- Comments -->
@@ -526,11 +567,14 @@
   </form>
   <!-------------------------------- Additional Tab Part -------------------------------->
   <div additional>
+    <!-- Hazardous -->
     <app-load-modal-hazardous
       *ngIf="isHazardousVisible"
       (close)="isHazardousVisible = false"
     ></app-load-modal-hazardous>
-
-    <div *ngIf="!isHazardousVisible">Mapa</div>
+    <!-- Map -->
+    <div *ngIf="!isHazardousVisible" class="load-map">
+      <app-maps [mapType]="'routing'"></app-maps>
+    </div>
   </div>
 </app-ta-modal>

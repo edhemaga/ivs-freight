@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { Subject, takeUntil } from 'rxjs';
+import { elementAt, Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
 import { LoadTService } from '../../load/state/load.service';
 import { LoadModalResponse } from '../../../../../../appcoretruckassist';
@@ -72,16 +72,18 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     },
   ];
 
-  public loadModalTitle: string = '1546';
+  public loadNumber: string;
   public loadModalBill: { rate: number; adjusted: number; due: number } = null;
 
   public labelsTemplate: any[] = [];
   public labelsDispatcher: any[] = [];
   public labelsCompanies: any[] = [];
   public labelsDispatches: any[] = [];
+  public originLabelsDispatches: any[] = [];
   public labelsGeneralCommodity: any[] = [];
   public labelsBroker: any[] = [];
   public labelsBrokerContacts: any[] = [];
+  public originBrokerContacts: any[] = [];
   public labelsTruckReq: any[] = [];
   public labelsTrailerReq: any[] = [];
   public labelsDoorType: any[] = [];
@@ -123,6 +125,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       labels: ['Truck #', 'Trailer #', 'Driver'],
       customClass: 'load-dispatches-ttd',
     },
+    textTransform: 'capitalize',
     isDropdown: true,
     dropdownWidthClass: 'w-col-397',
   };
@@ -138,6 +141,29 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     isRequired: true,
     dropdownWidthClass: 'w-col-696',
   };
+
+  public additionalOptions: any[] = [
+    {
+      id: 1,
+      name: 'Layover',
+    },
+    {
+      id: 2,
+      name: 'Lumper',
+    },
+    {
+      id: 3,
+      name: 'Fuel Surcharge',
+    },
+    {
+      id: 4,
+      name: 'Escort',
+    },
+    {
+      id: 5,
+      name: 'Detention',
+    },
+  ];
 
   public isAvailableAdjustedRate: boolean = false;
   public isAvailableAdvanceRate: boolean = false;
@@ -248,9 +274,17 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       }
       case 'dispatcher': {
         this.selectedDispatcher = event;
+
         if (this.selectedDispatcher) {
-          this.labelsDispatcher = this.labelsDispatcher.filter((item) => item); // valid dispatcherId
+          this.labelsDispatches = this.originLabelsDispatches.filter(
+            (item) => item.dispatcherId === this.selectedDispatcher.id
+          );
+          this.selectedDispatches = null;
+          this.loadForm.get('dispatchesId').patchValue(null);
+        } else {
+          this.labelsDispatches = this.originLabelsDispatches;
         }
+
         break;
       }
       case 'company': {
@@ -265,9 +299,19 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       case 'broker': {
         this.selectedBroker = event;
         if (this.selectedBroker) {
-          this.labelsBrokerContacts = this.labelsBrokerContacts.filter(
-            (item) => item.brokerId === this.selectedBroker.id
-          );
+          this.labelsBrokerContacts = this.originBrokerContacts.map((el) => {
+            return {
+              ...el,
+              contacts: el?.contacts?.filter(
+                (subEl) => subEl.brokerId === this.selectedBroker.id
+              ),
+            };
+          });
+
+          this.selectedBrokerContact = null;
+          this.loadForm.get('brokerContact').patchValue(null);
+        } else {
+          this.labelsBrokerContacts = this.originBrokerContacts;
         }
 
         break;
@@ -307,13 +351,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'dispatches': {
-        this.selectedDispatches = {
-          ...event,
-          name: event?.truck?.name
-            ?.concat(' ', event?.trailer?.name)
-            .concat(' ', event?.driver?.name),
-        };
         if (event) {
+          this.selectedDispatches = {
+            ...event,
+            name: event?.truck?.name
+              ?.concat(' ', event?.trailer?.name)
+              .concat(' ', event?.driver?.name),
+          };
+
           this.loadDispatchesTTDInputConfig = {
             ...this.loadDispatchesTTDInputConfig,
             multipleInputValues: {
@@ -541,28 +586,45 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: LoadModalResponse) => {
-          console.log(res);
+          this.loadNumber = res.loadNumber;
+
           // Brokers
           this.labelsBroker = res.brokers.map((item) => {
             return {
+              ...item,
               id: item.id,
               name: item.businessName,
               ban: item.ban,
               dnu: item.dnu,
-              status: 'High',
+              status: item.availableCreditType.name,
+              logoName:
+                item.dnu || item.ban
+                  ? 'ic_load-broker-dnu-ban.svg'
+                  : 'ic_load-broker-credit.svg',
             };
           });
-          this.labelsBrokerContacts = res.brokerContacts.map((item) => {
-            return {
-              ...item,
-              // name: item.contactName,
-              extensionPhone: '312',
-            };
-          });
-          // -----------------------
+
+          // Broker Contacts
+          this.labelsBrokerContacts = this.originBrokerContacts =
+            res.brokerContacts.map((item) => {
+              return {
+                ...item,
+                contacts: item.contacts.map((item) => {
+                  return {
+                    ...item,
+                    name: item.contactName,
+                    extensionPhone: item.extensionPhone
+                      ? item.extensionPhone
+                      : '321',
+                  };
+                }),
+              };
+            });
+
           // Dispatcher
           this.labelsDispatcher = res.dispatchers.map((item) => {
             return {
+              ...item,
               id: item.id,
               name: item.fullName,
               logoName: item.avatar,
@@ -575,10 +637,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           );
           this.loadForm.get('dispatcher').patchValue(initialDispatcher.name);
           this.selectedDispatcher = initialDispatcher;
-          // -----------------------
+
           // Division Companies
           this.labelsCompanies = res.companies.map((item) => {
             return {
+              ...item,
               id: item.id,
               name: item.companyName,
               isDivision: item.isDivision,
@@ -592,36 +655,43 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               (item) => item.name === this.companyUser.companyName
             );
           }
-          // -----------------------
+
           // Dispatches
-          this.labelsDispatches = res.dispatches.map((item) => {
-            return {
-              dispatchBoardId: item.dispatchBoardId,
-              id: item.id,
-              driver: {
-                id: item.driver.id,
-                name: item.driver.firstName.concat(' ', item.driver.lastName),
-                logoName: item.driver.avatar,
-              },
-              coDriver: {
-                id: item?.coDriver?.id,
-                name: item?.coDriver?.firstName?.concat(
-                  ' ',
-                  item?.coDriver?.lastName
-                ),
-                logoName: item?.coDriver?.avatar,
-              },
-              truck: {
-                id: item.truck.id,
-                name: `# ${item.truck.truckNumber}`,
-              },
-              trailer: {
-                id: item.trailer.id,
-                name: `# ${item.trailer.trailerNumber}`,
-              },
-            };
-          });
-          // -----------------------
+          this.labelsDispatches = this.originLabelsDispatches =
+            res.dispatches.map((item) => {
+              return {
+                ...item,
+                dispatchBoardId: item.dispatchBoardId,
+                dispatcherId: item.dispatcherId,
+                id: item.id,
+                driver: {
+                  id: item.driver.id,
+                  name: item.driver.firstName.concat(' ', item.driver.lastName),
+                  logoName: item.driver.avatar,
+                },
+                coDriver: {
+                  id: item?.coDriver?.id,
+                  name: item?.coDriver?.firstName?.concat(
+                    ' ',
+                    item?.coDriver?.lastName
+                  ),
+                  logoName: item?.coDriver?.avatar,
+                },
+                truck: {
+                  id: item.truck.id,
+                  name: `# ${item.truck.truckNumber}`,
+                },
+                trailer: {
+                  id: item.trailer.id,
+                  name: `# ${item.trailer.trailerNumber}`,
+                },
+              };
+            });
+          this.labelsDispatches = this.labelsDispatches.filter(
+            (item) => item.dispatcherId === this.selectedDispatcher.id
+          );
+
+          // Door Type
           this.labelsDoorType = res.doorTypes;
           this.labelsGeneralCommodity = res.generalCommodities.map((item) => {
             if (item.name.toLowerCase() === 'hazardous') {
@@ -635,10 +705,16 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             return { ...item };
           });
 
+          // Labels Suspension
           this.labelsSuspension = res.suspensions;
+
+          // Labels Template
           this.labelsTemplate = res.templates;
 
+          // Trailer Length
           this.labelsTrailerLength = res.trailerLengths;
+
+          // Trailer Req
           this.labelsTrailerReq = res.trailerTypes.map((item) => {
             return {
               ...item,
@@ -646,6 +722,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               subFolder: 'trailers',
             };
           });
+
+          // Truck Req
           this.labelsTruckReq = res.truckTypes.map((item) => {
             return {
               ...item,
@@ -653,10 +731,19 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               subFolder: 'trucks',
             };
           });
-          this.labelsYear = [];
+
+          // Years
+          this.labelsYear = res.years.map((item, index) => {
+            return {
+              id: index + 1,
+              name: item,
+            };
+          });
+
           // Shipper
           this.labelsShippers = res.shippers.map((item) => {
             return {
+              ...item,
               id: item.id,
               name: item.businessName,
               address: item.address.address,
@@ -667,6 +754,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.notificationService.error(error, 'Error');
         },
       });
+  }
+
+  public identity(index: number, item: any): number {
+    return item.id;
+  }
+
+  public onSelectAdditionalOption(option: any) {
+    console.log(option);
   }
 
   ngOnDestroy(): void {
