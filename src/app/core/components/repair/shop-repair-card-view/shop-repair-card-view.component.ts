@@ -9,15 +9,12 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { RepairShopResponse } from 'appcoretruckassist';
-import { ShopQuery } from '../state/shop-state/shop.query';
-import { RepairShopMinimalListQuery } from '../state/shop-details-state/shop-minimal-list-state/shop-minimal.query';
 import { map, Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
-import { RepairTService } from '../state/repair.service';
 import { RepairDQuery } from '../state/details-state/repair-d.query';
 import { RepairShopMinimalListResponse } from '../../../../../../appcoretruckassist/model/repairShopMinimalListResponse';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-shop-repair-card-view',
@@ -28,7 +25,7 @@ export class ShopRepairCardViewComponent
   implements OnInit, OnChanges, OnDestroy
 {
   private destroy$ = new Subject<void>();
-  @Input() shopResponse: RepairShopResponse;
+  @Input() repairShopCardViewData: RepairShopResponse;
   @Input() templateCard: boolean;
   public noteControl: FormControl = new FormControl();
   public count: number;
@@ -36,52 +33,51 @@ export class ShopRepairCardViewComponent
   public shopsDropdowns: any[] = [];
   public shopsList: any;
   public repairShopObject: any;
+
   constructor(
-    private shopQuery: ShopQuery,
     private detailsPageDriverSer: DetailsPageService,
     private tableService: TruckassistTableService,
     private cdRef: ChangeDetectorRef,
     private repairDQuery: RepairDQuery,
-    private shopService: RepairTService,
-    private act_route: ActivatedRoute
+    private act_route: ActivatedRoute,
+    private router: Router
   ) {}
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
 
+  ngOnChanges(changes: SimpleChanges): void {
     if (
       changes.shopResponse?.currentValue != changes.shopResponse?.previousValue
     ) {
       this.getActiveServices(changes.shopResponse.currentValue);
       this.noteControl.patchValue(changes.shopResponse.currentValue.note);
+      this.repairShopCardViewData = changes.shopResponse?.currentValue;
     }
-    // this.shopResponse = changes.shopResponse?.currentValue;
-    this.getShopsDropdown();
-    this.getRepairShopById(changes?.shopResponse?.currentValue?.id);
-    this.repairDQuery.repairShop$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((item) => (this.shopsList = item));
   }
+
   ngOnInit(): void {
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation && res.tab === 'repair-shop') {
-          this.shopResponse = res.data;
+          this.repairShopCardViewData = res.data;
           this.cdRef.detectChanges();
         }
       });
+
     this.tabsSwitcher();
-  }
-  /**Function return id */
-  public identity(index: number, item: any): number {
-    return item.id;
-  }
-  public getRepairShopById(id: number) {
-    this.shopService
-      .getRepairShopById(id, true)
+
+    // Only One Time Call From Store Data
+    this.getShopsDropdown();
+
+    // Call Change Dropdown When Router Change
+    this.router.events
       .pipe(takeUntil(this.destroy$))
-      .subscribe((item) => (this.repairShopObject = item));
+      .subscribe((event: any) => {
+        if (event instanceof NavigationEnd) {
+          this.getShopsDropdown();
+        }
+      });
   }
+
   public getShopsDropdown() {
     this.repairDQuery.repairShopMinimal$
       .pipe(
@@ -105,51 +101,37 @@ export class ShopRepairCardViewComponent
   }
 
   public onSelectedShop(event: any) {
-    console.log('selected: ', event);
-    console.log('@input shop response: ', this.shopResponse);
-
     if (event.id !== +this.act_route.snapshot.params['id']) {
-      this.shopsList = this.shopsDropdowns.map((items) => {
+      this.shopsDropdowns = this.shopsDropdowns.map((item) => {
         return {
-          id: items.id,
-          name: items.name,
-          status: items.status,
-          svg: items.pinned ? 'ic_star.svg' : null,
+          id: item.id,
+          name: item.name,
+          status: item.status,
+          svg: item.pinned ? 'ic_star.svg' : null,
           folder: 'common',
-          active: items.id === event.id,
+          active: item.id === event.id,
         };
       });
-      console.log(this.shopsList);
+
       this.detailsPageDriverSer.getDataDetailId(event.id);
     }
   }
 
   public onChangeShop(action: string) {
-    let currentIndex = this.shopsList.findIndex(
-      (shop) => shop.id === +this.act_route.snapshot.params['id']
-    );
-    console.log(currentIndex);
-    console.log(this.shopsList);
+    let currentIndex = this.shopsDropdowns.findIndex((item) => item.active);
+
     switch (action) {
       case 'previous': {
         currentIndex = --currentIndex;
         if (currentIndex != -1) {
-          this.detailsPageDriverSer.getDataDetailId(
-            this.shopsList[currentIndex].id
-          );
-
-          this.onSelectedShop({ id: this.shopsList[currentIndex].id });
+          this.onSelectedShop(this.shopsDropdowns[currentIndex]);
         }
         break;
       }
       case 'next': {
         currentIndex = ++currentIndex;
-        if (currentIndex !== -1 && this.shopsList.length > currentIndex) {
-          this.detailsPageDriverSer.getDataDetailId(
-            this.shopsList[currentIndex].id
-          );
-
-          this.onSelectedShop({ id: this.shopsList[currentIndex].id });
+        if (currentIndex !== -1 && this.shopsDropdowns.length > currentIndex) {
+          this.onSelectedShop({ id: this.shopsDropdowns[currentIndex].id });
         }
         break;
       }
@@ -160,10 +142,10 @@ export class ShopRepairCardViewComponent
   }
 
   public getActiveServices(data: RepairShopResponse) {
-    let res = data?.serviceTypes?.filter((item) => item.active);
-    this.count = res?.length;
+    this.count = data?.serviceTypes?.filter((item) => item.active).length;
     return this.count;
   }
+
   public tabsSwitcher() {
     this.tabs = [
       {
@@ -196,6 +178,12 @@ export class ShopRepairCardViewComponent
       },
     ];
   }
+
+  /**Function return id */
+  public identity(index: number, item: any): number {
+    return item.id;
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

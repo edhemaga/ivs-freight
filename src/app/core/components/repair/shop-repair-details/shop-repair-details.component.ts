@@ -7,20 +7,16 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { RepairShopResponse } from 'appcoretruckassist';
-import { RepairTService } from '../state/repair.service';
 import { Subject, take, takeUntil } from 'rxjs';
 import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { NotificationService } from '../../../services/notification/notification.service';
-import { ShopDetailsListQuery } from '../state/shop-details-state/shop-details-list-state/shop-details-list.query';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
-import { RepairShopMinimalListStore } from '../state/shop-details-state/shop-minimal-list-state/shop-minimal.store';
-import { RepairShopMinimalListQuery } from '../state/shop-details-state/shop-minimal-list-state/shop-minimal.query';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { RepairDQuery } from '../state/details-state/repair-d.query';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-shop-repair-details',
@@ -34,39 +30,26 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
   public shopRepairConfig: any[] = [];
   public repairDrop: any;
   public repairShopId: number;
-  public repairList: any = this.shopDetailsMinimalQuery.getAll();
-  public currentIndex: number = 0;
+
   public repairObject: any;
   public togglerWorkTime: boolean;
   public repairsDataLength: number;
+
   constructor(
     private act_route: ActivatedRoute,
     private detailsPageDriverService: DetailsPageService,
-    private shopService: RepairTService,
     private router: Router,
     private tableService: TruckassistTableService,
     private confirmationService: ConfirmationService,
-    private notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
-    private shopDetailsMinimalQuery: RepairShopMinimalListQuery,
-    private sumArr: SumArraysPipe,
     private DetailsDataService: DetailsDataService,
-    private sdlq: ShopDetailsListQuery,
     private dropDownService: DropDownService,
-    private rsmlist: RepairShopMinimalListStore,
     private repairDQuery: RepairDQuery
   ) {}
 
   ngOnInit(): void {
-    this.repairDQuery.repairShop$.subscribe((item) => {
-      this.currentIndex = item.findIndex(
-        (item) => item.id === +this.act_route.snapshot.params['id']
-      );
-      this.shopConf(item[this.currentIndex]);
-    });
-    this.repairDQuery.repairList$.subscribe((item) => {
-      this.repairsDataLength = item.pagination.data.length;
-    });
+    this.getRepairShopDataFromStore();
+
     this.initTableOptions();
 
     this.tableService.currentActionAnimation
@@ -78,6 +61,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
           this.cdRef.detectChanges();
         }
       });
+
     // Confirmation Subscribe
     this.confirmationService.confirmationData$
       .pipe(takeUntil(this.destroy$))
@@ -97,39 +81,33 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         },
       });
 
+    // This service will call on event from shop-repair-card-view component
     this.detailsPageDriverService.pageDetailChangeId$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id: number) => {
-        console.log('service id', id);
-
-        // let query;
-        // if (this.sdlq.hasEntity(id)) {
-        //   query = this.sdlq.selectEntity(id).pipe(take(1));
-        // } else {
-        //   query =
-        // }
-
-        this.shopService
-          .getRepairShopById(id)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: (res: RepairShopResponse) => {
-              console.log('shop repair list: ', res);
-              if (this.router.url.includes('shop-details')) {
-                this.router.navigate([`/repair/${res.id}/shop-details`]);
-              }
-              this.shopConf(res);
-              this.notificationService.success(
-                'Shop successfully changed',
-                'Success:'
-              );
-              this.cdRef.detectChanges();
-            },
-            error: () => {
-              this.notificationService.error("Shop can't be loaded", 'Error:');
-            },
-          });
+        if (this.router.url.includes('shop-details') && id) {
+          this.router.navigate([`/repair/${id}/shop-details`]);
+          this.getRepairShopDataFromStore(id);
+        }
       });
+  }
+
+  private getRepairShopDataFromStore(id?: number) {
+    this.repairDQuery.repairShop$
+      .pipe(take(1), takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe((items: RepairShopResponse[]) => {
+        const findedRepairShop = items.find(
+          (item) =>
+            item.id === (id ? id : +this.act_route.snapshot.params['id'])
+        );
+        if (findedRepairShop) {
+          this.shopConf(findedRepairShop);
+        }
+      });
+
+    this.repairDQuery.repairList$.subscribe((item) => {
+      this.repairsDataLength = item.pagination.data.length;
+    });
   }
 
   public initTableOptions() {
@@ -186,42 +164,39 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
       event.id
     );
   }
-  /**Function return id */
-  public identity(index: number, item: any): number {
-    return item.id;
-  }
+
   public deleteRepairShopById(id: number) {
-    let last = this.repairList.at(-1);
-    if (last.id === this.rsmlist.getValue().ids[this.currentIndex]) {
-      this.currentIndex = --this.currentIndex;
-    } else {
-      this.currentIndex = ++this.currentIndex;
-    }
-    this.shopService
-      .deleteRepairShopByIdDetails(id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          if (this.rsmlist.getValue().ids.length >= 1) {
-            this.router.navigate([
-              `/repair/${this.repairList[this.currentIndex].id}/shop-details`,
-            ]);
-          }
-          this.notificationService.success(
-            'Repair Shop successfully deleted',
-            'Success:'
-          );
-        },
-        error: () => {
-          this.router.navigate(['/repair']);
-        },
-      });
+    // let last = this.repairList.at(-1);
+    // if (last.id === this.rsmlist.getValue().ids[this.currentIndex]) {
+    //   this.currentIndex = --this.currentIndex;
+    // } else {
+    //   this.currentIndex = ++this.currentIndex;
+    // }
+    // this.shopService
+    //   .deleteRepairShopByIdDetails(id)
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe({
+    //     next: () => {
+    //       if (this.rsmlist.getValue().ids.length >= 1) {
+    //         this.router.navigate([
+    //           `/repair/${this.repairList[this.currentIndex].id}/shop-details`,
+    //         ]);
+    //       }
+    //       this.notificationService.success(
+    //         'Repair Shop successfully deleted',
+    //         'Success:'
+    //       );
+    //     },
+    //     error: () => {
+    //       this.router.navigate(['/repair']);
+    //     },
+    //   });
   }
 
   /**Function for header names and array of icons */
   public shopConf(data: RepairShopResponse) {
     this.repairObject = data;
-    console.log('shop conf: ', data);
+
     let total;
     this.DetailsDataService.setNewData(data);
 
@@ -296,8 +271,15 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         repairOpen: data?.openHoursToday === 'Closed' ? false : true,
       },
     ];
+
     this.repairShopId = data?.id ? data.id : null;
   }
+
+  /**Function return id */
+  public identity(index: number, item: any): number {
+    return item.id;
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

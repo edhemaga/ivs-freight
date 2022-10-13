@@ -30,8 +30,8 @@ import { RepairDQuery } from '../../state/details-state/repair-d.query';
   animations: [card_component_animation('showHideCardBody', '0px', '0px')],
 })
 export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
-  @Input() shopData: RepairShopResponse | any = null;
-  public repairsData: any;
+  @Input() repairShopItem: RepairShopResponse | any = null;
+  public repairListData: any;
   public data;
   public dummyData: any;
   public reviewsRepair: any = [];
@@ -40,31 +40,30 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
   public showRepairItems: boolean[] = [];
   private destroy$ = new Subject<void>();
   public repairsTest: any;
+
   constructor(
     private dropDownService: DropDownService,
     private modalService: ModalService,
     private confirmationService: ConfirmationService,
-    private shopService: RepairTService,
-    private shItem: ShopItemStore,
     private repairDQuery: RepairDQuery
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
+    if (
+      changes.repairShopItem?.currentValue?.data !=
+      changes.repairShopItem?.previousValue?.data
+    ) {
+      this.repairShopLikes = this.repairShopItem.upRatingCount;
+      this.repairShopDislike = this.repairShopItem.downRatingCount;
+      this.getReviews(this.repairShopItem);
 
-    if (changes.shopData?.currentValue != changes.shopData?.previousValue) {
-      // this.shopData = changes.shopData.currentValue.data;
+      this.repairDQuery.repairList$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((item) => (this.repairListData = item.pagination.data));
 
-      this.repairShopLikes = changes.shopData.currentValue.data.upRatingCount;
-      this.repairShopDislike =
-        changes.shopData.currentValue.data.downRatingCount;
-      this.getReviews(changes.shopData.currentValue.data);
+      this.repairListData?.map((item) => {
+        this.showRepairItems[item.id] = false;
+      });
     }
-    this.repairDQuery.repairList$.subscribe(
-      (item) => (this.repairsData = item.pagination.data)
-    );
-    this.repairsData?.map((item) => {
-      this.showRepairItems[item.id] = false;
-    });
   }
   ngOnInit(): void {
     // Confirmation Subscribe
@@ -90,16 +89,18 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
   }
 
   public deleteRepairByIdFunction(id: number) {
-    this.shopService
-      .deleteRepairById(id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe();
+    // this.shopService
+    //   .deleteRepairById(id)
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe();
   }
+
   public toggleRepairs(index: number, event?: any) {
     event.stopPropagation();
     event.preventDefault();
     this.showRepairItems[index] = !this.showRepairItems[index];
   }
+
   public optionsEvent(any: any, action: string) {
     const name = dropActionNameDriver(any, action);
     setTimeout(() => {
@@ -185,10 +186,12 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
       };
     });
   }
+
   /**Function return id */
   public identity(index: number, item: any): number {
     return item.id;
   }
+
   public changeReviewsEvent(reviews: { data: any[]; action: string }) {
     this.reviewsRepair = [...reviews.data];
     // TODO: API CREATE OR DELETE

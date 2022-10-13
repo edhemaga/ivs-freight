@@ -51,9 +51,10 @@ export class RepairDResolver implements Resolve<RepairDState> {
     }).pipe(
       tap((data) => {
         console.log('resolver data: ', data);
-        this.repairDService.updateRepairShop(data.repairShop);
-        this.repairDService.updateRepairList(data.repairList);
-        this.repairDService.updateRepairShopMinimal(data.repairShopMinimalList);
+        this.repairDService.updateRepairShop = data.repairShop;
+        this.repairDService.updateRepairList = data.repairList;
+        this.repairDService.updateRepairShopMinimal =
+          data.repairShopMinimalList;
       })
     );
   }

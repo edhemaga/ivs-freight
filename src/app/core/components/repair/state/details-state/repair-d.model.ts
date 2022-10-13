@@ -7,5 +7,3 @@ export interface IRepairD {
   repairList: RepairListResponse[];
   repairShopMinimal: RepairShopMinimalResponse[];
 }
-
-// example insert repairShop_1, repairShop_2 .filter() .find(item => item.id === id)

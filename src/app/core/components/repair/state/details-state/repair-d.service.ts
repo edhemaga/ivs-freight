@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-  RepairShopListResponse,
   RepairShopMinimalListResponse,
   RepairShopResponse,
 } from 'appcoretruckassist';
@@ -10,7 +9,6 @@ import { RepairDStore } from './repair-d.store';
 import { RepairListResponse } from '../../../../../../../appcoretruckassist/model/repairListResponse';
 import { RepairShopMinimalResponse } from '../../../../../../../appcoretruckassist/model/repairShopMinimalResponse';
 
-import { Store } from '@datorama/akita';
 import { RepairService } from '../../../../../../../appcoretruckassist/api/repair.service';
 
 @Injectable({
@@ -79,7 +77,7 @@ export class RepairDService {
     return this.repairShopService.apiRepairshopIdGet(shopId);
   }
 
-  public updateRepairShop(data: RepairShopResponse) {
+  set updateRepairShop(data: RepairShopResponse) {
     const repairShop: RepairShopResponse[] = Object.assign(
       [],
       this.repairDStore.getValue().repairShop
@@ -106,7 +104,7 @@ export class RepairDService {
     }
   }
 
-  public updateRepairList(data: RepairListResponse) {
+  set updateRepairList(data: RepairListResponse) {
     this.repairDStore.update((store) => {
       return {
         ...store,
@@ -115,7 +113,7 @@ export class RepairDService {
     });
   }
 
-  public updateRepairShopMinimal(data: RepairShopMinimalResponse) {
+  set updateRepairShopMinimal(data: RepairShopMinimalResponse) {
     this.repairDStore.update((store) => {
       return {
         ...store,
