@@ -1,44 +1,39 @@
-import {
-  CdkVirtualScrollViewport,
-  VirtualScrollStrategy,
-} from '@angular/cdk/scrolling';
-import { Subject } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
-import { CalendarScrollService } from '../calendar-scroll.service';
+import {CdkVirtualScrollViewport, VirtualScrollStrategy} from "@angular/cdk/scrolling";
+import {Subject} from "rxjs";
+import {distinctUntilChanged} from "rxjs/operators";
+import {Injectable} from "@angular/core";
+import { CalendarScrollService } from "../calendar-scroll.service";
 
-// STARTING YEAR OF CALLENDAR, IT IS NOW YEAR MINUS 90 YEARS
-export const STARTING_YEAR = new Date().getFullYear() - 90;
-export const RANGE = 12; // 95 * 12
+export const STARTING_YEAR = 1905;
+export const RANGE = 2352;
 
 export const FULL_SIZE = 182;
-
 const BUFFER = 500;
 const CYCLE = getCycle();
 export const CYCLE_HEIGHT = reduceCycle();
- 
+
 function getCycle(): ReadonlyArray<ReadonlyArray<number>> {
-  return Array.from({ length: 1 }, (_, i) =>
-    Array.from({ length: 12 }, (_, month) => FULL_SIZE)
+  return Array.from({length: 28}, (_, i) =>
+    Array.from({length: 12}, (_, month) => FULL_SIZE)
   );
 }
 
-function reduceCycle(lastYear: number = 1, lastMonth: number = 12): number {
+function reduceCycle(lastYear: number = 28, lastMonth: number = 12): number {
   return CYCLE.reduce(
     (total, year, yearIndex) =>
-      yearIndex <= lastYear
-        ? total +
-          year.reduce(
-            (sum, month, monthIndex) =>
-              yearIndex < lastYear ||
-              (yearIndex === lastYear && monthIndex < lastMonth)
-                ? sum + month
-                : sum,
-            0
-          )
-        : total,
-    0
-  );
+      yearIndex <= lastYear ? 
+          total +
+              year.reduce(
+                (sum, month, monthIndex) =>
+                  yearIndex < lastYear ||
+                  (yearIndex === lastYear && monthIndex < lastMonth)
+                    ? sum + month
+                    : sum,
+                0
+              )
+        : 
+      total
+    , 0);
 }
 
 /**
@@ -48,7 +43,10 @@ function reduceCycle(lastYear: number = 1, lastMonth: number = 12): number {
  */
 @Injectable()
 export class MobileCalendarStrategy implements VirtualScrollStrategy {
-  constructor(private calendarService: CalendarScrollService) {}
+
+  constructor(private calendarService: CalendarScrollService){
+
+  }
 
   private index$ = new Subject<any>();
   scrolledIndexChange = this.index$.pipe(distinctUntilChanged());
@@ -56,11 +54,8 @@ export class MobileCalendarStrategy implements VirtualScrollStrategy {
 
   attach(viewport: CdkVirtualScrollViewport) {
     this.viewport = viewport;
-    this.viewport.setTotalContentSize(CYCLE_HEIGHT);
-    this.updateRenderedRange(this.viewport, true);
-    setTimeout(() => {
-      this.viewport.scrollToIndex(10);
-    }, 0);
+    this.viewport.setTotalContentSize(CYCLE_HEIGHT * 7);
+    this.updateRenderedRange(this.viewport);
   }
 
   detach() {
@@ -75,11 +70,14 @@ export class MobileCalendarStrategy implements VirtualScrollStrategy {
   }
 
   /** These do not matter for this case */
-  onDataLengthChanged() {}
+  onDataLengthChanged() {
+  }
 
-  onContentRendered() {}
+  onContentRendered() {
+  }
 
-  onRenderedOffsetChanged() {}
+  onRenderedOffsetChanged() {
+  }
 
   scrollToIndex(index: number, behavior: ScrollBehavior) {
     if (this.viewport) {
@@ -94,25 +92,21 @@ export class MobileCalendarStrategy implements VirtualScrollStrategy {
   private getIndexForOffset(offset: number): number {
     return Math.round(offset / FULL_SIZE);
   }
-  private updateRenderedRange(
-    viewport: CdkVirtualScrollViewport,
-    firstTime?: boolean
-  ) {
+  private updateRenderedRange(viewport: CdkVirtualScrollViewport) {
     // koliko je scrolovano
     const offset = viewport.measureScrollOffset();
 
-    const { start, end } = viewport.getRenderedRange();
+    const {start, end} = viewport.getRenderedRange();
     const viewportSize = 230;
 
     const dataLength = viewport.getDataLength();
-
-    const newRange = { start, end };
+  
+    const newRange = {start, end};
     const firstVisibleIndex = this.getIndexForOffset(offset);
 
     const startOffsetIndex = FULL_SIZE * start;
 
     const startBuffer = offset - startOffsetIndex;
-
     if (startBuffer < BUFFER && start !== 0) {
       newRange.start = Math.max(0, this.getIndexForOffset(offset - BUFFER * 2));
       newRange.end = Math.min(
@@ -120,15 +114,10 @@ export class MobileCalendarStrategy implements VirtualScrollStrategy {
         this.getIndexForOffset(offset + viewportSize + BUFFER)
       );
     } else {
-      const endBuffer = FULL_SIZE * end - offset - viewportSize;
-      // U KOLIKO JE OSTATAK KOJI SE MOZE SCROLOVATI MANJI OD BUFFERA ( 500 ) I VECI JE OD DATALENGTH TJ POSTOJI JOS SCROLLA KOJI JE VECI OD BUFFERA ( 500 )
-
+      const endBuffer = (FULL_SIZE * end) - offset - viewportSize;
+    
       if (endBuffer < BUFFER && end !== dataLength) {
-        // PRONADJI PRVI INDEX KOJI SE SMANJUJE OD UKUPNOG SCROLLA MINUS BUFFER DA BI MOGAO UNAZAD DA IDE JOS JEDAN BUFFER
-
         newRange.start = Math.max(0, this.getIndexForOffset(offset - BUFFER));
-
-        // END SE BIRA ILI DATALENGHT KOJI JE JEDNAK DUZINI NIZA ILI SE TRAZI INDEX OD UKUPNOG SCROLLA PLUS VISINA VIDLJIVOG DELA SCROLLA PLUS BUFFER 2x
         newRange.end = Math.min(
           dataLength,
           this.getIndexForOffset(offset + viewportSize + BUFFER * 2)
@@ -136,18 +125,10 @@ export class MobileCalendarStrategy implements VirtualScrollStrategy {
       }
     }
 
-    //console.log(newRange);
     viewport.setRenderedRange(newRange);
-
     viewport.setRenderedContentOffset(this.getOffsetForIndex(newRange.start));
-    if (this.calendarService.selectedScroll === 'main') {
-      this.index$.next({
-        indx: firstVisibleIndex,
-        scrollOffset: offset,
-        cycleSize: FULL_SIZE,
-        type: 'main',
-        offsetIndx: offset / FULL_SIZE,
-      });
+    if( this.calendarService.selectedScroll === 'main' ){
+      this.index$.next({indx: firstVisibleIndex, scrollOffset: offset, cycleSize: FULL_SIZE, type: "main", offsetIndx: (offset / FULL_SIZE)});
     }
   }
 }

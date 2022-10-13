@@ -8,7 +8,8 @@ import {
   OnInit,
   Output,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
+  ViewEncapsulation,
 } from '@angular/core';
 import calendarJson from '../../../../../assets/calendarjson/calendar.json';
 import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';

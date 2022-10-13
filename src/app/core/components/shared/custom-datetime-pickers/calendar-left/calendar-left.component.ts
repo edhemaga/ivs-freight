@@ -37,35 +37,35 @@ export class CalendarLeftComponent implements OnInit {
   constructor(private calendarService: CalendarScrollService) {}
 
   ngOnInit(): void {
-    // this.calendarService.scrollToAutoIndex
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((indx) => {
-    //     this.virtualScrollViewport.scrollToIndex(indx, 'auto');
-    //   });
+    this.calendarService.scrollToAutoIndex
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((indx) => {
+        this.virtualScrollViewport.scrollToIndex(indx, 'auto');
+      });
 
-    // this.calendarService.scrolledIndexChange
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((res) => {
-    //     if (
-    //       res.type != 'left' &&
-    //       this.calendarService.selectedScroll != 'left'
-    //     ) {
-    //       const sizeTimes = FULL_SIZE / res.cycleSize;
-    //       const newScrollSize = sizeTimes * res.scrollOffset;
-    //       this.virtualScrollViewport.scrollToOffset(newScrollSize, 'auto');
-    //     }
-    //   });
+    this.calendarService.scrolledIndexChange
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (
+          res.type != 'left' &&
+          this.calendarService.selectedScroll != 'left'
+        ) {
+          const sizeTimes = FULL_SIZE / res.cycleSize;
+          const newScrollSize = sizeTimes * res.scrollOffset;
+          this.virtualScrollViewport.scrollToOffset(newScrollSize, 'auto');
+        }
+      });
 
-    // this.calendarService.scrollToDate
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((res) => {
-    //     setTimeout(() => {
-    //       if (res) {
-    //         const indx = this.findIndexInMonth(res);
-    //         this.virtualScrollViewport.scrollToIndex(indx);
-    //       } else this.virtualScrollViewport.scrollToIndex(this.currentIndex);
-    //     });
-    //   });
+    this.calendarService.scrollToDate
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        setTimeout(() => {
+          if (res) {
+            const indx = this.findIndexInMonth(res);
+            this.virtualScrollViewport.scrollToIndex(indx);
+          } else this.virtualScrollViewport.scrollToIndex(this.currentIndex);
+        });
+      });
   }
 
   findIndexInMonth(date: string): number {
