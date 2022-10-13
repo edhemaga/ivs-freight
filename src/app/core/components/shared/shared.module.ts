@@ -44,7 +44,6 @@ import { CalendarLeftComponent } from './custom-datetime-pickers/calendar-left/c
 import { DateCalendarsComponent } from './custom-datetime-pickers/date-calendars/date-calendars.component';
 import { DriverModalComponent } from '../modals/driver-modal/driver-modal.component';
 import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
-import { TaInputAddressComponent } from './ta-input-address/ta-input-address.component';
 import { DirectivesModule } from '../../directives/directives.module';
 
 import { TruckModalComponent } from '../modals/truck-modal/truck-modal.component';
@@ -141,7 +140,6 @@ export function playerFactory() {
     TaCustomCardComponent,
     TaReCardComponent,
     TaDetailsHeaderCardComponent,
-    TaInputAddressComponent,
     TaInputDropdownComponent,
     TaInputNoteComponent,
     TaInputComponent,
@@ -299,7 +297,6 @@ export function playerFactory() {
     TaCheckboxComponent,
     TaCommonHeaderComponent,
     TaReCardComponent,
-    TaInputAddressComponent,
     TaInputDropdownComponent,
     TaInputNoteComponent,
     TaInputComponent,
@@ -322,7 +319,6 @@ export function playerFactory() {
 
     TaCopyComponent,
     TaInputDropdownLabelComponent,
-    TaInputAddressComponent,
     DirectivesModule,
     TaUploadFilesComponent,
 
