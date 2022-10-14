@@ -14,15 +14,18 @@
       usaSelectedStates.length ||
       rangeValue > 0 ||
       moneyFilterStatus ||
-      longVal != 0
+      longVal != 0 ||
+      maxValueSet != maxValueRange ||
+      minValueSet != minValueRange
   }"
 >
   <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
   <div mainContent 
     ngbTooltip
-    mainTooltip="{{ !hoverClose ? filterActiveArray.length > 0  ? filterTitle + ' ' + filterActiveArray.length + ' Selected' : filterTitle  : 'Clear ' + filterTitle }}"
+    mainTooltip="{{ !hoverClose ? filterActiveArray.length > 0  ? filterTitle + ' ' + '</br>' + filterActiveArray.length + ' Selected' : filterTitle  : 'Clear ' + filterTitle }}"
     position="bottom"
-    tooltipBackground= "{{ !hoverClose ? '#6C6C6C' : '#EF5350' }}"
+    tooltipBackground= "{{ !hoverClose ? '#424242' : '#EF5350' }}"
+    tooltipTextAlign="center"
     class="main-icon-holder"
   >
     <svg-icon [src]="icon | taSvg: 'common'"></svg-icon>
@@ -46,7 +49,9 @@
         usaSelectedStates.length > 0 ||
         rangeValue > 0 ||
         moneyFilterStatus ||
-        longVal != 0
+        longVal != 0 ||
+        maxValueSet != maxValueRange ||
+        minValueSet != minValueRange
       "
       class="active-filter-num clear-filter"
       (mouseenter)="hoverClose = true"
@@ -66,9 +71,7 @@
       [class.pm-filter]="leftSideIcon"
       [class.truck-icon-holder]="largeLeftIcon"
     >
-      <div class="filter-header" 
-        [class.inactiveHeader]="expandSearch"
-        [class.activeHeader]="!expandSearch"
+      <div class="filter-header filter-text-part" 
       >
         <div class="user-filter-box" *ngIf="type != 'stateFilter'">
           {{ selectedUser.length }}
@@ -86,10 +89,7 @@
         </div>
       </div>
       <div
-        class="filter-header search-input-header"
-        [class.activeSearch]="expandSearch"
-        [class.inactiveSearch]="!expandSearch"
-        
+        class="filter-header search-input-header" [class.hidenClass]="!expandSearch"    
         [formGroup]="searchForm"
       >
         <app-ta-input
@@ -172,12 +172,6 @@
               <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
             </div>
             <div
-              ngbTooltip
-              mainTooltip="{{
-                type == 'userFilter' ? 'Remove User' : 'Remove'
-              }}"
-              position="top"
-              tooltipBackground="#6C6C6C"
               (click)="removeFromSelectedUser(item, indx)"
               class="icon-delete"
             >
@@ -196,6 +190,7 @@
           <div
             *ngFor="let item of usaSelectedStates; let indx = index"
             class="user-main-holder holder-bottom-margin"
+            (click)="removeFromSelectedUser(item, indx)"
           >
             <div class="user-profile-img active state-border-radius">
               <div class="state-short-holder">{{ item.short }}</div>
@@ -208,13 +203,6 @@
                 <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
               </div>
               <div
-                ngbTooltip
-                mainTooltip="{{
-                  type == 'userFilter' ? 'Remove User' : 'Remove'
-                }}"
-                position="top"
-                tooltipBackground="#6C6C6C"
-                (click)="removeFromSelectedUser(item, indx)"
                 class="icon-delete"
               >
                 <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -227,6 +215,7 @@
           <div
             *ngFor="let item of canadaSelectedStates; let indx = index"
             class="user-main-holder"
+            (click)="removeFromSelectedUser(item, indx, 'canada')"
           >
             <div class="user-profile-img active">
               <div class="state-short-holder">{{ item.short }}</div>
@@ -239,13 +228,6 @@
                 <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
               </div>
               <div
-                ngbTooltip
-                mainTooltip="{{
-                  type == 'userFilter' ? 'Remove User' : 'Remove'
-                }}"
-                position="top"
-                tooltipBackground="#6C6C6C"
-                (click)="removeFromSelectedUser(item, indx, 'canada')"
                 class="icon-delete"
               >
                 <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -691,11 +673,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -711,11 +688,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -734,11 +706,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -754,11 +721,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -774,11 +736,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -797,11 +754,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -817,11 +769,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -837,11 +784,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -857,11 +799,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -880,11 +817,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -900,11 +832,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -923,11 +850,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -943,11 +865,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -955,19 +872,14 @@
         </div>
         <div
           class="time-items"
-          [class.active]="selectedTimeValue == '2020'"
-          (click)="setTimeValue('2020')"
+          [class.active]="selectedTimeValue == lastYear"
+          (click)="setTimeValue(lastYear)"
         >
-          2020
+          {{lastYear}}
           <div class="selected-icon">
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -975,19 +887,14 @@
         </div>
         <div
           class="time-items"
-          [class.active]="selectedTimeValue == '2019'"
-          (click)="setTimeValue('2019')"
+          [class.active]="selectedTimeValue == last2Years"
+          (click)="setTimeValue(last2Years)"
         >
-          2019
+          {{last2Years}}
           <div class="selected-icon">
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -1006,11 +913,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -1349,7 +1251,7 @@
               placeholderInsteadOfLabel: true,
               customClass: 'line-input-26'
             }"
-            [placeholderType]="'longAddress'"
+            [placeholderType]="'shortAddress'"
             (incorrectEvent)="incorrectInput($event, 0, 18)"
             [activeAddress]="selectedAddress"
             (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
@@ -1447,5 +1349,6 @@
     </div>
   </div>
 </div>
+
 
 

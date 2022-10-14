@@ -1072,6 +1072,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
   loactionNameSet: any = '';
 
   activeFormNum: any = 0;
+  lastYear: any = '';
+  last2Years: any = '';
+
 
   @Input() type: string = 'userFilter';
   @Input() icon: string = 'user';
@@ -1097,6 +1100,15 @@ export class FilterComponent implements OnInit, AfterViewInit {
   constructor(private formBuilder: FormBuilder, private thousandSeparator: TaThousandSeparatorPipe,private elementRef: ElementRef, private cdRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+
+    if ( this.type == 'timeFilter' ) {
+      var d = new Date();
+      var pastYear = d.getFullYear() - 1;
+      var past2Year = d.getFullYear() - 2;
+
+      this.lastYear = pastYear;
+      this.last2Years = past2Year;
+    }
 
     if (this.type == 'payFilter'){
       this.maxValueRange = '20,000';
@@ -1474,6 +1486,13 @@ export class FilterComponent implements OnInit, AfterViewInit {
       entries.forEach((entry) => {
         if ( entry.contentRect.height ){
           this.activeFilter = true;
+          let filterSearchHead = document.querySelector('.search-input-header');
+          let filterTextHead = document.querySelector('.filter-text-part');
+          filterSearchHead?.classList.remove('activeSearch');
+          filterSearchHead?.classList.remove('inactiveSearch');
+
+          filterTextHead?.classList.remove('activeHeader');
+          filterTextHead?.classList.remove('inactiveHeader');
         } else {
           this.activeFilter = false;
           if ( this.defFilterHolder ){
@@ -1952,9 +1971,22 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   showSearch(mod?) {
+    let filterSearchHead = document.querySelector('.search-input-header');
+    let filterTextHead = document.querySelector('.filter-text-part');
+    
     if (mod) {
       this.expandSearch = false;
+      filterSearchHead?.classList.remove('activeSearch');
+      filterSearchHead?.classList.add('inactiveSearch');
+
+      filterTextHead?.classList.add('activeHeader');
+      filterTextHead?.classList.remove('inactiveHeader');
     } else {
+      filterSearchHead?.classList.add('activeSearch');
+      filterSearchHead?.classList.remove('inactiveSearch');
+
+      filterTextHead?.classList.remove('activeHeader');
+      filterTextHead?.classList.add('inactiveHeader');
       this.expandSearch = true;
     }
   }
@@ -2079,21 +2111,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
             ' ' + this.moneyForm.get('multiFormThirdTo')?.value
           ).slice(1);
 
-          /*
-          if ( parseInt(this.multiFromFirstToActive) > 0 ) {
-            formActive = formActive + 1;
-          }
-
-          if ( parseInt(this.multiFormSecondToActive) > 0 ) {
-            formActive = formActive + 1;
-          }
-
-          if ( parseInt(this.multiFormThirdToActive) > 0 ) {
-            formActive = formActive + 1;
-          }
-
-          this.activeFormNum = formActive;
-          */
           queryParams = {
             'firstFormFrom' : this.moneyForm.get('multiFromFirstFrom')?.value,
             'firstFormFTo' : this.moneyForm.get('multiFromFirstTo')?.value,
