@@ -1,7 +1,7 @@
 <div class="d-flex flex-column step-form" [formGroup]="accidentForm">
   <div class="d-flex line-container">
     <div class="group location-group">
-      <app-ta-input-address
+      <app-input-address-dropdown
         formControlName="location"
         [inputConfig]="{
           name: 'Address',
@@ -10,16 +10,17 @@
           isRequired: true,
           placeholderIcon: 'address',
           textTransform: 'capitalize',
-          autoFocus: true,
-          minLength: 12,
+          dropdownWidthClass: 'w-col-445',
+          minLength: 6,
           maxLength: 256,
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [placeholderType]="'shortAddress'"
         [incorrectValue]="false"
         (incorrectEvent)="incorrectInput($event, 0, 10)"
         [activeAddress]="selectedAddress"
         (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-      ></app-ta-input-address>
+      ></app-input-address-dropdown>
     </div>
     <div class="group date-group">
       <app-ta-input

@@ -2,6 +2,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { SharedService } from '../../../../services/shared/shared.service';
+import { noteColors } from '../../../../../const';
 
 @Component({
   selector: 'app-ta-note-container',
@@ -24,6 +25,7 @@ export class TaNoteContainerComponent implements OnInit {
   @Input() selectedEditor: any;
   @Input() isExpanded: boolean;
   @Input() parking: boolean = false;
+  @Input() popoverNote: boolean = false;
   selectedPaternColor = '#6c6c6c';
   showCollorPattern: boolean;
   activeOptions: any = {
@@ -32,33 +34,13 @@ export class TaNoteContainerComponent implements OnInit {
     foreColor: false,
     underline: false,
   };
-  containerColors: any[] = [
-    {
-      color: '#26A690',
-      name: 'Dark Green',
-    },
-    {
-      color: '#EF5350',
-      name: 'Red',
-    },
-    {
-      color: '#FFA726',
-      name: 'Yellow',
-    },
-    {
-      color: '#536BC2',
-      name: 'Blue',
-    },
-    {
-      color: '#6C6C6C',
-      name: 'Gray',
-    },
-  ];
+  containerColors: any[] = noteColors?.regular;
   selectedColorName: any = {
     color: '#6C6C6C',
     name: 'Gray',
   };
   slowTimeout: any;
+  lastSavedIndex: number = -1;
   private destroy$ = new Subject<void>();
 
   constructor(private sharedService: SharedService) {}
@@ -71,12 +53,25 @@ export class TaNoteContainerComponent implements OnInit {
       });
   }
 
+  ngAfterViewInit(): void {
+    if (this.popoverNote) {
+      this.containerColors = noteColors?.reversed;
+    }
+  }
+
   filterContainersColor() {
     this.containerColors.sort((a, b) => {
-      if (a['color'] != this.selectedColorName.color) {
+      if (this.popoverNote) {
+        if (a['color'] != this.selectedColorName.color) {
+          return 1;
+        }
         return -1;
+      } else {
+        if (a['color'] != this.selectedColorName.color) {
+          return -1;
+        }
+        return 1;
       }
-      return 1;
     });
   }
 
@@ -104,7 +99,10 @@ export class TaNoteContainerComponent implements OnInit {
         document.execCommand(action, false, null);
       }
     } else {
-      this.filterContainersColor();
+      if (this.lastSavedIndex != indx) {
+        this.filterContainersColor();
+      }
+      this.lastSavedIndex = indx;
       setTimeout(() => {
         this.focusElement();
         setTimeout(() => {
