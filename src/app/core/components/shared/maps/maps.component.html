@@ -196,29 +196,30 @@
     }"
   >
     <agm-snazzy-info-window
+      *ngIf="latlong.count > 1"
       [latitude]="latlong.latitude"
       [longitude]="latlong.longitude"
       [showCloseButton]="false"
+      [pointer]="false"
       placement="bottom"
     >
       <ng-template>
-        <div class="cluster-list" *ngIf="latlong.count > 1">
-          <div class="cluster-list-item" *ngFor="let name of latlong.names">{{ name }}</div>
-        </div>
-        <div class="cluster-list" *ngIf="latlong.count == 1">
-          <div class="cluster-list-item">{{ latlong.name }}</div>
+        <div class="cluster-list">
+          <div class="cluster-list-header">
+            <div class="header-content">
+              <div class="cluster-count">
+                  <div class="header-text">{{ latlong.count }}</div>
+              </div>
+              <div class="header-text" [style]="{'margin-left': '4px'}">Repair Shop</div>
+            </div>
+            <div class="divider"></div>
+          </div>
+          <div class="cluster-list-content">
+            <div class="cluster-list-item" *ngFor="let name of latlong.names">{{ name }}</div>
+          </div>
         </div>
       </ng-template>
     </agm-snazzy-info-window>
-  </agm-marker>
-
-  <agm-marker
-    *ngFor="let bounds of boundsMarkers; let i = index"
-    [label]="bounds.name"
-    [latitude]="bounds.lat"
-    [longitude]="bounds.long"
-  >
-    
   </agm-marker>
 
   <agm-circle

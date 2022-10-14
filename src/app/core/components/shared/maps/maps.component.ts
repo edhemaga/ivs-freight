@@ -104,7 +104,6 @@ export class MapsComponent implements OnInit, OnDestroy {
 
   public mapZoomTime: number = 0;
 
-  public boundsMarkers: any[] = [];
   public clusterMarkers: any[] = [];
 
   constructor(
@@ -142,29 +141,6 @@ export class MapsComponent implements OnInit, OnDestroy {
         southWestLongitude: sw.lng(),
         zoomLevel: this.mapZoom,
       };
-
-      this.boundsMarkers = [
-        {
-          lat: ne.lat(),
-          long: ne.lng(),
-          name: 'NE'
-        },
-        {
-          lat: nw.lat(),
-          long: nw.lng(),
-          name: 'NW'
-        },
-        {
-          lat: sw.lat(),
-          long: sw.lng(),
-          name: 'SW'
-        },
-        {
-          lat: se.lat(),
-          long: se.lng(),
-          name: 'SE'
-        }
-      ];
 
       this.callClusters(clustersObject);
     });
@@ -348,6 +324,8 @@ export class MapsComponent implements OnInit, OnDestroy {
   }
 
   callClusters(clustersObj) {
+    this.viewData = [];
+    
     if ( this.mapType == "repairShop" ) {
       console.log('callClusters clustersObj', clustersObj);
       this.repairShopService
@@ -356,7 +334,7 @@ export class MapsComponent implements OnInit, OnDestroy {
       .subscribe((clustersResponse: any) => {
         console.log('callClusters clustersResponse', clustersResponse);
         this.clusterMarkers = clustersResponse;
-        this.viewData = [];
+        this.ref.detectChanges();
       });
     }
   }
