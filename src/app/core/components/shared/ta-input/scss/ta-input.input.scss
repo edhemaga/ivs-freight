@@ -144,17 +144,17 @@
     padding-left: 29px;
   }
 
-<<<<<<< HEAD
-  &.dropdown-input-image-user {
-    padding-left: 30px;
-=======
-  &.valid-focus-in-datepicker{
+  &.valid-focus-in-datepicker {
     background-color: $input-background-color-valid-focus !important;
 
-    span, span .border-picker{
+    span,
+    span .border-picker {
       color: $input-text-color-normal-focus !important;
     }
->>>>>>> develop
+  }
+
+  &.dropdown-input-image-user {
+    padding-left: 30px;
   }
 
   &.valid-focus-in,
@@ -198,9 +198,10 @@
     color: $input-text-color-valid-focus-out !important;
   }
 
-  &.valid-focus-out-filled-datepicker  {
+  &.valid-focus-out-filled-datepicker {
     background-color: $input-background-color-valid-focus-out-datepicker !important;
-    span, span .border-picker{
+    span,
+    span .border-picker {
       color: $input-text-color-valid-focus-out !important;
     }
   }
