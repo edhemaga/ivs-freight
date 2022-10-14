@@ -303,7 +303,16 @@
         </div>
       </app-ta-custom-card>
 
-      <app-ta-custom-card [cardName]="'Create Stop'" [isCardOpen]="true">
+      <app-ta-custom-card
+        [cardName]="'Create Stop'"
+        [isCardOpen]="true"
+        [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+        (onActionEvent)="createNewStop($event)"
+        [animationMarginParams]="{
+          marginTop: '18px',
+          marginBottom: '22px'
+        }"
+      >
         <div class="stop-load-first-row">
           <app-ta-tab-switch
             [tabs]="stopTabs"
@@ -404,7 +413,14 @@
         </div>
       </app-ta-custom-card>
 
-      <app-ta-custom-card [cardName]="'Stops'" [hasCounter]="0">
+      <app-ta-custom-card
+        [cardName]="'Stops'"
+        [hasCounter]="0"
+        [animationMarginParams]="{
+          marginTop: '18px',
+          marginBottom: '22px'
+        }"
+      >
       </app-ta-custom-card>
 
       <app-ta-custom-card

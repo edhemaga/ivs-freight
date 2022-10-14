@@ -866,6 +866,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  public createNewStop() {}
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
