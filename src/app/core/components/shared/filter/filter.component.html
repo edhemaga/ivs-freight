@@ -22,7 +22,7 @@
   <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
   <div mainContent 
     ngbTooltip
-    mainTooltip="{{ !hoverClose ? filterActiveArray.length > 0  ? filterTitle + ' ' + '</br>' + filterActiveArray.length + ' Selected' : filterTitle  : 'Clear ' + filterTitle }}"
+    mainTooltip="{{ !hoverClose ? totalFiltersNum > 0  ? filterTitle + ' ' + '</br>' + totalFiltersNum + ' Selected' : filterTitle  : 'Clear ' + filterTitle }}"
     position="bottom"
     tooltipBackground= "{{ !hoverClose ? '#424242' : '#EF5350' }}"
     tooltipTextAlign="center"
@@ -1119,7 +1119,7 @@
         </div>
         <div
           class="money-main-holder"
-          [@showHideCardBody]="showPart3 ? 'true' : 'false'"
+          [@closeForm]="showPart3 ? 'true' : 'false'"
         >
           <div class="money-value-holder">
             <app-ta-input

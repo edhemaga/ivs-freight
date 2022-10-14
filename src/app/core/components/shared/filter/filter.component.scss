@@ -1040,6 +1040,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    overflow: hidden;
 
     .money-value-holder {
       position: relative;
@@ -1101,10 +1102,11 @@
     position: relative;
     width: 100%;
     padding-left: 4px;
-    margin-bottom: 24px;
+    margin-bottom: 21px;
 
     .form-name {
       padding-left: 2px;
+      line-height: 18px;
       font-size: 14px;
       font-weight: 800;
       color: #FFF;
@@ -1268,7 +1270,8 @@
   }
 
   .hiddenFormTitle {
-    margin-bottom: 6px;
+    transition: all 0.2s ease;
+    margin-bottom: 3px;
   }
 
   .hiddenFormBorder {

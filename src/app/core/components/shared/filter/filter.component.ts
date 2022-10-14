@@ -19,6 +19,7 @@ import { addressValidation, combinedSingleLimitValidation } from '../ta-input/ta
 import { card_component_animation } from '../animations/card-component.animations';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
+import { animate, style, transition, trigger, state, } from '@angular/animations';
 
 
 @Component({
@@ -27,7 +28,34 @@ import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popove
   styleUrls: ['./filter.component.scss'],
   providers: [NgbDropdownConfig, TaThousandSeparatorPipe],
   encapsulation: ViewEncapsulation.None,
-  animations: [card_component_animation('showHideCardBody')],
+  animations: [card_component_animation('showHideCardBody'), trigger('closeForm', [
+    state(
+      'true',
+      style({
+        height: '*',
+        overflow: 'visible',
+        opacity: '1',
+      })
+    ),
+    state(
+      'false',
+      style({
+        height: '0px',
+        overflow: 'hidden',
+        opacity: '0',
+        'margin-top': '0px',
+        'margin-bottom': '0px',
+      })
+    ),
+    state(
+      'null',
+      style({
+        height: '*',
+      })
+    ),
+    transition('false <=> true', [animate('.2s ease')]),
+    transition('true <=> false', [animate('.2s ease')]), 
+  ])],
 })
 export class FilterComponent implements OnInit, AfterViewInit {
   private destroy$ = new Subject<void>();
@@ -1074,7 +1102,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   activeFormNum: any = 0;
   lastYear: any = '';
   last2Years: any = '';
-
+  totalFiltersNum: any = 0;
 
   @Input() type: string = 'userFilter';
   @Input() icon: string = 'user';
@@ -1927,7 +1955,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     this.filterActiveArray = [];
     this.swipeActiveRange = 0;
     this.autoClose.tooltip.close();
-
+    this.totalFiltersNum = 0;
     let data = {
       'action' : 'Clear',
       'type' : this.type
@@ -2087,6 +2115,10 @@ export class FilterComponent implements OnInit, AfterViewInit {
       } else if (this.type == 'stateFilter') {
         this.filterUsaActiveArray = [...this.usaSelectedStates];
         this.filterCanadaActiveArray = [...this.canadaSelectedStates];
+
+        let totalStatesSelected = this.filterUsaActiveArray.length + this.filterCanadaActiveArray.length;
+        this.totalFiltersNum = totalStatesSelected;
+
       } else if (this.type == 'moneyFilter') {
         if (this.subType == 'all') {
 
@@ -2158,6 +2190,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
       } else {
         this.filterActiveArray = [...this.selectedUser];
         let selectedUsersIdArray: any = [];
+        this.totalFiltersNum = this.filterActiveArray.length;
 
         console.log('---this.type', this.type);
         let mainArray: any[] = [];
@@ -2367,7 +2400,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     }
 
     this.activeFormNum = formsActive;
-
+    this.totalFiltersNum = formsActive;
     if ( firstFormChanged == 'changed' || secondFormChanged == 'changed' || thirdFormChanged == 'changed' ) {
       this.setButtonAvailable = true;
     } else {
