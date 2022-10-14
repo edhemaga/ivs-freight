@@ -149,7 +149,7 @@
 
       <div class="d-flex align-items-center address-container">
         <div class="address-group">
-          <app-ta-input-address
+          <app-input-address-dropdown
             formControlName="address"
             [inputConfig]="{
               name: 'Address',
@@ -157,13 +157,15 @@
               label: 'Address, City, State Zip',
               isRequired: true,
               placeholderIcon: 'address',
+              textTransform: 'capitalize',
+              dropdownWidthClass: 'w-col-480',
               minLength: 6,
-              maxLength: 256,
-              textTransform: 'capitalize'
+              maxLength: 256
             }"
+            [placeholderType]="'longAddress'"
             [activeAddress]="selectedAddress"
             (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-          ></app-ta-input-address>
+          ></app-input-address-dropdown>
         </div>
         <div class="address-unit-group">
           <app-ta-input

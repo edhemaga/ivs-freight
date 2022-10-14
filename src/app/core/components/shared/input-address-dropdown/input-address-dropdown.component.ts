@@ -47,6 +47,7 @@ export class InputAddressDropdownComponent
   @Input() commandHandler: any;
   @Input() isRouting: boolean = false;
   @Input() closedBorder: boolean = false;
+  @Input() incorrectValue: boolean;
   addressExpanded: boolean = false;
   chosenFromDropdown: boolean = false;
   allowValidation: boolean = false;
