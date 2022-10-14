@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { elementAt, Subject, takeUntil } from 'rxjs';
+
 import { FormService } from '../../../services/form/form.service';
 import { LoadTService } from '../../load/state/load.service';
 import { LoadModalResponse } from '../../../../../../appcoretruckassist';
@@ -15,6 +15,9 @@ import { NotificationService } from '../../../services/notification/notification
 import { CommentsService } from '../../../services/comments/comments.service';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
 import { ITaInput } from '../../shared/ta-input/ta-input.config';
+
+import { combineLatest, Subject, takeUntil, delay, map, share } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-load-modal',
@@ -73,7 +76,16 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   ];
 
   public loadNumber: string;
-  public loadModalBill: { rate: number; adjusted: number; due: number } = null;
+  public loadModalBill: {
+    baseRate: number;
+    adjusted: number;
+    advance: number;
+    layover: number;
+    lumper: number;
+    fuelSurcharge: number;
+    escort: number;
+    detention: number;
+  };
 
   public labelsTemplate: any[] = [];
   public labelsDispatcher: any[] = [];
@@ -146,22 +158,27 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     {
       id: 1,
       name: 'Layover',
+      active: false,
     },
     {
       id: 2,
       name: 'Lumper',
+      active: false,
     },
     {
       id: 3,
       name: 'Fuel Surcharge',
+      active: false,
     },
     {
       id: 4,
       name: 'Escort',
+      active: false,
     },
     {
       id: 5,
       name: 'Detention',
+      active: false,
     },
   ];
 
@@ -193,10 +210,16 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     this.createForm();
     this.getLoadDropdowns();
     this.loadModalBill = {
-      rate: 0,
+      baseRate: 0,
       adjusted: 0,
-      due: 0,
+      advance: 0,
+      lumper: 0,
+      layover: 0,
+      fuelSurcharge: 0,
+      escort: 0,
+      detention: 0,
     };
+    this.trackBillingPayment();
   }
 
   private createForm() {
@@ -226,7 +249,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       toTime: [null, Validators.required],
       billingPaymentBaseRate: [null, Validators.required],
       billingPaymentAdjustedRate: [null],
-      lingPaymentAdvanceRate: [null],
+      bilingPaymentAdvanceRate: [null],
+      bilingPaymentLayover: [null],
+      bilingPaymentLumper: [null],
+      bilingPaymentFuelSurcharge: [null],
+      bilingPaymentEscort: [null],
+      bilingPaymentDetention: [null],
       note: [null],
     });
 
@@ -294,6 +322,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       case 'general-commodity': {
         this.selectedGeneralCommodity = event;
         this.isHazardousPicked = event?.name?.toLowerCase() === 'hazardous';
+
+        if (!this.isHazardousPicked) {
+          this.isHazardousVisible = false;
+        }
         break;
       }
       case 'broker': {
@@ -317,13 +349,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'broker-contact': {
-        this.selectedBrokerContact = {
-          ...event,
-          name: event?.name
-            ?.concat(' ', event?.phone)
-            .concat(' ', event?.extensionPhone),
-        };
         if (event) {
+          this.selectedBrokerContact = {
+            ...event,
+            name: event?.name
+              ?.concat(' ', event?.phone)
+              .concat(' ', event?.extensionPhone),
+          };
+
           this.loadBrokerContactsInputConfig = {
             ...this.loadBrokerContactsInputConfig,
             multipleInputValues: {
@@ -343,6 +376,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               ],
               customClass: 'load-broker-contact',
             },
+            blackInput: true,
           };
         } else {
           this.loadBrokerContactsInputConfig.multipleInputValues = null;
@@ -380,6 +414,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               ],
               customClass: 'load-dispatches-ttd',
             },
+            blackInput: true,
           };
         } else {
           this.loadDispatchesTTDInputConfig.multipleInputValues = null;
@@ -411,9 +446,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'shipper': {
-        this.selectedShipper = event?.name?.concat(' ', event?.address);
-
         if (event) {
+          this.selectedShipper = event?.name?.concat(' ', event?.address);
+
           this.loadShipperInputConfig = {
             ...this.loadShipperInputConfig,
             multipleInputValues: {
@@ -429,6 +464,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               ],
               customClass: 'load-shipper',
             },
+            blackInput: true,
           };
         } else {
           this.loadShipperInputConfig.multipleInputValues = null;
@@ -448,6 +484,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public onFilesEvent(event: any) {
     this.documents = event.files;
   }
+
+  /* Comments */
 
   public changeCommentsEvent(comments: ReviewCommentModal) {
     switch (comments.action) {
@@ -592,10 +630,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.labelsBroker = res.brokers.map((item) => {
             return {
               ...item,
-              id: item.id,
               name: item.businessName,
-              ban: item.ban,
-              dnu: item.dnu,
               status: item.availableCreditType.name,
               logoName:
                 item.dnu || item.ban
@@ -625,7 +660,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.labelsDispatcher = res.dispatchers.map((item) => {
             return {
               ...item,
-              id: item.id,
               name: item.fullName,
               logoName: item.avatar,
             };
@@ -642,11 +676,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.labelsCompanies = res.companies.map((item) => {
             return {
               ...item,
-              id: item.id,
               name: item.companyName,
-              isDivision: item.isDivision,
-              isActive: item.isActive,
-              logo: item.logo,
             };
           });
 
@@ -661,16 +691,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             res.dispatches.map((item) => {
               return {
                 ...item,
-                dispatchBoardId: item.dispatchBoardId,
-                dispatcherId: item.dispatcherId,
-                id: item.id,
                 driver: {
-                  id: item.driver.id,
+                  ...item.driver,
                   name: item.driver.firstName.concat(' ', item.driver.lastName),
                   logoName: item.driver.avatar,
                 },
                 coDriver: {
-                  id: item?.coDriver?.id,
+                  ...item.coDriver,
                   name: item?.coDriver?.firstName?.concat(
                     ' ',
                     item?.coDriver?.lastName
@@ -678,11 +705,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                   logoName: item?.coDriver?.avatar,
                 },
                 truck: {
-                  id: item.truck.id,
+                  ...item.truck,
                   name: `# ${item.truck.truckNumber}`,
                 },
                 trailer: {
-                  id: item.trailer.id,
+                  ...item.trailer,
                   name: `# ${item.trailer.trailerNumber}`,
                 },
               };
@@ -744,7 +771,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.labelsShippers = res.shippers.map((item) => {
             return {
               ...item,
-              id: item.id,
               name: item.businessName,
               address: item.address.address,
             };
@@ -761,7 +787,58 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectAdditionalOption(option: any) {
-    console.log(option);
+    option.active = !option.active;
+  }
+
+  public trackBillingPayment() {
+    this.loadForm
+      .get('billingPaymentBaseRate')
+      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe((value) => {
+        this.loadModalBill.baseRate = parseFloat(value);
+      });
+    this.loadForm
+      .get('billingPaymentAdjustedRate')
+      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe((value) => {
+        this.loadModalBill.adjusted = parseFloat(value);
+      });
+    this.loadForm
+      .get('bilingPaymentAdvanceRate')
+      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe((value) => {
+        this.loadModalBill.advance = parseFloat(value);
+      });
+    this.loadForm
+      .get('bilingPaymentLayover')
+      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe((value) => {
+        this.loadModalBill.layover = parseFloat(value);
+      });
+    this.loadForm
+      .get('bilingPaymentLumper')
+      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe((value) => {
+        this.loadModalBill.lumper = parseFloat(value);
+      });
+    this.loadForm
+      .get('bilingPaymentFuelSurcharge')
+      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe((value) => {
+        this.loadModalBill.fuelSurcharge = parseFloat(value);
+      });
+    this.loadForm
+      .get('bilingPaymentEscort')
+      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe((value) => {
+        this.loadModalBill.escort = parseFloat(value);
+      });
+    this.loadForm
+      .get('bilingPaymentDetention')
+      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe((value) => {
+        this.loadModalBill.detention = parseFloat(value);
+      });
   }
 
   ngOnDestroy(): void {

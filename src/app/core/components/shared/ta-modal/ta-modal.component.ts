@@ -50,7 +50,16 @@ export class TaModalComponent implements OnInit, OnDestroy {
   @Input() modalTitle: string;
   @Input() editName: string;
   @Input() loadModalTitle: string;
-  @Input() loadModalBill: any;
+  @Input() loadModalBill: {
+    baseRate: number;
+    adjusted: number;
+    advance: number;
+    layover: number;
+    lumper: number;
+    fuelSurcharge: number;
+    escort: number;
+    detention: number;
+  } = null;
   @Input() editData: any;
   @Input() confirmationData: any;
   @Input() headerSvg: string;

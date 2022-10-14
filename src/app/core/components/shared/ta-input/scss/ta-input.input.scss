@@ -243,9 +243,9 @@
   }
 
   &.load-shipper {
-    grid-template-columns: repeat(2, 1fr);
-    -moz-column-gap: 10px;
-    column-gap: 10px;
+    grid-template-columns: 300px 1fr;
+    -moz-column-gap: 2px;
+    column-gap: 2px;
     padding-right: 25px;
   }
 

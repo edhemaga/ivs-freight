@@ -114,7 +114,8 @@
             label: 'General Commodity',
             isDropdown: true,
             dropdownWidthClass: 'w-col-178',
-            placeholderIcon: isHazardousPicked ? 'hazardous-info' : null
+            placeholderIcon: isHazardousPicked ? 'hazardous-info' : null,
+            blackInput: true
           }"
           [options]="labelsGeneralCommodity"
           [activeItem]="selectedGeneralCommodity"
@@ -413,21 +414,21 @@
       >
         <div class="billing-payment-load">
           <!-- Base Rate -->
-          <div class="billing-payment-field">
-            <app-ta-input
-              formControlName="billingPaymentBaseRate"
-              [inputConfig]="{
-                name: 'Dollar',
-                type: 'number',
-                label: 'Base Rate',
-                isRequired: true,
-                placeholderIcon: 'dollar',
-                customClass: 'dollar-placeholderIcon',
-                thousandSeparator: true,
-                blackInput: true
-              }"
-            ></app-ta-input>
-          </div>
+          <app-ta-input
+            formControlName="billingPaymentBaseRate"
+            [inputConfig]="{
+              name: 'Dollar',
+              type: 'number',
+              label: 'Base Rate',
+              isRequired: true,
+              placeholderIcon: 'dollar',
+              customClass: 'dollar-placeholderIcon',
+              thousandSeparator: true,
+              blackInput: true
+            }"
+            [ngStyle]="{ width: '130px' }"
+          ></app-ta-input>
+
           <!-- Adjusted Rate -->
           <div
             *ngIf="!isAvailableAdjustedRate"
@@ -443,20 +444,22 @@
               src="assets/svg/common/ic_plus.svg"
             ></svg-icon>
           </div>
-          <div *ngIf="isAvailableAdjustedRate" class="billing-payment-field">
-            <app-ta-input
-              formControlName="billingPaymentAdjustedRate"
-              [inputConfig]="{
-                name: 'Dollar',
-                type: 'number',
-                label: 'Adjusted',
-                placeholderIcon: 'dollar',
-                customClass: 'dollar-placeholderIcon load-adjusted-rate',
-                thousandSeparator: true,
-                blackInput: true
-              }"
-            ></app-ta-input>
-          </div>
+
+          <app-ta-input
+            *ngIf="isAvailableAdjustedRate"
+            formControlName="billingPaymentAdjustedRate"
+            [inputConfig]="{
+              name: 'Dollar',
+              type: 'number',
+              label: 'Adjusted',
+              placeholderIcon: 'dollar',
+              customClass: 'dollar-placeholderIcon load-adjusted-rate',
+              thousandSeparator: true,
+              blackInput: true
+            }"
+            [ngStyle]="{ width: '130px' }"
+          ></app-ta-input>
+
           <!-- Advance Rate -->
           <div
             *ngIf="!isAvailableAdvanceRate"
@@ -472,20 +475,106 @@
               src="assets/svg/common/ic_plus.svg"
             ></svg-icon>
           </div>
-          <div *ngIf="isAvailableAdvanceRate" class="billing-payment-field">
-            <app-ta-input
-              formControlName="lingPaymentAdvanceRate"
-              [inputConfig]="{
-                name: 'Dollar',
-                type: 'number',
-                label: 'Advance',
-                placeholderIcon: 'dollar',
-                customClass: 'dollar-placeholderIcon load-advance-rate',
-                thousandSeparator: true,
-                blackInput: true
-              }"
-            ></app-ta-input>
-          </div>
+
+          <app-ta-input
+            *ngIf="isAvailableAdvanceRate"
+            formControlName="bilingPaymentAdvanceRate"
+            [inputConfig]="{
+              name: 'Dollar',
+              type: 'number',
+              label: 'Advance',
+              placeholderIcon: 'dollar',
+              customClass: 'dollar-placeholderIcon load-advance-rate',
+              thousandSeparator: true,
+              blackInput: true
+            }"
+            [ngStyle]="{ width: '130px' }"
+          ></app-ta-input>
+
+          <!-- Layover -->
+          <app-ta-input
+            *ngIf="additionalOptions[0].active"
+            formControlName="bilingPaymentLayover"
+            [inputConfig]="{
+              name: 'Dollar',
+              type: 'number',
+              label: 'Layover',
+              isRequired: true,
+              placeholderIcon: 'dollar',
+              customClass: 'dollar-placeholderIcon',
+              thousandSeparator: true,
+              blackInput: true
+            }"
+            [ngStyle]="{ width: '130px' }"
+          ></app-ta-input>
+
+          <!-- Lumper -->
+          <app-ta-input
+            *ngIf="additionalOptions[1].active"
+            formControlName="bilingPaymentLumper"
+            [inputConfig]="{
+              name: 'Dollar',
+              type: 'number',
+              label: 'Lumper',
+              isRequired: true,
+              placeholderIcon: 'dollar',
+              customClass: 'dollar-placeholderIcon',
+              thousandSeparator: true,
+              blackInput: true
+            }"
+            [ngStyle]="{ width: '130px' }"
+          ></app-ta-input>
+
+          <!-- Fuel Surcharge -->
+          <app-ta-input
+            *ngIf="additionalOptions[2].active"
+            formControlName="bilingPaymentFuelSurcharge"
+            [inputConfig]="{
+              name: 'Dollar',
+              type: 'number',
+              label: 'Fuel Surch.',
+              isRequired: true,
+              placeholderIcon: 'dollar',
+              customClass: 'dollar-placeholderIcon',
+              thousandSeparator: true,
+              blackInput: true
+            }"
+            [ngStyle]="{ width: '130px' }"
+          ></app-ta-input>
+
+          <!-- Escort -->
+          <app-ta-input
+            *ngIf="additionalOptions[3].active"
+            formControlName="bilingPaymentEscort"
+            [inputConfig]="{
+              name: 'Dollar',
+              type: 'number',
+              label: 'Escort',
+              isRequired: true,
+              placeholderIcon: 'dollar',
+              customClass: 'dollar-placeholderIcon',
+              thousandSeparator: true,
+              blackInput: true
+            }"
+            [ngStyle]="{ width: '130px' }"
+          ></app-ta-input>
+
+          <!-- Detention -->
+          <app-ta-input
+            *ngIf="additionalOptions[4].active"
+            formControlName="bilingPaymentDetention"
+            [inputConfig]="{
+              name: 'Dollar',
+              type: 'number',
+              label: 'Detention',
+              isRequired: true,
+              placeholderIcon: 'dollar',
+              customClass: 'dollar-placeholderIcon',
+              thousandSeparator: true,
+              blackInput: true
+            }"
+            [ngStyle]="{ width: '130px' }"
+          ></app-ta-input>
 
           <div
             #t2="ngbPopover"
@@ -497,7 +586,7 @@
             mainTooltip="Additional"
             tooltipBackground="#536BC2"
             position="top"
-            class="billing-plus billing-advance"
+            class="billing-plus billing-additional"
           >
             <svg-icon
               class="billing-additional-plus"
