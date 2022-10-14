@@ -245,7 +245,8 @@
         !getSuperControl.value &&
         getSuperControl.invalid &&
         (touchedInput || getSuperControl.touched) &&
-        !focusInput
+        !focusInput,
+      'disabled-filled': getSuperControl.value && inputConfig.isDisabled
     }"
     src="assets/svg/common/ic_arrow_input.svg"
     (click)="toggleDropdownOptions()"
