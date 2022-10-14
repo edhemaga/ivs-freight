@@ -14,14 +14,16 @@
   pointer-events: none;
   line-height: 18px;
 
-  &::-moz-selection {
-    background-color: $input-label-background-selection !important;
-    color: $input-label-text-selection !important;
-  }
+  span {
+    &::-moz-selection {
+      background-color: $input-label-background-selection !important;
+      color: $input-label-text-selection !important;
+    }
 
-  &::selection {
-    background-color: $input-label-background-selection !important;
-    color: $input-label-text-selection !important;
+    &::selection {
+      background-color: $input-label-background-selection !important;
+      color: $input-label-text-selection !important;
+    }
   }
 
   &.required {
@@ -54,14 +56,16 @@
     user-select: auto !important;
     pointer-events: all !important;
 
-    &::-moz-selection {
-      background-color: $input-label-background-selection;
-      color: $input-label-text-selection;
-    }
+    span {
+      &::-moz-selection {
+        background-color: $input-label-background-selection !important;
+        color: $input-label-text-selection !important;
+      }
 
-    &::selection {
-      background-color: $input-label-background-selection;
-      color: $input-label-text-selection;
+      &::selection {
+        background-color: $input-label-background-selection !important;
+        color: $input-label-text-selection !important;
+      }
     }
   }
 
@@ -95,6 +99,18 @@
     display: none !important;
   }
 
+  &.load-shipper {
+    &.required {
+      &::after {
+        content: " *";
+        color: $input-label-required-star;
+        position: absolute;
+        right: -10px;
+        top: 0px;
+      }
+    }
+  }
+
   //------------------------- Multiple Labels Classs -------------------------
 
   .load-dispatches-ttd {
@@ -109,8 +125,8 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
-    -moz-column-gap: 85px;
-    column-gap: 85px;
+    -moz-column-gap: 84px;
+    column-gap: 84px;
   }
 
   .load-shipper {

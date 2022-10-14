@@ -144,12 +144,17 @@
     padding-left: 29px;
   }
 
-  &.valid-focus-in-datepicker{
+  &.valid-focus-in-datepicker {
     background-color: $input-background-color-valid-focus !important;
 
-    span, span .border-picker{
+    span,
+    span .border-picker {
       color: $input-text-color-normal-focus !important;
     }
+  }
+
+  &.dropdown-input-image-user {
+    padding-left: 30px;
   }
 
   &.valid-focus-in,
@@ -193,9 +198,10 @@
     color: $input-text-color-valid-focus-out !important;
   }
 
-  &.valid-focus-out-filled-datepicker  {
+  &.valid-focus-out-filled-datepicker {
     background-color: $input-background-color-valid-focus-out-datepicker !important;
-    span, span .border-picker{
+    span,
+    span .border-picker {
       color: $input-text-color-valid-focus-out !important;
     }
   }
@@ -251,9 +257,9 @@
   }
 
   &.load-shipper {
-    grid-template-columns: repeat(2, 1fr);
-    -moz-column-gap: 10px;
-    column-gap: 10px;
+    grid-template-columns: 300px 1fr;
+    -moz-column-gap: 2px;
+    column-gap: 2px;
     padding-right: 25px;
   }
 

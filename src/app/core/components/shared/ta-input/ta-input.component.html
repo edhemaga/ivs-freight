@@ -435,10 +435,10 @@
     {{ selectedDropdownLabelColor.count }}
   </p>
 
-  <!-- Special Dropdown Selected Image with or Without Text -->
+  <!-- Special Dropdown Selected SVG with or Without Text -->
   <svg-icon
     *ngIf="
-      inputConfig.dropdownImageInput &&
+      inputConfig?.dropdownImageInput?.svg &&
       !(!inputConfig.dropdownImageInput?.withText && focusInput) &&
       !(
         ['truck', 'trailer'].includes(
@@ -446,7 +446,8 @@
         ) &&
         focusInput &&
         inputConfig.dropdownImageInput?.remove
-      )
+      ) &&
+      !inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl
     "
     [src]="inputConfig.dropdownImageInput?.url"
     class="dropdown-selected-image {{ inputConfig.dropdownImageInput?.class }}"
@@ -458,6 +459,33 @@
     }"
   >
   </svg-icon>
+
+  <!-- Special Dropdown Selected Image With Text With Initials name -->
+  <img
+    *ngIf="
+      inputConfig?.dropdownImageInput?.image &&
+      inputConfig?.dropdownImageInput?.url &&
+      !inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl
+    "
+    class="dropdown-selected-image name-initials-instead-url"
+    [src]="imageBase64Service.sanitizer(inputConfig?.dropdownImageInput?.url)"
+    [alt]="'Input Image'"
+  />
+  <div
+    *ngIf="
+      inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl &&
+      !(!inputConfig.dropdownImageInput?.withText && focusInput)
+    "
+    class="no-profile-image dropdown-selected-image name-initials-instead-url"
+  >
+    <app-profile-images
+      [indx]="0"
+      [size]="'small'"
+      [type]="'user'"
+      [name]="inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl"
+    >
+    </app-profile-images>
+  </div>
 
   <!-- DateTime Picker -->
   <div
@@ -684,8 +712,13 @@
         !inputConfig?.dropdownImageInput?.remove,
       'dropdown-input-image-color':
         inputConfig?.dropdownImageInput?.withText &&
-        inputConfig?.dropdownImageInput?.url &&
+        (inputConfig?.dropdownImageInput?.url ||
+          inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl) &&
         inputConfig?.dropdownImageInput?.template === 'color',
+      'dropdown-input-image-user':
+        inputConfig?.dropdownImageInput?.withText &&
+        inputConfig?.dropdownImageInput?.url &&
+        inputConfig?.dropdownImageInput?.template === 'user',
       'dropdown-input-image-without-text-transparent':
         inputConfig?.dropdownImageInput &&
         !inputConfig?.dropdownImageInput?.withText &&
@@ -706,7 +739,9 @@
   <label
     *ngIf="!inputConfig.multiSelectDropdownActive"
     [for]="inputConfig.name"
-    class="input-label {{ inputConfig.customClass }}"
+    class="input-label {{ inputConfig.customClass }} {{
+      inputConfig.multipleLabel?.customClass
+    }}"
     [ngClass]="{
       required: inputConfig.isRequired && !inputConfig.isDisabled,
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
