@@ -165,7 +165,7 @@ export class TaInputDropdownComponent
       this.inputConfig.name === 'Address' ||
       this.inputConfig.name === 'RoutingAddress'
     ) {
-      if (this.getSuperControl.value && this.inputRef.focusInput) {
+      if (this.getSuperControl.value && this.inputRef?.focusInput) {
         this.popoverRef?.open();
       } else {
         this.popoverRef?.close();
