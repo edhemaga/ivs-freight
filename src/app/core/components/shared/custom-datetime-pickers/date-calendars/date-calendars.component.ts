@@ -6,8 +6,6 @@ import { RANGE, STARTING_YEAR } from './calendar_strategy';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import moment from 'moment';
 
-const SCROLL_DEBOUNCE_TIME = 80;
-
 const MONTHS = [
   'January',
   'February',
@@ -51,7 +49,7 @@ export class DateCalendarsComponent implements OnInit {
     return sendDate;
   });
 
-  justYears = Array.from({ length: 196 }, (_, i) => {
+  justYears = Array.from({ length: 100 }, (_, i) => {
     return new Date(STARTING_YEAR + i, 1, 1);
   });
 
@@ -130,12 +128,17 @@ export class DateCalendarsComponent implements OnInit {
   public setListPreview(): void {
     if (this.listPreview === 'full_list') {
       this.setListPreviewValue.emit('month_list');
+      console.log("CLICK ON SET PREVIEW --------------");
+      console.log(Math.floor(this.activeIndex / 12));
       this.calendarService.setAutoIndex = Math.floor(this.activeIndex / 12);
     }
   }
 
   public setListPreviewToFull(num) {
     this.setListPreviewValue.emit('full_list');
+    console.log(this.activeIndex);
+    console.log(num);
+    console.log(this.activeIndex * 12 + num);
     this.calendarService.setAutoIndex = this.activeIndex * 12 + num;
   }
 

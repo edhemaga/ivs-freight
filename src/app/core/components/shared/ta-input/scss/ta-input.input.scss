@@ -15,7 +15,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 
-  &.datetimeclass {
+  &.datetimeclass:not(.disabled-filled) {
     letter-spacing: 1px;
     pointer-events: none;
     opacity: 0;
