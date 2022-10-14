@@ -102,14 +102,6 @@ export class Step6FormComponent
 
   ngOnInit(): void {
     this.createForm();
-
-    if (this.selectedMode === SelectedMode.APPLICANT) {
-      if (this.formValuesToPatch) {
-        this.patchForm(this.formValuesToPatch);
-
-        this.startValueChangesMonitoring();
-      }
-    }
   }
 
   ngAfterViewInit(): void {
@@ -154,13 +146,20 @@ export class Step6FormComponent
         }
       }
 
-      if (this.selectedMode === SelectedMode.REVIEW) {
+      if (
+        this.selectedMode === SelectedMode.REVIEW ||
+        this.selectedMode === SelectedMode.APPLICANT
+      ) {
         if (
           changes.formValuesToPatch?.previousValue !==
           changes.formValuesToPatch?.currentValue
         ) {
           setTimeout(() => {
             this.patchForm(changes.formValuesToPatch.currentValue);
+
+            if (this.selectedMode === SelectedMode.APPLICANT) {
+              this.startValueChangesMonitoring();
+            }
           }, 100);
         }
       }
@@ -182,11 +181,14 @@ export class Step6FormComponent
       if (formValue.emergencyContactReview) {
         const { isNameValid, isPhoneValid, isRelationshipValid } =
           formValue.emergencyContactReview;
+        console.log('formValue', formValue.emergencyContactReview);
 
         this.openAnnotationArray[15] = {
           ...this.openAnnotationArray[15],
           lineInputs: [!isNameValid, !isPhoneValid, !isRelationshipValid],
         };
+
+        console.log('arr', this.openAnnotationArray);
       }
     }
 

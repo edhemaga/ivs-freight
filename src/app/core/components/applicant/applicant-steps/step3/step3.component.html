@@ -64,7 +64,7 @@
             [ngStyle]="{
               cursor: selectedMode === 'REVIEW_MODE' ? 'pointer' : 'auto'
             }"
-            (click)="onCardReview(i)"
+            (click)="selectedMode === 'REVIEW_MODE' && onCardReview(i)"
           >
             <div class="d-flex align-items-center license-box">
               <p class="m-0 ta-font-regular">

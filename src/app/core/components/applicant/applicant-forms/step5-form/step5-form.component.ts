@@ -10,6 +10,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 
+import moment from 'moment';
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription, Subject, takeUntil } from 'rxjs';
@@ -121,14 +123,6 @@ export class Step5FormComponent
     this.createForm();
 
     this.getDropdownLists();
-
-    if (this.selectedMode === SelectedMode.APPLICANT) {
-      if (this.formValuesToPatch) {
-        this.patchForm(this.formValuesToPatch);
-
-        this.startValueChangesMonitoring();
-      }
-    }
   }
 
   ngAfterViewInit(): void {
@@ -142,6 +136,8 @@ export class Step5FormComponent
       this.violationsForm.valueChanges
         .pipe(takeUntil(this.destroy$))
         .subscribe((res) => {
+          res.location = this.selectedAddress;
+
           this.lastFormValuesEmitter.emit(res);
         });
     }
@@ -174,13 +170,20 @@ export class Step5FormComponent
         }
       }
 
-      if (this.selectedMode === SelectedMode.REVIEW) {
+      if (
+        this.selectedMode === SelectedMode.REVIEW ||
+        this.selectedMode === SelectedMode.APPLICANT
+      ) {
         if (
           changes.formValuesToPatch?.previousValue !==
           changes.formValuesToPatch?.currentValue
         ) {
           setTimeout(() => {
             this.patchForm(changes.formValuesToPatch.currentValue);
+
+            if (this.selectedMode === SelectedMode.APPLICANT) {
+              this.startValueChangesMonitoring();
+            }
           }, 100);
         }
       }
@@ -216,14 +219,35 @@ export class Step5FormComponent
       }
     }
 
+    const formValueVehicleType = formValue.vehicleType;
+
+    switch (formValueVehicleType) {
+      case 'Tow Truck Heavy':
+        formValue.vehicleType = 'Tow Truck';
+        break;
+
+      case 'Car Hauler - Semi Truck':
+        formValue.vehicleType = 'Car Hauler';
+        break;
+
+      case 'Semi Truck w Sleeper':
+        formValue.vehicleType = 'Semi w/Sleeper';
+        break;
+
+      default:
+        break;
+    }
+
     this.violationsForm.patchValue({
       date: formValue.date,
       vehicleType: formValue.vehicleType,
-      location: formValue.location,
+      location: formValue.location.address,
       description: formValue.description,
     });
 
     setTimeout(() => {
+      this.selectedAddress = formValue.location;
+
       this.selectedVehicleType = this.vehicleType.find(
         (item) => item.name === formValue.vehicleType
       );
@@ -234,15 +258,28 @@ export class Step5FormComponent
     this.subscription = this.violationsForm.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((updatedFormValues) => {
-        const { id, location, isEditingViolation, ...previousFormValues } =
-          this.formValuesToPatch;
+        const {
+          id,
+          date,
+          location,
+          isEditingViolation,
+          trafficViolationItemReview,
+          ...previousFormValues
+        } = this.formValuesToPatch;
 
         previousFormValues.location = location.address;
+        previousFormValues.date = moment(new Date(date)).format('MM/DD/YY');
 
         this.editingCardAddress = location;
 
-        const { firstRowReview, secondRowReview, ...newFormValues } =
-          updatedFormValues;
+        const {
+          firstRowReview,
+          secondRowReview,
+          location: newLocation,
+          ...newFormValues
+        } = updatedFormValues;
+
+        newFormValues.location = newLocation.address;
 
         if (isFormValueEqual(previousFormValues, newFormValues)) {
           this.isViolationEdited = false;
@@ -280,10 +317,16 @@ export class Step5FormComponent
     const { location, firstRowReview, secondRowReview, ...violationsForm } =
       this.violationsForm.value;
 
+    const selectedAddress = {
+      ...this.selectedAddress,
+      addressUnit: '',
+      county: '',
+    };
+
     const saveData: ViolationModel = {
       ...violationsForm,
       isEditingViolation: false,
-      location: this.selectedAddress.address,
+      location: selectedAddress,
     };
 
     this.formValuesEmitter.emit(saveData);
@@ -308,11 +351,17 @@ export class Step5FormComponent
     const { firstRowReview, secondRowReview, ...violationsForm } =
       this.violationsForm.value;
 
+    const selectedAddress = {
+      ...this.selectedAddress,
+      addressUnit: '',
+      county: '',
+    };
+
     const saveData: ViolationModel = {
       ...violationsForm,
       location: this.selectedAddress
-        ? this.selectedAddress.address
-        : this.editingCardAddress.address,
+        ? selectedAddress
+        : this.editingCardAddress,
       isEditingViolation: false,
     };
 

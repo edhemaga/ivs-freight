@@ -58,6 +58,12 @@
     height: 215px;
     border-radius: 3px;
   }
+
+  .signature-image-container {
+    img {
+      border-bottom: 0.1px solid $ta-light-grey-2;
+    }
+  }
 }
 
 .next-btn-container {

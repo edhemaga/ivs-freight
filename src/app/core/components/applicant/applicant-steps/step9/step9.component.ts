@@ -39,25 +39,9 @@ export class Step9Component implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
 
-    if (this.selectedMode === SelectedMode.APPLICANT) {
-      this.applicantActionsService.getApplicantInfo$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          this.applicantId = res.personalInfo.applicantId;
-        });
-    }
+    this.getApplicantId();
 
-    if (this.selectedMode === SelectedMode.REVIEW) {
-      let stepValuesResponse: any;
-
-      this.applicantQuery.driverRightsList$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          stepValuesResponse = res;
-        });
-
-      this.patchStepValues(stepValuesResponse);
-    }
+    this.getStepValuesFromStore();
   }
 
   public createForm(): void {
@@ -66,12 +50,34 @@ export class Step9Component implements OnInit, OnDestroy {
     });
   }
 
+  public getStepValuesFromStore(): void {
+    let stepValuesResponse: any;
+
+    this.applicantQuery.driverRightsList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        stepValuesResponse = res;
+      });
+
+    if (stepValuesResponse) {
+      this.patchStepValues(stepValuesResponse);
+    }
+  }
+
   public patchStepValues(stepValues: any): void {
     const { understandDriverRights } = stepValues;
 
     this.driverRightsForm
       .get('understandYourRights')
       .patchValue(understandDriverRights);
+  }
+
+  public getApplicantId(): void {
+    this.applicantQuery.applicantId$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res;
+      });
   }
 
   public onStepAction(event: any): void {
@@ -109,6 +115,16 @@ export class Step9Component implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/10`]);
+
+          this.applicantStore.update(1, (entity) => {
+            return {
+              ...entity,
+              driverRight: {
+                ...entity.driverRight,
+                understandDriverRights: saveData.understandDriverRights,
+              },
+            };
+          });
         },
         error: (err) => {
           console.log(err);

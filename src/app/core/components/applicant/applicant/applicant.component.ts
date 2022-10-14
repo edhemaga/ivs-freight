@@ -16,7 +16,7 @@ import { INavigation } from '../state/model/navigation.model';
 export class ApplicantComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode = SelectedMode.APPLICANT;
+  public selectedMode = SelectedMode.REVIEW;
 
   public menuItems: INavigation[] = [
     {
@@ -55,7 +55,7 @@ export class ApplicantComponent implements OnInit, OnDestroy {
       class: 'bullet-7',
     },
     {
-      title: 'Drug & Alchocol statement',
+      title: 'Drug & Alcohol statement',
       route: '8',
       class: 'bullet-8',
     },

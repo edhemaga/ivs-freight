@@ -75,6 +75,7 @@ export class Step6Component implements OnInit, OnDestroy {
 
   public applicantId: number;
   public educationId: number;
+  public emergencyContactsId: number[];
 
   private specialTrainingRadios: any;
   private otherTrainingRadios: any;
@@ -112,6 +113,8 @@ export class Step6Component implements OnInit, OnDestroy {
 
   public isEditing: boolean = false;
   public isReviewingCard: boolean = false;
+
+  public previousFormValuesOnEdit: any;
 
   public formValuesToPatch: any;
 
@@ -293,25 +296,9 @@ export class Step6Component implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
 
-    if (this.selectedMode === SelectedMode.APPLICANT) {
-      this.applicantActionsService.getApplicantInfo$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          this.applicantId = res.personalInfo.applicantId;
-        });
-    }
+    this.getApplicantId();
 
-    if (this.selectedMode === SelectedMode.REVIEW) {
-      let stepValuesResponse: any;
-
-      this.applicantQuery.educationList$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          stepValuesResponse = res;
-        });
-
-      this.patchStepValues(stepValuesResponse);
-    }
+    this.getStepValuesFromStore();
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -351,8 +338,87 @@ export class Step6Component implements OnInit, OnDestroy {
     });
   }
 
+  public getStepValuesFromStore(): void {
+    let stepValuesResponse: any;
+
+    this.applicantQuery.educationList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        stepValuesResponse = res;
+      });
+
+    if (stepValuesResponse) {
+      this.patchStepValues(stepValuesResponse);
+    }
+  }
+
   public patchStepValues(stepValues: any): void {
+    console.log('stepValues', stepValues);
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      if (stepValues.educationReview) {
+        const {
+          isSpecialTrainingDescriptionValid,
+          specialTrainingDescriptionMessage,
+          isOtherTrainingDescriptionValid,
+          otherTrainingDescriptionMessage,
+          isFromValid,
+          isToValid,
+          datesMessage,
+        } = stepValues.educationReview;
+
+        this.openAnnotationArray[0] = {
+          ...this.openAnnotationArray[0],
+          lineInputs: [!isSpecialTrainingDescriptionValid],
+          displayAnnotationButton:
+            !isSpecialTrainingDescriptionValid &&
+            !specialTrainingDescriptionMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: specialTrainingDescriptionMessage
+            ? true
+            : false,
+        };
+        this.openAnnotationArray[1] = {
+          ...this.openAnnotationArray[1],
+          lineInputs: [!isOtherTrainingDescriptionValid],
+          displayAnnotationButton:
+            !isOtherTrainingDescriptionValid && !otherTrainingDescriptionMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: otherTrainingDescriptionMessage
+            ? true
+            : false,
+        };
+        this.openAnnotationArray[2] = {
+          ...this.openAnnotationArray[2],
+          lineInputs: [!isFromValid, !isToValid],
+          displayAnnotationButton:
+            (!isFromValid || !isToValid) && !datesMessage ? true : false,
+          displayAnnotationTextArea: datesMessage ? true : false,
+        };
+
+        const inputFieldsArray = JSON.stringify(
+          this.openAnnotationArray
+            .filter((item) => Object.keys(item).length !== 0)
+            .map((item) => item.lineInputs)
+        );
+
+        if (inputFieldsArray.includes('true')) {
+          this.hasIncorrectFields = true;
+        } else {
+          this.hasIncorrectFields = false;
+        }
+
+        this.educationForm.patchValue({
+          questionReview1: specialTrainingDescriptionMessage,
+          questionReview2: otherTrainingDescriptionMessage,
+          questionReview4: datesMessage,
+        });
+      }
+    }
+
     const {
+      educationReview,
       highestGrade,
       collegeGrade,
       emergencyContacts,
@@ -369,10 +435,14 @@ export class Step6Component implements OnInit, OnDestroy {
       id,
     } = stepValues;
 
-    this.selectedGrade = highestGrade;
-    this.selectedCollegeGrade = collegeGrade;
+    this.formStatus = 'VALID';
+
+    this.selectedGrade = highestGrade - 1;
+    this.selectedCollegeGrade = collegeGrade - 1;
 
     this.educationId = id;
+
+    const { emergencyContactReviews } = educationReview;
 
     const lastItemInContactsArray =
       emergencyContacts[emergencyContacts.length - 1];
@@ -387,26 +457,37 @@ export class Step6Component implements OnInit, OnDestroy {
         name: item.name,
         phone: item.phone,
         relationship: item.relationship,
-        emergencyContactReview: lastItemInContactsArray.emergencyContactReview
-          ? lastItemInContactsArray.emergencyContactReview
+        emergencyContactReview: item.emergencyContactReview
+          ? item.emergencyContactReview
           : null,
       };
     });
 
     const filteredLastItemInContactsArray = {
+      id: lastItemInContactsArray.id,
       isEditingContact: false,
       name: lastItemInContactsArray.name,
       phone: lastItemInContactsArray.phone,
       relationship: lastItemInContactsArray.relationship,
+      /* emergencyContactReview: emergencyContactReviews
+        ? emergencyContactReviews[emergencyContactReviews.length - 1]
+        : null, */
       emergencyContactReview: lastItemInContactsArray.emergencyContactReview
         ? lastItemInContactsArray.emergencyContactReview
         : null,
+    };
+
+    this.lastContactCard = {
+      name: filteredLastItemInContactsArray.name,
+      phone: filteredLastItemInContactsArray.phone,
+      relationship: filteredLastItemInContactsArray.relationship,
     };
 
     this.contactsArray = [...filteredContactsArray];
 
     this.formValuesToPatch = filteredLastItemInContactsArray;
     this.previousFormValuesOnReview = filteredLastItemInContactsArray;
+    this.previousFormValuesOnEdit = filteredLastItemInContactsArray;
 
     for (let i = 0; i < filteredContactsArray.length; i++) {
       const firstEmptyObjectInList = this.openAnnotationArray.find(
@@ -530,12 +611,17 @@ export class Step6Component implements OnInit, OnDestroy {
           this.educationForm.get('driverForCompanyToExplain'),
           false
         );
+
+        this.educationForm.patchValue({
+          driverForCompanyBeforeExplain: null,
+          driverForCompanyToExplain: null,
+        });
       }
     }
   }
 
   public onSchoolGradeClick(gradeIndex: number): void {
-    if (this.selectedMode !== 'APPLICANT_MODE') {
+    if (this.selectedMode !== SelectedMode.APPLICANT) {
       return;
     }
 
@@ -544,7 +630,7 @@ export class Step6Component implements OnInit, OnDestroy {
   }
 
   public onCollegeGradeClick(gradeIndex: number): void {
-    if (this.selectedMode !== 'APPLICANT_MODE') {
+    if (this.selectedMode !== SelectedMode.APPLICANT) {
       return;
     }
 
@@ -606,6 +692,8 @@ export class Step6Component implements OnInit, OnDestroy {
 
     this.helperIndex = 2;
     this.selectedContactIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
   }
 
   public saveEditedContact(event: any): void {
@@ -616,6 +704,8 @@ export class Step6Component implements OnInit, OnDestroy {
 
     this.helperIndex = 2;
     this.selectedContactIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
   }
 
   public onGetFormStatus(status: string): void {
@@ -695,6 +785,14 @@ export class Step6Component implements OnInit, OnDestroy {
     this.selectedContactIndex = -1;
 
     this.formValuesToPatch = this.previousFormValuesOnReview;
+  }
+
+  public getApplicantId(): void {
+    this.applicantQuery.applicantId$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res;
+      });
   }
 
   public incorrectInput(
@@ -780,6 +878,18 @@ export class Step6Component implements OnInit, OnDestroy {
             break;
         }
       }
+    }
+
+    const inputFieldsArray = JSON.stringify(
+      this.openAnnotationArray
+        .filter((item) => Object.keys(item).length !== 0)
+        .map((item) => item.lineInputs)
+    );
+
+    if (inputFieldsArray.includes('true')) {
+      this.hasIncorrectFields = true;
+    } else {
+      this.hasIncorrectFields = false;
     }
   }
 
@@ -878,8 +988,12 @@ export class Step6Component implements OnInit, OnDestroy {
       specialTrainingDescription: specialTrainingExplain,
       otherTrainingDescription: otherTrainingExplain,
       driverBefore: driverForCompany,
-      from: convertDateToBackend(driverForCompanyBeforeExplain),
-      to: convertDateToBackend(driverForCompanyToExplain),
+      from: driverForCompany
+        ? convertDateToBackend(driverForCompanyBeforeExplain)
+        : null,
+      to: driverForCompany
+        ? convertDateToBackend(driverForCompanyToExplain)
+        : null,
       unableForJobDescription: unableForJobExplain,
       emergencyContacts: [...filteredContactsArray, filteredLastContactCard],
     };
@@ -890,6 +1004,29 @@ export class Step6Component implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/7`]);
+
+          this.applicantStore.update(1, (entity) => {
+            return {
+              ...entity,
+              education: {
+                ...entity.education,
+                highestGrade: saveData.highestGrade,
+                collegeGrade: saveData.collegeGrade,
+                specialTraining: saveData.specialTraining,
+                specialTrainingDescription: saveData.specialTrainingDescription,
+                otherTraining: saveData.otherTraining,
+                otherTrainingDescription: saveData.otherTrainingDescription,
+                knowledgeOfSafetyRegulations:
+                  saveData.knowledgeOfSafetyRegulations,
+                driverBefore: saveData.driverBefore,
+                from: saveData.from,
+                to: saveData.to,
+                unableForJob: saveData.unableForJob,
+                unableForJobDescription: saveData.unableForJobDescription,
+                emergencyContacts: saveData.emergencyContacts,
+              },
+            };
+          });
         },
         error: (err) => {
           console.log(err);
@@ -908,22 +1045,62 @@ export class Step6Component implements OnInit, OnDestroy {
     const lastItemReview =
       this.previousFormValuesOnReview.emergencyContactReview;
 
+    console.log('lastItem', lastItemReview);
+
+    const lastItemId = this.previousFormValuesOnReview.id;
+
     const lastReviewedItemInContactsArray = {
+      emergencyContactId: lastItemId,
       isNameValid: lastItemReview ? lastItemReview.isNameValid : true,
-      isPhoneValid: lastItemReview ? lastItemReview.isPhoneValid : true,
+      /*    isPhoneValid: lastItemReview ? !lastItemReview.isPhoneValid : true,
       isRelationshipValid: lastItemReview
-        ? lastItemReview.isRelationshipValid
-        : true,
+        ? !lastItemReview.isRelationshipValid
+        : true, */
       emergencyContactMessage: this.lastContactCard.firstRowReview,
     };
 
     const saveData: CreateEducationReviewCommand = {
-      applicantId: 1,
+      applicantId: this.applicantId,
       educationId: this.educationId,
+      isSpecialTrainingDescriptionValid:
+        !this.openAnnotationArray[0].lineInputs[0],
+      specialTrainingDescriptionMessage: questionReview1,
+      isOtherTrainingDescriptionValid:
+        !this.openAnnotationArray[1].lineInputs[0],
+      otherTrainingDescriptionMessage: questionReview2,
+      isFromValid: !this.openAnnotationArray[2].lineInputs[0],
+      isToValid: !this.openAnnotationArray[2].lineInputs[1],
+      datesMessage: questionReview4,
       emergencyContactReviews: [lastReviewedItemInContactsArray],
     };
 
-    console.log('saveData', saveData);
+    /*     console.log('saveData', saveData); */
+
+    const { emergencyContactReviews, ...rest } = saveData;
+
+    this.applicantActionsService
+      .createEducationReview(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/7`]);
+
+          this.applicantStore.update(1, (entity) => {
+            return {
+              ...entity,
+              education: {
+                ...entity.education,
+                educationReview: rest,
+              },
+            };
+          });
+
+          console.log('updatedStore', this.applicantStore);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   ngOnDestroy(): void {
@@ -931,3 +1108,61 @@ export class Step6Component implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 }
+
+/*
+
+    this.contactForm = this.formBuilder.group({
+      cardReview1: [null],
+      cardReview2: [null],
+      cardReview3: [null],
+      cardReview4: [null],
+      cardReview5: [null],
+      cardReview6: [null],
+      cardReview7: [null],
+      cardReview8: [null],
+      cardReview9: [null],
+      cardReview10: [null],
+    }); */
+
+/* public openAnnotationArray: {
+    lineIndex?: number;
+    lineInputs?: boolean[];
+    displayAnnotationButton?: boolean;
+    displayAnnotationTextArea?: boolean;
+  }[] = [
+    {
+      lineIndex: 0,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 1,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 2,
+      lineInputs: [false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 3,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+  ]; */

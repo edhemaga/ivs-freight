@@ -37,8 +37,10 @@
 
     <div class="radios-box">
       <app-ta-input-radiobuttons
+        #cmp
         [buttons]="question.answerChoices"
         (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
+        [disabled]="selectedMode === 'REVIEW_MODE'"
       ></app-ta-input-radiobuttons>
     </div>
   </div>
@@ -60,9 +62,10 @@
                 label: 'Motor Carrier',
                 isRequired: true,
                 textTransform: 'capitalize',
+                isDisabled: selectedMode === 'REVIEW_MODE',
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
-              [incorrectValue]="false"
+              [incorrectValue]="openAnnotationArray[0].lineInputs[0]"
               (incorrectEvent)="incorrectInput($event, 0, 0)"
             ></app-ta-input>
           </div>
@@ -77,9 +80,10 @@
                 placeholderIcon: 'phone',
                 mask: '(000) 000-0000',
                 maxLength: 14,
+                isDisabled: selectedMode === 'REVIEW_MODE',
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
-              [incorrectValue]="false"
+              [incorrectValue]="openAnnotationArray[0].lineInputs[1]"
               (incorrectEvent)="incorrectInput($event, 1, 0)"
             ></app-ta-input>
           </div>
@@ -127,7 +131,7 @@
                 maxLength: 256,
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
-              [incorrectValue]="false"
+              [incorrectValue]="openAnnotationArray[1].lineInputs[0]"
               (incorrectEvent)="incorrectInput($event, 0, 1)"
               [activeAddress]="selectedAddress"
               (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
@@ -143,9 +147,10 @@
                 minLength: 1,
                 maxLength: 10,
                 textTransform: 'uppercase',
+                isDisabled: selectedMode === 'REVIEW_MODE',
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
-              [incorrectValue]="false"
+              [incorrectValue]="openAnnotationArray[1].lineInputs[1]"
               (incorrectEvent)="incorrectInput($event, 1, 1)"
             ></app-ta-input>
           </div>
@@ -205,9 +210,10 @@
                 label: 'Name of SAP',
                 isRequired: true,
                 textTransform: 'capitalize',
+                isDisabled: selectedMode === 'REVIEW_MODE',
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
-              [incorrectValue]="false"
+              [incorrectValue]="openAnnotationArray[2].lineInputs[0]"
               (incorrectEvent)="incorrectInput($event, 0, 2)"
             ></app-ta-input>
           </div>
@@ -222,9 +228,10 @@
                 placeholderIcon: 'phone',
                 mask: '(000) 000-0000',
                 maxLength: 14,
+                isDisabled: selectedMode === 'REVIEW_MODE',
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
-              [incorrectValue]="false"
+              [incorrectValue]="openAnnotationArray[2].lineInputs[1]"
               (incorrectEvent)="incorrectInput($event, 1, 2)"
             ></app-ta-input>
           </div>
@@ -272,7 +279,7 @@
                 maxLength: 256,
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
-              [incorrectValue]="false"
+              [incorrectValue]="openAnnotationArray[3].lineInputs[0]"
               (incorrectEvent)="incorrectInput($event, 0, 3)"
               [activeAddress]="selectedSapAddress"
               (selectedAddress)="handleInputSelect($event, 'ADDRESS', 'SAP')"
@@ -288,9 +295,10 @@
                 minLength: 1,
                 maxLength: 10,
                 textTransform: 'uppercase',
+                isDisabled: selectedMode === 'REVIEW_MODE',
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
-              [incorrectValue]="false"
+              [incorrectValue]="openAnnotationArray[3].lineInputs[1]"
               (incorrectEvent)="incorrectInput($event, 1, 3)"
             ></app-ta-input>
           </div>

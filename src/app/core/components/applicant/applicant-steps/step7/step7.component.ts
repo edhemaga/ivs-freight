@@ -87,7 +87,6 @@ export class Step7Component implements OnInit, OnDestroy {
     '01/16/21',
   ];
 
-  public totalHoursInt: number;
   public totalHours: { id: number; value: number }[] = [];
   public totalHoursCounter: number = 0;
 
@@ -171,25 +170,9 @@ export class Step7Component implements OnInit, OnDestroy {
 
     this.createSevenDaysHos();
 
-    if (this.selectedMode === SelectedMode.APPLICANT) {
-      this.applicantActionsService.getApplicantInfo$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          this.applicantId = res.personalInfo.applicantId;
-        });
-    }
+    this.getApplicantId();
 
-    if (this.selectedMode === SelectedMode.REVIEW) {
-      let stepValuesResponse: any;
-
-      this.applicantQuery.sevenDaysHosList$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          stepValuesResponse = res;
-        });
-
-      this.patchStepValues(stepValuesResponse);
-    }
+    this.getStepValuesFromStore();
   }
 
   public get hosArray(): FormArray {
@@ -212,10 +195,58 @@ export class Step7Component implements OnInit, OnDestroy {
     });
   }
 
+  public getStepValuesFromStore(): void {
+    let stepValuesResponse: any;
+
+    this.applicantQuery.sevenDaysHosList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        stepValuesResponse = res;
+      });
+
+    if (stepValuesResponse) {
+      this.patchStepValues(stepValuesResponse);
+    }
+  }
+
   public patchStepValues(stepValues: any): void {
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      if (stepValues.sevenDaysHosReview) {
+        const {
+          isReleaseDateValid,
+          isLocationValid,
+          releaseDateLocationMessage,
+        } = stepValues.sevenDaysHosReview;
+        this.openAnnotationArray[0] = {
+          ...this.openAnnotationArray[0],
+          lineInputs: [!isReleaseDateValid, !isLocationValid],
+          displayAnnotationButton:
+            (!isReleaseDateValid || !isLocationValid) &&
+            !releaseDateLocationMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: releaseDateLocationMessage ? true : false,
+        };
+
+        const inputFieldsArray = JSON.stringify(
+          this.openAnnotationArray
+            .filter((item) => Object.keys(item).length !== 0)
+            .map((item) => item.lineInputs)
+        );
+
+        if (inputFieldsArray.includes('true')) {
+          this.hasIncorrectFields = true;
+        } else {
+          this.hasIncorrectFields = false;
+        }
+
+        this.sevenDaysHosForm.patchValue({
+          firstRowReview: releaseDateLocationMessage,
+        });
+      }
+    }
     const {
       hos,
-      totalHours,
       releasedFromWork,
       releasedDate,
       location,
@@ -230,23 +261,28 @@ export class Step7Component implements OnInit, OnDestroy {
         hos: hos[i].hours,
       });
 
+      this.totalHours[i] = {
+        id: i,
+        value: hos[i].hours,
+      };
+
       this.sevenDaysHosDateData[i + 1] = convertDateFromBackend(hos[i].date);
     }
-
-    this.totalHoursInt = totalHours;
 
     this.sevenDaysHosId = id;
 
     this.sevenDaysHosForm.patchValue({
       isValidHos: releasedFromWork,
       startDate: convertDateFromBackend(releasedDate),
-      address: location,
+      address: location.address,
       anotherEmployer: workingForAnotherEmployer,
       intendToWorkAnotherEmployer: intendToWorkForAnotherEmployer,
       isValidAnotherEmployer: certifyInfomation,
     });
 
     setTimeout(() => {
+      this.selectedAddress = location;
+
       const anotherEmployerValue =
         this.sevenDaysHosForm.get('anotherEmployer').value;
       const intendToWorkAnotherEmployerValue = this.sevenDaysHosForm.get(
@@ -354,6 +390,14 @@ export class Step7Component implements OnInit, OnDestroy {
       });
   }
 
+  public getApplicantId(): void {
+    this.applicantQuery.applicantId$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res;
+      });
+  }
+
   public incorrectInput(
     event: any,
     inputIndex: number,
@@ -437,7 +481,6 @@ export class Step7Component implements OnInit, OnDestroy {
       hosArray,
       isValidHos,
       startDate,
-      address,
       anotherEmployer,
       intendToWorkAnotherEmployer,
       isValidAnotherEmployer,
@@ -454,13 +497,19 @@ export class Step7Component implements OnInit, OnDestroy {
       }
     );
 
+    const selectedAddress = {
+      ...this.selectedAddress,
+      addressUnit: '',
+      county: '',
+    };
+
     const saveData: CreateSevenDaysHosCommand = {
       ...sevenDaysHosForm,
       applicantId: this.applicantId,
       hos: [...filteredHosArray],
       releasedFromWork: isValidHos,
       releasedDate: convertDateToBackend(startDate),
-      location: address,
+      location: selectedAddress,
       workingForAnotherEmployer: anotherEmployer,
       intendToWorkForAnotherEmployer: intendToWorkAnotherEmployer,
       certifyInfomation: isValidAnotherEmployer,
@@ -472,6 +521,23 @@ export class Step7Component implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/8`]);
+
+          this.applicantStore.update(1, (entity) => {
+            return {
+              ...entity,
+              sevenDaysHos: {
+                ...entity.sevenDaysHos,
+                hos: saveData.hos,
+                releasedFromWork: saveData.releasedFromWork,
+                releasedDate: saveData.releasedDate,
+                location: saveData.location,
+                workingForAnotherEmployer: saveData.workingForAnotherEmployer,
+                intendToWorkForAnotherEmployer:
+                  saveData.intendToWorkForAnotherEmployer,
+                certifyInfomation: saveData.certifyInfomation,
+              },
+            };
+          });
         },
         error: (err) => {
           console.log(err);
@@ -481,7 +547,7 @@ export class Step7Component implements OnInit, OnDestroy {
 
   public onSubmitReview(): void {
     const saveData: CreateSevenDaysHosReviewCommand = {
-      applicantId: 1,
+      applicantId: this.applicantId,
       sevenDaysHosId: this.sevenDaysHosId,
       isReleaseDateValid: !this.openAnnotationArray[0].lineInputs[0],
       isLocationValid: !this.openAnnotationArray[0].lineInputs[1],
@@ -489,7 +555,27 @@ export class Step7Component implements OnInit, OnDestroy {
         this.sevenDaysHosForm.get('firstRowReview').value,
     };
 
-    console.log('saveData', saveData);
+    this.applicantActionsService
+      .createSevenDaysHosReview(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.applicantStore.update(1, (entity) => {
+            return {
+              ...entity,
+              sevenDaysHos: {
+                ...entity.sevenDaysHos,
+                sevenDaysHosReview: saveData,
+              },
+            };
+          });
+
+          this.router.navigate([`/application/${this.applicantId}/8`]);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   ngOnDestroy(): void {

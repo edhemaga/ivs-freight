@@ -66,7 +66,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
   public applicantId: number;
   public personalInfoId: number;
-  public previousAddressesId: number;
+  public previousAddressesId: number[];
 
   public personalInfoForm: FormGroup;
 
@@ -626,51 +626,77 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.openAnnotationArray[0] = {
           ...this.openAnnotationArray[0],
           lineInputs: [!isFirstNameValid, !isLastNameValid, !isDoBValid],
+          displayAnnotationButton:
+            (!isFirstNameValid || !isLastNameValid || isDoBValid) &&
+            !personalInfoMessage
+              ? true
+              : false,
           displayAnnotationTextArea: personalInfoMessage ? true : false,
         };
         this.openAnnotationArray[1] = {
           ...this.openAnnotationArray[1],
           lineInputs: [!isPhoneValid],
+          displayAnnotationButton:
+            !isPhoneValid && !phoneMessage ? true : false,
           displayAnnotationTextArea: phoneMessage ? true : false,
         };
         this.openAnnotationArray[7] = {
           ...this.openAnnotationArray[7],
           lineInputs: [!isSsnValid, !isBankValid],
+          displayAnnotationButton:
+            (!isSsnValid || !isBankValid) && !ssnBankMessage ? true : false,
           displayAnnotationTextArea: ssnBankMessage ? true : false,
         };
         this.openAnnotationArray[8] = {
           ...this.openAnnotationArray[8],
           lineInputs: [!isAccountNumberValid, !isRoutingNumberValid],
+          displayAnnotationButton:
+            (!isAccountNumberValid || !isRoutingNumberValid) &&
+            !accountRoutingMessage
+              ? true
+              : false,
           displayAnnotationTextArea: accountRoutingMessage ? true : false,
         };
         this.openAnnotationArray[9] = {
           ...this.openAnnotationArray[9],
           lineInputs: [!isLegalWorkValid],
+          displayAnnotationButton:
+            !isLegalWorkValid && !legalWorkMessage ? true : false,
           displayAnnotationTextArea: legalWorkMessage ? true : false,
         };
         this.openAnnotationArray[10] = {
           ...this.openAnnotationArray[10],
           lineInputs: [!isAnotherNameValid],
+          displayAnnotationButton:
+            !isAnotherNameValid && !anotherNameMessage ? true : false,
           displayAnnotationTextArea: anotherNameMessage ? true : false,
         };
         this.openAnnotationArray[11] = {
           ...this.openAnnotationArray[11],
           lineInputs: [!isInMilitaryValid],
+          displayAnnotationButton:
+            !isInMilitaryValid && !inMilitaryMessage ? true : false,
           displayAnnotationTextArea: inMilitaryMessage ? true : false,
         };
         this.openAnnotationArray[12] = {
           ...this.openAnnotationArray[12],
           lineInputs: [!isFelonyValid],
+          displayAnnotationButton:
+            !isFelonyValid && !felonyMessage ? true : false,
           displayAnnotationTextArea: felonyMessage ? true : false,
         };
         this.openAnnotationArray[13] = {
           ...this.openAnnotationArray[13],
           lineInputs: [!isMisdemeanorValid],
+          displayAnnotationButton:
+            !isMisdemeanorValid && !misdemeanorMessage ? true : false,
           displayAnnotationTextArea: misdemeanorMessage ? true : false,
         };
         this.openAnnotationArray[14] = {
           ...this.openAnnotationArray[14],
           lineInputs: [!isDrunkDrivingValid],
+          displayAnnotationButton:
+            !isDrunkDrivingValid && !drunkDrivingMessage ? true : false,
           displayAnnotationTextArea: drunkDrivingMessage ? true : false,
         };
 
@@ -1408,21 +1434,21 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       .subscribe({
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/2`]);
+
+          this.applicantStore.update(1, (entity) => {
+            return {
+              ...entity,
+              personalInfo: {
+                ...entity.personalInfo,
+                personalInfoReview: saveData,
+              },
+            };
+          });
         },
         error: (err) => {
           console.log(err);
         },
       });
-
-    this.applicantStore.update(1, (entity) => {
-      return {
-        ...entity,
-        personalInfo: {
-          ...entity.personalInfo,
-          personalInfoReview: saveData,
-        },
-      };
-    });
   }
 
   ngOnDestroy(): void {

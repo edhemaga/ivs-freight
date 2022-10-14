@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -32,9 +38,21 @@ import {
   styleUrls: ['./step8.component.scss'],
 })
 export class Step8Component implements OnInit, OnDestroy {
+  @ViewChildren('cmp') set content(content: QueryList<any>) {
+    if (content) {
+      const radioButtonsArray = content.toArray();
+
+      this.drugTestRadios = radioButtonsArray[0]
+        ? radioButtonsArray[0].buttons
+        : null;
+    }
+  }
+
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
+
+  public drugTestRadios: any;
 
   public drugTestForm: FormGroup;
   public drugAlcoholStatementForm: FormGroup;
@@ -55,7 +73,7 @@ export class Step8Component implements OnInit, OnDestroy {
         label: 'YES',
         value: 'drugTestYes',
         name: 'drugTestYes',
-        checked: true,
+        checked: false,
       },
       {
         id: 2,
@@ -112,27 +130,11 @@ export class Step8Component implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
 
+    this.getApplicantId();
+
+    this.getStepValuesFromStore();
+
     this.isTestedNegative();
-
-    if (this.selectedMode === SelectedMode.APPLICANT) {
-      this.applicantActionsService.getApplicantInfo$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          this.applicantId = res.personalInfo.applicantId;
-        });
-    }
-
-    if (this.selectedMode === SelectedMode.REVIEW) {
-      let stepValuesResponse: any;
-
-      this.applicantQuery.drugAndAlcoholList$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          stepValuesResponse = res;
-        });
-
-      this.patchStepValues(stepValuesResponse);
-    }
   }
 
   public createForm(): void {
@@ -156,10 +158,101 @@ export class Step8Component implements OnInit, OnDestroy {
       thirdRowReview: [null],
       fourthRowReview: [null],
     });
+
+    setTimeout(() => {
+      const drugTestValue = this.drugTestForm.get('drugTest').value;
+
+      if (drugTestValue) this.drugTestRadios[0].checked = true;
+    }, 100);
+  }
+
+  public getStepValuesFromStore(): void {
+    let stepValuesResponse: any;
+
+    this.applicantQuery.drugAndAlcoholList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        stepValuesResponse = res;
+      });
+
+    if (stepValuesResponse) {
+      this.patchStepValues(stepValuesResponse);
+    }
   }
 
   public patchStepValues(stepValues: any): void {
-    console.log('stepvalues', stepValues);
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      if (stepValues.drugAndAlcoholReview) {
+        const {
+          isCarrierValid,
+          isPhoneValid,
+          carrierPhoneMessage,
+          isAddressValid,
+          isAddressUnitValid,
+          addressMessage,
+          isSapValid,
+          isSapPhoneValid,
+          sapPhoneMessage,
+          isSapAddressValid,
+          sapAddressMessage,
+        } = stepValues.drugAndAlcoholReview;
+
+        this.openAnnotationArray[0] = {
+          ...this.openAnnotationArray[0],
+          lineInputs: [!isCarrierValid, !isPhoneValid],
+          displayAnnotationButton:
+            (!isCarrierValid || !isPhoneValid) && !carrierPhoneMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: carrierPhoneMessage ? true : false,
+        };
+        this.openAnnotationArray[1] = {
+          ...this.openAnnotationArray[1],
+          lineInputs: [!isAddressValid, !isAddressUnitValid],
+          displayAnnotationButton:
+            (!isAddressValid || !isAddressUnitValid) && !addressMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: addressMessage ? true : false,
+        };
+        this.openAnnotationArray[2] = {
+          ...this.openAnnotationArray[2],
+          lineInputs: [!isSapValid, !isSapPhoneValid],
+          displayAnnotationButton:
+            (!isSapValid || !isSapPhoneValid) && !sapPhoneMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: sapPhoneMessage ? true : false,
+        };
+        this.openAnnotationArray[3] = {
+          ...this.openAnnotationArray[3],
+          lineInputs: [!isSapAddressValid],
+          displayAnnotationButton:
+            !isSapAddressValid && !sapAddressMessage ? true : false,
+          displayAnnotationTextArea: sapAddressMessage ? true : false,
+        };
+
+        const inputFieldsArray = JSON.stringify(
+          this.openAnnotationArray
+            .filter((item) => Object.keys(item).length !== 0)
+            .map((item) => item.lineInputs)
+        );
+
+        if (inputFieldsArray.includes('true')) {
+          this.hasIncorrectFields = true;
+        } else {
+          this.hasIncorrectFields = false;
+        }
+
+        this.drugAlcoholStatementForm.patchValue({
+          firstRowReview: carrierPhoneMessage,
+          secondRowReview: addressMessage,
+          thirdRowReview: sapPhoneMessage,
+          fourthRowReview: sapAddressMessage,
+        });
+      }
+    }
+
     const {
       positiveTest,
       motorCarrier,
@@ -192,6 +285,14 @@ export class Step8Component implements OnInit, OnDestroy {
       this.selectedAddress = address;
       this.selectedSapAddress = sapAddress;
     }
+
+    setTimeout(() => {
+      if (positiveTest) {
+        this.drugTestRadios[0].checked = true;
+      } else {
+        this.drugTestRadios[1].checked = true;
+      }
+    }, 100);
   }
 
   public handleInputSelect(
@@ -313,6 +414,14 @@ export class Step8Component implements OnInit, OnDestroy {
             this.drugAlcoholStatementForm.get('isAgreement')
           );
         }
+      });
+  }
+
+  public getApplicantId(): void {
+    this.applicantQuery.applicantId$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res;
       });
   }
 
@@ -450,15 +559,17 @@ export class Step8Component implements OnInit, OnDestroy {
       ...drugAlcoholStatementForm
     } = this.drugAlcoholStatementForm.value;
 
-    if (this.selectedAddress) {
-      this.selectedAddress.addressUnit = addressUnit;
-      this.selectedAddress.county = '';
-    }
+    const selectedAddress = {
+      ...this.selectedAddress,
+      addressUnit,
+      county: '',
+    };
 
-    if (this.selectedSapAddress) {
-      this.selectedSapAddress.addressUnit = sapAddressUnit;
-      this.selectedSapAddress.county = '';
-    }
+    const selectedSapAddress = {
+      ...this.selectedSapAddress,
+      addressUnit: sapAddressUnit,
+      county: '',
+    };
 
     const drugTestFormValue = this.drugTestForm.get('drugTest').value;
 
@@ -468,11 +579,11 @@ export class Step8Component implements OnInit, OnDestroy {
       positiveTest: drugTestFormValue,
       motorCarrier: drugTestFormValue ? motorCarrier : null,
       phone: drugTestFormValue ? phone : null,
-      address: drugTestFormValue ? this.selectedAddress : null,
+      address: drugTestFormValue ? selectedAddress : null,
       sapName: drugTestFormValue ? sapName : null,
       sapPhone: drugTestFormValue ? sapPhone : null,
-      sapAddress: drugTestFormValue ? this.selectedSapAddress : null,
-      certifyInformation: isAgreement,
+      sapAddress: drugTestFormValue ? selectedSapAddress : null,
+      certifyInfomation: drugTestFormValue ? isAgreement : null,
     };
 
     this.applicantActionsService
@@ -481,6 +592,23 @@ export class Step8Component implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/9`]);
+
+          this.applicantStore.update(1, (entity) => {
+            return {
+              ...entity,
+              drugAndAlcohol: {
+                ...entity.drugAndAlcohol,
+                positiveTest: saveData.positiveTest,
+                motorCarrier: saveData.motorCarrier,
+                phone: saveData.phone,
+                address: saveData.address,
+                sapName: saveData.sapName,
+                sapPhone: saveData.sapPhone,
+                sapAddress: saveData.sapAddress,
+                certifyInfomation: saveData.certifyInfomation,
+              },
+            };
+          });
         },
         error: (err) => {
           console.log(err);
@@ -493,12 +621,13 @@ export class Step8Component implements OnInit, OnDestroy {
       this.drugAlcoholStatementForm.value;
 
     const saveData: CreateDrugAndAlcoholReviewCommand = {
-      applicantId: 1,
+      applicantId: this.applicantId,
       drugAndAlcoholId: this.drugAndAlcoholId,
       isCarrierValid: !this.openAnnotationArray[0].lineInputs[0],
       isPhoneValid: !this.openAnnotationArray[0].lineInputs[1],
       carrierPhoneMessage: firstRowReview,
       isAddressValid: !this.openAnnotationArray[1].lineInputs[0],
+      isAddressUnitValid: !this.openAnnotationArray[1].lineInputs[1],
       addressMessage: secondRowReview,
       isSapValid: !this.openAnnotationArray[2].lineInputs[0],
       isSapPhoneValid: !this.openAnnotationArray[2].lineInputs[1],
@@ -507,7 +636,27 @@ export class Step8Component implements OnInit, OnDestroy {
       sapAddressMessage: fourthRowReview,
     };
 
-    console.log('saveData', saveData);
+    this.applicantActionsService
+      .createDrugAndAcoholReview(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.applicantStore.update(1, (entity) => {
+            return {
+              ...entity,
+              drugAndAlcohol: {
+                ...entity.drugAndAlcohol,
+                drugAndAlcoholReview: saveData,
+              },
+            };
+          });
+
+          this.router.navigate([`/application/${this.applicantId}/9`]);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   ngOnDestroy(): void {

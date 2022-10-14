@@ -162,11 +162,7 @@
                 }"
               >
                 Total Hours:
-                {{
-                  selectedMode === 'APPLICANT_MODE'
-                    ? (totalHours | sumArrays)
-                    : totalHoursInt
-                }}
+                {{ totalHours | sumArrays }}
               </p>
             </div>
           </tr>
@@ -228,9 +224,10 @@
               placeholderIcon: 'date',
               isRequired: true,
               customClass: 'datetimeclass',
+              isDisabled: selectedMode === 'REVIEW_MODE',
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
-            [incorrectValue]="false"
+            [incorrectValue]="openAnnotationArray[0].lineInputs[0]"
             (incorrectEvent)="incorrectInput($event, 0, 0)"
           ></app-ta-input>
         </div>
@@ -248,7 +245,7 @@
               maxLength: 256,
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
-            [incorrectValue]="false"
+            [incorrectValue]="openAnnotationArray[0].lineInputs[1]"
             (incorrectEvent)="incorrectInput($event, 1, 0)"
             [activeAddress]="selectedAddress"
             (selectedAddress)="handleInputSelect($event, 'ADDRESS')"

@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: '',
     component: SsnCardComponent,
-    data: { title: 'Ssn Card' },
+    data: { title: 'SSN Card' },
     children: [],
   },
 ];

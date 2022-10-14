@@ -34,7 +34,7 @@ import {
 export class Step5Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public applicantId: number;
 
@@ -63,6 +63,7 @@ export class Step5Component implements OnInit, OnDestroy {
   public isReviewingCard: boolean = false;
 
   public formValuesToPatch: any;
+  public previousFormValuesOnEdit: any;
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -89,40 +90,13 @@ export class Step5Component implements OnInit, OnDestroy {
 
     this.getDropdownLists();
 
+    this.getApplicantId();
+
+    this.getStepValuesFromStore();
+
     this.hasNoTrafficViolations();
 
-    if (this.selectedMode === SelectedMode.APPLICANT) {
-      this.applicantActionsService.getApplicantInfo$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          this.applicantId = res.personalInfo.applicantId;
-        });
-    }
-
-    if (this.selectedMode === SelectedMode.REVIEW) {
-      let stepValuesResponse: any;
-
-      this.applicantQuery.trafficViolationsList$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          stepValuesResponse = res;
-        });
-
-      this.patchStepValues(stepValuesResponse);
-
-      this.applicantQuery.cdlInformationList$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          const lastLicenseAdded = res.licences[res.licences.length - 1];
-
-          this.lastValidLicense = {
-            license: lastLicenseAdded.licenseNumber,
-            state: lastLicenseAdded.state.stateShortName,
-            /*  classType: lastLicenseAdded._class.name, */
-            expDate: convertDateFromBackend(lastLicenseAdded.expDate),
-          };
-        });
-    }
+    this.getCdlInformation();
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -156,6 +130,20 @@ export class Step5Component implements OnInit, OnDestroy {
       cardReview9: [null],
       cardReview10: [null],
     });
+  }
+
+  public getStepValuesFromStore(): void {
+    let stepValuesResponse: any;
+
+    this.applicantQuery.trafficViolationsList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        stepValuesResponse = res;
+      });
+
+    if (stepValuesResponse) {
+      this.patchStepValues(stepValuesResponse);
+    }
   }
 
   public patchStepValues(stepValues: any): void {
@@ -220,6 +208,7 @@ export class Step5Component implements OnInit, OnDestroy {
 
       this.formValuesToPatch = filteredLastItemInViolationsArray;
       this.previousFormValuesOnReview = filteredLastItemInViolationsArray;
+      this.previousFormValuesOnEdit = filteredLastItemInViolationsArray;
 
       for (let i = 0; i < filteredViolationsArray.length; i++) {
         const firstEmptyObjectInList = this.openAnnotationArray.find(
@@ -365,6 +354,8 @@ export class Step5Component implements OnInit, OnDestroy {
 
     this.helperIndex = 2;
     this.selectedViolationIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
   }
 
   public cancelViolationEditing(event: any): void {
@@ -374,6 +365,8 @@ export class Step5Component implements OnInit, OnDestroy {
 
     this.helperIndex = 2;
     this.selectedViolationIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
   }
 
   public onGetFormStatus(status: string): void {
@@ -465,6 +458,29 @@ export class Step5Component implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         this.vehicleType = res.truckTypes;
+      });
+  }
+
+  public getApplicantId(): void {
+    this.applicantQuery.applicantId$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res;
+      });
+  }
+
+  public getCdlInformation(): void {
+    this.applicantQuery.cdlInformationList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        const lastLicenseAdded = res.licences[res.licences.length - 1];
+
+        this.lastValidLicense = {
+          license: lastLicenseAdded.licenseNumber,
+          state: lastLicenseAdded.state.stateShortName,
+          /*  classType: lastLicenseAdded._class.name, */
+          expDate: convertDateFromBackend(lastLicenseAdded.expDate),
+        };
       });
   }
 
@@ -607,15 +623,53 @@ export class Step5Component implements OnInit, OnDestroy {
     const { certify } = this.certifyForm.value;
 
     const filteredViolationsArray = this.violationsArray.map((item) => {
+      const itemVehicleType = item.vehicleType;
+
+      switch (itemVehicleType) {
+        case 'Tow Truck':
+          item.vehicleType = 'Tow Truck Heavy';
+          break;
+
+        case 'Car Hauler':
+          item.vehicleType = 'Car Hauler - Semi Truck';
+          break;
+
+        case 'Semi w/Sleeper':
+          item.vehicleType = 'Semi Truck w Sleeper';
+          break;
+
+        default:
+          break;
+      }
+
       return {
         date: convertDateToBackend(item.date),
         vehicleTypeId: this.vehicleType.find(
           (vehicleItem) => vehicleItem.name === item.vehicleType
         ).id,
-        location: item.location.address,
+        location: item.location,
         description: item.description,
       };
     });
+
+    const lastViolationsCardVehicleType = this.lastViolationsCard.vehicleType;
+
+    switch (lastViolationsCardVehicleType) {
+      case 'Tow Truck':
+        this.lastViolationsCard.vehicleType = 'Tow Truck Heavy';
+        break;
+
+      case 'Car Hauler':
+        this.lastViolationsCard.vehicleType = 'Car Hauler - Semi Truck';
+        break;
+
+      case 'Semi w/Sleeper':
+        this.lastViolationsCard.vehicleType = 'Semi Truck w Sleeper';
+        break;
+
+      default:
+        break;
+    }
 
     let filteredLastViolationsCard: any;
 
@@ -646,12 +700,38 @@ export class Step5Component implements OnInit, OnDestroy {
         : [...filteredViolationsArray, filteredLastViolationsCard],
     };
 
+    const storeTrafficViolationItems = saveData.trafficViolationItems.map(
+      (item) => {
+        return {
+          ...item,
+          vehicleType: this.vehicleType.find(
+            (vehicleItem) => vehicleItem.id === item.vehicleTypeId
+          ),
+        };
+      }
+    );
+
     this.applicantActionsService
       .createTrafficViolations(saveData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/6`]);
+
+          this.applicantStore.update(1, (entity) => {
+            return {
+              ...entity,
+              trafficViolation: {
+                ...entity.trafficViolation,
+                noViolationsForPastTwelveMonths:
+                  saveData.noViolationsForPastTwelveMonths,
+                notBeenConvicted: saveData.notBeenConvicted,
+                onlyOneHoldLicense: saveData.onlyOneHoldLicense,
+                certifyViolations: saveData.certifyViolations,
+                trafficViolationItems: storeTrafficViolationItems,
+              },
+            };
+          });
         },
         error: (err) => {
           console.log(err);

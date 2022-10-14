@@ -12,7 +12,7 @@ import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-/* import { CreateDisclosureReleaseCommand } from 'appcoretruckassist/model/models'; */
+import { UpdateDisclosureReleaseCommand } from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step10',
@@ -40,25 +40,9 @@ export class Step10Component implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
 
-    if (this.selectedMode === SelectedMode.APPLICANT) {
-      this.applicantActionsService.getApplicantInfo$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          this.applicantId = res.personalInfo.applicantId;
-        });
-    }
+    this.getApplicantId();
 
-    if (this.selectedMode === SelectedMode.REVIEW) {
-      let stepValuesResponse: any;
-
-      this.applicantQuery.disclosureAndReleaseList$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          stepValuesResponse = res;
-        });
-
-      this.patchStepValues(stepValuesResponse);
-    }
+    this.getStepValuesFromStore();
   }
 
   public createForm(): void {
@@ -70,6 +54,20 @@ export class Step10Component implements OnInit, OnDestroy {
       isFifthDisclosure: [false, Validators.requiredTrue],
       isSixthDisclosure: [false, Validators.requiredTrue],
     });
+  }
+
+  public getStepValuesFromStore(): void {
+    let stepValuesResponse: any;
+
+    this.applicantQuery.disclosureAndReleaseList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        stepValuesResponse = res;
+      });
+
+    if (stepValuesResponse) {
+      this.patchStepValues(stepValuesResponse);
+    }
   }
 
   public patchStepValues(stepValues: any) {
@@ -148,6 +146,14 @@ export class Step10Component implements OnInit, OnDestroy {
     }
   }
 
+  public getApplicantId(): void {
+    this.applicantQuery.applicantId$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res;
+      });
+  }
+
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
       if (this.selectedMode === SelectedMode.APPLICANT) {
@@ -173,7 +179,7 @@ export class Step10Component implements OnInit, OnDestroy {
     const { isSixthDisclosure, ...disclosureReleaseForm } =
       this.disclosureReleaseForm.value;
 
-    const saveData: /* CreateDisclosureReleaseCommand */ any = {
+    const saveData: UpdateDisclosureReleaseCommand = {
       ...disclosureReleaseForm,
       applicantId: this.applicantId,
       isSixDisclosure: isSixthDisclosure,
@@ -185,6 +191,21 @@ export class Step10Component implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/11`]);
+
+          this.applicantStore.update(1, (entity) => {
+            return {
+              ...entity,
+              disclosureRelease: {
+                ...entity.disclosureRelease,
+                isFirstDisclosure: saveData.isFirstDisclosure,
+                isSecondDisclosure: saveData.isSecondDisclosure,
+                isThirdDisclosure: saveData.isThirdDisclosure,
+                isFourthDisclosure: saveData.isFourthDisclosure,
+                isFifthDisclosure: saveData.isFifthDisclosure,
+                isSixDisclosure: saveData.isSixDisclosure,
+              },
+            };
+          });
         },
         error: (err) => {
           console.log(err);

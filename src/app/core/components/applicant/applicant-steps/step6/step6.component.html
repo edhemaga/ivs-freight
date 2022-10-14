@@ -22,7 +22,8 @@
         'grade-hovered':
           selectedMode === 'APPLICANT_MODE' && i <= highlightGrade,
         'grade-selected':
-          selectedMode === 'APPLICANT_MODE' && selectedGrade === i,
+          (selectedMode === 'APPLICANT_MODE' && selectedGrade === i) ||
+          (selectedMode === 'APPLICANT_MODE' && i === selectedGrade),
         'all-before-selected':
           (selectedMode === 'APPLICANT_MODE' && i < selectedGrade) ||
           (selectedMode === 'APPLICANT_MODE' && selectedCollegeGrade > -1),
@@ -154,9 +155,10 @@
                     textTransform: 'capitalize',
                     placeholder: 'Please explain',
                     placeholderInsteadOfLabel: true,
+                    isDisabled: selectedMode === 'REVIEW_MODE',
                     incorrectInput: selectedMode === 'REVIEW_MODE'
                   }"
-                  [incorrectValue]="false"
+                  [incorrectValue]="openAnnotationArray[i].lineInputs[0]"
                   (incorrectEvent)="incorrectInput($event, 0, i)"
                 ></app-ta-input>
               </div>
@@ -266,9 +268,10 @@
                       placeholderIcon: 'date',
                       isRequired: true,
                       customClass: 'datetimeclass',
+                      isDisabled: selectedMode === 'REVIEW_MODE',
                       incorrectInput: selectedMode === 'REVIEW_MODE'
                     }"
-                    [incorrectValue]="false"
+                    [incorrectValue]="openAnnotationArray[2].lineInputs[0]"
                     (incorrectEvent)="incorrectInput($event, 0, 2)"
                   ></app-ta-input>
                 </div>
@@ -282,9 +285,10 @@
                       placeholderIcon: 'date',
                       isRequired: true,
                       customClass: 'datetimeclass',
+                      isDisabled: selectedMode === 'REVIEW_MODE',
                       incorrectInput: selectedMode === 'REVIEW_MODE'
                     }"
-                    [incorrectValue]="false"
+                    [incorrectValue]="openAnnotationArray[2].lineInputs[1]"
                     (incorrectEvent)="incorrectInput($event, 1, 2)"
                   ></app-ta-input>
                 </div>
@@ -443,7 +447,7 @@
                 [ngStyle]="{
                   cursor: selectedMode === 'REVIEW_MODE' ? 'pointer' : 'auto'
                 }"
-                (click)="onCardReview(i)"
+                (click)="selectedMode === 'REVIEW_MODE' && onCardReview(i)"
               >
                 <div class="d-flex align-items-center name-box">
                   <p class="m-0 ta-font-regular">

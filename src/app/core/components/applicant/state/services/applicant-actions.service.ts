@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 import { ApplicantService } from '../../../../../../../appcoretruckassist';
 
@@ -15,16 +15,13 @@ import {
   CreateSevenDaysHosCommand,
   CreateDrugAndAlcoholCommand,
   UpdateDriverRightsCommand,
-  /* CreateDisclosureReleaseCommand, */
-  // CreateAuthorizationCommand,
   CreateResponse,
   CreateEducationCommand,
   CreateTrafficViolationCommand,
   CreateAccidentRecordCommand,
   CreateApplicantCdlCommand,
   CreateWorkExperienceCommand,
-  CreatePersonalInfoReviewCommand /* 
-  CreateAuthorizationReviewCommand, */,
+  CreatePersonalInfoReviewCommand,
   CreateWorkExperienceReviewCommand,
   CreateApplicantCdlReviewCommand,
   CreateAccidentRecordReviewCommand,
@@ -33,10 +30,13 @@ import {
   CreateSevenDaysHosReviewCommand,
   CreateDrugAndAlcoholReviewCommand,
   InvitePreviousEmployerCommand,
-  VerifyPreviousEmployerCommand /* 
-  PreviousEmployerProspectResponse, */,
+  VerifyPreviousEmployerCommand,
   CreatePreviousEmployerAccidentHistoryCommand,
   CreatePreviousEmployerDrugAndAlcoholCommand,
+  SphPreviousEmployerProspectResponse,
+  InviteEmployerResponse,
+  UpdateAuthorizationCommand,
+  UpdateDisclosureReleaseCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -115,19 +115,6 @@ export class ApplicantActionsService {
     return this.applicantService.apiApplicantDrugandalcoholPost(data);
   }
 
-  public createDisclosureAndRelease(
-    data: /* CreateDisclosureReleaseCommand */ any
-  ): Observable<CreateResponse> {
-    /*  return this.applicantService.apiApplicantDisclosurereleasePost(data); */
-    return;
-  }
-
-  public createAuthorization(
-    data: /*CreateAuthorizationCommand*/ any
-  ): Observable<CreateResponse> {
-    return of(); //this.applicantService.apiApplicantAuthorizationPost(data);
-  }
-
   /* BACKEND PUT ACTION FUNCTIONS - APPLICANT MODE */
 
   public updatePersonalInfo(
@@ -140,6 +127,18 @@ export class ApplicantActionsService {
     data: UpdateDriverRightsCommand
   ): Observable<object> {
     return this.applicantService.apiApplicantDriverrightsPut(data);
+  }
+
+  public createDisclosureAndRelease(
+    data: UpdateDisclosureReleaseCommand
+  ): Observable<CreateResponse> {
+    return this.applicantService.apiApplicantDisclosurereleasePut(data);
+  }
+
+  public createAuthorization(
+    data: UpdateAuthorizationCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantAuthorizationPut(data);
   }
 
   /* BACKEND POST ACTION FUNCTIONS -  REVIEW MODE */
@@ -192,22 +191,17 @@ export class ApplicantActionsService {
     return this.applicantService.apiApplicantDrugandalcoholReviewPost(data);
   }
 
-  public createAuthorizationReview(): /*  data: CreateAuthorizationReviewCommand */
-  Observable<CreateResponse> {
-    return of(); /*  this.applicantService.apiApplicantAuthorizationReviewPost(data); */
-  }
-
   public invitePreviousEmployerSphForm(
     data: InvitePreviousEmployerCommand
-  ): Observable<any> {
+  ): Observable<InviteEmployerResponse> {
     return this.applicantService.apiApplicantPreviousemployerPost(data);
   }
 
   public verifyPreviousEmployerSphForm(
     data: VerifyPreviousEmployerCommand
-  ) /* : Observable<PreviousEmployerProspectResponse> */ {
-    return of(); /* this.applicantService
-      .apiApplicantPreviousemployerInvitePost(data)
+  ): Observable<SphPreviousEmployerProspectResponse> {
+    return this.applicantService
+      .apiApplicantPreviousemployerVerifyPost(data)
       .pipe(
         tap((res) => {
           this.applicantSphFormStore.set({
@@ -220,7 +214,7 @@ export class ApplicantActionsService {
             },
           });
         })
-      ); */
+      );
   }
 
   public createAccidentHistorySphForm(
