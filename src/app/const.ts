@@ -1126,3 +1126,50 @@ export const FILE_TABLES = {
   TRUCK_LOAD: 'Truckload',
   USER: 'User'
 };
+
+export const noteColors = {
+  regular: [
+    {
+      color: '#536BC2',
+      name: 'Blue',
+    },
+    {
+      color: '#FFA726',
+      name: 'Yellow',
+    },
+    {
+      color: '#EF5350',
+      name: 'Red',
+    },
+    {
+      color: '#26A690',
+      name: 'Dark Green',
+    },
+    {
+      color: '#6C6C6C',
+      name: 'Gray',
+    },
+  ],
+  reversed: [
+    {
+      color: '#6C6C6C',
+      name: 'Gray',
+    },
+    {
+      color: '#26A690',
+      name: 'Dark Green',
+    },
+    {
+      color: '#EF5350',
+      name: 'Red',
+    },
+    {
+      color: '#FFA726',
+      name: 'Yellow',
+    },
+    {
+      color: '#536BC2',
+      name: 'Blue',
+    },
+  ],
+};

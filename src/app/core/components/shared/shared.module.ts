@@ -111,6 +111,7 @@ import { SvgDefinitionsComponent } from '../../../svg-definitions/svg-definition
 import { TaCustomCardV2Component } from './ta-custom-card-v2/ta-custom-card-v2.component';
 import { InputAddressDropdownComponent } from './input-address-dropdown/input-address-dropdown.component';
 import { ApplicantReviewFeedbackComponent } from './applicant-review-feedback/applicant-review-feedback.component';
+import { LoadModalHazardousComponent } from '../modals/load-modal/load-modal-hazardous/load-modal-hazardous.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -162,6 +163,8 @@ export function playerFactory() {
     TaInputDropdownLabelComponent,
     TaUploadFilesComponent,
     ApplicantReviewFeedbackComponent,
+    TaTimePeriodComponent,
+    AutoclosePopoverComponent,
 
     // Modals Components
     ApplicantModalComponent,
@@ -187,6 +190,7 @@ export function playerFactory() {
     RepairOrderModalComponent,
     ProfileUpdateModalComponent,
     LoadModalComponent,
+    LoadModalHazardousComponent,
     TtTitleModalComponent,
     ConfirmationModalComponent,
 
@@ -322,6 +326,8 @@ export function playerFactory() {
     DirectivesModule,
     TaUploadFilesComponent,
 
+    InputAddressDropdownComponent,
+
     // Modals Components
     ApplicantModalComponent,
     TaModalComponent,
@@ -346,12 +352,9 @@ export function playerFactory() {
     RepairOrderModalComponent,
     ProfileUpdateModalComponent,
     LoadModalComponent,
-    TaUploadFilesComponent,
-    TaTimePeriodComponent,
-    AutoclosePopoverComponent,
+    LoadModalHazardousComponent,
     TtTitleModalComponent,
     ConfirmationModalComponent,
-    InputAddressDropdownComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

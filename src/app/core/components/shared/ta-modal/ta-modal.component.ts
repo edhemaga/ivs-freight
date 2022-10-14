@@ -20,6 +20,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import moment from 'moment';
 
 @Component({
   selector: 'app-ta-modal',
@@ -48,6 +49,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   @Input() modalTitle: string;
   @Input() editName: string;
+  @Input() loadModalTitle: string;
+  @Input() loadModalBill: any;
   @Input() editData: any;
   @Input() confirmationData: any;
   @Input() headerSvg: string;
@@ -60,7 +63,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
   @Input() isDNU: boolean;
   @Input() isBFB: boolean;
   @Input() resendEmail: boolean;
-  @Input() map: boolean;
+  @Input() modalAdditionalPart: boolean;
   @Input() topDivider: boolean = true;
   @Input() bottomDivider: boolean = true;
 
@@ -100,6 +103,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
   public dropZoneCounter: number = 0;
   public isLeaveZone: boolean = false;
   public hoverZone: boolean = false;
+
+  public dateNow = moment().format('DD/MM/YY');
 
   constructor(
     private ngbActiveModal: NgbActiveModal,

@@ -17,6 +17,7 @@ export interface TestResponse {
     testReason?: EnumValue;
     testType?: EnumValue;
     testingDate?: string;
+    result?: EnumValue;
     note?: string | null;
 }
 

@@ -966,6 +966,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 26px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 }
 
@@ -985,10 +990,6 @@
   column-gap: 12px;
   align-items: center;
   margin-bottom: 22px;
-
-  .broker-load-information {
-    display: flex;
-  }
 }
 
 .load-requirements-load {
@@ -1078,7 +1079,7 @@
   align-items: center;
   gap: 12px;
 
-  .billing-payment-rate {
+  .billing-payment-field {
     width: 130px;
   }
 
@@ -1092,6 +1093,12 @@
     transition: all 0.3s ease-in-out;
     cursor: pointer;
     border-radius: 2px;
+
+    svg-icon {
+      width: 16px;
+      height: 18px;
+      line-height: 16px;
+    }
 
     &.billing-adjusted {
       .billing-adjusted-plus {

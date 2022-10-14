@@ -8,6 +8,8 @@
   transition: all 0.3s ease-in-out;
   color: $input-label-color;
   -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
   pointer-events: none;
   line-height: 18px;
@@ -24,7 +26,7 @@
 
   &.required {
     &::after {
-      content: "*";
+      content: " *";
       color: $input-label-required-star;
     }
   }
@@ -91,6 +93,32 @@
 
   &.routing-address-focus {
     display: none !important;
+  }
+
+  //------------------------- Multiple Labels Classs -------------------------
+
+  .load-dispatches-ttd {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    -moz-column-gap: 86px;
+    column-gap: 86px;
+  }
+
+  .load-broker-contact {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    -moz-column-gap: 85px;
+    column-gap: 85px;
+  }
+
+  .load-shipper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    -moz-column-gap: 252px;
+    column-gap: 252px;
   }
 
   //------------------------- Custom class -------------------------

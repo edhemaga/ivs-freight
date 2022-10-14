@@ -11,11 +11,10 @@
  */
 
 
-export type ContactEmailType = 'Primary' | 'Work' | 'Personal';
+export type ContactEmailType = 'Work' | 'Home';
 
 export const ContactEmailType = {
-    Primary: 'Primary' as ContactEmailType,
     Work: 'Work' as ContactEmailType,
-    Personal: 'Personal' as ContactEmailType
+    Home: 'Home' as ContactEmailType
 };
 
