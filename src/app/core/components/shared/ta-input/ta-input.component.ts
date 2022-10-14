@@ -519,12 +519,15 @@ export class TaInputComponent
       }
     }
 
-    if (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) {
+    if (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel || this.inputConfig.name == 'Address') {
       if (event.keyCode === 40 || event.keyCode === 38) {
         this.inputService.dropDownKeyNavigation$.next(event.keyCode);
       }
       if (event.keyCode === 13) {
         this.inputService.dropDownKeyNavigation$.next(event.keyCode);
+        if(this.inputConfig.name == 'Address'){
+          this.input.nativeElement.blur();
+        }
       }
       if (event.keyCode === 27) {
         this.blurOnDropDownArrow();
