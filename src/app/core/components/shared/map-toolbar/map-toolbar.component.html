@@ -121,10 +121,7 @@
           disabled: activeTableData?.length < 1
         }"
       >
-        <div
-          *ngIf="activeTableData?.length < 1"
-          class="tooltip-hold"
-        ></div>
+        <div *ngIf="activeTableData?.length < 1" class="tooltip-hold"></div>
         <svg-icon
           [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
           [src]="'assets/svg/common/routing/ic_route_stop_picker.svg'"
@@ -133,17 +130,14 @@
       </div>
 
       <!-- Route Compare -->
-      <div 
-        class="action-div" 
+      <div
+        class="action-div"
         (click)="onToolBarAction('open-route-compare')"
         [ngClass]="{
           disabled: activeTableData?.length < 2
         }"
       >
-        <div
-          *ngIf="activeTableData?.length < 2"
-          class="tooltip-hold"
-        ></div>
+        <div *ngIf="activeTableData?.length < 2" class="tooltip-hold"></div>
         <svg-icon
           [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
           [src]="'assets/svg/common/routing/ic_route_compare.svg'"
@@ -255,7 +249,9 @@
     #op2="ngbPopover"
     (click)="onShowRoutePopover(op2)"
     [ngbPopover]="addRoutePopover"
-    [disablePopover]="activeTableData?.length < 8 || routeToEdit?.id ? false : true"
+    [disablePopover]="
+      activeTableData?.length < 8 || routeToEdit?.id ? false : true
+    "
     [placement]="'bottom-right'"
     [autoClose]="false"
     popoverClass="map-settings-popover add-route-popover"
@@ -404,8 +400,8 @@
     <div class="map-settings-divider"></div>
 
     <div class="map-settings-content buttons-container">
-      <div 
-        class="map-settings-button" 
+      <div
+        class="map-settings-button"
         [ngClass]="{ 'reset-button': mapFormChanged }"
         (click)="resetMapForm()"
       >
@@ -471,6 +467,8 @@
           dropdownWidthClass: 'w-col-280 truck-trailer-dropdown',
           dropdownImageInput: {
             withText: true,
+            svg: true,
+            image: false,
             url: selectedTruckType?.logoName,
             template: 'truck',
             class: selectedTruckType?.class

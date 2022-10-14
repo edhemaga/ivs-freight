@@ -1585,15 +1585,15 @@
               top: 0;
               right: 0px;
 
-              svg-icon{
-                svg{
+              svg-icon {
+                svg {
                   width: 15px;
                   height: 15px;
                 }
               }
             }
 
-            &:hover{
+            &:hover {
               .remove_hos {
                 display: block;
               }
@@ -1627,10 +1627,36 @@
   }
 }
 
+.load-additional-options {
+  .popover-body {
+    .load-additional-container {
+      background-color: #ffffff;
+      border-radius: 2px;
+      padding: 2px;
+      box-shadow: 0 0 4px rgb(0 0 0 / 15%);
+
+      .dropdown-option {
+        margin-bottom: 2px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #6c6c6c;
+        padding: 4px;
+        border-radius: 2px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #f7f7f7;
+          color: #3c3c3c;
+        }
+      }
+    }
+  }
+}
 
 .cdk-drag-animating {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
-.ngx-slider-list.cdk-drop-list-dragging .ngx-slider-item:not(.cdk-drag-placeholder) {
+.ngx-slider-list.cdk-drop-list-dragging
+  .ngx-slider-item:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }

@@ -202,7 +202,7 @@
 
   <div class="d-flex line-container">
     <div class="group address-group">
-      <app-ta-input-address
+      <app-input-address-dropdown
         formControlName="employerAddress"
         [inputConfig]="{
           name: 'Address',
@@ -211,15 +211,17 @@
           isRequired: true,
           placeholderIcon: 'address',
           textTransform: 'capitalize',
-          incorrectInput: selectedMode === 'REVIEW_MODE',
+          dropdownWidthClass: 'w-col-481',
           minLength: 12,
-          maxLength: 256
+          maxLength: 256,
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [placeholderType]="'longAddress'"
         [incorrectValue]="false"
         (incorrectEvent)="incorrectInput($event, 0, 23)"
         [activeAddress]="selectedAddress"
         (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-      ></app-ta-input-address>
+      ></app-input-address-dropdown>
     </div>
     <div class="group address-unit-group">
       <app-ta-input
@@ -490,6 +492,8 @@
             dropdownWidthClass: 'w-col-251',
             dropdownImageInput: {
               withText: true,
+              svg: true,
+              image: false,
               url: selectedVehicleType?.logoName,
               template: 'truck',
               class: selectedVehicleType?.name
@@ -522,6 +526,8 @@
             customClass: 'truck-trailer-dropdown',
             dropdownImageInput: {
               withText: true,
+              svg: true,
+              image: false,
               url: selectedTrailerType?.logoName,
               template: 'trailer',
               class: selectedTrailerType?.name?.toLowerCase().includes('liquid')

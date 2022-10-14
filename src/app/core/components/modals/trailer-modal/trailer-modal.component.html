@@ -49,6 +49,8 @@
                 isDropdown: true,
                 dropdownImageInput: {
                   withText: true,
+                  svg: true,
+                  image: false,
                   url: selectedTrailerType?.logoName,
                   template: 'trailer',
                   class: selectedTrailerType?.name
@@ -106,6 +108,8 @@
                   isDropdown: true,
                   dropdownImageInput: {
                     withText: false,
+                    svg: true,
+                    image: false,
                     url: selectedTrailerMake?.logoName
                   },
                   placeholder: selectedTrailerMake?.name,
@@ -150,6 +154,8 @@
                 isDropdown: true,
                 dropdownImageInput: {
                   withText: true,
+                  svg: true,
+                  image: false,
                   url: selectedColor?.code ? 'ic_color.svg' : null,
                   template: 'color',
                   color: selectedColor?.code

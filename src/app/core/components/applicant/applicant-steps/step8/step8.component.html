@@ -114,7 +114,7 @@
 
         <div class="d-flex line-container">
           <div class="group address-group">
-            <app-ta-input-address
+            <app-input-address-dropdown
               formControlName="address"
               [inputConfig]="{
                 name: 'Address',
@@ -123,15 +123,17 @@
                 isRequired: true,
                 placeholderIcon: 'address',
                 textTransform: 'capitalize',
+                dropdownWidthClass: 'w-col-481',
                 minLength: 6,
                 maxLength: 256,
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
+              [placeholderType]="'longAddress'"
               [incorrectValue]="false"
               (incorrectEvent)="incorrectInput($event, 0, 1)"
               [activeAddress]="selectedAddress"
               (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-            ></app-ta-input-address>
+            ></app-input-address-dropdown>
           </div>
           <div class="group unit-group">
             <app-ta-input
@@ -259,7 +261,7 @@
 
         <div class="d-flex line-container">
           <div class="group sap-address-group">
-            <app-ta-input-address
+            <app-input-address-dropdown
               formControlName="sapAddress"
               [inputConfig]="{
                 name: 'Address',
@@ -268,15 +270,17 @@
                 isRequired: true,
                 placeholderIcon: 'address',
                 textTransform: 'capitalize',
-                minLength: 12,
+                dropdownWidthClass: 'w-col-481',
+                minLength: 6,
                 maxLength: 256,
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
+              [placeholderType]="'longAddress'"
               [incorrectValue]="false"
               (incorrectEvent)="incorrectInput($event, 0, 3)"
               [activeAddress]="selectedSapAddress"
               (selectedAddress)="handleInputSelect($event, 'ADDRESS', 'SAP')"
-            ></app-ta-input-address>
+            ></app-input-address-dropdown>
           </div>
           <div class="group sap-unit-group">
             <app-ta-input

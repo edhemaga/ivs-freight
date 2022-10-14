@@ -52,6 +52,8 @@
                   isDropdown: true,
                   dropdownImageInput: {
                     withText: true,
+                    svg: true,
+                    image: false,
                     url: selectedTruckType?.logoName,
                     template: 'truck',
                     class: selectedTruckType?.name
@@ -100,6 +102,8 @@
                   isDropdown: true,
                   dropdownImageInput: {
                     withText: false,
+                    svg: true,
+                    image: false,
                     url: selectedTruckMake?.logoName
                   },
                   dropdownWidthClass: 'w-col-228'
@@ -149,6 +153,8 @@
                   isDropdown: true,
                   dropdownImageInput: {
                     withText: true,
+                    svg: true,
+                    image: false,
                     url: selectedColor?.code ? 'ic_color.svg' : null,
                     template: 'color',
                     color: selectedColor?.code

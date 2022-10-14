@@ -137,7 +137,8 @@
     class="dropdown-options  {{ inputConfig.dropdownWidthClass }}"
     [ngClass]="{
       scroll: options | taDropdownCount: template,
-      'dropdown-options-groups': template === 'groups'
+      'dropdown-options-groups':
+        template === 'groups' || template === 'load-broker-contact'
     }"
   >
     <div [ngSwitch]="template">
@@ -516,11 +517,7 @@
           <svg-icon
             *ngIf="option.name !== 'Add New'"
             class="load-broker-status"
-            [src]="
-              option.dnu || option.ban
-                ? 'ic_load-broker-dnu-ban.svg'
-                : 'ic_load-broker-credit.svg'
-            "
+            [src]="option.logoName"
             [ngClass]="{
               'dnu-status': option.dnu,
               'low-status':
@@ -545,39 +542,64 @@
       <!--------------------------- Load Broker Contact Template --------------------------->
       <div *ngSwitchCase="'load-broker-contact'">
         <div
-          *ngFor="let option of options; trackBy: identity"
-          class="dropdown-option load-broker-contact-template"
-          [ngClass]="{
-            disabled: option?.disabled,
-            'no-result':
-              options.length === 1 && options[0].name === 'No Results',
-            'add-new': option.name === 'Add New',
-            'add-new-divider': option.name === 'Add New' && options.length > 1,
-            active: option.id === activeItem?.id
-          }"
-          (click)="onActiveItem(option)"
+          *ngFor="let option of options; trackBy: identity; let i = index"
+          class="dropdown-groups load-broker-contact-groups"
+          [ngClass]="{ 'last-group': i === options.length - 1 }"
         >
-          <!-- Broker name -->
+          <p
+            *ngIf="options.length !== 1 && options[0].name !== 'No Results'"
+            class="dropdown-group-header"
+            [ngClass]="{
+              'add-new': option.name === 'Add New',
+              'add-new-divider': option.name === 'Add New' && options.length > 1
+            }"
+          >
+            {{
+              option.name === "Add New" ? option.name : option?.department?.name
+            }}
+          </p>
           <div
-            [innerHtml]="
-              option.name
-                | taHighlight: [{ index: 45632, text: getSuperControl.value }]
-            "
-          ></div>
-          <!-- Broker Phone -->
-          <div
-            [innerHtml]="
-              option.phone
-                | taHighlight: [{ index: 45632, text: getSuperControl.value }]
-            "
-          ></div>
-          <!-- Broker Phone Extension -->
-          <div
-            [innerHtml]="
-              option.extensionPhone
-                | taHighlight: [{ index: 45632, text: getSuperControl.value }]
-            "
-          ></div>
+            *ngFor="let item of option?.contacts; trackBy: identity"
+            class="dropdown-subgroup-options"
+            [ngClass]="{
+              'no-result': options.length === 1 && item.name === 'No Results'
+            }"
+            (click)="onActiveItem(item)"
+          >
+            <div
+              class="dropdown-subgroup-text"
+              [ngClass]="{
+                'no-result': options.length === 1 && item.name === 'No Results',
+                'active-without-check': item.id === activeItem?.id
+              }"
+              [innerHtml]="
+                item.name
+                  | taHighlight: [{ index: 45632, text: getSuperControl.value }]
+              "
+            ></div>
+
+            <div
+              class="dropdown-subgroup-text"
+              [ngClass]="{
+                'active-without-check': item.id === activeItem?.id
+              }"
+              [innerHtml]="
+                item.phone
+                  | taHighlight: [{ index: 45632, text: getSuperControl.value }]
+              "
+            ></div>
+
+            <div
+              class="dropdown-subgroup-text"
+              [ngClass]="{
+                active: item.id === activeItem?.id
+              }"
+              [innerHtml]="
+                item.extensionPhone
+                  | taHighlight: [{ index: 45632, text: getSuperControl.value }]
+              "
+            ></div>
+          </div>
         </div>
       </div>
 
