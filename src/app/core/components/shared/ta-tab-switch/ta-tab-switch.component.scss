@@ -1,272 +1,265 @@
-.tab-switch-holder{
+.tab-switch-holder {
+  position: relative;
+  width: 100%;
+  height: 32px;
+  border-radius: 3px;
+  background-color: #fff;
+  padding: 4px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  user-select: none;
+  line-height: 32px;
+
+  .tab-switch-items-holder {
     position: relative;
-    width: 100%;
+    flex: 1 auto;
     height: 32px;
-    border-radius: 3px;
-    background-color: #fff;
-    padding: 4px;
+    padding: 3px 8px;
+    box-sizing: border-box;
+    border-radius: 2px;
+    background-color: #eeeeee00;
+    font-size: 14px;
+    font-weight: 800;
+    color: #b7b7b7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    cursor: pointer;
+
+    &.active {
+      color: #6c6c6c;
+    }
+
+    &:hover:not(.active) {
+      color: #919191;
+    }
+  }
+
+  .slide-active-holder {
+    position: absolute;
+    background-color: #eeeeee;
+    color: #fff;
+    border-radius: 2px;
+    height: calc(100% - 8px);
+    left: 2px;
+    transition: all 0.25s ease-out;
+    pointer-events: none;
+  }
+
+  &.type1-modal-popup {
+    margin-top: 12px;
+    height: 30px;
+    background-color: #f7f7f7;
+    line-height: 30px;
+    padding: 2px;
+
+    .tab-switch-items-holder {
+      height: 30px;
+      font-weight: 700;
+
+      &.active {
+        color: #536bc2 !important;
+      }
+
+      &:hover:not(.active) {
+        background-color: #f3f3f3;
+        color: #6c6c6c;
+      }
+    }
+
+    .slide-active-holder {
+      background-color: #fff;
+      box-shadow: 0 0 2px #ffffff1a;
+      height: calc(100% - 4px);
+    }
+  }
+
+  &.type2-modal-popup {
+    height: 26px;
+    background-color: #f7f7f7;
+    line-height: 26px;
+    padding: 2px;
+
+    .tab-switch-items-holder {
+      height: 26px;
+      font-size: 12px;
+      font-weight: 700;
+
+      &.active {
+        color: #536bc2 !important;
+      }
+
+      &:hover:not(.active) {
+        background-color: #f3f3f3;
+        color: #6c6c6c;
+      }
+    }
+
+    .slide-active-holder {
+      background-color: #fff;
+      box-shadow: 0 0 2px #ffffff1a;
+      height: calc(100% - 4px);
+    }
+  }
+
+  &.load-type2-modal-popup {
+    .tab-switch-items-holder {
+      &.active {
+        color: #26a690 !important;
+      }
+    }
+  }
+
+  &.type3-modal-popup {
+    height: 26px;
+    background-color: #f7f7f7;
+    line-height: 26px;
+    padding: 2px;
+
+    .tab-switch-items-holder {
+      height: 26px;
+      font-size: 16px;
+      font-weight: 800;
+
+      &.active {
+        color: #536bc2 !important;
+      }
+
+      &:hover:not(.active) {
+        background-color: #f3f3f3;
+        color: #6c6c6c;
+      }
+    }
+
+    .slide-active-holder {
+      background-color: #fff;
+      box-shadow: 0 0 2px #ffffff1a;
+      height: calc(100% - 4px);
+    }
+  }
+}
+
+.custom-popover-holder {
+  position: relative;
+  width: 360px;
+  border-radius: 3px;
+  background-color: #fff;
+  box-shadow: 0 0 4px rgb(0 0 0 / 15%);
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 12px 0px;
+  box-sizing: border-box;
+
+  .custom-popover-close {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
+
+    svg-icon {
+      svg {
+        display: flex;
+        width: 18px;
+        height: 18px;
+
+        path {
+          fill: #aaaaaa;
+        }
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+      svg-icon {
+        svg {
+          path {
+            fill: #6c6c6c;
+          }
+        }
+      }
+    }
+  }
+
+  .custom-popover-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #6c6c6c;
+    padding: 0px 0px 8px 12px;
+    box-sizing: border-box;
+    user-select: none;
+  }
+
+  .custom-popover-border {
+    width: calc(100% - 16px);
+    height: 2px;
+    border-radius: 1px;
+    background-color: #f3f3f3;
+    margin: 0px 8px;
+  }
+
+  .custom-popover-date-picker-holder {
+    width: 100%;
+    padding: 26px 12px 22px 12px;
     box-sizing: border-box;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    user-select: none;
-    line-height: 32px;
+  }
 
-    .tab-switch-items-holder{
-        position: relative;
-        flex: 1 auto;
-        height: 32px;
-        padding: 3px 8px;
-        box-sizing: border-box;
-        border-radius: 2px;
-        background-color: #EEEEEE00;
-        font-size: 14px;
-        font-weight: 800;
-        color: #B7B7B7;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1;
-        cursor: pointer;
-
-        &.active{
-            color: #6C6C6C;
-        }
-
-        &:hover:not(.active){
-            color: #919191;
-        }
-    }
-
-    .slide-active-holder{
-        position: absolute;
-        background-color: #EEEEEE;
-        color: #fff;
-        border-radius: 2px;
-        height: calc(100% - 8px);
-        left: 2px;
-        transition: all 0.25s ease-out;
-        pointer-events: none;
-    }
-
-    &.type1-modal-popup{
-        margin-top: 12px;
-        height: 30px;
-        background-color: #f7f7f7;
-        line-height: 30px;
-        padding: 2px;
-
-        .tab-switch-items-holder{
-            height: 30px;
-            font-weight: 700;
-
-
-            &.active{
-                color: #536bc2 !important;
-
-            } 
-            
-            &:hover:not(.active){
-                background-color: #F3F3F3;
-                color: #6C6C6C;
-    
-            }    
-        }
-
-        .slide-active-holder{
-            background-color: #fff;
-            box-shadow: 0 0 2px #ffffff1A;
-            height: calc(100% - 4px);
-
-        }
-
-    }
-
-    &.type2-modal-popup{
-        height: 26px;
-        background-color: #f7f7f7;
-        line-height: 26px;
-        padding: 2px;
-
-        .tab-switch-items-holder{
-            height: 26px;
-            font-size: 12px;
-            font-weight: 700;
-
-
-            &.active{
-                color: #536bc2 !important;
-            }  
-            
-            
-            &:hover:not(.active){
-                background-color: #F3F3F3;
-                color: #6C6C6C;
-            }  
-        }
-
-        .slide-active-holder{
-            background-color: #fff;
-            box-shadow: 0 0 2px #ffffff1A;
-            height: calc(100% - 4px);
-
-        }
-
-    }
-
-    &.type3-modal-popup{
-        height: 26px;
-        background-color: #f7f7f7;
-        line-height: 26px;
-        padding: 2px;
-
-        .tab-switch-items-holder{
-            height: 26px;
-            font-size: 16px;
-            font-weight: 800;
-
-
-            &.active{
-                color: #536bc2 !important;
-            }  
-            
-            
-            &:hover:not(.active){
-                background-color: #F3F3F3;
-                color: #6C6C6C;
-            }  
-        }
-
-        .slide-active-holder{
-            background-color: #fff;
-            box-shadow: 0 0 2px #ffffff1A;
-            height: calc(100% - 4px);
-
-        }
-    }
-
-}
-
-.custom-popover-holder{
-    position: relative;
-    width: 360px;
-    border-radius: 3px;
-    background-color: #fff;
-    box-shadow: 0 0 4px rgb(0 0 0 / 15%);
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-direction: column;
-    padding: 12px 0px;
+  .custom-popover-button-holder {
+    width: 100%;
+    padding: 12px 12px 0px 12px;
     box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
 
-    .custom-popover-close{
-        position: absolute;
-        width: 22px;
-        height: 22px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        top: 12px;
-        right: 12px;
+    .custom-popover-button-clear {
+      width: 132px;
+      height: 32px;
+      border-radius: 2px;
+      background-color: #f3f3f3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #aaaaaa;
+      line-height: 32px;
+
+      &.active {
         cursor: pointer;
+        color: #6c6c6c;
 
-        svg-icon{
-            svg{
-                display: flex;
-                width: 18px;
-                height: 18px;
-
-                path{
-                    fill: #AAAAAA;
-                }
-            }
+        &:hover {
+          background-color: #6c6c6c;
+          color: #fff;
         }
+      }
+    }
 
-        &:hover{
-            cursor: pointer;
-            svg-icon{
-                svg{
-                    path{
-                        fill: #6C6C6C;
-                    }
-                }
-            }
+    .custom-popover-button-set {
+      &.active {
+        cursor: pointer;
+        background-color: #6d82c7;
+        color: #fff;
+
+        &:hover {
+          background-color: #536bc2;
+          color: #fff;
         }
+      }
     }
-
-    .custom-popover-title{
-        font-size: 18px;
-        font-weight: 800;
-        color: #6C6C6C;
-        padding: 0px 0px 8px 12px;
-        box-sizing: border-box;
-        user-select: none;
-    }
-
-    .custom-popover-border{
-        width: calc(100% - 16px);
-        height: 2px;
-        border-radius: 1px;
-        background-color: #F3F3F3;
-        margin: 0px 8px;
-    }
-
-    .custom-popover-date-picker-holder{
-        width: 100%;
-        padding: 26px 12px 22px 12px;
-        box-sizing: border-box;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-    }
-
-    .custom-popover-button-holder{
-        width: 100%;
-        padding: 12px 12px 0px 12px;
-        box-sizing: border-box;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        user-select: none;
-
-        .custom-popover-button-clear{
-            width: 132px;
-            height: 32px;
-            border-radius: 2px;
-            background-color: #F3F3F3;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 14px;
-            font-weight: 700;
-            color: #AAAAAA;
-            line-height: 32px;
-
-            &.active{
-                cursor: pointer;
-                color: #6C6C6C;
-
-                &:hover{
-                    background-color: #6C6C6C;
-                    color: #fff;
-                }
-            }
-        }
-
-        .custom-popover-button-set{
-
-            &.active{
-                cursor: pointer;
-                background-color: #6D82C7;
-                color: #fff;
-
-                &:hover{
-                    background-color: #536BC2;
-                    color: #fff;
-                }
-            }
-
-        }
-    }
+  }
 }

@@ -1,13 +1,16 @@
 $container-background-color: #f7f7f7;
 $container-color: #6c6c6c;
+$container-x-close: #919191;
 $container-color-20: rgb(108, 108, 108, 0.2);
+$white: #ffffff;
+$yellow: #ffcb86;
 
 .load-m-hazardous-container {
   display: flex;
   flex-direction: column;
   flex: 1;
 
-  height: 764px;
+  height: 779px;
   padding: 12px;
   padding-bottom: 0px;
 
@@ -21,7 +24,7 @@ $container-color-20: rgb(108, 108, 108, 0.2);
 
   &::-webkit-scrollbar-thumb {
     background-color: transparent;
-    border: 6px solid #6c6c6c;
+    border: 6px solid $container-color;
     border-radius: 1px;
   }
 
@@ -35,7 +38,7 @@ $container-color-20: rgb(108, 108, 108, 0.2);
 
   &::-moz-selection {
     background-color: rgb(229, 229, 229, 0.2);
-    color: #6c6c6c;
+    color: $container-color;
   }
 
   &-title {
@@ -75,7 +78,7 @@ $container-color-20: rgb(108, 108, 108, 0.2);
       &:hover {
         svg {
           path {
-            fill: #919191 !important;
+            fill: $container-x-close !important;
           }
         }
       }
@@ -196,8 +199,8 @@ $container-color-20: rgb(108, 108, 108, 0.2);
           }
 
           .tableContext-text {
-            color: #ffffff;
-            background-color: #ffcb86;
+            color: $white;
+            background-color: $yellow;
             width: 20px;
             height: 18px;
             border-radius: 2px;
