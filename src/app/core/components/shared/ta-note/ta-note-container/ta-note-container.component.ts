@@ -41,6 +41,7 @@ export class TaNoteContainerComponent implements OnInit {
   };
   slowTimeout: any;
   lastSavedIndex: number = -1;
+  defaultColorSet: boolean = false;
   private destroy$ = new Subject<void>();
 
   constructor(private sharedService: SharedService) {}
@@ -75,11 +76,15 @@ export class TaNoteContainerComponent implements OnInit {
     });
   }
 
-  executeEditor(action: string, color?: string, indx?: number) {
+  executeEditor(
+    action: string,
+    color?: string,
+    indx?: number,
+    preventSelectionRemove?: boolean
+  ) {
     if (indx || indx === 0) {
       this.selectedColorName = this.containerColors[indx];
     }
-
     document.execCommand('styleWithCSS', false, 'true');
     if (this.range) {
       this.selectionTaken.removeAllRanges();
@@ -109,6 +114,7 @@ export class TaNoteContainerComponent implements OnInit {
           this.focusElement();
           this.selectedPaternColor = color;
           document.execCommand('foreColor', false, color);
+          this.defaultColorSet = true;
         });
       });
     }
@@ -139,6 +145,14 @@ export class TaNoteContainerComponent implements OnInit {
             };
       }, 200);
       this.selectedPaternColor = document.queryCommandValue('ForeColor');
+    }
+
+    if(!this.defaultColorSet){
+      this.containerColors.map((col, indx) => {
+        if (col.color == this.selectedPaternColor) {
+          this.executeEditor('foreColor', this.selectedPaternColor, indx, true);
+        }
+      });
     }
   }
 
