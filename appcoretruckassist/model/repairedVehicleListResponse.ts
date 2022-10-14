@@ -9,13 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RepairedVehicleResponsePagination } from './repairedVehicleResponsePagination';
 
 
-export interface SevenDaysHosReviewResponse { 
-    id?: number;
-    isReleaseDateValid?: boolean;
-    isLocationValid?: boolean;
-    releaseDateLocationMessage?: string | null;
-    sevenDaysHosId?: number;
+export interface RepairedVehicleListResponse { 
+    pagination?: RepairedVehicleResponsePagination;
 }
 

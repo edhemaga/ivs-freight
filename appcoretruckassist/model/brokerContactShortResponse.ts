@@ -11,11 +11,11 @@
  */
 
 
-export interface SevenDaysHosReviewResponse { 
+export interface BrokerContactShortResponse { 
     id?: number;
-    isReleaseDateValid?: boolean;
-    isLocationValid?: boolean;
-    releaseDateLocationMessage?: string | null;
-    sevenDaysHosId?: number;
+    brokerId?: number;
+    phone?: string | null;
+    contactName?: string | null;
+    extensionPhone?: string | null;
 }
 

@@ -12,15 +12,19 @@
 import { AddressEntity } from './addressEntity';
 
 
-export interface CreateDrugAndAlcoholCommand { 
-    positiveTest?: boolean;
-    motorCarrier?: string | null;
+export interface SphDrugAndAlcoholResponse { 
+    id?: number;
+    employmentFrom?: string;
+    employmentTo?: string;
+    higherAlcoholConcentration?: boolean;
+    positiveDrugTest?: boolean;
+    refusedToSubmitTest?: boolean;
+    otherViolations?: boolean;
+    violatedDot?: boolean;
+    sapName?: string | null;
     phone?: string | null;
     address?: AddressEntity;
-    sapName?: string | null;
-    sapPhone?: string | null;
-    sapAddress?: AddressEntity;
-    certifyInfomation?: boolean;
-    applicantId?: number;
+    hasPositiveTests?: boolean;
+    sphProspectId?: number;
 }
 

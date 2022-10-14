@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AuthorizationReviewResponse } from './authorizationReviewResponse';
 
 
 export interface AuthorizationFeedbackResponse { 
@@ -21,7 +20,6 @@ export interface AuthorizationFeedbackResponse {
     signature?: string | null;
     reviewed?: boolean | null;
     approved?: boolean | null;
-    authorizationReview?: AuthorizationReviewResponse;
     applicantId?: number;
 }
 

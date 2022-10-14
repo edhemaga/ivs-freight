@@ -9,13 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AddressEntity } from './addressEntity';
 
 
-export interface SevenDaysHosReviewResponse { 
+export interface SphAccidentHistoryItemResponse { 
     id?: number;
-    isReleaseDateValid?: boolean;
-    isLocationValid?: boolean;
-    releaseDateLocationMessage?: string | null;
-    sevenDaysHosId?: number;
+    location?: AddressEntity;
+    date?: string;
+    fatalities?: number | null;
+    injuries?: number | null;
+    hazmatSpill?: boolean;
+    description?: string | null;
+    sphAccidentHistoryId?: number;
 }
 

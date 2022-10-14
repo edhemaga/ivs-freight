@@ -9,13 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BrokerContactShortResponse } from './brokerContactShortResponse';
+import { DepartmentResponse } from './departmentResponse';
 
 
-export interface SevenDaysHosReviewResponse { 
-    id?: number;
-    isReleaseDateValid?: boolean;
-    isLocationValid?: boolean;
-    releaseDateLocationMessage?: string | null;
-    sevenDaysHosId?: number;
+export interface BrokerContactGroupResponse { 
+    department?: DepartmentResponse;
+    contacts?: Array<BrokerContactShortResponse> | null;
 }
 
