@@ -68,7 +68,7 @@ export class RepairTService implements OnDestroy {
               );
               this.shopMinimalStore.add(shop);
               /*  this.sdls.update(shop.id, { repairs: shop.repairs }); */
-              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit });
+              // this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit });
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 tab: 'repair-shop',
@@ -127,7 +127,7 @@ export class RepairTService implements OnDestroy {
               );
               this.shopMinimalStore.add(shop);
               /* this.sdls.update(shop.id, { repairs: shop.repairs }); */
-              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit });
+              // this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit });
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 tab: 'repair-shop',

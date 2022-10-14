@@ -44,7 +44,6 @@ import { CalendarLeftComponent } from './custom-datetime-pickers/calendar-left/c
 import { DateCalendarsComponent } from './custom-datetime-pickers/date-calendars/date-calendars.component';
 import { DriverModalComponent } from '../modals/driver-modal/driver-modal.component';
 import { TaCheckboxComponent } from './ta-checkbox/ta-checkbox.component';
-import { TaInputAddressComponent } from './ta-input-address/ta-input-address.component';
 import { DirectivesModule } from '../../directives/directives.module';
 
 import { TruckModalComponent } from '../modals/truck-modal/truck-modal.component';
@@ -111,6 +110,7 @@ import { SvgDefinitionsComponent } from '../../../svg-definitions/svg-definition
 import { TaCustomCardV2Component } from './ta-custom-card-v2/ta-custom-card-v2.component';
 import { InputAddressDropdownComponent } from './input-address-dropdown/input-address-dropdown.component';
 import { ApplicantReviewFeedbackComponent } from './applicant-review-feedback/applicant-review-feedback.component';
+import { LoadModalHazardousComponent } from '../modals/load-modal/load-modal-hazardous/load-modal-hazardous.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -140,7 +140,6 @@ export function playerFactory() {
     TaCustomCardComponent,
     TaReCardComponent,
     TaDetailsHeaderCardComponent,
-    TaInputAddressComponent,
     TaInputDropdownComponent,
     TaInputNoteComponent,
     TaInputComponent,
@@ -162,6 +161,8 @@ export function playerFactory() {
     TaInputDropdownLabelComponent,
     TaUploadFilesComponent,
     ApplicantReviewFeedbackComponent,
+    TaTimePeriodComponent,
+    AutoclosePopoverComponent,
 
     // Modals Components
     ApplicantModalComponent,
@@ -187,6 +188,7 @@ export function playerFactory() {
     RepairOrderModalComponent,
     ProfileUpdateModalComponent,
     LoadModalComponent,
+    LoadModalHazardousComponent,
     TtTitleModalComponent,
     ConfirmationModalComponent,
 
@@ -295,7 +297,6 @@ export function playerFactory() {
     TaCheckboxComponent,
     TaCommonHeaderComponent,
     TaReCardComponent,
-    TaInputAddressComponent,
     TaInputDropdownComponent,
     TaInputNoteComponent,
     TaInputComponent,
@@ -318,9 +319,10 @@ export function playerFactory() {
 
     TaCopyComponent,
     TaInputDropdownLabelComponent,
-    TaInputAddressComponent,
     DirectivesModule,
     TaUploadFilesComponent,
+
+    InputAddressDropdownComponent,
 
     // Modals Components
     ApplicantModalComponent,
@@ -346,12 +348,9 @@ export function playerFactory() {
     RepairOrderModalComponent,
     ProfileUpdateModalComponent,
     LoadModalComponent,
-    TaUploadFilesComponent,
-    TaTimePeriodComponent,
-    AutoclosePopoverComponent,
+    LoadModalHazardousComponent,
     TtTitleModalComponent,
     ConfirmationModalComponent,
-    InputAddressDropdownComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

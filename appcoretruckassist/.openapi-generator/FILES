@@ -92,7 +92,6 @@ model/applicationStatus.ts
 model/archiveApplicationCommand.ts
 model/archiveMultipleApplicationsCommand.ts
 model/authorizationFeedbackResponse.ts
-model/authorizationReviewResponse.ts
 model/autocompleteSearchLayer.ts
 model/bankAccountResponse.ts
 model/bankAccountStatus.ts
@@ -102,7 +101,9 @@ model/bankResponse.ts
 model/bankResponsePagination.ts
 model/brakes.ts
 model/brokerContactCommand.ts
+model/brokerContactGroupResponse.ts
 model/brokerContactResponse.ts
+model/brokerContactShortResponse.ts
 model/brokerMinimalListResponse.ts
 model/brokerMinimalResponse.ts
 model/brokerMinimalResponsePagination.ts
@@ -169,8 +170,6 @@ model/createAccidentRecordReviewCommand.ts
 model/createApplicantCdlCommand.ts
 model/createApplicantCdlReviewCommand.ts
 model/createApplicantCommand.ts
-model/createAuthorizationCommand.ts
-model/createAuthorizationReviewCommand.ts
 model/createBankCommand.ts
 model/createBrokerCommand.ts
 model/createCommentCommand.ts
@@ -428,7 +427,6 @@ model/preferredLoadType.ts
 model/previousAddressReviewCommand.ts
 model/previousEmployerAccidentHistoryItemCommand.ts
 model/previousEmployerModalResponse.ts
-model/previousEmployerProspectResponse.ts
 model/previousEmployerRequestResponse.ts
 model/problemDetails.ts
 model/ratingSetResponse.ts
@@ -442,7 +440,6 @@ model/renewCdlCommand.ts
 model/reorderDispatchCommand.ts
 model/reorderDispatchesCommand.ts
 model/repairAutocompleteDescriptionResponse.ts
-model/repairByUnitResponse.ts
 model/repairItemCommand.ts
 model/repairItemResponse.ts
 model/repairListResponse.ts
@@ -465,6 +462,9 @@ model/repairShopServiceTypeResponse.ts
 model/repairShopShortResponse.ts
 model/repairType.ts
 model/repairUnitType.ts
+model/repairedVehicleListResponse.ts
+model/repairedVehicleResponse.ts
+model/repairedVehicleResponsePagination.ts
 model/resendInviteCommand.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
@@ -505,6 +505,10 @@ model/signUpCompanyCommand.ts
 model/signUpDriverMobileCommand.ts
 model/signupUserCommand.ts
 model/specialCheck.ts
+model/sphAccidentHistoryItemResponse.ts
+model/sphAccidentHistoryResponse.ts
+model/sphDrugAndAlcoholResponse.ts
+model/sphPreviousEmployerProspectResponse.ts
 model/splitLoadCommand.ts
 model/splitLoadResponse.ts
 model/stateResponse.ts
@@ -522,6 +526,7 @@ model/terminalListResponse.ts
 model/terminalResponse.ts
 model/terminalResponsePagination.ts
 model/testResponse.ts
+model/testResult.ts
 model/testType.ts
 model/timeOnly.ts
 model/timeType.ts

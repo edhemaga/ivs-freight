@@ -11,11 +11,11 @@
  */
 
 
-export type ContactPhoneType = 'Primary' | 'Work' | 'Personal';
+export type ContactPhoneType = 'Mobile' | 'Work' | 'Home';
 
 export const ContactPhoneType = {
-    Primary: 'Primary' as ContactPhoneType,
+    Mobile: 'Mobile' as ContactPhoneType,
     Work: 'Work' as ContactPhoneType,
-    Personal: 'Personal' as ContactPhoneType
+    Home: 'Home' as ContactPhoneType
 };
 

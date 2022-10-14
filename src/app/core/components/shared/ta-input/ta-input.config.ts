@@ -1,8 +1,16 @@
 export interface ITaInput {
   id?: any; // only for form array to indefier element
   name: string;
+  multipleInputValues?: {
+    options: any[]; // { value: string; logoName?: string; }
+    customClass: string;
+  };
   type: string;
   label?: string;
+  multipleLabel?: {
+    labels: string[]; // ['Driver', 'Truck #', 'Trailer #']
+    customClass: string;
+  };
   placeholder?: string; // only for dropdown, otherwise placeholder is label !!!
   placeholderIcon?: string;
   placeholderText?: string;
@@ -73,7 +81,10 @@ export interface ITaInput {
   dropdownWidthClass?: string; // Look in ta-input-drodown.scss for implementation class (width of dropdowns)
   dropdownImageInput?: {
     withText: boolean;
+    svg: boolean;
+    image: boolean;
     url: string;
+    nameInitialsInsteadUrl?: string; // if url does not exist, but must render initials of name
     template?: string; // truck, trailer...
     color?: string; // colors store in backe-end dynamicly
     class?: string; // colors store in front-end
