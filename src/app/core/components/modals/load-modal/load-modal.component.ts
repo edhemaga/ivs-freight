@@ -801,13 +801,25 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       .get('billingPaymentAdjustedRate')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
+        if (value > this.loadForm.get('billingPaymentBaseRate').value) {
+          this.loadModalBill.adjusted = 0;
+          this.loadForm.get('billingPaymentAdjustedRate').patchValue(0);
+          return;
+        }
         this.loadModalBill.adjusted = parseFloat(value);
+        this.loadForm.get('billingPaymentAdjustedRate').setErrors(null);
       });
     this.loadForm
       .get('bilingPaymentAdvanceRate')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
+        if (value > this.loadForm.get('billingPaymentBaseRate').value) {
+          this.loadModalBill.advance = 0;
+          this.loadForm.get('bilingPaymentAdvanceRate').patchValue(0);
+          return;
+        }
         this.loadModalBill.advance = parseFloat(value);
+        this.loadForm.get('bilingPaymentAdvanceRate').setErrors(null);
       });
     this.loadForm
       .get('bilingPaymentLayover')
