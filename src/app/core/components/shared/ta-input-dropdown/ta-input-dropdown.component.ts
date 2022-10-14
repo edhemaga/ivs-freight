@@ -485,7 +485,6 @@ export class TaInputDropdownComponent
               ),
             };
           });
-          // .filter((item) => item?.contacts?.length);
         }
 
         if (!this.options.length) {

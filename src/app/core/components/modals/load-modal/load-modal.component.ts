@@ -16,7 +16,15 @@ import { CommentsService } from '../../../services/comments/comments.service';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
 import { ITaInput } from '../../shared/ta-input/ta-input.config';
 
-import { combineLatest, Subject, takeUntil, delay, map, share } from 'rxjs';
+import {
+  combineLatest,
+  Subject,
+  takeUntil,
+  delay,
+  map,
+  share,
+  concat,
+} from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
@@ -126,6 +134,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       labels: ['Contact', 'Phone', 'Ext'],
       customClass: 'load-broker-contact',
     },
+    textTransform: 'uppercase',
     isDropdown: true,
     dropdownWidthClass: 'w-col-391',
   };
@@ -149,6 +158,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       labels: ['Shipper', 'Location'],
       customClass: 'load-shipper',
     },
+    textTransform: 'uppercase',
     isDropdown: true,
     isRequired: true,
     dropdownWidthClass: 'w-col-696',
@@ -447,18 +457,18 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       }
       case 'shipper': {
         if (event) {
-          this.selectedShipper = event?.name?.concat(' ', event?.address);
+          this.selectedShipper = event;
 
           this.loadShipperInputConfig = {
             ...this.loadShipperInputConfig,
             multipleInputValues: {
               options: [
                 {
-                  value: event?.name,
+                  value: this.selectedShipper.name,
                   logoName: null,
                 },
                 {
-                  value: event?.address,
+                  value: this.selectedShipper.address,
                   logoName: null,
                 },
               ],
@@ -466,6 +476,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             },
             blackInput: true,
           };
+
+          console.log('selected shipper - ', this.selectedShipper);
+          console.log('shipper conf - ', this.loadShipperInputConfig);
         } else {
           this.loadShipperInputConfig.multipleInputValues = null;
         }
