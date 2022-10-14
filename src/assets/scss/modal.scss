@@ -209,7 +209,7 @@ ngb-modal-window[aria-hidden="true"] {
               .load-modal-base-rate,
               .load-modal-adjusted-rate {
                 background-color: #6c6c6c;
-                color: #ffffff;
+                color: #ffffff !important;
                 margin: 0;
                 padding: 0;
                 font-size: 14px;
@@ -224,6 +224,16 @@ ngb-modal-window[aria-hidden="true"] {
 
               .load-modal-adjusted-rate {
                 background-color: #ffb74d;
+              }
+            }
+
+            &.no-bill-rate {
+              p {
+                color: #b7b7b7;
+              }
+
+              .load-modal-base-rate {
+                background-color: #b7b7b7;
               }
             }
           }
@@ -247,7 +257,7 @@ ngb-modal-window[aria-hidden="true"] {
 
             .load-modal-base-due {
               background-color: #ef5350;
-              color: #ffffff;
+              color: #ffffff !important;
               margin: 0;
               padding: 0;
               font-size: 14px;
@@ -258,6 +268,16 @@ ngb-modal-window[aria-hidden="true"] {
               border-radius: 2px;
               text-align: right;
               min-width: 84px;
+            }
+
+            &.no-due-rate {
+              p {
+                color: #b7b7b7;
+              }
+
+              .load-modal-base-due {
+                background-color: #b7b7b7;
+              }
             }
           }
         }

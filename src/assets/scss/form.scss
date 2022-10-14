@@ -1075,13 +1075,10 @@
 }
 
 .billing-payment-load {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  .billing-payment-field {
-    width: 130px;
-  }
+  display: grid;
+  grid-template-columns: repeat(6, max-content);
+  column-gap: 12px;
+  row-gap: 26px;
 
   .billing-plus {
     width: 26px;

@@ -360,10 +360,12 @@ export class TaInputDropdownComponent
               .find(
                 (item) => item.name.toLowerCase() === selectedItem.toLowerCase()
               );
+
             // MultiSelect Dropdown
             if (this.inputConfig.multiselectDropdown) {
               this.onMultiselectSelect(existItem, this.template);
             }
+
             // Normal Dropdown
             else {
               this.inputConfig = {
@@ -383,7 +385,7 @@ export class TaInputDropdownComponent
                     blackInput: false,
                   };
                   clearTimeout(timeout);
-                }, 600);
+                }, 150);
               }
             }
             this.popoverRef.close();
@@ -398,7 +400,7 @@ export class TaInputDropdownComponent
 
   private search(searchText: string): void {
     // Single Dropdown
-    if (this.template !== 'groups') {
+    if (this.template !== 'groups' && this.template !== 'load-broker-contact') {
       if (
         searchText?.length &&
         this.getSuperControl.value &&
@@ -408,9 +410,11 @@ export class TaInputDropdownComponent
           item.name
             ? item.name.toLowerCase().includes(searchText.toLowerCase())
             : item.code
+            ? item.code
                 .concat(' - ', item.description)
                 .toLowerCase()
                 .includes(searchText.toLowerCase())
+            : searchText.toLowerCase()
         );
 
         if (
@@ -457,16 +461,31 @@ export class TaInputDropdownComponent
         searchText?.length &&
         this.activeItem?.name !== this.getSuperControl.value
       ) {
-        this.options = this.originalOptions
-          .map((element) => {
+        if (this.template === 'groups') {
+          this.options = this.originalOptions
+            .map((element) => {
+              return {
+                ...element,
+                groups: element.groups.filter((subElement) =>
+                  subElement.name
+                    .toLowerCase()
+                    .includes(searchText.toLowerCase())
+                ),
+              };
+            })
+            .filter((item) => item.groups.length);
+        }
+
+        if (this.template === 'load-broker-contact') {
+          this.options = this.originalOptions.map((element) => {
             return {
               ...element,
-              groups: element.groups.filter((subElement) =>
+              contacts: element?.contacts?.filter((subElement) =>
                 subElement.name.toLowerCase().includes(searchText.toLowerCase())
               ),
             };
-          })
-          .filter((item) => item.groups.length);
+          });
+        }
 
         if (!this.options.length) {
           this.options.push({
@@ -544,14 +563,14 @@ export class TaInputDropdownComponent
         this.options = this.originalOptions;
         this.selectedItem.emit(option);
 
-        if (this.inputConfig.name != 'RoutingAddress') {
+        if (this.inputConfig.name !== 'RoutingAddress') {
           const timeout = setTimeout(() => {
             this.inputConfig = {
               ...this.inputConfig,
               blackInput: false,
             };
             clearTimeout(timeout);
-          }, 100);
+          }, 150);
         }
       }
     }
