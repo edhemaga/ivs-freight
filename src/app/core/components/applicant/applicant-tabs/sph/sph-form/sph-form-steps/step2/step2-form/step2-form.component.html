@@ -16,7 +16,7 @@
       ></app-ta-input>
     </div>
     <div class="group location-group">
-      <app-ta-input-address
+      <app-input-address-dropdown
         formControlName="accidentLocation"
         [inputConfig]="{
           name: 'Address',
@@ -24,13 +24,15 @@
           label: 'Location',
           isRequired: true,
           placeholderIcon: 'address',
+          textTransform: 'capitalize',
+          dropdownWidthClass: 'w-col-445',
           minLength: 12,
-          maxLength: 256,
-          textTransform: 'capitalize'
+          maxLength: 256
         }"
+        [placeholderType]="'shortAddress'"
         [activeAddress]="selectedAddress"
         (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-      ></app-ta-input-address>
+      ></app-input-address-dropdown>
     </div>
   </div>
 

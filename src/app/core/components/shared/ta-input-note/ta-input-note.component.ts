@@ -33,17 +33,25 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   saveIntervalStarted: boolean = false;
   @Input() isVisibleDivider: boolean = true;
   @Input() public animationsDisabled = false;
+  @Input() noteType: string = '';
 
   noActive: string;
 
   @Input() set isVisibleNote(value: boolean) {
     this.noActive = value ?  'active' : 'innactive';
-    this._isVisibleNote = value;
+    this._isVisibleNote = value ? true : false;
   }
 
   // @Input('isVisibleNote') set isVisibleNote(value: any) {
   //   this._isVisibleNote = value ? true : false;
   // }
+
+
+
+  animationMarginParams = {
+    marginTop: '0px',
+    marginBottom: '0px',
+  };
 
   @Input() isVisibleArrow: boolean = true;
   @Input() minRows: number = 2;
@@ -83,7 +91,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
 
     const oldNoActive = this.noActive;
     this.noActive = '';
-    this._isVisibleNote = oldNoActive == 'innactive' ? true : !this._isVisibleNote;
+    this._isVisibleNote = !this._isVisibleNote;
 
     if (this._isVisibleNote) {
       this.checkActiveItems();

@@ -267,13 +267,11 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     let dotAnimation = document.querySelector(
       this.editData ? '.animation-three-tabs' : '.animation-two-tabs'
     );
-    const animationTabTimeout = setTimeout(() => {
-      this.animationObject = {
-        value: this.selectedTab,
-        params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-      };
-      clearTimeout(animationTabTimeout);
-    });
+
+    this.animationObject = {
+      value: this.selectedTab,
+      params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+    };
   }
 
   public get shipperContacts(): FormArray {

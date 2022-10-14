@@ -48,6 +48,8 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
     private repairDQuery: RepairDQuery
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
+    console.log('promena', changes);
+
     if (
       changes.repairShopItem?.currentValue?.data !=
       changes.repairShopItem?.previousValue?.data

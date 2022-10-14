@@ -71,6 +71,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   range: any;
   isFocused: boolean = false;
   allowNoteClose: boolean = true;
+  allowAutoClose: boolean = true;
   private destroy$ = new Subject<void>();
 
   constructor(

@@ -201,4 +201,22 @@
       }
     }
   }
+
+  &.hazardous-svg {
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    svg {
+      path {
+        fill: $input-yellow-color-2;
+      }
+    }
+
+    &:hover {
+      svg {
+        path {
+          fill: $input-yellow-color-2 !important;
+        }
+      }
+    }
+  }
 }

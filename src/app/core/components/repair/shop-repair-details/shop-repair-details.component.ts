@@ -254,7 +254,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         id: 2,
         nameDefault: 'Repaired Vehicle',
         template: 'repaired-vehicle',
-        length: data?.repairsByUnit?.length ? data.repairsByUnit.length : 0,
+        // length: data?.repairsByUnit?.length ? data.repairsByUnit.length : 0,
         hide: true,
         customText: 'Repairs',
         data: data,

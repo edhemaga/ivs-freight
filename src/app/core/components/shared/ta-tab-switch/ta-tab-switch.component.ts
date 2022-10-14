@@ -80,10 +80,10 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
     this.date2.updateValueAndValidity();
   }
 
-  setCustomRange(e){
-    if (this.data1Valid && this.data2Valid){
+  setCustomRange(e) {
+    if (this.data1Valid && this.data2Valid) {
       let rangeData = [];
-      rangeData.push(this.data1Valid, this.data2Valid)
+      rangeData.push(this.data1Valid, this.data2Valid);
       this.saveCustomRange.emit(rangeData);
       this.closeCustomPopover(e);
     }
@@ -123,8 +123,8 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
     item.checked = true;
     this.hoverStyle = this.getElementOffset(e.target);
     const closeComponentArray = this.autoCloseComponent.toArray().reverse();
-    
-    if(item.name != 'Custom' && closeComponentArray[0]?.tooltip?.isOpen()){
+
+    if (item.name != 'Custom' && closeComponentArray[0]?.tooltip?.isOpen()) {
       closeComponentArray[0].tooltip.close();
     }
     this.switchClicked.emit(item);
