@@ -8,7 +8,7 @@ import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import {
   convertDateToBackend,
-  convertDateFromBackend,
+  convertDateFromBackendShortYear,
 } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -34,7 +34,7 @@ import {
 export class Step5Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public applicantId: number;
 
@@ -170,6 +170,7 @@ export class Step5Component implements OnInit, OnDestroy {
     this.certifyForm.get('certify').patchValue(certifyViolations);
 
     if (!noViolationsForPastTwelveMonths) {
+      console.log('stepValues', stepValues);
       const lastItemInViolationsArray =
         trafficViolationItems[trafficViolationItems.length - 1];
 
@@ -179,10 +180,33 @@ export class Step5Component implements OnInit, OnDestroy {
 
       const filteredViolationsArray = restOfTheItemsInViolationsArray.map(
         (item) => {
+          const itemVehicleTypeName = item.vehicleType.name;
+
+          const itemVehicleType = {
+            ...item.vehicleType,
+          };
+
+          switch (itemVehicleTypeName) {
+            case 'Tow Truck Heavy':
+              itemVehicleType.name = 'Tow Truck';
+              break;
+
+            case 'Car Hauler - Semi Truck':
+              itemVehicleType.name = 'Car Hauler';
+              break;
+
+            case 'Semi Truck w Sleeper':
+              itemVehicleType.name = 'Semi w/Sleeper';
+              break;
+
+            default:
+              break;
+          }
+
           return {
             isEditingViolation: false,
-            date: convertDateFromBackend(item.date),
-            vehicleType: item.vehicleType.name,
+            date: convertDateFromBackendShortYear(item.date),
+            vehicleType: itemVehicleType.name,
             location: item.location,
             description: item.description,
             trafficViolationItemReview: item.trafficViolationItemReview
@@ -192,10 +216,35 @@ export class Step5Component implements OnInit, OnDestroy {
         }
       );
 
+      const lastItemInViolationsArrayVehicleTypeName =
+        lastItemInViolationsArray.vehicleType.name;
+
+      const lastItemVehicleType = {
+        ...lastItemInViolationsArray.vehicleType,
+      };
+
+      switch (lastItemInViolationsArrayVehicleTypeName) {
+        case 'Tow Truck Heavy':
+          lastItemVehicleType.name = 'Tow Truck';
+          break;
+
+        case 'Car Hauler - Semi Truck':
+          lastItemVehicleType.name = 'Car Hauler';
+          break;
+
+        case 'Semi Truck w Sleeper':
+          lastItemVehicleType.name = 'Semi w/Sleeper';
+          break;
+
+        default:
+          break;
+      }
+
       const filteredLastItemInViolationsArray = {
+        id: lastItemInViolationsArray.id,
         isEditingViolation: false,
-        date: convertDateFromBackend(lastItemInViolationsArray.date),
-        vehicleType: lastItemInViolationsArray.vehicleType.name,
+        date: convertDateFromBackendShortYear(lastItemInViolationsArray.date),
+        vehicleType: lastItemVehicleType.name,
         location: lastItemInViolationsArray.location,
         description: lastItemInViolationsArray.description,
         trafficViolationItemReview:
@@ -473,13 +522,13 @@ export class Step5Component implements OnInit, OnDestroy {
     this.applicantQuery.cdlInformationList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        const lastLicenseAdded = res.licences[res.licences.length - 1];
+        const lastLicenseAdded: any = res.licences[res.licences.length - 1];
 
         this.lastValidLicense = {
           license: lastLicenseAdded.licenseNumber,
           state: lastLicenseAdded.state.stateShortName,
-          /*  classType: lastLicenseAdded._class.name, */
-          expDate: convertDateFromBackend(lastLicenseAdded.expDate),
+          classType: lastLicenseAdded.class.name,
+          expDate: convertDateFromBackendShortYear(lastLicenseAdded.expDate),
         };
       });
   }
@@ -652,7 +701,7 @@ export class Step5Component implements OnInit, OnDestroy {
       };
     });
 
-    const lastViolationsCardVehicleType = this.lastViolationsCard.vehicleType;
+    const lastViolationsCardVehicleType = this.lastViolationsCard?.vehicleType;
 
     switch (lastViolationsCardVehicleType) {
       case 'Tow Truck':
@@ -719,16 +768,25 @@ export class Step5Component implements OnInit, OnDestroy {
           this.router.navigate([`/application/${this.applicantId}/6`]);
 
           this.applicantStore.update(1, (entity) => {
+            const noViolations = saveData.noViolationsForPastTwelveMonths;
+
             return {
               ...entity,
               trafficViolation: {
                 ...entity.trafficViolation,
-                noViolationsForPastTwelveMonths:
-                  saveData.noViolationsForPastTwelveMonths,
-                notBeenConvicted: saveData.notBeenConvicted,
-                onlyOneHoldLicense: saveData.onlyOneHoldLicense,
-                certifyViolations: saveData.certifyViolations,
-                trafficViolationItems: storeTrafficViolationItems,
+                noViolationsForPastTwelveMonths: noViolations,
+                notBeenConvicted: noViolations
+                  ? false
+                  : saveData.notBeenConvicted,
+                onlyOneHoldLicense: noViolations
+                  ? false
+                  : saveData.onlyOneHoldLicense,
+                certifyViolations: noViolations
+                  ? false
+                  : saveData.certifyViolations,
+                trafficViolationItems: noViolations
+                  ? []
+                  : storeTrafficViolationItems,
               },
             };
           });
@@ -743,8 +801,12 @@ export class Step5Component implements OnInit, OnDestroy {
     const lastItemReview =
       this.previousFormValuesOnReview.trafficViolationItemReview;
 
+    const lastItemId = this.previousFormValuesOnReview.id;
+
     const lastReviewedItemIViolationsArray = {
+      trafficViolationId: lastItemId,
       isDateValid: lastItemReview ? lastItemReview.isDateValid : true,
+      isVehicleTypeValid: true,
       isLocationValid: lastItemReview ? lastItemReview.isLocationValid : true,
       vehicleTypeLocationMessage: this.lastViolationsCard.firstRowReview,
       isDescriptionValid: lastItemReview
@@ -754,11 +816,35 @@ export class Step5Component implements OnInit, OnDestroy {
     };
 
     const saveData: CreateTrafficViolationReviewCommand = {
-      applicantId: 1,
+      applicantId: this.applicantId,
       trafficViolationReviews: [lastReviewedItemIViolationsArray],
     };
 
     console.log('saveData', saveData.trafficViolationReviews[0]);
+
+    this.applicantActionsService
+      .createTrafficViolationsReview(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/6`]);
+          /* 
+            this.applicantStore.update(1, (entity) => {
+            return {
+              ...entity,
+              education: {
+                ...entity.education,
+                educationReview: rest,
+              },
+            };
+          });
+
+          console.log('updatedStore', this.applicantStore); */
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   ngOnDestroy(): void {

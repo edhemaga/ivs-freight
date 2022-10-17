@@ -10,6 +10,7 @@
           placeholderIcon: 'date',
           isRequired: true,
           customClass: 'datetimeclass',
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
@@ -26,6 +27,7 @@
           label: 'Vehicle type',
           isRequired: true,
           isDropdown: true,
+          isDisabled: selectedMode === 'REVIEW_MODE',
           dropdownWidthClass: 'w-col-192',
           dropdownImageInput: {
             withText: true,
@@ -38,13 +40,10 @@
               .replace(' ', '')
               .toLowerCase()
           },
-          customClass: 'truck-trailer-dropdown',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
+          customClass: 'truck-trailer-dropdown'
         }"
         [activeItem]="selectedVehicleType"
         [options]="vehicleType"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 1, 10)"
         (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
       ></app-ta-input-dropdown>
     </div>
@@ -107,6 +106,7 @@
           maxLength: 160,
           isRequired: true,
           textTransform: 'capitalize',
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="openAnnotationArray[11].lineInputs[0]"

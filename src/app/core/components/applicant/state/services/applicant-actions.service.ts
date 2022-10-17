@@ -167,7 +167,7 @@ export class ApplicantActionsService {
     return this.applicantService.apiApplicantAccidentrecordReviewPost(data);
   }
 
-  public createTrafficViolationReview(
+  public createTrafficViolationsReview(
     data: CreateTrafficViolationReviewCommand
   ): Observable<object> {
     return this.applicantService.apiApplicantTrafficviolationReviewPost(data);

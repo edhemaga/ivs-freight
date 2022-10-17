@@ -219,30 +219,11 @@ export class Step5FormComponent
       }
     }
 
-    const formValueVehicleType = formValue.vehicleType;
-
-    switch (formValueVehicleType) {
-      case 'Tow Truck Heavy':
-        formValue.vehicleType = 'Tow Truck';
-        break;
-
-      case 'Car Hauler - Semi Truck':
-        formValue.vehicleType = 'Car Hauler';
-        break;
-
-      case 'Semi Truck w Sleeper':
-        formValue.vehicleType = 'Semi w/Sleeper';
-        break;
-
-      default:
-        break;
-    }
-
     this.violationsForm.patchValue({
-      date: formValue.date,
-      vehicleType: formValue.vehicleType,
-      location: formValue.location.address,
-      description: formValue.description,
+      date: formValue?.date,
+      vehicleType: formValue?.vehicleType,
+      location: formValue?.location?.address,
+      description: formValue?.description,
     });
 
     setTimeout(() => {

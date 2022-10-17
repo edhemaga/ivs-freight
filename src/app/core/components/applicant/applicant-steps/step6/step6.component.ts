@@ -14,7 +14,7 @@ import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import {
   convertDateToBackend,
-  convertDateFromBackend,
+  convertDateFromBackendShortYear,
 } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -65,7 +65,7 @@ export class Step6Component implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public educationForm: FormGroup;
   public contactForm: FormGroup;
@@ -442,7 +442,7 @@ export class Step6Component implements OnInit, OnDestroy {
 
     this.educationId = id;
 
-    const { emergencyContactReviews } = educationReview;
+    /*  const { emergencyContactReviews } = educationReview; */
 
     const lastItemInContactsArray =
       emergencyContacts[emergencyContacts.length - 1];
@@ -513,8 +513,8 @@ export class Step6Component implements OnInit, OnDestroy {
       otherTrainingExplain: otherTrainingDescription,
       knowledgeOfSafetyRegulations,
       driverForCompany: driverBefore,
-      driverForCompanyBeforeExplain: convertDateFromBackend(from),
-      driverForCompanyToExplain: convertDateFromBackend(to),
+      driverForCompanyBeforeExplain: convertDateFromBackendShortYear(from),
+      driverForCompanyToExplain: convertDateFromBackendShortYear(to),
       unableForJob,
       unableForJobExplain: unableForJobDescription,
     });
@@ -997,6 +997,8 @@ export class Step6Component implements OnInit, OnDestroy {
       unableForJobDescription: unableForJobExplain,
       emergencyContacts: [...filteredContactsArray, filteredLastContactCard],
     };
+
+    console.log(saveData);
 
     this.applicantActionsService
       .createEducation(saveData)

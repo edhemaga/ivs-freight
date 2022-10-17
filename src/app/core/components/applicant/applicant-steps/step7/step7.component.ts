@@ -16,7 +16,7 @@ import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import {
   convertDateToBackend,
-  convertDateFromBackend,
+  convertDateFromBackendShortYear,
 } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -266,14 +266,16 @@ export class Step7Component implements OnInit, OnDestroy {
         value: hos[i].hours,
       };
 
-      this.sevenDaysHosDateData[i + 1] = convertDateFromBackend(hos[i].date);
+      this.sevenDaysHosDateData[i + 1] = convertDateFromBackendShortYear(
+        hos[i].date
+      );
     }
 
     this.sevenDaysHosId = id;
 
     this.sevenDaysHosForm.patchValue({
       isValidHos: releasedFromWork,
-      startDate: convertDateFromBackend(releasedDate),
+      startDate: convertDateFromBackendShortYear(releasedDate),
       address: location.address,
       anotherEmployer: workingForAnotherEmployer,
       intendToWorkAnotherEmployer: intendToWorkForAnotherEmployer,

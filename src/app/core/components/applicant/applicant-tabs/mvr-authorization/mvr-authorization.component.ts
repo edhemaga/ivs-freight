@@ -66,14 +66,12 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     this.applicantQuery.cdlInformationList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        const lastLicenseAdded = res.licences[res.licences.length - 1];
-
-        console.log('reees', res);
+        const lastLicenseAdded: any = res.licences[res.licences.length - 1];
 
         this.lastValidLicense = {
           license: lastLicenseAdded.licenseNumber,
           state: lastLicenseAdded.state.stateShortName,
-          /*  classType:lastLicenseAdded._class.name */
+          classType: lastLicenseAdded.class.name,
           expDate: convertDateFromBackend(lastLicenseAdded.expDate),
         };
       });
