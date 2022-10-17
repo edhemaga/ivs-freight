@@ -118,6 +118,7 @@
           *ngFor="let item of selectedUser; let indx = index"
           class="user-main-holder"
           [class.removeClass]="item.remove"
+          [@inOutAnimation]="'in'"
           (click)="removeFromSelectedUser(item, indx)"
         >
           <div class="user-profile-img" *ngIf="type == 'userFilter'">

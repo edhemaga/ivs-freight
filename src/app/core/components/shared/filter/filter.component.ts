@@ -19,7 +19,7 @@ import { addressValidation, combinedSingleLimitValidation } from '../ta-input/ta
 import { card_component_animation } from '../animations/card-component.animations';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
-import { animate, style, transition, trigger, state, } from '@angular/animations';
+import { animate, style, transition, trigger, state, keyframes } from '@angular/animations';
 
 
 @Component({
@@ -34,6 +34,7 @@ import { animate, style, transition, trigger, state, } from '@angular/animations
       style({
         height: '*',
         overflow: 'visible',
+        opacity: 1,
       })
     ),
     state(
@@ -42,6 +43,7 @@ import { animate, style, transition, trigger, state, } from '@angular/animations
         height: '0px',
         overflow: 'hidden',
         'margin-top': '0px',
+        opacity: 0,
       })
     ),
     state(
@@ -52,6 +54,32 @@ import { animate, style, transition, trigger, state, } from '@angular/animations
     ),
     transition('false <=> true', [animate('.2s linear')]),
     transition('true <=> false', [animate('.2s ease-in-out')]), 
+  ]), trigger("inOutAnimation", [
+    state("in", style({ opacity: 1 })),
+    transition(":enter", [
+      animate(
+        200,
+        keyframes([
+          style({ opacity: 0, offset: 0, scale: (0.6) }),
+          style({ opacity: 0.25, offset: 0.25, scale: (0.7) }),
+          style({ opacity: 0.5, offset: 0.5, scale: (0.8) }),
+          style({ opacity: 0.75, offset: 0.75, scale: (0.9) }),
+          style({ opacity: 1, offset: 1, scale: 1 }),
+        ])
+      )
+    ]),
+    transition(":leave", [
+      animate(
+        200,
+        keyframes([
+          style({ opacity: 1, offset: 0, scale: 1 }),
+          style({ opacity: 0.75, offset: 0.25, scale: (0.9) }),
+          style({ opacity: 0.5, offset: 0.5, scale: (0.8) }),
+          style({ opacity: 0.25, offset: 0.75, scale: (0.7) }),
+          style({ opacity: 0, offset: 1, scale: (0.6) }),
+        ])
+      )
+    ])
   ])],
 })
 export class FilterComponent implements OnInit, AfterViewInit {
