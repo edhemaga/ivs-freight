@@ -100,7 +100,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   toggleNote(data: any, t2) {
-    if (this.noteOpened) {
+    if (t2?.isOpen()) {
       if (this.openedAll) {
         this.leaveThisOpened = true;
         this.sharedService.emitAllNoteOpened.next(false);

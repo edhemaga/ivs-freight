@@ -57,11 +57,6 @@
     class="editor_buttons text_color"
     [class.popover_text_color]="popoverNote"
   >
-    <span
-      [ngStyle]="{ 'background-color': selectedPaternColor }"
-      class="circle_span"
-    >
-    </span>
     <div class="colors_patter" id="colors_patter">
       <div
         (click)="executeEditor('foreColor', paternCol.color, indx)"
@@ -72,25 +67,51 @@
             ? indx != containerColors?.length - 1 && !showCollorPattern
             : indx != 0 && !showCollorPattern
         "
-        [tooltipBackground]="'#6C6C6C'"
+        [tooltipBackground]="
+          (!popoverNote &&
+            indx != containerColors?.length - 1 &&
+            !showCollorPattern) ||
+          (popoverNote && indx != 0 && !showCollorPattern)
+            ? ''
+            : '#6C6C6C'
+        "
         ngbTooltip
         [mainTooltip]="
           !popoverNote &&
           indx == containerColors?.length - 1 &&
           !showCollorPattern
             ? 'Select Color'
+            : !popoverNote &&
+              indx != containerColors?.length - 1 &&
+              !showCollorPattern
+            ? ''
             : popoverNote && indx == 0 && !showCollorPattern
             ? 'Select Color'
+            : popoverNote && indx != 0 && !showCollorPattern
+            ? ''
             : paternCol.name
         "
         position="bottom"
         class="editor_buttons text_color opened_text_color"
         [class.input_note_container]="!popoverNote"
         [class.popover_text_color]="popoverNote"
+        [ngStyle]="{
+          opacity:
+            !popoverNote &&
+            !showCollorPattern &&
+            indx != containerColors?.length - 1
+              ? 0
+              : popoverNote && !showCollorPattern && indx != 0
+              ? 0
+              : 1
+        }"
       >
         <div
           class="color_picker_arrow"
-          [class.flip_arrow]="(!popoverNote && showCollorPattern) || (popoverNote && !showCollorPattern)"
+          [class.flip_arrow]="
+            (!popoverNote && showCollorPattern) ||
+            (popoverNote && !showCollorPattern)
+          "
           [class.active]="showCollorPattern"
           *ngIf="!popoverNote ? indx == containerColors?.length - 1 : indx == 0"
         >

@@ -147,13 +147,23 @@ export class TaNoteContainerComponent implements OnInit {
       this.selectedPaternColor = document.queryCommandValue('ForeColor');
     }
 
-    if(!this.defaultColorSet){
-      this.containerColors.map((col, indx) => {
-        if (col.color == this.selectedPaternColor) {
-          this.executeEditor('foreColor', this.selectedPaternColor, indx, true);
+    this.containerColors.map((col, indx) => {
+      if (col.color == this.selectedPaternColor) {
+        this.selectedColorName = this.containerColors[indx];
+        document.execCommand('styleWithCSS', false, 'true');
+        if (this.lastSavedIndex != indx) {
+          this.filterContainersColor();
         }
-      });
-    }
+        this.lastSavedIndex = indx;
+        setTimeout(() => {
+          this.focusElement();
+          setTimeout(() => {
+            this.focusElement();
+            this.selectedPaternColor = col.color;
+          });
+        });
+      }
+    });
   }
 
   public ngOnDestroy(): void {
