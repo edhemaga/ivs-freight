@@ -12,8 +12,6 @@
     'filter-active-colors':
       filterActiveArray.length > 0 ||
       selectedTimeValue != '' ||
-      canadaSelectedStates.length > 0 ||
-      usaSelectedStates.length ||
       rangeValue > 0 ||
       totalFiltersNum > 0 ||
       longVal != 0 ||
@@ -39,17 +37,10 @@
       {{totalFiltersNum}}
     </div>
     <div
-      *ngIf="canadaSelectedStates.length > 0 || usaSelectedStates.length > 0"
-      class="active-filter-num"
-    >
-      {{ usaSelectedStates.length + canadaSelectedStates.length }}
-    </div>
-    <div
       *ngIf="
         filterActiveArray.length > 0 ||
         selectedTimeValue != '' ||
-        canadaSelectedStates.length > 0 ||
-        usaSelectedStates.length > 0 ||
+        totalFiltersNum > 0 ||
         rangeValue > 0 ||
         moneyFilterStatus ||
         longVal != 0 ||

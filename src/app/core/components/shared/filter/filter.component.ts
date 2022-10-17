@@ -2317,7 +2317,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   onFilterClose(){
       this.activeFilter = false;
-      if ( this.defFilterHolder ){
+      if ( this.defFilterHolder && this.type != 'stateFilter'){
         
         let mainArray: any[] = [];
         switch (this.type) {
@@ -2405,6 +2405,10 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.longVal = this.longValueSet;
         this.latVal = this.latValSet;
         this.locationRange = this.locationRangeSet;
+      } else if ( this.type == 'stateFilter' ) {
+        this.usaSelectedStates = [...this.filterUsaActiveArray];
+        this.canadaSelectedStates = [...this.filterCanadaActiveArray];
+        this.setButtonAvailable = false;
       }
   }
 
