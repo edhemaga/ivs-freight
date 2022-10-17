@@ -275,7 +275,9 @@ export class DashboardPickupByStateComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.timePeriod?.changeTimePeriod('WTD');
+    if (this.timePeriod && this.timePeriod.changeTimePeriod) {
+      this.timePeriod?.changeTimePeriod('WTD');
+    }
   }
 
   changeStateSwitchTabs(ev, useLast?) {
