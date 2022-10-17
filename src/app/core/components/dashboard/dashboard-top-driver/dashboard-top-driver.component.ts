@@ -412,7 +412,9 @@ export class DashboardTopDriverComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.timePeriod?.changeTimePeriod('All Time');
+    if (this.timePeriod && this.timePeriod.changeTimePeriod) {
+      this.timePeriod?.changeTimePeriod('All Time');
+    }
   }
 
   changeDriverSwitchTabs(ev, useLast?) {
