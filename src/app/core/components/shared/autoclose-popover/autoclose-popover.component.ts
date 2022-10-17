@@ -1,9 +1,11 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   HostListener,
   Input,
   OnInit,
+  Output,
 } from '@angular/core';
 
 @Component({
@@ -15,6 +17,9 @@ export class AutoclosePopoverComponent implements OnInit {
   @Input() isDisabled: boolean;
   @Input() customClass: string;
   @Input() placement: string = 'bottom-right';
+  @Output() closeFilter = new EventEmitter<any>();
+  @Output() openFilter = new EventEmitter<any>();
+
   public tooltip: any;
   constructor(private eRef: ElementRef) {}
 
@@ -29,6 +34,20 @@ export class AutoclosePopoverComponent implements OnInit {
    }
     
   }
+
+  onFilterClose(){
+    if(this.closeFilter){
+      this.closeFilter.emit();
+    }
+  }
+
+
+  onFilterShown(){
+    if(this.openFilter){
+      this.openFilter.emit();
+    }
+  }
+
 
   closeCustomPopover() {
     this.tooltip.close();

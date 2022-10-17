@@ -7,6 +7,8 @@
     [autoClose]="false"
     (click)="switchTab($event, t2)"
     [disablePopover]="isDisabled"
+    (hidden)="onFilterClose()"
+    (shown)="onFilterShown()"
     [container]="'body'"
   >
     <ng-content select="[mainContent]"></ng-content>

@@ -2430,4 +2430,12 @@ export class FilterComponent implements OnInit, AfterViewInit {
     this.rangeForm?.get('rangeTo')?.setValue(toValue);
   }
 
+
+  onFilterClose(){
+    // WHEN FILTER IS LOSED
+  }
+
+  onFilterShown(){
+     // WHEN FILTER IS SHOWED
+  }
 }

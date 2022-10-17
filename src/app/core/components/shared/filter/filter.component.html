@@ -4,6 +4,8 @@
   [customClass]="'filterpopovermain'"
   [placement]="'bottom-left'"
   autoClose="outside"
+  (closeFilter)="onFilterClose()"
+  (openFilter)="onFilterShown()"
   [ngClass]="{
     'active-options': activeFilter,
     'clear-colors': hoverClose,
