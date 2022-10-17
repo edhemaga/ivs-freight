@@ -1123,7 +1123,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
   constructor(private formBuilder: FormBuilder, private thousandSeparator: TaThousandSeparatorPipe,private elementRef: ElementRef, private cdRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-
     if ( this.type == 'timeFilter' ) {
       var d = new Date();
       var pastYear = d.getFullYear() - 1;
@@ -1559,8 +1558,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   removeFromSelectedUser(item, indx, subType?) {
-    this.selectedUser.splice(indx, 1); 
-
+    this.selectedUser[indx].remove = true;
+    console.log('----this.selectedUser', this.selectedUser);
+  
     if (this.type == 'stateFilter') {
       if (subType == 'canada') {
         this.canadaSelectedStates.splice(indx, 1);
@@ -1678,7 +1678,12 @@ export class FilterComponent implements OnInit, AfterViewInit {
       }
     }
 
-    this.checkFilterActiveValue();
+    setTimeout(()=>{
+      this.selectedUser[indx].remove = false;
+      this.selectedUser.splice(indx, 1); 
+      this.checkFilterActiveValue();
+    },200)
+    
   }
 
   clearAll(e?, mod?) {

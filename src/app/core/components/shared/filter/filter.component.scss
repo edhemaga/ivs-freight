@@ -515,11 +515,14 @@
     flex-direction: column;
     //padding: 2px 2px 0px 2px;
     box-sizing: border-box;
+    transition: all 0.2s linear;
 
+    
     .user-main-holder {
       position: relative;
       width: 100%;
       height: 26px;
+      transition: all 0.2s linear;
       &:hover {
         cursor: pointer;
         background-color: #1d1d1d;
@@ -535,6 +538,14 @@
           }
 
         }
+      }
+
+      &.removeClass{
+        scale: (0.7);
+        height: 0px;
+        background-color: #000000;
+        opacity: 0;
+        pointer-events: none;  
       }
 
       .user-profile-img {
@@ -712,6 +723,9 @@
       width: 100%;
       display: flex;
       align-items: center;
+      height: 28px;
+      opacity: 1;
+      transition: all 0.3s linear;
 
       .user-main-holder {
         width: 100%;
@@ -785,6 +799,15 @@
 
         }
       }
+
+      &.hidenItem{
+        scale: (0.7);
+        height: 0px;
+        background-color: #000000;
+        opacity: 0;
+        pointer-events: none;
+      }
+
     }
   }
 
