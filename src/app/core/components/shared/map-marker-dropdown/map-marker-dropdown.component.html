@@ -183,7 +183,7 @@
       </span>
     </div>
   </div>
-  <div *ngIf="type == 'repairShop'">
+  <div *ngIf="type == 'repairShop' && item?.serviceTypes?.length">
     <div class="marker-divider"></div>
     <div class="marker-info-container-all">
       <div class="marker-repair-icons-container">
@@ -412,7 +412,7 @@
       </div>
       <div class="marker-divider"></div>
     </div>
-    <div *ngIf="type == 'repairShop' && item?.openHours">
+    <div *ngIf="type == 'repairShop' && item?.openHours?.length">
       <div class="marker-info-container-all">
         <div class="marker-title">Working Hours</div>
         <div
@@ -439,13 +439,13 @@
             <div class="marker-like-text marker-bold-text mg-bottom-4">
               Monday - Friday
             </div>
-            <!-- <div class="marker-info-text" *ngIf="item.openHours[1].startTime">
+            <div class="marker-info-text" *ngIf="item.openHours[1].startTime">
               {{ item.openHours[1].startTime }} -
               {{ item.openHours[1].endTime }}
             </div>
             <div class="marker-info-text" *ngIf="!item.openHours[1].startTime">
               Closed
-            </div> -->
+            </div>
           </div>
           <div
             class="marker-dual-info-container mg-bottom-8"
@@ -456,13 +456,13 @@
             <div class="marker-like-text marker-bold-text mg-bottom-4">
               Saturday
             </div>
-            <!-- <div class="marker-info-text" *ngIf="item.openHours && item.openHours[6].startTime">
+            <div class="marker-info-text" *ngIf="item.openHours && item.openHours[6].startTime">
               {{ item.openHours[6].startTime }} -
               {{ item.openHours[6].endTime }}
-            </div> -->
-            <!-- <div class="marker-info-text" *ngIf="!item.openHours || !item.openHours[6].startTime">
+            </div>
+            <div class="marker-info-text" *ngIf="!item.openHours || !item.openHours[6].startTime">
               Closed
-            </div> -->
+            </div>
           </div>
           <div
             class="marker-dual-info-container mg-bottom-8"
@@ -473,13 +473,13 @@
             <div class="marker-like-text marker-bold-text mg-bottom-4">
               Sunday
             </div>
-            <!-- <div class="marker-info-text" *ngIf="item.openHours[0].startTime">
+            <div class="marker-info-text" *ngIf="item.openHours[0].startTime">
               {{ item.openHours[0].startTime }} -
               {{ item.openHours[0].endTime }}
             </div>
             <div class="marker-info-text" *ngIf="!item.openHours[0].startTime">
               Closed
-            </div> -->
+            </div>
           </div>
           <div class="marker-dual-info-container mg-bottom-8">
             <div class="marker-like-text marker-bold-text mg-bottom-4"></div>

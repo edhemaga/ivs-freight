@@ -15,6 +15,7 @@ import { MapsService } from '../../../services/shared/maps.service';
 import { UpdatedData } from '../model/shared/enums';
 import { RepairTService } from '../../repair/state/repair.service';
 import { Subject, takeUntil } from 'rxjs';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
 @Component({
   selector: 'app-maps',
@@ -112,7 +113,8 @@ export class MapsComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private mapsAPILoader: MapsAPILoader,
     private mapsService: MapsService,
-    private repairShopService: RepairTService
+    private repairShopService: RepairTService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -158,10 +160,21 @@ export class MapsComponent implements OnInit, OnDestroy {
       if (data.isSelected && data.id != id) {
         data.isSelected = false;
       } else if (data.id == id) {
-        data.isSelected = !data.isSelected;
+        var selectShop = !data.isSelected;
 
-        if (data.isSelected) {
+        //data.isSelected = !data.isSelected;
+
+        if (selectShop) {
           this.markerSelected = true;
+
+          console.log('selectShop', this.viewData[index]);
+          if ( !data.createdAt ) {
+            if ( this.mapType == 'repairShop' ) {
+              this.getRepairShop(data.id, index);
+            }
+          } else {
+            data.isSelected = true;
+          }
 
           if (
             this.mapLatitude == data.latitude &&
@@ -175,6 +188,7 @@ export class MapsComponent implements OnInit, OnDestroy {
           }
         } else {
           this.markerSelected = false;
+          data.isSelected = false;
         }
 
         document
@@ -195,6 +209,8 @@ export class MapsComponent implements OnInit, OnDestroy {
     this.clusterMarkers.map((cluster) => {
       if ( cluster.isSelected) cluster.isSelected = false;
     });
+    
+    this.ref.detectChanges();
   }
 
   mapClick(event) {
@@ -349,6 +365,7 @@ export class MapsComponent implements OnInit, OnDestroy {
 
         var clustersToShow = [];
         var markersToShow = [];
+        var newMarkersAdded = false;
 
         clustersResponse.map((clusterItem) => {
           if ( clusterItem.count > 1 ) {
@@ -368,6 +385,7 @@ export class MapsComponent implements OnInit, OnDestroy {
 
             if ( markerIndex == -1 ) {
               this.viewData.push(clusterItem);
+              newMarkersAdded = true;
             }
 
             markersToShow.push(clusterItem.id);
@@ -389,6 +407,8 @@ export class MapsComponent implements OnInit, OnDestroy {
             cluster.showMarker = false;
           }
         });
+
+        if ( newMarkersAdded ) this.markersDropAnimation();
 
         this.ref.detectChanges();
       });
@@ -445,6 +465,25 @@ export class MapsComponent implements OnInit, OnDestroy {
   clusterHover(cluster, hover) {
     cluster.markerHover = hover;
     this.ref.detectChanges();
+  }
+
+  getRepairShop(id, index) {
+    this.repairShopService
+      .getRepairShopById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.viewData[index] = res;
+          this.viewData[index].isSelected = true;
+          console.log('getRepairShopById', this.viewData[index]);
+        },
+        error: () => {
+          this.notificationService.error(
+            `Cant' get repair shop by ${id}`,
+            'Error'
+          );
+        },
+      });
   }
 
   ngOnDestroy(): void {
