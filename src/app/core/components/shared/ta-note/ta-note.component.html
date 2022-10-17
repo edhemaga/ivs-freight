@@ -27,11 +27,10 @@
     position="bottom"
   >
     <svg-icon
-      (mouseenter)="allowAutoClose = false"
-      (mouseleave)="allowAutoClose = 'outside'"
+      app-autoclose-popover
       #t2="ngbPopover"
       [ngbPopover]="note_popover"
-      [autoClose]="'outside'"
+      autoClose="outside"
       class="note-btn"
       [container]="'body'"
       [placement]="'left-top'"
@@ -54,7 +53,6 @@
     class="kendo-editor-note-wrapper"
     [class.opened_all_hold]="openedAll"
     [class.closed_note_hold]="!openedAll && noteOpened"
-    *ngIf="noteOpened"
   >
     <div
       [class.expanded]="isExpanded"
@@ -66,7 +64,7 @@
         (focus)="checkFocus($event)"
         (input)="valueChange($event.target.innerHTML)"
         @noteLongAnimation
-        [@.disabled]="openedAll || parking"
+        [@.disabled]="openedAll || parking || noteOpened"
         [class.not_expanded]="!isExpanded"
         [class.parking_text_hold]="parking"
         [class.opened_all_editor]="openedAll"

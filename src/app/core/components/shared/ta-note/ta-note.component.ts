@@ -1,11 +1,13 @@
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
   OnInit,
   Output,
+  QueryList,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
@@ -43,8 +45,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   @Input() dispatchIndex: number = -1;
   @Input() noteWidth: number = 250;
   @ViewChild('main_editor', { static: false }) public main_editor: any;
-  @ViewChild('note_popover', { static: false }) public note_popover: any;
-
+  @ViewChild('note_popover', { static: false }) note_popover: any;
   tooltip: any;
   showCollorPattern: boolean;
   buttonsExpanded = false;
@@ -109,6 +110,9 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.checkActiveItems();
         this.isExpanded = true;
         this.buttonsExpanded = true;
+        setTimeout(() => {
+          t2.open();
+        }, 1);
       } else {
         this.isExpanded = false;
         this.buttonsExpanded = false;
@@ -124,7 +128,10 @@ export class TaNoteComponent implements OnInit, OnDestroy {
       }
       this.leaveThisOpened = true;
       this.sharedService.emitAllNoteOpened.next(false);
-      this.noteOpened = true;
+      setTimeout(() => {
+        this.noteOpened = true;
+      }, 1);
+
       t2.open();
     }
   }
