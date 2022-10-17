@@ -26,6 +26,7 @@ import {
   convertNumberInThousandSep,
 } from '../../../utils/methods.calculations';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { ImageBase64Service } from '../../../utils/base64.image';
 @Component({
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
@@ -110,7 +111,8 @@ export class TaInputComponent
     private calendarService: CalendarScrollService,
     private thousandSeparatorPipe: TaThousandSeparatorPipe,
     private refChange: ChangeDetectorRef,
-    private formService: FormService
+    private formService: FormService,
+    public imageBase64Service: ImageBase64Service
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -517,12 +519,19 @@ export class TaInputComponent
       }
     }
 
-    if (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) {
+    if (
+      this.inputConfig.isDropdown ||
+      this.inputConfig.dropdownLabel ||
+      this.inputConfig.name == 'Address'
+    ) {
       if (event.keyCode === 40 || event.keyCode === 38) {
         this.inputService.dropDownKeyNavigation$.next(event.keyCode);
       }
       if (event.keyCode === 13) {
         this.inputService.dropDownKeyNavigation$.next(event.keyCode);
+        if (this.inputConfig.name == 'Address') {
+          this.input.nativeElement.blur();
+        }
       }
       if (event.keyCode === 27) {
         this.blurOnDropDownArrow();
@@ -780,6 +789,11 @@ export class TaInputComponent
         data: this.getSuperControl.value,
         action: 'Toggle Dropdown',
       });
+    } else {
+      this.commandEvent.emit({
+        data: this.getSuperControl.value,
+        action: 'Placeholder Icon Event',
+      });
     }
   }
 
@@ -856,6 +870,7 @@ export class TaInputComponent
         'purchase price',
         'fuel tank size',
         'device no',
+        'weight',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (
@@ -1472,12 +1487,17 @@ export class TaInputComponent
     }
 
     // Text Transform Format
-
     this.transformText(newText, true);
   }
 
+  // Optimization for *ngFor
+  public trackIdentity = (index: number, data: any): number => index;
+
+  //------------------- Date & Time Picker -------------------
+
   public onDatePaste(e: any) {
     e.preventDefault();
+    console.log('PASTE DATE');
     const pasteText = e.clipboardData.getData('text');
     const pastedDate = new Date(pasteText);
     if (!isNaN(pastedDate.getTime())) {
@@ -1507,6 +1527,7 @@ export class TaInputComponent
         this.selectionInput = 0;
         this.setSpanSelection(this.span1.nativeElement);
       } else {
+        e.preventDefault();
         this.selectSpanByTabIndex(this.selectionInput);
       }
     }
@@ -1590,7 +1611,7 @@ export class TaInputComponent
         this.setDateTimeModel('up');
       } else if (e.keyCode == 40) {
         this.setDateTimeModel('down');
-      } else if (e.keyCode == 8) {
+      } else if (e.keyCode == 8 || e.keyCode == 46) {
         this.handleKeyboardInputs(e, true);
       }
     } else if (!this.isNumber(e)) {
@@ -1722,12 +1743,18 @@ export class TaInputComponent
 
           this.selectSpanByTabIndex(2);
         } else {
+          console.log(this.span3.nativeElement.innerHTML);
+          console.log();
+          const finalYear = parseInt(
+            this.span3.nativeElement.innerHTML + parseInt(e.key)
+          );
+
+          const finalShowYear =
+            finalYear > 31
+              ? parseInt(`19${finalYear}`)
+              : parseInt(`20${finalYear}`);
           this.dateTimeInputDate = new Date(
-            this.dateTimeInputDate.setFullYear(
-              parseInt(
-                `2${this.span3.nativeElement.innerHTML + parseInt(e.key)}`
-              )
-            )
+            this.dateTimeInputDate.setFullYear(finalShowYear)
           );
           this.span3.nativeElement.innerHTML = (
             this.span3.nativeElement.innerHTML + parseInt(e.key)
@@ -1980,5 +2007,24 @@ export class TaInputComponent
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  selectLastDateTimeHold() {
+    console.log('SELECT ON LAST', this.selectionInput);
+
+    // if (this.selectionInput == -1) {
+    //   this.span3.nativeElement.focus();
+    //   this.selectionInput = 2;
+    //   this.setSpanSelection(this.span3.nativeElement);
+    // }
+  }
+
+  focusMainField(e) {
+    console.log('FOCUS HERE');
+    this.selectionInput = -1;
+    this.setSpanSelection(this.holder1.nativeElement);
+    this.showDateInput = true;
+    clearTimeout(this.dateTimeMainTimer);
+    clearTimeout(this.focusBlur);
   }
 }

@@ -1,0 +1,10 @@
+.load-additional-container {
+  height: 795px;
+  width: 860px;
+  padding: 12px 12px 0px 6px;
+
+  &.map-container {
+    height: 807px;
+    padding: 0px;
+  }
+}

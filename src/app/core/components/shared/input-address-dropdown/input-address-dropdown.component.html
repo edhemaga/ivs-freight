@@ -13,6 +13,8 @@
       [inputConfig]="inputConfig"
       [options]="addresList"
       [activeItem]="activeAddress"
+      [incorrectValue]="incorrectValue"
+      (incorrectEvent)="onIncorrectInput($event)"
       (selectedItem)="onSelectDropdown($event, 'address')"
       (closeDropdown)="onCloseDropdown($event)"
     ></app-ta-input-dropdown>

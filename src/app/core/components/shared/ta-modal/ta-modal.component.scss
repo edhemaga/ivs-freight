@@ -80,18 +80,18 @@
   &.modal-container-load {
     width: 1726px;
     display: flex;
-    align-items: center;
 
     .divider {
       width: 841px;
     }
 
-    .load-modal-content {
+    .modal-original-part {
       width: 866px;
     }
 
-    .load-modal-map {
+    .modal-additional-part {
       width: 860px;
+      height: 779px;
     }
   }
 

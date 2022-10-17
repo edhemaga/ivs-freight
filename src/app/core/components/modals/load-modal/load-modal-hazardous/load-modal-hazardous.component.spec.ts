@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { TaInputAddressComponent } from './ta-input-address.component';
+import { LoadModalHazardousComponent } from './load-modal-hazardous.component';
 
-describe('TaInputAddressComponent', () => {
-  let component: TaInputAddressComponent;
-  let fixture: ComponentFixture<TaInputAddressComponent>;
+describe('LoadModalHazardousComponent', () => {
+  let component: LoadModalHazardousComponent;
+  let fixture: ComponentFixture<LoadModalHazardousComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaInputAddressComponent ]
+      declarations: [ LoadModalHazardousComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TaInputAddressComponent);
+    fixture = TestBed.createComponent(LoadModalHazardousComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

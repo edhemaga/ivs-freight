@@ -21,6 +21,8 @@ export interface CreateAccidentCommand {
     hazMat?: boolean;
     vehicloNo?: number | null;
     addressAccident?: AddressEntity;
+    longitude?: number | null;
+    latitude?: number | null;
     date?: string;
     time?: string | null;
     driverId?: number;

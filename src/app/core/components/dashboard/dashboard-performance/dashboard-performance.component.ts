@@ -556,7 +556,9 @@ export class DashboardPerformanceComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.timePeriod?.changeTimePeriod('MTD');
+    if (this.timePeriod && this.timePeriod.changeTimePeriod) {
+      this.timePeriod?.changeTimePeriod('MTD');
+    }
   }
 
   changeDashboardTabs(ev) {

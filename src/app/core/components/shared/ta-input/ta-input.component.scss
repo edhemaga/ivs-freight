@@ -4,6 +4,11 @@
   display: block;
   position: relative;
 
+  &.datetimeclass{
+    background-color: #eeeeee;
+    border-radius: 2px !important; 
+  }
+
   &.address-flag {
     display: grid;
     grid-template-columns: 1fr 40px;
@@ -309,6 +314,27 @@
               fill: $input-dropdown-path-fill-normal-hover;
             }
           }
+        }
+      }
+    }
+  }
+
+  &.hazardous-mode {
+    &:hover {
+      .input-icon {
+        svg {
+          path {
+            fill: $input-yellow-color-2 !important;
+          }
+        }
+
+        &:hover ~ .input-label {
+          color: $input-label-color-hover;
+        }
+
+        &:hover ~ .input-control {
+          background-color: $input-background-color-normal-hover;
+          color: $input-text-color-normal-hover;
         }
       }
     }

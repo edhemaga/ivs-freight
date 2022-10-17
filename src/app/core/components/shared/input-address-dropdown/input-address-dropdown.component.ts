@@ -47,8 +47,10 @@ export class InputAddressDropdownComponent
   @Input() commandHandler: any;
   @Input() isRouting: boolean = false;
   @Input() closedBorder: boolean = false;
+  @Input() incorrectValue: boolean;
   addressExpanded: boolean = false;
   chosenFromDropdown: boolean = false;
+  allowValidation: boolean = false;
   stopType: string = 'EMPTY';
   @Output() selectedAddress: EventEmitter<{
     address: AddressEntity;
@@ -69,6 +71,8 @@ export class InputAddressDropdownComponent
   );
 
   @Output() changeFlag: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  @Output() incorrectEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(
     @Self() public superControl: NgControl,
@@ -96,9 +100,13 @@ export class InputAddressDropdownComponent
           if (!term) {
             this.addresList = [];
           }
-          if (this.inputConfig.name != 'RoutingAddress') {
+          if (
+            this.inputConfig.name != 'RoutingAddress' &&
+            this.allowValidation
+          ) {
             this.getSuperControl.setErrors({ invalid: true });
           }
+          this.allowValidation = true;
           return term?.length >= 3;
         }),
         switchMap((query) => {
@@ -206,6 +214,10 @@ export class InputAddressDropdownComponent
         this.inputDropdown.inputRef.focusInput = true;
       }, 500);
     }
+  }
+
+  onIncorrectInput(event: boolean) {
+    this.incorrectEvent.emit(event);
   }
 
   ngOnDestroy(): void {

@@ -2,7 +2,7 @@
   [customClass]="'modal-container-sph-applicant'"
   [disableFooter]="true"
 >
-  <div class="d-flex flex-column open-modal-container">
+  <div origin class="d-flex flex-column open-modal-container">
     <!-- STEP 1 -->
 
     <div class="d-flex flex-column align-items-center step-one-container">
@@ -97,7 +97,7 @@
 
         <div class="d-flex">
           <div class="group address-group">
-            <app-ta-input-address
+            <app-input-address-dropdown
               formControlName="address"
               [inputConfig]="{
                 name: 'Address',
@@ -105,11 +105,13 @@
                 label: 'Address, City, State Zip',
                 placeholderIcon: 'address',
                 textTransform: 'capitalize',
+                dropdownWidthClass: 'w-col-480',
                 minLength: 6,
                 maxLength: 256,
                 isDisabled: true
               }"
-            ></app-ta-input-address>
+              [placeholderType]="'longAddress'"
+            ></app-input-address-dropdown>
           </div>
           <div class="group address-unit-group">
             <app-ta-input
@@ -390,19 +392,20 @@
                 ></app-ta-input>
               </div>
               <div class="group location-group">
-                <app-ta-input-address
+                <app-input-address-dropdown
                   formControlName="accidentLocation"
                   [inputConfig]="{
                     name: 'Address',
                     type: 'text',
                     label: 'Location',
-                    isRequired: true,
                     placeholderIcon: 'address',
-                    minLength: 12,
-                    maxLength: 256,
-                    textTransform: 'capitalize'
+                    textTransform: 'capitalize',
+                    dropdownWidthClass: 'w-col-445',
+                    minLength: 6,
+                    maxLength: 256
                   }"
-                ></app-ta-input-address>
+                  [placeholderType]="'shortAddress'"
+                ></app-input-address-dropdown>
               </div>
             </div>
 
@@ -665,7 +668,7 @@
 
           <div class="d-flex align-items-center address-container">
             <div class="address-group">
-              <app-ta-input-address
+              <app-input-address-dropdown
                 formControlName="address"
                 [inputConfig]="{
                   name: 'Address',
@@ -673,11 +676,13 @@
                   label: 'Address, City, State Zip',
                   isRequired: true,
                   placeholderIcon: 'address',
+                  textTransform: 'capitalize',
+                  dropdownWidthClass: 'w-col-445',
                   minLength: 6,
-                  maxLength: 256,
-                  textTransform: 'capitalize'
+                  maxLength: 256
                 }"
-              ></app-ta-input-address>
+                [placeholderType]="'longAddress'"
+              ></app-input-address-dropdown>
             </div>
             <div class="address-unit-group">
               <app-ta-input

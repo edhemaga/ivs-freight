@@ -1,13 +1,12 @@
-import {Pipe, PipeTransform} from '@angular/core';
-import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import { Pipe, PipeTransform } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { HighlightText } from '../model/searchFilter';
 
 @Pipe({
   name: 'taHighlight',
 })
 export class HighlightSearchPipe implements PipeTransform {
-  constructor(private sanitizer: DomSanitizer) {
-  }
+  constructor(private sanitizer: DomSanitizer) {}
 
   transform(text: any, chips: HighlightText[]): SafeHtml {
     if (text && chips && chips.length) {
@@ -17,7 +16,9 @@ export class HighlightSearchPipe implements PipeTransform {
       });
       chips.forEach((item, key) => {
         if (item.text && text) {
-          let pattern = item.text.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+          let pattern = item.text
+            .toString()
+            .replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
           pattern = pattern
             .split(' ')
             .filter((t) => {
@@ -27,7 +28,8 @@ export class HighlightSearchPipe implements PipeTransform {
           const regex = new RegExp('(' + pattern + ')(?!([^<]+)?>)', 'gi');
           text = text.replace(
             regex,
-            (match) => `<span class="highlight-text-${item.index}">${match}</span>`
+            (match) =>
+              `<span class="highlight-text-${item.index}">${match}</span>`
           );
         } else {
           return text;
