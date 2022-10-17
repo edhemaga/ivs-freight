@@ -579,7 +579,6 @@
                 type: 'text',
                 label: 'Location',
                 isRequired: true,
-                placeholderIcon: 'address',
                 placeholder: 'Location',
                 textTransform: 'capitalize',
                 incorrectInput: selectedMode === 'REVIEW_MODE',
@@ -589,7 +588,7 @@
                 autoFocus: true,
                 placeholderInsteadOfLabel: true
               }"
-              [placeholderType]="'longAddress'"
+              [placeholderType]="'shortAddress'"
               (incorrectEvent)="incorrectInput($event, 0, 18)"
               [activeAddress]="selectedAddress"
               (selectedAddress)="handleInputSelect($event, 'ADDRESS')"

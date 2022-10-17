@@ -333,7 +333,17 @@
                           isRequired: true,
                           placeholderIcon: 'address',
                           textTransform: 'capitalize',
-                          dropdownWidthClass: 'w-col-480',
+                          dropdownWidthClass: isEditingArray[i]?.isEditing &&
+                          !isEditingArray[i]?.isEditingAddress &&
+                          !isLastInputDeleted &&
+                          !isEditingArray[i]?.isFirstAddress
+                            ? 'w-col-442'
+                            : isEditingArray[i]?.isEditing &&
+                              !isEditingArray[i]?.isEditingAddress &&
+                              isEditingArray[i]?.isFirstAddress &&
+                              previousAddresses.controls.length === 1
+                            ? 'w-col-480'
+                            : 'w-col-412',
                           minLength: 6,
                           maxLength: 256,
                           incorrectInput: selectedMode === 'REVIEW_MODE'
