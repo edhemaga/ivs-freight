@@ -51,13 +51,17 @@
     <div class="note_border_line" *ngIf="!parking"></div>
   </div>
   <div
-    (click)="showCollorPattern = !showCollorPattern"
+    (click)="togglePattern()"
     [class.no_opacity]="showCollorPattern"
     [class.parking_tooltip]="parking && showCollorPattern"
     class="editor_buttons text_color"
     [class.popover_text_color]="popoverNote"
   >
-    <div class="colors_patter" id="colors_patter">
+    <div
+      class="colors_patter"
+      id="colors_patter"
+      [class.closed_pattern]="!closedPattern"
+    >
       <div
         (click)="executeEditor('foreColor', paternCol.color, indx)"
         *ngFor="let paternCol of containerColors; let indx = index"

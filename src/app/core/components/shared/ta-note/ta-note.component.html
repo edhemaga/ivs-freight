@@ -27,16 +27,16 @@
     position="bottom"
   >
     <svg-icon
-      app-autoclose-popover
       #t2="ngbPopover"
       [ngbPopover]="note_popover"
-      autoClose="outside"
+      [autoClose]="'outside'"
       class="note-btn"
       [container]="'body'"
       [placement]="'left-top'"
       popoverClass="my-note-popover"
       triggers="manual"
       (click)="toggleNote(note, t2)"
+      (hidden)="popoverClosed()"
       src="assets/svg/truckassist-table/note/{{ noteIcon }}"
     >
     </svg-icon>

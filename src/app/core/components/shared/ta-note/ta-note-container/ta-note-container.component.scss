@@ -156,11 +156,18 @@
           align-items: center;
           border-radius: 1px;
           z-index: 10;
+
+          &.closed_pattern{
+            width: 18px;
+            overflow: hidden;
+          }
+          
           div {
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 16px;
+            min-width: 16px;
+            max-width: 16px;
             height: 16px;
             margin: 0 1px;
             cursor: pointer;

@@ -42,6 +42,7 @@ export class TaNoteContainerComponent implements OnInit {
   slowTimeout: any;
   lastSavedIndex: number = -1;
   defaultColorSet: boolean = false;
+  closedPattern: boolean = false;
   private destroy$ = new Subject<void>();
 
   constructor(private sharedService: SharedService) {}
@@ -147,23 +148,37 @@ export class TaNoteContainerComponent implements OnInit {
       this.selectedPaternColor = document.queryCommandValue('ForeColor');
     }
 
-    this.containerColors.map((col, indx) => {
-      if (col.color == this.selectedPaternColor) {
-        this.selectedColorName = this.containerColors[indx];
-        document.execCommand('styleWithCSS', false, 'true');
-        if (this.lastSavedIndex != indx) {
-          this.filterContainersColor();
-        }
-        this.lastSavedIndex = indx;
-        setTimeout(() => {
-          this.focusElement();
+    if (this.defaultColorSet) {
+      this.containerColors.map((col, indx) => {
+        if (col.color == this.selectedPaternColor) {
+          this.selectedColorName = this.containerColors[indx];
+          document.execCommand('styleWithCSS', false, 'true');
+          if (this.lastSavedIndex != indx) {
+            this.filterContainersColor();
+          }
+          this.lastSavedIndex = indx;
           setTimeout(() => {
             this.focusElement();
-            this.selectedPaternColor = col.color;
+            setTimeout(() => {
+              this.focusElement();
+              this.selectedPaternColor = col.color;
+            });
           });
-        });
-      }
-    });
+        }
+      });
+    }
+  }
+
+  togglePattern() {
+    this.showCollorPattern = !this.showCollorPattern;
+
+    if(!this.showCollorPattern) {
+      setTimeout(()=>{
+        this.closedPattern = false;
+      }, 300)
+    } else {
+      this.closedPattern = true;
+    }
   }
 
   public ngOnDestroy(): void {

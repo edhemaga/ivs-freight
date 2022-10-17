@@ -71,8 +71,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   selectionTaken: any;
   range: any;
   isFocused: boolean = false;
-  allowNoteClose: boolean = true;
-  allowAutoClose: boolean = true;
+  preventClosing: boolean = false;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -101,6 +100,11 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   toggleNote(data: any, t2) {
+    this.preventClosing = true;
+    setTimeout(() => {
+      this.preventClosing = false;
+    }, 200);
+
     if (t2?.isOpen()) {
       if (this.openedAll) {
         this.leaveThisOpened = true;
@@ -156,13 +160,8 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   preventMouseDown(ev) {
-    this.allowNoteClose = false;
     ev.stopPropagation();
     ev.preventDefault();
-
-    setTimeout(() => {
-      this.allowNoteClose = true;
-    }, 500);
   }
 
   valueChange(event) {
@@ -188,10 +187,9 @@ export class TaNoteComponent implements OnInit, OnDestroy {
 
   saveNote(autoSave?: boolean) {
     setTimeout(() => {
-      if (!autoSave && this.openedAll && this.allowNoteClose) {
+      if (!autoSave && this.openedAll) {
         this.closeNote();
       }
-      this.allowNoteClose = true;
     }, 200);
     if (this.value == '<br>') {
       this.value = this.value.replace('<br>', '');
@@ -253,6 +251,14 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  popoverClosed() {
+    if (!this.preventClosing) {
+      this.closeNote();
+    }
+
+    this.preventClosing = false;
   }
 
   public ngOnDestroy(): void {
