@@ -10,19 +10,28 @@ import {
   OnDestroy,
   AfterViewInit,
   OnChanges,
+  forwardRef,
 } from '@angular/core';
 import {
   CdkVirtualScrollViewport,
   VIRTUAL_SCROLL_STRATEGY,
 } from '@angular/cdk/scrolling';
 import {
-  FULL_SIZE,
-  MobileCalendarStrategy,
+  CalendarStrategy,
+  STARTING_YEAR,
 } from './../date-calendars/calendar_strategy';
 import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 
-const SCROLL_DEBOUNCE_TIME = 80;
+export const FULL_SIZE = 182;
+// UKUPNA VISINA SCROLA 100 GODINA x ( 12 MESECI x PUNA VISINA JEDNO ITEMA U SCROLU )
+export const CYCLE_HEIGHT = (100 * (12 * FULL_SIZE)) + 50;
+
+export const CYCLE_HEIGHT_BY_MONTHS = 100 * FULL_SIZE + 65;
+
+function factory(dir: CalendarDatesMainComponent) {
+  return dir.scrollStrategy;
+}
 
 const MONTHS = [
   'January',
@@ -46,7 +55,8 @@ const MONTHS = [
   providers: [
     {
       provide: VIRTUAL_SCROLL_STRATEGY,
-      useClass: MobileCalendarStrategy,
+      useFactory: factory,
+      deps: [forwardRef(() => CalendarDatesMainComponent)],
     },
   ],
 })
@@ -58,8 +68,12 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
   @Input() listPreview: any;
   @Output() setListPreviewToFull: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild('monthsScrollRef', { static: true })
-  public virtualScrollViewport: CdkVirtualScrollViewport;
+  scrollStrategy: CalendarStrategy = new CalendarStrategy(
+    this.calendarService,
+    CYCLE_HEIGHT,
+    FULL_SIZE,
+    "main"
+  );
 
   private destroy$ = new Subject<void>();
 
@@ -75,7 +89,7 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
     'September',
     'October',
     'November',
-    'December',
+    'December'
   ];
 
   selectedYear: any;
@@ -87,7 +101,15 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
   constructor(private calendarService: CalendarScrollService) {}
 
   ngOnChanges(change: any) {
-    console.log('changesss', change);
+    if (change.listPreview) {
+      if (!change.listPreview.firstChange) {
+        this.scrollStrategy.updateScrollHeights(
+          change.listPreview.currentValue === 'month_list'
+            ? CYCLE_HEIGHT_BY_MONTHS
+            : CYCLE_HEIGHT
+        );
+      }
+    }
   }
 
   ngOnInit(): void {
@@ -98,7 +120,9 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
     this.calendarService.scrollToAutoIndex
       .pipe(takeUntil(this.destroy$))
       .subscribe((indx) => {
-        this.virtualScrollViewport.scrollToIndex(indx, 'auto');
+        setTimeout(() => {
+          this.scrollStrategy.scrollToIndex(indx, 'auto');
+        }, 0);
       });
 
     this.calendarService.scrolledIndexChange
@@ -110,7 +134,7 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
         ) {
           const sizeTimes = FULL_SIZE / res.cycleSize;
           const newScrollSize = Math.ceil(sizeTimes * res.scrollOffset);
-          this.virtualScrollViewport.scrollToOffset(newScrollSize);
+          this.scrollStrategy.scrollToOffset(newScrollSize, "auto");
         }
       });
 
@@ -120,9 +144,9 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
         setTimeout(() => {
           if (res) {
             const indx = this.findIndexInMonth(res);
-            this.virtualScrollViewport.scrollToIndex(indx);
+            this.scrollStrategy.scrollToIndex(indx, "auto");
           } else {
-            this.virtualScrollViewport.scrollToIndex(this.currentIndex);
+            this.scrollStrategy.scrollToIndex(this.currentIndex, "auto");
           }
         }, 200);
       });
@@ -130,16 +154,18 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
 
   findIndexInMonth(date: string): number {
     const selectedDate = new Date(date);
-    const indexMonth = (selectedDate.getFullYear() - 1905) * 12;
+    const indexMonth = (selectedDate.getFullYear() - STARTING_YEAR) * 12;
     const indx = indexMonth + selectedDate.getMonth();
     return indx;
   }
 
   onMonthChange(data: any) {
-    this.selectedYear = this.months[data.indx].getFullYear();
-    this.selectedMonth = this.monthNames[this.months[data.indx].getMonth()];
-    this.activeMonth = data.indx;
-    this.calendarService.index$.next(data);
+    if (this.months[data.indx]) {
+      this.selectedYear = this.months[data.indx].getFullYear();
+      this.selectedMonth = this.monthNames[this.months[data.indx].getMonth()];
+      this.activeMonth = data.indx;
+      this.calendarService.index$.next(data);
+    }
   }
 
   getMonth(index: number): string {

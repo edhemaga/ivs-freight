@@ -4,48 +4,20 @@ import {distinctUntilChanged} from "rxjs/operators";
 import {Injectable} from "@angular/core";
 import { CalendarScrollService } from "../calendar-scroll.service";
 
-export const STARTING_YEAR = 1905;
-export const RANGE = 2352;
+// POCETNA GODINA KALENDARA IDE UNAZAD 90 GODINA
+export const STARTING_YEAR = new Date().getFullYear() - 90;
 
-export const FULL_SIZE = 182;
+// RANGE JE UKUPNO 100 GODINA KOLIKO KALENDAR MOZE DA SADRZI x 12 MESECI
+export const RANGE = 100 * 12;
+
+
+// RANGE KOLIKO UKUPNO MOZE DA BUDE PRIKAZANO
 const BUFFER = 500;
-const CYCLE = getCycle();
-export const CYCLE_HEIGHT = reduceCycle();
 
-function getCycle(): ReadonlyArray<ReadonlyArray<number>> {
-  return Array.from({length: 28}, (_, i) =>
-    Array.from({length: 12}, (_, month) => FULL_SIZE)
-  );
-}
-
-function reduceCycle(lastYear: number = 28, lastMonth: number = 12): number {
-  return CYCLE.reduce(
-    (total, year, yearIndex) =>
-      yearIndex <= lastYear ? 
-          total +
-              year.reduce(
-                (sum, month, monthIndex) =>
-                  yearIndex < lastYear ||
-                  (yearIndex === lastYear && monthIndex < lastMonth)
-                    ? sum + month
-                    : sum,
-                0
-              )
-        : 
-      total
-    , 0);
-}
-
-/**
- * This scroll strategy is hard wired with styles for iOS and Android.
- * It is dependent on month height on those platforms and is designed to
- * work for {@link TuiMobileCalendarComponent} with years 1906 to 2102
- */
 @Injectable()
-export class MobileCalendarStrategy implements VirtualScrollStrategy {
+export class CalendarStrategy implements VirtualScrollStrategy {
 
-  constructor(private calendarService: CalendarScrollService){
-
+  constructor(private calendarService: CalendarScrollService, private startedHeight, private FULL_SIZE, private SCROLL_TYPE){
   }
 
   private index$ = new Subject<any>();
@@ -54,7 +26,12 @@ export class MobileCalendarStrategy implements VirtualScrollStrategy {
 
   attach(viewport: CdkVirtualScrollViewport) {
     this.viewport = viewport;
-    this.viewport.setTotalContentSize(CYCLE_HEIGHT * 7);
+    this.viewport.setTotalContentSize(this.startedHeight);
+    this.updateRenderedRange(this.viewport);
+  }
+
+  updateScrollHeights(height: number){
+    this.viewport.setTotalContentSize(height);
     this.updateRenderedRange(this.viewport);
   }
 
@@ -85,12 +62,18 @@ export class MobileCalendarStrategy implements VirtualScrollStrategy {
     }
   }
 
+  scrollToOffset(offset: number, behavior: ScrollBehavior){
+    if (this.viewport) {
+      this.viewport.scrollToOffset(offset, behavior);
+    }
+  }
+
   public getOffsetForIndex(index: number): number {
-    return FULL_SIZE * index;
+    return this.FULL_SIZE * index;
   }
 
   private getIndexForOffset(offset: number): number {
-    return Math.round(offset / FULL_SIZE);
+    return Math.round(offset / this.FULL_SIZE);
   }
   private updateRenderedRange(viewport: CdkVirtualScrollViewport) {
     // koliko je scrolovano
@@ -104,7 +87,7 @@ export class MobileCalendarStrategy implements VirtualScrollStrategy {
     const newRange = {start, end};
     const firstVisibleIndex = this.getIndexForOffset(offset);
 
-    const startOffsetIndex = FULL_SIZE * start;
+    const startOffsetIndex = this.FULL_SIZE * start;
 
     const startBuffer = offset - startOffsetIndex;
     if (startBuffer < BUFFER && start !== 0) {
@@ -114,7 +97,7 @@ export class MobileCalendarStrategy implements VirtualScrollStrategy {
         this.getIndexForOffset(offset + viewportSize + BUFFER)
       );
     } else {
-      const endBuffer = (FULL_SIZE * end) - offset - viewportSize;
+      const endBuffer = (this.FULL_SIZE * end) - offset - viewportSize;
     
       if (endBuffer < BUFFER && end !== dataLength) {
         newRange.start = Math.max(0, this.getIndexForOffset(offset - BUFFER));
@@ -127,8 +110,10 @@ export class MobileCalendarStrategy implements VirtualScrollStrategy {
 
     viewport.setRenderedRange(newRange);
     viewport.setRenderedContentOffset(this.getOffsetForIndex(newRange.start));
-    if( this.calendarService.selectedScroll === 'main' ){
-      this.index$.next({indx: firstVisibleIndex, scrollOffset: offset, cycleSize: FULL_SIZE, type: "main", offsetIndx: (offset / FULL_SIZE)});
+
+    // KORISTI SE ZA UPDEJT DRUGOG SCROLLA KOJI SLUSA
+    if( this.calendarService.selectedScroll === this.SCROLL_TYPE ){
+      this.index$.next({indx: firstVisibleIndex, scrollOffset: offset, cycleSize: this.FULL_SIZE, type: this.SCROLL_TYPE});
     }
   }
 }
