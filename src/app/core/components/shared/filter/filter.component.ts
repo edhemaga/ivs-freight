@@ -28,13 +28,12 @@ import { animate, style, transition, trigger, state, } from '@angular/animations
   styleUrls: ['./filter.component.scss'],
   providers: [NgbDropdownConfig, TaThousandSeparatorPipe],
   encapsulation: ViewEncapsulation.None,
-  animations: [card_component_animation('showHideCardBody'), trigger('closeForm', [
+  animations: [trigger('closeForm', [
     state(
       'true',
       style({
         height: '*',
         overflow: 'visible',
-        opacity: '1',
       })
     ),
     state(
@@ -42,9 +41,7 @@ import { animate, style, transition, trigger, state, } from '@angular/animations
       style({
         height: '0px',
         overflow: 'hidden',
-        opacity: '0',
         'margin-top': '0px',
-        'margin-bottom': '0px',
       })
     ),
     state(
@@ -53,8 +50,8 @@ import { animate, style, transition, trigger, state, } from '@angular/animations
         height: '*',
       })
     ),
-    transition('false <=> true', [animate('.2s ease')]),
-    transition('true <=> false', [animate('.2s ease')]), 
+    transition('false <=> true', [animate('.2s linear')]),
+    transition('true <=> false', [animate('.2s ease-in-out')]), 
   ])],
 })
 export class FilterComponent implements OnInit, AfterViewInit {
@@ -1103,6 +1100,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   lastYear: any = '';
   last2Years: any = '';
   totalFiltersNum: any = 0;
+  singleFormActive: any = false;
 
   @Input() type: string = 'userFilter';
   @Input() icon: string = 'user';
@@ -1956,6 +1954,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     this.swipeActiveRange = 0;
     this.autoClose.tooltip.close();
     this.totalFiltersNum = 0;
+    this.singleFormActive = false;
     let data = {
       'action' : 'Clear',
       'type' : this.type
@@ -2152,6 +2151,23 @@ export class FilterComponent implements OnInit, AfterViewInit {
             'thirdFormTo' : this.moneyForm.get('multiFormThirdTo')?.value,
           }  
 
+          let formsActive = 0;
+
+          if ( this.moneyForm.get('multiFromFirstFrom')?.value || this.moneyForm.get('multiFromFirstTo')?.value) {
+            formsActive = formsActive + 1;
+          }
+      
+          if ( this.moneyForm.get('multiFormSecondFrom')?.value || this.moneyForm.get('multiFormSecondTo')?.value ) {
+            formsActive = formsActive + 1;
+          }
+      
+          if ( this.moneyForm.get('multiFormThirdFrom')?.value ||  this.moneyForm.get('multiFormThirdTo')?.value ) {
+            formsActive = formsActive + 1;
+          }
+      
+          this.activeFormNum = formsActive;
+          this.totalFiltersNum = formsActive;
+
         } else {
           this.singleFromActive = (
             ' ' + this.moneyForm.get('singleFrom')?.value
@@ -2165,6 +2181,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
             return false;
           }   
 
+          this.singleFormActive = true;
           queryParams = {
             'singleFrom' : this.moneyForm.get('singleFrom')?.value ? parseInt(this.moneyForm.get('singleFrom')?.value) : '',
             'singleTo' : this.moneyForm.get('singleTo')?.value ? parseInt(this.moneyForm.get('singleTo')?.value) : '',
@@ -2384,23 +2401,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
       thirdFormChanged = 'changed';
     }
 
-
-    let formsActive = 0;
-
-    if ( firstFrom || firstTo) {
-      formsActive = formsActive + 1;
-    }
-
-    if ( secFrom || secTo ) {
-      formsActive = formsActive + 1;
-    }
-
-    if ( thirdFrom || thirdTo ) {
-      formsActive = formsActive + 1;
-    }
-
-    this.activeFormNum = formsActive;
-    this.totalFiltersNum = formsActive;
     if ( firstFormChanged == 'changed' || secondFormChanged == 'changed' || thirdFormChanged == 'changed' ) {
       this.setButtonAvailable = true;
     } else {

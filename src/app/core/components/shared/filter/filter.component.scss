@@ -1026,7 +1026,7 @@
   width: 300px;
 
   .filter-header {
-    padding-left: 4px;
+    padding-left: 3px;
 
     .user-title-text{
       padding-left: 0px;
@@ -1040,7 +1040,12 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin-top: 21px;
     overflow: hidden;
+
+    &.single-money-main {
+      margin-top: 0px;
+    }
 
     .money-value-holder {
       position: relative;
@@ -1053,7 +1058,7 @@
       font-size: 14px;
       //font-weight: 600;
       color: #aaaaaa;
-
+      transition: all 0.59s ease-in-out;
       .invalid-message {
         position: absolute;
         top: 18px;
@@ -1061,6 +1066,10 @@
         font-size: 11px;
         color: #ef5350;
       }
+    }
+
+    .closedForm{
+      height: 0px;
     }
 
     .errorForm {
@@ -1102,8 +1111,9 @@
     position: relative;
     width: 100%;
     padding-left: 4px;
-    margin-bottom: 21px;
-
+    margin-bottom: 4px;
+    transition: all 0.52s ease-in;
+    
     .form-name {
       padding-left: 2px;
       line-height: 18px;
@@ -1270,8 +1280,7 @@
   }
 
   .hiddenFormTitle {
-    transition: all 0.2s ease;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
   }
 
   .hiddenFormBorder {
@@ -1569,6 +1578,7 @@
         font-size: 11px;
         color: #ef5350;
       }
+
     }
 
     .errorForm {

@@ -13,10 +13,11 @@
       canadaSelectedStates.length > 0 ||
       usaSelectedStates.length ||
       rangeValue > 0 ||
-      moneyFilterStatus ||
+      totalFiltersNum > 0 ||
       longVal != 0 ||
       maxValueSet != maxValueRange ||
-      minValueSet != minValueRange
+      minValueSet != minValueRange ||
+      singleFormActive
   }"
 >
   <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
@@ -32,8 +33,8 @@
     <div *ngIf="filterActiveArray.length > 0" class="active-filter-num">
       {{ filterActiveArray.length }}
     </div>
-    <div *ngIf=" activeFormNum > 0 " class="active-filter-num">
-      {{activeFormNum}}
+    <div *ngIf=" totalFiltersNum > 0 " class="active-filter-num">
+      {{totalFiltersNum}}
     </div>
     <div
       *ngIf="canadaSelectedStates.length > 0 || usaSelectedStates.length > 0"
@@ -948,7 +949,7 @@
       </div>
       <div class="border-filter money-top-border-magin"></div>
       <div class="single-form-holder" *ngIf="subType != 'all'">
-        <div class="money-main-holder">
+        <div class="money-main-holder single-money-main">
           <div class="money-value-holder">
             <app-ta-input
               formControlName="singleFrom"
@@ -1001,7 +1002,7 @@
         </div>
         <div
           class="money-main-holder"
-          [@showHideCardBody]="showPart1 ? 'true' : 'false'"
+          [@closeForm]="showPart1 ? 'true' : 'false'"
         >
           <div class="money-value-holder">
             <app-ta-input
@@ -1060,7 +1061,7 @@
         </div>
         <div
           class="money-main-holder"
-          [@showHideCardBody]="showPart2 ? 'true' : 'false'"
+          [@closeForm]="showPart2 ? 'true' : 'false'"
         >
           <div class="money-value-holder">
             <app-ta-input
