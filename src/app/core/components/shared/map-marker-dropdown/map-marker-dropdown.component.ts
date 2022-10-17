@@ -22,6 +22,7 @@ export class MapMarkerDropdownComponent implements OnInit {
   @Input() locationFilterOn: boolean = false;
   @Input() dropdownActions: any[] = [];
   @Input() rating: any = {};
+  @Input() cluster: any = {};
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
 
   public copiedPhone: boolean = false;

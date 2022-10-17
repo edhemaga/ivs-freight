@@ -3,7 +3,7 @@
     background: #fff;
     border-radius: 3px;
     box-shadow: 0px 0px 4px #00000026;
-    pointer-events: all;
+    //pointer-events: all;
 
     .cluster-list-header {
         padding: 2px;
@@ -105,5 +105,23 @@
                 display: none!important;
             }
         }
+    }
+}
+
+.hideMarker {
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s;
+}
+
+.marker-icon {
+    #Path_33654-2 {
+        transition: 0.2s ease-in-out;
+    }
+
+    &.cluster-marker {
+        top: -46px;
+        transform: translateX(-50%);
     }
 }

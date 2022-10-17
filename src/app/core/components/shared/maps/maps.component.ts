@@ -123,28 +123,30 @@ export class MapsComponent implements OnInit, OnDestroy {
   public getMapInstance(map) {
     this.agmMap = map;
 
-    map.addListener('idle', (ev) => {
-      // update the coordinates here
-      var bounds = map.getBounds();
-      var ne = bounds.getNorthEast(); // LatLng of the north-east corner
-      var sw = bounds.getSouthWest(); // LatLng of the south-west corder
-      var nw = new google.maps.LatLng(ne.lat(), sw.lng());
-      var se = new google.maps.LatLng(sw.lat(), ne.lng());
-
-      var mapCenter = map.getCenter();
-
-      var clustersZoomLevel = this.mapZoom <= 18 ? this.mapZoom - 3 : 15;
-
-      var clustersObject = {
-        northEastLatitude: ne.lat(),
-        northEastLongitude: ne.lng(),
-        southWestLatitude: sw.lat(),
-        southWestLongitude: sw.lng(),
-        zoomLevel: this.mapZoom,
-      };
-
-      this.callClusters(clustersObject);
-    });
+    if ( this.mapType == 'repairShop' ) {
+      map.addListener('idle', (ev) => {
+        // update the coordinates here
+        var bounds = map.getBounds();
+        var ne = bounds.getNorthEast(); // LatLng of the north-east corner
+        var sw = bounds.getSouthWest(); // LatLng of the south-west corder
+        var nw = new google.maps.LatLng(ne.lat(), sw.lng());
+        var se = new google.maps.LatLng(sw.lat(), ne.lng());
+  
+        var mapCenter = map.getCenter();
+  
+        var clustersZoomLevel = this.mapZoom <= 18 ? this.mapZoom - 3 : 15;
+  
+        var clustersObject = {
+          northEastLatitude: ne.lat(),
+          northEastLongitude: ne.lng(),
+          southWestLatitude: sw.lat(),
+          southWestLongitude: sw.lng(),
+          zoomLevel: this.mapZoom,
+        };
+  
+        this.callClusters(clustersObject);
+      });
+    }
   }
 
   clickedMarker(id) {
@@ -189,6 +191,10 @@ export class MapsComponent implements OnInit, OnDestroy {
           });
       }
     });
+
+    this.clusterMarkers.map((cluster) => {
+      if ( cluster.isSelected) cluster.isSelected = false;
+    });
   }
 
   mapClick(event) {
@@ -196,6 +202,12 @@ export class MapsComponent implements OnInit, OnDestroy {
       if (data.isSelected) {
         data.isSelected = false;
         data.isExpanded = false;
+      }
+    });
+
+    this.clusterMarkers.map((data: any, index) => {
+      if (data.isSelected) {
+        data.isSelected = false;
       }
     });
 
@@ -325,19 +337,114 @@ export class MapsComponent implements OnInit, OnDestroy {
   }
 
   callClusters(clustersObj) {
-    this.viewData = [];
+    //this.viewData = [];
     
     if ( this.mapType == "repairShop" ) {
-      console.log('callClusters clustersObj', clustersObj);
+      //console.log('callClusters clustersObj', clustersObj);
       this.repairShopService
       .getRepairShopClusters(clustersObj)
       .pipe(takeUntil(this.destroy$))
       .subscribe((clustersResponse: any) => {
-        console.log('callClusters clustersResponse', clustersResponse);
-        this.clusterMarkers = clustersResponse;
+        //console.log('callClusters clustersResponse', clustersResponse);
+
+        var clustersToShow = [];
+        var markersToShow = [];
+
+        clustersResponse.map((clusterItem) => {
+          if ( clusterItem.count > 1 ) {
+            let clusterIndex = this.clusterMarkers.findIndex(
+              (item) => item.latitude === clusterItem.latitude && item.longitude === clusterItem.longitude
+            );
+
+            if ( clusterIndex == -1 ) {
+              this.clusterMarkers.push(clusterItem);
+            }
+
+            clustersToShow.push(clusterItem.latitude);
+          } else {
+            let markerIndex = this.viewData.findIndex(
+              (item) => item.id === clusterItem.id
+            );
+
+            if ( markerIndex == -1 ) {
+              this.viewData.push(clusterItem);
+            }
+
+            markersToShow.push(clusterItem.id);
+          }
+        });
+
+        this.viewData.map((item) => {
+          if ( markersToShow.includes(item.id) ) {
+            item.showMarker = true;
+          } else {
+            item.showMarker = false;
+          }
+        });
+
+        this.clusterMarkers.map((cluster) => {
+          if ( clustersToShow.includes(cluster.latitude) ) {
+            cluster.showMarker = true;
+          } else {
+            cluster.showMarker = false;
+          }
+        });
+
         this.ref.detectChanges();
       });
     }
+  }
+ 
+  clickedCluster(cluster) {
+    this.clusterMarkers.map((data: any, index) => {
+      if (data.isSelected && (data.latitude != cluster.latitude || data.longitude != cluster.longitude)) {
+        data.isSelected = false;
+      } else if (data.latitude == cluster.latitude && data.longitude == cluster.longitude) {
+        data.isSelected = !data.isSelected;
+        //console.log('select cluster', data.isSelected);
+
+        if (data.isSelected) {
+          this.markerSelected = true;
+
+          if (
+            this.mapLatitude == data.latitude &&
+            this.mapLongitude == data.longitude
+          ) {
+            this.mapLatitude = data.latitude + 0.000001;
+            this.mapLongitude = data.longitude + 0.000001;
+          } else {
+            this.mapLatitude = data.latitude;
+            this.mapLongitude = data.longitude;
+          }
+        } else {
+          this.markerSelected = false;
+        }
+
+        document
+          .querySelectorAll('.si-float-wrapper')
+          .forEach((parentElement: HTMLElement) => {
+            parentElement.style.zIndex = '998';
+
+            setTimeout(() => {
+              var childElements = parentElement.querySelectorAll(
+                '.show-marker-dropdown'
+              );
+              if (childElements.length) parentElement.style.zIndex = '999';
+            }, 1);
+          });
+      }
+    });
+
+    this.viewData.map((marker) => {
+      if ( marker.isSelected) marker.isSelected = false;
+    });
+
+    this.ref.detectChanges();
+  }
+
+  clusterHover(cluster, hover) {
+    cluster.markerHover = hover;
+    this.ref.detectChanges();
   }
 
   ngOnDestroy(): void {

@@ -1,4 +1,4 @@
-<div class="marker-tool-tip">
+<div class="marker-tool-tip" *ngIf="type != 'cluster'">
   <div class="marker-info-container-all">
     <div class="title-container">
       <div class="marker-business-name">{{ title }}</div>
@@ -668,5 +668,27 @@
       [ngClass]="{ rotate: item?.isExpanded }"
       [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
     ></svg-icon>
+  </div>
+</div>
+
+<div class="cluster-list" *ngIf="type == 'cluster'">
+  <div class="cluster-list-header">
+    <div class="header-content">
+      <div class="cluster-count">
+        <div class="header-text">{{ item.count }}</div>
+      </div>
+      <div class="header-text" [style]="{ 'margin-left': '4px' }">
+        {{ title }}
+      </div>
+    </div>
+    <div class="divider"></div>
+  </div>
+  <div class="cluster-list-content">
+    <div
+      class="cluster-list-item"
+      *ngFor="let name of item.names"
+    >
+      {{ name }}
+    </div>
   </div>
 </div>

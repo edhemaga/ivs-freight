@@ -650,6 +650,11 @@
     transform: scale(0.8) !important;
     pointer-events: none;
     transition: all 0.15s ease-out !important;
+
+    &.cluster-dropdown {
+        display: flex;
+        justify-content: center;
+    }
 }
 
 .show-marker-dropdown {

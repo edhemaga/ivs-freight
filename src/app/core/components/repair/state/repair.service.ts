@@ -525,7 +525,6 @@ export class RepairTService implements OnDestroy {
   public getRepairShopClusters(
     clustersQuery: GetRepairShopClustersQuery
   ): Observable<Array<ClusterResponse>> {
-    console.log('getRepairShopClusters clustersQuery', clustersQuery);
     return this.shopServices.apiRepairshopClustersGet(
       clustersQuery.northEastLatitude,
       clustersQuery.northEastLongitude,
