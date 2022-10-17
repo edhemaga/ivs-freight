@@ -289,6 +289,7 @@
                             ? '#FFA726'
                             : '#fff'
                       }"
+                      fill="#FFA726"
                     />
                   </g>
                   <g
@@ -339,28 +340,6 @@
                   cluster?.isSelected
               }"
             >
-              <!-- <div class="cluster-list">
-                <div class="cluster-list-header">
-                  <div class="header-content">
-                    <div class="cluster-count">
-                      <div class="header-text">{{ cluster.count }}</div>
-                    </div>
-                    <div class="header-text" [style]="{ 'margin-left': '4px' }">
-                      Repair Shop
-                    </div>
-                  </div>
-                  <div class="divider"></div>
-                </div>
-                <div class="cluster-list-content">
-                  <div
-                    class="cluster-list-item"
-                    *ngFor="let name of cluster.names"
-                  >
-                    {{ name }}
-                  </div>
-                </div>
-              </div> -->
-
               <app-map-marker-dropdown
                 [title]="
                   mapType == 'shipper'
