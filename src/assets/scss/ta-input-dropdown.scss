@@ -56,12 +56,28 @@
         &.dropdown-option-hovered {
           background-color: #f3f3f3;
           color: #3c3c3c;
+          border-radius: 2px;
+          cursor: pointer;
 
           .svg-template-logo,
           .svg-template-grayscale {
             svg {
               -webkit-filter: grayscale(0);
               filter: grayscale(0);
+            }
+          }
+
+          .svgtext-template-logo {
+            &.hide-hover-icons {
+              visibility: visible !important;
+              opacity: 1 !important;
+              transform: translateX(0px) !important;
+            }
+          }
+
+          .svgtext-template-text {
+            &.move-hover-text {
+              transform: translateX(0px) !important;
             }
           }
         }
@@ -117,7 +133,7 @@
             transition: all 0.3s ease-in-out;
           }
 
-          &.add-new-divider {
+          &-divider {
             &::after {
               content: "";
               position: absolute;
@@ -527,6 +543,10 @@
         width: 445px;
       }
 
+      &.w-col-442 {
+        width: 442px;
+      }
+
       &.w-col-439 {
         width: 439px;
       }
@@ -553,6 +573,10 @@
 
       &.w-col-414 {
         width: 414px;
+      }
+
+      &.w-col-412 {
+        width: 412px;
       }
 
       &.w-col-407 {

@@ -72,6 +72,8 @@ export class InputAddressDropdownComponent
 
   @Output() changeFlag: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  @Output() incorrectEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   constructor(
     @Self() public superControl: NgControl,
     private addressService: AddressService,
@@ -98,7 +100,10 @@ export class InputAddressDropdownComponent
           if (!term) {
             this.addresList = [];
           }
-          if (this.inputConfig.name != 'RoutingAddress' && this.allowValidation) {
+          if (
+            this.inputConfig.name != 'RoutingAddress' &&
+            this.allowValidation
+          ) {
             this.getSuperControl.setErrors({ invalid: true });
           }
           this.allowValidation = true;
@@ -209,6 +214,10 @@ export class InputAddressDropdownComponent
         this.inputDropdown.inputRef.focusInput = true;
       }, 500);
     }
+  }
+
+  onIncorrectInput(event: boolean) {
+    this.incorrectEvent.emit(event);
   }
 
   ngOnDestroy(): void {

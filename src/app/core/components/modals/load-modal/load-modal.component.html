@@ -671,15 +671,25 @@
     </div>
   </form>
   <!-------------------------------- Additional Tab Part -------------------------------->
-  <div additional>
+  <div
+    additional
+    class="load-additional-container"
+    [ngClass]="{ 'map-container': !isHazardousVisible }"
+  >
     <!-- Hazardous -->
     <app-load-modal-hazardous
       *ngIf="isHazardousVisible"
       (close)="isHazardousVisible = false"
     ></app-load-modal-hazardous>
     <!-- Map -->
-    <div *ngIf="!isHazardousVisible" class="load-map">
+    <!-- <div *ngIf="!isHazardousVisible" class="load-map">
       <app-maps [mapType]="'routing'"></app-maps>
-    </div>
+    </div> -->
+    <app-maps
+      *ngIf="!isHazardousVisible"
+      [mapType]="'routing'"
+      [routes]="[]"
+      [ngStyle]="{ width: '100%', height: '100%' }"
+    ></app-maps>
   </div>
 </app-ta-modal>

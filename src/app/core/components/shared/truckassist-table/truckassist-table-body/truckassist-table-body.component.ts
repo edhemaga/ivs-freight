@@ -181,7 +181,7 @@ export class TruckassistTableBodyComponent
       }
 
       if (changes.viewData.currentValue[0]) {
-        this.detailsDataService.setNewData(changes.viewData.currentValue[0]);
+        //this.detailsDataService.setNewData(changes.viewData.currentValue[0]);
       }
     }
 
@@ -380,6 +380,7 @@ export class TruckassistTableBodyComponent
 
   // RAITING
   onLike(row: any) {
+    this.detailsDataService.setNewData(row);
     this.bodyActions.emit({
       data: row,
       type: 'raiting',
@@ -388,6 +389,7 @@ export class TruckassistTableBodyComponent
   }
 
   onDislike(row: any) {
+    this.detailsDataService.setNewData(row);
     this.bodyActions.emit({
       data: row,
       type: 'raiting',

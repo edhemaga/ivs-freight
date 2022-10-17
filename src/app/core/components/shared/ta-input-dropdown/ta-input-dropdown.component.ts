@@ -165,7 +165,7 @@ export class TaInputDropdownComponent
       this.inputConfig.name === 'Address' ||
       this.inputConfig.name === 'RoutingAddress'
     ) {
-      if (this.getSuperControl.value && this.inputRef.focusInput) {
+      if (this.getSuperControl.value && this.inputRef?.focusInput) {
         this.popoverRef?.open();
       } else {
         this.popoverRef?.close();
@@ -717,6 +717,7 @@ export class TaInputDropdownComponent
     let elOffset =
       dropdownOption.height() * this.dropdownPosition +
       (this.dropdownPosition !== 0 ? this.dropdownPosition * 6 : 0);
+
     let viewport = dropdownContainer.scrollTop() + dropdownContainer.height();
 
     if (
