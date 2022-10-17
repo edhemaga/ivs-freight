@@ -61,9 +61,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
   @ViewChild(AutoclosePopoverComponent)
   autoClose: AutoclosePopoverComponent;
 
-  @ViewChild('pop1', { static: false }) pop1: ElementRef;
-
-
   @ViewChild('t2') t2: any;
   @ViewChild('mainFilter') mainFilter: any;
 
@@ -1502,119 +1499,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.observMainContainer();
-    }, 10);
-  }
 
-  observMainContainer(){
-    this.resizeObserver = new ResizeObserver((entries) => {
-      entries.forEach((entry) => {
-        if ( entry.contentRect.height ){
-          this.activeFilter = true;
-          let filterSearchHead = document.querySelector('.search-input-header');
-          let filterTextHead = document.querySelector('.filter-text-part');
-          filterSearchHead?.classList.remove('activeSearch');
-          filterSearchHead?.classList.remove('inactiveSearch');
-
-          filterTextHead?.classList.remove('activeHeader');
-          filterTextHead?.classList.remove('inactiveHeader');
-        } else {
-          this.activeFilter = false;
-          if ( this.defFilterHolder ){
-            
-            let mainArray: any[] = [];
-            switch (this.type) {
-              case 'departmentFilter':
-                mainArray = this.departmentArray;
-              break;
-              case 'pmFilter':
-                mainArray = this.pmFilterArray;
-              break;
-              case 'categoryFuelFilter':
-                mainArray = this.categoryFuelArray;
-              break;
-              case 'categoryRepairFilter':
-                mainArray = this.categoryRepairArray;
-              break;
-              case 'truckFilter':
-                mainArray = this.truckArray;
-              break;
-              case 'trailerFilter':
-                mainArray = this.trailerArray;
-              break;
-              case 'brokerFilter':
-                mainArray = this.brokerArray;
-              break;
-              case 'driverFilter':
-                mainArray = this.driverArray;
-              break;
-              case 'truckTypeFilter':
-                mainArray = this.truckTypeArray;
-              break;
-              case 'trailerTypeFilter':
-                mainArray = this.trailerTypeArray;
-              break;
-              case 'userFilter':
-                mainArray = this.unselectedUser;
-              break;
-            }
-
-            mainArray.map((item) => {
-              if ( ( item.isSelected && !item.currentSet ) || ( !item.isSelected && item.currentSet ) ){
-                let indexNum = this.selectedUser.indexOf(item);
-                if ( indexNum > -1 ) {
-                  this.removeFromSelectedUser(item, indexNum);
-                } else {
-                  let inactiveIndexNum = mainArray.indexOf(item);
-                  this.addToSelectedUser(item, inactiveIndexNum);
-                }
-              }
-            })
-          } else if ( this.type == 'timeFilter' ) {
-            this.selectedTimeValue = this.filterActiveTime;
-          } else if ( this.type == 'moneyFilter' ) {
-            if ( this.subType != 'all' ) {
-                let setFromValue = this.singleFromActive != 'null' && this.singleFromActive ? this.singleFromActive : '';
-                this.moneyForm.get('singleFrom')?.setValue(setFromValue);
-
-                let setToValue = this.singleToActive != 'null' && this.singleToActive ? this.singleToActive : '';
-                this.moneyForm.get('singleTo')?.setValue(setToValue);
-                if ( !setFromValue ) {
-                  this.setButtonAvailable = false;
-                } 
-            } else {
-              let firstFromActive = this.multiFromFirstFromActive && this.multiFromFirstFromActive != 'null' ? this.multiFromFirstFromActive : '';
-              let firstToActive = this.multiFromFirstToActive && this.multiFromFirstToActive != 'null' ? this.multiFromFirstToActive : '';
-
-              this.moneyForm.get('multiFromFirstTo')?.setValue(firstToActive);
-              this.moneyForm.get('multiFromFirstFrom')?.setValue(firstFromActive);
-
-              let secFromActive = this.multiFormSecondFromActive && this.multiFormSecondFromActive != 'null' ? this.multiFormSecondFromActive : '';
-              let secToActive = this.multiFormSecondToActive && this.multiFormSecondToActive != 'null' ? this.multiFormSecondToActive : '';
-
-              this.moneyForm.get('multiFormSecondFrom')?.setValue(secFromActive);
-              this.moneyForm.get('multiFormSecondTo')?.setValue(secToActive);
-              
-              let thirdFromActive = this.multiFormThirdFromActive && this.multiFormThirdFromActive != 'null' ? this.multiFormThirdFromActive : '';
-              let thirdToActive = this.multiFormThirdToActive && this.multiFormThirdToActive != 'null' ? this.multiFormThirdToActive : '';
-
-              this.moneyForm.get('multiFormThirdFrom')?.setValue(thirdFromActive);
-              this.moneyForm.get('multiFormThirdTo')?.setValue(thirdToActive);
-            }
-            
-          } else if ( this.type == 'locationFilter' ) {
-
-            this.locationForm.setValue({address: this.loactionNameSet});
-            this.longVal = this.longValueSet;
-            this.latVal = this.latValSet;
-            this.locationRange = this.locationRangeSet;
-          }
-          this.cdRef.detectChanges();
-        }
-      });
-    });
-    this.resizeObserver.observe(this.pop1.nativeElement);
   }
 
   addToSelectedUser(item, indx, subType?) {
@@ -2430,12 +2315,107 @@ export class FilterComponent implements OnInit, AfterViewInit {
     this.rangeForm?.get('rangeTo')?.setValue(toValue);
   }
 
-
   onFilterClose(){
-    // WHEN FILTER IS LOSED
+      this.activeFilter = false;
+      if ( this.defFilterHolder ){
+        
+        let mainArray: any[] = [];
+        switch (this.type) {
+          case 'departmentFilter':
+            mainArray = this.departmentArray;
+          break;
+          case 'pmFilter':
+            mainArray = this.pmFilterArray;
+          break;
+          case 'categoryFuelFilter':
+            mainArray = this.categoryFuelArray;
+          break;
+          case 'categoryRepairFilter':
+            mainArray = this.categoryRepairArray;
+          break;
+          case 'truckFilter':
+            mainArray = this.truckArray;
+          break;
+          case 'trailerFilter':
+            mainArray = this.trailerArray;
+          break;
+          case 'brokerFilter':
+            mainArray = this.brokerArray;
+          break;
+          case 'driverFilter':
+            mainArray = this.driverArray;
+          break;
+          case 'truckTypeFilter':
+            mainArray = this.truckTypeArray;
+          break;
+          case 'trailerTypeFilter':
+            mainArray = this.trailerTypeArray;
+          break;
+          case 'userFilter':
+            mainArray = this.unselectedUser;
+          break;
+        }
+
+        mainArray.map((item) => {
+          if ( ( item.isSelected && !item.currentSet ) || ( !item.isSelected && item.currentSet ) ){
+            let indexNum = this.selectedUser.indexOf(item);
+            if ( indexNum > -1 ) {
+              this.removeFromSelectedUser(item, indexNum);
+            } else {
+              let inactiveIndexNum = mainArray.indexOf(item);
+              this.addToSelectedUser(item, inactiveIndexNum);
+            }
+          }
+        })
+      } else if ( this.type == 'timeFilter' ) {
+        this.selectedTimeValue = this.filterActiveTime;
+      } else if ( this.type == 'moneyFilter' ) {
+        if ( this.subType != 'all' ) {
+            let setFromValue = this.singleFromActive != 'null' && this.singleFromActive ? this.singleFromActive : '';
+            this.moneyForm.get('singleFrom')?.setValue(setFromValue);
+
+            let setToValue = this.singleToActive != 'null' && this.singleToActive ? this.singleToActive : '';
+            this.moneyForm.get('singleTo')?.setValue(setToValue);
+            if ( !setFromValue ) {
+              this.setButtonAvailable = false;
+            } 
+        } else {
+          let firstFromActive = this.multiFromFirstFromActive && this.multiFromFirstFromActive != 'null' ? this.multiFromFirstFromActive : '';
+          let firstToActive = this.multiFromFirstToActive && this.multiFromFirstToActive != 'null' ? this.multiFromFirstToActive : '';
+
+          this.moneyForm.get('multiFromFirstTo')?.setValue(firstToActive);
+          this.moneyForm.get('multiFromFirstFrom')?.setValue(firstFromActive);
+
+          let secFromActive = this.multiFormSecondFromActive && this.multiFormSecondFromActive != 'null' ? this.multiFormSecondFromActive : '';
+          let secToActive = this.multiFormSecondToActive && this.multiFormSecondToActive != 'null' ? this.multiFormSecondToActive : '';
+
+          this.moneyForm.get('multiFormSecondFrom')?.setValue(secFromActive);
+          this.moneyForm.get('multiFormSecondTo')?.setValue(secToActive);
+          
+          let thirdFromActive = this.multiFormThirdFromActive && this.multiFormThirdFromActive != 'null' ? this.multiFormThirdFromActive : '';
+          let thirdToActive = this.multiFormThirdToActive && this.multiFormThirdToActive != 'null' ? this.multiFormThirdToActive : '';
+
+          this.moneyForm.get('multiFormThirdFrom')?.setValue(thirdFromActive);
+          this.moneyForm.get('multiFormThirdTo')?.setValue(thirdToActive);
+        }
+        
+      } else if ( this.type == 'locationFilter' ) {
+
+        this.locationForm.setValue({address: this.loactionNameSet});
+        this.longVal = this.longValueSet;
+        this.latVal = this.latValSet;
+        this.locationRange = this.locationRangeSet;
+      }
   }
 
   onFilterShown(){
-     // WHEN FILTER IS SHOWED
+    this.activeFilter = true;
+      let filterSearchHead = document.querySelector('.search-input-header');
+      let filterTextHead = document.querySelector('.filter-text-part');
+      filterSearchHead?.classList.remove('activeSearch');
+      filterSearchHead?.classList.remove('inactiveSearch');
+
+      filterTextHead?.classList.remove('activeHeader');
+      filterTextHead?.classList.remove('inactiveHeader');
   }
 }
