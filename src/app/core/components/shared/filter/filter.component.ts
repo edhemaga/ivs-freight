@@ -19,6 +19,7 @@ import { addressValidation, combinedSingleLimitValidation } from '../ta-input/ta
 import { card_component_animation } from '../animations/card-component.animations';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
+import { animate, style, transition, trigger, state, } from '@angular/animations';
 
 
 @Component({
@@ -27,7 +28,31 @@ import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popove
   styleUrls: ['./filter.component.scss'],
   providers: [NgbDropdownConfig, TaThousandSeparatorPipe],
   encapsulation: ViewEncapsulation.None,
-  animations: [card_component_animation('showHideCardBody')],
+  animations: [trigger('closeForm', [
+    state(
+      'true',
+      style({
+        height: '*',
+        overflow: 'visible',
+      })
+    ),
+    state(
+      'false',
+      style({
+        height: '0px',
+        overflow: 'hidden',
+        'margin-top': '0px',
+      })
+    ),
+    state(
+      'null',
+      style({
+        height: '*',
+      })
+    ),
+    transition('false <=> true', [animate('.2s linear')]),
+    transition('true <=> false', [animate('.2s ease-in-out')]), 
+  ])],
 })
 export class FilterComponent implements OnInit, AfterViewInit {
   private destroy$ = new Subject<void>();
@@ -35,9 +60,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   @ViewChild(AutoclosePopoverComponent)
   autoClose: AutoclosePopoverComponent;
-
-  @ViewChild('pop1', { static: false }) pop1: ElementRef;
-
 
   @ViewChild('t2') t2: any;
   @ViewChild('mainFilter') mainFilter: any;
@@ -47,6 +69,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     {
       name: 'Aleksandar Djordjevic',
       id: 1,
+      avatar: 'https://www.gradprijepolje.com/wp-content/uploads/2021/09/Divac.jpg'
     },
     {
       name: 'Denis Rodman',
@@ -1023,7 +1046,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   public locationSliderData: Options = {
     floor: 50,
     ceil: 350,
-    step: 0,
+    step: 5,
     showSelectionBar: true,
     hideLimitLabels: true,
   };
@@ -1071,6 +1094,10 @@ export class FilterComponent implements OnInit, AfterViewInit {
   loactionNameSet: any = '';
 
   activeFormNum: any = 0;
+  lastYear: any = '';
+  last2Years: any = '';
+  totalFiltersNum: any = 0;
+  singleFormActive: any = false;
 
   @Input() type: string = 'userFilter';
   @Input() icon: string = 'user';
@@ -1096,6 +1123,15 @@ export class FilterComponent implements OnInit, AfterViewInit {
   constructor(private formBuilder: FormBuilder, private thousandSeparator: TaThousandSeparatorPipe,private elementRef: ElementRef, private cdRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+
+    if ( this.type == 'timeFilter' ) {
+      var d = new Date();
+      var pastYear = d.getFullYear() - 1;
+      var past2Year = d.getFullYear() - 2;
+
+      this.lastYear = pastYear;
+      this.last2Years = past2Year;
+    }
 
     if (this.type == 'payFilter'){
       this.maxValueRange = '20,000';
@@ -1463,112 +1499,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.observMainContainer();
-    }, 10);
-  }
 
-  observMainContainer(){
-    this.resizeObserver = new ResizeObserver((entries) => {
-      entries.forEach((entry) => {
-        if ( entry.contentRect.height ){
-          this.activeFilter = true;
-        } else {
-          this.activeFilter = false;
-          if ( this.defFilterHolder ){
-            
-            let mainArray: any[] = [];
-            switch (this.type) {
-              case 'departmentFilter':
-                mainArray = this.departmentArray;
-              break;
-              case 'pmFilter':
-                mainArray = this.pmFilterArray;
-              break;
-              case 'categoryFuelFilter':
-                mainArray = this.categoryFuelArray;
-              break;
-              case 'categoryRepairFilter':
-                mainArray = this.categoryRepairArray;
-              break;
-              case 'truckFilter':
-                mainArray = this.truckArray;
-              break;
-              case 'trailerFilter':
-                mainArray = this.trailerArray;
-              break;
-              case 'brokerFilter':
-                mainArray = this.brokerArray;
-              break;
-              case 'driverFilter':
-                mainArray = this.driverArray;
-              break;
-              case 'truckTypeFilter':
-                mainArray = this.truckTypeArray;
-              break;
-              case 'trailerTypeFilter':
-                mainArray = this.trailerTypeArray;
-              break;
-              case 'userFilter':
-                mainArray = this.unselectedUser;
-              break;
-            }
-
-            mainArray.map((item) => {
-              if ( ( item.isSelected && !item.currentSet ) || ( !item.isSelected && item.currentSet ) ){
-                let indexNum = this.selectedUser.indexOf(item);
-                if ( indexNum > -1 ) {
-                  this.removeFromSelectedUser(item, indexNum);
-                } else {
-                  let inactiveIndexNum = mainArray.indexOf(item);
-                  this.addToSelectedUser(item, inactiveIndexNum);
-                }
-              }
-            })
-          } else if ( this.type == 'timeFilter' ) {
-            this.selectedTimeValue = this.filterActiveTime;
-          } else if ( this.type == 'moneyFilter' ) {
-            if ( this.subType != 'all' ) {
-                let setFromValue = this.singleFromActive != 'null' && this.singleFromActive ? this.singleFromActive : '';
-                this.moneyForm.get('singleFrom')?.setValue(setFromValue);
-
-                let setToValue = this.singleToActive != 'null' && this.singleToActive ? this.singleToActive : '';
-                this.moneyForm.get('singleTo')?.setValue(setToValue);
-                if ( !setFromValue ) {
-                  this.setButtonAvailable = false;
-                } 
-            } else {
-              let firstFromActive = this.multiFromFirstFromActive && this.multiFromFirstFromActive != 'null' ? this.multiFromFirstFromActive : '';
-              let firstToActive = this.multiFromFirstToActive && this.multiFromFirstToActive != 'null' ? this.multiFromFirstToActive : '';
-
-              this.moneyForm.get('multiFromFirstTo')?.setValue(firstToActive);
-              this.moneyForm.get('multiFromFirstFrom')?.setValue(firstFromActive);
-
-              let secFromActive = this.multiFormSecondFromActive && this.multiFormSecondFromActive != 'null' ? this.multiFormSecondFromActive : '';
-              let secToActive = this.multiFormSecondToActive && this.multiFormSecondToActive != 'null' ? this.multiFormSecondToActive : '';
-
-              this.moneyForm.get('multiFormSecondFrom')?.setValue(secFromActive);
-              this.moneyForm.get('multiFormSecondTo')?.setValue(secToActive);
-              
-              let thirdFromActive = this.multiFormThirdFromActive && this.multiFormThirdFromActive != 'null' ? this.multiFormThirdFromActive : '';
-              let thirdToActive = this.multiFormThirdToActive && this.multiFormThirdToActive != 'null' ? this.multiFormThirdToActive : '';
-
-              this.moneyForm.get('multiFormThirdFrom')?.setValue(thirdFromActive);
-              this.moneyForm.get('multiFormThirdTo')?.setValue(thirdToActive);
-            }
-            
-          } else if ( this.type == 'locationFilter' ) {
-
-            this.locationForm.setValue({address: this.loactionNameSet});
-            this.longVal = this.longValueSet;
-            this.latVal = this.latValSet;
-            this.locationRange = this.locationRangeSet;
-          }
-          this.cdRef.detectChanges();
-        }
-      });
-    });
-    this.resizeObserver.observe(this.pop1.nativeElement);
   }
 
   addToSelectedUser(item, indx, subType?) {
@@ -1907,7 +1838,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
     this.filterActiveArray = [];
     this.swipeActiveRange = 0;
     this.autoClose.tooltip.close();
-
+    this.totalFiltersNum = 0;
+    this.singleFormActive = false;
     let data = {
       'action' : 'Clear',
       'type' : this.type
@@ -1930,7 +1862,13 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   setTimeValue(mod) {
-    this.selectedTimeValue = mod;
+    
+    if ( this.selectedTimeValue == mod ){
+      this.selectedTimeValue = '';
+    } else {
+      this.selectedTimeValue = mod;
+    }
+    
 
     if (this.filterActiveTime == mod) {
       this.setButtonAvailable = false;
@@ -1945,9 +1883,22 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   showSearch(mod?) {
+    let filterSearchHead = document.querySelector('.search-input-header');
+    let filterTextHead = document.querySelector('.filter-text-part');
+    
     if (mod) {
       this.expandSearch = false;
+      filterSearchHead?.classList.remove('activeSearch');
+      filterSearchHead?.classList.add('inactiveSearch');
+
+      filterTextHead?.classList.add('activeHeader');
+      filterTextHead?.classList.remove('inactiveHeader');
     } else {
+      filterSearchHead?.classList.add('activeSearch');
+      filterSearchHead?.classList.remove('inactiveSearch');
+
+      filterTextHead?.classList.remove('activeHeader');
+      filterTextHead?.classList.add('inactiveHeader');
       this.expandSearch = true;
     }
   }
@@ -2048,6 +1999,10 @@ export class FilterComponent implements OnInit, AfterViewInit {
       } else if (this.type == 'stateFilter') {
         this.filterUsaActiveArray = [...this.usaSelectedStates];
         this.filterCanadaActiveArray = [...this.canadaSelectedStates];
+
+        let totalStatesSelected = this.filterUsaActiveArray.length + this.filterCanadaActiveArray.length;
+        this.totalFiltersNum = totalStatesSelected;
+
       } else if (this.type == 'moneyFilter') {
         if (this.subType == 'all') {
 
@@ -2072,21 +2027,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
             ' ' + this.moneyForm.get('multiFormThirdTo')?.value
           ).slice(1);
 
-          /*
-          if ( parseInt(this.multiFromFirstToActive) > 0 ) {
-            formActive = formActive + 1;
-          }
-
-          if ( parseInt(this.multiFormSecondToActive) > 0 ) {
-            formActive = formActive + 1;
-          }
-
-          if ( parseInt(this.multiFormThirdToActive) > 0 ) {
-            formActive = formActive + 1;
-          }
-
-          this.activeFormNum = formActive;
-          */
           queryParams = {
             'firstFormFrom' : this.moneyForm.get('multiFromFirstFrom')?.value,
             'firstFormFTo' : this.moneyForm.get('multiFromFirstTo')?.value,
@@ -2095,6 +2035,23 @@ export class FilterComponent implements OnInit, AfterViewInit {
             'thirdFormFrom' : this.moneyForm.get('multiFormThirdFrom')?.value,
             'thirdFormTo' : this.moneyForm.get('multiFormThirdTo')?.value,
           }  
+
+          let formsActive = 0;
+
+          if ( this.moneyForm.get('multiFromFirstFrom')?.value || this.moneyForm.get('multiFromFirstTo')?.value) {
+            formsActive = formsActive + 1;
+          }
+      
+          if ( this.moneyForm.get('multiFormSecondFrom')?.value || this.moneyForm.get('multiFormSecondTo')?.value ) {
+            formsActive = formsActive + 1;
+          }
+      
+          if ( this.moneyForm.get('multiFormThirdFrom')?.value ||  this.moneyForm.get('multiFormThirdTo')?.value ) {
+            formsActive = formsActive + 1;
+          }
+      
+          this.activeFormNum = formsActive;
+          this.totalFiltersNum = formsActive;
 
         } else {
           this.singleFromActive = (
@@ -2109,6 +2066,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
             return false;
           }   
 
+          this.singleFormActive = true;
           queryParams = {
             'singleFrom' : this.moneyForm.get('singleFrom')?.value ? parseInt(this.moneyForm.get('singleFrom')?.value) : '',
             'singleTo' : this.moneyForm.get('singleTo')?.value ? parseInt(this.moneyForm.get('singleTo')?.value) : '',
@@ -2134,6 +2092,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
       } else {
         this.filterActiveArray = [...this.selectedUser];
         let selectedUsersIdArray: any = [];
+        this.totalFiltersNum = this.filterActiveArray.length;
 
         console.log('---this.type', this.type);
         let mainArray: any[] = [];
@@ -2327,23 +2286,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
       thirdFormChanged = 'changed';
     }
 
-
-    let formsActive = 0;
-
-    if ( firstFrom || firstTo) {
-      formsActive = formsActive + 1;
-    }
-
-    if ( secFrom || secTo ) {
-      formsActive = formsActive + 1;
-    }
-
-    if ( thirdFrom || thirdTo ) {
-      formsActive = formsActive + 1;
-    }
-
-    this.activeFormNum = formsActive;
-
     if ( firstFormChanged == 'changed' || secondFormChanged == 'changed' || thirdFormChanged == 'changed' ) {
       this.setButtonAvailable = true;
     } else {
@@ -2373,12 +2315,107 @@ export class FilterComponent implements OnInit, AfterViewInit {
     this.rangeForm?.get('rangeTo')?.setValue(toValue);
   }
 
-
   onFilterClose(){
-    // WHEN FILTER IS LOSED
+      this.activeFilter = false;
+      if ( this.defFilterHolder ){
+        
+        let mainArray: any[] = [];
+        switch (this.type) {
+          case 'departmentFilter':
+            mainArray = this.departmentArray;
+          break;
+          case 'pmFilter':
+            mainArray = this.pmFilterArray;
+          break;
+          case 'categoryFuelFilter':
+            mainArray = this.categoryFuelArray;
+          break;
+          case 'categoryRepairFilter':
+            mainArray = this.categoryRepairArray;
+          break;
+          case 'truckFilter':
+            mainArray = this.truckArray;
+          break;
+          case 'trailerFilter':
+            mainArray = this.trailerArray;
+          break;
+          case 'brokerFilter':
+            mainArray = this.brokerArray;
+          break;
+          case 'driverFilter':
+            mainArray = this.driverArray;
+          break;
+          case 'truckTypeFilter':
+            mainArray = this.truckTypeArray;
+          break;
+          case 'trailerTypeFilter':
+            mainArray = this.trailerTypeArray;
+          break;
+          case 'userFilter':
+            mainArray = this.unselectedUser;
+          break;
+        }
+
+        mainArray.map((item) => {
+          if ( ( item.isSelected && !item.currentSet ) || ( !item.isSelected && item.currentSet ) ){
+            let indexNum = this.selectedUser.indexOf(item);
+            if ( indexNum > -1 ) {
+              this.removeFromSelectedUser(item, indexNum);
+            } else {
+              let inactiveIndexNum = mainArray.indexOf(item);
+              this.addToSelectedUser(item, inactiveIndexNum);
+            }
+          }
+        })
+      } else if ( this.type == 'timeFilter' ) {
+        this.selectedTimeValue = this.filterActiveTime;
+      } else if ( this.type == 'moneyFilter' ) {
+        if ( this.subType != 'all' ) {
+            let setFromValue = this.singleFromActive != 'null' && this.singleFromActive ? this.singleFromActive : '';
+            this.moneyForm.get('singleFrom')?.setValue(setFromValue);
+
+            let setToValue = this.singleToActive != 'null' && this.singleToActive ? this.singleToActive : '';
+            this.moneyForm.get('singleTo')?.setValue(setToValue);
+            if ( !setFromValue ) {
+              this.setButtonAvailable = false;
+            } 
+        } else {
+          let firstFromActive = this.multiFromFirstFromActive && this.multiFromFirstFromActive != 'null' ? this.multiFromFirstFromActive : '';
+          let firstToActive = this.multiFromFirstToActive && this.multiFromFirstToActive != 'null' ? this.multiFromFirstToActive : '';
+
+          this.moneyForm.get('multiFromFirstTo')?.setValue(firstToActive);
+          this.moneyForm.get('multiFromFirstFrom')?.setValue(firstFromActive);
+
+          let secFromActive = this.multiFormSecondFromActive && this.multiFormSecondFromActive != 'null' ? this.multiFormSecondFromActive : '';
+          let secToActive = this.multiFormSecondToActive && this.multiFormSecondToActive != 'null' ? this.multiFormSecondToActive : '';
+
+          this.moneyForm.get('multiFormSecondFrom')?.setValue(secFromActive);
+          this.moneyForm.get('multiFormSecondTo')?.setValue(secToActive);
+          
+          let thirdFromActive = this.multiFormThirdFromActive && this.multiFormThirdFromActive != 'null' ? this.multiFormThirdFromActive : '';
+          let thirdToActive = this.multiFormThirdToActive && this.multiFormThirdToActive != 'null' ? this.multiFormThirdToActive : '';
+
+          this.moneyForm.get('multiFormThirdFrom')?.setValue(thirdFromActive);
+          this.moneyForm.get('multiFormThirdTo')?.setValue(thirdToActive);
+        }
+        
+      } else if ( this.type == 'locationFilter' ) {
+
+        this.locationForm.setValue({address: this.loactionNameSet});
+        this.longVal = this.longValueSet;
+        this.latVal = this.latValSet;
+        this.locationRange = this.locationRangeSet;
+      }
   }
 
   onFilterShown(){
-     // WHEN FILTER IS SHOWED
+    this.activeFilter = true;
+      let filterSearchHead = document.querySelector('.search-input-header');
+      let filterTextHead = document.querySelector('.filter-text-part');
+      filterSearchHead?.classList.remove('activeSearch');
+      filterSearchHead?.classList.remove('inactiveSearch');
+
+      filterTextHead?.classList.remove('activeHeader');
+      filterTextHead?.classList.remove('inactiveHeader');
   }
 }

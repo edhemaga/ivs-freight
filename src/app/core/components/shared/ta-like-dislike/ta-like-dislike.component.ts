@@ -10,6 +10,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 @Component({
   selector: 'app-ta-like-dislike',
@@ -26,7 +27,7 @@ export class TaLikeDislikeComponent implements OnInit, OnDestroy {
   public isLiked: boolean = false;
   public isDisliked: boolean = false;
 
-  constructor(private taLikeDislikeService: TaLikeDislikeService) {}
+  constructor(private taLikeDislikeService: TaLikeDislikeService, private DetailsDataService: DetailsDataService) {}
 
   ngOnInit(): void {
     this.taLikeDislikeService.populateLikeDislike$
@@ -42,12 +43,12 @@ export class TaLikeDislikeComponent implements OnInit, OnDestroy {
   public onAction(type: string, event: any) {
     event.preventDefault();
     event.stopPropagation();
-
     if (type === 'liked') {
       this.isLiked = !this.isLiked;
       if (this.isDisliked) {
         this.taDislikes--;
         this.isDisliked = false;
+        this.DetailsDataService.changeRateStatus('dislike', this.isDisliked);
       }
 
       if (this.isLiked) {
@@ -60,11 +61,13 @@ export class TaLikeDislikeComponent implements OnInit, OnDestroy {
         action: type,
         likeDislike: 1,
       });
+      this.DetailsDataService.changeRateStatus('like', this.isLiked);
     } else {
       this.isDisliked = !this.isDisliked;
       if (this.isLiked) {
         this.taLikes--;
         this.isLiked = false;
+        this.DetailsDataService.changeRateStatus('like', this.isLiked);
       }
       if (this.isDisliked) {
         this.taDislikes++;
@@ -76,6 +79,7 @@ export class TaLikeDislikeComponent implements OnInit, OnDestroy {
         action: type,
         likeDislike: -1,
       });
+      this.DetailsDataService.changeRateStatus('dislike', this.isDisliked);
     }
   }
 

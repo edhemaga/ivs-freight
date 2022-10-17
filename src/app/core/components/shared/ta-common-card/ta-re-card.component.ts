@@ -8,6 +8,7 @@ import {
 import moment from 'moment';
 import { card_component_animation } from '../animations/card-component.animations';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 @Component({
   selector: 'app-ta-re-card',
   templateUrl: './ta-re-card.component.html',
@@ -50,7 +51,7 @@ export class TaReCardComponent implements OnInit {
   public data: any;
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
-  constructor(private clipboard: Clipboard) {}
+  constructor(private clipboard: Clipboard, private DetailsDataService: DetailsDataService) {}
 
   ngOnInit(): void {
     this.CloseCard();
@@ -65,6 +66,7 @@ export class TaReCardComponent implements OnInit {
 
   public sendData(data: any) {
     this.data = data;
+    this.DetailsDataService.setCdlNum(this.cardNameCommon);
     this.dataDropDopwn.emit(data);
   }
   public toggleCard(event: any) {
