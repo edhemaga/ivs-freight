@@ -519,13 +519,17 @@ export class TaInputComponent
       }
     }
 
-    if (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel || this.inputConfig.name == 'Address') {
+    if (
+      this.inputConfig.isDropdown ||
+      this.inputConfig.dropdownLabel ||
+      this.inputConfig.name == 'Address'
+    ) {
       if (event.keyCode === 40 || event.keyCode === 38) {
         this.inputService.dropDownKeyNavigation$.next(event.keyCode);
       }
       if (event.keyCode === 13) {
         this.inputService.dropDownKeyNavigation$.next(event.keyCode);
-        if(this.inputConfig.name == 'Address'){
+        if (this.inputConfig.name == 'Address') {
           this.input.nativeElement.blur();
         }
       }
@@ -1739,12 +1743,18 @@ export class TaInputComponent
 
           this.selectSpanByTabIndex(2);
         } else {
+          console.log(this.span3.nativeElement.innerHTML);
+          console.log();
+          const finalYear = parseInt(
+            this.span3.nativeElement.innerHTML + parseInt(e.key)
+          );
+
+          const finalShowYear =
+            finalYear > 31
+              ? parseInt(`19${finalYear}`)
+              : parseInt(`20${finalYear}`);
           this.dateTimeInputDate = new Date(
-            this.dateTimeInputDate.setFullYear(
-              parseInt(
-                `2${this.span3.nativeElement.innerHTML + parseInt(e.key)}`
-              )
-            )
+            this.dateTimeInputDate.setFullYear(finalShowYear)
           );
           this.span3.nativeElement.innerHTML = (
             this.span3.nativeElement.innerHTML + parseInt(e.key)
