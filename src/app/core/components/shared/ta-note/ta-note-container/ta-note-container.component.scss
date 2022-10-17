@@ -157,6 +157,10 @@
           border-radius: 1px;
           z-index: 10;
 
+          &.input_note{
+            flex-direction: row-reverse;
+          }
+
           &.closed_pattern{
             width: 18px;
             overflow: hidden;
@@ -192,18 +196,9 @@
               background-color: #6C6C6C;
             }
 
-            &.input_note_container{
-              &:hover:not(:last-child) {
-                transform: scale(1.1);
-                transform-origin: center;
-              }
-            }
-
-            &.popover_text_color{
-              &:hover:not(:first-child) {
-                transform: scale(1.1);
-                transform-origin: center;
-              }
+            &:hover:not(:first-child) {
+              transform: scale(1.1);
+              transform-origin: center;
             }
 
             svg-icon {

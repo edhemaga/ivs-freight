@@ -34,7 +34,7 @@ export class TaNoteContainerComponent implements OnInit {
     foreColor: false,
     underline: false,
   };
-  containerColors: any[] = noteColors?.regular;
+  containerColors: any[] = noteColors;
   selectedColorName: any = {
     color: '#6C6C6C',
     name: 'Gray',
@@ -55,25 +55,12 @@ export class TaNoteContainerComponent implements OnInit {
       });
   }
 
-  ngAfterViewInit(): void {
-    if (this.popoverNote) {
-      this.containerColors = noteColors?.reversed;
-    }
-  }
-
   filterContainersColor() {
     this.containerColors.sort((a, b) => {
-      if (this.popoverNote) {
-        if (a['color'] != this.selectedColorName.color) {
-          return 1;
-        }
-        return -1;
-      } else {
-        if (a['color'] != this.selectedColorName.color) {
-          return -1;
-        }
+      if (a['color'] != this.selectedColorName.color) {
         return 1;
       }
+      return -1;
     });
   }
 
