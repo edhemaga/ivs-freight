@@ -717,6 +717,7 @@ export class TaInputDropdownComponent
     let elOffset =
       dropdownOption.height() * this.dropdownPosition +
       (this.dropdownPosition !== 0 ? this.dropdownPosition * 6 : 0);
+
     let viewport = dropdownContainer.scrollTop() + dropdownContainer.height();
 
     if (

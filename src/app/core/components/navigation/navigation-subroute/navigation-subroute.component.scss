@@ -189,4 +189,12 @@
   .new-magic-line-selected:nth-child(12) ~ .new-magic-line {
     transform: translateY(319px);
   }
+
+  .subroutes:nth-child(13):hover ~ .new-magic-line {
+    transform: translateY(348px) !important;
+  }
+
+  .new-magic-line-selected:nth-child(13) ~ .new-magic-line {
+    transform: translateY(348px);
+  }
 }
