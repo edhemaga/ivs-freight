@@ -245,7 +245,8 @@
         !getSuperControl.value &&
         getSuperControl.invalid &&
         (touchedInput || getSuperControl.touched) &&
-        !focusInput
+        !focusInput,
+      'disabled-filled': getSuperControl.value && inputConfig.isDisabled
     }"
     src="assets/svg/common/ic_arrow_input.svg"
     (click)="toggleDropdownOptions()"
@@ -728,7 +729,7 @@
     (keypress)="manipulateWithInput($event)"
     (keyup)="onKeyUp($event)"
     (blur)="onBlur()"
-    (focus)="onFocus()"
+    (focus)="onFocus($event)"
     (select)="selectionChange($event)"
     (paste)="onPaste($event)"
     (input)="onChange($event.target.value); transformText($event.target.value)"

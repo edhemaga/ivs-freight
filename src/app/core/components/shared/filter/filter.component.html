@@ -4,48 +4,48 @@
   [customClass]="'filterpopovermain'"
   [placement]="'bottom-left'"
   autoClose="outside"
+  (closeFilter)="onFilterClose()"
+  (openFilter)="onFilterShown()"
   [ngClass]="{
     'active-options': activeFilter,
+    'clear-colors': hoverClose,
     'filter-active-colors':
-      selectedUser.length > 0 ||
       filterActiveArray.length > 0 ||
       selectedTimeValue != '' ||
-      canadaSelectedStates.length > 0 ||
-      usaSelectedStates.length ||
       rangeValue > 0 ||
-      moneyFilterStatus ||
-      longVal != 0
+      totalFiltersNum > 0 ||
+      longVal != 0 ||
+      maxValueSet != maxValueRange ||
+      minValueSet != minValueRange ||
+      singleFormActive
   }"
 >
   <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
   <div mainContent 
     ngbTooltip
-    mainTooltip="{{ !hoverClose ? filterTitle : 'Clear' }}"
+    mainTooltip="{{ !hoverClose ? totalFiltersNum > 0  ? filterTitle + ' ' + '</br>' + totalFiltersNum + ' Selected' : filterTitle  : 'Clear ' + filterTitle }}"
     position="bottom"
-    tooltipBackground= "#6C6C6C"
+    tooltipBackground= "{{ !hoverClose ? '#424242' : '#EF5350' }}"
+    tooltipTextAlign="center"
+    class="main-icon-holder"
   >
     <svg-icon [src]="icon | taSvg: 'common'"></svg-icon>
-    <div *ngIf="selectedUser.length > 0" class="active-filter-num">
-      {{ selectedUser.length }}
+    <div *ngIf="filterActiveArray.length > 0" class="active-filter-num">
+      {{ filterActiveArray.length }}
     </div>
-    <div *ngIf=" activeFormNum > 0 " class="active-filter-num">
-      {{activeFormNum}}
-    </div>
-    <div
-      *ngIf="canadaSelectedStates.length > 0 || usaSelectedStates.length > 0"
-      class="active-filter-num"
-    >
-      {{ usaSelectedStates.length + canadaSelectedStates.length }}
+    <div *ngIf=" totalFiltersNum > 0 " class="active-filter-num">
+      {{totalFiltersNum}}
     </div>
     <div
       *ngIf="
-        selectedUser.length > 0 ||
+        filterActiveArray.length > 0 ||
         selectedTimeValue != '' ||
-        canadaSelectedStates.length > 0 ||
-        usaSelectedStates.length > 0 ||
+        totalFiltersNum > 0 ||
         rangeValue > 0 ||
         moneyFilterStatus ||
-        longVal != 0
+        longVal != 0 ||
+        maxValueSet != maxValueRange ||
+        minValueSet != minValueRange
       "
       class="active-filter-num clear-filter"
       (mouseenter)="hoverClose = true"
@@ -55,7 +55,7 @@
       <svg-icon src="assets/svg/common/ic_cancel_violation.svg"></svg-icon>
     </div>
   </div>
-  <div popoverContent class="main-popover-body" #pop1>
+  <div popoverContent class="main-popover-body">
     <div
       *ngIf="defFilterHolder"
       class="filter-holder"
@@ -65,7 +65,8 @@
       [class.pm-filter]="leftSideIcon"
       [class.truck-icon-holder]="largeLeftIcon"
     >
-      <div class="filter-header" *ngIf="!expandSearch">
+      <div class="filter-header filter-text-part" 
+      >
         <div class="user-filter-box" *ngIf="type != 'stateFilter'">
           {{ selectedUser.length }}
         </div>
@@ -82,8 +83,7 @@
         </div>
       </div>
       <div
-        class="filter-header search-input-header"
-        *ngIf="expandSearch"
+        class="filter-header search-input-header" [class.hidenClass]="!expandSearch"    
         [formGroup]="searchForm"
       >
         <app-ta-input
@@ -94,7 +94,7 @@
             type: 'text',
             label: 'Search ' + filterTitle.split(' ')[0] + ' ',
             placeholderIcon: 'ic_search',
-            customClass: 'filter-search-input',
+            customClass: 'filter-search-input line-input-26',
             placeholderInsteadOfLabel: true,
             blackInput: true
           }"
@@ -117,23 +117,35 @@
         <div
           *ngFor="let item of selectedUser; let indx = index"
           class="user-main-holder"
+          [@inOutAnimation]="'in'"
+          (click)="removeFromSelectedUser(item, indx)"
         >
           <div class="user-profile-img" *ngIf="type == 'userFilter'">
-            <app-profile-images
+            <app-profile-images *ngIf="!item.avatar"
               [indx]="indx"
               [size]="'small'"
               [type]="'user'"
               [name]="item.name"
             ></app-profile-images>
+            <div
+              class="user_avatar"
+              *ngIf="item.avatar"
+              [ngStyle]="item.avatar && { 'background-image': 'url(' + item.avatar + ')' }"
+            ></div>
           </div>
           <div class="user-profile-img" *ngIf="type == 'driverFilter'">
-            <app-profile-images
+            <app-profile-images *ngIf="!item.avatar"
               [indx]="indx"
               [size]="'small'"
               [type]="'driver'"
               [name]="item.name"
             >
             </app-profile-images>
+            <div
+              class="user_avatar driver_avatar"
+              *ngIf="item.avatar"
+              [ngStyle]="item.avatar && { 'background-image': 'url(' + item.avatar + ')' }"
+            ></div>
           </div>
           <div class="user-profile-img" *ngIf="type == 'statusFilter'">
             <div
@@ -155,12 +167,6 @@
               <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
             </div>
             <div
-              ngbTooltip
-              mainTooltip="{{
-                type == 'userFilter' ? 'Remove User' : 'Remove'
-              }}"
-              position="top"
-              tooltipBackground="#6C6C6C"
               (click)="removeFromSelectedUser(item, indx)"
               class="icon-delete"
             >
@@ -174,11 +180,14 @@
         <div
           class="states-selected usa-selected-holder"
           *ngIf="usaSelectedStates.length > 0"
+          [@stateHeader]="'in'"
         >
           <div class="state-name-holder">UNITED STATES</div>
           <div
             *ngFor="let item of usaSelectedStates; let indx = index"
             class="user-main-holder holder-bottom-margin"
+            [@inOutAnimation]="'in'"
+            (click)="removeFromSelectedUser(item, indx)"
           >
             <div class="user-profile-img active state-border-radius">
               <div class="state-short-holder">{{ item.short }}</div>
@@ -191,13 +200,6 @@
                 <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
               </div>
               <div
-                ngbTooltip
-                mainTooltip="{{
-                  type == 'userFilter' ? 'Remove User' : 'Remove'
-                }}"
-                position="top"
-                tooltipBackground="#6C6C6C"
-                (click)="removeFromSelectedUser(item, indx)"
                 class="icon-delete"
               >
                 <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -205,11 +207,15 @@
             </div>
           </div>
         </div>
-        <div class="states-selected" *ngIf="canadaSelectedStates.length > 0">
+        <div class="states-selected" 
+          *ngIf="canadaSelectedStates.length > 0"
+          [@stateHeader]="'in'"
+        >
           <div class="state-name-holder">CANADA</div>
           <div
             *ngFor="let item of canadaSelectedStates; let indx = index"
             class="user-main-holder"
+            (click)="removeFromSelectedUser(item, indx, 'canada')"
           >
             <div class="user-profile-img active">
               <div class="state-short-holder">{{ item.short }}</div>
@@ -222,13 +228,6 @@
                 <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
               </div>
               <div
-                ngbTooltip
-                mainTooltip="{{
-                  type == 'userFilter' ? 'Remove User' : 'Remove'
-                }}"
-                position="top"
-                tooltipBackground="#6C6C6C"
-                (click)="removeFromSelectedUser(item, indx, 'canada')"
                 class="icon-delete"
               >
                 <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -253,18 +252,24 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
           >
             <div class="user-profile-img">
-              <app-profile-images
+              <app-profile-images *ngIf="!item.avatar"
                 [indx]="indx"
                 [size]="'small'"
                 [type]="'user'"
                 [name]="item.name"
               >
               </app-profile-images>
+              <div
+                class="user_avatar"
+                *ngIf="item.avatar"
+                [ngStyle]="item.avatar && { 'background-image': 'url(' + item.avatar + ')' }"
+              ></div>
             </div>
             <div class="user-frame">
               <div class="selected-name-text">
@@ -280,6 +285,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -304,6 +310,7 @@
             class="user-frame-holder"
           >
             <div
+              [@inOutAnimation]="'in'"  
               *ngIf="!item.hidden && !item.isSelected"
               (click)="addToSelectedUser(item, indx, 'pending')"
               class="user-main-holder"
@@ -332,6 +339,7 @@
             class="user-frame-holder"
           >
             <div
+              [@inOutAnimation]="'in'"
               *ngIf="!item.hidden && !item.isSelected"
               (click)="addToSelectedUser(item, indx, 'active')"
               class="user-main-holder"
@@ -358,6 +366,7 @@
             class="user-frame-holder"
           >
             <div
+              [@inOutAnimation]="'in'"
               *ngIf="!item.hidden && !item.isSelected"
               (click)="addToSelectedUser(item, indx, 'closed')"
               class="user-main-holder"
@@ -381,6 +390,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -402,6 +412,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -420,6 +431,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -441,6 +453,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -459,6 +472,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -477,6 +491,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -495,6 +510,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -513,18 +529,24 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
           >
             <div class="user-profile-img">
-              <app-profile-images
+              <app-profile-images *ngIf="!item.avatar"
                 [indx]="indx"
                 [size]="'small'"
                 [type]="'driver'"
                 [name]="item.name"
               >
               </app-profile-images>
+              <div
+                class="user_avatar driver_avatar"
+                *ngIf="item.avatar"
+                [ngStyle]="item.avatar && { 'background-image': 'url(' + item.avatar + ')' }"
+              ></div>
             </div>
             <div class="user-frame">
               <div class="selected-name-text">
@@ -540,6 +562,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -561,6 +584,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -583,6 +607,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder state-main-holder"
@@ -603,6 +628,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx, 'canada')"
             class="user-main-holder state-main-holder"
@@ -664,11 +690,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -684,11 +705,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -707,11 +723,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -727,11 +738,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -747,11 +753,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -770,11 +771,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -790,11 +786,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -810,11 +801,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -830,11 +816,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -853,11 +834,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -873,11 +849,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -896,11 +867,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -916,11 +882,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -928,19 +889,14 @@
         </div>
         <div
           class="time-items"
-          [class.active]="selectedTimeValue == '2020'"
-          (click)="setTimeValue('2020')"
+          [class.active]="selectedTimeValue == lastYear"
+          (click)="setTimeValue(lastYear)"
         >
-          2020
+          {{lastYear}}
           <div class="selected-icon">
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -948,19 +904,14 @@
         </div>
         <div
           class="time-items"
-          [class.active]="selectedTimeValue == '2019'"
-          (click)="setTimeValue('2019')"
+          [class.active]="selectedTimeValue == last2Years"
+          (click)="setTimeValue(last2Years)"
         >
-          2019
+          {{last2Years}}
           <div class="selected-icon">
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -979,11 +930,6 @@
             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
           </div>
           <div
-            ngbTooltip
-            mainTooltip="Remove"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeTimeValue($event)"
             class="icon-delete"
           >
             <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
@@ -1019,7 +965,7 @@
       </div>
       <div class="border-filter money-top-border-magin"></div>
       <div class="single-form-holder" *ngIf="subType != 'all'">
-        <div class="money-main-holder">
+        <div class="money-main-holder single-money-main">
           <div class="money-value-holder">
             <app-ta-input
               formControlName="singleFrom"
@@ -1072,7 +1018,7 @@
         </div>
         <div
           class="money-main-holder"
-          [@showHideCardBody]="showPart1 ? 'true' : 'false'"
+          [@closeForm]="showPart1 ? 'true' : 'false'"
         >
           <div class="money-value-holder">
             <app-ta-input
@@ -1131,7 +1077,7 @@
         </div>
         <div
           class="money-main-holder"
-          [@showHideCardBody]="showPart2 ? 'true' : 'false'"
+          [@closeForm]="showPart2 ? 'true' : 'false'"
         >
           <div class="money-value-holder">
             <app-ta-input
@@ -1190,7 +1136,7 @@
         </div>
         <div
           class="money-main-holder"
-          [@showHideCardBody]="showPart3 ? 'true' : 'false'"
+          [@closeForm]="showPart3 ? 'true' : 'false'"
         >
           <div class="money-value-holder">
             <app-ta-input
@@ -1322,7 +1268,7 @@
               placeholderInsteadOfLabel: true,
               customClass: 'line-input-26'
             }"
-            [placeholderType]="'longAddress'"
+            [placeholderType]="'shortAddress'"
             (incorrectEvent)="incorrectInput($event, 0, 18)"
             [activeAddress]="selectedAddress"
             (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
@@ -1346,7 +1292,7 @@
                 type: 'text',
                 label: 'From',
                 placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
-                customClass: 'line-input-26',
+                customClass: 'line-input-26'.concat(''+ this.rangeForm.get('rangeFrom').value == minValueRange ? ' discolor-placeholder' : '' +''),
                 thousandSeparator: true,
                 blackInput: true
               }"
@@ -1360,7 +1306,7 @@
                 type: 'text',
                 label: 'To',
                 placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
-                customClass: 'line-input-26',
+                customClass: 'line-input-26'.concat(''+ this.rangeForm.get('rangeTo').value == maxValueRange ? ' discolor-placeholder' : '' +''),
                 thousandSeparator: true,
                 blackInput: true
               }"
@@ -1420,5 +1366,6 @@
     </div>
   </div>
 </div>
+
 
 

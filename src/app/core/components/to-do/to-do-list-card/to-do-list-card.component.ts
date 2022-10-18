@@ -424,6 +424,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
 
   log(...params) {
     console.log(...params);
+    this.DetailsDataService.setNewData(params[1]['payload'])
   }
 
   ngAfterViewInit(): void {

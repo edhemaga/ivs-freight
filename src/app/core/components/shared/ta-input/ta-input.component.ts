@@ -1650,9 +1650,10 @@ export class TaInputComponent
           this.span1.nativeElement.innerHTML = 'mm';
           this.selectionInput = 0;
           this.selectSpanByTabIndex(0);
-        } else if (span1Value) {
-          if (parseInt(`${span1Value}${e.key}`) > 12) {
-            this.span2.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
+        } else if (span1Value != undefined) {
+          let final_value = parseInt(`${span1Value}${e.key}`);
+          if (final_value > 12) {
+            this.span1.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
               -2
             );
             this.selectionInput = 1;
@@ -1665,9 +1666,14 @@ export class TaInputComponent
                 )
               )
             );
-            this.span1.nativeElement.innerHTML = (
-              this.span1.nativeElement.innerHTML + parseInt(e.key)
-            ).slice(-2);
+
+            if (!final_value) {
+              this.span1.nativeElement.innerHTML = 'mm';
+            } else {
+              this.span1.nativeElement.innerHTML = (
+                this.span1.nativeElement.innerHTML + parseInt(e.key)
+              ).slice(-2);
+            }
             this.selectionInput = 1;
             this.selectSpanByTabIndex(1, true);
           }
@@ -1676,9 +1682,9 @@ export class TaInputComponent
             this.dateTimeInputDate.setMonth(parseInt(e.key) - 1)
           );
 
-          this.span1.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
-            -2
-          );
+          const final_value = ('0' + parseInt(e.key)).slice(-2);
+
+          this.span1.nativeElement.innerHTML = final_value;
 
           if (parseInt(`1${e.key}`) > 12) {
             this.selectionInput = 1;
@@ -1692,9 +1698,10 @@ export class TaInputComponent
           this.span2.nativeElement.innerHTML = 'dd';
           this.selectionInput = 0;
           this.selectSpanByTabIndex(0, true);
-        } else if (span2Value) {
-          if (parseInt(`${span2Value}${e.key}`) > 31) {
-            this.span3.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
+        } else if (span2Value != undefined) {
+          let final_value = parseInt(`${span2Value}${e.key}`);
+          if (final_value > 31) {
+            this.span2.nativeElement.innerHTML = ('0' + parseInt(e.key)).slice(
               -2
             );
             this.selectionInput = 2;
@@ -1705,9 +1712,15 @@ export class TaInputComponent
                 parseInt(this.span2.nativeElement.innerHTML + parseInt(e.key))
               )
             );
-            this.span2.nativeElement.innerHTML = (
-              this.span2.nativeElement.innerHTML + parseInt(e.key)
-            ).slice(-2);
+
+            if (!final_value) {
+              this.span2.nativeElement.innerHTML = 'dd';
+            } else {
+              this.span2.nativeElement.innerHTML = (
+                this.span2.nativeElement.innerHTML + parseInt(e.key)
+              ).slice(-2);
+            }
+
             this.selectionInput = 2;
             this.selectSpanByTabIndex(2, true);
           }
@@ -1743,8 +1756,6 @@ export class TaInputComponent
 
           this.selectSpanByTabIndex(2);
         } else {
-          console.log(this.span3.nativeElement.innerHTML);
-          console.log();
           const finalYear = parseInt(
             this.span3.nativeElement.innerHTML + parseInt(e.key)
           );
@@ -2010,7 +2021,6 @@ export class TaInputComponent
   }
 
   selectLastDateTimeHold() {
-    console.log('SELECT ON LAST', this.selectionInput);
 
     // if (this.selectionInput == -1) {
     //   this.span3.nativeElement.focus();
@@ -2020,7 +2030,6 @@ export class TaInputComponent
   }
 
   focusMainField(e) {
-    console.log('FOCUS HERE');
     this.selectionInput = -1;
     this.setSpanSelection(this.holder1.nativeElement);
     this.showDateInput = true;

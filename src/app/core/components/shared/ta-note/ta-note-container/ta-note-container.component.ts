@@ -34,13 +34,15 @@ export class TaNoteContainerComponent implements OnInit {
     foreColor: false,
     underline: false,
   };
-  containerColors: any[] = noteColors?.regular;
+  containerColors: any[] = noteColors;
   selectedColorName: any = {
     color: '#6C6C6C',
     name: 'Gray',
   };
   slowTimeout: any;
   lastSavedIndex: number = -1;
+  defaultColorSet: boolean = false;
+  closedPattern: boolean = false;
   private destroy$ = new Subject<void>();
 
   constructor(private sharedService: SharedService) {}
@@ -53,33 +55,24 @@ export class TaNoteContainerComponent implements OnInit {
       });
   }
 
-  ngAfterViewInit(): void {
-    if (this.popoverNote) {
-      this.containerColors = noteColors?.reversed;
-    }
-  }
-
   filterContainersColor() {
     this.containerColors.sort((a, b) => {
-      if (this.popoverNote) {
-        if (a['color'] != this.selectedColorName.color) {
-          return 1;
-        }
-        return -1;
-      } else {
-        if (a['color'] != this.selectedColorName.color) {
-          return -1;
-        }
+      if (a['color'] != this.selectedColorName.color) {
         return 1;
       }
+      return -1;
     });
   }
 
-  executeEditor(action: string, color?: string, indx?: number) {
+  executeEditor(
+    action: string,
+    color?: string,
+    indx?: number,
+    preventSelectionRemove?: boolean
+  ) {
     if (indx || indx === 0) {
       this.selectedColorName = this.containerColors[indx];
     }
-
     document.execCommand('styleWithCSS', false, 'true');
     if (this.range) {
       this.selectionTaken.removeAllRanges();
@@ -109,6 +102,7 @@ export class TaNoteContainerComponent implements OnInit {
           this.focusElement();
           this.selectedPaternColor = color;
           document.execCommand('foreColor', false, color);
+          this.defaultColorSet = true;
         });
       });
     }
@@ -139,6 +133,38 @@ export class TaNoteContainerComponent implements OnInit {
             };
       }, 200);
       this.selectedPaternColor = document.queryCommandValue('ForeColor');
+    }
+
+    if (this.defaultColorSet) {
+      this.containerColors.map((col, indx) => {
+        if (col.color == this.selectedPaternColor) {
+          this.selectedColorName = this.containerColors[indx];
+          document.execCommand('styleWithCSS', false, 'true');
+          if (this.lastSavedIndex != indx) {
+            this.filterContainersColor();
+          }
+          this.lastSavedIndex = indx;
+          setTimeout(() => {
+            this.focusElement();
+            setTimeout(() => {
+              this.focusElement();
+              this.selectedPaternColor = col.color;
+            });
+          });
+        }
+      });
+    }
+  }
+
+  togglePattern() {
+    this.showCollorPattern = !this.showCollorPattern;
+
+    if(!this.showCollorPattern) {
+      setTimeout(()=>{
+        this.closedPattern = false;
+      }, 300)
+    } else {
+      this.closedPattern = true;
     }
   }
 
