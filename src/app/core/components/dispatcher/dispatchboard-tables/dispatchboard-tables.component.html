@@ -578,7 +578,6 @@
                 name: 'Address',
                 type: 'text',
                 label: 'Location',
-                isRequired: true,
                 placeholder: 'Location',
                 textTransform: 'capitalize',
                 incorrectInput: selectedMode === 'REVIEW_MODE',
@@ -1096,8 +1095,6 @@
                   type: 'text',
                   label: 'Location',
                   placeholder: 'Location',
-                  isRequired: true,
-                  placeholderIcon: 'address',
                   textTransform: 'capitalize',
                   dropdownWidthClass: 'w-col-134',
                   incorrectInput: selectedMode === 'REVIEW_MODE',
@@ -1108,7 +1105,7 @@
                 }"
                 (incorrectEvent)="incorrectInput($event, 0, 18)"
                 [activeAddress]="selectedAddress"
-                [placeholderType]="'longAddress'"
+                [placeholderType]="'shortAddress'"
                 (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
                 (closeDropdown)="onHideDropdown($event)"
               ></app-input-address-dropdown>
