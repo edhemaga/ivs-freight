@@ -20,8 +20,6 @@ import {
   cdlCANADAValidation,
   cdlUSValidation,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
-//import { CreateCdlCommand } from 'appcoretruckassist/model/createCdlCommand';
-//import { EditCdlCommand } from 'appcoretruckassist/model/editCdlCommand';
 
 @Component({
   selector: 'app-driver-cdl-modal',
@@ -230,10 +228,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             restrictions: null,
             endorsements: null,
             note: res.note,
-            file: res.file ? res.file : null,
+            // file: res.file ? res.file : null,
           });
 
-          this.documents = res.file ? ([res.file] as any) : [];
+          // this.documents = res.file ? ([res.file] as any) : [];
 
           this.selectedEndorsment = res.cdlEndorsements;
           this.selectedRestrictions = res.cdlRestrictions;
