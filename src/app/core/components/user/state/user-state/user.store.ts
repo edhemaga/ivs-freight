@@ -10,4 +10,8 @@ export class UserStore extends EntityStore<UserState> {
   constructor() {
     super();
   }
+
+  // akitaPreAddEntity(book: any) {
+    
+  // }
 }
