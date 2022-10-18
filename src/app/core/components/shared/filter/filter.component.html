@@ -12,8 +12,6 @@
     'filter-active-colors':
       filterActiveArray.length > 0 ||
       selectedTimeValue != '' ||
-      canadaSelectedStates.length > 0 ||
-      usaSelectedStates.length ||
       rangeValue > 0 ||
       totalFiltersNum > 0 ||
       longVal != 0 ||
@@ -39,17 +37,10 @@
       {{totalFiltersNum}}
     </div>
     <div
-      *ngIf="canadaSelectedStates.length > 0 || usaSelectedStates.length > 0"
-      class="active-filter-num"
-    >
-      {{ usaSelectedStates.length + canadaSelectedStates.length }}
-    </div>
-    <div
       *ngIf="
         filterActiveArray.length > 0 ||
         selectedTimeValue != '' ||
-        canadaSelectedStates.length > 0 ||
-        usaSelectedStates.length > 0 ||
+        totalFiltersNum > 0 ||
         rangeValue > 0 ||
         moneyFilterStatus ||
         longVal != 0 ||
@@ -126,6 +117,7 @@
         <div
           *ngFor="let item of selectedUser; let indx = index"
           class="user-main-holder"
+          [@inOutAnimation]="'in'"
           (click)="removeFromSelectedUser(item, indx)"
         >
           <div class="user-profile-img" *ngIf="type == 'userFilter'">
@@ -188,11 +180,13 @@
         <div
           class="states-selected usa-selected-holder"
           *ngIf="usaSelectedStates.length > 0"
+          [@stateHeader]="'in'"
         >
           <div class="state-name-holder">UNITED STATES</div>
           <div
             *ngFor="let item of usaSelectedStates; let indx = index"
             class="user-main-holder holder-bottom-margin"
+            [@inOutAnimation]="'in'"
             (click)="removeFromSelectedUser(item, indx)"
           >
             <div class="user-profile-img active state-border-radius">
@@ -213,7 +207,10 @@
             </div>
           </div>
         </div>
-        <div class="states-selected" *ngIf="canadaSelectedStates.length > 0">
+        <div class="states-selected" 
+          *ngIf="canadaSelectedStates.length > 0"
+          [@stateHeader]="'in'"
+        >
           <div class="state-name-holder">CANADA</div>
           <div
             *ngFor="let item of canadaSelectedStates; let indx = index"
@@ -255,6 +252,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -287,6 +285,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -311,6 +310,7 @@
             class="user-frame-holder"
           >
             <div
+              [@inOutAnimation]="'in'"  
               *ngIf="!item.hidden && !item.isSelected"
               (click)="addToSelectedUser(item, indx, 'pending')"
               class="user-main-holder"
@@ -339,6 +339,7 @@
             class="user-frame-holder"
           >
             <div
+              [@inOutAnimation]="'in'"
               *ngIf="!item.hidden && !item.isSelected"
               (click)="addToSelectedUser(item, indx, 'active')"
               class="user-main-holder"
@@ -365,6 +366,7 @@
             class="user-frame-holder"
           >
             <div
+              [@inOutAnimation]="'in'"
               *ngIf="!item.hidden && !item.isSelected"
               (click)="addToSelectedUser(item, indx, 'closed')"
               class="user-main-holder"
@@ -388,6 +390,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -409,6 +412,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -427,6 +431,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -448,6 +453,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -466,6 +472,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -484,6 +491,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -502,6 +510,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -520,6 +529,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -552,6 +562,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -573,6 +584,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
@@ -595,6 +607,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder state-main-holder"
@@ -615,6 +628,7 @@
           class="user-frame-holder"
         >
           <div
+            [@inOutAnimation]="'in'"
             *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx, 'canada')"
             class="user-main-holder state-main-holder"

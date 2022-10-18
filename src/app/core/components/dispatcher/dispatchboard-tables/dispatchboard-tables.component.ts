@@ -249,7 +249,6 @@ export class DispatchboardTablesComponent implements OnInit {
       );
 
       this.selectTruck.reset();
-      this.showAddAddressField = -1;
     }
   }
 
