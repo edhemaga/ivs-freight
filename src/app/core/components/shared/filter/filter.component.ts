@@ -19,7 +19,7 @@ import { addressValidation, combinedSingleLimitValidation } from '../ta-input/ta
 import { card_component_animation } from '../animations/card-component.animations';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
-import { animate, style, transition, trigger, state, } from '@angular/animations';
+import { animate, style, transition, trigger, state, keyframes } from '@angular/animations';
 
 
 @Component({
@@ -34,6 +34,7 @@ import { animate, style, transition, trigger, state, } from '@angular/animations
       style({
         height: '*',
         overflow: 'visible',
+        opacity: 1,
       })
     ),
     state(
@@ -42,6 +43,7 @@ import { animate, style, transition, trigger, state, } from '@angular/animations
         height: '0px',
         overflow: 'hidden',
         'margin-top': '0px',
+        opacity: 0,
       })
     ),
     state(
@@ -52,6 +54,52 @@ import { animate, style, transition, trigger, state, } from '@angular/animations
     ),
     transition('false <=> true', [animate('.2s linear')]),
     transition('true <=> false', [animate('.2s ease-in-out')]), 
+  ]), trigger("inOutAnimation", [
+    state("in", style({ opacity: 1, scale: 1, height: '28px' })),
+    transition(":enter", [
+      animate(
+        200,
+        keyframes([
+          style({ opacity: 0, offset: 0, scale: (0.6), height: '0px' }),
+          style({ opacity: 0.25, offset: 0.25, scale: (0.7), height: '10px' }),
+          style({ opacity: 0.5, offset: 0.5, scale: (0.8), height: '15px' }),
+          style({ opacity: 0.75, offset: 0.75, scale: (0.9), height: '20px' }),
+          style({ opacity: 1, offset: 1, scale: 1, height: '28px' }),
+        ])
+      )
+    ]),
+    transition(":leave", [
+      animate(
+        200,
+        keyframes([
+          style({ opacity: 1, offset: 0, scale: 1, height: '28px' }),
+          style({ opacity: 1, offset: 0.25, scale: (0.9), height: '20px' }),
+          style({ opacity: 0.75, offset: 0.5, scale: (0.8), height: '15px' }),
+          style({ opacity: 0.25, offset: 0.75, scale: (0.7), height: '10px' }),
+          style({ opacity: 0, offset: 1, scale: (0.6), height: '0px' }),
+        ])
+      )
+    ])
+  ]), trigger("stateHeader", [
+    state("in", style({ opacity: 1, height: '*'})),
+    transition(":enter", [
+      animate(
+        200,
+        keyframes([
+          style({ opacity: 0, offset: 0, height: '0px'}),
+          style({ opacity: 1, offset: 1, height: '*'}),
+        ])
+      )
+    ]),
+    transition(":leave", [
+      animate(
+        200,
+        keyframes([
+          style({ opacity: 1, offset: 0, }),
+          style({ opacity: 0, offset: 1, height: '0px'}),
+        ])
+      )
+    ])
   ])],
 })
 export class FilterComponent implements OnInit, AfterViewInit {
@@ -1123,7 +1171,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
   constructor(private formBuilder: FormBuilder, private thousandSeparator: TaThousandSeparatorPipe,private elementRef: ElementRef, private cdRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-
     if ( this.type == 'timeFilter' ) {
       var d = new Date();
       var pastYear = d.getFullYear() - 1;
@@ -1545,7 +1592,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     }
 
     mainArray[indx].isSelected = true;
-
+   
     if (this.type == 'stateFilter') {
       if (subType == 'canada') {
         this.canadaSelectedStates.push(item);
@@ -1677,8 +1724,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         });
       }
     }
-
-    this.checkFilterActiveValue();
+      this.checkFilterActiveValue();
   }
 
   clearAll(e?, mod?) {
@@ -2317,7 +2363,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   onFilterClose(){
       this.activeFilter = false;
-      if ( this.defFilterHolder ){
+      if ( this.defFilterHolder && this.type != 'stateFilter'){
         
         let mainArray: any[] = [];
         switch (this.type) {
@@ -2405,6 +2451,10 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.longVal = this.longValueSet;
         this.latVal = this.latValSet;
         this.locationRange = this.locationRangeSet;
+      } else if ( this.type == 'stateFilter' ) {
+        this.usaSelectedStates = [...this.filterUsaActiveArray];
+        this.canadaSelectedStates = [...this.filterCanadaActiveArray];
+        this.setButtonAvailable = false;
       }
   }
 
