@@ -180,6 +180,7 @@
         <div
           class="states-selected usa-selected-holder"
           *ngIf="usaSelectedStates.length > 0"
+          [@stateHeader]="'in'"
         >
           <div class="state-name-holder">UNITED STATES</div>
           <div
@@ -206,7 +207,10 @@
             </div>
           </div>
         </div>
-        <div class="states-selected" *ngIf="canadaSelectedStates.length > 0">
+        <div class="states-selected" 
+          *ngIf="canadaSelectedStates.length > 0"
+          [@stateHeader]="'in'"
+        >
           <div class="state-name-holder">CANADA</div>
           <div
             *ngFor="let item of canadaSelectedStates; let indx = index"

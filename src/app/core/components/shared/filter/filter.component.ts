@@ -80,6 +80,26 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
         ])
       )
     ])
+  ]), trigger("stateHeader", [
+    state("in", style({ opacity: 1, height: '*'})),
+    transition(":enter", [
+      animate(
+        200,
+        keyframes([
+          style({ opacity: 0, offset: 0, height: '0px'}),
+          style({ opacity: 1, offset: 1, height: '*'}),
+        ])
+      )
+    ]),
+    transition(":leave", [
+      animate(
+        200,
+        keyframes([
+          style({ opacity: 1, offset: 0, }),
+          style({ opacity: 0, offset: 1, height: '0px'}),
+        ])
+      )
+    ])
   ])],
 })
 export class FilterComponent implements OnInit, AfterViewInit {
