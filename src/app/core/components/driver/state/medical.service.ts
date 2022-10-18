@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import {
-  CreateMedicalCommand,
+  // CreateMedicalCommand,
   DriverResponse,
-  EditMedicalCommand,
+  // EditMedicalCommand,
   MedicalResponse,
   MedicalService,
 } from 'appcoretruckassist';
@@ -64,7 +64,7 @@ export class MedicalTService implements OnDestroy {
   }
 
   /* Observable<CreateMedicalResponse> */
-  public addMedical(data: CreateMedicalCommand): Observable<any> {
+  public addMedical(data: /*CreateMedicalCommand*/ any): Observable<any> {
     return this.medicalService.apiMedicalPost(data).pipe(
       tap((res: any) => {
         const subDriver = this.driverService
@@ -94,7 +94,7 @@ export class MedicalTService implements OnDestroy {
     );
   }
 
-  public updateMedical(data: EditMedicalCommand): Observable<object> {
+  public updateMedical(data: /*EditMedicalCommand*/ any): Observable<object> {
     return this.medicalService.apiMedicalPut(data).pipe(
       tap((res: any) => {
         let driverId = this.driverItemStore.getValue().ids[0];

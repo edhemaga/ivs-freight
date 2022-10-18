@@ -1,9 +1,9 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
-  CreateMvrCommand,
+  // CreateMvrCommand,
   DriverResponse,
-  EditMvrCommand,
+  // EditMvrCommand,
   GetMvrModalResponse,
   MvrResponse,
 } from 'appcoretruckassist';
@@ -136,7 +136,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   private updateMVR() {
     const { issueDate } = this.mvrForm.value;
-    const newData: EditMvrCommand = {
+    const newData: /*EditMvrCommand*/ any = {
       driverId: this.editData.id,
       id: this.editData.file_id,
       ...this.mvrForm.value,
@@ -162,7 +162,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   private addMVR() {
     const { issueDate } = this.mvrForm.value;
-    const newData: CreateMvrCommand = {
+    const newData: /* CreateMvrCommand */ any = {
       driverId: this.editData.id,
       ...this.mvrForm.value,
       issueDate: convertDateToBackend(issueDate),

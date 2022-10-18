@@ -21,6 +21,7 @@ import { ActivateDeactivateEFSFuelCard } from '../model/models';
 import { AddFuelCardCommand } from '../model/models';
 import { AddFuelStopCommand } from '../model/models';
 import { AddFuelTransactionCommand } from '../model/models';
+import { ClusterResponse } from '../model/models';
 import { ConnectEFSCommand } from '../model/models';
 import { CreateResponse } from '../model/models';
 import { EditEFSFuelTransactionCommand } from '../model/models';
@@ -104,6 +105,83 @@ export class FuelService {
             throw Error("key may not be null if value is not object or array");
         }
         return httpParams;
+    }
+
+    /**
+     * @param northEastLatitude 
+     * @param northEastLongitude 
+     * @param southWestLatitude 
+     * @param southWestLongitude 
+     * @param zoomLevel 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiFuelClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<Array<ClusterResponse>>;
+    public apiFuelClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<Array<ClusterResponse>>>;
+    public apiFuelClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<Array<ClusterResponse>>>;
+    public apiFuelClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (northEastLatitude !== undefined && northEastLatitude !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>northEastLatitude, 'NorthEastLatitude');
+        }
+        if (northEastLongitude !== undefined && northEastLongitude !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>northEastLongitude, 'NorthEastLongitude');
+        }
+        if (southWestLatitude !== undefined && southWestLatitude !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>southWestLatitude, 'SouthWestLatitude');
+        }
+        if (southWestLongitude !== undefined && southWestLongitude !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>southWestLongitude, 'SouthWestLongitude');
+        }
+        if (zoomLevel !== undefined && zoomLevel !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>zoomLevel, 'ZoomLevel');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.get<Array<ClusterResponse>>(`${this.configuration.basePath}/api/fuel/clusters`,
+            {
+                params: queryParameters,
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
     }
 
     /**
@@ -859,18 +937,53 @@ export class FuelService {
 
     /**
      * @param fuelStopId 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param companyId 
+     * @param sort 
+     * @param search 
+     * @param search1 
+     * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelFuelledvehicleGet(fuelStopId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<FuelledVehicleHistoryListResponse>;
-    public apiFuelFuelledvehicleGet(fuelStopId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<FuelledVehicleHistoryListResponse>>;
-    public apiFuelFuelledvehicleGet(fuelStopId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<FuelledVehicleHistoryListResponse>>;
-    public apiFuelFuelledvehicleGet(fuelStopId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiFuelFuelledvehicleGet(fuelStopId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<FuelledVehicleHistoryListResponse>;
+    public apiFuelFuelledvehicleGet(fuelStopId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<FuelledVehicleHistoryListResponse>>;
+    public apiFuelFuelledvehicleGet(fuelStopId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<FuelledVehicleHistoryListResponse>>;
+    public apiFuelFuelledvehicleGet(fuelStopId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (fuelStopId !== undefined && fuelStopId !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>fuelStopId, 'FuelStopId');
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (companyId !== undefined && companyId !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>companyId, 'CompanyId');
+        }
+        if (sort !== undefined && sort !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>sort, 'Sort');
+        }
+        if (search !== undefined && search !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>search, 'Search');
+        }
+        if (search1 !== undefined && search1 !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>search1, 'Search1');
+        }
+        if (search2 !== undefined && search2 !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>search2, 'Search2');
         }
 
         let headers = this.defaultHeaders;
