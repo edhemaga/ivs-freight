@@ -113,7 +113,7 @@
         transition: all 0.3s ease-in-out;
         border-radius: 2px;
         padding: 4px;
-        width: 24px;
+        width: 26px;
 
         //background-image: url('../../../../assets/img/svgs/right.svg');
         background-repeat: no-repeat;
@@ -155,19 +155,23 @@
           display: flex;
           align-items: center;
           border-radius: 1px;
-          // box-shadow: 0 1px 5px 1px rgba(0, 0, 0, 0.15) !important;
           z-index: 10;
-          // &:after {
-          //   @include triangletop;
-          //   content: '';
-          //   top: -4px;
-          //   left: 3px;
-          // }
+
+          &.input_note{
+            flex-direction: row-reverse;
+          }
+
+          &.closed_pattern{
+            width: 18px;
+            overflow: hidden;
+          }
+          
           div {
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 16px;
+            min-width: 16px;
+            max-width: 16px;
             height: 16px;
             margin: 0 1px;
             cursor: pointer;
@@ -192,18 +196,9 @@
               background-color: #6C6C6C;
             }
 
-            &.input_note_container{
-              &:hover:not(:last-child) {
-                transform: scale(1.1);
-                transform-origin: center;
-              }
-            }
-
-            &.popover_text_color{
-              &:hover:not(:first-child) {
-                transform: scale(1.1);
-                transform-origin: center;
-              }
+            &:hover:not(:first-child) {
+              transform: scale(1.1);
+              transform-origin: center;
             }
 
             svg-icon {

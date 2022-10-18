@@ -20,7 +20,7 @@ export const LOAD_STATUS = [
     color: '#959595',
     selected: false,
     approved: false,
-    group: 'PENDING'
+    group: 'PENDING',
   },
   {
     id: 1,
@@ -28,7 +28,7 @@ export const LOAD_STATUS = [
     color: '#202020',
     selected: false,
     approved: false,
-    group: 'PENDING'
+    group: 'PENDING',
   },
   {
     id: 2,
@@ -36,7 +36,7 @@ export const LOAD_STATUS = [
     color: '#497BDC',
     selected: false,
     approved: false,
-    group: 'ACTIVE'
+    group: 'ACTIVE',
   },
   {
     id: 3,
@@ -44,7 +44,7 @@ export const LOAD_STATUS = [
     color: '#207E4C',
     selected: false,
     approved: false,
-    group: 'ACTIVE'
+    group: 'ACTIVE',
   },
   {
     id: 4,
@@ -52,7 +52,7 @@ export const LOAD_STATUS = [
     color: '#AE3232',
     selected: false,
     approved: false,
-    group: 'CLOSED'
+    group: 'CLOSED',
   },
   {
     id: 5,
@@ -60,7 +60,7 @@ export const LOAD_STATUS = [
     color: '#FF5D5D',
     selected: false,
     approved: false,
-    group: 'CLOSED'
+    group: 'CLOSED',
   },
   {
     id: 6,
@@ -68,7 +68,7 @@ export const LOAD_STATUS = [
     color: '#F99E00',
     selected: false,
     approved: false,
-    group: 'CLOSED'
+    group: 'CLOSED',
   },
   {
     id: 7,
@@ -76,7 +76,7 @@ export const LOAD_STATUS = [
     color: '#C9C9C9',
     selected: false,
     approved: false,
-    group: 'CLOSED'
+    group: 'CLOSED',
   },
   // MVR statuses
   {
@@ -85,7 +85,7 @@ export const LOAD_STATUS = [
     color: '#FFA85D',
     selected: false,
     approved: false,
-    group: 'PENDING'
+    group: 'PENDING',
   },
   {
     id: 9,
@@ -93,7 +93,7 @@ export const LOAD_STATUS = [
     color: '#24C1A1',
     selected: false,
     approved: false,
-    group: 'COMPLETE'
+    group: 'COMPLETE',
   },
   {
     id: 10,
@@ -101,7 +101,7 @@ export const LOAD_STATUS = [
     color: '#FF5D5D',
     selected: false,
     approved: false,
-    group: 'DECLINED'
+    group: 'DECLINED',
   },
   // End MVR statuses
   {
@@ -110,7 +110,7 @@ export const LOAD_STATUS = [
     color: '#BFB580',
     selected: false,
     approved: false,
-    group: 'BILLED'
+    group: 'BILLED',
   },
   {
     id: 1070,
@@ -120,7 +120,7 @@ export const LOAD_STATUS = [
     typeColor: '#CFC8A3',
     selected: false,
     approved: false,
-    group: 'BILLED'
+    group: 'BILLED',
   },
   {
     id: 1100,
@@ -128,7 +128,7 @@ export const LOAD_STATUS = [
     color: '#B7B7B7',
     selected: false,
     approved: false,
-    group: 'BILLED'
+    group: 'BILLED',
   },
   {
     id: 1200,
@@ -136,7 +136,7 @@ export const LOAD_STATUS = [
     color: '#9F9A7B',
     selected: false,
     approved: false,
-    group: 'BILLED'
+    group: 'BILLED',
   },
   {
     id: 1300,
@@ -144,7 +144,7 @@ export const LOAD_STATUS = [
     color: '#807B65',
     selected: false,
     approved: false,
-    group: 'BILLED'
+    group: 'BILLED',
   },
   {
     id: 1400,
@@ -152,7 +152,7 @@ export const LOAD_STATUS = [
     color: '#65614D',
     selected: false,
     approved: false,
-    group: 'BILLED'
+    group: 'BILLED',
   },
   {
     id: 1500,
@@ -160,7 +160,7 @@ export const LOAD_STATUS = [
     color: '#514E40',
     selected: false,
     approved: false,
-    group: 'BILLED'
+    group: 'BILLED',
   },
   {
     id: 1112, // 1211
@@ -170,7 +170,7 @@ export const LOAD_STATUS = [
     typeColor: '#B7B7B7',
     selected: false,
     approved: false,
-    group: 'BILLED'
+    group: 'BILLED',
   },
   {
     id: 1113, // 1311
@@ -180,7 +180,7 @@ export const LOAD_STATUS = [
     typeColor: '#B7B7B7',
     selected: false,
     approved: false,
-    group: 'BILLED'
+    group: 'BILLED',
   },
   {
     id: 1114, // 1411
@@ -190,7 +190,7 @@ export const LOAD_STATUS = [
     typeColor: '#B7B7B7',
     selected: false,
     approved: false,
-    group: 'BILLED'
+    group: 'BILLED',
   },
   {
     id: 1115, // 1511
@@ -200,7 +200,7 @@ export const LOAD_STATUS = [
     typeColor: '#B7B7B7',
     selected: false,
     approved: false,
-    group: 'BILLED'
+    group: 'BILLED',
   },
   {
     id: 5010, // 1005
@@ -210,7 +210,7 @@ export const LOAD_STATUS = [
     typeColor: '#FF5D5D',
     selected: false,
     approved: false,
-    group: 'BILLED'
+    group: 'BILLED',
   },
   {
     id: 5012, // 1205
@@ -220,7 +220,7 @@ export const LOAD_STATUS = [
     typeColor: '#FF5D5D',
     selected: false,
     approved: false,
-    group: 'BILLED'
+    group: 'BILLED',
   },
   {
     id: 5013, // 1305
@@ -230,7 +230,7 @@ export const LOAD_STATUS = [
     typeColor: '#FF5D5D',
     selected: false,
     approved: false,
-    group: 'BILLED'
+    group: 'BILLED',
   },
   {
     id: 5014, // 1405
@@ -240,7 +240,7 @@ export const LOAD_STATUS = [
     typeColor: '#FF5D5D',
     selected: false,
     approved: false,
-    group: 'BILLED'
+    group: 'BILLED',
   },
   {
     id: 5015, // 1505
@@ -250,8 +250,8 @@ export const LOAD_STATUS = [
     typeColor: '#FF5D5D',
     selected: false,
     approved: false,
-    group: 'BILLED'
-  }
+    group: 'BILLED',
+  },
 ];
 
 // TODO: use color from LOAD_STATUS array insetad of classes
@@ -277,96 +277,96 @@ export const DISPATCH_BOARD_STATUS = [
     id: 0,
     name: 'OFF',
     sort: 1,
-    color: '#C1C1C1'
+    color: '#C1C1C1',
   },
   {
     id: 1000,
     name: 'ACTIVE',
     sort: 2,
-    color: '#508F91'
+    color: '#508F91',
   },
   {
     id: 2000,
     name: 'DISPATCHED',
     sort: 3,
-    color: '#7FA2E6'
+    color: '#7FA2E6',
   },
   {
     id: 3000,
     name: 'CHECKED IN',
     sort: 4,
-    color: '#60D5BD'
+    color: '#60D5BD',
   },
   {
     id: 3100,
     name: 'CHECKED IN', // with number - CHECKED IN 1
     load_count: 1,
     sort: 5,
-    color: '#CCCCCC'
+    color: '#CCCCCC',
   },
   {
     id: 3200,
     name: 'LOADED', // with number - LOADED 1
     load_count: 1,
     sort: 6,
-    color: '#207E4C'
+    color: '#207E4C',
   },
   {
     id: 4000,
     name: 'LOADED',
     sort: 7,
-    color: '#74BF97'
+    color: '#74BF97',
   },
   {
     id: 4070,
     name: 'REPAIR',
     load_repear: true,
     sort: 12,
-    color: '#C29FCB'
+    color: '#C29FCB',
   },
   {
     id: 5000,
     name: 'CHECKED IN',
     sort: 9,
-    color: '#FFA7A7'
+    color: '#FFA7A7',
   },
   {
     id: 5100,
     name: 'CHECKED IN', // with number - CHECKED IN 1 - this in delivered
     load_count: 1,
     sort: 10,
-    color: '#CCCCCC'
+    color: '#CCCCCC',
   },
   {
     id: 5200,
     name: 'OFFLOADED',
     load_count: 1,
     sort: 11,
-    color: '#FFBF6B'
+    color: '#FFBF6B',
   },
   {
     id: 6000,
     name: 'EMPTY',
     sort: 11,
-    color: '#FFBF6B'
+    color: '#FFBF6B',
   },
   {
     id: 7000,
     name: 'REPAIR SHOP',
     sort: 12,
-    color: '#C29FCB'
+    color: '#C29FCB',
   },
   {
     id: 8000,
     name: 'DEAD HEADING',
     sort: 12,
-    color: '#9F9F9F'
+    color: '#9F9F9F',
   },
   {
     id: 9000,
     name: 'CANCEL',
     sort: 12,
-    color: '#E27579'
+    color: '#E27579',
   },
 ];
 
@@ -636,7 +636,7 @@ export const TRUCK_LIST = [
     whiteFile: 'white-car-hauler.svg',
     color: '668888',
     legendcolor: '668888',
-  }
+  },
 ];
 
 export const TRUCK_LIST_APPLICANTS = [
@@ -1021,33 +1021,33 @@ export const TIME_ZONES = [
   {
     id: 1,
     name: '(UTC-8) Alaska Daylight Time',
-    offset: -8
+    offset: -8,
   },
   {
     id: 2,
     name: '(UTC-7) Pacific Daylight Time',
-    offset: -7
+    offset: -7,
   },
   {
     id: 3,
     name: '(UTC-7) Mountain Standard Time',
-    offset: -7
+    offset: -7,
   },
   {
     id: 4,
     name: '(UTC-6) Mountain Daylight Time',
-    offset: -6
+    offset: -6,
   },
   {
     id: 5,
     name: '(UTC-5) Central Daylight Time',
-    offset: -5
+    offset: -5,
   },
   {
     id: 6,
     name: '(UTC-4) Eastern Daylight Time',
-    offset: -4
-  }
+    offset: -4,
+  },
 ];
 
 export const PAY_PERIODS = [
@@ -1124,52 +1124,28 @@ export const FILE_TABLES = {
   TRAILER: 'Trailer',
   TRUCK: 'Truck',
   TRUCK_LOAD: 'Truckload',
-  USER: 'User'
+  USER: 'User',
 };
 
-export const noteColors = {
-  regular: [
-    {
-      color: '#536BC2',
-      name: 'Blue',
-    },
-    {
-      color: '#FFA726',
-      name: 'Yellow',
-    },
-    {
-      color: '#EF5350',
-      name: 'Red',
-    },
-    {
-      color: '#26A690',
-      name: 'Dark Green',
-    },
-    {
-      color: '#6C6C6C',
-      name: 'Gray',
-    },
-  ],
-  reversed: [
-    {
-      color: '#6C6C6C',
-      name: 'Gray',
-    },
-    {
-      color: '#26A690',
-      name: 'Dark Green',
-    },
-    {
-      color: '#EF5350',
-      name: 'Red',
-    },
-    {
-      color: '#FFA726',
-      name: 'Yellow',
-    },
-    {
-      color: '#536BC2',
-      name: 'Blue',
-    },
-  ],
-};
+export const noteColors = [
+  {
+    color: 'rgb(108, 108, 108)',
+    name: 'Gray',
+  },
+  {
+    color: 'rgb(38, 166, 144)',
+    name: 'Dark Green',
+  },
+  {
+    color: 'rgb(239, 83, 80)',
+    name: 'Red',
+  },
+  {
+    color: 'rgb(255, 167, 38)',
+    name: 'Yellow',
+  },
+  {
+    color: 'rgb(83, 107, 194)',
+    name: 'Blue',
+  },
+];
