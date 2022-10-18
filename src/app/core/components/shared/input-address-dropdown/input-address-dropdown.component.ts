@@ -8,6 +8,7 @@ import {
   Self,
   ViewChild,
   ViewEncapsulation,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { filter, Subject, switchMap, takeUntil } from 'rxjs';
 import { AddressService } from 'src/app/core/services/shared/address.service';
@@ -77,7 +78,8 @@ export class InputAddressDropdownComponent
   constructor(
     @Self() public superControl: NgControl,
     private addressService: AddressService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private ref: ChangeDetectorRef
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -125,6 +127,8 @@ export class InputAddressDropdownComponent
             id: indx,
           };
         });
+
+        this.ref.detectChanges();
       });
   }
 

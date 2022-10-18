@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpResponseBase } from '@angular/common/http';
@@ -28,6 +28,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit, OnDestroy {
+  @ViewChild('inputAddress', { static: false }) public inputAddress: any;
   private destroy$ = new Subject<void>();
   public registerForm!: FormGroup;
 
@@ -97,6 +98,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   public registerCompany(): void {
+    if (this.inputAddress?.inputDropdown?.inputRef?.focusInput && this.inputAddress?.addresList?.length) {
+      return;
+    }
     if (this.registerForm.invalid) {
       this.inputService.markInvalid(this.registerForm);
       return;
