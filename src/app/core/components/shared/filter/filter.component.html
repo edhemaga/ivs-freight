@@ -117,7 +117,6 @@
         <div
           *ngFor="let item of selectedUser; let indx = index"
           class="user-main-holder"
-          [class.removeClass]="item.remove"
           [@inOutAnimation]="'in'"
           (click)="removeFromSelectedUser(item, indx)"
         >
@@ -186,6 +185,7 @@
           <div
             *ngFor="let item of usaSelectedStates; let indx = index"
             class="user-main-holder holder-bottom-margin"
+            [@inOutAnimation]="'in'"
             (click)="removeFromSelectedUser(item, indx)"
           >
             <div class="user-profile-img active state-border-radius">
@@ -246,10 +246,10 @@
         <div
           *ngFor="let item of unselectedUser; let indx = index"
           class="user-frame-holder"
-          [class.hidenItem]="item.isSelected"
         >
           <div
-            *ngIf="!item.hidden"
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
           >
@@ -279,10 +279,10 @@
         <div
           *ngFor="let item of departmentArray; let indx = index"
           class="user-frame-holder"
-          [class.hidenItem]="item.isSelected"
         >
           <div
-            *ngIf="!item.hidden"
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
           >
@@ -304,10 +304,10 @@
           <div
             *ngFor="let item of pendingStatusArray; let indx = index"
             class="user-frame-holder"
-            [class.hidenItem]="item.isSelected"
           >
             <div
-              *ngIf="!item.hidden"
+              [@inOutAnimation]="'in'"  
+              *ngIf="!item.hidden && !item.isSelected"
               (click)="addToSelectedUser(item, indx, 'pending')"
               class="user-main-holder"
             >
@@ -333,10 +333,10 @@
           <div
             *ngFor="let item of activeStatusArray; let indx = index"
             class="user-frame-holder"
-            [class.hidenItem]="item.isSelected"
           >
             <div
-              *ngIf="!item.hidden"
+              [@inOutAnimation]="'in'"
+              *ngIf="!item.hidden && !item.isSelected"
               (click)="addToSelectedUser(item, indx, 'active')"
               class="user-main-holder"
             >
@@ -360,10 +360,10 @@
           <div
             *ngFor="let item of closedStatusArray; let indx = index"
             class="user-frame-holder"
-            [class.hidenItem]="item.isSelected"
           >
             <div
-              *ngIf="!item.hidden"
+              [@inOutAnimation]="'in'"
+              *ngIf="!item.hidden && !item.isSelected"
               (click)="addToSelectedUser(item, indx, 'closed')"
               class="user-main-holder"
             >
@@ -384,10 +384,10 @@
         <div
           *ngFor="let item of pmFilterArray; let indx = index"
           class="user-frame-holder"
-          [class.hidenItem]="item.isSelected"
         >
           <div
-            *ngIf="!item.hidden"
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
           >
@@ -406,10 +406,10 @@
         <div
           *ngFor="let item of categoryFuelArray; let indx = index"
           class="user-frame-holder"
-          [class.hidenItem]="item.isSelected"
         >
           <div
-            *ngIf="!item.hidden"
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
           >
@@ -425,10 +425,10 @@
         <div
           *ngFor="let item of categoryRepairArray; let indx = index"
           class="user-frame-holder"
-          [class.hidenItem]="item.isSelected"
         >
           <div
-            *ngIf="!item.hidden"
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
           >
@@ -447,10 +447,10 @@
         <div
           *ngFor="let item of truckArray; let indx = index"
           class="user-frame-holder"
-          [class.hidenItem]="item.isSelected"
         >
           <div
-            *ngIf="!item.hidden"
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
           >
@@ -466,10 +466,10 @@
         <div
           *ngFor="let item of trailerArray; let indx = index"
           class="user-frame-holder"
-          [class.hidenItem]="item.isSelected"
         >
           <div
-            *ngIf="!item.hidden"
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
           >
@@ -485,10 +485,10 @@
         <div
           *ngFor="let item of fuelStopArray; let indx = index"
           class="user-frame-holder"
-          [class.hidenItem]="item.isSelected"
         >
           <div
-            *ngIf="!item.hidden"
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
           >
@@ -504,10 +504,10 @@
         <div
           *ngFor="let item of brokerArray; let indx = index"
           class="user-frame-holder"
-          [class.hidenItem]="item.isSelected"
         >
           <div
-            *ngIf="!item.hidden"
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
           >
@@ -523,10 +523,10 @@
         <div
           *ngFor="let item of driverArray; let indx = index"
           class="user-frame-holder"
-          [class.hidenItem]="item.isSelected"
         >
           <div
-            *ngIf="!item.hidden"
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
           >
@@ -556,10 +556,10 @@
         <div
           *ngFor="let item of truckTypeArray; let indx = index"
           class="user-frame-holder"
-          [class.hidenItem]="item.isSelected"
         >
           <div
-            *ngIf="!item.hidden"
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
           >
@@ -578,10 +578,10 @@
         <div
           *ngFor="let item of trailerTypeArray; let indx = index"
           class="user-frame-holder"
-          [class.hidenItem]="item.isSelected"
         >
           <div
-            *ngIf="!item.hidden"
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder"
           >
@@ -601,10 +601,10 @@
         <div
           *ngFor="let item of usaStates; let indx = index"
           class="user-frame-holder"
-          [class.hidenItem]="item.isSelected"
         >
           <div
-            *ngIf="!item.hidden"
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx)"
             class="user-main-holder state-main-holder"
           >
@@ -622,10 +622,10 @@
         <div
           *ngFor="let item of canadaStates; let indx = index"
           class="user-frame-holder"
-          [class.hidenItem]="item.isSelected"
         >
           <div
-            *ngIf="!item.hidden"
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
             (click)="addToSelectedUser(item, indx, 'canada')"
             class="user-main-holder state-main-holder"
           >

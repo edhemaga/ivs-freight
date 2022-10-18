@@ -55,16 +55,16 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
     transition('false <=> true', [animate('.2s linear')]),
     transition('true <=> false', [animate('.2s ease-in-out')]), 
   ]), trigger("inOutAnimation", [
-    state("in", style({ opacity: 1 })),
+    state("in", style({ opacity: 1, scale: 1, height: '28px' })),
     transition(":enter", [
       animate(
         200,
         keyframes([
-          style({ opacity: 0, offset: 0, scale: (0.6) }),
-          style({ opacity: 0.25, offset: 0.25, scale: (0.7) }),
-          style({ opacity: 0.5, offset: 0.5, scale: (0.8) }),
-          style({ opacity: 0.75, offset: 0.75, scale: (0.9) }),
-          style({ opacity: 1, offset: 1, scale: 1 }),
+          style({ opacity: 0, offset: 0, scale: (0.6), height: '0px' }),
+          style({ opacity: 0.25, offset: 0.25, scale: (0.7), height: '10px' }),
+          style({ opacity: 0.5, offset: 0.5, scale: (0.8), height: '15px' }),
+          style({ opacity: 0.75, offset: 0.75, scale: (0.9), height: '20px' }),
+          style({ opacity: 1, offset: 1, scale: 1, height: '28px' }),
         ])
       )
     ]),
@@ -72,11 +72,11 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
       animate(
         200,
         keyframes([
-          style({ opacity: 1, offset: 0, scale: 1 }),
-          style({ opacity: 0.75, offset: 0.25, scale: (0.9) }),
-          style({ opacity: 0.5, offset: 0.5, scale: (0.8) }),
-          style({ opacity: 0.25, offset: 0.75, scale: (0.7) }),
-          style({ opacity: 0, offset: 1, scale: (0.6) }),
+          style({ opacity: 1, offset: 0, scale: 1, height: '28px' }),
+          style({ opacity: 1, offset: 0.25, scale: (0.9), height: '20px' }),
+          style({ opacity: 0.75, offset: 0.5, scale: (0.8), height: '15px' }),
+          style({ opacity: 0.25, offset: 0.75, scale: (0.7), height: '10px' }),
+          style({ opacity: 0, offset: 1, scale: (0.6), height: '0px' }),
         ])
       )
     ])
@@ -1572,7 +1572,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     }
 
     mainArray[indx].isSelected = true;
-
+   
     if (this.type == 'stateFilter') {
       if (subType == 'canada') {
         this.canadaSelectedStates.push(item);
@@ -1586,9 +1586,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   removeFromSelectedUser(item, indx, subType?) {
-    this.selectedUser[indx].remove = true;
-    console.log('----this.selectedUser', this.selectedUser);
-  
+    this.selectedUser.splice(indx, 1); 
+
     if (this.type == 'stateFilter') {
       if (subType == 'canada') {
         this.canadaSelectedStates.splice(indx, 1);
@@ -1705,13 +1704,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         });
       }
     }
-
-    setTimeout(()=>{
-      this.selectedUser[indx].remove = false;
-      this.selectedUser.splice(indx, 1); 
       this.checkFilterActiveValue();
-    },200)
-    
   }
 
   clearAll(e?, mod?) {
