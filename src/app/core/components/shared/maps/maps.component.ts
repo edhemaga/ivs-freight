@@ -285,6 +285,8 @@ export class MapsComponent implements OnInit, OnDestroy {
       // The user scrolled down.
       this.zoomChange(this.mapZoom - 1);
     }
+
+    this.ref.detectChanges();
   }
 
   showHideMarkers() {

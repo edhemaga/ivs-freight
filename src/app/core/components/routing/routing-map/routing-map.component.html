@@ -411,7 +411,7 @@
               <div
                 class="route-card-row m-0"
                 [formGroup]="$any(addressInputs)"
-                [ngClass]="{ 'focused-route': route.isFocused }"
+                [ngClass]="{ 'focused-route': route.isFocused, 'disable-hover': inputAddress?.addressExpanded }"
                 (click)="focusOnInput(i, false, $event)"
                 [attr.data-id]="'newStop' + route.id"
                 [ngStyle]="{
@@ -433,7 +433,7 @@
                     'width.px': 14,
                     'height.px': 14,
                     fill: route.isFocused ? '#fff' : route.color,
-                    opacity: inputAddress?.inputDropdown?.inputRef?.focusInput ? '0' : '1'
+                    opacity: inputAddress?.addressExpanded ? '0' : '1'
                   }"
                 ></svg-icon>
                 <div
@@ -934,7 +934,7 @@
               <div
                 class="route-card-row m-0"
                 [formGroup]="$any(addressInputs)"
-                [ngClass]="{ 'focused-route': route.isFocused }"
+                [ngClass]="{ 'focused-route': route.isFocused, 'disable-hover': inputAddress?.inputDropdown?.inputRef?.focusInput }"
                 (click)="focusOnInput(i, false, $event)"
               >
                 <div

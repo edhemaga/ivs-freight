@@ -365,6 +365,7 @@
               height: 24px;
               background: #F3F3F3;
               border-radius: 2px;
+              user-select: none;
           }
   
           .header-text {
@@ -372,6 +373,15 @@
               line-height: 18px;
               font-weight: 800;
               color: #6C6C6C;
+
+              &::-moz-selection {
+                color: #6C6C6C;
+                background: #6c6c6c33;
+              }
+              &::selection {
+                  color: #6C6C6C;
+                  background: #6c6c6c33;
+              }
           }
       }
 
@@ -409,15 +419,26 @@
           padding: 4px 6px;
           border-radius: 2px;
   
+          color: #6C6C6C;
           font-weight: 400;
           text-transform: uppercase;
 
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
+
+          &::-moz-selection {
+            color: #6C6C6C;
+            background: #6c6c6c33;
+          }
+          &::selection {
+              color: #6C6C6C;
+              background: #6c6c6c33;
+          }
   
           &:hover {
               background: #F7F7F7;
+              color: #3C3C3C;
               cursor: pointer;
           }
       }

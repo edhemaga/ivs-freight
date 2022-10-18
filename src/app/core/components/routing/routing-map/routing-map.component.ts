@@ -2323,6 +2323,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       : true;
     this.addressFlag = this.addressFlag == 'Empty' ? 'Loaded' : 'Empty';
 
+    this.inputAddress.changeStopType();
+
     if (event) {
       this.addNewStop(event);
     }
