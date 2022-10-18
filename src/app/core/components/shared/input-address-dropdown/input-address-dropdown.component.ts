@@ -50,6 +50,7 @@ export class InputAddressDropdownComponent
   @Input() isRouting: boolean = false;
   @Input() closedBorder: boolean = false;
   @Input() incorrectValue: boolean;
+  @Input () hideEmptyLoaded: boolean = false;
   addressExpanded: boolean = false;
   chosenFromDropdown: boolean = false;
   allowValidation: boolean = false;
