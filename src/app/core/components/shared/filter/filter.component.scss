@@ -515,11 +515,15 @@
     flex-direction: column;
     //padding: 2px 2px 0px 2px;
     box-sizing: border-box;
+    transition: all 0.2s linear;
 
+    
     .user-main-holder {
       position: relative;
       width: 100%;
-      height: 26px;
+      height: 28px;
+      transition: all 0.2s linear;
+      cursor: pointer;
       &:hover {
         cursor: pointer;
         background-color: #1d1d1d;
@@ -535,6 +539,22 @@
           }
 
         }
+        
+        .selected-icon {
+          display: none;
+        }
+
+        .icon-delete {
+          display: flex;
+        }
+      }
+
+      &.removeClass{
+        scale: (0.7);
+        height: 0px;
+        background-color: #000000;
+        opacity: 0;
+        pointer-events: none;  
       }
 
       .user-profile-img {
@@ -643,16 +663,7 @@
       }
 
       &:hover {
-        cursor: pointer;
-        //background-color: #F7F7F7;
-
-        .selected-icon {
-          display: none;
-        }
-
-        .icon-delete {
-          display: flex;
-        }
+        
       }
 
       &::-moz-selection {
@@ -691,6 +702,7 @@
     overflow-y: auto;
 
     user-select: none;
+    transition: all 0.2s linear;
 
     &::-webkit-scrollbar {
       width: 4px;
@@ -712,9 +724,12 @@
       width: 100%;
       display: flex;
       align-items: center;
+      opacity: 1;
+      transition: all 0.2s linear;
 
       .user-main-holder {
         width: 100%;
+        transition: all 0.2s linear;
         &:hover {
           cursor: pointer;
           background-color: #1d1d1d;
@@ -785,6 +800,15 @@
 
         }
       }
+
+      &.hidenItem{
+        scale: (0.7);
+        height: 0px;
+        background-color: #000000;
+        opacity: 0;
+        pointer-events: none;
+      }
+
     }
   }
 
@@ -910,6 +934,7 @@
 
 .pm-filter {
   .user-main-holder {
+    transition: all 0.2s linear;
     .selected-filter-icon {
       top: 0px !important;
 
@@ -974,6 +999,7 @@
   }
 
   .user-main-holder {
+    transition: all 0.2s linear;
     &:hover {
       .user-frame {
         padding-left: 56px !important;
@@ -1251,9 +1277,11 @@
 
   .states-selected {
     width: 100%;
+    transition: all 0.2s linear;
   }
 
   .user-main-holder {
+    transition: all 0.2s linear;
     &:hover {
       .state-short-holder {
         background-color: #ffffff;
