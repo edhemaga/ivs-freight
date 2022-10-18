@@ -8,6 +8,7 @@ export const initialState = (): RepairDState => {
   return {
     repairShop: [],
     repairList: [],
+    repairedVehicleList: [],
     repairShopMinimal: [],
   };
 };

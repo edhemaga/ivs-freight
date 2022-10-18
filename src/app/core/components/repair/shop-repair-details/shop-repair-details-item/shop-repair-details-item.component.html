@@ -8,7 +8,7 @@
       </app-shop-repair-card-view>
     </div>
     <div *ngSwitchCase="'repair'">
-      <div class="repair-container">
+      <div class="repair-container" *ngIf="repairListData?.length">
         <div class="repair-header">
           <span class="repaier-headers">UNIT</span>
           <span class="repaier-headers">DATE</span>
@@ -179,7 +179,7 @@
     <div *ngSwitchCase="'repaired-vehicle'">
       <div
         class="repaired-vehicle-container"
-        *ngIf="repairShopItem?.data?.repairsByUnit?.length"
+        *ngIf="repairedVehicleListData?.length"
       >
         <div class="repair-vehicle-header">
           <span class="repaier-headers">UNIT</span>
@@ -191,7 +191,7 @@
         <div
           class="repair-items-vehicle"
           *ngFor="
-            let vehicle of repairShopItem.data.repairsByUnit;
+            let vehicle of repairedVehicleListData;
             let i = index
           "
         >

@@ -1,24 +1,30 @@
 import { Injectable } from '@angular/core';
-import {
-  RepairShopMinimalListResponse,
-  RepairShopResponse,
-} from 'appcoretruckassist';
-import { Observable } from 'rxjs';
+
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { RepairShopService } from '../../../../../../../appcoretruckassist/api/repairShop.service';
 import { RepairDStore } from './repair-d.store';
 import { RepairListResponse } from '../../../../../../../appcoretruckassist/model/repairListResponse';
 import { RepairShopMinimalResponse } from '../../../../../../../appcoretruckassist/model/repairShopMinimalResponse';
 
 import { RepairService } from '../../../../../../../appcoretruckassist/api/repair.service';
+import { RepairedVehicleListResponse } from '../../../../../../../appcoretruckassist/model/repairedVehicleListResponse';
+import { RepairShopMinimalListResponse } from '../../../../../../../appcoretruckassist/model/repairShopMinimalListResponse';
+import { RepairShopResponse } from '../../../../../../../appcoretruckassist/model/repairShopResponse';
+import { RepairDQuery } from './repair-d.query';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RepairDService {
+  public currentIndex: number;
+  public repairShopList: any;
+  public repairShopId: number;
+  private destroy$ = new Subject<void>();
   constructor(
     private repairShopService: RepairShopService,
     private repairService: RepairService,
-    private repairDStore: RepairDStore
+    private repairDStore: RepairDStore,
+    private rDq: RepairDQuery
   ) {}
 
   // Get Repair List
@@ -72,11 +78,18 @@ export class RepairDService {
       companyId
     );
   }
-
-  public getRepairShopById(shopId: number): Observable<RepairShopResponse> {
-    return this.repairShopService.apiRepairshopIdGet(shopId);
+  //get repreidVehicle list
+  public getRepairedVehicle(
+    repairShopId?: number,
+    pageIndex?: number,
+    pageSize?: number
+  ): Observable<RepairedVehicleListResponse> {
+    return this.repairShopService.apiRepairshopRepairedvehicleGet(
+      repairShopId,
+      pageIndex,
+      pageSize
+    );
   }
-
   set updateRepairShop(data: RepairShopResponse) {
     const repairShop: RepairShopResponse[] = Object.assign(
       [],
@@ -109,6 +122,15 @@ export class RepairDService {
       return {
         ...store,
         repairList: data,
+      };
+    });
+  }
+
+  set updateRepairedVehicleList(data: RepairedVehicleListResponse) {
+    this.repairDStore.update((store) => {
+      return {
+        ...store,
+        repairedVehicleList: data,
       };
     });
   }

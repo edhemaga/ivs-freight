@@ -12,9 +12,9 @@ import { RepairShopResponse } from 'appcoretruckassist';
 import { map, Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
-import { RepairDQuery } from '../state/details-state/repair-d.query';
 import { RepairShopMinimalListResponse } from '../../../../../../appcoretruckassist/model/repairShopMinimalListResponse';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { RepairDQuery } from '../state/details-state/repair-d.query';
 
 @Component({
   selector: 'app-shop-repair-card-view',
@@ -45,12 +45,16 @@ export class ShopRepairCardViewComponent
 
   ngOnChanges(changes: SimpleChanges): void {
     if (
-      changes.shopResponse?.currentValue != changes.shopResponse?.previousValue
+      changes.repairShopCardViewData?.currentValue !=
+      changes.repairShopCardViewData?.previousValue
     ) {
-      this.getActiveServices(changes.shopResponse.currentValue);
-      this.noteControl.patchValue(changes.shopResponse.currentValue.note);
-      this.repairShopCardViewData = changes.shopResponse?.currentValue;
+      this.noteControl.patchValue(
+        changes.repairShopCardViewData.currentValue.note
+      );
+      this.repairShopCardViewData =
+        changes.repairShopCardViewData?.currentValue;
     }
+    this.getActiveServices(changes.repairShopCardViewData.currentValue);
   }
 
   ngOnInit(): void {
@@ -142,7 +146,8 @@ export class ShopRepairCardViewComponent
   }
 
   public getActiveServices(data: RepairShopResponse) {
-    this.count = data?.serviceTypes?.filter((item) => item.active).length;
+    let res = data.serviceTypes.filter((item) => item.active);
+    this.count = res.length;
     return this.count;
   }
 

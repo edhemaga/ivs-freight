@@ -1,4 +1,4 @@
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import {
   ChangeDetectorRef,
   Component,
@@ -8,56 +8,78 @@ import {
 } from '@angular/core';
 import { RepairShopResponse } from 'appcoretruckassist';
 import { Subject, take, takeUntil } from 'rxjs';
-import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
-import { RepairDQuery } from '../state/details-state/repair-d.query';
 import { distinctUntilChanged } from 'rxjs/operators';
+import { RepairDQuery } from '../state/details-state/repair-d.query';
+import { RepairTService } from '../state/repair.service';
+import { RepairDStore } from '../state/details-state/repair-d.store';
 
 @Component({
   selector: 'app-shop-repair-details',
   templateUrl: './shop-repair-details.component.html',
   styleUrls: ['./shop-repair-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DetailsPageService, SumArraysPipe],
+  providers: [DetailsPageService],
 })
 export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   public shopRepairConfig: any[] = [];
   public repairDrop: any;
   public repairShopId: number;
-
+  public repairList: any;
   public repairObject: any;
   public togglerWorkTime: boolean;
-  public repairsDataLength: number;
-
+  public repairsDataLength: number = 0;
+  public repairedDataLength: number = 0;
+  public currentIndex: number = 0;
   constructor(
     private act_route: ActivatedRoute,
     private detailsPageDriverService: DetailsPageService,
     private router: Router,
+    private shopService: RepairTService,
     private tableService: TruckassistTableService,
     private confirmationService: ConfirmationService,
     private cdRef: ChangeDetectorRef,
     private DetailsDataService: DetailsDataService,
     private dropDownService: DropDownService,
-    private repairDQuery: RepairDQuery
+    private repairDQuery: RepairDQuery,
+    private repairDStore: RepairDStore
   ) {}
 
   ngOnInit(): void {
+    this.getRepairListAndRepairedCount();
+    // Call Change Count When Router Change
+    this.router.events
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((event: any) => {
+        if (event instanceof NavigationEnd) {
+          this.getRepairListAndRepairedCount();
+        }
+      });
     this.getRepairShopDataFromStore();
+    this.repairDQuery.repairShopMinimal$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => {
+        this.repairList = item.pagination.data;
+
+        this.cdRef.detectChanges();
+      });
 
     this.initTableOptions();
-
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation === 'update' && res.tab === 'repair-shop') {
-          this.shopConf(res.data);
-
+          this.getRepairShopDataFromStore(res.id);
+          this.cdRef.detectChanges();
+        }
+        if (res.animation === 'delete' && res.tab === 'repair-shop') {
+          this.getRepairShopDataFromStore(res.id);
           this.cdRef.detectChanges();
         }
       });
@@ -69,7 +91,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         next: (res: Confirmation) => {
           switch (res.type) {
             case 'delete': {
-              if (res.template === 'repair-shop') {
+              if (res.template === 'repair shop') {
                 this.deleteRepairShopById(res.id);
               }
               break;
@@ -88,11 +110,31 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         if (this.router.url.includes('shop-details') && id) {
           this.router.navigate([`/repair/${id}/shop-details`]);
           this.getRepairShopDataFromStore(id);
+          this.cdRef.detectChanges();
         }
       });
   }
 
+  public getRepairListAndRepairedCount() {
+    this.repairDQuery.repairList$
+      .pipe(take(1), takeUntil(this.destroy$))
+      .subscribe((item) => {
+        this.repairsDataLength = item.pagination.count;
+      });
+    this.repairDQuery.repairedVehicleList$
+      .pipe(take(1), takeUntil(this.destroy$))
+      .subscribe((item) => {
+        this.repairedDataLength = item.pagination.count;
+      });
+    this.getRepairShopDataFromStore();
+  }
   private getRepairShopDataFromStore(id?: number) {
+    this.currentIndex = this.repairDStore
+      .getValue()
+      .repairShopMinimal.pagination.data.findIndex(
+        (shop) => shop.id === (id ? id : +this.act_route.snapshot.params['id'])
+      );
+
     this.repairDQuery.repairShop$
       .pipe(take(1), takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((items: RepairShopResponse[]) => {
@@ -100,14 +142,12 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
           (item) =>
             item.id === (id ? id : +this.act_route.snapshot.params['id'])
         );
+
         if (findedRepairShop) {
           this.shopConf(findedRepairShop);
         }
       });
-
-    this.repairDQuery.repairList$.subscribe((item) => {
-      this.repairsDataLength = item.pagination.data.length;
-    });
+    this.cdRef.detectChanges();
   }
 
   public initTableOptions() {
@@ -166,38 +206,42 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
   }
 
   public deleteRepairShopById(id: number) {
-    // let last = this.repairList.at(-1);
-    // if (last.id === this.rsmlist.getValue().ids[this.currentIndex]) {
-    //   this.currentIndex = --this.currentIndex;
-    // } else {
-    //   this.currentIndex = ++this.currentIndex;
-    // }
-    // this.shopService
-    //   .deleteRepairShopByIdDetails(id)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe({
-    //     next: () => {
-    //       if (this.rsmlist.getValue().ids.length >= 1) {
-    //         this.router.navigate([
-    //           `/repair/${this.repairList[this.currentIndex].id}/shop-details`,
-    //         ]);
-    //       }
-    //       this.notificationService.success(
-    //         'Repair Shop successfully deleted',
-    //         'Success:'
-    //       );
-    //     },
-    //     error: () => {
-    //       this.router.navigate(['/repair']);
-    //     },
-    //   });
+    let last = this.repairList.at(-1);
+    if (
+      last.id ===
+      this.repairDStore.getValue().repairShopMinimal.pagination.data[
+        this.currentIndex
+      ].id
+    ) {
+      this.currentIndex = --this.currentIndex;
+    } else {
+      this.currentIndex = ++this.currentIndex;
+    }
+    let repairId =
+      this.repairDStore.getValue().repairShopMinimal.pagination.data[
+        this.currentIndex
+      ].id;
+
+    this.shopService
+      .deleteRepairShopByIdDetails(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          if (
+            this.repairDStore.getValue().repairShopMinimal.pagination.count >= 1
+          ) {
+            this.router.navigate([`/repair/${repairId}/shop-details`]);
+          }
+        },
+        error: (error) => {
+          this.router.navigate(['/repair']);
+        },
+      });
   }
 
   /**Function for header names and array of icons */
-  public shopConf(data: RepairShopResponse) {
+  public shopConf(data?: RepairShopResponse) {
     this.repairObject = data;
-
-    let total;
     this.DetailsDataService.setNewData(data);
 
     if (data?.openHoursToday === 'Closed') {
@@ -219,9 +263,9 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         template: 'repair',
         icon: true,
         repairOpen: data?.openHoursToday === 'Closed' ? false : true,
-        length: this.repairsDataLength ? this.repairsDataLength : 0,
+        length: this.repairsDataLength,
         customText: 'Date',
-        total: total,
+        total: data?.cost ? data.cost : 0,
         icons: [
           {
             id: Math.random() * 1000,
@@ -254,7 +298,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         id: 2,
         nameDefault: 'Repaired Vehicle',
         template: 'repaired-vehicle',
-        // length: data?.repairsByUnit?.length ? data.repairsByUnit.length : 0,
+        length: this.repairedDataLength,
         hide: true,
         customText: 'Repairs',
         data: data,

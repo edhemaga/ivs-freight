@@ -1,4 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
+import { OnChanges, SimpleChanges } from '@angular/core';
 import {
   Component,
   Input,

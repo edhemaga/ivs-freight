@@ -1,6 +1,7 @@
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
@@ -17,8 +18,6 @@ import { ConfirmationService } from '../../../modals/confirmation-modal/confirma
 import { RepairOrderModalComponent } from '../../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { RepairTService } from '../../state/repair.service';
-import { ShopItemStore } from '../../state/shop-details-state/shop-detail.store';
 import { RepairDQuery } from '../../state/details-state/repair-d.query';
 
 @Component({
@@ -32,6 +31,7 @@ import { RepairDQuery } from '../../state/details-state/repair-d.query';
 export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
   @Input() repairShopItem: RepairShopResponse | any = null;
   public repairListData: any;
+  public repairedVehicleListData: any;
   public data;
   public dummyData: any;
   public reviewsRepair: any = [];
@@ -45,23 +45,35 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
     private dropDownService: DropDownService,
     private modalService: ModalService,
     private confirmationService: ConfirmationService,
-    private repairDQuery: RepairDQuery
+    private repairDQuery: RepairDQuery,
+    private cdr: ChangeDetectorRef
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('promena', changes);
-
     if (
       changes.repairShopItem?.currentValue?.data !=
       changes.repairShopItem?.previousValue?.data
     ) {
-      this.repairShopLikes = this.repairShopItem.upRatingCount;
-      this.repairShopDislike = this.repairShopItem.downRatingCount;
-      this.getReviews(this.repairShopItem);
-
+      this.repairShopLikes = changes.repairShopItem?.currentValue?.data.upCount;
+      this.repairShopDislike =
+        changes.repairShopItem?.currentValue?.data.downCount;
+      this.getReviews(changes.repairShopItem?.currentValue?.data);
+      this.initTableOptions();
       this.repairDQuery.repairList$
         .pipe(takeUntil(this.destroy$))
-        .subscribe((item) => (this.repairListData = item.pagination.data));
-
+        .subscribe(
+          (item) => (
+            (this.repairListData = item.pagination.data),
+            this.cdr.detectChanges()
+          )
+        );
+      this.repairDQuery.repairedVehicleList$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (item) => (
+            (this.repairedVehicleListData = item.pagination.data),
+            this.cdr.detectChanges()
+          )
+        );
       this.repairListData?.map((item) => {
         this.showRepairItems[item.id] = false;
       });

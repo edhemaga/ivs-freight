@@ -10,6 +10,7 @@ export class RepairDQuery extends QueryEntity<RepairDState> {
 
   repairShopMinimal$ = this.select('repairShopMinimal');
 
+  repairedVehicleList$ = this.select('repairedVehicleList');
   constructor(protected repairDStore: RepairDStore) {
     super(repairDStore);
   }

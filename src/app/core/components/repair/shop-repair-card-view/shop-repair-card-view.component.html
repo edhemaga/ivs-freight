@@ -8,7 +8,7 @@
     [options]="shopsDropdowns"
     (selectValue)="onSelectedShop($event)"
     (changeEvent)="onChangeShop($event)"
-    [dateChecked]="'Today'"
+    [dateChecked]="repairShopCardViewData?.lastVisited?(repairShopCardViewData?.lastVisited | formatDateP:'difference-days'):false"
     [haveDropSVG]="true"
   >
     <div class="repair-information-wrapper">
