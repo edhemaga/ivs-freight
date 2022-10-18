@@ -84,9 +84,6 @@
           class="load-modal-bill-due"
           [ngClass]="{ 'no-due-rate': !loadModalBill.advance }"
         >
-          {{
-            loadModalBill.baseRate - loadModalBill.advance | taThousandSeparator
-          }}
           <p>Due</p>
           <p class="load-modal-base-due">
             $

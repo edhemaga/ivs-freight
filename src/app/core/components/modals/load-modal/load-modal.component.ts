@@ -1,9 +1,10 @@
 import {
   CreateCommentCommand,
+  RoutingService,
   SignInResponse,
   UpdateCommentCommand,
 } from 'appcoretruckassist';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -16,16 +17,10 @@ import { CommentsService } from '../../../services/comments/comments.service';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
 import { ITaInput } from '../../shared/ta-input/ta-input.config';
 
-import {
-  combineLatest,
-  Subject,
-  takeUntil,
-  delay,
-  map,
-  share,
-  concat,
-} from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { descriptionValidation } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-load-modal',
@@ -34,11 +29,9 @@ import { distinctUntilChanged } from 'rxjs/operators';
   providers: [ModalService, FormService],
 })
 export class LoadModalComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public loadForm: FormGroup;
-
   public isFormDirty: boolean;
 
   public selectedTab: number = 1;
@@ -84,6 +77,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   ];
 
   public loadNumber: string;
+
   public loadModalBill: {
     baseRate: number;
     adjusted: number;
@@ -112,6 +106,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public labelsYear: any[] = [];
   public labelsShippers: any[] = [];
 
+  // Load Details Labels
+  public labelsloadDetailsUnits: any[] = [];
+  public labelsLoadDetailsStackable: any[] = [];
+  public labelsLoadDetailsTarps: any[] = [];
+  public labelsLoadDriverAssis: any[] = [];
+  public labelsLoadStrapChain: any[] = [];
+
   public selectedTemplate: any = null;
   public selectedDispatcher: any = null;
   public selectedCompany: any = null;
@@ -126,6 +127,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public selectedTrailerLength: any = null;
   public selectedYear: any = null;
   public selectedShipper: any = null;
+
+  // Selected Load Details
+  public selectedLoadDetailsUnits: any[] = [];
+  public selectedLoadDetailsStackable: any[] = [];
+  public selectedLoadDetailsTarps: any[] = [];
+  public selectedLoadDetailsDriverAssis: any[] = [];
+  public selectedLoadDetailsStrapChain: any[] = [];
 
   public loadBrokerContactsInputConfig: ITaInput = {
     name: 'Input Dropdown',
@@ -201,9 +209,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public companyUser: SignInResponse = null;
 
   public isDateRange: boolean = false;
-
   public isHazardousPicked: boolean = false;
   public isHazardousVisible: boolean = false;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -212,7 +221,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     private formService: FormService,
     private loadService: LoadTService,
     private notificationService: NotificationService,
-    private commentsService: CommentsService
+    private commentsService: CommentsService,
+    private routingService: RoutingService
   ) {}
 
   ngOnInit() {
@@ -252,11 +262,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       lifgate: [null],
       stopMode: ['Pickup'],
       shipper: [null, Validators.required],
-      date: [null, Validators.required],
-      dateRange: [null],
+      dateFrom: [null, Validators.required],
+      dateTo: [null],
       timeMode: ['Open'],
-      fromTime: [null, Validators.required],
-      toTime: [null, Validators.required],
+      timeFrom: [null, Validators.required],
+      timeTo: [null, Validators.required],
       billingPaymentBaseRate: [null, Validators.required],
       billingPaymentAdjustedRate: [null],
       bilingPaymentAdvanceRate: [null],
@@ -265,6 +275,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       bilingPaymentFuelSurcharge: [null],
       bilingPaymentEscort: [null],
       bilingPaymentDetention: [null],
+      loadStops: this.formBuilder.array([]),
       note: [null],
     });
 
@@ -291,11 +302,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.selectedStopTime = event.id;
         if (this.selectedStopTime === 6) {
           this.inputService.changeValidators(
-            this.loadForm.get('toTime'),
+            this.loadForm.get('timeTo'),
             false
           );
         } else {
-          this.inputService.changeValidators(this.loadForm.get('toTime'));
+          this.inputService.changeValidators(this.loadForm.get('timeTo'));
         }
         break;
       }
@@ -304,7 +315,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
   public onModalAction(data: { action: string; bool: boolean }): void {}
 
-  public onSelectDropdown(event: any, action: string) {
+  public onSelectDropdown(event: any, action: string, index?: number) {
     switch (action) {
       case 'template': {
         this.selectedTemplate = event;
@@ -322,7 +333,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         } else {
           this.labelsDispatches = this.originLabelsDispatches;
         }
-
         break;
       }
       case 'company': {
@@ -355,7 +365,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         } else {
           this.labelsBrokerContacts = this.originBrokerContacts;
         }
-
         break;
       }
       case 'broker-contact': {
@@ -391,7 +400,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         } else {
           this.loadBrokerContactsInputConfig.multipleInputValues = null;
         }
-
         break;
       }
       case 'dispatches': {
@@ -458,30 +466,30 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       case 'shipper': {
         if (event) {
           this.selectedShipper = event;
-
-          this.loadShipperInputConfig = {
-            ...this.loadShipperInputConfig,
-            multipleInputValues: {
-              options: [
-                {
-                  value: this.selectedShipper.name,
-                  logoName: null,
-                },
-                {
-                  value: this.selectedShipper.address,
-                  logoName: null,
-                },
-              ],
-              customClass: 'load-shipper',
-            },
-            blackInput: true,
-          };
-
-          console.log('selected shipper - ', this.selectedShipper);
-          console.log('shipper conf - ', this.loadShipperInputConfig);
+          this.createNewStop();
         } else {
           this.loadShipperInputConfig.multipleInputValues = null;
         }
+        break;
+      }
+      case 'units': {
+        this.selectedLoadDetailsUnits[index] = event;
+        break;
+      }
+      case 'stackable': {
+        this.selectedLoadDetailsStackable[index] = event;
+        break;
+      }
+      case 'tarp': {
+        this.selectedLoadDetailsTarps[index] = event;
+        break;
+      }
+      case 'driverAssis': {
+        this.selectedLoadDetailsDriverAssis[index] = event;
+        break;
+      }
+      case 'strapChain': {
+        this.selectedLoadDetailsStrapChain[index] = event;
         break;
       }
       default: {
@@ -499,7 +507,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   }
 
   /* Comments */
-
   public changeCommentsEvent(comments: ReviewCommentModal) {
     switch (comments.action) {
       case 'delete': {
@@ -631,6 +638,268 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  public identity(index: number, item: any): number {
+    return item.id;
+  }
+
+  public onSelectAdditionalOption(option: any) {
+    option.active = !option.active;
+  }
+
+  public trackBillingPayment() {
+    this.loadForm
+      .get('billingPaymentBaseRate')
+      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe((value) => {
+        this.loadModalBill.baseRate = parseFloat(value);
+      });
+
+    this.loadForm
+      .get('billingPaymentAdjustedRate')
+      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe((value) => {
+        if (value > this.loadForm.get('billingPaymentBaseRate').value) {
+          this.loadModalBill.adjusted = 0;
+          this.loadForm.get('billingPaymentAdjustedRate').patchValue(0);
+          return;
+        }
+        this.loadModalBill.adjusted = parseFloat(value);
+        this.loadForm.get('billingPaymentAdjustedRate').setErrors(null);
+      });
+
+    this.loadForm
+      .get('bilingPaymentAdvanceRate')
+      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe((value) => {
+        if (value > this.loadForm.get('billingPaymentBaseRate').value) {
+          this.loadModalBill.advance = 0;
+          this.loadForm.get('bilingPaymentAdvanceRate').patchValue(0);
+          return;
+        }
+        this.loadModalBill.advance = parseFloat(value);
+        this.loadForm.get('bilingPaymentAdvanceRate').setErrors(null);
+      });
+
+    this.loadForm
+      .get('bilingPaymentLayover')
+      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe((value) => {
+        this.loadModalBill.layover = parseFloat(value);
+      });
+
+    this.loadForm
+      .get('bilingPaymentLumper')
+      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe((value) => {
+        this.loadModalBill.lumper = parseFloat(value);
+      });
+
+    this.loadForm
+      .get('bilingPaymentFuelSurcharge')
+      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe((value) => {
+        this.loadModalBill.fuelSurcharge = parseFloat(value);
+      });
+
+    this.loadForm
+      .get('bilingPaymentEscort')
+      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe((value) => {
+        this.loadModalBill.escort = parseFloat(value);
+      });
+
+    this.loadForm
+      .get('bilingPaymentDetention')
+      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe((value) => {
+        this.loadModalBill.detention = parseFloat(value);
+      });
+  }
+
+  public trackStopInformation(loadStopId: number) {
+    this.loadForm
+      .get('dateFrom')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        const stop = this.loadStops().controls.find(
+          (item) => item.get('id').value === loadStopId
+        );
+
+        stop.get('dateFrom').patchValue(value);
+      });
+
+    this.loadForm
+      .get('dateTo')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        const stop = this.loadStops().controls.find(
+          (item) => item.get('id').value === loadStopId
+        );
+
+        stop.get('dateTo').patchValue(value);
+      });
+
+    this.loadForm
+      .get('timeFrom')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        const stop = this.loadStops().controls.find(
+          (item) => item.get('id').value === loadStopId
+        );
+
+        stop.get('timeFrom').patchValue(value);
+      });
+
+    this.loadForm
+      .get('timeTo')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        const stop = this.loadStops().controls.find(
+          (item) => item.get('id').value === loadStopId
+        );
+
+        stop.get('timeTo').patchValue(value);
+      });
+  }
+
+  // Load Stop
+  public createNewStop() {
+    if (this.selectedShipper) {
+      this.loadShipperInputConfig = {
+        ...this.loadShipperInputConfig,
+        multipleInputValues: {
+          options: [
+            {
+              value: this.selectedShipper.name,
+              logoName: null,
+            },
+            {
+              value: this.selectedShipper.address,
+              logoName: null,
+            },
+          ],
+          customClass: 'load-shipper',
+        },
+        blackInput: true,
+      };
+
+      // IF Load Stop Exist , just return
+      if (
+        this.loadStops().controls.find(
+          (item) =>
+            item.get('shipper').value === this.selectedShipper.name &&
+            item.get('location').value === this.selectedShipper.address
+        )
+      ) {
+        return;
+      }
+
+      // this.routingService
+      //   .apiRoutingGet(
+      //     JSON.stringify({
+      //       longitude: this.selectedShipper.longitude,
+      //       latitude: this.selectedShipper.latitude,
+      //     })
+      //   )
+      //   .pipe(takeUntil(this.destroy$))
+      //   .subscribe({
+      //     next: (res: RoutingResponse) => {
+      //       console.log(res);
+      //     },
+      //     error: (err: any) => {
+      //       console.log(err);
+      //     },
+      //   });
+
+      this.addLoadStop();
+    }
+  }
+
+  public addLoadStop() {
+    this.loadStops().push(this.newLoadStop());
+  }
+
+  public newLoadStop(): FormGroup {
+    this.trackStopInformation(this.loadStops().length + 1);
+    return this.formBuilder.group({
+      id: [this.loadStops().length + 1],
+      shipper: [this.selectedShipper.name],
+      location: [this.selectedShipper.address],
+      dateFrom: [null],
+      dateTo: [null],
+      timeFrom: [null],
+      timeTo: [null],
+      legMi: [null],
+      total: [null],
+      address: ['3905 Elliot Ave, Springdale, GA 72762, USA'],
+      contact: ['A. Djordjevic'],
+      phone: ['(987) 654-3210'],
+      extensionPhone: ['444'],
+      loadStopDetails: this.formBuilder.array([]),
+      hovered: [false],
+      stopMode: [this.selectedStopTab === 3 ? 'pickup' : 'delivery'],
+      openClose: [true],
+    });
+  }
+
+  public loadStops(): FormArray {
+    return this.loadForm.get('loadStops') as FormArray;
+  }
+
+  public removeLoadStop(index: number) {
+    this.loadStops().removeAt(index);
+  }
+
+  // Load Stop Details
+  public addLoadStopDetails(id: number) {
+    this.loadStopsDetails(id).push(this.newLoadStopDetails());
+  }
+
+  public loadStopsDetails(loadStopIndex: number): FormArray {
+    return this.loadStops()
+      .at(loadStopIndex)
+      .get('loadStopDetails') as FormArray;
+  }
+
+  public newLoadStopDetails(): FormGroup {
+    return this.formBuilder.group({
+      description: [null, descriptionValidation],
+      qty: [null],
+      units: [null],
+      weight: [null],
+      length: [null],
+      height: [null],
+      tmp: [null],
+      bol: [null],
+      appointment: [null],
+      pickup: [null],
+      po: [null],
+      seal: [null],
+      code: [null],
+      stackable: [null],
+      tarp: [null],
+      driverAssis: [null],
+      strapChain: [null],
+    });
+  }
+
+  public removeLoadStopDetails(
+    loadStopIndex: number,
+    loadStopDetailsIndex: number
+  ) {
+    this.loadStopsDetails(loadStopIndex).removeAt(loadStopDetailsIndex);
+  }
+
+  public drop(event: CdkDragDrop<any[]>) {
+    moveItemInArray(
+      this.loadStops().controls,
+      event.previousIndex,
+      event.currentIndex
+    );
+
+    moveItemInArray([], event.previousIndex, event.currentIndex);
+  }
+
   private getLoadDropdowns(id?: number) {
     this.loadService
       .getLoadDropdowns(id)
@@ -727,6 +996,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 },
               };
             });
+
           this.labelsDispatches = this.labelsDispatches.filter(
             (item) => item.dispatcherId === this.selectedDispatcher.id
           );
@@ -788,85 +1058,27 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               address: item.address.address,
             };
           });
+
+          // Units
+          this.labelsloadDetailsUnits = res.loadItemUnits;
+
+          // Stackable
+          this.labelsLoadDetailsStackable = [];
+
+          // Tarps
+          this.labelsLoadDetailsTarps = res.tarps;
+
+          // Driver Assis
+          this.labelsLoadDriverAssis = [];
+
+          // Strap/Chain
+          this.labelsLoadStrapChain = res.secures;
         },
         error: (error: any) => {
           this.notificationService.error(error, 'Error');
         },
       });
   }
-
-  public identity(index: number, item: any): number {
-    return item.id;
-  }
-
-  public onSelectAdditionalOption(option: any) {
-    option.active = !option.active;
-  }
-
-  public trackBillingPayment() {
-    this.loadForm
-      .get('billingPaymentBaseRate')
-      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-      .subscribe((value) => {
-        this.loadModalBill.baseRate = parseFloat(value);
-      });
-    this.loadForm
-      .get('billingPaymentAdjustedRate')
-      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-      .subscribe((value) => {
-        if (value > this.loadForm.get('billingPaymentBaseRate').value) {
-          this.loadModalBill.adjusted = 0;
-          this.loadForm.get('billingPaymentAdjustedRate').patchValue(0);
-          return;
-        }
-        this.loadModalBill.adjusted = parseFloat(value);
-        this.loadForm.get('billingPaymentAdjustedRate').setErrors(null);
-      });
-    this.loadForm
-      .get('bilingPaymentAdvanceRate')
-      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-      .subscribe((value) => {
-        if (value > this.loadForm.get('billingPaymentBaseRate').value) {
-          this.loadModalBill.advance = 0;
-          this.loadForm.get('bilingPaymentAdvanceRate').patchValue(0);
-          return;
-        }
-        this.loadModalBill.advance = parseFloat(value);
-        this.loadForm.get('bilingPaymentAdvanceRate').setErrors(null);
-      });
-    this.loadForm
-      .get('bilingPaymentLayover')
-      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-      .subscribe((value) => {
-        this.loadModalBill.layover = parseFloat(value);
-      });
-    this.loadForm
-      .get('bilingPaymentLumper')
-      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-      .subscribe((value) => {
-        this.loadModalBill.lumper = parseFloat(value);
-      });
-    this.loadForm
-      .get('bilingPaymentFuelSurcharge')
-      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-      .subscribe((value) => {
-        this.loadModalBill.fuelSurcharge = parseFloat(value);
-      });
-    this.loadForm
-      .get('bilingPaymentEscort')
-      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-      .subscribe((value) => {
-        this.loadModalBill.escort = parseFloat(value);
-      });
-    this.loadForm
-      .get('bilingPaymentDetention')
-      .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-      .subscribe((value) => {
-        this.loadModalBill.detention = parseFloat(value);
-      });
-  }
-
-  public createNewStop() {}
 
   ngOnDestroy(): void {
     this.destroy$.next();
