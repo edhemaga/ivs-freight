@@ -585,7 +585,9 @@
                 minLength: 12,
                 maxLength: 256,
                 autoFocus: true,
-                placeholderInsteadOfLabel: true
+                placeholderInsteadOfLabel: true,
+                hideErrorMessage: true,
+                blackInput: true
               }"
               [placeholderType]="'shortAddress'"
               (incorrectEvent)="incorrectInput($event, 0, 18)"
@@ -1101,7 +1103,9 @@
                   minLength: 12,
                   maxLength: 256,
                   autoFocus: true,
-                  placeholderInsteadOfLabel: true
+                  placeholderInsteadOfLabel: true,
+                  hideErrorMessage: true,
+                  blackInput: true
                 }"
                 (incorrectEvent)="incorrectInput($event, 0, 18)"
                 [activeAddress]="selectedAddress"
