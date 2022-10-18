@@ -166,6 +166,7 @@ export * from './createTrafficViolationCommand';
 export * from './createTrafficViolationReviewCommand';
 export * from './createTrailerCommand';
 export * from './createTruckCommand';
+export * from './createWithUploadsResponse';
 export * from './createWorkExperienceCommand';
 export * from './createWorkExperienceReviewCommand';
 export * from './creditType';

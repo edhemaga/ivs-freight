@@ -222,6 +222,7 @@ model/createTrafficViolationCommand.ts
 model/createTrafficViolationReviewCommand.ts
 model/createTrailerCommand.ts
 model/createTruckCommand.ts
+model/createWithUploadsResponse.ts
 model/createWorkExperienceCommand.ts
 model/createWorkExperienceReviewCommand.ts
 model/creditType.ts
