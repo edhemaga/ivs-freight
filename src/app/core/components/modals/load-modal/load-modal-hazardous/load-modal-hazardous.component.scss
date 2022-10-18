@@ -1,7 +1,7 @@
 $container-background-color: #f7f7f7;
 $container-color: #6c6c6c;
 $container-x-close: #919191;
-$container-color-20: rgb(108, 108, 108, 0.2);
+$container-color-20: rgba(108, 108, 108, 0.2);
 $white: #ffffff;
 $yellow: #ffcb86;
 
@@ -35,7 +35,7 @@ $yellow: #ffcb86;
   }
 
   &::-moz-selection {
-    background-color: rgb(229, 229, 229, 0.2);
+    background-color: $container-color-20;
     color: $container-color;
   }
 
