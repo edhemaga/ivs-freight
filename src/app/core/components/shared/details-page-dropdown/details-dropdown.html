@@ -19,7 +19,16 @@
 </div>
 
 <ng-template #dropdownPopover let-data="data">
-  <div class="details-dropdown">
+  <div class="details-dropdown-body">
+    <div class="action-holder" *ngFor="let action of options;let i=index; trackBy:identity">
+      <div class="action-select-holder">  
+        <div class="actionTitle">{{action.title}}</div>
+        <div class="actionIcon" [class.redIcon]="action.title == 'Delete' " [class.blueIcon]="action.title == 'Print' " [class.greenIcon]="action.title == 'Edit'" >
+          <svg-icon src="{{action.svg}}" ></svg-icon>
+        </div>
+      </div>
+    </div>
+    <!--
     <div
       (click)="onAction(action,$event)"
       *ngFor="let action of options;let i=index; trackBy:identity"
@@ -35,5 +44,7 @@
         <div  class="dropdown-content-text-details">{{ action.title }}</div>
       </div>
     </div>
+    -->
+
   </div>
 </ng-template>

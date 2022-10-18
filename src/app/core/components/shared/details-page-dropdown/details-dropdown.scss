@@ -120,3 +120,162 @@
     }
   }
 }
+
+.details-dropdown-body {
+ 
+  padding: 4px;
+  
+  background-color: #2F2F2F;
+  border-radius: 3px;
+  
+  .action-holder{
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    height: 26px;
+    margin-bottom: 4px;
+    border-radius: 2px;
+
+    .actionTitle{
+      flex: 1;
+      display: flex;
+      align-items: center;
+      margin-right: 22px;
+      margin-left: 5px;
+      line-height: 18px;
+      font-size: 14px;
+      color: #FFFFFF;
+    }
+
+    .action-select-holder{
+      position: relative;
+
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .actionIcon{
+      display: flex;
+      align-items: center;
+      height: 18px;
+      width: 18px;
+      margin-right: 5px;
+
+      svg-icon {
+        display: flex;
+        align-items: center;
+        svg {
+          height: 17.1px;
+          width: 17.1px;
+
+          path{
+            fill:#AAAAAA;
+          }
+        }
+      }
+
+      &.redIcon{
+        svg-icon {
+          svg {
+            path{
+              fill: #E57373;
+            }
+          }
+        }
+      }
+
+      &.blueIcon{
+        svg-icon {
+          svg {
+            path{
+              fill: #6F9EE0;
+            }
+          }
+        }
+      }
+
+      &.greenIcon{
+        svg-icon {
+          svg {
+            path{
+              fill: #4DB6A2;
+            }
+          }
+        }
+      }
+      
+      
+    }
+
+    &.rightIcon{
+      
+      .actionTitle{
+        margin-right: 22px;
+        margin-left: 30px;
+      }
+
+      .actionIcon{
+        position: absolute;
+        left: 0px;
+        margin: 0px 5px;
+      }
+
+    }
+
+    &:hover{
+      cursor: pointer;
+      background-color: #1D1D1D;
+
+      .actionTitle{
+        color: #CCCCCC;
+      }
+
+      .actionIcon{
+        svg-icon {
+          svg {
+            path{
+              fill: #DADADA;
+            }
+          }
+        }
+      }
+
+      .redIcon{
+        svg-icon {
+          svg {
+            path{
+              fill: #EF9A9A;
+            }
+          }
+        }
+      }
+
+      .blueIcon{
+        svg-icon {
+          svg {
+            path{
+              fill: #98B9EA;
+            }
+          }
+        }
+      }
+
+      .greenIcon{
+        svg-icon {
+          svg {
+            path{
+              fill: #80CBBA;
+            }
+          }
+        }
+      }
+      
+    }
+
+  }
+
+}
