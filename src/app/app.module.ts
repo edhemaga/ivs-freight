@@ -13,7 +13,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './core/components/shared/shared.module';
-import { ToastNoAnimationModule } from 'ngx-toastr';
+import { ToastNoAnimationModule, ToastrModule } from 'ngx-toastr';
 import { NgIdleModule } from '@ng-idle/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 // ---- NAVIGATION
@@ -56,7 +56,7 @@ import { configFactory } from './app.config';
     AppRoutingModule,
     HttpClientModule,
     SharedModule,
-    ToastNoAnimationModule.forRoot({
+    ToastrModule.forRoot({
       preventDuplicates: true,
       enableHtml: true,
       timeOut: 5000,
