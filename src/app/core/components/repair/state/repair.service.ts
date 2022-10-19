@@ -534,6 +534,34 @@ export class RepairTService implements OnDestroy {
     );
   }
 
+  public getRepairShopMapList(
+    northEastLatitude?: number,
+    northEastLongitude?: number,
+    southWestLatitude?: number,
+    southWestLongitude?: number,
+    pageIndex?: number,
+    pageSize?: number,
+    companyId?: number,
+    sort?: string,
+    search?: string,
+    search1?: string,
+    search2?: string
+  ) {
+    return this.shopServices.apiRepairshopListmapGet(
+      northEastLatitude,
+      northEastLongitude,
+      southWestLatitude,
+      southWestLongitude,
+      pageIndex,
+      pageSize,
+      companyId,
+      sort,
+      search,
+      search1,
+      search2
+    );
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

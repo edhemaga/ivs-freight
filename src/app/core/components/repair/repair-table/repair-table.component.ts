@@ -5,6 +5,7 @@ import {
   ViewEncapsulation,
   ViewChild,
   AfterViewInit,
+  ChangeDetectorRef
 } from '@angular/core';
 import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -96,6 +97,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     searchThree: undefined,
   };
 
+  mapListData = [];
+
   constructor(
     private modalService: ModalService,
     private tableService: TruckassistTableService,
@@ -106,7 +109,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     private repairService: RepairTService,
     public datePipe: DatePipe,
     private thousandSeparator: TaThousandSeparatorPipe,
-    private reviewRatingService: ReviewsRatingService
+    private reviewRatingService: ReviewsRatingService,
+    private ref: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -447,6 +451,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (td.data.length) {
       this.viewData = td.data;
+
+      this.mapListData = JSON.parse(JSON.stringify(this.viewData));
 
       this.viewData = this.viewData.map((data: any, index: number) => {
         if (this.selectedTab === 'active') {
@@ -886,6 +892,15 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
           }, 1000);
         });
     }
+  }
+
+  updateMapList(mapListResponse) {
+    this.mapListData = mapListResponse.pagination.data;
+    this.tableData[2].length = mapListResponse.pagination.count;
+
+    this.ref.detectChanges();
+
+    console.log('mapListData', this.mapListData);
   }
 
   ngOnDestroy(): void {
