@@ -73,7 +73,13 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     } else if (key === 27) {
       this.insertBeforeActive = -1;
 
-      if (this.focusedRouteIndex != null) {
+      if ( this.inputAddress?.addressExpanded ) {
+        this.inputAddress.inputDropdown?.inputRef?.input.nativeElement.blur();
+        this.inputAddress.addressExpanded = false;
+        setTimeout(() => {
+          this.inputAddress.inputDropdown.inputRef.focusInput = false;
+        }, 500);
+      } else if (this.focusedRouteIndex != null) {
         /* Remove focus from Add new stop input */
         this.focusOnInput(this.focusedRouteIndex, true);
 

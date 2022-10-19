@@ -476,7 +476,12 @@ export class MapsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res) => {
           this.viewData[index] = res;
-          this.viewData[index].isSelected = true;
+
+          setTimeout(() => {
+            this.viewData[index].isSelected = true;
+            this.ref.detectChanges();
+          }, 200);
+          
           console.log('getRepairShopById', this.viewData[index]);
         },
         error: () => {

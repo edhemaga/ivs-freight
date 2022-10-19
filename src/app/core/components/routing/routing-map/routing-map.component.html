@@ -500,6 +500,7 @@
                       }
                     }"
                     [isRouting]="true"
+                    [hideEmptyLoaded]="!route.stops.length"
                     (changeFlag)="
                       $event === true
                         ? (addressFlag = 'Loaded')
