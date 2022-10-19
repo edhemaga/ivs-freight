@@ -686,9 +686,10 @@
   <div class="cluster-list-content">
     <div
       class="cluster-list-item"
-      *ngFor="let name of item.names"
+      (click)="openClusterItemInfo(item2)"
+      *ngFor="let item2 of item.names"
     >
-      {{ name }}
+      {{ item2.name }}
     </div>
   </div>
 </div>

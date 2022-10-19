@@ -120,7 +120,7 @@
         transition: 0.2s ease-in-out;
     }
 
-    &.cluster-marker {
+    &.cluster-marker, &.hide-cluster-marker {
         top: -46px;
         transform: translateX(-50%);
     }

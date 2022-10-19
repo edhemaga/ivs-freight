@@ -216,6 +216,7 @@
           <ng-template>
             <div
               class="marker-container marker-icon cluster-marker"
+              [ngClass]="{ 'cluster-marker': !cluster.detailedInfo, 'hide-cluster-marker': cluster.detailedInfo }"
               (click)="clickedCluster(cluster)"
               (mousewheel)="markerZoom($event, cluster)"
               (mouseenter)="clusterHover(cluster, true)"
@@ -337,10 +338,12 @@
               class="marker-dropdown cluster-dropdown"
               [ngClass]="{
                 'show-marker-dropdown marker-dropdown-animation':
-                  cluster?.isSelected
+                  cluster?.isSelected,
+                'cluster-dropdown': !cluster.detailedInfo
               }"
             >
               <app-map-marker-dropdown
+                *ngIf="!cluster?.detailedInfo"
                 [title]="
                   mapType == 'shipper'
                     ? 'Shipper'
@@ -356,6 +359,34 @@
                 "
                 [type]="'cluster'"
                 [item]="cluster"
+                (showClusterItemInfo)="showClusterItemInfo($event)"
+              ></app-map-marker-dropdown>
+              <app-map-marker-dropdown
+                *ngIf="cluster?.detailedInfo"
+                [title]="
+                  mapType == 'shipper'
+                    ? cluster?.detailedInfo.businessName
+                    : mapType == 'accident' || mapType == 'inspection'
+                    ? cluster?.detailedInfo.report
+                    : mapType == 'repairShop'
+                    ? cluster?.detailedInfo.name
+                    : mapType == 'fuelStop'
+                    ? cluster?.detailedInfo.companyName
+                    : ''
+                "
+                [item]="cluster.detailedInfo"
+                [type]="mapType"
+                [rating]="
+                  mapType == 'shipper'
+                    ? cluster?.detailedInfo.raiting
+                    : mapType == 'repairShop'
+                    ? cluster?.detailedInfo.shopRaiting
+                    : {}
+                "
+                [sortCategory]="activeSortType"
+                [locationFilterOn]="locationFilterOn"
+                [dropdownActions]="dropdownActions"
+                (bodyActions)="dropDownActionCall($event)"
               ></app-map-marker-dropdown>
             </div>
           </ng-template>

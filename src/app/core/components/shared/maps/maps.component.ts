@@ -14,6 +14,7 @@ import * as AppConst from 'src/app/const';
 import { MapsService } from '../../../services/shared/maps.service';
 import { UpdatedData } from '../model/shared/enums';
 import { RepairTService } from '../../repair/state/repair.service';
+import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
@@ -116,6 +117,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     private mapsAPILoader: MapsAPILoader,
     private mapsService: MapsService,
     private repairShopService: RepairTService,
+    private shipperService: ShipperTService,
     private notificationService: NotificationService
   ) {}
 
@@ -127,7 +129,7 @@ export class MapsComponent implements OnInit, OnDestroy {
   public getMapInstance(map) {
     this.agmMap = map;
 
-    if (this.mapType == 'repairShop') {
+    if (this.mapType == 'repairShop' || this.mapType == 'shipper') {
       map.addListener('idle', (ev) => {
         // update the coordinates here
         var bounds = map.getBounds();
@@ -173,6 +175,8 @@ export class MapsComponent implements OnInit, OnDestroy {
           if (!data.createdAt) {
             if (this.mapType == 'repairShop') {
               this.getRepairShop(data.id, index);
+            } else if ( this.mapType == 'shipper' ) {
+              this.getShipper(data.id, index);
             }
           } else {
             data.isSelected = true;
@@ -226,6 +230,11 @@ export class MapsComponent implements OnInit, OnDestroy {
     this.clusterMarkers.map((data: any, index) => {
       if (data.isSelected) {
         data.isSelected = false;
+        if ( data.detailedInfo ) {
+          setTimeout(() => {
+            data.detailedInfo = false;
+          }, 200);
+        }
       }
     });
 
@@ -431,6 +440,64 @@ export class MapsComponent implements OnInit, OnDestroy {
           console.log('mapListResponse', mapListResponse);
           this.updateMapList.emit(mapListResponse);
         });
+    } else if ( this.mapType == 'shipper' ) {
+      this.shipperService
+        .getShipperClusters(clustersObj)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((clustersResponse: any) => {
+          console.log('callClusters clustersResponse', clustersResponse);
+
+          var clustersToShow = [];
+          var markersToShow = [];
+          var newMarkersAdded = false;
+
+          clustersResponse.map((clusterItem) => {
+            if (clusterItem.count > 1) {
+              let clusterIndex = this.clusterMarkers.findIndex(
+                (item) =>
+                  item.latitude === clusterItem.latitude &&
+                  item.longitude === clusterItem.longitude
+              );
+
+              if (clusterIndex == -1) {
+                this.clusterMarkers.push(clusterItem);
+              }
+
+              clustersToShow.push(clusterItem.latitude);
+            } else {
+              let markerIndex = this.viewData.findIndex(
+                (item) => item.id === clusterItem.id
+              );
+
+              if (markerIndex == -1) {
+                this.viewData.push(clusterItem);
+                newMarkersAdded = true;
+              }
+
+              markersToShow.push(clusterItem.id);
+            }
+          });
+
+          this.viewData.map((item) => {
+            if (markersToShow.includes(item.id)) {
+              item.showMarker = true;
+            } else {
+              item.showMarker = false;
+            }
+          });
+
+          this.clusterMarkers.map((cluster) => {
+            if (clustersToShow.includes(cluster.latitude)) {
+              cluster.showMarker = true;
+            } else {
+              cluster.showMarker = false;
+            }
+          });
+
+          if (newMarkersAdded) this.markersDropAnimation();
+
+          this.ref.detectChanges();
+        });
     }
   }
 
@@ -446,10 +513,13 @@ export class MapsComponent implements OnInit, OnDestroy {
         data.latitude == cluster.latitude &&
         data.longitude == cluster.longitude
       ) {
-        data.isSelected = !data.isSelected;
+        if ( !data.detailedInfo ) {
+          data.isSelected = !data.isSelected;
+        }
+        
         //console.log('select cluster', data.isSelected);
 
-        if (data.isSelected) {
+        if (data.isSelected && !data.detailedInfo) {
           this.markerSelected = true;
 
           if (
@@ -462,6 +532,8 @@ export class MapsComponent implements OnInit, OnDestroy {
             this.mapLatitude = data.latitude;
             this.mapLongitude = data.longitude;
           }
+        } else if ( data.detailedInfo ) {
+          data.detailedInfo = false;
         } else {
           this.markerSelected = false;
         }
@@ -517,8 +589,72 @@ export class MapsComponent implements OnInit, OnDestroy {
       });
   }
 
+  getShipper(id, index) {
+    this.shipperService
+      .getShipperById(id, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.viewData[index] = res;
+
+          setTimeout(() => {
+            this.viewData[index].isSelected = true;
+            this.ref.detectChanges();
+          }, 200);
+
+          console.log('getShipper', this.viewData[index]);
+        },
+        error: () => {
+          this.notificationService.error(
+            `Cant' get shipper by ${id}`,
+            'Error'
+          );
+        },
+      });
+  }
+
   updateRef() {
     this.ref.detectChanges();
+  }
+
+  showClusterItemInfo(data) {
+    var cluster = data[0];
+    var item = data[1];
+    console.log('showClusterItemInfo', data);
+
+    if ( this.mapType == 'repairShop' ) {
+      this.repairShopService
+        .getRepairShopById(item.id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (res) => {
+            cluster.detailedInfo = res;
+            this.ref.detectChanges();
+          },
+          error: () => {
+            this.notificationService.error(
+              `Cant' get repair shop by ${item.id}`,
+              'Error'
+            );
+          },
+        });
+    } else if ( this.mapType == 'shipper' ) {
+      this.shipperService
+        .getShipperById(item.id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (res) => {
+            cluster.detailedInfo = res;
+            this.ref.detectChanges();
+          },
+          error: () => {
+            this.notificationService.error(
+              `Cant' get shipper by ${item.id}`,
+              'Error'
+            );
+          },
+        });
+    }
   }
 
   ngOnDestroy(): void {
