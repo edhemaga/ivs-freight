@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { Secure } from './secure';
+import { YesNoEnum } from './yesNoEnum';
 import { LoadItemUnit } from './loadItemUnit';
 
 
@@ -30,8 +31,8 @@ export interface LoadStopItemCommand {
     units?: LoadItemUnit;
     secure?: Secure;
     tarp?: number | null;
-    stackable?: boolean | null;
-    driverAssist?: boolean | null;
+    stackable?: YesNoEnum;
+    driverAssist?: YesNoEnum;
     hazardousMaterialId?: number | null;
 }
 

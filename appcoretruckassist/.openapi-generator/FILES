@@ -196,8 +196,6 @@ model/createInsurancePolicyCommand.ts
 model/createLoadCommand.ts
 model/createLoadTemplateCommand.ts
 model/createMapCommand.ts
-model/createMedicalCommand.ts
-model/createMvrCommand.ts
 model/createOffDutyLocationCommand.ts
 model/createOwnerCommand.ts
 model/createParkingCommand.ts
@@ -223,6 +221,7 @@ model/createTrafficViolationCommand.ts
 model/createTrafficViolationReviewCommand.ts
 model/createTrailerCommand.ts
 model/createTruckCommand.ts
+model/createWithUploadsResponse.ts
 model/createWorkExperienceCommand.ts
 model/createWorkExperienceReviewCommand.ts
 model/creditType.ts
@@ -265,8 +264,6 @@ model/editFuelCardCommand.ts
 model/editFuelItemCommand.ts
 model/editFuelStopCommand.ts
 model/editFuelTransactionCommand.ts
-model/editMedicalCommand.ts
-model/editMvrCommand.ts
 model/editTestCommand.ts
 model/educationFeedbackResponse.ts
 model/educationReviewResponse.ts
@@ -300,6 +297,7 @@ model/fuelTransactionResponse.ts
 model/fuelTransactionResponsePagination.ts
 model/fuelledVehicleHistoryListResponse.ts
 model/fuelledVehicleResponse.ts
+model/fuelledVehicleResponsePagination.ts
 model/getApplicantListQuery.ts
 model/getApplicantListResponse.ts
 model/getAvailableCreditEFSQuery.ts
@@ -661,4 +659,5 @@ model/workExperienceItemCommand.ts
 model/workExperienceItemResponse.ts
 model/workExperienceItemReviewCommand.ts
 model/workExperienceItemReviewResponse.ts
+model/yesNoEnum.ts
 variables.ts
