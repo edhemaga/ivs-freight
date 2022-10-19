@@ -65,7 +65,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private formService: FormService,
-    private DetailsDataService: DetailsDataService,
+    private DetailsDataService: DetailsDataService
   ) {}
 
   ngOnInit(): void {
@@ -233,10 +233,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             restrictions: null,
             endorsements: null,
             note: res.note,
-            file: res.file ? res.file : null,
+            file: res.files ? res.files : null,
           });
 
-          this.documents = res.file ? ([res.file] as any) : [];
+          this.documents = res.files ? ([res.files] as any) : [];
 
           this.selectedEndorsment = res.cdlEndorsements;
           this.selectedRestrictions = res.cdlRestrictions;

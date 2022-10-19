@@ -45,6 +45,8 @@ export interface LoadModalResponse {
     timeTypes?: Array<EnumValue> | null;
     secures?: Array<EnumValue> | null;
     tarps?: Array<EnumValue> | null;
+    stackable?: Array<EnumValue> | null;
+    driverAssist?: Array<EnumValue> | null;
     hazardousMaterials?: Array<HazardousMaterialResponse> | null;
     loadPossibleNextStatuses?: Array<EnumValue> | null;
 }
