@@ -846,27 +846,27 @@
         }
 
         &:nth-child(2) {
-          margin-left: 10px;
+          margin-left: 18px;
         }
 
         &:nth-child(3) {
-          margin-left: 148px;
+          margin-left: 100px;
         }
 
         &:nth-child(4) {
-          margin-left: 102px;
+          margin-left: 125px;
         }
 
         &:nth-child(5) {
-          margin-left: 99px;
+          margin-left: 106px;
         }
 
         &:nth-child(6) {
-          margin-left: 103px;
+          margin-left: 65px;
         }
 
         &:nth-child(7) {
-          margin-left: 42px;
+          margin-left: 53px;
         }
       }
     }
@@ -883,11 +883,11 @@
 
         .common-fake-table-card-title {
           display: grid;
-          grid-template-columns: 24px 203px 168px repeat(2, 133px) 88px 83px 24px;
+          grid-template-columns: 18px 144px 180px 130px 82px 88px 87px 18px;
           grid-template-rows: 26px;
           align-items: center;
-          -moz-column-gap: 0px;
-          column-gap: 0px;
+          -moz-column-gap: 12px;
+          column-gap: 12px;
           padding-left: 7px;
           border-top-left-radius: 2px;
           border-top-right-radius: 2px;
@@ -946,7 +946,8 @@
           .load-stop-location,
           .load-stop-date,
           .load-stop-time,
-          .load-stop-leg-mi {
+          .load-stop-leg-mi,
+          .load-stop-total {
             margin: 0;
             padding: 0;
             font-size: 14px;
@@ -1027,8 +1028,8 @@
           scrollbar-width: none !important; /* Firefox */
 
           &::-webkit-scrollbar {
-            width: 3px;
-            height: 3px;
+            width: 6px;
+            height: 6px;
           }
 
           &::-webkit-scrollbar-thumb {
@@ -1081,10 +1082,9 @@
 
           .load-stop-details-header {
             display: grid;
-            grid-template-columns: 26px 164px 68px 73px 83px repeat(3, 68px) 111px repeat(
-                2,
-                101px
-              ) repeat(3, 75px) 71px 72px 71px 67px;
+            grid-template-columns:
+              26px 164px 68px 73px 83px repeat(3, 68px) 111px repeat(2, 101px)
+              repeat(3, 75px) 71px 72px 71px 67px;
             align-items: center;
             padding: 0px 5px 5px 5px;
 

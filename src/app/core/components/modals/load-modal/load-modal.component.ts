@@ -828,6 +828,29 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  public closeAllLoadStopExceptActive(loadStop: AbstractControl) {
+    this.loadStops().controls.map((item) => {
+      if (item.get('id').value === loadStop.get('id').value) {
+        item.get('openClose').patchValue(true);
+      } else {
+        item.get('openClose').patchValue(false);
+      }
+    });
+  }
+
+  public toggleLoadStop(loadStop: FormGroup) {
+    loadStop.get('openClose').patchValue(!loadStop.get('openClose').value);
+
+    if (loadStop.get('openClose').value) {
+      this.closeAllLoadStopExceptActive(loadStop);
+      console.log(loadStop.value);
+      this.loadForm.get('dateFrom').patchValue(loadStop.get('dateFrom').value);
+      this.loadForm.get('dateTo').patchValue(loadStop.get('dateTo').value);
+      this.loadForm.get('timeFrom').patchValue(loadStop.get('timeFrom').value);
+      this.loadForm.get('timeTo').patchValue(loadStop.get('timeTo').value);
+    }
+  }
+
   public drawStopOnMap() {
     this.routingService
       .apiRoutingGet(
@@ -851,7 +874,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             routeColor: '#919191',
             stops: this.loadStops()
               .controls.filter((item) => item)
-              .map((item) => {
+              .map((item, index) => {
                 return {
                   lat: item.get('latitude').value,
                   long: item.get('longitude').value,
@@ -859,10 +882,38 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     item.get('stopMode').value === 'pickup'
                       ? '#4db6a2'
                       : '#ef5350',
-                  empty: true,
+                  empty: index === 0,
                 };
               }),
           };
+
+          this.loadStops().controls.forEach(
+            (element: FormGroup, index: number) => {
+              if (index === 0) {
+                element.get('miles').patchValue(null);
+                element.get('hours').patchValue(null);
+                element.get('minutes').patchValue(null);
+                element.get('cost').patchValue(null);
+                return;
+              }
+
+              element.get('miles').patchValue(res.legs[index - 1].miles);
+              element.get('hours').patchValue(res.legs[index - 1].hours);
+              element.get('minutes').patchValue(res.legs[index - 1].minutes);
+              element.get('cost').patchValue(res.legs[index - 1].cost);
+              if (!element.get('total').value) {
+                element.get('total').patchValue(
+                  res.legs
+                    .map((item) => item.miles)
+                    .reduce((accumulator, item) => {
+                      return (accumulator += item);
+                    }, 0)
+                );
+              }
+            }
+          );
+
+          console.log(this.loadStops().value);
         },
         error: (err: any) => {
           console.log(err);
@@ -923,36 +974,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       }
 
       this.addLoadStop();
-
-      if (
-        this.loadForm.get('dateFrom').value ||
-        this.loadForm.get('dateTo').value ||
-        this.loadForm.get('timeFrom').value ||
-        this.loadForm.get('timeTo').value
-      ) {
-        this.loadForm.get('dateFrom').patchValue(null, { emitEvent: false });
-        this.loadForm.get('dateTo').patchValue(null, { emitEvent: false });
-        this.loadForm.get('timeFrom').patchValue(null, { emitEvent: false });
-        this.loadForm.get('timeTo').patchValue(null, { emitEvent: false });
-      }
-    }
-  }
-
-  public closeAllLoadStopExceptActive(loadStop: AbstractControl) {
-    this.loadStops().controls.map((item) => {
-      if (item.get('id').value === loadStop.get('id').value) {
-        item.get('openClose').patchValue(true);
-      } else {
-        item.get('openClose').patchValue(false);
-      }
-    });
-  }
-
-  public toggleLoadStop(loadStop: FormGroup) {
-    loadStop.get('openClose').patchValue(!loadStop.get('openClose').value);
-
-    if (loadStop.get('openClose').value) {
-      this.closeAllLoadStopExceptActive(loadStop);
     }
   }
 
@@ -963,6 +984,18 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     this.closeAllLoadStopExceptActive(
       this.loadStops().controls[this.loadStops().length - 1]
     );
+
+    if (
+      this.loadForm.get('dateFrom').value ||
+      this.loadForm.get('dateTo').value ||
+      this.loadForm.get('timeFrom').value ||
+      this.loadForm.get('timeTo').value
+    ) {
+      this.loadForm.get('dateFrom').patchValue(null, { emitEvent: false });
+      this.loadForm.get('dateTo').patchValue(null, { emitEvent: false });
+      this.loadForm.get('timeFrom').patchValue(null, { emitEvent: false });
+      this.loadForm.get('timeTo').patchValue(null, { emitEvent: false });
+    }
   }
 
   public newLoadStop(): FormGroup {
@@ -976,8 +1009,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       timeTo: [null],
       longitude: [this.selectedShipper.longitude],
       latitude: [this.selectedShipper.latitude],
-      legMi: [null],
+      // From legs
+      miles: [null],
+      hours: [null],
+      minutes: [null],
+      cost: [null],
       total: [null],
+      // -----------
       address: ['3905 Elliot Ave, Springdale, GA 72762, USA'],
       contact: ['A. Djordjevic'],
       phone: ['(987) 654-3210'],

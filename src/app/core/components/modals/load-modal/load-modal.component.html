@@ -3,6 +3,7 @@
   [editData]="editData"
   [loadModalTitle]="loadNumber"
   [loadModalBill]="loadModalBill"
+  [hazardousLogo]="isHazardousPicked"
   [isModalValid]="loadForm.valid && isFormDirty"
   [tabChange]="headerTabs"
   [customClass]="'modal-container-load'"
@@ -499,7 +500,7 @@
                   </p>
 
                   <p class="load-stop-leg-mi">
-                    {{ loadStop.get("legMi").value }}
+                    {{ loadStop.get("miles").value }}
                   </p>
 
                   <p class="load-stop-total">
@@ -602,6 +603,7 @@
 
                         <!-- Hazardous Dropdown -->
                         <app-ta-input-dropdown
+                          *ngIf="isHazardousPicked"
                           formControlName="hazardous"
                           [template]="'svgtext-template'"
                           [inputConfig]="{
@@ -622,7 +624,8 @@
                             dropdownWidthClass: 'w-col-156',
                             hideRequiredCheck: true,
                             hideErrorMessage: true,
-                            blackInput: true
+                            blackInput: true,
+                            customClass: 'load-stop-details'
                           }"
                           [options]="labelsLoadDetailsHazardous"
                           [activeItem]="
