@@ -19,7 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { CdlResponse } from '../model/models';
 import { ClassType } from '../model/models';
-import { CreateResponse } from '../model/models';
+import { CreateWithUploadsResponse } from '../model/models';
 import { GetCdlModalResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { RenewCdlCommand } from '../model/models';
@@ -432,14 +432,14 @@ export class CdlService {
      * @param endorsements 
      * @param stateId 
      * @param note 
-     * @param file 
+     * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCdlPost(driverId?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, file?: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiCdlPost(driverId?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, file?: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiCdlPost(driverId?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, file?: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiCdlPost(driverId?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, file?: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiCdlPost(driverId?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiCdlPost(driverId?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiCdlPost(driverId?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiCdlPost(driverId?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -522,8 +522,14 @@ export class CdlService {
         if (note !== undefined) {
             formParams = formParams.append('Note', <any>note) as any || formParams;
         }
-        if (file !== undefined) {
-            formParams = formParams.append('File', <any>file) as any || formParams;
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
         }
 
         let responseType: 'text' | 'json' = 'json';
@@ -531,7 +537,7 @@ export class CdlService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/cdl`,
+        return this.httpClient.post<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/cdl`,
             convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,
@@ -553,15 +559,14 @@ export class CdlService {
      * @param endorsements 
      * @param stateId 
      * @param note 
-     * @param file 
-     * @param fileModified 
+     * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCdlPut(id?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, file?: Blob, fileModified?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
-    public apiCdlPut(id?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, file?: Blob, fileModified?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
-    public apiCdlPut(id?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, file?: Blob, fileModified?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
-    public apiCdlPut(id?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, file?: Blob, fileModified?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiCdlPut(id?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiCdlPut(id?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiCdlPut(id?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiCdlPut(id?: number, cdlNumber?: string, issueDate?: string, expDate?: string, classType?: ClassType, restrictions?: Array<number>, endorsements?: Array<number>, stateId?: number, note?: string, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -644,11 +649,14 @@ export class CdlService {
         if (note !== undefined) {
             formParams = formParams.append('Note', <any>note) as any || formParams;
         }
-        if (file !== undefined) {
-            formParams = formParams.append('File', <any>file) as any || formParams;
-        }
-        if (fileModified !== undefined) {
-            formParams = formParams.append('FileModified', <any>fileModified) as any || formParams;
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
         }
 
         let responseType: 'text' | 'json' = 'json';
@@ -656,7 +664,7 @@ export class CdlService {
             responseType = 'text';
         }
 
-        return this.httpClient.put<object>(`${this.configuration.basePath}/api/cdl`,
+        return this.httpClient.put<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/cdl`,
             convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,

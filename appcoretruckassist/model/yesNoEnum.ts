@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FuelledVehicleResponsePagination } from './fuelledVehicleResponsePagination';
 
 
-export interface FuelledVehicleHistoryListResponse { 
-    pagination?: FuelledVehicleResponsePagination;
-}
+export type YesNoEnum = 'Yes' | 'No';
+
+export const YesNoEnum = {
+    Yes: 'Yes' as YesNoEnum,
+    No: 'No' as YesNoEnum
+};
 
