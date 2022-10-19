@@ -1081,9 +1081,10 @@
 
           .load-stop-details-header {
             display: grid;
-            grid-template-columns:
-              26px 158px 68px 73px 83px repeat(3, 68px) 111px repeat(2, 101px)
-              repeat(3, 75px) 71px 73px 72px 67px;
+            grid-template-columns: 26px 164px 68px 73px 83px repeat(3, 68px) 111px repeat(
+                2,
+                101px
+              ) repeat(3, 75px) 71px 72px 71px 67px;
             align-items: center;
             padding: 0px 5px 5px 5px;
 

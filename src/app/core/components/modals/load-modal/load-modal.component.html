@@ -463,11 +463,7 @@
                   }"
                   (mouseenter)="loadStop.get('hovered').patchValue(true)"
                   (mouseleave)="loadStop.get('hovered').patchValue(false)"
-                  (click)="
-                    loadStop
-                      .get('openClose')
-                      .patchValue(!loadStop.get('openClose').value)
-                  "
+                  (click)="toggleLoadStop(loadStop)"
                 >
                   <div class="load-stop-serial-number">
                     <p *ngIf="!loadStop.get('hovered').value">
@@ -588,6 +584,7 @@
 
                         <!-- Description -->
                         <app-ta-input
+                          *ngIf="!isHazardousPicked"
                           formControlName="description"
                           [inputConfig]="{
                             name: 'Description',
@@ -602,6 +599,43 @@
                           }"
                           [ngStyle]="{ height: '20px' }"
                         ></app-ta-input>
+
+                        <!-- Hazardous Dropdown -->
+                        <app-ta-input-dropdown
+                          formControlName="hazardous"
+                          [template]="'svgtext-template'"
+                          [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            isDropdown: true,
+                            dropdownImageInput: {
+                              withText: true,
+                              svg: true,
+                              image: false,
+                              url:
+                                'assets/svg/common/load/' +
+                                selectedLoadDetailsHazardous[
+                                  loadStopDetailsIndex
+                                ]?.logoName,
+                              template: 'user'
+                            },
+                            dropdownWidthClass: 'w-col-156',
+                            hideRequiredCheck: true,
+                            hideErrorMessage: true,
+                            blackInput: true
+                          }"
+                          [options]="labelsLoadDetailsHazardous"
+                          [activeItem]="
+                            selectedLoadDetailsHazardous[loadStopDetailsIndex]
+                          "
+                          (selectedItem)="
+                            onSelectDropdown(
+                              $event,
+                              'hazardous',
+                              loadStopDetailsIndex
+                            )
+                          "
+                        ></app-ta-input-dropdown>
 
                         <!-- QTY -->
                         <app-ta-input
@@ -623,7 +657,7 @@
                             name: 'Input Dropdown',
                             type: 'text',
                             isDropdown: true,
-                            dropdownWidthClass: 'w-col-66',
+                            dropdownWidthClass: 'w-col-73',
                             hideRequiredCheck: true,
                             hideErrorMessage: true,
                             blackInput: true,
@@ -799,7 +833,7 @@
                             name: 'Input Dropdown',
                             type: 'text',
                             isDropdown: true,
-                            dropdownWidthClass: 'w-col-66',
+                            dropdownWidthClass: 'w-col-69',
                             hideRequiredCheck: true,
                             hideErrorMessage: true,
                             blackInput: true,
@@ -825,7 +859,7 @@
                             name: 'Input Dropdown',
                             type: 'text',
                             isDropdown: true,
-                            dropdownWidthClass: 'w-col-66',
+                            dropdownWidthClass: 'w-col-71',
                             hideRequiredCheck: true,
                             hideErrorMessage: true,
                             blackInput: true,
@@ -851,13 +885,13 @@
                             name: 'Input Dropdown',
                             type: 'text',
                             isDropdown: true,
-                            dropdownWidthClass: 'w-col-66',
+                            dropdownWidthClass: 'w-col-69',
                             hideRequiredCheck: true,
                             hideErrorMessage: true,
                             blackInput: true,
                             customClass: 'load-stop-details'
                           }"
-                          [options]="labelsLoadDriverAssis"
+                          [options]="labelsLoadDetailsDriverAssis"
                           [activeItem]="
                             selectedLoadDetailsDriverAssis[loadStopDetailsIndex]
                           "
@@ -883,7 +917,7 @@
                             blackInput: true,
                             customClass: 'load-stop-details'
                           }"
-                          [options]="labelsLoadStrapChain"
+                          [options]="labelsLoadDetailsStrapChain"
                           [activeItem]="
                             selectedLoadDetailsStrapChain[loadStopDetailsIndex]
                           "

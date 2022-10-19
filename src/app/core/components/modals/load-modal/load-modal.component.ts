@@ -5,7 +5,13 @@ import {
   SignInResponse,
   UpdateCommentCommand,
 } from 'appcoretruckassist';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -135,14 +141,16 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public labelsloadDetailsUnits: any[] = [];
   public labelsLoadDetailsStackable: any[] = [];
   public labelsLoadDetailsTarps: any[] = [];
-  public labelsLoadDriverAssis: any[] = [];
-  public labelsLoadStrapChain: any[] = [];
+  public labelsLoadDetailsDriverAssis: any[] = [];
+  public labelsLoadDetailsStrapChain: any[] = [];
+  public labelsLoadDetailsHazardous: any[] = [];
 
   public selectedLoadDetailsUnits: any[] = [];
   public selectedLoadDetailsStackable: any[] = [];
   public selectedLoadDetailsTarps: any[] = [];
   public selectedLoadDetailsDriverAssis: any[] = [];
   public selectedLoadDetailsStrapChain: any[] = [];
+  public selectedLoadDetailsHazardous: any[] = [];
 
   public loadBrokerContactsInputConfig: ITaInput = {
     name: 'Input Dropdown',
@@ -533,6 +541,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.selectedLoadDetailsStrapChain[index] = event;
         break;
       }
+      case 'hazardous': {
+        this.selectedLoadDetailsHazardous[index] = event;
+        break;
+      }
       default: {
         break;
       }
@@ -834,9 +846,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: RoutingResponse) => {
           console.log(res);
-        },
-        error: (err: any) => {
-          console.log(err);
           // TODO: Populate lat and long with routesPoints
           this.loadStopRoutes[0] = {
             routeColor: '#919191',
@@ -854,6 +863,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 };
               }),
           };
+        },
+        error: (err: any) => {
+          console.log(err);
         },
       });
   }
@@ -926,9 +938,31 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  public closeAllLoadStopExceptActive(loadStop: AbstractControl) {
+    this.loadStops().controls.map((item) => {
+      if (item.get('id').value === loadStop.get('id').value) {
+        item.get('openClose').patchValue(true);
+      } else {
+        item.get('openClose').patchValue(false);
+      }
+    });
+  }
+
+  public toggleLoadStop(loadStop: FormGroup) {
+    loadStop.get('openClose').patchValue(!loadStop.get('openClose').value);
+
+    if (loadStop.get('openClose').value) {
+      this.closeAllLoadStopExceptActive(loadStop);
+    }
+  }
+
   public addLoadStop() {
     this.loadStops().push(this.newLoadStop());
     this.drawStopOnMap();
+
+    this.closeAllLoadStopExceptActive(
+      this.loadStops().controls[this.loadStops().length - 1]
+    );
   }
 
   public newLoadStop(): FormGroup {
@@ -991,6 +1025,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public newLoadStopDetails(): FormGroup {
     return this.formBuilder.group({
       description: [null, descriptionValidation],
+      hazardous: [null],
       qty: [null],
       units: [null],
       weight: [null],
@@ -1205,16 +1240,31 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.labelsloadDetailsUnits = res.loadItemUnits;
 
           // Stackable
-          this.labelsLoadDetailsStackable = [];
+          this.labelsLoadDetailsStackable = res.stackable;
 
           // Tarps
           this.labelsLoadDetailsTarps = res.tarps;
 
           // Driver Assis
-          this.labelsLoadDriverAssis = [];
+          this.labelsLoadDetailsDriverAssis = res.driverAssist;
 
           // Strap/Chain
-          this.labelsLoadStrapChain = res.secures;
+          this.labelsLoadDetailsStrapChain = res.secures;
+
+          // Hazardous
+          this.labelsLoadDetailsHazardous = res.hazardousMaterials.map(
+            (item) => {
+              return {
+                ...item,
+                name: item.description,
+                logoName: item.logoName.includes('explosives')
+                  ? 'ic_explosives.svg'
+                  : item.logoName,
+                folder: 'common',
+                subFolder: 'load',
+              };
+            }
+          );
         },
         error: (error: any) => {
           this.notificationService.error(error, 'Error');
