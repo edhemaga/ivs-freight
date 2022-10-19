@@ -12,7 +12,7 @@
 
 
 export interface FileResponse { 
-    url?: string | null;
     fileName?: string | null;
+    url?: string | null;
 }
 

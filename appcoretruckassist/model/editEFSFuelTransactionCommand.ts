@@ -14,5 +14,6 @@
 export interface EditEFSFuelTransactionCommand { 
     id?: number;
     truckId?: number;
+    trailerId?: number | null;
 }
 
