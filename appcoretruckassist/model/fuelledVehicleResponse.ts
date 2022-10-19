@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RepairUnitType } from './repairUnitType';
 
 
 export interface FuelledVehicleResponse { 
     unitId?: number | null;
     unitNumber?: string | null;
+    unitType?: RepairUnitType;
     numberOfRefueling?: number | null;
     logoName?: string | null;
     totalCost?: number | null;

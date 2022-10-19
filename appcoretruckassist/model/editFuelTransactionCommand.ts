@@ -16,6 +16,7 @@ export interface EditFuelTransactionCommand {
     id?: number;
     truckId?: number;
     driverId?: number | null;
+    trailerId?: number | null;
     fuelStopStoreId?: number;
     transactionDate?: string;
     total?: number | null;

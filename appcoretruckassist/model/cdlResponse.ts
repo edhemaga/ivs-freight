@@ -30,6 +30,6 @@ export interface CdlResponse {
     note?: string | null;
     createdAt?: string;
     updatedAt?: string;
-    file?: FileResponse;
+    files?: Array<FileResponse> | null;
 }
 
