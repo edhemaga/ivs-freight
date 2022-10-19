@@ -780,7 +780,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             item.get('location').value === this.selectedShipper.address
         );
 
-        if (stop) {
+        if (stop && !stop.get('dateFrom').value) {
           stop.get('dateFrom').patchValue(value);
         }
       });
@@ -794,7 +794,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             item.get('shipper').value === this.selectedShipper.name &&
             item.get('location').value === this.selectedShipper.address
         );
-        if (stop) {
+        if (stop && !stop.get('dateTo').value) {
           stop.get('dateTo').patchValue(value);
         }
       });
@@ -808,7 +808,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             item.get('shipper').value === this.selectedShipper.name &&
             item.get('location').value === this.selectedShipper.address
         );
-        if (stop) {
+        if (stop && !stop.get('timeFrom').value) {
           stop.get('timeFrom').patchValue(value);
         }
       });
@@ -822,7 +822,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             item.get('shipper').value === this.selectedShipper.name &&
             item.get('location').value === this.selectedShipper.address
         );
-        if (stop) {
+        if (stop && !stop.get('timeTo').value) {
           stop.get('timeTo').patchValue(value);
         }
       });
@@ -843,7 +843,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
     if (loadStop.get('openClose').value) {
       this.closeAllLoadStopExceptActive(loadStop);
-      console.log(loadStop.value);
+
       this.loadForm.get('dateFrom').patchValue(loadStop.get('dateFrom').value);
       this.loadForm.get('dateTo').patchValue(loadStop.get('dateTo').value);
       this.loadForm.get('timeFrom').patchValue(loadStop.get('timeFrom').value);
