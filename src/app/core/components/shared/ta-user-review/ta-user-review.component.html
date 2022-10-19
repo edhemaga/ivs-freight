@@ -1,9 +1,11 @@
 <div
   *ngFor="let data of reviewData; trackBy: identity; let ind = index"
   class="ta-user-review"
-  [ngClass]="{ 'edit-review': data.isEditMode }"
+  [ngClass]="{ 'edit-review': data.isEditMode,
+  'separate': ind
+   }"
 >
-  <div class="ta-review-header">
+  <div class="ta-review-header" *ngIf="!data.isEditMode">
     <div class="ta-user-information">
       <img
         *ngIf="data.companyUser?.avatar"
@@ -50,7 +52,7 @@
         ngbTooltip
         mainTooltip="Edit"
         position="top"
-        tooltipBackground="#6C6C6C"
+        tooltipBackground="#424242"
         *ngIf="!data.isEditMode"
         class="action-edit"
         (click)="onAction(data, 'edit', ind)"
@@ -71,7 +73,7 @@
     </div>
   </div>
   <!-- Edit Mode -->
-  <div class="ta-review-message" [class.focus]="data.isEditMode">
+  <div class="ta-review-message">
     <div *ngIf="!data.isEditMode" class="message">
       {{ data.commentContent }}
     </div>
@@ -80,40 +82,43 @@
       #reviewMessage
       type="text"
       class="review-textarea"
+      placeholder="Type something"
       [class.show]="data.isEditMode"
-      (input)="transformText($event, ind)"
+      (input)="inputValueChange($event, ind)"
       (keyup)="keyUp($event, data, !data.isNewReview ? 'update' : 'add', ind)"
     />
 
-    <!-- Edit Mode Review Actions -->
-    <div *ngIf="data.isEditMode" class="ta-review-message-actions">
-      <div
-        class="ta-review-message-confirm"
-        ngbTooltip
-        mainTooltip="Confirm"
-        tooltipBackground="#E5E5E5"
-        tooltipColor="#6c6c6c"
-        position="top"
-        (click)="onAction(data, !data.isNewReview ? 'update' : 'add', ind)"
-      >
-        <svg-icon
-          class="ta-review-message-confirm-first"
-          [src]="'assets/svg/ic_spec-confirm.svg'"
-        ></svg-icon>
+    <div class="review_options_hold" *ngIf="data.isEditMode">
+      <div class="review_prop_hold">
+        <div class="review_option_icon">
+          <svg-icon
+            src="assets/svg/common/ic_{{
+              data.isNewReview ? 'plus' : 'pen'
+            }}.svg"
+          ></svg-icon>
+        </div>
+        <div class="review_option_text">
+          {{ data.isNewReview ? "ADD COMMENT" : "EDIT COMMENT" }}
+        </div>
       </div>
-      <div
-        class="ta-review-message-cancel"
-        ngbTooltip
-        mainTooltip="Cancel"
-        tooltipBackground="#E5E5E5"
-        tooltipColor="#6c6c6c"
-        position="top"
-        (click)="onAction(data, 'cancel', ind)"
-      >
-        <svg-icon
-          class="ta-review-message-cancel-first"
-          [src]="'assets/svg/ic_x.svg'"
-        ></svg-icon>
+      <div class="review_buttons">
+        <div
+          class="review_button close"
+          (click)="onAction(data, 'cancel', ind)"
+        >
+          <div class="review_button_text">CANCEL</div>
+        </div>
+        <div
+          class="review_button save"
+          [class.value_changed]="valueChanged"
+          (click)="
+            valueChanged
+              ? onAction(data, !data.isNewReview ? 'update' : 'add', ind)
+              : ''
+          "
+        >
+          <div class="review_button_text">SAVE</div>
+        </div>
       </div>
     </div>
   </div>
