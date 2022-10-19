@@ -14,37 +14,55 @@
 >
   <svg-icon
     class="dropdown-dots"
-    src="{{ hasVericalDots? 'assets/svg/common/ic_horizontal_dots_details.svg' : 'assets/svg/common/ic_dots.svg'}}"
+    src="{{ hasVericalDots? 'assets/svg/common/horizontal-dropdown-dots.svg' : 'assets/svg/common/vertical-dropdown-actions.svg'}}"
   ></svg-icon>
 </div>
 
-<ng-template #dropdownPopover let-data="data">
-  <div class="details-dropdown-body">
-    <div class="action-holder" *ngFor="let action of options;let i=index; trackBy:identity">
-      <div class="action-select-holder">  
-        <div class="actionTitle">{{action.title}}</div>
-        <div class="actionIcon" [class.redIcon]="action.title == 'Delete' " [class.blueIcon]="action.title == 'Print' " [class.greenIcon]="action.title == 'Edit'" >
-          <svg-icon src="{{action.svg}}" ></svg-icon>
+<ng-template #dropdownPopover let-data="data" style="max-width: 20px" >
+  <div class="dropdown-main-popover-body"  
+    [class.horizontalMargin]="placement.indexOf('-right') > -1"
+    [class.verticalMargin]="placement.indexOf('-right') == -1"
+  >  
+    <div class="details-dropdown-body">
+      <div *ngFor="let action of options;let i=index; trackBy:identity">
+        <div class="action-holder" *ngIf="action.title != 'border' && action.title != 'Add New' && action.title != 'Request'" (click)="onAction(action,$event)">
+          <div class="action-select-holder">  
+            <div class="actionTitle">{{action.title}}</div>
+            <div class="actionIcon" [class.redIcon]="action.redIcon" [class.blueIcon]="action.blueIcon">
+              <svg-icon src="{{action.svg}}" ></svg-icon>
+            </div>
+          </div>
+        </div>
+        <div class="action-holder" *ngIf="action.title == 'Add New' || action.title == 'Request' ">
+          <div class="action-select-holder">  
+            <div class="actionTitle">{{action.title}}</div>
+            <div class="actionIcon arrowIcon">
+              <svg-icon src="{{action.svg}}" ></svg-icon>
+            </div>
+          </div>
+        </div>
+        <div class="border-holder" *ngIf="action.title == 'border'">
+          <div class="action-border-line"></div>
         </div>
       </div>
-    </div>
-    <!--
-    <div
-      (click)="onAction(action,$event)"
-      *ngFor="let action of options;let i=index; trackBy:identity"
-      class="details-dropdown-content "
-      [ngClass]="{'hide':!action.show}"
-    >
-      <div  class="svg-text-dropdown" [ngClass]="{'danger':action.danger}">
-        <svg-icon
-          [ngClass]="{'activate-header':action.activate,'deactivate-header':action.deactivate}"
-          class="action-svg"
-          src="{{action.svg}}"
-        ></svg-icon>
-        <div  class="dropdown-content-text-details">{{ action.title }}</div>
+      <!--
+      <div
+        (click)="onAction(action,$event)"
+        *ngFor="let action of options;let i=index; trackBy:identity"
+        class="details-dropdown-content "
+        [ngClass]="{'hide':!action.show}"
+      >
+        <div  class="svg-text-dropdown" [ngClass]="{'danger':action.danger}">
+          <svg-icon
+            [ngClass]="{'activate-header':action.activate,'deactivate-header':action.deactivate}"
+            class="action-svg"
+            src="{{action.svg}}"
+          ></svg-icon>
+          <div  class="dropdown-content-text-details">{{ action.title }}</div>
+        </div>
       </div>
-    </div>
-    -->
+      -->
 
-  </div>
+    </div>
+  </div>  
 </ng-template>

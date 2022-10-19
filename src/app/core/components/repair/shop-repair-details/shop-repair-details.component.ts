@@ -132,23 +132,57 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
       },
       actions: [
         {
-          title: 'Print',
-          name: 'print',
-          svg: 'assets/svg/common/ic_fax.svg',
-          show: true,
-        },
-
-        {
           title: 'Edit',
           name: 'edit',
           svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
           show: true,
         },
         {
-          title: 'Add to favourites',
+          title: 'border'
+        },
+        {
+          title: 'Add Bill',
+          name: 'add-bill',
+          svg: 'assets/svg/common/ic_plus.svg',
+          show: true,
+          blueIcon: true,
+        },
+        {
+          title: 'Move to Favourite',
           name: 'add-favourites',
           svg: 'assets/svg/common/ic_star.svg',
           activate: true,
+          show: true,
+        },
+        {
+          title: 'Write Review',
+          name: 'write-review',
+          svg: 'assets/svg/common/review-pen.svg',
+          show: true,
+        },
+        {
+          title: 'border'
+        },
+        {
+          title: 'Share',
+          name: 'share',
+          svg: 'assets/svg/common/share-icon.svg',
+          show: true,
+        },
+        {
+          title: 'Print',
+          name: 'print',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: true,
+        },
+        {
+          title: 'border'
+        },
+        {
+          title: 'Close Business',
+          name: 'close-business',
+          svg: 'assets/svg/common/close-business-icon.svg',
+          redIcon: true,
           show: true,
         },
         {
@@ -159,6 +193,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
           svg: 'assets/svg/common/ic_trash_updated.svg',
           danger: true,
           show: true,
+          redIcon: true,
         },
       ],
       export: true,

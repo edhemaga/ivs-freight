@@ -308,10 +308,30 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
       },
       actions: [
         {
+          title: 'Edit',
+          name: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: data.status == 1 ? true : false,
+        },
+        {
+          title: 'border'
+        },
+        {
           title: 'Send Message',
           name: 'dm',
           svg: 'assets/svg/common/ic_dm.svg',
           show: data.status == 1 ? true : false,
+        },
+        {
+          title: 'Add New',
+          svg: 'assets/svg/common/fill_arrow_down.svg',
+        },
+        {
+          title: 'Request',
+          svg: 'assets/svg/common/fill_arrow_down.svg',
+        },
+        {
+          title: 'border'
         },
         {
           title: 'Print',
@@ -319,12 +339,14 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           svg: 'assets/svg/common/ic_fax.svg',
           show: data.status == 1 || data.status == 0 ? true : false,
         },
-
         {
-          title: 'Edit',
-          name: 'edit',
-          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-          show: data.status == 1 ? true : false,
+          title: 'Share',
+          name: 'share',
+          svg: 'assets/svg/common/share-icon.svg',
+          show: true,
+        },
+        {
+          title: 'border',
         },
         {
           title: data.status == 0 ? 'Activate' : 'Deactivate',
@@ -333,6 +355,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           activate: data.status == 0 ? true : false,
           deactivate: data.status == 1 ? true : false,
           show: data.status == 1 || data.status == 0 ? true : false,
+          redIcon: true,
         },
         {
           title: 'Delete',
@@ -342,6 +365,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           svg: 'assets/svg/common/ic_trash_updated.svg',
           danger: true,
           show: data.status == 1 || data.status == 0 ? true : false,
+          redIcon: true,
         },
       ],
       export: true,
