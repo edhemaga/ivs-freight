@@ -14,12 +14,13 @@
       [options]="addresList"
       [activeItem]="activeAddress"
       [incorrectValue]="incorrectValue"
+      (incorrectEvent)="onIncorrectInput($event)"
       (selectedItem)="onSelectDropdown($event, 'address')"
       (closeDropdown)="onCloseDropdown($event)"
     ></app-ta-input-dropdown>
     <div
       class="stop_hold"
-      *ngIf="isRouting && addressExpanded"
+      *ngIf="isRouting && addressExpanded && !hideEmptyLoaded"
       (click)="changeStopType()"
     >
       <div class="stop_text">{{ stopType }}</div>

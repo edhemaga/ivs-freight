@@ -20,6 +20,9 @@ import {
   cdlCANADAValidation,
   cdlUSValidation,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+import { DetailsDataService } from '../../../../../services/details-data/details-data.service';
+//import { CreateCdlCommand } from 'appcoretruckassist/model/createCdlCommand';
+//import { EditCdlCommand } from 'appcoretruckassist/model/editCdlCommand';
 
 @Component({
   selector: 'app-driver-cdl-modal',
@@ -61,7 +64,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService
+    private formService: FormService,
+    private DetailsDataService: DetailsDataService
   ) {}
 
   ngOnInit(): void {
@@ -111,6 +115,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.cdlForm);
           return;
         }
+        this.DetailsDataService.setCdlNum(this.cdlForm.get('cdlNumber')?.value);
         if (this.editData.type === 'edit-licence') {
           if (this.isFormDirty) {
             this.updateCdl();
@@ -228,10 +233,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             restrictions: null,
             endorsements: null,
             note: res.note,
-            // file: res.file ? res.file : null,
+            file: res.files ? res.files : null,
           });
 
-          // this.documents = res.file ? ([res.file] as any) : [];
+          this.documents = res.files ? ([res.files] as any) : [];
 
           this.selectedEndorsment = res.cdlEndorsements;
           this.selectedRestrictions = res.cdlRestrictions;

@@ -299,7 +299,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       ],
       emergencyContactPhone: [null, [phoneFaxRegex, Validators.required]],
       emergencyContactRelationship: [null, name2_24Validation],
-      note: [{ value: null, disabled: true }],
+      note: [null],
       avatar: [null],
       twic: [false],
       twicExpDate: [null],

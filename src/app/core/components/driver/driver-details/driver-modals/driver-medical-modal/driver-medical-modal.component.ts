@@ -1,11 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  // CreateMedicalCommand,
-  DriverResponse,
-  // EditMedicalCommand,
-  MedicalResponse,
-} from 'appcoretruckassist';
+import { DriverResponse, MedicalResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { DriverTService } from '../../../state/driver.service';
 import { MedicalTService } from '../../../state/medical.service';
@@ -17,6 +12,8 @@ import {
   convertDateToBackend,
   convertDateFromBackend,
 } from '../../../../../utils/methods.calculations';
+import { EditMedicalCommand } from 'appcoretruckassist/model/editMedicalCommand';
+import { CreateMedicalCommand } from 'appcoretruckassist/model/createMedicalCommand';
 
 @Component({
   selector: 'app-driver-medical-modal',

@@ -2,9 +2,7 @@ import { MvrService } from './../../../../../../appcoretruckassist/api/mvr.servi
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, tap, takeUntil, Subject, of } from 'rxjs';
 import {
-  // CreateMvrCommand,
   DriverResponse,
-  // EditMvrCommand,
   GetMvrModalResponse,
   MvrResponse,
 } from 'appcoretruckassist';
@@ -96,7 +94,7 @@ export class MvrTService implements OnDestroy {
     );
   }
 
-  public updateMvr(data: /*EditMvrCommand*/ any): Observable<object> {
+  public updateMvr(data: any): Observable<object> {
     return this.mvrService.apiMvrPut(data).pipe(
       tap((res: any) => {
         let driverId = this.driverItemStore.getValue().ids[0];

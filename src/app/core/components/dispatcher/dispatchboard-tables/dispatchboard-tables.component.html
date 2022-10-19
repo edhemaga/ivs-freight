@@ -578,8 +578,6 @@
                 name: 'Address',
                 type: 'text',
                 label: 'Location',
-                isRequired: true,
-                placeholderIcon: 'address',
                 placeholder: 'Location',
                 textTransform: 'capitalize',
                 incorrectInput: selectedMode === 'REVIEW_MODE',
@@ -587,9 +585,11 @@
                 minLength: 12,
                 maxLength: 256,
                 autoFocus: true,
-                placeholderInsteadOfLabel: true
+                placeholderInsteadOfLabel: true,
+                hideErrorMessage: true,
+                blackInput: true
               }"
-              [placeholderType]="'longAddress'"
+              [placeholderType]="'shortAddress'"
               (incorrectEvent)="incorrectInput($event, 0, 18)"
               [activeAddress]="selectedAddress"
               (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
@@ -1097,19 +1097,19 @@
                   type: 'text',
                   label: 'Location',
                   placeholder: 'Location',
-                  isRequired: true,
-                  placeholderIcon: 'address',
                   textTransform: 'capitalize',
                   dropdownWidthClass: 'w-col-134',
                   incorrectInput: selectedMode === 'REVIEW_MODE',
                   minLength: 12,
                   maxLength: 256,
                   autoFocus: true,
-                  placeholderInsteadOfLabel: true
+                  placeholderInsteadOfLabel: true,
+                  hideErrorMessage: true,
+                  blackInput: true
                 }"
                 (incorrectEvent)="incorrectInput($event, 0, 18)"
                 [activeAddress]="selectedAddress"
-                [placeholderType]="'longAddress'"
+                [placeholderType]="'shortAddress'"
                 (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
                 (closeDropdown)="onHideDropdown($event)"
               ></app-input-address-dropdown>
