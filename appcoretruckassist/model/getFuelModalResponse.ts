@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { TruckMinimalResponse } from './truckMinimalResponse';
+import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { EnumValue } from './enumValue';
 
 
@@ -18,5 +19,6 @@ export interface GetFuelModalResponse {
     fuelCardBrand?: Array<EnumValue> | null;
     fuelTransactionType?: Array<EnumValue> | null;
     truckMinimalLists?: Array<TruckMinimalResponse> | null;
+    trailerMinimalLists?: Array<TrailerMinimalResponse> | null;
 }
 

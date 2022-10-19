@@ -16,5 +16,7 @@ export interface ShipperShortResponse {
     id?: number;
     businessName?: string | null;
     address?: AddressEntity;
+    longitude?: number | null;
+    latitude?: number | null;
 }
 
