@@ -1,5 +1,6 @@
 import {
   CreateCommentCommand,
+  RoutingResponse,
   RoutingService,
   SignInResponse,
   UpdateCommentCommand,
@@ -18,7 +19,7 @@ import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.c
 import { ITaInput } from '../../shared/ta-input/ta-input.config';
 
 import { Subject, takeUntil } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { descriptionValidation } from '../../shared/ta-input/ta-input.regex-validations';
 
@@ -87,6 +88,15 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     fuelSurcharge: number;
     escort: number;
     detention: number;
+  } = {
+    baseRate: 0,
+    adjusted: 0,
+    advance: 0,
+    layover: 0,
+    lumper: 0,
+    fuelSurcharge: 0,
+    escort: 0,
+    detention: 0,
   };
 
   public labelsTemplate: any[] = [];
@@ -106,13 +116,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public labelsYear: any[] = [];
   public labelsShippers: any[] = [];
 
-  // Load Details Labels
-  public labelsloadDetailsUnits: any[] = [];
-  public labelsLoadDetailsStackable: any[] = [];
-  public labelsLoadDetailsTarps: any[] = [];
-  public labelsLoadDriverAssis: any[] = [];
-  public labelsLoadStrapChain: any[] = [];
-
   public selectedTemplate: any = null;
   public selectedDispatcher: any = null;
   public selectedCompany: any = null;
@@ -128,7 +131,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public selectedYear: any = null;
   public selectedShipper: any = null;
 
-  // Selected Load Details
+  // Load Details Labels
+  public labelsloadDetailsUnits: any[] = [];
+  public labelsLoadDetailsStackable: any[] = [];
+  public labelsLoadDetailsTarps: any[] = [];
+  public labelsLoadDriverAssis: any[] = [];
+  public labelsLoadStrapChain: any[] = [];
+
   public selectedLoadDetailsUnits: any[] = [];
   public selectedLoadDetailsStackable: any[] = [];
   public selectedLoadDetailsTarps: any[] = [];
@@ -206,9 +215,15 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public documents: any[] = [];
   public comments: any[] = [];
 
+  public loadStopRoutes: {
+    routeColor: string;
+    stops: { lat: number; long: number; stopColor: string; empty: boolean }[];
+  }[] = [];
+
   public companyUser: SignInResponse = null;
 
   public isDateRange: boolean = false;
+
   public isHazardousPicked: boolean = false;
   public isHazardousVisible: boolean = false;
 
@@ -229,17 +244,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     this.companyUser = JSON.parse(localStorage.getItem('user'));
     this.createForm();
     this.getLoadDropdowns();
-    this.loadModalBill = {
-      baseRate: 0,
-      adjusted: 0,
-      advance: 0,
-      lumper: 0,
-      layover: 0,
-      fuelSurcharge: 0,
-      escort: 0,
-      detention: 0,
-    };
+
     this.trackBillingPayment();
+    this.trackStopInformation();
   }
 
   private createForm() {
@@ -360,8 +367,42 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             };
           });
 
-          this.selectedBrokerContact = null;
-          this.loadForm.get('brokerContact').patchValue(null);
+          this.selectedBrokerContact = {
+            ...this.labelsBrokerContacts[1].contacts[0],
+            name: this.labelsBrokerContacts[1].contacts[0]?.contactName
+              ?.concat(' ', this.labelsBrokerContacts[1].contacts[0]?.phone)
+              .concat(
+                ' ',
+                this.labelsBrokerContacts[1].contacts[0]?.extensionPhone
+              ),
+          };
+
+          this.loadForm
+            .get('brokerContact')
+            .patchValue(this.selectedBrokerContact.name);
+
+          this.loadBrokerContactsInputConfig = {
+            ...this.loadBrokerContactsInputConfig,
+            multipleInputValues: {
+              options: [
+                {
+                  value: this.labelsBrokerContacts[1].contacts[0].name,
+                  logoName: null,
+                },
+                {
+                  value: this.labelsBrokerContacts[1].contacts[0].phone,
+                  logoName: null,
+                },
+                {
+                  value:
+                    this.labelsBrokerContacts[1].contacts[0].extensionPhone,
+                  logoName: null,
+                },
+              ],
+              customClass: 'load-broker-contact',
+            },
+            blackInput: true,
+          };
         } else {
           this.labelsBrokerContacts = this.originBrokerContacts;
         }
@@ -716,16 +757,20 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public trackStopInformation(loadStopId: number) {
+  public trackStopInformation() {
     this.loadForm
       .get('dateFrom')
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         const stop = this.loadStops().controls.find(
-          (item) => item.get('id').value === loadStopId
+          (item) =>
+            item.get('shipper').value === this.selectedShipper.name &&
+            item.get('location').value === this.selectedShipper.address
         );
 
-        stop.get('dateFrom').patchValue(value);
+        if (stop) {
+          stop.get('dateFrom').patchValue(value);
+        }
       });
 
     this.loadForm
@@ -733,10 +778,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         const stop = this.loadStops().controls.find(
-          (item) => item.get('id').value === loadStopId
+          (item) =>
+            item.get('shipper').value === this.selectedShipper.name &&
+            item.get('location').value === this.selectedShipper.address
         );
-
-        stop.get('dateTo').patchValue(value);
+        if (stop) {
+          stop.get('dateTo').patchValue(value);
+        }
       });
 
     this.loadForm
@@ -744,10 +792,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         const stop = this.loadStops().controls.find(
-          (item) => item.get('id').value === loadStopId
+          (item) =>
+            item.get('shipper').value === this.selectedShipper.name &&
+            item.get('location').value === this.selectedShipper.address
         );
-
-        stop.get('timeFrom').patchValue(value);
+        if (stop) {
+          stop.get('timeFrom').patchValue(value);
+        }
       });
 
     this.loadForm
@@ -755,10 +806,55 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         const stop = this.loadStops().controls.find(
-          (item) => item.get('id').value === loadStopId
+          (item) =>
+            item.get('shipper').value === this.selectedShipper.name &&
+            item.get('location').value === this.selectedShipper.address
         );
+        if (stop) {
+          stop.get('timeTo').patchValue(value);
+        }
+      });
+  }
 
-        stop.get('timeTo').patchValue(value);
+  public drawStopOnMap() {
+    this.routingService
+      .apiRoutingGet(
+        JSON.stringify(
+          this.loadStops()
+            .controls.filter((item) => item)
+            .map((item) => {
+              return {
+                longitude: item.get('longitude').value,
+                latitude: item.get('latitude').value,
+              };
+            })
+        )
+      )
+      .pipe(debounceTime(1000), takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: RoutingResponse) => {
+          console.log(res);
+        },
+        error: (err: any) => {
+          console.log(err);
+          // TODO: Populate lat and long with routesPoints
+          this.loadStopRoutes[0] = {
+            routeColor: '#919191',
+            stops: this.loadStops()
+              .controls.filter((item) => item)
+              .map((item) => {
+                return {
+                  lat: item.get('latitude').value,
+                  long: item.get('longitude').value,
+                  stopColor:
+                    item.get('stopMode').value === 'pickup'
+                      ? '#4db6a2'
+                      : '#ef5350',
+                  empty: true,
+                };
+              }),
+          };
+        },
       });
   }
 
@@ -783,44 +879,59 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         blackInput: true,
       };
 
-      // IF Load Stop Exist , just return
-      if (
-        this.loadStops().controls.find(
-          (item) =>
-            item.get('shipper').value === this.selectedShipper.name &&
-            item.get('location').value === this.selectedShipper.address
-        )
-      ) {
+      // If Load Stop Exist , just return
+      const existLoadStop = this.loadStops().controls.find(
+        (item) =>
+          item.get('shipper').value === this.selectedShipper.name &&
+          item.get('location').value === this.selectedShipper.address
+      );
+
+      if (existLoadStop) {
+        this.loadForm
+          .get('dateFrom')
+          .patchValue(existLoadStop.get('dateFrom').value, {
+            emitEvent: false,
+          });
+
+        this.loadForm
+          .get('dateTo')
+          .patchValue(existLoadStop.get('dateTo').value, { emitEvent: false });
+
+        this.loadForm
+          .get('timeFrom')
+          .patchValue(existLoadStop.get('timeFrom').value, {
+            emitEvent: false,
+          });
+
+        this.loadForm
+          .get('timeTo')
+          .patchValue(existLoadStop.get('timeTo').value, { emitEvent: false });
+
         return;
       }
 
-      // this.routingService
-      //   .apiRoutingGet(
-      //     JSON.stringify({
-      //       longitude: this.selectedShipper.longitude,
-      //       latitude: this.selectedShipper.latitude,
-      //     })
-      //   )
-      //   .pipe(takeUntil(this.destroy$))
-      //   .subscribe({
-      //     next: (res: RoutingResponse) => {
-      //       console.log(res);
-      //     },
-      //     error: (err: any) => {
-      //       console.log(err);
-      //     },
-      //   });
-
       this.addLoadStop();
+
+      if (
+        this.loadForm.get('dateFrom').value ||
+        this.loadForm.get('dateTo').value ||
+        this.loadForm.get('timeFrom').value ||
+        this.loadForm.get('timeTo').value
+      ) {
+        this.loadForm.get('dateFrom').patchValue(null, { emitEvent: false });
+        this.loadForm.get('dateTo').patchValue(null, { emitEvent: false });
+        this.loadForm.get('timeFrom').patchValue(null, { emitEvent: false });
+        this.loadForm.get('timeTo').patchValue(null, { emitEvent: false });
+      }
     }
   }
 
   public addLoadStop() {
     this.loadStops().push(this.newLoadStop());
+    this.drawStopOnMap();
   }
 
   public newLoadStop(): FormGroup {
-    this.trackStopInformation(this.loadStops().length + 1);
     return this.formBuilder.group({
       id: [this.loadStops().length + 1],
       shipper: [this.selectedShipper.name],
@@ -829,6 +940,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       dateTo: [null],
       timeFrom: [null],
       timeTo: [null],
+      longitude: [this.selectedShipper.longitude],
+      latitude: [this.selectedShipper.latitude],
       legMi: [null],
       total: [null],
       address: ['3905 Elliot Ave, Springdale, GA 72762, USA'],
@@ -848,6 +961,20 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
   public removeLoadStop(index: number) {
     this.loadStops().removeAt(index);
+    this.loadStopRoutes[0] = {
+      routeColor: '#919191',
+      stops: this.loadStops()
+        .controls.filter((item) => item)
+        .map((item) => {
+          return {
+            lat: item.get('latitude').value,
+            long: item.get('longitude').value,
+            stopColor:
+              item.get('stopMode').value === 'pickup' ? '#4db6a2' : '#ef5350',
+            empty: true,
+          };
+        }),
+    };
   }
 
   // Load Stop Details
@@ -890,12 +1017,27 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     this.loadStopsDetails(loadStopIndex).removeAt(loadStopDetailsIndex);
   }
 
-  public drop(event: CdkDragDrop<any[]>) {
+  public loadStopReordering(event: CdkDragDrop<any[]>) {
     moveItemInArray(
       this.loadStops().controls,
       event.previousIndex,
       event.currentIndex
     );
+
+    this.loadStopRoutes[0] = {
+      routeColor: '#919191',
+      stops: this.loadStops()
+        .controls.filter((item) => item)
+        .map((item) => {
+          return {
+            lat: item.get('latitude').value,
+            long: item.get('longitude').value,
+            stopColor:
+              item.get('stopMode').value === 'pickup' ? '#4db6a2' : '#ef5350',
+            empty: true,
+          };
+        }),
+    };
 
     moveItemInArray([], event.previousIndex, event.currentIndex);
   }
@@ -1079,6 +1221,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         },
       });
   }
+  private getLoadById(id: number) {}
+  private createLoad() {}
+  private updateLoad(id: number) {}
+  private saveLoadTemplate() {}
 
   ngOnDestroy(): void {
     this.destroy$.next();

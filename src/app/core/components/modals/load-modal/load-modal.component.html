@@ -12,6 +12,7 @@
 >
   <!-- Origin Tab -->
   <form
+    #originTab
     origin
     [formGroup]="loadForm"
     class="form-container form-container-without-mb"
@@ -426,7 +427,7 @@
           cdkDropList
           formArrayName="loadStops"
           class="common-fake-table-modal common-fake-table-modal-load-stops"
-          (cdkDropListDropped)="drop($event)"
+          (cdkDropListDropped)="loadStopReordering($event)"
         >
           <div class="common-fake-table-label">
             <p>#</p>
@@ -1165,6 +1166,7 @@
       'load-map-container': !isHazardousVisible,
       'load-hazardous-container': isHazardousVisible
     }"
+    [ngStyle]="{ height: originTab?.nativeElement?.height }"
   >
     <!-- Hazardous -->
     <app-load-modal-hazardous
@@ -1176,7 +1178,7 @@
     <app-maps
       *ngIf="!isHazardousVisible"
       [mapType]="'routing'"
-      [routes]="[]"
+      [routes]="loadStopRoutes"
       [ngStyle]="{ width: '100%', height: '100%' }"
     ></app-maps>
   </div>
