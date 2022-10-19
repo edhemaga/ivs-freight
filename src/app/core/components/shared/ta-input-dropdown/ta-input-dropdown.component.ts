@@ -913,6 +913,9 @@ export class TaInputDropdownComponent
   }
 
   public toggleMultiselectDropdown() {
+    if (this.inputConfig.isDisabled) {
+      return;
+    }
     this.isMultiSelectInputFocus = !this.isMultiSelectInputFocus;
 
     if (this.isMultiSelectInputFocus) {
