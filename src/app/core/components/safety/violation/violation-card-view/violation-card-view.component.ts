@@ -38,41 +38,6 @@ export class ViolationCardViewComponent implements OnInit, OnChanges {
       'How to pursue pleasure rationally encounter consequences that are extremely painful.'
     );
   }
-
-  // public countSpecialChecks(violDate: RoadsideInspectionResponse) {
-  //   this.specialChecksCounter = 0;
-  //   if (violDate?.alcContSubCheck) {
-  //     this.specialChecksCounter++;
-  //   }
-  //   if (violDate?.condByLocalJuris) {
-  //     this.specialChecksCounter++;
-  //   }
-  //   if (violDate?.sizeAndWeightEnf) {
-  //     this.specialChecksCounter++;
-  //   }
-  //   if (violDate?.eScreenInspection) {
-  //     this.specialChecksCounter++;
-  //   }
-  //   if (violDate?.trafficEnforcment) {
-  //     this.specialChecksCounter++;
-  //   }
-  //   if (violDate?.pasaConditionInsp) {
-  //     this.specialChecksCounter++;
-  //   }
-  //   if (violDate?.drugInterdSearch) {
-  //     this.specialChecksCounter++;
-  //   }
-  //   if (violDate?.borderEnfInspection) {
-  //     this.specialChecksCounter++;
-  //   }
-  //   if (violDate?.postCrashInspection) {
-  //     this.specialChecksCounter++;
-  //   }
-  //   if (violDate?.pbbtInspection) {
-  //     this.specialChecksCounter++;
-  //   }
-  // }
-
   public getViolationDropdown() {
     this.violationDropdown = this.violationMinimalQuery.getAll().map((item) => {
       return {
