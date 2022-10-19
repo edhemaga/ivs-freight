@@ -9,10 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FuelledVehicleResponsePagination } from './fuelledVehicleResponsePagination';
+import { FuelledVehicleResponse } from './fuelledVehicleResponse';
 
 
-export interface FuelledVehicleHistoryListResponse { 
-    pagination?: FuelledVehicleResponsePagination;
+export interface FuelledVehicleResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<FuelledVehicleResponse> | null;
 }
 

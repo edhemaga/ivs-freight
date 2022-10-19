@@ -1,9 +1,7 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
-  CreateMvrCommand,
   DriverResponse,
-  EditMvrCommand,
   GetMvrModalResponse,
   MvrResponse,
 } from 'appcoretruckassist';
@@ -18,6 +16,8 @@ import {
   convertDateToBackend,
   convertDateFromBackend,
 } from '../../../../../utils/methods.calculations';
+import { EditMvrCommand } from 'appcoretruckassist/model/editMvrCommand';
+import { CreateMvrCommand } from 'appcoretruckassist/model/createMvrCommand';
 
 @Component({
   selector: 'app-driver-mvr-modal',
