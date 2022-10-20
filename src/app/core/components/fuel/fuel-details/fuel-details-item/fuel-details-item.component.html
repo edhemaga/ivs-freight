@@ -1,9 +1,9 @@
 <div class="repair-component">
-  <div [ngSwitch]="data.template">
+  <div *ngFor="let fuel of fuelData; trackBy:identity" [ngSwitch]="fuel.template">
     <div *ngSwitchCase="'general'">
       <app-ta-details-header-card
         [cardDetailsName]=""
-        [cardDetailsDate]="'08/03/20'"
+        [cardDetailsDate]="fuel?.data?.createdAt | formatDateP"
         [tooltipNext]="'Next Fuel'"
         [tooltipPrevious]="'Previous Fuel'"
         [searchInputName]="'Search Fuel'"
@@ -18,7 +18,7 @@
               class="repair-icon"
               src="assets/svg/common/ic_phone.svg"
             ></svg-icon>
-            <p class="repair-value">(123) 546-6664</p>
+            <p class="repair-value">{{fuel?.data?.phone}}</p>
           </div>
 
           <div class="repair-information-item">
@@ -27,7 +27,7 @@
               src="assets/svg/common/ic_address.svg"
             ></svg-icon>
             <p class="repair-value">
-              5462 N East River Rd apt 611, Chicago, IL 60656, USA
+              {{fuel?.data?.address?.address}}
             </p>
           </div>
         </div>
