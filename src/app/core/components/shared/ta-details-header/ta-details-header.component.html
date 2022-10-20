@@ -73,7 +73,7 @@
         [ngClass]="{ 'has-counter-header': counterData }"
       >
         <app-ta-counter
-          *ngIf="(!danger && counterData) || counterData == 0"
+          *ngIf="(!danger && counterData ) || counterData == 0 && !hideCounter "
           [countBackgroud]="'#F3F3F3'"
           [countColor]="'#919191'"
           [countHeight]="'24px'"
@@ -93,6 +93,21 @@
             class="arrow-down-header"
             src="assets/svg/common/calendar/arrow-right.svg"
           ></svg-icon>
+        </div>
+        <div *ngIf="secondNameHeader" class="header-text-arrow-down">
+          <div class="second-counter">
+          <app-ta-counter
+          
+          [countBackgroud]="'#F3F3F3'"
+          [countColor]="'#919191'"
+          [countHeight]="'24px'"
+          [countWidth]="'24px'"
+          [count]="countViolation"
+        >
+        </app-ta-counter>
+      </div>
+          <p [ngClass]="{'pl-6-header':loadNames}" class="header-name disable-selection second-name-header-l">{{ secondNameHeader }}</p>
+         
         </div>
         <div *ngIf="hasIcon" class="repair-header-icons">
           <span

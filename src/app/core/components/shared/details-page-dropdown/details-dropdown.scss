@@ -147,7 +147,7 @@
           }
         }
       }
-
+      
       &.greenIcon{
         svg-icon {
           svg {
@@ -263,4 +263,10 @@
   }
   
 
+}
+.divider-drop-down {
+  width: 100%;
+  height: 1px;
+  border-radius: 1px;
+  background-color: #aaaaaa;
 }

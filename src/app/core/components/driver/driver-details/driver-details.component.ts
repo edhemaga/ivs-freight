@@ -168,7 +168,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   /**Function template and names for header and other options in header */
   public detailCongif(dataDriver: DriverResponse) {
     this.DetailsDataService.setNewData(dataDriver);
-    this.getDriverById(dataDriver.id);
+    this.driverObject = dataDriver;
     this.initTableOptions(dataDriver);
     this.checkExpiration(dataDriver);
 
@@ -280,7 +280,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
   /**Function for dots in cards */
   public initTableOptions(data: DriverResponse): void {
-    this.getDriverById(data.id);
     this.arrayActiveCdl = [];
     this.isActiveCdl = false;
     this.cdlActiveId = 0;
@@ -372,12 +371,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     };
   }
 
-  public getDriverById(id: number) {
-    this.driverService
-      .getDriverById(id, true)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((item) => (this.driverObject = item));
-  }
   public getCdlById(id: number) {
     this.cdlService
       .getCdlById(id)
