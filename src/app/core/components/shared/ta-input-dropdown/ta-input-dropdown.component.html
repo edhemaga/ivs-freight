@@ -62,39 +62,7 @@
         tooltipBackground="#6c6c6c"
         position="top"
         class="multiselect-item-clear"
-        (click)="removeMultiSelectItem(ind, 'multiselect')"
-      >
-        <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
-      </div>
-    </span>
-  </div>
-
-  <!-- Multiselect items Restrictions & Endorsments -->
-  <div
-    *ngIf="
-      inputConfig.multiselectDropdown &&
-      multiselectItems.length > 0 &&
-      template === 'multiselect-res-endors'
-    "
-    class="multiselect-items {{ multiselectTemplate }}"
-  >
-    <span
-      class="multiselect-item"
-      *ngFor="
-        let multiSelect of multiselectItems;
-        trackBy: identity;
-        let ind = index
-      "
-    >
-      {{ multiSelect.code | formatRestEndor: multiSelect.description }}
-      <div
-        *ngIf="!inputConfig.isDisabled"
-        ngbTooltip
-        mainTooltip="Clear"
-        tooltipBackground="#6c6c6c"
-        position="top"
-        class="multiselect-item-clear"
-        (click)="removeMultiSelectItem(ind, 'multiselect-res-endors')"
+        (click)="removeMultiSelectItem(ind)"
       >
         <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
       </div>
@@ -293,26 +261,6 @@
         </div>
       </div>
       <!--------------------------- Multiselect Template --------------------------->
-      <div *ngSwitchCase="'multiselect-res-endors'">
-        <div
-          *ngFor="let option of options; trackBy: identity"
-          class="dropdown-option"
-          [ngClass]="{
-            disabled: option?.disabled,
-            'no-result':
-              options.length === 1 && options[0].name === 'No Results',
-            active: option?.active,
-            'last-active': lastActiveMultiselectItem?.id === option.id
-          }"
-          (click)="onMultiselectSelect(option, 'multiselect-res-endors')"
-          [innerHtml]="
-            option.code
-              | formatRestEndor: option.description
-              | taHighlight: [{ index: 45632, text: getSuperControl.value }]
-          "
-        ></div>
-      </div>
-      <!--------------------------- Multiselect Template --------------------------->
       <div *ngSwitchCase="'multiselect'">
         <div
           *ngFor="let option of options; trackBy: identity"
@@ -324,7 +272,7 @@
             active: option?.active,
             'last-active': lastActiveMultiselectItem?.id === option.id
           }"
-          (click)="onMultiselectSelect(option, 'multiselect')"
+          (click)="onMultiselectSelect(option)"
           [innerHtml]="
             option.name
               | taHighlight: [{ index: 45632, text: getSuperControl.value }]

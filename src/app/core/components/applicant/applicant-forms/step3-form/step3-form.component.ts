@@ -288,9 +288,23 @@ export class Step3FormComponent
         (item) => item.name === formValue?.classType
       );
 
-      this.selectedRestrictions = formValue?.restrictions;
+      this.selectedRestrictions = this.formValuesToPatch.restrictions.map(
+        (item) => {
+          return {
+            ...item,
+            name: item.code.concat(' ', '-').concat(' ', item.description),
+          };
+        }
+      );
 
-      this.selectedEndorsments = formValue?.endorsments;
+      this.selectedEndorsments = this.formValuesToPatch.endorsments.map(
+        (item) => {
+          return {
+            ...item,
+            name: item.code.concat(' ', '-').concat(' ', item.description),
+          };
+        }
+      );
     }, 150);
   }
 
@@ -640,6 +654,20 @@ export class Step3FormComponent
     this.cardOpenAnnotationArrayValuesEmitter.emit(filteredOpenAnnotationArray);
 
     this.isCardReviewedIncorrect = false;
+
+    /*  this.restrictionsList = data.restrictions.map((item) => {
+          return {
+            ...item,
+            name: item.code.concat(' ', '-').concat(' ', item.description),
+          };
+        });
+        this.endorsmentsList = data.endorsements.map((item) => {
+          return {
+            ...item,
+            name: item.code.concat(' ', '-').concat(' ', item.description),
+          };
+        });
+      }); */
   }
 
   ngOnDestroy(): void {
