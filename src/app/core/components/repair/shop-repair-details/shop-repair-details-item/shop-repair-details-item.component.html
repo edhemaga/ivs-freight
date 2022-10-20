@@ -1,12 +1,14 @@
 <div class="repair-component">
-  <div [ngSwitch]="shopData.template">
+  <div [ngSwitch]="repairShopItem.template">
     <!---------------------------- GENERAL TEMPLATE ----------------------------->
     <div *ngSwitchCase="'general'">
-      <app-shop-repair-card-view [shopResponse]="shopData?.data">
+      <app-shop-repair-card-view
+        [repairShopCardViewData]="repairShopItem?.data"
+      >
       </app-shop-repair-card-view>
     </div>
     <div *ngSwitchCase="'repair'">
-      <div class="repair-container" *ngIf="shopData?.data?.repairs?.length">
+      <div class="repair-container" *ngIf="repairListData?.length">
         <div class="repair-header">
           <span class="repaier-headers">UNIT</span>
           <span class="repaier-headers">DATE</span>
@@ -17,21 +19,25 @@
         <div class="divider"></div>
         <div class="repair-items-wrapper">
           <span
-            *ngFor="let repairs of shopData?.data?.repairs; let i = index"
-            (click)="showRepairItems[repairs?.id]=!showRepairItems[repairs?.id]"
+            *ngFor="let repairs of repairListData; let i = index"
+            (click)="
+              showRepairItems[repairs?.id] = !showRepairItems[repairs?.id]
+            "
             class="item-shop-wrapper"
             [ngClass]="{
               'finish-order-cont': !repairs.invoice,
-              'open-items-body': showRepairItems[repairs?.id] && repairs.invoice,
+              'open-items-body':
+                showRepairItems[repairs?.id] && repairs.invoice,
               'open-items-body-no-invoice':
-                showRepairItems[i] && !repairs.invoice
+                showRepairItems[repairs?.id] && !repairs.invoice
             }"
           >
             <div class="repair-items">
               <div
                 class="items-header"
                 [ngClass]="{
-                  'open-items-body': showRepairItems[repairs?.id] && repairs.invoice,
+                  'open-items-body':
+                    showRepairItems[repairs?.id] && repairs.invoice,
                   'open-items-body-no-invoice':
                     showRepairItems[repairs?.id] && !repairs.invoice
                 }"
@@ -41,7 +47,11 @@
                     ? repairs.trailer.trailerNumber
                     : repairs.truck.truckNumber
                 }}</span>
-                <span class="date">{{repairs.date? (repairs.date | formatDateP): (repairs.createdAt | formatDateP) }}</span>
+                <span class="date">{{
+                  repairs.date
+                    ? (repairs.date | formatDateP)
+                    : (repairs.createdAt | formatDateP)
+                }}</span>
                 <span class="date"
                   ><span class="inv" *ngIf="repairs.invoice">{{
                     repairs.invoice
@@ -58,7 +68,10 @@
                   <span
                     class="item-desc"
                     *ngFor="let desc of repairs?.items; trackBy: identity"
-                    [ngClass]="{ 'have-pm-description':  desc?.pmTruck != null || desc?.pmTrailer != null }"
+                    [ngClass]="{
+                      'have-pm-description':
+                        desc?.pmTruck != null || desc?.pmTrailer != null
+                    }"
                     >{{ desc.description }}
                     <span
                       class="full-stop-shop"
@@ -94,7 +107,9 @@
             </div>
             <div
               *ngIf="repairs?.items?.length"
-              [@showHideCardBody]="showRepairItems[repairs?.id] ? 'true' : 'false'"
+              [@showHideCardBody]="
+                showRepairItems[repairs?.id] ? 'true' : 'false'
+              "
               [ngClass]="{
                 'no-repairs-inovice': !repairs.invoice
               }"
@@ -133,14 +148,17 @@
                       [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
                     ></svg-icon>
                     <svg-icon
-                    *ngIf="desc?.pmTrailer?.logoName"
-                    class="pm-icon"
-                    [src]="
-                      'assets/svg/common/repair-pm/' + desc?.pmTrailer?.logoName
-                    "
-                    [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
-                  ></svg-icon>
-                    <span class="description-item">{{ desc?.description }}</span>
+                      *ngIf="desc?.pmTrailer?.logoName"
+                      class="pm-icon"
+                      [src]="
+                        'assets/svg/common/repair-pm/' +
+                        desc?.pmTrailer?.logoName
+                      "
+                      [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
+                    ></svg-icon>
+                    <span class="description-item">{{
+                      desc?.description
+                    }}</span>
                   </div>
                   <span
                     *ngIf="desc.price"
@@ -161,7 +179,7 @@
     <div *ngSwitchCase="'repaired-vehicle'">
       <div
         class="repaired-vehicle-container"
-        *ngIf="shopData?.data?.repairsByUnit?.length"
+        *ngIf="repairedVehicleListData?.length"
       >
         <div class="repair-vehicle-header">
           <span class="repaier-headers">UNIT</span>
@@ -172,7 +190,10 @@
         <div class="divider"></div>
         <div
           class="repair-items-vehicle"
-          *ngFor="let vehicle of shopData.data.repairsByUnit; let i = index"
+          *ngFor="
+            let vehicle of repairedVehicleListData;
+            let i = index
+          "
         >
           <div class="items-vehicle">
             <span class="unit">{{ vehicle.unitNumber }}</span>

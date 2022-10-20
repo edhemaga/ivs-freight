@@ -303,9 +303,12 @@ export class TaInputComponent
       const elem =
         this.selectionInput == -1
           ? this.holder1.nativeElement
-          : this.span1.nativeElement; 
+          : this.span1.nativeElement;
 
-      if (this.selectionInput == -1 && e?.target?.nodeName === 'INPUT' || e?.relatedTarget?.nodeName === "INPUT") {
+      if (
+        (this.selectionInput == -1 && e?.target?.nodeName === 'INPUT') ||
+        e?.relatedTarget?.nodeName === 'INPUT'
+      ) {
         this.preventBlur = true;
         elem.focus();
         this.setSpanSelection(elem);
@@ -360,7 +363,7 @@ export class TaInputComponent
           this.inputConfig.name === 'timepicker'
         ) {
           this.focusBlur = setTimeout(() => {
-           // this.focusInput = false;
+            // this.focusInput = false;
             this.blurOnDateTime();
           }, 100);
         } else {
@@ -467,6 +470,30 @@ export class TaInputComponent
     if (this.inputConfig.isDisabled) {
       return;
     }
+
+    if (
+      (this.inputConfig.name === 'datepicker' ||
+        this.inputConfig.name === 'timepicker') &&
+      !this.inputConfig.isDisabled
+    ) {
+      if (this.t2) {
+        if (!this.t2.isOpen()) {
+          clearTimeout(this.dateTimeMainTimer);
+          clearTimeout(this.focusBlur);
+          this.holder1.nativeElement.focus();
+          this.selectionInput = -1;
+          this.setSpanSelection(this.holder1.nativeElement);
+          this.t2.open();
+        } else {
+          this.holder1.nativeElement.blur();
+          this.focusInput = false; 
+          let selection = window.getSelection();
+          selection.removeAllRanges();
+        }
+        return;
+      }
+    }
+
     this.dropdownToggler = !this.dropdownToggler;
 
     this.inputService.dropDownShowHide$.next(this.dropdownToggler);
@@ -475,15 +502,6 @@ export class TaInputComponent
       clearTimeout(this.timeout);
       this.input.nativeElement.focus();
       this.focusInput = true;
-    }
-    if (
-      (this.inputConfig.name === 'datepicker' ||
-        this.inputConfig.name === 'timepicker') &&
-      !this.inputConfig.isDisabled
-    ) {
-      if (this.t2) {
-        this.t2.open();
-      }
     }
   }
 
@@ -1523,15 +1541,14 @@ export class TaInputComponent
 
     const selectionInput = parseInt(element.getAttribute('tabindex'));
 
-    if(window.getSelection().toString().length > 10){
+    if (window.getSelection().toString().length > 10) {
       this.holder1.nativeElement.focus();
       this.selectionInput = 0;
       this.setSpanSelection(this.holder1.nativeElement);
       clearTimeout(this.dateTimeMainTimer);
       clearTimeout(this.focusBlur);
-      return; 
+      return;
     }
-
 
     clearTimeout(this.dateTimeMainTimer);
     if (element.classList.contains('main')) {
@@ -1593,17 +1610,18 @@ export class TaInputComponent
           this.selectSpanByTabIndex(this.selectionInput, true);
         }
       } else if (e.keyCode == 39 || e.keyCode == 9) {
-        console.log("SHIFT PRESSED",this.selectionInput );
         if (this.selectionInput != 2 && !e.shiftKey) {
           this.selectionInput = this.selectionInput + 1;
           this.selectSpanByTabIndex(this.selectionInput, true);
         } else if (e.keyCode == 9 && !e.shiftKey) {
-          let allInputs = document.querySelectorAll('input.input-control') as NodeListOf<HTMLInputElement>;
+          let allInputs = document.querySelectorAll(
+            'input.input-control'
+          ) as NodeListOf<HTMLInputElement>;
           [...(allInputs as any)].map((item, indx) => {
             if (item === this.input.nativeElement) {
               if (allInputs[indx + 1]) {
                 allInputs[indx + 1].focus();
-              }else{
+              } else {
                 this.focusInput = false;
                 this.blurOnDateTime();
               }
@@ -2047,6 +2065,7 @@ export class TaInputComponent
 
     this.showDateInput = true;
     this.selectionInput = -1;
+    this.focusInput = true;
 
     if (window.getSelection && document.createRange) {
       selection = window.getSelection();

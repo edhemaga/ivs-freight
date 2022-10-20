@@ -1,9 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
-  // CreateTestCommand,
   DriverResponse,
-  // EditTestCommand,
   GetTestModalResponse,
   TestResponse,
 } from 'appcoretruckassist';
@@ -19,6 +17,8 @@ import {
   convertDateToBackend,
   convertDateFromBackend,
 } from '../../../../../utils/methods.calculations';
+import { CreateTestCommand } from 'appcoretruckassist/model/createTestCommand';
+import { EditTestCommand } from 'appcoretruckassist/model/editTestCommand';
 
 @Component({
   selector: 'app-driver-drugAlcohol-modal',

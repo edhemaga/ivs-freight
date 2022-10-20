@@ -9,12 +9,13 @@ import {
 import { FormControl } from '@angular/forms';
 import { card_modal_animation } from '../animations/card-modal.animation';
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
+import { card_component_animation } from '../animations/card-component.animations';
 
 @Component({
   selector: 'app-ta-custom-card-v2',
   templateUrl: './ta-custom-card-v2.component.html',
   styleUrls: ['./ta-custom-card-v2.component.scss'],
-  animations: [card_modal_animation('showHideCardBody')],
+  animations: [card_component_animation('showHideCardBody')],
   encapsulation: ViewEncapsulation.None,
 })
 export class TaCustomCardV2Component {

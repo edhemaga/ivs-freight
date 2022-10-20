@@ -130,6 +130,10 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
   public identity(index: number, item: any): number {
     return index;
   }
+  public print() {
+    // do other stuff...
+    window.print();
+  }
   public getTruckById(id: number) {
     this.truckTService
       .getTruckById(id, true)
