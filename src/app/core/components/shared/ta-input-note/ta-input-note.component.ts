@@ -34,6 +34,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   @Input() isVisibleDivider: boolean = true;
   @Input() public animationsDisabled = false;
   @Input() noteType: string = '';
+  savingNote: boolean = false;
 
   noActive: string;
 
@@ -131,6 +132,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
 
   saveNote(allowSave?: boolean) {
     console.log('NOTE SAVED');
+    this.savingNote = true;
     if (this.value == '<br>') {
       this.value = this.value.replace('<br>', '');
     }
@@ -138,6 +140,9 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
       this.savedValue = this.value;
       this.getSuperControl.patchValue(this.value);
     }
+    setTimeout(()=>{
+      this.savingNote = false;
+    },1500)
   }
 
   prepareForTextRange() {
