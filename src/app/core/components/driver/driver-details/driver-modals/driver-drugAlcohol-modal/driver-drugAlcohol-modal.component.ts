@@ -191,7 +191,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   public updateTest() {
     const { testingDate } = this.drugForm.value;
 
-    const newData: EditTestCommand = {
+    const newData: /*EditTestCommand*/ any = {
       id: this.editData.file_id,
       ...this.drugForm.value,
       testingDate: convertDateToBackend(testingDate),
@@ -218,7 +218,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   public addTest() {
     const { testingDate } = this.drugForm.value;
 
-    const newData: CreateTestCommand = {
+    const newData: /*CreateTestCommand*/ any = {
       driverId: this.editData.id,
       ...this.drugForm.value,
       testingDate: convertDateToBackend(testingDate),

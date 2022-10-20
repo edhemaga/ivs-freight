@@ -315,6 +315,7 @@ export * from './mapMarkerListResponse';
 export * from './mapMinimalResponse';
 export * from './mapMinimalResponsePagination';
 export * from './mapResponse';
+export * from './markerNamesResponse';
 export * from './medicalResponse';
 export * from './milesByStateResponse';
 export * from './milesByUnitListResponse';

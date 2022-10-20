@@ -115,18 +115,16 @@
 
   .load-dispatches-ttd {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 58px);
     align-items: center;
-    -moz-column-gap: 86px;
-    column-gap: 86px;
+    -moz-column-gap: 70px;
+    column-gap: 70px;
   }
 
   .load-broker-contact {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 120px);
     align-items: center;
-    -moz-column-gap: 84px;
-    column-gap: 84px;
   }
 
   .load-shipper {
