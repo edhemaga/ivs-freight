@@ -21,7 +21,11 @@
     <!-------------------------------- FTL Tab -------------------------------->
     <div *ngIf="selectedTab === 1" class="m-tab">
       <div class="load-ftl-first-row">
-        <div class="ftl-load-status">UNASSIGNED</div>
+        <app-load-modal-statuses
+          [mode]="'Create'"
+          [statuses]="loadCreateStatuses"
+          [active]="loadCreateStatuses | activeLoadStatus"
+        ></app-load-modal-statuses>
         <app-ta-input-dropdown
           formControlName="selectTemplate"
           [inputConfig]="{
@@ -150,7 +154,10 @@
               svg: true,
               image: false,
               url: selectedBroker?.logoName,
-              class: 'load-broker',
+              class: 'load-broker'.concat(
+                ' ',
+                selectedBroker?.availableCreditType?.name?.toLowerCase()
+              ),
               template: 'user'
             },
             textTransform: 'capitalize',
