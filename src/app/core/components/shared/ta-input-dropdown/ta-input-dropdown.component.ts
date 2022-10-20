@@ -457,16 +457,11 @@ export class TaInputDropdownComponent
     }
     // Group Dropdown Items
     else {
-      console.log('groups');
       if (
         searchText?.length &&
         this.activeItem?.name !== this.getSuperControl.value
       ) {
-        console.log('search text: ', searchText);
-        console.log('active item: ', this.activeItem);
-        console.log('super control: ', this.getSuperControl.value);
         if (this.template === 'groups') {
-          console.log('original options: ', this.originalOptions);
           this.options = this.originalOptions
             .map((element) => {
               return {
@@ -480,8 +475,6 @@ export class TaInputDropdownComponent
             })
             .filter((item) => item.groups.length);
         }
-
-        console.log('options: ', this.options);
 
         if (this.template === 'load-broker-contact') {
           this.options = this.originalOptions.map((element) => {
@@ -788,52 +781,6 @@ export class TaInputDropdownComponent
         };
       })
     );
-    //   break;
-    // }
-    // case 'multiselect-res-endors': {
-    //   if (this.multiselectItems.some((item) => item.id === option.id)) {
-    //     return;
-    //   }
-
-    //   this.options = this.originalOptions.map((item) => {
-    //     if (item.id === option.id) {
-    //       return {
-    //         ...item,
-    //         active: true,
-    //       };
-    //     } else {
-    //       if (!item.active) {
-    //         return {
-    //           ...item,
-    //           active: false,
-    //         };
-    //       } else {
-    //         return {
-    //           ...item,
-    //           active: true,
-    //         };
-    //       }
-    //     }
-    //   });
-
-    //   this.multiselectItems = this.options.filter((item) => item.active);
-
-    //   this.selectedItems.emit(
-    //     this.multiselectItems.map((item) => {
-    //       const { id, name, code, description } = item;
-    //       return {
-    //         id,
-    //         name,
-    //         code,
-    //         description,
-    //       };
-    //     })
-    //   );
-    //   break;
-    // }
-    // default: {
-    //   break;
-    // }
 
     this.options = this.options.sort(
       (x, y) => Number(y.active) - Number(x.active)
@@ -876,25 +823,11 @@ export class TaInputDropdownComponent
       this.inputConfig.label = this.multiSelectLabel;
     }
 
-    // if (action === 'multiselect') {
     this.selectedItems.emit(
       this.multiselectItems.map((item) => {
         return { ...item };
       })
     );
-    // }
-    // else {
-    //   this.selectedItems.emit(
-    //     this.multiselectItems.map((item) => {
-    //       const { id, code, description } = item;
-    //       return {
-    //         id,
-    //         code,
-    //         description,
-    //       };
-    //     })
-    //   );
-    // }
   }
 
   public deleteAllMultiSelectItems(currentLabel?: string) {

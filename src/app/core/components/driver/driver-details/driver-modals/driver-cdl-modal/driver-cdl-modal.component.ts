@@ -172,8 +172,18 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             };
           });
           this.classTypes = res.classTypes;
-          this.endorsements = res.endorsements;
-          this.restrictions = res.restrictions;
+          this.endorsements = res.endorsements.map((item) => {
+            return {
+              ...item,
+              name: item.code.concat(' ', '-').concat(' ', item.description),
+            };
+          });
+          this.restrictions = res.restrictions.map((item) => {
+            return {
+              ...item,
+              name: item.code.concat(' ', '-').concat(' ', item.description),
+            };
+          });
         },
         error: () => {
           this.notificationService.error(
@@ -264,9 +274,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
               name: item.code.concat(' ', '-').concat(' ', item.description),
             };
           });
-          console.log('get by id');
-          console.log(this.selectedEndorsment);
-          console.log(this.selectedRestrictions);
+          console.log('endorsment component: ', this.selectedEndorsment);
+          console.log('restrictions component: ', this.selectedRestrictions);
           this.selectedClassType = res.classType;
           this.selectedStateType = res.state;
         },
