@@ -100,6 +100,5 @@ export interface ITaInput {
   multiSelectDropdownActive?: boolean;
 
   // Address
-  onlyCityAndZipAddress?: boolean;
-  addressFlag?: string; // added text in right corner and this flag will be disabled clear button, invalid danger mark
+  addressFlag?: string; // added text in right corner and this flag will be disabled clear button, invalid danger mark\
 }
