@@ -942,6 +942,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           customClass: 'load-shipper',
         },
       };
+      this.loadForm.get('shipper').patchValue(null, { emitEvent: false });
       this.loadForm.get('dateFrom').patchValue(null, { emitEvent: false });
       this.loadForm.get('dateTo').patchValue(null, { emitEvent: false });
       this.loadForm.get('timeFrom').patchValue(null, { emitEvent: false });
