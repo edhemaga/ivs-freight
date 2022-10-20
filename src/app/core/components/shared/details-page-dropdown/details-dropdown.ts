@@ -10,6 +10,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { animate, style, transition, trigger, state, keyframes } from '@angular/animations';
 
 @Component({
   selector: 'app-details-page-dropdown',
@@ -17,6 +18,32 @@ import { DetailsDataService } from '../../../services/details-data/details-data.
   styleUrls: ['./details-dropdown.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations:[
+    trigger('SubtypeAnimation', [
+      state(
+        'true',
+        style({
+          height: '*',
+          overflow: 'hidden',
+          opacity: 1,
+          'padding-bottom' : '4px',
+          'padding-top' : '9px'
+        })
+      ),
+      state(
+        'false',
+        style({
+          height: '0px',
+          overflow: 'hidden',
+          'padding-bottom' : '0px',
+          'padding-top' : '0px',
+          opacity: 0,
+        })
+      ),
+      transition('false <=> true', [animate('.3s ease-in')]),
+      transition('true <=> false', [animate('.3s ease-in')]), 
+    ])
+  ]
 })
 export class DetailsDropdownComponent implements OnInit, OnChanges {
   @Input() options: any;
@@ -82,4 +109,17 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
 
     this.tooltip.close();
   }
+
+  openSubtype(indx){
+    if (this.options[indx]['openSubtype']) {
+      this.options[indx]['openSubtype'] = false;
+    } else {
+      this.options.map((item) => {
+        item['openSubtype'] = false;
+      });
+      this.options[indx]['openSubtype'] = true;
+    }
+    
+  }
+
 }

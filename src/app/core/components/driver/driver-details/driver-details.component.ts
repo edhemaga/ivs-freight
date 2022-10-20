@@ -323,11 +323,13 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         },
         {
           title: 'Add New',
-          svg: 'assets/svg/common/fill_arrow_down.svg',
+          svg: 'assets/svg/common/dropdown-arrow.svg',
+          subType: ['CDL', 'Test (Drug, Alcohol)', 'Medical Exam', 'MVR']
         },
         {
           title: 'Request',
-          svg: 'assets/svg/common/fill_arrow_down.svg',
+          svg: 'assets/svg/common/dropdown-arrow.svg',
+          subType: ['Background Check', 'Medical Exam', 'Test (Drug, Alcohol)', 'MVR']
         },
         {
           title: 'border'
@@ -354,7 +356,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           activate: data.status == 0 ? true : false,
           deactivate: data.status == 1 ? true : false,
           show: data.status == 1 || data.status == 0 ? true : false,
-          redIcon: true,
+          redIcon: data.status == 1 ? true : false,
+          blueIcon: data.status == 0 ? true : false,
         },
         {
           title: 'Delete',

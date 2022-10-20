@@ -9,7 +9,7 @@
   width: 26px;
   height: 26px;
   border-radius: 2px;
-
+  
   .dropdown-dots {
     cursor: pointer;
     svg {
@@ -107,10 +107,12 @@
       height: 18px;
       width: 18px;
       margin-right: 5px;
-
+     
       svg-icon {
         display: flex;
         align-items: center;
+        transform: rotate(0deg);
+        transition: all 0.3s ease-in;
         svg {
 
           rect{
@@ -147,7 +149,7 @@
           }
         }
       }
-      
+
       &.greenIcon{
         svg-icon {
           svg {
@@ -244,6 +246,58 @@
         }
       }
       
+    }
+  }
+
+  .subTypeHolder{
+    height: auto;
+    min-height: 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 4px;
+    transition: all 0.3s ease-in;
+
+    .subtype-holder{
+      width: calc(100% - 8px);
+      padding-top: 10px;
+
+      .subtypeTitle{
+        color: #fff;
+        font-size: 14px;
+        padding-left: 8px;
+        line-height: 26px;
+        margin-bottom: 4px;
+        border-radius: 1px;
+        &:hover{
+          background-color: #1D1D1D;
+        }
+
+      }
+
+    }
+  }
+
+  .openedSubtype{
+    background-color: #AAAAAA10;
+
+    .actionTitle{
+      font-weight: 700;
+      transition: all 0.3s ease-in;
+    }
+
+    .actionIcon{
+      svg-icon{
+        transform: rotate(180deg);
+      }
+    }
+
+    &:hover{
+      background-color: #AAAAAA10;
+      
+      .actionTitle{
+        color: #FFFFFF;
+      }
     }
 
   }

@@ -1,7 +1,7 @@
 <div
   #t2="ngbPopover"
   (click)="toggleDropdown(t2)"
-  [autoClose]="true"
+  [autoClose]="'outside'"
   [ngbPopover]="dropdownPopover"
   [placement]="placement"
   class="details-dropdown-container"
@@ -33,11 +33,18 @@
             </div>
           </div>
         </div>
-        <div class="action-holder" *ngIf="action.title == 'Add New' || action.title == 'Request' ">
+        <div class="action-holder subTypeHolder" [class.openedSubtype]="action.openSubtype" *ngIf="action.title == 'Add New' || action.title == 'Request' " (click)="openSubtype(i)">
           <div class="action-select-holder">  
             <div class="actionTitle">{{action.title}}</div>
             <div class="actionIcon arrowIcon">
               <svg-icon src="{{action.svg}}" ></svg-icon>
+            </div>
+          </div>
+          <div class="subtype-holder" 
+            [@SubtypeAnimation]="action.openSubtype ? true : false"
+            >
+            <div class="subtypeTitle" *ngFor="let sub of action.subType">
+              {{sub}}
             </div>
           </div>
         </div>
