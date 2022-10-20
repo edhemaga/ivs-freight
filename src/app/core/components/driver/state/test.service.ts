@@ -66,7 +66,7 @@ export class TestTService implements OnDestroy {
     );
   }
 
-  public updateTest(data: EditTestCommand): Observable<object> { 
+  public updateTest(data: EditTestCommand): Observable<object> {
     const sortedParams = getFunctionParams(this.drugService.apiTestPut, data);
     return this.drugService.apiTestPut(...sortedParams).pipe(
       tap((res: any) => {
