@@ -1220,10 +1220,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.labelsBroker = res.brokers.map((item) => {
             return {
               ...item,
-              name: item.businessName,
-              status: item.availableCreditType.name,
+              name: item?.businessName,
+              status: item.availableCreditType?.name,
               logoName:
-                item.dnu || item.ban
+                item?.dnu || item?.ban
                   ? 'ic_load-broker-dnu-ban.svg'
                   : 'ic_load-broker-credit.svg',
             };
@@ -1237,7 +1237,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 contacts: item.contacts.map((item) => {
                   return {
                     ...item,
-                    name: item.contactName,
+                    name: item?.contactName,
                     extensionPhone: item.extensionPhone
                       ? item.extensionPhone
                       : '321',
@@ -1250,14 +1250,17 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.labelsDispatcher = res.dispatchers.map((item) => {
             return {
               ...item,
-              name: item.fullName,
-              logoName: item.avatar,
+              name: item?.fullName,
+              logoName: item?.avatar,
             };
           });
           const initialDispatcher = this.labelsDispatcher.find(
             (item) =>
-              item.name ===
-              this.companyUser.firstName.concat(' ', this.companyUser.lastName)
+              item?.name ===
+              this.companyUser?.firstName?.concat(
+                ' ',
+                this.companyUser?.lastName
+              )
           );
           this.loadForm.get('dispatcher').patchValue(initialDispatcher.name);
           this.selectedDispatcher = initialDispatcher;
@@ -1275,7 +1278,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.labelsCompanies = res.companies.map((item) => {
             return {
               ...item,
-              name: item.companyName,
+              name: item?.companyName,
             };
           });
 
@@ -1308,17 +1311,17 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 },
                 truck: {
                   ...item.truck,
-                  name: `# ${item.truck.truckNumber}`,
+                  name: `# ${item.truck?.truckNumber}`,
                 },
                 trailer: {
                   ...item.trailer,
-                  name: `# ${item.trailer.trailerNumber}`,
+                  name: `# ${item.trailer?.trailerNumber}`,
                 },
               };
             });
 
           this.labelsDispatches = this.labelsDispatches.filter(
-            (item) => item.dispatcherId === this.selectedDispatcher.id
+            (item) => item?.dispatcherId === this.selectedDispatcher.id
           );
 
           // Door Type
@@ -1374,8 +1377,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.labelsShippers = res.shippers.map((item) => {
             return {
               ...item,
-              name: item.businessName,
-              address: item.address.address,
+              name: item?.businessName,
+              address: item.address?.address,
             };
           });
 
@@ -1399,8 +1402,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             (item) => {
               return {
                 ...item,
-                name: item.description,
-                logoName: item.logoName.includes('explosives')
+                name: item?.description,
+                logoName: item?.logoName?.includes('explosives')
                   ? 'ic_explosives.svg'
                   : item.logoName,
                 folder: 'common',
