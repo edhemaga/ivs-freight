@@ -353,6 +353,9 @@
 
           <div
             class="d-flex align-items-center justify-content-center text-center notice-info-container"
+            [ngStyle]="{
+              'margin-bottom': applicantCardInfo.ssn ? 0 : '20px'
+            }"
           >
             <p
               class="m-0 ta-font-regular"
@@ -370,6 +373,7 @@
 
           <div
             class="d-flex flex-column justify-content-center applicant-card-container"
+            *ngIf="applicantCardInfo.ssn"
           >
             <div
               class="d-flex align-items-center"

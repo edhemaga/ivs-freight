@@ -487,7 +487,13 @@ export class Step6Component implements OnInit, OnDestroy {
 
     this.formValuesToPatch = filteredLastItemInContactsArray;
     this.previousFormValuesOnReview = filteredLastItemInContactsArray;
-    this.previousFormValuesOnEdit = filteredLastItemInContactsArray;
+    this.previousFormValuesOnEdit = this.contactsArray.length
+      ? filteredLastItemInContactsArray
+      : {
+          name: null,
+          phone: null,
+          relationship: null,
+        };
 
     for (let i = 0; i < filteredContactsArray.length; i++) {
       const firstEmptyObjectInList = this.openAnnotationArray.find(

@@ -210,8 +210,8 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
     this.selectedEmployer = firstItemInRequestsBoxValues;
 
     this.sphTabForm.patchValue({
-      previousEmployer: firstItemInRequestsBoxValues.name,
-      applicantName: firstItemInRequestsBoxValues.applicantName,
+      previousEmployer: firstItemInRequestsBoxValues?.name,
+      applicantName: firstItemInRequestsBoxValues?.applicantName,
     });
 
     this.updateRequests(firstItemInRequestsBoxValues);
@@ -272,7 +272,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
   public updateRequests(selectedEmployerRequests: any) {
     this.previousRequests.clear();
 
-    const selectedRequestsLength = selectedEmployerRequests.requests?.length
+    const selectedRequestsLength = selectedEmployerRequests?.requests?.length
       ? selectedEmployerRequests.requests.length
       : null;
 

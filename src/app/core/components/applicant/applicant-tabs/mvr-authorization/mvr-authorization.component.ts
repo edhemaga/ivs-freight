@@ -25,7 +25,7 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 export class MvrAuthorizationComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public mvrAuthorizationForm: FormGroup;
   public dontHaveMvrForm: FormGroup;
@@ -66,13 +66,13 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     this.applicantQuery.cdlInformationList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        const lastLicenseAdded: any = res.licences[res.licences.length - 1];
+        const lastLicenseAdded: any = res?.licences[res.licences.length - 1];
 
         this.lastValidLicense = {
-          license: lastLicenseAdded.licenseNumber,
-          state: lastLicenseAdded.state.stateShortName,
-          classType: lastLicenseAdded.class.name,
-          expDate: convertDateFromBackend(lastLicenseAdded.expDate),
+          license: lastLicenseAdded?.licenseNumber,
+          state: lastLicenseAdded?.state?.stateShortName,
+          classType: lastLicenseAdded?.class?.name,
+          expDate: convertDateFromBackend(lastLicenseAdded?.expDate),
         };
       });
 

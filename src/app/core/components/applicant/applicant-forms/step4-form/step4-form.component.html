@@ -13,6 +13,7 @@
           dropdownWidthClass: 'w-col-445',
           minLength: 6,
           maxLength: 256,
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [placeholderType]="'shortAddress'"
@@ -32,6 +33,7 @@
           placeholderIcon: 'date',
           isRequired: true,
           customClass: 'datetimeclass',
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="openAnnotationArray[10].lineInputs[1]"
@@ -77,13 +79,15 @@
             hideRequiredCheck: true,
             hideClear: true,
             hideErrorMessage: true,
-            textAlign: 'center'
+            textAlign: 'center',
+            isDisabled: selectedMode === 'REVIEW_MODE'
           }"
           [name]="'Fatalities #'"
           [elementOrder]="1"
           [minimum]="0"
           [type]="'applicant'"
           [selectedMode]="selectedMode"
+          [disabledArrow]="selectedMode === 'REVIEW_MODE'"
         ></app-ta-input-arrows>
       </div>
 
@@ -97,13 +101,15 @@
             hideRequiredCheck: true,
             hideClear: true,
             hideErrorMessage: true,
-            textAlign: 'center'
+            textAlign: 'center',
+            isDisabled: selectedMode === 'REVIEW_MODE'
           }"
           [name]="'Injuries #'"
           [elementOrder]="2"
           [minimum]="0"
           [type]="'applicant'"
           [selectedMode]="selectedMode"
+          [disabledArrow]="selectedMode === 'REVIEW_MODE'"
         ></app-ta-input-arrows>
       </div>
     </div>
@@ -151,6 +157,7 @@
           label: 'Vehicle type',
           isRequired: true,
           isDropdown: true,
+          isDisabled: selectedMode === 'REVIEW_MODE',
           dropdownWidthClass: 'w-col-applicant-t-type',
           dropdownImageInput: {
             withText: true,
@@ -163,13 +170,10 @@
               .replace(' ', '')
               .toLowerCase()
           },
-          customClass: 'truck-trailer-dropdown',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
+          customClass: 'truck-trailer-dropdown'
         }"
         [activeItem]="selectedVehicleType"
         [options]="vehicleType"
-        [incorrectValue]="openAnnotationArray[11].lineInputs[0]"
-        (incorrectEvent)="incorrectInput($event, 0, 11)"
         (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
       ></app-ta-input-dropdown>
     </div>
@@ -184,6 +188,7 @@
           maxLength: 160,
           textTransform: 'capitalize',
           isRequired: true,
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="openAnnotationArray[11].lineInputs[1]"

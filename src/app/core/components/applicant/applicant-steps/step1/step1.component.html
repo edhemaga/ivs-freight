@@ -95,8 +95,8 @@
               maxLength: 26,
               textTransform: 'capitalize',
               autoFocus: true,
-              incorrectInput: selectedMode === 'REVIEW_MODE',
-              isDisabled: true
+              isDisabled: selectedMode === 'REVIEW_MODE',
+              incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="openAnnotationArray[0].lineInputs[0]"
             (incorrectEvent)="incorrectInput($event, 0, 0)"
@@ -113,6 +113,7 @@
               minLength: 2,
               maxLength: 26,
               textTransform: 'capitalize',
+              isDisabled: selectedMode === 'REVIEW_MODE',
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="openAnnotationArray[0].lineInputs[1]"
@@ -129,6 +130,7 @@
               placeholderIcon: 'date',
               isRequired: true,
               customClass: 'datetimeclass',
+              isDisabled: selectedMode === 'REVIEW_MODE',
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="openAnnotationArray[0].lineInputs[2]"
@@ -176,6 +178,7 @@
               placeholderIcon: 'phone',
               mask: '(000) 000-0000',
               maxLength: 14,
+              isDisabled: selectedMode === 'REVIEW_MODE',
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="openAnnotationArray[1].lineInputs[0]"
@@ -335,19 +338,21 @@
                           isRequired: true,
                           placeholderIcon: 'address',
                           textTransform: 'capitalize',
-                          dropdownWidthClass: isEditingArray[i]?.isEditing &&
-                          !isEditingArray[i]?.isEditingAddress &&
-                          !isLastInputDeleted &&
-                          !isEditingArray[i]?.isFirstAddress
-                            ? 'w-col-442'
-                            : isEditingArray[i]?.isEditing &&
-                              !isEditingArray[i]?.isEditingAddress &&
-                              isEditingArray[i]?.isFirstAddress &&
-                              previousAddresses.controls.length === 1
-                            ? 'w-col-480'
-                            : 'w-col-412',
+                          dropdownWidthClass:
+                            isEditingArray[i]?.isEditing &&
+                            !isEditingArray[i]?.isEditingAddress &&
+                            !isLastInputDeleted &&
+                            !isEditingArray[i]?.isFirstAddress
+                              ? 'w-col-442'
+                              : isEditingArray[i]?.isEditing &&
+                                !isEditingArray[i]?.isEditingAddress &&
+                                isEditingArray[i]?.isFirstAddress &&
+                                previousAddresses.controls.length === 1
+                              ? 'w-col-480'
+                              : 'w-col-412',
                           minLength: 6,
                           maxLength: 256,
+                          isDisabled: selectedMode === 'REVIEW_MODE',
                           incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
                         [placeholderType]="'longAddress'"
@@ -381,9 +386,22 @@
                           minLength: 1,
                           maxLength: 10,
                           textTransform: 'uppercase',
+                          isDisabled: selectedMode === 'REVIEW_MODE',
                           incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
-                        [incorrectValue]="false"
+                        [incorrectValue]="
+                          openAnnotationArray[6].lineInputs
+                            ? openAnnotationArray[6].lineInputs[1]
+                            : openAnnotationArray[5].lineInputs
+                            ? openAnnotationArray[5].lineInputs[1]
+                            : openAnnotationArray[4].lineInputs
+                            ? openAnnotationArray[4].lineInputs[1]
+                            : openAnnotationArray[3].lineInputs
+                            ? openAnnotationArray[3].lineInputs[1]
+                            : openAnnotationArray[2].lineInputs
+                            ? openAnnotationArray[2].lineInputs[1]
+                            : false
+                        "
                         (incorrectEvent)="incorrectInput($event, 1, i + 2)"
                       ></app-ta-input>
                     </div>
@@ -432,6 +450,7 @@
 
                     <div
                       class="d-flex align-items-center justify-content-center delete-btn-container"
+                      [ngClass]="{ disabled: selectedMode === 'REVIEW_MODE' }"
                       *ngIf="
                         isEditingArray[i]?.isEditing &&
                         !isEditingArray[i]?.isEditingAddress &&
@@ -673,6 +692,7 @@
               isRequired: true,
               mask: '000-00-0000',
               maxLength: 11,
+              isDisabled: selectedMode === 'REVIEW_MODE',
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="openAnnotationArray[7].lineInputs[0]"
@@ -692,13 +712,11 @@
               textTransform: 'uppercase',
               isDropdown: true,
               dropdownWidthClass: 'w-col-416',
-              incorrectInput: selectedMode === 'REVIEW_MODE'
+              isDisabled: selectedMode === 'REVIEW_MODE'
             }"
             [activeItem]="selectedBank"
             [options]="banksDropdownList"
             [canAddNew]="true"
-            [incorrectValue]="openAnnotationArray[7].lineInputs[1]"
-            (incorrectEvent)="incorrectInput($event, 1, 7)"
             (saveItem)="onSaveNewBank($event)"
             (selectedItem)="handleInputSelect($event, 'BANK')"
           ></app-ta-input-dropdown>
@@ -740,7 +758,9 @@
               name: 'account-bank',
               type: 'text',
               label: 'Account number',
-              isDisabled: !isBankSelected,
+              isDisabled:
+                (selectedMode === 'APPLICANT_MODE' && !isBankSelected) ||
+                selectedMode === 'REVIEW_MODE',
               isRequired: isBankSelected,
               maxLength: 17,
               minLength: 5,
@@ -757,7 +777,9 @@
               name: 'routing-bank',
               type: 'text',
               label: 'Routing number',
-              isDisabled: !isBankSelected,
+              isDisabled:
+                (selectedMode === 'APPLICANT_MODE' && !isBankSelected) ||
+                selectedMode === 'REVIEW_MODE',
               isRequired: isBankSelected,
               minLength: 9,
               maxLength: 9,
@@ -854,6 +876,7 @@
                   textTransform: 'capitalize',
                   placeholder: 'Please explain',
                   placeholderInsteadOfLabel: true,
+                  isDisabled: selectedMode === 'REVIEW_MODE',
                   incorrectInput: selectedMode === 'REVIEW_MODE'
                 }"
                 [incorrectValue]="openAnnotationArray[i + 9].lineInputs[0]"

@@ -15,6 +15,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription, Subject, takeUntil } from 'rxjs';
 
+import moment from 'moment';
+
 import {
   anyInputInLineIncorrect,
   isFormValueEqual,
@@ -258,14 +260,6 @@ export class Step2FormComponent
     this.getDropdownLists();
 
     this.isDriverPosition();
-
-    if (this.selectedMode === SelectedMode.APPLICANT) {
-      if (this.formValuesToPatch) {
-        this.patchForm(this.formValuesToPatch);
-
-        this.startValueChangesMonitoring();
-      }
-    }
   }
 
   ngAfterViewInit(): void {
@@ -365,13 +359,20 @@ export class Step2FormComponent
         }
       }
 
-      if (this.selectedMode === SelectedMode.REVIEW) {
+      if (
+        this.selectedMode === SelectedMode.REVIEW ||
+        this.selectedMode === SelectedMode.APPLICANT
+      ) {
         if (
           changes.formValuesToPatch?.previousValue !==
           changes.formValuesToPatch?.currentValue
         ) {
           setTimeout(() => {
             this.patchForm(changes.formValuesToPatch.currentValue);
+
+            if (this.selectedMode === SelectedMode.APPLICANT) {
+              this.startValueChangesMonitoring();
+            }
           }, 100);
         }
       }
@@ -442,76 +443,126 @@ export class Step2FormComponent
       if (formValue.workExperienceItemReview) {
         const {
           isEmployerValid,
+          employerMessage,
           isJobDescriptionValid,
           isFromValid,
           isToValid,
+          jobDescriptionMessage,
           isPhoneValid,
           isEmailValid,
           isFaxValid,
+          contactMessage,
           isAddressValid,
           isAddressUnitValid,
-          isReasonForLeavingValid,
+          addressMessage,
           isAccountForPeriodBetweenValid,
+          accountForPeriodBetweenMessage,
         } = formValue.workExperienceItemReview;
 
         this.openAnnotationArray[20] = {
           ...this.openAnnotationArray[20],
           lineInputs: [!isEmployerValid],
+          displayAnnotationButton:
+            !isEmployerValid && !employerMessage ? true : false,
+          displayAnnotationTextArea: employerMessage ? true : false,
         };
         this.openAnnotationArray[21] = {
           ...this.openAnnotationArray[21],
           lineInputs: [!isJobDescriptionValid, !isFromValid, !isToValid],
+          displayAnnotationButton:
+            (!isJobDescriptionValid || !isFromValid || !isToValid) &&
+            !jobDescriptionMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: jobDescriptionMessage ? true : false,
         };
         this.openAnnotationArray[22] = {
           ...this.openAnnotationArray[22],
           lineInputs: [!isPhoneValid, !isEmailValid, !isFaxValid],
+          displayAnnotationButton:
+            (!isPhoneValid || !isEmailValid || !isFaxValid) && !contactMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: contactMessage ? true : false,
         };
         this.openAnnotationArray[23] = {
           ...this.openAnnotationArray[23],
           lineInputs: [!isAddressValid, !isAddressUnitValid],
-        };
-        this.openAnnotationArray[25] = {
-          ...this.openAnnotationArray[25],
-          lineInputs: [!isReasonForLeavingValid],
+          displayAnnotationButton:
+            (!isAddressValid || !isAddressUnitValid) && !addressMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: addressMessage ? true : false,
         };
         this.openAnnotationArray[26] = {
           ...this.openAnnotationArray[26],
           lineInputs: [!isAccountForPeriodBetweenValid],
+          displayAnnotationButton:
+            !isAccountForPeriodBetweenValid && !accountForPeriodBetweenMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: accountForPeriodBetweenMessage
+            ? true
+            : false,
         };
+
+        const inputFieldsArray = JSON.stringify(
+          this.openAnnotationArray
+            .filter((item) => Object.keys(item).length !== 0)
+            .map((item) => item.lineInputs)
+        );
+
+        if (inputFieldsArray.includes('true')) {
+          this.hasIncorrectFieldsEmitter.emit(true);
+
+          this.isCardReviewedIncorrect = true;
+        } else {
+          this.hasIncorrectFieldsEmitter.emit(false);
+
+          this.isCardReviewedIncorrect = false;
+        }
+
+        this.workExperienceForm.patchValue({
+          firstRowReview: employerMessage,
+          secondRowReview: jobDescriptionMessage,
+          thirdRowReview: contactMessage,
+          fourthRowReview: addressMessage,
+          seventhRowReview: accountForPeriodBetweenMessage,
+        });
       }
     }
 
     this.workExperienceForm.patchValue({
-      employer: formValue.employer,
-      jobDescription: formValue.jobDescription,
-      fromDate: formValue.fromDate,
-      toDate: formValue.toDate,
-      employerPhone: formValue.employerPhone,
-      employerEmail: formValue.employerEmail,
-      employerFax: formValue.employerFax,
-      employerAddress: formValue.employerAddress.address,
-      employerAddressUnit: formValue.employerAddressUnit,
-      isDrivingPosition: formValue.isDrivingPosition,
-      cfrPart: formValue.cfrPart,
-      fmCSA: formValue.fmCSA,
-      reasonForLeaving: formValue.reasonForLeaving,
-      accountForPeriod: formValue.accountForPeriod,
+      employer: formValue?.employer,
+      jobDescription: formValue?.jobDescription,
+      fromDate: formValue?.fromDate,
+      toDate: formValue?.toDate,
+      employerPhone: formValue?.employerPhone,
+      employerEmail: formValue?.employerEmail,
+      employerFax: formValue?.employerFax,
+      employerAddress: formValue?.employerAddress?.address,
+      employerAddressUnit: formValue?.employerAddressUnit,
+      isDrivingPosition: formValue?.isDrivingPosition,
+      cfrPart: formValue?.cfrPart,
+      fmCSA: formValue?.fmCSA,
+      reasonForLeaving: formValue?.reasonForLeaving,
+      accountForPeriod: formValue?.accountForPeriod,
     });
 
-    this.selectedAddress = formValue.employerAddress;
+    this.selectedAddress = formValue?.employerAddress;
 
     setTimeout(() => {
       this.selectedReasonForLeaving = this.reasonsForLeaving.find(
-        (item) => item.name === formValue.reasonForLeaving
+        (item) => item.name === formValue?.reasonForLeaving
       );
     }, 150);
 
-    if (formValue.isDrivingPosition) {
+    if (formValue?.isDrivingPosition) {
       const lastItemInClassOfEquipmentArray =
-        formValue.classesOfEquipment[formValue.classesOfEquipment.length - 1];
+        formValue?.classesOfEquipment[formValue?.classesOfEquipment.length - 1];
 
       const restOfTheItemsInClassOfEquipmentArray = [
-        ...formValue.classesOfEquipment,
+        ...formValue?.classesOfEquipment,
       ];
 
       restOfTheItemsInClassOfEquipmentArray.pop();
@@ -574,18 +625,41 @@ export class Step2FormComponent
           employerAddress,
           applicantId,
           isEditingWorkHistory,
+          fromDate,
+          toDate,
+          workExperienceItemReview,
           ...previousFormValues
         } = this.formValuesToPatch;
 
-        previousFormValues.employerAddress = employerAddress.address;
+        previousFormValues.fromDate = moment(new Date(fromDate)).format(
+          'MM/DD/YY'
+        );
+        previousFormValues.toDate = moment(new Date(toDate)).format('MM/DD/YY');
+
+        previousFormValues.employerAddress = employerAddress?.address;
 
         this.editingCardAddress = employerAddress;
 
-        previousFormValues.classesOfEquipment = JSON.stringify(
-          previousFormValues.classesOfEquipment
-        );
+        if (previousFormValues?.classesOfEquipment[0]?.vehicleType) {
+          const sortedValues = previousFormValues?.classesOfEquipment.map(
+            (item) => {
+              return Object.keys(item)
+                .sort()
+                .reduce((accumulator, key) => {
+                  accumulator[key] = item[key];
+
+                  return accumulator;
+                }, {});
+            }
+          );
+
+          previousFormValues.classesOfEquipment = JSON.stringify(sortedValues);
+        } else {
+          previousFormValues.classesOfEquipment = JSON.stringify([null]);
+        }
 
         const {
+          employerAddress: newEmployerAddress,
           classOfEquipmentCards,
           classOfEquipmentSubscription,
           vehicleType: updatedVehicleType,
@@ -595,14 +669,20 @@ export class Step2FormComponent
           secondRowReview,
           thirdRowReview,
           fourthRowReview,
-          fifthRowReview,
+          fifthRowReview: updatedFifthRowReview,
           sixthRowReview,
           seventhRowReview,
           ...newFormValues
         } = updatedFormValues;
 
-        const { vehicleType, trailerType, ...classOfEquipmentForm } =
-          this.classOfEquipmentForm.value;
+        newFormValues.employerAddress = newEmployerAddress?.address;
+
+        const {
+          vehicleType,
+          trailerType,
+          fifthRowReview,
+          ...classOfEquipmentForm
+        } = this.classOfEquipmentForm.value;
 
         let vehicleTypeImageLocation: any;
         let trailerTypeImageLocation: any;
@@ -628,10 +708,26 @@ export class Step2FormComponent
           isEditingClassOfEquipment: false,
         };
 
-        newFormValues.classesOfEquipment = JSON.stringify([
-          ...this.classOfEquipmentArray,
-          lastClassOfEquipmentCard,
-        ]);
+        if (lastClassOfEquipmentCard.vehicleType) {
+          const newClassOfEquipment = [
+            ...this.classOfEquipmentArray,
+            lastClassOfEquipmentCard,
+          ];
+
+          const sortedValues = newClassOfEquipment.map((item) => {
+            return Object.keys(item)
+              .sort()
+              .reduce((accumulator, key) => {
+                accumulator[key] = item[key];
+
+                return accumulator;
+              }, {});
+          });
+
+          newFormValues.classesOfEquipment = JSON.stringify(sortedValues);
+        } else {
+          newFormValues.classesOfEquipment = JSON.stringify([null]);
+        }
 
         if (isFormValueEqual(previousFormValues, newFormValues)) {
           this.isWorkExperienceEdited = false;
@@ -831,7 +927,10 @@ export class Step2FormComponent
       ...workExperienceForm
     } = this.workExperienceForm.value;
 
-    this.selectedAddress.addressUnit = employerAddressUnit;
+    const selectedAddress = {
+      ...this.selectedAddress,
+      addressUnit: employerAddressUnit,
+    };
 
     let lastClassOfEquipmentCard: any;
 
@@ -863,7 +962,7 @@ export class Step2FormComponent
 
     const saveData: WorkHistoryModel = {
       ...workExperienceForm,
-      employerAddress: this.selectedAddress,
+      employerAddress: selectedAddress,
       employerAddressUnit,
       isDrivingPosition,
       classesOfEquipment: [
@@ -905,6 +1004,8 @@ export class Step2FormComponent
     }
 
     this.workExperienceForm.reset();
+
+    this.formService.resetForm(this.workExperienceForm);
 
     this.subscription.unsubscribe();
   }
@@ -961,12 +1062,15 @@ export class Step2FormComponent
       ...workExperienceForm
     } = this.workExperienceForm.value;
 
-    this.selectedAddress.addressUnit = employerAddressUnit;
+    const selectedAddress = {
+      ...this.selectedAddress,
+      addressUnit: employerAddressUnit,
+    };
 
     const saveData: WorkHistoryModel = {
       ...workExperienceForm,
       employerAddress: this.selectedAddress
-        ? this.selectedAddress
+        ? selectedAddress
         : this.editingCardAddress,
       employerAddressUnit,
       classesOfEquipment: [...this.helperClassOfEquipmentArray],
@@ -980,6 +1084,8 @@ export class Step2FormComponent
     this.selectedReasonForLeaving = null;
 
     this.workExperienceForm.reset();
+
+    this.formService.resetForm(this.workExperienceForm);
 
     this.subscription.unsubscribe();
   }
@@ -1353,17 +1459,9 @@ export class Step2FormComponent
 
             break;
           case 23:
-            this.workExperienceForm.get('fourthRowReview').patchValue(null);
-
-            break;
-          case 24:
             if (!isAnyInputInLineIncorrect) {
-              this.classOfEquipmentForm.get('fifthRowReview').patchValue(null);
+              this.workExperienceForm.get('fourthRowReview').patchValue(null);
             }
-
-            break;
-          case 25:
-            this.workExperienceForm.get('sixthRowReview').patchValue(null);
 
             break;
           case 26:

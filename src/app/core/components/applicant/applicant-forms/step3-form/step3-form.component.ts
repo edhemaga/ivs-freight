@@ -13,6 +13,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription, Subject, takeUntil } from 'rxjs';
 
+import moment from 'moment';
+
 import { FormService } from './../../../../services/form/form.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 
@@ -136,14 +138,6 @@ export class Step3FormComponent
     this.createForm();
 
     this.getDropdownLists();
-
-    if (this.selectedMode === SelectedMode.APPLICANT) {
-      if (this.formValuesToPatch) {
-        this.patchForm(this.formValuesToPatch);
-
-        this.startValueChangesMonitoring();
-      }
-    }
   }
 
   ngAfterViewInit(): void {
@@ -171,8 +165,6 @@ export class Step3FormComponent
           const reviewMessages = {
             firstRowReview: res.firstRowReview,
             secondRowReview: res.secondRowReview,
-            thirdRowReview: res.thirdRowReview,
-            fourthRowReview: res.fourthRowReview,
           };
 
           this.lastFormValuesEmitter.emit(reviewMessages);
@@ -194,13 +186,20 @@ export class Step3FormComponent
         }
       }
 
-      if (this.selectedMode === SelectedMode.REVIEW) {
+      if (
+        this.selectedMode === SelectedMode.REVIEW ||
+        this.selectedMode === SelectedMode.APPLICANT
+      ) {
         if (
           changes.formValuesToPatch?.previousValue !==
           changes.formValuesToPatch?.currentValue
         ) {
           setTimeout(() => {
             this.patchForm(changes.formValuesToPatch.currentValue);
+
+            if (this.selectedMode === SelectedMode.APPLICANT) {
+              this.startValueChangesMonitoring();
+            }
           }, 100);
         }
       }
@@ -221,8 +220,6 @@ export class Step3FormComponent
 
       firstRowReview: [null],
       secondRowReview: [null],
-      thirdRowReview: [null],
-      fourthRowReview: [null],
     });
   }
 
@@ -267,33 +264,33 @@ export class Step3FormComponent
     });
 
     setTimeout(() => {
-      if (formValue.country.toLowerCase() === 'us') {
+      if (formValue.country?.toLowerCase() === 'us') {
         this.stateTypes = this.usStates;
       } else {
         this.stateTypes = this.canadaStates;
       }
 
       this.selectedCountryType = this.countryTypes.find(
-        (item) => item.name === formValue.country
+        (item) => item.name === formValue?.country
       );
 
       const filteredStateType = this.usStates.find(
-        (stateItem) => stateItem.name === formValue.state
+        (stateItem) => stateItem.name === formValue?.state
       );
 
       this.selectedStateType = filteredStateType
         ? filteredStateType
         : this.canadaStates.find(
-            (stateItem) => stateItem.name === formValue.state
+            (stateItem) => stateItem.name === formValue?.state
           );
 
       this.selectedClassType = this.classTypes.find(
-        (item) => item.name === formValue.classType
+        (item) => item.name === formValue?.classType
       );
 
-      this.selectedRestrictions = formValue.restrictions;
+      this.selectedRestrictions = formValue?.restrictions;
 
-      this.selectedEndorsments = formValue.endorsments;
+      this.selectedEndorsments = formValue?.endorsments;
     }, 150);
   }
 
@@ -301,8 +298,12 @@ export class Step3FormComponent
     this.subscription = this.licenseForm.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((updatedFormValues) => {
-        const { isEditingLicense, ...previousFormValues } =
-          this.formValuesToPatch;
+        const {
+          isEditingLicense,
+          licenseReview,
+          expDate,
+          ...previousFormValues
+        } = this.formValuesToPatch;
 
         const {
           restrictions,
@@ -311,26 +312,28 @@ export class Step3FormComponent
           endorsmentsSubscription,
           firstRowReview,
           secondRowReview,
-          thirdRowReview,
-          fourthRowReview,
           ...newFormValues
         } = updatedFormValues;
 
+        previousFormValues.expDate = moment(new Date(expDate)).format(
+          'MM/DD/YY'
+        );
+
         previousFormValues.licenseNumber =
-          previousFormValues.licenseNumber.toUpperCase();
+          previousFormValues.licenseNumber?.toUpperCase();
 
         newFormValues.licenseNumber =
           newFormValues.licenseNumber?.toUpperCase();
 
         previousFormValues.restrictions = JSON.stringify(
-          previousFormValues.restrictions.map((item) => item.id)
+          previousFormValues.restrictions?.map((item) => item.id)
         );
         newFormValues.restrictions = JSON.stringify(
           restrictionsSubscription?.map((item) => item.id)
         );
 
         previousFormValues.endorsments = JSON.stringify(
-          previousFormValues.endorsments.map((item) => item.id)
+          previousFormValues.endorsments?.map((item) => item.id)
         );
         newFormValues.endorsments = JSON.stringify(
           endorsmentsSubscription?.map((item) => item.id)
@@ -409,8 +412,6 @@ export class Step3FormComponent
       endorsmentsSubscription,
       firstRowReview,
       secondRowReview,
-      thirdRowReview,
-      fourthRowReview,
       ...licenseForm
     } = this.licenseForm.value;
 
@@ -441,6 +442,8 @@ export class Step3FormComponent
 
     this.licenseForm.reset();
 
+    this.formService.resetForm(this.licenseForm);
+
     this.subscription.unsubscribe();
   }
 
@@ -461,8 +464,6 @@ export class Step3FormComponent
       endorsmentsSubscription,
       firstRowReview,
       secondRowReview,
-      thirdRowReview,
-      fourthRowReview,
       ...licenseForm
     } = this.licenseForm.value;
 
@@ -484,6 +485,8 @@ export class Step3FormComponent
     this.selectedRestrictions = [];
 
     this.licenseForm.reset();
+
+    this.formService.resetForm(this.licenseForm);
 
     this.subscription.unsubscribe();
   }
@@ -579,14 +582,6 @@ export class Step3FormComponent
             if (!isAnyInputInLineIncorrect) {
               this.licenseForm.get('secondRowReview').patchValue(null);
             }
-
-            break;
-          case 12:
-            this.licenseForm.get('thirdRowReview').patchValue(null);
-
-            break;
-          case 13:
-            this.licenseForm.get('fourthRowReview').patchValue(null);
 
             break;
 

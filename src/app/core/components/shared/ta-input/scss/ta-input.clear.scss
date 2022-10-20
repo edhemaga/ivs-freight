@@ -1,4 +1,4 @@
-@import "./ta-input.colors.scss";
+@import './ta-input.colors.scss';
 // -------------------- Input Clear --------------------
 .input-clear {
   position: absolute;
@@ -94,6 +94,8 @@
   }
 
   &.incorrect-input {
+    display: none;
+
     .input-clear-x {
       svg {
         path {
@@ -104,6 +106,8 @@
         }
       }
       &:hover {
+        display: inline-block;
+
         svg {
           path {
             fill: $input-clear-path-fill-incorrect-hover !important;

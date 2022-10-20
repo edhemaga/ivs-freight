@@ -452,6 +452,22 @@
                   }
                 }
               }
+
+              &.disabled {
+                pointer-events: none;
+
+                &:hover {
+                  background: $ta-light-grey-5;
+
+                  .delete-icon {
+                    svg {
+                      path {
+                        fill: $bw4;
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }

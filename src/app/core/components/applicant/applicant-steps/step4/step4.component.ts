@@ -33,7 +33,7 @@ import {
 export class Step4Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public accidentForm: FormGroup;
 
@@ -55,6 +55,7 @@ export class Step4Component implements OnInit, OnDestroy {
   public isReviewingCard: boolean = false;
 
   public formValuesToPatch: any;
+  public previousFormValuesOnEdit: any;
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -78,29 +79,13 @@ export class Step4Component implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
 
+    this.getApplicantId();
+
+    this.getStepValuesFromStore();
+
     this.getDropdownLists();
 
     this.hasNoAccidents();
-
-    if (this.selectedMode === SelectedMode.APPLICANT) {
-      this.applicantActionsService.getApplicantInfo$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          this.applicantId = res.personalInfo.applicantId;
-        });
-    }
-
-    if (this.selectedMode === SelectedMode.REVIEW) {
-      let stepValuesResponse: any;
-
-      this.applicantQuery.accidentRecordList$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res) => {
-          stepValuesResponse = res;
-        });
-
-      this.patchStepValues(stepValuesResponse);
-    }
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -122,10 +107,27 @@ export class Step4Component implements OnInit, OnDestroy {
     });
   }
 
+  public getStepValuesFromStore(): void {
+    let stepValuesResponse: any;
+
+    this.applicantQuery.accidentRecordList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        stepValuesResponse = res;
+      });
+
+    if (stepValuesResponse) {
+      this.patchStepValues(stepValuesResponse);
+    }
+  }
+
   public patchStepValues(stepValues: any): void {
+    console.log('stepValues', stepValues);
     const { noAccidentInThreeYears, accidents } = stepValues;
 
     this.accidentForm.get('hasPastAccident').patchValue(noAccidentInThreeYears);
+
+    this.formStatus = 'VALID';
 
     if (!noAccidentInThreeYears) {
       const lastItemInAccidentArray = accidents[accidents.length - 1];
@@ -139,6 +141,7 @@ export class Step4Component implements OnInit, OnDestroy {
           return {
             isEditingAccident: false,
             location: item.location,
+            accidentState: item.location.stateShortName,
             date: convertDateFromBackend(item.date).replace(/-/g, '/'),
             hazmatSpill: item.hazmatSpill,
             fatalities: item.fatalities,
@@ -155,6 +158,7 @@ export class Step4Component implements OnInit, OnDestroy {
       const filteredLastItemInAccidentArray = {
         isEditingAccident: false,
         location: lastItemInAccidentArray.location,
+        accidentState: lastItemInAccidentArray.location.stateShortName,
         date: convertDateFromBackend(lastItemInAccidentArray.date).replace(
           /-/g,
           '/'
@@ -173,6 +177,17 @@ export class Step4Component implements OnInit, OnDestroy {
 
       this.formValuesToPatch = filteredLastItemInAccidentArray;
       this.previousFormValuesOnReview = filteredLastItemInAccidentArray;
+      this.previousFormValuesOnEdit = this.accidentArray.length
+        ? filteredLastItemInAccidentArray
+        : {
+            location: null,
+            date: null,
+            fatalities: 0,
+            injuries: 0,
+            hazmatSpill: null,
+            vehicleType: null,
+            description: null,
+          };
 
       for (let i = 0; i < filteredAccidentArray.length; i++) {
         const firstEmptyObjectInList = this.openAnnotationArray.find(
@@ -202,9 +217,10 @@ export class Step4Component implements OnInit, OnDestroy {
           this.formStatus = 'VALID';
 
           this.formValuesToPatch = {
+            location: null,
             date: null,
-            fatalities: null,
-            injuries: null,
+            fatalities: 0,
+            injuries: 0,
             hazmatSpill: null,
             vehicleType: null,
             description: null,
@@ -268,6 +284,8 @@ export class Step4Component implements OnInit, OnDestroy {
 
     this.helperIndex = 2;
     this.selectedAccidentIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
   }
 
   public saveEditedAccident(event: any): void {
@@ -278,6 +296,8 @@ export class Step4Component implements OnInit, OnDestroy {
 
     this.helperIndex = 2;
     this.selectedAccidentIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
   }
 
   public onGetFormStatus(status: string): void {
@@ -365,6 +385,14 @@ export class Step4Component implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         this.vehicleType = res.truckTypes;
+      });
+  }
+
+  public getApplicantId(): void {
+    this.applicantQuery.applicantId$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res;
       });
   }
 
@@ -486,7 +514,7 @@ export class Step4Component implements OnInit, OnDestroy {
 
     const filteredAccidentArray = this.accidentArray.map((item) => {
       return {
-        location: item.location.address,
+        location: item.location,
         date: convertDateToBackend(item.date),
         fatalities: item.fatalities,
         injuries: item.injuries,
@@ -523,12 +551,34 @@ export class Step4Component implements OnInit, OnDestroy {
         : [...filteredAccidentArray, filteredLastAccidentCard],
     };
 
+    const storeAccidentRecordItems = saveData.accidents.map((item) => {
+      return {
+        ...item,
+        vehicleType: this.vehicleType.find(
+          (vehicleItem) => vehicleItem.id === item.vehicleTypeId
+        ),
+      };
+    });
+
     this.applicantActionsService
       .createAccidentRecord(saveData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/5`]);
+
+          this.applicantStore.update(1, (entity) => {
+            const noAccidents = saveData.noAccidentInThreeYears;
+
+            return {
+              ...entity,
+              accidentRecords: {
+                ...entity.accidentRecords,
+                noAccidentInThreeYears: noAccidents,
+                accidents: noAccidents ? null : storeAccidentRecordItems,
+              },
+            };
+          });
         },
         error: (err) => {
           console.log(err);
@@ -543,9 +593,7 @@ export class Step4Component implements OnInit, OnDestroy {
       isLocationValid: lastItemReview ? lastItemReview.isLocationValid : true,
       isDateValid: lastItemReview ? lastItemReview.isDateValid : true,
       locationDateMessage: this.lastAccidentCard.firstRowReview,
-      isVehicleTypeValid: lastItemReview
-        ? lastItemReview.isVehicleTypeValid
-        : true,
+      isVehicleTypeValid: true,
       isDescriptionValid: lastItemReview
         ? lastItemReview.isDescriptionValid
         : true,
@@ -553,11 +601,35 @@ export class Step4Component implements OnInit, OnDestroy {
     };
 
     const saveData: CreateAccidentRecordReviewCommand = {
-      applicantId: 1,
+      applicantId: this.applicantId,
       accidentReviews: [lastReviewedItemInAccidentArray],
     };
 
     console.log('saveData', saveData.accidentReviews[0]);
+
+    this.applicantActionsService
+      .createAccidentRecordReview(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/5`]);
+          /* 
+            this.applicantStore.update(1, (entity) => {
+            return {
+              ...entity,
+              education: {
+                ...entity.education,
+                educationReview: rest,
+              },
+            };
+          });
+
+          console.log('updatedStore', this.applicantStore); */
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   ngOnDestroy(): void {

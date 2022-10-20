@@ -130,6 +130,7 @@
                 dropdownWidthClass: 'w-col-481',
                 minLength: 6,
                 maxLength: 256,
+                isDisabled: selectedMode === 'REVIEW_MODE',
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
               [placeholderType]="'longAddress'"
@@ -280,6 +281,7 @@
                 dropdownWidthClass: 'w-col-481',
                 minLength: 6,
                 maxLength: 256,
+                isDisabled: selectedMode === 'REVIEW_MODE',
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
               [placeholderType]="'longAddress'"

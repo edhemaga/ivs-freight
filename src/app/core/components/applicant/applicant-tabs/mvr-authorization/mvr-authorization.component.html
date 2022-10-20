@@ -141,6 +141,7 @@
 
           <div
             class="d-flex flex-column justify-content-center license-view-container"
+            *ngIf="lastValidLicense.license"
             [ngStyle]="{
               'margin-bottom':
                 selectedMode === 'APPLICANT_MODE' ? '32px' : '22px'
@@ -181,28 +182,28 @@
             >
               <div class="d-flex align-items-center driver-box">
                 <p class="m-0 ta-font-regular">
-                  {{ lastValidLicense.name }}
+                  {{ lastValidLicense?.name }}
                 </p>
               </div>
               <div class="d-flex align-items-center license-box">
                 <p class="m-0 ta-font-regular">
-                  {{ lastValidLicense.license }}
+                  {{ lastValidLicense?.license }}
                 </p>
               </div>
               <div class="d-flex align-items-center state-box">
                 <p class="m-0 ta-font-regular">
-                  {{ lastValidLicense.state }}
+                  {{ lastValidLicense?.state }}
                 </p>
               </div>
               <div class="d-flex align-items-center class-box">
                 <p class="m-0 ta-font-regular">
-                  {{ lastValidLicense.classType }}
+                  {{ lastValidLicense?.classType }}
                 </p>
               </div>
 
               <div class="d-flex align-items-center date-box">
                 <p class="m-0 ta-font-regular">
-                  {{ lastValidLicense.expDate }}
+                  {{ lastValidLicense?.expDate }}
                 </p>
               </div>
             </div>

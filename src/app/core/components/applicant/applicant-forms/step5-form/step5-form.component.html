@@ -60,6 +60,7 @@
           dropdownWidthClass: 'w-col-242',
           minLength: 12,
           maxLength: 256,
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [placeholderType]="'shortAddress'"

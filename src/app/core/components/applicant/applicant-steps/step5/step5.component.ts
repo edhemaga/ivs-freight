@@ -34,7 +34,7 @@ import {
 export class Step5Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public applicantId: number;
 
@@ -257,7 +257,14 @@ export class Step5Component implements OnInit, OnDestroy {
 
       this.formValuesToPatch = filteredLastItemInViolationsArray;
       this.previousFormValuesOnReview = filteredLastItemInViolationsArray;
-      this.previousFormValuesOnEdit = filteredLastItemInViolationsArray;
+      this.previousFormValuesOnEdit = this.violationsArray.length
+        ? filteredLastItemInViolationsArray
+        : {
+            date: null,
+            vehicleType: null,
+            location: null,
+            description: null,
+          };
 
       for (let i = 0; i < filteredViolationsArray.length; i++) {
         const firstEmptyObjectInList = this.openAnnotationArray.find(
@@ -522,13 +529,13 @@ export class Step5Component implements OnInit, OnDestroy {
     this.applicantQuery.cdlInformationList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        const lastLicenseAdded: any = res.licences[res.licences.length - 1];
+        const lastLicenseAdded: any = res?.licences[res.licences.length - 1];
 
         this.lastValidLicense = {
-          license: lastLicenseAdded.licenseNumber,
-          state: lastLicenseAdded.state.stateShortName,
-          classType: lastLicenseAdded.class.name,
-          expDate: convertDateFromBackendShortYear(lastLicenseAdded.expDate),
+          license: lastLicenseAdded?.licenseNumber,
+          state: lastLicenseAdded?.state?.stateShortName,
+          classType: lastLicenseAdded?.class?.name,
+          expDate: convertDateFromBackendShortYear(lastLicenseAdded?.expDate),
         };
       });
   }

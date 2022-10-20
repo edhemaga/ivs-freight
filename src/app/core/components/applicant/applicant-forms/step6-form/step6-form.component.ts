@@ -208,16 +208,17 @@ export class Step6FormComponent
 
         const { firstRowReview, ...newFormValues } = updatedFormValues;
 
-        previousFormValues.name = previousFormValues.name.toUpperCase();
+        previousFormValues.name = previousFormValues.name?.toUpperCase();
         previousFormValues.relationship =
-          previousFormValues.relationship.toUpperCase();
+          previousFormValues.relationship?.toUpperCase();
 
         if (newFormValues.name) {
-          newFormValues.name = newFormValues.name.toUpperCase();
+          newFormValues.name = newFormValues.name?.toUpperCase();
         }
 
         if (newFormValues.relationship) {
-          newFormValues.relationship = newFormValues.relationship.toUpperCase();
+          newFormValues.relationship =
+            newFormValues.relationship?.toUpperCase();
         }
 
         if (isFormValueEqual(previousFormValues, newFormValues)) {
@@ -271,6 +272,8 @@ export class Step6FormComponent
 
     this.contactForm.reset();
 
+    this.formService.resetForm(this.contactForm);
+
     this.subscription.unsubscribe();
   }
 
@@ -280,6 +283,8 @@ export class Step6FormComponent
     this.isContactEdited = false;
 
     this.contactForm.reset();
+
+    this.formService.resetForm(this.contactForm);
 
     this.subscription.unsubscribe();
   }

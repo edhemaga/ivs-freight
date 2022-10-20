@@ -22,7 +22,7 @@ import { UpdateAuthorizationCommand } from 'appcoretruckassist';
 export class Step11Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public authorizationForm: FormGroup;
 

@@ -14,6 +14,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Subscription, Subject, takeUntil } from 'rxjs';
 
+import moment from 'moment';
+
 import {
   addressValidation,
   descriptionValidation,
@@ -143,14 +145,6 @@ export class Step4FormComponent
     this.createForm();
 
     this.getDropdownLists();
-
-    if (this.selectedMode === SelectedMode.APPLICANT) {
-      if (this.formValuesToPatch) {
-        this.patchForm(this.formValuesToPatch);
-
-        this.startValueChangesMonitoring();
-      }
-    }
   }
 
   ngAfterViewInit(): void {
@@ -166,6 +160,16 @@ export class Step4FormComponent
       this.accidentForm.valueChanges
         .pipe(takeUntil(this.destroy$))
         .subscribe((res) => {
+          if (this.selectedAddress) {
+            const selectedAddress = {
+              ...this.selectedAddress,
+              addressUnit: '',
+              county: '',
+            };
+
+            res.location = selectedAddress;
+          }
+
           this.lastFormValuesEmitter.emit(res);
         });
     }
@@ -199,13 +203,20 @@ export class Step4FormComponent
         }
       }
 
-      if (this.selectedMode === SelectedMode.REVIEW) {
+      if (
+        this.selectedMode === SelectedMode.REVIEW ||
+        this.selectedMode === SelectedMode.APPLICANT
+      ) {
         if (
           changes.formValuesToPatch?.previousValue !==
           changes.formValuesToPatch?.currentValue
         ) {
           setTimeout(() => {
             this.patchForm(changes.formValuesToPatch.currentValue);
+
+            if (this.selectedMode === SelectedMode.APPLICANT) {
+              this.startValueChangesMonitoring();
+            }
           }, 100);
         }
       }
@@ -249,16 +260,16 @@ export class Step4FormComponent
     }
 
     this.accidentForm.patchValue({
-      location: formValue.location.address,
-      date: formValue.date,
-      hazmatSpill: formValue.hazmatSpill,
-      fatalities: formValue.fatalities,
-      injuries: formValue.injuries,
-      vehicleType: formValue.vehicleType,
-      description: formValue.description,
+      location: formValue?.location ? formValue?.location?.address : null,
+      date: formValue?.date,
+      hazmatSpill: formValue?.hazmatSpill,
+      fatalities: formValue?.fatalities,
+      injuries: formValue?.injuries,
+      vehicleType: formValue?.vehicleType,
+      description: formValue?.description,
     });
 
-    this.selectedAddress = formValue.location;
+    this.selectedAddress = formValue?.location;
 
     setTimeout(() => {
       const hazmatSpillValue = this.accidentForm.get('hazmatSpill').value;
@@ -269,8 +280,13 @@ export class Step4FormComponent
         this.hazmatSpillRadios[1].checked = true;
       }
 
+      if (hazmatSpillValue === null) {
+        this.hazmatSpillRadios[0].checked = false;
+        this.hazmatSpillRadios[1].checked = false;
+      }
+
       this.selectedVehicleType = this.vehicleType.find(
-        (item) => item.name === formValue.vehicleType
+        (item) => item.name === formValue?.vehicleType
       );
     }, 150);
   }
@@ -280,18 +296,27 @@ export class Step4FormComponent
       .pipe(takeUntil(this.destroy$))
       .subscribe((updatedFormValues) => {
         const {
+          date,
           location,
           accidentState,
           isEditingAccident,
+          accidentRecordReview,
           ...previousFormValues
         } = this.formValuesToPatch;
 
-        previousFormValues.location = location.address;
+        previousFormValues.location = location?.address;
+        previousFormValues.date = moment(new Date(date)).format('MM/DD/YY');
 
         this.editingCardAddress = location;
 
-        const { firstRowReview, secondRowReview, ...newFormValues } =
-          updatedFormValues;
+        const {
+          firstRowReview,
+          secondRowReview,
+          location: newLocation,
+          ...newFormValues
+        } = updatedFormValues;
+
+        newFormValues.location = newLocation?.address;
 
         if (isFormValueEqual(previousFormValues, newFormValues)) {
           this.isAccidentEdited = false;
@@ -341,10 +366,16 @@ export class Step4FormComponent
     const { location, firstRowReview, secondRowReview, ...accidentForm } =
       this.accidentForm.value;
 
+    const selectedAddress = {
+      ...this.selectedAddress,
+      addressUnit: '',
+      county: '',
+    };
+
     const saveData: AccidentModel = {
       ...accidentForm,
-      location: this.selectedAddress,
-      accidentState: this.selectedAddress.state,
+      location: selectedAddress,
+      accidentState: this.selectedAddress.stateShortName,
       isEditingAccident: false,
     };
 
@@ -375,6 +406,8 @@ export class Step4FormComponent
 
     this.accidentForm.reset();
 
+    this.formService.resetForm(this.accidentForm);
+
     this.subscription.unsubscribe();
   }
 
@@ -391,14 +424,20 @@ export class Step4FormComponent
     const { location, firstRowReview, secondRowReview, ...accidentForm } =
       this.accidentForm.value;
 
+    const selectedAddress = {
+      ...this.selectedAddress,
+      addressUnit: '',
+      county: '',
+    };
+
     const saveData: AccidentModel = {
       ...accidentForm,
       location: this.selectedAddress
-        ? this.selectedAddress
+        ? selectedAddress
         : this.editingCardAddress,
       accidentState: this.selectedAddress
-        ? this.selectedAddress.state
-        : this.editingCardAddress.state,
+        ? this.selectedAddress.stateShortName
+        : this.editingCardAddress.stateShortName,
       isEditingAccident: false,
     };
 
@@ -407,6 +446,8 @@ export class Step4FormComponent
     this.isAccidentEdited = false;
 
     this.accidentForm.reset();
+
+    this.formService.resetForm(this.accidentForm);
 
     this.subscription.unsubscribe();
   }

@@ -181,7 +181,6 @@
                     ></svg-icon>
                   </div>
                 </div>
-
                 <div *ngIf="selectedMode === 'FEEDBACK_MODE'">
                   <div
                     class="feedback-icon-box"
@@ -291,7 +290,7 @@
           ? '12px'
           : selectedMode === 'REVIEW_MODE' &&
             workExperienceArray[workExperienceArray.length - 1]
-              .isEditingWorkHistory
+              ?.isEditingWorkHistory
           ? 0
           : '22px'
     }"

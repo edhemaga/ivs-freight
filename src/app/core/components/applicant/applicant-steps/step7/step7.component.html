@@ -244,6 +244,7 @@
               dropdownWidthClass: 'w-col-431',
               minLength: 6,
               maxLength: 256,
+              isDisabled: selectedMode === 'REVIEW_MODE',
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [activeAddress]="selectedAddress"

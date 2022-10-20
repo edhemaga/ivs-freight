@@ -194,7 +194,9 @@
         *ngIf="selectedMode !== 'APPLICANT_MODE'"
       >
         <img
-          src="{{ 'data:image/png;base64,' + signatureImgSrc }}"
+          src="{{
+            signatureImgSrc ? 'data:image/png;base64,' + signatureImgSrc : ''
+          }}"
           alt="signature"
         />
       </div>

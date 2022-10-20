@@ -222,7 +222,7 @@ export class Step5FormComponent
     this.violationsForm.patchValue({
       date: formValue?.date,
       vehicleType: formValue?.vehicleType,
-      location: formValue?.location?.address,
+      location: formValue.location ? formValue?.location?.address : null,
       description: formValue?.description,
     });
 
@@ -248,7 +248,7 @@ export class Step5FormComponent
           ...previousFormValues
         } = this.formValuesToPatch;
 
-        previousFormValues.location = location.address;
+        previousFormValues.location = location?.address;
         previousFormValues.date = moment(new Date(date)).format('MM/DD/YY');
 
         this.editingCardAddress = location;
@@ -260,7 +260,7 @@ export class Step5FormComponent
           ...newFormValues
         } = updatedFormValues;
 
-        newFormValues.location = newLocation.address;
+        newFormValues.location = newLocation?.address;
 
         if (isFormValueEqual(previousFormValues, newFormValues)) {
           this.isViolationEdited = false;
@@ -352,6 +352,8 @@ export class Step5FormComponent
 
     this.violationsForm.reset();
 
+    this.formService.resetForm(this.violationsForm);
+
     this.subscription.unsubscribe();
   }
 
@@ -361,6 +363,8 @@ export class Step5FormComponent
     this.isViolationEdited = false;
 
     this.violationsForm.reset();
+
+    this.formService.resetForm(this.violationsForm);
 
     this.subscription.unsubscribe();
   }

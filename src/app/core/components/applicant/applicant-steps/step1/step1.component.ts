@@ -60,7 +60,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public personalInfoRadios: any;
 
@@ -324,13 +324,13 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.createForm();
 
-    this.getBanksDropdownList();
-
-    this.isBankUnselected();
+    this.getApplicantId();
 
     this.getStepValuesFromStore();
 
-    this.getApplicantId();
+    this.getBanksDropdownList();
+
+    this.isBankUnselected();
   }
 
   ngAfterViewInit(): void {
@@ -404,9 +404,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public patchStepValues(stepValues: any): void {
+    console.log('stepValues', stepValues);
     const {
       id,
-      isAgreement,
+      isAgreed,
       firstName,
       lastName,
       doB,
@@ -435,7 +436,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     } = stepValues;
 
     this.personalInfoForm.patchValue({
-      isAgreement: true,
+      isAgreement: isAgreed,
       firstName,
       lastName,
       dateOfBirth: convertDateFromBackend(doB),
@@ -479,36 +480,66 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.personalInfoRadios[0].buttons[0].checked = true;
       } else {
         this.personalInfoRadios[0].buttons[1].checked = true;
+
+        if (legalWork === null) {
+          this.personalInfoRadios[0].buttons[0].checked = false;
+          this.personalInfoRadios[0].buttons[1].checked = false;
+        }
       }
 
       if (anotherName) {
         this.personalInfoRadios[1].buttons[0].checked = true;
       } else {
         this.personalInfoRadios[1].buttons[1].checked = true;
+
+        if (anotherName === null) {
+          this.personalInfoRadios[1].buttons[0].checked = false;
+          this.personalInfoRadios[1].buttons[1].checked = false;
+        }
       }
 
       if (inMilitary) {
         this.personalInfoRadios[2].buttons[0].checked = true;
       } else {
         this.personalInfoRadios[2].buttons[1].checked = true;
+
+        if (inMilitary === null) {
+          this.personalInfoRadios[2].buttons[0].checked = false;
+          this.personalInfoRadios[2].buttons[1].checked = false;
+        }
       }
 
       if (felony) {
         this.personalInfoRadios[3].buttons[0].checked = true;
       } else {
         this.personalInfoRadios[3].buttons[1].checked = true;
+
+        if (felony === null) {
+          this.personalInfoRadios[3].buttons[0].checked = false;
+          this.personalInfoRadios[3].buttons[1].checked = false;
+        }
       }
 
       if (misdemeanor) {
         this.personalInfoRadios[4].buttons[0].checked = true;
       } else {
         this.personalInfoRadios[4].buttons[1].checked = true;
+
+        if (misdemeanor === null) {
+          this.personalInfoRadios[4].buttons[0].checked = false;
+          this.personalInfoRadios[4].buttons[1].checked = false;
+        }
       }
 
       if (drunkDriving) {
         this.personalInfoRadios[5].buttons[0].checked = true;
       } else {
         this.personalInfoRadios[5].buttons[1].checked = true;
+
+        if (drunkDriving === null) {
+          this.personalInfoRadios[5].buttons[0].checked = false;
+          this.personalInfoRadios[5].buttons[1].checked = false;
+        }
       }
     }, 150);
 
@@ -516,6 +547,16 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     this.previousAddressesId = previousAddresses.map((item: any) => item.id);
 
     const addresses = [...previousAddresses, address];
+
+    this.selectedAddresses = addresses.map((item, index) => {
+      if (index === addresses.length - 1) {
+        return item;
+      }
+
+      return {
+        ...item.address,
+      };
+    });
 
     for (let i = 0; i < addresses.length; i++) {
       this.previousAddresses.push(this.createNewAddress());
@@ -537,7 +578,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         });
 
         if (this.selectedMode === SelectedMode.REVIEW) {
-          const { isAddressValid, addressMessage } = personalInfoReview || {};
+          const { isAddressValid, isAddressUnitValid, addressMessage } =
+            personalInfoReview || {};
 
           const firstEmptyObjectInList = this.openAnnotationArray.find(
             (item) => Object.keys(item).length === 0
@@ -548,8 +590,14 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
           this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
             lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
-            lineInputs: [isAddressValid == null ? false : !isAddressValid],
-            displayAnnotationButton: false,
+            lineInputs: [
+              isAddressValid == null ? false : !isAddressValid,
+              isAddressUnitValid == null ? false : !isAddressUnitValid,
+            ],
+            displayAnnotationButton:
+              (!isAddressValid || !isAddressUnitValid) && !addressMessage
+                ? true
+                : false,
             displayAnnotationTextArea: addressMessage ? true : false,
           };
 
@@ -575,6 +623,20 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         });
 
         if (this.selectedMode === SelectedMode.REVIEW) {
+          const selectedPreviousAddressReview =
+            previousAddresses[i].previousAddressReview;
+
+          let isPreviousAddressValid: any;
+          let previousAddressMessage: any;
+
+          if (selectedPreviousAddressReview) {
+            isPreviousAddressValid =
+              selectedPreviousAddressReview.isPreviousAddressValid;
+
+            previousAddressMessage =
+              selectedPreviousAddressReview.previousAddressMessage;
+          }
+
           const firstEmptyObjectInList = this.openAnnotationArray.find(
             (item) => Object.keys(item).length === 0
           );
@@ -584,15 +646,25 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
           this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
             lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
+            lineInputs: [
+              isPreviousAddressValid == null ? false : !isPreviousAddressValid,
+            ],
+            displayAnnotationButton:
+              !isPreviousAddressValid && !previousAddressMessage ? true : false,
+            displayAnnotationTextArea: previousAddressMessage ? true : false,
           };
+
+          this.previousAddresses
+            .at(i)
+            .get(`cardReview${i + 1}`)
+            .patchValue(previousAddressMessage ? previousAddressMessage : null);
         }
       }
 
       this.previousAddresses.removeAt(i + 1);
     }
+
+    this.isLastAddedPreviousAddressValid = true;
 
     if (this.selectedMode === SelectedMode.REVIEW) {
       if (personalInfoReview) {
@@ -604,7 +676,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
           isPhoneValid,
           phoneMessage,
           isSsnValid,
-          isBankValid,
           ssnBankMessage,
           isAccountNumberValid,
           isRoutingNumberValid,
@@ -627,7 +698,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
           ...this.openAnnotationArray[0],
           lineInputs: [!isFirstNameValid, !isLastNameValid, !isDoBValid],
           displayAnnotationButton:
-            (!isFirstNameValid || !isLastNameValid || isDoBValid) &&
+            (!isFirstNameValid || !isLastNameValid || !isDoBValid) &&
             !personalInfoMessage
               ? true
               : false,
@@ -642,9 +713,9 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         };
         this.openAnnotationArray[7] = {
           ...this.openAnnotationArray[7],
-          lineInputs: [!isSsnValid, !isBankValid],
+          lineInputs: [!isSsnValid],
           displayAnnotationButton:
-            (!isSsnValid || !isBankValid) && !ssnBankMessage ? true : false,
+            !isSsnValid && !ssnBankMessage ? true : false,
           displayAnnotationTextArea: ssnBankMessage ? true : false,
         };
         this.openAnnotationArray[8] = {
@@ -922,6 +993,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public onRemoveNewAddress(index: number): void {
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      return;
+    }
+
     const isEditingAnyAddress = this.isEditingArray.some(
       (item) => item.isEditing && item.isEditingAddress
     );
@@ -946,6 +1021,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     if (this.previousAddresses.controls.length < 2) {
       this.isEditingArray[0].isEditing = true;
       this.isEditingArray[0].isEditingAddress = false;
+    }
+
+    if (this.previousAddresses.controls.length === 1) {
+      this.isLastInputDeleted = false;
     }
   }
 
@@ -1013,6 +1092,14 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
       this.helperIndex = 2;
     }
+
+    if (this.previousAddresses.controls.length < 5) {
+      const lastAddressIndex = this.previousAddresses.controls.length - 1;
+
+      this.isEditingArray[lastAddressIndex].isEditing = true;
+
+      this.isEditingMiddlePositionAddress = false;
+    }
   }
 
   public onCancelEditingNewAddress(index: number): void {
@@ -1028,6 +1115,14 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     this.previousAddressUnitOnEdit = null;
 
     this.helperIndex = 2;
+
+    if (this.previousAddresses.controls.length < 5) {
+      const lastAddressIndex = this.previousAddresses.controls.length - 1;
+
+      this.isEditingArray[lastAddressIndex].isEditing = true;
+
+      this.isEditingMiddlePositionAddress = false;
+    }
   }
 
   public getBanksDropdownList(): void {
@@ -1068,32 +1163,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         selectedInputsLine.displayAnnotationButton = false;
         selectedInputsLine.displayAnnotationTextArea = false;
       }
-
-      switch (selectedInputsLine.lineIndex) {
-        case 2:
-          this.previousAddresses.at(0).patchValue({
-            cardReview1: null,
-          });
-          break;
-        case 3:
-          this.previousAddresses.at(1).patchValue({
-            cardReview2: null,
-          });
-          break;
-        case 4:
-          this.previousAddresses.at(2).patchValue({
-            cardReview3: null,
-          });
-          break;
-        case 5:
-          this.previousAddresses.at(3).patchValue({
-            cardReview4: null,
-          });
-          break;
-
-        default:
-          break;
-      }
     } else {
       if (event) {
         selectedInputsLine.lineInputs[inputIndex] = true;
@@ -1118,18 +1187,18 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
         switch (lineIndex) {
           case 0:
-            this.personalInfoForm.get('firstRowReview').patchValue(null);
+            if (!isAnyInputInLineIncorrect) {
+              this.personalInfoForm.get('firstRowReview').patchValue(null);
+            }
+
             break;
           case 1:
             this.personalInfoForm.get('secondRowReview').patchValue(null);
-            break;
-          case 6:
-            this.previousAddresses.at(4).patchValue({
-              cardReview5: null,
-            });
+
             break;
           case 7:
             this.personalInfoForm.get('thirdRowReview').patchValue(null);
+
             break;
           case 8:
             this.personalInfoForm.get('fourthRowReview').patchValue(null);
@@ -1156,6 +1225,55 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
           default:
             break;
         }
+      }
+    }
+
+    if (type === 'card' || !event) {
+      const lineInputItems = selectedInputsLine.lineInputs;
+      const isAnyInputInLineIncorrect = anyInputInLineIncorrect(lineInputItems);
+
+      switch (selectedInputsLine.lineIndex) {
+        case 2:
+          if (!isAnyInputInLineIncorrect) {
+            this.previousAddresses.at(0).patchValue({
+              cardReview1: null,
+            });
+          }
+
+          break;
+        case 3:
+          if (!isAnyInputInLineIncorrect) {
+            this.previousAddresses.at(1).patchValue({
+              cardReview2: null,
+            });
+          }
+
+          break;
+        case 4:
+          if (!isAnyInputInLineIncorrect) {
+            this.previousAddresses.at(2).patchValue({
+              cardReview3: null,
+            });
+          }
+
+          break;
+        case 5:
+          if (!isAnyInputInLineIncorrect) {
+            this.previousAddresses.at(3).patchValue({
+              cardReview4: null,
+            });
+          }
+
+          break;
+        case 6:
+          if (!isAnyInputInLineIncorrect) {
+            this.previousAddresses.at(4).patchValue({
+              cardReview5: null,
+            });
+          }
+
+        default:
+          break;
       }
     }
 
@@ -1227,7 +1345,9 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       ...personalInfoForm
     } = this.personalInfoForm.value;
 
-    this.selectedAddresses = this.selectedAddresses.filter((item) => item);
+    this.selectedAddresses = this.selectedAddresses.filter(
+      (item) => item.address
+    );
 
     this.selectedAddresses = this.selectedAddresses.map((item, index) => {
       return {
@@ -1260,12 +1380,37 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       drunkDrivingDescription: drunkDrivingExplain,
     };
 
+    const storePreviousAddresses = this.selectedAddresses
+      .filter((item, index) => index !== this.selectedAddresses.length - 1)
+      .map((item, index) => {
+        return {
+          address: item,
+        };
+      });
+
     this.applicantActionsService
       .updatePersonalInfo(saveData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/2`]);
+
+          this.applicantStore.update(1, (entity) => {
+            return {
+              ...entity,
+              personalInfo: {
+                ...entity.personalInfo,
+                ...saveData,
+                bank: this.banksDropdownList.find(
+                  (item) => item.id === saveData.bankId
+                ),
+                bankName: this.banksDropdownList.find(
+                  (item) => item.id === saveData.bankId
+                ).name,
+                previousAddresses: storePreviousAddresses,
+              },
+            };
+          });
         },
         error: (err) => {
           console.log(err);
@@ -1395,6 +1540,18 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
           : this.previousAddresses.controls.length === 5
           ? !this.openAnnotationArray[6].lineInputs[0]
           : null,
+      isAddressUnitValid:
+        this.previousAddresses.controls.length === 1
+          ? !this.openAnnotationArray[2].lineInputs[1]
+          : this.previousAddresses.controls.length === 2
+          ? !this.openAnnotationArray[3].lineInputs[1]
+          : this.previousAddresses.controls.length === 3
+          ? !this.openAnnotationArray[4].lineInputs[1]
+          : this.previousAddresses.controls.length === 4
+          ? !this.openAnnotationArray[5].lineInputs[1]
+          : this.previousAddresses.controls.length === 5
+          ? !this.openAnnotationArray[6].lineInputs[1]
+          : null,
       addressMessage:
         this.previousAddresses.controls.length === 1
           ? this.previousAddresses.controls[0].get('cardReview1').value
@@ -1440,6 +1597,14 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
               ...entity,
               personalInfo: {
                 ...entity.personalInfo,
+                previousAddresses: entity.personalInfo.previousAddresses.map(
+                  (item, index) => {
+                    return {
+                      ...item,
+                      previousAddressReview: previousAddresses[index],
+                    };
+                  }
+                ),
                 personalInfoReview: saveData,
               },
             };
