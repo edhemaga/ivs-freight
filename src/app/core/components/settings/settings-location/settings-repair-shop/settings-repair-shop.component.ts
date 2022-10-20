@@ -110,7 +110,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
   }
   public getRepairShopList() {
     this.repairShopSrv
-      .getCompanyRepairShopList()
+      .getRepairShopList()
       .pipe(takeUntil(this.destroy$))
       .subscribe((item) => {
         this.repairShopData = item.pagination;

@@ -372,6 +372,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
       this.truck?.color?.code ? this.truck.color.code : '#aaa'
     );
   }
+
   public buttonSwitcher() {
     this.buttonsArrayPerfomance = [
       {

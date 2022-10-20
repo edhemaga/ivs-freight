@@ -125,6 +125,7 @@ model/checkOwnerSsnEinResponse.ts
 model/classOfEquipmentCommand.ts
 model/classOfEquipmentResponse.ts
 model/classType.ts
+model/clusterResponse.ts
 model/colorResponse.ts
 model/commentByEntityTypeListResponse.ts
 model/commentResponse.ts
@@ -195,8 +196,6 @@ model/createInsurancePolicyCommand.ts
 model/createLoadCommand.ts
 model/createLoadTemplateCommand.ts
 model/createMapCommand.ts
-model/createMedicalCommand.ts
-model/createMvrCommand.ts
 model/createOffDutyLocationCommand.ts
 model/createOwnerCommand.ts
 model/createParkingCommand.ts
@@ -215,13 +214,13 @@ model/createSevenDaysHosReviewCommand.ts
 model/createShipperCommand.ts
 model/createTableConfigCommand.ts
 model/createTerminalCommand.ts
-model/createTestCommand.ts
 model/createTitleCommand.ts
 model/createTodoCommand.ts
 model/createTrafficViolationCommand.ts
 model/createTrafficViolationReviewCommand.ts
 model/createTrailerCommand.ts
 model/createTruckCommand.ts
+model/createWithUploadsResponse.ts
 model/createWorkExperienceCommand.ts
 model/createWorkExperienceReviewCommand.ts
 model/creditType.ts
@@ -264,9 +263,6 @@ model/editFuelCardCommand.ts
 model/editFuelItemCommand.ts
 model/editFuelStopCommand.ts
 model/editFuelTransactionCommand.ts
-model/editMedicalCommand.ts
-model/editMvrCommand.ts
-model/editTestCommand.ts
 model/educationFeedbackResponse.ts
 model/educationReviewResponse.ts
 model/emergencyContactCommand.ts
@@ -299,6 +295,7 @@ model/fuelTransactionResponse.ts
 model/fuelTransactionResponsePagination.ts
 model/fuelledVehicleHistoryListResponse.ts
 model/fuelledVehicleResponse.ts
+model/fuelledVehicleResponsePagination.ts
 model/getApplicantListQuery.ts
 model/getApplicantListResponse.ts
 model/getAvailableCreditEFSQuery.ts
@@ -525,8 +522,6 @@ model/terminalListResponse.ts
 model/terminalResponse.ts
 model/terminalResponsePagination.ts
 model/testResponse.ts
-model/testResult.ts
-model/testType.ts
 model/timeOnly.ts
 model/timeType.ts
 model/tireSizeResponse.ts
@@ -660,4 +655,5 @@ model/workExperienceItemCommand.ts
 model/workExperienceItemResponse.ts
 model/workExperienceItemReviewCommand.ts
 model/workExperienceItemReviewResponse.ts
+model/yesNoEnum.ts
 variables.ts

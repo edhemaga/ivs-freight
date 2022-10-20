@@ -1,11 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  CreateMedicalCommand,
-  DriverResponse,
-  EditMedicalCommand,
-  MedicalResponse,
-} from 'appcoretruckassist';
+import { DriverResponse, MedicalResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { DriverTService } from '../../../state/driver.service';
 import { MedicalTService } from '../../../state/medical.service';
@@ -17,6 +12,8 @@ import {
   convertDateToBackend,
   convertDateFromBackend,
 } from '../../../../../utils/methods.calculations';
+import { EditMedicalCommand } from 'appcoretruckassist/model/editMedicalCommand';
+import { CreateMedicalCommand } from 'appcoretruckassist/model/createMedicalCommand';
 
 @Component({
   selector: 'app-driver-medical-modal',
@@ -119,7 +116,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
   private updateMedical(id: number) {
     const { issueDate, expDate } = this.medicalForm.value;
 
-    const newData: EditMedicalCommand = {
+    const newData: /* EditMedicalCommand */ any = {
       id: this.editData.file_id,
       ...this.medicalForm.value,
       issueDate: convertDateToBackend(issueDate),
@@ -144,7 +141,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
   private addMedical() {
     const { issueDate, expDate } = this.medicalForm.value;
-    const newData: CreateMedicalCommand = {
+    const newData: /*CreateMedicalCommand*/ any = {
       driverId: this.editData.id,
       ...this.medicalForm.value,
       issueDate: convertDateToBackend(issueDate),

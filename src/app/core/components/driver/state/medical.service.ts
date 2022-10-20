@@ -1,8 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import {
-  CreateMedicalCommand,
   DriverResponse,
-  EditMedicalCommand,
   MedicalResponse,
   MedicalService,
 } from 'appcoretruckassist';
@@ -12,6 +10,9 @@ import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
+import { EditMedicalCommand } from '../../../../../../appcoretruckassist/model/editMedicalCommand';
+import { CreateMedicalCommand } from '../../../../../../appcoretruckassist/model/createMedicalCommand';
+import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
   providedIn: 'root',
@@ -65,7 +66,12 @@ export class MedicalTService implements OnDestroy {
 
   /* Observable<CreateMedicalResponse> */
   public addMedical(data: CreateMedicalCommand): Observable<any> {
-    return this.medicalService.apiMedicalPost(data).pipe(
+    const sortedParams = getFunctionParams(
+      this.medicalService.apiMedicalPost,
+      data
+    );
+
+    return this.medicalService.apiMedicalPost(...sortedParams).pipe(
       tap((res: any) => {
         const subDriver = this.driverService
           .getDriverById(data.driverId)
@@ -95,7 +101,11 @@ export class MedicalTService implements OnDestroy {
   }
 
   public updateMedical(data: EditMedicalCommand): Observable<object> {
-    return this.medicalService.apiMedicalPut(data).pipe(
+    const sortedParams = getFunctionParams(
+      this.medicalService.apiMedicalPut,
+      data
+    );
+    return this.medicalService.apiMedicalPut(...sortedParams).pipe(
       tap((res: any) => {
         let driverId = this.driverItemStore.getValue().ids[0];
         const subDriver = this.driverService

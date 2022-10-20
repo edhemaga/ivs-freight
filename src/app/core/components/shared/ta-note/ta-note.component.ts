@@ -1,11 +1,13 @@
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
   OnInit,
   Output,
+  QueryList,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
@@ -43,8 +45,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   @Input() dispatchIndex: number = -1;
   @Input() noteWidth: number = 250;
   @ViewChild('main_editor', { static: false }) public main_editor: any;
-  @ViewChild('note_popover', { static: false }) public note_popover: any;
-
+  @ViewChild('note_popover', { static: false }) note_popover: any;
   tooltip: any;
   showCollorPattern: boolean;
   buttonsExpanded = false;
@@ -70,8 +71,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   selectionTaken: any;
   range: any;
   isFocused: boolean = false;
-  allowNoteClose: boolean = true;
-  allowAutoClose: boolean = true;
+  preventClosing: boolean = false;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -100,7 +100,12 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   toggleNote(data: any, t2) {
-    if (this.noteOpened) {
+    this.preventClosing = true;
+    setTimeout(() => {
+      this.preventClosing = false;
+    }, 200);
+
+    if (t2?.isOpen()) {
       if (this.openedAll) {
         this.leaveThisOpened = true;
         this.sharedService.emitAllNoteOpened.next(false);
@@ -109,6 +114,9 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.checkActiveItems();
         this.isExpanded = true;
         this.buttonsExpanded = true;
+        setTimeout(() => {
+          t2.open();
+        }, 1);
       } else {
         this.isExpanded = false;
         this.buttonsExpanded = false;
@@ -124,7 +132,10 @@ export class TaNoteComponent implements OnInit, OnDestroy {
       }
       this.leaveThisOpened = true;
       this.sharedService.emitAllNoteOpened.next(false);
-      this.noteOpened = true;
+      setTimeout(() => {
+        this.noteOpened = true;
+      }, 1);
+
       t2.open();
     }
   }
@@ -149,13 +160,8 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   preventMouseDown(ev) {
-    this.allowNoteClose = false;
     ev.stopPropagation();
     ev.preventDefault();
-
-    setTimeout(() => {
-      this.allowNoteClose = true;
-    }, 500);
   }
 
   valueChange(event) {
@@ -181,10 +187,9 @@ export class TaNoteComponent implements OnInit, OnDestroy {
 
   saveNote(autoSave?: boolean) {
     setTimeout(() => {
-      if (!autoSave && this.openedAll && this.allowNoteClose) {
+      if (!autoSave && this.openedAll) {
         this.closeNote();
       }
-      this.allowNoteClose = true;
     }, 200);
     if (this.value == '<br>') {
       this.value = this.value.replace('<br>', '');
@@ -246,6 +251,14 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  popoverClosed() {
+    if (!this.preventClosing) {
+      this.closeNote();
+    }
+
+    this.preventClosing = false;
   }
 
   public ngOnDestroy(): void {

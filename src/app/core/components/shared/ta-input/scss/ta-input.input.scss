@@ -180,7 +180,7 @@
   }
 
   &.valid-focus-out-filled-datepicker {
-    background-color: $input-background-color-valid-focus-out-datepicker !important;
+    background-color: $input-background-color-valid-focus-out !important;
     span,
     span .border-picker {
       color: $input-text-color-valid-focus-out !important;
@@ -303,6 +303,15 @@
 
     &::placeholder {
       color: $input-placeholder-color-normal-focus !important;
+    }
+  }
+
+  &.load-stop-details {
+    background-color: $input-background-color-load-stop-details-focus-out !important;
+
+    &:hover {
+      background-color: $input-background-color-normal-hover !important;
+      color: $input-text-color-normal-hover !important;
     }
   }
 }

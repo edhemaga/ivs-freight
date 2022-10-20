@@ -26,11 +26,18 @@ export class companyRepairShopResolver
   ) {}
   resolve(): Observable<CompanyRepairShopState | boolean> {
     return this.companyRepairService
-      .getCompanyRepairShopList(
+      .getRepairShopList(
+        1,
+        undefined,
         true,
-        this.pageIndex,
-        this.pageSize,
-        this.companyId
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        1,
+        25
       )
       .pipe(
         catchError(() => {

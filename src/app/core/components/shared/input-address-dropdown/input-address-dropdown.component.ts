@@ -8,6 +8,8 @@ import {
   Self,
   ViewChild,
   ViewEncapsulation,
+  ChangeDetectorRef,
+  HostListener,
 } from '@angular/core';
 import { filter, Subject, switchMap, takeUntil } from 'rxjs';
 import { AddressService } from 'src/app/core/services/shared/address.service';
@@ -48,6 +50,7 @@ export class InputAddressDropdownComponent
   @Input() isRouting: boolean = false;
   @Input() closedBorder: boolean = false;
   @Input() incorrectValue: boolean;
+  @Input () hideEmptyLoaded: boolean = false;
   addressExpanded: boolean = false;
   chosenFromDropdown: boolean = false;
   allowValidation: boolean = false;
@@ -74,10 +77,25 @@ export class InputAddressDropdownComponent
 
   @Output() incorrectEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: any) {
+    const key = event.keyCode;
+    if (this.inputConfig.name == 'RoutingAddress') {
+      if (key === 13) {
+        if (this.currentAddressData) {
+          this.onCommands(event, 'confirm');
+        }
+      } else if (key === 27) {
+        this.clearInput(event);
+      }
+    }
+  }
+
   constructor(
     @Self() public superControl: NgControl,
     private addressService: AddressService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private ref: ChangeDetectorRef
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -99,6 +117,11 @@ export class InputAddressDropdownComponent
         filter((term: string) => {
           if (!term) {
             this.addresList = [];
+          } else if (
+            term != this.currentAddressData?.address.address &&
+            this.inputConfig.name == 'RoutingAddress'
+          ) {
+            this.currentAddressData = null;
           }
           if (
             this.inputConfig.name != 'RoutingAddress' &&
@@ -125,6 +148,8 @@ export class InputAddressDropdownComponent
             id: indx,
           };
         });
+
+        this.ref.detectChanges();
       });
   }
 
@@ -172,13 +197,8 @@ export class InputAddressDropdownComponent
         this.commandEvent.emit(this.currentAddressData);
       }
 
-      this.currentAddressData = null;
-      this.addressExpanded = false;
-      this.addresList = [];
-      this.getSuperControl.setValue(null);
-      this.activeAddress = null;
-      this.inputDropdown?.inputRef?.clearInput(e);
-      this.chosenFromDropdown = false;
+      this.closeAddress();
+      this.clearInput(e);
     }
   }
 
@@ -186,6 +206,19 @@ export class InputAddressDropdownComponent
     if (!this.addressExpanded) {
       this.addressExpanded = true;
     }
+  }
+
+  closeAddress() {
+    this.addressExpanded = false;
+  }
+
+  clearInput(e) {
+    this.currentAddressData = null;
+    this.addresList = [];
+    this.getSuperControl.setValue(null);
+    this.activeAddress = null;
+    this.inputDropdown?.inputRef?.clearInput(e);
+    this.chosenFromDropdown = false;
   }
 
   checkSearchLayers(value) {

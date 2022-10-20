@@ -10,7 +10,7 @@ const notificationOptions: Partial<IndividualConfig> = {
   tapToDismiss: false,
   timeOut: 3000,
   extendedTimeOut: 1500,
-  easeTime: 145,
+  easeTime: 215,
   enableHtml: true,
   toastClass: '',
 };
@@ -27,12 +27,20 @@ export class NotificationService {
 
   public errorToastr(httpRequest: HttpRequest<any>, next: HttpHandler, error?) {
     const user = JSON.parse(localStorage.getItem('user'));
+    let loginPageReq = false;
+    if (
+      httpRequest.url.indexOf('login') > -1 ||
+      httpRequest.url.indexOf('forgotpassword') > -1 ||
+      httpRequest.url.indexOf('signupcompany') > -1
+    ) {
+      loginPageReq = true;
+    }
 
     if (
       httpRequest.url.indexOf('pm/truck/') > -1 ||
-      (error && error.status == 401) ||
-      !user ||
-      !user?.token ||
+      (error && error.status == 401 && !loginPageReq) ||
+      (!user && !loginPageReq) ||
+      (!user?.token && !loginPageReq) ||
       httpRequest.url.indexOf('applicant') > -1 ||
       httpRequest.url.indexOf('application') > -1 ||
       httpRequest.url.indexOf('dispatch') > -1 ||

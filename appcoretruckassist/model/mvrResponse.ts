@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 
 
 export interface MvrResponse { 
@@ -18,6 +19,7 @@ export interface MvrResponse {
     cdlId?: number;
     cdlNumber?: string | null;
     note?: string | null;
+    files?: Array<FileResponse> | null;
     createdAt?: string;
     updatedAt?: string;
 }

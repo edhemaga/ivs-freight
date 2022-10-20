@@ -40,6 +40,7 @@ export class TaUserReviewComponent implements OnChanges {
     new EventEmitter<ReviewCommentModal>();
 
   private user: SignInResponse = JSON.parse(localStorage.getItem('user'));
+  valueChanged: boolean = false;
 
   constructor(
     private reviewSortPipe: ReviewsSortPipe,
@@ -156,9 +157,13 @@ export class TaUserReviewComponent implements OnChanges {
     }, 150);
   }
 
-  public transformText(event: any, ind: number) {
-    this.reviewMessageRef.toArray()[ind].nativeElement.value =
-      this.titleCaseInput(event.target.value);
+  public inputValueChange(event: any, ind: number) {
+    this.reviewMessageRef.toArray()[ind].nativeElement.value = event.target.value;
+    if(this.reviewData[ind].commentContent == event.target.value || event.target.value == '') {
+      this.valueChanged = false;
+    } else {
+      this.valueChanged = true;
+    }
   }
 
   public keyUp(event: any, review: any, type: string, index: number) {
