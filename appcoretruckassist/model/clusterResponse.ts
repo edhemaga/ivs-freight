@@ -9,12 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MarkerNamesResponse } from './markerNamesResponse';
 
 
 export interface ClusterResponse { 
     id?: number | null;
     name?: string | null;
-    names?: Array<string> | null;
+    names?: Array<MarkerNamesResponse> | null;
     latitude?: number;
     longitude?: number;
     count?: number;

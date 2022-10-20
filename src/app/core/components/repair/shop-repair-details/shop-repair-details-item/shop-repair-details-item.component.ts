@@ -1,5 +1,7 @@
+import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
@@ -7,8 +9,8 @@ import {
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
-import { RepairShopResponse } from 'appcoretruckassist';
-import { Subject, takeUntil } from 'rxjs';
+import { RepairListResponse, RepairShopResponse } from 'appcoretruckassist';
+import { Subject, takeUntil, forkJoin } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
 import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
@@ -16,7 +18,7 @@ import { ConfirmationService } from '../../../modals/confirmation-modal/confirma
 import { RepairOrderModalComponent } from '../../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { RepairTService } from '../../state/repair.service';
+import { RepairDQuery } from '../../state/details-state/repair-d.query';
 
 @Component({
   selector: 'app-shop-repair-details-item',
@@ -27,28 +29,52 @@ import { RepairTService } from '../../state/repair.service';
   animations: [card_component_animation('showHideCardBody', '0px', '0px')],
 })
 export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
-  @Input() shopData: RepairShopResponse | any = null;
+  @Input() repairShopItem: RepairShopResponse | any = null;
+  public repairListData: any;
+  public repairedVehicleListData: any;
+  public data;
   public dummyData: any;
   public reviewsRepair: any = [];
   public repairShopLikes: number;
   public repairShopDislike: number;
   public showRepairItems: boolean[] = [];
   private destroy$ = new Subject<void>();
+  public repairsTest: any;
 
   constructor(
     private dropDownService: DropDownService,
     private modalService: ModalService,
     private confirmationService: ConfirmationService,
-    private shopService: RepairTService
+    private repairDQuery: RepairDQuery,
+    private cdr: ChangeDetectorRef
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.shopData?.currentValue != changes.shopData?.previousValue) {
-      this.shopData = changes.shopData.currentValue;
-      this.repairShopLikes = changes.shopData.currentValue.data.upRatingCount;
+    if (
+      changes.repairShopItem?.currentValue?.data !=
+      changes.repairShopItem?.previousValue?.data
+    ) {
+      this.repairShopLikes = changes.repairShopItem?.currentValue?.data.upCount;
       this.repairShopDislike =
-        changes.shopData.currentValue.data.downRatingCount;
-      this.getReviews(changes.shopData.currentValue.data);
-      changes?.shopData?.currentValue?.data?.repairs.map((item) => {
+        changes.repairShopItem?.currentValue?.data.downCount;
+      this.getReviews(changes.repairShopItem?.currentValue?.data);
+      this.initTableOptions();
+      this.repairDQuery.repairList$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (item) => (
+            (this.repairListData = item.pagination.data),
+            this.cdr.detectChanges()
+          )
+        );
+      this.repairDQuery.repairedVehicleList$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (item) => (
+            (this.repairedVehicleListData = item.pagination.data),
+            this.cdr.detectChanges()
+          )
+        );
+      this.repairListData?.map((item) => {
         this.showRepairItems[item.id] = false;
       });
     }
@@ -77,16 +103,18 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
   }
 
   public deleteRepairByIdFunction(id: number) {
-    this.shopService
-      .deleteRepairById(id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe();
+    // this.shopService
+    //   .deleteRepairById(id)
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe();
   }
+
   public toggleRepairs(index: number, event?: any) {
     event.stopPropagation();
     event.preventDefault();
     this.showRepairItems[index] = !this.showRepairItems[index];
   }
+
   public optionsEvent(any: any, action: string) {
     const name = dropActionNameDriver(any, action);
     setTimeout(() => {
@@ -172,10 +200,12 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
       };
     });
   }
+
   /**Function return id */
   public identity(index: number, item: any): number {
     return item.id;
   }
+
   public changeReviewsEvent(reviews: { data: any[]; action: string }) {
     this.reviewsRepair = [...reviews.data];
     // TODO: API CREATE OR DELETE

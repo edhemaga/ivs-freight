@@ -1,4 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
+import { OnChanges, SimpleChanges } from '@angular/core';
 import {
   Component,
   Input,
@@ -41,6 +42,9 @@ export class TaCommonHeaderComponent implements OnInit {
   @Input() repairIsOpen: boolean;
   @Input() showRepairHeaderOpen: boolean;
   @Input() loadNames: boolean;
+  @Input() secondNameHeader: string = '';
+  @Input() countViolation: number;
+  @Input() hideCounter: boolean;
   public up: boolean = false;
   public down: boolean = false;
   constructor(private routes: ActivatedRoute) {}

@@ -1,8 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import {
-  CreateTestCommand,
   DriverResponse,
-  EditTestCommand,
   GetTestModalResponse,
   TestResponse,
   TestService,
@@ -13,6 +11,9 @@ import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
+import { CreateTestCommand } from 'appcoretruckassist/model/createTestCommand';
+import { EditTestCommand } from 'appcoretruckassist/model/editTestCommand';
+import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +31,8 @@ export class TestTService implements OnDestroy {
 
   /* Observable<CreateTestResponse> */
   public addTest(data: CreateTestCommand): Observable<any> {
-    return this.drugService.apiTestPost(data).pipe(
+    const sortedParams = getFunctionParams(this.drugService.apiTestPost, data);
+    return this.drugService.apiTestPost(...sortedParams).pipe(
       tap((res: any) => {
         const subDriver = this.driverService
           .getDriverById(data.driverId)
@@ -65,7 +67,8 @@ export class TestTService implements OnDestroy {
   }
 
   public updateTest(data: EditTestCommand): Observable<object> {
-    return this.drugService.apiTestPut(data).pipe(
+    const sortedParams = getFunctionParams(this.drugService.apiTestPut, data);
+    return this.drugService.apiTestPut(...sortedParams).pipe(
       tap((res: any) => {
         let driverId = this.driverItemStore.getValue().ids[0];
         const subDriver = this.driverService.getDriverById(driverId).subscribe({

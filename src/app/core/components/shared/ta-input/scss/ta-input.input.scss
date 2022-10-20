@@ -199,7 +199,7 @@
   }
 
   &.valid-focus-out-filled-datepicker {
-    background-color: $input-background-color-valid-focus-out-datepicker !important;
+    background-color: $input-background-color-valid-focus-out !important;
     span,
     span .border-picker {
       color: $input-text-color-valid-focus-out !important;
@@ -245,15 +245,27 @@
   }
 
   &.load-dispatches-ttd {
-    grid-template-columns: repeat(3, 1fr);
-    -moz-column-gap: 11px;
-    column-gap: 11px;
+    grid-template-columns: repeat(3, 128px);
+
+    span:last-child {
+      .multiple-input-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 98px;
+      }
+    }
+
+    span {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
   }
 
   &.load-broker-contact {
-    grid-template-columns: repeat(3, 1fr);
-    -moz-column-gap: 10px;
-    column-gap: 10px;
+    grid-template-columns: repeat(3, 120px);
   }
 
   &.load-shipper {

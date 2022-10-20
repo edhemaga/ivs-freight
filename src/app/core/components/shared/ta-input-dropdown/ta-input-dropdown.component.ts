@@ -134,7 +134,7 @@ export class TaInputDropdownComponent
       if (changes.preloadMultiselectItems?.currentValue?.length) {
         const timeout = setTimeout(() => {
           this.preloadMultiselectItems.forEach((item) => {
-            this.onMultiselectSelect(item, this.template);
+            this.onMultiselectSelect(item);
           });
           clearTimeout(timeout);
         }, 50);
@@ -363,7 +363,7 @@ export class TaInputDropdownComponent
 
             // MultiSelect Dropdown
             if (this.inputConfig.multiselectDropdown) {
-              this.onMultiselectSelect(existItem, this.template);
+              this.onMultiselectSelect(existItem);
             }
 
             // Normal Dropdown
@@ -741,94 +741,46 @@ export class TaInputDropdownComponent
   }
 
   // ----------------------------------  Multiselect Dropdown ----------------------------------
-  public onMultiselectSelect(option: any, action: string): void {
+  public onMultiselectSelect(option: any): void {
     this.isMultiSelectInputFocus = false;
     this.inputConfig.label = null;
 
-    switch (action) {
-      case 'multiselect': {
-        if (this.multiselectItems.some((item) => item.id === option.id)) {
-          return;
-        }
-
-        this.options = this.options.map((item) => {
-          if (item.id === option.id) {
-            return {
-              ...item,
-              active: true,
-            };
-          } else {
-            if (!item.active) {
-              return {
-                ...item,
-                active: false,
-              };
-            } else {
-              return {
-                ...item,
-                active: true,
-              };
-            }
-          }
-        });
-
-        this.multiselectItems = this.options.filter((item) => item.active);
-
-        this.selectedItems.emit(
-          this.multiselectItems.map((item) => {
-            const { id, name } = item;
-            return {
-              id,
-              name,
-            };
-          })
-        );
-        break;
-      }
-      case 'multiselect-res-endors': {
-        if (this.multiselectItems.some((item) => item.id === option.id)) {
-          return;
-        }
-
-        this.options = this.originalOptions.map((item) => {
-          if (item.id === option.id) {
-            return {
-              ...item,
-              active: true,
-            };
-          } else {
-            if (!item.active) {
-              return {
-                ...item,
-                active: false,
-              };
-            } else {
-              return {
-                ...item,
-                active: true,
-              };
-            }
-          }
-        });
-
-        this.multiselectItems = this.options.filter((item) => item.active);
-
-        this.selectedItems.emit(
-          this.multiselectItems.map((item) => {
-            const { id, code, description } = item;
-            return {
-              id,
-              code,
-              description,
-            };
-          })
-        );
-        break;
-      }
-      default: {
-        break;
-      }
+    // switch (action) {
+    //   case 'multiselect': {
+    if (this.multiselectItems.some((item) => item.id === option.id)) {
+      return;
     }
+
+    this.options = this.options.map((item) => {
+      if (item.id === option.id) {
+        return {
+          ...item,
+          active: true,
+        };
+      } else {
+        if (!item.active) {
+          return {
+            ...item,
+            active: false,
+          };
+        } else {
+          return {
+            ...item,
+            active: true,
+          };
+        }
+      }
+    });
+
+    this.multiselectItems = this.options.filter((item) => item.active);
+
+    this.selectedItems.emit(
+      this.multiselectItems.map((item) => {
+        return {
+          ...item,
+        };
+      })
+    );
 
     this.options = this.options.sort(
       (x, y) => Number(y.active) - Number(x.active)
@@ -847,7 +799,7 @@ export class TaInputDropdownComponent
     };
   }
 
-  public removeMultiSelectItem(index: number, action: string) {
+  public removeMultiSelectItem(index: number) {
     this.options = this.originalOptions.map((item) => {
       if (item.id === this.multiselectItems[index].id) {
         return {
@@ -871,28 +823,11 @@ export class TaInputDropdownComponent
       this.inputConfig.label = this.multiSelectLabel;
     }
 
-    if (action === 'multiselect') {
-      this.selectedItems.emit(
-        this.multiselectItems.map((item) => {
-          const { id, name } = item;
-          return {
-            id,
-            name,
-          };
-        })
-      );
-    } else {
-      this.selectedItems.emit(
-        this.multiselectItems.map((item) => {
-          const { id, code, description } = item;
-          return {
-            id,
-            code,
-            description,
-          };
-        })
-      );
-    }
+    this.selectedItems.emit(
+      this.multiselectItems.map((item) => {
+        return { ...item };
+      })
+    );
   }
 
   public deleteAllMultiSelectItems(currentLabel?: string) {
