@@ -442,7 +442,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       case 'LOGIN':
         
         this.actionType = this.toastrType == 'toast-error' ? 'LOGIN' : 'LOGGED IN';
-        let errorMessage = this.errorData.error.error ? this.errorData.error.error : '';
+        let errorMessage = this.errorData?.error?.error ? this.errorData.error.error : 'Error occurred';
         this.message = errorMessage;
         this.leftSideMove = false;
 
