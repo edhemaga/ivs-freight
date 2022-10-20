@@ -216,7 +216,6 @@
           <ng-template>
             <div
               class="marker-container marker-icon cluster-marker"
-              [ngClass]="{ 'cluster-marker': !cluster.detailedInfo, 'hide-cluster-marker': cluster.detailedInfo }"
               (click)="clickedCluster(cluster)"
               (mousewheel)="markerZoom($event, cluster)"
               (mouseenter)="clusterHover(cluster, true)"
@@ -273,6 +272,23 @@
                   id="Group_70617"
                   data-name="Group 70617"
                   transform="translate(-1239 -563)"
+                  ngbTooltip
+                  [mainTooltip]="
+                    cluster.count + ' ' + (mapType == 'shipper'
+                      ? 'SHIPPERS'
+                      : mapType == 'accident'
+                      ? 'ACCIDENTS'
+                      : mapType == 'inspection'
+                      ? 'ROADSIDE INSPECTIONS'
+                      : mapType == 'repairShop'
+                      ? 'REPAIR SHOPS'
+                      : mapType == 'fuelStop'
+                      ? 'FUEL STOPS'
+                      : '')
+                  "
+                  tooltipBackground="#6C6C6C"
+                  position="top"
+                  [ngStyle]="{ 'outline': 'none' }"
                 >
                   <g
                     transform="matrix(1, 0, 0, 1, 1239, 563)"

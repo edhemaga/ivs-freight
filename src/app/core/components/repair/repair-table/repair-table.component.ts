@@ -899,8 +899,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     this.tableData[2].length = mapListResponse.pagination.count;
 
     this.ref.detectChanges();
-
-    console.log('mapListData', this.mapListData);
   }
 
   ngOnDestroy(): void {

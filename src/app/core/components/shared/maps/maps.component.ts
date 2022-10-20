@@ -171,7 +171,6 @@ export class MapsComponent implements OnInit, OnDestroy {
         if (selectShop) {
           this.markerSelected = true;
 
-          console.log('selectShop', this.viewData[index]);
           if (!data.createdAt) {
             if (this.mapType == 'repairShop') {
               this.getRepairShop(data.id, index);
@@ -369,13 +368,10 @@ export class MapsComponent implements OnInit, OnDestroy {
     //this.viewData = [];
 
     if (this.mapType == 'repairShop') {
-      //console.log('callClusters clustersObj', clustersObj);
       this.repairShopService
         .getRepairShopClusters(clustersObj)
         .pipe(takeUntil(this.destroy$))
         .subscribe((clustersResponse: any) => {
-          console.log('callClusters clustersResponse', clustersResponse);
-
           var clustersToShow = [];
           var markersToShow = [];
           var newMarkersAdded = false;
@@ -437,7 +433,6 @@ export class MapsComponent implements OnInit, OnDestroy {
         )
         .pipe(takeUntil(this.destroy$))
         .subscribe((mapListResponse: any) => {
-          console.log('mapListResponse', mapListResponse);
           this.updateMapList.emit(mapListResponse);
         });
     } else if ( this.mapType == 'shipper' ) {
@@ -445,8 +440,6 @@ export class MapsComponent implements OnInit, OnDestroy {
         .getShipperClusters(clustersObj)
         .pipe(takeUntil(this.destroy$))
         .subscribe((clustersResponse: any) => {
-          console.log('callClusters clustersResponse', clustersResponse);
-
           var clustersToShow = [];
           var markersToShow = [];
           var newMarkersAdded = false;
@@ -516,8 +509,6 @@ export class MapsComponent implements OnInit, OnDestroy {
         if ( !data.detailedInfo ) {
           data.isSelected = !data.isSelected;
         }
-        
-        //console.log('select cluster', data.isSelected);
 
         if (data.isSelected && !data.detailedInfo) {
           this.markerSelected = true;
@@ -577,8 +568,6 @@ export class MapsComponent implements OnInit, OnDestroy {
             this.viewData[index].isSelected = true;
             this.ref.detectChanges();
           }, 200);
-
-          console.log('getRepairShopById', this.viewData[index]);
         },
         error: () => {
           this.notificationService.error(
@@ -601,8 +590,6 @@ export class MapsComponent implements OnInit, OnDestroy {
             this.viewData[index].isSelected = true;
             this.ref.detectChanges();
           }, 200);
-
-          console.log('getShipper', this.viewData[index]);
         },
         error: () => {
           this.notificationService.error(
@@ -620,7 +607,6 @@ export class MapsComponent implements OnInit, OnDestroy {
   showClusterItemInfo(data) {
     var cluster = data[0];
     var item = data[1];
-    console.log('showClusterItemInfo', data);
 
     if ( this.mapType == 'repairShop' ) {
       this.repairShopService
