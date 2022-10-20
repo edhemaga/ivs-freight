@@ -33,7 +33,8 @@
             "
             [ngClass]="{
               'completed-step':
-                selectedMode === 'APPLICANT_MODE' && storeArr[i].isCompleted,
+                selectedMode === 'APPLICANT_MODE' &&
+                isStepCompletedArray[i].isCompleted,
               'completed-step-review':
                 selectedMode === 'REVIEW_MODE' &&
                 reviewStoreArr[i].isReviewed &&

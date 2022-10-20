@@ -36,7 +36,7 @@ import {
 export class Step2Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public applicantId: number;
 
@@ -59,6 +59,7 @@ export class Step2Component implements OnInit, OnDestroy {
 
   public formValuesToPatch: any;
   public previousFormValuesOnEdit: any;
+  public annotationMessagesOnReview: any;
 
   public vehicleType: TruckTypeResponse[] = [];
   public trailerType: TrailerTypeResponse[] = [];
@@ -156,17 +157,31 @@ export class Step2Component implements OnInit, OnDestroy {
           displayAnnotationTextArea: false,
         };
 
-        const hasIncorrectValue = Object.values(
-          workExperienceItemsReview[i]
-        ).includes(false);
+        const workExperienceItemReview = {
+          ...workExperienceItemsReview[i],
+        };
 
-        const incorrectMessage = workExperienceItemsReview[i].commonMessage;
+        delete workExperienceItemReview.isPrimary;
+
+        let hasIncorrectValue: boolean;
+
+        if (workExperienceItemsReview[0]) {
+          hasIncorrectValue = Object.values(workExperienceItemReview).includes(
+            false
+          );
+        }
+
+        const incorrectMessage = workExperienceItemsReview[i]?.commonMessage;
+
+        if (hasIncorrectValue == null || hasIncorrectValue == undefined) {
+          hasIncorrectValue = false;
+        }
 
         this.openAnnotationArray[i] = {
           ...this.openAnnotationArray[i],
           lineInputs: [hasIncorrectValue],
           displayAnnotationButton:
-            !hasIncorrectValue && !incorrectMessage ? true : false,
+            hasIncorrectValue && !incorrectMessage ? true : false,
           displayAnnotationTextArea: incorrectMessage ? true : false,
         };
 
@@ -184,7 +199,7 @@ export class Step2Component implements OnInit, OnDestroy {
 
         this.workExperienceForm
           .get(`cardReview${i + 1}`)
-          .patchValue(incorrectMessage);
+          .patchValue(incorrectMessage ? incorrectMessage : null);
       }
     }
 
@@ -524,6 +539,17 @@ export class Step2Component implements OnInit, OnDestroy {
 
     this.helperIndex = 2;
     this.selectedWorkExperienceIndex = -1;
+
+    const lastWorkExperienceCard = this.lastWorkExperienceCard;
+
+    this.previousFormValuesOnReview.workExperienceItemReview = {
+      ...this.previousFormValuesOnReview.workExperienceItemReview,
+      employerMessage: lastWorkExperienceCard.firstRowReview,
+      jobDescriptionMessage: lastWorkExperienceCard.secondRowReview,
+      contactMessage: lastWorkExperienceCard.thirdRowReview,
+      addressMessage: lastWorkExperienceCard.fourthRowReview,
+      accountForPeriodBetweenMessage: lastWorkExperienceCard.seventhRowReview,
+    };
 
     this.formValuesToPatch = this.previousFormValuesOnReview;
   }

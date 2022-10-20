@@ -6,6 +6,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
 import { ApplicantListsService } from 'src/app/core/components/applicant/state/services/applicant-lists.service';
 
+import { ApplicantQuery } from '../state/store/applicant.query';
+
 import { INavigation } from '../state/model/navigation.model';
 
 @Component({
@@ -76,7 +78,7 @@ export class ApplicantComponent implements OnInit, OnDestroy {
     },
   ];
 
-  storeArr = [
+  public isStepCompletedArray = [
     { id: 0, isCompleted: false },
     { id: 1, isCompleted: false },
     { id: 2, isCompleted: false },
@@ -120,22 +122,120 @@ export class ApplicantComponent implements OnInit, OnDestroy {
 
   constructor(
     private applicantActionsService: ApplicantActionsService,
-    private applicantListsService: ApplicantListsService
+    private applicantListsService: ApplicantListsService,
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
-    this.applicantListsService
-      .getDropdownLists()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe();
+    this.getApplicantById();
 
+    this.getDropdownLists();
+
+    this.getStepValuesFromStore();
+  }
+
+  public trackByIdentity = (index: number, item: any): number => index;
+
+  public getApplicantById(): void {
     this.applicantActionsService
       .getApplicantById(4)
       .pipe(takeUntil(this.destroy$))
       .subscribe();
   }
 
-  public trackByIdentity = (index: number, item: any): number => index;
+  public getDropdownLists(): void {
+    this.applicantListsService
+      .getDropdownLists()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
+  }
+
+  public getStepValuesFromStore(): void {
+    this.applicantQuery.fullList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.isStepCompletedArray = this.isStepCompletedArray.map(
+          (item, index) => {
+            if (index === 0) {
+              return {
+                ...item,
+                isCompleted: res.personalInfo ? true : false,
+              };
+            }
+
+            if (index === 1) {
+              return {
+                ...item,
+                isCompleted: res.workExperience ? true : false,
+              };
+            }
+
+            if (index === 2) {
+              return {
+                ...item,
+                isCompleted: res.cdlInformation ? true : false,
+              };
+            }
+
+            if (index === 3) {
+              return {
+                ...item,
+                isCompleted: res.accidentRecords ? true : false,
+              };
+            }
+
+            if (index === 4) {
+              return {
+                ...item,
+                isCompleted: res.trafficViolation ? true : false,
+              };
+            }
+
+            if (index === 5) {
+              return {
+                ...item,
+                isCompleted: res.education ? true : false,
+              };
+            }
+
+            if (index === 6) {
+              return {
+                ...item,
+                isCompleted: res.sevenDaysHos ? true : false,
+              };
+            }
+
+            if (index === 7) {
+              return {
+                ...item,
+                isCompleted: res.drugAndAlcohol ? true : false,
+              };
+            }
+
+            if (index === 8) {
+              return {
+                ...item,
+                isCompleted: res.driverRight ? true : false,
+              };
+            }
+
+            if (index === 9) {
+              return {
+                ...item,
+                isCompleted: res.disclosureRelease ? true : false,
+              };
+            }
+
+            if (index === 10) {
+              return {
+                ...item,
+                isCompleted: res.authorization ? true : false,
+              };
+            }
+          }
+        );
+      });
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

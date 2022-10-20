@@ -275,7 +275,6 @@ export class TaInputComponent
   }
 
   public onFocus(e?): void {
-    console.log('ON FOCUS');
     // Password
     if (this.inputConfig.type === 'password') {
       this.isVisiblePasswordEye = true;
@@ -486,7 +485,7 @@ export class TaInputComponent
           this.t2.open();
         } else {
           this.holder1.nativeElement.blur();
-          this.focusInput = false; 
+          this.focusInput = false;
           let selection = window.getSelection();
           selection.removeAllRanges();
         }
