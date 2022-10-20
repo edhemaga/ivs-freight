@@ -49,6 +49,7 @@ $input-red-color-8: rgb(
 $input-red-color-9: rgb(239, 83, 80, 0.4); // placeholder-icon divider
 
 $input-green-color-1: #26a690;
+$input-green-color-2: #f6faf5;
 
 $input-yellow-color-1: #ffa726;
 $input-yellow-color-2: #ffb74d;
@@ -225,6 +226,9 @@ $input-text-color-filled-disabled: $input-gray-color-2;
 
 // Blue Text Color
 $input-text-color-blue: $input-blue-color-1;
+
+// Load Stop Details Color
+$input-background-color-load-stop-details-focus-out: $input-green-color-2;
 
 //----------------------- INPUT LABEL -----------------------
 $input-label-color-active-up: 600;
