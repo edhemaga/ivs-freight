@@ -377,7 +377,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.loadCreateStatuses = this.loadCreateStatuses.map((item) => {
             return {
               ...item,
-              active: item.name === 'BOOKED',
+              active: item.name === 'BOOKED' && !this.selectedDispatches,
             };
           });
         }
@@ -525,6 +525,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           };
         } else {
           this.loadDispatchesTTDInputConfig.multipleInputValues = null;
+          this.loadCreateStatuses = this.loadCreateStatuses.map((item) => {
+            return {
+              ...item,
+              active: item.name === 'UNASSIGNED',
+            };
+          });
         }
         break;
       }
