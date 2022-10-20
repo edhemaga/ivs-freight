@@ -181,6 +181,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     {
       'api' : 'Comment',
       'value' : 'COMMENT'
+    },
+    {
+      'api' : 'forgotpassword',
+      'value' : 'PASSWORD'
     }
     
   ]
@@ -570,6 +574,9 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       break;
       case 'COMMENT' : 
         this.message = this.DetailsDataService.mainData?.title;    
+      break;
+      case 'PASSWORD' :
+        this.message = this.errorData.error.error ? this.errorData.error.error : '';
       break;
     }
 
