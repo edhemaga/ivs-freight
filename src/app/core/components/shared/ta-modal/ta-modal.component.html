@@ -28,6 +28,12 @@
           }}.svg"
           class="modal-header-svg"
         ></svg-icon>
+        <!-- Hazardous Logo -->
+        <svg-icon
+          *ngIf="hazardousLogo"
+          src="assets/svg/common/load/ic_hazardous_modal_logo.svg"
+          class="modal-hazardous-logo"
+        ></svg-icon>
         <!-- Header title -->
         <h5 class="modal-title">{{ modalTitle }}</h5>
         <!-- Header name -->
@@ -84,9 +90,6 @@
           class="load-modal-bill-due"
           [ngClass]="{ 'no-due-rate': !loadModalBill.advance }"
         >
-          {{
-            loadModalBill.baseRate - loadModalBill.advance | taThousandSeparator
-          }}
           <p>Due</p>
           <p class="load-modal-base-due">
             $

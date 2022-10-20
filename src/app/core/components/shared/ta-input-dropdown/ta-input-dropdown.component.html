@@ -2,7 +2,8 @@
   [ngClass]="{
     'multiselect-dropdown':
       inputConfig.multiselectDropdown && multiselectItems.length > 0,
-    focus: isMultiSelectInputFocus
+    focus: isMultiSelectInputFocus,
+    disabled: inputConfig.isDisabled
   }"
 >
   <p *ngIf="multiselectItems.length > 0" class="multiselect-label">
@@ -22,7 +23,7 @@
 
   <!-- Multiselect clear all -->
   <div
-    *ngIf="multiselectItems.length > 0"
+    *ngIf="multiselectItems.length > 0 && !inputConfig.isDisabled"
     class="input-clear input-clear-multiselect"
     [ngClass]="{
       'valid-focus-in': !getSuperControl.value && isMultiSelectInputFocus
@@ -55,6 +56,7 @@
     >
       {{ multiSelect.name }}
       <div
+        *ngIf="!inputConfig.isDisabled"
         ngbTooltip
         mainTooltip="Clear"
         tooltipBackground="#6c6c6c"
@@ -86,6 +88,7 @@
     >
       {{ multiSelect.code | formatRestEndor: multiSelect.description }}
       <div
+        *ngIf="!inputConfig.isDisabled"
         ngbTooltip
         mainTooltip="Clear"
         tooltipBackground="#6c6c6c"

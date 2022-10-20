@@ -65,7 +65,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private formService: FormService,
-    private DetailsDataService: DetailsDataService,
+    private DetailsDataService: DetailsDataService
   ) {}
 
   ngOnInit(): void {

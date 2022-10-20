@@ -66,7 +66,10 @@ export class MedicalTService implements OnDestroy {
 
   /* Observable<CreateMedicalResponse> */
   public addMedical(data: CreateMedicalCommand): Observable<any> {
-    const sortedParams = getFunctionParams(this.medicalService.apiMedicalPost, data);
+    const sortedParams = getFunctionParams(
+      this.medicalService.apiMedicalPost,
+      data
+    );
 
     return this.medicalService.apiMedicalPost(...sortedParams).pipe(
       tap((res: any) => {
@@ -98,7 +101,10 @@ export class MedicalTService implements OnDestroy {
   }
 
   public updateMedical(data: EditMedicalCommand): Observable<object> {
-    const sortedParams = getFunctionParams(this.medicalService.apiMedicalPut, data);
+    const sortedParams = getFunctionParams(
+      this.medicalService.apiMedicalPut,
+      data
+    );
     return this.medicalService.apiMedicalPut(...sortedParams).pipe(
       tap((res: any) => {
         let driverId = this.driverItemStore.getValue().ids[0];

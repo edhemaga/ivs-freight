@@ -603,8 +603,10 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
   }
 
   setIndex(mainIndx, indx) {
-    this.currentHoldIndex = mainIndx;
-    this.currentChildIndex = indx;
+    if(!this.newComment) {
+      this.currentHoldIndex = mainIndx;
+      this.currentChildIndex = indx;
+    }
   }
 
   ngOnDestroy(): void {
