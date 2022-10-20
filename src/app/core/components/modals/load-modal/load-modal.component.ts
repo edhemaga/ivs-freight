@@ -1229,8 +1229,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             };
           });
 
-          console.log(this.labelsBroker);
-
           // Broker Contacts
           this.labelsBrokerContacts = this.originBrokerContacts =
             res.brokerContacts.map((item) => {
@@ -1296,17 +1294,17 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                   ...item.driver,
                   name: item.driver?.firstName?.concat(
                     ' ',
-                    item?.driver?.lastName
+                    item.driver?.lastName
                   ),
-                  logoName: item.driver.avatar,
+                  logoName: item.driver?.avatar,
                 },
                 coDriver: {
                   ...item.coDriver,
-                  name: item?.coDriver?.firstName?.concat(
+                  name: item.coDriver?.firstName?.concat(
                     ' ',
-                    item?.coDriver?.lastName
+                    item.coDriver?.lastName
                   ),
-                  logoName: item?.coDriver?.avatar,
+                  logoName: item.coDriver?.avatar,
                 },
                 truck: {
                   ...item.truck,
