@@ -16,7 +16,7 @@
         <div *ngIf="!retryStarted" class="closeToastrBtn closeIcon" (click)="closeToast()">
             <svg-icon src="assets/svg/common/ic_x.svg"></svg-icon>
         </div>
-        <div *ngIf="retryStarted" class="animation-holder">
+        <div *ngIf="retryStarted" class="closeToastrBtn">
             <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
         </div>
     </div>    
