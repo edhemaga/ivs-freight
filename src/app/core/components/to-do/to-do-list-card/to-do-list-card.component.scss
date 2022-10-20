@@ -195,7 +195,7 @@
       align-items: flex-start;
       flex-direction: column;
       border-radius: 4px;
-      transition: all 0.2s;
+      transition: all 0.1s;
       cursor: grab;
 
       .todo_deadline_hold {
@@ -595,7 +595,7 @@
 
           .add_comment_holder {
             &.move_comment_hold {
-              margin-top: 10px;
+              margin-top: 4px;
             }
             &.shrink_hold {
               display: flex;
@@ -619,7 +619,7 @@
 
           .todo_list_holder {
             display: flex;
-            padding-top: 4px;
+            padding-top: 8px;
             border-top: 1px solid #dadada;
             &.expand {
               margin-bottom: 8px;

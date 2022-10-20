@@ -7,6 +7,10 @@
   border-radius: 2px;
   transition: all 0.3s ease-in-out;
 
+  &.separate{
+    margin-top: 4px;
+  }
+
   p {
     margin: 0;
     padding: 0;
@@ -107,23 +111,21 @@
       display: none;
       align-items: center;
       gap: 6px;
-      line-height: 18px;
-      width: 42px;
-      height: 18px;
       justify-content: center;
       text-align: center;
 
       .action-edit,
       .action-delete {
+        padding: 4px;
+        border-radius: 2px;
         transition: all 0.3s ease-in-out;
-        width: 18px;
-        height: 18px;
 
         svg {
-          width: 100%;
-          height: 100%;
+          display: flex;
+          width: 18px;
+          height: 18px;
           path {
-            fill: #aaaaaa;
+            fill: #919191;
           }
         }
 
@@ -135,9 +137,10 @@
       .action-edit {
         transition: all 0.3s ease-in-out;
         &:hover {
+          background-color: #cccccc;
           svg {
             path {
-              fill: #6c6c6c;
+              fill: #424242;
             }
           }
         }
@@ -146,9 +149,10 @@
       .action-delete {
         transition: all 0.3s ease-in-out;
         &:hover {
+          background-color: #f0ccc9;
           svg {
             path {
-              fill: #ef5350;
+              fill: #f44336;
             }
           }
         }
@@ -160,10 +164,6 @@
     border-radius: 2px;
     overflow: hidden;
     position: relative;
-
-    &.focus {
-      background-color: #6c6c6c;
-    }
 
     .message {
       color: #6c6c6c;
@@ -185,23 +185,24 @@
     }
 
     .review-textarea {
+      padding: 0;
+      margin-bottom: 10px;
       width: 100%;
-      height: 26px;
       font-size: 14px;
       font-weight: 400;
       line-height: 18px;
       color: #ffffff;
-      background-color: #6c6c6c;
-      border-radius: 2px;
-      padding: 4px 6px;
+      background-color: #2f2f2f;
       resize: none;
       border: none;
       box-shadow: none;
       outline: none;
       display: none;
-      text-transform: capitalize;
-
       scrollbar-width: none !important; /* Firefox */
+
+      &::placeholder {
+        color: #919191;
+      }
 
       &::-webkit-scrollbar {
         width: 3px;
@@ -320,6 +321,91 @@
         }
       }
     }
+
+    .review_options_hold {
+      display: flex;
+      .review_prop_hold {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        .review_option_icon {
+          width: 14px;
+          height: 14px;
+          margin-right: 6px;
+
+          svg-icon {
+            svg {
+              display: flex;
+              width: 14px;
+              height: 14px;
+
+              path {
+                fill: #6f9ee0;
+              }
+            }
+          }
+        }
+        .review_option_text {
+          color: #6f9ee0;
+          font-size: 11px;
+          font-weight: 700;
+          line-height: 14px;
+        }
+      }
+
+      .review_buttons {
+        display: flex;
+        align-items: center;
+
+        .review_button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          width: 100px;
+          height: 26px;
+
+          border-radius: 2px;
+          cursor: pointer;
+
+          .review_button_text {
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 14px;
+          }
+
+          &.close {
+            background-color: #6c6c6c;
+            margin-right: 4px;
+
+            &:hover {
+              background-color: #1d1d1d;
+            }
+          }
+
+          &.save {
+            background-color: #6c6c6c;
+
+            .review_button_text {
+              color: #aaaaaa;
+            }
+
+            &.value_changed {
+              background-color: #6f9ee0;
+
+              &:hover {
+                background-color: #3074d3;
+              }
+
+              .review_button_text {
+                color: #ffffff;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   &:hover {
@@ -368,9 +454,10 @@
 
   // EDIT MODE
   &.edit-review {
-    background-color: #f7f7f7;
+    background-color: #2f2f2f;
     border-radius: 2px;
     transition: all 0.3s ease-in-out;
+    padding: 10px 4px 4px 10px;
 
     .ta-user-data {
       .ta-user-datetime {
