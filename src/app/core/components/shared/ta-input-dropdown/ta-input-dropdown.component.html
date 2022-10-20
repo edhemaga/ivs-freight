@@ -410,6 +410,7 @@
         >
           <!-- Truck -->
           <div
+            class="load-dispatch-truck"
             [innerHtml]="
               option.truck.name
                 | taHighlight: [{ index: 45632, text: getSuperControl.value }]
@@ -417,6 +418,7 @@
           ></div>
           <!-- Trailer -->
           <div
+            class="load-dispatch-trailer"
             [innerHtml]="
               option.trailer.name
                 | taHighlight: [{ index: 45632, text: getSuperControl.value }]
@@ -442,6 +444,7 @@
               </app-profile-images>
             </div>
             <div
+              class="load-dispatch-driver"
               [innerHtml]="
                 option.driver.name
                   | taHighlight: [{ index: 45632, text: getSuperControl.value }]

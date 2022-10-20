@@ -26,8 +26,8 @@ import { ITaInput } from '../../shared/ta-input/ta-input.config';
 
 import { Subject, takeUntil } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { descriptionValidation } from '../../shared/ta-input/ta-input.regex-validations';
+import { ILoadStatus } from './load-modal-statuses/load-modal-statuses.component';
 
 @Component({
   selector: 'app-load-modal',
@@ -228,6 +228,27 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     stops: { lat: number; long: number; stopColor: string; empty: boolean }[];
   }[] = [];
 
+  public loadCreateStatuses: ILoadStatus[] = [
+    {
+      id: 1,
+      name: 'BOOKED',
+      active: true,
+      color: '#C1C1C1',
+    },
+    {
+      id: 2,
+      name: 'UNASSIGNED',
+      active: false,
+      color: '#C1C1C1',
+    },
+    {
+      id: 3,
+      name: 'ASSIGNED',
+      active: false,
+      color: '#9F9F9F',
+    },
+  ];
+
   public companyUser: SignInResponse = null;
 
   public isDateRange: boolean = false;
@@ -340,6 +361,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.selectedDispatcher = event;
 
         if (this.selectedDispatcher) {
+          this.loadCreateStatuses = this.loadCreateStatuses.map((item) => {
+            return {
+              ...item,
+              active: item.name === 'UNASSIGNED',
+            };
+          });
           this.labelsDispatches = this.originLabelsDispatches.filter(
             (item) => item.dispatcherId === this.selectedDispatcher.id
           );
@@ -347,6 +374,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.loadForm.get('dispatchesId').patchValue(null);
         } else {
           this.labelsDispatches = this.originLabelsDispatches;
+          this.loadCreateStatuses = this.loadCreateStatuses.map((item) => {
+            return {
+              ...item,
+              active: item.name === 'BOOKED' && !this.selectedDispatches,
+            };
+          });
         }
         break;
       }
@@ -365,6 +398,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       }
       case 'broker': {
         this.selectedBroker = event;
+
         if (this.selectedBroker) {
           this.labelsBrokerContacts = this.originBrokerContacts.map((el) => {
             return {
@@ -409,7 +443,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               ],
               customClass: 'load-broker-contact',
             },
-            blackInput: true,
           };
         } else {
           this.labelsBrokerContacts = this.originBrokerContacts;
@@ -460,6 +493,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               .concat(' ', event?.driver?.name),
           };
 
+          this.loadCreateStatuses = this.loadCreateStatuses.map((item) => {
+            return {
+              ...item,
+              active: item.name === 'ASSIGNED' && this.selectedDispatcher,
+            };
+          });
+
           this.loadDispatchesTTDInputConfig = {
             ...this.loadDispatchesTTDInputConfig,
             multipleInputValues: {
@@ -485,6 +525,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           };
         } else {
           this.loadDispatchesTTDInputConfig.multipleInputValues = null;
+          this.loadCreateStatuses = this.loadCreateStatuses.map((item) => {
+            return {
+              ...item,
+              active: item.name === 'UNASSIGNED',
+            };
+          });
         }
         break;
       }
@@ -515,12 +561,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       case 'shipper': {
         if (event) {
           // If Load Stops Doesn't exist, but 'delivery' is first picked just return
-          console.log(this.loadStops().length);
-          console.log(this.selectedStopTab);
+
           if (!this.loadStops().length && this.selectedStopTab === 4) {
             return;
           } else {
-            console.log('izaso sam');
             this.selectedShipper = event;
             this.createNewStop();
           }
@@ -846,16 +890,62 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public toggleLoadStop(loadStop: FormGroup) {
+  public toggleLoadStop(loadStop: AbstractControl) {
+    console.log('toggling');
+    console.log(loadStop.value);
     loadStop.get('openClose').patchValue(!loadStop.get('openClose').value);
 
     if (loadStop.get('openClose').value) {
       this.closeAllLoadStopExceptActive(loadStop);
 
+      this.selectedShipper = this.labelsShippers.find(
+        (item) =>
+          item.name === loadStop.get('shipper').value &&
+          item.address === loadStop.get('location').value
+      );
+      this.loadShipperInputConfig = {
+        ...this.loadShipperInputConfig,
+        multipleInputValues: {
+          options: [
+            {
+              value: loadStop.get('shipper').value,
+              logoName: null,
+            },
+            {
+              value: loadStop.get('location').value,
+              logoName: null,
+            },
+          ],
+          customClass: 'load-shipper',
+        },
+      };
+
       this.loadForm.get('dateFrom').patchValue(loadStop.get('dateFrom').value);
       this.loadForm.get('dateTo').patchValue(loadStop.get('dateTo').value);
       this.loadForm.get('timeFrom').patchValue(loadStop.get('timeFrom').value);
       this.loadForm.get('timeTo').patchValue(loadStop.get('timeTo').value);
+    } else {
+      this.selectedShipper = null;
+      this.loadShipperInputConfig = {
+        ...this.loadShipperInputConfig,
+        multipleInputValues: {
+          options: [
+            {
+              value: null,
+              logoName: null,
+            },
+            {
+              value: null,
+              logoName: null,
+            },
+          ],
+          customClass: 'load-shipper',
+        },
+      };
+      this.loadForm.get('dateFrom').patchValue(null, { emitEvent: false });
+      this.loadForm.get('dateTo').patchValue(null, { emitEvent: false });
+      this.loadForm.get('timeFrom').patchValue(null, { emitEvent: false });
+      this.loadForm.get('timeTo').patchValue(null, { emitEvent: false });
     }
   }
 
@@ -876,7 +966,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       .pipe(debounceTime(1000), takeUntil(this.destroy$))
       .subscribe({
         next: (res: RoutingResponse) => {
-          console.log(res);
           // TODO: Populate lat and long with routesPoints
           this.loadStopRoutes[0] = {
             routeColor: '#919191',
@@ -920,8 +1009,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               }
             }
           );
-
-          console.log(this.loadStops().value);
         },
         error: (err: any) => {
           console.log(err);
@@ -947,7 +1034,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           ],
           customClass: 'load-shipper',
         },
-        blackInput: true,
       };
 
       // If Load Stop Exist , just return
@@ -1143,6 +1229,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             };
           });
 
+          console.log(this.labelsBroker);
+
           // Broker Contacts
           this.labelsBrokerContacts = this.originBrokerContacts =
             res.brokerContacts.map((item) => {
@@ -1175,6 +1263,15 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           );
           this.loadForm.get('dispatcher').patchValue(initialDispatcher.name);
           this.selectedDispatcher = initialDispatcher;
+
+          if (this.selectedDispatcher) {
+            this.loadCreateStatuses = this.loadCreateStatuses.map((item) => {
+              return {
+                ...item,
+                active: item.name === 'UNASSIGNED',
+              };
+            });
+          }
 
           // Division Companies
           this.labelsCompanies = res.companies.map((item) => {
