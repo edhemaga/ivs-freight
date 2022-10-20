@@ -33,6 +33,7 @@
       ?.toLowerCase()
       ?.includes('hazardous')
   }"
+  
 >
   <!-- Input Clear -->
   <div
@@ -498,8 +499,8 @@
     "
     [class.active]="showDateInput"
     tabindex="-1"
-    (focus)="focusMainField($event)"
-    (click)="selectLastDateTimeHold()"
+    (mousedown)="selectLastOneForSelection()"
+    (mouseup)="selectLastOneAfterMoseUp()"
     (paste)="onDatePaste($event)"
     (blur)="onBlur()"
     (keydown)="changeSelection($event, true)"
@@ -527,10 +528,8 @@
         ((touchedInput || getSuperControl.touched) &&
           getSuperControl.invalid &&
           !focusInput),
-          'valid-focus-in-datepicker':
-          getSuperControl.value &&
-          getSuperControl.valid &&
-          focusInput
+      'valid-focus-in-datepicker':
+        getSuperControl.value && getSuperControl.valid && focusInput
     }"
   >
     <span
@@ -538,7 +537,7 @@
       class="main"
       tabindex="0"
       (focus)="onFocus($event)"
-      (click)="setSelection($event)"
+      (mouseup)="setSelection($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'mm' : 'HH'"
@@ -554,7 +553,7 @@
       class="main"
       tabindex="1"
       (focus)="onFocus()"
-      (click)="setSelection($event)"
+      (mouseup)="setSelection($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
@@ -570,7 +569,7 @@
       class="main"
       tabindex="2"
       (focus)="onFocus()"
-      (click)="setSelection($event)"
+      (mouseup)="setSelection($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'yy' : 'AM'"
@@ -728,7 +727,7 @@
     }"
     (keypress)="manipulateWithInput($event)"
     (keyup)="onKeyUp($event)"
-    (blur)="onBlur()"
+    (blur)="onBlur($event)"
     (focus)="onFocus($event)"
     (select)="selectionChange($event)"
     (paste)="onPaste($event)"

@@ -36,7 +36,7 @@ const routeSpecify = {
       transition(
         'inactive => active',
         animate(
-          '150ms ease-out',
+          '230ms ease',
           keyframes([
             style({
               position: 'relative',
@@ -53,7 +53,7 @@ const routeSpecify = {
       transition(
         'active => removed',
         animate(
-          '150ms ease-out',
+          '230ms ease',
           keyframes([
             style({
               opacity: 1,
@@ -61,9 +61,9 @@ const routeSpecify = {
               top: '0px',
             }),
             style({
-              opacity: 0,
               position: 'relative',
               top: '100px',
+              opacity: 0,
             }),
           ])
         )
@@ -181,6 +181,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     {
       'api' : 'Comment',
       'value' : 'COMMENT'
+    },
+    {
+      'api' : 'forgotpassword',
+      'value' : 'PASSWORD'
     }
     
   ]
@@ -438,7 +442,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       case 'LOGIN':
         
         this.actionType = this.toastrType == 'toast-error' ? 'LOGIN' : 'LOGGED IN';
-        let errorMessage = this.errorData.error.error ? this.errorData.error.error : '';
+        let errorMessage = this.errorData?.error?.error ? this.errorData.error.error : 'Error occurred';
         this.message = errorMessage;
         this.leftSideMove = false;
 
@@ -570,6 +574,9 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       break;
       case 'COMMENT' : 
         this.message = this.DetailsDataService.mainData?.title;    
+      break;
+      case 'PASSWORD' :
+        this.message = this.errorData.error.error ? this.errorData.error.error : '';
       break;
     }
 

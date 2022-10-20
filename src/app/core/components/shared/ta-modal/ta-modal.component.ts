@@ -60,6 +60,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     escort: number;
     detention: number;
   } = null;
+  @Input() hazardousLogo?: boolean;
   @Input() editData: any;
   @Input() confirmationData: any;
   @Input() headerSvg: string;

@@ -214,7 +214,6 @@ model/createSevenDaysHosReviewCommand.ts
 model/createShipperCommand.ts
 model/createTableConfigCommand.ts
 model/createTerminalCommand.ts
-model/createTestCommand.ts
 model/createTitleCommand.ts
 model/createTodoCommand.ts
 model/createTrafficViolationCommand.ts
@@ -264,7 +263,6 @@ model/editFuelCardCommand.ts
 model/editFuelItemCommand.ts
 model/editFuelStopCommand.ts
 model/editFuelTransactionCommand.ts
-model/editTestCommand.ts
 model/educationFeedbackResponse.ts
 model/educationReviewResponse.ts
 model/emergencyContactCommand.ts
@@ -524,8 +522,6 @@ model/terminalListResponse.ts
 model/terminalResponse.ts
 model/terminalResponsePagination.ts
 model/testResponse.ts
-model/testResult.ts
-model/testType.ts
 model/timeOnly.ts
 model/timeType.ts
 model/tireSizeResponse.ts

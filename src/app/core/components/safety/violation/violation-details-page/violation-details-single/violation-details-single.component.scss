@@ -287,6 +287,7 @@
     background-color: #ffffff;
     border-radius: 3px;
     padding: 0 6px;
+    width: 568px;
     .violation-t-head {
         display: flex;
         justify-content: space-between;
@@ -347,10 +348,14 @@
     padding: 0 10px;
     display: grid;
     .t-body-items {
-        display: grid;
-        grid-template-columns: 140px 810px 60px;
+        display: flex;
+
         align-items: center;
         padding: 8px 0;
+        .description-name-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
         .cancel {
             display: flex;
             align-items: center;
@@ -367,6 +372,8 @@
         .icon-text-wrapper {
             display: flex;
             align-items: center;
+            width: 503px;
+            padding-bottom: 4px;
         }
         .body-icons {
             margin-right: 6px;
@@ -392,6 +399,8 @@
             font-weight: 400;
             color: #6c6c6c;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             &::-moz-selection {
                 color: #6c6c6c;
                 background: rgb(108, 108, 108, 0.2);
@@ -406,6 +415,9 @@
             font-weight: 600;
             color: #6c6c6c;
             text-align: center;
+            position: relative;
+            bottom: 12px;
+            left: 4px;
             &::-moz-selection {
                 color: #6c6c6c;
                 background: rgb(108, 108, 108, 0.2);
@@ -430,4 +442,24 @@
 }
 .second-table {
     margin-top: 12px;
+}
+.violation-card-table-wrapper {
+    display: flex;
+    align-items: center;
+    column-gap: 12px;
+    align-items: flex-start;
+    .card-road-container {
+        background-color: #ffffff;
+        padding: 9px 6px;
+        width: 449px;
+        padding-bottom: 6px;
+        border-radius: 3px;
+    }
+}
+.violation-table-container {
+    width: 568px;
+}
+.violation-table-wrapper-head {
+    display: flex;
+    flex-direction: column;
 }

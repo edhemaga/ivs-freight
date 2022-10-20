@@ -115,19 +115,13 @@
         [bodyTemplate]="'card'"
         [isCardOpen]="true"
         [cardName]="'Additional Details'"
-        *ngIf="truck.truckGrossWeight"
+        
       >
         <div class="common-template">
-          <div *ngIf="truck.truckGrossWeight.name" class="common-template-item">
+          <div *ngIf="truck.truckGrossWeight?.name" class="common-template-item">
             <div class="common-template-item-name">Gross Weight</div>
             <div class="common-template-item-value">
-              {{ truck?.truckGrossWeight.name }}
-            </div>
-          </div>
-          <div *ngIf="truck?.mileage" class="common-template-item">
-            <div class="common-template-item-name">Starting Mileage</div>
-            <div class="common-template-item-value">
-              {{ truck?.mileage | taThousandSeparator }} mi
+              {{ truck?.truckGrossWeight?.name }}
             </div>
           </div>
           <div *ngIf="truck?.emptyWeight" class="common-template-item">
@@ -136,19 +130,48 @@
               {{ truck?.emptyWeight | taThousandSeparator }} Ibs
             </div>
           </div>
-          <div
-            *ngIf="truck?.truckEngineType?.name"
-            class="common-template-item"
-          >
-            <div class="common-template-item-name">Engine Type</div>
+          <div *ngIf="truck?.truckEngineModel?.name" class="common-template-item">
+            <div class="common-template-item-name">Engine Model</div>
             <div class="common-template-item-value">
-              {{ truck?.truckEngineType.name }}
+              {{ truck?.truckEngineModel.name }}
+            </div>
+          </div>
+          <div *ngIf="truck?.engineOilType?.name" class="common-template-item">
+            <div class="common-template-item-name">Engine Oil Type</div>
+            <div class="common-template-item-value">
+              {{ truck?.engineOilType?.name }}
+            </div>
+          </div>
+          <div *ngIf="truck?.apUnit?.name" class="common-template-item">
+            <div class="common-template-item-name">Ap Unit</div>
+            <div class="common-template-item-value">
+              {{ truck?.apUnit?.name }}
+            </div>
+          </div>
+
+          <div *ngIf="truck?.transmissionModel" class="common-template-item">
+            <div class="common-template-item-name">Transmission Model</div>
+            <div class="common-template-item-value">
+              {{ truck?.transmissionModel }}
+            </div>
+          </div>
+
+          <div *ngIf="truck?.fuelTankSize" class="common-template-item">
+            <div class="common-template-item-name">Fuel Tank Size</div>
+            <div class="common-template-item-value">
+              {{ truck?.fuelTankSize }}
             </div>
           </div>
           <div *ngIf="truck?.axles" class="common-template-item">
-            <div class="common-template-item-name">Axles</div>
+            <div class="common-template-item-name">Axle</div>
             <div class="common-template-item-value">
               {{ truck?.axles }}
+            </div>
+          </div>
+          <div *ngIf="truck?.brakes?.name" class="common-template-item">
+            <div class="common-template-item-name">Brakes</div>
+            <div class="common-template-item-value">
+              {{ truck?.brakes?.name }}
             </div>
           </div>
           <div *ngIf="truck?.tireSize?.name" class="common-template-item">
@@ -157,16 +180,82 @@
               {{ truck?.tireSize.name }}
             </div>
           </div>
-          <div *ngIf="truck?.ipasEzpass" class="common-template-item">
-            <div class="common-template-item-name">IPASS/EZPASS</div>
+
+          <div *ngIf="truck?.frontWheels?.name" class="common-template-item">
+            <div class="common-template-item-name">Front Wheels</div>
             <div class="common-template-item-value">
-              {{ truck?.ipasEzpass }}
+              {{ truck?.frontWheels?.name }}
+            </div>
+          </div>
+          <div *ngIf="truck?.rearWheels?.name" class="common-template-item">
+            <div class="common-template-item-name">Rear Wheels</div>
+            <div class="common-template-item-value">
+              {{ truck?.rearWheels?.name }}
+            </div>
+          </div>
+          <div *ngIf="truck?.shifter?.name" class="common-template-item">
+            <div class="common-template-item-name">Shifter</div>
+            <div class="common-template-item-value">
+              {{ truck?.shifter?.name }}
+            </div>
+          </div>
+          <div *ngIf="truck?.gearRatio?.name" class="common-template-item">
+            <div class="common-template-item-name">Gear Ratio</div>
+            <div class="common-template-item-value">
+              {{ truck?.gearRatio?.name }}
+            </div>
+          </div>
+          <div *ngIf="truck?.doubleBunk" class="common-template-item">
+            <div class="common-template-item-name">Features</div>
+            <div class="common-template-item-value">
+              Double Bunk
+            </div>
+          </div>
+          <div *ngIf="truck?.mileage" class="common-template-item">
+            <div class="common-template-item-name">Starting Mileage</div>
+            <div class="common-template-item-value">
+              {{ truck?.mileage | taThousandSeparator }} mi
+            </div>
+          </div>
+          
+          <div *ngIf="truck?.tollTransponder?.name" class="common-template-item">
+            <div class="common-template-item-name">Toll Transponder</div>
+            <div class="common-template-item-value">
+              {{ truck?.tollTransponder?.name }}
+            </div>
+          </div>
+           
+          <div *ngIf="truck?.tollTransponderDeviceNo" class="common-template-item">
+            <div class="common-template-item-name">Toll Device ID</div>
+            <div class="common-template-item-value">
+              {{    truck?.tollTransponderDeviceNo  }}
             </div>
           </div>
           <div *ngIf="truck?.insurancePolicy" class="common-template-item">
             <div class="common-template-item-name">Insurance Policy</div>
             <div class="common-template-item-value">
               {{ truck?.insurancePolicy }}
+            </div>
+          </div>
+         
+         
+
+          <div *ngIf="truck?.fhwaExp" class="common-template-item">
+            <div class="common-template-item-name">FHWA Expiration</div>
+            <div class="common-template-item-value">
+              {{ truck?.fhwaExp +  ' months' }}
+            </div>
+          </div>
+          <div *ngIf="truck?.purchaseDate" class="common-template-item">
+            <div class="common-template-item-name">Purchase Date</div>
+            <div class="common-template-item-value">
+              {{ truck?.purchaseDate | formatDateP }}
+            </div>
+          </div>
+          <div *ngIf="truck?.purchasePrice" class="common-template-item">
+            <div class="common-template-item-name">Purchase Price</div>
+            <div class="common-template-item-value">
+              ${{ truck?.purchasePrice | taThousandSeparator }}
             </div>
           </div>
         </div>

@@ -1,10 +1,11 @@
 @import "../../app/core/components/shared/ta-input/scss/ta-input.clear.scss";
+@import "../../app/core/components/shared/ta-input/scss/ta-input.colors.scss";
 .multiselect-dropdown {
   display: flex;
   flex-direction: column;
   justify-items: center;
   border-radius: 2px;
-  background-color: #eeeeee;
+  background-color: $input-background-color-normal;
   position: relative;
 
   .multiselect-label {
@@ -14,7 +15,7 @@
     font-size: 11px;
     font-weight: 600;
     transition: all 0.3s ease-in-out;
-    color: #2f2f2f;
+    color: $input-text-color-normal;
     -webkit-user-select: auto !important;
     -moz-user-select: auto !important;
     -ms-user-select: auto !important;
@@ -22,17 +23,17 @@
     pointer-events: all !important;
 
     &::-moz-selection {
-      background-color: rgb(47, 47, 47, 0.2);
-      color: #2f2f2f;
+      background-color: rgba(47, 47, 47, 0.2);
+      color: $input-text-color-normal;
     }
 
     &::selection {
-      background-color: rgb(47, 47, 47, 0.2);
-      color: #2f2f2f;
+      background-color: rgba(47, 47, 47, 0.2);
+      color: $input-text-color-normal;
     }
 
     .required-label-multiselect {
-      color: #e57373;
+      color: $input-label-required-star;
     }
   }
 
@@ -49,7 +50,7 @@
       transition: all 0.3s ease-in-out;
       svg {
         path {
-          fill: #2f2f2f !important;
+          fill: $input-text-color-normal !important;
         }
       }
     }
@@ -57,7 +58,7 @@
     &.valid {
       svg {
         path {
-          fill: #97a8dc;
+          fill: $input-blue-color-3;
         }
       }
     }
@@ -80,7 +81,7 @@
       height: 22px;
       border-radius: 1px;
       background-color: #f9f9f9;
-      color: #2f2f2f;
+      color: $input-text-color-normal;
       padding: 2px 4px;
       font-size: 14px;
       font-weight: 400;
@@ -115,7 +116,7 @@
             transition: transform 0.3s;
             transform: scale(1);
             transform-origin: center;
-            fill: #919191;
+            fill: $input-gray-color-4;
           }
         }
 
@@ -126,7 +127,7 @@
               transform: scale(1.2);
               transform-origin: center;
               transition: transform 0.3s;
-              fill: #2f2f2f !important;
+              fill: $input-text-color-normal !important;
             }
           }
         }
@@ -142,13 +143,13 @@
 
   // multiselect dropdown hover
   &:hover {
-    background-color: #eeeeee;
+    background-color: $input-white-color-2;
     .multiselect-arrow {
       cursor: pointer;
       &.valid {
         svg {
           path {
-            fill: #6d82c7;
+            fill: $input-blue-color-2;
           }
         }
       }
@@ -164,13 +165,13 @@
         .input-clear-x {
           svg {
             path {
-              fill: #eeeeee !important;
+              fill: $input-white-color-2 !important;
             }
           }
           &:hover {
             svg {
               rect {
-                fill: #2f2f2f !important;
+                fill: $input-text-color-normal !important;
               }
             }
           }
@@ -180,25 +181,25 @@
 
     .multiselect-items {
       .multiselect-item {
-        color: #1d1d1d;
+        color: $input-black-color-1;
       }
     }
     // Ovveride input class
     .input-custom-group .input-control {
-      background-color: #eeeeee !important;
+      background-color: $input-white-color-2 !important;
     }
   }
 
   // Focused Multiple Dropdowns
   &.focus {
-    background-color: #255bb9;
+    background-color: $input-blue-color-1;
     transition: all 0.3s ease-in-out;
     .multiselect-arrow {
       svg {
         transform: rotate(180deg);
         transition: all 0.3s ease-in-out;
         path {
-          fill: #f5fafc !important;
+          fill: $input-white-color-3 !important;
         }
       }
     }
@@ -213,13 +214,13 @@
         .input-clear-x {
           svg {
             path {
-              fill: #255bb9 !important;
+              fill: $input-blue-color-1 !important;
             }
           }
           &:hover {
             svg {
               rect {
-                fill: #bdcaeb !important;
+                fill: $input-blue-color-4 !important;
               }
             }
           }
@@ -227,7 +228,7 @@
           &:hover {
             svg {
               rect {
-                fill: #f5fafc !important;
+                fill: $input-white-color-3 !important;
               }
             }
           }
@@ -237,23 +238,23 @@
 
     .multiselect-items {
       .multiselect-item {
-        background-color: #6d82c7;
-        color: #ffffff;
+        background-color: $input-blue-color-2;
+        color: $input-white-color-1;
 
         &-clear {
           svg {
             path {
-              fill: #255bb9;
+              fill: $input-blue-color-1;
             }
             rect {
-              fill: #bdcaeb;
+              fill: $input-blue-color-4;
             }
           }
 
           &:hover {
             svg {
               rect {
-                fill: #f5fafc !important;
+                fill: $input-white-color-3 !important;
               }
             }
           }
@@ -271,17 +272,28 @@
     }
 
     &:hover {
-      background-color: #255bb9 !important;
+      background-color: $input-blue-color-1 !important;
       .multiselect-items {
         .multiselect-item {
-          color: #ffffff !important;
+          color: $input-white-color-1 !important;
         }
       }
 
       // Ovveride input class
       .input-custom-group .input-control {
         transition: all 0.3s ease-in-out;
-        background-color: #255bb9 !important;
+        background-color: $input-blue-color-1 !important;
+      }
+    }
+  }
+
+  &.disabled {
+    background-color: $input-background-color-disabled !important;
+    color: $input-text-color-filled-disabled !important;
+
+    .multiselect-items {
+      .multiselect-item {
+        background-color: #ffffff !important;
       }
     }
   }
