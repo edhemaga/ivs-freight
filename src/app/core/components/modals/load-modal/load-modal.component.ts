@@ -1294,7 +1294,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 ...item,
                 driver: {
                   ...item.driver,
-                  name: item.driver.firstName.concat(' ', item.driver.lastName),
+                  name: item.driver?.firstName?.concat(
+                    ' ',
+                    item?.driver?.lastName
+                  ),
                   logoName: item.driver.avatar,
                 },
                 coDriver: {
