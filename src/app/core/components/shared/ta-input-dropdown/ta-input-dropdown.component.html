@@ -38,6 +38,7 @@
   </div>
 
   <!-- Multiselect items -->
+
   <div
     *ngIf="
       inputConfig.multiselectDropdown &&
@@ -62,7 +63,7 @@
         tooltipBackground="#6c6c6c"
         position="top"
         class="multiselect-item-clear"
-        (click)="removeMultiSelectItem(ind, 'multiselect')"
+        (click)="removeMultiSelectItem(ind)"
       >
         <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
       </div>
@@ -70,7 +71,7 @@
   </div>
 
   <!-- Multiselect items Restrictions & Endorsments -->
-  <div
+  <!-- <div
     *ngIf="
       inputConfig.multiselectDropdown &&
       multiselectItems.length > 0 &&
@@ -86,7 +87,7 @@
         let ind = index
       "
     >
-      {{ multiSelect.code | formatRestEndor: multiSelect.description }}
+      {{ multiSelect.name }}
       <div
         *ngIf="!inputConfig.isDisabled"
         ngbTooltip
@@ -99,7 +100,7 @@
         <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
       </div>
     </span>
-  </div>
+  </div> -->
 
   <!-- Dropdown search -->
   <app-ta-input
@@ -293,7 +294,7 @@
         </div>
       </div>
       <!--------------------------- Multiselect Template --------------------------->
-      <div *ngSwitchCase="'multiselect-res-endors'">
+      <!-- <div *ngSwitchCase="'multiselect-res-endors'">
         <div
           *ngFor="let option of options; trackBy: identity"
           class="dropdown-option"
@@ -306,12 +307,11 @@
           }"
           (click)="onMultiselectSelect(option, 'multiselect-res-endors')"
           [innerHtml]="
-            option.code
-              | formatRestEndor: option.description
+            option.name
               | taHighlight: [{ index: 45632, text: getSuperControl.value }]
           "
         ></div>
-      </div>
+      </div> -->
       <!--------------------------- Multiselect Template --------------------------->
       <div *ngSwitchCase="'multiselect'">
         <div
@@ -324,7 +324,7 @@
             active: option?.active,
             'last-active': lastActiveMultiselectItem?.id === option.id
           }"
-          (click)="onMultiselectSelect(option, 'multiselect')"
+          (click)="onMultiselectSelect(option)"
           [innerHtml]="
             option.name
               | taHighlight: [{ index: 45632, text: getSuperControl.value }]

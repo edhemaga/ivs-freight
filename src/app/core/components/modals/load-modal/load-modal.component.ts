@@ -514,8 +514,16 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       }
       case 'shipper': {
         if (event) {
-          this.selectedShipper = event;
-          this.createNewStop();
+          // If Load Stops Doesn't exist, but 'delivery' is first picked just return
+          console.log(this.loadStops().length);
+          console.log(this.selectedStopTab);
+          if (!this.loadStops().length && this.selectedStopTab === 4) {
+            return;
+          } else {
+            console.log('izaso sam');
+            this.selectedShipper = event;
+            this.createNewStop();
+          }
         } else {
           this.loadShipperInputConfig.multipleInputValues = null;
         }
@@ -1021,7 +1029,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       phone: ['(987) 654-3210'],
       extensionPhone: ['444'],
       loadStopDetails: this.formBuilder.array([]),
-      hovered: [false],
       stopMode: [this.selectedStopTab === 3 ? 'pickup' : 'delivery'],
       openClose: [true],
     });
@@ -1090,30 +1097,30 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     this.loadStopsDetails(loadStopIndex).removeAt(loadStopDetailsIndex);
   }
 
-  public loadStopReordering(event: CdkDragDrop<any[]>) {
-    moveItemInArray(
-      this.loadStops().controls,
-      event.previousIndex,
-      event.currentIndex
-    );
+  // public loadStopReordering(event: CdkDragDrop<any[]>) {
+  //   moveItemInArray(
+  //     this.loadStops().controls,
+  //     event.previousIndex,
+  //     event.currentIndex
+  //   );
 
-    this.loadStopRoutes[0] = {
-      routeColor: '#919191',
-      stops: this.loadStops()
-        .controls.filter((item) => item)
-        .map((item) => {
-          return {
-            lat: item.get('latitude').value,
-            long: item.get('longitude').value,
-            stopColor:
-              item.get('stopMode').value === 'pickup' ? '#4db6a2' : '#ef5350',
-            empty: true,
-          };
-        }),
-    };
+  //   this.loadStopRoutes[0] = {
+  //     routeColor: '#919191',
+  //     stops: this.loadStops()
+  //       .controls.filter((item) => item)
+  //       .map((item) => {
+  //         return {
+  //           lat: item.get('latitude').value,
+  //           long: item.get('longitude').value,
+  //           stopColor:
+  //             item.get('stopMode').value === 'pickup' ? '#4db6a2' : '#ef5350',
+  //           empty: true,
+  //         };
+  //       }),
+  //   };
 
-    moveItemInArray([], event.previousIndex, event.currentIndex);
-  }
+  //   moveItemInArray([], event.previousIndex, event.currentIndex);
+  // }
 
   private getLoadDropdowns(id?: number) {
     this.loadService

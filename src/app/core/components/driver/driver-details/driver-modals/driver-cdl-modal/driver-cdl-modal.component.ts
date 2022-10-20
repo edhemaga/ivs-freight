@@ -212,8 +212,22 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     });
 
     this.documents = res.file ? ([res.file] as any) : [];
-    this.selectedEndorsment = res.cdlEndorsements;
-    this.selectedRestrictions = res.cdlRestrictions;
+    this.selectedEndorsment = res.cdlEndorsements.map((item) => {
+      return {
+        ...item,
+        name: item.code.concat(' ', '-').concat(' ', item.description),
+      };
+    });
+
+    this.selectedRestrictions = res.cdlRestrictions.map((item) => {
+      return {
+        ...item,
+        name: item.code.concat(' ', '-').concat(' ', item.description),
+      };
+    });
+    console.log('dropdown');
+    console.log(this.selectedEndorsment);
+    console.log(this.selectedRestrictions);
     this.selectedClassType = res.classType;
     this.selectedStateType = res.state;
   }
@@ -238,8 +252,21 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
           this.documents = res.files ? ([res.files] as any) : [];
 
-          this.selectedEndorsment = res.cdlEndorsements;
-          this.selectedRestrictions = res.cdlRestrictions;
+          this.selectedEndorsment = res.cdlEndorsements.map((item) => {
+            return {
+              ...item,
+              name: item.code.concat(' ', '-').concat(' ', item.description),
+            };
+          });
+          this.selectedRestrictions = res.cdlRestrictions.map((item) => {
+            return {
+              ...item,
+              name: item.code.concat(' ', '-').concat(' ', item.description),
+            };
+          });
+          console.log('get by id');
+          console.log(this.selectedEndorsment);
+          console.log(this.selectedRestrictions);
           this.selectedClassType = res.classType;
           this.selectedStateType = res.state;
         },

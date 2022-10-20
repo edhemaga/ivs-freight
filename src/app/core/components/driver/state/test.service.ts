@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import {
-  CreateTestCommand,
+  // CreateTestCommand,
   DriverResponse,
-  EditTestCommand,
+  // EditTestCommand,
   GetTestModalResponse,
   TestResponse,
   TestService,
@@ -29,7 +29,7 @@ export class TestTService implements OnDestroy {
   ) {}
 
   /* Observable<CreateTestResponse> */
-  public addTest(data: CreateTestCommand): Observable<any> {
+  public addTest(data: /*CreateTestCommand*/ any): Observable<any> {
     return this.drugService.apiTestPost(data).pipe(
       tap((res: any) => {
         const subDriver = this.driverService
@@ -64,7 +64,7 @@ export class TestTService implements OnDestroy {
     );
   }
 
-  public updateTest(data: EditTestCommand): Observable<object> {
+  public updateTest(data: /*EditTestCommand*/ any): Observable<object> {
     return this.drugService.apiTestPut(data).pipe(
       tap((res: any) => {
         let driverId = this.driverItemStore.getValue().ids[0];
