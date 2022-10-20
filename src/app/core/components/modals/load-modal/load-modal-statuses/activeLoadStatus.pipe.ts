@@ -6,6 +6,6 @@ import { ILoadStatus } from './load-modal-statuses.component';
 })
 export class ActiveLoadStatusPipe implements PipeTransform {
   transform(statuses: ILoadStatus[]): any {
-    return statuses.find((item) => item.active);
+    return statuses.find((item) => item?.active);
   }
 }

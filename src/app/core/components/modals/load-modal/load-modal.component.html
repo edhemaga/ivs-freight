@@ -22,9 +22,13 @@
     <div *ngIf="selectedTab === 1" class="m-tab">
       <div class="load-ftl-first-row">
         <app-load-modal-statuses
-          [mode]="'Create'"
-          [statuses]="loadCreateStatuses"
-          [active]="loadCreateStatuses | activeLoadStatus"
+          [mode]="editData?.type === 'edit' ? 'Edit' : 'Create'"
+          [statuses]="editData?.type === 'edit' ? [] : loadCreateStatuses"
+          [active]="
+            (editData?.type === 'edit' ? [] : loadCreateStatuses)
+              | activeLoadStatus
+          "
+          (selected)="loadCreateStatuses = $event"
         ></app-load-modal-statuses>
         <app-ta-input-dropdown
           formControlName="selectTemplate"

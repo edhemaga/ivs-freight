@@ -361,6 +361,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.selectedDispatcher = event;
 
         if (this.selectedDispatcher) {
+          this.loadCreateStatuses = this.loadCreateStatuses.map((item) => {
+            return {
+              ...item,
+              active: item.name === 'UNASSIGNED',
+            };
+          });
           this.labelsDispatches = this.originLabelsDispatches.filter(
             (item) => item.dispatcherId === this.selectedDispatcher.id
           );
@@ -368,6 +374,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.loadForm.get('dispatchesId').patchValue(null);
         } else {
           this.labelsDispatches = this.originLabelsDispatches;
+          this.loadCreateStatuses = this.loadCreateStatuses.map((item) => {
+            return {
+              ...item,
+              active: item.name === 'BOOKED',
+            };
+          });
         }
         break;
       }
@@ -480,6 +492,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               ?.concat(' ', event?.trailer?.name)
               .concat(' ', event?.driver?.name),
           };
+
+          this.loadCreateStatuses = this.loadCreateStatuses.map((item) => {
+            return {
+              ...item,
+              active: item.name === 'ASSIGNED' && this.selectedDispatcher,
+            };
+          });
 
           this.loadDispatchesTTDInputConfig = {
             ...this.loadDispatchesTTDInputConfig,
@@ -1238,6 +1257,15 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           );
           this.loadForm.get('dispatcher').patchValue(initialDispatcher.name);
           this.selectedDispatcher = initialDispatcher;
+
+          if (this.selectedDispatcher) {
+            this.loadCreateStatuses = this.loadCreateStatuses.map((item) => {
+              return {
+                ...item,
+                active: item.name === 'UNASSIGNED',
+              };
+            });
+          }
 
           // Division Companies
           this.labelsCompanies = res.companies.map((item) => {

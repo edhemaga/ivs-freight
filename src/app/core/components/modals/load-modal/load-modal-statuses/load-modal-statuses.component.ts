@@ -16,8 +16,9 @@ export class LoadModalStatusesComponent implements OnInit {
   @Input() mode: 'Create' | 'Edit';
   @Input() active: ILoadStatus;
   @Input() statuses: ILoadStatus[];
-  @Output() selected: EventEmitter<ILoadStatus> =
-    new EventEmitter<ILoadStatus>();
+  @Output() selected: EventEmitter<ILoadStatus[]> = new EventEmitter<
+    ILoadStatus[]
+  >();
 
   constructor() {}
 
@@ -28,8 +29,13 @@ export class LoadModalStatusesComponent implements OnInit {
   }
 
   public onSelectLoadStatus(status: ILoadStatus) {
-    status.active = true;
+    this.statuses = this.statuses.map((item) => {
+      return {
+        ...item,
+        active: item.id === status.id,
+      };
+    });
     this.active = status;
-    this.selected.emit(status);
+    this.selected.emit(this.statuses);
   }
 }

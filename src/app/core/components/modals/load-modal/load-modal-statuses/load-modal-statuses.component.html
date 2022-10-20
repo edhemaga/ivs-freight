@@ -12,7 +12,7 @@
 </div>
 
 <ng-template #taInputDropdownPopover>
-  <div *ngIf="mode === 'Create'" class="load-modal-status-container">
+  <div *ngIf="mode === 'Edit'" class="load-modal-status-container">
     <div
       *ngFor="let status of statuses; trackBy: identity"
       class="dropdown-option"
