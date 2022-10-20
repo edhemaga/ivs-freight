@@ -357,6 +357,7 @@
                   cluster?.isSelected,
                 'cluster-dropdown': !cluster.detailedInfo
               }"
+              [ngStyle]="{ 'margin-top': '10px' }"
             >
               <app-map-marker-dropdown
                 *ngIf="!cluster?.detailedInfo"

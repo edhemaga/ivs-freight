@@ -562,7 +562,7 @@ export class MapsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          this.viewData[index] = res;
+          this.viewData[index] = {...this.viewData[index], ...res};
 
           setTimeout(() => {
             this.viewData[index].isSelected = true;
