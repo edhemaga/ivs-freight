@@ -28,6 +28,7 @@ import { MapService } from './api/map.service';
 import { MedicalService } from './api/medical.service';
 import { MilesService } from './api/miles.service';
 import { MvrService } from './api/mvr.service';
+import { NoteService } from './api/note.service';
 import { OwnerService } from './api/owner.service';
 import { OwnerHistoryService } from './api/ownerHistory.service';
 import { ParkingService } from './api/parking.service';

@@ -50,7 +50,7 @@ export class InputAddressDropdownComponent
   @Input() isRouting: boolean = false;
   @Input() closedBorder: boolean = false;
   @Input() incorrectValue: boolean;
-  @Input () hideEmptyLoaded: boolean = false;
+  @Input() hideEmptyLoaded: boolean = false;
   addressExpanded: boolean = false;
   chosenFromDropdown: boolean = false;
   allowValidation: boolean = false;
@@ -125,7 +125,8 @@ export class InputAddressDropdownComponent
           }
           if (
             this.inputConfig.name != 'RoutingAddress' &&
-            this.allowValidation
+            this.allowValidation &&
+            this.inputDropdown.inputRef.focusInput
           ) {
             this.getSuperControl.setErrors({ invalid: true });
           }
