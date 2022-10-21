@@ -527,10 +527,8 @@
         ((touchedInput || getSuperControl.touched) &&
           getSuperControl.invalid &&
           !focusInput),
-          'valid-focus-in-datepicker':
-          getSuperControl.value &&
-          getSuperControl.valid &&
-          focusInput
+      'valid-focus-in-datepicker':
+        getSuperControl.value && getSuperControl.valid && focusInput
     }"
   >
     <span
@@ -605,7 +603,7 @@
         </div>
       </span>
 
-      {{ item.value }}
+      <span class="multiple-input-text">{{ item.value }}</span>
     </span>
   </div>
 

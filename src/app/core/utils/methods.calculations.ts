@@ -87,7 +87,7 @@ export const convertDateToBackend = (date: string) => {
 
 //------------------------------- DATE FROM BACKEND -------------------------------
 export const convertDateFromBackend = (date: string) => {
-  return moment(new Date(date)).format('MM/DD/YYYY');
+  return moment(new Date(date)).format('MM/DD/YY');
 };
 
 //------------------------------- Convert thousand separator in number -------------------------------

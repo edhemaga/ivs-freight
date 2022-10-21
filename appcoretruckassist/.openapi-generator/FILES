@@ -371,6 +371,7 @@ model/mapMarkerListResponse.ts
 model/mapMinimalResponse.ts
 model/mapMinimalResponsePagination.ts
 model/mapResponse.ts
+model/markerNamesResponse.ts
 model/medicalResponse.ts
 model/milesByStateResponse.ts
 model/milesByUnitListResponse.ts

@@ -257,9 +257,23 @@ export class Step3FormComponent
         (item) => item.name === this.formValuesToPatch.classType
       );
 
-      this.selectedRestrictions = this.formValuesToPatch.restrictions;
+      this.selectedRestrictions = this.formValuesToPatch.restrictions.map(
+        (item) => {
+          return {
+            ...item,
+            name: item.code.concat(' ', '-').concat(' ', item.description),
+          };
+        }
+      );
 
-      this.selectedEndorsments = this.formValuesToPatch.endorsments;
+      this.selectedEndorsments = this.formValuesToPatch.endorsments.map(
+        (item) => {
+          return {
+            ...item,
+            name: item.code.concat(' ', '-').concat(' ', item.description),
+          };
+        }
+      );
     }, 150);
   }
 
@@ -490,8 +504,18 @@ export class Step3FormComponent
 
         this.classTypes = data.classTypes;
 
-        this.restrictionsList = data.restrictions;
-        this.endorsmentsList = data.endorsements;
+        this.restrictionsList = data.restrictions.map((item) => {
+          return {
+            ...item,
+            name: item.code.concat(' ', '-').concat(' ', item.description),
+          };
+        });
+        this.endorsmentsList = data.endorsements.map((item) => {
+          return {
+            ...item,
+            name: item.code.concat(' ', '-').concat(' ', item.description),
+          };
+        });
       });
   }
 

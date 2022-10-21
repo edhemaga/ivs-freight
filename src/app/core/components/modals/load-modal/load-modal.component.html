@@ -21,7 +21,15 @@
     <!-------------------------------- FTL Tab -------------------------------->
     <div *ngIf="selectedTab === 1" class="m-tab">
       <div class="load-ftl-first-row">
-        <div class="ftl-load-status">UNASSIGNED</div>
+        <app-load-modal-statuses
+          [mode]="editData?.type === 'edit' ? 'Edit' : 'Create'"
+          [statuses]="editData?.type === 'edit' ? [] : loadCreateStatuses"
+          [active]="
+            (editData?.type === 'edit' ? [] : loadCreateStatuses)
+              | activeLoadStatus
+          "
+          (selected)="loadCreateStatuses = $event"
+        ></app-load-modal-statuses>
         <app-ta-input-dropdown
           formControlName="selectTemplate"
           [inputConfig]="{
@@ -150,7 +158,10 @@
               svg: true,
               image: false,
               url: selectedBroker?.logoName,
-              class: 'load-broker',
+              class: 'load-broker'.concat(
+                ' ',
+                selectedBroker?.availableCreditType?.name?.toLowerCase()
+              ),
               template: 'user'
             },
             textTransform: 'capitalize',
@@ -425,10 +436,8 @@
       >
         <div
           *ngIf="loadStops().length"
-          cdkDropList
           formArrayName="loadStops"
           class="common-fake-table-modal common-fake-table-modal-load-stops"
-          (cdkDropListDropped)="loadStopReordering($event)"
         >
           <div class="common-fake-table-label">
             <p>#</p>
@@ -442,7 +451,6 @@
           <div class="common-fake-table-body">
             <!-- Load Stop -->
             <div
-              cdkDrag
               *ngFor="
                 let loadStop of loadStops().controls;
                 let loadStopIndex = index;
@@ -462,19 +470,12 @@
                     'delivery-mode':
                       loadStop.get('stopMode').value === 'delivery'
                   }"
-                  (mouseenter)="loadStop.get('hovered').patchValue(true)"
-                  (mouseleave)="loadStop.get('hovered').patchValue(false)"
                   (click)="toggleLoadStop(loadStop)"
                 >
                   <div class="load-stop-serial-number">
-                    <p *ngIf="!loadStop.get('hovered').value">
+                    <p>
                       {{ loadStop.get("id").value }}
                     </p>
-
-                    <svg-icon
-                      *ngIf="loadStop.get('hovered').value"
-                      src="assets/svg/common/load/ic_load-ordering.svg"
-                    ></svg-icon>
                   </div>
 
                   <p class="load-stop-shipper-name">

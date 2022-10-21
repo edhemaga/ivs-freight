@@ -26,8 +26,8 @@ import { ITaInput } from '../../shared/ta-input/ta-input.config';
 
 import { Subject, takeUntil } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { descriptionValidation } from '../../shared/ta-input/ta-input.regex-validations';
+import { ILoadStatus } from './load-modal-statuses/load-modal-statuses.component';
 
 @Component({
   selector: 'app-load-modal',
@@ -228,6 +228,27 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     stops: { lat: number; long: number; stopColor: string; empty: boolean }[];
   }[] = [];
 
+  public loadCreateStatuses: ILoadStatus[] = [
+    {
+      id: 1,
+      name: 'BOOKED',
+      active: true,
+      color: '#C1C1C1',
+    },
+    {
+      id: 2,
+      name: 'UNASSIGNED',
+      active: false,
+      color: '#C1C1C1',
+    },
+    {
+      id: 3,
+      name: 'ASSIGNED',
+      active: false,
+      color: '#9F9F9F',
+    },
+  ];
+
   public companyUser: SignInResponse = null;
 
   public isDateRange: boolean = false;
@@ -340,6 +361,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.selectedDispatcher = event;
 
         if (this.selectedDispatcher) {
+          this.loadCreateStatuses = this.loadCreateStatuses.map((item) => {
+            return {
+              ...item,
+              active: item.name === 'UNASSIGNED',
+            };
+          });
           this.labelsDispatches = this.originLabelsDispatches.filter(
             (item) => item.dispatcherId === this.selectedDispatcher.id
           );
@@ -347,6 +374,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.loadForm.get('dispatchesId').patchValue(null);
         } else {
           this.labelsDispatches = this.originLabelsDispatches;
+          this.loadCreateStatuses = this.loadCreateStatuses.map((item) => {
+            return {
+              ...item,
+              active: item.name === 'BOOKED' && !this.selectedDispatches,
+            };
+          });
         }
         break;
       }
@@ -365,6 +398,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       }
       case 'broker': {
         this.selectedBroker = event;
+
         if (this.selectedBroker) {
           this.labelsBrokerContacts = this.originBrokerContacts.map((el) => {
             return {
@@ -409,7 +443,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               ],
               customClass: 'load-broker-contact',
             },
-            blackInput: true,
           };
         } else {
           this.labelsBrokerContacts = this.originBrokerContacts;
@@ -460,6 +493,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               .concat(' ', event?.driver?.name),
           };
 
+          this.loadCreateStatuses = this.loadCreateStatuses.map((item) => {
+            return {
+              ...item,
+              active: item.name === 'ASSIGNED' && this.selectedDispatcher,
+            };
+          });
+
           this.loadDispatchesTTDInputConfig = {
             ...this.loadDispatchesTTDInputConfig,
             multipleInputValues: {
@@ -485,6 +525,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           };
         } else {
           this.loadDispatchesTTDInputConfig.multipleInputValues = null;
+          this.loadCreateStatuses = this.loadCreateStatuses.map((item) => {
+            return {
+              ...item,
+              active: item.name === 'UNASSIGNED',
+            };
+          });
         }
         break;
       }
@@ -514,8 +560,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       }
       case 'shipper': {
         if (event) {
-          this.selectedShipper = event;
-          this.createNewStop();
+          // If Load Stops Doesn't exist, but 'delivery' is first picked just return
+
+          if (!this.loadStops().length && this.selectedStopTab === 4) {
+            return;
+          } else {
+            this.selectedShipper = event;
+            this.createNewStop();
+          }
         } else {
           this.loadShipperInputConfig.multipleInputValues = null;
         }
@@ -838,16 +890,63 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public toggleLoadStop(loadStop: FormGroup) {
+  public toggleLoadStop(loadStop: AbstractControl) {
+    console.log('toggling');
+    console.log(loadStop.value);
     loadStop.get('openClose').patchValue(!loadStop.get('openClose').value);
 
     if (loadStop.get('openClose').value) {
       this.closeAllLoadStopExceptActive(loadStop);
 
+      this.selectedShipper = this.labelsShippers.find(
+        (item) =>
+          item.name === loadStop.get('shipper').value &&
+          item.address === loadStop.get('location').value
+      );
+      this.loadShipperInputConfig = {
+        ...this.loadShipperInputConfig,
+        multipleInputValues: {
+          options: [
+            {
+              value: loadStop.get('shipper').value,
+              logoName: null,
+            },
+            {
+              value: loadStop.get('location').value,
+              logoName: null,
+            },
+          ],
+          customClass: 'load-shipper',
+        },
+      };
+
       this.loadForm.get('dateFrom').patchValue(loadStop.get('dateFrom').value);
       this.loadForm.get('dateTo').patchValue(loadStop.get('dateTo').value);
       this.loadForm.get('timeFrom').patchValue(loadStop.get('timeFrom').value);
       this.loadForm.get('timeTo').patchValue(loadStop.get('timeTo').value);
+    } else {
+      this.selectedShipper = null;
+      this.loadShipperInputConfig = {
+        ...this.loadShipperInputConfig,
+        multipleInputValues: {
+          options: [
+            {
+              value: null,
+              logoName: null,
+            },
+            {
+              value: null,
+              logoName: null,
+            },
+          ],
+          customClass: 'load-shipper',
+        },
+      };
+      this.loadForm.get('shipper').patchValue(null, { emitEvent: false });
+      this.loadForm.get('dateFrom').patchValue(null, { emitEvent: false });
+      this.loadForm.get('dateTo').patchValue(null, { emitEvent: false });
+      this.loadForm.get('timeFrom').patchValue(null, { emitEvent: false });
+      this.loadForm.get('timeTo').patchValue(null, { emitEvent: false });
     }
   }
 
@@ -868,7 +967,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       .pipe(debounceTime(1000), takeUntil(this.destroy$))
       .subscribe({
         next: (res: RoutingResponse) => {
-          console.log(res);
           // TODO: Populate lat and long with routesPoints
           this.loadStopRoutes[0] = {
             routeColor: '#919191',
@@ -912,8 +1010,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               }
             }
           );
-
-          console.log(this.loadStops().value);
         },
         error: (err: any) => {
           console.log(err);
@@ -939,7 +1035,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           ],
           customClass: 'load-shipper',
         },
-        blackInput: true,
       };
 
       // If Load Stop Exist , just return
@@ -1021,7 +1116,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       phone: ['(987) 654-3210'],
       extensionPhone: ['444'],
       loadStopDetails: this.formBuilder.array([]),
-      hovered: [false],
       stopMode: [this.selectedStopTab === 3 ? 'pickup' : 'delivery'],
       openClose: [true],
     });
@@ -1090,30 +1184,30 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     this.loadStopsDetails(loadStopIndex).removeAt(loadStopDetailsIndex);
   }
 
-  public loadStopReordering(event: CdkDragDrop<any[]>) {
-    moveItemInArray(
-      this.loadStops().controls,
-      event.previousIndex,
-      event.currentIndex
-    );
+  // public loadStopReordering(event: CdkDragDrop<any[]>) {
+  //   moveItemInArray(
+  //     this.loadStops().controls,
+  //     event.previousIndex,
+  //     event.currentIndex
+  //   );
 
-    this.loadStopRoutes[0] = {
-      routeColor: '#919191',
-      stops: this.loadStops()
-        .controls.filter((item) => item)
-        .map((item) => {
-          return {
-            lat: item.get('latitude').value,
-            long: item.get('longitude').value,
-            stopColor:
-              item.get('stopMode').value === 'pickup' ? '#4db6a2' : '#ef5350',
-            empty: true,
-          };
-        }),
-    };
+  //   this.loadStopRoutes[0] = {
+  //     routeColor: '#919191',
+  //     stops: this.loadStops()
+  //       .controls.filter((item) => item)
+  //       .map((item) => {
+  //         return {
+  //           lat: item.get('latitude').value,
+  //           long: item.get('longitude').value,
+  //           stopColor:
+  //             item.get('stopMode').value === 'pickup' ? '#4db6a2' : '#ef5350',
+  //           empty: true,
+  //         };
+  //       }),
+  //   };
 
-    moveItemInArray([], event.previousIndex, event.currentIndex);
-  }
+  //   moveItemInArray([], event.previousIndex, event.currentIndex);
+  // }
 
   private getLoadDropdowns(id?: number) {
     this.loadService
@@ -1127,10 +1221,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.labelsBroker = res.brokers.map((item) => {
             return {
               ...item,
-              name: item.businessName,
-              status: item.availableCreditType.name,
+              name: item?.businessName,
+              status: item.availableCreditType?.name,
               logoName:
-                item.dnu || item.ban
+                item?.dnu || item?.ban
                   ? 'ic_load-broker-dnu-ban.svg'
                   : 'ic_load-broker-credit.svg',
             };
@@ -1144,7 +1238,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 contacts: item.contacts.map((item) => {
                   return {
                     ...item,
-                    name: item.contactName,
+                    name: item?.contactName,
                     extensionPhone: item.extensionPhone
                       ? item.extensionPhone
                       : '321',
@@ -1157,23 +1251,35 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.labelsDispatcher = res.dispatchers.map((item) => {
             return {
               ...item,
-              name: item.fullName,
-              logoName: item.avatar,
+              name: item?.fullName,
+              logoName: item?.avatar,
             };
           });
           const initialDispatcher = this.labelsDispatcher.find(
             (item) =>
-              item.name ===
-              this.companyUser.firstName.concat(' ', this.companyUser.lastName)
+              item?.name ===
+              this.companyUser?.firstName?.concat(
+                ' ',
+                this.companyUser?.lastName
+              )
           );
           this.loadForm.get('dispatcher').patchValue(initialDispatcher.name);
           this.selectedDispatcher = initialDispatcher;
+
+          if (this.selectedDispatcher) {
+            this.loadCreateStatuses = this.loadCreateStatuses.map((item) => {
+              return {
+                ...item,
+                active: item.name === 'UNASSIGNED',
+              };
+            });
+          }
 
           // Division Companies
           this.labelsCompanies = res.companies.map((item) => {
             return {
               ...item,
-              name: item.companyName,
+              name: item?.companyName,
             };
           });
 
@@ -1190,30 +1296,33 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 ...item,
                 driver: {
                   ...item.driver,
-                  name: item.driver.firstName.concat(' ', item.driver.lastName),
-                  logoName: item.driver.avatar,
+                  name: item.driver?.firstName?.concat(
+                    ' ',
+                    item.driver?.lastName
+                  ),
+                  logoName: item.driver?.avatar,
                 },
                 coDriver: {
                   ...item.coDriver,
-                  name: item?.coDriver?.firstName?.concat(
+                  name: item.coDriver?.firstName?.concat(
                     ' ',
-                    item?.coDriver?.lastName
+                    item.coDriver?.lastName
                   ),
-                  logoName: item?.coDriver?.avatar,
+                  logoName: item.coDriver?.avatar,
                 },
                 truck: {
                   ...item.truck,
-                  name: `# ${item.truck.truckNumber}`,
+                  name: `# ${item.truck?.truckNumber}`,
                 },
                 trailer: {
                   ...item.trailer,
-                  name: `# ${item.trailer.trailerNumber}`,
+                  name: `# ${item.trailer?.trailerNumber}`,
                 },
               };
             });
 
           this.labelsDispatches = this.labelsDispatches.filter(
-            (item) => item.dispatcherId === this.selectedDispatcher.id
+            (item) => item?.dispatcherId === this.selectedDispatcher.id
           );
 
           // Door Type
@@ -1269,8 +1378,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.labelsShippers = res.shippers.map((item) => {
             return {
               ...item,
-              name: item.businessName,
-              address: item.address.address,
+              name: item?.businessName,
+              address: item.address?.address,
             };
           });
 
@@ -1294,8 +1403,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             (item) => {
               return {
                 ...item,
-                name: item.description,
-                logoName: item.logoName.includes('explosives')
+                name: item?.description,
+                logoName: item?.logoName?.includes('explosives')
                   ? 'ic_explosives.svg'
                   : item.logoName,
                 folder: 'common',
