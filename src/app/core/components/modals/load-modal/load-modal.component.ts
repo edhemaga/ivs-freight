@@ -1486,11 +1486,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       adjustedRate: convertThousanSepInNumber(form.adjustedRate),
       advancePay: convertThousanSepInNumber(form.advancePay),
       additionalBillingRates: this.premmapedAdditionalBillingRate(),
-      stops: null,
+      stops: this.premmapedStops() as any,
     };
 
     console.log('load created: ', newData);
-    console.log(this.premmapedStops());
+
     // this.loadService
     //   .createLoad(newData)
     //   .pipe(takeUntil(this.destroy$))
@@ -1544,8 +1544,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         dateFrom: convertDateToBackend(item.get('dateFrom').value),
         dateTo: convertDateToBackend(item.get('dateTo').value),
         timeType: item.get('timeType').value,
-        timeFrom: [null],
-        timeTo: [null],
+        timeFrom: item.get('timeFrom').value,
+        timeTo: item.get('timeTo').value,
         arrive: null,
         depart: null,
         // From legs
