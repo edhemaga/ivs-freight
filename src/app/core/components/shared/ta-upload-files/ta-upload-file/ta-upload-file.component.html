@@ -206,8 +206,16 @@
       }}"
       [ngClass]="{ 'no-tag': !file?.tag }"
       ngbTooltip
-      [mainTooltip]="numberOfFilePages"
-      tooltipBackground="#6c6c6c"
+      [mainTooltip]="
+        numberOfFilePages && file?.extension?.toLowerCase() == 'pdf'
+          ? numberOfFilePages
+          : ''
+      "
+      [tooltipBackground]="
+        numberOfFilePages && file?.extension?.toLowerCase() == 'pdf'
+          ? '#6c6c6c'
+          : ''
+      "
       position="top"
     >
       {{ file?.extension | uppercase }}
