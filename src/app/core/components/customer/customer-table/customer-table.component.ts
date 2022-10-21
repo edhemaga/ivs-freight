@@ -5,6 +5,7 @@ import {
   ViewEncapsulation,
   ViewChild,
   AfterViewInit,
+  ChangeDetectorRef
 } from '@angular/core';
 
 import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
@@ -69,6 +70,8 @@ export class CustomerTableComponent
     searchTwo: undefined,
     searchThree: undefined,
   };
+  
+  mapListData = [];
 
   constructor(
     private modalService: ModalService,
@@ -81,6 +84,7 @@ export class CustomerTableComponent
     private thousandSeparator: TaThousandSeparatorPipe,
     private reviewRatingService: ReviewsRatingService,
     private DetailsDataService: DetailsDataService,
+    private ref: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -382,6 +386,8 @@ export class CustomerTableComponent
 
     if (td.data.length) {
       this.viewData = td.data;
+
+      this.mapListData = JSON.parse(JSON.stringify(this.viewData));
 
       this.viewData = this.viewData.map((data: any) => {
         if (this.selectedTab === 'active') {
@@ -699,6 +705,8 @@ export class CustomerTableComponent
         tableData: event.data,
       };
 
+      console.log('raitingData', raitingData);
+
       this.reviewRatingService
         .addRating(raitingData)
         .pipe(takeUntil(this.destroy$))
@@ -812,6 +820,12 @@ export class CustomerTableComponent
 
     this.tableService.sendRowsSelected([]);
     this.tableService.sendResetSelectedColumns(true);
+  }
+
+  updateMapList(mapListResponse) {
+    this.mapListData = mapListResponse.pagination.data;
+    this.tableData[1].length = mapListResponse.pagination.count;
+    this.ref.detectChanges();
   }
 
   ngOnDestroy(): void {

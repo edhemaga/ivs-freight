@@ -175,6 +175,7 @@ export class MapsComponent implements OnInit, OnDestroy {
             if (this.mapType == 'repairShop') {
               this.getRepairShop(data.id, index);
             } else if ( this.mapType == 'shipper' ) {
+              console.log('getShipper data.id', data.id);
               this.getShipper(data.id, index);
             }
           } else {
@@ -433,7 +434,20 @@ export class MapsComponent implements OnInit, OnDestroy {
         )
         .pipe(takeUntil(this.destroy$))
         .subscribe((mapListResponse: any) => {
-          this.updateMapList.emit(mapListResponse);
+          console.log('repair shop list', mapListResponse);
+
+          var mapListData = {...mapListResponse};
+          mapListData.pagination.data.map((data) => {
+            data.shopRaiting = {
+              hasLiked: data.currentCompanyUserRating === 1,
+              hasDislike: data.currentCompanyUserRating === -1,
+              likeCount: data?.upCount ? data.upCount : '0',
+              dislikeCount: data?.downCount ? data.downCount : '0',
+            }
+          });
+
+          this.updateMapList.emit(mapListData);
+          // this.mapsService.updateMapList(mapListResponse);
         });
     } else if ( this.mapType == 'shipper' ) {
       this.shipperService
@@ -443,6 +457,7 @@ export class MapsComponent implements OnInit, OnDestroy {
           var clustersToShow = [];
           var markersToShow = [];
           var newMarkersAdded = false;
+          console.log('clustersResponse', clustersResponse);
 
           clustersResponse.map((clusterItem) => {
             if (clusterItem.count > 1) {
@@ -490,6 +505,31 @@ export class MapsComponent implements OnInit, OnDestroy {
           if (newMarkersAdded) this.markersDropAnimation();
 
           this.ref.detectChanges();
+        });
+
+      this.shipperService
+        .getShipperMapList(
+          clustersObj.northEastLatitude,
+          clustersObj.northEastLongitude,
+          clustersObj.southWestLatitude,
+          clustersObj.southWestLongitude
+        )
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((mapListResponse: any) => {
+          console.log('shipper list', mapListResponse);
+
+          var mapListData = {...mapListResponse};
+          mapListData.pagination.data.map((data) => {
+            data.raiting = {
+              hasLiked: data.currentCompanyUserRating === 1,
+              hasDislike: data.currentCompanyUserRating === -1,
+              likeCount: data?.upCount ? data.upCount : '0',
+              dislikeCount: data?.downCount ? data.downCount : '0',
+            }
+          });
+
+          this.updateMapList.emit(mapListData);
+          // this.mapsService.updateMapList(mapListResponse);
         });
     }
   }
@@ -579,8 +619,9 @@ export class MapsComponent implements OnInit, OnDestroy {
   }
 
   getShipper(id, index) {
+    console.log('getShipper', id);
     this.shipperService
-      .getShipperById(id, true)
+      .getShipperById(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {

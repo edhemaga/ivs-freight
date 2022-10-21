@@ -41,7 +41,7 @@
         (markerClick)="clickedMarker(latlong.id, $event)"
         [label]="
           mapType == 'shipper'
-            ? latlong.businessName
+            ? (latlong.businessName ? latlong.businessName : latlong.name)
             : mapType == 'accident'
             ? latlong.report
             : mapType == 'repairShop'
@@ -117,7 +117,7 @@
                   <div>
                     {{
                       mapType == "shipper"
-                        ? latlong.businessName
+                        ? (latlong.businessName ? latlong.businessName : latlong.name)
                         : mapType == "accident" || mapType == "inspection"
                         ? latlong.report
                         : mapType == "repairShop"
@@ -159,7 +159,7 @@
               <app-map-marker-dropdown
                 [title]="
                   mapType == 'shipper'
-                    ? latlong.businessName
+                    ? (latlong.businessName ? latlong.businessName : latlong.name)
                     : mapType == 'accident' || mapType == 'inspection'
                     ? latlong.report
                     : mapType == 'repairShop'

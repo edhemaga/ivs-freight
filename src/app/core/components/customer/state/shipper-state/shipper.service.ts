@@ -285,6 +285,38 @@ export class ShipperTService implements OnDestroy {
       clustersQuery.zoomLevel
     );
   }
+  
+  public getShipperMapList(
+    northEastLatitude?: number, 
+    northEastLongitude?: number, 
+    southWestLatitude?: number, 
+    southWestLongitude?: number, 
+    ban?: number, 
+    dnu?: number, 
+    pageIndex?: number, 
+    pageSize?: number, 
+    companyId?: number, 
+    sort?: string, 
+    search?: string, 
+    search1?: string, 
+    search2?: string
+  ) {
+    return this.shipperService.apiShipperListmapGet(
+      northEastLatitude, 
+      northEastLongitude, 
+      southWestLatitude, 
+      southWestLongitude, 
+      ban, 
+      dnu, 
+      pageIndex, 
+      pageSize, 
+      companyId, 
+      sort, 
+      search, 
+      search1, 
+      search2
+    );
+  }
 
   //  <--------------------------------- Review ---------------------------------->
 

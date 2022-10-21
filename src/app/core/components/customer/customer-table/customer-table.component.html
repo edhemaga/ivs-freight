@@ -33,11 +33,11 @@
     <app-map-list
       [type]="'shipper'"
       [columns]="columns"
-      [mapListContent]="viewData"
+      [mapListContent]="mapListData"
       (headActions)="onTableHeadActions($event)"
     >
       <app-map-list-card
-        *ngFor="let latlong of viewData; let i = index"
+        *ngFor="let latlong of mapListData; let i = index"
         #listCard
         [title]="latlong?.businessName"
         [isSelected]="latlong?.isSelected"
@@ -60,10 +60,11 @@
 
     <app-maps
       #mapsComponent
-      [_viewData]="viewData"
+      [_viewData]="[]"
       [dropdownActions]="tableOptions.actions"
       [mapType]="'shipper'"
       (callDropDownAction)="onTableBodyActions($event)"
+      (updateMapList)="updateMapList($event)"
     ></app-maps>
   </div>
 </div>
