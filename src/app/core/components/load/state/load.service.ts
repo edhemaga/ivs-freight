@@ -1,6 +1,7 @@
 import { LoadResponse } from './../../../../../../appcoretruckassist/model/loadResponse';
 import { Injectable } from '@angular/core';
 import {
+  CreateResponse,
   LoadListResponse,
   LoadService,
   LoadTemplateListResponse,
@@ -10,6 +11,8 @@ import { LoadMinimalListResponse } from '../../../../../../appcoretruckassist/mo
 import { LoadDetailsListQuery } from './load-details-state/load-details-list-state/load-d-list.query';
 import { LoadDetailsListStore } from './load-details-state/load-details-list-state/load-d-list.store';
 import { LoadModalResponse } from '../../../../../../appcoretruckassist/model/loadModalResponse';
+import { CreateLoadCommand } from '../../../../../../appcoretruckassist/model/createLoadCommand';
+import { UpdateLoadCommand } from '../../../../../../appcoretruckassist/model/updateLoadCommand';
 
 @Injectable({
   providedIn: 'root',
@@ -94,6 +97,18 @@ export class LoadTService {
       search1,
       search2
     );
+  }
+
+  public createLoad(data: CreateLoadCommand): Observable<CreateResponse> {
+    return this.loadServices.apiLoadPost(data);
+  }
+
+  public updateLoad(data: UpdateLoadCommand): Observable<any> {
+    return this.loadServices.apiLoadPut(data);
+  }
+
+  public deleteLoadById(id: number): Observable<any> {
+    return this.loadServices.apiLoadIdDelete(id);
   }
 
   public getLoadById(loadId: number): Observable<LoadResponse> {
