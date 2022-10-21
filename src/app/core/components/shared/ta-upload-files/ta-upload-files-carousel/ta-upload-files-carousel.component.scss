@@ -34,7 +34,6 @@
     border-radius: 2px;
     text-align: center;
     box-shadow: 0 0 4px rgb(0 0 0 / 15%);
-    padding-top: 3px;
     display: none;
     transform: translate(-5%, 22%);
 
@@ -53,6 +52,7 @@
       height: 18px;
       line-height: 18px;
       svg {
+        display: flex;
         width: 18px;
         height: 18px;
         line-height: 18px;
@@ -71,7 +71,9 @@
   &:hover {
     transition: all 0.3s ease-in-out;
     .ta-upload-carousel-control-bg {
-      display: block;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 

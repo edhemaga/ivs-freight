@@ -206,13 +206,13 @@
       }}"
       [ngClass]="{ 'no-tag': !file?.tag }"
       ngbTooltip
-      mainTooltip="numberOfFilePages"
+      [mainTooltip]="numberOfFilePages"
       tooltipBackground="#6c6c6c"
       position="top"
     >
       {{ file?.extension | uppercase }}
     </div>
-    <p *ngIf="!editFile" class="ta-upload-file-name">{{ file?.fileName }}</p>
+    <p *ngIf="!editFile" class="ta-upload-file-name">{{ file?.name }}</p>
     <!-- Edit mode -->
     <app-ta-input
       *ngIf="editFile"
