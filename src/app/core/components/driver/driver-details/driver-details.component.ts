@@ -310,7 +310,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           title: 'Edit',
           name: 'edit',
           svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-          show: data.status == 1 ? true : false,
+          disabled: data.status == 0 ? true : false,
         },
         {
           title: 'border'
@@ -320,16 +320,28 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           name: 'dm',
           svg: 'assets/svg/common/ic_dm.svg',
           show: data.status == 1 ? true : false,
+          disabled: data.status == 0 ? true : false,
         },
         {
           title: 'Add New',
           svg: 'assets/svg/common/dropdown-arrow.svg',
-          subType: ['CDL', 'Test (Drug, Alcohol)', 'Medical Exam', 'MVR']
+          disabled: data.status == 0 ? true : false,
+          subType: [
+              { subName :'CDL', actionName: 'CDL'}, 
+              { subName : 'Test (Drug, Alcohol)', actionName: 'Drug & Alcohol Test'}, 
+              { subName : 'Medical Exam', actionName: 'Medical'}, 
+              { subName: 'MVR', actionName: 'MVR'}]
         },
         {
           title: 'Request',
           svg: 'assets/svg/common/dropdown-arrow.svg',
-          subType: ['Background Check', 'Medical Exam', 'Test (Drug, Alcohol)', 'MVR']
+          disabled: data.status == 0 ? true : false,
+          subType: [
+            { subName :'Background Check', actionName: 'Background Check'},
+            { subName :'Medical Exam', actionName: 'Medical'},
+            { subName :'Test (Drug, Alcohol)', actionName: 'Drug & Alcohol Test'},
+            { subName :'MVR', actionName: 'MVR'}
+          ]
         },
         {
           title: 'border'

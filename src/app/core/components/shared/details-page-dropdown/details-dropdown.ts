@@ -27,7 +27,7 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
           overflow: 'hidden',
           opacity: 1,
           'padding-bottom' : '4px',
-          'padding-top' : '9px'
+          'padding-top' : '5px'
         })
       ),
       state(
@@ -53,9 +53,11 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
   @Input() data: any;
   @Input() public placement: string = 'bottom-right';
   @Output() dropDownActions: EventEmitter<any> = new EventEmitter();
+  @Output() openModalAction: EventEmitter<any> = new EventEmitter();
   dropContent: any[] = [];
   tooltip: any;
   dropDownActive: number = -1;
+  subtypeHovered: any = false;
 
   constructor(private DetailsDataService: DetailsDataService) {}
 
@@ -101,11 +103,30 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
   onAction(action: any, event?: any) {
     event.stopPropagation();
     event.preventDefault();
+
+    if ( action.disabled ){
+      return false;
+    }
+
     this.dropDownActions.emit({
       id: this.id,
       data: this.data,
       type: action.name,
     });
+
+    this.tooltip.close();
+  }
+
+  subTypeAction(actionData: any, action: any, event?: any){
+    event.stopPropagation();
+    event.preventDefault();
+
+    if ( actionData.disabled ){
+      return false;
+    }
+
+    let actionName = action.actionName;
+    this.openModalAction.emit(actionName);
 
     this.tooltip.close();
   }

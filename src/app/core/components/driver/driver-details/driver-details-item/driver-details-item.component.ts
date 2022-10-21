@@ -205,6 +205,15 @@ export class DriverDetailsItemComponent
           show: true,
         },
         {
+          title: 'border',
+        },
+        {
+          title: 'View Details',
+          name: 'view-details',
+          svg: 'assets/svg/common/ic_hazardous-info.svg',
+          show: true,
+        },
+        {
           title: 'Renew',
           name: 'renew',
           svg: 'assets/svg/common/ic_reload_renew.svg',
@@ -213,6 +222,24 @@ export class DriverDetailsItemComponent
             this.arrayOfRenewCdl[this.currentIndex] == true
               ? true
               : false,
+        },
+        {
+          title: 'border',
+        },
+        {
+          title: 'Print',
+          name: 'print',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: true,
+        },
+        {
+          title: 'Share',
+          name: 'share',
+          svg: 'assets/svg/common/share-icon.svg',
+          show: true,
+        },
+        {
+          title: 'border',
         },
         {
           title:
@@ -229,6 +256,8 @@ export class DriverDetailsItemComponent
             !this.templateName && this.expiredCard[this.currentIndex] == false
               ? true
               : false,
+          redIcon: this.activateShow[this.currentIndex] == true ? false : true,    
+          blueIcon: this.activateShow[this.currentIndex] == true ? true : false,    
         },
         {
           title: 'Delete',
@@ -238,6 +267,7 @@ export class DriverDetailsItemComponent
           svg: 'assets/svg/common/ic_trash_updated.svg',
           danger: true,
           show: true,
+          redIcon: true,
         },
       ],
       export: true,

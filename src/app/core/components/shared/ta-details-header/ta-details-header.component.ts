@@ -53,6 +53,7 @@ export class TaCommonHeaderComponent implements OnInit {
 
   public openModal(val: any) {
     this.openModalAction.emit(val);
+    console.log('--val--', val)
   }
   public makeRequestFun(req: any) {
     this.makeRequest.emit(req);
