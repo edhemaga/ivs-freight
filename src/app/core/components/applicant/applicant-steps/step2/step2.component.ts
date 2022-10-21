@@ -173,7 +173,7 @@ export class Step2Component implements OnInit, OnDestroy {
 
         const incorrectMessage = workExperienceItemsReview[i]?.commonMessage;
 
-        if (hasIncorrectValue == null || hasIncorrectValue == undefined) {
+        if (hasIncorrectValue === null || hasIncorrectValue == undefined) {
           hasIncorrectValue = false;
         }
 

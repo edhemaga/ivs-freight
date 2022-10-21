@@ -23,7 +23,7 @@ import { INavigation } from '../state/model/navigation.model';
 export class ApplicantComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode = SelectedMode.APPLICANT;
+  public selectedMode = SelectedMode.REVIEW;
 
   public menuItems: INavigation[] = [
     {
@@ -124,9 +124,9 @@ export class ApplicantComponent implements OnInit, OnDestroy {
     { id: 5, hasIncorrectAnswer: false, sentToReview: false },
     { id: 6, hasIncorrectAnswer: false, sentToReview: false },
     { id: 7, hasIncorrectAnswer: false, sentToReview: false },
-    { id: 7, hasIncorrectAnswer: false, sentToReview: false },
-    { id: 7, hasIncorrectAnswer: false, sentToReview: false },
-    { id: 7, hasIncorrectAnswer: false, sentToReview: false },
+    { id: 8, hasIncorrectAnswer: false, sentToReview: false },
+    { id: 9, hasIncorrectAnswer: false, sentToReview: false },
+    { id: 10, hasIncorrectAnswer: false, sentToReview: false },
   ];
 
   constructor(
@@ -163,6 +163,8 @@ export class ApplicantComponent implements OnInit, OnDestroy {
     this.applicantQuery.fullList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
+        console.log('REEES', res);
+
         res = JSON.parse(JSON.stringify(res));
 
         if (this.selectedMode === SelectedMode.REVIEW) {

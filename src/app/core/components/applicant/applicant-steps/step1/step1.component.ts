@@ -60,7 +60,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public personalInfoRadios: any;
 
@@ -92,81 +92,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
   public previousAddressOnEdit: string;
   public previousAddressUnitOnEdit: string;
-
-  public openAnnotationArray: {
-    lineIndex?: number;
-    lineInputs?: boolean[];
-    displayAnnotationButton?: boolean;
-    displayAnnotationTextArea?: boolean;
-  }[] = [
-    {
-      lineIndex: 0,
-      lineInputs: [false, false, false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 1,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {},
-    {},
-    {},
-    {},
-    {},
-    {
-      lineIndex: 7,
-      lineInputs: [false, false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 8,
-      lineInputs: [false, false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 9,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 10,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 11,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 12,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 13,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 14,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-  ];
-  public cardReviewIndex: number = 0;
-  public hasIncorrectFields: boolean = false;
 
   public questions: ApplicantQuestion[] = [
     {
@@ -308,6 +233,83 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       ],
     },
   ];
+
+  public openAnnotationArray: {
+    lineIndex?: number;
+    lineInputs?: boolean[];
+    displayAnnotationButton?: boolean;
+    displayAnnotationTextArea?: boolean;
+  }[] = [
+    {
+      lineIndex: 0,
+      lineInputs: [false, false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 1,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {},
+    {},
+    {},
+    {},
+    {},
+    {
+      lineIndex: 7,
+      lineInputs: [false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 8,
+      lineInputs: [false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 9,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 10,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 11,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 12,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 13,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 14,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+  ];
+  public cardReviewIndex: number = 0;
+  public hasIncorrectFields: boolean = false;
+
+  public stepFeedbackValues: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -591,8 +593,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
           this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
             lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
             lineInputs: [
-              isAddressValid == null ? false : !isAddressValid,
-              isAddressUnitValid == null ? false : !isAddressUnitValid,
+              isAddressValid === null ? false : !isAddressValid,
+              isAddressUnitValid === null ? false : !isAddressUnitValid,
             ],
             displayAnnotationButton:
               (!isAddressValid || !isAddressUnitValid) && !addressMessage
@@ -647,7 +649,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
           this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
             lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
             lineInputs: [
-              isPreviousAddressValid == null ? false : !isPreviousAddressValid,
+              isPreviousAddressValid === null ? false : !isPreviousAddressValid,
             ],
             displayAnnotationButton:
               !isPreviousAddressValid && !previousAddressMessage ? true : false,
@@ -771,6 +773,18 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
           displayAnnotationTextArea: drunkDrivingMessage ? true : false,
         };
 
+        const inputFieldsArray = JSON.stringify(
+          this.openAnnotationArray
+            .filter((item) => Object.keys(item).length !== 0)
+            .map((item) => item.lineInputs)
+        );
+
+        if (inputFieldsArray.includes('true')) {
+          this.hasIncorrectFields = true;
+        } else {
+          this.hasIncorrectFields = false;
+        }
+
         this.personalInfoForm.patchValue({
           firstRowReview: personalInfoMessage,
           secondRowReview: phoneMessage,
@@ -787,16 +801,12 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       }
     }
 
-    const inputFieldsArray = JSON.stringify(
-      this.openAnnotationArray
-        .filter((item) => Object.keys(item).length !== 0)
-        .map((item) => item.lineInputs)
-    );
+    if (this.selectedMode === SelectedMode.FEEDBACK) {
+      if (personalInfoReview) {
+        this.stepFeedbackValues = personalInfoReview;
 
-    if (inputFieldsArray.includes('true')) {
-      this.hasIncorrectFields = true;
-    } else {
-      this.hasIncorrectFields = false;
+        console.log('this.stepFeedbackValues', this.stepFeedbackValues);
+      }
     }
   }
 

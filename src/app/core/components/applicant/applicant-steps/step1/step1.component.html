@@ -95,7 +95,10 @@
               maxLength: 26,
               textTransform: 'capitalize',
               autoFocus: true,
-              isDisabled: selectedMode === 'REVIEW_MODE',
+              isDisabled:
+                selectedMode === 'REVIEW_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' &&
+                  stepFeedbackValues.isFirstNameValid),
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="openAnnotationArray[0].lineInputs[0]"
@@ -113,7 +116,10 @@
               minLength: 2,
               maxLength: 26,
               textTransform: 'capitalize',
-              isDisabled: selectedMode === 'REVIEW_MODE',
+              isDisabled:
+                selectedMode === 'REVIEW_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' &&
+                  stepFeedbackValues.isLastNameValid),
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="openAnnotationArray[0].lineInputs[1]"
@@ -130,7 +136,10 @@
               placeholderIcon: 'date',
               isRequired: true,
               customClass: 'datetimeclass',
-              isDisabled: selectedMode === 'REVIEW_MODE',
+              isDisabled:
+                selectedMode === 'REVIEW_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' &&
+                  stepFeedbackValues.isDoBValid),
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="openAnnotationArray[0].lineInputs[2]"
@@ -149,17 +158,23 @@
           <app-applicant-review-feedback
             formControlName="firstRowReview"
             [displayAnnotationButton]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[0].displayAnnotationButton
             "
             [displayAnnotationTextArea]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[0].displayAnnotationTextArea
             "
             [lineIndex]="0"
             [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
             [feedbackText]="
-              'Check the routing number one more time (one number missing)!!!'
+              selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues.personalInfoMessage
             "
-            (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+            (annotationBtnClickEvent)="
+              selectedMode === 'REVIEW_MODE' &&
+                getAnnotationBtnClickValue($event)
+            "
           ></app-applicant-review-feedback>
         </div>
       </div>
@@ -213,17 +228,23 @@
           <app-applicant-review-feedback
             formControlName="secondRowReview"
             [displayAnnotationButton]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[1].displayAnnotationButton
             "
             [displayAnnotationTextArea]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[1].displayAnnotationTextArea
             "
             [lineIndex]="1"
             [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
             [feedbackText]="
-              'Check the routing number one more time (one number missing)!!!'
+              selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues.phoneMessage
             "
-            (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+            (annotationBtnClickEvent)="
+              selectedMode === 'REVIEW_MODE' &&
+                getAnnotationBtnClickValue($event)
+            "
           ></app-applicant-review-feedback>
         </div>
       </div>
@@ -733,17 +754,23 @@
           <app-applicant-review-feedback
             formControlName="thirdRowReview"
             [displayAnnotationButton]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[7].displayAnnotationButton
             "
             [displayAnnotationTextArea]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[7].displayAnnotationTextArea
             "
             [lineIndex]="7"
             [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
             [feedbackText]="
-              'Check the routing number one more time (one number missing)!!!'
+              selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues.ssnBankMessage
             "
-            (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+            (annotationBtnClickEvent)="
+              selectedMode === 'REVIEW_MODE' &&
+                getAnnotationBtnClickValue($event)
+            "
           ></app-applicant-review-feedback>
         </div>
       </div>
@@ -801,17 +828,23 @@
           <app-applicant-review-feedback
             formControlName="fourthRowReview"
             [displayAnnotationButton]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[8].displayAnnotationButton
             "
             [displayAnnotationTextArea]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[8].displayAnnotationTextArea
             "
             [lineIndex]="8"
             [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
             [feedbackText]="
-              'Check the routing number one more time (one number missing)!!!'
+              selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues.accountRoutingMessage
             "
-            (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+            (annotationBtnClickEvent)="
+              selectedMode === 'REVIEW_MODE' &&
+                getAnnotationBtnClickValue($event)
+            "
           ></app-applicant-review-feedback>
         </div>
       </div>
@@ -896,17 +929,34 @@
               <app-applicant-review-feedback
                 [formControlName]="'questionReview' + (i + 1)"
                 [displayAnnotationButton]="
+                  selectedMode === 'REVIEW_MODE' &&
                   openAnnotationArray[i + 9].displayAnnotationButton
                 "
                 [displayAnnotationTextArea]="
+                  selectedMode === 'REVIEW_MODE' &&
                   openAnnotationArray[i + 9].displayAnnotationTextArea
                 "
                 [lineIndex]="i + 9"
                 [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
                 [feedbackText]="
-                  'Check the routing number one more time (one number missing)!!!'
+                  selectedMode === 'FEEDBACK_MODE' && i === 0
+                    ? stepFeedbackValues.legalWorkMessage
+                    : i === 1
+                    ? stepFeedbackValues.anotherNameMessage
+                    : i === 2
+                    ? stepFeedbackValues.inMilitaryMessage
+                    : i === 3
+                    ? stepFeedbackValues.felonyMessage
+                    : i === 4
+                    ? stepFeedbackValues.misdemeanorMessage
+                    : i === 5
+                    ? stepFeedbackValues.drunkDrivingMessage
+                    : null
                 "
-                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+                (annotationBtnClickEvent)="
+                  selectedMode === 'REVIEW_MODE' &&
+                    getAnnotationBtnClickValue($event)
+                "
               ></app-applicant-review-feedback>
             </div>
           </div>

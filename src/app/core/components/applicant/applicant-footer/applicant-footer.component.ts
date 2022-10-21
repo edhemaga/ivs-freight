@@ -136,7 +136,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
       this.selectedMode = changes.mode?.currentValue;
     }
 
-    if (this.selectedMode === SelectedMode.APPLICANT) {
+    if (this.selectedMode !== SelectedMode.REVIEW) {
       this.getCompanyInfo();
     }
 
