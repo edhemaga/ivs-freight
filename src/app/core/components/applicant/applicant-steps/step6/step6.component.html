@@ -349,6 +349,7 @@
                       textTransform: 'capitalize',
                       placeholder: 'Please explain',
                       placeholderInsteadOfLabel: true,
+                      isDisabled: selectedMode === 'REVIEW_MODE',
                       incorrectInput: selectedMode === 'REVIEW_MODE'
                     }"
                     [incorrectValue]="false"

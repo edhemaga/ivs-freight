@@ -11,6 +11,7 @@
           textTransform: 'capitalize',
           minLength: 2,
           maxLength: 24,
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="openAnnotationArray[15].lineInputs[0]"
@@ -28,6 +29,7 @@
           placeholderIcon: 'phone',
           mask: '(000) 000-0000',
           maxLength: 14,
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="openAnnotationArray[15].lineInputs[1]"
@@ -45,6 +47,7 @@
           minLength: 2,
           maxLength: 24,
           isRequired: true,
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="openAnnotationArray[15].lineInputs[2]"

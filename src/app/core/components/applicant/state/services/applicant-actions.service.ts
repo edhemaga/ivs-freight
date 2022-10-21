@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 import { ApplicantService } from '../../../../../../../appcoretruckassist';
 
@@ -43,23 +43,11 @@ import {
   providedIn: 'root',
 })
 export class ApplicantActionsService {
-  private applicantInfoSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
-    null
-  );
-
   constructor(
     private applicantService: ApplicantService,
     private applicantStore: ApplicantStore,
     private applicantSphFormStore: ApplicantSphFormStore
   ) {}
-
-  public getApplicantInfo(data: any) {
-    this.applicantInfoSubject.next(data);
-  }
-
-  get getApplicantInfo$() {
-    return this.applicantInfoSubject.asObservable();
-  }
 
   /* BACKEND POST ACTION FUNCTIONS -  APPLICANT MODE */
 

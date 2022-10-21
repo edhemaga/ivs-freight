@@ -50,7 +50,7 @@ export class Step8Component implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public drugTestRadios: any;
 
@@ -376,8 +376,6 @@ export class Step8Component implements OnInit, OnDestroy {
             this.drugAlcoholStatementForm.get('isAgreement'),
             false
           );
-
-          this.drugAlcoholStatementForm.patchValue({ isAgreement: null });
 
           this.drugAlcoholStatementForm.patchValue({
             motorCarrier: null,

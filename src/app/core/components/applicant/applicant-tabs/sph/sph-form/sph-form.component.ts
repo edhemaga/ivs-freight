@@ -35,7 +35,7 @@ export class SphFormComponent implements OnInit, OnDestroy {
     },
   ];
 
-  public isStepCompletedArray = [
+  public isStepCompletedArray: { id: number; isCompleted: boolean }[] = [
     { id: 1, isCompleted: false },
     { id: 2, isCompleted: false },
     { id: 3, isCompleted: false },

@@ -15,13 +15,16 @@
             "
             class="text-center step"
             [routerLinkActive]="
-              selectedMode === 'REVIEW_MODE' &&
-              reviewStoreArr[i].isReviewed &&
-              !reviewStoreArr[i].hasIncorrectAnswer
+              (selectedMode === 'REVIEW_MODE' &&
+                isStepReviewedArray[i].isReviewed &&
+                !isStepReviewedArray[i].hasIncorrectAnswer) ||
+              (selectedMode === 'REVIEW_MODE' &&
+                !isStepReviewedArray[i].isReviewed &&
+                !isStepReviewedArray[i].hasIncorrectAnswer)
                 ? 'step-active-review'
                 : selectedMode === 'REVIEW_MODE' &&
-                  reviewStoreArr[i].isReviewed &&
-                  reviewStoreArr[i].hasIncorrectAnswer
+                  isStepReviewedArray[i].isReviewed &&
+                  isStepReviewedArray[i].hasIncorrectAnswer
                 ? 'step-active-review-incorrect'
                 : selectedMode === 'FEEDBACK_MODE' &&
                   !feedbackStoreArr[i].hasIncorrectAnswer
@@ -37,12 +40,12 @@
                 isStepCompletedArray[i].isCompleted,
               'completed-step-review':
                 selectedMode === 'REVIEW_MODE' &&
-                reviewStoreArr[i].isReviewed &&
-                !reviewStoreArr[i].hasIncorrectAnswer,
+                isStepReviewedArray[i].isReviewed &&
+                !isStepReviewedArray[i].hasIncorrectAnswer,
               'completed-step-review-incorrect':
                 selectedMode === 'REVIEW_MODE' &&
-                reviewStoreArr[i].isReviewed &&
-                reviewStoreArr[i].hasIncorrectAnswer,
+                isStepReviewedArray[i].isReviewed &&
+                isStepReviewedArray[i].hasIncorrectAnswer,
               'completed-step-feedback':
                 selectedMode === 'FEEDBACK_MODE' &&
                 !feedbackStoreArr[i].hasIncorrectAnswer,
@@ -71,6 +74,7 @@
             </p>
           </div>
         </div>
+
         <router-outlet></router-outlet>
       </div>
 

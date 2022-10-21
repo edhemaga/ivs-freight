@@ -55,7 +55,7 @@ export class Step3Component implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public permitForm: FormGroup;
   public licenseForm: FormGroup;

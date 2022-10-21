@@ -128,6 +128,14 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
   ) {}
 
   ngOnInit(): void {
+    this.copyrightYear = moment().format('YYYY');
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.mode?.previousValue !== changes.mode?.currentValue) {
+      this.selectedMode = changes.mode?.currentValue;
+    }
+
     if (this.selectedMode === SelectedMode.APPLICANT) {
       this.getCompanyInfo();
     }
@@ -139,14 +147,6 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
       this.getDocumentsBoxHeight();
 
       this.getRequestsBoxValuesFromStore();
-    }
-
-    this.copyrightYear = moment().format('YYYY');
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.mode?.previousValue !== changes.mode?.currentValue) {
-      this.selectedMode = changes.mode?.currentValue;
     }
 
     if (
@@ -411,19 +411,14 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public getCompanyInfo(): void {
-    this.applicantActionsService.getApplicantInfo$
+    this.applicantQuery.companyInfoList$
       .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (res) => {
-          this.companyInfo = res?.companyInfo;
+      .subscribe((res) => {
+        this.companyInfo = res?.companyInfo;
 
-          this.dateOfApplication = convertDateFromBackend(
-            res?.inviteDate
-          ).replace(/-/g, '/');
-        },
-        error: (err) => {
-          console.log(err);
-        },
+        this.dateOfApplication = convertDateFromBackend(
+          res?.inviteDate
+        ).replace(/-/g, '/');
       });
   }
 

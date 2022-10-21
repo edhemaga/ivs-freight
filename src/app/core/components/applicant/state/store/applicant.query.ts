@@ -5,8 +5,6 @@ import { ApplicantStore, ApplicantState } from './applicant.store';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicantQuery extends QueryEntity<ApplicantState> {
-  public applicantId$ = this.select((state) => state.entities[1].id);
-
   public personalInfoList$ = this.select(
     (state) => state.entities[1].personalInfo
   );
@@ -49,9 +47,18 @@ export class ApplicantQuery extends QueryEntity<ApplicantState> {
     (state) => state.entities[1].authorization
   );
 
+  public applicantId$ = this.select((state) => state.entities[1].id);
+
   public requestsList$ = this.select((state) => state.entities[1].requests);
 
   public fullList$ = this.select((state) => state?.entities[1]);
+
+  public companyInfoList$ = this.select((state) => {
+    return {
+      companyInfo: state?.entities[1].companyInfo,
+      inviteDate: state?.entities[1].inviteDate,
+    };
+  });
 
   constructor(protected applicantStore: ApplicantStore) {
     super(applicantStore);

@@ -3,6 +3,11 @@ import { SelectedMode } from '../state/enum/selected-mode.enum';
 
 import { Subject, takeUntil } from 'rxjs';
 
+import {
+  isAnyPropertyInObjectFalse,
+  isAnyValueInArrayTrue,
+} from '../state/utils/utils';
+
 import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
 import { ApplicantListsService } from 'src/app/core/components/applicant/state/services/applicant-lists.service';
 
@@ -78,7 +83,7 @@ export class ApplicantComponent implements OnInit, OnDestroy {
     },
   ];
 
-  public isStepCompletedArray = [
+  public isStepCompletedArray: { id: number; isCompleted: boolean }[] = [
     { id: 0, isCompleted: false },
     { id: 1, isCompleted: false },
     { id: 2, isCompleted: false },
@@ -92,15 +97,19 @@ export class ApplicantComponent implements OnInit, OnDestroy {
     { id: 10, isCompleted: false },
   ];
 
-  reviewStoreArr = [
-    { id: 0, isReviewed: true, hasIncorrectAnswer: false },
-    { id: 1, isReviewed: true, hasIncorrectAnswer: false },
-    { id: 2, isReviewed: true, hasIncorrectAnswer: true },
-    { id: 3, isReviewed: true, hasIncorrectAnswer: false },
-    { id: 4, isReviewed: true, hasIncorrectAnswer: false },
-    { id: 5, isReviewed: true, hasIncorrectAnswer: false },
-    { id: 6, isReviewed: true, hasIncorrectAnswer: false },
-    { id: 7, isReviewed: true, hasIncorrectAnswer: false },
+  public isStepReviewedArray: {
+    id: number;
+    isReviewed: boolean;
+    hasIncorrectAnswer: boolean;
+  }[] = [
+    { id: 0, isReviewed: false, hasIncorrectAnswer: false },
+    { id: 1, isReviewed: false, hasIncorrectAnswer: false },
+    { id: 2, isReviewed: false, hasIncorrectAnswer: false },
+    { id: 3, isReviewed: false, hasIncorrectAnswer: false },
+    { id: 4, isReviewed: false, hasIncorrectAnswer: false },
+    { id: 5, isReviewed: false, hasIncorrectAnswer: false },
+    { id: 6, isReviewed: false, hasIncorrectAnswer: false },
+    { id: 7, isReviewed: false, hasIncorrectAnswer: false },
     { id: 8, isReviewed: true, hasIncorrectAnswer: false },
     { id: 9, isReviewed: true, hasIncorrectAnswer: false },
     { id: 10, isReviewed: true, hasIncorrectAnswer: false },
@@ -154,86 +163,221 @@ export class ApplicantComponent implements OnInit, OnDestroy {
     this.applicantQuery.fullList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        this.isStepCompletedArray = this.isStepCompletedArray.map(
-          (item, index) => {
-            if (index === 0) {
-              return {
-                ...item,
-                isCompleted: res.personalInfo ? true : false,
-              };
-            }
+        res = JSON.parse(JSON.stringify(res));
 
-            if (index === 1) {
-              return {
-                ...item,
-                isCompleted: res.workExperience ? true : false,
-              };
-            }
+        if (this.selectedMode === SelectedMode.REVIEW) {
+          this.isStepReviewedArray = this.isStepReviewedArray.map(
+            (item, index) => {
+              if (index === 0) {
+                const personalInfoReview =
+                  res?.personalInfo?.personalInfoReview;
 
-            if (index === 2) {
-              return {
-                ...item,
-                isCompleted: res.cdlInformation ? true : false,
-              };
-            }
+                const previousAddresses = res?.personalInfo?.previousAddresses;
 
-            if (index === 3) {
-              return {
-                ...item,
-                isCompleted: res.accidentRecords ? true : false,
-              };
-            }
+                const previousAddressesReviews = previousAddresses.map(
+                  (item) => item?.previousAddressReview
+                );
 
-            if (index === 4) {
-              return {
-                ...item,
-                isCompleted: res.trafficViolation ? true : false,
-              };
-            }
+                let hasIncorrectValue: boolean;
+                let cardHasIncorrectValue: boolean;
 
-            if (index === 5) {
-              return {
-                ...item,
-                isCompleted: res.education ? true : false,
-              };
-            }
+                if (personalInfoReview) {
+                  hasIncorrectValue =
+                    isAnyPropertyInObjectFalse(personalInfoReview);
+                }
 
-            if (index === 6) {
-              return {
-                ...item,
-                isCompleted: res.sevenDaysHos ? true : false,
-              };
-            }
+                if (previousAddresses) {
+                  cardHasIncorrectValue = isAnyPropertyInObjectFalse(
+                    previousAddressesReviews
+                  );
+                }
 
-            if (index === 7) {
-              return {
-                ...item,
-                isCompleted: res.drugAndAlcohol ? true : false,
-              };
-            }
+                return {
+                  ...item,
+                  isReviewed: personalInfoReview ? true : false,
+                  hasIncorrectAnswer:
+                    hasIncorrectValue || cardHasIncorrectValue,
+                };
+              }
 
-            if (index === 8) {
-              return {
-                ...item,
-                isCompleted: res.driverRight ? true : false,
-              };
-            }
+              if (index === 1) {
+                const workExperienceItems =
+                  res?.workExperience?.workExperienceItems;
 
-            if (index === 9) {
-              return {
-                ...item,
-                isCompleted: res.disclosureRelease ? true : false,
-              };
-            }
+                const workExperienceItemsReview = workExperienceItems.map(
+                  (item) => item?.workExperienceItemReview
+                );
 
-            if (index === 10) {
-              return {
-                ...item,
-                isCompleted: res.authorization ? true : false,
-              };
+                let filteredWorkExperienceItemsReview = [];
+
+                for (let i = 0; i < workExperienceItemsReview.length; i++) {
+                  const filteredItem = workExperienceItemsReview[i];
+
+                  delete filteredItem.isPrimary;
+
+                  filteredWorkExperienceItemsReview = [
+                    ...filteredWorkExperienceItemsReview,
+                    filteredItem,
+                  ];
+                }
+
+                let hasIncorrectValue: boolean;
+
+                if (workExperienceItemsReview[0]) {
+                  hasIncorrectValue = isAnyPropertyInObjectFalse(
+                    workExperienceItemsReview[0]
+                  );
+
+                  let incorrectValuesArray = [];
+
+                  for (let i = 0; i < workExperienceItemsReview.length; i++) {
+                    const objectHasIncorrectValue = isAnyPropertyInObjectFalse(
+                      workExperienceItemsReview[i]
+                    );
+
+                    incorrectValuesArray = [
+                      ...incorrectValuesArray,
+                      objectHasIncorrectValue,
+                    ];
+                  }
+
+                  if (isAnyValueInArrayTrue(incorrectValuesArray)) {
+                    hasIncorrectValue = true;
+                  } else {
+                    hasIncorrectValue = false;
+                  }
+                }
+
+                return {
+                  ...item,
+                  isReviewed: workExperienceItems ? true : false,
+                  hasIncorrectAnswer: hasIncorrectValue,
+                };
+              }
+
+              if (index === 6) {
+                const sevenDaysHosReview =
+                  res?.sevenDaysHos?.sevenDaysHosReview;
+
+                let hasIncorrectValue: boolean;
+
+                if (sevenDaysHosReview) {
+                  hasIncorrectValue =
+                    isAnyPropertyInObjectFalse(sevenDaysHosReview);
+                }
+
+                return {
+                  ...item,
+                  isReviewed: sevenDaysHosReview ? true : false,
+                  hasIncorrectAnswer: hasIncorrectValue,
+                };
+              }
+
+              if (index === 7) {
+                const drugAndAlcoholReview =
+                  res?.drugAndAlcohol?.drugAndAlcoholReview;
+
+                let hasIncorrectValue: boolean;
+
+                if (drugAndAlcoholReview) {
+                  hasIncorrectValue =
+                    isAnyPropertyInObjectFalse(drugAndAlcoholReview);
+                }
+
+                return {
+                  ...item,
+                  isReviewed: drugAndAlcoholReview ? true : false,
+                  hasIncorrectAnswer: hasIncorrectValue,
+                };
+              }
+
+              return item;
             }
-          }
-        );
+          );
+        }
+
+        if (this.selectedMode === SelectedMode.APPLICANT) {
+          this.isStepCompletedArray = this.isStepCompletedArray.map(
+            (item, index) => {
+              if (index === 0) {
+                return {
+                  ...item,
+                  isCompleted: res.personalInfo ? true : false,
+                };
+              }
+
+              if (index === 1) {
+                return {
+                  ...item,
+                  isCompleted: res.workExperience ? true : false,
+                };
+              }
+
+              if (index === 2) {
+                return {
+                  ...item,
+                  isCompleted: res.cdlInformation ? true : false,
+                };
+              }
+
+              if (index === 3) {
+                return {
+                  ...item,
+                  isCompleted: res.accidentRecords ? true : false,
+                };
+              }
+
+              if (index === 4) {
+                return {
+                  ...item,
+                  isCompleted: res.trafficViolation ? true : false,
+                };
+              }
+
+              if (index === 5) {
+                return {
+                  ...item,
+                  isCompleted: res.education ? true : false,
+                };
+              }
+
+              if (index === 6) {
+                return {
+                  ...item,
+                  isCompleted: res.sevenDaysHos ? true : false,
+                };
+              }
+
+              if (index === 7) {
+                return {
+                  ...item,
+                  isCompleted: res.drugAndAlcohol ? true : false,
+                };
+              }
+
+              if (index === 8) {
+                return {
+                  ...item,
+                  isCompleted: res.driverRight ? true : false,
+                };
+              }
+
+              if (index === 9) {
+                return {
+                  ...item,
+                  isCompleted: res.disclosureRelease ? true : false,
+                };
+              }
+
+              if (index === 10) {
+                return {
+                  ...item,
+                  isCompleted: res.authorization ? true : false,
+                };
+              }
+            }
+          );
+        }
       });
   }
 

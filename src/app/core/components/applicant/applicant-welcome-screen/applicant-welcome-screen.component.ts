@@ -47,8 +47,6 @@ export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {
-          this.applicantActionsService.getApplicantInfo(res);
-
           this.dateOfApplication = convertDateFromBackend(
             res.inviteDate
           ).replace(/-/g, '/');
