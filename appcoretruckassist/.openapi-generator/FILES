@@ -28,6 +28,7 @@ api/map.service.ts
 api/medical.service.ts
 api/miles.service.ts
 api/mvr.service.ts
+api/note.service.ts
 api/owner.service.ts
 api/ownerHistory.service.ts
 api/parking.service.ts
@@ -272,6 +273,7 @@ model/emergencyContactResponse.ts
 model/emergencyContactReviewCommand.ts
 model/emergencyContactReviewResponse.ts
 model/employmentHistoryResponse.ts
+model/entityTypeNote.ts
 model/entityTypeReview.ts
 model/enumValue.ts
 model/eventModalResponse.ts
@@ -420,6 +422,7 @@ model/parkingListResponse.ts
 model/parkingResponse.ts
 model/parkingResponsePagination.ts
 model/passwordResponse.ts
+model/patchNoteCommand.ts
 model/payPeriod.ts
 model/perMileEntity.ts
 model/personalInfoFeedbackResponse.ts
