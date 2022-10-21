@@ -519,8 +519,8 @@ export class Step6Component implements OnInit, OnDestroy {
       otherTrainingExplain: otherTrainingDescription,
       knowledgeOfSafetyRegulations,
       driverForCompany: driverBefore,
-      driverForCompanyBeforeExplain: convertDateFromBackendShortYear(from),
-      driverForCompanyToExplain: convertDateFromBackendShortYear(to),
+      driverForCompanyBeforeExplain: from && convertDateFromBackendShortYear(from),
+      driverForCompanyToExplain: to && convertDateFromBackendShortYear(to),
       unableForJob,
       unableForJobExplain: unableForJobDescription,
     });
