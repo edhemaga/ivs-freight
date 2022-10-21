@@ -28,6 +28,15 @@
       inputConfig.isDropdown &&
       (touchedInput || getSuperControl.touched) &&
       !focusInput,
+      'invalid-focus-out-filled':
+      (getSuperControl.value &&
+        getSuperControl.invalid &&
+        !focusInput &&
+        !inputConfig.isDisabled &&
+        !inputConfig.blackInput) ||
+      ((touchedInput || getSuperControl.touched) &&
+        getSuperControl.invalid &&
+        !focusInput),
     'dropdown-label-active': selectedDropdownLabelColor && !editInputMode,
     'hazardous-mode': inputConfig.placeholderIcon
       ?.toLowerCase()

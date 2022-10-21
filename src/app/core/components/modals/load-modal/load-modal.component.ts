@@ -28,6 +28,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { descriptionValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { ILoadStatus } from './load-modal-statuses/load-modal-statuses.component';
+import moment from 'moment';
 
 @Component({
   selector: 'app-load-modal',
@@ -922,8 +923,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
       this.loadForm.get('dateFrom').patchValue(loadStop.get('dateFrom').value);
       this.loadForm.get('dateTo').patchValue(loadStop.get('dateTo').value);
-      this.loadForm.get('timeFrom').patchValue(loadStop.get('timeFrom').value);
-      this.loadForm.get('timeTo').patchValue(loadStop.get('timeTo').value);
+
+      this.loadForm.get('timeFrom').patchValue(moment(loadStop.get('timeFrom').value, 'HH:mm:SS A').toDate());
+      this.loadForm.get('timeTo').patchValue(moment(loadStop.get('timeTo').value, 'HH:mm:SS A').toDate());
     } else {
       this.selectedShipper = null;
       this.loadShipperInputConfig = {
