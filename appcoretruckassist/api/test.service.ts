@@ -27,11 +27,11 @@ import { CreateWithUploadsResponse } from '../model/models';
 import { GetTestModalResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { TestResponse } from '../model/models';
-import { TestResult } from 'appcoretruckassist/model/testResult';
-import { TestType } from 'appcoretruckassist/model/testType';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
+import { TestType } from 'appcoretruckassist/model/testType';
+import { TestResult } from 'appcoretruckassist/model/testResult';
 
 @Injectable({
   providedIn: 'root',
