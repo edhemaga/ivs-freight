@@ -111,6 +111,7 @@ import { TaCustomCardV2Component } from './ta-custom-card-v2/ta-custom-card-v2.c
 import { InputAddressDropdownComponent } from './input-address-dropdown/input-address-dropdown.component';
 import { ApplicantReviewFeedbackComponent } from './applicant-review-feedback/applicant-review-feedback.component';
 import { LoadModalHazardousComponent } from '../modals/load-modal/load-modal-hazardous/load-modal-hazardous.component';
+import { LoadModalStatusesComponent } from '../modals/load-modal/load-modal-statuses/load-modal-statuses.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -191,6 +192,7 @@ export function playerFactory() {
     LoadModalHazardousComponent,
     TtTitleModalComponent,
     ConfirmationModalComponent,
+    LoadModalStatusesComponent,
 
     //----------------------------
     MapListComponent,
@@ -351,6 +353,7 @@ export function playerFactory() {
     LoadModalHazardousComponent,
     TtTitleModalComponent,
     ConfirmationModalComponent,
+    LoadModalStatusesComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
