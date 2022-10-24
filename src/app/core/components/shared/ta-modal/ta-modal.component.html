@@ -152,14 +152,17 @@
           Delete
         </button>
 
-        <!-- Delete -->
+        <!-- Load Template -->
         <button
           *ngIf="loadModalTemplate"
           (click)="onAction('load-template')"
           class="modal-load-template-btn"
           type="button"
         >
-          Save as Template
+          {{ loadTemplateSpinnerVisibility ? "Saving" : "Save as Template" }}
+          <div *ngIf="loadTemplateSpinnerVisibility" class="modal-spinner">
+            <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
+          </div>
         </button>
 
         <!-- Resend Email -->

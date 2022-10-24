@@ -35,6 +35,7 @@ import {
 } from '../../../utils/methods.calculations';
 import moment from 'moment';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
+import { convertNumberInThousandSep } from '../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-load-modal',
@@ -277,7 +278,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       suspension: [null],
       trailerLengthId: [null],
       year: [null],
-      liftgate: [false],
+      liftgate: [null],
       // ----------------
       shipper: [null, Validators.required],
       dateFrom: [null, Validators.required],
@@ -357,7 +358,17 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'load-template': {
-        console.log('save tempalte');
+        if (this.loadForm.invalid) {
+          this.inputService.markInvalid(this.loadForm);
+          return;
+        }
+
+        this.saveLoadTemplate();
+
+        this.modalService.setModalSpinner({
+          action: 'load-template',
+          status: true,
+        });
         break;
       }
       default: {
@@ -763,6 +774,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectAdditionalOption(option: any) {
+    if (!this.loadForm.get('baseRate').value) {
+      return;
+    }
     option.active = !option.active;
   }
 
@@ -771,68 +785,95 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       .get('baseRate')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
-        this.loadModalBill.baseRate = parseFloat(value);
+        if (!value) {
+          this.isAvailableAdjustedRate = false;
+          this.isAvailableAdvanceRate = false;
+
+          this.loadForm.get('adjustedRate').reset();
+          this.loadForm.get('advancePay').reset();
+          this.loadForm.get('layoverRate').reset();
+          this.loadForm.get('lumperRate').reset();
+          this.loadForm.get('fuelSurchargeRate').reset();
+          this.loadForm.get('escortRate').reset();
+          this.loadForm.get('detentionRate').reset();
+          this.additionalBillingTypes.filter((item) => (item.active = false));
+        } else {
+          this.loadModalBill.baseRate = convertThousanSepInNumber(value);
+        }
       });
 
     this.loadForm
       .get('adjustedRate')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
-        if (value > this.loadForm.get('baseRate').value) {
-          this.loadModalBill.adjusted = 0;
-          this.loadForm.get('adjustedRate').patchValue(0);
+        if (!this.loadForm.get('baseRate').value || !value) {
           return;
         }
-        this.loadModalBill.adjusted = parseFloat(value);
-        this.loadForm.get('adjustedRate').setErrors(null);
+
+        if (
+          convertThousanSepInNumber(value) >
+          convertThousanSepInNumber(this.loadForm.get('baseRate').value)
+        ) {
+          this.loadModalBill.adjusted = 0;
+          this.loadForm.get('adjustedRate').reset();
+        } else {
+          this.loadModalBill.adjusted = convertThousanSepInNumber(value);
+        }
       });
 
     this.loadForm
       .get('advancePay')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
-        if (value > this.loadForm.get('baseRate').value) {
-          this.loadModalBill.advance = 0;
-          this.loadForm.get('advancePay').patchValue(0);
+        if (!this.loadForm.get('baseRate').value || !value) {
           return;
         }
-        this.loadModalBill.advance = parseFloat(value);
-        this.loadForm.get('advancePay').setErrors(null);
+
+        if (
+          convertThousanSepInNumber(value) >
+          convertThousanSepInNumber(this.loadForm.get('baseRate').value)
+        ) {
+          this.loadModalBill.advance = 0;
+          this.loadForm.get('advancePay').reset();
+          return;
+        } else {
+          this.loadModalBill.advance = convertThousanSepInNumber(value);
+        }
       });
 
     this.loadForm
       .get('layoverRate')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
-        this.loadModalBill.layover = parseFloat(value);
+        this.loadModalBill.layover = convertThousanSepInNumber(value);
       });
 
     this.loadForm
       .get('lumperRate')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
-        this.loadModalBill.lumper = parseFloat(value);
+        this.loadModalBill.lumper = convertThousanSepInNumber(value);
       });
 
     this.loadForm
       .get('fuelSurchargeRate')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
-        this.loadModalBill.fuelSurcharge = parseFloat(value);
+        this.loadModalBill.fuelSurcharge = convertThousanSepInNumber(value);
       });
 
     this.loadForm
       .get('escortRate')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
-        this.loadModalBill.escort = parseFloat(value);
+        this.loadModalBill.escort = convertThousanSepInNumber(value);
       });
 
     this.loadForm
       .get('detentionRate')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
-        this.loadModalBill.detention = parseFloat(value);
+        this.loadModalBill.detention = convertThousanSepInNumber(value);
       });
   }
 
@@ -931,7 +972,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         .patchValue(
           moment(loadStop.get('timeFrom').value, 'HH:mm:SS A').toDate()
         );
-
       this.loadForm
         .get('timeTo')
         .patchValue(
@@ -1268,7 +1308,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               logoName: item?.avatar,
             };
           });
-
           const initialDispatcher = this.labelsDispatcher.find(
             (item) =>
               item?.name ===
@@ -1495,21 +1534,21 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       stops: this.premmapedStops() as any,
     };
 
-    this.loadService
-      .createLoad(newData)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.notificationService.success(
-            'Successfully created load',
-            'Success'
-          );
-          this.modalService.setModalSpinner({ action: null, status: false });
-        },
-        error: (error: any) => {
-          this.notificationService.success(`Error: ${error}`, 'Error');
-        },
-      });
+    // this.loadService
+    //   .createLoad(newData)
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe({
+    //     next: () => {
+    //       this.notificationService.success(
+    //         'Successfully created load',
+    //         'Success'
+    //       );
+    //   this.modalService.setModalSpinner({ action: null, status: false });
+    //     },
+    //     error: (error: any) => {
+    //       this.notificationService.success(`Error: ${error}`, 'Error');
+    //     },
+    //   });
   }
   private updateLoad(id: number) {}
 
@@ -1538,7 +1577,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       generalCommodity: this.selectedGeneralCommodity
         ? this.selectedGeneralCommodity.id
         : null,
-      weight: form.weight ? parseFloat(form.weight) : null,
+      weight: convertThousanSepInNumber(form.weight),
       loadRequirements: {
         id: null,
         truckTypeId: this.selectedTruckReq ? this.selectedTruckReq.id : null,
@@ -1554,11 +1593,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         liftgate: form.liftgate,
       },
       note: form.note,
-      baseRate: form.baseRate,
-      adjustedRate: form.adjustedRate,
-      advancePay: form.advancePay,
+      baseRate: convertThousanSepInNumber(form.baseRate),
+      adjustedRate: convertThousanSepInNumber(form.adjustedRate),
+      advancePay: convertThousanSepInNumber(form.advancePay),
       additionalBillingRates: this.premmapedAdditionalBillingRate(),
-      stops: this.premmapedStops(),
+      stops: this.premmapedStops() as any,
     };
 
     this.loadService
@@ -1566,10 +1605,17 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.notificationService.success('Successfully save template');
+          this.notificationService.success(
+            'Successfully create load template.',
+            'Success'
+          );
+          this.modalService.setModalSpinner({
+            action: 'load-template',
+            status: false,
+          });
         },
         error: (error: any) => {
-          console.log(error);
+          this.notificationService.error(error, 'Error');
         },
       });
   }
@@ -1605,8 +1651,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         dateFrom: convertDateToBackend(item.get('dateFrom').value),
         dateTo: convertDateToBackend(item.get('dateTo').value),
         timeType: item.get('timeType').value,
-        timeFrom: item.get('timeFrom').value,
-        timeTo: item.get('timeTo').value,
+        timeFrom: [null],
+        timeTo: [null],
         arrive: null,
         depart: null,
         // From legs

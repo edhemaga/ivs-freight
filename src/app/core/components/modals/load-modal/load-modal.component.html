@@ -961,8 +961,8 @@
           <app-ta-input
             formControlName="baseRate"
             [inputConfig]="{
-              name: 'Dollar',
-              type: 'number',
+              name: 'base-rate',
+              type: 'text',
               label: 'Base Rate',
               isRequired: true,
               placeholderIcon: 'dollar',
@@ -981,7 +981,9 @@
             mainTooltip="Adjusted"
             tooltipBackground="#FFA726"
             position="top"
-            (click)="isAvailableAdjustedRate = true"
+            (click)="
+              isAvailableAdjustedRate = true && loadForm.get('baseRate').value
+            "
           >
             <svg-icon
               class="billing-adjusted-plus"
@@ -993,8 +995,8 @@
             *ngIf="isAvailableAdjustedRate"
             formControlName="adjustedRate"
             [inputConfig]="{
-              name: 'Dollar',
-              type: 'number',
+              name: 'adjusted-rate',
+              type: 'text',
               label: 'Adjusted',
               placeholderIcon: 'dollar',
               customClass: 'dollar-placeholderIcon load-adjusted-rate',
@@ -1012,7 +1014,9 @@
             mainTooltip="Advance"
             tooltipBackground="#26A690"
             position="top"
-            (click)="isAvailableAdvanceRate = true"
+            (click)="
+              isAvailableAdvanceRate = true && loadForm.get('baseRate').value
+            "
           >
             <svg-icon
               class="billing-advance-plus"
@@ -1024,8 +1028,8 @@
             *ngIf="isAvailableAdvanceRate"
             formControlName="advancePay"
             [inputConfig]="{
-              name: 'Dollar',
-              type: 'number',
+              name: 'advance-pay-rate',
+              type: 'text',
               label: 'Advance',
               placeholderIcon: 'dollar',
               customClass: 'dollar-placeholderIcon load-advance-rate',
@@ -1040,10 +1044,9 @@
             *ngIf="additionalBillingTypes[0]?.active"
             formControlName="layoverRate"
             [inputConfig]="{
-              name: 'Dollar',
-              type: 'number',
+              name: 'layover-rate',
+              type: 'text',
               label: 'Layover',
-              isRequired: true,
               placeholderIcon: 'dollar',
               customClass: 'dollar-placeholderIcon',
               thousandSeparator: true,
@@ -1057,10 +1060,9 @@
             *ngIf="additionalBillingTypes[1]?.active"
             formControlName="lumperRate"
             [inputConfig]="{
-              name: 'Dollar',
-              type: 'number',
+              name: 'lumper-rate',
+              type: 'text',
               label: 'Lumper',
-              isRequired: true,
               placeholderIcon: 'dollar',
               customClass: 'dollar-placeholderIcon',
               thousandSeparator: true,
@@ -1074,10 +1076,9 @@
             *ngIf="additionalBillingTypes[2]?.active"
             formControlName="fuelSurchargeRate"
             [inputConfig]="{
-              name: 'Dollar',
-              type: 'number',
+              name: 'fuel-surcharge-rate',
+              type: 'text',
               label: 'Fuel Surch.',
-              isRequired: true,
               placeholderIcon: 'dollar',
               customClass: 'dollar-placeholderIcon',
               thousandSeparator: true,
@@ -1091,10 +1092,9 @@
             *ngIf="additionalBillingTypes[3]?.active"
             formControlName="escortRate"
             [inputConfig]="{
-              name: 'Dollar',
-              type: 'number',
+              name: 'escort-rate',
+              type: 'text',
               label: 'Escort',
-              isRequired: true,
               placeholderIcon: 'dollar',
               customClass: 'dollar-placeholderIcon',
               thousandSeparator: true,
@@ -1108,10 +1108,9 @@
             *ngIf="additionalBillingTypes[4]?.active"
             formControlName="detentionRate"
             [inputConfig]="{
-              name: 'Dollar',
-              type: 'number',
+              name: 'detention-rate',
+              type: 'text',
               label: 'Detention',
-              isRequired: true,
               placeholderIcon: 'dollar',
               customClass: 'dollar-placeholderIcon',
               thousandSeparator: true,

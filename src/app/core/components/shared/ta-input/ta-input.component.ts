@@ -486,7 +486,7 @@ export class TaInputComponent
           this.t2.open();
         } else {
           this.holder1.nativeElement.blur();
-          this.focusInput = false; 
+          this.focusInput = false;
           let selection = window.getSelection();
           selection.removeAllRanges();
         }
@@ -895,6 +895,14 @@ export class TaInputComponent
         'fuel tank size',
         'device no',
         'weight',
+        'base-rate',
+        'adjusted-rate',
+        'advance-pay-rate',
+        'layover-rate',
+        'lumper-rate',
+        'fuel-surcharge-rate',
+        'escort-rate',
+        'detention-rate',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (

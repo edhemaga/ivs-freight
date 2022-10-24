@@ -108,6 +108,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
   public saveAddNewSpinnerVisibility: boolean = false;
   public deleteSpinnerVisibility: boolean = false;
   public resendEmailSpinnerVisibility: boolean = false;
+  public loadTemplateSpinnerVisibility: boolean = false;
 
   // Drag & Drop properties
   public isDropZoneVisible: boolean = false;
@@ -173,13 +174,17 @@ export class TaModalComponent implements OnInit, OnDestroy {
               this.resendEmailSpinnerVisibility = data.status;
               break;
             }
+            case 'load-template': {
+              this.loadTemplateSpinnerVisibility = data.status;
+              break;
+            }
             default: {
               this.saveSpinnerVisibility = data.status;
               break;
             }
           }
 
-          if (!['save and add new'].includes(data.action)) {
+          if (!['save and add new', 'load-template'].includes(data.action)) {
             if (data.clearTimeout) {
               const timeout = setTimeout(() => {
                 this.onAction('close');
@@ -313,7 +318,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'load-template': {
-        this.confirmationAction.emit(this.confirmationData);
+        console.log('load template');
+        this.action.emit({ action: action, bool: false });
         break;
       }
       default: {
