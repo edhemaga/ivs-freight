@@ -51,6 +51,7 @@ export class TruckassistTableBodyComponent
   @Input() tableData: any[];
   @Input() selectedTab: string;
   @Input() tableContainerWidth: number;
+  @Input() entityType: string;
 
   pinedColumns: any = [];
   pinedWidth: number = 0;

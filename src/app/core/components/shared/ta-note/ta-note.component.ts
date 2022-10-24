@@ -72,6 +72,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   @Output() saveNoteValue = new EventEmitter();
   @Input() openedAll: any;
   @Input() entityId: number = 0;
+  @Input() entityType: string;
   leaveThisOpened: boolean;
   selectionTaken: any;
   range: any;
@@ -210,7 +211,9 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
 
     this.savedValue = this.value;
-    this.updateNote();
+    if (this.entityId && this.entityType) {
+      this.updateNote();
+    }
     if (this.dispatchIndex == -1) this.saveNoteValue.emit(this.value);
     else
       this.saveNoteValue.emit({
@@ -277,7 +280,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
 
   updateNote() {
     const updateValue = {
-      entityTypeNote: EntityTypeNote.Driver,
+      entityTypeNote: EntityTypeNote[this.entityType],
       entityId: this.entityId,
       note: this.value,
     };
