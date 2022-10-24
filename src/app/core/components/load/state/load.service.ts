@@ -5,6 +5,7 @@ import {
   LoadListResponse,
   LoadService,
   LoadTemplateListResponse,
+  LoadTemplateResponse,
 } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
 import { LoadMinimalListResponse } from '../../../../../../appcoretruckassist/model/loadMinimalListResponse';
@@ -13,6 +14,7 @@ import { LoadDetailsListStore } from './load-details-state/load-details-list-sta
 import { LoadModalResponse } from '../../../../../../appcoretruckassist/model/loadModalResponse';
 import { CreateLoadCommand } from '../../../../../../appcoretruckassist/model/createLoadCommand';
 import { UpdateLoadCommand } from '../../../../../../appcoretruckassist/model/updateLoadCommand';
+import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
 
 @Injectable({
   providedIn: 'root',
@@ -117,5 +119,16 @@ export class LoadTService {
 
   public getLoadDropdowns(id?: number): Observable<LoadModalResponse> {
     return this.loadServices.apiLoadModalGet(id);
+  }
+
+  // Load Templates
+  public createLoadTemplate(
+    data: CreateLoadTemplateCommand
+  ): Observable<CreateResponse> {
+    return this.loadServices.apiLoadTemplatePost(data);
+  }
+
+  public getLoadTemplateById(id: number): Observable<LoadTemplateResponse> {
+    return this.loadServices.apiLoadTemplateIdGet(id);
   }
 }

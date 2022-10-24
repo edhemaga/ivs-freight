@@ -132,21 +132,34 @@
     <div
       *ngIf="!disableFooter && !confirmationData"
       class="modal-footer"
-      [ngClass]="{ 'mutliple-buttons': editData?.type?.includes('edit') }"
+      [ngClass]="{
+        'mutliple-buttons': editData?.type?.includes('edit'),
+        'load-template': loadModalTemplate
+      }"
     >
       <!-- Footer Left Side -->
       <div
         class="ta-modal-footer-left-side"
-        *ngIf="editData?.type?.includes('edit')"
+        *ngIf="editData?.type?.includes('edit') || loadModalTemplate"
       >
         <!-- Delete -->
         <button
-          *ngIf="!disableDelete && !resendEmail"
+          *ngIf="!disableDelete && !resendEmail && !loadModalTemplate"
           (click)="onAction('delete')"
           class="modal-delete-btn"
           type="button"
         >
           Delete
+        </button>
+
+        <!-- Delete -->
+        <button
+          *ngIf="loadModalTemplate"
+          (click)="onAction('load-template')"
+          class="modal-load-template-btn"
+          type="button"
+        >
+          Save as Template
         </button>
 
         <!-- Resend Email -->

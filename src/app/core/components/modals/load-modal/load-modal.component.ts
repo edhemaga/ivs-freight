@@ -34,6 +34,7 @@ import {
   convertThousanSepInNumber,
 } from '../../../utils/methods.calculations';
 import moment from 'moment';
+import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
 
 @Component({
   selector: 'app-load-modal',
@@ -276,7 +277,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       suspension: [null],
       trailerLengthId: [null],
       year: [null],
-      liftgate: [null],
+      liftgate: [false],
       // ----------------
       shipper: [null, Validators.required],
       dateFrom: [null, Validators.required],
@@ -353,6 +354,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           this.deleteLoadById(this.editData.id);
           this.modalService.setModalSpinner({ action: 'delete', status: true });
         }
+        break;
+      }
+      case 'load-template': {
+        console.log('save tempalte');
         break;
       }
       default: {
@@ -926,6 +931,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         .patchValue(
           moment(loadStop.get('timeFrom').value, 'HH:mm:SS A').toDate()
         );
+
       this.loadForm
         .get('timeTo')
         .patchValue(
@@ -1222,7 +1228,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: LoadModalResponse) => {
-          console.log(res);
           this.loadNumber = res.loadNumber;
 
           // Brokers
@@ -1263,6 +1268,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               logoName: item?.avatar,
             };
           });
+
           const initialDispatcher = this.labelsDispatcher.find(
             (item) =>
               item?.name ===
@@ -1433,13 +1439,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               };
             }
           );
-          console.log(this.additionalBillingTypes);
         },
         error: (error: any) => {
           this.notificationService.error(error, 'Error');
         },
       });
   }
+
   private getLoadById(id: number) {}
 
   private addLoad() {
@@ -1489,29 +1495,84 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       stops: this.premmapedStops() as any,
     };
 
-    console.log('load created: ', newData);
-
-    // this.loadService
-    //   .createLoad(newData)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe({
-    //     next: () => {
-    //       this.notificationService.success(
-    //         'Successfully created load',
-    //         'Success'
-    //       );
-    //   this.modalService.setModalSpinner({ action: null, status: false });
-    //     },
-    //     error: (error: any) => {
-    //       this.notificationService.success(`Error: ${error}`, 'Error');
-    //     },
-    //   });
+    this.loadService
+      .createLoad(newData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfully created load',
+            'Success'
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
+        error: (error: any) => {
+          this.notificationService.success(`Error: ${error}`, 'Error');
+        },
+      });
   }
   private updateLoad(id: number) {}
 
   private deleteLoadById(id: number) {}
 
-  private saveLoadTemplate() {}
+  private saveLoadTemplate() {
+    const { ...form } = this.loadForm.value;
+    const newData: CreateLoadTemplateCommand = {
+      name: '',
+      type: this.headerTabs.find((item) => item.id === this.selectedTab)
+        .name as any,
+      dispatcherId: this.selectedDispatcher ? this.selectedDispatcher.id : null,
+      companyId:
+        this.labelsCompanies.length === 1
+          ? this.labelsCompanies[0].id
+          : this.selectedCompany
+          ? this.selectedCompany.id
+          : null,
+      dateCreated: moment(new Date()).toISOString(true),
+      dispatchId: this.selectedDispatches ? this.selectedDispatches.id : null,
+      brokerId: this.selectedBroker ? this.selectedBroker.id : null,
+      brokerContactId: this.selectedBrokerContact
+        ? this.selectedBrokerContact.id
+        : null,
+      referenceNumber: form.referenceNumber,
+      generalCommodity: this.selectedGeneralCommodity
+        ? this.selectedGeneralCommodity.id
+        : null,
+      weight: form.weight ? parseFloat(form.weight) : null,
+      loadRequirements: {
+        id: null,
+        truckTypeId: this.selectedTruckReq ? this.selectedTruckReq.id : null,
+        trailerTypeId: this.selectedTrailerReq
+          ? this.selectedTrailerReq.id
+          : null,
+        doorType: this.selectedDoorType ? this.selectedDoorType.id : null,
+        suspension: this.selectedSuspension ? this.selectedSuspension.id : null,
+        trailerLengthId: this.selectedTrailerLength
+          ? this.selectedTrailerLength.id
+          : null,
+        year: this.selectedYear ? this.selectedYear.id : null,
+        liftgate: form.liftgate,
+      },
+      note: form.note,
+      baseRate: form.baseRate,
+      adjustedRate: form.adjustedRate,
+      advancePay: form.advancePay,
+      additionalBillingRates: this.premmapedAdditionalBillingRate(),
+      stops: this.premmapedStops(),
+    };
+
+    this.loadService
+      .createLoadTemplate(newData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success('Successfully save template');
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+      });
+  }
 
   private premmapedAdditionalBillingRate() {
     return this.additionalBillingTypes.map((item) => {

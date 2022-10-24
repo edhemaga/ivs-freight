@@ -60,6 +60,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     escort: number;
     detention: number;
   } = null;
+  @Input() loadModalTemplate: boolean;
   @Input() hazardousLogo?: boolean;
   @Input() editData: any;
   @Input() confirmationData: any;
@@ -308,6 +309,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'archive': {
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'load-template': {
         this.confirmationAction.emit(this.confirmationData);
         break;
       }
