@@ -290,19 +290,31 @@ ngb-modal-window[aria-hidden="true"] {
 
         .modal-close {
           position: relative;
+          width: 18px;
+          height: 18px;
+          line-height: 12px;
+          right: 1px;
+          cursor: pointer;
           transition: all 0.3s ease-in;
+
           svg {
-            width: 24px;
-            height: 24px;
             path {
               fill: #919191;
             }
+
+            rect {
+              fill: transparent;
+              border-radius: 2px;
+            }
           }
+
           &:hover {
-            cursor: pointer;
             svg {
               path {
-                fill: #919191;
+                fill: #424242;
+              }
+              rect {
+                fill: rgb(66, 66, 66, 0.2);
               }
             }
           }
