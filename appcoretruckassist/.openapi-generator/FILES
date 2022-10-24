@@ -28,6 +28,7 @@ api/map.service.ts
 api/medical.service.ts
 api/miles.service.ts
 api/mvr.service.ts
+api/note.service.ts
 api/owner.service.ts
 api/ownerHistory.service.ts
 api/parking.service.ts
@@ -104,6 +105,8 @@ model/brokerContactCommand.ts
 model/brokerContactGroupResponse.ts
 model/brokerContactResponse.ts
 model/brokerContactShortResponse.ts
+model/brokerInvoiceAgeingResponse.ts
+model/brokerLoadsResponse.ts
 model/brokerMinimalListResponse.ts
 model/brokerMinimalResponse.ts
 model/brokerMinimalResponsePagination.ts
@@ -270,6 +273,7 @@ model/emergencyContactResponse.ts
 model/emergencyContactReviewCommand.ts
 model/emergencyContactReviewResponse.ts
 model/employmentHistoryResponse.ts
+model/entityTypeNote.ts
 model/entityTypeReview.ts
 model/enumValue.ts
 model/eventModalResponse.ts
@@ -336,6 +340,8 @@ model/itemFuel.ts
 model/legResponse.ts
 model/loadBillingAdditionalCommand.ts
 model/loadBillingAdditionalResponse.ts
+model/loadBrokerDetailsResponse.ts
+model/loadBrokerDetailsResponsePagination.ts
 model/loadItemUnit.ts
 model/loadListResponse.ts
 model/loadMinimalListResponse.ts
@@ -416,6 +422,7 @@ model/parkingListResponse.ts
 model/parkingResponse.ts
 model/parkingResponsePagination.ts
 model/passwordResponse.ts
+model/patchNoteCommand.ts
 model/payPeriod.ts
 model/perMileEntity.ts
 model/personalInfoFeedbackResponse.ts
