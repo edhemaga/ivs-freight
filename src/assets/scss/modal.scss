@@ -290,14 +290,13 @@ ngb-modal-window[aria-hidden="true"] {
 
         .modal-close {
           position: relative;
-          width: 18px;
-          height: 18px;
-          line-height: 12px;
           right: 1px;
           cursor: pointer;
           transition: all 0.3s ease-in;
 
           svg {
+            width: 26px;
+            height: 26px;
             path {
               fill: #919191;
             }
