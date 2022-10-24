@@ -325,6 +325,11 @@ ngb-modal-window[aria-hidden="true"] {
           justify-content: space-between;
         }
 
+        &.load-template {
+          display: flex;
+          justify-content: space-between;
+        }
+
         .modal-delete-btn {
           min-width: 96px;
           height: 32px;
@@ -353,7 +358,8 @@ ngb-modal-window[aria-hidden="true"] {
 
         .modal-deactivate-btn,
         .modal-resend-email-btn,
-        .modal-cancel-btn {
+        .modal-cancel-btn,
+        .modal-load-template-btn {
           position: relative;
           min-width: 128px;
           height: 32px;
@@ -615,7 +621,7 @@ body:not(.modal-open) {
     box-shadow: $box-shadow !important;
     padding: 2px;
 
-    &.popover-wraper{
+    &.popover-wraper {
       background-color: #424242;
 
       .switch_statuses {
