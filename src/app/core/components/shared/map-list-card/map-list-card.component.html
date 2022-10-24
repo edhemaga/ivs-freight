@@ -132,12 +132,12 @@
       </div>
       <div *ngIf="sortCategory.name == 'Avg. Pickup Time'">
         <div class="marker-like-text marker-medium-text">
-          Avg. Pickup<span class="marker-bold-text"> {{ item.avgPickupTime != null ? item.avgPickupTime : '22m 37s' }}</span>
+          Avg. Pickup<span class="marker-bold-text"> {{ item.avgPickupTime != null ? item.avgPickupTime : '0m' }}</span>
         </div>
       </div>
       <div *ngIf="sortCategory.name == 'Avg. Delivery Time'">
         <div class="marker-like-text marker-medium-text">
-          Avg. Delivery<span class="marker-bold-text"> {{ item.avgDeliveryTime != null ? item.avgDeliveryTime : '37m 12s' }}</span>
+          Avg. Delivery<span class="marker-bold-text"> {{ item.avgDeliveryTime != null ? item.avgDeliveryTime : '0m' }}</span>
         </div>
       </div>
       <div *ngIf="sortCategory.name == 'Location' && item.distanceBetween">

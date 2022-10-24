@@ -15,6 +15,9 @@
   </div>
 </div>
 
+<!-- Test performance when getting data on button -->
+<!-- <div class="get-clusters-button" (click)="getClusters()">Get Repair Shops</div> -->
+
 <div class="map-container" [ngClass]="{ 'routing-map': mapType == 'routing' }">
   <agm-map
     [latitude]="mapLatitude"
@@ -41,7 +44,9 @@
         (markerClick)="clickedMarker(latlong.id, $event)"
         [label]="
           mapType == 'shipper'
-            ? (latlong.businessName ? latlong.businessName : latlong.name)
+            ? latlong.businessName
+              ? latlong.businessName
+              : latlong.name
             : mapType == 'accident'
             ? latlong.report
             : mapType == 'repairShop'
@@ -117,7 +122,9 @@
                   <div>
                     {{
                       mapType == "shipper"
-                        ? (latlong.businessName ? latlong.businessName : latlong.name)
+                        ? latlong.businessName
+                          ? latlong.businessName
+                          : latlong.name
                         : mapType == "accident" || mapType == "inspection"
                         ? latlong.report
                         : mapType == "repairShop"
@@ -159,7 +166,9 @@
               <app-map-marker-dropdown
                 [title]="
                   mapType == 'shipper'
-                    ? (latlong.businessName ? latlong.businessName : latlong.name)
+                    ? latlong.businessName
+                      ? latlong.businessName
+                      : latlong.name
                     : mapType == 'accident' || mapType == 'inspection'
                     ? latlong.report
                     : mapType == 'repairShop'
@@ -191,7 +200,6 @@
     <!-- cluster markers -->
     <div *ngFor="let cluster of clusterMarkers; let i = index">
       <agm-marker
-        *ngIf="cluster.showMarker"
         [label]="cluster.name != null ? cluster.name : ''"
         [latitude]="cluster.latitude"
         [longitude]="cluster.longitude"
@@ -202,7 +210,7 @@
         <agm-snazzy-info-window
           [closeOnMapClick]="false"
           [closeWhenOthersOpen]="false"
-          [isOpen]="true"
+          [isOpen]="cluster.showMarker ? true : false"
           [latitude]="cluster.latitude"
           [longitude]="cluster.longitude"
           [maxHeight]="32"
@@ -215,11 +223,16 @@
         >
           <ng-template>
             <div
-              class="marker-container marker-icon cluster-marker"
+              class="marker-container marker-icon cluster-marker hide-marker-at-start"
               (click)="clickedCluster(cluster)"
               (mousewheel)="markerZoom($event, cluster)"
               (mouseenter)="clusterHover(cluster, true)"
               (mouseleave)="clusterHover(cluster, false)"
+              [ngClass]="{
+                'marker-fade-in-animation': cluster.fadeIn,
+                'hide-marker-at-start': cluster.fadeIn,
+                'marker-fade-out-animation': cluster.fadeOut
+              }"
             >
               <!-- <svg-icon
                 class="marker-icon"
@@ -274,7 +287,9 @@
                   transform="translate(-1239 -563)"
                   ngbTooltip
                   [mainTooltip]="
-                    cluster.count + ' ' + (mapType == 'shipper'
+                    cluster.count +
+                    ' ' +
+                    (mapType == 'shipper'
                       ? 'SHIPPERS'
                       : mapType == 'accident'
                       ? 'ACCIDENTS'
@@ -288,7 +303,7 @@
                   "
                   tooltipBackground="#6C6C6C"
                   position="top"
-                  [ngStyle]="{ 'outline': 'none' }"
+                  [ngStyle]="{ outline: 'none' }"
                 >
                   <g
                     transform="matrix(1, 0, 0, 1, 1239, 563)"

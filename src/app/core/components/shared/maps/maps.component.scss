@@ -123,5 +123,48 @@
     &.cluster-marker, &.hide-cluster-marker {
         top: -46px;
         transform: translateX(-50%);
+        transition: 0.2s ease-in-out;
+
+        &.hide-marker-at-start {
+            opacity: 0;
+        }
+    }
+}
+
+.get-clusters-button {
+    position: absolute;
+    top: 60px;
+    right: 18px;
+    padding: 6px 8px;
+
+    background: #fff;
+    border-radius: 2px;
+    cursor: pointer;
+    z-index: 999;
+}
+
+.marker-fade-in-animation {
+    animation: marker-fade-in-animation 0.2s ease-in 0.2s;
+}
+
+.marker-fade-out-animation {
+    animation: marker-fade-out-animation 0.2s;
+}
+  
+@keyframes marker-fade-in-animation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+  
+@keyframes marker-fade-out-animation {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
     }
 }

@@ -132,25 +132,8 @@ export class MapsComponent implements OnInit, OnDestroy {
     if (this.mapType == 'repairShop' || this.mapType == 'shipper') {
       map.addListener('idle', (ev) => {
         // update the coordinates here
-        var bounds = map.getBounds();
-        var ne = bounds.getNorthEast(); // LatLng of the north-east corner
-        var sw = bounds.getSouthWest(); // LatLng of the south-west corder
-        var nw = new google.maps.LatLng(ne.lat(), sw.lng());
-        var se = new google.maps.LatLng(sw.lat(), ne.lng());
 
-        var mapCenter = map.getCenter();
-
-        var clustersZoomLevel = this.mapZoom <= 18 ? this.mapZoom - 3 : 15;
-
-        var clustersObject = {
-          northEastLatitude: ne.lat(),
-          northEastLongitude: ne.lng(),
-          southWestLatitude: sw.lat(),
-          southWestLongitude: sw.lng(),
-          zoomLevel: this.mapZoom,
-        };
-
-        this.callClusters(clustersObject);
+        this.getClusters();
       });
     }
   }
@@ -414,9 +397,22 @@ export class MapsComponent implements OnInit, OnDestroy {
 
           this.clusterMarkers.map((cluster) => {
             if (clustersToShow.includes(cluster.latitude)) {
+              if ( !cluster.showMarker ) {
+                cluster.fadeIn = true;
+                setTimeout(() => {
+                  cluster.fadeIn = false;
+                  this.ref.detectChanges();
+                }, 200);
+              }
+
               cluster.showMarker = true;
             } else {
-              cluster.showMarker = false;
+              cluster.fadeOut = true;
+              setTimeout(() => {
+                cluster.fadeOut = false;
+                cluster.showMarker = false;
+                this.ref.detectChanges();
+              }, 200);
             }
           });
 
@@ -604,6 +600,13 @@ export class MapsComponent implements OnInit, OnDestroy {
         next: (res) => {
           this.viewData[index] = {...this.viewData[index], ...res};
 
+          this.viewData[index].shopRaiting = {
+            hasLiked: res.currentCompanyUserRating === 1,
+            hasDislike: res.currentCompanyUserRating === -1,
+            likeCount: res?.upCount ? res.upCount : '0',
+            dislikeCount: res?.downCount ? res.downCount : '0',
+          }
+
           setTimeout(() => {
             this.viewData[index].isSelected = true;
             this.ref.detectChanges();
@@ -625,7 +628,14 @@ export class MapsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          this.viewData[index] = res;
+          this.viewData[index] = {...this.viewData[index], ...res};
+
+          this.viewData[index].raiting = {
+            hasLiked: res.currentCompanyUserRating === 1,
+            hasDislike: res.currentCompanyUserRating === -1,
+            likeCount: res?.upCount ? res.upCount : '0',
+            dislikeCount: res?.downCount ? res.downCount : '0',
+          };
 
           setTimeout(() => {
             this.viewData[index].isSelected = true;
@@ -656,6 +666,14 @@ export class MapsComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (res) => {
             cluster.detailedInfo = res;
+
+            cluster.detailedInfo.shopRaiting = {
+              hasLiked: res.currentCompanyUserRating === 1,
+              hasDislike: res.currentCompanyUserRating === -1,
+              likeCount: res?.upCount ? res.upCount : '0',
+              dislikeCount: res?.downCount ? res.downCount : '0',
+            };
+
             this.ref.detectChanges();
           },
           error: () => {
@@ -672,6 +690,14 @@ export class MapsComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (res) => {
             cluster.detailedInfo = res;
+
+            cluster.detailedInfo.raiting = {
+              hasLiked: res.currentCompanyUserRating === 1,
+              hasDislike: res.currentCompanyUserRating === -1,
+              likeCount: res?.upCount ? res.upCount : '0',
+              dislikeCount: res?.downCount ? res.downCount : '0',
+            };
+
             this.ref.detectChanges();
           },
           error: () => {
@@ -682,6 +708,28 @@ export class MapsComponent implements OnInit, OnDestroy {
           },
         });
     }
+  }
+
+  getClusters() {
+    var bounds = this.agmMap.getBounds();
+    var ne = bounds.getNorthEast(); // LatLng of the north-east corner
+    var sw = bounds.getSouthWest(); // LatLng of the south-west corder
+    var nw = new google.maps.LatLng(ne.lat(), sw.lng());
+    var se = new google.maps.LatLng(sw.lat(), ne.lng());
+
+    var mapCenter = this.agmMap.getCenter();
+
+    var clustersZoomLevel = this.mapZoom <= 18 ? this.mapZoom - 3 : 15;
+
+    var clustersObject = {
+      northEastLatitude: ne.lat(),
+      northEastLongitude: ne.lng(),
+      southWestLatitude: sw.lat(),
+      southWestLongitude: sw.lng(),
+      zoomLevel: this.mapZoom,
+    };
+
+    this.callClusters(clustersObject);
   }
 
   ngOnDestroy(): void {

@@ -91,8 +91,10 @@ export class MapMarkerDropdownComponent implements OnInit {
   }
 
   showMoreOptions(event) {
-    event.preventDefault();
-    event.stopPropagation();
+    //event.preventDefault();
+    //event.stopPropagation();
+
+    this.ref.detectChanges();
   }
 
   callBodyAction(action) {
