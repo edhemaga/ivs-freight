@@ -94,7 +94,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       restrictions: [null],
       endorsements: [null],
       note: [null],
-      file: [null],
+      files: [null],
     });
 
     this.formService.checkFormChange(this.cdlForm);
@@ -218,10 +218,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       restrictions: null,
       endorsements: null,
       note: res.note,
-      file: res.file ? res.file : null,
+      file: res.files ? res.files : null,
     });
 
-    this.documents = res.file ? ([res.file] as any) : [];
+    this.documents = res.files ? (res.files as any) : [];
     this.selectedEndorsment = res.cdlEndorsements.map((item) => {
       return {
         ...item,
@@ -257,10 +257,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             restrictions: null,
             endorsements: null,
             note: res.note,
-            file: res.files ? res.files : null,
+            files: res.files ? res.files : null,
           });
 
-          this.documents = res.files ? ([res.files] as any) : [];
+          this.documents = res.files ? (res.files as any) : [];
 
           this.selectedEndorsment = res.cdlEndorsements.map((item) => {
             return {
@@ -301,9 +301,9 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       endorsements: this.selectedEndorsment
         ? this.selectedEndorsment.map((item) => item.id)
         : [],
-      file: this.documents[0]?.realFile
-        ? this.documents[0]?.realFile
-        : JSON.stringify(this.cdlForm.value.file),
+      files: this.documents[0]?.realFile
+        ? [this.documents[0]?.realFile]
+        : this.cdlForm.value.files,
       fileModified: this.fileModified,
     };
 
@@ -339,7 +339,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       endorsements: this.selectedEndorsment
         ? this.selectedEndorsment.map((item) => item.id)
         : [],
-      file: this.documents[0]?.realFile,
+      files: [this.documents[0]?.realFile],
     };
 
     if (this.editData.type === 'renew-licence') {
@@ -377,11 +377,12 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
+    console.log(event);
     this.documents = event.files;
 
     if (event.action == 'delete') {
       this.cdlForm.patchValue({
-        file: null,
+        files: null,
       });
 
       this.fileModified = true;
