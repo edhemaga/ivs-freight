@@ -310,7 +310,7 @@
             let i = index;
             trackBy: identity
           "
-          [options]="dataDropDown"
+          [options]="dataDropDownMvr"
           [cardNameCommon]="med?.issueDate | formatDateP"
           [expDateClose]="med?.expDate | formatDateP"
           [optionsId]="med.id"
@@ -409,7 +409,7 @@
             let i = index;
             trackBy: identity
           "
-          [options]="dataDropDown"
+          [options]="dataDropDownMvr"
           [cardNameCurrent]="'mvr'"
           (clickedCard)="getNameForDrop($event)"
           (dataDropDopwn)="getMvrById(mvr.id)"

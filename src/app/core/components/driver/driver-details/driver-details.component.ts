@@ -347,16 +347,16 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           title: 'border'
         },
         {
-          title: 'Print',
-          name: 'print',
-          svg: 'assets/svg/common/ic_fax.svg',
-          show: data.status == 1 || data.status == 0 ? true : false,
-        },
-        {
           title: 'Share',
           name: 'share',
           svg: 'assets/svg/common/share-icon.svg',
           show: true,
+        },
+        {
+          title: 'Print',
+          name: 'print',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: data.status == 1 || data.status == 0 ? true : false,
         },
         {
           title: 'border',
