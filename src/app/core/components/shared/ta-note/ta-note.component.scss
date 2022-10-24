@@ -102,22 +102,6 @@
   background-repeat: no-repeat;
 }
 
-.note-normal-icon {
-  background-image: url("../../../../../assets/svg/truckassist-table/note/Note.svg");
-
-  &:hover {
-    background-image: url("../../../../../assets/svg/truckassist-table/note/Note-hover.svg");
-  }
-}
-
-.note-note-empty {
-  background-image: url("../../../../../assets/svg/truckassist-table/note/Note - Empty.svg");
-
-  &:hover {
-    background-image: url("../../../../../assets/svg/truckassist-table/note/Note - Empty-hover.svg");
-  }
-}
-
 .note_holder_span {
   //width: 32px;
   width: 100%;

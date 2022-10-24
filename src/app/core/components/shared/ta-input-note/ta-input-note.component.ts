@@ -13,6 +13,8 @@ import { card_component_animation } from '../animations/card-component.animation
 import { SharedService } from '../../../services/shared/shared.service';
 import moment from 'moment';
 import { card_modal_animation } from '../animations/card-modal.animation';
+import { NoteUpdateService } from 'src/app/core/services/shared/note.service';
+import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
 
 @Component({
   selector: 'app-ta-input-note',
@@ -35,19 +37,17 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   @Input() public animationsDisabled = false;
   @Input() noteType: string = '';
   savingNote: boolean = false;
-
+  @Input() entityId: number = 0;
   noActive: string;
 
   @Input() set isVisibleNote(value: boolean) {
-    this.noActive = value ?  'active' : 'innactive';
+    this.noActive = value ? 'active' : 'innactive';
     this._isVisibleNote = value ? true : false;
   }
 
   // @Input('isVisibleNote') set isVisibleNote(value: any) {
   //   this._isVisibleNote = value ? true : false;
   // }
-
-
 
   animationMarginParams = {
     marginTop: '0px',
@@ -64,7 +64,8 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
 
   constructor(
     @Self() public superControl: NgControl,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private noteService: NoteUpdateService
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -89,7 +90,6 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   public registerOnTouched(fn: any): void {}
 
   public openNote() {
-
     const oldNoActive = this.noActive;
     this.noActive = '';
     this._isVisibleNote = !this._isVisibleNote;
@@ -132,7 +132,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
 
   saveNote(allowSave?: boolean) {
     console.log('NOTE SAVED');
-    this.savingNote = true;
+
     if (this.value == '<br>') {
       this.value = this.value.replace('<br>', '');
     }
@@ -140,9 +140,13 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
       this.savedValue = this.value;
       this.getSuperControl.patchValue(this.value);
     }
-    setTimeout(()=>{
-      this.savingNote = false;
-    },1500)
+    if (this.noteType == 'details-card') {
+      this.savingNote = true;
+      setTimeout(() => {
+        this.savingNote = false;
+      }, 1500);
+      this.updateNote();
+    }
   }
 
   prepareForTextRange() {
@@ -156,5 +160,15 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     if (this.savedValue != this.value) {
       this.saveNote(true);
     }
+  }
+
+  updateNote() {
+    const updateValue = {
+      entityTypeNote: EntityTypeNote.Driver,
+      entityId: this.entityId,
+      note: this.value,
+    };
+
+    this.noteService.updateNote(updateValue).subscribe(() => {});
   }
 }
