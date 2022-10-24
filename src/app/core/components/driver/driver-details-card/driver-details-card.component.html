@@ -580,9 +580,10 @@
             [minRows]="1"
             [placeholder]="'Write something.'"
             [customClass]="'note-small'"
-            [note]="driver.note"
+            [note]="driverObject?.note"
             [noteType]="'details-card'"
             [entityId]="driver.id"
+            [entityType]="'Driver'"
           >
           </app-ta-input-note>
         </div>

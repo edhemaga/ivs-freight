@@ -38,6 +38,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   @Input() noteType: string = '';
   savingNote: boolean = false;
   @Input() entityId: number = 0;
+  @Input() entityType: string = '';
   noActive: string;
 
   @Input() set isVisibleNote(value: boolean) {
@@ -140,7 +141,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
       this.savedValue = this.value;
       this.getSuperControl.patchValue(this.value);
     }
-    if (this.noteType == 'details-card') {
+    if (this.noteType == 'details-card' && this.entityId && this.entityType != '') {
       this.savingNote = true;
       setTimeout(() => {
         this.savingNote = false;
@@ -164,7 +165,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
 
   updateNote() {
     const updateValue = {
-      entityTypeNote: EntityTypeNote.Driver,
+      entityTypeNote: EntityTypeNote[this.entityType],
       entityId: this.entityId,
       note: this.value,
     };
