@@ -17,6 +17,7 @@ import { SharedService } from '../../../services/shared/shared.service';
 import moment from 'moment';
 import { NoteUpdateService } from 'src/app/core/services/shared/note.service';
 import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 @Component({
   selector: 'app-ta-note',
@@ -42,6 +43,7 @@ import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
 })
 export class TaNoteComponent implements OnInit, OnDestroy {
   @Input() note: any;
+  @Input() mainData: any;
   @Input() openAllNotesText: any;
   @Input() parking: any = false;
   @Input() dispatchIndex: number = -1;
@@ -80,7 +82,8 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   constructor(
     private sharedService: SharedService,
     private ref: ChangeDetectorRef,
-    private noteService: NoteUpdateService
+    private noteService: NoteUpdateService,
+    private DetailsDataService: DetailsDataService,
   ) {}
 
   ngOnInit(): void {
@@ -106,6 +109,10 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   toggleNote(data: any, t2) {
+   
+    if (this.mainData){
+      this.DetailsDataService.setNewData(this.mainData);
+    }
     this.preventClosing = true;
     setTimeout(() => {
       this.preventClosing = false;
