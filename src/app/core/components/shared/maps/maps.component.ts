@@ -492,9 +492,22 @@ export class MapsComponent implements OnInit, OnDestroy {
 
           this.clusterMarkers.map((cluster) => {
             if (clustersToShow.includes(cluster.latitude)) {
+              if ( !cluster.showMarker ) {
+                cluster.fadeIn = true;
+                setTimeout(() => {
+                  cluster.fadeIn = false;
+                  this.ref.detectChanges();
+                }, 200);
+              }
+
               cluster.showMarker = true;
             } else {
-              cluster.showMarker = false;
+              cluster.fadeOut = true;
+              setTimeout(() => {
+                cluster.fadeOut = false;
+                cluster.showMarker = false;
+                this.ref.detectChanges();
+              }, 200);
             }
           });
 
