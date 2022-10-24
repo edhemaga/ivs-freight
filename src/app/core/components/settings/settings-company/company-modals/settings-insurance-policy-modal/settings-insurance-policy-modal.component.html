@@ -8,6 +8,7 @@
   (action)="onModalAction($event)"
 >
   <form
+    origin
     [formGroup]="insurancePolicyForm"
     class="form-container form-container-without-mb"
   >
@@ -96,12 +97,10 @@
             type: 'text',
             label: 'Address, City, State Zip',
             placeholderIcon: 'address',
-            placeholder: 'Address, City, State Zip',
             textTransform: 'capitalize',
             dropdownWidthClass: 'w-col-376',
             minLength: 6,
-            maxLength: 256,
-            isDropdown: true
+            maxLength: 256
           }"
           [placeholderType]="'longAddress'"
           [activeAddress]="selectedAddress"

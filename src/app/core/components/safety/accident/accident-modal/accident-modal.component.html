@@ -7,789 +7,775 @@
   [disableDelete]="true"
   (action)="onModalAction($event)"
 >
-  <app-ta-tab-switch
-    [tabs]="tabs"
-    (switchClicked)="tabChange($event)"
-    [type]="'type1-modal-popup'"
-  >
-  </app-ta-tab-switch>
+  <div origin>
+    <app-ta-tab-switch
+      [tabs]="tabs"
+      (switchClicked)="tabChange($event)"
+      [type]="'type1-modal-popup'"
+    >
+    </app-ta-tab-switch>
 
-  <form
-    [formGroup]="accidentForm"
-    class="form-container"
-    [ngClass]="{
-      'tab-2': selectedTab !== 1
-    }"
-  >
-    <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
-      <!-------------------------------- Basic Tab -------------------------------->
-      <div class="m-tab" *ngIf="selectedTab === 1">
-        <div class="report-federally-recordable">
-          <app-ta-input
-            formControlName="report"
-            [inputConfig]="{
-              name: 'Report',
-              type: 'text',
-              label: 'Report',
-              isDisabled: editData?.type === 'edit',
-              autoFocus: editData?.type !== 'edit',
-              customClass: 'line-input-26-in-card'
-            }"
-          ></app-ta-input>
-          <app-ta-input
-            formControlName="federallyRecordable"
-            [inputConfig]="{
-              name: 'Federally Recordable',
-              type: 'text',
-              isDisabled: editData?.type === 'edit',
-              label: 'Federally Recordable',
-              customClass: 'line-input-26-in-card'
-            }"
-          ></app-ta-input>
-          <app-ta-input
-            formControlName="stateRecordable"
-            [inputConfig]="{
-              name: 'State Recordable',
-              type: 'text',
-              isDisabled: editData?.type === 'edit',
-              label: 'State Recordable',
-              customClass: 'line-input-26-in-card'
-            }"
-          ></app-ta-input>
-        </div>
-        <div class="inj-fat-tow-hazmat-vehNumber">
-          <app-ta-input
-            formControlName="injury"
-            [inputConfig]="{
-              name: 'Injury',
-              type: 'text',
-              isDisabled: editData?.type === 'edit',
-              label: 'Injury',
-              placeholderIcon: 'injury',
-              customClass: 'line-input-26-in-card'
-            }"
-          ></app-ta-input>
-          <app-ta-input
-            formControlName="fatality"
-            [inputConfig]="{
-              name: 'Fatality',
-              type: 'text',
-              isDisabled: editData?.type === 'edit',
-              label: 'Fatality',
-              placeholderIcon: 'fatality',
-              customClass: 'line-input-26-in-card'
-            }"
-          ></app-ta-input>
-          <app-ta-input
-            formControlName="towing"
-            [inputConfig]="{
-              name: 'Towing',
-              type: 'text',
-              isDisabled: editData?.type === 'edit',
-              label: 'Towing',
-              placeholderIcon: 'towing',
-              customClass: 'line-input-26-in-card'
-            }"
-          ></app-ta-input>
-          <app-ta-input
-            formControlName="hazmat"
-            [inputConfig]="{
-              name: 'Hazmat',
-              type: 'text',
-              isDisabled: editData?.type === 'edit',
-              label: 'Hazmat',
-              placeholderIcon: 'hazmat',
-              customClass: 'line-input-26-in-card'
-            }"
-          ></app-ta-input>
-          <app-ta-input
-            formControlName="vehicleNumber"
-            [inputConfig]="{
-              name: 'Vehicle Number',
-              type: 'text',
-              isDisabled: editData?.type === 'edit',
-              label: 'Vehicle No.',
-              placeholderIcon: 'crash_vehicle',
-              customClass: 'line-input-26-in-card'
-            }"
-          ></app-ta-input>
-        </div>
-        <div class="row last-row">
-          <div class="col-6">
-            <app-input-address-dropdown
-              formControlName="location"
-              [inputConfig]="{
-                name: 'Address',
-                type: 'text',
-                label: 'Location',
-                isDisabled: editData?.type === 'edit',
-                placeholderIcon: 'address',
-                placeholder: 'Location',
-                textTransform: 'capitalize',
-                dropdownWidthClass: 'w-col-405',
-                minLength: 6,
-                maxLength: 256,
-                isDropdown: true,
-                customClass: 'line-input-26-in-card'
-              }"
-              [placeholderType]="'longAddress'"
-              [activeAddress]="addressLocation"
-              (selectedAddress)="onHandleAddress($event, 'location')"
-            ></app-input-address-dropdown>
-          </div>
-          <div class="col-3">
+    <form
+      [formGroup]="accidentForm"
+      class="form-container"
+      [ngClass]="{
+        'tab-2': selectedTab !== 1
+      }"
+    >
+      <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
+        <!-------------------------------- Basic Tab -------------------------------->
+        <div class="m-tab" *ngIf="selectedTab === 1">
+          <div class="report-federally-recordable">
             <app-ta-input
-              formControlName="date"
+              formControlName="report"
               [inputConfig]="{
-                name: 'datepicker',
+                name: 'Report',
                 type: 'text',
-                isDropdown: true,
-                label: 'Date',
+                label: 'Report',
                 isDisabled: editData?.type === 'edit',
-                placeholderIcon: 'date',
-                customClass: 'datetimeclass',
-                customClass: 'line-input-26-in-card'
+                autoFocus: editData?.type !== 'edit'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="federallyRecordable"
+              [inputConfig]="{
+                name: 'Federally Recordable',
+                type: 'text',
+                isDisabled: editData?.type === 'edit',
+                label: 'Federally Recordable'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="stateRecordable"
+              [inputConfig]="{
+                name: 'State Recordable',
+                type: 'text',
+                isDisabled: editData?.type === 'edit',
+                label: 'State Recordable'
               }"
             ></app-ta-input>
           </div>
-          <div class="col-3 no-p-left">
+          <div class="inj-fat-tow-hazmat-vehNumber">
             <app-ta-input
-              formControlName="time"
+              formControlName="injury"
               [inputConfig]="{
-                name: 'timepicker',
+                name: 'Injury',
                 type: 'text',
-                label: 'Time',
-                isDropdown: true,
                 isDisabled: editData?.type === 'edit',
-                placeholderIcon: 'time',
-                customClass: 'datetimeclass',
-                customClass: 'line-input-26-in-card'
+                label: 'Injury',
+                placeholderIcon: 'injury'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="fatality"
+              [inputConfig]="{
+                name: 'Fatality',
+                type: 'text',
+                isDisabled: editData?.type === 'edit',
+                label: 'Fatality',
+                placeholderIcon: 'fatality'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="towing"
+              [inputConfig]="{
+                name: 'Towing',
+                type: 'text',
+                isDisabled: editData?.type === 'edit',
+                label: 'Towing',
+                placeholderIcon: 'towing'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="hazmat"
+              [inputConfig]="{
+                name: 'Hazmat',
+                type: 'text',
+                isDisabled: editData?.type === 'edit',
+                label: 'Hazmat',
+                placeholderIcon: 'hazmat'
+              }"
+            ></app-ta-input>
+            <app-ta-input
+              formControlName="vehicleNumber"
+              [inputConfig]="{
+                name: 'Vehicle Number',
+                type: 'text',
+                isDisabled: editData?.type === 'edit',
+                label: 'Vehicle No.',
+                placeholderIcon: 'crash_vehicle'
               }"
             ></app-ta-input>
           </div>
-        </div>
-        <app-ta-custom-card
-          [cardName]="'Driver'"
-          [isCardOpen]="true"
-          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
-        >
-          <div class="violation-modal-row-3">
-            <app-ta-input
-              formControlName="driverName"
-              [inputConfig]="{
-                name: 'Driver Name',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
-                label: 'Driver',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="driverLicenceNumber"
-              [inputConfig]="{
-                name: 'Licence Number',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
-                label: 'Licence No.',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="driverState"
-              [inputConfig]="{
-                name: 'State',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
-                label: 'State',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="driverDOB"
-              [inputConfig]="{
-                name: 'datepicker',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
-                isDropdown: true,
-                label: 'DoB',
-                placeholderIcon: 'date',
-                customClass: 'datetimeclass',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
+          <div class="row last-row">
+            <div class="col-6">
+              <app-input-address-dropdown
+                formControlName="location"
+                [inputConfig]="{
+                  name: 'Address',
+                  type: 'text',
+                  label: 'Location',
+                  isDisabled: editData?.type === 'edit',
+                  placeholderIcon: 'address',
+                  textTransform: 'capitalize',
+                  dropdownWidthClass: 'w-col-405',
+                  minLength: 6,
+                  maxLength: 256
+                }"
+                [placeholderType]="'longAddress'"
+                [activeAddress]="addressLocation"
+                (selectedAddress)="onHandleAddress($event, 'location')"
+              ></app-input-address-dropdown>
+            </div>
+            <div class="col-3">
+              <app-ta-input
+                formControlName="date"
+                [inputConfig]="{
+                  name: 'datepicker',
+                  type: 'text',
+                  isDropdown: true,
+                  label: 'Date',
+                  isDisabled: editData?.type === 'edit',
+                  placeholderIcon: 'date',
+                  customClass: 'datetimeclass'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="col-3 no-p-left">
+              <app-ta-input
+                formControlName="time"
+                [inputConfig]="{
+                  name: 'timepicker',
+                  type: 'text',
+                  label: 'Time',
+                  isDropdown: true,
+                  isDisabled: editData?.type === 'edit',
+                  placeholderIcon: 'time',
+                  customClass: 'datetimeclass'
+                }"
+              ></app-ta-input>
+            </div>
           </div>
-        </app-ta-custom-card>
-        <app-ta-custom-card
-          [cardName]="'Truck'"
-          [isCardOpen]="true"
-          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
-        >
-          <div class="violation-modal-row-5">
-            <app-ta-input
-              formControlName="truckUnit"
-              [inputConfig]="{
-                name: 'Truck Number',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
-                label: 'Unit',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="truckType"
-              [inputConfig]="{
-                name: 'Truck Type',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
-                label: 'Type',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="truckMake"
-              [inputConfig]="{
-                name: 'Truck Make',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
-                label: 'Make',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="truckPlateNumber"
-              [inputConfig]="{
-                name: 'Truck Plate Make',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
-                label: 'Plate No.',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="truckState"
-              [inputConfig]="{
-                name: 'Truck State',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
-                label: 'State',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="truckVIN"
-              [inputConfig]="{
-                name: 'vin-number',
-                label: 'VIN',
-                minLength: 5,
-                maxLength: 17,
-                textTransform: 'uppercase',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-          </div>
-        </app-ta-custom-card>
-        <app-ta-custom-card
-          [cardName]="'Trailer'"
-          [isCardOpen]="true"
-          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
-        >
-          <div class="violation-modal-row-6">
-            <app-ta-input-dropdown
-              formControlName="trailerUnit"
-              [inputConfig]="{
-                name: 'Input Dropdown',
-                type: 'text',
-                label: 'Unit',
-                isDropdown: true,
-                dropdownWidthClass: 'w-col-100',
-                customClass: 'line-input-26-in-card'
-              }"
-              [options]="labelsTrailerUnits"
-              (selectedItem)="onSelectDropDown($event, 'trailer-unit')"
-            ></app-ta-input-dropdown>
-            <app-ta-input
-              formControlName="trailerType"
-              [inputConfig]="{
-                name: 'Trailer Type',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
-                label: 'Type',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="trailerMake"
-              [inputConfig]="{
-                name: 'Trailer Make',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
-                label: 'Make',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="trailerPlateNumber"
-              [inputConfig]="{
-                name: 'Trailer Plate Number',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
-                label: 'Plate No.',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="trailerState"
-              [inputConfig]="{
-                name: 'Trailer State',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
-                label: 'State',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="trailerVIN"
-              [inputConfig]="{
-                name: 'vin-number',
-                label: 'VIN',
-                type: 'text',
-                minLength: 5,
-                maxLength: 17,
-                textTransform: 'uppercase',
-                isDisabled: editData?.type === 'edit',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-          </div>
-        </app-ta-custom-card>
-        <div class="violation-card">
           <app-ta-custom-card
-            [cardName]="'Violation'"
-            [isCardOpen]="violations.length > 0"
-            [hasScrollBody]="violations.length > 10"
+            [cardName]="'Driver'"
+            [isCardOpen]="true"
+            [animationMarginParams]="{
+              marginTop: '18px',
+              marginBottom: '22px'
+            }"
+          >
+            <div class="violation-modal-row-3">
+              <app-ta-input
+                formControlName="driverName"
+                [inputConfig]="{
+                  name: 'Driver Name',
+                  type: 'text',
+                  isDisabled: editData?.type === 'edit',
+                  label: 'Driver'
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="driverLicenceNumber"
+                [inputConfig]="{
+                  name: 'Licence Number',
+                  type: 'text',
+                  isDisabled: editData?.type === 'edit',
+                  label: 'Licence No.'
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="driverState"
+                [inputConfig]="{
+                  name: 'State',
+                  type: 'text',
+                  isDisabled: editData?.type === 'edit',
+                  label: 'State'
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="driverDOB"
+                [inputConfig]="{
+                  name: 'datepicker',
+                  type: 'text',
+                  isDisabled: editData?.type === 'edit',
+                  isDropdown: true,
+                  label: 'DoB',
+                  placeholderIcon: 'date',
+                  customClass: 'datetimeclass'
+                }"
+              ></app-ta-input>
+            </div>
+          </app-ta-custom-card>
+          <app-ta-custom-card
+            [cardName]="'Truck'"
+            [isCardOpen]="true"
+            [animationMarginParams]="{
+              marginTop: '18px',
+              marginBottom: '22px'
+            }"
+          >
+            <div class="violation-modal-row-5">
+              <app-ta-input
+                formControlName="truckUnit"
+                [inputConfig]="{
+                  name: 'Truck Number',
+                  type: 'text',
+                  isDisabled: editData?.type === 'edit',
+                  label: 'Unit'
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="truckType"
+                [inputConfig]="{
+                  name: 'Truck Type',
+                  type: 'text',
+                  isDisabled: editData?.type === 'edit',
+                  label: 'Type'
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="truckMake"
+                [inputConfig]="{
+                  name: 'Truck Make',
+                  type: 'text',
+                  isDisabled: editData?.type === 'edit',
+                  label: 'Make'
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="truckPlateNumber"
+                [inputConfig]="{
+                  name: 'Truck Plate Make',
+                  type: 'text',
+                  isDisabled: editData?.type === 'edit',
+                  label: 'Plate No.'
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="truckState"
+                [inputConfig]="{
+                  name: 'Truck State',
+                  type: 'text',
+                  isDisabled: editData?.type === 'edit',
+                  label: 'State'
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="truckVIN"
+                [inputConfig]="{
+                  name: 'vin-number',
+                  label: 'VIN',
+                  minLength: 5,
+                  maxLength: 17,
+                  textTransform: 'uppercase',
+                  type: 'text',
+                  isDisabled: editData?.type === 'edit'
+                }"
+              ></app-ta-input>
+            </div>
+          </app-ta-custom-card>
+          <app-ta-custom-card
+            [cardName]="'Trailer'"
+            [isCardOpen]="true"
+            [animationMarginParams]="{
+              marginTop: '18px',
+              marginBottom: '22px'
+            }"
+          >
+            <div class="violation-modal-row-6">
+              <app-ta-input-dropdown
+                formControlName="trailerUnit"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Unit',
+                  isDropdown: true,
+                  dropdownWidthClass: 'w-col-100'
+                }"
+                [options]="labelsTrailerUnits"
+                (selectedItem)="onSelectDropDown($event, 'trailer-unit')"
+              ></app-ta-input-dropdown>
+              <app-ta-input
+                formControlName="trailerType"
+                [inputConfig]="{
+                  name: 'Trailer Type',
+                  type: 'text',
+                  isDisabled: editData?.type === 'edit',
+                  label: 'Type'
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="trailerMake"
+                [inputConfig]="{
+                  name: 'Trailer Make',
+                  type: 'text',
+                  isDisabled: editData?.type === 'edit',
+                  label: 'Make'
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="trailerPlateNumber"
+                [inputConfig]="{
+                  name: 'Trailer Plate Number',
+                  type: 'text',
+                  isDisabled: editData?.type === 'edit',
+                  label: 'Plate No.'
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="trailerState"
+                [inputConfig]="{
+                  name: 'Trailer State',
+                  type: 'text',
+                  isDisabled: editData?.type === 'edit',
+                  label: 'State'
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="trailerVIN"
+                [inputConfig]="{
+                  name: 'vin-number',
+                  label: 'VIN',
+                  type: 'text',
+                  minLength: 5,
+                  maxLength: 17,
+                  textTransform: 'uppercase',
+                  isDisabled: editData?.type === 'edit'
+                }"
+              ></app-ta-input>
+            </div>
+          </app-ta-custom-card>
+          <div class="violation-card">
+            <app-ta-custom-card
+              [cardName]="'Violation'"
+              [isCardOpen]="violations.length > 0"
+              [hasScrollBody]="violations.length > 10"
+            >
+              <div
+                formArrayName="violations"
+                class="common-fake-table-modal common-fake-table-modal-accident-violations"
+                *ngIf="violations.length"
+              >
+                <div class="common-fake-table-label">
+                  <p>CATEGORY</p>
+                  <p>SW</p>
+                  <p>HM</p>
+                  <p>DESCRIPTION</p>
+                </div>
+                <div class="common-fake-table-body">
+                  <div
+                    *ngFor="
+                      let violation of violations.controls;
+                      let ind = index
+                    "
+                  >
+                    <div [formGroupName]="ind" class="common-fake-table-card">
+                      <p class="violation-category">
+                        <svg-icon
+                          class="violation-category-svg"
+                          src="assets/svg/common/ic_crash_indicator.svg"
+                        ></svg-icon>
+                        <span class="violation-category-text">{{
+                          violation.get("categoryId").value
+                        }}</span>
+                      </p>
+                      <p class="violation-sw">
+                        {{ violation.get("sw").value }}
+                      </p>
+                      <svg-icon
+                        class="violation-hm"
+                        [class.active]="violation.get('hm').value"
+                        src="{{
+                          violation.get('hm').value
+                            ? 'assets/svg/common/ic_confirm.svg'
+                            : 'assets/svg/common/ic_x.svg'
+                        }}"
+                      ></svg-icon>
+                      <app-ta-input
+                        formControlName="description"
+                        [inputConfig]="{
+                          name: 'Description',
+                          type: 'text',
+                          minLength: 2,
+                          maxLength: 160,
+                          textTransform: 'capitalize',
+                          hideErrorMessage: true,
+                          hideRequiredCheck: true,
+                          customClass: 'line-input-26-in-card'
+                        }"
+                      ></app-ta-input>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </app-ta-custom-card>
+          </div>
+
+          <app-ta-custom-card
+            [hasCounter]="insurances.length ? insurances.length : 0"
+            [cardName]="'Insurance'"
+            [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
+            [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+            [isCardOpen]="insurances.length > 0"
+            [hasBodyData]="insurances.length > 0"
+            [hasScrollBody]="insurances.length > 0"
+            (onActionEvent)="addInsurance($event)"
           >
             <div
-              formArrayName="violations"
-              class="common-fake-table-modal common-fake-table-modal-accident-violations"
-              *ngIf="violations.length"
+              formArrayName="insurance"
+              class="common-fake-table-modal common-fake-table-modal-accident-insurance"
+              *ngIf="insurances.length"
             >
               <div class="common-fake-table-label">
-                <p>CATEGORY</p>
-                <p>SW</p>
-                <p>HM</p>
-                <p>DESCRIPTION</p>
+                <p>INS. TYPE</p>
+                <p>CLAIM NO.</p>
+                <p>INS. ADJUSTER</p>
+                <p>PHONE</p>
+                <p>EMAIL</p>
               </div>
               <div class="common-fake-table-body">
                 <div
-                  *ngFor="let violation of violations.controls; let ind = index"
+                  *ngFor="let insurance of insurances.controls; let ind = index"
                 >
                   <div [formGroupName]="ind" class="common-fake-table-card">
-                    <p class="violation-category">
-                      <svg-icon
-                        class="violation-category-svg"
-                        src="assets/svg/common/ic_crash_indicator.svg"
-                      ></svg-icon>
-                      <span class="violation-category-text">{{
-                        violation.get("categoryId").value
-                      }}</span>
-                    </p>
-                    <p class="violation-sw">{{ violation.get("sw").value }}</p>
-                    <svg-icon
-                      class="violation-hm"
-                      [class.active]="violation.get('hm').value"
-                      src="{{
-                        violation.get('hm').value
-                          ? 'assets/svg/common/ic_confirm.svg'
-                          : 'assets/svg/common/ic_x.svg'
-                      }}"
-                    ></svg-icon>
-                    <app-ta-input
-                      formControlName="description"
+                    <app-ta-input-dropdown
+                      formControlName="insuranceType"
                       [inputConfig]="{
-                        name: 'Description',
+                        name: 'Input Dropdown',
                         type: 'text',
-                        minLength: 2,
-                        maxLength: 160,
+                        isDropdown: true,
+                        dropdownWidthClass: 'w-col-136',
+                        hideErrorMessage: true,
+                        hideRequiredCheck: true,
+                        customClass: 'line-input-26-in-card'
+                      }"
+                      [options]="labelsInsuranceType"
+                      (selectedItem)="
+                        onSelectDropDown($event, 'insurance-type', ind)
+                      "
+                    ></app-ta-input-dropdown>
+
+                    <app-ta-input
+                      formControlName="claimNumber"
+                      [inputConfig]="{
+                        name: 'Claim Number',
+                        type: 'text',
                         textTransform: 'capitalize',
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
                         customClass: 'line-input-26-in-card'
                       }"
                     ></app-ta-input>
+
+                    <app-ta-input
+                      formControlName="insuranceAdjuster"
+                      [inputConfig]="{
+                        name: 'Insurance Adjuster',
+                        type: 'text',
+                        textTransform: 'capitalize',
+                        hideErrorMessage: true,
+                        hideRequiredCheck: true,
+                        customClass: 'line-input-26-in-card'
+                      }"
+                    ></app-ta-input>
+
+                    <app-ta-input
+                      formControlName="phone"
+                      [inputConfig]="{
+                        name: 'Phone',
+                        type: 'text',
+                        mask: '(000) 000-0000',
+                        maxLength: 14,
+                        hideErrorMessage: true,
+                        hideRequiredCheck: true,
+                        customClass: 'line-input-26-in-card'
+                      }"
+                    ></app-ta-input>
+
+                    <app-ta-input
+                      formControlName="email"
+                      [inputConfig]="{
+                        name: 'Email',
+                        type: 'text',
+                        minLength: 5,
+                        maxLength: 64,
+                        textTransform: 'lowercase',
+                        hideErrorMessage: true,
+                        hideRequiredCheck: true,
+                        customClass: 'line-input-26-in-card'
+                      }"
+                    ></app-ta-input>
+
+                    <div
+                      ngbTooltip
+                      mainTooltip="Delete"
+                      position="top"
+                      tooltipBackground="#EF5350"
+                      class="common-fake-table-delete"
+                      (click)="removeInsurance(ind)"
+                    >
+                      <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </app-ta-custom-card>
-        </div>
 
-        <app-ta-custom-card
-          [hasCounter]="insurances.length ? insurances.length : 0"
-          [cardName]="'Insurance'"
-          [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
-          [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-          [isCardOpen]="insurances.length > 0"
-          [hasBodyData]="insurances.length > 0"
-          [hasScrollBody]="insurances.length > 0"
-          (onActionEvent)="addInsurance($event)"
-        >
-          <div
-            formArrayName="insurance"
-            class="common-fake-table-modal common-fake-table-modal-accident-insurance"
-            *ngIf="insurances.length"
+          <app-ta-custom-card
+            [hasCounter]="documents.length ? documents.length : 0"
+            [cardName]="'Documents'"
+            [isCardOpen]="documents.length > 0"
           >
-            <div class="common-fake-table-label">
-              <p>INS. TYPE</p>
-              <p>CLAIM NO.</p>
-              <p>INS. ADJUSTER</p>
-              <p>PHONE</p>
-              <p>EMAIL</p>
-            </div>
-            <div class="common-fake-table-body">
-              <div
-                *ngFor="let insurance of insurances.controls; let ind = index"
-              >
-                <div [formGroupName]="ind" class="common-fake-table-card">
-                  <app-ta-input-dropdown
-                    formControlName="insuranceType"
-                    [inputConfig]="{
-                      name: 'Input Dropdown',
-                      type: 'text',
-                      isDropdown: true,
-                      dropdownWidthClass: 'w-col-136',
-                      hideErrorMessage: true,
-                      hideRequiredCheck: true,
-                      customClass: 'line-input-26-in-card'
-                    }"
-                    [options]="labelsInsuranceType"
-                    (selectedItem)="
-                      onSelectDropDown($event, 'insurance-type', ind)
-                    "
-                  ></app-ta-input-dropdown>
+            <app-ta-upload-files
+              [files]="documents"
+              [size]="'large'"
+              (onFileEvent)="onFilesEvent($event)"
+            ></app-ta-upload-files>
+          </app-ta-custom-card>
 
-                  <app-ta-input
-                    formControlName="claimNumber"
-                    [inputConfig]="{
-                      name: 'Claim Number',
-                      type: 'text',
-                      textTransform: 'capitalize',
-                      hideErrorMessage: true,
-                      hideRequiredCheck: true,
-                      customClass: 'line-input-26-in-card'
-                    }"
-                  ></app-ta-input>
+          <app-ta-custom-card
+            [hasCounter]="media.length ? media.length : 0"
+            [cardName]="'Media'"
+            [isCardOpen]="media.length > 0"
+          >
+            <app-ta-upload-files
+              [files]="media"
+              [size]="'large'"
+              (onFileEvent)="onFilesEvent($event)"
+            ></app-ta-upload-files>
+          </app-ta-custom-card>
 
-                  <app-ta-input
-                    formControlName="insuranceAdjuster"
-                    [inputConfig]="{
-                      name: 'Insurance Adjuster',
-                      type: 'text',
-                      textTransform: 'capitalize',
-                      hideErrorMessage: true,
-                      hideRequiredCheck: true,
-                      customClass: 'line-input-26-in-card'
-                    }"
-                  ></app-ta-input>
-
-                  <app-ta-input
-                    formControlName="phone"
-                    [inputConfig]="{
-                      name: 'Phone',
-                      type: 'text',
-                      mask: '(000) 000-0000',
-                      maxLength: 14,
-                      hideErrorMessage: true,
-                      hideRequiredCheck: true,
-                      customClass: 'line-input-26-in-card'
-                    }"
-                  ></app-ta-input>
-
-                  <app-ta-input
-                    formControlName="email"
-                    [inputConfig]="{
-                      name: 'Email',
-                      type: 'text',
-                      minLength: 5,
-                      maxLength: 64,
-                      textTransform: 'lowercase',
-                      hideErrorMessage: true,
-                      hideRequiredCheck: true,
-                      customClass: 'line-input-26-in-card'
-                    }"
-                  ></app-ta-input>
-
-                  <div
-                    ngbTooltip
-                    mainTooltip="Delete"
-                    position="top"
-                    tooltipBackground="#EF5350"
-                    class="common-fake-table-delete"
-                    (click)="removeInsurance(ind)"
-                  >
-                    <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
-                  </div>
-                </div>
+          <app-ta-input-note
+            formControlName="note"
+            [isVisibleNote]="accidentForm.get('note').value"
+          ></app-ta-input-note>
+        </div>
+        <!-------------------------------- Additional Tab -------------------------------->
+        <div class="m-tab" *ngIf="selectedTab === 2">
+          <app-ta-custom-card
+            [cardName]="'Crash Environment'"
+            [isCardOpen]="true"
+            [animationMarginParams]="{
+              marginTop: '18px',
+              marginBottom: '22px'
+            }"
+          >
+            <div class="row">
+              <div class="col-8">
+                <app-ta-input
+                  formControlName="roadwayTrafficWay"
+                  [inputConfig]="{
+                    name: 'Roadway Trafficway',
+                    type: 'text',
+                    label: 'Roadway Trafficway'
+                  }"
+                ></app-ta-input>
+              </div>
+              <div class="col-4">
+                <app-ta-input
+                  formControlName="weatherCondition"
+                  [inputConfig]="{
+                    name: 'Weather Condition',
+                    type: 'text',
+                    label: 'Weather Condition'
+                  }"
+                ></app-ta-input>
               </div>
             </div>
-          </div>
-        </app-ta-custom-card>
-
-        <app-ta-custom-card
-          [hasCounter]="documents.length ? documents.length : 0"
-          [cardName]="'Documents'"
-          [isCardOpen]="documents.length > 0"
-        >
-          <app-ta-upload-files
-            [files]="documents"
-            [size]="'large'"
-            (onFileEvent)="onFilesEvent($event)"
-          ></app-ta-upload-files>
-        </app-ta-custom-card>
-
-        <app-ta-custom-card
-          [hasCounter]="media.length ? media.length : 0"
-          [cardName]="'Media'"
-          [isCardOpen]="media.length > 0"
-        >
-          <app-ta-upload-files
-            [files]="media"
-            [size]="'large'"
-            (onFileEvent)="onFilesEvent($event)"
-          ></app-ta-upload-files>
-        </app-ta-custom-card>
-
-        <app-ta-input-note
-          formControlName="note"
-          [isVisibleNote]="accidentForm.get('note').value"
-        ></app-ta-input-note>
-      </div>
-      <!-------------------------------- Additional Tab -------------------------------->
-      <div class="m-tab" *ngIf="selectedTab === 2">
-        <app-ta-custom-card
-          [cardName]="'Crash Environment'"
-          [isCardOpen]="true"
-          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
-        >
-          <div class="row">
-            <div class="col-8">
-              <app-ta-input
-                formControlName="roadwayTrafficWay"
-                [inputConfig]="{
-                  name: 'Roadway Trafficway',
-                  type: 'text',
-                  label: 'Roadway Trafficway',
-                  customClass: 'line-input-26-in-card'
-                }"
-              ></app-ta-input>
+            <div class="row row-mb-12">
+              <div class="col-4">
+                <app-ta-input
+                  formControlName="roadAccessControl"
+                  [inputConfig]="{
+                    name: 'Road Access Control',
+                    type: 'text',
+                    label: 'Road Access Control'
+                  }"
+                ></app-ta-input>
+              </div>
+              <div class="col-4">
+                <app-ta-input
+                  formControlName="roadSurfaceCondition"
+                  [inputConfig]="{
+                    name: 'Road Surface Condition',
+                    type: 'text',
+                    label: 'Road Surface Condition'
+                  }"
+                ></app-ta-input>
+              </div>
+              <div class="col-4 no-p-left">
+                <app-ta-input
+                  formControlName="lightCondition"
+                  [inputConfig]="{
+                    name: 'Light Condition',
+                    type: 'text',
+                    label: 'Light Condition'
+                  }"
+                ></app-ta-input>
+              </div>
             </div>
-            <div class="col-4">
-              <app-ta-input
-                formControlName="weatherCondition"
-                [inputConfig]="{
-                  name: 'Weather Condition',
-                  type: 'text',
-                  label: 'Weather Condition',
-                  customClass: 'line-input-26-in-card'
-                }"
-              ></app-ta-input>
-            </div>
-          </div>
-          <div class="row row-mb-12">
-            <div class="col-4">
-              <app-ta-input
-                formControlName="roadAccessControl"
-                [inputConfig]="{
-                  name: 'Road Access Control',
-                  type: 'text',
-                  label: 'Road Access Control',
-                  customClass: 'line-input-26-in-card'
-                }"
-              ></app-ta-input>
-            </div>
-            <div class="col-4">
-              <app-ta-input
-                formControlName="roadSurfaceCondition"
-                [inputConfig]="{
-                  name: 'Road Surface Condition',
-                  type: 'text',
-                  label: 'Road Surface Condition',
-                  customClass: 'line-input-26-in-card'
-                }"
-              ></app-ta-input>
-            </div>
-            <div class="col-4 no-p-left">
-              <app-ta-input
-                formControlName="lightCondition"
-                [inputConfig]="{
-                  name: 'Light Condition',
-                  type: 'text',
-                  label: 'Light Condition',
-                  customClass: 'line-input-26-in-card'
-                }"
-              ></app-ta-input>
-            </div>
-          </div>
-        </app-ta-custom-card>
-        <app-ta-custom-card
-          [cardName]="'Authority Details'"
-          [isCardOpen]="true"
-          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
-        >
-          <div class="violation-modal-autority-details-row">
-            <app-ta-input
-              formControlName="reportingAgency"
-              [inputConfig]="{
-                name: 'Reporting Agency',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
-                label: 'Reporting Agency',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="authorityPoliceOffice"
-              [inputConfig]="{
-                name: 'Police Officer',
-                type: 'text',
-                label: 'Police Officer',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="authorityBadgeNumber"
-              [inputConfig]="{
-                name: 'Badge Number',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
-                label: 'Badge Number',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-          </div>
-          <div
-            class="violation-modal-autority-details-row violation-modal-autority-details-row-second"
+          </app-ta-custom-card>
+          <app-ta-custom-card
+            [cardName]="'Authority Details'"
+            [isCardOpen]="true"
+            [animationMarginParams]="{
+              marginTop: '18px',
+              marginBottom: '22px'
+            }"
           >
-            <app-ta-input-address
-              formControlName="authorityAddress"
-              [inputConfig]="{
-                name: 'Address',
-                type: 'text',
-                label: 'Address, City, State Zip',
-                placeholderIcon: 'address',
-                minLength: 12,
-                maxLength: 256,
-                textTransform: 'capitalize',
-                customClass: 'line-input-26-in-card'
-              }"
-              [activeAddress]="addressAuthority"
-              (selectedAddress)="onHandleAddress($event, 'address-authority')"
-            ></app-ta-input-address>
-            <app-ta-input
-              formControlName="authorityPhone"
-              [inputConfig]="{
-                name: 'Phone',
-                type: 'text',
-                label: 'Phone',
-                placeholderIcon: 'phone',
-                mask: '(000) 000-0000',
-                maxLength: 14,
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="authorityFax"
-              [inputConfig]="{
-                name: 'Fax',
-                type: 'text',
-                label: 'Fax',
-                mask: '(000) 000-0000',
-                placeholderIcon: 'fax',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-          </div>
-        </app-ta-custom-card>
-        <app-ta-custom-card
-          [cardName]="'Location & Shipping info'"
-          [isCardOpen]="isLocationAndShippingOpen"
-          (onOpenCard)="isLocationAndShippingOpen = $event"
-          [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
-        >
-          <div class="row">
-            <div class="col-6">
-              <app-ta-input-address
-                formControlName="shippingOriginLocation"
+            <div class="violation-modal-autority-details-row">
+              <app-ta-input
+                formControlName="reportingAgency"
+                [inputConfig]="{
+                  name: 'Reporting Agency',
+                  type: 'text',
+                  isDisabled: editData?.type === 'edit',
+                  label: 'Reporting Agency'
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="authorityPoliceOffice"
+                [inputConfig]="{
+                  name: 'Police Officer',
+                  type: 'text',
+                  label: 'Police Officer'
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="authorityBadgeNumber"
+                [inputConfig]="{
+                  name: 'Badge Number',
+                  type: 'text',
+                  isDisabled: editData?.type === 'edit',
+                  label: 'Badge Number'
+                }"
+              ></app-ta-input>
+            </div>
+            <div
+              class="violation-modal-autority-details-row violation-modal-autority-details-row-second"
+            >
+              <app-input-address-dropdown
+                formControlName="authorityAddress"
                 [inputConfig]="{
                   name: 'Address',
                   type: 'text',
-                  label: 'Origin',
+                  label: 'Address, City, State Zip',
                   placeholderIcon: 'address',
-                  minLength: 12,
-                  maxLength: 256,
                   textTransform: 'capitalize',
-                  customClass: 'line-input-26-in-card'
+                  dropdownWidthClass: 'w-col-452',
+                  minLength: 6,
+                  maxLength: 256
                 }"
-                [activeAddress]="addressOrigin"
-                (selectedAddress)="onHandleAddress($event, 'address-origin')"
-              ></app-ta-input-address>
-            </div>
-            <div class="col-6">
-              <app-ta-input-address
-                formControlName="shippingDestinationLocation"
+                [placeholderType]="'longAddress'"
+                [activeAddress]="addressAuthority"
+                (selectedAddress)="onHandleAddress($event, 'address-authority')"
+              ></app-input-address-dropdown>
+              <app-ta-input
+                formControlName="authorityPhone"
                 [inputConfig]="{
-                  name: 'Address',
+                  name: 'Phone',
                   type: 'text',
-                  label: 'Destination',
-                  placeholderIcon: 'address',
-                  minLength: 12,
-                  maxLength: 256,
-                  textTransform: 'capitalize',
-                  customClass: 'line-input-26-in-card'
+                  label: 'Phone',
+                  placeholderIcon: 'phone',
+                  mask: '(000) 000-0000',
+                  maxLength: 14
                 }"
-                [activeAddress]="addressDestination"
-                (selectedAddress)="
-                  onHandleAddress($event, 'address-destination')
-                "
-              ></app-ta-input-address>
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="authorityFax"
+                [inputConfig]="{
+                  name: 'Fax',
+                  type: 'text',
+                  label: 'Fax',
+                  mask: '(000) 000-0000',
+                  placeholderIcon: 'fax'
+                }"
+              ></app-ta-input>
             </div>
-          </div>
-          <div class="violation-modal-location-shipping-row-3">
-            <app-ta-input-dropdown
-              formControlName="shippingCustomer"
-              [inputConfig]="{
-                name: 'Input Dropdown',
-                type: 'text',
-                label: 'Customer',
-                isDropdown: true,
-                dropdownWidthClass: 'w-col-273',
-                customClass: 'line-input-26-in-card'
-              }"
-              [options]="labelsViolationCustomer"
-              (selectedItem)="onSelectDropDown($event, 'shipping-customer')"
-            ></app-ta-input-dropdown>
-            <app-ta-input
-              formControlName="shippingBOL"
-              [inputConfig]="{
-                name: 'BoL',
-                type: 'text',
-                label: 'BoL',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-            <app-ta-input
-              formControlName="shippingCargo"
-              [inputConfig]="{
-                name: 'Cargo',
-                type: 'text',
-                label: 'Cargo',
-                customClass: 'line-input-26-in-card'
-              }"
-            ></app-ta-input>
-          </div>
-        </app-ta-custom-card>
+          </app-ta-custom-card>
+          <app-ta-custom-card
+            [cardName]="'Location & Shipping info'"
+            [isCardOpen]="isLocationAndShippingOpen"
+            (onOpenCard)="isLocationAndShippingOpen = $event"
+            [animationMarginParams]="{
+              marginTop: '18px',
+              marginBottom: '22px'
+            }"
+          >
+            <div class="row">
+              <div class="col-6">
+                <app-input-address-dropdown
+                  formControlName="shippingOriginLocation"
+                  [inputConfig]="{
+                    name: 'Address',
+                    type: 'text',
+                    label: 'Origin',
+                    placeholderIcon: 'address',
+                    textTransform: 'capitalize',
+                    dropdownWidthClass: 'w-col-407',
+                    minLength: 6,
+                    maxLength: 256
+                  }"
+                  [placeholderType]="'longAddress'"
+                  [activeAddress]="addressOrigin"
+                  (selectedAddress)="onHandleAddress($event, 'address-origin')"
+                ></app-input-address-dropdown>
+              </div>
+              <div class="col-6">
+                <app-input-address-dropdown
+                  formControlName="shippingDestinationLocation"
+                  [inputConfig]="{
+                    name: 'Address',
+                    type: 'text',
+                    label: 'Destination',
+                    placeholderIcon: 'address',
+                    textTransform: 'capitalize',
+                    dropdownWidthClass: 'w-col-418',
+                    minLength: 6,
+                    maxLength: 256
+                  }"
+                  [placeholderType]="'longAddress'"
+                  [activeAddress]="addressDestination"
+                  (selectedAddress)="
+                    onHandleAddress($event, 'address-destination')
+                  "
+                ></app-input-address-dropdown>
+              </div>
+            </div>
+            <div class="violation-modal-location-shipping-row-3">
+              <app-ta-input-dropdown
+                formControlName="shippingCustomer"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Customer',
+                  isDropdown: true,
+                  dropdownWidthClass: 'w-col-273'
+                }"
+                [options]="labelsViolationCustomer"
+                (selectedItem)="onSelectDropDown($event, 'shipping-customer')"
+              ></app-ta-input-dropdown>
+              <app-ta-input
+                formControlName="shippingBOL"
+                [inputConfig]="{
+                  name: 'BoL',
+                  type: 'text',
+                  label: 'BoL'
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="shippingCargo"
+                [inputConfig]="{
+                  name: 'Cargo',
+                  type: 'text',
+                  label: 'Cargo'
+                }"
+              ></app-ta-input>
+            </div>
+          </app-ta-custom-card>
+        </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
 </app-ta-modal>

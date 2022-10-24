@@ -1,9 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
-  CreateTestCommand,
   DriverResponse,
-  EditTestCommand,
   GetTestModalResponse,
   TestResponse,
 } from 'appcoretruckassist';
@@ -19,6 +17,8 @@ import {
   convertDateToBackend,
   convertDateFromBackend,
 } from '../../../../../utils/methods.calculations';
+import { CreateTestCommand } from 'appcoretruckassist/model/createTestCommand';
+import { EditTestCommand } from 'appcoretruckassist/model/editTestCommand';
 
 @Component({
   selector: 'app-driver-drugAlcohol-modal',
@@ -191,7 +191,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   public updateTest() {
     const { testingDate } = this.drugForm.value;
 
-    const newData: EditTestCommand = {
+    const newData: /*EditTestCommand*/ any = {
       id: this.editData.file_id,
       ...this.drugForm.value,
       testingDate: convertDateToBackend(testingDate),
@@ -218,7 +218,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   public addTest() {
     const { testingDate } = this.drugForm.value;
 
-    const newData: CreateTestCommand = {
+    const newData: /*CreateTestCommand*/ any = {
       driverId: this.editData.id,
       ...this.drugForm.value,
       testingDate: convertDateToBackend(testingDate),

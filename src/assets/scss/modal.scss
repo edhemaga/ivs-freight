@@ -121,6 +121,8 @@ ngb-modal-window[aria-hidden="true"] {
           color: #424242;
           line-height: 18px;
           padding-top: 1px;
+          position: relative;
+          left: 2px;
         }
 
         .modal-header-tab-change {
@@ -128,6 +130,8 @@ ngb-modal-window[aria-hidden="true"] {
           height: 24px;
           margin-left: 2px;
           margin-bottom: 1px;
+          position: relative;
+          right: 2px;
 
           .ta-input-radiobutons {
             height: 100% !important;
@@ -158,6 +162,12 @@ ngb-modal-window[aria-hidden="true"] {
           line-height: 16px;
         }
 
+        .modal-hazardous-logo {
+          width: 23px;
+          height: 23px;
+          line-height: 22px;
+        }
+
         .edit-name {
           color: #ffffff;
           background: #424242;
@@ -167,11 +177,119 @@ ngb-modal-window[aria-hidden="true"] {
           font-size: 14px;
           font-weight: 400;
           line-height: 18px;
+
+          &-date {
+            color: #aaaaaa;
+          }
+        }
+
+        .load-modal-bill {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+
+          &-rate {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+
+            p {
+              font-size: 14px;
+              font-weight: 600;
+              color: #6c6c6c;
+              line-height: 18px;
+              margin: 0;
+              padding: 0;
+            }
+
+            &-price-container {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              height: 22px;
+              border-radius: 2px;
+              overflow: hidden;
+
+              .load-modal-base-rate,
+              .load-modal-adjusted-rate {
+                background-color: #6c6c6c;
+                color: #ffffff !important;
+                margin: 0;
+                padding: 0;
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 18px;
+                width: 100%;
+                height: 100%;
+                padding: 2px 4px;
+                text-align: right;
+                min-width: 84px;
+              }
+
+              .load-modal-adjusted-rate {
+                background-color: #ffb74d;
+              }
+            }
+
+            &.no-bill-rate {
+              p {
+                color: #b7b7b7;
+              }
+
+              .load-modal-base-rate {
+                background-color: #b7b7b7;
+              }
+            }
+          }
+
+          &-due {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            overflow: hidden;
+            border-radius: 2px;
+
+            p {
+              font-size: 14px;
+              font-weight: 600;
+              color: #ef5350;
+              line-height: 18px;
+              margin: 0;
+              padding: 0;
+            }
+
+            .load-modal-base-due {
+              background-color: #ef5350;
+              color: #ffffff !important;
+              margin: 0;
+              padding: 0;
+              font-size: 14px;
+              font-weight: 600;
+              line-height: 18px;
+              height: 100%;
+              padding: 2px 4px;
+              border-radius: 2px;
+              text-align: right;
+              min-width: 84px;
+            }
+
+            &.no-due-rate {
+              p {
+                color: #b7b7b7;
+              }
+
+              .load-modal-base-due {
+                background-color: #b7b7b7;
+              }
+            }
+          }
         }
 
         .modal-close {
           position: relative;
-          left: 4px;
           transition: all 0.3s ease-in;
           svg {
             width: 24px;
@@ -497,12 +615,22 @@ body:not(.modal-open) {
     box-shadow: $box-shadow !important;
     padding: 2px;
 
+    &.popover-wraper{
+      background-color: #424242;
+
+      .switch_statuses {
+        &:hover {
+          background-color: #2f2f2f !important;
+        }
+      }
+    }
+
     &.active {
       padding: 4px;
       transition: top 0.3s;
 
       .switch_statuses {
-        height: 32px !important;
+        height: 24px !important;
         padding-bottom: 0;
       }
 
@@ -599,5 +727,133 @@ body:not(.modal-open) {
 .status_change_popover {
   .ta_status_main_holder {
     width: 110px;
+  }
+}
+
+.note-textarea {
+  &::-moz-selection {
+    color: $bw6-2;
+    background: rgb(108, 108, 108, 0.2);
+  }
+
+  &::selection {
+    color: $bw6-2;
+    background: rgb(108, 108, 108, 0.2);
+  }
+
+  span {
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
+
+  span[style*="color: rgb(83, 107, 194)"],
+  span[style*="color: rgb(83, 107, 194)"] span {
+    &::-moz-selection {
+      color: $bw6-2 !important;
+      background: rgb(83, 107, 194, 0.2) !important;
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(83, 107, 194, 0.2) !important;
+    }
+  }
+
+  span[style*="color: rgb(38, 166, 144)"],
+  span[style*="color: rgb(38, 166, 144)"] span {
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(38, 166, 144, 0.2) !important;
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(38, 166, 144, 0.2) !important;
+    }
+  }
+
+  span[style*="color: rgb(239, 83, 80)"],
+  span[style*="color: rgb(239, 83, 80)"] span {
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(239, 83, 80, 0.2) !important;
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(239, 83, 80, 0.2) !important;
+    }
+  }
+
+  span[style*="color: rgb(255, 167, 38)"],
+  span[style*="color: rgb(255, 167, 38)"] span {
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(255, 167, 38, 0.2) !important;
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(255, 167, 38, 0.2) !important;
+    }
+  }
+
+  span[style*="color: rgb(83, 107, 194)"],
+  span[style*="color: rgb(83, 107, 194)"] span {
+    &::-moz-selection {
+      color: $bw6-2 !important;
+      background: rgb(83, 107, 194, 0.2) !important;
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(83, 107, 194, 0.2) !important;
+    }
+  }
+
+  span[style*="color: rgb(38, 166, 144)"],
+  span[style*="color: rgb(38, 166, 144)"] span {
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(38, 166, 144, 0.2) !important;
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(38, 166, 144, 0.2) !important;
+    }
+  }
+
+  span[style*="color: rgb(239, 83, 80)"],
+  span[style*="color: rgb(239, 83, 80)"] span {
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(239, 83, 80, 0.2) !important;
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(239, 83, 80, 0.2) !important;
+    }
+  }
+
+  span[style*="color: rgb(255, 167, 38)"],
+  span[style*="color: rgb(255, 167, 38)"] span {
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(255, 167, 38, 0.2) !important;
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(255, 167, 38, 0.2) !important;
+    }
   }
 }

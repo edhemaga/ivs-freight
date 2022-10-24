@@ -22,7 +22,7 @@ export class AppInterceptor implements HttpInterceptor {
             timeOutValue = 1;
           }
           setTimeout(() => {
-            this.notificationService.errorToastr(httpRequest, next);
+            this.notificationService.errorToastr(httpRequest, next, error);
           }, timeOutValue);
         }
 

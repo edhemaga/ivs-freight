@@ -17,6 +17,8 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { BrokerInvoiceAgeingResponse } from '../model/models';
+import { BrokerLoadsResponse } from '../model/models';
 import { BrokerMinimalListResponse } from '../model/models';
 import { BrokerModalResponse } from '../model/models';
 import { BrokerResponse } from '../model/models';
@@ -593,6 +595,59 @@ export class BrokerService {
     }
 
     /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiBrokerInvoiceageingIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<BrokerInvoiceAgeingResponse>;
+    public apiBrokerInvoiceageingIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<BrokerInvoiceAgeingResponse>>;
+    public apiBrokerInvoiceageingIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<BrokerInvoiceAgeingResponse>>;
+    public apiBrokerInvoiceageingIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiBrokerInvoiceageingIdGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.get<BrokerInvoiceAgeingResponse>(`${this.configuration.basePath}/api/broker/invoiceageing/${encodeURIComponent(String(id))}`,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * @param ids 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -809,6 +864,143 @@ export class BrokerService {
         }
 
         return this.httpClient.get<BrokerMinimalListResponse>(`${this.configuration.basePath}/api/broker/list/minimal`,
+            {
+                params: queryParameters,
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param loadType 
+     * @param statusType 
+     * @param status 
+     * @param dispatcherId 
+     * @param dispatchId 
+     * @param brokerId 
+     * @param dateFrom 
+     * @param dateTo 
+     * @param revenueFrom 
+     * @param revenueTo 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param companyId 
+     * @param sort 
+     * @param search 
+     * @param search1 
+     * @param search2 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: number, dispatcherId?: number, dispatchId?: number, brokerId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<BrokerLoadsResponse>;
+    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: number, dispatcherId?: number, dispatchId?: number, brokerId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<BrokerLoadsResponse>>;
+    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: number, dispatcherId?: number, dispatchId?: number, brokerId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<BrokerLoadsResponse>>;
+    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: number, dispatcherId?: number, dispatchId?: number, brokerId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (loadType !== undefined && loadType !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>loadType, 'LoadType');
+        }
+        if (statusType !== undefined && statusType !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>statusType, 'StatusType');
+        }
+        if (status !== undefined && status !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>status, 'Status');
+        }
+        if (dispatcherId !== undefined && dispatcherId !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>dispatcherId, 'DispatcherId');
+        }
+        if (dispatchId !== undefined && dispatchId !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>dispatchId, 'DispatchId');
+        }
+        if (brokerId !== undefined && brokerId !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>brokerId, 'BrokerId');
+        }
+        if (dateFrom !== undefined && dateFrom !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>dateFrom, 'DateFrom');
+        }
+        if (dateTo !== undefined && dateTo !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>dateTo, 'DateTo');
+        }
+        if (revenueFrom !== undefined && revenueFrom !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>revenueFrom, 'RevenueFrom');
+        }
+        if (revenueTo !== undefined && revenueTo !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>revenueTo, 'RevenueTo');
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (companyId !== undefined && companyId !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>companyId, 'CompanyId');
+        }
+        if (sort !== undefined && sort !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>sort, 'Sort');
+        }
+        if (search !== undefined && search !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>search, 'Search');
+        }
+        if (search1 !== undefined && search1 !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>search1, 'Search1');
+        }
+        if (search2 !== undefined && search2 !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>search2, 'Search2');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.get<BrokerLoadsResponse>(`${this.configuration.basePath}/api/broker/loads`,
             {
                 params: queryParameters,
                 responseType: <any>responseType,

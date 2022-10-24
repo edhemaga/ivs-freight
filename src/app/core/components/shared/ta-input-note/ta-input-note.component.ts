@@ -12,15 +12,16 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { card_component_animation } from '../animations/card-component.animations';
 import { SharedService } from '../../../services/shared/shared.service';
 import moment from 'moment';
+import { card_modal_animation } from '../animations/card-modal.animation';
 
 @Component({
   selector: 'app-ta-input-note',
   templateUrl: './ta-input-note.component.html',
   styleUrls: ['./ta-input-note.component.scss'],
-  animations: [card_component_animation('showHideCardBody')],
+  animations: [card_modal_animation('showHideCardBody')],
 })
 export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
-  _isVisibleNote: any = 0;
+  _isVisibleNote: any = 'null';
   selectionTaken: any;
   range: any;
   @Input() note: any;
@@ -32,17 +33,25 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   saveIntervalStarted: boolean = false;
   @Input() isVisibleDivider: boolean = true;
   @Input() public animationsDisabled = false;
-
+  @Input() noteType: string = '';
 
   noActive: string;
 
   @Input() set isVisibleNote(value: boolean) {
-    this.noActive = value ? "active" : "innactive";
+    this.noActive = value ?  'active' : 'innactive';
+    this._isVisibleNote = value ? true : false;
   }
 
   // @Input('isVisibleNote') set isVisibleNote(value: any) {
   //   this._isVisibleNote = value ? true : false;
   // }
+
+
+
+  animationMarginParams = {
+    marginTop: '0px',
+    marginBottom: '0px',
+  };
 
   @Input() isVisibleArrow: boolean = true;
   @Input() minRows: number = 2;
@@ -79,8 +88,11 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   public registerOnTouched(fn: any): void {}
 
   public openNote() {
-    this.noActive = "";
+
+    const oldNoActive = this.noActive;
+    this.noActive = '';
     this._isVisibleNote = !this._isVisibleNote;
+
     if (this._isVisibleNote) {
       this.checkActiveItems();
     }
@@ -124,7 +136,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     }
     if (allowSave) {
       this.savedValue = this.value;
-      this.getSuperControl.patchValue(this.value)
+      this.getSuperControl.patchValue(this.value);
     }
   }
 

@@ -171,7 +171,7 @@
               </div>
               <div class="card-pdf">
                 <app-ta-upload-files
-                  [files]="cdl.file ? [cdl.file] : []"
+                  [files]="cdl.files ? cdl.files : []"
                   [customClassName]="'driver-details-pdf'"
                   [hasCarouselBottomTabs]="true"
                 ></app-ta-upload-files>
@@ -186,6 +186,7 @@
                   [minRows]="1"
                   [placeholder]="'Write something.'"
                   [customClass]="'note-small'"
+                  [noteType]="'details-card'"
                 >
                 </app-ta-input-note>
               </div>
@@ -292,6 +293,7 @@
                   [minRows]="1"
                   [placeholder]="'Write something.'"
                   [customClass]="'note-small'"
+                  [noteType]="'details-card'"
                 >
                 </app-ta-input-note>
               </div>
@@ -390,6 +392,7 @@
                   [minRows]="1"
                   [placeholder]="'Write something.'"
                   [customClass]="'note-small'"
+                  [noteType]="'details-card'"
                 >
                 </app-ta-input-note>
               </div>
@@ -487,6 +490,7 @@
                   [minRows]="1"
                   [placeholder]="'Write something.'"
                   [customClass]="'note-small'"
+                  [noteType]="'details-card'"
                 >
                 </app-ta-input-note>
               </div>

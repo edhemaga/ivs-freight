@@ -17,6 +17,7 @@
   (action)="onModalAction($event)"
 >
   <form
+    origin
     [formGroup]="repairOrderForm"
     class="form-container form-container-without-mb"
   >
@@ -288,7 +289,6 @@
                     id: 'QTY' + ind,
                     name: 'QTY',
                     type: 'text',
-                    textTransform: 'capitalize',
                     blueInputColor:
                       !selectedPM[ind]?.logoName?.includes('ic_custom_pm'),
                     hideRequiredCheck: true,

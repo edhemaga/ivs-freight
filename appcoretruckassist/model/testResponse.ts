@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { EnumValue } from './enumValue';
 
 
@@ -17,6 +18,8 @@ export interface TestResponse {
     testReason?: EnumValue;
     testType?: EnumValue;
     testingDate?: string;
+    result?: EnumValue;
     note?: string | null;
+    files?: Array<FileResponse> | null;
 }
 

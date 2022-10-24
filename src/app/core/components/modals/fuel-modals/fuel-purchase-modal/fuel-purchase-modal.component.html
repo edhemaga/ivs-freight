@@ -7,7 +7,11 @@
   [isModalValid]="fuelForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="fuelForm" class="form-container form-container-without-mb">
+  <form
+    origin
+    [formGroup]="fuelForm"
+    class="form-container form-container-without-mb"
+  >
     <div class="row">
       <div class="col-6">
         <app-ta-input-dropdown
@@ -168,7 +172,6 @@
                 [inputConfig]="{
                   name: 'QTY',
                   type: 'text',
-                  textTransform: 'capitalize',
                   hideErrorMessage: true,
                   blackInput: true,
                   hideRequiredCheck: true

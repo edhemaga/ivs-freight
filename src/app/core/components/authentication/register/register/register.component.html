@@ -95,6 +95,7 @@
           <div class="d-flex">
             <div class="group address-group">
               <app-input-address-dropdown
+                #inputAddress
                 formControlName="address"
                 [inputConfig]="{
                   name: 'Address',
@@ -102,12 +103,10 @@
                   label: 'Address, City, State Zip',
                   isRequired: true,
                   placeholderIcon: 'address',
-                  placeholder: 'Address, City, State Zip',
                   textTransform: 'capitalize',
                   dropdownWidthClass: 'w-col-503',
                   minLength: 6,
-                  maxLength: 256,
-                  isDropdown: true
+                  maxLength: 256
                 }"
                 [placeholderType]="'longAddress'"
                 [activeAddress]="selectedAddress"

@@ -4,7 +4,7 @@
   [class.opened_main_all_holder]="openedAll"
   #t2="ngbPopover"
   [ngbPopover]="note_popover"
-  [autoClose]="false"
+  [autoClose]="'outside'"
   [container]="'body'"
   [placement]="'left-top'"
   popoverClass="my-note-popover"
@@ -29,13 +29,14 @@
     <svg-icon
       #t2="ngbPopover"
       [ngbPopover]="note_popover"
-      [autoClose]="false"
+      [autoClose]="'outside'"
       class="note-btn"
       [container]="'body'"
       [placement]="'left-top'"
       popoverClass="my-note-popover"
       triggers="manual"
       (click)="toggleNote(note, t2)"
+      (hidden)="popoverClosed()"
       src="assets/svg/truckassist-table/note/{{ noteIcon }}"
     >
     </svg-icon>
@@ -52,7 +53,6 @@
     class="kendo-editor-note-wrapper"
     [class.opened_all_hold]="openedAll"
     [class.closed_note_hold]="!openedAll && noteOpened"
-    *ngIf="noteOpened"
   >
     <div
       [class.expanded]="isExpanded"
@@ -64,7 +64,7 @@
         (focus)="checkFocus($event)"
         (input)="valueChange($event.target.innerHTML)"
         @noteLongAnimation
-        [@.disabled]="openedAll || parking"
+        [@.disabled]="openedAll || parking || noteOpened"
         [class.not_expanded]="!isExpanded"
         [class.parking_text_hold]="parking"
         [class.opened_all_editor]="openedAll"
@@ -88,6 +88,8 @@
           [selectionTaken]="selectionTaken"
           [value]="value"
           [parking]="parking"
+          [popoverNote]="true"
+          [selectedEditor]="main_editor?.nativeElement"
         ></app-ta-note-container>
       </div>
     </div>

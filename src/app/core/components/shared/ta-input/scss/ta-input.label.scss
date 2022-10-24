@@ -8,23 +8,27 @@
   transition: all 0.3s ease-in-out;
   color: $input-label-color;
   -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
   pointer-events: none;
   line-height: 18px;
 
-  &::-moz-selection {
-    background-color: $input-label-background-selection !important;
-    color: $input-label-text-selection !important;
-  }
+  span {
+    &::-moz-selection {
+      background-color: $input-label-background-selection !important;
+      color: $input-label-text-selection !important;
+    }
 
-  &::selection {
-    background-color: $input-label-background-selection !important;
-    color: $input-label-text-selection !important;
+    &::selection {
+      background-color: $input-label-background-selection !important;
+      color: $input-label-text-selection !important;
+    }
   }
 
   &.required {
     &::after {
-      content: "*";
+      content: " *";
       color: $input-label-required-star;
     }
   }
@@ -52,14 +56,16 @@
     user-select: auto !important;
     pointer-events: all !important;
 
-    &::-moz-selection {
-      background-color: $input-label-background-selection;
-      color: $input-label-text-selection;
-    }
+    span {
+      &::-moz-selection {
+        background-color: $input-label-background-selection !important;
+        color: $input-label-text-selection !important;
+      }
 
-    &::selection {
-      background-color: $input-label-background-selection;
-      color: $input-label-text-selection;
+      &::selection {
+        background-color: $input-label-background-selection !important;
+        color: $input-label-text-selection !important;
+      }
     }
   }
 
@@ -91,6 +97,42 @@
 
   &.routing-address-focus {
     display: none !important;
+  }
+
+  &.load-shipper {
+    &.required {
+      &::after {
+        content: " *";
+        color: $input-label-required-star;
+        position: absolute;
+        right: -10px;
+        top: 0px;
+      }
+    }
+  }
+
+  //------------------------- Multiple Labels Classs -------------------------
+
+  .load-dispatches-ttd {
+    display: grid;
+    grid-template-columns: repeat(3, 58px);
+    align-items: center;
+    -moz-column-gap: 70px;
+    column-gap: 70px;
+  }
+
+  .load-broker-contact {
+    display: grid;
+    grid-template-columns: repeat(3, 120px);
+    align-items: center;
+  }
+
+  .load-shipper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    -moz-column-gap: 252px;
+    column-gap: 252px;
   }
 
   //------------------------- Custom class -------------------------

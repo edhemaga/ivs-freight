@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FuelStopResponse } from 'appcoretruckassist';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-fuel-details',
@@ -8,10 +10,11 @@ import { Component, OnInit } from '@angular/core';
 export class FuelDetailsComponent implements OnInit {
   public fuelConfig: any[] = [];
   public fuelDrop: any;
-  constructor() {}
+  constructor(private actRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.fuelConf();
+    this.fuelConf(this.actRoute.snapshot.data.fuelSingle);
+
     this.initTableOptions();
   }
   /**Function for dots in cards */
@@ -72,21 +75,23 @@ export class FuelDetailsComponent implements OnInit {
     return item.id;
   }
 
-  fuelConf() {
+  fuelConf(data: FuelStopResponse) {
     this.fuelConfig = [
       {
         id: 0,
         name: 'Fuel Stop Details',
         template: 'general',
+        data: data,
       },
       {
         id: 1,
         name: 'Transaction',
         template: 'transaction',
         icon: true,
-        data: 25,
+        length: 25,
         customText: 'Date',
         status: false,
+        data: data,
         icons: [
           {
             id: Math.random() * 1000,
@@ -111,10 +116,11 @@ export class FuelDetailsComponent implements OnInit {
         id: 2,
         name: 'Fuelled Vehicle',
         template: 'fuel-vehicle',
-        data: 18,
+        length: 18,
         hide: true,
         status: true,
         customText: 'Cost',
+        data: data,
       },
     ];
   }

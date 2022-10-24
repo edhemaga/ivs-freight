@@ -10,6 +10,7 @@ export class DetailsDataService {
   public leftSideMenuChanges = this.leftSideMenuStatus.asObservable();
 
   public mainData: any;
+  public cdlNum: any;
   public leftMenuOpened: any = false;
 
   constructor() { }
@@ -30,6 +31,18 @@ export class DetailsDataService {
       this.mainData.ban = status;
     } else if ( type == 'status' ) {
       this.mainData.status = status;
+    }
+  }
+
+  setCdlNum(mod){
+    this.cdlNum = mod;
+  }
+
+  changeRateStatus(type, mod){
+    if ( type == 'like' ){
+      this.mainData.raiting.hasLiked = mod;
+    }else {
+      this.mainData.raiting.hasDislike = mod;
     }
   }
 }

@@ -1,12 +1,13 @@
 .user-icon {
   position: relative;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   display: flex;
   justify-content: center;
   align-items: center;
 
   border-radius: 2px;
+  cursor: pointer;
 
   svg-icon {
     svg {
@@ -16,17 +17,46 @@
     }
   }
 
-  &.active-options {
+  &:hover{
+
+    background-color: #42424220;
+
+    .main-icon-holder{
+      svg-icon {
+        svg {
+          path {
+            fill: #424242 !important;
+          }
+        }
+      }
+    }
+  }
+
+  .main-icon-holder{
     svg-icon {
       svg {
         path {
-          fill: #6C6C6C !important;
+          fill: #919191 !important;
+        }
+      }
+    }
+  }
+
+  &.active-options {
+    background-color: #42424220;
+
+    .main-icon-holder{
+      svg-icon {
+        svg {
+          path {
+            fill: #424242 !important;
+          }
         }
       }
     }
 
     &.filter-active-colors {
-      background-color: #536bc2 !important;
+      background-color: #536bc220 !important;
 
       .active-filter-num {
         background-color: #536bc2 !important;
@@ -39,12 +69,14 @@
   }
 
   &.filter-active-colors {
-    background-color: #6d82c7;
+    background-color: #3074D320;
 
-    svg-icon {
-      svg {
-        path {
-          fill: #ffffff !important;
+    .main-icon-holder{
+      svg-icon {
+        svg {
+          path {
+            fill: #3074D3 !important;
+          }
         }
       }
     }
@@ -62,22 +94,19 @@
       align-items: center;
 
       color: #fff;
-      font-size: 9px;
+      font-size: 8px;
+      font-weight: 700;
 
       border-radius: 100%;
-      background-color: #6d82c7;
-      border: 1px solid #fff;
+      background-color: #3074D3;
+      border: 2px solid #fff;
 
       user-select: none;
-      
-      &:hover {
-        background-color: #3551b7 !important;
-      }
     }
 
     .clear-filter {
       display: none;
-
+      background-color: #EF5350 !important;
       svg-icon {
         svg {
           height: 6px !important;
@@ -91,10 +120,28 @@
       .clear-tooltip {
         position: absolute;
       }
+
+      &:hover {
+        background-color: #F44336 !important;
+
+        .clear-colors{
+          background-color: #EF5350;
+        }
+      }
     }
 
     &:hover {
-      background-color: #536bc2 !important;
+      background-color: #3074D3 !important;
+      transition: 0.2s all;
+      .main-icon-holder{
+        svg-icon {
+          svg {
+            path {
+              fill: #FFFFFF !important;
+            }
+          }
+        }
+      }
 
       .active-filter-num {
         background-color: #536bc2;
@@ -104,6 +151,14 @@
         display: flex;
         z-index: 2;
       }
+    }
+  }
+
+  &.clear-colors {
+    background-color: #EF5350 !important;
+
+    &:hover{
+      background-color: #EF5350 !important;
     }
   }
 }
@@ -119,6 +174,7 @@
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
+  overflow: hidden;
 
   .filter-header {
     position: relative;
@@ -129,6 +185,46 @@
     justify-content: flex-start;
     align-items: center;
     user-select: none;
+    
+
+    &.activeHeader{
+      
+      display: flex;
+
+      animation-name: showHeaderAnimation;
+      animation-delay: 0s;
+      animation-duration: 0.2s;
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards; 
+    }
+
+    &.inactiveHeader{
+      display: flex;
+
+      animation-name: hideHeaderAnimation;
+      animation-delay: 0s;
+      animation-duration: 0.2s;
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes showHeaderAnimation {
+      from {
+        right: 300px;
+      }
+      to {
+        right: 0px;
+      }
+    }
+
+    @keyframes hideHeaderAnimation {
+      from {
+       right: 0px;
+      }
+      to {
+        right: 300px;
+      }
+    }
 
     .user-filter-box {
       width: 24px;
@@ -157,6 +253,7 @@
 
       &.counter-padd-title{
         padding-left: 4.5px;
+        line-height: 26px;
       }
     }
 
@@ -229,15 +326,72 @@
     }
 
     &.search-input-header {
-      position: relative;
-      width: 100%;
-
+      position: absolute;
+      width: 248px;
+      //display: none;
+      transition: 0.3s all;
       .input-form-holder {
         .input-custom-group {
           .input-clear {
             top: 2px !important;
           }
         }
+      }
+
+      &.activeSearch{
+        display: flex;
+
+        animation-name: showAnimationClass;
+        animation-delay: 0s;
+        animation-duration: 0.2s;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+      }
+
+      &.inactiveSearch{
+        display: flex;
+
+        animation-name: hideAnimation;
+        animation-delay: 0s;
+        animation-duration: 0.2s;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+      }
+
+      @keyframes showAnimationClass {
+        from {
+          margin-left: 95%;
+          width: 0px;
+          overflow: hidden;
+        }
+        to {
+          margin-left: 0%;
+          width: 248px;
+        }
+      }
+
+      @keyframes hideAnimation {
+        from {
+          margin-left: 0%;
+          width: 248px;
+        }
+        to {
+          margin-left: 95%;
+          width: 0px;
+          overflow: hidden;
+          display: none;
+        }
+      }
+
+
+      &:hover{
+        .close-input-search{
+          display: flex !important;
+        }
+      }
+
+      &.hidenClass{
+        display: none;
       }
     }
 
@@ -247,40 +401,36 @@
 
     .close-input-search {
       position: absolute;
-      right: 6px;
+      right: 4px;
       width: 18px;
       height: 18px;
-      display: flex;
+      display: none;
       justify-content: center;
       align-items: center;
-      top: 4px;
-      right: 4px;
+      
+      line-height: 26px;
+      border-radius: 1px;
+
+      background-color: #B7B7B7;
 
       svg-icon {
         svg {
           display: flex;
-          width: 12.38px;
-          height: 12.38px;
+          width: 9.63px;
+          height: 9.63px;
 
           path {
-            fill: #919191;
+            fill: #EEEEEE;
           }
         }
       }
 
       &:hover {
         cursor: pointer;
-        width: 24px;
-        height: 24px;
-        border-radius: 1px;
-        background-color: #6c6c6c;
-        top: 2px;
-        right: 2px;
-
         svg-icon {
           svg {
             path {
-              fill: #fff;
+              //fill: #fff;
             }
           }
         }
@@ -365,11 +515,15 @@
     flex-direction: column;
     //padding: 2px 2px 0px 2px;
     box-sizing: border-box;
+    transition: all 0.2s linear;
 
+    
     .user-main-holder {
       position: relative;
       width: 100%;
-      height: 26px;
+      height: 28px;
+      transition: all 0.2s linear;
+      cursor: pointer;
       &:hover {
         cursor: pointer;
         background-color: #1d1d1d;
@@ -385,6 +539,22 @@
           }
 
         }
+        
+        .selected-icon {
+          display: none;
+        }
+
+        .icon-delete {
+          display: flex;
+        }
+      }
+
+      &.removeClass{
+        scale: (0.7);
+        height: 0px;
+        background-color: #000000;
+        opacity: 0;
+        pointer-events: none;  
       }
 
       .user-profile-img {
@@ -395,6 +565,24 @@
         align-items: center;
         height: 26px;
         width: 18px;
+
+        .user_avatar{
+          width: 18px;
+          height: 18px;
+
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: cover;
+          border-radius: 100%;
+
+          &.driver_avatar{
+            height: 18px;
+            width: 15px;
+
+            border-radius: 2px;
+          }
+
+        }
       }
     }
 
@@ -412,6 +600,7 @@
       color: #fff;
       line-height: 26px;
       margin-bottom: 2px;
+      user-select: none;
 
       .selected-icon {
         position: absolute;
@@ -446,7 +635,7 @@
         align-items: center;
         top: 2.5px;
         right: 4px;
-        scale: (0.9);
+        
         border-radius: 1px;
         transition: all 0.2s ease-in-out;
         svg-icon {
@@ -462,8 +651,8 @@
         }
 
         &:hover {
-          scale: (1);
-          top: 3px;
+          
+          //top: 3px;
           svg-icon {
             svg {
               path {
@@ -475,16 +664,7 @@
       }
 
       &:hover {
-        cursor: pointer;
-        //background-color: #F7F7F7;
-
-        .selected-icon {
-          display: none;
-        }
-
-        .icon-delete {
-          display: flex;
-        }
+        
       }
 
       &::-moz-selection {
@@ -523,6 +703,7 @@
     overflow-y: auto;
 
     user-select: none;
+    transition: all 0.2s linear;
 
     &::-webkit-scrollbar {
       width: 4px;
@@ -544,9 +725,12 @@
       width: 100%;
       display: flex;
       align-items: center;
+      opacity: 1;
+      transition: all 0.2s linear;
 
       .user-main-holder {
         width: 100%;
+        transition: all 0.2s linear;
         &:hover {
           cursor: pointer;
           background-color: #1d1d1d;
@@ -598,7 +782,34 @@
         width: 18px;
         display: flex;
         align-items: center;
+
+        .user_avatar{
+          width: 18px;
+          height: 18px;
+
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: cover;
+          border-radius: 100%;
+
+          &.driver_avatar{
+            height: 18px;
+            width: 15px;
+
+            border-radius: 2px;
+          }
+
+        }
       }
+
+      &.hidenItem{
+        scale: (0.7);
+        height: 0px;
+        background-color: #000000;
+        opacity: 0;
+        pointer-events: none;
+      }
+
     }
   }
 
@@ -724,6 +935,7 @@
 
 .pm-filter {
   .user-main-holder {
+    transition: all 0.2s linear;
     .selected-filter-icon {
       top: 0px !important;
 
@@ -788,6 +1000,7 @@
   }
 
   .user-main-holder {
+    transition: all 0.2s linear;
     &:hover {
       .user-frame {
         padding-left: 56px !important;
@@ -840,7 +1053,12 @@
   width: 300px;
 
   .filter-header {
-    padding-left: 4px;
+    padding-left: 3px;
+
+    .user-title-text{
+      padding-left: 0px;
+    }
+
   }
 
   .money-main-holder {
@@ -849,6 +1067,12 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin-top: 21px;
+    overflow: hidden;
+
+    &.single-money-main {
+      margin-top: 0px;
+    }
 
     .money-value-holder {
       position: relative;
@@ -861,7 +1085,7 @@
       font-size: 14px;
       //font-weight: 600;
       color: #aaaaaa;
-
+      transition: all 0.59s ease-in-out;
       .invalid-message {
         position: absolute;
         top: 18px;
@@ -869,6 +1093,10 @@
         font-size: 11px;
         color: #ef5350;
       }
+    }
+
+    .closedForm{
+      height: 0px;
     }
 
     .errorForm {
@@ -910,9 +1138,12 @@
     position: relative;
     width: 100%;
     padding-left: 4px;
-    margin-bottom: 24px;
-
+    margin-bottom: 4px;
+    transition: all 0.52s ease-in;
+    
     .form-name {
+      padding-left: 2px;
+      line-height: 18px;
       font-size: 14px;
       font-weight: 800;
       color: #FFF;
@@ -1047,9 +1278,11 @@
 
   .states-selected {
     width: 100%;
+    transition: all 0.2s linear;
   }
 
   .user-main-holder {
+    transition: all 0.2s linear;
     &:hover {
       .state-short-holder {
         background-color: #ffffff;
@@ -1076,7 +1309,7 @@
   }
 
   .hiddenFormTitle {
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
 
   .hiddenFormBorder {
@@ -1374,6 +1607,7 @@
         font-size: 11px;
         color: #ef5350;
       }
+
     }
 
     .errorForm {
@@ -1405,7 +1639,7 @@
   .time-header {
     position: relative;
     width: 100%;
-    //padding: 8px 0px 8px 8px;
+    padding-left: 4px;
     box-sizing: border-box;
     font-size: 14px;
     font-weight: 800;
@@ -1533,7 +1767,7 @@
         align-items: center;
         top: 2.5px;
         right: 4px;
-        scale: (0.9);
+        
         transition: all 0.2s ease-in-out;
 
         svg-icon {
@@ -1549,8 +1783,8 @@
         }
 
         &:hover {
-          top: 3px;
-          scale: (1);
+          //top: 3px;
+          
           svg-icon {
             svg {
               path {
@@ -2051,3 +2285,4 @@
 .popover {
   background-color: transparent;
 }
+

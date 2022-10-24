@@ -28,6 +28,7 @@ api/map.service.ts
 api/medical.service.ts
 api/miles.service.ts
 api/mvr.service.ts
+api/note.service.ts
 api/owner.service.ts
 api/ownerHistory.service.ts
 api/parking.service.ts
@@ -92,7 +93,6 @@ model/applicationStatus.ts
 model/archiveApplicationCommand.ts
 model/archiveMultipleApplicationsCommand.ts
 model/authorizationFeedbackResponse.ts
-model/authorizationReviewResponse.ts
 model/autocompleteSearchLayer.ts
 model/bankAccountResponse.ts
 model/bankAccountStatus.ts
@@ -102,7 +102,11 @@ model/bankResponse.ts
 model/bankResponsePagination.ts
 model/brakes.ts
 model/brokerContactCommand.ts
+model/brokerContactGroupResponse.ts
 model/brokerContactResponse.ts
+model/brokerContactShortResponse.ts
+model/brokerInvoiceAgeingResponse.ts
+model/brokerLoadsResponse.ts
 model/brokerMinimalListResponse.ts
 model/brokerMinimalResponse.ts
 model/brokerMinimalResponsePagination.ts
@@ -124,6 +128,7 @@ model/checkOwnerSsnEinResponse.ts
 model/classOfEquipmentCommand.ts
 model/classOfEquipmentResponse.ts
 model/classType.ts
+model/clusterResponse.ts
 model/colorResponse.ts
 model/commentByEntityTypeListResponse.ts
 model/commentResponse.ts
@@ -168,8 +173,6 @@ model/createAccidentRecordReviewCommand.ts
 model/createApplicantCdlCommand.ts
 model/createApplicantCdlReviewCommand.ts
 model/createApplicantCommand.ts
-model/createAuthorizationCommand.ts
-model/createAuthorizationReviewCommand.ts
 model/createBankCommand.ts
 model/createBrokerCommand.ts
 model/createCommentCommand.ts
@@ -196,8 +199,6 @@ model/createInsurancePolicyCommand.ts
 model/createLoadCommand.ts
 model/createLoadTemplateCommand.ts
 model/createMapCommand.ts
-model/createMedicalCommand.ts
-model/createMvrCommand.ts
 model/createOffDutyLocationCommand.ts
 model/createOwnerCommand.ts
 model/createParkingCommand.ts
@@ -216,13 +217,13 @@ model/createSevenDaysHosReviewCommand.ts
 model/createShipperCommand.ts
 model/createTableConfigCommand.ts
 model/createTerminalCommand.ts
-model/createTestCommand.ts
 model/createTitleCommand.ts
 model/createTodoCommand.ts
 model/createTrafficViolationCommand.ts
 model/createTrafficViolationReviewCommand.ts
 model/createTrailerCommand.ts
 model/createTruckCommand.ts
+model/createWithUploadsResponse.ts
 model/createWorkExperienceCommand.ts
 model/createWorkExperienceReviewCommand.ts
 model/creditType.ts
@@ -265,9 +266,6 @@ model/editFuelCardCommand.ts
 model/editFuelItemCommand.ts
 model/editFuelStopCommand.ts
 model/editFuelTransactionCommand.ts
-model/editMedicalCommand.ts
-model/editMvrCommand.ts
-model/editTestCommand.ts
 model/educationFeedbackResponse.ts
 model/educationReviewResponse.ts
 model/emergencyContactCommand.ts
@@ -275,6 +273,7 @@ model/emergencyContactResponse.ts
 model/emergencyContactReviewCommand.ts
 model/emergencyContactReviewResponse.ts
 model/employmentHistoryResponse.ts
+model/entityTypeNote.ts
 model/entityTypeReview.ts
 model/enumValue.ts
 model/eventModalResponse.ts
@@ -300,6 +299,7 @@ model/fuelTransactionResponse.ts
 model/fuelTransactionResponsePagination.ts
 model/fuelledVehicleHistoryListResponse.ts
 model/fuelledVehicleResponse.ts
+model/fuelledVehicleResponsePagination.ts
 model/getApplicantListQuery.ts
 model/getApplicantListResponse.ts
 model/getAvailableCreditEFSQuery.ts
@@ -340,6 +340,8 @@ model/itemFuel.ts
 model/legResponse.ts
 model/loadBillingAdditionalCommand.ts
 model/loadBillingAdditionalResponse.ts
+model/loadBrokerDetailsResponse.ts
+model/loadBrokerDetailsResponsePagination.ts
 model/loadItemUnit.ts
 model/loadListResponse.ts
 model/loadMinimalListResponse.ts
@@ -375,6 +377,7 @@ model/mapMarkerListResponse.ts
 model/mapMinimalResponse.ts
 model/mapMinimalResponsePagination.ts
 model/mapResponse.ts
+model/markerNamesResponse.ts
 model/medicalResponse.ts
 model/milesByStateResponse.ts
 model/milesByUnitListResponse.ts
@@ -419,6 +422,7 @@ model/parkingListResponse.ts
 model/parkingResponse.ts
 model/parkingResponsePagination.ts
 model/passwordResponse.ts
+model/patchNoteCommand.ts
 model/payPeriod.ts
 model/perMileEntity.ts
 model/personalInfoFeedbackResponse.ts
@@ -427,7 +431,6 @@ model/preferredLoadType.ts
 model/previousAddressReviewCommand.ts
 model/previousEmployerAccidentHistoryItemCommand.ts
 model/previousEmployerModalResponse.ts
-model/previousEmployerProspectResponse.ts
 model/previousEmployerRequestResponse.ts
 model/problemDetails.ts
 model/ratingSetResponse.ts
@@ -441,7 +444,6 @@ model/renewCdlCommand.ts
 model/reorderDispatchCommand.ts
 model/reorderDispatchesCommand.ts
 model/repairAutocompleteDescriptionResponse.ts
-model/repairByUnitResponse.ts
 model/repairItemCommand.ts
 model/repairItemResponse.ts
 model/repairListResponse.ts
@@ -464,6 +466,9 @@ model/repairShopServiceTypeResponse.ts
 model/repairShopShortResponse.ts
 model/repairType.ts
 model/repairUnitType.ts
+model/repairedVehicleListResponse.ts
+model/repairedVehicleResponse.ts
+model/repairedVehicleResponsePagination.ts
 model/resendInviteCommand.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
@@ -504,6 +509,10 @@ model/signUpCompanyCommand.ts
 model/signUpDriverMobileCommand.ts
 model/signupUserCommand.ts
 model/specialCheck.ts
+model/sphAccidentHistoryItemResponse.ts
+model/sphAccidentHistoryResponse.ts
+model/sphDrugAndAlcoholResponse.ts
+model/sphPreviousEmployerProspectResponse.ts
 model/splitLoadCommand.ts
 model/splitLoadResponse.ts
 model/stateResponse.ts
@@ -521,7 +530,6 @@ model/terminalListResponse.ts
 model/terminalResponse.ts
 model/terminalResponsePagination.ts
 model/testResponse.ts
-model/testType.ts
 model/timeOnly.ts
 model/timeType.ts
 model/tireSizeResponse.ts
@@ -655,4 +663,5 @@ model/workExperienceItemCommand.ts
 model/workExperienceItemResponse.ts
 model/workExperienceItemReviewCommand.ts
 model/workExperienceItemReviewResponse.ts
+model/yesNoEnum.ts
 variables.ts

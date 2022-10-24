@@ -71,6 +71,10 @@
     text {
       fill: $input-placeholder-icon-path-valid-focus !important;
     }
+
+    &::after {
+      background: $input-placeholder-icon-path-valid-focus !important;
+    }
   }
 
   &.valid-required-out {
@@ -100,6 +104,10 @@
 
     text {
       fill: $input-placeholder-icon-path-invalid-focus !important;
+    }
+
+    &::after {
+      background-color: $input-placeholder-icon-path-invalid-focus !important;
     }
   }
 
@@ -154,8 +162,6 @@
     top: 2px;
 
     &::after {
-      background: $input-placeholder-icon-normal-after;
-
       left: 24px;
       top: 3px;
     }
@@ -165,8 +171,8 @@
     top: 1px;
 
     &::after {
-      background: $input-placeholder-icon-normal-after;
-      top: 4px;
+      top: 5px;
+      height: 17px;
     }
   }
 
@@ -198,6 +204,24 @@
     svg {
       path {
         fill: $input-placeholder-icon-color-dark-green !important;
+      }
+    }
+  }
+
+  &.hazardous-svg {
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    svg {
+      path {
+        fill: $input-yellow-color-2;
+      }
+    }
+
+    &:hover {
+      svg {
+        path {
+          fill: $input-yellow-color-2 !important;
+        }
       }
     }
   }

@@ -16,5 +16,6 @@ export interface CreateContactPhoneCommand {
     phone?: string | null;
     phoneExt?: string | null;
     contactPhoneType?: ContactPhoneType;
+    primary?: boolean;
 }
 

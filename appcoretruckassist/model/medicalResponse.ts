@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 
 
 export interface MedicalResponse { 
@@ -16,6 +17,7 @@ export interface MedicalResponse {
     note?: string | null;
     issueDate?: string;
     expDate?: string;
+    files?: Array<FileResponse> | null;
     createdAt?: string;
     updatedAt?: string;
 }

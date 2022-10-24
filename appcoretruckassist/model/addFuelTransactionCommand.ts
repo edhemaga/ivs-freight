@@ -15,6 +15,7 @@ import { CreateFuelItemCommand } from './createFuelItemCommand';
 export interface AddFuelTransactionCommand { 
     driverId?: number | null;
     truckId?: number;
+    trailerId?: number | null;
     fuelStopStoreId?: number;
     transactionDate?: string;
     total?: number;

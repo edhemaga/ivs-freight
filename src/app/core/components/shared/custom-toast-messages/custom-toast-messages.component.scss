@@ -1,6 +1,7 @@
 .main-toast-holder{
     position: relative;
-    width: 280px;
+    width: max-content;
+    min-width: 200px;
     height: 48px;
     padding: 8px;
     border-radius: 3px;
@@ -9,17 +10,30 @@
     margin-bottom: 10px;
     margin-left: 0px;
     user-select: none;
-    transition: all 0.15s ease;
+    transition: all 0.300s ease;
+    
+    display: flex;
+    flex-wrap: nowrap;
     
     &.wide-toast-message{
-        width: 340px;
+        //width: 340px;
     }
 
     &.movedLeft{
         margin-left: 142px;
     }
 
+    .main-messages-holder{
+        min-width: 152px;
+    }
+
+    .buttons_holder{
+        display: flex;
+        flex-wrap: nowrap;
+    }
+
     .toast-title{
+        margin-right: 22px;
         font-size: 11px;
         font-weight: bold;
         line-height: 14px;
@@ -28,7 +42,8 @@
     }
 
     .toast-message{
-        width: 90%;
+        width: 100%;
+        margin-right: 22px;
         font-size: 14px; 
         color: #FFFFFF;
         line-height: 18px;
@@ -41,13 +56,10 @@
     }
 
     .errorMessage{
-        width: 75%;
+        //width: 75%;
     }
 
     .closeToastrBtn{
-        position: absolute;
-        top: 8px;
-        right: 8px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -78,8 +90,7 @@
 
     .retryButton{
        // display: none;
-        right: 41px;
-
+        margin-right: 8px;
         svg {
             height: 16.2px;
             width: 13.69;
@@ -105,12 +116,6 @@
         .toast-message{
             opacity: 1;
         }
-    }
-
-    &.closeToastAction{
-        opacity: 0 !important;
-        //transform: scale(0.7);
-        transition: all 0.15s ease-in-out;
     }
 }
 

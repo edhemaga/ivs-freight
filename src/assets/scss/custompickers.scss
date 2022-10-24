@@ -116,7 +116,7 @@
 
 .pickers_holder {
   position: absolute;
-  top: 5px !important;
+  top: 3px !important;
   width: auto !important;
   padding: 0;
 
@@ -565,6 +565,7 @@
         color: #3C3C3C;
         background-color: #F7F7F7;
         border-radius: 2px;
+        cursor: pointer;
       }
     }
   }

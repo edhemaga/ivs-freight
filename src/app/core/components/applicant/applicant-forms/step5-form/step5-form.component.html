@@ -29,6 +29,8 @@
           dropdownWidthClass: 'w-col-192',
           dropdownImageInput: {
             withText: true,
+            svg: true,
+            image: false,
             url: selectedVehicleType?.logoName,
             template: 'truck',
             class: selectedVehicleType?.name
@@ -47,7 +49,7 @@
       ></app-ta-input-dropdown>
     </div>
     <div class="group location-group">
-      <app-ta-input-address
+      <app-input-address-dropdown
         formControlName="location"
         [inputConfig]="{
           name: 'Address',
@@ -56,16 +58,17 @@
           isRequired: true,
           placeholderIcon: 'address',
           textTransform: 'capitalize',
-          autoFocus: true,
+          dropdownWidthClass: 'w-col-242',
           minLength: 12,
           maxLength: 256,
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [placeholderType]="'shortAddress'"
         [incorrectValue]="false"
         (incorrectEvent)="incorrectInput($event, 2, 10)"
         [activeAddress]="selectedAddress"
         (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-      ></app-ta-input-address>
+      ></app-input-address-dropdown>
     </div>
 
     <!-- REVIEW AND FEEDBACK -->

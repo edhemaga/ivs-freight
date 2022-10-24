@@ -17,6 +17,7 @@ export class AppTooltipComponent implements AfterViewInit {
   @Input() position: string = '';
   @Input() tooltipBackground: string = 'rgb(40, 82, 159)';
   @Input() tooltipColor: string = '#fff';
+  @Input() tooltipTextAlign: string = 'left';
 
   @ViewChild(TemplateRef, { static: false }) template: TemplateRef<void>;
 

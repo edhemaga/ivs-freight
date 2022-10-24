@@ -15,6 +15,7 @@ import {
   RepairShopService,
   UpdateRepairShopCommand,
   RepairListResponse,
+  RepairShopMinimalResponse,
 } from 'appcoretruckassist';
 import { RepairShopResponse } from '../../../../../../appcoretruckassist/model/repairShopResponse';
 import { RepairTruckStore } from './repair-truck-state/repair-truck.store';
@@ -24,10 +25,9 @@ import { RepairTruckQuery } from './repair-truck-state/repair-truck.query';
 import { RepairTrailerQuery } from './repair-trailer-state/repair-trailer.query';
 import { ShopQuery } from './shop-state/shop.query';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { ShopDetailsListStore } from './shop-details-state/shop-details-list-state/shop-details-list.store';
-import { RepairShopMinimalListStore } from './shop-details-state/shop-minimal-list-state/shop-minimal.store';
-import { ShopItemStore } from './shop-details-state/shop-detail.store';
-import { RepairShopMinimalListQuery } from './shop-details-state/shop-minimal-list-state/shop-minimal.query';
+import { RepairDQuery } from './details-state/repair-d.query';
+import { RepairDStore } from './details-state/repair-d.store';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -46,11 +46,8 @@ export class RepairTService implements OnDestroy {
     private shopStore: ShopStore,
     private shopQuery: ShopQuery,
     private tableService: TruckassistTableService,
-    private sdls: ShopDetailsListStore,
-    private shopMinimalStore: RepairShopMinimalListStore,
-    private shopDetailsMinimalQuery: RepairShopMinimalListQuery,
-
-    private sItemStore: ShopItemStore
+    private rDs: RepairDStore,
+    private rDq: RepairDQuery
   ) {}
 
   // <----------------------- Repair Truck And Trailer -------------------->
@@ -61,12 +58,6 @@ export class RepairTService implements OnDestroy {
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (shop: RepairShopResponse | any) => {
-              this.shopMinimalStore.remove(
-                ({ id }) => id === data.repairShopId
-              );
-              this.shopMinimalStore.add(shop);
-             /*  this.sdls.update(shop.id, { repairs: shop.repairs }); */
-              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit });
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 tab: 'repair-shop',
@@ -120,12 +111,6 @@ export class RepairTService implements OnDestroy {
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (shop: RepairShopResponse | any) => {
-              this.shopMinimalStore.remove(
-                ({ id }) => id === data.repairShopId
-              );
-              this.shopMinimalStore.add(shop);
-              /* this.sdls.update(shop.id, { repairs: shop.repairs }); */
-              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit });
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 tab: 'repair-shop',
@@ -283,11 +268,7 @@ export class RepairTService implements OnDestroy {
               const repairShopCount = JSON.parse(
                 localStorage.getItem('repairShopTableCount')
               );
-
-              this.shopStore.add(shop);
-              this.shopMinimalStore.add(shop);
               repairShopCount.repairShops++;
-
               localStorage.setItem(
                 'repairShopTableCount',
                 JSON.stringify({
@@ -317,10 +298,9 @@ export class RepairTService implements OnDestroy {
           .subscribe({
             next: (shop: RepairShopResponse | any) => {
               this.shopStore.remove(({ id }) => id === data.id);
-              this.shopMinimalStore.remove(({ id }) => id === data.id);
-              this.shopMinimalStore.add(shop);
+
               this.shopStore.add(shop);
-              this.sdls.replace(shop.id, shop);
+
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 tab: 'repair-shop',
@@ -391,16 +371,14 @@ export class RepairTService implements OnDestroy {
     repairId: number,
     getIndex?: boolean
   ): Observable<RepairShopResponse> {
-    this.shopDetailsMinimalQuery
-      .selectAll()
+    this.rDq.repairShopMinimal$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((item) => (this.repairShopList = item));
-    if (getIndex) {
+      .subscribe((item) => (this.repairShopList = item?.pagination?.data));
+    if (getIndex && this.repairShopList) {
       this.currentIndex = this.repairShopList.findIndex(
-        (driver) => driver.id === repairId
+        (shop) => shop.id === repairId
       );
       let last = this.repairShopList.at(-1);
-
       if (last.id === repairId) {
         this.currentIndex = --this.currentIndex;
       } else {
@@ -409,9 +387,9 @@ export class RepairTService implements OnDestroy {
       if (this.currentIndex == -1) {
         this.currentIndex = 0;
       }
+
       this.repairShopId = this.repairShopList[this.currentIndex].id;
     }
-
     return this.shopServices.apiRepairshopIdGet(repairId);
   }
 
@@ -422,9 +400,6 @@ export class RepairTService implements OnDestroy {
           localStorage.getItem('repairShopTableCount')
         );
         this.shopStore.remove(({ id }) => id === shopId);
-        this.shopMinimalStore.remove(({ id }) => id === shopId);
-        this.sdls.remove(({ id }) => id === shopId);
-
         shopCount.repairShops--;
 
         localStorage.setItem(
@@ -459,8 +434,7 @@ export class RepairTService implements OnDestroy {
         );
 
         this.shopStore.remove(({ id }) => id === shopId);
-        this.shopMinimalStore.remove(({ id }) => id === shopId);
-        this.sdls.remove(({ id }) => id === shopId);
+
         shopCount.repairShops--;
 
         localStorage.setItem(
@@ -518,6 +492,14 @@ export class RepairTService implements OnDestroy {
 
   public getRepairShopModalDropdowns(): Observable<RepairShopModalResponse> {
     return this.shopServices.apiRepairshopModalGet();
+  }
+  set updateRepairShopMinimal(data: RepairShopMinimalResponse) {
+    this.rDs.update((store) => {
+      return {
+        ...store,
+        repairShopMinimal: data,
+      };
+    });
   }
   ngOnDestroy(): void {
     this.destroy$.next();

@@ -21,7 +21,7 @@ import { UpdatedData } from '../model/shared/enums';
 })
 export class MapsComponent implements OnInit {
   viewData = [];
-  @Input() set _viewData(value) {
+  @Input() set _viewData(value) { // table data (shippers, repair shops)
     var previousData = JSON.parse(JSON.stringify(this.viewData));
     var updatedData = false;
 
@@ -47,7 +47,8 @@ export class MapsComponent implements OnInit {
       }, 1000);
     }
   }
-  @Input() mapType: string = 'shipper';
+  @Input() mapType: string = 'shipper';  // shipper, repairShop, fuelStop, accident, inspection, routing
+  @Input() routes: any[] = [];  // array of stops to be shown on map, ex. - [{routeColor: #3074D3, stops: [{lat: 39.353087, long: -84.299328, stopColor: #EF5350, empty: true}, {lat: 39.785871, long: -86.143448, stopColor: #26A690, empty: false}]]
   @Input() dropdownActions: any[] = [];
   @Output() callDropDownAction: EventEmitter<any> = new EventEmitter();
 
@@ -88,14 +89,14 @@ export class MapsComponent implements OnInit {
   };
 
   public routeColors: any[] = [
-    '#8A9AEF',
-    '#FDB46B',
-    '#F27B8E',
-    '#6DC089',
-    '#A574C3',
-    '#73D0F1',
-    '#F69FF3',
-    '#A1887F',
+    '#3074D3',
+    '#FFA726',
+    '#EF5350',
+    '#26A690',
+    '#AB47BC',
+    '#38BDEB',
+    '#F276EF',
+    '#8D6E63',
   ];
 
   public mapZoomTime: number = 0;

@@ -6,7 +6,7 @@
       [headerText]="item.name"
       [hasIcon]="item.icon"
       [hidePlus]="item.hide"
-      [counterData]="item.data"
+      [counterData]="item.length"
       [options]="fuelDrop"
       [customText]="item.customText"
       [arrayIcons]="item.icons"
@@ -16,8 +16,10 @@
     </app-ta-details-header>
   </div>
   <div class="repair-details-cmp">
-    <div *ngFor="let item of fuelConfig; trackBy: identity">
-      <app-fuel-details-item [data]="item"> </app-fuel-details-item>
+    <div>
+      <app-fuel-details-item [fuelData]="fuelConfig"> 
+
+      </app-fuel-details-item>
     </div>
   </div>
 </div>

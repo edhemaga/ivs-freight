@@ -955,18 +955,6 @@
   align-items: center;
   margin-top: 26px;
   margin-bottom: 32px;
-
-  .ftl-load-status {
-    border-radius: 2px;
-    background-color: #f3f3f3;
-    color: #c1c1c1;
-    font-size: 12px;
-    font-weight: 900;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 }
 
 .load-ftl-second-row {
@@ -985,10 +973,6 @@
   column-gap: 12px;
   align-items: center;
   margin-bottom: 22px;
-
-  .broker-load-information {
-    display: flex;
-  }
 }
 
 .load-requirements-load {
@@ -1074,13 +1058,10 @@
 }
 
 .billing-payment-load {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  .billing-payment-rate {
-    width: 130px;
-  }
+  display: grid;
+  grid-template-columns: repeat(6, max-content);
+  column-gap: 12px;
+  row-gap: 26px;
 
   .billing-plus {
     width: 26px;
@@ -1092,6 +1073,12 @@
     transition: all 0.3s ease-in-out;
     cursor: pointer;
     border-radius: 2px;
+
+    svg-icon {
+      width: 16px;
+      height: 18px;
+      line-height: 16px;
+    }
 
     &.billing-adjusted {
       .billing-adjusted-plus {

@@ -20,6 +20,7 @@ import {
   cdlCANADAValidation,
   cdlUSValidation,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+import { DetailsDataService } from '../../../../../services/details-data/details-data.service';
 //import { CreateCdlCommand } from 'appcoretruckassist/model/createCdlCommand';
 //import { EditCdlCommand } from 'appcoretruckassist/model/editCdlCommand';
 
@@ -63,7 +64,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService
+    private formService: FormService,
+    private DetailsDataService: DetailsDataService
   ) {}
 
   ngOnInit(): void {
@@ -92,7 +94,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       restrictions: [null],
       endorsements: [null],
       note: [null],
-      file: [null],
+      files: [null],
     });
 
     this.formService.checkFormChange(this.cdlForm);
@@ -113,6 +115,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.cdlForm);
           return;
         }
+        this.DetailsDataService.setCdlNum(this.cdlForm.get('cdlNumber')?.value);
         if (this.editData.type === 'edit-licence') {
           if (this.isFormDirty) {
             this.updateCdl();
@@ -169,8 +172,18 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             };
           });
           this.classTypes = res.classTypes;
-          this.endorsements = res.endorsements;
-          this.restrictions = res.restrictions;
+          this.endorsements = res.endorsements.map((item) => {
+            return {
+              ...item,
+              name: item.code.concat(' ', '-').concat(' ', item.description),
+            };
+          });
+          this.restrictions = res.restrictions.map((item) => {
+            return {
+              ...item,
+              name: item.code.concat(' ', '-').concat(' ', item.description),
+            };
+          });
         },
         error: () => {
           this.notificationService.error(
@@ -205,12 +218,26 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       restrictions: null,
       endorsements: null,
       note: res.note,
-      file: res.file ? res.file : null,
+      file: res.files ? res.files : null,
     });
 
-    this.documents = res.file ? ([res.file] as any) : [];
-    this.selectedEndorsment = res.cdlEndorsements;
-    this.selectedRestrictions = res.cdlRestrictions;
+    this.documents = res.files ? (res.files as any) : [];
+    this.selectedEndorsment = res.cdlEndorsements.map((item) => {
+      return {
+        ...item,
+        name: item.code.concat(' ', '-').concat(' ', item.description),
+      };
+    });
+
+    this.selectedRestrictions = res.cdlRestrictions.map((item) => {
+      return {
+        ...item,
+        name: item.code.concat(' ', '-').concat(' ', item.description),
+      };
+    });
+    console.log('dropdown');
+    console.log(this.selectedEndorsment);
+    console.log(this.selectedRestrictions);
     this.selectedClassType = res.classType;
     this.selectedStateType = res.state;
   }
@@ -230,13 +257,25 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             restrictions: null,
             endorsements: null,
             note: res.note,
-            file: res.file ? res.file : null,
+            files: res.files ? res.files : null,
           });
 
-          this.documents = res.file ? ([res.file] as any) : [];
+          this.documents = res.files ? (res.files as any) : [];
 
-          this.selectedEndorsment = res.cdlEndorsements;
-          this.selectedRestrictions = res.cdlRestrictions;
+          this.selectedEndorsment = res.cdlEndorsements.map((item) => {
+            return {
+              ...item,
+              name: item.code.concat(' ', '-').concat(' ', item.description),
+            };
+          });
+          this.selectedRestrictions = res.cdlRestrictions.map((item) => {
+            return {
+              ...item,
+              name: item.code.concat(' ', '-').concat(' ', item.description),
+            };
+          });
+          console.log('endorsment component: ', this.selectedEndorsment);
+          console.log('restrictions component: ', this.selectedRestrictions);
           this.selectedClassType = res.classType;
           this.selectedStateType = res.state;
         },
@@ -262,9 +301,9 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       endorsements: this.selectedEndorsment
         ? this.selectedEndorsment.map((item) => item.id)
         : [],
-      file: this.documents[0]?.realFile
-        ? this.documents[0]?.realFile
-        : JSON.stringify(this.cdlForm.value.file),
+      files: this.documents[0]?.realFile
+        ? [this.documents[0]?.realFile]
+        : this.cdlForm.value.files,
       fileModified: this.fileModified,
     };
 
@@ -300,7 +339,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       endorsements: this.selectedEndorsment
         ? this.selectedEndorsment.map((item) => item.id)
         : [],
-      file: this.documents[0]?.realFile,
+      files: [this.documents[0]?.realFile],
     };
 
     if (this.editData.type === 'renew-licence') {
@@ -338,11 +377,12 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
+    console.log(event);
     this.documents = event.files;
 
     if (event.action == 'delete') {
       this.cdlForm.patchValue({
-        file: null,
+        files: null,
       });
 
       this.fileModified = true;

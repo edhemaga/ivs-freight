@@ -2,6 +2,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { SharedService } from '../../../../services/shared/shared.service';
+import { noteColors } from '../../../../../const';
 
 @Component({
   selector: 'app-ta-note-container',
@@ -24,6 +25,7 @@ export class TaNoteContainerComponent implements OnInit {
   @Input() selectedEditor: any;
   @Input() isExpanded: boolean;
   @Input() parking: boolean = false;
+  @Input() popoverNote: boolean = false;
   selectedPaternColor = '#6c6c6c';
   showCollorPattern: boolean;
   activeOptions: any = {
@@ -32,33 +34,15 @@ export class TaNoteContainerComponent implements OnInit {
     foreColor: false,
     underline: false,
   };
-  containerColors: any[] = [
-    {
-      color: '#26A690',
-      name: 'Dark Green',
-    },
-    {
-      color: '#EF5350',
-      name: 'Red',
-    },
-    {
-      color: '#FFA726',
-      name: 'Yellow',
-    },
-    {
-      color: '#536BC2',
-      name: 'Blue',
-    },
-    {
-      color: '#6C6C6C',
-      name: 'Gray',
-    },
-  ];
+  containerColors: any[] = noteColors;
   selectedColorName: any = {
     color: '#6C6C6C',
     name: 'Gray',
   };
   slowTimeout: any;
+  lastSavedIndex: number = -1;
+  defaultColorSet: boolean = false;
+  closedPattern: boolean = false;
   private destroy$ = new Subject<void>();
 
   constructor(private sharedService: SharedService) {}
@@ -74,17 +58,21 @@ export class TaNoteContainerComponent implements OnInit {
   filterContainersColor() {
     this.containerColors.sort((a, b) => {
       if (a['color'] != this.selectedColorName.color) {
-        return -1;
+        return 1;
       }
-      return 1;
+      return -1;
     });
   }
 
-  executeEditor(action: string, color?: string, indx?: number) {
+  executeEditor(
+    action: string,
+    color?: string,
+    indx?: number,
+    preventSelectionRemove?: boolean
+  ) {
     if (indx || indx === 0) {
       this.selectedColorName = this.containerColors[indx];
     }
-
     document.execCommand('styleWithCSS', false, 'true');
     if (this.range) {
       this.selectionTaken.removeAllRanges();
@@ -104,13 +92,17 @@ export class TaNoteContainerComponent implements OnInit {
         document.execCommand(action, false, null);
       }
     } else {
-      this.filterContainersColor();
+      if (this.lastSavedIndex != indx) {
+        this.filterContainersColor();
+      }
+      this.lastSavedIndex = indx;
       setTimeout(() => {
         this.focusElement();
         setTimeout(() => {
           this.focusElement();
           this.selectedPaternColor = color;
           document.execCommand('foreColor', false, color);
+          this.defaultColorSet = true;
         });
       });
     }
@@ -141,6 +133,38 @@ export class TaNoteContainerComponent implements OnInit {
             };
       }, 200);
       this.selectedPaternColor = document.queryCommandValue('ForeColor');
+    }
+
+    if (this.defaultColorSet) {
+      this.containerColors.map((col, indx) => {
+        if (col.color == this.selectedPaternColor) {
+          this.selectedColorName = this.containerColors[indx];
+          document.execCommand('styleWithCSS', false, 'true');
+          if (this.lastSavedIndex != indx) {
+            this.filterContainersColor();
+          }
+          this.lastSavedIndex = indx;
+          setTimeout(() => {
+            this.focusElement();
+            setTimeout(() => {
+              this.focusElement();
+              this.selectedPaternColor = col.color;
+            });
+          });
+        }
+      });
+    }
+  }
+
+  togglePattern() {
+    this.showCollorPattern = !this.showCollorPattern;
+
+    if(!this.showCollorPattern) {
+      setTimeout(()=>{
+        this.closedPattern = false;
+      }, 300)
+    } else {
+      this.closedPattern = true;
     }
   }
 

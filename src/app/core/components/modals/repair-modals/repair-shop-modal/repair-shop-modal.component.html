@@ -8,6 +8,7 @@
   (action)="onModalAction($event)"
 >
   <form
+    origin
     [formGroup]="repairShopForm"
     class="form-container form-container-without-mb"
   >
@@ -105,14 +106,11 @@
             label: 'Address, City, State Zip',
             isRequired: true,
             placeholderIcon: 'address',
-            placeholder: 'Address, City, State Zip',
             textTransform: 'capitalize',
-            dropdownWidthClass: 'w-col-512',
+            dropdownWidthClass: 'w-col-376',
             minLength: 6,
-            maxLength: 256,
-            isDropdown: true
+            maxLength: 256
           }"
-          [incorrectValue]="false"
           [placeholderType]="'longAddress'"
           [activeAddress]="selectedAddress"
           (selectedAddress)="onHandleAddress($event)"
