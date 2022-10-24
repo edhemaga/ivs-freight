@@ -93,6 +93,8 @@ export class TaNoteComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.value = this.note;
+
+    this.correctEntityType();
   }
 
   checkFocus(e) {
@@ -296,6 +298,15 @@ export class TaNoteComponent implements OnInit, OnDestroy {
       this.noteIcon = 'Note.svg';
     } else {
       this.noteIcon = 'Note - Empty.svg';
+    }
+  }
+
+  correctEntityType() {
+    if(this.entityType == 'User') {
+      this.entityType = 'CompanyUser';
+    }
+    if(this.entityType == 'Customer') {
+      this.entityType = 'Broker';
     }
   }
 
