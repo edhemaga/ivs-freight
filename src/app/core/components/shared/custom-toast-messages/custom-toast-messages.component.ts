@@ -252,9 +252,9 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
     switch (this.actionType) {
       case 'ACCOUNT':
-        let accName = this.httpRequest.body?.name ? this.httpRequest.body.name : '';
-        if (!accName){
-          accName = this.DetailsDataService.mainData?.name;
+        let accName = this.DetailsDataService?.mainData ? this.DetailsDataService.mainData?.name : '';   
+        if (!accName){ 
+          accName = this.httpRequest.body?.name ? this.httpRequest.body.name : '';
         }
         this.message = accName;
         this.wideMessage = true;

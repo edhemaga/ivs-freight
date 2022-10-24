@@ -31,7 +31,7 @@ export class NotificationService {
       loginPageReq = true;
     }
     
-    if ( httpRequest.url.indexOf('pm/truck/') > -1 || ( error && error.status == 401 && !loginPageReq) || (!user && !loginPageReq ) || ( !user?.token && !loginPageReq ) || httpRequest.url.indexOf('applicant') > -1 || httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 || httpRequest.url.indexOf('division') > -1 ) {
+    if ( httpRequest.url.indexOf('account/refresh') > -1 || httpRequest.url.indexOf('pm/truck/') > -1 || ( error && error.status == 401 && !loginPageReq) || (!user && !loginPageReq ) || ( !user?.token && !loginPageReq ) || httpRequest.url.indexOf('applicant') > -1 || httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 || httpRequest.url.indexOf('division') > -1 ) {
       return false;
     }
 
@@ -45,7 +45,7 @@ export class NotificationService {
 
   public successToastr(httpRequest: HttpRequest<any>, next: HttpHandler){
     
-    if ( httpRequest.url.indexOf('pm/truck/') > -1 || httpRequest.url.indexOf('login') > -1 || httpRequest.url.indexOf('applicant') > -1 || httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 || httpRequest.url.indexOf('division') > -1 ) {
+    if ( httpRequest.url.indexOf('account/refresh') > -1 || httpRequest.url.indexOf('pm/truck/') > -1 || httpRequest.url.indexOf('login') > -1 || httpRequest.url.indexOf('applicant') > -1 || httpRequest.url.indexOf('application') > -1 || httpRequest.url.indexOf('dispatch') > -1 || httpRequest.url.indexOf('division') > -1 ) {
       return false;
     }
 
