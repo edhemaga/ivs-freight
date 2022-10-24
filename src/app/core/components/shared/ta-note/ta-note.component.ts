@@ -84,7 +84,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     private sharedService: SharedService,
     private ref: ChangeDetectorRef,
     private noteService: NoteUpdateService,
-    private DetailsDataService: DetailsDataService,
+    private DetailsDataService: DetailsDataService
   ) {}
 
   ngOnInit(): void {
@@ -112,8 +112,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   toggleNote(data: any, t2) {
-   
-    if (this.mainData){
+    if (this.mainData) {
       this.DetailsDataService.setNewData(this.mainData);
     }
     this.preventClosing = true;
@@ -302,10 +301,10 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   correctEntityType() {
-    if(this.entityType == 'User') {
+    if (this.entityType == 'User') {
       this.entityType = 'CompanyUser';
     }
-    if(this.entityType == 'Customer') {
+    if (this.entityType == 'Customer') {
       this.entityType = 'Broker';
     }
   }
