@@ -597,6 +597,7 @@ export class TaInputDropdownComponent
   }
 
   public commandEvent(event: { data: any; action: string; mode: string }) {
+    console.log('command event: ', event);
     if (event.action === 'Edit Input') {
       this.selectedLabelMode.emit('Color');
     }
