@@ -87,10 +87,7 @@
                     </span>
                     <!-- <span class="select_span description_item_span">{{item.truck.truckType.name}}</span> -->
                     <div
-                      *ngIf="
-                        item.truck !== null &&
-                        !__isBoardLocked
-                      "
+                      *ngIf="item.truck !== null && !__isBoardLocked"
                       [mainTooltip]="'remove'"
                       [tooltipBackground]="'#6C6C6C'"
                       ngbTooltip
@@ -165,9 +162,18 @@
             </div>
           </td>
           <td class="trailer-field abs">
-            <div class="dispatch-list">
+            <div
+              cdkDropList
+              id="{{ rowIndex | cdkid: gridIndex:'trailer' }}"
+              [cdkDropListData]="dData"
+              [cdkDropListConnectedTo]="
+                rowIndex
+                  | cdkconnect: dData.dispatches.length:gridIndex:'trailer'
+              "
+              class="dispatch-list"
+            >
               <div
-                class="dispacher-card dispatch-box"
+                class="dispacher-card dispatch-box drag-item"
                 [class.empty_row]="
                   !item.trailer && trailerSelectOpened != rowIndex
                 "
@@ -179,12 +185,14 @@
                     : 'empty'
                 "
                 [class.empty-box-field]="__isBoardLocked && !item.trailer"
+                cdkDrag
+                cdkDragLockAxis="y"
+                [cdkDragPreviewClass]="'dispatch-dragged-row'"
               >
-                <!-- <div
+                <div
                   *cdkDragPlaceholder
-                  [ngClass]="'trailer_' + item.trailerColor.toLowerCase()"
-                  class="example-custom-placeholder"
-                ></div> -->
+                  class="custom-dispatch-placeholder"
+                ></div>
 
                 <div class="trailer_span_holder">
                   <span
@@ -302,10 +310,17 @@
           <td class="driver-field">
             <div
               class="dispatch-list"
+              cdkDropList
+              id="{{ rowIndex | cdkid: gridIndex:'drivers' }}"
+              [cdkDropListData]="dData"
+              [cdkDropListConnectedTo]="
+                rowIndex
+                  | cdkconnect: dData.dispatches.length:gridIndex:'drivers'
+              "
               [class.multiple-drivers-list]="item.driver && item.coDriver"
             >
               <div
-                class="dispacher-card dispatch-box"
+                class="dispacher-card dispatch-box drag-item"
                 [class.empty_row]="
                   !item.driver && driverSelectOpened != rowIndex
                 "
@@ -318,7 +333,13 @@
                     : 'empty'
                 "
                 [class.empty-box-field]="__isBoardLocked && !item.driver"
+                cdkDrag
+                cdkDragLockAxis="y"
               >
+                <div
+                  *cdkDragPlaceholder
+                  class="custom-dispatch-placeholder"
+                ></div>
                 <div class="driver_span_holder">
                   <span
                     *ngIf="
@@ -968,11 +989,14 @@
           <td class="trailer-field abs">
             <div class="dispatch-list">
               <div
+                cdkDropList
+                id="trailer-1"
                 class="dispacher-card dispatch-box"
                 [class.empty_row]="trailerSelectOpened != -2"
                 [class.empty-box-field]="__isBoardLocked"
               >
                 <div class="trailer_span_holder">
+                  <div *cdkDragPlaceholder class="custom-dispatch-placeholder"></div>
                   <div
                     class="app-ta-input-dropdown-holder"
                     *ngIf="trailerSelectOpened == -2"
@@ -1026,6 +1050,8 @@
           <td class="driver-field">
             <div class="dispatch-list">
               <div
+                cdkDropList
+                id="drivers-1"
                 class="dispacher-card dispatch-box"
                 [class.empty_row]="driverSelectOpened != -2"
                 [class.empty-box-field]="__isBoardLocked"
