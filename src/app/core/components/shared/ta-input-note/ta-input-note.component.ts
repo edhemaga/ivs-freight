@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -66,7 +67,8 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   constructor(
     @Self() public superControl: NgControl,
     private sharedService: SharedService,
-    private noteService: NoteUpdateService
+    private noteService: NoteUpdateService,
+    private ref: ChangeDetectorRef
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -124,6 +126,11 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
           this.saveNote(true);
         }
       }, 100);
+    }
+
+    if (this.noteType == 'details-card' && this.entityId && this.entityType != '') {
+      this.savingNote = true;
+      this.ref.detectChanges();
     }
   }
 

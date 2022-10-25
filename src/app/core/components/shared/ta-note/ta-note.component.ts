@@ -190,6 +190,11 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         }
       }, 100);
     }
+
+    if (this.entityId && this.entityType) {
+      this.savingNote = true;
+      this.ref.detectChanges();
+    }
   }
 
   checkActiveItems() {
