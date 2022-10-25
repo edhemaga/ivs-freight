@@ -79,10 +79,10 @@
   }
 
   .note-body {
+    position: relative;
     overflow: hidden;
     padding: 0 6px;
     cursor: text;
-
 
     &.innactive {
       height: 0px !important;
@@ -92,11 +92,10 @@
       margin-bottom: 0px !important;
     }
 
-    &.active{
+    &.active {
       overflow: visible !important;
       opacity: 1 !important;
     }
-
 
     .note-textarea {
       overflow: auto;
@@ -116,9 +115,10 @@
 
       scrollbar-width: none !important; /* Firefox */
 
-      &.details_textarea{
+      &.details_textarea {
         padding-left: 4px;
         padding-bottom: 7px;
+        padding-right: 20px;
       }
 
       &::-webkit-scrollbar {
@@ -183,6 +183,13 @@
         content: attr(placeholder);
         color: #aaaaaa;
       }
+    }
+
+    .spinner {
+      display: flex;
+      position: absolute;
+      bottom: 1px;
+      right: 0;
     }
   }
 
