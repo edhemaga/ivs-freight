@@ -16,7 +16,11 @@
       focusInput &&
       !selectedDropdownLabelColor &&
       !inputConfig.dropdownLabel,
-    valid: getSuperControl.value && getSuperControl.valid && !focusInput,
+    valid:
+      getSuperControl.value &&
+      getSuperControl.valid &&
+      !focusInput &&
+      !inputConfig.hideClear,
     'valid-dropdown-image-selection':
       !inputConfig.dropdownImageInput?.withText &&
       inputConfig.dropdownImageInput?.url &&
@@ -52,7 +56,8 @@
         !inputConfig.commands?.active &&
         !inputConfig?.loadingSpinner?.isLoading) ||
       (inputConfig.commands?.active &&
-        inputConfig.commands.type !== 'pm-increment-decrement') ||
+        inputConfig.commands.type !== 'pm-increment-decrement' &&
+        !inputConfig.hideClear) ||
       inputConfig.incorrectInput
     "
     class="input-clear {{ inputConfig.customClass }}"
