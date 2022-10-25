@@ -406,6 +406,10 @@
     align-self: flex-end;
     position: relative;
 
+    &:hover{
+      background-color: #EEEEEE;
+    }
+
     p {
       margin: 0;
     }
@@ -476,10 +480,6 @@
 
     .ta-upload-file-header {
       display: flex;
-    }
-
-    .ta-upload-file-footer {
-      background-color: #eeeeee;
     }
   }
 
