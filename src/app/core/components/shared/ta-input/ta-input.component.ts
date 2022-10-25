@@ -901,6 +901,8 @@ export class TaInputComponent
         'fuel-surcharge-rate',
         'escort-rate',
         'detention-rate',
+        'fuel per miles',
+        'fuel price map',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (

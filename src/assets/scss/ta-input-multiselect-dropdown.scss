@@ -62,6 +62,14 @@
         }
       }
     }
+
+    &.disabled {
+      svg {
+        path {
+          fill: #b7b7b7 !important;
+        }
+      }
+    }
   }
 
   .multiselect-items {

@@ -229,7 +229,6 @@
     class="input-dropdown-arrow {{ inputConfig.customClass }}"
     *ngIf="
       ((inputConfig.isDropdown || inputConfig.dropdownLabel) &&
-        !inputConfig.isDisabled &&
         !inputConfig.multiSelectDropdownActive) ||
       ((inputConfig.name === 'datepicker' ||
         inputConfig.name === 'timepicker') &&
