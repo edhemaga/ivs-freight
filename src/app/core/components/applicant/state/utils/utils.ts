@@ -15,6 +15,26 @@ export const isFormValueEqual = (formValue: object, newFormValue: object) => {
   return true;
 };
 
+export const isFormValueNotEqual = (
+  formValue: object,
+  newFormValue: object
+) => {
+  const formValueKeys = Object.keys(formValue);
+  const newFormValueKeys = Object.keys(newFormValue);
+
+  if (formValueKeys.length !== newFormValueKeys.length) {
+    return false;
+  }
+
+  for (let key of formValueKeys) {
+    if (formValue[key] === newFormValue[key]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
 export const anyInputInLineIncorrect = (lineInputs: boolean[]) => {
   return lineInputs.some((item: boolean) => item);
 };

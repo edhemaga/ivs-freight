@@ -175,8 +175,28 @@
               font-size: 12px;
               color: $bw5;
 
+              &::-moz-selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
+
+              &::selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
+
               span {
                 color: $progress-danger;
+
+                &::-moz-selection {
+                  color: $bw5;
+                  background: rgb(145, 145, 145, 0.2);
+                }
+
+                &::selection {
+                  color: $bw5;
+                  background: rgb(145, 145, 145, 0.2);
+                }
               }
             }
           }
@@ -189,6 +209,16 @@
               height: 15px;
               font-size: 12px;
               color: $bw5;
+
+              &::-moz-selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
+
+              &::selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
             }
           }
         }

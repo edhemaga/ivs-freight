@@ -9,13 +9,18 @@ import {
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
-import { anyInputInLineIncorrect } from '../../state/utils/utils';
+import {
+  anyInputInLineIncorrect,
+  isAnyValueInArrayTrue,
+  isFormValueNotEqual,
+} from '../../state/utils/utils';
 
 import {
   convertDateToBackend,
   convertDateFromBackend,
+  convertDateFromBackendShortYear,
 } from 'src/app/core/utils/methods.calculations';
 
 import {
@@ -60,9 +65,13 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public personalInfoRadios: any;
+
+  public subscription: Subscription;
+
+  public stepValues: any;
 
   public applicantId: number;
   public personalInfoId: number;
@@ -310,11 +319,12 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
   public hasIncorrectFields: boolean = false;
 
   public stepFeedbackValues: any;
+  public isFeedbackValueUpdated: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
-    private inputService: TaInputService,
     private router: Router,
+    private inputService: TaInputService,
     private applicantListsService: ApplicantListsService,
     private applicantActionsService: ApplicantActionsService,
     private bankVerificationService: BankVerificationService,
@@ -620,16 +630,16 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         ];
 
         this.previousAddresses.at(i).patchValue({
-          address: previousAddresses[i].address.address,
-          addressUnit: previousAddresses[i].address.addressUnit,
+          address: previousAddresses[i]?.address?.address,
+          addressUnit: previousAddresses[i]?.address?.addressUnit,
         });
 
         if (this.selectedMode === SelectedMode.REVIEW) {
           const selectedPreviousAddressReview =
             previousAddresses[i].previousAddressReview;
 
-          let isPreviousAddressValid: any;
-          let previousAddressMessage: any;
+          let isPreviousAddressValid: any = null;
+          let previousAddressMessage: any = null;
 
           if (selectedPreviousAddressReview) {
             isPreviousAddressValid =
@@ -652,7 +662,9 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
               isPreviousAddressValid === null ? false : !isPreviousAddressValid,
             ],
             displayAnnotationButton:
-              !isPreviousAddressValid && !previousAddressMessage ? true : false,
+              !isPreviousAddressValid === false && !previousAddressMessage
+                ? true
+                : false,
             displayAnnotationTextArea: previousAddressMessage ? true : false,
           };
 
@@ -803,16 +815,37 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     if (this.selectedMode === SelectedMode.FEEDBACK) {
       if (personalInfoReview) {
-        this.stepFeedbackValues = personalInfoReview;
-
-        console.log('this.stepFeedbackValues', this.stepFeedbackValues);
+        this.stepFeedbackValues = {
+          ...this.stepFeedbackValues,
+          ...personalInfoReview,
+        };
       }
+
+      if (previousAddresses) {
+        const previousAddressesReview = previousAddresses.map((item, index) => {
+          return {
+            ...item.previousAddressReview,
+            address: previousAddresses[index].address.address,
+            addressUnit: previousAddresses[index].address.addressUnit,
+          };
+        });
+
+        this.stepFeedbackValues = {
+          ...this.stepFeedbackValues,
+          previousAddressesReview,
+        };
+      }
+
+      this.stepValues = stepValues;
+
+      this.startFeedbackValueChangesMonitoring();
     }
   }
 
   public handleInputSelect(event: any, action: string, index?: number): void {
     switch (action) {
       case InputSwitchActions.BANK:
+        console.log('EVENT', event);
         this.selectedBank = event;
 
         if (!event) {
@@ -862,12 +895,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
           this.previousAddresses.at(index).patchValue({
             address: address.address,
           });
-
-          if (this.previousAddresses.controls.length === 5) {
-            this.isEditingArray[
-              this.previousAddresses.controls.length - 1
-            ].isEditing = false;
-          }
         }
 
         break;
@@ -1041,8 +1068,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
   public onEditNewAddress(index: number): void {
     this.helperIndex = index;
 
-    const lastPreviousAddressAdded = this.previousAddresses.length - 1;
-
     if (this.previousAddresses.controls[index].value.address) {
       this.isEditingArray[index].isEditingAddress = true;
 
@@ -1052,31 +1077,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       this.previousAddressUnitOnEdit =
         this.previousAddresses.controls[index].value.addressUnit;
 
-      if (index !== 0) {
-        this.isEditingMiddlePositionAddress = true;
-
-        if (
-          !this.previousAddresses.at(lastPreviousAddressAdded).value.address
-        ) {
-          this.previousAddresses.removeAt(lastPreviousAddressAdded);
-
-          this.isEditingArray.splice(lastPreviousAddressAdded, 1);
-
-          this.isLastInputDeleted = true;
-        }
-      } else {
-        this.isEditingMiddlePositionAddress = false;
-
-        if (
-          !this.previousAddresses.at(lastPreviousAddressAdded).value.address
-        ) {
-          this.previousAddresses.removeAt(lastPreviousAddressAdded);
-
-          this.isEditingArray.splice(lastPreviousAddressAdded, 1);
-
-          this.isLastInputDeleted = true;
-        }
-      }
+      this.isEditingMiddlePositionAddress = true;
 
       this.isEditingArray = this.isEditingArray.map((item, itemIndex) => {
         if (index === 0 && this.previousAddresses.controls.length === 1) {
@@ -1103,13 +1104,11 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       this.helperIndex = 2;
     }
 
-    if (this.previousAddresses.controls.length < 5) {
-      const lastAddressIndex = this.previousAddresses.controls.length - 1;
+    const lastAddressIndex = this.previousAddresses.controls.length - 1;
 
-      this.isEditingArray[lastAddressIndex].isEditing = true;
+    this.isEditingMiddlePositionAddress = false;
 
-      this.isEditingMiddlePositionAddress = false;
-    }
+    this.isEditingArray[lastAddressIndex].isEditing = true;
   }
 
   public onCancelEditingNewAddress(index: number): void {
@@ -1126,13 +1125,11 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     this.helperIndex = 2;
 
-    if (this.previousAddresses.controls.length < 5) {
-      const lastAddressIndex = this.previousAddresses.controls.length - 1;
+    const lastAddressIndex = this.previousAddresses.controls.length - 1;
 
-      this.isEditingArray[lastAddressIndex].isEditing = true;
+    this.isEditingMiddlePositionAddress = false;
 
-      this.isEditingMiddlePositionAddress = false;
-    }
+    this.isEditingArray[lastAddressIndex].isEditing = true;
   }
 
   public getBanksDropdownList(): void {
@@ -1312,9 +1309,184 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  public startFeedbackValueChangesMonitoring() {
+    this.subscription = this.personalInfoForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((updatedFormValues) => {
+        const filteredIncorrectValues = Object.keys(
+          this.stepFeedbackValues
+        ).reduce((o, key) => {
+          this.stepFeedbackValues[key] === false &&
+            (o[key] = this.stepFeedbackValues[key]);
+
+          return o;
+        }, {});
+
+        const filteredFieldsWithIncorrectValues = Object.keys(
+          filteredIncorrectValues
+        ).reduce((o, key) => {
+          const keyName = key
+            .replace('Valid', '')
+            .replace('is', '')
+            .trim()
+            .toLowerCase();
+
+          let match: any;
+
+          match = Object.keys(this.stepValues)
+            .filter((item) => item.toLowerCase().includes(keyName))
+            .pop();
+
+          o[keyName] = this.stepValues[match];
+
+          if (keyName === 'dob') {
+            o['dob'] = convertDateFromBackendShortYear(o['dob']);
+          }
+
+          if (keyName === 'address') {
+            o['address'] = JSON.stringify({
+              address: this.stepValues['address'].address,
+            });
+          }
+
+          if (keyName === 'addressunit') {
+            o['addressunit'] = this.stepValues['address'].addressUnit;
+          }
+
+          return o;
+        }, {});
+
+        const filteredUpdatedFieldsWithIncorrectValues = Object.keys(
+          filteredFieldsWithIncorrectValues
+        ).reduce((o, key) => {
+          const keyName = key;
+
+          let match: any;
+
+          match = Object.keys(this.stepValues)
+            .filter((item) => item.toLowerCase().includes(keyName))
+            .pop();
+
+          o[keyName] = updatedFormValues[match];
+
+          if (keyName === 'dob') {
+            o['dob'] = updatedFormValues.dateOfBirth;
+          }
+
+          if (keyName === 'address') {
+            o['address'] = JSON.stringify({
+              address:
+                updatedFormValues.previousAddresses[
+                  updatedFormValues.previousAddresses.length - 1
+                ].address,
+            });
+          }
+
+          if (keyName === 'addressunit') {
+            o['addressunit'] =
+              updatedFormValues.previousAddresses[
+                updatedFormValues.previousAddresses.length - 1
+              ].addressUnit;
+          }
+
+          if (keyName === 'legalwork') {
+            o['legalwork'] = updatedFormValues.legalWorkExplain;
+          }
+
+          if (keyName === 'anothername') {
+            o['anothername'] = updatedFormValues.anotherNameExplain;
+          }
+
+          if (keyName === 'inmilitary') {
+            o['inmilitary'] = updatedFormValues.inMilitaryExplain;
+          }
+
+          if (keyName === 'felony') {
+            o['felony'] = updatedFormValues.felonyExplain;
+          }
+
+          if (keyName === 'misdemeanor') {
+            o['misdemeanor'] = updatedFormValues.misdemeanorExplain;
+          }
+
+          if (keyName === 'drunkdriving') {
+            o['drunkdriving'] = updatedFormValues.drunkDrivingExplain;
+          }
+
+          return o;
+        }, {});
+
+        let reviewedCorrectItemsIndex: any = [];
+
+        const filteredPreviousAddressesFields =
+          this.stepFeedbackValues.previousAddressesReview
+            .filter((item, index) => {
+              if (item.isPreviousAddressValid) {
+                reviewedCorrectItemsIndex = [
+                  ...reviewedCorrectItemsIndex,
+                  index,
+                ];
+              }
+
+              return !item.isPreviousAddressValid;
+            })
+            .map((item) => {
+              return {
+                address: item.address,
+                addressUnit: item.addressUnit,
+              };
+            });
+
+        const filteredUpdatedPreviousAddressesFields =
+          updatedFormValues.previousAddresses
+            .filter((item, index) => {
+              if (reviewedCorrectItemsIndex.includes(index)) {
+                return false;
+              }
+
+              if (index === updatedFormValues.previousAddresses.length - 1) {
+                return false;
+              }
+
+              return item;
+            })
+            .map((item) => {
+              return {
+                address: item.address,
+                addressUnit: item.addressUnit,
+              };
+            });
+
+        let formNotEqualArray = [];
+
+        for (let i = 0; i < filteredPreviousAddressesFields.length; i++) {
+          const equalValue =
+            JSON.stringify(filteredPreviousAddressesFields[i]) ===
+            JSON.stringify(filteredUpdatedPreviousAddressesFields[i]);
+
+          formNotEqualArray = [...formNotEqualArray, equalValue];
+        }
+
+        const hasTrueValues = !isAnyValueInArrayTrue(formNotEqualArray);
+        const isFormNotEqual = isFormValueNotEqual(
+          filteredFieldsWithIncorrectValues,
+          filteredUpdatedFieldsWithIncorrectValues
+        );
+
+        if (hasTrueValues && isFormNotEqual) {
+          this.isFeedbackValueUpdated = true;
+        } else {
+          this.isFeedbackValueUpdated = false;
+        }
+      });
+  }
+
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      if (this.selectedMode === SelectedMode.APPLICANT) {
+      if (
+        this.selectedMode === SelectedMode.APPLICANT ||
+        this.selectedMode === SelectedMode.FEEDBACK
+      ) {
         this.onSubmit();
       }
 
@@ -1325,6 +1497,12 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public onSubmit(): void {
+    if (this.selectedMode === SelectedMode.FEEDBACK) {
+      if (!this.isFeedbackValueUpdated) {
+        return;
+      }
+    }
+
     if (this.personalInfoForm.invalid) {
       this.inputService.markInvalid(this.personalInfoForm);
       return;
@@ -1392,11 +1570,13 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     const storePreviousAddresses = this.selectedAddresses
       .filter((item, index) => index !== this.selectedAddresses.length - 1)
-      .map((item, index) => {
+      .map((item) => {
         return {
           address: item,
         };
       });
+
+    console.log('storePreviousAddresses', storePreviousAddresses);
 
     this.applicantActionsService
       .updatePersonalInfo(saveData)
@@ -1416,11 +1596,25 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                 ),
                 bankName: this.banksDropdownList.find(
                   (item) => item.id === saveData.bankId
-                ).name,
-                previousAddresses: storePreviousAddresses,
+                )?.name,
+                previousAddresses: entity.personalInfo.previousAddresses.length
+                  ? entity.personalInfo.previousAddresses.map((item, index) => {
+                      return {
+                        ...item,
+                        address: storePreviousAddresses[index]?.address,
+                      };
+                    })
+                  : storePreviousAddresses.map((item) => {
+                      return {
+                        address: item.address,
+                        previousAddressReview: null,
+                      };
+                    }),
               },
             };
           });
+
+          console.log('this.applicantStore', this.applicantStore);
         },
         error: (err) => {
           console.log(err);

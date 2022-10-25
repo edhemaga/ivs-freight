@@ -163,8 +163,6 @@ export class ApplicantComponent implements OnInit, OnDestroy {
     this.applicantQuery.fullList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        console.log('REEES', res);
-
         res = JSON.parse(JSON.stringify(res));
 
         if (this.selectedMode === SelectedMode.REVIEW) {
