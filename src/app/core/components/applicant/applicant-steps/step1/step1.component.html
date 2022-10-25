@@ -98,7 +98,7 @@
               isDisabled:
                 selectedMode === 'REVIEW_MODE' ||
                 (selectedMode === 'FEEDBACK_MODE' &&
-                  stepFeedbackValues.isFirstNameValid),
+                  stepFeedbackValues?.isFirstNameValid),
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="openAnnotationArray[0].lineInputs[0]"
@@ -119,7 +119,7 @@
               isDisabled:
                 selectedMode === 'REVIEW_MODE' ||
                 (selectedMode === 'FEEDBACK_MODE' &&
-                  stepFeedbackValues.isLastNameValid),
+                  stepFeedbackValues?.isLastNameValid),
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="openAnnotationArray[0].lineInputs[1]"
@@ -139,7 +139,7 @@
               isDisabled:
                 selectedMode === 'REVIEW_MODE' ||
                 (selectedMode === 'FEEDBACK_MODE' &&
-                  stepFeedbackValues.isDoBValid),
+                  stepFeedbackValues?.isDoBValid),
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="openAnnotationArray[0].lineInputs[2]"
@@ -169,7 +169,7 @@
             [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
             [feedbackText]="
               selectedMode === 'FEEDBACK_MODE' &&
-              stepFeedbackValues.personalInfoMessage
+              stepFeedbackValues?.personalInfoMessage
             "
             (annotationBtnClickEvent)="
               selectedMode === 'REVIEW_MODE' &&
@@ -196,7 +196,7 @@
               isDisabled:
                 selectedMode === 'REVIEW_MODE' ||
                 (selectedMode === 'FEEDBACK_MODE' &&
-                  stepFeedbackValues.isPhoneValid),
+                  stepFeedbackValues?.isPhoneValid),
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="openAnnotationArray[1].lineInputs[0]"
@@ -242,7 +242,7 @@
             [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
             [feedbackText]="
               selectedMode === 'FEEDBACK_MODE' &&
-              stepFeedbackValues.phoneMessage
+              stepFeedbackValues?.phoneMessage
             "
             (annotationBtnClickEvent)="
               selectedMode === 'REVIEW_MODE' &&
@@ -390,7 +390,7 @@
                             selectedMode === 'REVIEW_MODE' ||
                             (selectedMode === 'FEEDBACK_MODE' &&
                               i === previousAddresses.controls.length - 1 &&
-                              stepFeedbackValues.isAddressValid),
+                              stepFeedbackValues?.isAddressValid),
                           incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
                         [placeholderType]="'longAddress'"
@@ -428,7 +428,7 @@
                             selectedMode === 'REVIEW_MODE' ||
                             (selectedMode === 'FEEDBACK_MODE' &&
                               i === previousAddresses.controls.length - 1 &&
-                              stepFeedbackValues.isAddressUnitValid),
+                              stepFeedbackValues?.isAddressUnitValid),
                           incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
                         [incorrectValue]="
@@ -759,7 +759,7 @@
               isDisabled:
                 selectedMode === 'REVIEW_MODE' ||
                 (selectedMode === 'FEEDBACK_MODE' &&
-                  stepFeedbackValues.isSsnValid),
+                  stepFeedbackValues?.isSsnValid),
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="openAnnotationArray[7].lineInputs[0]"
@@ -813,7 +813,7 @@
             [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
             [feedbackText]="
               selectedMode === 'FEEDBACK_MODE' &&
-              stepFeedbackValues.ssnBankMessage
+              stepFeedbackValues?.ssnBankMessage
             "
             (annotationBtnClickEvent)="
               selectedMode === 'REVIEW_MODE' &&
@@ -837,7 +837,7 @@
                 (selectedMode === 'APPLICANT_MODE' && !isBankSelected) ||
                 selectedMode === 'REVIEW_MODE' ||
                 (selectedMode === 'FEEDBACK_MODE' &&
-                  stepFeedbackValues.isAccountNumberValid),
+                  stepFeedbackValues?.isAccountNumberValid),
               isRequired: isBankSelected,
               maxLength: 17,
               minLength: 5,
@@ -858,7 +858,7 @@
                 (selectedMode === 'APPLICANT_MODE' && !isBankSelected) ||
                 selectedMode === 'REVIEW_MODE' ||
                 (selectedMode === 'FEEDBACK_MODE' &&
-                  stepFeedbackValues.isRoutingNumberValid),
+                  stepFeedbackValues?.isRoutingNumberValid),
               isRequired: isBankSelected,
               minLength: 9,
               maxLength: 9,
@@ -891,7 +891,7 @@
             [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
             [feedbackText]="
               selectedMode === 'FEEDBACK_MODE' &&
-              stepFeedbackValues.accountRoutingMessage
+              stepFeedbackValues?.accountRoutingMessage
             "
             (annotationBtnClickEvent)="
               selectedMode === 'REVIEW_MODE' &&
@@ -967,12 +967,12 @@
                   isDisabled:
                     selectedMode === 'REVIEW_MODE' ||
                     (selectedMode === 'FEEDBACK_MODE' &&
-                      ((i === 0 && stepFeedbackValues.isLegalWorkValid) ||
-                        (i === 1 && stepFeedbackValues.isAnotherNameValid) ||
-                        (i === 2 && stepFeedbackValues.isInMilitaryValid) ||
-                        (i === 3 && stepFeedbackValues.isFelonyValid) ||
-                        (i === 4 && stepFeedbackValues.isMisdemeanorValid) ||
-                        (i === 5 && stepFeedbackValues.isDrunkDrivingValid))),
+                      ((i === 0 && stepFeedbackValues?.isLegalWorkValid) ||
+                        (i === 1 && stepFeedbackValues?.isAnotherNameValid) ||
+                        (i === 2 && stepFeedbackValues?.isInMilitaryValid) ||
+                        (i === 3 && stepFeedbackValues?.isFelonyValid) ||
+                        (i === 4 && stepFeedbackValues?.isMisdemeanorValid) ||
+                        (i === 5 && stepFeedbackValues?.isDrunkDrivingValid))),
                   incorrectInput: selectedMode === 'REVIEW_MODE'
                 }"
                 [incorrectValue]="openAnnotationArray[i + 9].lineInputs[0]"
@@ -1038,8 +1038,10 @@
     [nextStep]="true"
     [mode]="selectedMode"
     [filledCorrectly]="
-      selectedMode === 'APPLICANT_MODE' && personalInfoForm.valid ||
-      selectedMode === 'FEEDBACK_MODE' && personalInfoForm.valid && isFeedbackValueUpdated
+      (selectedMode === 'APPLICANT_MODE' && personalInfoForm.valid) ||
+      (selectedMode === 'FEEDBACK_MODE' &&
+        personalInfoForm.valid &&
+        isFeedbackValueUpdated)
     "
     [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && hasIncorrectFields"
     (stepEvent)="onStepAction($event)"

@@ -224,10 +224,6 @@ export class ApplicantComponent implements OnInit, OnDestroy {
                 let hasIncorrectValue: boolean;
 
                 if (workExperienceItemsReview[0]) {
-                  hasIncorrectValue = isAnyPropertyInObjectFalse(
-                    workExperienceItemsReview[0]
-                  );
-
                   let incorrectValuesArray = [];
 
                   for (let i = 0; i < workExperienceItemsReview.length; i++) {

@@ -22,7 +22,7 @@ import { UpdateAuthorizationCommand } from 'appcoretruckassist';
 export class Step11Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public authorizationForm: FormGroup;
 
@@ -58,17 +58,13 @@ export class Step11Component implements OnInit, OnDestroy {
   }
 
   public getStepValuesFromStore(): void {
-    let stepValuesResponse: any;
-
     this.applicantQuery.authorizationList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        stepValuesResponse = res;
+        if (res) {
+          this.patchStepValues(res);
+        }
       });
-
-    if (stepValuesResponse) {
-      this.patchStepValues(stepValuesResponse);
-    }
   }
 
   public patchStepValues(stepValues: any): void {
@@ -154,7 +150,10 @@ export class Step11Component implements OnInit, OnDestroy {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      if (this.selectedMode === SelectedMode.APPLICANT) {
+      if (
+        this.selectedMode === SelectedMode.APPLICANT ||
+        this.selectedMode === SelectedMode.FEEDBACK
+      ) {
         this.onSubmit();
       }
 
@@ -179,7 +178,10 @@ export class Step11Component implements OnInit, OnDestroy {
     const saveData: UpdateAuthorizationCommand = {
       ...authorizationForm,
       applicantId: this.applicantId,
-      signature: this.signature,
+      signature:
+        this.selectedMode === SelectedMode.APPLICANT
+          ? this.signature
+          : this.signatureImgSrc,
     };
 
     this.applicantActionsService

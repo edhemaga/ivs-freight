@@ -21,7 +21,7 @@ import { UpdateDriverRightsCommand } from 'appcoretruckassist/model/models';
 export class Step9Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public applicantId: number;
 
@@ -51,17 +51,13 @@ export class Step9Component implements OnInit, OnDestroy {
   }
 
   public getStepValuesFromStore(): void {
-    let stepValuesResponse: any;
-
     this.applicantQuery.driverRightsList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        stepValuesResponse = res;
+        if (res) {
+          this.patchStepValues(res);
+        }
       });
-
-    if (stepValuesResponse) {
-      this.patchStepValues(stepValuesResponse);
-    }
   }
 
   public patchStepValues(stepValues: any): void {
@@ -82,7 +78,10 @@ export class Step9Component implements OnInit, OnDestroy {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      if (this.selectedMode === SelectedMode.APPLICANT) {
+      if (
+        this.selectedMode === SelectedMode.APPLICANT ||
+        this.selectedMode === SelectedMode.FEEDBACK
+      ) {
         this.onSubmit();
       }
 

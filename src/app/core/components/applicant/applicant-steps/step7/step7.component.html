@@ -143,7 +143,9 @@
                         max: 24,
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
-                        isDisabled: selectedMode === 'REVIEW_MODE'
+                        isDisabled:
+                          selectedMode === 'REVIEW_MODE' ||
+                          selectedMode === 'FEEDBACK_MODE'
                       }"
                       (change)="countTotalHours(i)"
                     ></app-ta-input>
@@ -180,21 +182,22 @@
           [label]="
             'I hereby certify that the information given above is correct to the best of my Knowledge '
           "
-          [customClass]="
-            selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
+          [customClass]="'bold-12'"
+          [disabledStillCheckMark]="
+            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
           "
-          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         >
         </app-ta-checkbox>
         <p
           class="m-0 text-center ta-font-bold"
           [ngStyle]="{
-            color:
-              !sevenDaysHosForm.get('isValidHos').value ||
-              selectedMode === 'FEEDBACK_MODE'
-                ? '#6c6c6c'
-                : '#2f2f2f',
-            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
+            color: !sevenDaysHosForm.get('isValidHos').value
+              ? '#6c6c6c'
+              : '#2f2f2f',
+            cursor:
+              selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+                ? 'auto'
+                : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isValidHos')"
         >
@@ -224,7 +227,10 @@
               placeholderIcon: 'date',
               isRequired: true,
               customClass: 'datetimeclass',
-              isDisabled: selectedMode === 'REVIEW_MODE',
+              isDisabled:
+                selectedMode === 'REVIEW_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' &&
+                  stepFeedbackValues?.isReleaseDateValid),
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="openAnnotationArray[0].lineInputs[0]"
@@ -244,7 +250,10 @@
               dropdownWidthClass: 'w-col-431',
               minLength: 6,
               maxLength: 256,
-              isDisabled: selectedMode === 'REVIEW_MODE',
+              isDisabled:
+                selectedMode === 'REVIEW_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' &&
+                  stepFeedbackValues?.isLocationValid),
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [activeAddress]="selectedAddress"
@@ -266,17 +275,23 @@
           <app-applicant-review-feedback
             formControlName="firstRowReview"
             [displayAnnotationButton]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[0].displayAnnotationButton
             "
             [displayAnnotationTextArea]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[0].displayAnnotationTextArea
             "
             [lineIndex]="0"
             [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
             [feedbackText]="
-              'Check the routing number one more time (one number missing)!!!'
+              selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues?.releaseDateLocationMessage
             "
-            (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+            (annotationBtnClickEvent)="
+              selectedMode === 'REVIEW_MODE' &&
+                getAnnotationBtnClickValue($event)
+            "
           ></app-applicant-review-feedback>
         </div>
       </div>
@@ -332,7 +347,10 @@
             <app-ta-input-radiobuttons
               #cmp
               [buttons]="question.answerChoices"
-              [disabled]="selectedMode === 'REVIEW_MODE'"
+              [disabled]="
+                selectedMode === 'REVIEW_MODE' ||
+                selectedMode === 'FEEDBACK_MODE'
+              "
               (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
             ></app-ta-input-radiobuttons>
           </div>
@@ -350,21 +368,22 @@
           [label]="
             'I hereby certify that the information given above is true and I understand that once I begin'
           "
-          [customClass]="
-            selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
+          [customClass]="'bold-12'"
+          [disabledStillCheckMark]="
+            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
           "
-          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         >
         </app-ta-checkbox>
         <p
           class="m-0 text-center ta-font-bold"
           [ngStyle]="{
-            color:
-              !sevenDaysHosForm.get('isValidAnotherEmployer').value ||
-              selectedMode === 'FEEDBACK_MODE'
-                ? '#6c6c6c'
-                : '#2f2f2f',
-            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
+            color: !sevenDaysHosForm.get('isValidAnotherEmployer').value
+              ? '#6c6c6c'
+              : '#2f2f2f',
+            cursor:
+              selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+                ? 'auto'
+                : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isValidAnotherEmployer')"
         >
@@ -385,7 +404,10 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [filledCorrectly]="
-      selectedMode === 'APPLICANT_MODE' && sevenDaysHosForm.valid
+      (selectedMode === 'APPLICANT_MODE' && sevenDaysHosForm.valid) ||
+      (selectedMode === 'FEEDBACK_MODE' &&
+        sevenDaysHosForm.valid &&
+        isFeedbackValueUpdated)
     "
     [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && hasIncorrectFields"
     [mode]="selectedMode"

@@ -8,11 +8,14 @@ import {
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 import { addressValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 
-import { anyInputInLineIncorrect } from '../../state/utils/utils';
+import {
+  anyInputInLineIncorrect,
+  isFormValueNotEqual,
+} from '../../state/utils/utils';
 
 import {
   convertDateToBackend,
@@ -56,7 +59,11 @@ export class Step7Component implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.FEEDBACK;
+
+  public subscription: Subscription;
+
+  public stepValues: any;
 
   public sevenDaysHosForm: FormGroup;
 
@@ -156,6 +163,9 @@ export class Step7Component implements OnInit, OnDestroy {
   ];
   public hasIncorrectFields: boolean = false;
 
+  public stepFeedbackValues: any;
+  public isFeedbackValueUpdated: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -196,20 +206,28 @@ export class Step7Component implements OnInit, OnDestroy {
   }
 
   public getStepValuesFromStore(): void {
-    let stepValuesResponse: any;
-
     this.applicantQuery.sevenDaysHosList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        stepValuesResponse = res;
+        if (res) {
+          this.patchStepValues(res);
+        }
       });
-
-    if (stepValuesResponse) {
-      this.patchStepValues(stepValuesResponse);
-    }
   }
 
   public patchStepValues(stepValues: any): void {
+    const {
+      hos,
+      releasedFromWork,
+      releasedDate,
+      location,
+      workingForAnotherEmployer,
+      intendToWorkForAnotherEmployer,
+      certifyInfomation,
+      id,
+      sevenDaysHosReview,
+    } = stepValues;
+
     if (this.selectedMode === SelectedMode.REVIEW) {
       if (stepValues.sevenDaysHosReview) {
         const {
@@ -245,16 +263,16 @@ export class Step7Component implements OnInit, OnDestroy {
         });
       }
     }
-    const {
-      hos,
-      releasedFromWork,
-      releasedDate,
-      location,
-      workingForAnotherEmployer,
-      intendToWorkForAnotherEmployer,
-      certifyInfomation,
-      id,
-    } = stepValues;
+
+    if (this.selectedMode === SelectedMode.FEEDBACK) {
+      if (sevenDaysHosReview) {
+        this.stepFeedbackValues = sevenDaysHosReview;
+      }
+
+      this.stepValues = stepValues;
+
+      this.startFeedbackValueChangesMonitoring();
+    }
 
     for (let i = 0; i < hos.length; i++) {
       this.hosArray.at(i).patchValue({
@@ -457,9 +475,88 @@ export class Step7Component implements OnInit, OnDestroy {
     }
   }
 
+  public startFeedbackValueChangesMonitoring() {
+    if (this.stepFeedbackValues) {
+      const filteredIncorrectValues = Object.keys(
+        this.stepFeedbackValues
+      ).reduce((o, key) => {
+        this.stepFeedbackValues[key] === false &&
+          (o[key] = this.stepFeedbackValues[key]);
+
+        return o;
+      }, {});
+
+      const hasIncorrectValues = Object.keys(filteredIncorrectValues).length;
+
+      if (hasIncorrectValues) {
+        this.subscription = this.sevenDaysHosForm.valueChanges
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((updatedFormValues) => {
+            const filteredFieldsWithIncorrectValues = Object.keys(
+              filteredIncorrectValues
+            ).reduce((o, key) => {
+              const keyName = key
+                .replace('Valid', '')
+                .replace('is', '')
+                .trim()
+                .toLowerCase();
+
+              if (keyName === 'releasedate') {
+                o['startDate'] = convertDateFromBackendShortYear(
+                  this.stepValues.releasedDate
+                );
+              }
+
+              if (keyName === 'location') {
+                o['address'] = JSON.stringify({
+                  address: this.stepValues.location.address,
+                });
+              }
+
+              return o;
+            }, {});
+
+            const filteredUpdatedFieldsWithIncorrectValues = Object.keys(
+              filteredFieldsWithIncorrectValues
+            ).reduce((o, key) => {
+              const keyName = key;
+
+              if (keyName === 'startDate') {
+                o['startDate'] = updatedFormValues.startDate;
+              }
+
+              if (keyName === 'address') {
+                o['address'] = JSON.stringify({
+                  address: updatedFormValues.address,
+                });
+              }
+
+              return o;
+            }, {});
+
+            const isFormNotEqual = isFormValueNotEqual(
+              filteredFieldsWithIncorrectValues,
+              filteredUpdatedFieldsWithIncorrectValues
+            );
+
+            if (isFormNotEqual) {
+              this.isFeedbackValueUpdated = true;
+            } else {
+              this.isFeedbackValueUpdated = false;
+            }
+          });
+      } else {
+        this.isFeedbackValueUpdated = true;
+      }
+    }
+  }
+
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      if (this.selectedMode === SelectedMode.APPLICANT) {
+      if (
+        this.selectedMode === SelectedMode.APPLICANT ||
+        this.selectedMode === SelectedMode.FEEDBACK
+      ) {
         this.onSubmit();
       }
 
@@ -474,6 +571,12 @@ export class Step7Component implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
+    if (this.selectedMode === SelectedMode.FEEDBACK) {
+      if (!this.isFeedbackValueUpdated) {
+        return;
+      }
+    }
+
     if (this.sevenDaysHosForm.invalid) {
       this.inputService.markInvalid(this.sevenDaysHosForm);
       return;
@@ -517,8 +620,17 @@ export class Step7Component implements OnInit, OnDestroy {
       certifyInfomation: isValidAnotherEmployer,
     };
 
-    this.applicantActionsService
-      .createSevenDaysHos(saveData)
+    const selectMatchingBackendMethod = () => {
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        return this.applicantActionsService.createSevenDaysHos(saveData);
+      }
+
+      if (this.selectedMode === SelectedMode.FEEDBACK) {
+        return this.applicantActionsService.updateSevenDaysHos(saveData);
+      }
+    };
+
+    selectMatchingBackendMethod()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
@@ -540,6 +652,12 @@ export class Step7Component implements OnInit, OnDestroy {
               },
             };
           });
+
+          if (this.selectedMode === SelectedMode.FEEDBACK) {
+            if (this.subscription) {
+              this.subscription.unsubscribe();
+            }
+          }
         },
         error: (err) => {
           console.log(err);

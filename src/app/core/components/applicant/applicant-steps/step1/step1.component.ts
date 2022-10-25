@@ -65,7 +65,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public personalInfoRadios: any;
 
@@ -341,8 +341,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     this.getStepValuesFromStore();
 
     this.getBanksDropdownList();
-
-    this.isBankUnselected();
   }
 
   ngAfterViewInit(): void {
@@ -402,16 +400,16 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public getStepValuesFromStore(): void {
-    let stepValuesResponse: any;
+    let stepResponse: any;
 
     this.applicantQuery.personalInfoList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        stepValuesResponse = res;
+        stepResponse = res;
       });
 
-    if (stepValuesResponse) {
-      this.patchStepValues(stepValuesResponse);
+    if (stepResponse) {
+      this.patchStepValues(stepResponse);
     }
   }
 
@@ -478,6 +476,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       const { id: bankNumberId } = bank;
 
       bankId = bankNumberId;
+
+      this.isBankSelected = true;
     }
 
     setTimeout(() => {
@@ -845,11 +845,16 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
   public handleInputSelect(event: any, action: string, index?: number): void {
     switch (action) {
       case InputSwitchActions.BANK:
-        console.log('EVENT', event);
         this.selectedBank = event;
 
         if (!event) {
-          this.personalInfoForm.get('bankId').patchValue(null);
+          this.isBankSelected = false;
+
+          this.personalInfoForm.patchValue({
+            bankId: null,
+            accountNumber: null,
+            routingNumber: null,
+          });
         }
 
         this.onBankSelected();
@@ -943,22 +948,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         error: (err) => {
           this.notificationService.error("Can't add new bank", 'Error');
         },
-      });
-  }
-
-  public isBankUnselected(): void {
-    this.personalInfoForm
-      .get('bankId')
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe((value) => {
-        if (!value) {
-          this.isBankSelected = false;
-
-          this.personalInfoForm.patchValue({
-            accountNumber: null,
-            routingNumber: null,
-          });
-        }
       });
   }
 
@@ -1310,175 +1299,182 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public startFeedbackValueChangesMonitoring() {
-    this.subscription = this.personalInfoForm.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((updatedFormValues) => {
-        const filteredIncorrectValues = Object.keys(
-          this.stepFeedbackValues
-        ).reduce((o, key) => {
-          this.stepFeedbackValues[key] === false &&
-            (o[key] = this.stepFeedbackValues[key]);
+    if (this.stepFeedbackValues) {
+      const filteredIncorrectValues = Object.keys(
+        this.stepFeedbackValues
+      ).reduce((o, key) => {
+        this.stepFeedbackValues[key] === false &&
+          (o[key] = this.stepFeedbackValues[key]);
 
-          return o;
-        }, {});
+        return o;
+      }, {});
 
-        const filteredFieldsWithIncorrectValues = Object.keys(
-          filteredIncorrectValues
-        ).reduce((o, key) => {
-          const keyName = key
-            .replace('Valid', '')
-            .replace('is', '')
-            .trim()
-            .toLowerCase();
+      const hasIncorrectValues = Object.keys(filteredIncorrectValues).length;
 
-          let match: any;
+      if (hasIncorrectValues) {
+        this.subscription = this.personalInfoForm.valueChanges
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((updatedFormValues) => {
+            const filteredFieldsWithIncorrectValues = Object.keys(
+              filteredIncorrectValues
+            ).reduce((o, key) => {
+              const keyName = key
+                .replace('Valid', '')
+                .replace('is', '')
+                .trim()
+                .toLowerCase();
 
-          match = Object.keys(this.stepValues)
-            .filter((item) => item.toLowerCase().includes(keyName))
-            .pop();
+              const match = Object.keys(this.stepValues)
+                .filter((item) => item.toLowerCase().includes(keyName))
+                .pop();
 
-          o[keyName] = this.stepValues[match];
+              o[keyName] = this.stepValues[match];
 
-          if (keyName === 'dob') {
-            o['dob'] = convertDateFromBackendShortYear(o['dob']);
-          }
-
-          if (keyName === 'address') {
-            o['address'] = JSON.stringify({
-              address: this.stepValues['address'].address,
-            });
-          }
-
-          if (keyName === 'addressunit') {
-            o['addressunit'] = this.stepValues['address'].addressUnit;
-          }
-
-          return o;
-        }, {});
-
-        const filteredUpdatedFieldsWithIncorrectValues = Object.keys(
-          filteredFieldsWithIncorrectValues
-        ).reduce((o, key) => {
-          const keyName = key;
-
-          let match: any;
-
-          match = Object.keys(this.stepValues)
-            .filter((item) => item.toLowerCase().includes(keyName))
-            .pop();
-
-          o[keyName] = updatedFormValues[match];
-
-          if (keyName === 'dob') {
-            o['dob'] = updatedFormValues.dateOfBirth;
-          }
-
-          if (keyName === 'address') {
-            o['address'] = JSON.stringify({
-              address:
-                updatedFormValues.previousAddresses[
-                  updatedFormValues.previousAddresses.length - 1
-                ].address,
-            });
-          }
-
-          if (keyName === 'addressunit') {
-            o['addressunit'] =
-              updatedFormValues.previousAddresses[
-                updatedFormValues.previousAddresses.length - 1
-              ].addressUnit;
-          }
-
-          if (keyName === 'legalwork') {
-            o['legalwork'] = updatedFormValues.legalWorkExplain;
-          }
-
-          if (keyName === 'anothername') {
-            o['anothername'] = updatedFormValues.anotherNameExplain;
-          }
-
-          if (keyName === 'inmilitary') {
-            o['inmilitary'] = updatedFormValues.inMilitaryExplain;
-          }
-
-          if (keyName === 'felony') {
-            o['felony'] = updatedFormValues.felonyExplain;
-          }
-
-          if (keyName === 'misdemeanor') {
-            o['misdemeanor'] = updatedFormValues.misdemeanorExplain;
-          }
-
-          if (keyName === 'drunkdriving') {
-            o['drunkdriving'] = updatedFormValues.drunkDrivingExplain;
-          }
-
-          return o;
-        }, {});
-
-        let reviewedCorrectItemsIndex: any = [];
-
-        const filteredPreviousAddressesFields =
-          this.stepFeedbackValues.previousAddressesReview
-            .filter((item, index) => {
-              if (item.isPreviousAddressValid) {
-                reviewedCorrectItemsIndex = [
-                  ...reviewedCorrectItemsIndex,
-                  index,
-                ];
+              if (keyName === 'dob') {
+                o['dob'] = convertDateFromBackendShortYear(o['dob']);
               }
 
-              return !item.isPreviousAddressValid;
-            })
-            .map((item) => {
-              return {
-                address: item.address,
-                addressUnit: item.addressUnit,
-              };
-            });
-
-        const filteredUpdatedPreviousAddressesFields =
-          updatedFormValues.previousAddresses
-            .filter((item, index) => {
-              if (reviewedCorrectItemsIndex.includes(index)) {
-                return false;
+              if (keyName === 'address') {
+                o['address'] = JSON.stringify({
+                  address: this.stepValues.address.address,
+                });
               }
 
-              if (index === updatedFormValues.previousAddresses.length - 1) {
-                return false;
+              if (keyName === 'addressunit') {
+                o['addressunit'] = this.stepValues.address.addressUnit;
               }
 
-              return item;
-            })
-            .map((item) => {
-              return {
-                address: item.address,
-                addressUnit: item.addressUnit,
-              };
-            });
+              return o;
+            }, {});
 
-        let formNotEqualArray = [];
+            const filteredUpdatedFieldsWithIncorrectValues = Object.keys(
+              filteredFieldsWithIncorrectValues
+            ).reduce((o, key) => {
+              const keyName = key;
 
-        for (let i = 0; i < filteredPreviousAddressesFields.length; i++) {
-          const equalValue =
-            JSON.stringify(filteredPreviousAddressesFields[i]) ===
-            JSON.stringify(filteredUpdatedPreviousAddressesFields[i]);
+              const match = Object.keys(this.stepValues)
+                .filter((item) => item.toLowerCase().includes(keyName))
+                .pop();
 
-          formNotEqualArray = [...formNotEqualArray, equalValue];
-        }
+              o[keyName] = updatedFormValues[match];
 
-        const hasTrueValues = !isAnyValueInArrayTrue(formNotEqualArray);
-        const isFormNotEqual = isFormValueNotEqual(
-          filteredFieldsWithIncorrectValues,
-          filteredUpdatedFieldsWithIncorrectValues
-        );
+              if (keyName === 'dob') {
+                o['dob'] = updatedFormValues.dateOfBirth;
+              }
 
-        if (hasTrueValues && isFormNotEqual) {
-          this.isFeedbackValueUpdated = true;
-        } else {
-          this.isFeedbackValueUpdated = false;
-        }
-      });
+              if (keyName === 'address') {
+                o['address'] = JSON.stringify({
+                  address:
+                    updatedFormValues.previousAddresses[
+                      updatedFormValues.previousAddresses.length - 1
+                    ].address,
+                });
+              }
+
+              if (keyName === 'addressunit') {
+                o['addressunit'] =
+                  updatedFormValues.previousAddresses[
+                    updatedFormValues.previousAddresses.length - 1
+                  ].addressUnit;
+              }
+
+              if (keyName === 'legalwork') {
+                o['legalwork'] = updatedFormValues.legalWorkExplain;
+              }
+
+              if (keyName === 'anothername') {
+                o['anothername'] = updatedFormValues.anotherNameExplain;
+              }
+
+              if (keyName === 'inmilitary') {
+                o['inmilitary'] = updatedFormValues.inMilitaryExplain;
+              }
+
+              if (keyName === 'felony') {
+                o['felony'] = updatedFormValues.felonyExplain;
+              }
+
+              if (keyName === 'misdemeanor') {
+                o['misdemeanor'] = updatedFormValues.misdemeanorExplain;
+              }
+
+              if (keyName === 'drunkdriving') {
+                o['drunkdriving'] = updatedFormValues.drunkDrivingExplain;
+              }
+
+              return o;
+            }, {});
+
+            let reviewedCorrectItemsIndex: any = [];
+
+            const filteredPreviousAddressesFields =
+              this.stepFeedbackValues.previousAddressesReview
+                .filter((item, index) => {
+                  if (item.isPreviousAddressValid) {
+                    reviewedCorrectItemsIndex = [
+                      ...reviewedCorrectItemsIndex,
+                      index,
+                    ];
+                  }
+
+                  return !item.isPreviousAddressValid;
+                })
+                .map((item) => {
+                  return {
+                    address: item.address,
+                    addressUnit: item.addressUnit,
+                  };
+                });
+
+            const filteredUpdatedPreviousAddressesFields =
+              updatedFormValues.previousAddresses
+                .filter((item, index) => {
+                  if (reviewedCorrectItemsIndex.includes(index)) {
+                    return false;
+                  }
+
+                  if (
+                    index ===
+                    updatedFormValues.previousAddresses.length - 1
+                  ) {
+                    return false;
+                  }
+
+                  return item;
+                })
+                .map((item) => {
+                  return {
+                    address: item.address,
+                    addressUnit: item.addressUnit,
+                  };
+                });
+
+            let formNotEqualArray = [];
+
+            for (let i = 0; i < filteredPreviousAddressesFields.length; i++) {
+              const equalValue =
+                JSON.stringify(filteredPreviousAddressesFields[i]) ===
+                JSON.stringify(filteredUpdatedPreviousAddressesFields[i]);
+
+              formNotEqualArray = [...formNotEqualArray, equalValue];
+            }
+
+            const hasTrueValues = !isAnyValueInArrayTrue(formNotEqualArray);
+            const isFormNotEqual = isFormValueNotEqual(
+              filteredFieldsWithIncorrectValues,
+              filteredUpdatedFieldsWithIncorrectValues
+            );
+
+            if (hasTrueValues && isFormNotEqual) {
+              this.isFeedbackValueUpdated = true;
+            } else {
+              this.isFeedbackValueUpdated = false;
+            }
+          });
+      } else {
+        this.isFeedbackValueUpdated = true;
+      }
+    }
   }
 
   public onStepAction(event: any): void {
@@ -1604,15 +1600,16 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         address: storePreviousAddresses[index]?.address,
                       };
                     })
-                  : storePreviousAddresses.map((item) => {
-                      return {
-                        address: item.address,
-                        previousAddressReview: null,
-                      };
-                    }),
+                  : storePreviousAddresses,
               },
             };
           });
+
+          if (this.selectedMode === SelectedMode.FEEDBACK) {
+            if (this.subscription) {
+              this.subscription.unsubscribe();
+            }
+          }
 
           console.log('this.applicantStore', this.applicantStore);
         },

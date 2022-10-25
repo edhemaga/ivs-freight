@@ -22,7 +22,7 @@ import { UpdateDisclosureReleaseCommand } from 'appcoretruckassist/model/models'
 export class Step10Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public disclosureReleaseForm: FormGroup;
 
@@ -57,17 +57,13 @@ export class Step10Component implements OnInit, OnDestroy {
   }
 
   public getStepValuesFromStore(): void {
-    let stepValuesResponse: any;
-
     this.applicantQuery.disclosureAndReleaseList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        stepValuesResponse = res;
+        if (res) {
+          this.patchStepValues(res);
+        }
       });
-
-    if (stepValuesResponse) {
-      this.patchStepValues(stepValuesResponse);
-    }
   }
 
   public patchStepValues(stepValues: any) {
@@ -156,7 +152,10 @@ export class Step10Component implements OnInit, OnDestroy {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      if (this.selectedMode === SelectedMode.APPLICANT) {
+      if (
+        this.selectedMode === SelectedMode.APPLICANT ||
+        this.selectedMode === SelectedMode.FEEDBACK
+      ) {
         this.onSubmit();
       }
 

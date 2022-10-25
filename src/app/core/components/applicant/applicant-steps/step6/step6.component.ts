@@ -339,17 +339,13 @@ export class Step6Component implements OnInit, OnDestroy {
   }
 
   public getStepValuesFromStore(): void {
-    let stepValuesResponse: any;
-
     this.applicantQuery.educationList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        stepValuesResponse = res;
+        if (res) {
+          this.patchStepValues(res);
+        }
       });
-
-    if (stepValuesResponse) {
-      this.patchStepValues(stepValuesResponse);
-    }
   }
 
   public patchStepValues(stepValues: any): void {
@@ -519,7 +515,8 @@ export class Step6Component implements OnInit, OnDestroy {
       otherTrainingExplain: otherTrainingDescription,
       knowledgeOfSafetyRegulations,
       driverForCompany: driverBefore,
-      driverForCompanyBeforeExplain: from && convertDateFromBackendShortYear(from),
+      driverForCompanyBeforeExplain:
+        from && convertDateFromBackendShortYear(from),
       driverForCompanyToExplain: to && convertDateFromBackendShortYear(to),
       unableForJob,
       unableForJobExplain: unableForJobDescription,

@@ -37,6 +37,8 @@ import {
   InviteEmployerResponse,
   UpdateAuthorizationCommand,
   UpdateDisclosureReleaseCommand,
+  UpdateDrugAndAlcoholCommand,
+  UpdateSevenDaysHosCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -103,12 +105,24 @@ export class ApplicantActionsService {
     return this.applicantService.apiApplicantDrugandalcoholPost(data);
   }
 
-  /* BACKEND PUT ACTION FUNCTIONS - APPLICANT MODE */
+  /* BACKEND PUT ACTION FUNCTIONS - APPLICANT & FEEDBACK MODE */
 
   public updatePersonalInfo(
     data: UpdatePersonalInfoCommand
   ): Observable<object> {
     return this.applicantService.apiApplicantPersonalPut(data);
+  }
+
+  public updateSevenDaysHos(
+    data: UpdateSevenDaysHosCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantSevendayshosPut(data);
+  }
+
+  public updateDrugAndAlcohol(
+    data: UpdateDrugAndAlcoholCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantDrugandalcoholPut(data);
   }
 
   public updateDriverRights(

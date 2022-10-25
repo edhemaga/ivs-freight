@@ -8,9 +8,12 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
-import { anyInputInLineIncorrect } from '../../state/utils/utils';
+import {
+  anyInputInLineIncorrect,
+  isFormValueNotEqual,
+} from '../../state/utils/utils';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
@@ -50,9 +53,13 @@ export class Step8Component implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public drugTestRadios: any;
+
+  public subscription: Subscription;
+
+  public stepValues: any;
 
   public drugTestForm: FormGroup;
   public drugAlcoholStatementForm: FormGroup;
@@ -118,6 +125,9 @@ export class Step8Component implements OnInit, OnDestroy {
   ];
   public hasIncorrectFields: boolean = false;
 
+  public stepFeedbackValues: any;
+  public isFeedbackValueUpdated: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -167,20 +177,30 @@ export class Step8Component implements OnInit, OnDestroy {
   }
 
   public getStepValuesFromStore(): void {
-    let stepValuesResponse: any;
-
     this.applicantQuery.drugAndAlcoholList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        stepValuesResponse = res;
+        if (res) {
+          this.patchStepValues(res);
+        }
       });
-
-    if (stepValuesResponse) {
-      this.patchStepValues(stepValuesResponse);
-    }
   }
 
   public patchStepValues(stepValues: any): void {
+    console.log('stepValues', stepValues);
+    const {
+      positiveTest,
+      motorCarrier,
+      phone,
+      address,
+      sapName,
+      sapPhone,
+      sapAddress,
+      certifyInfomation,
+      id,
+      drugAndAlcoholReview,
+    } = stepValues;
+
     if (this.selectedMode === SelectedMode.REVIEW) {
       if (stepValues.drugAndAlcoholReview) {
         const {
@@ -253,17 +273,15 @@ export class Step8Component implements OnInit, OnDestroy {
       }
     }
 
-    const {
-      positiveTest,
-      motorCarrier,
-      phone,
-      address,
-      sapName,
-      sapPhone,
-      sapAddress,
-      certifyInfomation,
-      id,
-    } = stepValues;
+    if (this.selectedMode === SelectedMode.FEEDBACK) {
+      if (drugAndAlcoholReview) {
+        this.stepFeedbackValues = drugAndAlcoholReview;
+      }
+
+      this.stepValues = stepValues;
+
+      this.startFeedbackValueChangesMonitoring();
+    }
 
     this.drugTestForm.get('drugTest').patchValue(positiveTest);
 
@@ -513,9 +531,132 @@ export class Step8Component implements OnInit, OnDestroy {
     }
   }
 
+  public startFeedbackValueChangesMonitoring() {
+    if (this.stepFeedbackValues) {
+      const filteredIncorrectValues = Object.keys(
+        this.stepFeedbackValues
+      ).reduce((o, key) => {
+        this.stepFeedbackValues[key] === false &&
+          (o[key] = this.stepFeedbackValues[key]);
+
+        return o;
+      }, {});
+
+      const hasIncorrectValues = Object.keys(filteredIncorrectValues).length;
+
+      if (hasIncorrectValues) {
+        this.subscription = this.drugAlcoholStatementForm.valueChanges
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((updatedFormValues) => {
+            const filteredFieldsWithIncorrectValues = Object.keys(
+              filteredIncorrectValues
+            ).reduce((o, key) => {
+              const keyName = key
+                .replace('Valid', '')
+                .replace('is', '')
+                .trim()
+                .toLowerCase();
+
+              const match = Object.keys(this.stepValues)
+                .filter((item) => item.toLowerCase().includes(keyName))
+                .pop();
+
+              o[keyName] = this.stepValues[match];
+
+              if (keyName === 'phone') {
+                o['phone'] = this.stepValues.phone;
+              }
+
+              if (keyName === 'address') {
+                o['address'] = JSON.stringify({
+                  address: this.stepValues.address.address,
+                });
+              }
+
+              if (keyName === 'addressunit') {
+                o['addressunit'] = this.stepValues.address.addressUnit;
+              }
+
+              if (keyName === 'sap') {
+                o['sapname'] = this.stepValues.sapName;
+
+                delete o['sap'];
+              }
+
+              if (keyName === 'sapaddress') {
+                o['sapaddress'] = JSON.stringify({
+                  address: this.stepValues.sapAddress.address,
+                });
+              }
+
+              if (keyName === 'sapaddressunit') {
+                o['sapaddressunit'] = this.stepValues.sapAddress.addressUnit;
+              }
+
+              return o;
+            }, {});
+
+            const filteredUpdatedFieldsWithIncorrectValues = Object.keys(
+              filteredFieldsWithIncorrectValues
+            ).reduce((o, key) => {
+              const keyName = key;
+
+              const match = Object.keys(this.stepValues)
+                .filter((item) => item.toLowerCase().includes(keyName))
+                .pop();
+
+              o[keyName] = updatedFormValues[match];
+
+              if (keyName === 'phone') {
+                o['phone'] = updatedFormValues.phone;
+              }
+
+              if (keyName === 'address') {
+                o['address'] = JSON.stringify({
+                  address: updatedFormValues.address,
+                });
+              }
+
+              if (keyName === 'addressunit') {
+                o['addressunit'] = updatedFormValues.addressUnit;
+              }
+
+              if (keyName === 'sapaddress') {
+                o['sapaddress'] = JSON.stringify({
+                  address: updatedFormValues.sapAddress,
+                });
+              }
+
+              if (keyName === 'sapaddressunit') {
+                o['sapaddressunit'] = updatedFormValues.sapAddressUnit;
+              }
+
+              return o;
+            }, {});
+
+            const isFormNotEqual = isFormValueNotEqual(
+              filteredFieldsWithIncorrectValues,
+              filteredUpdatedFieldsWithIncorrectValues
+            );
+
+            if (isFormNotEqual) {
+              this.isFeedbackValueUpdated = true;
+            } else {
+              this.isFeedbackValueUpdated = false;
+            }
+          });
+      } else {
+        this.isFeedbackValueUpdated = true;
+      }
+    }
+  }
+
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      if (this.selectedMode === SelectedMode.APPLICANT) {
+      if (
+        this.selectedMode === SelectedMode.APPLICANT ||
+        this.selectedMode === SelectedMode.FEEDBACK
+      ) {
         this.onSubmit();
       }
 
@@ -530,6 +671,12 @@ export class Step8Component implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
+    if (this.selectedMode === SelectedMode.FEEDBACK) {
+      if (!this.isFeedbackValueUpdated) {
+        return;
+      }
+    }
+
     if (this.drugAlcoholStatementForm.invalid) {
       this.inputService.markInvalid(this.drugAlcoholStatementForm);
       return;
@@ -584,8 +731,17 @@ export class Step8Component implements OnInit, OnDestroy {
       certifyInfomation: drugTestFormValue ? isAgreement : null,
     };
 
-    this.applicantActionsService
-      .createDrugAndAlcohol(saveData)
+    const selectMatchingBackendMethod = () => {
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        return this.applicantActionsService.createDrugAndAlcohol(saveData);
+      }
+
+      if (this.selectedMode === SelectedMode.FEEDBACK) {
+        return this.applicantActionsService.updateDrugAndAlcohol(saveData);
+      }
+    };
+
+    selectMatchingBackendMethod()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
@@ -607,6 +763,12 @@ export class Step8Component implements OnInit, OnDestroy {
               },
             };
           });
+
+          if (this.selectedMode === SelectedMode.FEEDBACK) {
+            if (this.subscription) {
+              this.subscription.unsubscribe();
+            }
+          }
         },
         error: (err) => {
           console.log(err);
