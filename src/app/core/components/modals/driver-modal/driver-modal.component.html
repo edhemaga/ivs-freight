@@ -142,7 +142,7 @@
           <!-- Payroll -->
           <app-ta-custom-card
             [cardName]="'Payroll'"
-            [isCardOpen]="true"
+            [isCardOpen]="true && !driverForm.get('isOwner').value"
             [animationMarginParams]="{
               marginTop: '18px',
               marginBottom: '22px'
