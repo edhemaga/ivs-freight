@@ -339,7 +339,6 @@ export class TaInputComponent
       return;
     }
 
-    // console.log("BLUR FIRST", this.preventBlur);
     // // Datepicker
     if (this.preventBlur) {
       this.preventBlur = false;
@@ -902,6 +901,8 @@ export class TaInputComponent
         'fuel-surcharge-rate',
         'escort-rate',
         'detention-rate',
+        'fuel per miles',
+        'fuel price map',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (
@@ -1528,7 +1529,7 @@ export class TaInputComponent
 
   public onDatePaste(e: any) {
     e.preventDefault();
-    console.log('PASTE DATE');
+
     const pasteText = e.clipboardData.getData('text');
     const pastedDate = new Date(pasteText);
     if (!isNaN(pastedDate.getTime())) {

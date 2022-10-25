@@ -112,6 +112,8 @@ import { InputAddressDropdownComponent } from './input-address-dropdown/input-ad
 import { ApplicantReviewFeedbackComponent } from './applicant-review-feedback/applicant-review-feedback.component';
 import { LoadModalHazardousComponent } from '../modals/load-modal/load-modal-hazardous/load-modal-hazardous.component';
 import { LoadModalStatusesComponent } from '../modals/load-modal/load-modal-statuses/load-modal-statuses.component';
+import { MapSettingsModalComponent } from './map-toolbar/map-settings-modal/map-settings-modal.component';
+import { MapRouteModalComponent } from './map-toolbar/map-route-modal/map-route-modal.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -193,6 +195,8 @@ export function playerFactory() {
     TtTitleModalComponent,
     ConfirmationModalComponent,
     LoadModalStatusesComponent,
+    MapSettingsModalComponent,
+    MapRouteModalComponent,
 
     //----------------------------
     MapListComponent,
@@ -354,6 +358,8 @@ export function playerFactory() {
     TtTitleModalComponent,
     ConfirmationModalComponent,
     LoadModalStatusesComponent,
+    MapSettingsModalComponent,
+    MapRouteModalComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

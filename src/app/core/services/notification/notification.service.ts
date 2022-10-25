@@ -84,17 +84,14 @@ export class NotificationService {
   }
 
   public success(message: string, title?: string) {
-    console.log('--old success toast message');
     //this.toastr.success(message, title, notificationOptions);
   }
 
   public error(message: string, title?: string, retryStatus?: boolean) {
-    console.log('--old error toast message');
     //this.toastr.error(message, title, notificationOptions);
   }
 
   public warning(message: string, title?: string) {
-    console.log('--old warning toast message');
     //this.toastr.warning(message, title, notificationOptions);
   }
 }
