@@ -894,6 +894,14 @@ export class TaInputComponent
         'fuel tank size',
         'device no',
         'weight',
+        'base-rate',
+        'adjusted-rate',
+        'advance-pay-rate',
+        'layover-rate',
+        'lumper-rate',
+        'fuel-surcharge-rate',
+        'escort-rate',
+        'detention-rate',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (

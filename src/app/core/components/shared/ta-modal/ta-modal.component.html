@@ -107,7 +107,7 @@
         <!-- Header Load close -->
         <svg-icon
           class="modal-close"
-          src="assets/svg/common/ic_x.svg"
+          src="assets/svg/ic_x.svg"
           (click)="onAction('close')"
         ></svg-icon>
       </div>
@@ -115,7 +115,7 @@
       <svg-icon
         *ngIf="!loadModalBill"
         class="modal-close"
-        src="assets/svg/common/ic_x.svg"
+        src="assets/svg/ic_x.svg"
         (click)="onAction('close')"
       ></svg-icon>
     </div>
@@ -132,21 +132,37 @@
     <div
       *ngIf="!disableFooter && !confirmationData"
       class="modal-footer"
-      [ngClass]="{ 'mutliple-buttons': editData?.type?.includes('edit') }"
+      [ngClass]="{
+        'mutliple-buttons': editData?.type?.includes('edit'),
+        'load-template': loadModalTemplate
+      }"
     >
       <!-- Footer Left Side -->
       <div
         class="ta-modal-footer-left-side"
-        *ngIf="editData?.type?.includes('edit')"
+        *ngIf="editData?.type?.includes('edit') || loadModalTemplate"
       >
         <!-- Delete -->
         <button
-          *ngIf="!disableDelete && !resendEmail"
+          *ngIf="!disableDelete && !resendEmail && !loadModalTemplate"
           (click)="onAction('delete')"
           class="modal-delete-btn"
           type="button"
         >
           Delete
+        </button>
+
+        <!-- Load Template -->
+        <button
+          *ngIf="loadModalTemplate"
+          (click)="onAction('load-template')"
+          class="modal-load-template-btn"
+          type="button"
+        >
+          {{ loadTemplateSpinnerVisibility ? "Saving" : "Save as Template" }}
+          <div *ngIf="loadTemplateSpinnerVisibility" class="modal-spinner">
+            <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
+          </div>
         </button>
 
         <!-- Resend Email -->

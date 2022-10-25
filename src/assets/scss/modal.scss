@@ -290,19 +290,30 @@ ngb-modal-window[aria-hidden="true"] {
 
         .modal-close {
           position: relative;
+          right: 1px;
+          cursor: pointer;
           transition: all 0.3s ease-in;
+
           svg {
-            width: 24px;
-            height: 24px;
+            width: 26px;
+            height: 26px;
             path {
               fill: #919191;
             }
+
+            rect {
+              fill: transparent;
+              border-radius: 2px;
+            }
           }
+
           &:hover {
-            cursor: pointer;
             svg {
               path {
-                fill: #919191;
+                fill: #424242;
+              }
+              rect {
+                fill: rgb(66, 66, 66, 0.2);
               }
             }
           }
@@ -321,6 +332,11 @@ ngb-modal-window[aria-hidden="true"] {
         border: none;
 
         &.mutliple-buttons {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        &.load-template {
           display: flex;
           justify-content: space-between;
         }
@@ -353,7 +369,8 @@ ngb-modal-window[aria-hidden="true"] {
 
         .modal-deactivate-btn,
         .modal-resend-email-btn,
-        .modal-cancel-btn {
+        .modal-cancel-btn,
+        .modal-load-template-btn {
           position: relative;
           min-width: 128px;
           height: 32px;
@@ -615,7 +632,7 @@ body:not(.modal-open) {
     box-shadow: $box-shadow !important;
     padding: 2px;
 
-    &.popover-wraper{
+    &.popover-wraper {
       background-color: #424242;
 
       .switch_statuses {
