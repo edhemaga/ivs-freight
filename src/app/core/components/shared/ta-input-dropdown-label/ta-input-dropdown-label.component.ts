@@ -31,6 +31,10 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
   @Output() saveLabel: EventEmitter<{ data: any; action: string }> =
     new EventEmitter<{ data: string; action: string }>();
 
+  @Output() editModeLabel: EventEmitter<boolean> = new EventEmitter<boolean>(
+    false
+  );
+
   public switchMode: 'Label' | 'Color' = 'Label';
 
   constructor(@Self() public superControl: NgControl) {
@@ -49,6 +53,14 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
    * SELECT FROM ITEMS DROPDOWN
    */
   public onSelectDropdown(event: any, action: string) {
+    if (event?.id === 7655) {
+      this.editModeLabel.emit(true);
+    }
+
+    if (event?.id !== 7655 && action === 'label') {
+      this.getSuperControl.setErrors(null);
+    }
+
     if (this.switchMode === 'Color' && action === 'color') {
       this.pickColorLabel.emit(event);
     }
@@ -63,6 +75,12 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
    */
   public onSelectLabelMode(event: 'Label' | 'Color') {
     this.switchMode = event;
+
+    if (event === 'Color') {
+      this.editModeLabel.emit(true);
+    } else {
+      this.editModeLabel.emit(false);
+    }
   }
 
   /**
@@ -72,6 +90,7 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
     if (event.action === 'cancel') {
       this.getSuperControl.reset();
     }
+
     if (event.action === 'edit') {
       this.saveLabel.emit({ data: event.data, action: event.action });
     }
@@ -79,6 +98,8 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
     if (event.action === 'new') {
       this.saveLabel.emit({ data: event.data, action: event.action });
     }
+
+    this.editModeLabel.emit(false);
   }
 
   public identity(index: number, item: any): number {
