@@ -635,6 +635,7 @@ export class TaInputDropdownComponent
 
     if (this.inputConfig.dropdownLabel) {
       this.selectedLabelMode.emit('Label');
+      this.inputRef.touchedInput = true;
     }
   }
 

@@ -49,7 +49,6 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
    * SELECT FROM ITEMS DROPDOWN
    */
   public onSelectDropdown(event: any, action: string) {
-    console.log('seelect: ', event, action);
     if (this.switchMode === 'Color' && action === 'color') {
       this.pickColorLabel.emit(event);
     }
@@ -70,7 +69,6 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
    * SAVE LABEL NAME
    */
   public onSaveLabel(event: any) {
-    console.log(event);
     if (event.action === 'cancel') {
       this.getSuperControl.reset();
     }

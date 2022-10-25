@@ -28,7 +28,7 @@
       inputConfig.isDropdown &&
       (touchedInput || getSuperControl.touched) &&
       !focusInput,
-      'invalid-focus-out-filled':
+    'invalid-focus-out-filled':
       (getSuperControl.value &&
         getSuperControl.invalid &&
         !focusInput &&
@@ -657,7 +657,7 @@
         !inputConfig?.dropdownImageInput?.url &&
         !inputConfig.blackInput,
       'valid-focus-out-filled':
-        ((getSuperControl.value &&
+        (((getSuperControl.value &&
           getSuperControl.valid &&
           !focusInput &&
           !inputConfig.isDisabled &&
@@ -665,7 +665,12 @@
           !isVisibleCommands &&
           !inputConfig.blackInput) ||
           (!focusInput && inputConfig.dropdownImageInput?.url)) &&
-        !inputConfig.blackInput,
+          !inputConfig.blackInput) ||
+        (inputConfig.dropdownLabel &&
+          getSuperControl.value &&
+          getSuperControl.valid &&
+          !focusInput &&
+          !inputConfig.isDisabled),
       'invalid-focus-in':
         getSuperControl.value &&
         getSuperControl.invalid &&
