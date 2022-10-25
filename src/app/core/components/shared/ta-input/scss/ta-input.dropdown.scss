@@ -186,6 +186,14 @@
     }
   }
 
+  &.disabled-filled {
+    svg {
+      path {
+        fill: #b7b7b7 !important;
+      }
+    }
+  }
+
   &.input-32 {
     top: 6px;
   }

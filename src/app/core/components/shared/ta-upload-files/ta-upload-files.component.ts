@@ -107,10 +107,8 @@ export class TaUploadFilesComponent implements OnInit {
   public onUploadFiles(data: { files: UploadFile[]; action: string }) {
     switch (data.action) {
       case 'add': {
-        console.log("ADDING FILES");
-        console.log(data.files);
         const oldFiles = this.files.length ? this.files : [];
-        console.log(oldFiles);
+
         this.files = [...oldFiles, ...data.files];
         this.onFileEvent.emit({ files: this.files, action: 'add' });
         break;

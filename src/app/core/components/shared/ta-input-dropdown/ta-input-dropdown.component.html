@@ -15,7 +15,8 @@
     *ngIf="inputConfig.multiSelectDropdownActive"
     class="multiselect-arrow"
     [ngClass]="{
-      valid: !isMultiSelectInputFocus && multiselectItems.length > 0
+      valid: !isMultiSelectInputFocus && multiselectItems.length > 0,
+      disabled: inputConfig.isDisabled
     }"
     src="assets/svg/common/ic_arrow_down_updated.svg"
     (click)="toggleMultiselectDropdown()"
