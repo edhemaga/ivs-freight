@@ -92,6 +92,15 @@
       }
     }
   }
+
+  .spinner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    width: 18px;
+    height: 18px;
+  }
 }
 
 .note-normal-icon,
@@ -395,6 +404,15 @@
       &.parking_text_hold {
         max-height: 124px;
       }
+    }
+
+    .spinner{
+      position: absolute;
+      right: 2px;
+      bottom: 6px;
+      
+      width: 18px;
+      height: 18px;
     }
 
     .container_separate {

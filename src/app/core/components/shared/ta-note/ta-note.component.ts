@@ -78,6 +78,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   range: any;
   isFocused: boolean = false;
   preventClosing: boolean = false;
+  savingNote: boolean = false;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -168,11 +169,6 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     if (this.selectionTaken.rangeCount && this.selectionTaken.getRangeAt) {
       this.range = this.selectionTaken.getRangeAt(0);
     }
-    this.saveIntervalStarted = false;
-    clearInterval(this.saveInterval);
-    if (this.savedValue != this.value) {
-      this.saveNote();
-    }
   }
 
   preventMouseDown(ev) {
@@ -184,7 +180,6 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     this.value = event;
     this.checkActiveItems();
     this.lastTypeTime = moment().unix();
-
     if (!this.saveIntervalStarted) {
       this.saveIntervalStarted = true;
       this.saveInterval = setInterval(() => {
@@ -213,6 +208,12 @@ export class TaNoteComponent implements OnInit, OnDestroy {
 
     this.savedValue = this.value;
     if (this.entityId && this.entityType) {
+      this.savingNote = true;
+      this.ref.detectChanges();
+      setTimeout(() => {
+        this.savingNote = false;
+        this.ref.detectChanges();
+      }, 1500);
       this.updateNote();
     }
     if (this.dispatchIndex == -1) this.saveNoteValue.emit(this.value);
