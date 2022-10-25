@@ -36,6 +36,7 @@
             label: 'CDL',
             isRequired: true,
             isDropdown: true,
+            isDisabled: cdls?.length === 1,
             dropdownWidthClass: 'w-col-228'
           }"
           [options]="cdls"

@@ -94,7 +94,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     this.formService.formValueChange$
       .pipe(takeUntil(this.destroy$))
       .subscribe((isFormChange: boolean) => {
-        this.isFormDirty = isFormChange;
+        this.isFormDirty = isFormChange && !this.disabledFormValidation;
       });
   }
 
@@ -383,6 +383,11 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  public disabledFormValidation: boolean = false;
+  public companyAccountLabelMode(event: boolean) {
+    this.disabledFormValidation = event;
   }
 
   ngOnDestroy(): void {

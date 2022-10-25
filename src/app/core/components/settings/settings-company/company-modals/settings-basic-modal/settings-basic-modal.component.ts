@@ -1392,8 +1392,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.companyForm.get('preferredLoadType').value === 'FTL' ? 1 : 2,
     };
 
-    console.log('form', form);
-
     for (let index = 0; index < departmentContacts.length; index++) {
       departmentContacts[index].departmentId =
         this.selectedDepartmentFormArray[index].id;
@@ -1588,7 +1586,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   }
 
   private editCompany() {
-    console.log(this.editData);
     this.companyForm.patchValue({
       // -------------------- Basic Tab
       name: this.editData.company.name,

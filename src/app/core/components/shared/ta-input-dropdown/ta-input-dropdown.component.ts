@@ -526,6 +526,7 @@ export class TaInputDropdownComponent
           this.inputRef.setInputCursorAtTheEnd(
             this.inputRef.input.nativeElement
           );
+          this.selectedItem.emit(option);
         }
         // Normal Dropdown
         else {
@@ -597,7 +598,6 @@ export class TaInputDropdownComponent
   }
 
   public commandEvent(event: { data: any; action: string; mode: string }) {
-    console.log('command event: ', event);
     if (event.action === 'Edit Input') {
       this.selectedLabelMode.emit('Color');
     }
@@ -635,6 +635,7 @@ export class TaInputDropdownComponent
 
     if (this.inputConfig.dropdownLabel) {
       this.selectedLabelMode.emit('Label');
+      this.inputRef.touchedInput = true;
     }
   }
 

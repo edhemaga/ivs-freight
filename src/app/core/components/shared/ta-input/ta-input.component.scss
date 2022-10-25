@@ -4,14 +4,13 @@
   display: block;
   position: relative;
 
-  &.datetimeclass{
-    
-    &:not(.invalid-focus-out-filled):not(.valid){
+  &.datetimeclass {
+    &:not(.invalid-focus-out-filled):not(.valid) {
       background-color: #eeeeee;
     }
-    border-radius: 2px !important; 
+    border-radius: 2px !important;
 
-    &.invalid-focus-out-filled{
+    &.invalid-focus-out-filled {
       background-color: $input-background-color-invalid-focus-out !important;
     }
   }
@@ -267,7 +266,7 @@
       }
 
       .input-required-check {
-        display: none !important;
+        display: none;
       }
 
       .input-password-eye {

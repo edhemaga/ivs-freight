@@ -218,6 +218,11 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
               name: item.cdlNumber,
             };
           });
+
+          if (this.cdls.length === 1) {
+            this.selectedCdl = this.cdls[0];
+            this.mvrForm.get('cdlId').patchValue(this.selectedCdl.name);
+          }
         },
         error: () => {
           this.notificationService.error(
