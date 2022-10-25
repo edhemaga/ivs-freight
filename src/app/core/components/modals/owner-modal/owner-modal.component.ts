@@ -141,7 +141,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   }
 
   private manipulateWithOwnerInputs() {
-    console.log(this.selectedTab);
     if (this.selectedTab === 1) {
       this.inputService.changeValidators(this.ownerForm.get('bussinesName'));
       this.inputService.changeValidators(this.ownerForm.get('ein'), true, [

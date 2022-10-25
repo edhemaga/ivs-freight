@@ -124,7 +124,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     this.formService.formValueChange$
       .pipe(takeUntil(this.destroy$))
       .subscribe((isFormChange: boolean) => {
-        this.isFormDirty = isFormChange;
+        this.isFormDirty = isFormChange && !this.disabledFormValidation;
       });
   }
 
@@ -496,6 +496,11 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  public disabledFormValidation: boolean = false;
+  public companyContactLabelMode(event: boolean) {
+    this.disabledFormValidation = event;
   }
 
   // Checkbox card

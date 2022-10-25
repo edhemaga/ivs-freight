@@ -110,7 +110,6 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
-    console.log(event);
     this.documents = event.files;
   }
 
