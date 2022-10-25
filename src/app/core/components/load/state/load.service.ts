@@ -1,15 +1,20 @@
 import { LoadResponse } from './../../../../../../appcoretruckassist/model/loadResponse';
 import { Injectable } from '@angular/core';
 import {
+  CreateResponse,
   LoadListResponse,
   LoadService,
   LoadTemplateListResponse,
+  LoadTemplateResponse,
 } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
 import { LoadMinimalListResponse } from '../../../../../../appcoretruckassist/model/loadMinimalListResponse';
 import { LoadDetailsListQuery } from './load-details-state/load-details-list-state/load-d-list.query';
 import { LoadDetailsListStore } from './load-details-state/load-details-list-state/load-d-list.store';
 import { LoadModalResponse } from '../../../../../../appcoretruckassist/model/loadModalResponse';
+import { CreateLoadCommand } from '../../../../../../appcoretruckassist/model/createLoadCommand';
+import { UpdateLoadCommand } from '../../../../../../appcoretruckassist/model/updateLoadCommand';
+import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
 
 @Injectable({
   providedIn: 'root',
@@ -96,11 +101,34 @@ export class LoadTService {
     );
   }
 
+  public createLoad(data: CreateLoadCommand): Observable<CreateResponse> {
+    return this.loadServices.apiLoadPost(data);
+  }
+
+  public updateLoad(data: UpdateLoadCommand): Observable<any> {
+    return this.loadServices.apiLoadPut(data);
+  }
+
+  public deleteLoadById(id: number): Observable<any> {
+    return this.loadServices.apiLoadIdDelete(id);
+  }
+
   public getLoadById(loadId: number): Observable<LoadResponse> {
     return this.loadServices.apiLoadIdGet(loadId);
   }
 
   public getLoadDropdowns(id?: number): Observable<LoadModalResponse> {
     return this.loadServices.apiLoadModalGet(id);
+  }
+
+  // Load Templates
+  public createLoadTemplate(
+    data: CreateLoadTemplateCommand
+  ): Observable<CreateResponse> {
+    return this.loadServices.apiLoadTemplatePost(data);
+  }
+
+  public getLoadTemplateById(id: number): Observable<LoadTemplateResponse> {
+    return this.loadServices.apiLoadTemplateIdGet(id);
   }
 }

@@ -5,10 +5,13 @@
   position: relative;
 
   &.datetimeclass{
-   // background-color: #eeeeee;
+    
+    &:not(.invalid-focus-out-filled):not(.valid){
+      background-color: #eeeeee;
+    }
     border-radius: 2px !important; 
 
-    &.invalid-empty-required{
+    &.invalid-focus-out-filled{
       background-color: $input-background-color-invalid-focus-out !important;
     }
   }

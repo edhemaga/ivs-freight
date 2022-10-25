@@ -28,6 +28,14 @@ import { Subject, takeUntil } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { descriptionValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { ILoadStatus } from './load-modal-statuses/load-modal-statuses.component';
+import { CreateLoadCommand } from '../../../../../../appcoretruckassist/model/createLoadCommand';
+import {
+  convertDateToBackend,
+  convertThousanSepInNumber,
+} from '../../../utils/methods.calculations';
+import moment from 'moment';
+import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
+import { convertNumberInThousandSep } from '../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-load-modal',
@@ -189,33 +197,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     dropdownWidthClass: 'w-col-696',
   };
 
-  public additionalOptions: any[] = [
-    {
-      id: 1,
-      name: 'Layover',
-      active: false,
-    },
-    {
-      id: 2,
-      name: 'Lumper',
-      active: false,
-    },
-    {
-      id: 3,
-      name: 'Fuel Surcharge',
-      active: false,
-    },
-    {
-      id: 4,
-      name: 'Escort',
-      active: false,
-    },
-    {
-      id: 5,
-      name: 'Detention',
-      active: false,
-    },
-  ];
+  public additionalBillingTypes: any[] = [];
 
   public isAvailableAdjustedRate: boolean = false;
   public isAvailableAdvanceRate: boolean = false;
@@ -260,13 +242,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private modalService: ModalService,
     private inputService: TaInputService,
     private formService: FormService,
+    private commentsService: CommentsService,
+    private routingService: RoutingService,
     private loadService: LoadTService,
     private notificationService: NotificationService,
-    private commentsService: CommentsService,
-    private routingService: RoutingService
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -280,38 +262,38 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.loadForm = this.formBuilder.group({
-      selectTemplate: [null],
-      dispatcher: [null],
-      company: [this.companyUser.companyName, Validators.required],
-      dispatchesId: [null],
-      refNumber: [null, Validators.required],
+      loadTemplateId: [null],
+      dispatcherId: [null],
+      companyId: [this.companyUser.companyName, Validators.required],
+      dispatchId: [null],
+      referenceNumber: [null, Validators.required],
       generalCommodity: [null],
-      weight: [null],
-      broker: [null, Validators.required],
-      brokerContact: [null],
-      truckReq: [null],
-      trailerReq: [null],
+      weight: [null], // convert in number
+      brokerId: [null, Validators.required],
+      brokerContactId: [null],
+      // loadRequirements
+      truckTypeId: [null],
+      trailerTypeId: [null],
       doorType: [null],
       suspension: [null],
-      length: [null],
+      trailerLengthId: [null],
       year: [null],
-      lifgate: [null],
-      stopMode: ['Pickup'],
+      liftgate: [null],
+      // ----------------
       shipper: [null, Validators.required],
       dateFrom: [null, Validators.required],
       dateTo: [null],
-      timeMode: ['Open'],
       timeFrom: [null, Validators.required],
       timeTo: [null, Validators.required],
-      billingPaymentBaseRate: [null, Validators.required],
-      billingPaymentAdjustedRate: [null],
-      bilingPaymentAdvanceRate: [null],
-      bilingPaymentLayover: [null],
-      bilingPaymentLumper: [null],
-      bilingPaymentFuelSurcharge: [null],
-      bilingPaymentEscort: [null],
-      bilingPaymentDetention: [null],
-      loadStops: this.formBuilder.array([]),
+      baseRate: [null, Validators.required], // convert in number
+      adjustedRate: [null], // convert in number
+      advancePay: [null], // convert in number
+      layoverRate: [null],
+      lumperRate: [null],
+      fuelSurchargeRate: [null],
+      escortRate: [null],
+      detentionRate: [null],
+      stops: this.formBuilder.array([]),
       note: [null],
     });
 
@@ -349,7 +331,51 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onModalAction(data: { action: string; bool: boolean }): void {}
+  public onModalAction(data: { action: string; bool: boolean }): void {
+    switch (data.action) {
+      case 'close': {
+        break;
+      }
+      case 'save': {
+        if (this.loadForm.invalid) {
+          this.inputService.markInvalid(this.loadForm);
+          return;
+        }
+        if (this.editData) {
+          this.updateLoad(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
+        } else {
+          this.addLoad();
+          this.modalService.setModalSpinner({ action: null, status: true });
+        }
+        break;
+      }
+      case 'delete': {
+        if (this.editData) {
+          this.deleteLoadById(this.editData.id);
+          this.modalService.setModalSpinner({ action: 'delete', status: true });
+        }
+        break;
+      }
+      case 'load-template': {
+        if (this.loadForm.invalid) {
+          this.inputService.markInvalid(this.loadForm);
+          return;
+        }
+
+        this.saveLoadTemplate();
+
+        this.modalService.setModalSpinner({
+          action: 'load-template',
+          status: true,
+        });
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
 
   public onSelectDropdown(event: any, action: string, index?: number) {
     switch (action) {
@@ -371,7 +397,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             (item) => item.dispatcherId === this.selectedDispatcher.id
           );
           this.selectedDispatches = null;
-          this.loadForm.get('dispatchesId').patchValue(null);
+          this.loadForm.get('dispatchId').patchValue(null);
         } else {
           this.labelsDispatches = this.originLabelsDispatches;
           this.loadCreateStatuses = this.loadCreateStatuses.map((item) => {
@@ -420,7 +446,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           };
 
           this.loadForm
-            .get('brokerContact')
+            .get('brokerContactId')
             .patchValue(this.selectedBrokerContact.name);
 
           this.loadBrokerContactsInputConfig = {
@@ -748,76 +774,106 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectAdditionalOption(option: any) {
+    if (!this.loadForm.get('baseRate').value) {
+      return;
+    }
     option.active = !option.active;
   }
 
   public trackBillingPayment() {
     this.loadForm
-      .get('billingPaymentBaseRate')
+      .get('baseRate')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
-        this.loadModalBill.baseRate = parseFloat(value);
+        if (!value) {
+          this.isAvailableAdjustedRate = false;
+          this.isAvailableAdvanceRate = false;
+
+          this.loadForm.get('adjustedRate').reset();
+          this.loadForm.get('advancePay').reset();
+          this.loadForm.get('layoverRate').reset();
+          this.loadForm.get('lumperRate').reset();
+          this.loadForm.get('fuelSurchargeRate').reset();
+          this.loadForm.get('escortRate').reset();
+          this.loadForm.get('detentionRate').reset();
+          this.additionalBillingTypes.filter((item) => (item.active = false));
+        } else {
+          this.loadModalBill.baseRate = convertThousanSepInNumber(value);
+        }
       });
 
     this.loadForm
-      .get('billingPaymentAdjustedRate')
+      .get('adjustedRate')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
-        if (value > this.loadForm.get('billingPaymentBaseRate').value) {
+        if (!this.loadForm.get('baseRate').value || !value) {
+          return;
+        }
+
+        if (
+          convertThousanSepInNumber(value) >
+          convertThousanSepInNumber(this.loadForm.get('baseRate').value)
+        ) {
           this.loadModalBill.adjusted = 0;
-          this.loadForm.get('billingPaymentAdjustedRate').patchValue(0);
-          return;
+          this.loadForm.get('adjustedRate').reset();
+        } else {
+          this.loadModalBill.adjusted = convertThousanSepInNumber(value);
         }
-        this.loadModalBill.adjusted = parseFloat(value);
-        this.loadForm.get('billingPaymentAdjustedRate').setErrors(null);
       });
 
     this.loadForm
-      .get('bilingPaymentAdvanceRate')
+      .get('advancePay')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
-        if (value > this.loadForm.get('billingPaymentBaseRate').value) {
+        if (!this.loadForm.get('baseRate').value || !value) {
+          return;
+        }
+
+        if (
+          convertThousanSepInNumber(value) >
+          convertThousanSepInNumber(this.loadForm.get('baseRate').value)
+        ) {
           this.loadModalBill.advance = 0;
-          this.loadForm.get('bilingPaymentAdvanceRate').patchValue(0);
+          this.loadForm.get('advancePay').reset();
           return;
+        } else {
+          this.loadModalBill.advance = convertThousanSepInNumber(value);
         }
-        this.loadModalBill.advance = parseFloat(value);
-        this.loadForm.get('bilingPaymentAdvanceRate').setErrors(null);
       });
 
     this.loadForm
-      .get('bilingPaymentLayover')
+      .get('layoverRate')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
-        this.loadModalBill.layover = parseFloat(value);
+        this.loadModalBill.layover = convertThousanSepInNumber(value);
       });
 
     this.loadForm
-      .get('bilingPaymentLumper')
+      .get('lumperRate')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
-        this.loadModalBill.lumper = parseFloat(value);
+        this.loadModalBill.lumper = convertThousanSepInNumber(value);
       });
 
     this.loadForm
-      .get('bilingPaymentFuelSurcharge')
+      .get('fuelSurchargeRate')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
-        this.loadModalBill.fuelSurcharge = parseFloat(value);
+        this.loadModalBill.fuelSurcharge = convertThousanSepInNumber(value);
       });
 
     this.loadForm
-      .get('bilingPaymentEscort')
+      .get('escortRate')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
-        this.loadModalBill.escort = parseFloat(value);
+        this.loadModalBill.escort = convertThousanSepInNumber(value);
       });
 
     this.loadForm
-      .get('bilingPaymentDetention')
+      .get('detentionRate')
       .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe((value) => {
-        this.loadModalBill.detention = parseFloat(value);
+        this.loadModalBill.detention = convertThousanSepInNumber(value);
       });
   }
 
@@ -827,9 +883,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         const stop = this.loadStops().controls.find(
-          (item) =>
-            item.get('shipper').value === this.selectedShipper.name &&
-            item.get('location').value === this.selectedShipper.address
+          (item) => item.get('shipperId').value === this.selectedShipper.id
         );
 
         if (stop && !stop.get('dateFrom').value) {
@@ -842,9 +896,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         const stop = this.loadStops().controls.find(
-          (item) =>
-            item.get('shipper').value === this.selectedShipper.name &&
-            item.get('location').value === this.selectedShipper.address
+          (item) => item.get('shipperId').value === this.selectedShipper.id
         );
         if (stop && !stop.get('dateTo').value) {
           stop.get('dateTo').patchValue(value);
@@ -856,9 +908,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         const stop = this.loadStops().controls.find(
-          (item) =>
-            item.get('shipper').value === this.selectedShipper.name &&
-            item.get('location').value === this.selectedShipper.address
+          (item) => item.get('shipperId').value === this.selectedShipper.id
         );
         if (stop && !stop.get('timeFrom').value) {
           stop.get('timeFrom').patchValue(value);
@@ -870,9 +920,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         const stop = this.loadStops().controls.find(
-          (item) =>
-            item.get('shipper').value === this.selectedShipper.name &&
-            item.get('location').value === this.selectedShipper.address
+          (item) => item.get('shipperId').value === this.selectedShipper.id
         );
         if (stop && !stop.get('timeTo').value) {
           stop.get('timeTo').patchValue(value);
@@ -882,7 +930,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
   public closeAllLoadStopExceptActive(loadStop: AbstractControl) {
     this.loadStops().controls.map((item) => {
-      if (item.get('id').value === loadStop.get('id').value) {
+      if (item.get('stopOrder').value === loadStop.get('stopOrder').value) {
         item.get('openClose').patchValue(true);
       } else {
         item.get('openClose').patchValue(false);
@@ -891,28 +939,24 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   }
 
   public toggleLoadStop(loadStop: AbstractControl) {
-    console.log('toggling');
-    console.log(loadStop.value);
     loadStop.get('openClose').patchValue(!loadStop.get('openClose').value);
 
     if (loadStop.get('openClose').value) {
       this.closeAllLoadStopExceptActive(loadStop);
 
       this.selectedShipper = this.labelsShippers.find(
-        (item) =>
-          item.name === loadStop.get('shipper').value &&
-          item.address === loadStop.get('location').value
+        (item) => item.id === loadStop.get('shipperId').value
       );
       this.loadShipperInputConfig = {
         ...this.loadShipperInputConfig,
         multipleInputValues: {
           options: [
             {
-              value: loadStop.get('shipper').value,
+              value: this.selectedShipper.name,
               logoName: null,
             },
             {
-              value: loadStop.get('location').value,
+              value: this.selectedShipper.address,
               logoName: null,
             },
           ],
@@ -922,8 +966,17 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
       this.loadForm.get('dateFrom').patchValue(loadStop.get('dateFrom').value);
       this.loadForm.get('dateTo').patchValue(loadStop.get('dateTo').value);
-      this.loadForm.get('timeFrom').patchValue(loadStop.get('timeFrom').value);
-      this.loadForm.get('timeTo').patchValue(loadStop.get('timeTo').value);
+
+      this.loadForm
+        .get('timeFrom')
+        .patchValue(
+          moment(loadStop.get('timeFrom').value, 'HH:mm:SS A').toDate()
+        );
+      this.loadForm
+        .get('timeTo')
+        .patchValue(
+          moment(loadStop.get('timeTo').value, 'HH:mm:SS A').toDate()
+        );
     } else {
       this.selectedShipper = null;
       this.loadShipperInputConfig = {
@@ -942,7 +995,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           customClass: 'load-shipper',
         },
       };
-      this.loadForm.get('shipper').patchValue(null, { emitEvent: false });
+      this.loadForm.get('shipperId').patchValue(null, { emitEvent: false });
       this.loadForm.get('dateFrom').patchValue(null, { emitEvent: false });
       this.loadForm.get('dateTo').patchValue(null, { emitEvent: false });
       this.loadForm.get('timeFrom').patchValue(null, { emitEvent: false });
@@ -951,70 +1004,89 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   }
 
   public drawStopOnMap() {
-    this.routingService
-      .apiRoutingGet(
-        JSON.stringify(
-          this.loadStops()
-            .controls.filter((item) => item)
-            .map((item) => {
-              return {
-                longitude: item.get('longitude').value,
-                latitude: item.get('latitude').value,
-              };
-            })
-        )
-      )
-      .pipe(debounceTime(1000), takeUntil(this.destroy$))
-      .subscribe({
-        next: (res: RoutingResponse) => {
-          // TODO: Populate lat and long with routesPoints
-          this.loadStopRoutes[0] = {
-            routeColor: '#919191',
-            stops: this.loadStops()
+    if (this.loadStops().length > 1) {
+      this.routingService
+        .apiRoutingGet(
+          JSON.stringify(
+            this.loadStops()
               .controls.filter((item) => item)
-              .map((item, index) => {
+              .map((item) => {
                 return {
-                  lat: item.get('latitude').value,
-                  long: item.get('longitude').value,
-                  stopColor:
-                    item.get('stopMode').value === 'pickup'
-                      ? '#4db6a2'
-                      : '#ef5350',
-                  empty: index === 0,
+                  longitude: item.get('longitude').value,
+                  latitude: item.get('latitude').value,
                 };
-              }),
-          };
+              })
+          )
+        )
+        .pipe(debounceTime(1000), takeUntil(this.destroy$))
+        .subscribe({
+          next: (res: RoutingResponse) => {
+            // TODO: Populate lat and long with routesPoints
+            this.loadStopRoutes[0] = {
+              routeColor: '#919191',
+              stops: this.loadStops()
+                .controls.filter((item) => item)
+                .map((item, index) => {
+                  return {
+                    lat: item.get('latitude').value,
+                    long: item.get('longitude').value,
+                    stopColor:
+                      item.get('stopType').value === 'Pickup'
+                        ? '#4db6a2'
+                        : '#ef5350',
+                    empty: index === 0,
+                  };
+                }),
+            };
 
-          this.loadStops().controls.forEach(
-            (element: FormGroup, index: number) => {
-              if (index === 0) {
-                element.get('miles').patchValue(null);
-                element.get('hours').patchValue(null);
-                element.get('minutes').patchValue(null);
-                element.get('cost').patchValue(null);
-                return;
-              }
+            this.loadStops().controls.forEach(
+              (element: FormGroup, index: number) => {
+                if (index === 0) {
+                  element.get('legMiles').patchValue(null);
+                  element.get('legHours').patchValue(null);
+                  element.get('legMinutes').patchValue(null);
+                  return;
+                }
+                // index - 1, because firstStop was skipped
+                element.get('legMiles').patchValue(res.legs[index - 1].miles);
+                element.get('legHours').patchValue(res.legs[index - 1].hours);
+                element
+                  .get('legMinutes')
+                  .patchValue(res.legs[index - 1].minutes);
 
-              element.get('miles').patchValue(res.legs[index - 1].miles);
-              element.get('hours').patchValue(res.legs[index - 1].hours);
-              element.get('minutes').patchValue(res.legs[index - 1].minutes);
-              element.get('cost').patchValue(res.legs[index - 1].cost);
-              if (!element.get('total').value) {
-                element.get('total').patchValue(
-                  res.legs
-                    .map((item) => item.miles)
-                    .reduce((accumulator, item) => {
-                      return (accumulator += item);
-                    }, 0)
-                );
+                if (!element.get('totalLegMiles').value) {
+                  element.get('totalLegMiles').patchValue(
+                    res.legs
+                      .map((item) => item.miles)
+                      .reduce((accumulator, item) => {
+                        return (accumulator += item);
+                      }, 0)
+                  );
+
+                  element.get('totalLegHours').patchValue(
+                    res.legs
+                      .map((item) => item.hours)
+                      .reduce((accumulator, item) => {
+                        return (accumulator += item);
+                      }, 0)
+                  );
+
+                  element.get('totalLegMinutes').patchValue(
+                    res.legs
+                      .map((item) => item.minutes)
+                      .reduce((accumulator, item) => {
+                        return (accumulator += item);
+                      }, 0)
+                  );
+                }
               }
-            }
-          );
-        },
-        error: (err: any) => {
-          console.log(err);
-        },
-      });
+            );
+          },
+          error: (err: any) => {
+            console.log(err);
+          },
+        });
+    }
   }
 
   // Load Stop
@@ -1039,9 +1111,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
       // If Load Stop Exist , just return
       const existLoadStop = this.loadStops().controls.find(
-        (item) =>
-          item.get('shipper').value === this.selectedShipper.name &&
-          item.get('location').value === this.selectedShipper.address
+        (item) => item.get('shipperId').value === this.selectedShipper.id
       );
 
       if (existLoadStop) {
@@ -1095,34 +1165,43 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
   public newLoadStop(): FormGroup {
     return this.formBuilder.group({
-      id: [this.loadStops().length + 1],
-      shipper: [this.selectedShipper.name],
-      location: [this.selectedShipper.address],
-      dateFrom: [null],
-      dateTo: [null],
+      id: [null],
+      stopType: [this.selectedStopTab === 3 ? 'Pickup' : 'Delivery'],
+      stopOrder: [this.loadStops().length + 1],
+      shipperId: [this.selectedShipper.id],
+      dateFrom: [null], // convert for backend
+      dateTo: [null], // convert for backend
+      timeType: [
+        this.stopTimeTabs.find((item) => item.id === this.selectedStopTime)
+          .name,
+      ],
       timeFrom: [null],
       timeTo: [null],
+      arrive: [null], // null when create mode
+      depart: [null], // null when create mode
       longitude: [this.selectedShipper.longitude],
       latitude: [this.selectedShipper.latitude],
       // From legs
-      miles: [null],
-      hours: [null],
-      minutes: [null],
-      cost: [null],
-      total: [null],
+      legMiles: [null],
+      legHours: [null],
+      legMinutes: [null],
+      totalLegMiles: [null],
+      totalLegHours: [null],
+      totalLegMinutes: [null],
       // -----------
+      // Shipper Contact information
       address: ['3905 Elliot Ave, Springdale, GA 72762, USA'],
       contact: ['A. Djordjevic'],
       phone: ['(987) 654-3210'],
       extensionPhone: ['444'],
-      loadStopDetails: this.formBuilder.array([]),
-      stopMode: [this.selectedStopTab === 3 ? 'pickup' : 'delivery'],
+      // -----------
+      items: this.formBuilder.array([]),
       openClose: [true],
     });
   }
 
   public loadStops(): FormArray {
-    return this.loadForm.get('loadStops') as FormArray;
+    return this.loadForm.get('stops') as FormArray;
   }
 
   public removeLoadStop(index: number) {
@@ -1136,7 +1215,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             lat: item.get('latitude').value,
             long: item.get('longitude').value,
             stopColor:
-              item.get('stopMode').value === 'pickup' ? '#4db6a2' : '#ef5350',
+              item.get('stopType').value === 'Pickup' ? '#4db6a2' : '#ef5350',
             empty: true,
           };
         }),
@@ -1149,31 +1228,30 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   }
 
   public loadStopsDetails(loadStopIndex: number): FormArray {
-    return this.loadStops()
-      .at(loadStopIndex)
-      .get('loadStopDetails') as FormArray;
+    return this.loadStops().at(loadStopIndex).get('items') as FormArray;
   }
 
   public newLoadStopDetails(): FormGroup {
     return this.formBuilder.group({
-      description: [null, descriptionValidation],
-      hazardous: [null],
-      qty: [null],
-      units: [null],
+      id: [null],
+      bolNumber: [null],
+      appointmentNumber: [null],
+      pickupNumber: [null],
+      poNumber: [null],
+      sealNumber: [null],
       weight: [null],
       length: [null],
       height: [null],
-      tmp: [null],
-      bol: [null],
-      appointment: [null],
-      pickup: [null],
-      po: [null],
-      seal: [null],
+      temperature: [null],
+      description: [null, descriptionValidation],
       code: [null],
-      stackable: [null],
+      quantity: [null],
+      units: [null],
+      secure: [null],
       tarp: [null],
-      driverAssis: [null],
-      strapChain: [null],
+      stackable: [null],
+      driverAssist: [null],
+      hazardousMaterialId: [null],
     });
   }
 
@@ -1183,31 +1261,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   ) {
     this.loadStopsDetails(loadStopIndex).removeAt(loadStopDetailsIndex);
   }
-
-  // public loadStopReordering(event: CdkDragDrop<any[]>) {
-  //   moveItemInArray(
-  //     this.loadStops().controls,
-  //     event.previousIndex,
-  //     event.currentIndex
-  //   );
-
-  //   this.loadStopRoutes[0] = {
-  //     routeColor: '#919191',
-  //     stops: this.loadStops()
-  //       .controls.filter((item) => item)
-  //       .map((item) => {
-  //         return {
-  //           lat: item.get('latitude').value,
-  //           long: item.get('longitude').value,
-  //           stopColor:
-  //             item.get('stopMode').value === 'pickup' ? '#4db6a2' : '#ef5350',
-  //           empty: true,
-  //         };
-  //       }),
-  //   };
-
-  //   moveItemInArray([], event.previousIndex, event.currentIndex);
-  // }
 
   private getLoadDropdowns(id?: number) {
     this.loadService
@@ -1263,7 +1316,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 this.companyUser?.lastName
               )
           );
-          this.loadForm.get('dispatcher').patchValue(initialDispatcher.name);
+
+          this.loadForm.get('dispatcherId').patchValue(initialDispatcher.name);
           this.selectedDispatcher = initialDispatcher;
 
           if (this.selectedDispatcher) {
@@ -1412,16 +1466,257 @@ export class LoadModalComponent implements OnInit, OnDestroy {
               };
             }
           );
+
+          // Additional Billing Types
+          this.additionalBillingTypes = res.additionalBillingTypes.map(
+            (item) => {
+              return {
+                id: null,
+                additionalBillingType: item.id,
+                name: item.name,
+                active: false,
+              };
+            }
+          );
         },
         error: (error: any) => {
           this.notificationService.error(error, 'Error');
         },
       });
   }
+
   private getLoadById(id: number) {}
-  private createLoad() {}
+
+  private addLoad() {
+    const { ...form } = this.loadForm.value;
+    let newData: CreateLoadCommand = {
+      type: this.headerTabs.find((item) => item.id === this.selectedTab)
+        .name as any,
+      loadNumber: this.loadNumber,
+      loadTemplateId: this.selectedTemplate ? this.selectedTemplate.id : null,
+      dispatcherId: this.selectedDispatcher ? this.selectedDispatcher.id : null,
+      companyId:
+        this.labelsCompanies.length === 1
+          ? this.labelsCompanies[0].id
+          : this.selectedCompany
+          ? this.selectedCompany.id
+          : null,
+      dispatchId: this.selectedDispatches ? this.selectedDispatches.id : null,
+      dateCreated: moment(new Date()).toISOString(true),
+      brokerId: this.selectedBroker ? this.selectedBroker.id : null,
+      brokerContactId: this.selectedBrokerContact
+        ? this.selectedBrokerContact.id
+        : null,
+      referenceNumber: form.referenceNumber,
+      generalCommodity: this.selectedGeneralCommodity
+        ? this.selectedGeneralCommodity.id
+        : null,
+      weight: convertThousanSepInNumber(form.weight),
+      loadRequirements: {
+        id: null,
+        truckTypeId: this.selectedTruckReq ? this.selectedTruckReq.id : null,
+        trailerTypeId: this.selectedTrailerReq
+          ? this.selectedTrailerReq.id
+          : null,
+        doorType: this.selectedDoorType ? this.selectedDoorType.id : null,
+        suspension: this.selectedSuspension ? this.selectedSuspension.id : null,
+        trailerLengthId: this.selectedTrailerLength
+          ? this.selectedTrailerLength.id
+          : null,
+        year: this.selectedYear ? this.selectedYear.id : null,
+        liftgate: form.liftgate,
+      },
+      note: form.note,
+      baseRate: convertThousanSepInNumber(form.baseRate),
+      adjustedRate: convertThousanSepInNumber(form.adjustedRate),
+      advancePay: convertThousanSepInNumber(form.advancePay),
+      additionalBillingRates: this.premmapedAdditionalBillingRate(),
+      stops: this.premmapedStops() as any,
+    };
+
+    // this.loadService
+    //   .createLoad(newData)
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe({
+    //     next: () => {
+    //       this.notificationService.success(
+    //         'Successfully created load',
+    //         'Success'
+    //       );
+    //   this.modalService.setModalSpinner({ action: null, status: false });
+    //     },
+    //     error: (error: any) => {
+    //       this.notificationService.success(`Error: ${error}`, 'Error');
+    //     },
+    //   });
+  }
   private updateLoad(id: number) {}
-  private saveLoadTemplate() {}
+
+  private deleteLoadById(id: number) {}
+
+  private saveLoadTemplate() {
+    const { ...form } = this.loadForm.value;
+    const newData: CreateLoadTemplateCommand = {
+      name: '',
+      type: this.headerTabs.find((item) => item.id === this.selectedTab)
+        .name as any,
+      dispatcherId: this.selectedDispatcher ? this.selectedDispatcher.id : null,
+      companyId:
+        this.labelsCompanies.length === 1
+          ? this.labelsCompanies[0].id
+          : this.selectedCompany
+          ? this.selectedCompany.id
+          : null,
+      dateCreated: moment(new Date()).toISOString(true),
+      dispatchId: this.selectedDispatches ? this.selectedDispatches.id : null,
+      brokerId: this.selectedBroker ? this.selectedBroker.id : null,
+      brokerContactId: this.selectedBrokerContact
+        ? this.selectedBrokerContact.id
+        : null,
+      referenceNumber: form.referenceNumber,
+      generalCommodity: this.selectedGeneralCommodity
+        ? this.selectedGeneralCommodity.id
+        : null,
+      weight: convertThousanSepInNumber(form.weight),
+      loadRequirements: {
+        id: null,
+        truckTypeId: this.selectedTruckReq ? this.selectedTruckReq.id : null,
+        trailerTypeId: this.selectedTrailerReq
+          ? this.selectedTrailerReq.id
+          : null,
+        doorType: this.selectedDoorType ? this.selectedDoorType.id : null,
+        suspension: this.selectedSuspension ? this.selectedSuspension.id : null,
+        trailerLengthId: this.selectedTrailerLength
+          ? this.selectedTrailerLength.id
+          : null,
+        year: this.selectedYear ? this.selectedYear.id : null,
+        liftgate: form.liftgate,
+      },
+      note: form.note,
+      baseRate: convertThousanSepInNumber(form.baseRate),
+      adjustedRate: convertThousanSepInNumber(form.adjustedRate),
+      advancePay: convertThousanSepInNumber(form.advancePay),
+      additionalBillingRates: this.premmapedAdditionalBillingRate(),
+      stops: this.premmapedStops() as any,
+    };
+
+    this.loadService
+      .createLoadTemplate(newData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfully create load template.',
+            'Success'
+          );
+          this.modalService.setModalSpinner({
+            action: 'load-template',
+            status: false,
+          });
+        },
+        error: (error: any) => {
+          this.notificationService.error(error, 'Error');
+        },
+      });
+  }
+
+  private premmapedAdditionalBillingRate() {
+    return this.additionalBillingTypes.map((item) => {
+      return {
+        id: item.id ? item.id : null,
+        additionalBillingType: item.additionalBillingType,
+        rate:
+          item.additionalBillingType === 1
+            ? this.loadForm.get('layoverRate').value
+            : item.additionalBillingType === 2
+            ? this.loadForm.get('lumperRate').value
+            : item.additionalBillingType === 3
+            ? this.loadForm.get('fuelSurchargeRate').value
+            : item.additionalBillingType === 4
+            ? this.loadForm.get('escortRate').value
+            : item.additionalBillingType === 5
+            ? this.loadForm.get('detentionRate').value
+            : null,
+      };
+    });
+  }
+
+  private premmapedStops() {
+    return this.loadStops().controls.map((item, index) => {
+      return {
+        id: null,
+        stopType: item.get('stopType').value,
+        stopOrder: item.get('stopOrder').value,
+        shipperId: item.get('shipperId').value,
+        dateFrom: convertDateToBackend(item.get('dateFrom').value),
+        dateTo: convertDateToBackend(item.get('dateTo').value),
+        timeType: item.get('timeType').value,
+        timeFrom: [null],
+        timeTo: [null],
+        arrive: null,
+        depart: null,
+        // From legs
+        legMiles: item.get('legMiles').value,
+        legHours: item.get('legHours').value,
+        legMinutes: item.get('legMinutes').value,
+        totalLegMiles: item.get('totalLegMiles').value,
+        totalLegHours: item.get('totalLegHours').value,
+        totalLegMinutes: item.get('totalLegMinutes').value,
+        // -----------
+        // Shipper Contact information
+        // address: ['3905 Elliot Ave, Springdale, GA 72762, USA'],
+        // contact: ['A. Djordjevic'],
+        // phone: ['(987) 654-3210'],
+        // extensionPhone: ['444'],
+        // -----------
+        items: this.loadStopsDetails(index).controls.map((item, index) => {
+          return {
+            id: item.get('id').value,
+            bolNumber: item.get('bolNumber').value,
+            appointmentNumber: item.get('appointmentNumber').value,
+            pickupNumber: item.get('pickupNumber').value,
+            poNumber: item.get('poNumber').value,
+            sealNumber: item.get('sealNumber').value,
+            weight: item.get('weight').value
+              ? convertThousanSepInNumber(item.get('weight').value)
+              : null,
+            length: item.get('length').value
+              ? convertThousanSepInNumber(item.get('length').value)
+              : null,
+            height: item.get('height').value
+              ? convertThousanSepInNumber(item.get('height').value)
+              : null,
+            temperature: item.get('temperature').value
+              ? convertThousanSepInNumber(item.get('temperature').value)
+              : null,
+            description: item.get('description').value,
+            code: item.get('code').value,
+            quantity: item.get('quantity').value
+              ? convertThousanSepInNumber(item.get('quantity').value)
+              : null,
+            units: this.selectedLoadDetailsUnits[index]
+              ? this.selectedLoadDetailsUnits[index].id
+              : null,
+            secure: this.selectedLoadDetailsStrapChain[index]
+              ? this.selectedLoadDetailsStrapChain[index].id
+              : null,
+            tarp: this.selectedLoadDetailsTarps[index]
+              ? this.selectedLoadDetailsTarps[index].id
+              : null,
+            stackable: this.selectedLoadDetailsStackable[index]
+              ? this.selectedLoadDetailsStackable[index].id
+              : null,
+            driverAssist: this.selectedLoadDetailsDriverAssis[index]
+              ? this.selectedLoadDetailsDriverAssis[index].id
+              : null,
+            hazardousMaterialId: this.selectedLoadDetailsHazardous[index]
+              ? this.selectedLoadDetailsHazardous[index].id
+              : null,
+          };
+        }),
+      };
+    });
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

@@ -196,7 +196,7 @@ export const name2_24Validation = [
 
 //---------------- Price
 export const priceValidation = [
-  Validators.minLength(2),
+  Validators.minLength(1),
   Validators.maxLength(24),
 ];
 

@@ -1,12 +1,13 @@
 <app-ta-modal
   [modalTitle]="!editData?.type?.includes('edit') ? 'Create Load' : 'Edit Load'"
   [editData]="editData"
-  [loadModalTitle]="loadNumber"
-  [loadModalBill]="loadModalBill"
-  [hazardousLogo]="isHazardousPicked"
   [isModalValid]="loadForm.valid && isFormDirty"
   [tabChange]="headerTabs"
   [customClass]="'modal-container-load'"
+  [loadModalTitle]="loadNumber"
+  [loadModalBill]="loadModalBill"
+  [hazardousLogo]="isHazardousPicked"
+  [loadModalTemplate]="true"
   [modalAdditionalPart]="true"
   (onTabHeaderChange)="onModalHeaderTabChange($event)"
   (action)="onModalAction($event)"
@@ -31,7 +32,7 @@
           (selected)="loadCreateStatuses = $event"
         ></app-load-modal-statuses>
         <app-ta-input-dropdown
-          formControlName="selectTemplate"
+          formControlName="loadTemplateId"
           [inputConfig]="{
             name: 'Input Dropdown',
             type: 'text',
@@ -44,7 +45,7 @@
           (selectedItem)="onSelectDropdown($event, 'template')"
         ></app-ta-input-dropdown>
         <app-ta-input-dropdown
-          formControlName="dispatcher"
+          formControlName="dispatcherId"
           [template]="'load-dispatcher'"
           [inputConfig]="{
             name: 'Input Dropdown',
@@ -71,7 +72,7 @@
         <!-- Only One Company -->
         <app-ta-input
           *ngIf="labelsCompanies.length === 1"
-          formControlName="company"
+          formControlName="companyId"
           [inputConfig]="{
             name: 'Company',
             type: 'text',
@@ -83,7 +84,7 @@
         <!-- Multiple Companies -->
         <app-ta-input-dropdown
           *ngIf="labelsCompanies.length > 1"
-          formControlName="company"
+          formControlName="companyId"
           [inputConfig]="{
             name: 'Input Dropdown',
             type: 'text',
@@ -98,7 +99,7 @@
       </div>
       <div class="load-ftl-second-row">
         <app-ta-input-dropdown
-          formControlName="dispatchesId"
+          formControlName="dispatchId"
           [template]="'load-dispatches-ttd'"
           [inputConfig]="loadDispatchesTTDInputConfig"
           [options]="labelsDispatches"
@@ -106,7 +107,7 @@
           (selectedItem)="onSelectDropdown($event, 'dispatches')"
         ></app-ta-input-dropdown>
         <app-ta-input
-          formControlName="refNumber"
+          formControlName="referenceNumber"
           [inputConfig]="{
             name: 'Ref Number',
             type: 'text',
@@ -145,7 +146,7 @@
       </div>
       <div class="load-ftl-third-row">
         <app-ta-input-dropdown
-          formControlName="broker"
+          formControlName="brokerId"
           [template]="'load-broker'"
           [inputConfig]="{
             name: 'Input Dropdown',
@@ -175,7 +176,7 @@
         ></app-ta-input-dropdown>
 
         <app-ta-input-dropdown
-          formControlName="brokerContact"
+          formControlName="brokerContactId"
           [template]="'load-broker-contact'"
           [inputConfig]="loadBrokerContactsInputConfig"
           [canAddNew]="true"
@@ -188,10 +189,11 @@
       <app-ta-custom-card
         [cardName]="'Load Requirements'"
         [animationMarginParams]="{ marginTop: '18px', marginBottom: '22px' }"
+        [isCardOpen]="false"
       >
         <div class="load-requirements-load">
           <app-ta-input-dropdown
-            formControlName="truckReq"
+            formControlName="truckTypeId"
             [template]="'svgtext-template'"
             [inputConfig]="{
               name: 'Input Dropdown',
@@ -218,7 +220,7 @@
           ></app-ta-input-dropdown>
 
           <app-ta-input-dropdown
-            formControlName="trailerReq"
+            formControlName="trailerTypeId"
             [template]="'svgtext-template'"
             [inputConfig]="{
               name: 'Input Dropdown',
@@ -281,7 +283,7 @@
           ></app-ta-input-dropdown>
 
           <app-ta-input-dropdown
-            formControlName="length"
+            formControlName="trailerLengthId"
             [inputConfig]="{
               name: 'Input Dropdown',
               type: 'text',
@@ -309,7 +311,7 @@
           ></app-ta-input-dropdown>
 
           <app-ta-checkbox
-            formControlName="lifgate"
+            formControlName="liftgate"
             [customClass]="'regular-small'"
             [label]="'Lifgate'"
           ></app-ta-checkbox>
@@ -436,7 +438,7 @@
       >
         <div
           *ngIf="loadStops().length"
-          formArrayName="loadStops"
+          formArrayName="stops"
           class="common-fake-table-modal common-fake-table-modal-load-stops"
         >
           <div class="common-fake-table-label">
@@ -466,24 +468,24 @@
                 <div
                   class="common-fake-table-card-title"
                   [ngClass]="{
-                    'pickup-mode': loadStop.get('stopMode').value === 'pickup',
+                    'pickup-mode': loadStop.get('stopType').value === 'Pickup',
                     'delivery-mode':
-                      loadStop.get('stopMode').value === 'delivery'
+                      loadStop.get('stopType').value === 'Delivery'
                   }"
                   (click)="toggleLoadStop(loadStop)"
                 >
                   <div class="load-stop-serial-number">
                     <p>
-                      {{ loadStop.get("id").value }}
+                      {{ loadStop.get("stopOrder").value }}
                     </p>
                   </div>
 
                   <p class="load-stop-shipper-name">
-                    {{ loadStop.get("shipper").value }}
+                    {{ selectedShipper.name }}
                   </p>
 
                   <p class="load-stop-location">
-                    {{ loadStop.get("location").value }}
+                    {{ selectedShipper.address }}
                   </p>
 
                   <p class="load-stop-date">
@@ -501,11 +503,11 @@
                   </p>
 
                   <p class="load-stop-leg-mi">
-                    {{ loadStop.get("miles").value }}
+                    {{ loadStop.get("legMiles").value }}
                   </p>
 
                   <p class="load-stop-total">
-                    {{ loadStop.get("total").value }}
+                    {{ loadStop.get("totalLegMiles").value }}
                   </p>
 
                   <div
@@ -543,7 +545,7 @@
                       <p>{{ loadStop.get("extensionPhone").value }}</p>
                     </div>
                   </div>
-                  <div formArrayName="loadStopDetails">
+                  <div formArrayName="items">
                     <div
                       *ngIf="loadStopsDetails(loadStopIndex).length"
                       class="load-stop-details-header"
@@ -605,7 +607,7 @@
                         <!-- Hazardous Dropdown -->
                         <app-ta-input-dropdown
                           *ngIf="isHazardousPicked"
-                          formControlName="hazardous"
+                          formControlName="hazardousMaterialId"
                           [template]="'svgtext-template'"
                           [inputConfig]="{
                             name: 'Input Dropdown',
@@ -643,7 +645,7 @@
 
                         <!-- QTY -->
                         <app-ta-input
-                          formControlName="qty"
+                          formControlName="quantity"
                           [inputConfig]="{
                             name: 'QTY',
                             type: 'text',
@@ -727,7 +729,7 @@
 
                         <!-- TMP -->
                         <app-ta-input
-                          formControlName="tmp"
+                          formControlName="temperature"
                           [inputConfig]="{
                             name: 'TMP',
                             type: 'text',
@@ -742,7 +744,7 @@
 
                         <!-- BOL -->
                         <app-ta-input
-                          formControlName="bol"
+                          formControlName="bolNumber"
                           [inputConfig]="{
                             name: 'BOL',
                             type: 'text',
@@ -757,7 +759,7 @@
 
                         <!-- Appointment -->
                         <app-ta-input
-                          formControlName="appointment"
+                          formControlName="appointmentNumber"
                           [inputConfig]="{
                             name: 'Appointment',
                             type: 'text',
@@ -772,7 +774,7 @@
 
                         <!-- Pickup -->
                         <app-ta-input
-                          formControlName="pickup"
+                          formControlName="pickupNumber"
                           [inputConfig]="{
                             name: 'Pickup',
                             type: 'text',
@@ -787,7 +789,7 @@
 
                         <!-- PO -->
                         <app-ta-input
-                          formControlName="po"
+                          formControlName="poNumber"
                           [inputConfig]="{
                             name: 'PO',
                             type: 'text',
@@ -802,7 +804,7 @@
 
                         <!-- Seal -->
                         <app-ta-input
-                          formControlName="seal"
+                          formControlName="sealNumber"
                           [inputConfig]="{
                             name: 'Seal',
                             type: 'text',
@@ -884,7 +886,7 @@
 
                         <!-- Driver Assis -->
                         <app-ta-input-dropdown
-                          formControlName="driverAssis"
+                          formControlName="driverAssist"
                           [inputConfig]="{
                             name: 'Input Dropdown',
                             type: 'text',
@@ -910,7 +912,7 @@
 
                         <!-- Strap Chain -->
                         <app-ta-input-dropdown
-                          formControlName="strapChain"
+                          formControlName="secure"
                           [inputConfig]="{
                             name: 'Input Dropdown',
                             type: 'text',
@@ -957,10 +959,10 @@
         <div class="billing-payment-load">
           <!-- Base Rate -->
           <app-ta-input
-            formControlName="billingPaymentBaseRate"
+            formControlName="baseRate"
             [inputConfig]="{
-              name: 'Dollar',
-              type: 'number',
+              name: 'base-rate',
+              type: 'text',
               label: 'Base Rate',
               isRequired: true,
               placeholderIcon: 'dollar',
@@ -979,7 +981,9 @@
             mainTooltip="Adjusted"
             tooltipBackground="#FFA726"
             position="top"
-            (click)="isAvailableAdjustedRate = true"
+            (click)="
+              isAvailableAdjustedRate = true && loadForm.get('baseRate').value
+            "
           >
             <svg-icon
               class="billing-adjusted-plus"
@@ -989,10 +993,10 @@
 
           <app-ta-input
             *ngIf="isAvailableAdjustedRate"
-            formControlName="billingPaymentAdjustedRate"
+            formControlName="adjustedRate"
             [inputConfig]="{
-              name: 'Dollar',
-              type: 'number',
+              name: 'adjusted-rate',
+              type: 'text',
               label: 'Adjusted',
               placeholderIcon: 'dollar',
               customClass: 'dollar-placeholderIcon load-adjusted-rate',
@@ -1010,7 +1014,9 @@
             mainTooltip="Advance"
             tooltipBackground="#26A690"
             position="top"
-            (click)="isAvailableAdvanceRate = true"
+            (click)="
+              isAvailableAdvanceRate = true && loadForm.get('baseRate').value
+            "
           >
             <svg-icon
               class="billing-advance-plus"
@@ -1020,10 +1026,10 @@
 
           <app-ta-input
             *ngIf="isAvailableAdvanceRate"
-            formControlName="bilingPaymentAdvanceRate"
+            formControlName="advancePay"
             [inputConfig]="{
-              name: 'Dollar',
-              type: 'number',
+              name: 'advance-pay-rate',
+              type: 'text',
               label: 'Advance',
               placeholderIcon: 'dollar',
               customClass: 'dollar-placeholderIcon load-advance-rate',
@@ -1035,13 +1041,12 @@
 
           <!-- Layover -->
           <app-ta-input
-            *ngIf="additionalOptions[0].active"
-            formControlName="bilingPaymentLayover"
+            *ngIf="additionalBillingTypes[0]?.active"
+            formControlName="layoverRate"
             [inputConfig]="{
-              name: 'Dollar',
-              type: 'number',
+              name: 'layover-rate',
+              type: 'text',
               label: 'Layover',
-              isRequired: true,
               placeholderIcon: 'dollar',
               customClass: 'dollar-placeholderIcon',
               thousandSeparator: true,
@@ -1052,13 +1057,12 @@
 
           <!-- Lumper -->
           <app-ta-input
-            *ngIf="additionalOptions[1].active"
-            formControlName="bilingPaymentLumper"
+            *ngIf="additionalBillingTypes[1]?.active"
+            formControlName="lumperRate"
             [inputConfig]="{
-              name: 'Dollar',
-              type: 'number',
+              name: 'lumper-rate',
+              type: 'text',
               label: 'Lumper',
-              isRequired: true,
               placeholderIcon: 'dollar',
               customClass: 'dollar-placeholderIcon',
               thousandSeparator: true,
@@ -1069,13 +1073,12 @@
 
           <!-- Fuel Surcharge -->
           <app-ta-input
-            *ngIf="additionalOptions[2].active"
-            formControlName="bilingPaymentFuelSurcharge"
+            *ngIf="additionalBillingTypes[2]?.active"
+            formControlName="fuelSurchargeRate"
             [inputConfig]="{
-              name: 'Dollar',
-              type: 'number',
+              name: 'fuel-surcharge-rate',
+              type: 'text',
               label: 'Fuel Surch.',
-              isRequired: true,
               placeholderIcon: 'dollar',
               customClass: 'dollar-placeholderIcon',
               thousandSeparator: true,
@@ -1086,13 +1089,12 @@
 
           <!-- Escort -->
           <app-ta-input
-            *ngIf="additionalOptions[3].active"
-            formControlName="bilingPaymentEscort"
+            *ngIf="additionalBillingTypes[3]?.active"
+            formControlName="escortRate"
             [inputConfig]="{
-              name: 'Dollar',
-              type: 'number',
+              name: 'escort-rate',
+              type: 'text',
               label: 'Escort',
-              isRequired: true,
               placeholderIcon: 'dollar',
               customClass: 'dollar-placeholderIcon',
               thousandSeparator: true,
@@ -1103,13 +1105,12 @@
 
           <!-- Detention -->
           <app-ta-input
-            *ngIf="additionalOptions[4].active"
-            formControlName="bilingPaymentDetention"
+            *ngIf="additionalBillingTypes[4]?.active"
+            formControlName="detentionRate"
             [inputConfig]="{
-              name: 'Dollar',
-              type: 'number',
+              name: 'detention-rate',
+              type: 'text',
               label: 'Detention',
-              isRequired: true,
               placeholderIcon: 'dollar',
               customClass: 'dollar-placeholderIcon',
               thousandSeparator: true,
@@ -1139,7 +1140,7 @@
           <ng-template #taInputDropdownPopover>
             <div class="load-additional-container">
               <div
-                *ngFor="let option of additionalOptions; trackBy: identity"
+                *ngFor="let option of additionalBillingTypes; trackBy: identity"
                 class="dropdown-option"
                 (click)="onSelectAdditionalOption(option)"
               >
