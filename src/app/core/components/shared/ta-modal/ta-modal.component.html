@@ -1,4 +1,8 @@
-<div cdkDrag class="modal-container {{ customClass }}" ngBAutofocus>
+<div 
+  cdkDrag class="modal-container {{ customClass }}" 
+  ngBAutofocus
+  (cdkDragStarted)="removeSelections($event)"
+  >
   <div class="modal-original-part">
     <!-- Modal Header -->
     <div cdkDragHandle class="modal-header">

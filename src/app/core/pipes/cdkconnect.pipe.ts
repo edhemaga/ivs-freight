@@ -21,8 +21,6 @@ export class CdkConnectPipe implements PipeTransform {
         data.push(type + ni);
       }
     }
-    console.log("WHAT IS DATA");
-    console.log(data);
     return data;
   }
 }

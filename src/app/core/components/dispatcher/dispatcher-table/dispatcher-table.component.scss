@@ -391,7 +391,7 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
   }
 
   .cdk-drag-disabled {
-    .dispatch-box {
+    .dispatch-box:not(.cdk-drag) {
       cursor: auto !important;
     }
   }

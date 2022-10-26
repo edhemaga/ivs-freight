@@ -164,6 +164,7 @@
           <td class="trailer-field abs">
             <div
               cdkDropList
+              (cdkDropListDropped)="dropTrailer($event, rowIndex)"
               id="{{ rowIndex | cdkid: gridIndex:'trailer' }}"
               [cdkDropListData]="dData"
               [cdkDropListConnectedTo]="
@@ -186,6 +187,8 @@
                 "
                 [class.empty-box-field]="__isBoardLocked && !item.trailer"
                 cdkDrag
+                (cdkDragStarted)="cdkDragStartedTrailer($event, rowIndex)"
+                [cdkDragDisabled]="__isBoardLocked || !item.trailer"
                 cdkDragLockAxis="y"
                 [cdkDragPreviewClass]="'dispatch-dragged-row'"
               >
@@ -312,6 +315,7 @@
               class="dispatch-list"
               cdkDropList
               id="{{ rowIndex | cdkid: gridIndex:'drivers' }}"
+              (cdkDropListDropped)="dropDriver($event, rowIndex)"
               [cdkDropListData]="dData"
               [cdkDropListConnectedTo]="
                 rowIndex
@@ -333,6 +337,8 @@
                     : 'empty'
                 "
                 [class.empty-box-field]="__isBoardLocked && !item.driver"
+                [cdkDragDisabled]="__isBoardLocked || !item.driver"
+                (cdkDragStarted)="cdkDragStartedDriver($event, rowIndex)"
                 cdkDrag
                 cdkDragLockAxis="y"
               >
@@ -996,7 +1002,6 @@
                 [class.empty-box-field]="__isBoardLocked"
               >
                 <div class="trailer_span_holder">
-                  <div *cdkDragPlaceholder class="custom-dispatch-placeholder"></div>
                   <div
                     class="app-ta-input-dropdown-holder"
                     *ngIf="trailerSelectOpened == -2"
