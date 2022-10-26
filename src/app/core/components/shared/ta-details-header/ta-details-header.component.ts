@@ -116,7 +116,7 @@ export class TaCommonHeaderComponent implements OnInit {
             action.disabled = false;
           }
 
-          if ( index == 10 ) {
+          if ( index == 9 ) {
             if ( itemData.status != 1) {
               action.title = 'Reopen Business';
               action.greenIcon = true;
@@ -128,7 +128,7 @@ export class TaCommonHeaderComponent implements OnInit {
               action.redIcon = true;
               action.name = 'close-business';
             }
-          }
+          } 
 
         })
       break;
