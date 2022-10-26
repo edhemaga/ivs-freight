@@ -253,7 +253,8 @@
       <div
         *ngIf="
           (selectedMode === 'APPLICANT_MODE' && !isEditing) ||
-          (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
+          (selectedMode === 'REVIEW_MODE' && !isReviewingCard) ||
+          selectedMode === 'FEEDBACK_MODE'
         "
       >
         <app-step2-form
@@ -299,10 +300,10 @@
       formControlName="noWorkExperience"
       [name]="'noWorkExperience'"
       [label]="'I don’t have work experience'"
-      [customClass]="
-        selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
+      [customClass]="'bold-12'"
+      [disabledStillCheckMark]="
+        selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
       "
-      [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
     ></app-ta-checkbox>
   </div>
 </div>

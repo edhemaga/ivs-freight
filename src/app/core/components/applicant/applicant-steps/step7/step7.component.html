@@ -404,10 +404,9 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [filledCorrectly]="
-      (selectedMode === 'APPLICANT_MODE' && sevenDaysHosForm.valid) ||
-      (selectedMode === 'FEEDBACK_MODE' &&
-        sevenDaysHosForm.valid &&
-        isFeedbackValueUpdated)
+      sevenDaysHosForm.valid &&
+      (selectedMode === 'APPLICANT_MODE' ||
+        (selectedMode === 'FEEDBACK_MODE' && isFeedbackValueUpdated))
     "
     [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && hasIncorrectFields"
     [mode]="selectedMode"

@@ -185,6 +185,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     {
       'api' : 'forgotpassword',
       'value' : 'PASSWORD'
+    },
+    {
+      'api' : 'note',
+      'value' : 'NOTE'
     }
     
   ]
@@ -241,6 +245,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         this.actionTitle = this.toastrType == 'toast-error' ? 'LOAD' : 'LOADED';
       break;
       case 'PUT':
+      case 'PATCH':
         //this.actionTitle = this.toastrType == 'toast-error' ? 'REMOVE' : 'REMOVED';
         this.actionTitle = this.toastrType == 'toast-error' ? 'UPDATE' : 'UPDATED';
       break;
@@ -577,6 +582,20 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       break;
       case 'PASSWORD' :
         this.message = this.errorData.error.error ? this.errorData.error.error : '';
+      break;
+      case 'NOTE' :
+        let noteName = '';
+        if ( this.httpRequest.body.entityTypeNote == "Driver") {
+          noteName = this.DetailsDataService.mainData.fullName ? this.DetailsDataService.mainData.fullName : this.DetailsDataService.mainData.firstName + ' ' + this.DetailsDataService.mainData.lastName;
+        } else if (this.httpRequest.body.entityTypeNote == "Truck") {
+          let noteTruckNum = this.DetailsDataService.mainData?.truckNumber;
+          noteName = 'Truck - ' + noteTruckNum;
+        } else if (this.httpRequest.body.entityTypeNote == "Trailer") {
+          let noteTrailerNum = this.DetailsDataService.mainData?.trailerNumber;
+          noteName = 'Trailer - ' + noteTrailerNum;
+        }
+      
+        this.message = noteName;  
       break;
     }
 

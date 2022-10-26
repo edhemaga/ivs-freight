@@ -92,6 +92,15 @@
       }
     }
   }
+
+  .spinner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    width: 18px;
+    height: 18px;
+  }
 }
 
 .note-normal-icon,
@@ -100,22 +109,6 @@
   width: 16px;
   height: 18px;
   background-repeat: no-repeat;
-}
-
-.note-normal-icon {
-  background-image: url("../../../../../assets/svg/truckassist-table/note/Note.svg");
-
-  &:hover {
-    background-image: url("../../../../../assets/svg/truckassist-table/note/Note-hover.svg");
-  }
-}
-
-.note-note-empty {
-  background-image: url("../../../../../assets/svg/truckassist-table/note/Note - Empty.svg");
-
-  &:hover {
-    background-image: url("../../../../../assets/svg/truckassist-table/note/Note - Empty-hover.svg");
-  }
 }
 
 .note_holder_span {
@@ -411,6 +404,15 @@
       &.parking_text_hold {
         max-height: 124px;
       }
+    }
+
+    .spinner{
+      position: absolute;
+      right: 2px;
+      bottom: 6px;
+      
+      width: 18px;
+      height: 18px;
     }
 
     .container_separate {
