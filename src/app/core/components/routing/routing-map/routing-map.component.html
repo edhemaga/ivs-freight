@@ -20,7 +20,7 @@
         class="route-card-scroll"
         cdkDropList
         #routeList="cdkDropList"
-        [cdkDropListData]="tableData[selectedMapIndex].routes"
+        [cdkDropListData]="tableData[selectedMapIndex]?.routes"
         [cdkDropListConnectedTo]="[routeFreeDrag]"
         (cdkDropListDropped)="dropRoutes($event)"
       >

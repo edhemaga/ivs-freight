@@ -27,6 +27,8 @@ import {
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { ModalService } from './../../shared/ta-modal/modal.service';
 import { distinctUntilChanged, Subject, takeUntil, filter } from 'rxjs';
+import { RoutingStateService } from '../state/routing-state/routing-state.service';
+import { GetMapListResponse, GetRouteListResponse } from 'appcoretruckassist';
 
 declare var google: any;
 declare const geoXML3: any;
@@ -192,9 +194,67 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
   selectedTab: string = 'map1';
   selectedMapIndex: number = 0;
-  tableOptions: any = {};
 
-  tableData: any[] = [];
+  //tableOptions: any = {};
+  tableOptions: any = {
+    disabledMutedStyle: null,
+    toolbarActions: {
+      hideLocationFilter: true,
+      hideViewMode: true,
+      showMapView: false,
+    },
+    config: {
+      showSort: true,
+      sortBy: '',
+      sortDirection: '',
+      disabledColumns: [0],
+      minWidth: 60,
+    },
+  };
+
+  //tableData: any[] = [];
+  tableData: any[] = [
+    {
+      title: 'Map 1',
+      field: 'map1',
+      length: 0,
+      gridNameTitle: 'Routing',
+      distanceUnit: 'mi', // mi or km
+      borderType: 'open', // open or closed
+      addressType: 'city', // city or address,
+      routes: [],
+    },
+    {
+      title: 'Map 2',
+      field: 'map2',
+      length: 0,
+      gridNameTitle: 'Routing',
+      distanceUnit: 'mi', // mi or km
+      borderType: 'open', // open or closed
+      addressType: 'city', // city or address,
+      routes: [],
+    },
+    {
+      title: 'Map 3',
+      field: 'map3',
+      length: 0,
+      gridNameTitle: 'Routing',
+      distanceUnit: 'mi', // mi or km
+      borderType: 'open', // open or closed
+      addressType: 'city', // city or address,
+      routes: [],
+    },
+    {
+      title: 'Map 4',
+      field: 'map4',
+      length: 0,
+      gridNameTitle: 'Routing',
+      distanceUnit: 'mi', // mi or km
+      borderType: 'open', // open or closed
+      addressType: 'city', // city or address,
+      routes: [],
+    },
+  ];
 
   dropdownActions: any[] = [
     {
@@ -428,28 +488,34 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   changedFreeMoveTime: any;
 
   mapZoomTime: number = 0;
+  mapList: any[] = [];
 
   constructor(
     private mapsService: MapsService,
     private formBuilder: FormBuilder,
     private ref: ChangeDetectorRef,
     private modalService: ModalService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private routingService: RoutingStateService
   ) {}
 
   ngOnInit(): void {
-    this.initTableOptions();
+    //this.initTableOptions();
 
     this.addressForm = this.formBuilder.group({
       address: [null, [...addressValidation]],
     });
 
-    this.initAddressFields();
+    //this.initAddressFields();
 
-    this.tableData[this.selectedMapIndex].routes.map((item, index) => {
-      this.calculateDistanceBetweenStops(index);
-      this.calculateRouteWidth(item);
-    });
+    var companyUserId = JSON.parse(localStorage.getItem('user')).companyUserId;
+    console.log('companyUserId', companyUserId);
+    this.getMapList(companyUserId, 1, 4);
+
+    // this.tableData[this.selectedMapIndex].routes.map((item, index) => {
+    //   this.calculateDistanceBetweenStops(index);
+    //   this.calculateRouteWidth(item);
+    // });
 
     // Confirmation Subscribe
     this.confirmationService.confirmationData$
@@ -1561,48 +1627,66 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       },
     };
 
-    this.tableData = [
-      {
-        title: 'Map 1',
-        field: 'map1',
+    this.tableData = this.mapList.map((map, index) => {
+      var mapObj = {
+        id: map.id,
+        title: map.name,
+        field: 'map'+(index+1),
         length: 0,
         gridNameTitle: 'Routing',
         distanceUnit: 'mi', // mi or km
         borderType: 'open', // open or closed
         addressType: 'city', // city or address,
         routes: [],
-      },
-      {
-        title: 'Map 2',
-        field: 'map2',
-        length: 0,
-        gridNameTitle: 'Routing',
-        distanceUnit: 'mi', // mi or km
-        borderType: 'open', // open or closed
-        addressType: 'city', // city or address,
-        routes: [],
-      },
-      {
-        title: 'Map 3',
-        field: 'map3',
-        length: 0,
-        gridNameTitle: 'Routing',
-        distanceUnit: 'mi', // mi or km
-        borderType: 'open', // open or closed
-        addressType: 'city', // city or address,
-        routes: [],
-      },
-      {
-        title: 'Map 4',
-        field: 'map4',
-        length: 0,
-        gridNameTitle: 'Routing',
-        distanceUnit: 'mi', // mi or km
-        borderType: 'open', // open or closed
-        addressType: 'city', // city or address,
-        routes: [],
-      },
-    ];
+      };
+
+      return mapObj;
+    });
+
+    console.log('tableData', this.tableData);
+
+    // this.tableData = [
+    //   {
+    //     title: 'Map 1',
+    //     field: 'map1',
+    //     length: 0,
+    //     gridNameTitle: 'Routing',
+    //     distanceUnit: 'mi', // mi or km
+    //     borderType: 'open', // open or closed
+    //     addressType: 'city', // city or address,
+    //     routes: [],
+    //   },
+    //   {
+    //     title: 'Map 2',
+    //     field: 'map2',
+    //     length: 0,
+    //     gridNameTitle: 'Routing',
+    //     distanceUnit: 'mi', // mi or km
+    //     borderType: 'open', // open or closed
+    //     addressType: 'city', // city or address,
+    //     routes: [],
+    //   },
+    //   {
+    //     title: 'Map 3',
+    //     field: 'map3',
+    //     length: 0,
+    //     gridNameTitle: 'Routing',
+    //     distanceUnit: 'mi', // mi or km
+    //     borderType: 'open', // open or closed
+    //     addressType: 'city', // city or address,
+    //     routes: [],
+    //   },
+    //   {
+    //     title: 'Map 4',
+    //     field: 'map4',
+    //     length: 0,
+    //     gridNameTitle: 'Routing',
+    //     distanceUnit: 'mi', // mi or km
+    //     borderType: 'open', // open or closed
+    //     addressType: 'city', // city or address,
+    //     routes: [],
+    //   },
+    // ];
   }
 
   zoomMap(zoom) {
@@ -2305,5 +2389,73 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     if (event) {
       this.addNewStop(event);
     }
+  }
+
+  getMapList(
+    companyUserId?: number,
+    pageIndex?: number,
+    pageSize?: number,
+    companyId?: number,
+    sort?: string,
+    search?: string,
+    search1?: string,
+    search2?: string
+  ) {
+    this.routingService
+      .getMapList(
+        companyUserId,
+        pageIndex,
+        pageSize,
+        companyId,
+        sort,
+        search,
+        search1,
+        search2
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((maps: GetMapListResponse | any) => {
+        console.log('getMapList response', maps);
+
+        this.mapList = maps.pagination.data;
+        this.initTableOptions();
+
+        this.mapList.map((item) => {
+          this.getRouteList(item.id, 1, 8);
+        });
+      });
+  }
+
+  getRouteList(
+    mapId?: number,
+    pageIndex?: number,
+    pageSize?: number,
+    companyId?: number,
+    sort?: string,
+    search?: string,
+    search1?: string,
+    search2?: string
+  ) {
+    this.routingService
+      .getRouteList(
+        mapId,
+        pageIndex,
+        pageSize,
+        companyId,
+        sort,
+        search,
+        search1,
+        search2
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((routes: GetRouteListResponse) => {
+        console.log('getRouteList response', routes);
+
+        this.tableData[this.selectedMapIndex].routes.map((item, index) => {
+          this.calculateDistanceBetweenStops(index);
+          this.calculateRouteWidth(item);
+        });
+
+        this.initAddressFields();
+      });
   }
 }
