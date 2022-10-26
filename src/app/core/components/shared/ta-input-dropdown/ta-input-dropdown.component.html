@@ -15,7 +15,8 @@
     *ngIf="inputConfig.multiSelectDropdownActive"
     class="multiselect-arrow"
     [ngClass]="{
-      valid: !isMultiSelectInputFocus && multiselectItems.length > 0
+      valid: !isMultiSelectInputFocus && multiselectItems.length > 0,
+      disabled: inputConfig.isDisabled
     }"
     src="assets/svg/common/ic_arrow_down_updated.svg"
     (click)="toggleMultiselectDropdown()"
@@ -598,7 +599,11 @@
               options.length === 1 && options[0].name === 'No Results',
             'add-new': option.name === 'Add New',
             'add-new-divider': option.name === 'Add New' && options.length > 1,
-            active: option.id === activeItem?.id,
+            active:
+              option.id ===
+              (activeItem?.duplicateId
+                ? activeItem?.duplicateId
+                : activeItem?.id),
             'active-repair-truck-trailer': option?.status === 1,
             routing_dropdown: inputConfig.name == 'RoutingAddress'
           }"

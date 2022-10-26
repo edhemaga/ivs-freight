@@ -459,7 +459,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     this.truckService
       .getTruckById(id, true)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((item) => item);
+      .subscribe((item) => {this.truck = item});
   }
   /**Function for dots in cards */
   public initTableOptions(): void {

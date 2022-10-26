@@ -68,6 +68,7 @@
           [selectedLabelColor]="selectedAccountColor"
           (pickExistLabel)="onPickExistLabel($event)"
           (pickColorLabel)="onSelectColorLabel($event)"
+          (editModeLabel)="companyAccountLabelMode($event)"
           (saveLabel)="onSaveLabel($event)"
         >
         </app-ta-input-dropdown-label>
@@ -83,7 +84,7 @@
             label: 'Username',
             placeholderIcon: 'username',
             isRequired: true,
-            minLength: 6,
+            minLength: 2,
             maxLength: 30
           }"
         ></app-ta-input>

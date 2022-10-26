@@ -88,6 +88,10 @@ ngb-modal-window[aria-hidden="true"] {
             cursor: grabbing;
           }
         }
+        .modal-footer {
+          cursor: -webkit-grabbing;
+          cursor: grabbing;
+        }
       }
 
       .modal-header {
@@ -330,13 +334,16 @@ ngb-modal-window[aria-hidden="true"] {
       .modal-footer {
         padding: 12px;
         border: none;
+        cursor: -webkit-grab;
+        cursor: grab;
 
         &.mutliple-buttons {
           display: flex;
           justify-content: space-between;
         }
 
-        &.load-template {
+        &.load-template,
+        &.map-settings-template {
           display: flex;
           justify-content: space-between;
         }
@@ -370,7 +377,8 @@ ngb-modal-window[aria-hidden="true"] {
         .modal-deactivate-btn,
         .modal-resend-email-btn,
         .modal-cancel-btn,
-        .modal-load-template-btn {
+        .modal-load-template-btn,
+        .modal-map-settings-reset-btn {
           position: relative;
           min-width: 128px;
           height: 32px;

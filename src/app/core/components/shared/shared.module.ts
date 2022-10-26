@@ -89,13 +89,13 @@ import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-inpu
 import { LoadModalComponent } from '../modals/load-modal/load-modal.component';
 import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.component';
 import { TaNoteModule } from './ta-note/ta-note.module';
+import { TaSpinnerModule } from './ta-spinner/ta-spinner.module';
 import { CustomScrollbarComponent } from './custom-scrollbar/custom-scrollbar.component';
 import { TaUploadFilesComponent } from './ta-upload-files/ta-upload-files.component';
 import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdown';
 import { MapsComponent } from './maps/maps.component';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices.component';
-import { TaSpinnerComponent } from './ta-spinner/ta-spinner.component';
 import { TaCopyComponent } from './ta-copy/ta-copy.component';
 import { LottieModule } from 'ngx-lottie';
 import { TaTimePeriodComponent } from './ta-time-period/ta-time-period.component';
@@ -112,6 +112,8 @@ import { InputAddressDropdownComponent } from './input-address-dropdown/input-ad
 import { ApplicantReviewFeedbackComponent } from './applicant-review-feedback/applicant-review-feedback.component';
 import { LoadModalHazardousComponent } from '../modals/load-modal/load-modal-hazardous/load-modal-hazardous.component';
 import { LoadModalStatusesComponent } from '../modals/load-modal/load-modal-statuses/load-modal-statuses.component';
+import { MapSettingsModalComponent } from './map-toolbar/map-settings-modal/map-settings-modal.component';
+import { MapRouteModalComponent } from './map-toolbar/map-route-modal/map-route-modal.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -156,7 +158,6 @@ export function playerFactory() {
     FilterComponent,
     TaChartComponent,
     TaInputArrowsComponent,
-    TaSpinnerComponent,
     TaTimePeriodComponent,
     TaUploadFileComponent,
     TaInputDropdownLabelComponent,
@@ -193,6 +194,8 @@ export function playerFactory() {
     TtTitleModalComponent,
     ConfirmationModalComponent,
     LoadModalStatusesComponent,
+    MapSettingsModalComponent,
+    MapRouteModalComponent,
 
     //----------------------------
     MapListComponent,
@@ -245,6 +248,7 @@ export function playerFactory() {
     ChartsModule,
     TaNoteModule,
     AgmSnazzyInfoWindowModule,
+    TaSpinnerModule,
   ],
   exports: [
     // Modules
@@ -317,7 +321,6 @@ export function playerFactory() {
     MapToolbarComponent,
 
     ProgressInvoicesComponent,
-    TaSpinnerComponent,
 
     TaCopyComponent,
     TaInputDropdownLabelComponent,
@@ -354,6 +357,8 @@ export function playerFactory() {
     TtTitleModalComponent,
     ConfirmationModalComponent,
     LoadModalStatusesComponent,
+    MapSettingsModalComponent,
+    MapRouteModalComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

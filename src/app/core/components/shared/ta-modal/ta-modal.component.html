@@ -1,4 +1,8 @@
-<div cdkDrag class="modal-container {{ customClass }}" ngBAutofocus>
+<div 
+  cdkDrag class="modal-container {{ customClass }}" 
+  ngBAutofocus
+  (cdkDragStarted)="removeSelections($event)"
+  >
   <div class="modal-original-part">
     <!-- Modal Header -->
     <div cdkDragHandle class="modal-header">
@@ -132,24 +136,46 @@
     <div
       *ngIf="!disableFooter && !confirmationData"
       class="modal-footer"
+      cdkDragHandle
       [ngClass]="{
         'mutliple-buttons': editData?.type?.includes('edit'),
-        'load-template': loadModalTemplate
+        'load-template': loadModalTemplate,
+        'map-settings-template': mapSettingsModal || mapRouteModal
       }"
     >
       <!-- Footer Left Side -->
       <div
         class="ta-modal-footer-left-side"
-        *ngIf="editData?.type?.includes('edit') || loadModalTemplate"
+        *ngIf="
+          editData?.type?.includes('edit') ||
+          loadModalTemplate ||
+          mapSettingsModal ||
+          mapRouteModal
+        "
       >
         <!-- Delete -->
         <button
-          *ngIf="!disableDelete && !resendEmail && !loadModalTemplate"
+          *ngIf="
+            !disableDelete &&
+            !resendEmail &&
+            !loadModalTemplate &&
+            !mapSettingsModal &&
+            !mapRouteModal
+          "
           (click)="onAction('delete')"
           class="modal-delete-btn"
           type="button"
         >
           Delete
+        </button>
+        <!-- Map Settings Reset -->
+        <button
+          *ngIf="(mapSettingsModal || mapRouteModal) && resetMapVisibility"
+          (click)="onAction('reset-map-routing')"
+          class="modal-map-settings-reset-btn"
+          type="button"
+        >
+          Reset
         </button>
 
         <!-- Load Template -->
@@ -237,8 +263,37 @@
           </div>
         </button>
 
+        <!-- Set Map Settings -->
+        <button
+          *ngIf="mapSettingsModal"
+          (click)="onAction('set-map-settings')"
+          class="modal-save-btn"
+          [ngClass]="{ valid: isModalValid }"
+          type="button"
+        >
+          {{ setMapSettingsSpinnerVisibility ? "Saving" : "Set" }}
+          <div *ngIf="setMapSettingsSpinnerVisibility" class="modal-spinner">
+            <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
+          </div>
+        </button>
+
+        <!-- Create Map Route -->
+        <button
+          *ngIf="mapRouteModal"
+          (click)="onAction('create-map-route')"
+          class="modal-save-btn"
+          [ngClass]="{ valid: isModalValid }"
+          type="button"
+        >
+          {{ setMapRouteSpinnerVisibility ? "Saving" : "Create" }}
+          <div *ngIf="setMapRouteSpinnerVisibility" class="modal-spinner">
+            <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
+          </div>
+        </button>
+
         <!-- Save button -->
         <button
+          *ngIf="!mapSettingsModal && !mapRouteModal"
           (click)="onAction('save')"
           class="modal-save-btn"
           [ngClass]="{ valid: isModalValid }"
@@ -370,6 +425,7 @@
         List
       </button>
     </div>
+    <!-- End Confirmation Modal -->
 
     <!-- Modal DropZone -->
     <div
@@ -387,7 +443,7 @@
       ></app-ta-upload-dropzone>
     </div>
   </div>
-  <!-- Modal Map -->
+  <!-- Modal Additional Part -->
   <div *ngIf="modalAdditionalPart" class="modal-additional-part">
     <ng-content select="[additional]"></ng-content>
   </div>

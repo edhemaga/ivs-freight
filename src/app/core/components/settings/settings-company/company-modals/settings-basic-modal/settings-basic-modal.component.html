@@ -629,7 +629,13 @@
               </div>
             </div>
           </app-ta-custom-card>
-          <div *ngIf="editData.type === 'edit-company'" class="company-part">
+          <div
+            *ngIf="
+              editData.type === 'edit-company' ||
+              editData?.company?.divisions?.length === 1
+            "
+            class="company-part"
+          >
             <app-ta-custom-card
               [cardName]="'Load Format and Customer Billing'"
               [isCardOpen]="true"
@@ -767,6 +773,7 @@
                       placeholderText: 'months',
                       label: 'MVR',
                       isRequired: true,
+                      hideClear: true,
                       commands: {
                         active: true,
                         type: 'months',
@@ -792,6 +799,7 @@
                       placeholderText: 'months',
                       label: 'Truck Inspection',
                       isRequired: true,
+                      hideClear: true,
                       commands: {
                         active: true,
                         type: 'months',
@@ -817,6 +825,7 @@
                       placeholderText: 'months',
                       label: 'Trailer Inspection',
                       isRequired: true,
+                      hideClear: true,
                       commands: {
                         active: true,
                         type: 'months',
@@ -1144,6 +1153,7 @@
           </app-ta-custom-card>
           <app-ta-custom-card
             [cardName]="'Accounting'"
+            [isCardOpen]="false"
             [animationMarginParams]="{
               marginTop: '18px',
               marginBottom: '22px'
@@ -1208,6 +1218,7 @@
           </app-ta-custom-card>
           <app-ta-custom-card
             [cardName]="'Company Owner'"
+            [isCardOpen]="false"
             [animationMarginParams]="{
               marginTop: '18px',
               marginBottom: '22px'
@@ -1272,6 +1283,7 @@
           </app-ta-custom-card>
           <app-ta-custom-card
             [cardName]="'Dispatch'"
+            [isCardOpen]="false"
             [animationMarginParams]="{
               marginTop: '18px',
               marginBottom: '22px'
@@ -1355,6 +1367,7 @@
           </app-ta-custom-card>
           <app-ta-custom-card
             [cardName]="'Manager'"
+            [isCardOpen]="false"
             [animationMarginParams]="{
               marginTop: '18px',
               marginBottom: '22px'
@@ -1434,6 +1447,7 @@
           </app-ta-custom-card>
           <app-ta-custom-card
             [cardName]="'Recruiting'"
+            [isCardOpen]="false"
             [animationMarginParams]="{
               marginTop: '18px',
               marginBottom: '22px'
@@ -1498,6 +1512,7 @@
           </app-ta-custom-card>
           <app-ta-custom-card
             [cardName]="'Repair'"
+            [isCardOpen]="false"
             [animationMarginParams]="{
               marginTop: '18px',
               marginBottom: '22px'
@@ -1558,6 +1573,7 @@
           </app-ta-custom-card>
           <app-ta-custom-card
             [cardName]="'Safety'"
+            [isCardOpen]="false"
             [animationMarginParams]="{
               marginTop: '18px',
               marginBottom: '22px'
@@ -1618,6 +1634,7 @@
           </app-ta-custom-card>
           <app-ta-custom-card
             [cardName]="'Other'"
+            [isCardOpen]="false"
             [animationMarginParams]="{
               marginTop: '18px',
               marginBottom: '22px'

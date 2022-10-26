@@ -115,10 +115,12 @@
         [bodyTemplate]="'card'"
         [isCardOpen]="true"
         [cardName]="'Additional Details'"
-        
       >
         <div class="common-template">
-          <div *ngIf="truck.truckGrossWeight?.name" class="common-template-item">
+          <div
+            *ngIf="truck.truckGrossWeight?.name"
+            class="common-template-item"
+          >
             <div class="common-template-item-name">Gross Weight</div>
             <div class="common-template-item-value">
               {{ truck?.truckGrossWeight?.name }}
@@ -130,7 +132,10 @@
               {{ truck?.emptyWeight | taThousandSeparator }} Ibs
             </div>
           </div>
-          <div *ngIf="truck?.truckEngineModel?.name" class="common-template-item">
+          <div
+            *ngIf="truck?.truckEngineModel?.name"
+            class="common-template-item"
+          >
             <div class="common-template-item-name">Engine Model</div>
             <div class="common-template-item-value">
               {{ truck?.truckEngineModel.name }}
@@ -207,9 +212,7 @@
           </div>
           <div *ngIf="truck?.doubleBunk" class="common-template-item">
             <div class="common-template-item-name">Features</div>
-            <div class="common-template-item-value">
-              Double Bunk
-            </div>
+            <div class="common-template-item-value">Double Bunk</div>
           </div>
           <div *ngIf="truck?.mileage" class="common-template-item">
             <div class="common-template-item-name">Starting Mileage</div>
@@ -217,18 +220,24 @@
               {{ truck?.mileage | taThousandSeparator }} mi
             </div>
           </div>
-          
-          <div *ngIf="truck?.tollTransponder?.name" class="common-template-item">
+
+          <div
+            *ngIf="truck?.tollTransponder?.name"
+            class="common-template-item"
+          >
             <div class="common-template-item-name">Toll Transponder</div>
             <div class="common-template-item-value">
               {{ truck?.tollTransponder?.name }}
             </div>
           </div>
-           
-          <div *ngIf="truck?.tollTransponderDeviceNo" class="common-template-item">
+
+          <div
+            *ngIf="truck?.tollTransponderDeviceNo"
+            class="common-template-item"
+          >
             <div class="common-template-item-name">Toll Device ID</div>
             <div class="common-template-item-value">
-              {{    truck?.tollTransponderDeviceNo  }}
+              {{ truck?.tollTransponderDeviceNo }}
             </div>
           </div>
           <div *ngIf="truck?.insurancePolicy" class="common-template-item">
@@ -237,13 +246,11 @@
               {{ truck?.insurancePolicy }}
             </div>
           </div>
-         
-         
 
           <div *ngIf="truck?.fhwaExp" class="common-template-item">
             <div class="common-template-item-name">FHWA Expiration</div>
             <div class="common-template-item-value">
-              {{ truck?.fhwaExp +  ' months' }}
+              {{ truck?.fhwaExp + " months" }}
             </div>
           </div>
           <div *ngIf="truck?.purchaseDate" class="common-template-item">
@@ -427,6 +434,7 @@
 
       <!--------Owner History--------->
       <app-ta-custom-card
+        [isCardOpen]="false"
         [tooltipName]="'View in Modal'"
         [cardName]="'Owner History'"
         [bodyTemplate]="'card'"
@@ -483,6 +491,8 @@
           [minRows]="1"
           [placeholder]="'Write something.'"
           [noteType]="'details-card'"
+          [entityId]="truck.id"
+          [entityType]="'Truck'"
         >
         </app-ta-input-note>
       </div>
@@ -556,6 +566,8 @@
                     [minRows]="1"
                     [isVisibleNote]="true"
                     [noteType]="'details-card'"
+                    [entityId]="truck.id"
+                    [entityType]="'Truck'"
                   ></app-ta-input-note>
                 </div>
               </div>
@@ -613,6 +625,8 @@
                     [minRows]="1"
                     [isVisibleNote]="true"
                     [noteType]="'details-card'"
+                    [entityId]="truck.id"
+                    [entityType]="'Truck'"
                   ></app-ta-input-note>
                 </div>
               </div>
@@ -677,6 +691,8 @@
                     [isVisibleDivider]="false"
                     [isVisibleNote]="true"
                     [noteType]="'details-card'"
+                    [entityId]="truck.id"
+                    [entityType]="'Truck'"
                   ></app-ta-input-note>
                 </div>
               </div>

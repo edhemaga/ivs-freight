@@ -16,7 +16,11 @@
       focusInput &&
       !selectedDropdownLabelColor &&
       !inputConfig.dropdownLabel,
-    valid: getSuperControl.value && getSuperControl.valid && !focusInput,
+    valid:
+      getSuperControl.value &&
+      getSuperControl.valid &&
+      !focusInput &&
+      !inputConfig.hideClear,
     'valid-dropdown-image-selection':
       !inputConfig.dropdownImageInput?.withText &&
       inputConfig.dropdownImageInput?.url &&
@@ -28,7 +32,7 @@
       inputConfig.isDropdown &&
       (touchedInput || getSuperControl.touched) &&
       !focusInput,
-      'invalid-focus-out-filled':
+    'invalid-focus-out-filled':
       (getSuperControl.value &&
         getSuperControl.invalid &&
         !focusInput &&
@@ -52,7 +56,8 @@
         !inputConfig.commands?.active &&
         !inputConfig?.loadingSpinner?.isLoading) ||
       (inputConfig.commands?.active &&
-        inputConfig.commands.type !== 'pm-increment-decrement') ||
+        inputConfig.commands.type !== 'pm-increment-decrement' &&
+        !inputConfig.hideClear) ||
       inputConfig.incorrectInput
     "
     class="input-clear {{ inputConfig.customClass }}"
@@ -79,8 +84,7 @@
         getSuperControl.value &&
         (inputConfig.isDropdown || inputConfig.type === 'password') &&
         !inputConfig.isDisabled &&
-        !inputConfig.multiSelectDropdownActive &&
-        !inputConfig.blackInput,
+        !inputConfig.multiSelectDropdownActive,
       'dropdown-position-image':
         inputConfig.dropdownImageInput?.url &&
         !inputConfig.isDisabled &&
@@ -224,7 +228,6 @@
     class="input-dropdown-arrow {{ inputConfig.customClass }}"
     *ngIf="
       ((inputConfig.isDropdown || inputConfig.dropdownLabel) &&
-        !inputConfig.isDisabled &&
         !inputConfig.multiSelectDropdownActive) ||
       ((inputConfig.name === 'datepicker' ||
         inputConfig.name === 'timepicker') &&
@@ -437,7 +440,7 @@
   <!-- Input Label Counter -->
   <p
     *ngIf="selectedDropdownLabelColor && getSuperControl.value && !focusInput"
-    [style.top]="'5px'"
+    [style.top]="'4px'"
     [style.left]="50 + getSuperControl?.value.toString().length * 8 + 'px'"
     class="input-label-counter"
   >
@@ -657,7 +660,7 @@
         !inputConfig?.dropdownImageInput?.url &&
         !inputConfig.blackInput,
       'valid-focus-out-filled':
-        ((getSuperControl.value &&
+        (((getSuperControl.value &&
           getSuperControl.valid &&
           !focusInput &&
           !inputConfig.isDisabled &&
@@ -665,7 +668,12 @@
           !isVisibleCommands &&
           !inputConfig.blackInput) ||
           (!focusInput && inputConfig.dropdownImageInput?.url)) &&
-        !inputConfig.blackInput,
+          !inputConfig.blackInput) ||
+        (inputConfig.dropdownLabel &&
+          getSuperControl.value &&
+          getSuperControl.valid &&
+          !focusInput &&
+          !inputConfig.isDisabled),
       'invalid-focus-in':
         getSuperControl.value &&
         getSuperControl.invalid &&
