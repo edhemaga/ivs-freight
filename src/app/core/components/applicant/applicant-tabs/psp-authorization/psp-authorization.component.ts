@@ -46,8 +46,6 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
     this.applicantQuery.personalInfoList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        console.log(res);
-
         this.applicantCardInfo = {
           name: res.fullName,
           ssn: res.ssn,
