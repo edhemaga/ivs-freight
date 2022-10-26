@@ -16,6 +16,9 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { TruckTService } from '../../truck/state/truck.service';
 import { TruckListResponse } from 'appcoretruckassist';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
+import { ModalService } from '../ta-modal/modal.service';
+import { MapSettingsModalComponent } from './map-settings-modal/map-settings-modal.component';
+import { MapRouteModalComponent } from './map-route-modal/map-route-modal.component';
 
 @Component({
   selector: 'app-map-toolbar',
@@ -205,7 +208,8 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     private formBuilder: FormBuilder,
     private ref: ChangeDetectorRef,
     private inputService: TaInputService,
-    private truckService: TruckTService
+    private truckService: TruckTService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -424,39 +428,45 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onShowMapSettings(mapSettingsPopup: any) {
-    this.mapSettingsPopup = mapSettingsPopup;
+    this.modalService.openModal(MapSettingsModalComponent, { size: 'small' });
+    // this.mapSettingsPopup = mapSettingsPopup;
 
-    if (mapSettingsPopup.isOpen()) {
-      mapSettingsPopup.close();
+    // if (mapSettingsPopup.isOpen()) {
+    //   mapSettingsPopup.close();
 
-      this.resetMapForm();
-    } else {
-      mapSettingsPopup.open({});
-    }
+    //   this.resetMapForm();
+    // } else {
+    //   mapSettingsPopup.open({});
+    // }
 
-    if (this.addRoutePopup && this.addRoutePopup.isOpen()) {
-      this.addRoutePopup.close();
-      this.routeToEdit = {};
-    }
+    // if (this.addRoutePopup && this.addRoutePopup.isOpen()) {
+    //   this.addRoutePopup.close();
+    //   this.routeToEdit = {};
+    // }
 
-    this.mapSettingsPopupOpen = mapSettingsPopup.isOpen();
-    this.optionsPopupContent[4].active = false;
+    // this.mapSettingsPopupOpen = mapSettingsPopup.isOpen();
+    // this.optionsPopupContent[4].active = false;
   }
 
   onShowRoutePopover(addRoutePopup: any) {
-    this.addRoutePopup = addRoutePopup;
+    this.modalService.openModal(
+      MapRouteModalComponent,
+      { size: 'small' },
+      { ...this.routeToEdit }
+    );
+    // this.addRoutePopup = addRoutePopup;
 
-    if (addRoutePopup.isOpen()) {
-      addRoutePopup.close();
-      this.routeToEdit = {};
+    // if (addRoutePopup.isOpen()) {
+    //   addRoutePopup.close();
+    //   this.routeToEdit = {};
 
-      this.resetRouteForm();
-    } else {
-      addRoutePopup.open({});
-    }
+    //   this.resetRouteForm();
+    // } else {
+    //   addRoutePopup.open({});
+    // }
 
-    this.addRoutePopupOpen = addRoutePopup.isOpen();
-    this.optionsPopupContent[4].active = false;
+    // this.addRoutePopupOpen = addRoutePopup.isOpen();
+    // this.optionsPopupContent[4].active = false;
   }
 
   onShowLayersPopover(layersPopup: any) {

@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DetailsDataService {
-
   private leftSideMenuStatus = new BehaviorSubject<boolean>(false);
   public leftSideMenuChanges = this.leftSideMenuStatus.asObservable();
 
@@ -13,35 +12,34 @@ export class DetailsDataService {
   public cdlNum: any;
   public leftMenuOpened: any = false;
 
-  constructor() { }
+  constructor() {}
 
-  setNewData(newData){
+  setNewData(newData) {
     this.mainData = newData;
-    console.log('---mainData---', this.mainData);
   }
 
   public updateLeftMenuStatus(leftSideMenuStatus: boolean) {
     this.leftSideMenuStatus.next(leftSideMenuStatus);
   }
 
-  changeDnuStatus(type, status){
-    if ( type == 'dnu'){
+  changeDnuStatus(type, status) {
+    if (type == 'dnu') {
       this.mainData.dnu = status;
-    } else if ( type == 'ban' ) {
+    } else if (type == 'ban') {
       this.mainData.ban = status;
-    } else if ( type == 'status' ) {
+    } else if (type == 'status') {
       this.mainData.status = status;
     }
   }
 
-  setCdlNum(mod){
+  setCdlNum(mod) {
     this.cdlNum = mod;
   }
 
-  changeRateStatus(type, mod){
-    if ( type == 'like' ){
+  changeRateStatus(type, mod) {
+    if (type == 'like') {
       this.mainData.raiting.hasLiked = mod;
-    }else {
+    } else {
       this.mainData.raiting.hasDislike = mod;
     }
   }

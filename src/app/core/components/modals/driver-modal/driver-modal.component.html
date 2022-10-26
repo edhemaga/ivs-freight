@@ -699,6 +699,7 @@
           <app-ta-input-note
             formControlName="note"
             [isVisibleNote]="driverForm.get('note').value"
+            [note]="driverForm.get('note').value"
           ></app-ta-input-note>
         </div>
         <!-------------------------------- Additional Tab -------------------------------->
@@ -767,6 +768,7 @@
                       placeholderText: 'months',
                       label: 'MVR Exp.',
                       isRequired: true,
+                      hideClear: true,
                       commands: {
                         active: true,
                         type: 'months',
