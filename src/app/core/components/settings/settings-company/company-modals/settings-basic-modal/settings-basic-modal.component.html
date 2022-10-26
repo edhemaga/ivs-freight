@@ -629,7 +629,13 @@
               </div>
             </div>
           </app-ta-custom-card>
-          <div *ngIf="editData.type === 'edit-company'" class="company-part">
+          <div
+            *ngIf="
+              editData.type === 'edit-company' ||
+              editData?.company?.divisions?.length === 1
+            "
+            class="company-part"
+          >
             <app-ta-custom-card
               [cardName]="'Load Format and Customer Billing'"
               [isCardOpen]="true"
