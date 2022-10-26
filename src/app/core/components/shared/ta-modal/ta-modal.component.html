@@ -132,6 +132,7 @@
     <div
       *ngIf="!disableFooter && !confirmationData"
       class="modal-footer"
+      cdkDragHandle
       [ngClass]="{
         'mutliple-buttons': editData?.type?.includes('edit'),
         'load-template': loadModalTemplate,

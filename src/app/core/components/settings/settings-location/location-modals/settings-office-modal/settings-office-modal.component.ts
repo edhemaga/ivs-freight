@@ -63,8 +63,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   public monthlyDays: any[] = [];
   public selectedDay: any = null;
 
-  public isContactCardsScrolling: boolean = false;
-
   public departments: any[] = [];
   public selectedDepartmentFormArray: any[] = [];
   public isDepartmentContactCardOpen: boolean = false;
@@ -232,10 +230,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     valid: boolean;
   }): void {
     if (event.valid) this.selectedAddress = event.address;
-  }
-
-  public onScrollingDepartmentContacts(event: any) {
-    this.isContactCardsScrolling = event.target.scrollLeft > 1;
   }
 
   public onSelectDropdown(event: any, action: string) {
@@ -430,8 +424,12 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
               })
             );
 
-            this.selectedDepartmentFormArray[index] =
-              res.departmentContacts[index].department;
+            this.selectedDepartmentFormArray[index] = {
+              ...res.departmentContacts[index],
+              name: res.departmentContacts[index].department.name,
+              duplicateId: res.departmentContacts[index].department.id,
+            };
+            console.log(this.selectedDepartmentFormArray);
           }
         },
         error: () => {
