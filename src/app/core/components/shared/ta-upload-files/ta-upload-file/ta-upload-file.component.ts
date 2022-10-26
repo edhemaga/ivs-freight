@@ -45,6 +45,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
   @Input() hasTag: boolean = false;
   @Input() hasNumberOfPages: boolean = false;
   @Input() activePage: number = 1;
+  @Input() tags: any[] = [];
 
   @Output() fileAction: EventEmitter<{ file: UploadFile; action: string }> =
     new EventEmitter<{ file: UploadFile; action: string }>(null);
@@ -68,6 +69,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
   public isFileDelete: boolean = false;
 
   public isIncorrectMarkHover: boolean = false;
+  @ViewChild('t2') t2: any;
 
   constructor(private inputService: TaInputService) {}
 
@@ -101,7 +103,14 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
   public onAction(action: string) {
     switch (action) {
       case 'tag': {
-        this.fileAction.emit({ file: this.file, action });
+        if (this.file.tag) {
+          this.selectTag(this.file.tag);
+        } else {
+          this.selectTag('No Tag');
+        }
+
+        this.t2.open();
+        //this.fileAction.emit({ file: this.file, action });
         break;
       }
       case 'download': {
@@ -163,6 +172,21 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
   public getAnnotationReviewEvent(event: any) {
     this.documentReviewInputVisible = event.type === 'open';
+  }
+
+  public selectTag(tag: string) {
+    this.tags.map((item) => {
+      if (item.name == tag) {
+        item.checked = true;
+        if (item.name == 'No Tag') {
+          this.file.tag = null;
+        } else {
+          this.file.tag = item.name;
+        }
+      } else {
+        item.checked = false;
+      }
+    });
   }
 
   ngOnDestroy(): void {

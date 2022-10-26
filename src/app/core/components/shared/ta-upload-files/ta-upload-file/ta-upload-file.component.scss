@@ -113,6 +113,9 @@
 
     // No Review Actions
     .ta-upload-file-action-leftside {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       width: 30px;
       height: 30px;
       border-radius: 1px;
@@ -122,9 +125,14 @@
       cursor: pointer;
 
       .ta-upload-action-tag {
-        width: 18px;
-        height: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+        height: 100%;
         svg {
+          display: flex;
           height: 18px;
           width: 18px;
           path {
@@ -134,6 +142,18 @@
 
         &:hover {
           transition: all 0.3s ease-in-out;
+          svg {
+            path {
+              fill: #ffffff;
+            }
+          }
+        }
+      }
+
+      &.active {
+        background-color: #536bc2e6;
+
+        .ta-upload-action-tag {
           svg {
             path {
               fill: #ffffff;
@@ -163,9 +183,14 @@
 
       .ta-upload-action-download,
       .ta-upload-action-delete {
-        width: 18px;
-        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        width: 100%;
+        height: 100%;
         line-height: 15px;
+        
         svg {
           height: 18px;
           width: 18px;
@@ -300,6 +325,10 @@
       -ms-user-select: none !important;
       user-select: none !important;
 
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+
       span {
         line-height: 14px;
       }
@@ -406,8 +435,8 @@
     align-self: flex-end;
     position: relative;
 
-    &:hover{
-      background-color: #EEEEEE;
+    &:hover {
+      background-color: #eeeeee;
     }
 
     p {
@@ -436,14 +465,14 @@
       &-jpg,
       &-jpeg,
       &-png {
-        background: #FFB74D;
+        background: #ffb74d;
       }
 
       &-pdf {
-        background-color: #E57373;
+        background-color: #e57373;
 
-        &:hover{
-          background-color: #EF5350;
+        &:hover {
+          background-color: #ef5350;
         }
       }
 
@@ -475,7 +504,8 @@
     }
   }
 
-  &:hover {
+  &:hover,
+  &.keep_open {
     transition: all 0.3s ease-in-out;
 
     .ta-upload-file-header {
@@ -496,6 +526,98 @@
     .ta-upload-file-delete-template {
       width: 304px;
       height: 320px;
+    }
+  }
+}
+
+.tags_main_holder {
+  min-width: 172px;
+  padding: 2px;
+
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
+
+  cursor: pointer;
+
+  .tags_inner_holder {
+    display: flex;
+    align-items: center;
+
+    height: 26px;
+    margin: 1px 0px;
+    padding-left: 4px;
+
+    border-radius: 1px;
+
+    &.firstRow {
+      margin-top: 0;
+    }
+
+    &.lastRow {
+      margin-bottom: 0;
+    }
+
+    .tag_options_holder {
+      display: flex;
+      align-items: center;
+      padding-right: 4px;
+
+      width: 100%;
+      height: 100%;
+      .tag_name {
+        flex: 1;
+        font-size: 14px;
+        line-height: 18px;
+        color: #6c6c6c;
+
+        &.checked {
+          color: #536bc2;
+        }
+      }
+
+      .checked_icon {
+        opacity: 0;
+        margin-left: 4px;
+
+        &.shown {
+          opacity: 1;
+        }
+
+        svg-icon {
+          svg {
+            display: flex;
+
+            path {
+              fill: #6d82c7;
+            }
+          }
+        }
+      }
+    }
+
+    &:hover {
+      background-color: #f3f3f3;
+
+      .tag_options_holder {
+        .tag_name {
+          color: #3c3c3c;
+
+          &.checked {
+            color: #3551b7;
+          }
+        }
+
+        .checked_icon {
+          svg-icon {
+            svg {
+              path {
+                fill: #536bc2;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
