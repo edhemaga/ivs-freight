@@ -85,13 +85,51 @@ export class TaCommonHeaderComponent implements OnInit {
     //console.log('--mainData---', this.mainData);
     let itemData = this.mainData?.data;
     console.log('--itemData---', itemData)
+    let diasbleClosedArray;
+
+    if ( this.mainData?.nameDefault == 'Repair Shop Details' ) {
+      if ( itemData.status != 1 ) {
+        diasbleClosedArray = [0, 3, 4, 5];
+      } else if ( itemData.companyOwned ) {
+        diasbleClosedArray = [4];
+      }
+    }
+
     switch (this.mainData?.nameDefault) {
       case 'Repair Shop Details' : 
         this.options?.actions.map((action, index)=>{
-          //console.log('--action---', action, index);
-          if ( itemData.companyOwned == false && index == 3 ) {
-            action.disabled = true;
+          if ( index == 4 ) {
+            if (itemData.pinned != false) {
+              action.title = 'Remove from Favourite';
+              action.name = 'remove-from-favourite';
+              action.blueIcon = true;
+            } else {
+              action.title = 'Move to Favourite';
+              action.name = 'move-to-favourite';
+              action.blueIcon = false;
+            }
           }
+
+          if ( diasbleClosedArray && diasbleClosedArray.indexOf(index) > -1 ) {
+            action.disabled = true;
+          } else {
+            action.disabled = false;
+          }
+
+          if ( index == 10 ) {
+            if ( itemData.status != 1) {
+              action.title = 'Reopen Business';
+              action.greenIcon = true;
+              action.redIcon = false;
+              action.name = 'open-business';
+            } else {
+              action.title = 'Close Business';
+              action.greenIcon = false;
+              action.redIcon = true;
+              action.name = 'close-business';
+            }
+          }
+
         })
       break;
     }
