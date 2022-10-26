@@ -21,6 +21,7 @@ import { DispatcherStoreService } from '../state/dispatcher.service';
 import {
   CreateDispatchCommand,
   DispatchResponse,
+  SwitchDispatchCommand,
   UpdateDispatchCommand,
 } from 'appcoretruckassist';
 import { DispatchStatus } from '../../../../../../appcoretruckassist/model/dispatchStatus';
@@ -220,6 +221,8 @@ export class DispatchboardTablesComponent implements OnInit {
 
   savedTruckId: any;
   testTimeout: any;
+  startIndexTrailer: number;
+  startIndexDriver: number;
 
   constructor(
     private dss: DispatcherStoreService,
@@ -254,7 +257,8 @@ export class DispatchboardTablesComponent implements OnInit {
 
   onHideDropdown(e) {
     setTimeout(() => {
-      if( this.showAddAddressField != -2 ) this.dData.dispatches[this.showAddAddressField].truck = null;
+      if (this.showAddAddressField != -2)
+        this.dData.dispatches[this.showAddAddressField].truck = null;
       this.showAddAddressField = -1;
       this.chd.detectChanges();
     }, 200);
@@ -332,6 +336,102 @@ export class DispatchboardTablesComponent implements OnInit {
     this.truckSelectOpened = -1;
   }
 
+  dropTrailer(event, finalIndx) {
+    if (finalIndx === this.startIndexTrailer) return;
+    const finalIndexData = this.getDataForUpdate(
+      this.dData.dispatches[finalIndx]
+    );
+    const startingIndexData = this.getDataForUpdate(
+      this.dData.dispatches[this.startIndexTrailer]
+    );
+
+    this.__change_in_proggress = true;
+    this.dss
+      .switchDispathboard({
+        dispatchBoardId: this.dData.id,
+        firstDispatch: {
+          ...startingIndexData,
+          id: this.dData.dispatches[this.startIndexTrailer].id,
+          trailerId: this.dData.dispatches[finalIndx]?.trailer?.id,
+        },
+        secondDispatch: {
+          ...finalIndexData,
+          id: this.dData.dispatches[finalIndx].id,
+          trailerId: this.dData.dispatches[this.startIndexTrailer]?.trailer?.id,
+        },
+      })
+      .subscribe((res) => {
+        this.dss
+          .updateDispatchboardRowById(
+            this.dData.dispatches[this.startIndexTrailer].id,
+            this.dData.id
+          )
+          .subscribe((res) => {
+            this.__change_in_proggress = false;
+          });
+        this.dss
+          .updateDispatchboardRowById(
+            this.dData.dispatches[finalIndx].id,
+            this.dData.id
+          )
+          .subscribe((res) => {
+            this.__change_in_proggress = false;
+          });
+      });
+  }
+
+  dropDriver(event, finalIndx) {
+    if (finalIndx === this.startIndexDriver) return;
+    const finalIndexData = this.getDataForUpdate(
+      this.dData.dispatches[finalIndx]
+    );
+    const startingIndexData = this.getDataForUpdate(
+      this.dData.dispatches[this.startIndexDriver]
+    );
+
+    this.__change_in_proggress = true;
+    this.dss
+      .switchDispathboard({
+        dispatchBoardId: this.dData.id,
+        firstDispatch: {
+          ...startingIndexData,
+          id: this.dData.dispatches[this.startIndexDriver].id,
+          driverId: this.dData.dispatches[finalIndx]?.driver?.id,
+        },
+        secondDispatch: {
+          ...finalIndexData,
+          id: this.dData.dispatches[finalIndx].id,
+          driverId: this.dData.dispatches[this.startIndexDriver]?.driver?.id,
+        },
+      })
+      .subscribe((res) => {
+        this.dss
+          .updateDispatchboardRowById(
+            this.dData.dispatches[this.startIndexDriver].id,
+            this.dData.id
+          )
+          .subscribe((res) => {
+            this.__change_in_proggress = false;
+          });
+        this.dss
+          .updateDispatchboardRowById(
+            this.dData.dispatches[finalIndx].id,
+            this.dData.id
+          )
+          .subscribe((res) => {
+            this.__change_in_proggress = false;
+          });
+      });
+  }
+
+  cdkDragStartedTrailer(event, indx) {
+    this.startIndexTrailer = indx;
+  }
+
+  cdkDragStartedDriver(event, indx) {
+    this.startIndexDriver = indx;
+  }
+
   dropList(event) {
     moveItemInArray(
       this.dData.dispatches,
@@ -339,6 +439,7 @@ export class DispatchboardTablesComponent implements OnInit {
       event.currentIndex
     );
 
+    this.__change_in_proggress = true;
     this.dss
       .reorderDispatchboard({
         dispatchBoardId: this.dData.id,
@@ -353,7 +454,9 @@ export class DispatchboardTablesComponent implements OnInit {
           },
         ],
       })
-      .subscribe((res) => {});
+      .subscribe((res) => {
+        this.__change_in_proggress = false;
+      });
   }
 
   public hoverPhoneEmailMain(indx: number) {
@@ -394,6 +497,16 @@ export class DispatchboardTablesComponent implements OnInit {
 
   removeDriver(indx) {
     this.updateOrAddDispatchBoardAndSend('driverId', null, indx);
+  }
+
+  getDataForUpdate(oldData): SwitchDispatchCommand {
+    return {
+      truckId: oldData.truck ? oldData.truck?.id : null,
+      trailerId: oldData.trailer ? oldData.trailer?.id : null,
+      driverId: oldData.driver ? oldData.driver?.id : null,
+      coDriverId: oldData.coDriver ? oldData.coDriver?.id : null,
+      location: oldData.location?.address ? oldData.location : null,
+    };
   }
 
   updateOrAddDispatchBoardAndSend(key, value, index) {

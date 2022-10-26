@@ -261,6 +261,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.checkForCompany();
     this.getModalDropdowns();
+    console.log(this.editData);
   }
 
   private checkForCompany() {

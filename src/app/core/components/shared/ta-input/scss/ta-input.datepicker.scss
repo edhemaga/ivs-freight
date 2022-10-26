@@ -11,25 +11,24 @@
   z-index: 20;
   cursor: text;
 
-  &:focus{
-    span:nth-child(2){
+  &:focus {
+    span:nth-child(2) {
       z-index: 12;
       pointer-events: none;
     }
-    span:nth-child(3){
+    span:nth-child(3) {
       z-index: 13;
     }
 
-    span:nth-child(4){
+    span:nth-child(4) {
       z-index: 14;
       pointer-events: none;
     }
 
-    span:nth-child(5){
+    span:nth-child(5) {
       z-index: 15;
     }
   }
-
 
   &.active {
     opacity: 1;
@@ -44,7 +43,7 @@
     align-items: center;
 
     z-index: 10;
-    .border-picker{
+    .border-picker {
       position: absolute;
       top: 0;
       left: 50%;
@@ -54,8 +53,10 @@
       align-items: center;
       z-index: -1;
     }
-    &::selection, & div::selection{
-      background-color: #6d82c7 !important;
+
+    &::selection,
+    & div::selection {
+      background-color: #808080 !important;
       color: #ffffff !important;
     }
   }
@@ -69,6 +70,16 @@
 
     &::selection {
       z-index: 10;
+    }
+  }
+
+  &.valid-focus-in-datepicker.focused {
+    span {
+      &::selection,
+      & div::selection {
+        background-color: #6d82c7 !important;
+        color: #ffffff !important;
+      }
     }
   }
 }

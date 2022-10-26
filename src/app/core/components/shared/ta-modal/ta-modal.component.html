@@ -1,4 +1,8 @@
-<div cdkDrag class="modal-container {{ customClass }}" ngBAutofocus>
+<div 
+  cdkDrag class="modal-container {{ customClass }}" 
+  ngBAutofocus
+  (cdkDragStarted)="removeSelections($event)"
+  >
   <div class="modal-original-part">
     <!-- Modal Header -->
     <div cdkDragHandle class="modal-header">
@@ -132,6 +136,7 @@
     <div
       *ngIf="!disableFooter && !confirmationData"
       class="modal-footer"
+      cdkDragHandle
       [ngClass]="{
         'mutliple-buttons': editData?.type?.includes('edit'),
         'load-template': loadModalTemplate,
