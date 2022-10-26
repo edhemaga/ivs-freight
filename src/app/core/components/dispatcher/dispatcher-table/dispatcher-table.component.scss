@@ -385,13 +385,13 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
     height: 32px !important;
     // background: white;
     border-radius: 3px;
-    //overflow: hidden;
+    overflow: hidden;
     display: block;
     transition: all 0.2s ease 0s !important;
   }
 
   .cdk-drag-disabled {
-    .dispatch-box {
+    .dispatch-box:not(.cdk-drag) {
       cursor: auto !important;
     }
   }

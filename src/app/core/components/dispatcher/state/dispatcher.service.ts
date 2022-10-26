@@ -6,6 +6,7 @@ import {
   DispatchBoardResponse,
   DispatchService,
   ReorderDispatchesCommand,
+  SwitchDispatchesCommand,
   UpdateDispatchCommand,
 } from 'appcoretruckassist';
 import { flatMap, delay, debounce, of, interval, filter } from 'rxjs';
@@ -64,6 +65,10 @@ export class DispatcherStoreService {
     return this.dispatchService.apiDispatchReorderPut(reorder);
   }
 
+  switchDispathboard(swithcData: SwitchDispatchesCommand){
+    return this.dispatchService.apiDispatchSwitchPut(swithcData);
+  }
+
   deleteDispatchboard(id: number) {
     return this.dispatchService.apiDispatchIdDelete(id);
   }
@@ -83,6 +88,28 @@ export class DispatcherStoreService {
           this.dispatchBoardItem = { id: dispatch_id, item: res };
         })
       );
+  }
+
+  updateDispatchboardRowById(id: number, dispatch_id: number){
+    return this.getDispatchBoardRowById(id).pipe(
+      flatMap((response) => {
+        if (!response.truck && !response.trailer && !response.driver) {
+          return this.deleteDispatchboard(response.id);
+        }
+
+        return of(response);
+      })
+    ).pipe(
+      delay(300),
+      map((res) => {
+        if (res.id) this.dispatchBoardItem = { id: dispatch_id, item: res };
+        else
+          this.dispatchBoardItem = {
+            id: dispatch_id,
+            item: { id: id },
+          };
+      })
+    );
   }
 
   updateDispatchBoard(updateData: UpdateDispatchCommand, dispatch_id: number) {
