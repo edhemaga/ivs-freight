@@ -110,6 +110,7 @@ export class MapsComponent implements OnInit, OnDestroy {
   public mapZoomTime: number = 0;
 
   public clusterMarkers: any[] = [];
+  public clustersTimeout: any;
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -133,7 +134,11 @@ export class MapsComponent implements OnInit, OnDestroy {
       map.addListener('idle', (ev) => {
         // update the coordinates here
 
-        this.getClusters();
+        clearTimeout(this.clustersTimeout);
+
+        this.clustersTimeout = setTimeout(() => {
+          this.getClusters();
+        }, 500);
       });
     }
   }
