@@ -25,15 +25,15 @@
   >  
     <div class="details-dropdown-body">
       <div *ngFor="let action of options;let i=index; trackBy:identity">
-        <div class="action-holder" [class.disabledAction]="action.disabled" *ngIf="action.title != 'border' && action.title != 'Add New' && action.title != 'Request'" (click)="onAction(action,$event)">
+        <div class="action-holder" [class.disabledAction]="action.disabled" *ngIf="action.title != 'border' && action.title != 'Add New' && action.title != 'Request' && action.title != 'Report' " (click)="onAction(action,$event)">
           <div class="action-select-holder">  
             <div class="actionTitle">{{action.title}}</div>
-            <div class="actionIcon" [class.redIcon]="action.redIcon" [class.blueIcon]="action.blueIcon">
+            <div class="actionIcon" [class.redIcon]="action.redIcon" [class.blueIcon]="action.blueIcon" [class.greenIcon]="action.greenIcon">
               <svg-icon src="{{action.svg}}" ></svg-icon>
             </div>
           </div>
         </div>
-        <div class="action-holder subTypeHolder" [class.hoveredSubtype]="subtypeHovered == i && action.openSubtype" [class.disabledAction]="action.disabled" [class.openedSubtype]="action.openSubtype" *ngIf="action.title == 'Add New' || action.title == 'Request' " >
+        <div class="action-holder subTypeHolder" [class.hoveredSubtype]="subtypeHovered == i && action.openSubtype" [class.disabledAction]="action.disabled" [class.openedSubtype]="action.openSubtype" *ngIf="action.title == 'Add New' || action.title == 'Request' || action.title == 'Report' " >
           <div class="action-select-holder" (click)="openSubtype(i)" (mouseleave)="subtypeHovered = false" (mouseover)="subtypeHovered = i">  
             <div class="actionTitle">{{action.title}}</div>
             <div class="actionIcon arrowIcon">

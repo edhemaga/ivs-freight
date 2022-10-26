@@ -228,6 +228,12 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
           title: 'border',
         },
         {
+          title: 'View Details',
+          name: 'view-details',
+          svg: 'assets/svg/common/ic_hazardous-info.svg',
+          show: true,
+        },
+        {
           title: 'Add New',
           svg: 'assets/svg/common/dropdown-arrow.svg',
           disabled: data.status == 0 ? true : false,
@@ -235,7 +241,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
               { subName :'Registration', actionName: 'Registration'}, 
               { subName : 'FHWA Inspection', actionName: 'FHWA Inspection'}, 
               { subName : 'Title', actionName: 'Title'}, 
-              { subName: 'Lease / Rent', actionName: 'Lease / Rent'}],
+              { subName: 'Lease / Rent', actionName: 'Lease / Purchase'}],
         },
         {
           title: 'border'

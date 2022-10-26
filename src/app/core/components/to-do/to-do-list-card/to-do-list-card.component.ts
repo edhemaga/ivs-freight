@@ -455,6 +455,65 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
+          title: 'border'
+        },
+        {
+          title: 'View Details',
+          name: 'view-details',
+          svg: 'assets/svg/common/ic_hazardous-info.svg',
+          show: true,
+        },
+        {
+          title: 'Send Message',
+          name: 'dm',
+          svg: 'assets/svg/common/ic_dm.svg',
+          show: true,
+        },
+        {
+          title: 'Go to Link',
+          name: 'link',
+          svg: 'assets/svg/common/ic_web.svg',
+          show: true,
+        },
+        {
+          title: 'Add Comment',
+          name: 'add-comment',
+          svg: 'assets/svg/common/ic_plus.svg',
+          show: true,
+          blueIcon: true,
+        },
+        {
+          title: 'Mark as Ongoing',
+          name: 'mark-as-ongoing',
+          svg: 'assets/svg/detail-cards/refresh.svg',
+          show: true,
+        },
+        {
+          title: 'Mark as Done',
+          name: 'mark-as-done',
+          svg: 'assets/svg/common/dropdown-done-icon.svg',
+          show: true,
+          greenIcon: true,
+        },
+        {
+          title: 'border'
+        },
+        {
+          title: 'Share',
+          name: 'share',
+          svg: 'assets/svg/common/share-icon.svg',
+          show: true,
+        },
+        {
+          title: 'Print',
+          name: 'print-truck',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: true,
+        },
+        {
+          title: 'border'
+        },
+        {
           title: 'Delete',
           name: 'delete-item',
           type: 'driver',
@@ -462,6 +521,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
           svg: 'assets/svg/common/ic_trash_updated.svg',
           danger: true,
           show: true,
+          redIcon: true,
         },
       ],
       export: true,
@@ -607,6 +667,66 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
       this.currentHoldIndex = mainIndx;
       this.currentChildIndex = indx;
     }
+  }
+
+  toggleDropdownActions(data){
+
+    let newTitle = '';
+    let newIcon = '';
+    let newName = '';
+    let messageAndLinkStatus = true;
+
+    if ( data.todoUsers.length == 0 || data.departments.length == 0 || !data.url) {
+      messageAndLinkStatus = false;
+      console.log("--messageAndLinkStatus--", messageAndLinkStatus)
+    }
+  
+    if ( data.status.name == "Todo" ) {
+      newTitle = 'Mark as Ongoing';
+      newIcon = 'assets/svg/detail-cards/refresh.svg';
+      newName = 'mark-as-ongoing';
+    } 
+    else {
+      newTitle = 'Mark as To-Do';
+      newIcon = 'assets/svg/common/ic_time.svg';
+      newName = 'mark-as-done';
+    }
+    
+    this.dropdownOptions.actions.map((action, index) => {
+      if ( index == 6 ){
+        action.title = newTitle;
+        action.svg = newIcon;
+      } else if ( index == 7 ) {
+
+        if ( data.status.name == 'Done' ) {
+          action.title = 'Mark as Ongoing';
+          action.svg = 'assets/svg/detail-cards/refresh.svg';
+          action.greenIcon = false;
+          action.name = 'mark-as-ongoing';
+        } else {
+          action.title = 'Mark as Done';
+          action.svg = 'assets/svg/common/dropdown-done-icon.svg';
+          action.greenIcon = true;
+          action.name = 'mark-as-done';
+        }
+        
+      } else if ( index == 3 ) {
+        if ( !messageAndLinkStatus ) {
+          action.disabled = true;
+        } else {
+          action.disabled = false;
+        }
+      } else if ( index == 4 ) {
+        if ( !messageAndLinkStatus ) {
+          action.disabled = true;
+          action.title = 'No Link'
+        } else {
+          action.disabled = false;
+          action.title = 'Go to Link'
+        }
+      }
+      
+    })
   }
 
   ngOnDestroy(): void {

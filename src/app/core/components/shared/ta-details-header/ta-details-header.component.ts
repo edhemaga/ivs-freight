@@ -45,6 +45,7 @@ export class TaCommonHeaderComponent implements OnInit {
   @Input() secondNameHeader: string = '';
   @Input() countViolation: number;
   @Input() hideCounter: boolean;
+  @Input() mainData: any;
   public up: boolean = false;
   public down: boolean = false;
   constructor(private routes: ActivatedRoute) {}
@@ -78,5 +79,22 @@ export class TaCommonHeaderComponent implements OnInit {
   }
   public trackByIndex(index: number, obj: any): any {
     return index;
+  }
+
+  toggleDropdownActions(){
+    //console.log('--mainData---', this.mainData);
+    let itemData = this.mainData?.data;
+    console.log('--itemData---', itemData)
+    switch (this.mainData?.nameDefault) {
+      case 'Repair Shop Details' : 
+        this.options?.actions.map((action, index)=>{
+          //console.log('--action---', action, index);
+          if ( itemData.companyOwned == false && index == 3 ) {
+            action.disabled = true;
+          }
+        })
+      break;
+    }
+  
   }
 }

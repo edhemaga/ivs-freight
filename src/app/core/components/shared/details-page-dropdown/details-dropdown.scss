@@ -30,7 +30,7 @@
     .dropdown-dots {
       svg {
           path {
-            fill: #424242;
+            fill: #424242 !important;
           }
       }
     }
@@ -43,7 +43,7 @@
       cursor: pointer;
       svg {
           path {
-            fill: #424242;
+            fill: #424242 !important;
           }
       }
     }
@@ -376,7 +376,7 @@
         svg-icon{
           svg{
             path {
-              fill: #AAAAAA40;
+              fill: #AAAAAA40 !important;
             }
           }
         }
@@ -387,7 +387,7 @@
       svg-icon {
         svg {
           path{
-            fill: #E5737340;
+            fill: #E5737340 !important;
           }
         }
       }
@@ -397,7 +397,7 @@
       svg-icon {
         svg {
           path{
-            fill: #6F9EE040;
+            fill: #6F9EE040 !important;
           }
         }
       }
@@ -407,7 +407,7 @@
       svg-icon {
         svg {
           path{
-            fill: #4DB6A240;
+            fill: #4DB6A240 !important;
           }
         }
       }
