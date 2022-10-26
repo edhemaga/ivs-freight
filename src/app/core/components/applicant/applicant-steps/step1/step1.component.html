@@ -1038,10 +1038,9 @@
     [nextStep]="true"
     [mode]="selectedMode"
     [filledCorrectly]="
-      (selectedMode === 'APPLICANT_MODE' && personalInfoForm.valid) ||
-      (selectedMode === 'FEEDBACK_MODE' &&
-        personalInfoForm.valid &&
-        isFeedbackValueUpdated)
+      personalInfoForm.valid &&
+      (selectedMode === 'APPLICANT_MODE' ||
+        (selectedMode === 'FEEDBACK_MODE' && isFeedbackValueUpdated))
     "
     [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && hasIncorrectFields"
     (stepEvent)="onStepAction($event)"

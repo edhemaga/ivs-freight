@@ -418,13 +418,10 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [filledCorrectly]="
-      (selectedMode === 'APPLICANT_MODE' &&
-        drugTestForm.valid &&
-        drugAlcoholStatementForm.valid) ||
-      (selectedMode === 'FEEDBACK_MODE' &&
-        drugTestForm.valid &&
-        drugAlcoholStatementForm.valid &&
-        isFeedbackValueUpdated)
+      drugTestForm.valid &&
+      drugAlcoholStatementForm.valid &&
+      (selectedMode === 'APPLICANT_MODE' ||
+        (selectedMode === 'FEEDBACK_MODE' && isFeedbackValueUpdated))
     "
     [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && hasIncorrectFields"
     [mode]="selectedMode"

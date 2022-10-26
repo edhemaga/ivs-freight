@@ -201,12 +201,9 @@
     [nextStep]="true"
     [lastStep]="true"
     [filledCorrectly]="
-      (selectedMode === 'APPLICANT_MODE' &&
-        authorizationForm.valid &&
-        signature) ||
-      (selectedMode === 'FEEDBACK_MODE' &&
-        authorizationForm.valid &&
-        signatureImgSrc)
+      authorizationForm.valid &&
+      ((selectedMode === 'APPLICANT_MODE' && signature) ||
+        (selectedMode === 'FEEDBACK_MODE' && signatureImgSrc))
     "
     [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"

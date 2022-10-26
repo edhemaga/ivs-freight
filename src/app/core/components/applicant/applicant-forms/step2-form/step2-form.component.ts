@@ -360,21 +360,16 @@ export class Step2FormComponent
       }
 
       if (
-        this.selectedMode === SelectedMode.REVIEW ||
-        this.selectedMode === SelectedMode.APPLICANT
+        changes.formValuesToPatch?.previousValue !==
+        changes.formValuesToPatch?.currentValue
       ) {
-        if (
-          changes.formValuesToPatch?.previousValue !==
-          changes.formValuesToPatch?.currentValue
-        ) {
-          setTimeout(() => {
-            this.patchForm(changes.formValuesToPatch.currentValue);
+        setTimeout(() => {
+          this.patchForm(changes.formValuesToPatch.currentValue);
 
-            if (this.selectedMode === SelectedMode.APPLICANT) {
-              this.startValueChangesMonitoring();
-            }
-          }, 100);
-        }
+          if (this.selectedMode === SelectedMode.APPLICANT) {
+            this.startValueChangesMonitoring();
+          }
+        }, 100);
       }
     }
   }
