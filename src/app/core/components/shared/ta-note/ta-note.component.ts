@@ -15,6 +15,9 @@ import { Subject } from 'rxjs';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { SharedService } from '../../../services/shared/shared.service';
 import moment from 'moment';
+import { NoteUpdateService } from 'src/app/core/services/shared/note.service';
+import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 @Component({
   selector: 'app-ta-note',
@@ -40,6 +43,7 @@ import moment from 'moment';
 })
 export class TaNoteComponent implements OnInit, OnDestroy {
   @Input() note: any;
+  @Input() mainData: any;
   @Input() openAllNotesText: any;
   @Input() parking: any = false;
   @Input() dispatchIndex: number = -1;
@@ -67,22 +71,31 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   };
   @Output() saveNoteValue = new EventEmitter();
   @Input() openedAll: any;
+  @Input() entityId: number = 0;
+  @Input() entityType: string;
   leaveThisOpened: boolean;
   selectionTaken: any;
   range: any;
   isFocused: boolean = false;
   preventClosing: boolean = false;
+  savingNote: boolean = false;
   private destroy$ = new Subject<void>();
 
   constructor(
     private sharedService: SharedService,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private noteService: NoteUpdateService,
+    private DetailsDataService: DetailsDataService
   ) {}
 
   ngOnInit(): void {
-    if (this.note && this.note != '') {
-      this.noteIcon = 'Note.svg';
-    }
+    this.checkNoteImage(this.note);
+  }
+
+  ngAfterViewInit(): void {
+    this.value = this.note;
+
+    this.correctEntityType();
   }
 
   checkFocus(e) {
@@ -100,6 +113,9 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   toggleNote(data: any, t2) {
+    if (this.mainData) {
+      this.DetailsDataService.setNewData(this.mainData);
+    }
     this.preventClosing = true;
     setTimeout(() => {
       this.preventClosing = false;
@@ -122,6 +138,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.buttonsExpanded = false;
         this.leaveThisOpened = false;
         this.noteOpened = false;
+        this.note = this.value;
         t2.close();
       }
       this.showCollorPattern = false;
@@ -152,11 +169,6 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     if (this.selectionTaken.rangeCount && this.selectionTaken.getRangeAt) {
       this.range = this.selectionTaken.getRangeAt(0);
     }
-    this.saveIntervalStarted = false;
-    clearInterval(this.saveInterval);
-    if (this.savedValue != this.value) {
-      this.saveNote();
-    }
   }
 
   preventMouseDown(ev) {
@@ -168,7 +180,6 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     this.value = event;
     this.checkActiveItems();
     this.lastTypeTime = moment().unix();
-
     if (!this.saveIntervalStarted) {
       this.saveIntervalStarted = true;
       this.saveInterval = setInterval(() => {
@@ -178,6 +189,11 @@ export class TaNoteComponent implements OnInit, OnDestroy {
           this.saveNote(true);
         }
       }, 100);
+    }
+
+    if (this.entityId && this.entityType) {
+      this.savingNote = true;
+      this.ref.detectChanges();
     }
   }
 
@@ -196,6 +212,15 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
 
     this.savedValue = this.value;
+    if (this.entityId && this.entityType) {
+      this.savingNote = true;
+      this.ref.detectChanges();
+      setTimeout(() => {
+        this.savingNote = false;
+        this.ref.detectChanges();
+      }, 1500);
+      this.updateNote();
+    }
     if (this.dispatchIndex == -1) this.saveNoteValue.emit(this.value);
     else
       this.saveNoteValue.emit({
@@ -210,8 +235,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     this.showCollorPattern = false;
     this.isExpanded = false;
     this.buttonsExpanded = false;
-
-    this.ref.detectChanges();
+    this.note = this.value;
   }
 
   maxLimitForContenteditableDiv(e: any, limit: number) {
@@ -259,6 +283,36 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
 
     this.preventClosing = false;
+  }
+
+  updateNote() {
+    const updateValue = {
+      entityTypeNote: EntityTypeNote[this.entityType],
+      entityId: this.entityId,
+      note: this.value,
+    };
+
+    this.noteService.updateNote(updateValue).subscribe(() => {
+      this.checkNoteImage(this.value);
+      this.ref.detectChanges();
+    });
+  }
+
+  checkNoteImage(note) {
+    if (note && note != '') {
+      this.noteIcon = 'Note.svg';
+    } else {
+      this.noteIcon = 'Note - Empty.svg';
+    }
+  }
+
+  correctEntityType() {
+    if (this.entityType == 'User') {
+      this.entityType = 'CompanyUser';
+    }
+    if (this.entityType == 'Customer') {
+      this.entityType = 'Broker';
+    }
   }
 
   public ngOnDestroy(): void {

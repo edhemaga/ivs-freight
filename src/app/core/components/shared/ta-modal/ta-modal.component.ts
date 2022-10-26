@@ -77,6 +77,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
   @Input() modalAdditionalPart: boolean;
   @Input() topDivider: boolean = true;
   @Input() bottomDivider: boolean = true;
+  // Routing Map Props
+  @Input() mapSettingsModal: boolean = false;
+  @Input() mapRouteModal: boolean = false;
+  @Input() resetMapVisibility: boolean = false;
+  // -----------------
 
   @Input() specificCaseModalName: boolean;
 
@@ -109,6 +114,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
   public deleteSpinnerVisibility: boolean = false;
   public resendEmailSpinnerVisibility: boolean = false;
   public loadTemplateSpinnerVisibility: boolean = false;
+  public setMapSettingsSpinnerVisibility: boolean = false;
+  public setMapRouteSpinnerVisibility: boolean = false;
 
   // Drag & Drop properties
   public isDropZoneVisible: boolean = false;
@@ -176,6 +183,14 @@ export class TaModalComponent implements OnInit, OnDestroy {
             }
             case 'load-template': {
               this.loadTemplateSpinnerVisibility = data.status;
+              break;
+            }
+            case 'set-map-settings': {
+              this.setMapSettingsSpinnerVisibility = data.status;
+              break;
+            }
+            case 'create-map-route': {
+              this.setMapRouteSpinnerVisibility = data.status;
               break;
             }
             default: {
@@ -318,7 +333,18 @@ export class TaModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'load-template': {
-        console.log('load template');
+        this.action.emit({ action: action, bool: false });
+        break;
+      }
+      case 'reset-map-routing': {
+        this.action.emit({ action: action, bool: false });
+        break;
+      }
+      case 'set-map-settings': {
+        this.action.emit({ action: action, bool: false });
+        break;
+      }
+      case 'create-map-route': {
         this.action.emit({ action: action, bool: false });
         break;
       }

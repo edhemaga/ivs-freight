@@ -235,9 +235,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         name: item.code.concat(' ', '-').concat(' ', item.description),
       };
     });
-    console.log('dropdown');
-    console.log(this.selectedEndorsment);
-    console.log(this.selectedRestrictions);
+
     this.selectedClassType = res.classType;
     this.selectedStateType = res.state;
   }
@@ -274,8 +272,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
               name: item.code.concat(' ', '-').concat(' ', item.description),
             };
           });
-          console.log('endorsment component: ', this.selectedEndorsment);
-          console.log('restrictions component: ', this.selectedRestrictions);
+
           this.selectedClassType = res.classType;
           this.selectedStateType = res.state;
         },
@@ -377,7 +374,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
-    console.log(event);
     this.documents = event.files;
 
     if (event.action == 'delete') {
