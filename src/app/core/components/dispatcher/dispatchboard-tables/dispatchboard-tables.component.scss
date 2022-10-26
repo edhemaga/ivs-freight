@@ -51,6 +51,13 @@ $truck_collors: "5ba160", "ffaf47", "e94949", "4c83e2", "eec860", "508181",
       background-color: rgb(238, 238, 238);
       z-index: 10;
 
+      &.cdk-drag-handle{
+        cursor: grab;
+        &:active{
+          cursor: grabbing;
+        }
+      }
+
       &.theads-dispatch {
         display: flex;
         align-items: center;
