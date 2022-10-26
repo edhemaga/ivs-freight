@@ -370,11 +370,13 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
   }
 
   toggleComment(e: Event, mainIndx: number, indx: number) {
+   
     e.preventDefault();
     e.stopPropagation();
     this.DetailsDataService.setNewData(
       this.scene.children[mainIndx].children[indx]
     );
+    console.log(this.scene.children[mainIndx].children[indx], this.scene.children[mainIndx].children[indx]);
     this.scene.children[mainIndx].children[indx]['commentActive'] =
       !this.scene.children[mainIndx].children[indx]['commentActive'];
   }
@@ -551,6 +553,12 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
           type: 'delete',
         }
       );
+    } else if (event.type === 'add-comment') {
+      if ( event.data.commentActive ) {
+        event.data.commentActive = false;
+      } else {
+        event.data.commentActive = true;
+      }
     } else {
       this.modalService.openModal(
         TaskModalComponent,
@@ -676,9 +684,10 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     let newName = '';
     let messageAndLinkStatus = true;
 
+    this.DetailsDataService.setNewData(data); 
+
     if ( data.todoUsers.length == 0 || data.departments.length == 0 || !data.url) {
       messageAndLinkStatus = false;
-      console.log("--messageAndLinkStatus--", messageAndLinkStatus)
     }
   
     if ( data.status.name == "Todo" ) {

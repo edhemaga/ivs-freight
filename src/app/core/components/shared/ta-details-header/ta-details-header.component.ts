@@ -91,14 +91,14 @@ export class TaCommonHeaderComponent implements OnInit {
       if ( itemData.status != 1 ) {
         diasbleClosedArray = [0, 3, 4, 5];
       } else if ( itemData.companyOwned ) {
-        diasbleClosedArray = [4];
+        diasbleClosedArray = [3];
       }
     }
 
     switch (this.mainData?.nameDefault) {
       case 'Repair Shop Details' : 
         this.options?.actions.map((action, index)=>{
-          if ( index == 4 ) {
+          if ( index == 3 ) {
             if (itemData.pinned != false) {
               action.title = 'Remove from Favourite';
               action.name = 'remove-from-favourite';
