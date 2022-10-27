@@ -90,25 +90,23 @@ export class TaLogoChangeComponent
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    // const timeout = setTimeout(() => {
-    //   this.imageUrl = changes.imageUrl?.currentValue
-    //     ? this.imageBase64Service.sanitizer(changes.imageUrl.currentValue)
-    //     : null;
+    if (this.croppieShape !== 'rectangle') {
+      const timeout = setTimeout(() => {
+        this.imageUrl = changes.imageUrl?.currentValue
+          ? this.imageBase64Service.sanitizer(changes.imageUrl.currentValue)
+          : null;
 
-    //
-
-    //   clearTimeout(timeout);
-
-    //   console.log('img', this.imageUrl);
-    // }, 150);
-
-    if (changes.imageUrl?.previousValue !== changes.imageUrl?.currentValue) {
-      this.imageUrl = this.imageBase64Service.sanitizer(
-        changes.imageUrl.currentValue
-      );
+        clearTimeout(timeout);
+      }, 150);
     }
 
     if (this.croppieShape === 'rectangle') {
+      if (changes.imageUrl?.previousValue !== changes.imageUrl?.currentValue) {
+        this.imageUrl = this.imageBase64Service.sanitizer(
+          changes.imageUrl.currentValue
+        );
+      }
+
       if (!changes.imageUrl?.currentValue) {
         this.imageUrl = this.imageBase64Service.getStringFromBase64(
           this.imageUrl.changingThisBreaksApplicationSecurity
@@ -123,18 +121,6 @@ export class TaLogoChangeComponent
         this.deleteLogoEvent.emit(true);
       }
     }
-
-    /*     if (
-      changes.displayUploadZone?.previousValue !==
-      changes.displayUploadZone?.currentValue
-    ) {
-      this.showUploadZone = true;
-
-      this.imageUrl = null;
-
-      this.deleteLogoEvent.emit(true);
-    }
- */
   }
 
   ngOnInit(): void {
