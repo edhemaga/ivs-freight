@@ -16,9 +16,7 @@ import Croppie from 'croppie';
 import { CroppieDirective } from 'angular-croppie-module';
 import { Options } from '@angular-slider/ngx-slider';
 import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
-import {
-  DropZoneConfig,
-} from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import { DropZoneConfig } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -92,21 +90,51 @@ export class TaLogoChangeComponent
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const timeout = setTimeout(() => {
-      this.imageUrl = changes.imageUrl.currentValue
-        ? this.imageBase64Service.sanitizer(changes.imageUrl.currentValue)
-        : null;
+    // const timeout = setTimeout(() => {
+    //   this.imageUrl = changes.imageUrl?.currentValue
+    //     ? this.imageBase64Service.sanitizer(changes.imageUrl.currentValue)
+    //     : null;
 
-      clearTimeout(timeout);
-    }, 150);
+    //
 
-    if (this.displayUploadZone) {
+    //   clearTimeout(timeout);
+
+    //   console.log('img', this.imageUrl);
+    // }, 150);
+
+    if (changes.imageUrl?.previousValue !== changes.imageUrl?.currentValue) {
+      this.imageUrl = this.imageBase64Service.sanitizer(
+        changes.imageUrl.currentValue
+      );
+    }
+
+    if (this.croppieShape === 'rectangle') {
+      if (!changes.imageUrl?.currentValue) {
+        this.imageUrl = this.imageBase64Service.getStringFromBase64(
+          this.imageUrl.changingThisBreaksApplicationSecurity
+        );
+
+        this.imageUrl = null;
+      }
+
+      if (changes.displayUploadZone?.currentValue) {
+        this.showUploadZone = true;
+
+        this.deleteLogoEvent.emit(true);
+      }
+    }
+
+    /*     if (
+      changes.displayUploadZone?.previousValue !==
+      changes.displayUploadZone?.currentValue
+    ) {
       this.showUploadZone = true;
 
       this.imageUrl = null;
 
       this.deleteLogoEvent.emit(true);
     }
+ */
   }
 
   ngOnInit(): void {
@@ -133,7 +161,7 @@ export class TaLogoChangeComponent
         zoom: this.imageScale,
       });
       this.ngxSliderPosition = 0;
-      this.showUploadZone = true;
+      this.showUploadZone = this.croppieShape === 'rectangle' ? false : true;
     }
   }
 
@@ -168,6 +196,7 @@ export class TaLogoChangeComponent
         this.imageBase64Service.getStringFromBase64(base64)
       );
       this.imageUrl = base64;
+
       this.showUploadZone = this.croppieShape !== 'rectangle';
     });
     this.isImageValid = true;
