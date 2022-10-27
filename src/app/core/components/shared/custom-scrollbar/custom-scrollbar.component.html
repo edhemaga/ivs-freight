@@ -1,9 +1,17 @@
-<div class="custom-scrollbar-holder" #contentHolder [scrollTop]="300">
-    <ng-content></ng-content>
-    <div class="right-bar-scroll" *ngIf="showScrollbar">
-        <div class="right-bar"
-            #bar
-            [ngStyle]="{height: (scrollHeight + 'px')}"
-            (mousedown)="setDraggingStart($event)" (mouseup)="isMouseDown = false"></div>
-    </div>
+<div
+  class="custom-scrollbar-holder"
+  #contentHolder
+  (cdkObserveContent)="projectContentChanged($event)"
+  [class.activeToolbar]="showScrollbar"
+>
+  <ng-content></ng-content>
+  <div class="right-bar-scroll" *ngIf="showScrollbar">
+    <div
+      class="right-bar"
+      #bar
+      [ngStyle]="{ height: scrollHeight + 'px' }"
+      (mousedown)="setDraggingStart($event)"
+      (mouseup)="isMouseDown = false"
+    ></div>
+  </div>
 </div>

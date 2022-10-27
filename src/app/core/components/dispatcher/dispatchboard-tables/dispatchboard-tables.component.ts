@@ -32,7 +32,6 @@ import { ColorFinderPipe } from '../pipes/color-finder.pipe';
 import { Options } from '@angular-slider/ngx-slider';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { LabelType } from 'ng5-slider';
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
 
 @Component({
   selector: 'app-dispatchboard-tables',
