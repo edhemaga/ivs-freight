@@ -37,6 +37,7 @@ export class NotificationService {
     }
 
     if (
+      httpRequest.url.indexOf('account/refresh') > -1 ||
       httpRequest.url.indexOf('pm/truck/') > -1 ||
       (error && error.status == 401 && !loginPageReq) ||
       (!user && !loginPageReq) ||
@@ -62,6 +63,7 @@ export class NotificationService {
 
   public successToastr(httpRequest: HttpRequest<any>, next: HttpHandler) {
     if (
+      httpRequest.url.indexOf('account/refresh') > -1 ||
       httpRequest.url.indexOf('pm/truck/') > -1 ||
       httpRequest.url.indexOf('login') > -1 ||
       httpRequest.url.indexOf('applicant') > -1 ||

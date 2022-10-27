@@ -128,16 +128,35 @@
           (click)="onAction('close')"
         ></svg-icon>
       </div>
-      <!-- Divider top -->
-      <div *ngIf="topDivider" class="divider"></div>
-      <!-- Modal body -->
-      <div class="modal-body">
-        <!-- Modal content -->
-        <ng-content select="[origin]"></ng-content>
-        <!-- Divider bottom -->
-        <div *ngIf="bottomDivider" class="divider"></div>
-      </div>
-      <!-- Modal footer Normal -->
+      <!-- Header close -->
+      <svg-icon
+        *ngIf="!loadModalBill"
+        class="modal-close"
+        src="assets/svg/ic_x.svg"
+        (click)="onAction('close')"
+      ></svg-icon>
+    </div>
+    <!-- Divider top -->
+    <div *ngIf="topDivider" class="divider"></div>
+    <!-- Modal body -->
+    <div class="modal-body">
+      <!-- Modal content -->
+      <ng-content select="[origin]"></ng-content>
+      <!-- Divider bottom -->
+      <div *ngIf="bottomDivider" class="divider"></div>
+    </div>
+    <!-- Modal footer Normal -->
+    <div
+      *ngIf="!disableFooter && !confirmationData"
+      class="modal-footer"
+      cdkDragHandle
+      [ngClass]="{
+        'mutliple-buttons': editData?.type?.includes('edit'),
+        'load-template': loadModalTemplate,
+        'map-settings-template': mapSettingsModal || mapRouteModal
+      }"
+    >
+      <!-- Footer Left Side -->
       <div
         *ngIf="!disableFooter && !confirmationData"
         class="modal-footer"
