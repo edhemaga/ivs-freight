@@ -7,16 +7,16 @@ import {
 } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 
-import { DriverTService } from '../../../state/driver.service';
-import { TestTService } from '../../../state/test.service';
-import { ModalService } from '../../../../shared/ta-modal/modal.service';
-import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
-import { NotificationService } from '../../../../../services/notification/notification.service';
-import { FormService } from '../../../../../services/form/form.service';
+import { DriverTService } from '../../../driver/state/driver.service';
+import { TestTService } from '../../../driver/state/test.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
+import { FormService } from '../../../../services/form/form.service';
 import {
   convertDateToBackend,
   convertDateFromBackend,
-} from '../../../../../utils/methods.calculations';
+} from '../../../../utils/methods.calculations';
 import { CreateTestCommand } from 'appcoretruckassist/model/createTestCommand';
 import { EditTestCommand } from 'appcoretruckassist/model/editTestCommand';
 

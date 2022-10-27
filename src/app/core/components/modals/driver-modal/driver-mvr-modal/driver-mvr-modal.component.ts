@@ -5,17 +5,17 @@ import {
   GetMvrModalResponse,
   MvrResponse,
 } from 'appcoretruckassist';
-import { DriverTService } from '../../../state/driver.service';
-import { MvrTService } from '../../../state/mvr.service';
+import { DriverTService } from '../../../driver/state/driver.service';
+import { MvrTService } from '../../../driver/state/mvr.service';
 import { Subject, takeUntil } from 'rxjs';
-import { ModalService } from '../../../../shared/ta-modal/modal.service';
-import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
-import { NotificationService } from '../../../../../services/notification/notification.service';
-import { FormService } from '../../../../../services/form/form.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
+import { FormService } from '../../../../services/form/form.service';
 import {
   convertDateToBackend,
   convertDateFromBackend,
-} from '../../../../../utils/methods.calculations';
+} from '../../../../utils/methods.calculations';
 import { EditMvrCommand } from 'appcoretruckassist/model/editMvrCommand';
 import { CreateMvrCommand } from 'appcoretruckassist/model/createMvrCommand';
 
