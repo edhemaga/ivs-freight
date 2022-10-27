@@ -876,3 +876,35 @@ body:not(.modal-open) {
     }
   }
 }
+
+
+ngb-modal-window.modal{
+  overflow: hidden;
+
+  .modal-dialog{
+    max-width: initial !important;
+    margin: 0 !important;
+
+    .modal-container{
+      margin: auto;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    .custom-scrollbar-holder{
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+
+      transition: all 0.3s;
+
+      &:not(.activeToolbar){
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}
