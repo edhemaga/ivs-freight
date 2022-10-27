@@ -136,28 +136,10 @@ export class ApplicantComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.getApplicantById();
-
-    this.getDropdownLists();
-
     this.getStepValuesFromStore();
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
-
-  public getApplicantById(): void {
-    this.applicantActionsService
-      .getApplicantById(4)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe();
-  }
-
-  public getDropdownLists(): void {
-    this.applicantListsService
-      .getDropdownLists()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe();
-  }
 
   public getStepValuesFromStore(): void {
     this.applicantQuery.fullList$

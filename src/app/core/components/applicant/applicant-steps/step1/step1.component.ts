@@ -54,6 +54,7 @@ import {
   UpdatePersonalInfoCommand,
   CreatePersonalInfoReviewCommand,
 } from 'appcoretruckassist/model/models';
+import { PersonalInfoFeedbackResponse } from '../../../../../../../appcoretruckassist/model/personalInfoFeedbackResponse';
 
 @Component({
   selector: 'app-step1',
@@ -65,7 +66,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public personalInfoRadios: any;
 
@@ -80,7 +81,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
   public personalInfoForm: FormGroup;
 
   public selectedBank: any = null;
-  public selectedAddresses: AddressEntity[] = [];
+  public selectedAddresses: AddressEntity[] | any = [];
 
   public banksDropdownList: BankResponse[] = [];
 
@@ -400,21 +401,16 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public getStepValuesFromStore(): void {
-    let stepResponse: any;
-
     this.applicantQuery.personalInfoList$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        stepResponse = res;
+      .subscribe((res: PersonalInfoFeedbackResponse) => {
+        console.log('COMPONENT STEP 1');
+        console.log(res);
+        this.patchStepValues(res);
       });
-
-    if (stepResponse) {
-      this.patchStepValues(stepResponse);
-    }
   }
 
-  public patchStepValues(stepValues: any): void {
-    console.log('stepValues', stepValues);
+  public patchStepValues(res: PersonalInfoFeedbackResponse): void {
     const {
       id,
       isAgreed,
@@ -443,7 +439,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       misdemeanorDescription,
       drunkDrivingDescription,
       personalInfoReview,
-    } = stepValues;
+    } = res;
 
     this.personalInfoForm.patchValue({
       isAgreement: isAgreed,
@@ -566,7 +562,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       }
 
       return {
-        ...item.address,
+        ...res.address,
       };
     });
 
@@ -836,7 +832,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         };
       }
 
-      this.stepValues = stepValues;
+      this.stepValues = res;
 
       this.startFeedbackValueChangesMonitoring();
     }
@@ -1038,10 +1034,11 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     }
 
     this.isEditingMiddlePositionAddress = false;
-
+    this.applicantActionsService.deleteAddressFormStore(
+      this.previousAddresses.at(index).get('address').value
+    );
     this.previousAddresses.removeAt(index);
     this.selectedAddresses.splice(index, 1);
-
     this.isEditingArray.splice(index, 1);
 
     if (this.previousAddresses.controls.length < 2) {
@@ -1568,11 +1565,11 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       .filter((item, index) => index !== this.selectedAddresses.length - 1)
       .map((item) => {
         return {
+          id: null,
           address: item,
+          previousAddressReview: null,
         };
       });
-
-    console.log('storePreviousAddresses', storePreviousAddresses);
 
     this.applicantActionsService
       .updatePersonalInfo(saveData)
@@ -1582,6 +1579,24 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
           this.router.navigate([`/application/${this.applicantId}/2`]);
 
           this.applicantStore.update(1, (entity) => {
+            let previousAddressStore = Object.assign(
+              [],
+              entity.personalInfo.previousAddresses
+            );
+
+            while (
+              previousAddressStore.length < storePreviousAddresses.length
+            ) {
+              previousAddressStore = [
+                ...previousAddressStore,
+                {
+                  id: null,
+                  address: null,
+                  previousAddressReview: null,
+                },
+              ];
+            }
+
             return {
               ...entity,
               personalInfo: {
@@ -1593,8 +1608,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                 bankName: this.banksDropdownList.find(
                   (item) => item.id === saveData.bankId
                 )?.name,
-                previousAddresses: entity.personalInfo.previousAddresses.length
-                  ? entity.personalInfo.previousAddresses.map((item, index) => {
+                previousAddresses: previousAddressStore.length
+                  ? previousAddressStore.map((item, index) => {
                       return {
                         ...item,
                         address: storePreviousAddresses[index]?.address,
@@ -1610,8 +1625,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
               this.subscription.unsubscribe();
             }
           }
-
-          console.log('this.applicantStore', this.applicantStore);
         },
         error: (err) => {
           console.log(err);
@@ -1636,89 +1649,19 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     const previousAddresses =
       this.previousAddresses.controls.length === 1
         ? []
-        : this.previousAddresses.controls.length === 2
-        ? [
-            {
-              previousAddressId: this.previousAddressesId[0],
+        : this.previousAddresses.controls.map((item, index) => {
+            if (this.previousAddresses.controls.length - 1 === index) {
+              return;
+            }
+            return {
+              previousAddressId: this.previousAddressesId[index],
               isPreviousAddressValid:
-                !this.openAnnotationArray[2].lineInputs[0],
-              previousAddressMessage:
-                this.previousAddresses.controls[0]?.get('cardReview1').value,
-            },
-          ]
-        : this.previousAddresses.controls.length === 3
-        ? [
-            {
-              previousAddressId: this.previousAddressesId[0],
-              isPreviousAddressValid:
-                !this.openAnnotationArray[2].lineInputs[0],
-              previousAddressMessage:
-                this.previousAddresses.controls[0]?.get('cardReview1').value,
-            },
-            {
-              previousAddressId: this.previousAddressesId[1],
-              isPreviousAddressValid:
-                !this.openAnnotationArray[3].lineInputs[0],
-              previousAddressMessage:
-                this.previousAddresses.controls[1]?.get('cardReview2').value,
-            },
-          ]
-        : this.previousAddresses.controls.length === 4
-        ? [
-            {
-              previousAddressId: this.previousAddressesId[0],
-              isPreviousAddressValid:
-                !this.openAnnotationArray[2].lineInputs[0],
-              previousAddressMessage:
-                this.previousAddresses.controls[0]?.get('cardReview1').value,
-            },
-            {
-              previousAddressId: this.previousAddressesId[1],
-              isPreviousAddressValid:
-                !this.openAnnotationArray[3].lineInputs[0],
-              previousAddressMessage:
-                this.previousAddresses.controls[1]?.get('cardReview2').value,
-            },
-            {
-              previousAddressId: this.previousAddressesId[2],
-              isPreviousAddressValid:
-                !this.openAnnotationArray[4].lineInputs[0],
-              previousAddressMessage:
-                this.previousAddresses.controls[2]?.get('cardReview3').value,
-            },
-          ]
-        : this.previousAddresses.controls.length === 5
-        ? [
-            {
-              previousAddressId: this.previousAddressesId[0],
-              isPreviousAddressValid:
-                !this.openAnnotationArray[2].lineInputs[0],
-              previousAddressMessage:
-                this.previousAddresses.controls[0]?.get('cardReview1').value,
-            },
-            {
-              previousAddressId: this.previousAddressesId[1],
-              isPreviousAddressValid:
-                !this.openAnnotationArray[3].lineInputs[0],
-              previousAddressMessage:
-                this.previousAddresses.controls[1]?.get('cardReview2').value,
-            },
-            {
-              previousAddressId: this.previousAddressesId[2],
-              isPreviousAddressValid:
-                !this.openAnnotationArray[4].lineInputs[0],
-              previousAddressMessage:
-                this.previousAddresses.controls[2]?.get('cardReview3').value,
-            },
-            {
-              previousAddressId: this.previousAddressesId[3],
-              isPreviousAddressValid:
-                !this.openAnnotationArray[5].lineInputs[0],
-              previousAddressMessage:
-                this.previousAddresses.controls[3]?.get('cardReview4').value,
-            },
-          ]
-        : null;
+                !this.openAnnotationArray[index + 2].lineInputs[0],
+              previousAddressMessage: this.previousAddresses.controls[
+                index
+              ]?.get(`cardReview${index + 1}`).value,
+            };
+          });
 
     const saveData: CreatePersonalInfoReviewCommand = {
       applicantId: this.applicantId,
@@ -1729,42 +1672,22 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       personalInfoMessage: firstRowReview,
       isPhoneValid: !this.openAnnotationArray[1].lineInputs[0],
       phoneMessage: secondRowReview,
-      isAddressValid:
-        this.previousAddresses.controls.length === 1
-          ? !this.openAnnotationArray[2].lineInputs[0]
-          : this.previousAddresses.controls.length === 2
-          ? !this.openAnnotationArray[3].lineInputs[0]
-          : this.previousAddresses.controls.length === 3
-          ? !this.openAnnotationArray[4].lineInputs[0]
-          : this.previousAddresses.controls.length === 4
-          ? !this.openAnnotationArray[5].lineInputs[0]
-          : this.previousAddresses.controls.length === 5
-          ? !this.openAnnotationArray[6].lineInputs[0]
-          : null,
-      isAddressUnitValid:
-        this.previousAddresses.controls.length === 1
-          ? !this.openAnnotationArray[2].lineInputs[1]
-          : this.previousAddresses.controls.length === 2
-          ? !this.openAnnotationArray[3].lineInputs[1]
-          : this.previousAddresses.controls.length === 3
-          ? !this.openAnnotationArray[4].lineInputs[1]
-          : this.previousAddresses.controls.length === 4
-          ? !this.openAnnotationArray[5].lineInputs[1]
-          : this.previousAddresses.controls.length === 5
-          ? !this.openAnnotationArray[6].lineInputs[1]
-          : null,
-      addressMessage:
-        this.previousAddresses.controls.length === 1
-          ? this.previousAddresses.controls[0].get('cardReview1').value
-          : this.previousAddresses.controls.length === 2
-          ? this.previousAddresses.controls[1].get('cardReview2').value
-          : this.previousAddresses.controls.length === 3
-          ? this.previousAddresses.controls[2].get('cardReview3').value
-          : this.previousAddresses.controls.length === 4
-          ? this.previousAddresses.controls[3].get('cardReview4').value
-          : this.previousAddresses.controls.length === 5
-          ? this.previousAddresses.controls[4].get('cardReview5').value
-          : null,
+      isAddressValid: this.previousAddresses.controls.length
+        ? !this.openAnnotationArray[this.previousAddresses.controls.length + 1]
+            .lineInputs[0]
+        : null,
+
+      isAddressUnitValid: this.previousAddresses.controls.length
+        ? !this.openAnnotationArray[this.previousAddresses.controls.length + 1]
+            .lineInputs[1]
+        : null,
+
+      addressMessage: this.previousAddresses.controls.length
+        ? this.previousAddresses.controls[
+            this.previousAddresses.controls.length - 1
+          ].get(`cardReview${this.previousAddresses.controls.length}`).value
+        : null,
+
       isSsnValid: !this.openAnnotationArray[7].lineInputs[0],
       isBankValid: !this.openAnnotationArray[7].lineInputs[1],
       ssnBankMessage: thirdRowReview,
