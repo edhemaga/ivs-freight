@@ -27,6 +27,9 @@ import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { LoadModalComponent } from '../../modals/load-modal/load-modal.component';
 import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
+import { DriverMvrModalComponent } from '../../driver/driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
+import { DriverMedicalModalComponent } from '../../driver/driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
+import { DriverDrugAlcoholModalComponent } from '../../driver/driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 
 @Component({
   selector: 'app-navigation-modals',
@@ -172,6 +175,22 @@ export class NavigationModalsComponent {
       case 'accident': {
         this.modalService.openModal(AccidentModalComponent, {
           size: 'large-xl',
+        });
+        break;
+      }
+      case 'mvr': {
+        this.modalService.openModal(DriverMvrModalComponent, { size: 'small' });
+        break;
+      }
+      case 'test': {
+        this.modalService.openModal(DriverDrugAlcoholModalComponent, {
+          size: 'small',
+        });
+        break;
+      }
+      case 'medical': {
+        this.modalService.openModal(DriverMedicalModalComponent, {
+          size: 'small',
         });
         break;
       }
