@@ -84,8 +84,7 @@
         getSuperControl.value &&
         (inputConfig.isDropdown || inputConfig.type === 'password') &&
         !inputConfig.isDisabled &&
-        !inputConfig.multiSelectDropdownActive &&
-        !inputConfig.blackInput,
+        !inputConfig.multiSelectDropdownActive,
       'dropdown-position-image':
         inputConfig.dropdownImageInput?.url &&
         !inputConfig.isDisabled &&
@@ -441,7 +440,7 @@
   <!-- Input Label Counter -->
   <p
     *ngIf="selectedDropdownLabelColor && getSuperControl.value && !focusInput"
-    [style.top]="'5px'"
+    [style.top]="'4px'"
     [style.left]="50 + getSuperControl?.value.toString().length * 8 + 'px'"
     class="input-label-counter"
   >

@@ -14,8 +14,8 @@ export class CdkConnectPipe implements PipeTransform {
       }
     }
 
-    const data = [];
-    for (let i = 0; i <= gridLength; i++) {
+    const data = [`${type}-1`];
+    for (let i = 0; i < gridLength; i++) {
       const ni = parseInt(i + '' + gridIndex);
       if (i !== rowIndex) {
         data.push(type + ni);

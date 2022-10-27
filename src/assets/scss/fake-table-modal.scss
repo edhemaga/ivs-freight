@@ -836,6 +836,21 @@
     }
   }
 
+  // Office department contact
+
+  &-office-department-contacts {
+    .common-fake-table-body {
+      .common-fake-table-card {
+        grid-template-columns: 120px 130px 60px 80px 1fr;
+
+        .common-fake-table-delete {
+          bottom: 8px;
+          right: 3px;
+        }
+      }
+    }
+  }
+
   // Load Stops
   &-load-stops {
     overflow-x: hidden !important;
