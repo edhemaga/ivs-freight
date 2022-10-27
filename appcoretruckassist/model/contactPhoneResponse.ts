@@ -17,5 +17,6 @@ export interface ContactPhoneResponse {
     phone?: string | null;
     phoneExt?: string | null;
     contactPhoneType?: EnumValue;
+    primary?: boolean | null;
 }
 
