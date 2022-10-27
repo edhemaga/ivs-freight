@@ -62,9 +62,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   public labelsContactPhones: any[] = [];
   public isContactPhoneExtExist: boolean[] = [];
-  public labelsContactEmails: any[] = [];
-
   public selectedContactPhone: any[] = [];
+
+  public labelsContactEmails: any[] = [];
   public selectedContactEmail: any[] = [];
 
   public dropZoneConfig: DropZoneConfig = {
@@ -156,13 +156,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public setPrimaryPhone(formControl: AbstractControl) {
-    this.contactPhones.controls.map((item) =>
-      item.get('primary').patchValue(false)
-    );
-    formControl.get('primary').patchValue(!formControl.get('primary').value);
-  }
-
   public get contactEmails(): FormArray {
     return this.contactForm.get('contactEmails') as FormArray;
   }
@@ -171,6 +164,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     return this.formBuilder.group({
       email: [null],
       contactEmailType: [null],
+      primary: !this.contactEmails.length,
     });
   }
 
@@ -230,6 +224,32 @@ export class ContactModalComponent implements OnInit, OnDestroy {
           this.deleteCompanyContactById(this.editData.id);
           this.modalService.setModalSpinner({ action: 'delete', status: true });
         }
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  public setPrimary(formControl: AbstractControl, action: string) {
+    switch (action) {
+      case 'phone': {
+        this.contactPhones.controls.map((item) =>
+          item.get('primary').patchValue(false)
+        );
+        formControl
+          .get('primary')
+          .patchValue(!formControl.get('primary').value);
+        break;
+      }
+      case 'email': {
+        this.contactEmails.controls.map((item) =>
+          item.get('primary').patchValue(false)
+        );
+        formControl
+          .get('primary')
+          .patchValue(!formControl.get('primary').value);
         break;
       }
       default: {
