@@ -259,7 +259,10 @@
                 placeholderIcon: 'email',
                 minLength: 5,
                 maxLength: 64,
-                textTransform: 'lowercase'
+                textTransform: 'lowercase',
+                customClass: contactPhones.length
+                  ? 'line-input-26-in-card'
+                  : null
               }"
             ></app-ta-input>
 
@@ -271,7 +274,10 @@
                 label: 'Type',
                 textTransform: 'capitalize',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-120'
+                dropdownWidthClass: 'w-col-120',
+                customClass: contactPhones.length
+                  ? 'line-input-26-in-card'
+                  : null
               }"
               [activeItem]="selectedContactEmail[ind]"
               [options]="labelsContactEmails"
