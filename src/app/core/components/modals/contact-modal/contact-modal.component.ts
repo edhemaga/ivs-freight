@@ -145,7 +145,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       phone: [null, phoneFaxRegex],
       phoneExt: [null, phoneExtension],
       contactPhoneType: [null],
-      primary: this.contactPhones.length === 1,
+      primary: !this.contactPhones.length,
     });
   }
 
