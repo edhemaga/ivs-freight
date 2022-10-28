@@ -13,12 +13,15 @@ import {
   RouteResponse,
   UpdateRouteCommand
 } from 'appcoretruckassist';
-import { takeUntil, Subject, Observable, tap } from 'rxjs';
+import { takeUntil, Subject, Observable, tap, BehaviorSubject } from 'rxjs';
 import { MapResponse } from '../../../../../../../appcoretruckassist/model/mapResponse';
 
 @Injectable({ providedIn: 'root' })
 export class RoutingStateService implements OnDestroy {
   private destroy$ = new Subject<void>();
+  
+  private updatedData = new BehaviorSubject<any>({});
+  public currentUpdatedData = this.updatedData.asObservable();
 
   constructor(
     private routingStateStore: RoutingStateStore,
@@ -88,6 +91,12 @@ export class RoutingStateService implements OnDestroy {
               //   data: trailer,
               //   id: trailer.id,
               // });
+
+              this.sendUpdatedData({
+                type: 'map',
+                data: map,
+                id: data.id
+              });
 
               console.log('updateMap response', map);
 
@@ -212,6 +221,10 @@ export class RoutingStateService implements OnDestroy {
         console.log('deleteRouteById', routeId);
       })
     );
+  }
+
+  public sendUpdatedData(data: any) {
+    this.updatedData.next(data);
   }
 
   ngOnDestroy(): void {

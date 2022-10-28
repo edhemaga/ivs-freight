@@ -428,7 +428,11 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onShowMapSettings(mapSettingsPopup: any) {
-    this.modalService.openModal(MapSettingsModalComponent, { size: 'small' });
+    this.modalService.openModal(MapSettingsModalComponent, { size: 'small' },
+    {
+      ...this.activeTableData,
+      type: 'edit',
+    });
     // this.mapSettingsPopup = mapSettingsPopup;
 
     // if (mapSettingsPopup.isOpen()) {
@@ -451,9 +455,15 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   onShowRoutePopover(addRoutePopup: any) {
     this.modalService.openModal(
       MapRouteModalComponent,
-      { size: 'small' },
-      { ...this.routeToEdit }
+      { size: 'small' }
     );
+
+    // ,
+    // {
+    //   ...this.routeToEdit,
+    //   type: 'edit',
+    // }
+
     // this.addRoutePopup = addRoutePopup;
 
     // if (addRoutePopup.isOpen()) {

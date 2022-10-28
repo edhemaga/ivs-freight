@@ -535,6 +535,16 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
           }
         },
       });
+
+    this.routingService.currentUpdatedData
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        console.log('updateMap res', res);
+
+        if ( res.type == 'map' ) {
+          this.updateMapData(res.id, res.data);
+        }
+      });
   }
 
   ngOnDestroy(): void {
@@ -2457,5 +2467,20 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
         this.initAddressFields();
       });
+  }
+
+  updateMapData(dataId: number, updatedData: any) {
+    console.log('updateMapData', updatedData);
+    this.tableData = this.tableData.map((data: any) => {
+      if (data.id === dataId) {
+        data.title = updatedData.name;
+        console.log('updateMapData name', data.name);
+      }
+
+      return data;
+    });
+    
+    console.log('tableData', this.tableData);
+    this.mapToolbar.getSelectedTabTableData();
   }
 }
