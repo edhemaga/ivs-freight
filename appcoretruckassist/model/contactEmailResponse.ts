@@ -16,5 +16,6 @@ export interface ContactEmailResponse {
     id?: number;
     email?: string | null;
     contactEmailType?: EnumValue;
+    primary?: boolean;
 }
 

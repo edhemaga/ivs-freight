@@ -146,7 +146,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
           this.testTypes = res.testTypes;
           this.alcoholTests = res.alcoholTestReasons;
           this.drugTests = res.drugTestReasons;
-          this.testResults = [];
+          this.testResults = res.testResults;
         },
         error: () => {
           this.notificationService.error(
@@ -201,6 +201,10 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
         }
         break;
       }
+      case 'result': {
+        this.selectedTestResult = event;
+        break;
+      }
       default: {
         break;
       }
@@ -219,6 +223,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       testingDate: convertDateToBackend(testingDate),
       testReasonId: this.selectedReasonType.id,
       testType: this.selectedTestType.id,
+      result: this.selectedTestResult ? this.selectedTestResult.id : null,
       note: note,
     };
 
@@ -246,6 +251,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       testingDate: convertDateToBackend(testingDate),
       testReasonId: this.selectedReasonType.id,
       testType: this.selectedTestType.id,
+      result: this.selectedTestResult ? this.selectedTestResult.id : null,
       note: note,
     };
 

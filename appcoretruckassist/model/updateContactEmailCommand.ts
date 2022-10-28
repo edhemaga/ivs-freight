@@ -16,5 +16,6 @@ export interface UpdateContactEmailCommand {
     id?: number;
     email?: string | null;
     contactEmailType?: ContactEmailType;
+    primary?: boolean;
 }
 

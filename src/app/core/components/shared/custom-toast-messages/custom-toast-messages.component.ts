@@ -315,7 +315,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             this.message = this.DetailsDataService.mainData?.dbaName ? this.DetailsDataService.mainData?.dbaName : this.DetailsDataService.mainData?.businessName; 
           break;
           case 2:
-            console.log('----this.DetailsDataService.mainData', this.DetailsDataService.mainData)
             this.message = this.DetailsDataService.mainData?.name ? this.DetailsDataService.mainData?.name : '';
             this.actionType = 'REPAIR SHOP';
           break;
@@ -520,6 +519,18 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         if ( !name ) { 
           name = this.DetailsDataService.mainData?.name;
          }
+
+         if ( apiEndPoint.indexOf('verifyowner') > -1 ) {
+          this.actionType = 'ACCOUNT';
+          let thankYouEmail = localStorage.getItem('thankYouEmail') ? JSON.parse(localStorage.getItem('thankYouEmail')) : '';
+          if (thankYouEmail) {
+            name = thankYouEmail;
+          }
+
+          this.actionTitle = this.toastrType == 'toast-error' ? 'VERIFY' : 'VERIFIED';
+          
+       }
+
         this.message = name;
       break;
       case 'CONTACT':
