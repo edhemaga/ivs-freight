@@ -11,7 +11,41 @@
     [formGroup]="drugForm"
     class="form-container form-container-without-mb"
   >
+    <div *ngIf="!editData" class="row first-row">
+      <div class="col-12">
+        <app-ta-input-dropdown
+          formControlName="driver"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Driver',
+            isRequired: true,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-456',
+            autoFocus: !editData
+          }"
+          [options]="labelsDrivers"
+          [activeItem]="selectedDriver"
+          (selectedItem)="onSelectDropdown($event, 'driver')"
+        ></app-ta-input-dropdown>
+      </div>
+    </div>
     <div class="row">
+      <div class="col-6">
+        <app-ta-input
+          formControlName="testingDate"
+          [inputConfig]="{
+            name: 'datepicker',
+            type: 'text',
+            label: 'Issue Date',
+            isDropdown: true,
+            placeholderIcon: 'date',
+            isRequired: true,
+            customClass: 'datetimeclass',
+            autoFocus: editData && editData?.type !== 'edit-drug'
+          }"
+        ></app-ta-input>
+      </div>
       <div class="col-6">
         <app-ta-input-dropdown
           formControlName="testType"
@@ -21,14 +55,16 @@
             label: 'Type',
             isRequired: true,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-216',
-            autoFocus: editData?.type !== 'edit-drug'
+            dropdownWidthClass: 'w-col-228'
           }"
           [options]="testTypes"
           [activeItem]="selectedTestType"
           (selectedItem)="onSelectDropdown($event, 'test')"
         ></app-ta-input-dropdown>
       </div>
+    </div>
+
+    <div class="row last-row">
       <div class="col-6">
         <app-ta-input-dropdown
           formControlName="testReasonId"
@@ -39,29 +75,28 @@
             isRequired: true,
             isDropdown: true,
             isDisabled: !drugForm.get('testType').value,
-            dropdownWidthClass: 'w-col-228'
+            dropdownWidthClass: 'w-col-216'
           }"
           [options]="reasonTypes"
           [activeItem]="reasonTypes"
           (selectedItem)="onSelectDropdown($event, 'reason')"
         ></app-ta-input-dropdown>
       </div>
-    </div>
-
-    <div class="row last-row">
-      <div class="col-12">
-        <app-ta-input
-          formControlName="testingDate"
+      <div class="col-6">
+        <app-ta-input-dropdown
+          formControlName="result"
           [inputConfig]="{
-            name: 'datepicker',
+            name: 'Input Dropdown',
             type: 'text',
-            label: 'Issue Date',
-            isDropdown: true,
-            placeholderIcon: 'date',
+            label: 'Results',
             isRequired: true,
-            customClass: 'datetimeclass'
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-228'
           }"
-        ></app-ta-input>
+          [options]="testResults"
+          [activeItem]="selectedTestResult"
+          (selectedItem)="onSelectDropdown($event, 'result')"
+        ></app-ta-input-dropdown>
       </div>
     </div>
 

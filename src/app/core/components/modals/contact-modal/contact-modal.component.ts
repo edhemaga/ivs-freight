@@ -4,7 +4,13 @@ import {
   departmentValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormArray,
+  AbstractControl,
+} from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import {
   AddressEntity,
@@ -27,6 +33,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
 import Croppie from 'croppie';
 import { FormService } from '../../../services/form/form.service';
+import { phoneExtension } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-contact-modal',
@@ -52,6 +59,13 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   public selectedAddress: any = null;
 
   public isFormDirty: boolean;
+
+  public labelsContactPhones: any[] = [];
+  public isContactPhoneExtExist: boolean[] = [];
+  public selectedContactPhone: any[] = [];
+
+  public labelsContactEmails: any[] = [];
+  public selectedContactEmail: any[] = [];
 
   public dropZoneConfig: DropZoneConfig = {
     dropZoneType: 'image',
@@ -104,21 +118,15 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     this.contactForm = this.formBuilder.group({
       name: [null, [Validators.required, ...fullNameValidation]],
       companyContactLabelId: [null],
-      phone: [null, [phoneFaxRegex]],
-      email: [null],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
+      contactPhones: this.formBuilder.array([]),
+      contactEmails: this.formBuilder.array([]),
       shared: [true],
       sharedLabelId: [null, [Validators.required, ...departmentValidation]],
       avatar: [null],
       note: [null],
     });
-
-    this.inputService.customInputValidator(
-      this.contactForm.get('email'),
-      'email',
-      this.destroy$
-    );
 
     this.formService.checkFormChange(this.contactForm);
     this.formService.formValueChange$
@@ -126,6 +134,70 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       .subscribe((isFormChange: boolean) => {
         this.isFormDirty = isFormChange && !this.disabledFormValidation;
       });
+  }
+
+  public get contactPhones(): FormArray {
+    return this.contactForm.get('contactPhones') as FormArray;
+  }
+
+  public createContactPhones() {
+    return this.formBuilder.group({
+      phone: [null, phoneFaxRegex],
+      phoneExt: [null, phoneExtension],
+      contactPhoneType: [null],
+      primary: !this.contactPhones.length,
+    });
+  }
+
+  public addContactPhones(event: { check: boolean; action: string }) {
+    if (event.check) {
+      this.contactPhones.push(this.createContactPhones());
+      this.isContactPhoneExtExist.push(false);
+    }
+  }
+
+  public get contactEmails(): FormArray {
+    return this.contactForm.get('contactEmails') as FormArray;
+  }
+
+  public createContactEmails() {
+    return this.formBuilder.group({
+      email: [null],
+      contactEmailType: [null],
+      primary: !this.contactEmails.length,
+    });
+  }
+
+  public addContactEmails(event: { check: boolean; action: string }) {
+    const form = this.createContactEmails();
+    if (event.check) {
+      this.contactEmails.push(form);
+    }
+
+    this.inputService.customInputValidator(
+      form.get('email'),
+      'email',
+      this.destroy$
+    );
+  }
+
+  public removeContactFeature(action: string, index: number) {
+    switch (action) {
+      case 'contact-phone': {
+        this.contactPhones.removeAt(index);
+        this.selectedContactPhone.splice(index, 1);
+        this.isContactPhoneExtExist.splice(index, 1);
+        break;
+      }
+      case 'contact-email': {
+        this.contactEmails.removeAt(index);
+        this.selectedContactEmail.splice(index, 1);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -152,6 +224,32 @@ export class ContactModalComponent implements OnInit, OnDestroy {
           this.deleteCompanyContactById(this.editData.id);
           this.modalService.setModalSpinner({ action: 'delete', status: true });
         }
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  public setPrimary(formControl: AbstractControl, action: string) {
+    switch (action) {
+      case 'phone': {
+        this.contactPhones.controls.map((item) =>
+          item.get('primary').patchValue(false)
+        );
+        formControl
+          .get('primary')
+          .patchValue(!formControl.get('primary').value);
+        break;
+      }
+      case 'email': {
+        this.contactEmails.controls.map((item) =>
+          item.get('primary').patchValue(false)
+        );
+        formControl
+          .get('primary')
+          .patchValue(!formControl.get('primary').value);
         break;
       }
       default: {
@@ -187,6 +285,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
           this.contactLabels = res.labels;
           this.sharedDepartments = res.departments;
           this.sharedDepartments = [];
+          console.log(res);
         },
         error: () => {
           this.notificationService.error(
@@ -209,8 +308,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
               ? res.companyContactLabel.name
               : null,
             avatar: res.avatar,
-            phone: res.phone,
-            email: res.email,
             address: res.address ? res.address.address : null,
             addressUnit: res.address ? res.address.addressUnit : null,
             shared: res.shared,
@@ -323,10 +420,18 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onSelectDropdown(event: any, action): void {
+  public onSelectDropdown(event: any, action: string, index?: number): void {
     switch (action) {
       case 'departments': {
         this.selectedSharedDepartment = event;
+        break;
+      }
+      case 'contact-email': {
+        this.selectedContactEmail[index] = event;
+        break;
+      }
+      case 'contact-phone': {
+        this.selectedContactPhone[index] = event;
         break;
       }
       default: {
