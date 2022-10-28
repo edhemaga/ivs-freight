@@ -27,9 +27,9 @@ import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { LoadModalComponent } from '../../modals/load-modal/load-modal.component';
 import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
-import { DriverMvrModalComponent } from '../../driver/driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
-import { DriverMedicalModalComponent } from '../../driver/driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
-import { DriverDrugAlcoholModalComponent } from '../../driver/driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
+import { DriverMedicalModalComponent } from '../../modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
+import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 
 @Component({
   selector: 'app-navigation-modals',

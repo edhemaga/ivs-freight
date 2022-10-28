@@ -6,10 +6,10 @@ import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.com
 import { DatePipe } from '@angular/common';
 import { DriverTService } from '../state/driver.service';
 import { DriversActiveState } from '../state/driver-active-state/driver-active.store';
-import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
-import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
-import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
+import { DriverCdlModalComponent } from '../../modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverMedicalModalComponent } from '../../modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
+import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
 
 import { DriversInactiveState } from '../state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
