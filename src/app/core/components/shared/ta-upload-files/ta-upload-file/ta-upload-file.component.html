@@ -148,7 +148,7 @@
   <div class="ta-upload-file-content  {{ customClassName }}">
     <!-- Pdf Content -->
     <pdf-viewer
-      *ngIf="file?.extension?.toLowerCase() === 'pdf'"
+      *ngIf="file?.extension?.toLowerCase() === 'pdf' || fileExtension === 'pdf'"
       [src]="file?.url"
       [(page)]="activePage"
       [render-text]="false"
@@ -163,9 +163,9 @@
     <!-- Image Content -->
     <img
       class="ta-upload-file-image"
-      *ngIf="file?.extension?.toLowerCase() !== 'pdf'"
+      *ngIf="file?.extension?.toLowerCase() != 'pdf' && fileExtension != 'pdf'"
       [src]="file?.url"
-      [alt]="file?.name"
+      [alt]="file?.fileName"
     />
 
     <!-- Number of pages -->
@@ -212,25 +212,26 @@
     <div
       *ngIf="!editFile"
       class="ta-upload-file-ext ta-upload-file-ext-{{
-        file?.extension | lowercase
+        file?.extension ? file?.extension : fileExtension | lowercase
       }}"
       [ngClass]="{ 'no-tag': !file?.tag }"
       ngbTooltip
       [mainTooltip]="
-        numberOfFilePages && file?.extension?.toLowerCase() == 'pdf'
+        numberOfFilePages && (file?.extension?.toLowerCase() == 'pdf' || fileExtension === 'pdf')
           ? numberOfFilePages
           : ''
       "
       [tooltipBackground]="
-        numberOfFilePages && file?.extension?.toLowerCase() == 'pdf'
+        numberOfFilePages && (file?.extension?.toLowerCase() == 'pdf' || fileExtension === 'pdf')
           ? '#6c6c6c'
           : ''
       "
       position="top"
     >
-      {{ file?.extension | uppercase }}
+      <div *ngIf="file?.extension">{{ file?.extension | uppercase }}</div>
+      <div *ngIf="!file?.extension">{{ file?.url | urlExtension }}</div>
     </div>
-    <p *ngIf="!editFile" class="ta-upload-file-name">{{ file?.name }}</p>
+    <p *ngIf="!editFile" class="ta-upload-file-name">{{ file?.fileName }}</p>
     <!-- Edit mode -->
     <app-ta-input
       *ngIf="editFile"
@@ -239,7 +240,7 @@
         name: 'File Name',
         type: 'text',
         label: null,
-        placeholder: file.name,
+        placeholder: file.fileName,
         textTransform: 'capitalize'
       }"
     ></app-ta-input>

@@ -37,6 +37,10 @@
     display: none;
     transform: translate(-5%, 22%);
 
+    &:hover {
+      background: rgba(255, 255, 255);
+    }
+
     &.prev {
       left: -4px;
       padding-right: 1px;

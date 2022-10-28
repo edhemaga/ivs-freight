@@ -249,7 +249,7 @@
       background-color: transparent !important;
       width: 160px !important;
       height: 160px !important;
-      border-radius: 2px !important;
+      border-radius: 1px !important;
       box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
       top: 4px !important;
       -webkit-user-select: none !important;
@@ -272,7 +272,7 @@
       max-height: 160px;
       -o-object-fit: fill;
       object-fit: fill;
-      border-radius: 2px;
+      border-radius: 1px;
       vertical-align: middle;
       margin-top: 6px;
       top: 50%;
@@ -310,7 +310,7 @@
     .ta-upload-file-tag {
       max-width: 101px;
       height: 18px;
-      border-radius: 2px;
+      border-radius: 1px;
       background-color: rgb(83, 107, 194);
       color: #ffffff;
       font-size: 11px;
@@ -355,7 +355,7 @@
         background-color: transparent !important;
         width: 295px !important;
         height: 312px !important;
-        border-radius: 3px !important;
+        border-radius: 1px !important;
 
         .canvasWrapper,
         .pdfViewer,
@@ -461,6 +461,7 @@
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
+      text-transform: uppercase;
 
       &-jpg,
       &-jpeg,
