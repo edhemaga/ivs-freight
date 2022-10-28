@@ -57,7 +57,6 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     this.createForm();
 
     if (this.editData) {
-      console.log(this.editData);
       this.getDriverById(this.editData.id);
       this.getModalDropdowns(this.editData.id);
 
@@ -212,7 +211,6 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: MvrResponse) => {
-          console.log(res);
           this.mvrForm.patchValue({
             cdlId: res.cdlNumber,
             issueDate: convertDateFromBackend(res.issueDate),

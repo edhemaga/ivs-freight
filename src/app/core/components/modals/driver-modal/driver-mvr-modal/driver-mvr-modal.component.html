@@ -29,10 +29,7 @@
         ></app-ta-input-dropdown>
       </div>
     </div>
-    <div
-      class="row first-row last-row"
-      [ngClass]="{ 'first-row': editData?.type === 'edit-mvr' }"
-    >
+    <div class="row first-row last-row" [ngClass]="{ 'first-row': editData }">
       <div class="col-6">
         <app-ta-input
           formControlName="issueDate"

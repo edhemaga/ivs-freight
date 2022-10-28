@@ -1,6 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DriverResponse, MedicalResponse } from 'appcoretruckassist';
+import {
+  DriverListResponse,
+  DriverResponse,
+  MedicalResponse,
+} from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { DriverTService } from '../../../driver/state/driver.service';
 import { MedicalTService } from '../../../driver/state/medical.service';
@@ -12,8 +16,6 @@ import {
   convertDateToBackend,
   convertDateFromBackend,
 } from '../../../../utils/methods.calculations';
-import { EditMedicalCommand } from 'appcoretruckassist/model/editMedicalCommand';
-import { CreateMedicalCommand } from 'appcoretruckassist/model/createMedicalCommand';
 
 @Component({
   selector: 'app-driver-medical-modal',
@@ -27,11 +29,14 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
   public medicalForm: FormGroup;
 
+  public isFormDirty: boolean;
+
   public modalName: string;
 
   public documents: any[] = [];
 
-  public isFormDirty: boolean;
+  public selectedDriver: any = null;
+  public labelsDrivers: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,14 +50,22 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
-    this.getDriverById(this.editData.id);
-    if (this.editData.type === 'edit-medical') {
-      this.getMedicalById();
+
+    if (this.editData) {
+      this.getDriverById(this.editData.id);
+
+      if (this.editData.type === 'edit-medical') {
+        this.getMedicalById(this.editData.file_id);
+      }
+    } else {
+      this.getListOfDrivers();
+      this.medicalForm.get('driver').setValidators(Validators.required);
     }
   }
 
   private createForm() {
     this.medicalForm = this.formBuilder.group({
+      driver: [null],
       issueDate: [null, Validators.required],
       expDate: [null, Validators.required],
       note: [null],
@@ -91,7 +104,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.medicalForm);
           return;
         }
-        if (this.editData.type === 'edit-medical') {
+        if (this.editData?.type === 'edit-medical') {
           if (this.isFormDirty) {
             this.updateMedical(this.editData.id);
             this.modalService.setModalSpinner({ action: null, status: true });
@@ -114,13 +127,13 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
   }
 
   private updateMedical(id: number) {
-    const { issueDate, expDate } = this.medicalForm.value;
+    const { issueDate, expDate, driver, note } = this.medicalForm.value;
 
-    const newData: /* EditMedicalCommand */ any = {
+    const newData: any = {
       id: this.editData.file_id,
-      ...this.medicalForm.value,
       issueDate: convertDateToBackend(issueDate),
       expDate: convertDateToBackend(expDate),
+      note: note,
     };
 
     this.medicalService
@@ -140,12 +153,12 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
   }
 
   private addMedical() {
-    const { issueDate, expDate } = this.medicalForm.value;
-    const newData: /*CreateMedicalCommand*/ any = {
-      driverId: this.editData.id,
-      ...this.medicalForm.value,
+    const { issueDate, expDate, driver, note } = this.medicalForm.value;
+    const newData: any = {
+      driverId: this.selectedDriver ? this.selectedDriver.id : this.editData.id,
       issueDate: convertDateToBackend(issueDate),
       expDate: convertDateToBackend(expDate),
+      note: note,
     };
 
     this.medicalService
@@ -164,9 +177,9 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public getMedicalById() {
+  public getMedicalById(id: number) {
     this.medicalService
-      .getMedicalById(this.editData.file_id)
+      .getMedicalById(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: MedicalResponse) => {
@@ -178,6 +191,43 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
         },
         error: () => {
           this.notificationService.error("Can't get Test", 'Error:');
+        },
+      });
+  }
+
+  public onSelectDropdown(event: any, action: string) {
+    switch (action) {
+      case 'driver': {
+        if (event) {
+          this.selectedDriver = event;
+          this.modalName = this.selectedDriver.name;
+        } else {
+          this.modalName = null;
+        }
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  public getListOfDrivers() {
+    this.driverService
+      .getDrivers()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: DriverListResponse) => {
+          console.log('list of drivers: ', res);
+          this.labelsDrivers = res.pagination.data.map((item) => {
+            return {
+              id: item.id,
+              name: item.fullName,
+            };
+          });
+        },
+        error: () => {
+          this.notificationService.error("Can't load list of drivers", 'Error');
         },
       });
   }
