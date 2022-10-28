@@ -13,11 +13,14 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   Input,
   OnDestroy,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -47,11 +50,14 @@ import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/
   styleUrls: ['./load-modal.component.scss'],
   providers: [ModalService, FormService],
 })
-export class LoadModalComponent implements OnInit, OnDestroy {
+export class LoadModalComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('originTab') originRef: ElementRef;
   @Input() editData: any;
 
   public loadForm: FormGroup;
   public isFormDirty: boolean;
+
+  public additionalPartHeight: number = 0;
 
   public additionalTabHeight: number = 0;
 
@@ -264,6 +270,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
     this.trackBillingPayment();
     this.trackStopInformation();
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.additionalPartHeight =
+        this.originRef.nativeElement.clientHeight + 118;
+    }, 150);
   }
 
   private createForm() {
@@ -693,6 +706,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       updatedAt: new Date().toISOString(),
       isNewReview: true,
     });
+
+    this.additionalPartHeight = this.originRef.nativeElement.clientHeight + 118;
   }
 
   public addComment(comments: ReviewCommentModal) {
@@ -746,6 +761,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           );
         },
       });
+
+    this.additionalPartHeight = this.originRef.nativeElement.clientHeight + 118;
   }
 
   public updateComment(comments: ReviewCommentModal) {
@@ -1011,6 +1028,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       this.loadForm.get('timeFrom').patchValue(null, { emitEvent: false });
       this.loadForm.get('timeTo').patchValue(null, { emitEvent: false });
     }
+
+    this.additionalPartHeight = this.originRef.nativeElement.clientHeight + 118;
   }
 
   public drawStopOnMap() {
@@ -1155,7 +1174,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public addLoadStop() {
     this.loadStops().push(this.newLoadStop());
     this.drawStopOnMap();
-
+    this.additionalPartHeight = this.originRef.nativeElement.clientHeight + 118;
     this.closeAllLoadStopExceptActive(
       this.loadStops().controls[this.loadStops().length - 1]
     );
@@ -1230,11 +1249,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
           };
         }),
     };
+    this.additionalPartHeight = this.originRef.nativeElement.clientHeight + 118;
   }
 
   // Load Stop Details
   public addLoadStopDetails(id: number) {
     this.loadStopsDetails(id).push(this.newLoadStopDetails());
+    this.additionalPartHeight = this.originRef.nativeElement.clientHeight + 118;
   }
 
   public loadStopsDetails(loadStopIndex: number): FormArray {
@@ -1270,6 +1291,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     loadStopDetailsIndex: number
   ) {
     this.loadStopsDetails(loadStopIndex).removeAt(loadStopDetailsIndex);
+    this.additionalPartHeight = this.originRef.nativeElement.clientHeight + 118;
   }
 
   private getLoadDropdowns(id?: number) {

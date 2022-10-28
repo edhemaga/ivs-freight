@@ -140,8 +140,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     return this.contactForm.get('contactPhones') as FormArray;
   }
 
-  public createContactPhones() {
+  public createContactPhones(id?: number) {
     return this.formBuilder.group({
+      id: [id ? id : null],
       phone: [null, phoneFaxRegex],
       phoneExt: [null, phoneExtension],
       contactPhoneType: [null],
@@ -150,6 +151,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   }
 
   public addContactPhones(event: { check: boolean; action: string }) {
+    console.log(event);
     if (event.check) {
       this.contactPhones.push(this.createContactPhones());
       this.isContactPhoneExtExist.push(false);
@@ -160,8 +162,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     return this.contactForm.get('contactEmails') as FormArray;
   }
 
-  public createContactEmails() {
+  public createContactEmails(id?: number) {
     return this.formBuilder.group({
+      id: [id ? id : null],
       email: [null],
       contactEmailType: [null],
       primary: !this.contactEmails.length,
@@ -342,6 +345,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         : null,
       address: this.selectedAddress?.address ? this.selectedAddress : null,
     };
+
+    console.log(newData);
 
     this.contactService
       .addCompanyContact(newData)
