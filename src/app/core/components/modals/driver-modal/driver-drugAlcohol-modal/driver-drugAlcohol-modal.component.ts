@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
+  DriverListResponse,
   DriverResponse,
   GetTestModalResponse,
   TestResponse,
@@ -17,8 +18,6 @@ import {
   convertDateToBackend,
   convertDateFromBackend,
 } from '../../../../utils/methods.calculations';
-import { CreateTestCommand } from 'appcoretruckassist/model/createTestCommand';
-import { EditTestCommand } from 'appcoretruckassist/model/editTestCommand';
 
 @Component({
   selector: 'app-driver-drugAlcohol-modal',
@@ -27,24 +26,30 @@ import { EditTestCommand } from 'appcoretruckassist/model/editTestCommand';
   providers: [ModalService, FormService],
 })
 export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public drugForm: FormGroup;
 
+  public isFormDirty: boolean;
+
   public modalName: string = null;
 
-  public documents: any[] = [];
   public testTypes: any[] = [];
   public alcoholTests: any[] = [];
   public drugTests: any[] = [];
-
+  public testResults: any[] = [];
   public reasonTypes: any[] = [];
 
   public selectedTestType: any = null;
   public selectedReasonType: any = null;
+  public selectedTestResult: any = null;
 
-  public isFormDirty: boolean;
+  public labelsDrivers: any[] = [];
+  public selectedDriver: any = null;
+
+  public documents: any[] = [];
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -60,17 +65,25 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     this.createForm();
     this.getDrugDropdowns();
     this.testStateChange();
-    this.getDriverById(this.editData.id);
-    if (this.editData.type === 'edit-drug') {
-      this.getTestById();
+
+    if (this.editData) {
+      this.getDriverById(this.editData.id);
+      if (this.editData.type === 'edit-drug') {
+        this.getTestById(this.editData.file_id);
+      }
+    } else {
+      this.getListOfDrivers();
+      this.drugForm.get('driver').setValidators(Validators.required);
     }
   }
 
   private createForm() {
     this.drugForm = this.formBuilder.group({
+      driver: [null],
       testType: [null, Validators.required],
       testReasonId: [null, Validators.required],
       testingDate: [null, Validators.required],
+      result: [null, Validators.required],
       note: [null],
     });
 
@@ -93,7 +106,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.drugForm);
           return;
         }
-        if (this.editData.type === 'edit-drug') {
+        if (this.editData?.type === 'edit-drug') {
           if (this.isFormDirty) {
             this.updateTest();
             this.modalService.setModalSpinner({ action: null, status: true });
@@ -133,6 +146,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
           this.testTypes = res.testTypes;
           this.alcoholTests = res.alcoholTestReasons;
           this.drugTests = res.drugTestReasons;
+          this.testResults = [];
         },
         error: () => {
           this.notificationService.error(
@@ -178,6 +192,15 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
         this.selectedReasonType = event;
         break;
       }
+      case 'driver': {
+        if (event) {
+          this.selectedDriver = event;
+          this.modalName = this.selectedDriver.name;
+        } else {
+          this.modalName = null;
+        }
+        break;
+      }
       default: {
         break;
       }
@@ -189,14 +212,14 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   }
 
   public updateTest() {
-    const { testingDate } = this.drugForm.value;
+    const { testingDate, driver, note } = this.drugForm.value;
 
-    const newData: /*EditTestCommand*/ any = {
+    const newData: any = {
       id: this.editData.file_id,
-      ...this.drugForm.value,
       testingDate: convertDateToBackend(testingDate),
       testReasonId: this.selectedReasonType.id,
       testType: this.selectedTestType.id,
+      note: note,
     };
 
     this.testService
@@ -216,14 +239,14 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   }
 
   public addTest() {
-    const { testingDate } = this.drugForm.value;
+    const { testingDate, driver, note } = this.drugForm.value;
 
-    const newData: /*CreateTestCommand*/ any = {
-      driverId: this.editData.id,
-      ...this.drugForm.value,
+    const newData: any = {
+      driverId: this.selectedDriver ? this.selectedDriver.id : this.editData.id,
       testingDate: convertDateToBackend(testingDate),
       testReasonId: this.selectedReasonType.id,
       testType: this.selectedTestType.id,
+      note: note,
     };
 
     this.testService
@@ -242,9 +265,9 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public getTestById() {
+  public getTestById(id: number) {
     this.testService
-      .getTestById(this.editData.file_id)
+      .getTestById(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: TestResponse) => {
@@ -259,6 +282,26 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
         },
         error: () => {
           this.notificationService.error("Can't get Test", 'Error:');
+        },
+      });
+  }
+
+  public getListOfDrivers() {
+    this.driverService
+      .getDrivers()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: DriverListResponse) => {
+          console.log('list of drivers: ', res);
+          this.labelsDrivers = res.pagination.data.map((item) => {
+            return {
+              id: item.id,
+              name: item.fullName,
+            };
+          });
+        },
+        error: () => {
+          this.notificationService.error("Can't load list of drivers", 'Error');
         },
       });
   }

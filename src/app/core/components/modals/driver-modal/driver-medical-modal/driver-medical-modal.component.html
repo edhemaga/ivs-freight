@@ -23,7 +23,8 @@
             label: 'Driver',
             isRequired: true,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-456'
+            dropdownWidthClass: 'w-col-456',
+            autoFocus: !editData
           }"
           [options]="labelsDrivers"
           [activeItem]="selectedDriver"
@@ -43,7 +44,7 @@
             placeholderIcon: 'date',
             isRequired: true,
             customClass: 'datetimeclass',
-            autoFocus: editData?.type !== 'edit-medical'
+            autoFocus: editData && editData?.type !== 'edit-medical'
           }"
         ></app-ta-input>
       </div>
