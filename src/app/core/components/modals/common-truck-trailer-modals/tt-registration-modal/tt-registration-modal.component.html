@@ -97,7 +97,18 @@
 
     <app-ta-input-note
       formControlName="note"
-      [isVisibleNote]="registrationForm.get('note').value"
+      [isVisibleNote]="
+        registrationForm.get('note').value &&
+        registrationForm.get('note').value != 'null'
+          ? registrationForm.get('note').value
+          : false
+      "
+      [note]="
+        registrationForm.get('note').value &&
+        registrationForm.get('note').value != 'null'
+          ? registrationForm.get('note').value
+          : ''
+      "
     ></app-ta-input-note>
   </form>
 </app-ta-modal>

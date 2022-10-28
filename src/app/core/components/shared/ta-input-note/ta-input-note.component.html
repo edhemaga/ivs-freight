@@ -44,7 +44,7 @@
       (input)="changeValue($event.target.innerHTML)"
       (focus)="checkFocus($event)"
       (blur)="prepareForTextRange()"
-      [innerHTML]="note | safeHtml"
+      [innerHTML]="showNote | safeHtml"
     ></div>
     <div class="spinner" *ngIf="savingNote && noteType == 'details-card'">
       <app-ta-spinner [size]="'small'" [color]="'blueDark'"></app-ta-spinner>

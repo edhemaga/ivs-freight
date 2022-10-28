@@ -93,7 +93,16 @@
 
     <app-ta-input-note
       formControlName="note"
-      [isVisibleNote]="ttTitleForm.get('note').value"
+      [isVisibleNote]="
+        ttTitleForm.get('note').value && ttTitleForm.get('note').value != 'null'
+          ? ttTitleForm.get('note').value
+          : false
+      "
+      [note]="
+        ttTitleForm.get('note').value && ttTitleForm.get('note').value != 'null'
+          ? ttTitleForm.get('note').value
+          : ''
+      "
     ></app-ta-input-note>
   </form>
 </app-ta-modal>

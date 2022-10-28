@@ -27,7 +27,13 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   _isVisibleNote: any = 'null';
   selectionTaken: any;
   range: any;
-  @Input() note: any;
+  gotValue: boolean = false;
+  showNote: any;
+  @Input() set note(value) {
+    if (value && value != '' && value != 'null' && !this.gotValue) {
+      this.showNote = value;
+    }
+  }
   value: string = '';
   savedValue: string = '';
   saveInterval: any;
@@ -113,14 +119,16 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   }
 
   changeValue(event) {
+    this.gotValue = true;
     this.value = event;
     this.checkActiveItems();
     this.lastTypeTime = moment().unix();
+    const updateTime = this.noteType == 'details-card' ? 2 : 0;
 
     if (!this.saveIntervalStarted) {
       this.saveIntervalStarted = true;
       this.saveInterval = setInterval(() => {
-        if (moment().unix() - this.lastTypeTime >= 2) {
+        if (moment().unix() - this.lastTypeTime >= updateTime) {
           this.saveIntervalStarted = false;
           clearInterval(this.saveInterval);
           this.saveNote(true);
@@ -128,7 +136,11 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
       }, 100);
     }
 
-    if (this.noteType == 'details-card' && this.entityId && this.entityType != '') {
+    if (
+      this.noteType == 'details-card' &&
+      this.entityId &&
+      this.entityType != ''
+    ) {
       this.savingNote = true;
       this.ref.detectChanges();
     }
@@ -148,7 +160,11 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
       this.savedValue = this.value;
       this.getSuperControl.patchValue(this.value);
     }
-    if (this.noteType == 'details-card' && this.entityId && this.entityType != '') {
+    if (
+      this.noteType == 'details-card' &&
+      this.entityId &&
+      this.entityType != ''
+    ) {
       this.savingNote = true;
       setTimeout(() => {
         this.savingNote = false;

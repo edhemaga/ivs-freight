@@ -548,7 +548,18 @@
 
           <app-ta-input-note
             formControlName="note"
-            [isVisibleNote]="accidentForm.get('note').value"
+            [isVisibleNote]="
+              accidentForm.get('note').value &&
+              accidentForm.get('note').value != 'null'
+                ? accidentForm.get('note').value
+                : false
+            "
+            [note]="
+              accidentForm.get('note').value &&
+              accidentForm.get('note').value != 'null'
+                ? accidentForm.get('note').value
+                : ''
+            "
           ></app-ta-input-note>
         </div>
         <!-------------------------------- Additional Tab -------------------------------->

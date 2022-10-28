@@ -48,6 +48,8 @@ export class DriverDetailsItemComponent
   @Input() drivers: DriverResponse | any = null;
   public cdlNote: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
+  public testNote: FormControl = new FormControl();
+  public medNote: FormControl = new FormControl();
   public toggler: boolean[] = [];
   public showMoreEmployment: boolean = false;
   public dataDropDown: any;
