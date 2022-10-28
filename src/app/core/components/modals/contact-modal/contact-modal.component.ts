@@ -140,13 +140,19 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     return this.contactForm.get('contactPhones') as FormArray;
   }
 
-  public createContactPhones(id?: number) {
+  public createContactPhones(element?: any) {
     return this.formBuilder.group({
-      id: [id ? id : null],
-      phone: [null, phoneFaxRegex],
-      phoneExt: [null, phoneExtension],
-      contactPhoneType: [null],
-      primary: !this.contactPhones.length,
+      id: [element?.id ? element.id : 0],
+      phone: [element?.phone ? element.phone : null, phoneFaxRegex],
+      phoneExt: [element?.phoneExt ? element.phoneExt : null, phoneExtension],
+      contactPhoneType: [
+        element?.contactPhoneType ? element.contactPhoneType.name : null,
+      ],
+      primary: element?.primary
+        ? element.primary
+        : this.editData
+        ? false
+        : !this.contactPhones.length,
     });
   }
 
@@ -162,12 +168,18 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     return this.contactForm.get('contactEmails') as FormArray;
   }
 
-  public createContactEmails(id?: number) {
+  public createContactEmails(element?: any) {
     return this.formBuilder.group({
-      id: [id ? id : null],
-      email: [null],
-      contactEmailType: [null],
-      primary: !this.contactEmails.length,
+      id: [element?.id ? element.id : 0],
+      email: [element?.email ? element.email : null],
+      contactEmailType: [
+        element?.contactEmailType ? element.contactEmailType.name : null,
+      ],
+      primary: element?.primary
+        ? element.primary
+        : this.editData
+        ? false
+        : !this.contactEmails.length,
     });
   }
 
@@ -287,8 +299,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         next: (res: CompanyContactModalResponse) => {
           this.contactLabels = res.labels;
           this.sharedDepartments = res.departments;
-          this.sharedDepartments = [];
-          console.log(res);
+          this.labelsContactEmails = res.contactEmailType;
+          this.labelsContactPhones = res.contactPhoneType;
         },
         error: () => {
           this.notificationService.error(
@@ -317,6 +329,27 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             sharedLabelId: null, // TODO: Ceka se BACK
             note: res.note,
           });
+
+          if (res.contactPhones.length) {
+            for (let index = 0; index < res.contactPhones.length; index++) {
+              this.contactPhones.push(
+                this.createContactPhones(res.contactPhones[index])
+              );
+              this.selectedContactPhone[index] = res.contactPhones[index];
+              this.isContactPhoneExtExist[index] =
+                !!res.contactPhones[index].phoneExt;
+            }
+          }
+
+          if (res.contactEmails.length) {
+            for (let index = 0; index < res.contactEmails.length; index++) {
+              this.contactEmails.push(
+                this.createContactEmails(res.contactEmails[index])
+              );
+              this.selectedContactEmail[index] = res.contactEmails[index];
+            }
+          }
+
           this.selectedContactLabel = res.companyContactLabel;
 
           this.selectedAddress = res.address;
