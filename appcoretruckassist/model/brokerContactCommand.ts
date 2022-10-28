@@ -15,7 +15,7 @@ export interface BrokerContactCommand {
     contactName?: string | null;
     departmentId?: number;
     phone?: string | null;
-    phoneExt?: string | null;
+    extensionPhone?: string | null;
     email?: string | null;
 }
 

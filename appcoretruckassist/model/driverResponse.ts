@@ -50,6 +50,7 @@ export interface DriverResponse {
     teamDriver?: boolean | null;
     commissionSolo?: number | null;
     commissionTeam?: number | null;
+    flatRate?: number | null;
     hired?: string | null;
     avatar?: string | null;
     twic?: boolean;
