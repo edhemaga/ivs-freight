@@ -51,7 +51,18 @@
 
     <app-ta-input-note
       formControlName="note"
-      [isVisibleNote]="fhwaInspectionForm.get('note').value"
+      [isVisibleNote]="
+        fhwaInspectionForm.get('note').value &&
+        fhwaInspectionForm.get('note').value != 'null'
+          ? fhwaInspectionForm.get('note').value
+          : false
+      "
+      [note]="
+        fhwaInspectionForm.get('note').value &&
+        fhwaInspectionForm.get('note').value != 'null'
+          ? fhwaInspectionForm.get('note').value
+          : ''
+      "
     ></app-ta-input-note>
   </form>
 </app-ta-modal>

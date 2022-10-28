@@ -114,7 +114,16 @@
     </div>
     <app-ta-input-note
       formControlName="note"
-      [isVisibleNote]="drugForm.get('note').value"
+      [isVisibleNote]="
+        drugForm.get('note').value && drugForm.get('note').value != 'null'
+          ? drugForm.get('note').value
+          : false
+      "
+      [note]="
+        drugForm.get('note').value && drugForm.get('note').value != 'null'
+          ? drugForm.get('note').value
+          : ''
+      "
     ></app-ta-input-note>
   </form>
 </app-ta-modal>

@@ -78,7 +78,16 @@
     </div>
     <app-ta-input-note
       formControlName="note"
-      [isVisibleNote]="mvrForm.get('note').value"
+      [isVisibleNote]="
+        mvrForm.get('note').value && mvrForm.get('note').value != 'null'
+          ? mvrForm.get('note').value
+          : false
+      "
+      [note]="
+        mvrForm.get('note').value && mvrForm.get('note').value != 'null'
+          ? mvrForm.get('note').value
+          : ''
+      "
     ></app-ta-input-note>
   </form>
 </app-ta-modal>
