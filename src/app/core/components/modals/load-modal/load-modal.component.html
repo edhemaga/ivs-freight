@@ -1199,13 +1199,18 @@
     </div>
   </form>
   <!-------------------------------- Additional Tab Part -------------------------------->
+
   <div
     additional
     [ngClass]="{
       'load-map-container': !isHazardousVisible,
       'load-hazardous-container': isHazardousVisible
     }"
-    [ngStyle]="{ height: originTab?.nativeElement?.height }"
+    [ngStyle]="{
+      height: originTab?.clientHeight + 118 + 'px',
+      overflow: 'hidden',
+      'owerflow-y': 'scroll'
+    }"
   >
     <!-- Hazardous -->
     <app-load-modal-hazardous

@@ -12,7 +12,13 @@ import {
   Validators,
   AbstractControl,
 } from '@angular/forms';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
@@ -46,6 +52,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
   public loadForm: FormGroup;
   public isFormDirty: boolean;
+
+  public additionalTabHeight: number = 0;
 
   public selectedTab: number = 1;
   public headerTabs = [
