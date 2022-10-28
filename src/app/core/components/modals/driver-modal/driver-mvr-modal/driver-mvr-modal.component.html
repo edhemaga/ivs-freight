@@ -11,7 +11,28 @@
     [formGroup]="mvrForm"
     class="form-container form-container-without-mb"
   >
-    <div class="row first-row last-row">
+    <div *ngIf="!editData" class="row first-row">
+      <div class="col-12">
+        <app-ta-input-dropdown
+          formControlName="driver"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Driver',
+            isRequired: true,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-456'
+          }"
+          [options]="labelsDrivers"
+          [activeItem]="selectedDriver"
+          (selectedItem)="onSelectDropdown($event, 'driver')"
+        ></app-ta-input-dropdown>
+      </div>
+    </div>
+    <div
+      class="row first-row last-row"
+      [ngClass]="{ 'first-row': editData?.type === 'edit-mvr' }"
+    >
       <div class="col-6">
         <app-ta-input
           formControlName="issueDate"
