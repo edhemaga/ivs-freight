@@ -105,10 +105,55 @@ export class TaReCardComponent implements OnInit {
   }
 
   toggleDropdown(){
-    console.log("heeeeeeeeer", this.mainData);
-    let currentDate = moment().format('MM/DD/YYYY');
-    let expDate = moment(this.mainData?.expDate).format('MM/DD/YYYY');
-    //console.log("currentDate", currentDate);
-    //console.log("expDate", expDate);
+    //console.log("heeeeeeeeer", this.mainData);
+    console.log("cardNameCurrent", this.cardNameCurrent); 
+    if ( this.cardNameCurrent == 'registration' ) {
+      let currentDate = moment().format('MM/DD/YYYY');
+      let expDate = moment(this.mainData?.expDate).format('MM/DD/YYYY');
+      
+      this.options.actions.map((action,index)=>{
+        if ( currentDate > expDate ) {
+          if ( index == 3 ) {
+            action.disabled = false;
+          } else if ( index == 4 ) {
+            action.disabled = true;
+          } else if ( index == 9 ) {
+            action.hide = true;
+          }
+        } else {
+          if ( index == 3 ) {
+            action.disabled = true;
+          } else if ( index == 4 ) {
+            action.disabled = false;
+          } else if ( index == 9 ) {
+            action.hide = false;
+          }
+        }
+      })
+      
+    } else if ( this.cardNameCurrent == 'truckRegistration' ) {
+      let currentDate = moment().format('MM/DD/YYYY');
+      let expDate = moment(this.mainData?.expDate).format('MM/DD/YYYY');
+      this.options.actions.map((action,index)=>{
+        if ( currentDate > expDate ) {
+          if ( index == 3 ) {
+            action.disabled = false;
+          } else if ( index == 4 ) {
+            action.disabled = true;
+          } else if ( index == 9 ) {
+            action.hide = true;
+          }
+        } else {
+          if ( index == 3 ) {
+            action.disabled = true;
+          } else if ( index == 4 ) {
+            action.disabled = false;
+          } else if ( index == 9 ) {
+            action.hide = false;
+          }
+        }
+      })
+    }
+    
   }
 }

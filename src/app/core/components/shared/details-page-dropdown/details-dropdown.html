@@ -25,7 +25,7 @@
   >  
     <div class="details-dropdown-body">
       <div *ngFor="let action of options;let i=index; trackBy:identity">
-        <div class="action-holder" [class.disabledAction]="action.disabled" *ngIf="action.title != 'border' && action.title != 'Add New' && action.title != 'Request' && action.title != 'Report' " (click)="onAction(action,$event)">
+        <div class="action-holder" [class.disabledAction]="action.disabled" *ngIf="action.title != 'border' && action.title != 'Add New' && action.title != 'Request' && action.title != 'Report' && !action.hide" (click)="onAction(action,$event)">
           <div class="action-select-holder">  
             <div class="actionTitle">{{action.title}}</div>
             <div class="actionIcon" [class.redIcon]="action.redIcon" [class.blueIcon]="action.blueIcon" [class.greenIcon]="action.greenIcon">
