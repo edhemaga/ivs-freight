@@ -95,6 +95,14 @@ export class TaCommonHeaderComponent implements OnInit {
       }
     }
 
+    if ( this.mainData?.nameDefault == 'Broker Details' ) {
+      if ( itemData.status != 1 ) {
+        diasbleClosedArray = [0, 2, 3, 4, 5, 6];
+      } else if ( itemData.dnu || itemData.ban) {
+        diasbleClosedArray = [2];
+      }
+    }
+
     switch (this.mainData?.nameDefault) {
       case 'Repair Shop Details' : 
         this.options?.actions.map((action, index)=>{
@@ -131,6 +139,37 @@ export class TaCommonHeaderComponent implements OnInit {
           } 
 
         })
+      break;
+      case 'Broker Details' : 
+        this.options?.actions.map((action, index)=>{
+          if ( diasbleClosedArray && diasbleClosedArray.indexOf(index) > -1 ) {
+            action.disabled = true;
+          } else {
+            action.disabled = false;
+          }
+
+          if ( index == 5 ){
+            if ( itemData.ban ) {
+              action.title = 'Remove from Ban List';
+              action.name = 'remove-from-ban';
+            } else {
+              action.title = 'Move to Ban List';
+              action.name = "move-to-ban";
+            }
+          }
+
+          if ( index == 6 ) {
+            if ( itemData.dnu ) {
+              action.title = 'Remove from DNU List';
+              action.name = 'remove-from-dnu';
+            } else {
+              action.title = 'Move to DNU List';
+              action.name = 'move-to-dnu';
+            }
+          }
+
+        })
+        
       break;
     }
   

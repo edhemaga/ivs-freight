@@ -423,6 +423,8 @@
           [cardNameCommon]="mvr?.issueDate | formatDateP"
           [expDateClose]="mvr?.expDate | formatDateP"
           [optionsId]="mvr.id"
+          [setPositionDrop]="true"
+          [mainData]="mvr"
           (dropActions)="optionsEvent($event, 'mvr')"
         >
           <div class="cards-container">

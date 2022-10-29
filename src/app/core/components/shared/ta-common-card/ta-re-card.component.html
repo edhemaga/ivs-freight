@@ -97,6 +97,7 @@
         [placement]="setPositionDrop? 'bottom-right' : 'right-top right-bottom'"
         (dropDownActions)="dropAct($event)"
         [customClassDropDown]="'drop-down-details-single'"
+        (click)="toggleDropdown()"
       >
       </app-details-page-dropdown>
     </div>

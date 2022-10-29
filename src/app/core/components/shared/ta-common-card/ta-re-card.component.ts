@@ -48,6 +48,7 @@ export class TaReCardComponent implements OnInit {
   @Output() dataDropDopwn = new EventEmitter<any>();
   @Input() hasToggler: boolean;
   @Input() public testDate: any;
+  @Input() public mainData: any;
   public data: any;
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
@@ -101,5 +102,13 @@ export class TaReCardComponent implements OnInit {
     event.stopPropagation();
     this.copiedCommon = true;
     this.clipboard.copy(val);
+  }
+
+  toggleDropdown(){
+    console.log("heeeeeeeeer", this.mainData);
+    let currentDate = moment().format('MM/DD/YYYY');
+    let expDate = moment(this.mainData?.expDate).format('MM/DD/YYYY');
+    //console.log("currentDate", currentDate);
+    //console.log("expDate", expDate);
   }
 }
