@@ -12,7 +12,16 @@ import {
   Validators,
   AbstractControl,
 } from '@angular/forms';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
@@ -42,10 +51,13 @@ import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/
   providers: [ModalService, FormService],
 })
 export class LoadModalComponent implements OnInit, OnDestroy {
+  @ViewChild('originTab') originRef: ElementRef;
   @Input() editData: any;
 
   public loadForm: FormGroup;
   public isFormDirty: boolean;
+
+  public additionalTabHeight: number = 0;
 
   public selectedTab: number = 1;
   public headerTabs = [
@@ -1147,7 +1159,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public addLoadStop() {
     this.loadStops().push(this.newLoadStop());
     this.drawStopOnMap();
-
     this.closeAllLoadStopExceptActive(
       this.loadStops().controls[this.loadStops().length - 1]
     );

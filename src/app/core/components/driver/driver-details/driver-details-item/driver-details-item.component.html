@@ -187,6 +187,9 @@
                   [placeholder]="'Write something.'"
                   [customClass]="'note-small'"
                   [noteType]="'details-card'"
+                  [note]="cdl.note && cdl.note != 'null' ? cdl.note : ''"
+                  [entityId]="cdl.id"
+                  [entityType]="'Cdl'"
                 >
                 </app-ta-input-note>
               </div>
@@ -286,7 +289,7 @@
               <div class="divider"></div>
               <div class="card-note">
                 <app-ta-input-note
-                  [formControl]="cdlNote"
+                  [formControl]="testNote"
                   [isVisibleDivider]="false"
                   [isVisibleNote]="true"
                   [isVisibleArrow]="false"
@@ -294,6 +297,9 @@
                   [placeholder]="'Write something.'"
                   [customClass]="'note-small'"
                   [noteType]="'details-card'"
+                  [note]="test.note && test.note != 'null' ? test.note : ''"
+                  [entityId]="test.id"
+                  [entityType]="'Test'"
                 >
                 </app-ta-input-note>
               </div>
@@ -385,7 +391,7 @@
               <div class="divider"></div>
               <div class="card-note">
                 <app-ta-input-note
-                  [formControl]="cdlNote"
+                  [formControl]="medNote"
                   [isVisibleDivider]="false"
                   [isVisibleNote]="true"
                   [isVisibleArrow]="false"
@@ -393,6 +399,9 @@
                   [placeholder]="'Write something.'"
                   [customClass]="'note-small'"
                   [noteType]="'details-card'"
+                  [note]="med.note && med.note != 'null' ? med.note : ''"
+                  [entityId]="med.id"
+                  [entityType]="'Medical'"
                 >
                 </app-ta-input-note>
               </div>
@@ -485,7 +494,7 @@
               <div class="divider"></div>
               <div class="card-note">
                 <app-ta-input-note
-                  [formControl]="cdlNote"
+                  [formControl]="mvrNote"
                   [isVisibleDivider]="false"
                   [isVisibleNote]="true"
                   [isVisibleArrow]="false"
@@ -493,6 +502,9 @@
                   [placeholder]="'Write something.'"
                   [customClass]="'note-small'"
                   [noteType]="'details-card'"
+                  [note]="mvr.note && mvr.note != 'null' ? mvr.note : ''"
+                  [entityId]="mvr.id"
+                  [entityType]="'Mvr'"
                 >
                 </app-ta-input-note>
               </div>
