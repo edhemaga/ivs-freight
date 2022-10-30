@@ -1190,7 +1190,16 @@
       <!-- Note -->
       <app-ta-input-note
         formControlName="note"
-        [isVisibleNote]="loadForm.get('note').value"
+        [isVisibleNote]="
+          loadForm.get('note').value && loadForm.get('note').value != 'null'
+            ? loadForm.get('note').value
+            : false
+        "
+        [note]="
+          loadForm.get('note').value && loadForm.get('note').value != 'null'
+            ? loadForm.get('note').value
+            : ''
+        "
       ></app-ta-input-note>
     </div>
     <!-------------------------------- LTL Tab -------------------------------->

@@ -393,6 +393,9 @@
               [placeholder]="'Write something.'"
               [customClass]="'note-small'"
               [noteType]="'details-card'"
+              [note]="insurance.note && insurance.note != 'null' ? insurance.note : ''"
+              [entityId]="insurance.id"
+              [entityType]="'InsurancePolicy'"
             >
             </app-ta-input-note>
           </div>

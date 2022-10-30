@@ -78,7 +78,16 @@
 
     <app-ta-input-note
       formControlName="note"
-      [isVisibleNote]="medicalForm.get('note').value"
+      [isVisibleNote]="
+        medicalForm.get('note').value && medicalForm.get('note').value != 'null'
+          ? medicalForm.get('note').value
+          : false
+      "
+      [note]="
+        medicalForm.get('note').value && medicalForm.get('note').value != 'null'
+          ? medicalForm.get('note').value
+          : ''
+      "
     ></app-ta-input-note>
   </form>
 </app-ta-modal>

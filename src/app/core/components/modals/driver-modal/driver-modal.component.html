@@ -698,8 +698,18 @@
           <!-- Note -->
           <app-ta-input-note
             formControlName="note"
-            [isVisibleNote]="driverForm.get('note').value"
-            [note]="driverForm.get('note').value"
+            [isVisibleNote]="
+              driverForm.get('note').value &&
+              driverForm.get('note').value != 'null'
+                ? driverForm.get('note').value
+                : false
+            "
+            [note]="
+              driverForm.get('note').value &&
+              driverForm.get('note').value != 'null'
+                ? driverForm.get('note').value
+                : ''
+            "
           ></app-ta-input-note>
         </div>
         <!-------------------------------- Additional Tab -------------------------------->

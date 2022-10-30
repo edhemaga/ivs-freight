@@ -241,6 +241,9 @@
             [placeholder]="'Write something.'"
             [customClass]="'note-small'"
             [noteType]="'details-card'"
+            [note]="load.note && load.note != 'null' ? load.note : ''"
+            [entityId]="load.id"
+            [entityType]="'Load'"
           >
           </app-ta-input-note>
         </div>
