@@ -6,8 +6,6 @@ import { ApplicantService } from '../../../../../../../appcoretruckassist';
 
 import { ApplicantStore } from '../store/applicant.store';
 import { ApplicantSphFormStore } from '../store/applicant-sph-form-store/applicant-sph-form.store';
-import { AddressEntity } from '../../../../../../../appcoretruckassist/model/addressEntity';
-import { ApplicantQuery } from '../store/applicant.query';
 
 import {
   VerifyApplicantCommand,
@@ -41,6 +39,7 @@ import {
   UpdateDisclosureReleaseCommand,
   UpdateDrugAndAlcoholCommand,
   UpdateSevenDaysHosCommand,
+  ApplicantModalResponse,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -50,7 +49,6 @@ export class ApplicantActionsService {
   constructor(
     private applicantService: ApplicantService,
     private applicantStore: ApplicantStore,
-    private applicantQuery: ApplicantQuery,
     private applicantSphFormStore: ApplicantSphFormStore
   ) {}
 
@@ -244,21 +242,7 @@ export class ApplicantActionsService {
     return this.applicantService.apiApplicantIdGet(id);
   }
 
-  public deleteAddressFormStore(previousAddress: string) {
-    const newAddresses = this.applicantQuery
-      .getEntity(1)
-      .personalInfo.previousAddresses.filter(
-        (item) => item.address.address !== previousAddress
-      );
-
-    this.applicantStore.update(1, (entity) => {
-      return {
-        ...entity,
-        personalInfo: {
-          ...entity.personalInfo,
-          previousAddresses: newAddresses,
-        },
-      };
-    });
+  public getDropdownLists(): Observable<ApplicantModalResponse> {
+    return this.applicantService.apiApplicantModalGet();
   }
 }

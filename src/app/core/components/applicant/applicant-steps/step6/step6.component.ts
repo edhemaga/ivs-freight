@@ -27,8 +27,10 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { ContactModel } from '../../state/model/education.model';
 import {
+  ApplicantResponse,
   CreateEducationCommand,
   CreateEducationReviewCommand,
+  EducationFeedbackResponse,
 } from 'appcoretruckassist/model/models';
 
 @Component({
@@ -296,8 +298,6 @@ export class Step6Component implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
 
-    this.getApplicantId();
-
     this.getStepValuesFromStore();
   }
 
@@ -339,16 +339,18 @@ export class Step6Component implements OnInit, OnDestroy {
   }
 
   public getStepValuesFromStore(): void {
-    this.applicantQuery.educationList$
+    this.applicantQuery.applicant$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res) {
-          this.patchStepValues(res);
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        if (res.education) {
+          this.patchStepValues(res.education);
         }
       });
   }
 
-  public patchStepValues(stepValues: any): void {
+  public patchStepValues(stepValues: EducationFeedbackResponse): void {
     console.log('stepValues', stepValues);
     if (this.selectedMode === SelectedMode.REVIEW) {
       if (stepValues.educationReview) {
@@ -790,14 +792,6 @@ export class Step6Component implements OnInit, OnDestroy {
     this.formValuesToPatch = this.previousFormValuesOnReview;
   }
 
-  public getApplicantId(): void {
-    this.applicantQuery.applicantId$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res;
-      });
-  }
-
   public incorrectInput(
     event: any,
     inputIndex: number,
@@ -1010,25 +1004,29 @@ export class Step6Component implements OnInit, OnDestroy {
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/7`]);
 
-          this.applicantStore.update(1, (entity) => {
+          this.applicantStore.update((store) => {
             return {
-              ...entity,
-              education: {
-                ...entity.education,
-                highestGrade: saveData.highestGrade,
-                collegeGrade: saveData.collegeGrade,
-                specialTraining: saveData.specialTraining,
-                specialTrainingDescription: saveData.specialTrainingDescription,
-                otherTraining: saveData.otherTraining,
-                otherTrainingDescription: saveData.otherTrainingDescription,
-                knowledgeOfSafetyRegulations:
-                  saveData.knowledgeOfSafetyRegulations,
-                driverBefore: saveData.driverBefore,
-                from: saveData.from,
-                to: saveData.to,
-                unableForJob: saveData.unableForJob,
-                unableForJobDescription: saveData.unableForJobDescription,
-                emergencyContacts: saveData.emergencyContacts,
+              ...store,
+              applicant: {
+                ...store.applicant,
+                education: {
+                  ...store.applicant.education,
+                  highestGrade: saveData.highestGrade,
+                  collegeGrade: saveData.collegeGrade,
+                  specialTraining: saveData.specialTraining,
+                  specialTrainingDescription:
+                    saveData.specialTrainingDescription,
+                  otherTraining: saveData.otherTraining,
+                  otherTrainingDescription: saveData.otherTrainingDescription,
+                  knowledgeOfSafetyRegulations:
+                    saveData.knowledgeOfSafetyRegulations,
+                  driverBefore: saveData.driverBefore,
+                  from: saveData.from,
+                  to: saveData.to,
+                  unableForJob: saveData.unableForJob,
+                  unableForJobDescription: saveData.unableForJobDescription,
+                  emergencyContacts: saveData.emergencyContacts,
+                },
               },
             };
           });
@@ -1090,7 +1088,7 @@ export class Step6Component implements OnInit, OnDestroy {
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/7`]);
 
-          this.applicantStore.update(1, (entity) => {
+          /*    this.applicantStore.update(1, (entity) => {
             return {
               ...entity,
               education: {
@@ -1098,7 +1096,7 @@ export class Step6Component implements OnInit, OnDestroy {
                 educationReview: rest,
               },
             };
-          });
+          }); */
 
           console.log('updatedStore', this.applicantStore);
         },

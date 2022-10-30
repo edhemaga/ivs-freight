@@ -28,14 +28,18 @@ import {
 
 import { AnswerChoices } from '../../state/model/applicant-question.model';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { AddressEntity, TruckTypeResponse } from 'appcoretruckassist';
+import {
+  AddressEntity,
+  ApplicantModalResponse,
+  TruckTypeResponse,
+} from 'appcoretruckassist';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { AccidentModel } from '../../state/model/accident.model';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { FormService } from './../../../../services/form/form.service';
 
-import { ApplicantListsQuery } from '../../state/store/applicant-lists-store/applicant-lists.query';
+import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { TaInputRadiobuttonsComponent } from '../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
 
@@ -138,7 +142,7 @@ export class Step4FormComponent
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private formService: FormService,
-    private applicantListsQuery: ApplicantListsQuery
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
@@ -453,9 +457,9 @@ export class Step4FormComponent
   }
 
   public getDropdownLists(): void {
-    this.applicantListsQuery.dropdownLists$
+    this.applicantQuery.applicantDropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
+      .subscribe((res: ApplicantModalResponse) => {
         this.vehicleType = res.truckTypes.map((item) => {
           return {
             ...item,

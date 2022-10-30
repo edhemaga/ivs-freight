@@ -29,13 +29,14 @@ import {
 import { FormService } from './../../../../services/form/form.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 
-import { ApplicantListsQuery } from '../../state/store/applicant-lists-store/applicant-lists.query';
+import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { ViolationModel } from '../../state/model/violations.model';
 import {
   AddressEntity,
+  ApplicantModalResponse,
   TruckTypeResponse,
 } from 'appcoretruckassist/model/models';
 
@@ -116,7 +117,7 @@ export class Step5FormComponent
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private formService: FormService,
-    private applicantListsQuery: ApplicantListsQuery
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
@@ -370,9 +371,9 @@ export class Step5FormComponent
   }
 
   public getDropdownLists(): void {
-    this.applicantListsQuery.dropdownLists$
+    this.applicantQuery.applicantDropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
+      .subscribe((res: ApplicantModalResponse) => {
         this.vehicleType = res.truckTypes.map((item) => {
           if (item.id === 3) {
             return {

@@ -53,8 +53,10 @@ import {
   CreateResponse,
   UpdatePersonalInfoCommand,
   CreatePersonalInfoReviewCommand,
+  PersonalInfoFeedbackResponse,
+  ApplicantResponse,
+  ApplicantModalResponse,
 } from 'appcoretruckassist/model/models';
-import { PersonalInfoFeedbackResponse } from '../../../../../../../appcoretruckassist/model/personalInfoFeedbackResponse';
 
 @Component({
   selector: 'app-step1',
@@ -337,11 +339,9 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.createForm();
 
-    this.getApplicantId();
-
     this.getStepValuesFromStore();
 
-    this.getBanksDropdownList();
+    this.getDropdownLists();
   }
 
   ngAfterViewInit(): void {
@@ -401,16 +401,16 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public getStepValuesFromStore(): void {
-    this.applicantQuery.personalInfoList$
+    this.applicantQuery.applicant$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res: PersonalInfoFeedbackResponse) => {
-        console.log('COMPONENT STEP 1');
-        console.log(res);
-        this.patchStepValues(res);
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        this.patchStepValues(res.personalInfo);
       });
   }
 
-  public patchStepValues(res: PersonalInfoFeedbackResponse): void {
+  public patchStepValues(stepValues: PersonalInfoFeedbackResponse): void {
     const {
       id,
       isAgreed,
@@ -439,7 +439,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       misdemeanorDescription,
       drunkDrivingDescription,
       personalInfoReview,
-    } = res;
+    } = stepValues;
 
     this.personalInfoForm.patchValue({
       isAgreement: isAgreed,
@@ -477,76 +477,77 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     }
 
     setTimeout(() => {
-      console.log('id', bankId);
-      console.log('banke', this.banksDropdownList);
-
       this.selectedBank = this.banksDropdownList.find(
         (item) => item.id === bankId
       );
 
-      if (legalWork) {
-        this.personalInfoRadios[0].buttons[0].checked = true;
-      } else {
-        this.personalInfoRadios[0].buttons[1].checked = true;
+      const isAgreementValue = this.personalInfoForm.get('isAgreement').value;
 
-        if (legalWork === null) {
-          this.personalInfoRadios[0].buttons[0].checked = false;
-          this.personalInfoRadios[0].buttons[1].checked = false;
+      if (isAgreementValue) {
+        if (legalWork) {
+          this.personalInfoRadios[0].buttons[0].checked = true;
+        } else {
+          this.personalInfoRadios[0].buttons[1].checked = true;
+
+          if (legalWork === null) {
+            this.personalInfoRadios[0].buttons[0].checked = false;
+            this.personalInfoRadios[0].buttons[1].checked = false;
+          }
         }
-      }
 
-      if (anotherName) {
-        this.personalInfoRadios[1].buttons[0].checked = true;
-      } else {
-        this.personalInfoRadios[1].buttons[1].checked = true;
+        if (anotherName) {
+          this.personalInfoRadios[1].buttons[0].checked = true;
+        } else {
+          this.personalInfoRadios[1].buttons[1].checked = true;
 
-        if (anotherName === null) {
-          this.personalInfoRadios[1].buttons[0].checked = false;
-          this.personalInfoRadios[1].buttons[1].checked = false;
+          if (anotherName === null) {
+            this.personalInfoRadios[1].buttons[0].checked = false;
+            this.personalInfoRadios[1].buttons[1].checked = false;
+          }
         }
-      }
 
-      if (inMilitary) {
-        this.personalInfoRadios[2].buttons[0].checked = true;
-      } else {
-        this.personalInfoRadios[2].buttons[1].checked = true;
+        if (inMilitary) {
+          this.personalInfoRadios[2].buttons[0].checked = true;
+        } else {
+          this.personalInfoRadios[2].buttons[1].checked = true;
 
-        if (inMilitary === null) {
-          this.personalInfoRadios[2].buttons[0].checked = false;
-          this.personalInfoRadios[2].buttons[1].checked = false;
+          if (inMilitary === null) {
+            this.personalInfoRadios[2].buttons[0].checked = false;
+            this.personalInfoRadios[2].buttons[1].checked = false;
+          }
         }
-      }
 
-      if (felony) {
-        this.personalInfoRadios[3].buttons[0].checked = true;
-      } else {
-        this.personalInfoRadios[3].buttons[1].checked = true;
+        if (felony) {
+          this.personalInfoRadios[3].buttons[0].checked = true;
+        } else {
+          this.personalInfoRadios[3].buttons[1].checked = true;
 
-        if (felony === null) {
-          this.personalInfoRadios[3].buttons[0].checked = false;
-          this.personalInfoRadios[3].buttons[1].checked = false;
+          if (felony === null) {
+            this.personalInfoRadios[3].buttons[0].checked = false;
+            this.personalInfoRadios[3].buttons[1].checked = false;
+          }
         }
-      }
 
-      if (misdemeanor) {
-        this.personalInfoRadios[4].buttons[0].checked = true;
-      } else {
-        this.personalInfoRadios[4].buttons[1].checked = true;
+        if (misdemeanor) {
+          this.personalInfoRadios[4].buttons[0].checked = true;
+        } else {
+          this.personalInfoRadios[4].buttons[1].checked = true;
 
-        if (misdemeanor === null) {
-          this.personalInfoRadios[4].buttons[0].checked = false;
-          this.personalInfoRadios[4].buttons[1].checked = false;
+          if (misdemeanor === null) {
+            this.personalInfoRadios[4].buttons[0].checked = false;
+            this.personalInfoRadios[4].buttons[1].checked = false;
+          }
         }
-      }
 
-      if (drunkDriving) {
-        this.personalInfoRadios[5].buttons[0].checked = true;
-      } else {
-        this.personalInfoRadios[5].buttons[1].checked = true;
+        if (drunkDriving) {
+          this.personalInfoRadios[5].buttons[0].checked = true;
+        } else {
+          this.personalInfoRadios[5].buttons[1].checked = true;
 
-        if (drunkDriving === null) {
-          this.personalInfoRadios[5].buttons[0].checked = false;
-          this.personalInfoRadios[5].buttons[1].checked = false;
+          if (drunkDriving === null) {
+            this.personalInfoRadios[5].buttons[0].checked = false;
+            this.personalInfoRadios[5].buttons[1].checked = false;
+          }
         }
       }
     }, 150);
@@ -561,9 +562,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         return item;
       }
 
-      return {
-        ...res.address,
-      };
+      return item.address;
     });
 
     for (let i = 0; i < addresses.length; i++) {
@@ -832,7 +831,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         };
       }
 
-      this.stepValues = res;
+      this.stepValues = stepValues;
 
       this.startFeedbackValueChangesMonitoring();
     }
@@ -1034,9 +1033,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     }
 
     this.isEditingMiddlePositionAddress = false;
-    this.applicantActionsService.deleteAddressFormStore(
-      this.previousAddresses.at(index).get('address').value
-    );
+
     this.previousAddresses.removeAt(index);
     this.selectedAddresses.splice(index, 1);
     this.isEditingArray.splice(index, 1);
@@ -1118,21 +1115,19 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     this.isEditingArray[lastAddressIndex].isEditing = true;
   }
 
-  public getBanksDropdownList(): void {
+  public getDropdownLists(): void {
     this.applicantListsService
       .getBanksDropdownList()
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
         this.banksDropdownList = data;
       });
-  }
 
-  public getApplicantId() {
-    this.applicantQuery.applicantId$
+    /* this.applicantQuery.applicantDropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res;
-      });
+      .subscribe((res: ApplicantModalResponse) => {
+        this.banksDropdownList = res.banks;
+      }); */
   }
 
   public incorrectInput(
@@ -1578,11 +1573,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/2`]);
 
-          this.applicantStore.update(1, (entity) => {
-            let previousAddressStore = Object.assign(
-              [],
-              entity.personalInfo.previousAddresses
-            );
+          this.applicantStore.update((store) => {
+            let previousAddressStore = [];
 
             while (
               previousAddressStore.length < storePreviousAddresses.length
@@ -1598,24 +1590,27 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             }
 
             return {
-              ...entity,
-              personalInfo: {
-                ...entity.personalInfo,
-                ...saveData,
-                bank: this.banksDropdownList.find(
-                  (item) => item.id === saveData.bankId
-                ),
-                bankName: this.banksDropdownList.find(
-                  (item) => item.id === saveData.bankId
-                )?.name,
-                previousAddresses: previousAddressStore.length
-                  ? previousAddressStore.map((item, index) => {
-                      return {
-                        ...item,
-                        address: storePreviousAddresses[index]?.address,
-                      };
-                    })
-                  : storePreviousAddresses,
+              ...store,
+              applicant: {
+                ...store.applicant,
+                personalInfo: {
+                  ...store.applicant.personalInfo,
+                  ...saveData,
+                  bank: this.banksDropdownList.find(
+                    (item) => item.id === saveData.bankId
+                  ),
+                  bankName: this.banksDropdownList.find(
+                    (item) => item.id === saveData.bankId
+                  )?.name,
+                  previousAddresses: previousAddressStore.length
+                    ? previousAddressStore.map((item, index) => {
+                        return {
+                          ...item,
+                          address: storePreviousAddresses[index]?.address,
+                        };
+                      })
+                    : storePreviousAddresses,
+                },
               },
             };
           });
@@ -1650,9 +1645,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       this.previousAddresses.controls.length === 1
         ? []
         : this.previousAddresses.controls.map((item, index) => {
-            if (this.previousAddresses.controls.length - 1 === index) {
+            if (index === this.previousAddresses.controls.length - 1) {
               return;
             }
+
             return {
               previousAddressId: this.previousAddressesId[index],
               isPreviousAddressValid:
@@ -1676,18 +1672,15 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         ? !this.openAnnotationArray[this.previousAddresses.controls.length + 1]
             .lineInputs[0]
         : null,
-
       isAddressUnitValid: this.previousAddresses.controls.length
         ? !this.openAnnotationArray[this.previousAddresses.controls.length + 1]
             .lineInputs[1]
         : null,
-
       addressMessage: this.previousAddresses.controls.length
         ? this.previousAddresses.controls[
             this.previousAddresses.controls.length - 1
           ].get(`cardReview${this.previousAddresses.controls.length}`).value
         : null,
-
       isSsnValid: !this.openAnnotationArray[7].lineInputs[0],
       isBankValid: !this.openAnnotationArray[7].lineInputs[1],
       ssnBankMessage: thirdRowReview,
@@ -1716,20 +1709,24 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/2`]);
 
-          this.applicantStore.update(1, (entity) => {
+          this.applicantStore.update((store) => {
             return {
-              ...entity,
-              personalInfo: {
-                ...entity.personalInfo,
-                previousAddresses: entity.personalInfo.previousAddresses.map(
-                  (item, index) => {
-                    return {
-                      ...item,
-                      previousAddressReview: previousAddresses[index],
-                    };
-                  }
-                ),
-                personalInfoReview: saveData,
+              ...store,
+              applicant: {
+                ...store.applicant,
+                personalInfo: {
+                  ...store.applicant.personalInfo,
+                  previousAddresses:
+                    store.applicant.personalInfo.previousAddresses.map(
+                      (item, index) => {
+                        return {
+                          ...item,
+                          previousAddressReview: previousAddresses[index],
+                        };
+                      }
+                    ),
+                  personalInfoReview: saveData,
+                },
               },
             };
           });

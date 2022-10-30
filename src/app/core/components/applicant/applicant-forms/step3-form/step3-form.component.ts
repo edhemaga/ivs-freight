@@ -18,7 +18,7 @@ import moment from 'moment';
 import { FormService } from './../../../../services/form/form.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 
-import { ApplicantListsQuery } from '../../state/store/applicant-lists-store/applicant-lists.query';
+import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import {
   anyInputInLineIncorrect,
@@ -29,6 +29,7 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { LicenseModel } from '../../state/model/cdl-information';
 import {
+  ApplicantModalResponse,
   CdlEndorsementResponse,
   CdlRestrictionResponse,
   EnumValue,
@@ -131,7 +132,7 @@ export class Step3FormComponent
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private formService: FormService,
-    private applicantListsQuery: ApplicantListsQuery
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
@@ -502,9 +503,9 @@ export class Step3FormComponent
   }
 
   public getDropdownLists(): void {
-    this.applicantListsQuery.dropdownLists$
+    this.applicantQuery.applicantDropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
+      .subscribe((res: ApplicantModalResponse) => {
         this.countryTypes = res.countryTypes;
 
         this.usStates = res.usStates.map((item) => {

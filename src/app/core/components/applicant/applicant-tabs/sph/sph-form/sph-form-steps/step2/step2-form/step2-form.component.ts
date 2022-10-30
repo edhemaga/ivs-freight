@@ -93,12 +93,6 @@ export class SphStep2FormComponent
 
   ngOnInit(): void {
     this.createForm();
-
-    if (this.formValuesToPatch) {
-      this.patchForm(this.formValuesToPatch);
-
-      this.startValueChangesMonitoring();
-    }
   }
 
   ngAfterViewInit(): void {
@@ -133,6 +127,8 @@ export class SphStep2FormComponent
     ) {
       setTimeout(() => {
         this.patchForm(changes.formValuesToPatch.currentValue);
+
+        this.startValueChangesMonitoring();
       }, 100);
     }
   }

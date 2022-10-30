@@ -31,7 +31,7 @@ import {
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { FormService } from './../../../../services/form/form.service';
 
-import { ApplicantListsQuery } from '../../state/store/applicant-lists-store/applicant-lists.query';
+import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
@@ -42,6 +42,7 @@ import {
 } from '../../state/model/work-history.model';
 import { AddressEntity } from './../../../../../../../appcoretruckassist/model/addressEntity';
 import {
+  ApplicantModalResponse,
   EnumValue,
   TrailerLengthResponse,
   TrailerTypeResponse,
@@ -251,7 +252,7 @@ export class Step2FormComponent
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private formService: FormService,
-    private applicantListsQuery: ApplicantListsQuery
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
@@ -1360,9 +1361,9 @@ export class Step2FormComponent
   }
 
   public getDropdownLists(): void {
-    this.applicantListsQuery.dropdownLists$
+    this.applicantQuery.applicantDropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
+      .subscribe((res: ApplicantModalResponse) => {
         this.vehicleType = res.truckTypes.map((item) => {
           return {
             ...item,

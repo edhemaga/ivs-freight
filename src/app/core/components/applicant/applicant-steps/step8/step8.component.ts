@@ -31,6 +31,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import {
   AddressEntity,
+  ApplicantResponse,
   CreateDrugAndAlcoholCommand,
   CreateDrugAndAlcoholReviewCommand,
 } from 'appcoretruckassist/model/models';
@@ -140,8 +141,6 @@ export class Step8Component implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
 
-    this.getApplicantId();
-
     this.getStepValuesFromStore();
 
     this.isTestedNegative();
@@ -177,11 +176,13 @@ export class Step8Component implements OnInit, OnDestroy {
   }
 
   public getStepValuesFromStore(): void {
-    this.applicantQuery.drugAndAlcoholList$
+    this.applicantQuery.applicant$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res) {
-          this.patchStepValues(res);
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        if (res.drugAndAlcohol) {
+          this.patchStepValues(res.drugAndAlcohol);
         }
       });
   }
@@ -430,14 +431,6 @@ export class Step8Component implements OnInit, OnDestroy {
             this.drugAlcoholStatementForm.get('isAgreement')
           );
         }
-      });
-  }
-
-  public getApplicantId(): void {
-    this.applicantQuery.applicantId$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res;
       });
   }
 
@@ -747,19 +740,22 @@ export class Step8Component implements OnInit, OnDestroy {
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/9`]);
 
-          this.applicantStore.update(1, (entity) => {
+          this.applicantStore.update((store) => {
             return {
-              ...entity,
-              drugAndAlcohol: {
-                ...entity.drugAndAlcohol,
-                positiveTest: saveData.positiveTest,
-                motorCarrier: saveData.motorCarrier,
-                phone: saveData.phone,
-                address: saveData.address,
-                sapName: saveData.sapName,
-                sapPhone: saveData.sapPhone,
-                sapAddress: saveData.sapAddress,
-                certifyInfomation: saveData.certifyInfomation,
+              ...store,
+              applicant: {
+                ...store.applicant,
+                drugAndAlcohol: {
+                  ...store.applicant.drugAndAlcohol,
+                  positiveTest: saveData.positiveTest,
+                  motorCarrier: saveData.motorCarrier,
+                  phone: saveData.phone,
+                  address: saveData.address,
+                  sapName: saveData.sapName,
+                  sapPhone: saveData.sapPhone,
+                  sapAddress: saveData.sapAddress,
+                  certifyInfomation: saveData.certifyInfomation,
+                },
               },
             };
           });
@@ -801,17 +797,20 @@ export class Step8Component implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.applicantStore.update(1, (entity) => {
+          this.router.navigate([`/application/${this.applicantId}/9`]);
+
+          this.applicantStore.update((store) => {
             return {
-              ...entity,
-              drugAndAlcohol: {
-                ...entity.drugAndAlcohol,
-                drugAndAlcoholReview: saveData,
+              ...store,
+              applicant: {
+                ...store.applicant,
+                drugAndAlcohol: {
+                  ...store.applicant.drugAndAlcohol,
+                  drugAndAlcoholReview: saveData,
+                },
               },
             };
           });
-
-          this.router.navigate([`/application/${this.applicantId}/9`]);
         },
         error: (err) => {
           console.log(err);

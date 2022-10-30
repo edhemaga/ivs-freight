@@ -15,7 +15,6 @@ import { ApplicantActionsService } from '../../state/services/applicant-actions.
 
 import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
-import { ApplicantListsQuery } from '../../state/store/applicant-lists-store/applicant-lists.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { WorkHistoryModel } from '../../state/model/work-history.model';
@@ -26,6 +25,9 @@ import {
   TrailerTypeResponse,
   TruckTypeResponse,
   CreateWorkExperienceReviewCommand,
+  WorkExperienceFeedbackResponse,
+  ApplicantResponse,
+  ApplicantModalResponse,
 } from 'appcoretruckassist/model/models';
 
 @Component({
@@ -36,7 +38,7 @@ import {
 export class Step2Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public applicantId: number;
 
@@ -82,14 +84,11 @@ export class Step2Component implements OnInit, OnDestroy {
     private router: Router,
     private applicantActionsService: ApplicantActionsService,
     private applicantStore: ApplicantStore,
-    private applicantQuery: ApplicantQuery,
-    private applicantListsQuery: ApplicantListsQuery
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
     this.createForm();
-
-    this.getApplicantId();
 
     this.getStepValuesFromStore();
 
@@ -118,16 +117,18 @@ export class Step2Component implements OnInit, OnDestroy {
   }
 
   public getStepValuesFromStore(): void {
-    this.applicantQuery.workExperienceList$
+    this.applicantQuery.applicant$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res) {
-          this.patchStepValues(res);
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        if (res.workExperience) {
+          this.patchStepValues(res.workExperience);
         }
       });
   }
 
-  public patchStepValues(stepValues: any): void {
+  public patchStepValues(stepValues: WorkExperienceFeedbackResponse): void {
     const { haveWorkExperience, workExperienceItems } = stepValues;
 
     if (this.selectedMode === SelectedMode.REVIEW) {
@@ -564,9 +565,9 @@ export class Step2Component implements OnInit, OnDestroy {
   }
 
   public getDropdownLists(): void {
-    this.applicantListsQuery.dropdownLists$
+    this.applicantQuery.applicantDropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
+      .subscribe((res: ApplicantModalResponse) => {
         this.vehicleType = res.truckTypes;
 
         this.trailerType = res.trailerTypes;
@@ -574,14 +575,6 @@ export class Step2Component implements OnInit, OnDestroy {
         this.trailerLengthType = res.trailerLenghts;
 
         this.reasonsForLeaving = res.reasonsForLeave;
-      });
-  }
-
-  public getApplicantId(): void {
-    this.applicantQuery.applicantId$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res;
       });
   }
 
@@ -856,17 +849,20 @@ export class Step2Component implements OnInit, OnDestroy {
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/3`]);
 
-          this.applicantStore.update(1, (entity) => {
+          this.applicantStore.update((store) => {
             const noWorkExperience = saveData.haveWorkExperience;
 
             return {
-              ...entity,
-              workExperience: {
-                ...entity.workExperience,
-                haveWorkExperience: noWorkExperience,
-                workExperienceItems: noWorkExperience
-                  ? null
-                  : storeWorkExperienceItems,
+              ...store,
+              applicant: {
+                ...store.applicant,
+                workExperience: {
+                  ...store.applicant.workExperience,
+                  haveWorkExperience: noWorkExperience,
+                  workExperienceItems: noWorkExperience
+                    ? null
+                    : storeWorkExperienceItems,
+                },
               },
             };
           });
@@ -966,32 +962,37 @@ export class Step2Component implements OnInit, OnDestroy {
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/3`]);
 
-          this.applicantStore.update(1, (entity) => {
+          this.applicantStore.update((store) => {
             return {
-              ...entity,
-              workExperience: {
-                ...entity.workExperience,
-                workExperienceItems:
-                  entity.workExperience.workExperienceItems.map(
-                    (item, index) => {
-                      if (
-                        index ===
-                        entity.workExperience.workExperienceItems.length - 1
-                      ) {
+              ...store,
+              applicant: {
+                ...store.applicant,
+                workExperience: {
+                  ...store.applicant.workExperience,
+                  workExperienceItems:
+                    store.applicant.workExperience.workExperienceItems.map(
+                      (item, index) => {
+                        if (
+                          index ===
+                          store.applicant.workExperience.workExperienceItems
+                            .length -
+                            1
+                        ) {
+                          return {
+                            ...item,
+                            workExperienceItemReview:
+                              lastReviewedItemInWorkExperienceArray,
+                          };
+                        }
+
                         return {
                           ...item,
                           workExperienceItemReview:
-                            lastReviewedItemInWorkExperienceArray,
+                            workExperienceArrayReview[index],
                         };
                       }
-
-                      return {
-                        ...item,
-                        workExperienceItemReview:
-                          workExperienceArrayReview[index],
-                      };
-                    }
-                  ),
+                    ),
+                },
               },
             };
           });

@@ -33,8 +33,10 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import {
   AddressEntity,
+  ApplicantResponse,
   CreateSevenDaysHosCommand,
   CreateSevenDaysHosReviewCommand,
+  SevenDaysHosFeedbackResponse,
 } from 'appcoretruckassist/model/models';
 
 @Component({
@@ -180,8 +182,6 @@ export class Step7Component implements OnInit, OnDestroy {
 
     this.createSevenDaysHos();
 
-    this.getApplicantId();
-
     this.getStepValuesFromStore();
   }
 
@@ -206,16 +206,18 @@ export class Step7Component implements OnInit, OnDestroy {
   }
 
   public getStepValuesFromStore(): void {
-    this.applicantQuery.sevenDaysHosList$
+    this.applicantQuery.applicant$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res) {
-          this.patchStepValues(res);
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        if (res.sevenDaysHos) {
+          this.patchStepValues(res.sevenDaysHos);
         }
       });
   }
 
-  public patchStepValues(stepValues: any): void {
+  public patchStepValues(stepValues: SevenDaysHosFeedbackResponse): void {
     const {
       hos,
       releasedFromWork,
@@ -407,14 +409,6 @@ export class Step7Component implements OnInit, OnDestroy {
       .subscribe((value) => {
         this.totalHours = [...this.totalHours];
         this.totalHours[index].value = +value;
-      });
-  }
-
-  public getApplicantId(): void {
-    this.applicantQuery.applicantId$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res;
       });
   }
 
@@ -636,19 +630,22 @@ export class Step7Component implements OnInit, OnDestroy {
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/8`]);
 
-          this.applicantStore.update(1, (entity) => {
+          this.applicantStore.update((store) => {
             return {
-              ...entity,
-              sevenDaysHos: {
-                ...entity.sevenDaysHos,
-                hos: saveData.hos,
-                releasedFromWork: saveData.releasedFromWork,
-                releasedDate: saveData.releasedDate,
-                location: saveData.location,
-                workingForAnotherEmployer: saveData.workingForAnotherEmployer,
-                intendToWorkForAnotherEmployer:
-                  saveData.intendToWorkForAnotherEmployer,
-                certifyInfomation: saveData.certifyInfomation,
+              ...store,
+              applicant: {
+                ...store.applicant,
+                sevenDaysHos: {
+                  ...store.applicant.sevenDaysHos,
+                  hos: saveData.hos,
+                  releasedFromWork: saveData.releasedFromWork,
+                  releasedDate: saveData.releasedDate,
+                  location: saveData.location,
+                  workingForAnotherEmployer: saveData.workingForAnotherEmployer,
+                  intendToWorkForAnotherEmployer:
+                    saveData.intendToWorkForAnotherEmployer,
+                  certifyInfomation: saveData.certifyInfomation,
+                },
               },
             };
           });
@@ -680,17 +677,20 @@ export class Step7Component implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.applicantStore.update(1, (entity) => {
+          this.router.navigate([`/application/${this.applicantId}/8`]);
+
+          this.applicantStore.update((store) => {
             return {
-              ...entity,
-              sevenDaysHos: {
-                ...entity.sevenDaysHos,
-                sevenDaysHosReview: saveData,
+              ...store,
+              applicant: {
+                ...store.applicant,
+                sevenDaysHos: {
+                  ...store.applicant.sevenDaysHos,
+                  sevenDaysHosReview: saveData,
+                },
               },
             };
           });
-
-          this.router.navigate([`/application/${this.applicantId}/8`]);
         },
         error: (err) => {
           console.log(err);

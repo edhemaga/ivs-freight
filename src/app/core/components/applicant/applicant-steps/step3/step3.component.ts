@@ -22,14 +22,16 @@ import { ApplicantActionsService } from '../../state/services/applicant-actions.
 
 import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
-import { ApplicantListsQuery } from '../../state/store/applicant-lists-store/applicant-lists.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { LicenseModel } from '../../state/model/cdl-information';
 import { AnswerChoices } from '../../state/model/applicant-question.model';
 import {
+  ApplicantModalResponse,
+  ApplicantResponse,
   CdlEndorsementResponse,
+  CdlFeedbackResponse,
   CdlRestrictionResponse,
   CountryType,
   CreateApplicantCdlCommand,
@@ -55,7 +57,7 @@ export class Step3Component implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public permitForm: FormGroup;
   public licenseForm: FormGroup;
@@ -143,14 +145,11 @@ export class Step3Component implements OnInit, OnDestroy {
     private router: Router,
     private applicantActionsService: ApplicantActionsService,
     private applicantStore: ApplicantStore,
-    private applicantQuery: ApplicantQuery,
-    private applicantListsQuery: ApplicantListsQuery
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
     this.createForm();
-
-    this.getApplicantId();
 
     this.getStepValuesFromStore();
 
@@ -181,16 +180,18 @@ export class Step3Component implements OnInit, OnDestroy {
   }
 
   public getStepValuesFromStore(): void {
-    this.applicantQuery.cdlInformationList$
+    this.applicantQuery.applicant$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res) {
-          this.patchStepValues(res);
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        if (res.cdlInformation) {
+          this.patchStepValues(res.cdlInformation);
         }
       });
   }
 
-  public patchStepValues(stepValues: any): void {
+  public patchStepValues(stepValues: any /* CdlFeedbackResponse */): void {
     console.log('stepValues', stepValues);
     const { cdlDenied, cdlDeniedExplanation, licences } = stepValues;
 
@@ -460,9 +461,9 @@ export class Step3Component implements OnInit, OnDestroy {
   }
 
   public getDropdownLists(): void {
-    this.applicantListsQuery.dropdownLists$
+    this.applicantQuery.applicantDropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
+      .subscribe((res: ApplicantModalResponse) => {
         this.countryTypes = res.countryTypes;
 
         this.usStates = res.usStates.map((item) => {
@@ -485,14 +486,6 @@ export class Step3Component implements OnInit, OnDestroy {
 
         this.restrictionsList = res.restrictions;
         this.endorsmentsList = res.endorsements;
-      });
-  }
-
-  public getApplicantId(): void {
-    this.applicantQuery.applicantId$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res;
       });
   }
 
@@ -709,14 +702,17 @@ export class Step3Component implements OnInit, OnDestroy {
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/4`]);
 
-          this.applicantStore.update(1, (entity) => {
+          this.applicantStore.update((store) => {
             return {
-              ...entity,
-              cdlInformation: {
-                ...entity.cdlInformation,
-                cdlDenied: saveData.cdlDenied,
-                cdlDeniedExplanation: saveData.cdlDeniedExplanation,
-                licences: storeLicenceItems,
+              ...store,
+              applicant: {
+                ...store.applicant,
+                cdlInformation: {
+                  ...store.applicant.cdlInformation,
+                  cdlDenied: saveData.cdlDenied,
+                  cdlDeniedExplanation: saveData.cdlDeniedExplanation,
+                  licences: storeLicenceItems,
+                },
               },
             };
           });

@@ -320,7 +320,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'applicant/previousemployer/welcome',
+    path: 'sph-form/1',
     loadChildren: () =>
       import(
         './core/components/applicant/applicant-tabs/sph/sph-form/sph-form.module'

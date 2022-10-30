@@ -77,7 +77,7 @@ export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.router.navigate([`/application/${this.applicantId}/1`]);
+          this.router.navigate([`/application/${this.applicantId.id}/1`]);
         },
         error: (err) => {
           console.log(err);

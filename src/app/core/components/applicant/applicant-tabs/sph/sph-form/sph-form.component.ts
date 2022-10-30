@@ -55,14 +55,16 @@ export class SphFormComponent implements OnInit, OnDestroy {
     this.applicantSphFormQuery.fullList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        this.isStepCompletedArray = this.isStepCompletedArray.map(
-          (item, index) => {
-            return {
-              ...item,
-              isCompleted: res[`step${index + 1}`] ? true : false,
-            };
-          }
-        );
+        if (res) {
+          this.isStepCompletedArray = this.isStepCompletedArray.map(
+            (item, index) => {
+              return {
+                ...item,
+                isCompleted: res[`step${index + 1}`] ? true : false,
+              };
+            }
+          );
+        }
       });
   }
 
