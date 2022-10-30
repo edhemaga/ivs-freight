@@ -455,7 +455,11 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   onShowRoutePopover(addRoutePopup: any) {
     this.modalService.openModal(
       MapRouteModalComponent,
-      { size: 'small' }
+      { size: 'small' },
+      {
+        mapId: this.activeTableData.id,
+        type: 'add',
+      }
     );
 
     // ,
@@ -697,30 +701,40 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   editRoute(route) {
-    this.routeToEdit = route;
+    // this.routeToEdit = route;
 
-    this.routeForm.patchValue({
-      routeName: route.name,
-      truckId: route.truckId ? route.truckId : '',
-      duration: route.stopTime ? true : false,
-      durationTime: route.stopTime ? route.stopTime : null,
-      fuelCost: route.fuelPrice ? true : false,
-      fuelMpg: route.mpg ? route.mpg : null,
-      fuelPrice: route.fuelPrice ? route.fuelPrice : null,
-      routeType: route.routeType,
-    });
+    // this.routeForm.patchValue({
+    //   routeName: route.name,
+    //   truckId: route.truckId ? route.truckId : '',
+    //   duration: route.stopTime ? true : false,
+    //   durationTime: route.stopTime ? route.stopTime : null,
+    //   fuelCost: route.fuelPrice ? true : false,
+    //   fuelMpg: route.mpg ? route.mpg : null,
+    //   fuelPrice: route.fuelPrice ? route.fuelPrice : null,
+    //   routeType: route.routeType,
+    // });
 
-    this.routeTabs.map((item) => {
-      if (item.name == route.routeType) {
-        item.checked = true;
-      } else {
-        item.checked = false;
+    // this.routeTabs.map((item) => {
+    //   if (item.name == route.routeType) {
+    //     item.checked = true;
+    //   } else {
+    //     item.checked = false;
+    //   }
+    // });
+
+    // this.ref.detectChanges();
+
+    // this.addRoutePopup.open();
+
+    this.modalService.openModal(
+      MapRouteModalComponent,
+      { size: 'small' },
+      {
+        ...route,
+        mapId: this.activeTableData.id,
+        type: 'edit',
       }
-    });
-
-    this.ref.detectChanges();
-
-    this.addRoutePopup.open();
+    );
   }
 
   toggleStopPicker() {

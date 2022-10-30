@@ -163,6 +163,13 @@ export class RoutingStateService implements OnDestroy {
               //   id: shipper.id,
               // });
 
+              this.sendUpdatedData({
+                type: 'route',
+                data: route,
+                mapId: data.mapId,
+                id: route.id
+              });
+
               console.log('addRoute', route);
 
               subRoute.unsubscribe();
@@ -172,7 +179,7 @@ export class RoutingStateService implements OnDestroy {
     );
   }
 
-  updateRoute(data: UpdateRouteCommand): Observable<any> {
+  updateRoute(data: UpdateRouteCommand | any): Observable<any> {
     return this.routeService.apiRoutePut(data).pipe(
       tap(() => {
         const subMap = this.getRouteById(data.id)
@@ -188,6 +195,12 @@ export class RoutingStateService implements OnDestroy {
               //   data: trailer,
               //   id: trailer.id,
               // });
+
+              this.sendUpdatedData({
+                type: 'edit-route',
+                data: route,
+                id: route.id
+              });
 
               console.log('updateRoute response', route);
 

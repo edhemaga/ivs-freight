@@ -543,6 +543,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
         if ( res.type == 'map' ) {
           this.updateMapData(res.id, res.data);
+        } else if ( res.type == 'route' ) {
+          this.addRoute(res.mapId, res.data);
+        } else if ( res.type == 'edit-route' ) {
+          this.getRouteList(this.tableData[this.selectedMapIndex].id, 1, 8);
         }
       });
   }
@@ -2460,7 +2464,42 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       .subscribe((routes: GetRouteListResponse) => {
         console.log('getRouteList response', routes);
 
-        this.tableData[this.selectedMapIndex].routes.map((item, index) => {
+        const mapIndex = this.tableData.findIndex(
+          (item) => {
+            console.log('mapId', item.id, mapId);
+            return item.id === mapId;
+          }
+        );
+
+        var newRoutes = [];
+        this.tableData[mapIndex].routes = [];
+
+        var routesArr = routes.pagination.data;
+        routesArr.map((route) => {
+          var newRoute = {
+            id: route.id,
+            name: route.name,
+            hidden: false,
+            expanded: false,
+            routeType: 'Practical',
+            truckId: '',
+            stopTime: '',
+            mpg: '',
+            fuelPrice: '',
+            stops: [],
+            color: this.findRouteColor(),
+          };
+          console.log('newRoute', newRoute);
+
+          this.tableData[mapIndex].routes.push(newRoute);
+        });
+        console.log('getRouteList routesArr', routesArr);
+        console.log('getRouteList newRoutes', newRoutes);
+
+        //this.tableData[mapIndex].routes = newRoutes;
+        console.log('map routes', this.tableData[mapIndex], mapIndex);
+
+        this.tableData[mapIndex].routes.map((item, index) => {
           this.calculateDistanceBetweenStops(index);
           this.calculateRouteWidth(item);
         });
@@ -2482,5 +2521,46 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     
     console.log('tableData', this.tableData);
     this.mapToolbar.getSelectedTabTableData();
+  }
+
+  addRoute(mapId: number, updatedData: any) {
+    this.addressInputs.push(
+      this.formBuilder.group({
+        address: [],
+      })
+    );
+
+    var newRoute = {
+      id: updatedData.id,
+      name: updatedData.name,
+      hidden: false,
+      expanded: false,
+      routeType: 'Practical',
+      truckId: '',
+      stopTime: '',
+      mpg: '',
+      fuelPrice: '',
+      stops: [],
+      color: this.findRouteColor(),
+    };
+
+    console.log('updatedData', updatedData);
+
+    this.getRouteList(mapId, 1, 8);
+
+    // if (this.tableData[this.selectedMapIndex].routes.length < 8) {
+    //   this.tableData[this.selectedMapIndex].routes.push(newRoute);
+    // }
+
+    this.showHideDuplicate();
+
+    // this.calculateRouteWidth(
+    //   this.tableData[this.selectedMapIndex].routes[
+    //     this.tableData[this.selectedMapIndex].routes.length - 1
+    //   ]
+    // );
+
+    this.tableData[this.selectedMapIndex].length =
+      this.tableData[this.selectedMapIndex].routes.length;
   }
 }

@@ -2,7 +2,8 @@
   [modalTitle]="'Map Setings'"
   [isModalValid]="mapSettingsForm.valid && isFormDirty"
   [mapSettingsModal]="true"
-  [resetMapVisibility]="true"
+  [resetMapVisibility]="false"
+  [editData]="editData"
   (action)="onModalAction($event)"
 >
   <form origin [formGroup]="mapSettingsForm" class="form-container">
