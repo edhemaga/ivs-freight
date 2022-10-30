@@ -189,6 +189,14 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     {
       'api' : 'note',
       'value' : 'NOTE'
+    },
+    {
+      'api' : 'route',
+      'value' : 'ROUTE'
+    },
+    {
+      'api' : 'map',
+      'value' : 'MAP',
     }
     
   ]
@@ -616,6 +624,14 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         }
       
         this.message = noteName;  
+      break;
+      case 'ROUTE' : 
+        let routeName = this.httpRequest.body.name;
+        this.message = routeName;
+      break;
+      case 'MAP' : 
+        let mapName = this.httpRequest.body.name;
+        this.message = mapName;
       break;
     }
 
