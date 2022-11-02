@@ -13,7 +13,7 @@
 >
   <div
     class="note_button_hold"
-    *ngIf="!openedAll"
+    *ngIf="!openedAll && (noteOpened || (!noteOpened && !savingNote))"
     [ngClass]="{
       'note-normal-icon': !openedAll,
       'note-note-empty': !note && !openedAll,
@@ -40,6 +40,9 @@
       src="assets/svg/truckassist-table/note/{{ noteIcon }}"
     >
     </svg-icon>
+  </div>
+  <div class="spinner" *ngIf="!openedAll && !noteOpened && savingNote">
+    <app-ta-spinner [size]="'small'" [color]="'blueDark'"></app-ta-spinner>
   </div>
   <div
     *ngIf="openedAll"
@@ -76,6 +79,9 @@
       ></div>
       <div class="container_separate" *ngIf="isExpanded">
         <div class="container_separate_inner"></div>
+      </div>
+      <div class="spinner" *ngIf="savingNote && isExpanded">
+        <app-ta-spinner [size]="'small'" [color]="'blueDark'"></app-ta-spinner>
       </div>
       <div
         class="note_container"

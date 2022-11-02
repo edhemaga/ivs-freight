@@ -11,7 +11,26 @@
     [formGroup]="mvrForm"
     class="form-container form-container-without-mb"
   >
-    <div class="row first-row last-row">
+    <div *ngIf="!editData" class="row first-row">
+      <div class="col-12">
+        <app-ta-input-dropdown
+          formControlName="driver"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Driver',
+            isRequired: true,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-456',
+            autoFocus: !editData
+          }"
+          [options]="labelsDrivers"
+          [activeItem]="selectedDriver"
+          (selectedItem)="onSelectDropdown($event, 'driver')"
+        ></app-ta-input-dropdown>
+      </div>
+    </div>
+    <div class="row first-row last-row" [ngClass]="{ 'first-row': editData }">
       <div class="col-6">
         <app-ta-input
           formControlName="issueDate"
@@ -23,7 +42,7 @@
             isDropdown: true,
             isRequired: true,
             customClass: 'datetimeclass',
-            autoFocus: editData?.type !== 'edit-mvr'
+            autoFocus: editData && editData?.type !== 'edit-mvr'
           }"
         ></app-ta-input>
       </div>
@@ -59,7 +78,16 @@
     </div>
     <app-ta-input-note
       formControlName="note"
-      [isVisibleNote]="mvrForm.get('note').value"
+      [isVisibleNote]="
+        mvrForm.get('note').value && mvrForm.get('note').value != 'null'
+          ? mvrForm.get('note').value
+          : false
+      "
+      [note]="
+        mvrForm.get('note').value && mvrForm.get('note').value != 'null'
+          ? mvrForm.get('note').value
+          : ''
+      "
     ></app-ta-input-note>
   </form>
 </app-ta-modal>

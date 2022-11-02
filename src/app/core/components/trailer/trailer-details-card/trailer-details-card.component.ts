@@ -61,7 +61,7 @@ export class TrailerDetailsCardComponent
     this.trailerService
       .getTrailerById(id, true)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((item) => item);
+      .subscribe((item) => ((this.trailer = item)));
   }
   /**Function for toggle page in cards */
   /**Function for toggle page in cards */

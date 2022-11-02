@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -13,6 +14,8 @@ import { card_component_animation } from '../animations/card-component.animation
 import { SharedService } from '../../../services/shared/shared.service';
 import moment from 'moment';
 import { card_modal_animation } from '../animations/card-modal.animation';
+import { NoteUpdateService } from 'src/app/core/services/shared/note.service';
+import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
 
 @Component({
   selector: 'app-ta-input-note',
@@ -24,7 +27,13 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   _isVisibleNote: any = 'null';
   selectionTaken: any;
   range: any;
-  @Input() note: any;
+  gotValue: boolean = false;
+  showNote: any;
+  @Input() set note(value) {
+    if (value && value != '' && value != 'null' && !this.gotValue) {
+      this.showNote = value;
+    }
+  }
   value: string = '';
   savedValue: string = '';
   saveInterval: any;
@@ -34,19 +43,19 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   @Input() isVisibleDivider: boolean = true;
   @Input() public animationsDisabled = false;
   @Input() noteType: string = '';
-
+  savingNote: boolean = false;
+  @Input() entityId: number = 0;
+  @Input() entityType: string = '';
   noActive: string;
 
   @Input() set isVisibleNote(value: boolean) {
-    this.noActive = value ?  'active' : 'innactive';
+    this.noActive = value ? 'active' : 'innactive';
     this._isVisibleNote = value ? true : false;
   }
 
   // @Input('isVisibleNote') set isVisibleNote(value: any) {
   //   this._isVisibleNote = value ? true : false;
   // }
-
-
 
   animationMarginParams = {
     marginTop: '0px',
@@ -63,7 +72,9 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
 
   constructor(
     @Self() public superControl: NgControl,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private noteService: NoteUpdateService,
+    private ref: ChangeDetectorRef
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -88,7 +99,6 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   public registerOnTouched(fn: any): void {}
 
   public openNote() {
-
     const oldNoActive = this.noActive;
     this.noActive = '';
     this._isVisibleNote = !this._isVisibleNote;
@@ -109,19 +119,30 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   }
 
   changeValue(event) {
+    this.gotValue = true;
     this.value = event;
     this.checkActiveItems();
     this.lastTypeTime = moment().unix();
+    const updateTime = this.noteType == 'details-card' ? 2 : 0;
 
     if (!this.saveIntervalStarted) {
       this.saveIntervalStarted = true;
       this.saveInterval = setInterval(() => {
-        if (moment().unix() - this.lastTypeTime >= 2) {
+        if (moment().unix() - this.lastTypeTime >= updateTime) {
           this.saveIntervalStarted = false;
           clearInterval(this.saveInterval);
           this.saveNote(true);
         }
       }, 100);
+    }
+
+    if (
+      this.noteType == 'details-card' &&
+      this.entityId &&
+      this.entityType != ''
+    ) {
+      this.savingNote = true;
+      this.ref.detectChanges();
     }
   }
 
@@ -131,12 +152,24 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
 
   saveNote(allowSave?: boolean) {
     console.log('NOTE SAVED');
+
     if (this.value == '<br>') {
       this.value = this.value.replace('<br>', '');
     }
     if (allowSave) {
       this.savedValue = this.value;
       this.getSuperControl.patchValue(this.value);
+    }
+    if (
+      this.noteType == 'details-card' &&
+      this.entityId &&
+      this.entityType != ''
+    ) {
+      this.savingNote = true;
+      setTimeout(() => {
+        this.savingNote = false;
+      }, 1500);
+      this.updateNote();
     }
   }
 
@@ -151,5 +184,15 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     if (this.savedValue != this.value) {
       this.saveNote(true);
     }
+  }
+
+  updateNote() {
+    const updateValue = {
+      entityTypeNote: EntityTypeNote[this.entityType],
+      entityId: this.entityId,
+      note: this.value,
+    };
+
+    this.noteService.updateNote(updateValue).subscribe(() => {});
   }
 }

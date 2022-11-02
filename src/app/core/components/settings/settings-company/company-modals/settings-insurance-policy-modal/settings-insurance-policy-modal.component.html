@@ -775,7 +775,18 @@
     </div>
     <app-ta-input-note
       formControlName="note"
-      [isVisibleNote]="insurancePolicyForm.get('note').value"
+      [isVisibleNote]="
+        insurancePolicyForm.get('note').value &&
+        insurancePolicyForm.get('note').value != 'null'
+          ? insurancePolicyForm.get('note').value
+          : false
+      "
+      [note]="
+        insurancePolicyForm.get('note').value &&
+        insurancePolicyForm.get('note').value != 'null'
+          ? insurancePolicyForm.get('note').value
+          : ''
+      "
     ></app-ta-input-note>
   </form>
 </app-ta-modal>

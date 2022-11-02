@@ -152,7 +152,16 @@
 
     <app-ta-input-note
       formControlName="note"
-      [isVisibleNote]="cdlForm.get('note').value"
+      [isVisibleNote]="
+        cdlForm.get('note').value && cdlForm.get('note').value != 'null'
+          ? cdlForm.get('note').value
+          : false
+      "
+      [note]="
+        cdlForm.get('note').value && cdlForm.get('note').value != 'null'
+          ? cdlForm.get('note').value
+          : ''
+      "
     ></app-ta-input-note>
   </form>
 </app-ta-modal>

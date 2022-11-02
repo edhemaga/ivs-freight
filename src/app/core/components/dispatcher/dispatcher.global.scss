@@ -1191,46 +1191,6 @@
     width: 101% !important;
   }
 
-  /*.status_1 {
-      background-color: #9e9e9e !important;
-      border-color: #9e9e9e !important;
-    }
-  
-    .status_2 {
-      background-color: #80e17d !important;
-      border-color: #80e17d !important;
-    }
-  
-    .status_5 {
-      background-color: #4bae50 !important;
-      border-color: #4bae50 !important;
-    }
-  
-    .status_4 {
-      background-color: #077e22 !important;
-      border-color: #077e22 !important;
-    }
-  
-    .status_3 {
-      background-color: #2095f3 !important;
-      border-color: #2095f3 !important;
-    }
-  
-    .status_7 {
-      background-color: #ff7960 !important;
-      border-color: #ff7960 !important;
-    }
-  
-    .status_6 {
-      background-color: #f44336 !important;
-      border-color: #f44336 !important;
-    }
-    .status_8 {
-      background-color: #f44336 !important;
-      border-color: #f44336 !important;
-    }*/
-
-  // .k-dropdown-wrap { width: 100px !important; }
   .dispatch-map-wrapper {
     agm-map {
       height: 300px;
@@ -1238,18 +1198,9 @@
     }
   }
 
-  kendo-dropdownlist {
-    // width: 120px !important;
-    height: 36px !important;
-  }
-
   .fa-plus-container {
     text-align: center;
   }
-
-  // tr:hover {
-  //   background-color: #fff !important;
-  // }
 
   .dispatch-pickup-delivery {
     line-height: 23px;
@@ -1270,155 +1221,14 @@
     }
   }
 
-  kendo-dropdownbutton {
-    width: 135px;
-
-    button {
-      width: 135px;
-    }
-  }
-
-  .dispatcher-close {
-    position: relative;
-    top: -16px;
-    opacity: 0;
-  }
+  // .dispatcher-close {
+  //   position: relative;
+  //   top: -16px;
+  //   opacity: 0;
+  // }
 
   .dragging {
     background-color: red !important;
-  }
-
-  .dispacher-card {
-    position: relative;
-    background: #fff !important;
-    border-radius: 3px;
-    height: 32px;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
-
-    &.empty_row {
-      background-color: transparent !important;
-
-      &:active {
-        cursor: auto !important;
-      }
-    }
-
-    .drag-span-holder,
-    .driver_span_holder,
-    .trailer_span_holder {
-      margin: 2px;
-      height: 28px;
-      width: 100%;
-
-      .app-ta-input-dropdown-holder .input-custom-group .input-control {
-        height: 28px !important;
-      }
-    }
-
-    span.drag-span,
-    span.select_span {
-      white-space: nowrap;
-      // padding-right: 0.75rem;
-      width: 80px;
-      line-height: 32px;
-      height: 28px;
-      // box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
-      padding-left: 6px;
-      display: flex;
-      align-items: center;
-
-      // &.drag-span {
-      //   margin: 2px;
-      //   height: 28px;
-      // }
-
-      &.select_span {
-        display: inline-block;
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        line-height: 21px;
-        padding-left: 0;
-        height: auto;
-
-        &::-moz-selection {
-          color: #919191 !important;
-          background: #91919122 !important;
-        }
-
-        &::selection {
-          color: #6c6c6c !important;
-          background: #91919122 !important;
-        }
-
-        &.selection-color {
-          padding-right: 0;
-        }
-      }
-    }
-
-    span.fa-plus-container {
-      box-shadow: none !important;
-    }
-
-    .dispatcher-close {
-      display: none;
-      position: absolute;
-      right: 4px;
-      top: 4px;
-      opacity: 1;
-      cursor: pointer;
-
-      svg-icon {
-        display: flex;
-
-        svg {
-          width: 20px;
-          height: 20px;
-          path {
-            fill: rgba(255, 255, 255, 0.4);
-          }
-        }
-      }
-
-      &.dispatcher_new_codriver {
-        right: 28px;
-
-        svg-icon {
-          svg {
-            rect {
-              fill: rgba(255, 255, 255, 0.4);
-            }
-            path {
-              fill: #6c6c6c;
-            }
-          }
-        }
-      }
-
-      &:hover {
-        svg-icon {
-          svg {
-            path,
-            rect {
-              fill: rgba(255, 255, 255, 1);
-            }
-          }
-        }
-
-        &.dispatcher_new_codriver {
-          svg-icon {
-            svg {
-              path {
-                fill: #6c6c6c;
-              }
-            }
-          }
-        }
-      }
-    }
   }
 
   .dispatch-remove-item {
@@ -1558,14 +1368,7 @@
       }
     }
 
-    .k-grid-aria-root {
-      //border-radius: 3px;
-      //box-shadow: 1px 0 0 1px #fff;
-      //background-color: #fff;
-    }
-
     .k-grid-header {
-      //background-color: transparent !important;
       display: none !important;
     }
   }
@@ -1625,7 +1428,6 @@
   }
 
   .phone-email-icon {
-    // background-image: url('../../../../assets/img/svgs/mail-white.svg');
     background-position: center;
     background-size: 18px 14px;
     background-repeat: no-repeat;
@@ -1636,7 +1438,6 @@
   }
 
   .phone-email-icon.phone-icon {
-    //background-image: url('../../../../assets/img/svgs/phone.svg') !important;
     background-size: 18px;
   }
 }
@@ -1660,7 +1461,6 @@
   overflow: hidden;
   font-weight: 600;
   text-align: center;
-  //padding-top: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1711,23 +1511,6 @@
   position: relative;
   height: 34px;
 }
-
-// .dispatch-dropdown.ng-select.ng-select-opened {
-//   position: relative;
-//   top: 0 !important;
-//   left: 50%;
-//   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.15) !important;
-//   background-color: $white;
-//   z-index: 10;
-//   border-top-left-radius: 3px;
-//   border-top-right-radius: 3px;
-//   transition: none !important;
-//   transform: translateX(-50%);
-
-//   .disp_selected {
-//     background-color: #fff;
-//   }
-// }
 
 .dispatch-dropdown.ng-select {
   position: relative;
@@ -1801,12 +1584,10 @@
 
   .ng-dropdown-panel {
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.15) !important;
-    // box-shadow: $box-shadow !important;
     border-radius: 0 0 3px 3px;
   }
 
   .ng-option {
-    // border-top: 1px solid #f4f5f7;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
     padding: 0 6px;
@@ -2091,23 +1872,6 @@
       }
     }
   }
-
-  // tr {
-  //   td:nth-child(1), th:nth-child(1) {
-  //     position: absolute;
-  //     left: -309px;
-  //   }
-
-  //   td:nth-child(2), th:nth-child(2) {
-  //     position: absolute;
-  //     left: -232px;
-  //   }
-
-  //   td:nth-child(3), th:nth-child(3) {
-  //     position: absolute;
-  //     left: -134px;
-  //   }
-  // }
 
   .truck-field {
     width: 76px;

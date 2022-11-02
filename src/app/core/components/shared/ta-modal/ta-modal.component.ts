@@ -395,6 +395,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
     this.onTabHeaderChange.emit(event);
   }
 
+  public removeSelections(e){
+    let selection = window.getSelection();
+    selection.removeAllRanges();
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

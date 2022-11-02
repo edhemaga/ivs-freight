@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { DriverCdlModalComponent } from '../../components/driver/driver-details/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
-import { DriverDrugAlcoholModalComponent } from '../../components/driver/driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { DriverMedicalModalComponent } from '../../components/driver/driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
-import { DriverMvrModalComponent } from '../../components/driver/driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
+import { DriverCdlModalComponent } from '../../components/modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverDrugAlcoholModalComponent } from '../../components/modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverMedicalModalComponent } from '../../components/modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
+import { DriverMvrModalComponent } from '../../components/modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
 import { BrokerModalComponent } from '../../components/modals/broker-modal/broker-modal.component';
 import { TtFhwaInspectionModalComponent } from '../../components/modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../components/modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';

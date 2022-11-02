@@ -29,6 +29,7 @@ export class TaCustomCardComponent implements OnChanges {
   @Input() headerSvgEnabled: boolean = false;
   @Input() hasHeaderSvg: string = null;
   @Input() hasActionSvg: string = null;
+  @Input() actionText: string = null;
   @Input() hasDivider: boolean = true;
   @Input() hasLikeDislike: boolean = false;
   @Input() hasScrollBody: boolean = false;
@@ -48,6 +49,7 @@ export class TaCustomCardComponent implements OnChanges {
   noActive: string;
 
   @Input() set isCardOpen(value: boolean) {
+    console.log("IS CARD OPEN", value);
     this.noActive = value ? 'active' : 'innactive';
     this._isCardOpen = value;
   }

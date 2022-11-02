@@ -16,5 +16,6 @@ export interface GetTestModalResponse {
     drugTestReasons?: Array<EnumValue> | null;
     alcoholTestReasons?: Array<EnumValue> | null;
     testTypes?: Array<EnumValue> | null;
+    testResults?: Array<EnumValue> | null;
 }
 
