@@ -190,11 +190,6 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         }
       }, 100);
     }
-
-    if (this.entityId && this.entityType) {
-      this.savingNote = true;
-      this.ref.detectChanges();
-    }
   }
 
   checkActiveItems() {
@@ -218,7 +213,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         this.savingNote = false;
         this.ref.detectChanges();
-      }, 1500);
+      }, 700);
       this.updateNote();
     }
     if (this.dispatchIndex == -1) this.saveNoteValue.emit(this.value);

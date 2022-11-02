@@ -135,15 +135,6 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
         }
       }, 100);
     }
-
-    if (
-      this.noteType == 'details-card' &&
-      this.entityId &&
-      this.entityType != ''
-    ) {
-      this.savingNote = true;
-      this.ref.detectChanges();
-    }
   }
 
   checkActiveItems() {
@@ -168,7 +159,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
       this.savingNote = true;
       setTimeout(() => {
         this.savingNote = false;
-      }, 1500);
+      }, 700);
       this.updateNote();
     }
   }
