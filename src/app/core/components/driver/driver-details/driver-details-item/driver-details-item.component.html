@@ -14,7 +14,7 @@
         <app-ta-re-card
           *ngFor="let cdl of dataCDl; let i = index; trackBy: identity"
           [options]="dataDropDown"
-          [cardDocumentCounter]="6"
+          [cardDocumentCounter]="cdl?.files?.length ? cdl.files.length : 0"
           [statusActive]="cdl.status"
           (dataDropDopwn)="getCdlById(cdl.id)"
           (resizePage)="toggleResizePage(i, 'cdl')"
@@ -157,7 +157,7 @@
                       [countBackgroud]="'#F3F3F3'"
                       [countHeight]="'24px'"
                       [countWidth]="'24px'"
-                      [count]="6"
+                      [count]="cdl?.files?.length ? cdl.files.length : 0"
                     >
                     </app-ta-counter>
                     <p class="details-document-name">Document</p>
@@ -174,6 +174,7 @@
                   [files]="cdl.files ? cdl.files : []"
                   [customClassName]="'driver-details-pdf'"
                   [hasCarouselBottomTabs]="true"
+                  [type]="'details'"
                 ></app-ta-upload-files>
               </div>
               <div class="divider"></div>
@@ -214,7 +215,7 @@
           [testDate]="test?.testingDate | formatDateP"
           (dataDropDopwn)="getTestById(test.id)"
           (clickedCard)="getNameForDrop($event)"
-          [cardDocumentCounter]="6"
+          [cardDocumentCounter]="test?.files?.length ? test.files.length : 0"
           [weeklyWidth]="'18'"
           [cardNameCurrent]="'test'"
           [noteIcons]="
@@ -256,7 +257,7 @@
                       [countBackgroud]="'#F3F3F3'"
                       [countHeight]="'24px'"
                       [countWidth]="'24px'"
-                      [count]="6"
+                      [count]="test?.files?.length ? test.files.length : 0"
                     >
                     </app-ta-counter>
                     <p class="details-document-name">Document</p>
@@ -270,20 +271,10 @@
               </div>
               <div class="card-pdf">
                 <app-ta-upload-files
-                  [files]="[
-                    {
-                      name: 'truckassist - 0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      name: 'truckassist - 1',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    }
-                  ]"
+                  [files]="test.files ? test.files : []"
                   [customClassName]="'driver-details-pdf'"
                   [hasCarouselBottomTabs]="true"
+                  [type]="'details'"
                 ></app-ta-upload-files>
               </div>
               <div class="divider"></div>
@@ -358,7 +349,7 @@
                       [countBackgroud]="'#F3F3F3'"
                       [countHeight]="'24px'"
                       [countWidth]="'24px'"
-                      [count]="6"
+                      [count]="med?.files?.length ? med.files.length : 0"
                     >
                     </app-ta-counter>
                     <p class="details-document-name">Document</p>
@@ -372,20 +363,10 @@
               </div>
               <div class="card-pdf">
                 <app-ta-upload-files
-                  [files]="[
-                    {
-                      name: 'truckassist - 0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      name: 'truckassist - 1',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    }
-                  ]"
+                  [files]="med.files ? med.files : []"
                   [customClassName]="'driver-details-pdf'"
                   [hasCarouselBottomTabs]="true"
+                  [type]="'details'"
                 ></app-ta-upload-files>
               </div>
               <div class="divider"></div>
@@ -422,7 +403,7 @@
           [cardNameCurrent]="'mvr'"
           (clickedCard)="getNameForDrop($event)"
           (dataDropDopwn)="getMvrById(mvr.id)"
-          [cardDocumentCounter]="6"
+          [cardDocumentCounter]="mvr?.files?.length ? mvr.files.length : 0"
           [noteIcons]="
             mvr.note
               ? 'assets/svg/truckassist-table/note/Note.svg'
@@ -459,7 +440,7 @@
                       [countBackgroud]="'#F3F3F3'"
                       [countHeight]="'24px'"
                       [countWidth]="'24px'"
-                      [count]="6"
+                      [count]="mvr?.files?.length ? mvr.files.length : 0"
                     >
                     </app-ta-counter>
                     <p class="details-document-name">Document</p>
@@ -473,20 +454,10 @@
               </div>
               <div class="card-pdf">
                 <app-ta-upload-files
-                  [files]="[
-                    {
-                      name: 'truckassist - 0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      name: 'truckassist - 1',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    }
-                  ]"
+                  [files]="mvr.files ? mvr.files : []"
                   [customClassName]="'driver-details-pdf'"
                   [hasCarouselBottomTabs]="true"
+                  [type]="'details'"
                 ></app-ta-upload-files>
               </div>
               <div class="divider"></div>

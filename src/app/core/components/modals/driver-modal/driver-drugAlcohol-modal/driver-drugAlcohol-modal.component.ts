@@ -245,7 +245,9 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
   public addTest() {
     const { testingDate, driver, note } = this.drugForm.value;
-
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
     const newData: any = {
       driverId: this.selectedDriver ? this.selectedDriver.id : this.editData.id,
       testingDate: convertDateToBackend(testingDate),
@@ -253,6 +255,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       testType: this.selectedTestType.id,
       result: this.selectedTestResult ? this.selectedTestResult.id : null,
       note: note,
+      files: documents,
     };
 
     this.testService

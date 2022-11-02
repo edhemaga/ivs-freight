@@ -182,11 +182,15 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   private addMVR() {
     const { issueDate, driver, note } = this.mvrForm.value;
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
     const newData: any = {
       driverId: this.selectedDriver ? this.selectedDriver.id : this.editData.id,
       issueDate: convertDateToBackend(issueDate),
       cdlId: this.selectedCdl.id,
       note: note,
+      files: documents,
     };
 
     this.mvrService

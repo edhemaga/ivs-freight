@@ -154,11 +154,15 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
   private addMedical() {
     const { issueDate, expDate, driver, note } = this.medicalForm.value;
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
     const newData: any = {
       driverId: this.selectedDriver ? this.selectedDriver.id : this.editData.id,
       issueDate: convertDateToBackend(issueDate),
       expDate: convertDateToBackend(expDate),
       note: note,
+      files: documents,
     };
 
     this.medicalService
