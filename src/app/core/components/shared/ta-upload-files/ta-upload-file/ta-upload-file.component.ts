@@ -128,6 +128,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
         break;
       }
       case 'delete': {
+        this.isFileDelete = false;
         this.fileAction.emit({ file: this.file, action });
         break;
       }

@@ -391,6 +391,16 @@
       word-wrap: break-word;
       text-align: center;
       margin-bottom: 26px;
+
+      &::-moz-selection {
+        background-color: rgb(108, 108, 108, 0.2) !important;
+        color: #6c6c6c !important;
+      }
+
+      &::selection {
+        background-color: rgb(108, 108, 108, 0.2) !important;
+        color: #6c6c6c !important;
+      }
     }
 
     .ta-upload-file-btn {
@@ -404,6 +414,7 @@
       text-align: center;
       cursor: pointer;
       padding: 6px 0px;
+      user-select: none;
 
       &-delete {
         color: #ef5350;

@@ -36,6 +36,7 @@
     box-shadow: 0 0 4px rgb(0 0 0 / 15%);
     display: none;
     transform: translate(-5%, 22%);
+    transition: all 0.3s ease-in-out;
 
     &:hover {
       background: rgba(255, 255, 255);
@@ -60,6 +61,7 @@
         width: 18px;
         height: 18px;
         line-height: 18px;
+        opacity: 0.7;
         path {
           fill: #aaaaaa;
         }
@@ -69,6 +71,12 @@
     &:hover {
       transition: all 0.3s ease-in-out;
       background: rgb(255, 255, 255, 1);
+
+      .ta-upload-files-control {
+        svg{
+          opacity: 1;
+        }
+      }
     }
   }
 
