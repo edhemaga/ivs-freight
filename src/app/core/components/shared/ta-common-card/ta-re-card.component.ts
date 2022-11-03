@@ -106,9 +106,9 @@ export class TaReCardComponent implements OnInit {
 
   toggleDropdown(){
     //console.log("heeeeeeeeer", this.mainData);
+    let currentDate = moment().format('MM/DD/YYYY');
     console.log("cardNameCurrent", this.cardNameCurrent); 
     if ( this.cardNameCurrent == 'registration' ) {
-      let currentDate = moment().format('MM/DD/YYYY');
       let expDate = moment(this.mainData?.expDate).format('MM/DD/YYYY');
       
       this.options.actions.map((action,index)=>{
@@ -130,9 +130,7 @@ export class TaReCardComponent implements OnInit {
           }
         }
       })
-      
     } else if ( this.cardNameCurrent == 'truckRegistration' ) {
-      let currentDate = moment().format('MM/DD/YYYY');
       let expDate = moment(this.mainData?.expDate).format('MM/DD/YYYY');
       this.options.actions.map((action,index)=>{
         if ( currentDate > expDate ) {
@@ -153,6 +151,8 @@ export class TaReCardComponent implements OnInit {
           }
         }
       })
+    } else if ( this.cardNameCurrent == 'cdl' ) {
+      console.log('--cdl card opened--')
     }
     
   }
