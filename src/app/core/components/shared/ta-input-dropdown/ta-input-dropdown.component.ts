@@ -747,8 +747,6 @@ export class TaInputDropdownComponent
     this.isMultiSelectInputFocus = false;
     this.inputConfig.label = null;
 
-    // switch (action) {
-    //   case 'multiselect': {
     if (this.multiselectItems.some((item) => item.id === option.id)) {
       return;
     }
@@ -823,6 +821,10 @@ export class TaInputDropdownComponent
       this.inputConfig.multiSelectDropdownActive = null;
       this.lastActiveMultiselectItem = null;
       this.inputConfig.label = this.multiSelectLabel;
+    } else {
+      this.lastActiveMultiselectItem = this.options
+        .filter((item) => item.active)
+        .slice(-1)[0];
     }
 
     this.selectedItems.emit(
