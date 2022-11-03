@@ -266,9 +266,54 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
       },
       actions: [
         {
-          title: 'Send Message',
-          name: 'dm',
-          svg: 'assets/svg/common/ic_dm.svg',
+          title: 'Edit',
+          name: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
+        },
+        {
+          title: 'border'
+        },
+        {
+          title: 'Create Load',
+          name: 'create-load',
+          svg: 'assets/svg/common/ic_plus.svg',
+          show: true,
+          blueIcon: true,
+        },
+        {
+          title: 'Add Contact',
+          name: 'add-contact',
+          svg: 'assets/svg/truckassist-table/customer/contact-column-avatar.svg',
+          show: true,
+        },
+        {
+          title: 'Write Review',
+          name: 'write-review',
+          svg: 'assets/svg/common/review-pen.svg',
+          show: true,
+        },
+        {
+          title: data?.ban ? 'Remove from Ban List' : 'Move to Ban list',
+          name: data?.ban ? 'remove-from-ban' : 'move-to-ban',
+          svg: 'assets/svg/common/ic_disable-status.svg',
+          show: true,
+        },
+        {
+          title: data?.dnu ? 'Remove from DNU' : 'Move to DNU List',
+          name: data?.dnu ? 'remove-from-dnu' : 'move-to-dnu',
+          svg: 'assets/svg/common/ic_disable-status.svg',
+          deactivate: true,
+          show: true,
+          redIcon: true,
+        },
+        {
+          title: 'border'
+        },
+        {
+          title: 'Share',
+          name: 'share',
+          svg: 'assets/svg/common/share-icon.svg',
           show: true,
         },
         {
@@ -278,25 +323,15 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'Edit',
-          name: 'edit',
-          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-          show: true,
+          title: 'border'
         },
         {
-          title: data?.dnu ? 'Remove from DNU' : 'Move to DNU',
-          name: data?.dnu ? 'remove-from-dnu' : 'move-to-dnu',
-          svg: 'assets/svg/common/ic_disable-status.svg',
-          deactivate: true,
+          title: 'Close Business',
+          name: 'close-business',
+          svg: 'assets/svg/common/close-business-icon.svg',
+          redIcon: true,
           show: true,
         },
-        {
-          title: data?.ban ? 'Remove from Ban List' : 'Move to Ban list',
-          name: data?.ban ? 'remove-from-ban' : 'move-to-ban',
-          svg: 'assets/svg/common/ic_disable-status.svg',
-          show: true,
-        },
-
         {
           title: 'Delete',
           name: 'delete-item',
@@ -305,7 +340,16 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
           svg: 'assets/svg/common/ic_trash_updated.svg',
           danger: true,
           show: true,
+          redIcon: true,
         },
+        /*
+        {
+          title: 'Send Message',
+          name: 'dm',
+          svg: 'assets/svg/common/ic_dm.svg',
+          show: true,
+        },
+        */
       ],
       export: true,
     };

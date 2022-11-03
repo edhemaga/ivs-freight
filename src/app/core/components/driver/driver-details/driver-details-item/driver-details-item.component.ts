@@ -53,6 +53,7 @@ export class DriverDetailsItemComponent
   public toggler: boolean[] = [];
   public showMoreEmployment: boolean = false;
   public dataDropDown: any;
+  public dataDropDownMvr: any;
   public expDateCard: any;
   public dataCDl: any;
   public templateName: boolean;
@@ -167,6 +168,10 @@ export class DriverDetailsItemComponent
     this.expiredCard = [];
     data?.cdls?.map((item) => {
       let endDate = moment(item.expDate);
+      let daysDiff = endDate.diff(moment(), 'days');
+      let isBefore = moment(item.expDate).isBefore(moment());
+      
+    
       if (moment(item.expDate).isBefore(moment())) {
         this.expiredCard.push(true);
       } else {
@@ -177,16 +182,21 @@ export class DriverDetailsItemComponent
       } else {
         this.activateShow.push(false);
       }
-      if (
-        moment(item.expDate).isBefore(moment()) ||
-        endDate.diff(moment(), 'days') <= 365
-      ) {
+      /*
+      if ( moment(item.expDate).isBefore(moment()) || endDate.diff(moment(), 'days') <= 365 ) {
         this.arrayOfRenewCdl.push(true);
       } else {
         this.arrayOfRenewCdl.push(false);
       }
-    });
+      */
+      if ( daysDiff < -365 ) {
+        this.arrayOfRenewCdl.push(true);
+      } else {
+        this.arrayOfRenewCdl.push(false); 
+      }
 
+    });
+    
     this.dataDropDown = {
       disabledMutedStyle: null,
       toolbarActions: {
@@ -207,14 +217,37 @@ export class DriverDetailsItemComponent
           show: true,
         },
         {
+          title: 'border',
+        },
+        {
+          title: 'View Details',
+          name: 'view-details',
+          svg: 'assets/svg/common/ic_hazardous-info.svg',
+          show: true,
+        },
+        {
           title: 'Renew',
           name: 'renew',
           svg: 'assets/svg/common/ic_reload_renew.svg',
-          show:
-            !this.templateName &&
-            this.arrayOfRenewCdl[this.currentIndex] == true
-              ? true
-              : false,
+          disabled: this.arrayOfRenewCdl[this.currentIndex],
+        },
+        {
+          title: 'border',
+        },
+        {
+          title: 'Share',
+          name: 'share',
+          svg: 'assets/svg/common/share-icon.svg',
+          show: true,
+        },
+        {
+          title: 'Print',
+          name: 'print',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: true,
+        },
+        {
+          title: 'border',
         },
         {
           title:
@@ -231,6 +264,8 @@ export class DriverDetailsItemComponent
             !this.templateName && this.expiredCard[this.currentIndex] == false
               ? true
               : false,
+          redIcon: this.activateShow[this.currentIndex] == true ? false : true,    
+          blueIcon: this.activateShow[this.currentIndex] == true ? true : false,    
         },
         {
           title: 'Delete',
@@ -240,10 +275,72 @@ export class DriverDetailsItemComponent
           svg: 'assets/svg/common/ic_trash_updated.svg',
           danger: true,
           show: true,
+          redIcon: true,
         },
       ],
       export: true,
     };
+
+    this.dataDropDownMvr = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        {
+          title: 'Edit',
+          name: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
+        },
+        {
+          title: 'border',
+        },
+        {
+          title: 'View Details',
+          name: 'view-details',
+          svg: 'assets/svg/common/ic_hazardous-info.svg',
+          show: true,
+        },
+        {
+          title: 'border',
+        },
+        {
+          title: 'Share',
+          name: 'share',
+          svg: 'assets/svg/common/share-icon.svg',
+          show: true,
+        },
+        {
+          title: 'Print',
+          name: 'print',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: true,
+        },
+        {
+          title: 'border',
+        },
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'driver',
+          text: 'Are you sure you want to delete driver(s)?',
+          svg: 'assets/svg/common/ic_trash_updated.svg',
+          danger: true,
+          show: true,
+          redIcon: true,
+        },
+      ],
+      export: true,
+    };
+    
   }
 
   public getCdlById(id: number) {

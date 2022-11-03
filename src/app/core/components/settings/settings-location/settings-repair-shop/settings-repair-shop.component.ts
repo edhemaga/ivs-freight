@@ -141,6 +141,47 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
+          title: 'border',
+        },
+        {
+          title: 'View Details',
+          name: 'view-details',
+          svg: 'assets/svg/common/ic_hazardous-info.svg',
+          show: true,
+        },
+        {
+          title: 'Add Bill',
+          name: 'add-bill',
+          svg: 'assets/svg/common/ic_plus.svg',
+          show: true,
+          blueIcon: true,
+        },
+        {
+          title: 'border'
+        },
+        {
+          title: 'Share',
+          name: 'share',
+          svg: 'assets/svg/common/share-icon.svg',
+          show: true,
+        },
+        {
+          title: 'Print',
+          name: 'print',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: true,
+        },
+        {
+          title: 'border'
+        },
+        {
+          title: 'Close Business',
+          name: 'close-business',
+          svg: 'assets/svg/common/close-business-icon.svg',
+          redIcon: true,
+          show: true,
+        },
+        {
           title: 'Delete',
           name: 'delete-item',
           type: 'driver',
@@ -148,6 +189,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
           svg: 'assets/svg/common/ic_trash_updated.svg',
           danger: true,
           show: true,
+          redIcon: true,
         },
       ],
       export: true,

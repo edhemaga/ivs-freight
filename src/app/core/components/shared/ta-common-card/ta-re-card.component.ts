@@ -48,6 +48,7 @@ export class TaReCardComponent implements OnInit {
   @Output() dataDropDopwn = new EventEmitter<any>();
   @Input() hasToggler: boolean;
   @Input() public testDate: any;
+  @Input() public mainData: any;
   public data: any;
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
@@ -101,5 +102,58 @@ export class TaReCardComponent implements OnInit {
     event.stopPropagation();
     this.copiedCommon = true;
     this.clipboard.copy(val);
+  }
+
+  toggleDropdown(){
+    //console.log("heeeeeeeeer", this.mainData);
+    let currentDate = moment().format('MM/DD/YYYY');
+    console.log("cardNameCurrent", this.cardNameCurrent); 
+    if ( this.cardNameCurrent == 'registration' ) {
+      let expDate = moment(this.mainData?.expDate).format('MM/DD/YYYY');
+      
+      this.options.actions.map((action,index)=>{
+        if ( currentDate > expDate ) {
+          if ( index == 3 ) {
+            action.disabled = false;
+          } else if ( index == 4 ) {
+            action.disabled = true;
+          } else if ( index == 9 ) {
+            action.hide = true;
+          }
+        } else {
+          if ( index == 3 ) {
+            action.disabled = true;
+          } else if ( index == 4 ) {
+            action.disabled = false;
+          } else if ( index == 9 ) {
+            action.hide = false;
+          }
+        }
+      })
+    } else if ( this.cardNameCurrent == 'truckRegistration' ) {
+      let expDate = moment(this.mainData?.expDate).format('MM/DD/YYYY');
+      this.options.actions.map((action,index)=>{
+        if ( currentDate > expDate ) {
+          if ( index == 3 ) {
+            action.disabled = false;
+          } else if ( index == 4 ) {
+            action.disabled = true;
+          } else if ( index == 9 ) {
+            action.hide = true;
+          }
+        } else {
+          if ( index == 3 ) {
+            action.disabled = true;
+          } else if ( index == 4 ) {
+            action.disabled = false;
+          } else if ( index == 9 ) {
+            action.hide = false;
+          }
+        }
+      })
+    } else if ( this.cardNameCurrent == 'cdl' ) {
+      console.log('--cdl card opened--')
+    }
+    
   }
 }
