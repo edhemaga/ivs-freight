@@ -79,7 +79,7 @@ import { configFactory } from './app.config';
         provide: HTTP_INTERCEPTORS,
         useClass: RefreshTokenInterceptor,
         multi: true,
-      }
+      },
     ],
     EncryptionDecryptionService,
     GoogleMapsAPIWrapper,

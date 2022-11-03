@@ -4,7 +4,7 @@
       class="container-fluid d-flex flex-column justify-content-between medical-certificate-container"
     >
       <div class="d-flex flex-column align-items-center">
-        <app-applicant-header></app-applicant-header>
+        <app-applicant-header [mode]="selectedMode"></app-applicant-header>
 
         <h1 class="m-0 text-center title ta-font-bold">
           Medical Examiner's Certificate
@@ -36,7 +36,7 @@
                   customClass: 'datetimeclass',
                   incorrectInput: selectedMode === 'REVIEW_MODE'
                 }"
-                [incorrectValue]="false"
+                [incorrectValue]="openAnnotationArray[0].lineInputs[0]"
                 (incorrectEvent)="incorrectInput($event, 0, 0)"
               ></app-ta-input>
             </div>
@@ -52,7 +52,7 @@
                   customClass: 'datetimeclass',
                   incorrectInput: selectedMode === 'REVIEW_MODE'
                 }"
-                [incorrectValue]="false"
+                [incorrectValue]="openAnnotationArray[0].lineInputs[1]"
                 (incorrectEvent)="incorrectInput($event, 1, 0)"
               ></app-ta-input>
             </div>
@@ -150,7 +150,7 @@
 
       <!-- FOOTER -->
 
-      <app-applicant-footer></app-applicant-footer>
+      <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
     </div>
   </div>
 </div>
@@ -163,7 +163,11 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [lastStep]="true"
-    [filledCorrectly]="medicalCertificateForm.valid"
+    [filledCorrectly]="
+      selectedMode === 'APPLICANT_MODE' && medicalCertificateForm.valid
+    "
+    [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && hasIncorrectFields"
+    [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

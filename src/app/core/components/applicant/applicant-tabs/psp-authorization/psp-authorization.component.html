@@ -4,7 +4,7 @@
       class="container-fluid d-flex flex-column justify-content-between psp-authorization-container"
     >
       <div class="d-flex flex-column align-items-center">
-        <app-applicant-header></app-applicant-header>
+        <app-applicant-header [mode]="selectedMode"></app-applicant-header>
 
         <h1 class="m-0 text-center title ta-font-bold">
           PSP Online Service Authorization
@@ -127,6 +127,7 @@
                   ? 'applicant-feedback'
                   : 'bold-12'
               "
+              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
             >
             </app-ta-checkbox>
           </div>
@@ -167,6 +168,7 @@
                   ? 'applicant-disclosure-release-feedback'
                   : 'disclosure-release'
               "
+              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
             >
             </app-ta-checkbox>
 
@@ -179,7 +181,8 @@
                     ? '#3c3c3c'
                     : selectedMode === 'FEEDBACK_MODE'
                     ? '#919191'
-                    : '#6c6c6c'
+                    : '#6c6c6c',
+                cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
               }"
               (click)="handleCheckboxParagraphClick('isAuthorize')"
             >
@@ -208,6 +211,7 @@
                   ? 'applicant-disclosure-release-feedback'
                   : 'disclosure-release'
               "
+              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
             >
             </app-ta-checkbox>
 
@@ -220,7 +224,8 @@
                     ? '#3c3c3c'
                     : selectedMode === 'FEEDBACK_MODE'
                     ? '#919191'
-                    : '#6c6c6c'
+                    : '#6c6c6c',
+                cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
               }"
               (click)="handleCheckboxParagraphClick('isFurtherUnderstand')"
             >
@@ -250,6 +255,7 @@
                   ? 'applicant-disclosure-release-feedback'
                   : 'disclosure-release'
               "
+              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
             >
             </app-ta-checkbox>
 
@@ -262,7 +268,8 @@
                     ? '#3c3c3c'
                     : selectedMode === 'FEEDBACK_MODE'
                     ? '#919191'
-                    : '#6c6c6c'
+                    : '#6c6c6c',
+                cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
               }"
               (click)="handleCheckboxParagraphClick('isPspReport')"
             >
@@ -290,6 +297,7 @@
                   ? 'applicant-disclosure-release-feedback'
                   : 'disclosure-release'
               "
+              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
             >
             </app-ta-checkbox>
 
@@ -302,7 +310,8 @@
                     ? '#3c3c3c'
                     : selectedMode === 'FEEDBACK_MODE'
                     ? '#919191'
-                    : '#6c6c6c'
+                    : '#6c6c6c',
+                cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
               }"
               (click)="
                 handleCheckboxParagraphClick('isDisclosureRegardingReport')
@@ -344,6 +353,9 @@
 
           <div
             class="d-flex align-items-center justify-content-center text-center notice-info-container"
+            [ngStyle]="{
+              'margin-bottom': applicantCardInfo.ssn ? 0 : '20px'
+            }"
           >
             <p
               class="m-0 ta-font-regular"
@@ -361,6 +373,7 @@
 
           <div
             class="d-flex flex-column justify-content-center applicant-card-container"
+            *ngIf="applicantCardInfo.ssn"
           >
             <div
               class="d-flex align-items-center"
@@ -391,20 +404,17 @@
             >
               <div class="d-flex align-items-center driver-box">
                 <p class="m-0 ta-font-regular">
-                  <!--  {{ license.name }} -->
-                  aleksandar djordjevic
+                  {{ applicantCardInfo.name }}
                 </p>
               </div>
               <div class="d-flex align-items-center ssn-box">
                 <p class="m-0 ta-font-regular">
-                  <!--  {{ license.license }} -->
-                  123-45-6789
+                  {{ applicantCardInfo.ssn }}
                 </p>
               </div>
               <div class="d-flex align-items-center date-box">
                 <p class="m-0 ta-font-regular">
-                  <!--    {{ license.expDate }} -->
-                  01/19/20
+                  {{ applicantCardInfo.dob }}
                 </p>
               </div>
             </div>
@@ -432,7 +442,7 @@
 
       <!-- FOOTER -->
 
-      <app-applicant-footer></app-applicant-footer>
+      <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
     </div>
   </div>
 </div>
@@ -445,7 +455,12 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [lastStep]="true"
-    [filledCorrectly]="pspAuthorizationForm.valid && signature"
+    [filledCorrectly]="
+      selectedMode === 'APPLICANT_MODE' &&
+      pspAuthorizationForm.valid &&
+      signature
+    "
+    [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

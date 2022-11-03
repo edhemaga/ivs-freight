@@ -11,6 +11,11 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 import {
+  convertDateToBackend,
+  convertDateFromBackend,
+} from 'src/app/core/utils/methods.calculations';
+
+import {
   phoneFaxRegex,
   addressValidation,
   addressUnitValidation,
@@ -19,9 +24,13 @@ import {
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
 
+import { ApplicantSphFormQuery } from 'src/app/core/components/applicant/state/store/applicant-sph-form-store/applicant-sph-form.query';
+import { ApplicantSphFormStore } from 'src/app/core/components/applicant/state/store/applicant-sph-form-store/applicant-sph-form.store';
+
 import { ApplicantQuestion } from '../../../../../state/model/applicant-question.model';
 import { InputSwitchActions } from '../../../../../state/enum/input-switch-actions.enum';
 import { AddressEntity } from './../../../../../../../../../../appcoretruckassist/model/addressEntity';
+import { CreatePreviousEmployerDrugAndAlcoholCommand } from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step3',
@@ -33,9 +42,15 @@ export class Step3Component implements OnInit, AfterViewInit {
 
   private destroy$ = new Subject<void>();
 
-  public radioButtonsArray: any;
-
   public drugAndAlcoholTestingHistoryForm: FormGroup;
+
+  public radioButtonsArray: any;
+  public alcoholTestRadios: any;
+  public controledSubstancesRadios: any;
+  public refusedToSubmitRadios: any;
+  public otherViolationsRadios: any;
+  public drugAndAlcoholRegulationRadios: any;
+  public aspRehabilitationRadios: any;
 
   public selectedAddress: AddressEntity = null;
 
@@ -183,17 +198,28 @@ export class Step3Component implements OnInit, AfterViewInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private inputService: TaInputService,
-    private applicantActionsService: ApplicantActionsService
+    private applicantActionsService: ApplicantActionsService,
+    private applicantSphFormStore: ApplicantSphFormStore,
+    private applicantSphFormQuery: ApplicantSphFormQuery
   ) {}
 
   ngOnInit(): void {
     this.createForm();
 
     this.isNotSubjectToTesting();
+
+    this.getStepValuesFromStore();
   }
 
   ngAfterViewInit(): void {
     this.radioButtonsArray = this.components.toArray();
+
+    this.alcoholTestRadios = this.radioButtonsArray[0].buttons;
+    this.controledSubstancesRadios = this.radioButtonsArray[1].buttons;
+    this.refusedToSubmitRadios = this.radioButtonsArray[2].buttons;
+    this.otherViolationsRadios = this.radioButtonsArray[3].buttons;
+    this.drugAndAlcoholRegulationRadios = this.radioButtonsArray[4].buttons;
+    this.aspRehabilitationRadios = this.radioButtonsArray[5].buttons;
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -214,6 +240,98 @@ export class Step3Component implements OnInit, AfterViewInit {
       addressUnit: [null, [...addressUnitValidation]],
       aspRehabilitation: [null, Validators.required],
     });
+  }
+
+  public getStepValuesFromStore(): void {
+    let stepValuesResponse: any;
+
+    this.applicantSphFormQuery.stepThreeList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        stepValuesResponse = res;
+      });
+
+    if (stepValuesResponse) {
+      this.patchStepValues(stepValuesResponse);
+    }
+  }
+
+  public patchStepValues(stepValues: any): void {
+    const {
+      notSubjectToDot,
+      employmentFrom,
+      employmentTo,
+      higherAlcoholConcentration,
+      positiveDrugTest,
+      refusedToSubmitTest,
+      otherViolations,
+      violatedDot,
+      sapName,
+      phone,
+      address,
+      hasPositiveTests,
+    } = stepValues;
+
+    this.drugAndAlcoholTestingHistoryForm
+      .get('applicantNotSubject')
+      .patchValue(notSubjectToDot);
+
+    if (!notSubjectToDot) {
+      this.drugAndAlcoholTestingHistoryForm.patchValue({
+        employmentFromDate: convertDateFromBackend(employmentFrom),
+        employmentToDate: convertDateFromBackend(employmentTo),
+        alcoholTest: higherAlcoholConcentration,
+        controledSubstances: positiveDrugTest,
+        refusedToSubmit: refusedToSubmitTest,
+        otherViolations,
+        drugAndAlcoholRegulation: violatedDot,
+        sapName,
+        phone,
+        address: address.address,
+        addressUnit: address.addressUnit,
+        aspRehabilitation: hasPositiveTests,
+      });
+
+      setTimeout(() => {
+        this.selectedAddress = address;
+
+        if (higherAlcoholConcentration) {
+          this.alcoholTestRadios[0].checked = true;
+        } else {
+          this.alcoholTestRadios[1].checked = true;
+        }
+
+        if (positiveDrugTest) {
+          this.controledSubstancesRadios[0].checked = true;
+        } else {
+          this.controledSubstancesRadios[1].checked = true;
+        }
+
+        if (refusedToSubmitTest) {
+          this.refusedToSubmitRadios[0].checked = true;
+        } else {
+          this.refusedToSubmitRadios[1].checked = true;
+        }
+
+        if (otherViolations) {
+          this.otherViolationsRadios[0].checked = true;
+        } else {
+          this.otherViolationsRadios[1].checked = true;
+        }
+
+        if (violatedDot) {
+          this.drugAndAlcoholRegulationRadios[0].checked = true;
+        } else {
+          this.drugAndAlcoholRegulationRadios[1].checked = true;
+        }
+
+        if (hasPositiveTests) {
+          this.aspRehabilitationRadios[0].checked = true;
+        } else {
+          this.aspRehabilitationRadios[1].checked = true;
+        }
+      }, 150);
+    }
   }
 
   private isNotSubjectToTesting(): void {
@@ -388,6 +506,64 @@ export class Step3Component implements OnInit, AfterViewInit {
       this.inputService.markInvalid(this.drugAndAlcoholTestingHistoryForm);
       return;
     }
+
+    const {
+      applicantNotSubject,
+      employmentFromDate,
+      employmentToDate,
+      alcoholTest,
+      controledSubstances,
+      refusedToSubmit,
+      otherViolations,
+      drugAndAlcoholRegulation,
+      sapName,
+      phone,
+      addressUnit,
+      aspRehabilitation,
+    } = this.drugAndAlcoholTestingHistoryForm.value;
+
+    const selectedAddress = {
+      ...this.selectedAddress,
+      addressUnit,
+      county: '',
+    };
+
+    const saveData: CreatePreviousEmployerDrugAndAlcoholCommand = {
+      /* previousEmployerProspectId :, */
+      notSubjectToDot: applicantNotSubject,
+      employmentFrom: convertDateToBackend(employmentFromDate),
+      employmentTo: convertDateToBackend(employmentToDate),
+      higherAlcoholConcentration: alcoholTest,
+      positiveDrugTest: controledSubstances,
+      refusedToSubmitTest: refusedToSubmit,
+      otherViolations,
+      violatedDot: drugAndAlcoholRegulation,
+      sapName,
+      phone,
+      address: selectedAddress,
+      hasPositiveTests: aspRehabilitation,
+    };
+
+    /*   this.applicantActionsService
+      .createDrugAndAlcoholSphForm(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/sph-form-end']);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+ */
+    this.applicantSphFormStore.update(1, (entity) => {
+      return {
+        ...entity,
+        step3: saveData,
+      };
+    });
+
+    console.log('saveData', saveData);
   }
 
   ngOnDestroy(): void {

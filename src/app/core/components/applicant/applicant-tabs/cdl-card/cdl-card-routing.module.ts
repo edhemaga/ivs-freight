@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: '',
     component: CdlCardComponent,
-    data: { title: 'Cdl Card' },
+    data: { title: 'CDL Card' },
     children: [],
   },
 ];

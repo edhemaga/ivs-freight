@@ -1,10 +1,11 @@
 export interface ViolationModel {
-  id: number;
+  id?: number;
   date: string;
   vehicleType: string;
   location: any;
   description: string;
   isEditingViolation: boolean;
+  trafficViolationItemReview: any;
 }
 
 export class ViolationInfo {

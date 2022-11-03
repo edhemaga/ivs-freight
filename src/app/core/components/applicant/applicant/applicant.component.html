@@ -4,7 +4,7 @@
       class="container-fluid d-flex flex-column justify-content-between applicant-container"
     >
       <div class="d-flex flex-column justify-content-center">
-        <app-applicant-header></app-applicant-header>
+        <app-applicant-header [mode]="selectedMode"></app-applicant-header>
 
         <div class="d-flex justify-content-center step-progress-bar">
           <div
@@ -15,13 +15,16 @@
             "
             class="text-center step"
             [routerLinkActive]="
-              selectedMode === 'REVIEW_MODE' &&
-              reviewStoreArr[i].isReviewed &&
-              !reviewStoreArr[i].hasIncorrectAnswer
+              (selectedMode === 'REVIEW_MODE' &&
+                isStepReviewedArray[i].isReviewed &&
+                !isStepReviewedArray[i].hasIncorrectAnswer) ||
+              (selectedMode === 'REVIEW_MODE' &&
+                !isStepReviewedArray[i].isReviewed &&
+                !isStepReviewedArray[i].hasIncorrectAnswer)
                 ? 'step-active-review'
                 : selectedMode === 'REVIEW_MODE' &&
-                  reviewStoreArr[i].isReviewed &&
-                  reviewStoreArr[i].hasIncorrectAnswer
+                  isStepReviewedArray[i].isReviewed &&
+                  isStepReviewedArray[i].hasIncorrectAnswer
                 ? 'step-active-review-incorrect'
                 : selectedMode === 'FEEDBACK_MODE' &&
                   !feedbackStoreArr[i].hasIncorrectAnswer
@@ -33,15 +36,16 @@
             "
             [ngClass]="{
               'completed-step':
-                selectedMode === 'APPLICANT_MODE' && storeArr[i].isCompleted,
+                selectedMode === 'APPLICANT_MODE' &&
+                isStepCompletedArray[i].isCompleted,
               'completed-step-review':
                 selectedMode === 'REVIEW_MODE' &&
-                reviewStoreArr[i].isReviewed &&
-                !reviewStoreArr[i].hasIncorrectAnswer,
+                isStepReviewedArray[i].isReviewed &&
+                !isStepReviewedArray[i].hasIncorrectAnswer,
               'completed-step-review-incorrect':
                 selectedMode === 'REVIEW_MODE' &&
-                reviewStoreArr[i].isReviewed &&
-                reviewStoreArr[i].hasIncorrectAnswer,
+                isStepReviewedArray[i].isReviewed &&
+                isStepReviewedArray[i].hasIncorrectAnswer,
               'completed-step-feedback':
                 selectedMode === 'FEEDBACK_MODE' &&
                 !feedbackStoreArr[i].hasIncorrectAnswer,
@@ -70,10 +74,11 @@
             </p>
           </div>
         </div>
+
         <router-outlet></router-outlet>
       </div>
 
-      <app-applicant-footer></app-applicant-footer>
+      <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
     </div>
   </div>
 </div>
