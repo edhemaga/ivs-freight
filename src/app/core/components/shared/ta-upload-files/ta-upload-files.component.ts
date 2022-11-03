@@ -35,9 +35,11 @@ export class TaUploadFilesComponent implements OnInit {
   @Output() onFileEvent: EventEmitter<{
     files: UploadFile[] | UploadFile | any;
     action: string;
+    deleteId?: number;
   }> = new EventEmitter<{
     files: UploadFile[] | UploadFile | any;
     action: string;
+    deleteId?: number;
   }>(null);
 
   // Review
@@ -74,8 +76,9 @@ export class TaUploadFilesComponent implements OnInit {
         break;
       }
       case 'delete': {
-        this.files = this.files.filter((item) => item.fileName !== data.file.fileName);
-        this.onFileEvent.emit({ files: this.files, action: data.action });
+        let deleteId;
+        this.files = this.files.filter((item) => {console.log(data.file['fileId']);item.fileName !== data.file.fileName});
+        this.onFileEvent.emit({ files: this.files, action: data.action, deleteId: data.file['fileId'] });
         this.currentSlide = this.files.length - 1;
 
         if (
