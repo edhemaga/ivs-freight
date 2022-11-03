@@ -91,12 +91,26 @@
         ></app-ta-input>
       </div>
     </div>
-    <app-ta-custom-card [cardName]="'Notice of Assignment'">
+    <app-ta-custom-card
+      [cardName]="'Notice of Assignment'"
+      [isCardOpen]="false"
+    >
       Reausable Component edit Note
     </app-ta-custom-card>
     <app-ta-input-note
       formControlName="note"
-      [isVisibleNote]="factoringForm.get('note').value"
+      [isVisibleNote]="
+        factoringForm.get('note').value &&
+        factoringForm.get('note').value != 'null'
+          ? factoringForm.get('note').value
+          : false
+      "
+      [note]="
+        factoringForm.get('note').value &&
+        factoringForm.get('note').value != 'null'
+          ? factoringForm.get('note').value
+          : ''
+      "
     ></app-ta-input-note>
   </form>
 </app-ta-modal>
