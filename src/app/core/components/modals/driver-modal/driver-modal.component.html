@@ -142,7 +142,7 @@
           <!-- Payroll -->
           <app-ta-custom-card
             [cardName]="'Payroll'"
-            [isCardOpen]="true && !driverForm.get('isOwner').value"
+            [isCardOpen]="!driverForm.get('isOwner').value"
             [animationMarginParams]="{
               marginTop: '18px',
               marginBottom: '22px'
@@ -417,6 +417,30 @@
               </div>
             </div>
 
+            <!--Flat Rate -->
+            <div
+              *ngIf="
+                selectedPayType?.name.toLowerCase() === 'flat rate' &&
+                !driverForm.get('isOwner').value
+              "
+              class="row"
+            >
+              <div class="col-12">
+                <app-ta-input
+                  formControlName="flatRate"
+                  [inputConfig]="{
+                    name: 'Flat Rate',
+                    label: 'Flat Rate',
+                    type: 'text',
+                    placeholderIcon: 'dollar',
+                    customClass: 'dollar-placeholderIcon',
+                    thousandSeparator: true,
+                    min: 0,
+                    max: 5000
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
             <!-- Bank -->
             <div class="custom-bank-row custom-bank-row-driver">
               <div class="bank-field">

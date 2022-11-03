@@ -285,6 +285,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       teamLoadedMile: [null],
       teamPerStop: [null, perStopValidation],
       perMileTeam: [null],
+      flatRate: [null],
       commissionSolo: [25],
       commissionTeam: [25],
       isOwner: [false],
@@ -481,6 +482,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
       this.driverForm.get('commissionSolo').patchValue(null);
       this.driverForm.get('commissionTeam').patchValue(null);
+
+      this.inputService.changeValidators(
+        this.driverForm.get('flatRate'),
+        false
+      );
     }
 
     if (payType === 2) {
@@ -510,12 +516,54 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         false
       );
 
+      this.inputService.changeValidators(
+        this.driverForm.get('flatRate'),
+        false
+      );
+
       this.driverForm
         .get('commissionSolo')
         .patchValue(this.payrollCompany.solo.commissionSolo);
       this.driverForm
         .get('commissionTeam')
         .patchValue(this.payrollCompany.team.commissionTeam);
+    }
+
+    if (payType === 3) {
+      this.inputService.changeValidators(
+        this.driverForm.get('soloEmptyMile'),
+        false
+      );
+
+      this.inputService.changeValidators(
+        this.driverForm.get('soloLoadedMile'),
+        false
+      );
+
+      this.inputService.changeValidators(
+        this.driverForm.get('soloPerStop'),
+        false
+      );
+
+      this.inputService.changeValidators(
+        this.driverForm.get('teamEmptyMile'),
+        false
+      );
+
+      this.inputService.changeValidators(
+        this.driverForm.get('teamLoadedMile'),
+        false
+      );
+
+      this.inputService.changeValidators(
+        this.driverForm.get('teamPerStop'),
+        false
+      );
+
+      this.driverForm.get('commissionSolo').patchValue(null);
+      this.driverForm.get('commissionTeam').patchValue(null);
+
+      this.inputService.changeValidators(this.driverForm.get('flatRate'), true);
     }
   }
 
@@ -704,6 +752,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         if (!event) {
           return;
         }
+        console.log(this.selectedPayType);
         this.onPayTypeSelected(this.selectedPayType.id);
         break;
       }
@@ -935,11 +984,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             this.driverForm
               .get('perMileSolo')
               .patchValue(data.perMileSolo, { emitEvent: false });
-            this.driverForm
-              .get('commissionSolo')
-              .patchValue(data.defaultSoloDriverCommission, {
-                emitEvent: false,
-              });
+
+            if (data.defaultSoloDriverCommission) {
+              this.driverForm
+                .get('commissionSolo')
+                .patchValue(data.defaultSoloDriverCommission, {
+                  emitEvent: false,
+                });
+            }
           }
 
           if (['Team', 'Combined'].includes(this.fleetType)) {
@@ -966,23 +1018,30 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             this.driverForm
               .get('perMileTeam')
               .patchValue(data.perMileTeam, { emitEvent: false });
-            this.driverForm
-              .get('commissionTeam')
-              .patchValue(data.defaultTeamDriverCommission, {
-                emitEvent: false,
-              });
+
+            if (data.defaultTeamDriverCommission) {
+              this.driverForm
+                .get('commissionTeam')
+                .patchValue(data.defaultTeamDriverCommission, {
+                  emitEvent: false,
+                });
+            }
           }
 
           this.payrollCompany = {
             solo: {
               ...data.solo,
               perMileSolo: data.perMileSolo,
-              commissionSolo: data.defaultSoloDriverCommission,
+              commissionSolo: data.defaultSoloDriverCommission
+                ? data.defaultSoloDriverCommission
+                : this.driverForm.get('commissionSolo').value,
             },
             team: {
               ...data.team,
               perMileTeam: data.perMileTeam,
-              commissionTeam: data.defaultTeamDriverCommission,
+              commissionTeam: data.defaultTeamDriverCommission
+                ? data.defaultTeamDriverCommission
+                : this.driverForm.get('commissionTeam').value,
             },
             mvrExpiration: data.mvrExpiration.toString(),
           };
@@ -1011,6 +1070,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       teamPerStop,
       perMileTeam,
       commissionTeam,
+
+      flatRate,
 
       soloDriver,
       teamDriver,
@@ -1185,6 +1246,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           ? parseFloat(commissionTeam)
           : null
         : null,
+      flatRate: flatRate ? convertThousanSepInNumber(flatRate) : null,
       general: {
         mailNotification: mailNotificationGeneral,
         pushNotification: pushNotificationGeneral,
@@ -1311,12 +1373,16 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       soloPerStop,
       perMileSolo,
       commissionSolo,
-      mvrExpiration,
+
       teamEmptyMile,
       teamLoadedMile,
       teamPerStop,
       perMileTeam,
       commissionTeam,
+
+      flatRate,
+
+      mvrExpiration,
 
       soloDriver,
       teamDriver,
@@ -1493,6 +1559,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           ? parseFloat(commissionTeam)
           : null
         : null,
+      flatRate: flatRate ? convertThousanSepInNumber(flatRate) : null,
       general: {
         mailNotification: mailNotificationGeneral,
         pushNotification: pushNotificationGeneral,
@@ -1567,6 +1634,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
               ? convertNumberInThousandSep(res.solo.perStop)
               : null,
             soloDriver: res.soloDriver,
+            flatRate: res.flatRate
+              ? convertNumberInThousandSep(res.flatRate)
+              : null,
             teamPerStop: res.team.perStop
               ? convertNumberInThousandSep(res.team.perStop)
               : null,
