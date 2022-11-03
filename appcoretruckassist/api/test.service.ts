@@ -19,7 +19,6 @@ import { Observable }                                        from 'rxjs';
 
 import { CreateWithUploadsResponse } from '../model/models';
 import { GetTestModalResponse } from '../model/models';
-import { ProblemDetails } from '../model/models';
 import { TestResponse } from '../model/models';
 import { TestResult } from 'appcoretruckassist/model/testResult';
 import { TestType } from 'appcoretruckassist/model/testType';
