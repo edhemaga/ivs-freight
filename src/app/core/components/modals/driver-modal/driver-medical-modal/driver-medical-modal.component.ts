@@ -192,6 +192,8 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
             expDate: convertDateFromBackend(res.expDate),
             note: res.note,
           });
+
+          this.documents = res.files ? (res.files as any) : [];
         },
         error: () => {
           this.notificationService.error("Can't get Test", 'Error:');

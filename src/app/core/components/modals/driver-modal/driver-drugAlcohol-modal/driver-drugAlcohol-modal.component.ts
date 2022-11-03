@@ -288,6 +288,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
           });
           this.selectedTestType = res.testType;
           this.selectedReasonType = res.testReason;
+          this.documents = res.files ? (res.files as any) : [];
         },
         error: () => {
           this.notificationService.error("Can't get Test", 'Error:');

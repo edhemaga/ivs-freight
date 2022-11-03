@@ -224,6 +224,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
             id: res.cdlId,
             name: res.cdlNumber,
           };
+
+          this.documents = res.files ? (res.files as any) : [];
         },
         error: () => {
           this.notificationService.error("Can't get Test", 'Error:');
