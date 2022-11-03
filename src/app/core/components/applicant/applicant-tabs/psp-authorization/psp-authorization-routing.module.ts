@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: '',
     component: PspAuthorizationComponent,
-    data: { title: 'Psp Authorization' },
+    data: { title: 'PSP Authorization' },
     children: [],
   },
 ];

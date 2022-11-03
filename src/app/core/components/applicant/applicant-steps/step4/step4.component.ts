@@ -6,15 +6,24 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
-import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+  convertDateToBackend,
+  convertDateFromBackend,
+} from 'src/app/core/utils/methods.calculations';
 
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
-import { ApplicantListsService } from '../../state/services/applicant-lists.service';
+
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { AccidentModel } from '../../state/model/accident.model';
 import {
+  AccidentRecordFeedbackResponse,
+  ApplicantModalResponse,
+  ApplicantResponse,
   CreateAccidentRecordCommand,
+  CreateAccidentRecordReviewCommand,
   TruckTypeResponse,
 } from 'appcoretruckassist/model/models';
 
@@ -45,66 +54,37 @@ export class Step4Component implements OnInit, OnDestroy {
   public helperIndex: number = 2;
 
   public isEditing: boolean = false;
+  public isReviewingCard: boolean = false;
 
   public formValuesToPatch: any;
+  public previousFormValuesOnEdit: any;
 
   public openAnnotationArray: {
     lineIndex?: number;
     lineInputs?: boolean[];
     displayAnnotationButton?: boolean;
     displayAnnotationTextArea?: boolean;
-  }[] = [
-    {
-      lineIndex: 0,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 1,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 2,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 3,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-  ];
+  }[] = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+  public hasIncorrectFields: boolean = false;
+  public cardsWithIncorrectFields: boolean = false;
+  public previousFormValuesOnReview: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private applicantActionsService: ApplicantActionsService,
-    private applicantListsService: ApplicantListsService
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
     this.createForm();
 
+    this.getStepValuesFromStore();
+
     this.getDropdownLists();
 
     this.hasNoAccidents();
-
-    this.applicantActionsService.getApplicantInfo$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res.personalInfo.applicantId;
-      });
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -126,6 +106,105 @@ export class Step4Component implements OnInit, OnDestroy {
     });
   }
 
+  public getStepValuesFromStore(): void {
+    this.applicantQuery.applicant$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        if (res.accidentRecords) {
+          this.patchStepValues(res.accidentRecords);
+        }
+      });
+  }
+
+  public patchStepValues(stepValues: AccidentRecordFeedbackResponse): void {
+    console.log('stepValues', stepValues);
+    const { noAccidentInThreeYears, accidents } = stepValues;
+
+    this.accidentForm.get('hasPastAccident').patchValue(noAccidentInThreeYears);
+
+    this.formStatus = 'VALID';
+
+    if (!noAccidentInThreeYears) {
+      const lastItemInAccidentArray = accidents[accidents.length - 1];
+
+      const restOfTheItemsInAccidenteArray = [...accidents];
+
+      restOfTheItemsInAccidenteArray.pop();
+
+      const filteredAccidentArray = restOfTheItemsInAccidenteArray.map(
+        (item) => {
+          return {
+            isEditingAccident: false,
+            location: item.location,
+            accidentState: item.location.stateShortName,
+            date: convertDateFromBackend(item.date).replace(/-/g, '/'),
+            hazmatSpill: item.hazmatSpill,
+            fatalities: item.fatalities,
+            injuries: item.injuries,
+            vehicleType: item.vehicleType.name,
+            description: item.description,
+            accidentRecordReview: item.accidentRecordReview
+              ? item.accidentRecordReview
+              : null,
+          };
+        }
+      );
+
+      const filteredLastItemInAccidentArray = {
+        isEditingAccident: false,
+        location: lastItemInAccidentArray.location,
+        accidentState: lastItemInAccidentArray.location.stateShortName,
+        date: convertDateFromBackend(lastItemInAccidentArray.date).replace(
+          /-/g,
+          '/'
+        ),
+        hazmatSpill: lastItemInAccidentArray.hazmatSpill,
+        fatalities: lastItemInAccidentArray.fatalities,
+        injuries: lastItemInAccidentArray.injuries,
+        vehicleType: lastItemInAccidentArray.vehicleType.name,
+        description: lastItemInAccidentArray.description,
+        accidentRecordReview: lastItemInAccidentArray.accidentRecordReview
+          ? lastItemInAccidentArray.accidentRecordReview
+          : null,
+      };
+
+      this.accidentArray = [...filteredAccidentArray];
+
+      this.formValuesToPatch = filteredLastItemInAccidentArray;
+      this.previousFormValuesOnReview = filteredLastItemInAccidentArray;
+      this.previousFormValuesOnEdit = this.accidentArray.length
+        ? filteredLastItemInAccidentArray
+        : {
+            location: null,
+            date: null,
+            fatalities: 0,
+            injuries: 0,
+            hazmatSpill: null,
+            vehicleType: null,
+            description: null,
+          };
+
+      for (let i = 0; i < filteredAccidentArray.length; i++) {
+        const firstEmptyObjectInList = this.openAnnotationArray.find(
+          (item) => Object.keys(item).length === 0
+        );
+
+        const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+          firstEmptyObjectInList
+        );
+
+        this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+          lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+          lineInputs: [false],
+          displayAnnotationButton: false,
+          displayAnnotationTextArea: false,
+        };
+      }
+    }
+  }
+
   private hasNoAccidents(): void {
     this.accidentForm
       .get('hasPastAccident')
@@ -135,9 +214,10 @@ export class Step4Component implements OnInit, OnDestroy {
           this.formStatus = 'VALID';
 
           this.formValuesToPatch = {
+            location: null,
             date: null,
-            fatalities: null,
-            injuries: null,
+            fatalities: 0,
+            injuries: 0,
             hazmatSpill: null,
             vehicleType: null,
             description: null,
@@ -201,6 +281,8 @@ export class Step4Component implements OnInit, OnDestroy {
 
     this.helperIndex = 2;
     this.selectedAccidentIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
   }
 
   public saveEditedAccident(event: any): void {
@@ -211,6 +293,8 @@ export class Step4Component implements OnInit, OnDestroy {
 
     this.helperIndex = 2;
     this.selectedAccidentIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
   }
 
   public onGetFormStatus(status: string): void {
@@ -227,6 +311,80 @@ export class Step4Component implements OnInit, OnDestroy {
     this.lastAccidentCard = event;
   }
 
+  public onHasIncorrectFields(event: any): void {
+    if (event) {
+      this.hasIncorrectFields = true;
+    } else {
+      this.hasIncorrectFields = false;
+    }
+  }
+
+  public onGetOpenAnnotationArrayValues(event: any): void {
+    this.previousFormValuesOnReview.accidentRecordReview = {
+      isLocationValid: !event[0].lineInputs[0],
+      isDateValid: !event[0].lineInputs[1],
+      isVehicleTypeValid: !event[1].lineInputs[0],
+      isDescriptionValid: !event[1].lineInputs[1],
+    };
+  }
+
+  public onGetCardOpenAnnotationArrayValues(event: any): void {
+    this.isReviewingCard = false;
+
+    this.accidentArray[this.selectedAccidentIndex].isEditingAccident = false;
+
+    this.accidentArray[this.selectedAccidentIndex].accidentRecordReview = {
+      isLocationValid: !event[0].lineInputs[0],
+      isDateValid: !event[0].lineInputs[1],
+      isVehicleTypeValid: !event[1].lineInputs[0],
+      isDescriptionValid: !event[1].lineInputs[1],
+    };
+
+    const hasInvalidFields = JSON.stringify(
+      this.accidentArray[this.selectedAccidentIndex].accidentRecordReview
+    );
+
+    if (hasInvalidFields.includes('false')) {
+      this.openAnnotationArray[
+        this.selectedAccidentIndex
+      ].displayAnnotationButton = true;
+
+      this.openAnnotationArray[this.selectedAccidentIndex].lineInputs[0] = true;
+
+      this.cardsWithIncorrectFields = true;
+    } else {
+      this.openAnnotationArray[
+        this.selectedAccidentIndex
+      ].displayAnnotationButton = false;
+
+      this.hasIncorrectFields = false;
+    }
+
+    this.helperIndex = 2;
+    this.selectedAccidentIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnReview;
+  }
+
+  public cancelAccidentReview(event: any): void {
+    this.isReviewingCard = false;
+
+    this.accidentArray[this.selectedAccidentIndex].isEditingAccident = false;
+
+    this.helperIndex = 2;
+    this.selectedAccidentIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnReview;
+  }
+
+  public getDropdownLists(): void {
+    this.applicantQuery.applicantDropdownLists$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: ApplicantModalResponse) => {
+        this.vehicleType = res.truckTypes;
+      });
+  }
+
   public incorrectInput(
     event: any,
     inputIndex: number,
@@ -238,15 +396,32 @@ export class Step4Component implements OnInit, OnDestroy {
     );
 
     if (type === 'card') {
-      selectedInputsLine.lineInputs[inputIndex] =
-        !selectedInputsLine.lineInputs[inputIndex];
-
-      selectedInputsLine.displayAnnotationButton =
-        !selectedInputsLine.displayAnnotationButton;
+      if (selectedInputsLine.displayAnnotationButton) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+        selectedInputsLine.displayAnnotationButton = false;
+      }
 
       if (selectedInputsLine.displayAnnotationTextArea) {
         selectedInputsLine.displayAnnotationButton = false;
         selectedInputsLine.displayAnnotationTextArea = false;
+      }
+
+      Object.keys(this.accidentArray[lineIndex].accidentRecordReview).forEach(
+        (key) => {
+          this.accidentArray[lineIndex].accidentRecordReview[key] = true;
+        }
+      );
+
+      const inputFieldsArray = JSON.stringify(
+        this.openAnnotationArray
+          .filter((item) => Object.keys(item).length !== 0)
+          .map((item) => item.lineInputs)
+      );
+
+      if (inputFieldsArray.includes('true')) {
+        this.cardsWithIncorrectFields = true;
+      } else {
+        this.cardsWithIncorrectFields = false;
       }
     } else {
       if (event) {
@@ -285,18 +460,32 @@ export class Step4Component implements OnInit, OnDestroy {
     }
   }
 
-  public getDropdownLists(): void {
-    this.applicantListsService
-      .getDropdownLists()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.vehicleType = data.truckTypes;
-      });
+  public onCardReview(index: number) {
+    if (this.isReviewingCard) {
+      return;
+    }
+
+    this.helperIndex = index;
+    this.selectedAccidentIndex = index;
+
+    this.accidentArray[index].isEditingAccident = true;
+
+    this.isReviewingCard = true;
+
+    const selectedAccident = this.accidentArray[index];
+
+    this.formValuesToPatch = selectedAccident;
   }
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
 
     if (event.action === 'back-step') {
@@ -314,7 +503,7 @@ export class Step4Component implements OnInit, OnDestroy {
 
     const filteredAccidentArray = this.accidentArray.map((item) => {
       return {
-        location: item.location.address,
+        location: item.location,
         date: convertDateToBackend(item.date),
         fatalities: item.fatalities,
         injuries: item.injuries,
@@ -344,12 +533,21 @@ export class Step4Component implements OnInit, OnDestroy {
     }
 
     const saveData: CreateAccidentRecordCommand = {
-      applicantId: 1,
+      applicantId: this.applicantId,
       noAccidentInThreeYears: hasPastAccident,
       accidents: hasPastAccident
         ? []
         : [...filteredAccidentArray, filteredLastAccidentCard],
     };
+
+    const storeAccidentRecordItems = saveData.accidents.map((item) => {
+      return {
+        ...item,
+        vehicleType: this.vehicleType.find(
+          (vehicleItem) => vehicleItem.id === item.vehicleTypeId
+        ),
+      };
+    });
 
     this.applicantActionsService
       .createAccidentRecord(saveData)
@@ -357,6 +555,22 @@ export class Step4Component implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/5`]);
+
+          this.applicantStore.update((store) => {
+            const noAccidents = saveData.noAccidentInThreeYears;
+
+            return {
+              ...store,
+              applicant: {
+                ...store.applicant,
+                accidentRecords: {
+                  ...store.applicant.accidentRecords,
+                  noAccidentInThreeYears: noAccidents,
+                  accidents: noAccidents ? null : storeAccidentRecordItems,
+                },
+              },
+            };
+          });
         },
         error: (err) => {
           console.log(err);
@@ -364,7 +578,51 @@ export class Step4Component implements OnInit, OnDestroy {
       });
   }
 
-  /* public onSubmitReview(data: any): void {} */
+  public onSubmitReview(): void {
+    const lastItemReview = this.previousFormValuesOnReview.accidentRecordReview;
+
+    const lastReviewedItemInAccidentArray = {
+      isLocationValid: lastItemReview ? lastItemReview.isLocationValid : true,
+      isDateValid: lastItemReview ? lastItemReview.isDateValid : true,
+      locationDateMessage: this.lastAccidentCard.firstRowReview,
+      isVehicleTypeValid: true,
+      isDescriptionValid: lastItemReview
+        ? lastItemReview.isDescriptionValid
+        : true,
+      vehicleTypeDescriptionMessage: this.lastAccidentCard.secondRowReview,
+    };
+
+    const saveData: CreateAccidentRecordReviewCommand = {
+      applicantId: this.applicantId,
+      accidentReviews: [lastReviewedItemInAccidentArray],
+    };
+
+    console.log('saveData', saveData.accidentReviews[0]);
+
+    this.applicantActionsService
+      .createAccidentRecordReview(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/5`]);
+
+          /* this.applicantStore.update(1, (entity) => {
+            return {
+              ...entity,
+              education: {
+                ...entity.education,
+                educationReview: rest,
+              },
+            };
+          }); */
+
+          console.log('updatedStore', this.applicantStore);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

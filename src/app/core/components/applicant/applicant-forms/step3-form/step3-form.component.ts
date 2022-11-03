@@ -13,9 +13,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription, Subject, takeUntil } from 'rxjs';
 
+import moment from 'moment';
+
 import { FormService } from './../../../../services/form/form.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { ApplicantListsService } from '../../state/services/applicant-lists.service';
+
+import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import {
   anyInputInLineIncorrect,
@@ -26,6 +29,7 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { LicenseModel } from '../../state/model/cdl-information';
 import {
+  ApplicantModalResponse,
   CdlEndorsementResponse,
   CdlRestrictionResponse,
   EnumValue,
@@ -39,9 +43,11 @@ import {
 export class Step3FormComponent
   implements OnInit, OnDestroy, OnChanges, AfterViewInit
 {
+  @Input() mode: string;
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
   @Input() markFormInvalid?: boolean;
+  @Input() isReviewingCard: boolean;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
@@ -49,6 +55,10 @@ export class Step3FormComponent
   @Output() formStatusEmitter = new EventEmitter<any>();
   @Output() markInvalidEmitter = new EventEmitter<any>();
   @Output() lastFormValuesEmitter = new EventEmitter<any>();
+  @Output() hasIncorrectFieldsEmitter = new EventEmitter<any>();
+  @Output() openAnnotationArrayValuesEmitter = new EventEmitter<any>();
+  @Output() cardOpenAnnotationArrayValuesEmitter = new EventEmitter<any>();
+  @Output() cancelFormReviewingEmitter = new EventEmitter<any>();
 
   private destroy$ = new Subject<void>();
 
@@ -116,91 +126,84 @@ export class Step3FormComponent
       displayAnnotationTextArea: false,
     },
   ];
+  public isCardReviewedIncorrect: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private formService: FormService,
-    private applicantListsService: ApplicantListsService
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
     this.createForm();
 
     this.getDropdownLists();
+  }
 
-    if (this.formValuesToPatch) {
-      this.patchForm();
-
-      this.subscription = this.licenseForm.valueChanges
+  ngAfterViewInit(): void {
+    if (this.selectedMode === SelectedMode.APPLICANT) {
+      this.licenseForm.statusChanges
         .pipe(takeUntil(this.destroy$))
-        .subscribe((updatedFormValues) => {
-          const { isEditingLicense, ...previousFormValues } =
-            this.formValuesToPatch;
+        .subscribe((res) => {
+          this.formStatusEmitter.emit(res);
+        });
 
-          const {
-            restrictions,
-            endorsments,
-            restrictionsSubscription,
-            endorsmentsSubscription,
-            firstRowReview,
-            secondRowReview,
-            thirdRowReview,
-            fourthRowReview,
-            ...newFormValues
-          } = updatedFormValues;
+      this.licenseForm.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          res.restrictions = this.selectedRestrictions;
+          res.endorsments = this.selectedEndorsments;
 
-          previousFormValues.licenseNumber =
-            previousFormValues.licenseNumber.toUpperCase();
+          this.lastFormValuesEmitter.emit(res);
+        });
+    }
 
-          newFormValues.licenseNumber =
-            newFormValues.licenseNumber?.toUpperCase();
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      this.licenseForm.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          const reviewMessages = {
+            firstRowReview: res.firstRowReview,
+            secondRowReview: res.secondRowReview,
+          };
 
-          previousFormValues.restrictions = JSON.stringify(
-            previousFormValues.restrictions.map((item) => item.id)
-          );
-          newFormValues.restrictions = JSON.stringify(
-            restrictionsSubscription?.map((item) => item.id)
-          );
-
-          previousFormValues.endorsments = JSON.stringify(
-            previousFormValues.endorsments.map((item) => item.id)
-          );
-          newFormValues.endorsments = JSON.stringify(
-            endorsmentsSubscription?.map((item) => item.id)
-          );
-
-          if (isFormValueEqual(previousFormValues, newFormValues)) {
-            this.isLicenseEdited = false;
-          } else {
-            this.isLicenseEdited = true;
-          }
+          this.lastFormValuesEmitter.emit(reviewMessages);
         });
     }
   }
 
-  ngAfterViewInit(): void {
-    this.licenseForm.statusChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.formStatusEmitter.emit(res);
-      });
-
-    this.licenseForm.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        res.restrictions = this.selectedRestrictions;
-        res.endorsments = this.selectedEndorsments;
-
-        this.lastFormValuesEmitter.emit(res);
-      });
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.markFormInvalid?.currentValue) {
-      this.inputService.markInvalid(this.licenseForm);
+    if (changes.mode?.previousValue !== changes.mode?.currentValue) {
+      this.selectedMode = changes.mode?.currentValue;
 
-      this.markInvalidEmitter.emit(false);
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        if (
+          changes.markFormInvalid?.previousValue !==
+          changes.markFormInvalid?.currentValue
+        ) {
+          this.inputService.markInvalid(this.licenseForm);
+          this.markInvalidEmitter.emit(false);
+        }
+      }
+
+      if (
+        this.selectedMode === SelectedMode.REVIEW ||
+        this.selectedMode === SelectedMode.APPLICANT
+      ) {
+        if (
+          changes.formValuesToPatch?.previousValue !==
+          changes.formValuesToPatch?.currentValue
+        ) {
+          setTimeout(() => {
+            this.patchForm(changes.formValuesToPatch.currentValue);
+
+            if (this.selectedMode === SelectedMode.APPLICANT) {
+              this.startValueChangesMonitoring();
+            }
+          }, 100);
+        }
+      }
     }
   }
 
@@ -218,63 +221,141 @@ export class Step3FormComponent
 
       firstRowReview: [null],
       secondRowReview: [null],
-      thirdRowReview: [null],
-      fourthRowReview: [null],
     });
   }
 
-  public patchForm(): void {
+  public patchForm(formValue: any): void {
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      if (formValue.licenseReview) {
+        const {
+          isLicenseNumberValid,
+          isCountryValid,
+          isStateValid,
+          isClassValid,
+          isExpDateValid,
+          isRestrictionsValid,
+          isEndorsmentsValid,
+        } = formValue.licenseReview;
+
+        this.openAnnotationArray[10] = {
+          ...this.openAnnotationArray[10],
+          lineInputs: [!isLicenseNumberValid, !isCountryValid],
+        };
+        this.openAnnotationArray[11] = {
+          ...this.openAnnotationArray[11],
+          lineInputs: [!isStateValid, !isClassValid, !isExpDateValid],
+        };
+        this.openAnnotationArray[12] = {
+          ...this.openAnnotationArray[12],
+          lineInputs: [!isRestrictionsValid],
+        };
+        this.openAnnotationArray[13] = {
+          ...this.openAnnotationArray[13],
+          lineInputs: [!isEndorsmentsValid],
+        };
+      }
+    }
+
     this.licenseForm.patchValue({
-      licenseNumber: this.formValuesToPatch.licenseNumber,
-      country: this.formValuesToPatch.country,
-      state: this.formValuesToPatch.state,
-      classType: this.formValuesToPatch.classType,
-      expDate: this.formValuesToPatch.expDate,
+      licenseNumber: formValue.licenseNumber,
+      country: formValue.country,
+      state: formValue.state,
+      classType: formValue.classType,
+      expDate: formValue.expDate,
     });
 
     setTimeout(() => {
-      if (this.formValuesToPatch.country.toLowerCase() === 'us') {
+      if (formValue.country?.toLowerCase() === 'us') {
         this.stateTypes = this.usStates;
       } else {
         this.stateTypes = this.canadaStates;
       }
 
       this.selectedCountryType = this.countryTypes.find(
-        (item) => item.name === this.formValuesToPatch.country
+        (item) => item.name === formValue?.country
       );
 
       const filteredStateType = this.usStates.find(
-        (stateItem) => stateItem.name === this.formValuesToPatch.state
+        (stateItem) => stateItem.name === formValue?.state
       );
 
       this.selectedStateType = filteredStateType
         ? filteredStateType
         : this.canadaStates.find(
-            (stateItem) => stateItem.name === this.formValuesToPatch.state
+            (stateItem) => stateItem.name === formValue?.state
           );
 
       this.selectedClassType = this.classTypes.find(
-        (item) => item.name === this.formValuesToPatch.classType
+        (item) => item.name === formValue?.classType
       );
 
-      this.selectedRestrictions = this.formValuesToPatch.restrictions.map(
-        (item) => {
-          return {
-            ...item,
-            name: item.code.concat(' ', '-').concat(' ', item.description),
-          };
-        }
-      );
+      this.selectedRestrictions = formValue.restrictions.map((item) => {
+        return {
+          ...item,
+          name: item.code.concat(' ', '-').concat(' ', item.description),
+        };
+      });
 
-      this.selectedEndorsments = this.formValuesToPatch.endorsments.map(
-        (item) => {
-          return {
-            ...item,
-            name: item.code.concat(' ', '-').concat(' ', item.description),
-          };
-        }
-      );
+      this.selectedEndorsments = formValue.endorsments.map((item) => {
+        return {
+          ...item,
+          name: item.code.concat(' ', '-').concat(' ', item.description),
+        };
+      });
     }, 150);
+  }
+
+  public startValueChangesMonitoring(): void {
+    this.subscription = this.licenseForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((updatedFormValues) => {
+        const {
+          isEditingLicense,
+          licenseReview,
+          expDate,
+          ...previousFormValues
+        } = this.formValuesToPatch;
+
+        const {
+          restrictions,
+          endorsments,
+          restrictionsSubscription,
+          endorsmentsSubscription,
+          firstRowReview,
+          secondRowReview,
+          ...newFormValues
+        } = updatedFormValues;
+
+        previousFormValues.expDate = moment(new Date(expDate)).format(
+          'MM/DD/YY'
+        );
+
+        previousFormValues.licenseNumber =
+          previousFormValues.licenseNumber?.toUpperCase();
+
+        newFormValues.licenseNumber =
+          newFormValues.licenseNumber?.toUpperCase();
+
+        previousFormValues.restrictions = JSON.stringify(
+          previousFormValues.restrictions?.map((item) => item.id)
+        );
+        newFormValues.restrictions = JSON.stringify(
+          restrictionsSubscription?.map((item) => item.id)
+        );
+
+        previousFormValues.endorsments = JSON.stringify(
+          previousFormValues.endorsments?.map((item) => item.id)
+        );
+        newFormValues.endorsments = JSON.stringify(
+          endorsmentsSubscription?.map((item) => item.id)
+        );
+
+        if (isFormValueEqual(previousFormValues, newFormValues)) {
+          this.isLicenseEdited = false;
+        } else {
+          this.isLicenseEdited = true;
+        }
+      });
   }
 
   public handleInputSelect(event: any, action: string): void {
@@ -342,8 +423,6 @@ export class Step3FormComponent
       endorsmentsSubscription,
       firstRowReview,
       secondRowReview,
-      thirdRowReview,
-      fourthRowReview,
       ...licenseForm
     } = this.licenseForm.value;
 
@@ -362,8 +441,6 @@ export class Step3FormComponent
     this.selectedEndorsments = [];
     this.selectedRestrictions = [];
 
-    this.licenseForm.reset();
-
     this.formService.resetForm(this.licenseForm);
   }
 
@@ -372,7 +449,7 @@ export class Step3FormComponent
 
     this.isLicenseEdited = false;
 
-    this.licenseForm.reset();
+    this.formService.resetForm(this.licenseForm);
 
     this.subscription.unsubscribe();
   }
@@ -394,8 +471,6 @@ export class Step3FormComponent
       endorsmentsSubscription,
       firstRowReview,
       secondRowReview,
-      thirdRowReview,
-      fourthRowReview,
       ...licenseForm
     } = this.licenseForm.value;
 
@@ -416,31 +491,79 @@ export class Step3FormComponent
     this.selectedEndorsments = [];
     this.selectedRestrictions = [];
 
-    this.licenseForm.reset();
+    this.formService.resetForm(this.licenseForm);
 
     this.subscription.unsubscribe();
+  }
+
+  public getDropdownLists(): void {
+    this.applicantQuery.applicantDropdownLists$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: ApplicantModalResponse) => {
+        this.countryTypes = res.countryTypes;
+
+        this.usStates = res.usStates.map((item) => {
+          return {
+            id: item.id,
+            name: item.stateShortName,
+            stateName: item.stateName,
+          };
+        });
+
+        this.canadaStates = res.canadaStates.map((item) => {
+          return {
+            id: item.id,
+            name: item.stateShortName,
+            stateName: item.stateName,
+          };
+        });
+
+        this.classTypes = res.classTypes;
+
+        this.restrictionsList = res.restrictions.map((item) => {
+          return {
+            ...item,
+            name: item.code.concat(' ', '-').concat(' ', item.description),
+          };
+        });
+
+        this.endorsmentsList = res.endorsements.map((item) => {
+          return {
+            ...item,
+            name: item.code.concat(' ', '-').concat(' ', item.description),
+          };
+        });
+      });
   }
 
   public incorrectInput(
     event: any,
     inputIndex: number,
-    lineIndex: number,
-    type?: string
+    lineIndex: number
   ): void {
     const selectedInputsLine = this.openAnnotationArray.find(
       (item) => item.lineIndex === lineIndex
     );
 
-    if (type === 'card') {
-      selectedInputsLine.lineInputs[inputIndex] =
-        !selectedInputsLine.lineInputs[inputIndex];
+    if (this.isReviewingCard) {
+      if (event) {
+        selectedInputsLine.lineInputs[inputIndex] = true;
+      }
 
-      selectedInputsLine.displayAnnotationButton =
-        !selectedInputsLine.displayAnnotationButton;
+      if (!event) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+      }
 
-      if (selectedInputsLine.displayAnnotationTextArea) {
-        selectedInputsLine.displayAnnotationButton = false;
-        selectedInputsLine.displayAnnotationTextArea = false;
+      const inputFieldsArray = JSON.stringify(
+        this.openAnnotationArray
+          .filter((item) => Object.keys(item).length !== 0)
+          .map((item) => item.lineInputs)
+      );
+
+      if (inputFieldsArray.includes('true')) {
+        this.isCardReviewedIncorrect = true;
+      } else {
+        this.isCardReviewedIncorrect = false;
       }
     } else {
       if (event) {
@@ -463,8 +586,44 @@ export class Step3FormComponent
           selectedInputsLine.displayAnnotationButton = false;
           selectedInputsLine.displayAnnotationTextArea = false;
         }
+
+        switch (lineIndex) {
+          case 10:
+            if (!isAnyInputInLineIncorrect) {
+              this.licenseForm.get('firstRowReview').patchValue(null);
+            }
+
+            break;
+          case 11:
+            if (!isAnyInputInLineIncorrect) {
+              this.licenseForm.get('secondRowReview').patchValue(null);
+            }
+
+            break;
+
+          default:
+            break;
+        }
       }
     }
+
+    const inputFieldsArray = JSON.stringify(
+      this.openAnnotationArray
+        .filter((item) => Object.keys(item).length !== 0)
+        .map((item) => item.lineInputs)
+    );
+
+    if (inputFieldsArray.includes('true')) {
+      this.hasIncorrectFieldsEmitter.emit(true);
+    } else {
+      this.hasIncorrectFieldsEmitter.emit(false);
+    }
+
+    const filteredOpenAnnotationArray = this.openAnnotationArray.filter(
+      (item) => Object.keys(item).length !== 0
+    );
+
+    this.openAnnotationArrayValuesEmitter.emit(filteredOpenAnnotationArray);
   }
 
   public getAnnotationBtnClickValue(event: any): void {
@@ -479,32 +638,26 @@ export class Step3FormComponent
     }
   }
 
-  public getDropdownLists(): void {
-    this.applicantListsService
-      .getDropdownLists()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.countryTypes = data.countryTypes;
+  public onCancelReviewLicense(): void {
+    this.cancelFormReviewingEmitter.emit(1);
 
-        this.usStates = data.usStates.map((item) => {
-          return {
-            id: item.id,
-            name: item.stateShortName,
-            stateName: item.stateName,
-          };
-        });
+    this.isCardReviewedIncorrect = false;
+  }
 
-        this.canadaStates = data.canadaStates.map((item) => {
-          return {
-            id: item.id,
-            name: item.stateShortName,
-            stateName: item.stateName,
-          };
-        });
+  public onAddAnnotation(): void {
+    if (!this.isCardReviewedIncorrect) {
+      return;
+    }
 
-        this.classTypes = data.classTypes;
+    const filteredOpenAnnotationArray = this.openAnnotationArray.filter(
+      (item) => Object.keys(item).length !== 0
+    );
 
-        this.restrictionsList = data.restrictions.map((item) => {
+    this.cardOpenAnnotationArrayValuesEmitter.emit(filteredOpenAnnotationArray);
+
+    this.isCardReviewedIncorrect = false;
+
+    /*  this.restrictionsList = data.restrictions.map((item) => {
           return {
             ...item,
             name: item.code.concat(' ', '-').concat(' ', item.description),
@@ -516,7 +669,7 @@ export class Step3FormComponent
             name: item.code.concat(' ', '-').concat(' ', item.description),
           };
         });
-      });
+      }); */
   }
 
   ngOnDestroy(): void {

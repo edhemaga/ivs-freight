@@ -11,14 +11,24 @@ import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { ApplicantListsService } from 'src/app/core/components/applicant/state/services/applicant-lists.service';
+import {
+  convertDateToBackend,
+  convertDateFromBackend,
+} from 'src/app/core/utils/methods.calculations';
+
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
+
+import { ApplicantQuery } from 'src/app/core/components/applicant/state/store/applicant.query';
+import { ApplicantSphFormStore } from 'src/app/core/components/applicant/state/store/applicant-sph-form-store/applicant-sph-form.store';
+import { ApplicantSphFormQuery } from 'src/app/core/components/applicant/state/store/applicant-sph-form-store/applicant-sph-form.query';
 
 import { ApplicantQuestion } from 'src/app/core/components/applicant/state/model/applicant-question.model';
 import { InputSwitchActions } from 'src/app/core/components/applicant/state/enum/input-switch-actions.enum';
 import { SphFormAccidentModel } from './../../../../../state/model/accident.model';
 import {
+  ApplicantModalResponse,
+  CreatePreviousEmployerAccidentHistoryCommand,
   EnumValue,
   TrailerTypeResponse,
   TruckTypeResponse,
@@ -57,7 +67,11 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
 
   public isEditing: boolean = false;
 
+  public previousFormValuesOnEdit: any;
+
   public workForCompanyRadios: any;
+  public motorVehicleForCompanyRadios: any;
+  public consideredForEmploymentAgainRadios: any;
 
   public formValuesToPatch: any;
 
@@ -138,20 +152,28 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private inputService: TaInputService,
-    private applicantListsService: ApplicantListsService,
-    private applicantActionsService: ApplicantActionsService
+    private applicantActionsService: ApplicantActionsService,
+    private applicantQuery: ApplicantQuery,
+    private applicantSphFormStore: ApplicantSphFormStore,
+    private applicantSphFormQuery: ApplicantSphFormQuery
   ) {}
 
   ngOnInit(): void {
     this.createForm();
 
     this.getDropdownLists();
+
+    this.hasNoSafetyPerformanceToReport();
+
+    this.getStepValuesFromStore();
   }
 
   ngAfterViewInit(): void {
     const radioButtonsArray = this.components.toArray();
 
     this.workForCompanyRadios = radioButtonsArray[0].buttons;
+    this.motorVehicleForCompanyRadios = radioButtonsArray[1].buttons;
+    this.consideredForEmploymentAgainRadios = radioButtonsArray[2].buttons;
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -170,6 +192,142 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
       consideredForEmploymentAgain: [null, Validators.required],
       noSafetyPerformance: [false],
     });
+  }
+
+  public getStepValuesFromStore(): void {
+    let stepValuesResponse: any;
+
+    this.applicantSphFormQuery.stepTwoList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        stepValuesResponse = res;
+      });
+
+    if (stepValuesResponse) {
+      this.patchStepValues(stepValuesResponse);
+    }
+  }
+
+  public patchStepValues(stepValues: any): void {
+    console.log('stepValues', stepValues);
+    const {
+      workForCompany,
+      workFrom,
+      workTo,
+      driveForCompany,
+      vehicleType,
+      trailerType,
+      reasonForLeaving,
+      reemployment,
+      noAccidents,
+      accidents,
+    } = stepValues;
+
+    this.accidentHistoryForm.patchValue({
+      applicantWorkForCompany: workForCompany,
+      applicantWorkForCompanyBeforeExplain: convertDateFromBackend(workFrom),
+      applicantWorkForCompanyToExplain: convertDateFromBackend(workTo),
+      motorVehicleForCompany: driveForCompany,
+      vehicleType: this.vehicleType.find((item) => item.id === vehicleType)
+        .name,
+      trailerType: this.trailerType.find((item) => item.id === trailerType)
+        .name,
+      reasonForLeaving: this.reasonsForLeaving.find(
+        (item) => item.id === reasonForLeaving
+      ).name,
+      consideredForEmploymentAgain: reemployment,
+      noSafetyPerformance: noAccidents,
+    });
+
+    if (!noAccidents) {
+      const lastItemInAccidentsArray = accidents[accidents.length - 1];
+
+      const restOfTheItemsInAccidentsArray = [...accidents];
+
+      restOfTheItemsInAccidentsArray.pop();
+
+      const filteredAccidentsArray = restOfTheItemsInAccidentsArray.map(
+        (item) => {
+          return {
+            isEditingAccident: false,
+            accidentDate: convertDateFromBackend(item.date),
+            accidentLocation: item.location,
+            accidentDescription: item.description,
+            hazmatSpill: item.hazmatSpill,
+            fatalities: item.fatalities,
+            injuries: item.injuries,
+          };
+        }
+      );
+
+      const filteredLastItemInAccidentArray = {
+        isEditingAccident: false,
+        accidentDate: convertDateFromBackend(lastItemInAccidentsArray.date),
+        accidentLocation: lastItemInAccidentsArray.location,
+        accidentDescription: lastItemInAccidentsArray.description,
+        hazmatSpill: lastItemInAccidentsArray.hazmatSpill,
+        fatalities: lastItemInAccidentsArray.fatalities,
+        injuries: lastItemInAccidentsArray.injuries,
+      };
+
+      this.accidentArray = [...filteredAccidentsArray];
+
+      this.formValuesToPatch = filteredLastItemInAccidentArray;
+      this.previousFormValuesOnEdit = filteredLastItemInAccidentArray;
+    }
+
+    setTimeout(() => {
+      if (workForCompany) {
+        this.workForCompanyRadios[0].checked = true;
+      } else {
+        this.workForCompanyRadios[1].checked = true;
+      }
+
+      if (driveForCompany) {
+        this.motorVehicleForCompanyRadios[0].checked = true;
+      } else {
+        this.motorVehicleForCompanyRadios[1].checked = true;
+      }
+
+      if (reemployment) {
+        this.consideredForEmploymentAgainRadios[0].checked = true;
+      } else {
+        this.consideredForEmploymentAgainRadios[1].checked = true;
+      }
+
+      this.selectedVehicleType = this.vehicleType.find(
+        (item) => item.id === vehicleType
+      );
+      this.selectedTrailerType = this.trailerType.find(
+        (item) => item.id === trailerType
+      );
+      this.selectedReasonForLeaving = this.reasonsForLeaving.find(
+        (item) => item.id === reasonForLeaving
+      );
+    }, 150);
+  }
+
+  private hasNoSafetyPerformanceToReport(): void {
+    this.accidentHistoryForm
+      .get('noSafetyPerformance')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        if (value) {
+          this.formStatus = 'VALID';
+
+          this.accidentArray = [];
+          this.formValuesToPatch = {
+            accidentDate: null,
+            accidentLocation: null,
+            accidentDescription: null,
+            hazmatSpill: null,
+            fatalities: 0,
+            injuries: 0,
+          };
+        } else {
+          this.formStatus = 'INVALID';
+        }
+      });
   }
 
   public handleInputSelect(event: any, action: string): void {
@@ -322,7 +480,35 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public onSelectYesWarningBox(): void {
-    this.router.navigate(['/sph-form-end']);
+    const { applicantWorkForCompany } = this.accidentHistoryForm.value;
+
+    const saveData: CreatePreviousEmployerAccidentHistoryCommand = {
+      workForCompany: applicantWorkForCompany,
+      workFrom: null,
+      workTo: null,
+      driveForCompany: null,
+      vehicleType: null,
+      trailerType: null,
+      reasonForLeaving: null,
+      reemployment: null,
+      noAccidents: null,
+      accidents: [],
+      /*       previousEmployerProspectId: number; */
+    };
+
+    console.log('saveData', saveData);
+
+    this.applicantActionsService
+      .createAccidentHistorySphForm(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/sph-form-end']);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   public getAccidentFormValues(event: any): void {
@@ -337,6 +523,8 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
 
     this.helperIndex = 2;
     this.selectedAccidentIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
   }
 
   public saveEditedAccident(event: any): void {
@@ -347,6 +535,8 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
 
     this.helperIndex = 2;
     this.selectedAccidentIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
   }
 
   public onGetFormStatus(status: string): void {
@@ -364,11 +554,10 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public getDropdownLists(): void {
-    this.applicantListsService
-      .getDropdownLists()
+    this.applicantQuery.applicantDropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.vehicleType = data.truckTypes.map((item) => {
+      .subscribe((res: ApplicantModalResponse) => {
+        this.vehicleType = res.truckTypes.map((item) => {
           return {
             ...item,
             folder: 'common',
@@ -376,7 +565,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
           };
         });
 
-        this.trailerType = data.trailerTypes.map((item) => {
+        this.trailerType = res.trailerTypes.map((item) => {
           return {
             ...item,
             folder: 'common',
@@ -384,7 +573,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
           };
         });
 
-        this.reasonsForLeaving = data.reasonsForLeave;
+        this.reasonsForLeaving = res.reasonsForLeave;
       });
   }
 
@@ -408,6 +597,72 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
       this.markFormInvalid = true;
       return;
     }
+
+    const {
+      applicantWorkForCompany,
+      applicantWorkForCompanyBeforeExplain,
+      applicantWorkForCompanyToExplain,
+      motorVehicleForCompany,
+      consideredForEmploymentAgain,
+      noSafetyPerformance,
+    } = this.accidentHistoryForm.value;
+
+    const filteredAccidentArray = this.accidentArray.map((item) => {
+      return {
+        date: convertDateToBackend(item.accidentDate),
+        location: item.accidentLocation.address,
+        description: item.accidentDescription,
+        hazmatSpill: item.hazmatSpill,
+        injuries: item.injuries,
+        fatalities: item.fatalities,
+      };
+    });
+
+    const filteredLastAccidentCard = {
+      date: convertDateToBackend(this.lastAccidentCard.accidentDate),
+      location: this.lastAccidentCard.accidentLocation,
+      description: this.lastAccidentCard.accidentDescription,
+      hazmatSpill: this.lastAccidentCard.hazmatSpill,
+      injuries: this.lastAccidentCard.injuries,
+      fatalities: this.lastAccidentCard.fatalities,
+    };
+
+    const saveData /* : CreatePreviousEmployerAccidentHistoryCommand */ = {
+      /* previousEmployerProspectId: , */
+      workForCompany: applicantWorkForCompany,
+      workFrom: applicantWorkForCompanyBeforeExplain,
+      workTo: applicantWorkForCompanyToExplain,
+      driveForCompany: motorVehicleForCompany,
+      vehicleType: motorVehicleForCompany ? this.selectedVehicleType.id : null,
+      trailerType: motorVehicleForCompany ? this.selectedTrailerType.id : null,
+      reasonForLeaving: this.selectedReasonForLeaving.id,
+      reemployment: consideredForEmploymentAgain,
+      noAccidents: noSafetyPerformance,
+      accidents: noSafetyPerformance
+        ? []
+        : [...filteredAccidentArray, filteredLastAccidentCard],
+    };
+
+    /* this.applicantActionsService
+      .createAccidentHistorySphForm(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/applicant/previousemployer/welcome/3']);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      }); */
+
+    this.applicantSphFormStore.update(1, (entity) => {
+      return {
+        ...entity,
+        step2: saveData,
+      };
+    });
+
+    console.log('saveData', saveData);
   }
 
   ngOnDestroy(): void {

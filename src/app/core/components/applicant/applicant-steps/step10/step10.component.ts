@@ -7,9 +7,16 @@ import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
+
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-/* import { CreateDisclosureReleaseCommand } from 'appcoretruckassist/model/models'; */
+import {
+  ApplicantResponse,
+  DisclosureReleaseFeedbackResponse,
+  UpdateDisclosureReleaseCommand,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step10',
@@ -29,17 +36,15 @@ export class Step10Component implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private router: Router,
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery,
     private applicantActionsService: ApplicantActionsService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
 
-    this.applicantActionsService.getApplicantInfo$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res.personalInfo.applicantId;
-      });
+    this.getStepValuesFromStore();
   }
 
   public createForm(): void {
@@ -53,8 +58,43 @@ export class Step10Component implements OnInit, OnDestroy {
     });
   }
 
+  public getStepValuesFromStore(): void {
+    this.applicantQuery.applicant$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        if (res.disclosureRelease) {
+          this.patchStepValues(res.disclosureRelease);
+        }
+      });
+  }
+
+  public patchStepValues(stepValues: DisclosureReleaseFeedbackResponse) {
+    const {
+      isFirstDisclosure,
+      isSecondDisclosure,
+      isThirdDisclosure,
+      isFourthDisclosure,
+      isFifthDisclosure,
+      isSixDisclosure,
+    } = stepValues;
+
+    this.disclosureReleaseForm.patchValue({
+      isFirstDisclosure,
+      isSecondDisclosure,
+      isThirdDisclosure,
+      isFourthDisclosure,
+      isFifthDisclosure,
+      isSixthDisclosure: isSixDisclosure,
+    });
+  }
+
   public handleCheckboxParagraphClick(type: string): void {
-    if (this.selectedMode === 'FEEDBACK_MODE') {
+    if (
+      this.selectedMode === 'FEEDBACK_MODE' ||
+      this.selectedMode === 'REVIEW_MODE'
+    ) {
       return;
     }
 
@@ -108,7 +148,16 @@ export class Step10Component implements OnInit, OnDestroy {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (
+        this.selectedMode === SelectedMode.APPLICANT ||
+        this.selectedMode === SelectedMode.FEEDBACK
+      ) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
 
     if (event.action === 'back-step') {
@@ -125,7 +174,7 @@ export class Step10Component implements OnInit, OnDestroy {
     const { isSixthDisclosure, ...disclosureReleaseForm } =
       this.disclosureReleaseForm.value;
 
-    const saveData: /* CreateDisclosureReleaseCommand */ any = {
+    const saveData: UpdateDisclosureReleaseCommand = {
       ...disclosureReleaseForm,
       applicantId: this.applicantId,
       isSixDisclosure: isSixthDisclosure,
@@ -137,11 +186,33 @@ export class Step10Component implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/11`]);
+
+          this.applicantStore.update((store) => {
+            return {
+              ...store,
+              applicant: {
+                ...store.applicant,
+                disclosureRelease: {
+                  ...store.applicant.disclosureRelease,
+                  isFirstDisclosure: saveData.isFirstDisclosure,
+                  isSecondDisclosure: saveData.isSecondDisclosure,
+                  isThirdDisclosure: saveData.isThirdDisclosure,
+                  isFourthDisclosure: saveData.isFourthDisclosure,
+                  isFifthDisclosure: saveData.isFifthDisclosure,
+                  isSixDisclosure: saveData.isSixDisclosure,
+                },
+              },
+            };
+          });
         },
         error: (err) => {
           console.log(err);
         },
       });
+  }
+
+  public onSubmitReview(): void {
+    this.router.navigate([`/application/${this.applicantId}/11`]);
   }
 
   ngOnDestroy(): void {

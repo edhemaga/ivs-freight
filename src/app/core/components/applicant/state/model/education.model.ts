@@ -1,9 +1,10 @@
 export interface ContactModel {
-  id: number;
+  id?: number;
   name: string;
   phone: string;
   relationship: string;
   isEditingContact: boolean;
+  emergencyContactReview: any;
 }
 
 export class Contact {

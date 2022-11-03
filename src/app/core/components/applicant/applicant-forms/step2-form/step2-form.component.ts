@@ -15,6 +15,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription, Subject, takeUntil } from 'rxjs';
 
+import moment from 'moment';
+
 import {
   anyInputInLineIncorrect,
   isFormValueEqual,
@@ -28,7 +30,8 @@ import {
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { FormService } from './../../../../services/form/form.service';
-import { ApplicantListsService } from '../../state/services/applicant-lists.service';
+
+import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
@@ -39,6 +42,7 @@ import {
 } from '../../state/model/work-history.model';
 import { AddressEntity } from './../../../../../../../appcoretruckassist/model/addressEntity';
 import {
+  ApplicantModalResponse,
   EnumValue,
   TrailerLengthResponse,
   TrailerTypeResponse,
@@ -66,10 +70,13 @@ export class Step2FormComponent
     }
   }
 
+  @Input() mode: string;
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
   @Input() markFormInvalid?: boolean;
   @Input() markInnerFormInvalid?: boolean;
+  @Input() isReviewingCard: boolean;
+  @Input() stepFeedbackValues?: any;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
@@ -79,12 +86,17 @@ export class Step2FormComponent
   @Output() markInvalidEmitter = new EventEmitter<any>();
   @Output() markInnerFormInvalidEmitter = new EventEmitter<any>();
   @Output() lastFormValuesEmitter = new EventEmitter<any>();
+  @Output() hasIncorrectFieldsEmitter = new EventEmitter<any>();
+  @Output() openAnnotationArrayValuesEmitter = new EventEmitter<any>();
+  @Output() cardOpenAnnotationArrayValuesEmitter = new EventEmitter<any>();
+  @Output() cancelFormReviewingEmitter = new EventEmitter<any>();
 
   private destroy$ = new Subject<void>();
 
   public selectedMode: string = SelectedMode.APPLICANT;
 
   public subscription: Subscription;
+  public innerFormSubscription: Subscription;
   public classOfEquipmentSubscription: Subscription;
 
   public workExperienceForm: FormGroup;
@@ -183,66 +195,16 @@ export class Step2FormComponent
     {},
     {},
     {},
-    {
-      lineIndex: 10,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 11,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 12,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 13,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 14,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 15,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 16,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 17,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 18,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 19,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
     {
       lineIndex: 20,
       lineInputs: [false],
@@ -286,170 +248,133 @@ export class Step2FormComponent
       displayAnnotationTextArea: false,
     },
   ];
+  public isCardReviewedIncorrect: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private formService: FormService,
-    private applicantListsService: ApplicantListsService
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
     this.createForm();
 
-    this.isDriverPosition();
-
     this.getDropdownLists();
 
-    if (this.formValuesToPatch) {
-      this.patchForm();
+    this.isDriverPosition();
+  }
 
-      this.subscription = this.workExperienceForm.valueChanges
+  ngAfterViewInit(): void {
+    if (this.selectedMode === SelectedMode.APPLICANT) {
+      this.workExperienceForm.statusChanges
         .pipe(takeUntil(this.destroy$))
-        .subscribe((updatedFormValues) => {
-          const {
-            employerAddress,
-            applicantId,
-            isEditingWorkHistory,
-            ...previousFormValues
-          } = this.formValuesToPatch;
+        .subscribe((res) => {
+          this.formStatusEmitter.emit(res);
+        });
 
-          previousFormValues.employerAddress = employerAddress.address;
+      this.classOfEquipmentForm.statusChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          this.innerFormStatusEmitter.emit(res);
+        });
 
-          this.editingCardAddress = employerAddress;
+      this.workExperienceForm.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          res.employerAddress = this.selectedAddress;
 
-          previousFormValues.classesOfEquipment = JSON.stringify(
-            previousFormValues.classesOfEquipment
-          );
+          const vehicleTypeImageLocation = res.vehicleType
+            ? this.vehicleType.find((item) => item.name === res.vehicleType)
+                .logoName
+            : null;
 
-          const {
-            classOfEquipmentCards,
-            classOfEquipmentSubscription,
-            vehicleType: updatedVehicleType,
-            trailerType: updatedTrailerType,
-            trailerLength,
-            firstRowReview,
-            secondRowReview,
-            thirdRowReview,
-            fourthRowReview,
-            fifthRowReview,
-            sixthRowReview,
-            seventhRowReview,
-            ...newFormValues
-          } = updatedFormValues;
-
-          const { vehicleType, trailerType, ...classOfEquipmentForm } =
-            this.classOfEquipmentForm.value;
-
-          let vehicleTypeImageLocation: any;
-          let trailerTypeImageLocation: any;
-
-          if (vehicleType) {
-            vehicleTypeImageLocation = this.vehicleType.find(
-              (item) => item.name === vehicleType
-            ).logoName;
-          }
-
-          if (trailerType) {
-            trailerTypeImageLocation = this.trailerType.find(
-              (item) => item.name === trailerType
-            ).logoName;
-          }
+          const trailerTypeImageLocation = res.trailerType
+            ? this.trailerType.find((item) => item.name === res.trailerType)
+                .logoName
+            : null;
 
           const lastClassOfEquipmentCard = {
-            ...classOfEquipmentForm,
-            vehicleType,
-            vehicleTypeImageLocation,
-            trailerType,
+            vehicleType: res.vehicleType,
+            vehicleTypeImageLocation: vehicleTypeImageLocation,
+            trailerType: res.trailerType,
+            trailerLength: res.trailerLength,
             trailerTypeImageLocation,
             isEditingClassOfEquipment: false,
           };
 
-          newFormValues.classesOfEquipment = JSON.stringify([
-            ...this.classOfEquipmentArray,
-            lastClassOfEquipmentCard,
-          ]);
-
-          if (isFormValueEqual(previousFormValues, newFormValues)) {
-            this.isWorkExperienceEdited = false;
+          if (res.classOfEquipmentSubscription) {
+            res.classesOfEquipment = [
+              ...res.classOfEquipmentSubscription,
+              lastClassOfEquipmentCard,
+            ];
           } else {
-            this.isWorkExperienceEdited = true;
+            res.classesOfEquipment = [lastClassOfEquipmentCard];
           }
+
+          res.isDrivingPosition = !res.isDrivingPosition
+            ? false
+            : res.isDrivingPosition;
+
+          this.lastFormValuesEmitter.emit(res);
+        });
+    }
+
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      this.workExperienceForm.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          const reviewMessages = {
+            firstRowReview: res.firstRowReview,
+            secondRowReview: res.secondRowReview,
+            thirdRowReview: res.thirdRowReview,
+            fourthRowReview: res.fourthRowReview,
+            fifthRowReview:
+              this.classOfEquipmentForm.get('fifthRowReview').value,
+            sixthRowReview: res.sixthRowReview,
+            seventhRowReview: res.seventhRowReview,
+          };
+
+          this.lastFormValuesEmitter.emit(reviewMessages);
         });
     }
   }
 
-  ngAfterViewInit(): void {
-    this.workExperienceForm.statusChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.formStatusEmitter.emit(res);
-      });
-
-    this.classOfEquipmentForm.statusChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.innerFormStatusEmitter.emit(res);
-      });
-
-    this.workExperienceForm.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res.employerAddressUnit) {
-          this.selectedAddress.addressUnit = res.employerAddressUnit;
-
-          res.employerAddress = this.selectedAddress;
-        } else {
-          res.employerAddress = this.selectedAddress;
-        }
-
-        const vehicleTypeImageLocation = res.vehicleType
-          ? this.vehicleType.find((item) => item.name === res.vehicleType)
-              .logoName
-          : null;
-
-        const trailerTypeImageLocation = res.trailerType
-          ? this.trailerType.find((item) => item.name === res.trailerType)
-              .logoName
-          : null;
-
-        const lastClassOfEquipmentCard = {
-          vehicleType: res.vehicleType,
-          vehicleTypeImageLocation: vehicleTypeImageLocation,
-          trailerType: res.trailerType,
-          trailerLength: res.trailerLength,
-          trailerTypeImageLocation,
-          isEditingClassOfEquipment: false,
-        };
-
-        if (res.classOfEquipmentSubscription) {
-          res.classesOfEquipment = [
-            ...res.classOfEquipmentSubscription,
-            lastClassOfEquipmentCard,
-          ];
-        } else {
-          res.classesOfEquipment = [lastClassOfEquipmentCard];
-        }
-
-        res.isDrivingPosition = !res.isDrivingPosition
-          ? false
-          : res.isDrivingPosition;
-
-        this.lastFormValuesEmitter.emit(res);
-      });
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.markFormInvalid?.currentValue) {
-      this.inputService.markInvalid(this.workExperienceForm);
+    if (changes.mode?.previousValue !== changes.mode?.currentValue) {
+      this.selectedMode = changes.mode?.currentValue;
 
-      this.markInvalidEmitter.emit(false);
-    }
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        if (
+          changes.markFormInvalid?.previousValue !==
+          changes.markFormInvalid?.currentValue
+        ) {
+          this.inputService.markInvalid(this.workExperienceForm);
+          this.markInvalidEmitter.emit(false);
+        }
 
-    if (changes.markInnerFormInvalid?.currentValue) {
-      this.inputService.markInvalid(this.classOfEquipmentForm);
+        if (
+          changes.markInnerFormInvalid?.previousValue !==
+          changes.markInnerFormInvalid?.currentValue
+        ) {
+          this.inputService.markInvalid(this.classOfEquipmentForm);
+          this.markInnerFormInvalidEmitter.emit(false);
+        }
+      }
 
-      this.markInnerFormInvalidEmitter.emit(false);
+      if (
+        changes.formValuesToPatch?.previousValue !==
+        changes.formValuesToPatch?.currentValue
+      ) {
+        setTimeout(() => {
+          this.patchForm(changes.formValuesToPatch.currentValue);
+
+          if (this.selectedMode === SelectedMode.APPLICANT) {
+            this.startValueChangesMonitoring();
+            this.startInnerFormValueChangesMonitoring();
+          }
+        }, 100);
+      }
     }
   }
 
@@ -501,6 +426,8 @@ export class Step2FormComponent
       vehicleType: [null],
       trailerType: [null],
       trailerLength: [null],
+
+      fifthRowReview: [null],
     });
 
     this.inputService.customInputValidator(
@@ -510,48 +437,144 @@ export class Step2FormComponent
     );
   }
 
-  public patchForm(): void {
+  public patchForm(formValue: any): void {
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      if (formValue.workExperienceItemReview) {
+        const {
+          isEmployerValid,
+          employerMessage,
+          isJobDescriptionValid,
+          isFromValid,
+          isToValid,
+          jobDescriptionMessage,
+          isPhoneValid,
+          isEmailValid,
+          isFaxValid,
+          contactMessage,
+          isAddressValid,
+          isAddressUnitValid,
+          addressMessage,
+          isAccountForPeriodBetweenValid,
+          accountForPeriodBetweenMessage,
+        } = formValue.workExperienceItemReview;
+
+        this.openAnnotationArray[20] = {
+          ...this.openAnnotationArray[20],
+          lineInputs: [!isEmployerValid],
+          displayAnnotationButton:
+            !isEmployerValid && !employerMessage ? true : false,
+          displayAnnotationTextArea: employerMessage ? true : false,
+        };
+        this.openAnnotationArray[21] = {
+          ...this.openAnnotationArray[21],
+          lineInputs: [!isJobDescriptionValid, !isFromValid, !isToValid],
+          displayAnnotationButton:
+            (!isJobDescriptionValid || !isFromValid || !isToValid) &&
+            !jobDescriptionMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: jobDescriptionMessage ? true : false,
+        };
+        this.openAnnotationArray[22] = {
+          ...this.openAnnotationArray[22],
+          lineInputs: [!isPhoneValid, !isEmailValid, !isFaxValid],
+          displayAnnotationButton:
+            (!isPhoneValid || !isEmailValid || !isFaxValid) && !contactMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: contactMessage ? true : false,
+        };
+        this.openAnnotationArray[23] = {
+          ...this.openAnnotationArray[23],
+          lineInputs: [!isAddressValid, !isAddressUnitValid],
+          displayAnnotationButton:
+            (!isAddressValid || !isAddressUnitValid) && !addressMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: addressMessage ? true : false,
+        };
+        this.openAnnotationArray[26] = {
+          ...this.openAnnotationArray[26],
+          lineInputs: [!isAccountForPeriodBetweenValid],
+          displayAnnotationButton:
+            !isAccountForPeriodBetweenValid && !accountForPeriodBetweenMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: accountForPeriodBetweenMessage
+            ? true
+            : false,
+        };
+
+        const inputFieldsArray = JSON.stringify(
+          this.openAnnotationArray
+            .filter((item) => Object.keys(item).length !== 0)
+            .map((item) => item.lineInputs)
+        );
+
+        if (inputFieldsArray.includes('true')) {
+          this.hasIncorrectFieldsEmitter.emit(true);
+
+          this.isCardReviewedIncorrect = true;
+        } else {
+          this.hasIncorrectFieldsEmitter.emit(false);
+
+          this.isCardReviewedIncorrect = false;
+        }
+
+        this.workExperienceForm.patchValue({
+          firstRowReview: employerMessage,
+          secondRowReview: jobDescriptionMessage,
+          thirdRowReview: contactMessage,
+          fourthRowReview: addressMessage,
+          seventhRowReview: accountForPeriodBetweenMessage,
+        });
+      }
+    }
+
     this.workExperienceForm.patchValue({
-      employer: this.formValuesToPatch.employer,
-      jobDescription: this.formValuesToPatch.jobDescription,
-      fromDate: this.formValuesToPatch.fromDate,
-      toDate: this.formValuesToPatch.toDate,
-      employerPhone: this.formValuesToPatch.employerPhone,
-      employerEmail: this.formValuesToPatch.employerEmail,
-      employerFax: this.formValuesToPatch.employerFax,
-      employerAddress: this.formValuesToPatch.employerAddress.address,
-      employerAddressUnit: this.formValuesToPatch.employerAddressUnit,
-      isDrivingPosition: this.formValuesToPatch.isDrivingPosition,
-      cfrPart: this.formValuesToPatch.cfrPart,
-      fmCSA: this.formValuesToPatch.fmCSA,
-      reasonForLeaving: this.formValuesToPatch.reasonForLeaving,
-      accountForPeriod: this.formValuesToPatch.accountForPeriod,
+      employer: formValue?.employer,
+      jobDescription: formValue?.jobDescription,
+      fromDate: formValue?.fromDate,
+      toDate: formValue?.toDate,
+      employerPhone: formValue?.employerPhone,
+      employerEmail: formValue?.employerEmail,
+      employerFax: formValue?.employerFax,
+      employerAddress: formValue?.employerAddress?.address,
+      employerAddressUnit: formValue?.employerAddressUnit,
+      isDrivingPosition: formValue?.isDrivingPosition,
+      cfrPart: formValue?.cfrPart,
+      fmCSA: formValue?.fmCSA,
+      reasonForLeaving: formValue?.reasonForLeaving,
+      accountForPeriod: formValue?.accountForPeriod,
     });
 
-    this.selectedAddress = this.formValuesToPatch.employerAddress;
+    this.selectedAddress = formValue?.employerAddress;
 
     setTimeout(() => {
       this.selectedReasonForLeaving = this.reasonsForLeaving.find(
-        (item) => item.name === this.formValuesToPatch.reasonForLeaving
+        (item) => item.name === formValue?.reasonForLeaving
       );
     }, 150);
 
-    if (this.formValuesToPatch.isDrivingPosition) {
+    if (formValue?.isDrivingPosition) {
       const lastItemInClassOfEquipmentArray =
-        this.formValuesToPatch.classesOfEquipment[
-          this.formValuesToPatch.classesOfEquipment.length - 1
-        ];
+        formValue?.classesOfEquipment[formValue?.classesOfEquipment.length - 1];
 
       const restOfTheItemsInClassOfEquipmentArray = [
-        ...this.formValuesToPatch.classesOfEquipment,
+        ...formValue?.classesOfEquipment,
       ];
 
       restOfTheItemsInClassOfEquipmentArray.pop();
 
       this.classOfEquipmentArray = [...restOfTheItemsInClassOfEquipmentArray];
-      this.helperClassOfEquipmentArray = [
-        ...this.formValuesToPatch.classesOfEquipment,
-      ];
+      this.helperClassOfEquipmentArray = [...formValue.classesOfEquipment];
+
+      this.workExperienceForm.patchValue({
+        vehicleType: lastItemInClassOfEquipmentArray.vehicleType,
+        trailerType: lastItemInClassOfEquipmentArray.trailerType,
+        trailerLength: lastItemInClassOfEquipmentArray.trailerLength,
+        classOfEquipmentSubscription: this.classOfEquipmentArray,
+      });
 
       this.classOfEquipmentForm.patchValue({
         vehicleType: lastItemInClassOfEquipmentArray.vehicleType,
@@ -596,8 +619,146 @@ export class Step2FormComponent
               item.name === lastItemInClassOfEquipmentArray.trailerLength
           );
         }
-      }, 150);
+      }, 100);
     }
+  }
+
+  public startInnerFormValueChangesMonitoring(): void {
+    this.innerFormSubscription = this.classOfEquipmentForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        const { vehicleType, trailerType, trailerLength } = value;
+
+        if (!vehicleType || !trailerType || !trailerLength) {
+          this.isWorkExperienceEdited = false;
+        } else {
+          this.isWorkExperienceEdited = true;
+        }
+      });
+  }
+
+  public startValueChangesMonitoring(): void {
+    this.subscription = this.workExperienceForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((updatedFormValues) => {
+        const {
+          id,
+          employerAddress,
+          applicantId,
+          isEditingWorkHistory,
+          fromDate,
+          toDate,
+          workExperienceItemReview,
+          ...previousFormValues
+        } = this.formValuesToPatch;
+
+        previousFormValues.fromDate = moment(new Date(fromDate)).format(
+          'MM/DD/YY'
+        );
+        previousFormValues.toDate = moment(new Date(toDate)).format('MM/DD/YY');
+
+        previousFormValues.employerAddress = employerAddress?.address;
+
+        this.editingCardAddress = employerAddress;
+
+        if (previousFormValues?.classesOfEquipment[0]?.vehicleType) {
+          const sortedValues = previousFormValues?.classesOfEquipment.map(
+            (item) => {
+              return Object.keys(item)
+                .sort()
+                .reduce((accumulator, key) => {
+                  accumulator[key] = item[key];
+
+                  return accumulator;
+                }, {});
+            }
+          );
+
+          previousFormValues.classesOfEquipment = JSON.stringify(sortedValues);
+        } else {
+          previousFormValues.classesOfEquipment = JSON.stringify([null]);
+        }
+
+        const {
+          employerAddress: newEmployerAddress,
+          classOfEquipmentCards,
+          classOfEquipmentSubscription,
+          vehicleType: updatedVehicleType,
+          trailerType: updatedTrailerType,
+          trailerLength,
+          firstRowReview,
+          secondRowReview,
+          thirdRowReview,
+          fourthRowReview,
+          fifthRowReview: updatedFifthRowReview,
+          sixthRowReview,
+          seventhRowReview,
+          ...newFormValues
+        } = updatedFormValues;
+
+        newFormValues.employerAddress = newEmployerAddress?.address;
+
+        const {
+          vehicleType,
+          trailerType,
+          fifthRowReview,
+          ...classOfEquipmentForm
+        } = this.classOfEquipmentForm.value;
+
+        let vehicleTypeImageLocation: any;
+        let trailerTypeImageLocation: any;
+
+        if (vehicleType) {
+          vehicleTypeImageLocation = this.vehicleType.find(
+            (item) => item.name === vehicleType
+          ).logoName;
+        }
+
+        if (trailerType) {
+          trailerTypeImageLocation = this.trailerType.find(
+            (item) => item.name === trailerType
+          ).logoName;
+        }
+
+        const lastClassOfEquipmentCard = {
+          ...classOfEquipmentForm,
+          vehicleType,
+          vehicleTypeImageLocation,
+          trailerType,
+          trailerTypeImageLocation,
+          isEditingClassOfEquipment: false,
+        };
+
+        if (lastClassOfEquipmentCard.vehicleType) {
+          const newClassOfEquipment = [
+            ...this.classOfEquipmentArray,
+            lastClassOfEquipmentCard,
+          ];
+
+          const sortedValues = newClassOfEquipment.map((item) => {
+            return Object.keys(item)
+              .sort()
+              .reduce((accumulator, key) => {
+                accumulator[key] = item[key];
+
+                return accumulator;
+              }, {});
+          });
+
+          newFormValues.classesOfEquipment = JSON.stringify(sortedValues);
+        } else {
+          newFormValues.classesOfEquipment = JSON.stringify([null]);
+        }
+
+        if (
+          isFormValueEqual(previousFormValues, newFormValues) ||
+          !this.classOfEquipmentForm.valid
+        ) {
+          this.isWorkExperienceEdited = false;
+        } else {
+          this.isWorkExperienceEdited = true;
+        }
+      });
   }
 
   private isDriverPosition(): void {
@@ -641,6 +802,8 @@ export class Step2FormComponent
           this.selectedVehicleType = null;
           this.selectedTrailerType = null;
           this.selectedTrailerLength = null;
+
+          this.classOfEquipmentArray = [];
 
           if (this.cfrPartRadios) {
             this.cfrPartRadios[0].checked = false;
@@ -790,7 +953,10 @@ export class Step2FormComponent
       ...workExperienceForm
     } = this.workExperienceForm.value;
 
-    this.selectedAddress.addressUnit = employerAddressUnit;
+    const selectedAddress = {
+      ...this.selectedAddress,
+      addressUnit: employerAddressUnit,
+    };
 
     let lastClassOfEquipmentCard: any;
 
@@ -822,7 +988,7 @@ export class Step2FormComponent
 
     const saveData: WorkHistoryModel = {
       ...workExperienceForm,
-      employerAddress: this.selectedAddress,
+      employerAddress: selectedAddress,
       employerAddressUnit,
       isDrivingPosition,
       classesOfEquipment: [
@@ -840,8 +1006,6 @@ export class Step2FormComponent
     this.selectedReasonForLeaving = null;
 
     this.classOfEquipmentArray = [];
-
-    this.workExperienceForm.reset();
 
     this.formService.resetForm(this.workExperienceForm);
   }
@@ -863,9 +1027,11 @@ export class Step2FormComponent
       this.fmcsaRadios[1].checked = false;
     }
 
-    this.workExperienceForm.reset();
+    this.formService.resetForm(this.workExperienceForm);
 
-    this.subscription.unsubscribe();
+    if (this.selectedMode === SelectedMode.APPLICANT) {
+      this.subscription.unsubscribe();
+    }
   }
 
   public onSaveEditedWorkExperience(): void {
@@ -883,23 +1049,29 @@ export class Step2FormComponent
       return;
     }
 
-    const lastItemInHelperClassOfEquipmentArray =
-      this.helperClassOfEquipmentArray[
-        this.helperClassOfEquipmentArray.length - 1
-      ];
-    const classOfEquipmentForm = this.classOfEquipmentForm.value;
+    const {
+      fifthRowReview: fifthRowReviewClassOfEquipment,
+      ...classOfEquipmentForm
+    } = this.classOfEquipmentForm.value;
 
-    if (
-      lastItemInHelperClassOfEquipmentArray?.vehicleType !==
-        classOfEquipmentForm?.vehicleType ||
-      lastItemInHelperClassOfEquipmentArray?.trailerType !==
-        classOfEquipmentForm?.trailerType ||
-      lastItemInHelperClassOfEquipmentArray?.trailerLength !==
-        classOfEquipmentForm?.trailerLength
-    ) {
-      this.helperClassOfEquipmentArray[
-        this.helperClassOfEquipmentArray.length - 1
-      ] = classOfEquipmentForm;
+    if (this.helperClassOfEquipmentArray.length) {
+      const lastItemInHelperClassOfEquipmentArray =
+        this.helperClassOfEquipmentArray[
+          this.helperClassOfEquipmentArray.length - 1
+        ];
+
+      if (
+        lastItemInHelperClassOfEquipmentArray?.vehicleType !==
+          classOfEquipmentForm?.vehicleType ||
+        lastItemInHelperClassOfEquipmentArray?.trailerType !==
+          classOfEquipmentForm?.trailerType ||
+        lastItemInHelperClassOfEquipmentArray?.trailerLength !==
+          classOfEquipmentForm?.trailerLength
+      ) {
+        this.helperClassOfEquipmentArray[
+          this.helperClassOfEquipmentArray.length - 1
+        ] = classOfEquipmentForm;
+      }
     }
 
     const {
@@ -920,15 +1092,20 @@ export class Step2FormComponent
       ...workExperienceForm
     } = this.workExperienceForm.value;
 
-    this.selectedAddress.addressUnit = employerAddressUnit;
+    const selectedAddress = {
+      ...this.selectedAddress,
+      addressUnit: employerAddressUnit,
+    };
 
     const saveData: WorkHistoryModel = {
       ...workExperienceForm,
       employerAddress: this.selectedAddress
-        ? this.selectedAddress
+        ? selectedAddress
         : this.editingCardAddress,
       employerAddressUnit,
-      classesOfEquipment: [...this.helperClassOfEquipmentArray],
+      classesOfEquipment: this.helperClassOfEquipmentArray.length
+        ? this.helperClassOfEquipmentArray
+        : [...this.classOfEquipmentArray, classOfEquipmentForm],
       isEditingWorkHistory: false,
     };
 
@@ -938,94 +1115,9 @@ export class Step2FormComponent
 
     this.selectedReasonForLeaving = null;
 
-    this.workExperienceForm.reset();
+    this.formService.resetForm(this.workExperienceForm);
 
     this.subscription.unsubscribe();
-  }
-
-  public incorrectInput(
-    event: any,
-    inputIndex: number,
-    lineIndex: number,
-    type?: string
-  ): void {
-    const selectedInputsLine = this.openAnnotationArray.find(
-      (item) => item.lineIndex === lineIndex
-    );
-
-    if (type === 'card') {
-      selectedInputsLine.lineInputs[inputIndex] =
-        !selectedInputsLine.lineInputs[inputIndex];
-
-      selectedInputsLine.displayAnnotationButton =
-        !selectedInputsLine.displayAnnotationButton;
-
-      if (selectedInputsLine.displayAnnotationTextArea) {
-        selectedInputsLine.displayAnnotationButton = false;
-        selectedInputsLine.displayAnnotationTextArea = false;
-      }
-    } else {
-      if (event) {
-        selectedInputsLine.lineInputs[inputIndex] = true;
-
-        if (!selectedInputsLine.displayAnnotationTextArea) {
-          selectedInputsLine.displayAnnotationButton = true;
-          selectedInputsLine.displayAnnotationTextArea = false;
-        }
-      }
-
-      if (!event) {
-        selectedInputsLine.lineInputs[inputIndex] = false;
-
-        const lineInputItems = selectedInputsLine.lineInputs;
-        const isAnyInputInLineIncorrect =
-          anyInputInLineIncorrect(lineInputItems);
-
-        if (!isAnyInputInLineIncorrect) {
-          selectedInputsLine.displayAnnotationButton = false;
-          selectedInputsLine.displayAnnotationTextArea = false;
-        }
-      }
-    }
-  }
-
-  public getAnnotationBtnClickValue(event: any): void {
-    if (event.type === 'open') {
-      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
-      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
-        true;
-    } else {
-      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
-      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
-        false;
-    }
-  }
-
-  public getDropdownLists(): void {
-    this.applicantListsService
-      .getDropdownLists()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.vehicleType = data.truckTypes.map((item) => {
-          return {
-            ...item,
-            folder: 'common',
-            subFolder: 'trucks',
-          };
-        });
-
-        this.trailerType = data.trailerTypes.map((item) => {
-          return {
-            ...item,
-            folder: 'common',
-            subFolder: 'trailers',
-          };
-        });
-
-        this.trailerLengthType = data.trailerLenghts;
-
-        this.reasonsForLeaving = data.reasonsForLeave;
-      });
   }
 
   public onAddClassOfEquipment(): void {
@@ -1111,6 +1203,8 @@ export class Step2FormComponent
       this.previousClassOfEquipmentCardsListOnEdit =
         this.helperClassOfEquipmentArray;
     } else {
+      this.previousFormValuesOnEdit = this.classOfEquipmentForm.value;
+
       this.previousClassOfEquipmentCardsListOnEdit = this.classOfEquipmentArray;
     }
 
@@ -1161,6 +1255,7 @@ export class Step2FormComponent
           cardReview8,
           cardReview9,
           cardReview10,
+          fifthRowReview,
           ...newFormValues
         } = updatedFormValues;
 
@@ -1185,20 +1280,35 @@ export class Step2FormComponent
 
     this.classOfEquipmentArray = this.previousClassOfEquipmentCardsListOnEdit;
 
-    this.selectedVehicleType = null;
-    this.selectedTrailerType = null;
-    this.selectedTrailerLength = null;
-
     this.classOfEquipmentForm.reset();
 
     this.classOfEquipmentSubscription.unsubscribe();
 
-    if (this.isEditing) {
-      this.classOfEquipmentForm.patchValue({
-        vehicleType: this.previousFormValuesOnEdit.vehicleType,
-        trailerType: this.previousFormValuesOnEdit.trailerType,
-        trailerLength: this.previousFormValuesOnEdit.trailerLength,
-      });
+    this.classOfEquipmentForm.patchValue({
+      vehicleType: this.previousFormValuesOnEdit.vehicleType,
+      trailerType: this.previousFormValuesOnEdit.trailerType,
+      trailerLength: this.previousFormValuesOnEdit.trailerLength,
+    });
+
+    this.selectedVehicleType = this.vehicleType.find(
+      (item) => item.name === this.previousFormValuesOnEdit.vehicleType
+    );
+
+    if (
+      this.selectedVehicleType.id === 5 ||
+      this.selectedVehicleType.id === 8
+    ) {
+      this.isTruckSelected = false;
+    } else {
+      this.isTruckSelected = true;
+
+      this.selectedTrailerType = this.trailerType.find(
+        (item) => item.name === this.previousFormValuesOnEdit.trailerType
+      );
+
+      this.selectedTrailerLength = this.trailerLengthType.find(
+        (item) => item.name === this.previousFormValuesOnEdit.trailerLength
+      );
     }
   }
 
@@ -1250,23 +1360,200 @@ export class Step2FormComponent
 
     this.isClassOfEquipmentEdited = false;
 
-    this.selectedVehicleType = null;
-    this.selectedTrailerType = null;
-    this.selectedTrailerLength = null;
-
     this.classOfEquipmentForm.reset();
 
     this.formService.resetForm(this.classOfEquipmentForm);
 
     this.classOfEquipmentSubscription.unsubscribe();
 
-    if (this.isEditing) {
-      this.classOfEquipmentForm.patchValue({
-        vehicleType: this.previousFormValuesOnEdit.vehicleType,
-        trailerType: this.previousFormValuesOnEdit.trailerType,
-        trailerLength: this.previousFormValuesOnEdit.trailerLength,
-      });
+    this.classOfEquipmentForm.patchValue({
+      vehicleType: this.previousFormValuesOnEdit.vehicleType,
+      trailerType: this.previousFormValuesOnEdit.trailerType,
+      trailerLength: this.previousFormValuesOnEdit.trailerLength,
+    });
+
+    this.selectedVehicleType = this.vehicleType.find(
+      (item) => item.name === this.previousFormValuesOnEdit.vehicleType
+    );
+
+    if (
+      this.selectedVehicleType.id === 5 ||
+      this.selectedVehicleType.id === 8
+    ) {
+      this.isTruckSelected = false;
+    } else {
+      this.isTruckSelected = true;
+
+      this.selectedTrailerType = this.trailerType.find(
+        (item) => item.name === this.previousFormValuesOnEdit.trailerType
+      );
+
+      this.selectedTrailerLength = this.trailerLengthType.find(
+        (item) => item.name === this.previousFormValuesOnEdit.trailerLength
+      );
     }
+  }
+
+  public getDropdownLists(): void {
+    this.applicantQuery.applicantDropdownLists$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: ApplicantModalResponse) => {
+        this.vehicleType = res.truckTypes.map((item) => {
+          return {
+            ...item,
+            folder: 'common',
+            subFolder: 'trucks',
+          };
+        });
+
+        this.trailerType = res.trailerTypes.map((item) => {
+          return {
+            ...item,
+            folder: 'common',
+            subFolder: 'trailers',
+          };
+        });
+
+        this.trailerLengthType = res.trailerLenghts;
+
+        this.reasonsForLeaving = res.reasonsForLeave;
+      });
+  }
+
+  public incorrectInput(
+    event: any,
+    inputIndex: number,
+    lineIndex: number
+  ): void {
+    const selectedInputsLine = this.openAnnotationArray.find(
+      (item) => item.lineIndex === lineIndex
+    );
+
+    if (this.isReviewingCard) {
+      if (event) {
+        selectedInputsLine.lineInputs[inputIndex] = true;
+      }
+
+      if (!event) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+      }
+
+      const inputFieldsArray = JSON.stringify(
+        this.openAnnotationArray
+          .filter((item) => Object.keys(item).length !== 0)
+          .map((item) => item.lineInputs)
+      );
+
+      if (inputFieldsArray.includes('true')) {
+        this.isCardReviewedIncorrect = true;
+      } else {
+        this.isCardReviewedIncorrect = false;
+      }
+    } else {
+      if (event) {
+        selectedInputsLine.lineInputs[inputIndex] = true;
+
+        if (!selectedInputsLine.displayAnnotationTextArea) {
+          selectedInputsLine.displayAnnotationButton = true;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+
+      if (!event) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+
+        const lineInputItems = selectedInputsLine.lineInputs;
+        const isAnyInputInLineIncorrect =
+          anyInputInLineIncorrect(lineInputItems);
+
+        if (!isAnyInputInLineIncorrect) {
+          selectedInputsLine.displayAnnotationButton = false;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+
+        switch (lineIndex) {
+          case 20:
+            this.workExperienceForm.get('firstRowReview').patchValue(null);
+
+            break;
+          case 21:
+            if (!isAnyInputInLineIncorrect) {
+              this.workExperienceForm.get('secondRowReview').patchValue(null);
+            }
+
+            break;
+          case 22:
+            if (!isAnyInputInLineIncorrect) {
+              this.workExperienceForm.get('thirdRowReview').patchValue(null);
+            }
+
+            break;
+          case 23:
+            if (!isAnyInputInLineIncorrect) {
+              this.workExperienceForm.get('fourthRowReview').patchValue(null);
+            }
+
+            break;
+          case 26:
+            this.workExperienceForm.get('seventhRowReview').patchValue(null);
+
+            break;
+
+          default:
+            break;
+        }
+      }
+
+      const inputFieldsArray = JSON.stringify(
+        this.openAnnotationArray
+          .filter((item) => Object.keys(item).length !== 0)
+          .map((item) => item.lineInputs)
+      );
+
+      if (inputFieldsArray.includes('true')) {
+        this.hasIncorrectFieldsEmitter.emit(true);
+      } else {
+        this.hasIncorrectFieldsEmitter.emit(false);
+      }
+
+      const filteredOpenAnnotationArray = this.openAnnotationArray.filter(
+        (item) => Object.keys(item).length !== 0
+      );
+
+      this.openAnnotationArrayValuesEmitter.emit(filteredOpenAnnotationArray);
+    }
+  }
+
+  public getAnnotationBtnClickValue(event: any): void {
+    if (event.type === 'open') {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        true;
+    } else {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        false;
+    }
+  }
+
+  public onCancelReviewWorkExperience(): void {
+    this.cancelFormReviewingEmitter.emit(1);
+
+    this.isCardReviewedIncorrect = false;
+  }
+
+  public onAddAnnotation(): void {
+    if (!this.isCardReviewedIncorrect) {
+      return;
+    }
+
+    const filteredOpenAnnotationArray = this.openAnnotationArray.filter(
+      (item) => Object.keys(item).length !== 0
+    );
+
+    this.cardOpenAnnotationArrayValuesEmitter.emit(filteredOpenAnnotationArray);
+
+    this.isCardReviewedIncorrect = false;
   }
 
   ngOnDestroy(): void {

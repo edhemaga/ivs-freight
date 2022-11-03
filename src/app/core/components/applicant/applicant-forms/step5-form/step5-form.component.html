@@ -10,9 +10,10 @@
           placeholderIcon: 'date',
           isRequired: true,
           customClass: 'datetimeclass',
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
         (incorrectEvent)="incorrectInput($event, 0, 10)"
       ></app-ta-input>
     </div>
@@ -26,6 +27,7 @@
           label: 'Vehicle type',
           isRequired: true,
           isDropdown: true,
+          isDisabled: selectedMode === 'REVIEW_MODE',
           dropdownWidthClass: 'w-col-192',
           dropdownImageInput: {
             withText: true,
@@ -38,13 +40,10 @@
               .replace(' ', '')
               .toLowerCase()
           },
-          customClass: 'truck-trailer-dropdown',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
+          customClass: 'truck-trailer-dropdown'
         }"
         [activeItem]="selectedVehicleType"
         [options]="vehicleType"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 1, 10)"
         (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
       ></app-ta-input-dropdown>
     </div>
@@ -61,12 +60,13 @@
           dropdownWidthClass: 'w-col-242',
           minLength: 12,
           maxLength: 256,
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [placeholderType]="'shortAddress'"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 2, 10)"
         [activeAddress]="selectedAddress"
+        [incorrectValue]="openAnnotationArray[10].lineInputs[2]"
+        (incorrectEvent)="incorrectInput($event, 2, 10)"
         (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
       ></app-input-address-dropdown>
     </div>
@@ -107,9 +107,10 @@
           maxLength: 160,
           isRequired: true,
           textTransform: 'capitalize',
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[11].lineInputs[0]"
         (incorrectEvent)="incorrectInput($event, 0, 11)"
       ></app-ta-input>
     </div>
@@ -183,6 +184,29 @@
         (click)="onSaveEditedViolation()"
       >
         Save Changes
+      </button>
+    </div>
+
+    <div
+      class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
+      *ngIf="isReviewingCard"
+    >
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+        (click)="onCancelReviewViolation()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+        [ngClass]="{
+          disabled: !isCardReviewedIncorrect
+        }"
+        (click)="onAddAnnotation()"
+      >
+        Add Annotation
       </button>
     </div>
   </div>

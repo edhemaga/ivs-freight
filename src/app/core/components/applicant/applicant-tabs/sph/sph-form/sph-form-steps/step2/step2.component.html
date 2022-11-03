@@ -292,6 +292,7 @@
 
         <div class="radios-box">
           <app-ta-input-radiobuttons
+            #cmp
             [buttons]="questions[2].answerChoices"
             (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
           ></app-ta-input-radiobuttons>
@@ -395,7 +396,7 @@
             </div>
             <div class="d-flex align-items-center hazmat-box">
               <p class="m-0 ta-font-regular">
-                {{ accident.hazmatSpill }}
+                {{ accident.hazmatSpill ? 'Yes' : 'No' }}
               </p>
             </div>
             <div class="d-flex align-items-center description-box">
@@ -468,6 +469,7 @@
         <app-sph-step2-form
           [isEditing]="isEditing"
           [markFormInvalid]="markFormInvalid"
+          [formValuesToPatch]="formValuesToPatch"
           (formValuesEmitter)="getAccidentFormValues($event)"
           (formStatusEmitter)="onGetFormStatus($event)"
           (markInvalidEmitter)="onMarkInvalidEmit($event)"
