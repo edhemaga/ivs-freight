@@ -105,7 +105,8 @@
     <div
       class="ta-upload-file-action-rightside"
       [ngClass]="{
-        'feedback-mode': isReview && reviewMode === 'FEEDBACK_MODE'
+        'feedback-mode': isReview && reviewMode === 'FEEDBACK_MODE',
+        'small': type == 'details'
       }"
     >
       <div
@@ -125,6 +126,7 @@
         position="top"
         class="ta-upload-action-delete"
         (click)="isFileDelete = true"
+        *ngIf="type != 'details'"
       >
         <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
       </div>
