@@ -184,18 +184,6 @@ export class ApplicantComponent implements OnInit, OnDestroy {
                 );
 
                 let filteredWorkExperienceItemsReview = [];
-
-                for (let i = 0; i < workExperienceItemsReview?.length; i++) {
-                  const filteredItem = workExperienceItemsReview[i];
-
-                  delete filteredItem.isPrimary;
-
-                  filteredWorkExperienceItemsReview = [
-                    ...filteredWorkExperienceItemsReview,
-                    filteredItem,
-                  ];
-                }
-
                 let hasIncorrectValue: boolean;
 
                 if (workExperienceItemsReview) {
@@ -207,6 +195,15 @@ export class ApplicantComponent implements OnInit, OnDestroy {
                       i < workExperienceItemsReview?.length;
                       i++
                     ) {
+                      const filteredItem = workExperienceItemsReview[i];
+
+                      delete filteredItem.isPrimary;
+
+                      filteredWorkExperienceItemsReview = [
+                        ...filteredWorkExperienceItemsReview,
+                        filteredItem,
+                      ];
+
                       const objectHasIncorrectValue =
                         isAnyPropertyInObjectFalse(
                           workExperienceItemsReview[i]

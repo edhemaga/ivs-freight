@@ -95,6 +95,7 @@ export class Step2FormComponent
   public selectedMode: string = SelectedMode.APPLICANT;
 
   public subscription: Subscription;
+  public innerFormSubscription: Subscription;
   public classOfEquipmentSubscription: Subscription;
 
   public workExperienceForm: FormGroup;
@@ -369,6 +370,7 @@ export class Step2FormComponent
 
           if (this.selectedMode === SelectedMode.APPLICANT) {
             this.startValueChangesMonitoring();
+            this.startInnerFormValueChangesMonitoring();
           }
         }, 100);
       }
@@ -566,6 +568,13 @@ export class Step2FormComponent
       this.classOfEquipmentArray = [...restOfTheItemsInClassOfEquipmentArray];
       this.helperClassOfEquipmentArray = [...formValue.classesOfEquipment];
 
+      this.workExperienceForm.patchValue({
+        vehicleType: lastItemInClassOfEquipmentArray.vehicleType,
+        trailerType: lastItemInClassOfEquipmentArray.trailerType,
+        trailerLength: lastItemInClassOfEquipmentArray.trailerLength,
+        classOfEquipmentSubscription: this.classOfEquipmentArray,
+      });
+
       this.classOfEquipmentForm.patchValue({
         vehicleType: lastItemInClassOfEquipmentArray.vehicleType,
         trailerType: lastItemInClassOfEquipmentArray.trailerType,
@@ -613,11 +622,26 @@ export class Step2FormComponent
     }
   }
 
+  public startInnerFormValueChangesMonitoring(): void {
+    this.innerFormSubscription = this.classOfEquipmentForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        const { vehicleType, trailerType, trailerLength } = value;
+
+        if (!vehicleType || !trailerType || !trailerLength) {
+          this.isWorkExperienceEdited = false;
+        } else {
+          this.isWorkExperienceEdited = true;
+        }
+      });
+  }
+
   public startValueChangesMonitoring(): void {
     this.subscription = this.workExperienceForm.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((updatedFormValues) => {
         const {
+          id,
           employerAddress,
           applicantId,
           isEditingWorkHistory,
@@ -725,7 +749,10 @@ export class Step2FormComponent
           newFormValues.classesOfEquipment = JSON.stringify([null]);
         }
 
-        if (isFormValueEqual(previousFormValues, newFormValues)) {
+        if (
+          isFormValueEqual(previousFormValues, newFormValues) ||
+          !this.classOfEquipmentForm.valid
+        ) {
           this.isWorkExperienceEdited = false;
         } else {
           this.isWorkExperienceEdited = true;
@@ -774,6 +801,8 @@ export class Step2FormComponent
           this.selectedVehicleType = null;
           this.selectedTrailerType = null;
           this.selectedTrailerLength = null;
+
+          this.classOfEquipmentArray = [];
 
           if (this.cfrPartRadios) {
             this.cfrPartRadios[0].checked = false;
@@ -977,8 +1006,6 @@ export class Step2FormComponent
 
     this.classOfEquipmentArray = [];
 
-    this.workExperienceForm.reset();
-
     this.formService.resetForm(this.workExperienceForm);
   }
 
@@ -998,8 +1025,6 @@ export class Step2FormComponent
       this.fmcsaRadios[0].checked = false;
       this.fmcsaRadios[1].checked = false;
     }
-
-    this.workExperienceForm.reset();
 
     this.formService.resetForm(this.workExperienceForm);
 
@@ -1021,23 +1046,29 @@ export class Step2FormComponent
       return;
     }
 
-    const lastItemInHelperClassOfEquipmentArray =
-      this.helperClassOfEquipmentArray[
-        this.helperClassOfEquipmentArray.length - 1
-      ];
-    const classOfEquipmentForm = this.classOfEquipmentForm.value;
+    const {
+      fifthRowReview: fifthRowReviewClassOfEquipment,
+      ...classOfEquipmentForm
+    } = this.classOfEquipmentForm.value;
 
-    if (
-      lastItemInHelperClassOfEquipmentArray?.vehicleType !==
-        classOfEquipmentForm?.vehicleType ||
-      lastItemInHelperClassOfEquipmentArray?.trailerType !==
-        classOfEquipmentForm?.trailerType ||
-      lastItemInHelperClassOfEquipmentArray?.trailerLength !==
-        classOfEquipmentForm?.trailerLength
-    ) {
-      this.helperClassOfEquipmentArray[
-        this.helperClassOfEquipmentArray.length - 1
-      ] = classOfEquipmentForm;
+    if (this.helperClassOfEquipmentArray.length) {
+      const lastItemInHelperClassOfEquipmentArray =
+        this.helperClassOfEquipmentArray[
+          this.helperClassOfEquipmentArray.length - 1
+        ];
+
+      if (
+        lastItemInHelperClassOfEquipmentArray?.vehicleType !==
+          classOfEquipmentForm?.vehicleType ||
+        lastItemInHelperClassOfEquipmentArray?.trailerType !==
+          classOfEquipmentForm?.trailerType ||
+        lastItemInHelperClassOfEquipmentArray?.trailerLength !==
+          classOfEquipmentForm?.trailerLength
+      ) {
+        this.helperClassOfEquipmentArray[
+          this.helperClassOfEquipmentArray.length - 1
+        ] = classOfEquipmentForm;
+      }
     }
 
     const {
@@ -1069,7 +1100,9 @@ export class Step2FormComponent
         ? selectedAddress
         : this.editingCardAddress,
       employerAddressUnit,
-      classesOfEquipment: [...this.helperClassOfEquipmentArray],
+      classesOfEquipment: this.helperClassOfEquipmentArray.length
+        ? this.helperClassOfEquipmentArray
+        : [...this.classOfEquipmentArray, classOfEquipmentForm],
       isEditingWorkHistory: false,
     };
 
@@ -1078,8 +1111,6 @@ export class Step2FormComponent
     this.isWorkExperienceEdited = false;
 
     this.selectedReasonForLeaving = null;
-
-    this.workExperienceForm.reset();
 
     this.formService.resetForm(this.workExperienceForm);
 

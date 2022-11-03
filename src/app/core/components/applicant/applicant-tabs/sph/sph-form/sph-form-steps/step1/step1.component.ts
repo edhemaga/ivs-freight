@@ -54,6 +54,8 @@ export class Step1Component implements OnInit, OnDestroy {
             : res.params.InviteCode,
         };
 
+        console.log('verifyData', verifyData);
+
         this.applicantSphFormStore.update(1, (entity) => {
           return {
             ...entity,

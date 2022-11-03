@@ -571,14 +571,21 @@
                     }"
                     [ngStyle]="{
                       'margin-left':
-                        selectedMode === 'APPLICANT_MODE' ||
-                        selectedMode === 'FEEDBACK_MODE'
+                        selectedMode === 'APPLICANT_MODE'
                           ? '26px'
+                          : selectedMode === 'FEEDBACK_MODE'
+                          ? '48px'
                           : '5px'
                     }"
                     *ngIf="!isEditingArray[i]?.isEditing"
                   >
                     <div
+                      *ngIf="
+                        selectedMode === 'APPLICANT_MODE' ||
+                        (selectedMode === 'FEEDBACK_MODE' &&
+                          !stepFeedbackValues.previousAddressesReview[i]
+                            .isPreviousAddressValid)
+                      "
                       ngbTooltip
                       mainTooltip="Edit"
                       tooltipBackground="#6C6C6C"
@@ -596,6 +603,7 @@
                     </div>
 
                     <div
+                      *ngIf="selectedMode === 'APPLICANT_MODE'"
                       ngbTooltip
                       mainTooltip="Delete"
                       tooltipBackground="#EF5350"

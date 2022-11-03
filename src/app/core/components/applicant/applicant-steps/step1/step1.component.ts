@@ -35,7 +35,6 @@ import {
   lastNameValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
-import { ApplicantListsService } from './../../state/services/applicant-lists.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
@@ -68,7 +67,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public personalInfoRadios: any;
 
@@ -328,7 +327,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private inputService: TaInputService,
-    private applicantListsService: ApplicantListsService,
     private applicantActionsService: ApplicantActionsService,
     private bankVerificationService: BankVerificationService,
     private notificationService: NotificationService,
@@ -552,6 +550,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       }
     }, 150);
 
+    this.stepValues = stepValues;
     this.personalInfoId = id;
     this.previousAddressesId = previousAddresses.map((item: any) => item.id);
 
@@ -608,10 +607,9 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             displayAnnotationTextArea: addressMessage ? true : false,
           };
 
-          this.previousAddresses
-            .at(this.previousAddresses.length - 1)
-            .get(`cardReview${i + 1}`)
-            .patchValue(addressMessage ? addressMessage : null);
+          this.previousAddresses.at(addresses.length - 1).patchValue({
+            [`cardReview${i + 1}`]: addressMessage,
+          });
         }
       } else {
         this.isEditingArray = [
@@ -644,6 +642,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
               selectedPreviousAddressReview.previousAddressMessage;
           }
 
+          console.log('isPreviousAddressValid', isPreviousAddressValid);
+
           const firstEmptyObjectInList = this.openAnnotationArray.find(
             (item) => Object.keys(item).length === 0
           );
@@ -657,16 +657,15 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
               isPreviousAddressValid === null ? false : !isPreviousAddressValid,
             ],
             displayAnnotationButton:
-              !isPreviousAddressValid === false && !previousAddressMessage
-                ? true
-                : false,
+              !isPreviousAddressValid && !previousAddressMessage ? true : false,
             displayAnnotationTextArea: previousAddressMessage ? true : false,
           };
 
-          this.previousAddresses
-            .at(i)
-            .get(`cardReview${i + 1}`)
-            .patchValue(previousAddressMessage ? previousAddressMessage : null);
+          console.log('this.openAnnotationArray', this.openAnnotationArray);
+
+          this.previousAddresses.at(i).patchValue({
+            [`cardReview${i + 1}`]: previousAddressMessage,
+          });
         }
       }
 
@@ -830,8 +829,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
           previousAddressesReview,
         };
       }
-
-      this.stepValues = stepValues;
 
       this.startFeedbackValueChangesMonitoring();
     }
@@ -1116,18 +1113,11 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public getDropdownLists(): void {
-    this.applicantListsService
-      .getBanksDropdownList()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.banksDropdownList = data;
-      });
-
-    /* this.applicantQuery.applicantDropdownLists$
+    this.applicantQuery.applicantDropdownLists$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: ApplicantModalResponse) => {
         this.banksDropdownList = res.banks;
-      }); */
+      });
   }
 
   public incorrectInput(
@@ -1556,13 +1546,16 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
       drunkDrivingDescription: drunkDrivingExplain,
     };
 
+    const stepPreviousAddresses = this.stepValues?.previousAddresses;
+
     const storePreviousAddresses = this.selectedAddresses
       .filter((item, index) => index !== this.selectedAddresses.length - 1)
-      .map((item) => {
+      .map((item, index) => {
         return {
-          id: null,
+          id: stepPreviousAddresses[index]?.id,
           address: item,
-          previousAddressReview: null,
+          previousAddressReview:
+            stepPreviousAddresses[index]?.previousAddressReview,
         };
       });
 
@@ -1606,7 +1599,11 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                     ? previousAddressStore.map((item, index) => {
                         return {
                           ...item,
+                          id: storePreviousAddresses[index]?.id,
                           address: storePreviousAddresses[index]?.address,
+                          previousAddressReview:
+                            storePreviousAddresses[index]
+                              ?.previousAddressReview,
                         };
                       })
                     : storePreviousAddresses,
@@ -1614,6 +1611,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
               },
             };
           });
+
+          console.log('STORE', this.applicantStore);
 
           if (this.selectedMode === SelectedMode.FEEDBACK) {
             if (this.subscription) {
