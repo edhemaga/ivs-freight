@@ -359,13 +359,17 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       soloLoadedMile: [null, mileValidation],
       soloPerStop: [null, perStopValidation],
       soloPerLoad: [null, perStopValidation],
+
       perMileSolo: [null, mileValidation],
+      perSoloLoad: [null, perStopValidation],
 
       teamEmptyMile: [null, mileValidation],
       teamLoadedMile: [null, mileValidation],
       teamPerStop: [null, perStopValidation],
       teamPerLoad: [null, perStopValidation],
+
       perMileTeam: [null, mileValidation],
+      perTeamLoad: [null, perStopValidation],
 
       loadedAndEmptySameRate: [false],
       driverSoloDefaultCommission: [25],
@@ -975,19 +979,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       // Driver & Owner
       driveOwnerPayPeriod,
       driverOwnerEndingIn,
-
       soloEmptyMile,
       soloLoadedMile,
       soloPerStop,
-      soloPerLoad,
-
       teamEmptyMile,
       teamLoadedMile,
       teamPerStop,
-      teamPerLoad,
-
       loadedAndEmptySameRate,
-
       driverSoloDefaultCommission,
       driverTeamDefaultCommission,
       ownerDefaultCommission,
@@ -1199,11 +1197,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       soloEmptyMile,
       soloLoadedMile,
       soloPerStop,
-      soloPerLoad,
       teamEmptyMile,
       teamLoadedMile,
       teamPerStop,
-      teamPerLoad,
       loadedAndEmptySameRate,
       driverSoloDefaultCommission,
       driverTeamDefaultCommission,
@@ -1337,12 +1333,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       soloLoadedMile,
       soloPerStop,
       perMileSolo,
-      soloPerLoad,
       teamEmptyMile,
       teamLoadedMile,
       teamPerStop,
       perMileTeam,
-      teamPerLoad,
       loadedAndEmptySameRate,
       driverSoloDefaultCommission,
       driverTeamDefaultCommission,
@@ -1546,8 +1540,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             : null
           : null
         : null,
-      soloPerLoad: soloPerLoad ? convertThousanSepInNumber(soloPerLoad) : null,
-      teamPerLoad: teamPerLoad ? convertThousanSepInNumber(teamPerLoad) : null,
+
       defaultSoloDriverCommission: ['Solo', 'Combined'].includes(
         this.selectedFleetType
       )
@@ -1908,6 +1901,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.companyForm
               .get('driverOwnerEndingIn')
               .patchValue(payroll.endingIn.name);
+
             this.companyForm
               .get('soloEmptyMile')
               .patchValue(payroll.solo.emptyMile);
@@ -1922,7 +1916,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                   : null
               );
             this.companyForm.get('perMileSolo').patchValue(payroll.perMileSolo);
-            // this.companyForm.get('soloPerLoad').patchValue(payroll.soloPerLoad);
 
             this.companyForm
               .get('teamEmptyMile')
@@ -1938,7 +1931,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                   : null
               );
             this.companyForm.get('perMileTeam').patchValue(payroll.perMileTeam);
-            // this.companyForm.get('teamPerLoad').patchValue(payroll.teamPerLoad);
 
             this.companyForm
               .get('loadedAndEmptySameRate')
