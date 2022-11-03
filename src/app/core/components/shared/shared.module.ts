@@ -114,6 +114,7 @@ import { LoadModalHazardousComponent } from '../modals/load-modal/load-modal-haz
 import { LoadModalStatusesComponent } from '../modals/load-modal/load-modal-statuses/load-modal-statuses.component';
 import { MapSettingsModalComponent } from './map-toolbar/map-settings-modal/map-settings-modal.component';
 import { MapRouteModalComponent } from './map-toolbar/map-route-modal/map-route-modal.component';
+import {ObserversModule} from '@angular/cdk/observers';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -249,6 +250,7 @@ export function playerFactory() {
     TaNoteModule,
     AgmSnazzyInfoWindowModule,
     TaSpinnerModule,
+    ObserversModule
   ],
   exports: [
     // Modules

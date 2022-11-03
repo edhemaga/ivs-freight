@@ -208,7 +208,16 @@
       </div>
       <app-ta-input-note
         formControlName="note"
-        [isVisibleNote]="ownerForm.get('note').value"
+        [isVisibleNote]="
+          ownerForm.get('note').value && ownerForm.get('note').value != 'null'
+            ? ownerForm.get('note').value
+            : false
+        "
+        [note]="
+          ownerForm.get('note').value && ownerForm.get('note').value != 'null'
+            ? ownerForm.get('note').value
+            : ''
+        "
       ></app-ta-input-note>
     </form>
   </div>

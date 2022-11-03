@@ -238,7 +238,18 @@
           </div>
           <app-ta-input-note
             formControlName="note"
-            [isVisibleNote]="trailerForm.get('note').value"
+            [isVisibleNote]="
+              trailerForm.get('note').value &&
+              trailerForm.get('note').value != 'null'
+                ? trailerForm.get('note').value
+                : false
+            "
+            [note]="
+              trailerForm.get('note').value &&
+              trailerForm.get('note').value != 'null'
+                ? trailerForm.get('note').value
+                : ''
+            "
           ></app-ta-input-note>
         </div>
         <!-------------------------------- Additional Tab -------------------------------->

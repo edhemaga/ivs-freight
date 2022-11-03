@@ -115,7 +115,18 @@
     <!-- Note -->
     <app-ta-input-note
       formControlName="note"
-      [isVisibleNote]="fuelStopForm.get('note').value"
+      [isVisibleNote]="
+        fuelStopForm.get('note').value &&
+        fuelStopForm.get('note').value != 'null'
+          ? fuelStopForm.get('note').value
+          : false
+      "
+      [note]="
+        fuelStopForm.get('note').value &&
+        fuelStopForm.get('note').value != 'null'
+          ? fuelStopForm.get('note').value
+          : ''
+      "
     ></app-ta-input-note>
   </form>
 </app-ta-modal>

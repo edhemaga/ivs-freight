@@ -11,11 +11,14 @@
  */
 
 
-export type TableType = 'LOAD' | 'CUSTOMER' | 'DRIVER' | 'APPLICANT' | 'TRUCK' | 'TRAILER' | 'REPAIR_TRUCK' | 'REPAIR_TRAILER' | 'REPAIR_SHOP' | 'PM_TRUCK' | 'PM_TRAILER' | 'FUEL_TRANSACTION' | 'FUEL_STOP' | 'OWNER' | 'ACCOUNT' | 'CONTACT' | 'VIOLATION' | 'ACCIDENT' | 'USER';
+export type TableType = 'LOAD_TEMPLATE' | 'LOAD_CLOSED' | 'LOAD_REGULAR' | 'BROKER' | 'SHIPPER' | 'DRIVER' | 'APPLICANT' | 'TRUCK' | 'TRAILER' | 'REPAIR_TRUCK' | 'REPAIR_TRAILER' | 'REPAIR_SHOP' | 'PM_TRUCK' | 'PM_TRAILER' | 'FUEL_TRANSACTION' | 'FUEL_STOP' | 'OWNER' | 'ACCOUNT' | 'CONTACT' | 'ROADSIDE_INSPECTION' | 'ACCIDENT' | 'USER';
 
 export const TableType = {
-    Load: 'LOAD' as TableType,
-    Customer: 'CUSTOMER' as TableType,
+    LoadTemplate: 'LOAD_TEMPLATE' as TableType,
+    LoadClosed: 'LOAD_CLOSED' as TableType,
+    LoadRegular: 'LOAD_REGULAR' as TableType,
+    Broker: 'BROKER' as TableType,
+    Shipper: 'SHIPPER' as TableType,
     Driver: 'DRIVER' as TableType,
     Applicant: 'APPLICANT' as TableType,
     Truck: 'TRUCK' as TableType,
@@ -30,7 +33,7 @@ export const TableType = {
     Owner: 'OWNER' as TableType,
     Account: 'ACCOUNT' as TableType,
     Contact: 'CONTACT' as TableType,
-    Violation: 'VIOLATION' as TableType,
+    RoadsideInspection: 'ROADSIDE_INSPECTION' as TableType,
     Accident: 'ACCIDENT' as TableType,
     User: 'USER' as TableType
 };

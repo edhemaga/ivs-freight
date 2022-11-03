@@ -115,6 +115,7 @@
       [cardName]="'Phone'"
       [headerSvgEnabled]="true"
       [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+      [actionText]="'ADD PHONE'"
       [isCardOpen]="contactPhones.length > 0"
       [hasBodyData]="contactPhones.length > 0"
       (onActionEvent)="addContactPhones($event)"
@@ -145,7 +146,15 @@
               <div
                 class="contact-phone-radio-btn"
                 [ngClass]="{ active: contactPh.get('primary').value }"
-                (click)="setPrimaryPhone(contactPh)"
+                ngbTooltip
+                [mainTooltip]="
+                  contactPh.get('primary').value
+                    ? 'Primary Number'
+                    : 'Set As Primary'
+                "
+                position="top"
+                tooltipBackground="#424242"
+                (click)="setPrimary(contactPh, 'phone')"
               ></div>
               <div class="contact-phone-card-content">
                 <app-ta-input
@@ -202,8 +211,8 @@
                     hideRequiredCheck: true,
                     customClass: 'line-input-26-in-card'
                   }"
-                  [activeItem]="labelsContactPhones[ind]"
-                  [options]="selectedContactPhone"
+                  [activeItem]="selectedContactPhone[ind]"
+                  [options]="labelsContactPhones"
                   (selectedItem)="
                     onSelectDropDown($event, 'contact-phone', ind)
                   "
@@ -230,69 +239,87 @@
       [cardName]="'Email'"
       [headerSvgEnabled]="true"
       [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+      [actionText]="'ADD EMAIL'"
       [isCardOpen]="contactEmails.length > 0"
       [hasBodyData]="contactEmails.length > 0"
       (onActionEvent)="addContactEmails($event)"
       [animationMarginParams]="{
-        marginTop: '18px',
-        marginBottom: '0px'
+        marginTop: '10px',
+        marginBottom: '12px'
       }"
     >
       <div
-        class="row row-no-mb"
         formArrayName="contactEmails"
+        class="contact-email-container"
         *ngIf="contactEmails.length"
       >
-        <div
-          class="col-12"
-          style="padding: 0px 12px !important; margin-bottom: 22px"
-          *ngFor="let contactEm of contactEmails.controls; let ind = index"
-        >
-          <div [formGroupName]="ind" class="contact-email-container">
-            <app-ta-input
-              formControlName="email"
-              [inputConfig]="{
-                name: 'Email',
-                type: 'text',
-                label: 'Email',
-                isRequired: true,
-                placeholderIcon: 'email',
-                minLength: 5,
-                maxLength: 64,
-                textTransform: 'lowercase',
-                customClass: contactPhones.length
-                  ? 'line-input-26-in-card'
-                  : null
-              }"
-            ></app-ta-input>
-
-            <app-ta-input-dropdown
-              formControlName="contactEmailType"
-              [inputConfig]="{
-                name: 'Input Dropdown',
-                type: 'text',
-                label: 'Type',
-                textTransform: 'capitalize',
-                isDropdown: true,
-                dropdownWidthClass: 'w-col-120',
-                customClass: contactPhones.length
-                  ? 'line-input-26-in-card'
-                  : null
-              }"
-              [activeItem]="selectedContactEmail[ind]"
-              [options]="labelsContactEmails"
-              (selectedItem)="onSelectDropDown($event, 'contact-email', ind)"
-            ></app-ta-input-dropdown>
-
+        <div class="contact-email-container-label">
+          <p>EMAIL</p>
+          <p>TYPE</p>
+        </div>
+        <div class="contact-email-container-body">
+          <div
+            *ngFor="let contactEm of contactEmails.controls; let ind = index"
+          >
             <div
-              ngbTooltip
-              mainTooltip="Delete"
-              position="top"
-              tooltipBackground="#EF5350"
-              class="contact-email-delete"
-              (click)="removeContactFeature('contact-email', ind)"
+              [formGroupName]="ind"
+              class="contact-email-container-body-card"
             >
-              <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+              <div
+                class="contact-email-radio-btn"
+                [ngClass]="{ active: contactEm.get('primary').value }"
+                ngbTooltip
+                [mainTooltip]="
+                  contactEm.get('primary').value
+                    ? 'Primary Email'
+                    : 'Set As Primary'
+                "
+                position="top"
+                tooltipBackground="#424242"
+                (click)="setPrimary(contactEm, 'email')"
+              ></div>
+              <div class="contact-email-card-content">
+                <app-ta-input
+                  formControlName="email"
+                  [inputConfig]="{
+                    name: 'Email',
+                    type: 'text',
+                    placeholderIcon: 'email',
+                    minLength: 5,
+                    maxLength: 64,
+                    textTransform: 'lowercase'
+                  }"
+                ></app-ta-input>
+
+                <app-ta-input-dropdown
+                  formControlName="contactEmailType"
+                  [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    textTransform: 'capitalize',
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-101',
+                    hideErrorMessage: true,
+                    hideRequiredCheck: true,
+                    customClass: 'line-input-26-in-card'
+                  }"
+                  [activeItem]="selectedContactEmail[ind]"
+                  [options]="labelsContactEmails"
+                  (selectedItem)="
+                    onSelectDropDown($event, 'contact-email', ind)
+                  "
+                ></app-ta-input-dropdown>
+                <div
+                  ngbTooltip
+                  mainTooltip="Delete"
+                  position="top"
+                  tooltipBackground="#EF5350"
+                  class="contact-email-delete"
+                  (click)="removeContactFeature('contact-email', ind)"
+                >
+                  <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -362,7 +389,18 @@
       <!-- Note -->
       <app-ta-input-note
         formControlName="note"
-        [isVisibleNote]="contactForm.get('note').value"
+        [isVisibleNote]="
+          contactForm.get('note').value &&
+          contactForm.get('note').value != 'null'
+            ? contactForm.get('note').value
+            : false
+        "
+        [note]="
+          contactForm.get('note').value &&
+          contactForm.get('note').value != 'null'
+            ? contactForm.get('note').value
+            : ''
+        "
       ></app-ta-input-note>
     </div>
   </form>

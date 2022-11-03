@@ -5,19 +5,18 @@ import {
   GetMvrModalResponse,
   MvrResponse,
 } from 'appcoretruckassist';
-import { DriverTService } from '../../../state/driver.service';
-import { MvrTService } from '../../../state/mvr.service';
+import { DriverTService } from '../../../driver/state/driver.service';
+import { MvrTService } from '../../../driver/state/mvr.service';
 import { Subject, takeUntil } from 'rxjs';
-import { ModalService } from '../../../../shared/ta-modal/modal.service';
-import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
-import { NotificationService } from '../../../../../services/notification/notification.service';
-import { FormService } from '../../../../../services/form/form.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
+import { FormService } from '../../../../services/form/form.service';
 import {
   convertDateToBackend,
   convertDateFromBackend,
-} from '../../../../../utils/methods.calculations';
-import { EditMvrCommand } from 'appcoretruckassist/model/editMvrCommand';
-import { CreateMvrCommand } from 'appcoretruckassist/model/createMvrCommand';
+} from '../../../../utils/methods.calculations';
+import { DriverListResponse } from '../../../../../../../appcoretruckassist/model/driverListResponse';
 
 @Component({
   selector: 'app-driver-mvr-modal',
@@ -26,10 +25,11 @@ import { CreateMvrCommand } from 'appcoretruckassist/model/createMvrCommand';
   providers: [ModalService, FormService],
 })
 export class DriverMvrModalComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public mvrForm: FormGroup;
+
+  public isFormDirty: boolean = false;
 
   public modalName: string;
 
@@ -38,7 +38,10 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   public cdls: any[] = [];
   public selectedCdl: any = null;
 
-  public isFormDirty: boolean = false;
+  public labelsDrivers: any[] = [];
+  public selectedDriver: any = null;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,16 +55,23 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
-    this.getModalDropdowns();
 
-    this.getDriverById(this.editData.id);
-    if (this.editData.type === 'edit-mvr') {
-      this.getMVRById();
+    if (this.editData) {
+      this.getDriverById(this.editData.id);
+      this.getModalDropdowns(this.editData.id);
+
+      if (this.editData.type === 'edit-mvr') {
+        this.getMVRById(this.editData.file_id);
+      }
+    } else {
+      this.getListOfDrivers();
+      this.mvrForm.get('driver').setValidators(Validators.required);
     }
   }
 
   private createForm() {
     this.mvrForm = this.formBuilder.group({
+      driver: [null],
       issueDate: [null, Validators.required],
       cdlId: [null, Validators.required],
       note: [null],
@@ -100,7 +110,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.mvrForm);
           return;
         }
-        if (this.editData.type === 'edit-mvr') {
+        if (this.editData?.type === 'edit-mvr') {
           if (this.isFormDirty) {
             this.updateMVR();
             this.modalService.setModalSpinner({ action: null, status: true });
@@ -128,6 +138,16 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
         this.selectedCdl = event;
         break;
       }
+      case 'driver': {
+        if (event) {
+          this.selectedDriver = event;
+          this.getModalDropdowns(this.selectedDriver.id);
+          this.modalName = this.selectedDriver.name;
+        } else {
+          this.modalName = null;
+        }
+        break;
+      }
       default: {
         break;
       }
@@ -135,13 +155,13 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   }
 
   private updateMVR() {
-    const { issueDate } = this.mvrForm.value;
-    const newData: /*EditMvrCommand*/ any = {
+    const { issueDate, driver, note } = this.mvrForm.value;
+    const newData: any = {
       driverId: this.editData.id,
       id: this.editData.file_id,
-      ...this.mvrForm.value,
       issueDate: convertDateToBackend(issueDate),
       cdlId: this.selectedCdl.id,
+      note: note,
     };
 
     this.mvrService
@@ -161,13 +181,14 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   }
 
   private addMVR() {
-    const { issueDate } = this.mvrForm.value;
-    const newData: /* CreateMvrCommand */ any = {
-      driverId: this.editData.id,
-      ...this.mvrForm.value,
+    const { issueDate, driver, note } = this.mvrForm.value;
+    const newData: any = {
+      driverId: this.selectedDriver ? this.selectedDriver.id : this.editData.id,
       issueDate: convertDateToBackend(issueDate),
       cdlId: this.selectedCdl.id,
+      note: note,
     };
+
     this.mvrService
       .addMvr(newData)
       .pipe(takeUntil(this.destroy$))
@@ -184,9 +205,9 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public getMVRById() {
+  public getMVRById(id: number) {
     this.mvrService
-      .getMvrById(this.editData.file_id)
+      .getMvrById(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: MvrResponse) => {
@@ -206,9 +227,9 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public getModalDropdowns() {
+  public getModalDropdowns(id: number) {
     this.mvrService
-      .getMvrModal(this.editData.id)
+      .getMvrModal(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: GetMvrModalResponse) => {
@@ -229,6 +250,25 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
             "Can't load mvr's modal dropdowns",
             'Error'
           );
+        },
+      });
+  }
+
+  public getListOfDrivers() {
+    this.driverService
+      .getDrivers()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: DriverListResponse) => {
+          this.labelsDrivers = res.pagination.data.map((item) => {
+            return {
+              id: item.id,
+              name: item.fullName,
+            };
+          });
+        },
+        error: () => {
+          this.notificationService.error("Can't load list of drivers", 'Error');
         },
       });
   }

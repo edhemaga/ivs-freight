@@ -42,6 +42,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { FormService } from '../../../services/form/form.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-shipper-modal',
@@ -639,8 +640,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             shippingHoursSameReceiving: reasponse.shippingHoursSameReceiving,
             shippingAppointment: reasponse.shippingAppointment,
             shippingOpenTwentyFourHours: reasponse.shippingOpenTwentyFourHours,
-            shippingFrom: reasponse.shippingFrom,
-            shippingTo: reasponse.shippingTo,
+            shippingFrom: moment(reasponse.shippingFrom, 'HH:mm:SS A').toDate(),
+            shippingTo: moment(reasponse.shippingTo, 'HH:mm:SS A').toDate(),
             note: reasponse.note,
             shipperContacts: [],
           });

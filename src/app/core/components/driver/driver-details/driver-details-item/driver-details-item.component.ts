@@ -30,7 +30,7 @@ import { DriverTService } from '../../state/driver.service';
 import { MedicalTService } from '../../state/medical.service';
 import { MvrTService } from '../../state/mvr.service';
 import { TestTService } from '../../state/test.service';
-import { DriverCdlModalComponent } from '../driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverCdlModalComponent } from '../../../modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
 import { DriversDetailsListQuery } from '../../state/driver-details-list-state/driver-details-list.query';
 
 @Component({
@@ -48,6 +48,8 @@ export class DriverDetailsItemComponent
   @Input() drivers: DriverResponse | any = null;
   public cdlNote: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
+  public testNote: FormControl = new FormControl();
+  public medNote: FormControl = new FormControl();
   public toggler: boolean[] = [];
   public showMoreEmployment: boolean = false;
   public dataDropDown: any;

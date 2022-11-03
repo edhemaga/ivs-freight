@@ -864,6 +864,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (reasponse: BrokerResponse) => {
+          console.log(reasponse);
           this.brokerForm.patchValue({
             businessName: reasponse.businessName,
             dbaName: reasponse.dbaName,
@@ -906,7 +907,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 ? convertNumberInThousandSep(reasponse.creditLimit)
                 : null,
             availableCredit: reasponse.availableCredit,
-            payTerm: reasponse.payTerm.name ? reasponse.payTerm.name : null,
+            payTerm: reasponse.payTerm ? reasponse.payTerm.name : null,
             note: reasponse.note,
             ban: reasponse.ban,
             dnu: reasponse.dnu,

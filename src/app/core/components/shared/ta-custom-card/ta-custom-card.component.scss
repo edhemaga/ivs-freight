@@ -93,6 +93,8 @@
           position: relative;
           bottom: 0.5px;
           right: 1px;
+          cursor: pointer;
+          transition: all 0.2s ease-in-out;
 
           &.new-position {
             margin-right: 0px;
@@ -100,15 +102,14 @@
 
           svg {
             path {
-              fill: #6d82c7;
+              fill: #3074d3;
             }
           }
+
           &:hover {
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
             svg {
               path {
-                fill: #536bc2;
+                fill: #3074d3;
               }
             }
           }
@@ -121,23 +122,23 @@
           align-items: center;
           justify-content: center;
           text-align: center;
-          width: 82px;
-          height: 24px;
+          min-width: 82px;
+          height: 26px;
           transform-origin: right;
-
-          background-color: #f3f3f3;
+          background-color: rgb(48, 116, 211, 0.2);
           border-radius: 2px;
-          transition: all 0.3s ease-in-out;
           cursor: pointer;
           position: relative;
           left: 3px;
+          padding: 6px 18px;
+          transition: all 0.2s ease-in-out;
 
           .header-action-text {
             margin: 0;
             font-size: 11px;
             font-weight: 700;
             line-height: 18px;
-            color: #536bc2;
+            color: #3074d3;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -152,8 +153,7 @@
           }
 
           &:hover {
-            transition: all 0.3s ease-in-out;
-            background-color: #536bc2;
+            background-color: #3074d3;
 
             .header-action-text {
               color: #ffffff;
@@ -175,24 +175,23 @@
         align-items: center;
         justify-content: center;
         text-align: center;
-        width: 82px;
-        height: 24px;
+        min-width: 82px;
+        height: 26px;
         transform-origin: right;
-
-        background: #f3f3f3;
+        background-color: rgb(48, 116, 211, 0.2);
         border-radius: 2px;
-        transition: all 0.3s ease-in-out;
         cursor: pointer;
         position: relative;
-        transition: background 0.3s ease-in-out;
+        left: 3px;
+        padding: 6px 18px;
+        transition: all 0.2s ease-in-out;
 
         .header-action-text {
           margin: 0;
           font-size: 11px;
           font-weight: 700;
           line-height: 18px;
-          color: #536bc2;
-          transition: color 0.3s ease-in-out;
+          color: #3074d3;
           -webkit-user-select: none;
           -moz-user-select: none;
           -ms-user-select: none;
@@ -200,7 +199,7 @@
         }
 
         &:hover {
-          background: #536bc2;
+          background-color: #536bc2;
 
           .header-action-text {
             color: #ffffff;

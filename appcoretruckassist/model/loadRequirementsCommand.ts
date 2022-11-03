@@ -19,6 +19,6 @@ export interface LoadRequirementsCommand {
     suspension?: number | null;
     trailerLengthId?: number | null;
     year?: number | null;
-    liftgate?: boolean;
+    liftgate?: boolean | null;
 }
 
