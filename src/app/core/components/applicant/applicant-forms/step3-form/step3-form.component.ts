@@ -441,8 +441,6 @@ export class Step3FormComponent
     this.selectedEndorsments = [];
     this.selectedRestrictions = [];
 
-    this.licenseForm.reset();
-
     this.formService.resetForm(this.licenseForm);
   }
 
@@ -450,8 +448,6 @@ export class Step3FormComponent
     this.cancelFormEditingEmitter.emit(1);
 
     this.isLicenseEdited = false;
-
-    this.licenseForm.reset();
 
     this.formService.resetForm(this.licenseForm);
 
@@ -494,8 +490,6 @@ export class Step3FormComponent
     this.selectedClassType = null;
     this.selectedEndorsments = [];
     this.selectedRestrictions = [];
-
-    this.licenseForm.reset();
 
     this.formService.resetForm(this.licenseForm);
 

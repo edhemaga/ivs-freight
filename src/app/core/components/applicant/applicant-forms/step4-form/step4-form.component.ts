@@ -390,8 +390,6 @@ export class Step4FormComponent
 
     this.selectedVehicleType = null;
 
-    this.accidentForm.reset();
-
     this.formService.resetForm(this.accidentForm);
 
     this.accidentForm.patchValue({
@@ -407,8 +405,6 @@ export class Step4FormComponent
 
     this.hazmatSpillRadios[0].checked = false;
     this.hazmatSpillRadios[1].checked = false;
-
-    this.accidentForm.reset();
 
     this.formService.resetForm(this.accidentForm);
 
@@ -448,8 +444,6 @@ export class Step4FormComponent
     this.saveFormEditingEmitter.emit(saveData);
 
     this.isAccidentEdited = false;
-
-    this.accidentForm.reset();
 
     this.formService.resetForm(this.accidentForm);
 

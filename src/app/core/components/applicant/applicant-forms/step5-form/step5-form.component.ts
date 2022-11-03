@@ -315,8 +315,6 @@ export class Step5FormComponent
 
     this.selectedVehicleType = null;
 
-    this.violationsForm.reset();
-
     this.formService.resetForm(this.violationsForm);
   }
 
@@ -351,8 +349,6 @@ export class Step5FormComponent
 
     this.isViolationEdited = false;
 
-    this.violationsForm.reset();
-
     this.formService.resetForm(this.violationsForm);
 
     this.subscription.unsubscribe();
@@ -362,8 +358,6 @@ export class Step5FormComponent
     this.cancelFormEditingEmitter.emit(1);
 
     this.isViolationEdited = false;
-
-    this.violationsForm.reset();
 
     this.formService.resetForm(this.violationsForm);
 

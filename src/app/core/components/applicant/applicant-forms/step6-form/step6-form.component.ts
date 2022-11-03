@@ -245,8 +245,6 @@ export class Step6FormComponent
     this.formValuesEmitter.emit(saveData);
 
     this.formService.resetForm(this.contactForm);
-
-    this.contactForm.reset();
   }
 
   public onSaveEditedContact(): void {
@@ -270,8 +268,6 @@ export class Step6FormComponent
 
     this.isContactEdited = false;
 
-    this.contactForm.reset();
-
     this.formService.resetForm(this.contactForm);
 
     this.subscription.unsubscribe();
@@ -281,8 +277,6 @@ export class Step6FormComponent
     this.cancelFormEditingEmitter.emit(1);
 
     this.isContactEdited = false;
-
-    this.contactForm.reset();
 
     this.formService.resetForm(this.contactForm);
 

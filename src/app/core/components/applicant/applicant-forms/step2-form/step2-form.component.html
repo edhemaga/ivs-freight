@@ -12,7 +12,10 @@
           isRequired: true,
           textTransform: 'capitalize',
           autoFocus: selectedMode === 'APPLICANT_MODE',
-          isDisabled: selectedMode === 'REVIEW_MODE',
+          isDisabled:
+            selectedMode === 'REVIEW_MODE' ||
+            (selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues?.isEmployerValid),
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="openAnnotationArray[20].lineInputs[0]"
@@ -32,17 +35,22 @@
       <app-applicant-review-feedback
         formControlName="firstRowReview"
         [displayAnnotationButton]="
+          selectedMode === 'REVIEW_MODE' &&
           openAnnotationArray[20].displayAnnotationButton
         "
         [displayAnnotationTextArea]="
+          selectedMode === 'REVIEW_MODE' &&
           openAnnotationArray[20].displayAnnotationTextArea
         "
         [lineIndex]="20"
         [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
         [feedbackText]="
-          'Check the routing number one more time (one number missing)!!!'
+          selectedMode === 'FEEDBACK_MODE' &&
+          stepFeedbackValues?.employerMessage
         "
-        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+        (annotationBtnClickEvent)="
+          selectedMode === 'REVIEW_MODE' && getAnnotationBtnClickValue($event)
+        "
       ></app-applicant-review-feedback>
     </div>
   </div>
@@ -61,7 +69,10 @@
           minLength: 2,
           maxLength: 160,
           textTransform: 'capitalize',
-          isDisabled: selectedMode === 'REVIEW_MODE',
+          isDisabled:
+            selectedMode === 'REVIEW_MODE' ||
+            (selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues?.isJobDescriptionValid),
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="openAnnotationArray[21].lineInputs[0]"
@@ -78,7 +89,10 @@
           placeholderIcon: 'date',
           isRequired: true,
           customClass: 'datetimeclass',
-          isDisabled: selectedMode === 'REVIEW_MODE',
+          isDisabled:
+            selectedMode === 'REVIEW_MODE' ||
+            (selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues?.isFromValid),
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="openAnnotationArray[21].lineInputs[1]"
@@ -95,7 +109,9 @@
           placeholderIcon: 'date',
           isRequired: true,
           customClass: 'datetimeclass',
-          isDisabled: selectedMode === 'REVIEW_MODE',
+          isDisabled:
+            selectedMode === 'REVIEW_MODE' ||
+            (selectedMode === 'FEEDBACK_MODE' && stepFeedbackValues?.isToValid),
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="openAnnotationArray[21].lineInputs[2]"
@@ -115,17 +131,22 @@
       <app-applicant-review-feedback
         formControlName="secondRowReview"
         [displayAnnotationButton]="
+          selectedMode === 'REVIEW_MODE' &&
           openAnnotationArray[21].displayAnnotationButton
         "
         [displayAnnotationTextArea]="
+          selectedMode === 'REVIEW_MODE' &&
           openAnnotationArray[21].displayAnnotationTextArea
         "
         [lineIndex]="21"
         [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
         [feedbackText]="
-          'Check the routing number one more time (one number missing)!!!'
+          selectedMode === 'FEEDBACK_MODE' &&
+          stepFeedbackValues?.jobDescriptionMessage
         "
-        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+        (annotationBtnClickEvent)="
+          selectedMode === 'REVIEW_MODE' && getAnnotationBtnClickValue($event)
+        "
       ></app-applicant-review-feedback>
     </div>
   </div>
@@ -144,7 +165,10 @@
           placeholderIcon: 'phone',
           mask: '(000) 000-0000',
           maxLength: 14,
-          isDisabled: selectedMode === 'REVIEW_MODE',
+          isDisabled:
+            selectedMode === 'REVIEW_MODE' ||
+            (selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues?.isPhoneValid),
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="openAnnotationArray[22].lineInputs[0]"
@@ -163,7 +187,10 @@
           minLength: 5,
           maxLength: 64,
           textTransform: 'lowercase',
-          isDisabled: selectedMode === 'REVIEW_MODE',
+          isDisabled:
+            selectedMode === 'REVIEW_MODE' ||
+            (selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues?.isEmailValid),
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="openAnnotationArray[22].lineInputs[1]"
@@ -179,7 +206,10 @@
           label: 'Employer Fax',
           placeholderIcon: 'fax',
           mask: '(000) 000-0000',
-          isDisabled: selectedMode === 'REVIEW_MODE',
+          isDisabled:
+            selectedMode === 'REVIEW_MODE' ||
+            (selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues?.isFaxValid),
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="openAnnotationArray[22].lineInputs[2]"
@@ -199,17 +229,21 @@
       <app-applicant-review-feedback
         formControlName="thirdRowReview"
         [displayAnnotationButton]="
+          selectedMode === 'REVIEW_MODE' &&
           openAnnotationArray[22].displayAnnotationButton
         "
         [displayAnnotationTextArea]="
+          selectedMode === 'REVIEW_MODE' &&
           openAnnotationArray[22].displayAnnotationTextArea
         "
         [lineIndex]="22"
         [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
         [feedbackText]="
-          'Check the routing number one more time (one number missing)!!!'
+          selectedMode === 'FEEDBACK_MODE' && stepFeedbackValues?.contactMessage
         "
-        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+        (annotationBtnClickEvent)="
+          selectedMode === 'REVIEW_MODE' && getAnnotationBtnClickValue($event)
+        "
       ></app-applicant-review-feedback>
     </div>
   </div>
@@ -230,7 +264,10 @@
           dropdownWidthClass: 'w-col-481',
           minLength: 12,
           maxLength: 256,
-          isDisabled: selectedMode === 'REVIEW_MODE',
+          isDisabled:
+            selectedMode === 'REVIEW_MODE' ||
+            (selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues?.isAddressValid),
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [placeholderType]="'longAddress'"
@@ -250,7 +287,10 @@
           minLength: 1,
           maxLength: 10,
           textTransform: 'uppercase',
-          isDisabled: selectedMode === 'REVIEW_MODE',
+          isDisabled:
+            selectedMode === 'REVIEW_MODE' ||
+            (selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues?.isAddressUnitValid),
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="openAnnotationArray[23].lineInputs[1]"
@@ -270,17 +310,21 @@
       <app-applicant-review-feedback
         formControlName="fourthRowReview"
         [displayAnnotationButton]="
+          selectedMode === 'REVIEW_MODE' &&
           openAnnotationArray[23].displayAnnotationButton
         "
         [displayAnnotationTextArea]="
+          selectedMode === 'REVIEW_MODE' &&
           openAnnotationArray[23].displayAnnotationTextArea
         "
         [lineIndex]="23"
         [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
         [feedbackText]="
-          'Check the routing number one more time (one number missing)!!!'
+          selectedMode === 'FEEDBACK_MODE' && stepFeedbackValues?.addressMessage
         "
-        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+        (annotationBtnClickEvent)="
+          selectedMode === 'REVIEW_MODE' && getAnnotationBtnClickValue($event)
+        "
       ></app-applicant-review-feedback>
     </div>
   </div>
@@ -294,10 +338,10 @@
       formControlName="isDrivingPosition"
       [name]="'isDrivingPosition'"
       [label]="'Was this a driving position?'"
-      [customClass]="
-        selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
+      [customClass]="'bold-12'"
+      [disabledStillCheckMark]="
+        selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
       "
-      [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
     ></app-ta-checkbox>
   </div>
 
@@ -439,7 +483,9 @@
             label: 'Vehicle type',
             isRequired: true,
             isDropdown: true,
-            isDisabled: selectedMode === 'REVIEW_MODE',
+            isDisabled:
+              selectedMode === 'REVIEW_MODE' ||
+              selectedMode === 'FEEDBACK_MODE',
             dropdownWidthClass: 'w-col-251',
             dropdownImageInput: {
               withText: true,
@@ -470,7 +516,9 @@
             isDisabled: !isTruckSelected,
             isRequired: isTruckSelected,
             isDropdown: true,
-            isDisabled: selectedMode === 'REVIEW_MODE',
+            isDisabled:
+              selectedMode === 'REVIEW_MODE' ||
+              selectedMode === 'FEEDBACK_MODE',
             dropdownWidthClass: 'w-col-211',
             customClass: 'truck-trailer-dropdown',
             dropdownImageInput: {
@@ -506,7 +554,9 @@
             isDropdown: true,
             isDisabled: !isTruckSelected,
             isRequired: isTruckSelected,
-            isDisabled: selectedMode === 'REVIEW_MODE',
+            isDisabled:
+              selectedMode === 'REVIEW_MODE' ||
+              selectedMode === 'FEEDBACK_MODE',
             dropdownWidthClass: 'w-col-130'
           }"
           [options]="trailerLengthType"
@@ -596,7 +646,9 @@
           <app-ta-input-radiobuttons
             #cmp
             [buttons]="question.answerChoices"
-            [disabled]="selectedMode === 'REVIEW_MODE'"
+            [disabled]="
+              selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+            "
             (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
           ></app-ta-input-radiobuttons>
         </div>
@@ -617,7 +669,8 @@
           isRequired: true,
           isDropdown: true,
           dropdownWidthClass: 'w-col-616',
-          isDisabled: selectedMode === 'REVIEW_MODE'
+          isDisabled:
+            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
         }"
         [options]="reasonsForLeaving"
         [activeItem]="selectedReasonForLeaving"
@@ -637,7 +690,10 @@
           type: 'text',
           label: 'Account for period between jobs (include reason)',
           textTransform: 'capitalize',
-          isDisabled: selectedMode === 'REVIEW_MODE',
+          isDisabled:
+            selectedMode === 'REVIEW_MODE' ||
+            (selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues?.isAccountForPeriodBetweenValid),
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="openAnnotationArray[26].lineInputs[0]"
@@ -657,17 +713,22 @@
       <app-applicant-review-feedback
         formControlName="seventhRowReview"
         [displayAnnotationButton]="
+          selectedMode === 'REVIEW_MODE' &&
           openAnnotationArray[26].displayAnnotationButton
         "
         [displayAnnotationTextArea]="
+          selectedMode === 'REVIEW_MODE' &&
           openAnnotationArray[26].displayAnnotationTextArea
         "
         [lineIndex]="26"
         [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
         [feedbackText]="
-          'Check the routing number one more time (one number missing)!!!'
+          selectedMode === 'FEEDBACK_MODE' &&
+          stepFeedbackValues?.accountForPeriodBetweenMessage
         "
-        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+        (annotationBtnClickEvent)="
+          selectedMode === 'REVIEW_MODE' && getAnnotationBtnClickValue($event)
+        "
       ></app-applicant-review-feedback>
     </div>
   </div>

@@ -79,6 +79,9 @@ export class Step2Component implements OnInit, OnDestroy {
   public cardsWithIncorrectFields: boolean = false;
   public previousFormValuesOnReview: any;
 
+  public stepFeedbackValues: any;
+  public isFeedbackValueUpdated: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -129,6 +132,7 @@ export class Step2Component implements OnInit, OnDestroy {
   }
 
   public patchStepValues(stepValues: WorkExperienceFeedbackResponse): void {
+    console.log('stepValues', stepValues);
     const { haveWorkExperience, workExperienceItems } = stepValues;
 
     if (this.selectedMode === SelectedMode.REVIEW) {
@@ -200,11 +204,48 @@ export class Step2Component implements OnInit, OnDestroy {
       }
     }
 
+    if (this.selectedMode === SelectedMode.FEEDBACK) {
+      const lastWorkExperienceItemReview =
+        workExperienceItems[workExperienceItems.length - 1]
+          .workExperienceItemReview;
+
+      this.stepFeedbackValues = lastWorkExperienceItemReview;
+
+      console.log('lastWorkExperienceItemReview', lastWorkExperienceItemReview);
+
+      /*      if (drugAndAlcoholReview) {
+        this.stepFeedbackValues = drugAndAlcoholReview;
+      }
+
+      this.stepValues = stepValues;
+
+      this.startFeedbackValueChangesMonitoring(); */
+    }
+
     this.workExperienceForm
       .get('noWorkExperience')
       .patchValue(haveWorkExperience);
 
     if (!haveWorkExperience) {
+      const itemReviewPlaceholder = {
+        isEmployerValid: true,
+        isJobDescriptionValid: true,
+        isFromValid: true,
+        isToValid: true,
+        isPhoneValid: true,
+        isEmailValid: true,
+        isFaxValid: true,
+        isAddressValid: true,
+        isAddressUnitValid: true,
+        isReasonForLeavingValid: true,
+        isAccountForPeriodBetweenValid: true,
+        employerMessage: null,
+        jobDescriptionMessage: null,
+        contactMessage: null,
+        addressMessage: null,
+        accountForPeriodBetweenMessage: null,
+      };
+
       const lastItemInWorkExperienceArray =
         workExperienceItems[workExperienceItems.length - 1];
 
@@ -250,7 +291,7 @@ export class Step2Component implements OnInit, OnDestroy {
               : [],
             workExperienceItemReview: item.workExperienceItemReview
               ? item.workExperienceItemReview
-              : null,
+              : itemReviewPlaceholder,
           };
         });
 
@@ -303,7 +344,7 @@ export class Step2Component implements OnInit, OnDestroy {
         workExperienceItemReview:
           lastItemInWorkExperienceArray.workExperienceItemReview
             ? lastItemInWorkExperienceArray.workExperienceItemReview
-            : null,
+            : itemReviewPlaceholder,
       };
 
       this.workExperienceArray = JSON.parse(

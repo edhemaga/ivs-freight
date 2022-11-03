@@ -246,8 +246,6 @@ export class SphStep2FormComponent
     this.hazmatSpillRadios[0].checked = false;
     this.hazmatSpillRadios[1].checked = false;
 
-    this.accidentForm.reset();
-
     this.formService.resetForm(this.accidentForm);
 
     this.accidentForm.patchValue({
@@ -286,8 +284,6 @@ export class SphStep2FormComponent
 
     this.isAccidentEdited = false;
 
-    this.accidentForm.reset();
-
     this.subscription.unsubscribe();
   }
 
@@ -298,8 +294,6 @@ export class SphStep2FormComponent
 
     this.hazmatSpillRadios[0].checked = false;
     this.hazmatSpillRadios[1].checked = false;
-
-    this.accidentForm.reset();
 
     this.subscription.unsubscribe();
   }

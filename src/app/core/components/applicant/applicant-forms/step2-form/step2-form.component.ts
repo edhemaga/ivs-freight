@@ -76,6 +76,7 @@ export class Step2FormComponent
   @Input() markFormInvalid?: boolean;
   @Input() markInnerFormInvalid?: boolean;
   @Input() isReviewingCard: boolean;
+  @Input() stepFeedbackValues?: any;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
@@ -1028,7 +1029,9 @@ export class Step2FormComponent
 
     this.formService.resetForm(this.workExperienceForm);
 
-    this.subscription.unsubscribe();
+    if (this.selectedMode === SelectedMode.APPLICANT) {
+      this.subscription.unsubscribe();
+    }
   }
 
   public onSaveEditedWorkExperience(): void {
