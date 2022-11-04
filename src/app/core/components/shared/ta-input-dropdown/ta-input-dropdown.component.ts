@@ -774,13 +774,7 @@ export class TaInputDropdownComponent
 
     this.multiselectItems = this.options.filter((item) => item.active);
 
-    this.selectedItems.emit(
-      this.multiselectItems.map((item) => {
-        return {
-          ...item,
-        };
-      })
-    );
+    this.selectedItems.emit(this.multiselectItems);
 
     this.options = this.options.sort(
       (x, y) => Number(y.active) - Number(x.active)

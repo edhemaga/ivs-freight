@@ -1137,7 +1137,11 @@ export class TaInputComponent
       }
     }
 
-    if (['per stop', 'flat rate'].includes(this.inputConfig.name.toLowerCase())) {
+    if (
+      ['per stop', 'flat rate', 'per load'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
       if (
         this.inputService
           .getInputRegexPattern('per stop')

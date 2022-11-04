@@ -35,10 +35,12 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   public modalName: string = null;
 
   public testTypes: any[] = [];
-  public alcoholTests: any[] = [];
-  public drugTests: any[] = [];
+  // Reasons
+  public reasons: any[] = [];
+  public alcoholReasons: any[] = [];
+  public drugReasons: any[] = [];
+  // -------
   public testResults: any[] = [];
-  public reasonTypes: any[] = [];
 
   public selectedTestType: any = null;
   public selectedReasonType: any = null;
@@ -144,8 +146,8 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: GetTestModalResponse) => {
           this.testTypes = res.testTypes;
-          this.alcoholTests = res.alcoholTestReasons;
-          this.drugTests = res.drugTestReasons;
+          this.alcoholReasons = res.alcoholTestReasons;
+          this.drugReasons = res.drugTestReasons;
           this.testResults = res.testResults;
         },
         error: () => {
@@ -177,14 +179,16 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     switch (action) {
       case 'test': {
         this.selectedTestType = event;
+
         this.inputService.changeValidators(
           this.drugForm.get('testReasonId'),
-          false
+          event ? true : false
         );
+
         if (this.selectedTestType.name.toLowerCase() === 'drug') {
-          this.reasonTypes = this.drugTests;
+          this.reasons = this.drugReasons;
         } else {
-          this.reasonTypes = this.alcoholTests;
+          this.reasons = this.alcoholReasons;
         }
         break;
       }
@@ -279,12 +283,18 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
         next: (res: TestResponse) => {
           this.drugForm.patchValue({
             testType: res.testType.name,
-            testReasonId: res.testReason.id,
+            testReasonId: res.testReason.name ? res.testReason.name : null,
             testingDate: convertDateFromBackend(res.testingDate),
             note: res.note,
           });
           this.selectedTestType = res.testType;
           this.selectedReasonType = res.testReason;
+
+          if (this.selectedTestType.name.toLowerCase() === 'drug') {
+            this.reasons = this.drugReasons;
+          } else {
+            this.reasons = this.alcoholReasons;
+          }
         },
         error: () => {
           this.notificationService.error("Can't get Test", 'Error:');
