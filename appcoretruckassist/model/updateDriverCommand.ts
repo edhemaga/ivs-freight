@@ -41,7 +41,8 @@ export interface UpdateDriverCommand {
     commissionTeam?: number | null;
     perMileSolo?: number | null;
     perMileTeam?: number | null;
-    flatRate?: number | null;
+    soloFlatRate?: number | null;
+    teamFlatRate?: number | null;
     ownerId?: number | null;
     isOwner?: boolean;
     ownerType?: OwnerType;

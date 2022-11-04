@@ -10,8 +10,10 @@
           type: 'text',
           label: 'Current or last employer',
           isRequired: true,
-          textTransform: 'capitalize',
           autoFocus: selectedMode === 'APPLICANT_MODE',
+          textTransform: 'uppercase',
+          minLength: 2,
+          maxLength: 64,
           isDisabled:
             selectedMode === 'REVIEW_MODE' ||
             (selectedMode === 'FEEDBACK_MODE' &&

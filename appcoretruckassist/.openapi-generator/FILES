@@ -297,6 +297,7 @@ model/fuelStopShortResponse.ts
 model/fuelTransactionListResponse.ts
 model/fuelTransactionResponse.ts
 model/fuelTransactionResponsePagination.ts
+model/fuelType.ts
 model/fuelledVehicleHistoryListResponse.ts
 model/fuelledVehicleResponse.ts
 model/fuelledVehicleResponsePagination.ts
