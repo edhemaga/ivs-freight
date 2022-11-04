@@ -16,8 +16,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
-
+      transform: rotate(0deg);
       fill: #919191;
+      transition: transform 0.2s ease;
       path{
         fill: #919191;
       }
@@ -39,13 +40,24 @@
 
   &.active-drop{
     background-color: #42424220;
+    
     .dropdown-dots {
       cursor: pointer;
       svg {
+        transform: rotate(90deg);
           path {
             fill: #424242 !important;
           }
       }
+    }
+
+    &:hover{
+      background-color: #424242;
+      svg {
+        path {
+          fill: #DADADA !important;
+        }
+    }
     }
   }
 
@@ -60,13 +72,13 @@
 
   &.verticalMargin{
     margin-left: 4px;
-    margin-top: 7px;
+    margin-top: 3px;
   }
 
 }
 
 .details-dropdown-body {
-  padding: 4px;
+  padding: 4px 4px 0.1px 4px;
   
   background-color: #2F2F2F;
   border-radius: 3px;
@@ -206,7 +218,7 @@
       background-color: #1D1D1D;
 
       .actionTitle{
-        color: #CCCCCC;
+        color: #fff;
       }
 
       .actionIcon{
