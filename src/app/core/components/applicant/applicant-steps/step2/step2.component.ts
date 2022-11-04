@@ -4,11 +4,15 @@ import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { anyInputInLineIncorrect } from '../../state/utils/utils';
+import {
+  anyInputInLineIncorrect,
+  isFormValueNotEqual,
+} from '../../state/utils/utils';
 
 import {
   convertDateToBackend,
   convertDateFromBackend,
+  convertDateFromBackendShortYear,
 } from 'src/app/core/utils/methods.calculations';
 
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
@@ -38,7 +42,7 @@ import {
 export class Step2Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public applicantId: number;
 
@@ -78,6 +82,8 @@ export class Step2Component implements OnInit, OnDestroy {
   public hasIncorrectFields: boolean = false;
   public cardsWithIncorrectFields: boolean = false;
   public previousFormValuesOnReview: any;
+
+  public lastItemStepValues: any;
 
   public stepFeedbackValues: any;
   public isFeedbackValueUpdated: boolean = false;
@@ -205,13 +211,20 @@ export class Step2Component implements OnInit, OnDestroy {
     }
 
     if (this.selectedMode === SelectedMode.FEEDBACK) {
+      const lastWorkExperienceItem =
+        workExperienceItems[workExperienceItems.length - 1];
+
       const lastWorkExperienceItemReview =
-        workExperienceItems[workExperienceItems.length - 1]
-          .workExperienceItemReview;
+        lastWorkExperienceItem.workExperienceItemReview;
 
-      this.stepFeedbackValues = lastWorkExperienceItemReview;
+      if (lastWorkExperienceItemReview) {
+        this.stepFeedbackValues = lastWorkExperienceItemReview;
 
-      console.log('lastWorkExperienceItemReview', lastWorkExperienceItemReview);
+        this.lastItemStepValues = lastWorkExperienceItem;
+
+        console.log('this.lastItemStepValues', this.lastItemStepValues);
+        console.log('this.stepFeedbackValues', this.stepFeedbackValues);
+      }
 
       /*      if (drugAndAlcoholReview) {
         this.stepFeedbackValues = drugAndAlcoholReview;
@@ -499,6 +512,12 @@ export class Step2Component implements OnInit, OnDestroy {
 
   public onGetLastFormValues(event: any): void {
     this.lastWorkExperienceCard = event;
+
+    if (this.selectedMode === SelectedMode.FEEDBACK) {
+      if (event) {
+        this.startFeedbackValueChangesMonitoring();
+      }
+    }
   }
 
   public onHasIncorrectFields(event: any): void {
@@ -715,6 +734,129 @@ export class Step2Component implements OnInit, OnDestroy {
     const selectedWorkExperience = this.workExperienceArray[index];
 
     this.formValuesToPatch = selectedWorkExperience;
+  }
+
+  public startFeedbackValueChangesMonitoring(): void {
+    if (this.stepFeedbackValues) {
+      const filteredIncorrectValues = Object.keys(
+        this.stepFeedbackValues
+      ).reduce((o, key) => {
+        this.stepFeedbackValues[key] === false &&
+          (o[key] = this.stepFeedbackValues[key]);
+
+        return o;
+      }, {});
+
+      const hasIncorrectValues = Object.keys(filteredIncorrectValues).length;
+
+      if (hasIncorrectValues) {
+        const filteredFieldsWithIncorrectValues = Object.keys(
+          filteredIncorrectValues
+        ).reduce((o, key) => {
+          const keyName = key
+            .replace('Valid', '')
+            .replace('is', '')
+            .trim()
+            .toLowerCase();
+
+          const match = Object.keys(this.lastItemStepValues)
+            .filter((item) => item.toLowerCase().includes(keyName))
+            .pop();
+
+          o[keyName] = this.lastItemStepValues[match];
+
+          if (keyName === 'from') {
+            o['from'] = convertDateFromBackendShortYear(o['from']);
+          }
+
+          if (keyName === 'to') {
+            o['to'] = convertDateFromBackendShortYear(o['to']);
+          }
+
+          if (keyName === 'address') {
+            o['address'] = JSON.stringify({
+              address: this.lastItemStepValues.address.address,
+            });
+          }
+
+          if (keyName === 'addressunit') {
+            o['addressunit'] = this.lastItemStepValues.address.addressUnit;
+          }
+
+          return o;
+        }, {});
+
+        const filteredUpdatedFieldsWithIncorrectValues = Object.keys(
+          filteredFieldsWithIncorrectValues
+        ).reduce((o, key) => {
+          const keyName = key;
+
+          const match = Object.keys(this.lastItemStepValues)
+            .filter((item) => item.toLowerCase().includes(keyName))
+            .pop();
+
+          o[keyName] = this.lastWorkExperienceCard[match];
+
+          if (keyName === 'from') {
+            o['from'] = this.lastWorkExperienceCard.fromDate;
+          }
+
+          if (keyName === 'to') {
+            o['to'] = this.lastWorkExperienceCard.toDate;
+          }
+
+          if (keyName === 'phone') {
+            o['phone'] = this.lastWorkExperienceCard.employerPhone;
+          }
+
+          if (keyName === 'fax') {
+            o['fax'] = this.lastWorkExperienceCard.employerFax;
+          }
+
+          if (keyName === 'email') {
+            o['email'] = this.lastWorkExperienceCard.employerEmail;
+          }
+
+          if (keyName === 'address') {
+            o['address'] = JSON.stringify({
+              address: this.lastWorkExperienceCard.employerAddress?.address,
+            });
+          }
+
+          if (keyName === 'addressunit') {
+            o['addressunit'] = this.lastWorkExperienceCard.employerAddressUnit;
+          }
+
+          if (keyName === 'accountforperiodbetween') {
+            o['accountforperiodbetween'] =
+              this.lastWorkExperienceCard.accountForPeriod;
+          }
+
+          return o;
+        }, {});
+
+        console.log(
+          'filteredFieldsWithIncorrectValues',
+          filteredFieldsWithIncorrectValues
+        );
+
+        console.log(
+          'filteredUpdatedFieldsWithIncorrectValues',
+          filteredUpdatedFieldsWithIncorrectValues
+        );
+
+        const isFormNotEqual = isFormValueNotEqual(
+          filteredFieldsWithIncorrectValues,
+          filteredUpdatedFieldsWithIncorrectValues
+        );
+
+        if (isFormNotEqual) {
+          this.isFeedbackValueUpdated = true;
+        } else {
+          this.isFeedbackValueUpdated = false;
+        }
+      }
+    }
   }
 
   public onStepAction(event: any): void {

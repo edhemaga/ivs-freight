@@ -319,10 +319,11 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [filledCorrectly]="
-      selectedMode === 'APPLICANT_MODE' &&
       workExperienceForm.valid &&
-      formStatus === 'VALID' &&
-      innerFormStatus === 'VALID'
+      ((selectedMode === 'APPLICANT_MODE' &&
+        formStatus === 'VALID' &&
+        innerFormStatus === 'VALID') ||
+        (selectedMode === 'FEEDBACK_MODE' && isFeedbackValueUpdated))
     "
     [hasIncorrectFields]="
       selectedMode === 'REVIEW_MODE' &&

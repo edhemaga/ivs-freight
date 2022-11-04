@@ -266,7 +266,10 @@ export class Step2FormComponent
   }
 
   ngAfterViewInit(): void {
-    if (this.selectedMode === SelectedMode.APPLICANT) {
+    if (
+      this.selectedMode === SelectedMode.APPLICANT ||
+      this.selectedMode === SelectedMode.FEEDBACK
+    ) {
       this.workExperienceForm.statusChanges
         .pipe(takeUntil(this.destroy$))
         .subscribe((res) => {

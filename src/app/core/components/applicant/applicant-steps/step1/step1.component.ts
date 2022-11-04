@@ -409,6 +409,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public patchStepValues(stepValues: PersonalInfoFeedbackResponse): void {
+    console.log('stepValues', stepValues);
     const {
       id,
       isAgreed,
@@ -1280,7 +1281,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public startFeedbackValueChangesMonitoring() {
+  public startFeedbackValueChangesMonitoring(): void {
     if (this.stepFeedbackValues) {
       const filteredIncorrectValues = Object.keys(
         this.stepFeedbackValues

@@ -469,7 +469,7 @@ export class Step7Component implements OnInit, OnDestroy {
     }
   }
 
-  public startFeedbackValueChangesMonitoring() {
+  public startFeedbackValueChangesMonitoring(): void {
     if (this.stepFeedbackValues) {
       const filteredIncorrectValues = Object.keys(
         this.stepFeedbackValues
