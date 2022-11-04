@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: '',
     component: HosRulesComponent,
-    data: { title: 'Hos Rules' },
+    data: { title: 'HOS Rules' },
     children: [],
   },
 ];

@@ -13,12 +13,13 @@
           dropdownWidthClass: 'w-col-445',
           minLength: 6,
           maxLength: 256,
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [placeholderType]="'shortAddress'"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 10)"
         [activeAddress]="selectedAddress"
+        [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
+        (incorrectEvent)="incorrectInput($event, 0, 10)"
         (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
       ></app-input-address-dropdown>
     </div>
@@ -32,9 +33,10 @@
           placeholderIcon: 'date',
           isRequired: true,
           customClass: 'datetimeclass',
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[10].lineInputs[1]"
         (incorrectEvent)="incorrectInput($event, 1, 10)"
       ></app-ta-input>
     </div>
@@ -77,13 +79,15 @@
             hideRequiredCheck: true,
             hideClear: true,
             hideErrorMessage: true,
-            textAlign: 'center'
+            textAlign: 'center',
+            isDisabled: selectedMode === 'REVIEW_MODE'
           }"
           [name]="'Fatalities #'"
           [elementOrder]="1"
           [minimum]="0"
           [type]="'applicant'"
           [selectedMode]="selectedMode"
+          [disabledArrow]="selectedMode === 'REVIEW_MODE'"
         ></app-ta-input-arrows>
       </div>
 
@@ -97,13 +101,15 @@
             hideRequiredCheck: true,
             hideClear: true,
             hideErrorMessage: true,
-            textAlign: 'center'
+            textAlign: 'center',
+            isDisabled: selectedMode === 'REVIEW_MODE'
           }"
           [name]="'Injuries #'"
           [elementOrder]="2"
           [minimum]="0"
           [type]="'applicant'"
           [selectedMode]="selectedMode"
+          [disabledArrow]="selectedMode === 'REVIEW_MODE'"
         ></app-ta-input-arrows>
       </div>
     </div>
@@ -131,6 +137,7 @@
       <div class="radios-box">
         <app-ta-input-radiobuttons
           [buttons]="answerChoices"
+          [disabled]="selectedMode === 'REVIEW_MODE'"
           (changedValue)="handleInputSelect($event, 'HAZMAT-SPILL')"
         ></app-ta-input-radiobuttons>
       </div>
@@ -150,6 +157,7 @@
           label: 'Vehicle type',
           isRequired: true,
           isDropdown: true,
+          isDisabled: selectedMode === 'REVIEW_MODE',
           dropdownWidthClass: 'w-col-applicant-t-type',
           dropdownImageInput: {
             withText: true,
@@ -162,13 +170,10 @@
               .replace(' ', '')
               .toLowerCase()
           },
-          customClass: 'truck-trailer-dropdown',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
+          customClass: 'truck-trailer-dropdown'
         }"
         [activeItem]="selectedVehicleType"
         [options]="vehicleType"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 11)"
         (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
       ></app-ta-input-dropdown>
     </div>
@@ -183,9 +188,10 @@
           maxLength: 160,
           textTransform: 'capitalize',
           isRequired: true,
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[11].lineInputs[1]"
         (incorrectEvent)="incorrectInput($event, 1, 11)"
       ></app-ta-input>
     </div>
@@ -259,6 +265,29 @@
         (click)="onSaveEditedAccident()"
       >
         Save Changes
+      </button>
+    </div>
+
+    <div
+      class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
+      *ngIf="isReviewingCard"
+    >
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+        (click)="onCancelReviewAccident()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+        [ngClass]="{
+          disabled: !isCardReviewedIncorrect
+        }"
+        (click)="onAddAnnotation()"
+      >
+        Add Annotation
       </button>
     </div>
   </div>

@@ -38,11 +38,14 @@
       <div *ngIf="isInactive" class="inactive-status">INACTIVE</div>
       <div *ngIf="showRepairHeaderOpen" [ngClass]="{'open-status':repairIsOpen}" class="inactive-status">{{repairIsOpen?'OPEN':'CLOSED'}}</div>
       <app-details-page-dropdown
+        (click)="toggleDropdownActions()"
         [customClassDropDown]="'drop-down-header'"
         [options]="options?.actions"
         [id]="optionsId"
+        [placement]="'right-top right-bottom'"
         (dropDownActions)="dropAct($event)"
-        [hasVericalDots]="true"
+        (openModalAction)="openModal($event)"
+        [hasVericalDots]="false"
       >
       </app-details-page-dropdown>
     </div>

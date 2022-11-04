@@ -9,10 +9,11 @@
           label: 'License #',
           isRequired: true,
           textTransform: 'capitalize',
-          autoFocus: true,
+          autoFocus: selectedMode === 'APPLICANT_MODE',
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
         (incorrectEvent)="incorrectInput($event, 0, 10)"
       ></app-ta-input>
     </div>
@@ -26,12 +27,10 @@
           isRequired: true,
           isDropdown: true,
           dropdownWidthClass: 'w-col-234',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
+          isDisabled: selectedMode === 'REVIEW_MODE'
         }"
         [activeItem]="selectedCountryType"
         [options]="countryTypes"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 1, 10)"
         (selectedItem)="handleInputSelect($event, 'COUNTRY-TYPE')"
       ></app-ta-input-dropdown>
     </div>
@@ -71,15 +70,15 @@
           type: 'text',
           label: 'State',
           isRequired: true,
-          isDisabled: !licenseForm.get('country').value,
+          isDisabled:
+            (selectedMode === 'APPLICANT_MODE' &&
+              !licenseForm.get('country').value) ||
+            selectedMode === 'REVIEW_MODE',
           isDropdown: true,
-          dropdownWidthClass: 'w-col-246',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
+          dropdownWidthClass: 'w-col-246'
         }"
         [activeItem]="selectedStateType"
         [options]="stateTypes"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 11)"
         (selectedItem)="handleInputSelect($event, 'STATE-TYPE')"
       ></app-ta-input-dropdown>
     </div>
@@ -93,12 +92,10 @@
           isRequired: true,
           isDropdown: true,
           dropdownWidthClass: 'w-col-174',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
+          isDisabled: selectedMode === 'REVIEW_MODE'
         }"
         [activeItem]="selectedClassType"
         [options]="classTypes"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 1, 11)"
         (selectedItem)="handleInputSelect($event, 'CLASS-TYPE')"
       ></app-ta-input-dropdown>
     </div>
@@ -112,9 +109,10 @@
           placeholderIcon: 'date',
           isRequired: true,
           customClass: 'datetimeclass',
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[11].lineInputs[2]"
         (incorrectEvent)="incorrectInput($event, 2, 11)"
       ></app-ta-input>
     </div>
@@ -158,37 +156,12 @@
           isDropdown: true,
           multiselectDropdown: true,
           dropdownWidthClass: 'w-col-616',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
+          isDisabled: selectedMode === 'REVIEW_MODE'
         }"
         [options]="restrictionsList"
         [preloadMultiselectItems]="selectedRestrictions"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 12)"
         (selectedItems)="handleInputSelect($event, 'RESTRICTIONS')"
       ></app-ta-input-dropdown>
-    </div>
-
-    <!-- REVIEW AND FEEDBACK -->
-
-    <div
-      class="review-feedback-container"
-      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
-    >
-      <app-applicant-review-feedback
-        formControlName="thirdRowReview"
-        [displayAnnotationButton]="
-          openAnnotationArray[12].displayAnnotationButton
-        "
-        [displayAnnotationTextArea]="
-          openAnnotationArray[12].displayAnnotationTextArea
-        "
-        [lineIndex]="12"
-        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-        [feedbackText]="
-          'Check the routing number one more time (one number missing)!!!'
-        "
-        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-      ></app-applicant-review-feedback>
     </div>
   </div>
 
@@ -207,37 +180,12 @@
           isDropdown: true,
           multiselectDropdown: true,
           dropdownWidthClass: 'w-col-616',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
+          isDisabled: selectedMode === 'REVIEW_MODE'
         }"
         [options]="endorsmentsList"
         [preloadMultiselectItems]="selectedEndorsments"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 13)"
         (selectedItems)="handleInputSelect($event, 'ENDORSMENTS')"
       ></app-ta-input-dropdown>
-    </div>
-
-    <!-- REVIEW AND FEEDBACK -->
-
-    <div
-      class="review-feedback-container"
-      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
-    >
-      <app-applicant-review-feedback
-        formControlName="fourthRowReview"
-        [displayAnnotationButton]="
-          openAnnotationArray[13].displayAnnotationButton
-        "
-        [displayAnnotationTextArea]="
-          openAnnotationArray[13].displayAnnotationTextArea
-        "
-        [lineIndex]="13"
-        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-        [feedbackText]="
-          'Check the routing number one more time (one number missing)!!!'
-        "
-        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-      ></app-applicant-review-feedback>
     </div>
   </div>
 
@@ -293,6 +241,29 @@
         }"
       >
         Save Changes
+      </button>
+    </div>
+
+    <div
+      class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
+      *ngIf="isReviewingCard"
+    >
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+        (click)="onCancelReviewLicense()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+        [ngClass]="{
+          disabled: !isCardReviewedIncorrect
+        }"
+        (click)="onAddAnnotation()"
+      >
+        Add Annotation
       </button>
     </div>
   </div>

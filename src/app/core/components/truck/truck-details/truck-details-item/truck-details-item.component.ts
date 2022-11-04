@@ -43,6 +43,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
   accountText: string = null;
   public truckData: any;
   public dataEdit: any;
+  public dataFHWA: any;
   constructor(
     private tableService: TruckassistTableService,
     private confirmationService: ConfirmationService,
@@ -102,7 +103,51 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
           svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
           show: true,
         },
-
+        {
+          title: 'border'
+        },
+        {
+          title: 'View Details',
+          name: 'view-details',
+          svg: 'assets/svg/common/ic_hazardous-info.svg',
+          show: true,
+        },
+        {
+          title: 'Renew',
+          name: 'renew',
+          svg: 'assets/svg/common/ic_retry_white.svg',
+          show: true,
+        },    
+        {
+          title: 'Transfer',
+          name: 'transfer',
+          svg: 'assets/svg/common/dropdown-transfer-icon.svg',
+          show: true,
+        },    
+        {
+          title: 'border'
+        },
+        {
+          title: 'Share',
+          name: 'share',
+          svg: 'assets/svg/common/share-icon.svg',
+          show: true,
+        },
+        {
+          title: 'Print',
+          name: 'print',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: true,
+        },  
+        {
+          title: 'border'
+        },
+        {
+          title: 'Void',
+          name: 'activate-item',
+          svg: 'assets/svg/common/ic_cancel_violation.svg',
+          redIcon: true,  
+        },    
         {
           title: 'Delete',
           name: 'delete-item',
@@ -111,10 +156,72 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
           svg: 'assets/svg/common/ic_trash_updated.svg',
           danger: true,
           show: true,
+          redIcon: true,
         },
       ],
       export: true,
     };
+
+    this.dataFHWA = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        {
+          title: 'Edit',
+          name: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
+        },
+        {
+          title: 'border'
+        },
+        {
+          title: 'View Details',
+          name: 'view-details',
+          svg: 'assets/svg/common/ic_hazardous-info.svg',
+          show: true,
+        },  
+        {
+          title: 'border'
+        },
+        {
+          title: 'Share',
+          name: 'share',
+          svg: 'assets/svg/common/share-icon.svg',
+          show: true,
+        },
+        {
+          title: 'Print',
+          name: 'print',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: true,
+        },  
+        {
+          title: 'border'
+        }, 
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'driver',
+          text: 'Are you sure you want to delete driver(s)?',
+          svg: 'assets/svg/common/ic_trash_updated.svg',
+          danger: true,
+          show: true,
+          redIcon: true,
+        },
+      ],
+      export: true,
+    };
+    
   }
 
   /**Function retrun id */

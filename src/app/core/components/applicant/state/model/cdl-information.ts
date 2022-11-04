@@ -1,5 +1,5 @@
 export interface LicenseModel {
-  id: number | null;
+  id?: number | null;
   licenseNumber: string | null;
   country: string;
   state: string;
@@ -8,6 +8,7 @@ export interface LicenseModel {
   endorsments?: any;
   restrictions?: any;
   isEditingLicense: boolean;
+  licenseReview: any;
 }
 
 export class CDLInformation {

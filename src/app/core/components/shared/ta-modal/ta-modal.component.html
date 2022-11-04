@@ -1,10 +1,5 @@
 <app-custom-scrollbar>
-  <div
-    cdkDrag
-    class="modal-container {{ customClass }}"
-    ngBAutofocus
-    (cdkDragStarted)="removeSelections($event)"
-  >
+  <div cdkDrag class="modal-container {{ customClass }}" ngBAutofocus>
     <div class="modal-original-part">
       <!-- Modal Header -->
       <div cdkDragHandle class="modal-header">
@@ -17,8 +12,8 @@
             *ngIf="tabChange"
             class="modal-header-tab-change"
             [ngClass]="{
-              'modal-header-tab-change-reorder': tabChangePosition === 'right'
-            }"
+                'modal-header-tab-change-reorder': tabChangePosition === 'right'
+              }"
           >
             <app-ta-tab-switch
               [tabs]="tabChange"
@@ -30,8 +25,8 @@
           <svg-icon
             *ngIf="headerSvg"
             src="assets/svg/common/confirmation/ic_confirmation_{{
-              headerSvg
-            }}.svg"
+                headerSvg
+              }}.svg"
             class="modal-header-svg"
           ></svg-icon>
           <!-- Hazardous Logo -->
@@ -46,9 +41,9 @@
           <h5
             class="edit-name"
             *ngIf="
-              (editData?.type?.includes('edit') || specificCaseModalName) &&
-              editName
-            "
+                (editData?.type?.includes('edit') || specificCaseModalName) &&
+                editName
+              "
           >
             {{ editName }}
           </h5>
@@ -67,31 +62,16 @@
             <p>Rate</p>
             <div class="load-modal-bill-rate-price-container">
               <p class="load-modal-base-rate">
-                $
-                {{
-                  loadModalBill.baseRate
-                    ? (loadModalBill.baseRate +
-                        loadModalBill.layover +
-                        loadModalBill.lumper +
-                        loadModalBill.fuelSurcharge +
-                        loadModalBill.escort +
-                        loadModalBill.detention | taThousandSeparator)
-                    : "0.00"
-                }}
+                $ {{ loadModalBill.baseRate ? (loadModalBill.baseRate +
+                loadModalBill.layover + loadModalBill.lumper +
+                loadModalBill.fuelSurcharge + loadModalBill.escort +
+                loadModalBill.detention | taThousandSeparator) : "0.00" }}
               </p>
-              <p
-                *ngIf="loadModalBill.adjusted"
-                class="load-modal-adjusted-rate"
-              >
-                $
-                {{
-                  loadModalBill.adjusted +
-                    loadModalBill.layover +
-                    loadModalBill.lumper +
-                    loadModalBill.fuelSurcharge +
-                    loadModalBill.escort +
-                    loadModalBill.detention | taThousandSeparator
-                }}
+              <p *ngIf="loadModalBill.adjusted" class="load-modal-adjusted-rate">
+                $ {{ loadModalBill.adjusted + loadModalBill.layover +
+                loadModalBill.lumper + loadModalBill.fuelSurcharge +
+                loadModalBill.escort + loadModalBill.detention |
+                taThousandSeparator }}
               </p>
             </div>
           </div>
@@ -101,16 +81,10 @@
           >
             <p>Due</p>
             <p class="load-modal-base-due">
-              $
-              {{
-                loadModalBill.advance
-                  ? (loadModalBill.baseRate - loadModalBill.advance
-                    | taThousandSeparator)
-                    ? (loadModalBill.baseRate - loadModalBill.advance
-                      | taThousandSeparator)
-                    : "0.00"
-                  : "0.00"
-              }}
+              $ {{ loadModalBill.advance ? (loadModalBill.baseRate -
+              loadModalBill.advance | taThousandSeparator) ?
+              (loadModalBill.baseRate - loadModalBill.advance |
+              taThousandSeparator) : "0.00" : "0.00" }}
             </p>
           </div>
           <!-- Header Load close -->
@@ -128,56 +102,45 @@
           (click)="onAction('close')"
         ></svg-icon>
       </div>
-    </div>
-    <!-- Divider top -->
-    <div *ngIf="topDivider" class="divider"></div>
-    <!-- Modal body -->
-    <div class="modal-body">
-      <!-- Modal content -->
-      <ng-content select="[origin]"></ng-content>
-      <!-- Divider bottom -->
-      <div *ngIf="bottomDivider" class="divider"></div>
-    </div>
-    <!-- Modal footer Normal -->
-    <div
-      *ngIf="!disableFooter && !confirmationData"
-      class="modal-footer"
-      cdkDragHandle
-      [ngClass]="{
-        'mutliple-buttons': editData?.type?.includes('edit'),
-        'load-template': loadModalTemplate,
-        'map-settings-template': mapSettingsModal || mapRouteModal
-      }"
-    >
-      <!-- Footer Left Side -->
+      <!-- Divider top -->
+      <div *ngIf="topDivider" class="divider"></div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <!-- Modal content -->
+        <ng-content select="[origin]"></ng-content>
+        <!-- Divider bottom -->
+        <div *ngIf="bottomDivider" class="divider"></div>
+      </div>
+      <!-- Modal footer Normal -->
       <div
         *ngIf="!disableFooter && !confirmationData"
         class="modal-footer"
+        cdkDragHandle
         [ngClass]="{
-          'mutliple-buttons': editData?.type?.includes('edit'),
-          'load-template': loadModalTemplate,
-          'map-settings-template': mapSettingsModal || mapRouteModal
-        }"
+            'mutliple-buttons': editData?.type?.includes('edit'),
+            'load-template': loadModalTemplate,
+            'map-settings-template': mapSettingsModal || mapRouteModal
+          }"
       >
         <!-- Footer Left Side -->
         <div
           class="ta-modal-footer-left-side"
           *ngIf="
-            editData?.type?.includes('edit') ||
-            loadModalTemplate ||
-            mapSettingsModal ||
-            mapRouteModal
-          "
+              editData?.type?.includes('edit') ||
+              loadModalTemplate ||
+              mapSettingsModal ||
+              mapRouteModal
+            "
         >
           <!-- Delete -->
           <button
             *ngIf="
-              !disableDelete &&
-              !resendEmail &&
-              !loadModalTemplate &&
-              !mapSettingsModal &&
-              !mapRouteModal
-            "
+                !disableDelete &&
+                !resendEmail &&
+                !loadModalTemplate &&
+                !mapSettingsModal &&
+                !mapRouteModal
+              "
             (click)="onAction('delete')"
             class="modal-delete-btn"
             type="button"
@@ -193,7 +156,7 @@
           >
             Reset
           </button>
-
+  
           <!-- Load Template -->
           <button
             *ngIf="loadModalTemplate"
@@ -203,13 +166,10 @@
           >
             {{ loadTemplateSpinnerVisibility ? "Saving" : "Save as Template" }}
             <div *ngIf="loadTemplateSpinnerVisibility" class="modal-spinner">
-              <app-ta-spinner
-                [size]="'small'"
-                [color]="'white'"
-              ></app-ta-spinner>
+              <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
             </div>
           </button>
-
+  
           <!-- Resend Email -->
           <button
             *ngIf="resendEmail"
@@ -217,19 +177,13 @@
             class="modal-resend-email-btn"
             type="button"
           >
-            {{
-              resendEmailSpinnerVisibility
-                ? "Sending"
-                : "Resend Application Email"
-            }}
+            {{ resendEmailSpinnerVisibility ? "Sending" : "Resend Application
+            Email" }}
             <div *ngIf="resendEmailSpinnerVisibility" class="modal-spinner">
-              <app-ta-spinner
-                [size]="'small'"
-                [color]="'white'"
-              ></app-ta-spinner>
+              <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
             </div>
           </button>
-
+  
           <!-- Deactivated -->
           <button
             *ngIf="editData?.disableButton"
@@ -239,7 +193,7 @@
           >
             {{ isDeactivated ? "Activate" : "Deactivate" }}
           </button>
-
+  
           <!-- DNU -->
           <button
             *ngIf="editData?.dnuButton"
@@ -253,7 +207,7 @@
           >
             {{ isDNU ? "Remove from DNU" : "Move to DNU" }}
           </button>
-
+  
           <!-- BFB -->
           <button
             *ngIf="editData?.bfbButton"
@@ -268,7 +222,7 @@
             {{ isBFB ? "Remove from BFB" : "Move to BFB" }}
           </button>
         </div>
-
+  
         <!-- Footer right side -->
         <div class="ta-modal-footer-right-side">
           <!-- Save and Add New button -->
@@ -281,13 +235,10 @@
           >
             {{ saveAddNewSpinnerVisibility ? "Saving" : "Save & Add New" }}
             <div *ngIf="saveAddNewSpinnerVisibility" class="modal-spinner">
-              <app-ta-spinner
-                [size]="'small'"
-                [color]="'white'"
-              ></app-ta-spinner>
+              <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
             </div>
           </button>
-
+  
           <!-- Set Map Settings -->
           <button
             *ngIf="mapSettingsModal"
@@ -298,13 +249,10 @@
           >
             {{ setMapSettingsSpinnerVisibility ? "Saving" : "Set" }}
             <div *ngIf="setMapSettingsSpinnerVisibility" class="modal-spinner">
-              <app-ta-spinner
-                [size]="'small'"
-                [color]="'white'"
-              ></app-ta-spinner>
+              <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
             </div>
           </button>
-
+  
           <!-- Create Map Route -->
           <button
             *ngIf="mapRouteModal"
@@ -315,13 +263,10 @@
           >
             {{ setMapRouteSpinnerVisibility ? "Saving" : "Create" }}
             <div *ngIf="setMapRouteSpinnerVisibility" class="modal-spinner">
-              <app-ta-spinner
-                [size]="'small'"
-                [color]="'white'"
-              ></app-ta-spinner>
+              <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
             </div>
           </button>
-
+  
           <!-- Save button -->
           <button
             *ngIf="!mapSettingsModal && !mapRouteModal"
@@ -330,32 +275,22 @@
             [ngClass]="{ valid: isModalValid }"
             type="button"
           >
-            {{
-              saveSpinnerVisibility
-                ? "Saving"
-                : editData?.type?.includes("edit")
-                ? editData?.type?.includes("fo")
-                  ? "Save"
-                  : "Save Changes"
-                : "Save"
-            }}
+            {{ saveSpinnerVisibility ? "Saving" : editData?.type?.includes("edit")
+            ? editData?.type?.includes("fo") ? "Save" : "Save Changes" : "Save" }}
             <div *ngIf="saveSpinnerVisibility" class="modal-spinner">
-              <app-ta-spinner
-                [size]="'small'"
-                [color]="'white'"
-              ></app-ta-spinner>
+              <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
             </div>
           </button>
         </div>
       </div>
-
+  
       <!-- Modal Footer Confirmation Modal -->
       <div
         *ngIf="confirmationData"
         class="modal-footer"
         [ngClass]="{
-          'mutliple-buttons': confirmationData.subType !== 'cdl void'
-        }"
+            'mutliple-buttons': confirmationData.subType !== 'cdl void'
+          }"
       >
         <!-- Cancel -->
         <button
@@ -370,8 +305,8 @@
         <button
           *ngIf="['delete', 'multiple delete'].includes(confirmationData?.type)"
           (click)="
-            onAction(confirmationData?.data ? 'delete' : 'multiple delete')
-          "
+              onAction(confirmationData?.data ? 'delete' : 'multiple delete')
+            "
           class="modal-delete-btn modal-red-btn modal-confirmation-btn"
           type="button"
         >
@@ -384,11 +319,8 @@
           class="modal-save-btn valid modal-confirmation-btn"
           type="button"
         >
-          Activate
-          {{
-            confirmationData?.template.substring(0, 1).toUpperCase() +
-              confirmationData?.template.substring(1)
-          }}
+          Activate {{ confirmationData?.template.substring(0, 1).toUpperCase() +
+          confirmationData?.template.substring(1) }}
         </button>
         <!-- Deactivate -->
         <button
@@ -397,8 +329,7 @@
           class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
           type="button"
         >
-          Deactivate
-          {{ confirmationData?.template }}
+          Deactivate {{ confirmationData?.template }}
         </button>
         <!-- Hire -->
         <button
@@ -416,11 +347,8 @@
           class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
           type="button"
         >
-          {{
-            confirmationData?.subTypeStatus
-              ? "Remove from archive"
-              : "Archive" + " " + confirmationData?.template
-          }}
+          {{ confirmationData?.subTypeStatus ? "Remove from archive" : "Archive" +
+          " " + confirmationData?.template }}
         </button>
         <!-- Void CDL -->
         <button
@@ -438,11 +366,9 @@
           class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
           type="button"
         >
-          {{
-            confirmationData?.subTypeStatus?.substring(0, 1).toUpperCase() +
-              confirmationData?.subTypeStatus?.substring(1)
-          }}
-          {{ confirmationData?.subTypeStatus === "move" ? "to" : "from" }} DNU
+          {{ confirmationData?.subTypeStatus?.substring(0, 1).toUpperCase() +
+          confirmationData?.subTypeStatus?.substring(1) }} {{
+          confirmationData?.subTypeStatus === "move" ? "to" : "from" }} DNU
         </button>
         <!-- DNU -->
         <button
@@ -451,16 +377,13 @@
           class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
           type="button"
         >
-          {{
-            confirmationData?.subTypeStatus?.substring(0, 1).toUpperCase() +
-              confirmationData?.subTypeStatus?.substring(1)
-          }}
-          {{ confirmationData?.subTypeStatus === "move" ? "to" : "from" }} Ban
-          List
+          {{ confirmationData?.subTypeStatus?.substring(0, 1).toUpperCase() +
+          confirmationData?.subTypeStatus?.substring(1) }} {{
+          confirmationData?.subTypeStatus === "move" ? "to" : "from" }} Ban List
         </button>
       </div>
       <!-- End Confirmation Modal -->
-
+  
       <!-- Modal DropZone -->
       <div
         class="drop-zone-active"

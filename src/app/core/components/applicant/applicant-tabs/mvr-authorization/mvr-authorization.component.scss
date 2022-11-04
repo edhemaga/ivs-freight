@@ -172,34 +172,25 @@
         .driver-box,
         .license-box,
         .state-box,
-        .class-box,
-        .date-box {
+        .class-box {
           &.driver-box {
-            width: 200px;
+            width: 206px;
             margin-right: 12px;
           }
 
           &.license-box {
-            width: 157px;
-            margin-right: 12px;
-            padding-left: 6px;
+            width: 151px;
+            margin-right: 18px;
           }
 
           &.state-box {
-            width: 61px;
-            margin-right: 12px;
-            padding-left: 6px;
+            width: 55px;
+            margin-right: 18px;
           }
 
           &.class-box {
-            width: 61px;
-            margin-right: 12px;
-            padding-left: 6px;
-          }
-
-          &.date-box {
-            margin-right: 8px;
-            padding-left: 6px;
+            width: 55px;
+            margin-right: 18px;
           }
         }
       }

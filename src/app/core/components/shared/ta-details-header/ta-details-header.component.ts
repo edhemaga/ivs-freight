@@ -45,6 +45,7 @@ export class TaCommonHeaderComponent implements OnInit {
   @Input() secondNameHeader: string = '';
   @Input() countViolation: number;
   @Input() hideCounter: boolean;
+  @Input() mainData: any;
   public up: boolean = false;
   public down: boolean = false;
   constructor(private routes: ActivatedRoute) {}
@@ -53,6 +54,7 @@ export class TaCommonHeaderComponent implements OnInit {
 
   public openModal(val: any) {
     this.openModalAction.emit(val);
+    console.log('--val--', val)
   }
   public makeRequestFun(req: any) {
     this.makeRequest.emit(req);
@@ -77,5 +79,99 @@ export class TaCommonHeaderComponent implements OnInit {
   }
   public trackByIndex(index: number, obj: any): any {
     return index;
+  }
+
+  toggleDropdownActions(){
+    //console.log('--mainData---', this.mainData);
+    let itemData = this.mainData?.data;
+    console.log('--itemData---', itemData)
+    let diasbleClosedArray;
+
+    if ( this.mainData?.nameDefault == 'Repair Shop Details' ) {
+      if ( itemData.status != 1 ) {
+        diasbleClosedArray = [0, 3, 4, 5];
+      } else if ( itemData.companyOwned ) {
+        diasbleClosedArray = [3];
+      }
+    }
+
+    if ( this.mainData?.nameDefault == 'Broker Details' ) {
+      if ( itemData.status != 1 ) {
+        diasbleClosedArray = [0, 2, 3, 4, 5, 6];
+      } else if ( itemData.dnu || itemData.ban) {
+        diasbleClosedArray = [2];
+      }
+    }
+
+    switch (this.mainData?.nameDefault) {
+      case 'Repair Shop Details' : 
+        this.options?.actions.map((action, index)=>{
+          if ( index == 3 ) {
+            if (itemData.pinned != false) {
+              action.title = 'Remove from Favourite';
+              action.name = 'remove-from-favourite';
+              action.blueIcon = true;
+            } else {
+              action.title = 'Move to Favourite';
+              action.name = 'move-to-favourite';
+              action.blueIcon = false;
+            }
+          }
+
+          if ( diasbleClosedArray && diasbleClosedArray.indexOf(index) > -1 ) {
+            action.disabled = true;
+          } else {
+            action.disabled = false;
+          }
+
+          if ( index == 9 ) {
+            if ( itemData.status != 1) {
+              action.title = 'Reopen Business';
+              action.greenIcon = true;
+              action.redIcon = false;
+              action.name = 'open-business';
+            } else {
+              action.title = 'Close Business';
+              action.greenIcon = false;
+              action.redIcon = true;
+              action.name = 'close-business';
+            }
+          } 
+
+        })
+      break;
+      case 'Broker Details' : 
+        this.options?.actions.map((action, index)=>{
+          if ( diasbleClosedArray && diasbleClosedArray.indexOf(index) > -1 ) {
+            action.disabled = true;
+          } else {
+            action.disabled = false;
+          }
+
+          if ( index == 5 ){
+            if ( itemData.ban ) {
+              action.title = 'Remove from Ban List';
+              action.name = 'remove-from-ban';
+            } else {
+              action.title = 'Move to Ban List';
+              action.name = "move-to-ban";
+            }
+          }
+
+          if ( index == 6 ) {
+            if ( itemData.dnu ) {
+              action.title = 'Remove from DNU List';
+              action.name = 'remove-from-dnu';
+            } else {
+              action.title = 'Move to DNU List';
+              action.name = 'move-to-dnu';
+            }
+          }
+
+        })
+        
+      break;
+    }
+  
   }
 }

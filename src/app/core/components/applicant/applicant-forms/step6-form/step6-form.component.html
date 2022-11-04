@@ -11,9 +11,10 @@
           textTransform: 'capitalize',
           minLength: 2,
           maxLength: 24,
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[15].lineInputs[0]"
         (incorrectEvent)="incorrectInput($event, 0, 15)"
       ></app-ta-input>
     </div>
@@ -28,9 +29,10 @@
           placeholderIcon: 'phone',
           mask: '(000) 000-0000',
           maxLength: 14,
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[15].lineInputs[1]"
         (incorrectEvent)="incorrectInput($event, 1, 15)"
       ></app-ta-input>
     </div>
@@ -45,9 +47,10 @@
           minLength: 2,
           maxLength: 24,
           isRequired: true,
+          isDisabled: selectedMode === 'REVIEW_MODE',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
-        [incorrectValue]="false"
+        [incorrectValue]="openAnnotationArray[15].lineInputs[2]"
         (incorrectEvent)="incorrectInput($event, 2, 15)"
       ></app-ta-input>
     </div>
@@ -121,6 +124,29 @@
         (click)="onSaveEditedContact()"
       >
         Save Changes
+      </button>
+    </div>
+
+    <div
+      class="d-flex align-items-center mx-auto justify-content-center btn-container"
+      *ngIf="isReviewingCard"
+    >
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+        (click)="onCancelReviewContact()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+        [ngClass]="{
+          disabled: !isCardReviewedIncorrect
+        }"
+        (click)="onAddAnnotation()"
+      >
+        Add Annotation
       </button>
     </div>
   </div>

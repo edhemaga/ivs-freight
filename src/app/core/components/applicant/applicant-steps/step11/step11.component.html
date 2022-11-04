@@ -16,23 +16,22 @@
           [label]="
             'I hereby authorize this company to release all records of employment, including assessments of my job previous '
           "
-          [customClass]="
-            selectedMode === 'FEEDBACK_MODE'
-              ? 'applicant-disclosure-release-feedback'
-              : 'disclosure-release'
+          [customClass]="'disclosure-release'"
+          [disabledStillCheckMark]="
+            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
           "
         >
         </app-ta-checkbox>
         <p
           class="m-0 text-center ta-font-regular"
           [ngStyle]="{
-            color:
-              selectedMode !== 'FEEDBACK_MODE' &&
-              authorizationForm.get('isFirstAuthorization').value
-                ? '#3c3c3c'
-                : selectedMode === 'FEEDBACK_MODE'
-                ? '#919191'
-                : '#6c6c6c'
+            color: authorizationForm.get('isFirstAuthorization').value
+              ? '#3c3c3c'
+              : '#6c6c6c',
+            cursor:
+              selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+                ? 'auto'
+                : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isFirstAuthorization')"
         >
@@ -68,23 +67,22 @@
           [label]="
             'I authorize the carrier to make such inquiries and investigations of my personal, employment, driving, '
           "
-          [customClass]="
-            selectedMode === 'FEEDBACK_MODE'
-              ? 'applicant-disclosure-release-feedback'
-              : 'disclosure-release'
+          [customClass]="'disclosure-release'"
+          [disabledStillCheckMark]="
+            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
           "
         >
         </app-ta-checkbox>
         <p
           class="m-0 text-center ta-font-regular"
           [ngStyle]="{
-            color:
-              selectedMode !== 'FEEDBACK_MODE' &&
-              authorizationForm.get('isSecondAuthorization').value
-                ? '#3c3c3c'
-                : selectedMode === 'FEEDBACK_MODE'
-                ? '#919191'
-                : '#6c6c6c'
+            color: authorizationForm.get('isSecondAuthorization').value
+              ? '#3c3c3c'
+              : '#6c6c6c',
+            cursor:
+              selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+                ? 'auto'
+                : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isSecondAuthorization')"
         >
@@ -107,23 +105,22 @@
           [label]="
             'In the event of employment, I understand that false or misleading information given in my application or '
           "
-          [customClass]="
-            selectedMode === 'FEEDBACK_MODE'
-              ? 'applicant-disclosure-release-feedback'
-              : 'disclosure-release'
+          [customClass]="'disclosure-release'"
+          [disabledStillCheckMark]="
+            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
           "
         >
         </app-ta-checkbox>
         <p
           class="m-0 text-center ta-font-regular"
           [ngStyle]="{
-            color:
-              selectedMode !== 'FEEDBACK_MODE' &&
-              authorizationForm.get('isThirdAuthorization').value
-                ? '#3c3c3c'
-                : selectedMode === 'FEEDBACK_MODE'
-                ? '#919191'
-                : '#6c6c6c'
+            color: authorizationForm.get('isThirdAuthorization').value
+              ? '#3c3c3c'
+              : '#6c6c6c',
+            cursor:
+              selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+                ? 'auto'
+                : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isThirdAuthorization')"
         >
@@ -144,23 +141,22 @@
           [label]="
             'This certifies that I completed this application, and that all entries on it and information in it are true and '
           "
-          [customClass]="
-            selectedMode === 'FEEDBACK_MODE'
-              ? 'applicant-disclosure-release-feedback'
-              : 'disclosure-release'
+          [customClass]="'disclosure-release'"
+          [disabledStillCheckMark]="
+            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
           "
         >
         </app-ta-checkbox>
         <p
           class="m-0 text-center ta-font-regular"
           [ngStyle]="{
-            color:
-              selectedMode !== 'FEEDBACK_MODE' &&
-              authorizationForm.get('isFourthAuthorization').value
-                ? '#3c3c3c'
-                : selectedMode === 'FEEDBACK_MODE'
-                ? '#919191'
-                : '#6c6c6c'
+            color: authorizationForm.get('isFourthAuthorization').value
+              ? '#3c3c3c'
+              : '#6c6c6c',
+            cursor:
+              selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+                ? 'auto'
+                : 'pointer'
           }"
           (click)="handleCheckboxParagraphClick('isFourthAuthorization')"
         >
@@ -177,13 +173,20 @@
         <app-applicant-signature-pad
           (signatureEmitter)="onSignatureAction($event)"
         ></app-applicant-signature-pad>
+
+        <img src="{{ signatureImgSrc }}" alt="signature" />
       </div>
 
       <div
         class="d-flex justify-content-center align-items-center signature-image-container"
         *ngIf="selectedMode !== 'APPLICANT_MODE'"
       >
-        <img src="" alt="signature" />
+        <img
+          src="{{
+            signatureImgSrc ? 'data:image/png;base64,' + signatureImgSrc : ''
+          }}"
+          alt="signature"
+        />
       </div>
     </form>
   </div>
@@ -197,7 +200,12 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [lastStep]="true"
-    [filledCorrectly]="authorizationForm.valid && signature"
+    [filledCorrectly]="
+      authorizationForm.valid &&
+      ((selectedMode === 'APPLICANT_MODE' && signature) ||
+        (selectedMode === 'FEEDBACK_MODE' && signatureImgSrc))
+    "
+    [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

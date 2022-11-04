@@ -1,4 +1,4 @@
-@import "./ta-input.colors.scss";
+@import './ta-input.colors.scss';
 // -------------------- Input Control --------------------
 .input-control {
   width: 100%;
@@ -41,25 +41,6 @@
 
   &.lowercase {
     text-transform: lowercase;
-  }
-
-  &.disabled {
-    background-color: $input-background-color-disabled !important;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    pointer-events: none;
-  }
-
-  &.disabled-filled {
-    background-color: $input-background-color-disabled !important;
-    color: $input-text-color-filled-disabled !important;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    pointer-events: none;
   }
 
   &:hover {
@@ -225,6 +206,25 @@
     color: $input-text-color-invalid-focus-out !important;
   }
 
+  &.disabled {
+    background-color: $input-background-color-disabled !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  &.disabled-filled {
+    background-color: $input-background-color-disabled !important;
+    color: $input-text-color-filled-disabled !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+  }
+
   &.blue-input-color {
     color: $input-text-color-blue !important;
   }
@@ -329,28 +329,28 @@
 }
 
 //------------------------- Input Number Hide Arrows -------------------------
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   margin: 0 !important;
 }
 
-input[type="number"]::-webkit-inner-spin-button:hover,
-input[type="number"]::-webkit-outer-spin-button:hover,
-input[type="number"]::-webkit-inner-spin-button:focus,
-input[type="number"]::-webkit-outer-spin-button:focus {
+input[type='number']::-webkit-inner-spin-button:hover,
+input[type='number']::-webkit-outer-spin-button:hover,
+input[type='number']::-webkit-inner-spin-button:focus,
+input[type='number']::-webkit-outer-spin-button:focus {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   margin: 0 !important;
 }
 
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield !important;
 }
-input[type="number"]:hover,
-input[type="number"]:focus {
+input[type='number']:hover,
+input[type='number']:focus {
   -moz-appearance: textfield !important;
 }

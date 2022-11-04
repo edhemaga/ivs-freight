@@ -197,7 +197,7 @@ export class DriverDetailsCardComponent
     private cdRef: ChangeDetectorRef,
     private tableService: TruckassistTableService,
     private driverMinimalQuery: DriversMinimalListQuery,
-    private imageBase64Service: ImageBase64Service,
+    public imageBase64Service: ImageBase64Service,
     private cdlService: CdlTService,
     private medicalService: MedicalTService,
     private mvrService: MvrTService,

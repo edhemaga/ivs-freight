@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: '',
     component: MvrAuthorizationComponent,
-    data: { title: 'Mvr Authorization' },
+    data: { title: 'MVR Authorization' },
     children: [],
   },
 ];
