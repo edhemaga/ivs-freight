@@ -48,6 +48,8 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   public selectedDriver: any = null;
 
   public documents: any[] = [];
+  public fileModified: boolean = false;
+  public filesForDelete: any[] = [];
 
   private destroy$ = new Subject<void>();
 
@@ -85,6 +87,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       testingDate: [null, Validators.required],
       result: [null, Validators.required],
       note: [null],
+      files: [null],
     });
 
     this.formService.checkFormChange(this.drugForm);
@@ -213,11 +216,23 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
   public onFilesEvent(event: any) {
     this.documents = event.files;
+
+    if (event.action == 'delete') {
+      this.drugForm.patchValue({
+        files: null,
+      });
+
+      this.filesForDelete.push(event.deleteId);
+
+      this.fileModified = true;
+    }
   }
 
   public updateTest() {
     const { testingDate, driver, note } = this.drugForm.value;
-
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
     const newData: any = {
       id: this.editData.file_id,
       testingDate: convertDateToBackend(testingDate),
@@ -225,6 +240,8 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       testType: this.selectedTestType.id,
       result: this.selectedTestResult ? this.selectedTestResult.id : null,
       note: note,
+      files: documents ? documents : this.drugForm.value.files,
+      filesForDeleteIds: this.filesForDelete,
     };
 
     this.testService

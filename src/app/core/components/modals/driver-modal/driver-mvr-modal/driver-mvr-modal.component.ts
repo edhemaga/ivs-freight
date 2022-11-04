@@ -40,6 +40,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   public labelsDrivers: any[] = [];
   public selectedDriver: any = null;
+  public fileModified: boolean = false;
+  public filesForDelete: any[] = [];
 
   private destroy$ = new Subject<void>();
 
@@ -75,6 +77,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       issueDate: [null, Validators.required],
       cdlId: [null, Validators.required],
       note: [null],
+      files: [null],
     });
 
     this.formService.checkFormChange(this.mvrForm);
@@ -130,6 +133,16 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   public onFilesEvent(event: any) {
     this.documents = event.files;
+
+    if (event.action == 'delete') {
+      this.mvrForm.patchValue({
+        files: null,
+      });
+
+      this.filesForDelete.push(event.deleteId);
+
+      this.fileModified = true;
+    }
   }
 
   public onSelectDropdown(event: any, action: string) {
@@ -156,12 +169,19 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   private updateMVR() {
     const { issueDate, driver, note } = this.mvrForm.value;
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
     const newData: any = {
       driverId: this.editData.id,
       id: this.editData.file_id,
       issueDate: convertDateToBackend(issueDate),
       cdlId: this.selectedCdl.id,
       note: note,
+      files: documents
+        ? documents
+        : this.mvrForm.value.files,
+      filesForDeleteIds: this.filesForDelete,
     };
 
     this.mvrService
