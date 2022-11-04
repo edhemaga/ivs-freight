@@ -20,5 +20,6 @@ export interface VinDecodeResponse {
     truckMake?: TruckMakeResponse;
     trailerMake?: TrailerMakeResponse;
     engineModel?: TruckEngineModelResponse;
+    fuelType?: string | null;
 }
 
