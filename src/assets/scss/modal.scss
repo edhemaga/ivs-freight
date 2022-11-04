@@ -907,15 +907,8 @@ ngb-modal-window.modal{
       transition: all 0.3s;
 
       .modal-container{
-        transition: all 0.3s;
         margin-top: 75px;
       }
-
-      // &:not(.activeToolbar){
-      //   .modal-container{
-      //     margin-top: 75px;
-      //   }
-      // }
     }
   }
 }
