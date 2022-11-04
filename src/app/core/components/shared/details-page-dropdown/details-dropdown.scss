@@ -217,6 +217,15 @@
       cursor: pointer;
       background-color: #1D1D1D;
 
+      &.disabledAction{
+        background-color: transparent;
+      }
+
+      &.subTypeHolder{
+        cursor: pointer !important;
+        
+      }
+
       .actionTitle{
         color: #fff;
       }
@@ -447,7 +456,7 @@
       }
 
     }
-
+    cursor: auto !important;
   }
   
 
