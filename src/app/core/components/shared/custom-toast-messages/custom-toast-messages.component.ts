@@ -358,7 +358,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       break;
       case 'CDL':
         let driverFullName =  this.DetailsDataService.mainData?.fullName ? this.DetailsDataService.mainData?.fullName.toUpperCase() : this.DetailsDataService.mainData?.firstName.toUpperCase() + ' ' + this.DetailsDataService.mainData?.lastName.toUpperCase();
-        let cdlNum = this.httpRequest.body?.cdlNumber ? this.httpRequest.body?.cdlNumber : this.DetailsDataService.cdlNum; 
+        
+        let cdlNum = this.httpRequest.body.getAll('CdlNumber')[0] ? this.httpRequest.body.getAll('CdlNumber')[0] : this.DetailsDataService.cdlNum; 
         
         if ( !this.httpRequest.body?.cdlNumber ){
           let cdlId = lastVal;
@@ -387,7 +388,9 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       case 'MEDICAL':  
         let driverName = this.DetailsDataService.mainData?.fullName ? this.DetailsDataService.mainData?.fullName.toUpperCase() : this.DetailsDataService.mainData?.firstName.toUpperCase() + ' ' + this.DetailsDataService.mainData?.lastName.toUpperCase() ; 
         
-        let issuedDate = this.httpRequest.body?.issueDate ? moment(this.httpRequest.body?.issueDate).format('MM/DD/YY') : '';
+        let dateFromData = this.httpRequest.body.getAll('IssueDate')[0];
+        
+        let issuedDate = dateFromData ? moment(dateFromData).format('MM/DD/YY') : '';
         if ( this.httpRequest.method == 'POST' ) {
           this.actionTitle = this.toastrType == 'toast-error' ? 'ADD NEW' : 'ADDED NEW';
           this.actionType = this.actionType == 'MVR' ? 'MVR - ' + driverName : 'MEDICAL - ' + driverName;
