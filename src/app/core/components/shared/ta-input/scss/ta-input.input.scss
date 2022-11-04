@@ -1,4 +1,4 @@
-@import './ta-input.colors.scss';
+@import "./ta-input.colors.scss";
 // -------------------- Input Control --------------------
 .input-control {
   width: 100%;
@@ -326,31 +326,40 @@
       color: $input-text-color-normal-hover !important;
     }
   }
+
+  &.disable-select-on-focus-out {
+    &::-moz-selection {
+      background-color: transparent !important;
+    }
+    &::selection {
+      background-color: transparent !important;
+    }
+  }
 }
 
 //------------------------- Input Number Hide Arrows -------------------------
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   margin: 0 !important;
 }
 
-input[type='number']::-webkit-inner-spin-button:hover,
-input[type='number']::-webkit-outer-spin-button:hover,
-input[type='number']::-webkit-inner-spin-button:focus,
-input[type='number']::-webkit-outer-spin-button:focus {
+input[type="number"]::-webkit-inner-spin-button:hover,
+input[type="number"]::-webkit-outer-spin-button:hover,
+input[type="number"]::-webkit-inner-spin-button:focus,
+input[type="number"]::-webkit-outer-spin-button:focus {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   margin: 0 !important;
 }
 
-input[type='number'] {
+input[type="number"] {
   -moz-appearance: textfield !important;
 }
-input[type='number']:hover,
-input[type='number']:focus {
+input[type="number"]:hover,
+input[type="number"]:focus {
   -moz-appearance: textfield !important;
 }

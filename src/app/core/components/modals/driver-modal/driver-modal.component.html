@@ -142,7 +142,7 @@
           <!-- Payroll -->
           <app-ta-custom-card
             [cardName]="'Payroll'"
-            [isCardOpen]="true && !driverForm.get('isOwner').value"
+            [isCardOpen]="!driverForm.get('isOwner').value"
             [animationMarginParams]="{
               marginTop: '18px',
               marginBottom: '22px'
@@ -417,6 +417,71 @@
               </div>
             </div>
 
+            <!--Flat Rate -->
+            <div
+              *ngIf="
+                selectedPayType?.name.toLowerCase() === 'flat rate' &&
+                !driverForm.get('isOwner').value
+              "
+              class="row"
+            >
+              <div
+                *ngIf="
+                  (this.driverForm.get('soloDriver').value &&
+                    fleetType === 'Combined') ||
+                  fleetType === 'Solo'
+                "
+                [ngClass]="
+                  fleetType === 'Combined' &&
+                  this.driverForm.get('teamDriver').value
+                    ? 'col-6'
+                    : 'col-12'
+                "
+              >
+                <app-ta-input
+                  formControlName="soloFlatRate"
+                  [inputConfig]="{
+                    name: 'Flat Rate',
+                    label: 'Solo Rate',
+                    type: 'text',
+                    placeholderIcon: 'dollar',
+                    customClass: 'dollar-placeholderIcon',
+                    thousandSeparator: true,
+                    isRequired: true,
+                    min: 0,
+                    max: 5000
+                  }"
+                ></app-ta-input>
+              </div>
+              <div
+                *ngIf="
+                  (this.driverForm.get('teamDriver').value &&
+                    fleetType === 'Combined') ||
+                  fleetType === 'Team'
+                "
+                [ngClass]="
+                  fleetType === 'Combined' &&
+                  this.driverForm.get('soloDriver').value
+                    ? 'col-6'
+                    : 'col-12'
+                "
+              >
+                <app-ta-input
+                  formControlName="teamFlatRate"
+                  [inputConfig]="{
+                    name: 'Flat Rate',
+                    label: 'Team Rate',
+                    type: 'text',
+                    placeholderIcon: 'dollar',
+                    customClass: 'dollar-placeholderIcon',
+                    thousandSeparator: true,
+                    isRequired: true,
+                    min: 0,
+                    max: 5000
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
             <!-- Bank -->
             <div class="custom-bank-row custom-bank-row-driver">
               <div class="bank-field">
@@ -664,8 +729,7 @@
                   isRequired: true,
                   textTransform: 'capitalize',
                   minLength: 2,
-                  maxLength: 24,
-                  customClass: 'line-input-26-in-card'
+                  maxLength: 24
                 }"
               ></app-ta-input>
               <app-ta-input
@@ -677,8 +741,7 @@
                   isRequired: true,
                   placeholderIcon: 'phone',
                   mask: '(000) 000-0000',
-                  maxLength: 14,
-                  customClass: 'line-input-26-in-card'
+                  maxLength: 14
                 }"
               ></app-ta-input>
               <app-ta-input
@@ -689,8 +752,7 @@
                   label: 'Relationship',
                   textTransform: 'capitalize',
                   minLength: 2,
-                  maxLength: 24,
-                  customClass: 'line-input-26-in-card'
+                  maxLength: 24
                 }"
               ></app-ta-input>
             </div>
