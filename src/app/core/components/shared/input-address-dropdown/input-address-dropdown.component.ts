@@ -129,6 +129,12 @@ export class InputAddressDropdownComponent
             this.inputDropdown.inputRef.focusInput
           ) {
             this.getSuperControl.setErrors({ invalid: true });
+            const addressData = {
+              address: {},
+              valid: false,
+              longLat: [],
+            };
+            this.selectedAddress.emit(addressData);
           }
           this.allowValidation = true;
           return term?.length >= 3;
