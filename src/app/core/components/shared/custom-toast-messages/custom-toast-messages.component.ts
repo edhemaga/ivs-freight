@@ -386,10 +386,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       break;
       case 'MVR':
       case 'MEDICAL':  
-        let driverName = this.DetailsDataService.mainData?.fullName ? this.DetailsDataService.mainData?.fullName.toUpperCase() : this.DetailsDataService.mainData?.firstName.toUpperCase() + ' ' + this.DetailsDataService.mainData?.lastName.toUpperCase() ; 
-        
+        let driverName = this.DetailsDataService.mainData?.fullName ? this.DetailsDataService.mainData?.fullName.toUpperCase() : this.DetailsDataService.mainData?.firstName.toUpperCase() + ' ' + this.DetailsDataService.mainData?.lastName.toUpperCase();
         let dateFromData = this.httpRequest.body.getAll('IssueDate')[0];
-        
         let issuedDate = dateFromData ? moment(dateFromData).format('MM/DD/YY') : '';
         if ( this.httpRequest.method == 'POST' ) {
           this.actionTitle = this.toastrType == 'toast-error' ? 'ADD NEW' : 'ADDED NEW';
