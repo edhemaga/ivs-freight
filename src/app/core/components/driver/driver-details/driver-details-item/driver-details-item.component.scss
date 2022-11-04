@@ -235,6 +235,12 @@
   flex-direction: column;
   margin-bottom: 13px;
   width: 100%;
+  cursor: default;
+
+  &.disabled {
+    margin-bottom: 3px !important;
+  }
+
   .icon-counter-wrapper {
     display: flex;
     align-items: center;
@@ -258,6 +264,18 @@
       &::selection {
         color: $color-gray-dark;
         background: rgb(108, 108, 108, 0.2);
+      }
+    }
+
+    &.disabled {
+      .details-document-name {
+        color: #b7b7b7;
+      }
+
+      .ta-counter {
+        .ta-counter-number {
+          color: #b7b7b7;
+        }
       }
     }
   }

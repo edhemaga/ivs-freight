@@ -150,9 +150,15 @@
             <div [@showHideCardBody]="toggler[i + 'cdl'] ? 'true' : 'false'">
               <div class="divider"></div>
 
-              <div class="details-document-container">
+              <div
+                class="details-document-container"
+                [class.disabled]="!cdl?.files?.length"
+              >
                 <div class="icon-counter-wrapper">
-                  <div class="counter-text-wrapper">
+                  <div
+                    class="counter-text-wrapper"
+                    [class.disabled]="!cdl?.files?.length"
+                  >
                     <app-ta-counter
                       [countBackgroud]="'#F3F3F3'"
                       [countHeight]="'24px'"
@@ -163,13 +169,14 @@
                     <p class="details-document-name">Document</p>
                   </div>
                   <svg-icon
+                    *ngIf="cdl?.files?.length"
                     (click)="onFileAction('download')"
                     src="assets/svg/common/ic_download.svg"
                   >
                   </svg-icon>
                 </div>
               </div>
-              <div class="card-pdf">
+              <div class="card-pdf" [class.disabled]="!cdl?.files?.length">
                 <app-ta-upload-files
                   [files]="cdl.files ? cdl.files : []"
                   [customClassName]="'driver-details-pdf'"
@@ -250,9 +257,15 @@
           <div class="cards-container">
             <div [@showHideCardBody]="toggler[i + 'test'] ? 'true' : 'false'">
               <div class="divider"></div>
-              <div class="details-document-container">
+              <div
+                class="details-document-container"
+                [class.disabled]="!test?.files?.length"
+              >
                 <div class="icon-counter-wrapper">
-                  <div class="counter-text-wrapper">
+                  <div
+                    class="counter-text-wrapper"
+                    [class.disabled]="!test?.files?.length"
+                  >
                     <app-ta-counter
                       [countBackgroud]="'#F3F3F3'"
                       [countHeight]="'24px'"
@@ -263,13 +276,14 @@
                     <p class="details-document-name">Document</p>
                   </div>
                   <svg-icon
+                    *ngIf="test?.files?.length"
                     (click)="onFileAction('download')"
                     src="assets/svg/common/ic_download.svg"
                   >
                   </svg-icon>
                 </div>
               </div>
-              <div class="card-pdf">
+              <div class="card-pdf" [class.disabled]="!test?.files?.length">
                 <app-ta-upload-files
                   [files]="test.files ? test.files : []"
                   [customClassName]="'driver-details-pdf'"
@@ -342,9 +356,15 @@
               [@showHideCardBody]="toggler[i + 'medical'] ? 'true' : 'false'"
             >
               <div class="divider"></div>
-              <div class="details-document-container">
+              <div
+                class="details-document-container"
+                [class.disabled]="!med?.files?.length"
+              >
                 <div class="icon-counter-wrapper">
-                  <div class="counter-text-wrapper">
+                  <div
+                    class="counter-text-wrapper"
+                    [class.disabled]="!med?.files?.length"
+                  >
                     <app-ta-counter
                       [countBackgroud]="'#F3F3F3'"
                       [countHeight]="'24px'"
@@ -355,13 +375,14 @@
                     <p class="details-document-name">Document</p>
                   </div>
                   <svg-icon
+                    *ngIf="med?.files?.length"
                     (click)="onFileAction('download')"
                     src="assets/svg/common/ic_download.svg"
                   >
                   </svg-icon>
                 </div>
               </div>
-              <div class="card-pdf">
+              <div class="card-pdf" [class.disabled]="!med?.files?.length">
                 <app-ta-upload-files
                   [files]="med.files ? med.files : []"
                   [customClassName]="'driver-details-pdf'"
@@ -433,8 +454,14 @@
             </div>
             <div [@showHideCardBody]="toggler[i + 'mvr'] ? 'true' : 'false'">
               <div class="divider"></div>
-              <div class="details-document-container">
-                <div class="icon-counter-wrapper">
+              <div
+                class="details-document-container"
+                [class.disabled]="!mvr?.files?.length"
+              >
+                <div
+                  class="icon-counter-wrapper"
+                  [class.disabled]="!mvr?.files?.length"
+                >
                   <div class="counter-text-wrapper">
                     <app-ta-counter
                       [countBackgroud]="'#F3F3F3'"
@@ -446,13 +473,14 @@
                     <p class="details-document-name">Document</p>
                   </div>
                   <svg-icon
+                    *ngIf="mvr?.files?.length"
                     (click)="onFileAction('download')"
                     src="assets/svg/common/ic_download.svg"
                   >
                   </svg-icon>
                 </div>
               </div>
-              <div class="card-pdf">
+              <div class="card-pdf" [class.disabled]="!mvr?.files?.length">
                 <app-ta-upload-files
                   [files]="mvr.files ? mvr.files : []"
                   [customClassName]="'driver-details-pdf'"

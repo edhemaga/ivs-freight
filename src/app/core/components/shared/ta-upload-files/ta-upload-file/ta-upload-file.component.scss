@@ -249,6 +249,8 @@
     position: relative;
 
     .ng2-pdf-viewer-container {
+      display: flex;
+      align-items: center;
       overflow: hidden !important;
       background-color: transparent !important;
       width: 160px !important;
@@ -266,7 +268,7 @@
       .pdfViewer .page,
       canvas {
         width: 160px !important;
-        height: 160px !important;
+        max-height: 160px !important;
         margin: 0 !important;
       }
     }
@@ -373,7 +375,7 @@
         .pdfViewer .page,
         canvas {
           width: 295px !important;
-          height: 335px !important;
+          max-height: 335px !important;
           margin: 0 !important;
         }
       }
