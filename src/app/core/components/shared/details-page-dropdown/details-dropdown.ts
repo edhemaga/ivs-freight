@@ -51,6 +51,7 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
   @Input() customClassDropDown: string;
   @Input() hasVericalDots: boolean;
   @Input() data: any;
+  @Input() leftIcon: any = false;
   @Input() public placement: string = 'bottom-right';
   @Output() dropDownActions: EventEmitter<any> = new EventEmitter();
   @Output() openModalAction: EventEmitter<any> = new EventEmitter();

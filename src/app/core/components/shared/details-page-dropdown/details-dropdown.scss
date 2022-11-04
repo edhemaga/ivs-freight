@@ -186,7 +186,7 @@
 
     }
 
-    &.rightIcon{
+    &.leftIcon{
       
       .actionTitle{
         margin-right: 22px;
@@ -281,7 +281,13 @@
 
     }
 
-
+    &.leftIcon{
+      .actionIcon{
+        position: absolute;
+        left: 0px;
+        margin: 0px 4px;
+      }
+    }
     
   }
 

@@ -95,6 +95,7 @@
         [id]="optionsId"
         (click)="sendData(data)"
         [placement]="setPositionDrop? 'bottom-right' : 'right-top right-bottom'"
+        [leftIcon]="setPositionDrop? false : true"
         (dropDownActions)="dropAct($event)"
         [customClassDropDown]="'drop-down-details-single'"
         (click)="toggleDropdown()"
