@@ -425,16 +425,57 @@
               "
               class="row"
             >
-              <div class="col-12">
+              <div
+                *ngIf="
+                  (this.driverForm.get('soloDriver').value &&
+                    fleetType === 'Combined') ||
+                  fleetType === 'Solo'
+                "
+                [ngClass]="
+                  fleetType === 'Combined' &&
+                  this.driverForm.get('teamDriver').value
+                    ? 'col-6'
+                    : 'col-12'
+                "
+              >
                 <app-ta-input
-                  formControlName="flatRate"
+                  formControlName="soloFlatRate"
                   [inputConfig]="{
                     name: 'Flat Rate',
-                    label: 'Flat Rate',
+                    label: 'Solo Rate',
                     type: 'text',
                     placeholderIcon: 'dollar',
                     customClass: 'dollar-placeholderIcon',
                     thousandSeparator: true,
+                    isRequired: true,
+                    min: 0,
+                    max: 5000
+                  }"
+                ></app-ta-input>
+              </div>
+              <div
+                *ngIf="
+                  (this.driverForm.get('teamDriver').value &&
+                    fleetType === 'Combined') ||
+                  fleetType === 'Team'
+                "
+                [ngClass]="
+                  fleetType === 'Combined' &&
+                  this.driverForm.get('soloDriver').value
+                    ? 'col-6'
+                    : 'col-12'
+                "
+              >
+                <app-ta-input
+                  formControlName="teamFlatRate"
+                  [inputConfig]="{
+                    name: 'Flat Rate',
+                    label: 'Team Rate',
+                    type: 'text',
+                    placeholderIcon: 'dollar',
+                    customClass: 'dollar-placeholderIcon',
+                    thousandSeparator: true,
+                    isRequired: true,
                     min: 0,
                     max: 5000
                   }"
