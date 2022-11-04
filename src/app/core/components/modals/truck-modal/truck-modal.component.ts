@@ -468,6 +468,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
               next: (res: VinDecodeResponse) => {
+                console.log('vin decoder: ', res);
                 this.truckForm.patchValue({
                   model: res?.model ? res.model : null,
                   year: res?.year ? res.year.toString() : null,
@@ -475,12 +476,16 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                   truckEngineModelId: res.engineModel?.name
                     ? res.engineModel.name
                     : null,
-                  fuelType: null,
+                  fuelType: this.fuelTypes.find(
+                    (item) => item.name === res.fuelType
+                  ).name,
                 });
                 this.loadingVinDecoder = false;
                 this.selectedTruckMake = res.truckMake;
                 this.selectedtruckEngineModelId = res.engineModel;
-                this.selectedFuelType = this.fuelTypes.find((item) => item);
+                this.selectedFuelType = this.fuelTypes.find(
+                  (item) => item.name === res.fuelType
+                );
               },
               error: () => {
                 this.notificationService.error(
@@ -531,7 +536,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             };
           });
           this.rearWheels = this.frontWheels = res.wheelsTypes;
-          this.fuelTypes = [];
+          this.fuelTypes = res.fuelTypes;
         },
         error: () => {
           this.notificationService.error(
@@ -592,7 +597,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             mileage: res.mileage
               ? convertNumberInThousandSep(res.mileage)
               : null,
-            fuelType: null,
+            fuelType: res.fuelType ? res.fuelType.name : null,
             engineOilType: res.engineOilType ? res.engineOilType.name : null,
             gearRatio: res.gearRatio ? res.gearRatio.name : null,
             apUnit: res.apUnit ? res.apUnit.name : null,
@@ -630,7 +635,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           this.selectedtruckEngineModelId = res.truckEngineModel
             ? res.truckEngineModel
             : null;
-          this.selectedFuelType = null;
+          this.selectedFuelType = res.fuelType;
           this.truckStatus = res.status !== 1;
 
           this.modalService.changeModalStatus({
