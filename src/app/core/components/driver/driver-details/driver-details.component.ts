@@ -307,10 +307,50 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
       },
       actions: [
         {
+          title: 'Edit',
+          name: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          disabled: data.status == 0 ? true : false,
+        },
+        {
+          title: 'border'
+        },
+        {
           title: 'Send Message',
           name: 'dm',
           svg: 'assets/svg/common/ic_dm.svg',
           show: data.status == 1 ? true : false,
+          disabled: data.status == 0 ? true : false,
+        },
+        {
+          title: 'Add New',
+          svg: 'assets/svg/common/dropdown-arrow.svg',
+          disabled: data.status == 0 ? true : false,
+          subType: [
+              { subName :'CDL', actionName: 'CDL'}, 
+              { subName : 'Test (Drug, Alcohol)', actionName: 'Drug & Alcohol Test'}, 
+              { subName : 'Medical Exam', actionName: 'Medical'}, 
+              { subName: 'MVR', actionName: 'MVR'}]
+        },
+        {
+          title: 'Request',
+          svg: 'assets/svg/common/dropdown-arrow.svg',
+          disabled: data.status == 0 ? true : false,
+          subType: [
+            { subName :'Background Check', actionName: 'Background Check'},
+            { subName :'Medical Exam', actionName: 'Medical'},
+            { subName :'Test (Drug, Alcohol)', actionName: 'Drug & Alcohol Test'},
+            { subName :'MVR', actionName: 'MVR'}
+          ]
+        },
+        {
+          title: 'border'
+        },
+        {
+          title: 'Share',
+          name: 'share',
+          svg: 'assets/svg/common/share-icon.svg',
+          show: true,
         },
         {
           title: 'Print',
@@ -318,12 +358,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           svg: 'assets/svg/common/ic_fax.svg',
           show: data.status == 1 || data.status == 0 ? true : false,
         },
-
         {
-          title: 'Edit',
-          name: 'edit',
-          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-          show: data.status == 1 ? true : false,
+          title: 'border',
         },
         {
           title: data.status == 0 ? 'Activate' : 'Deactivate',
@@ -332,6 +368,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           activate: data.status == 0 ? true : false,
           deactivate: data.status == 1 ? true : false,
           show: data.status == 1 || data.status == 0 ? true : false,
+          redIcon: data.status == 1 ? true : false,
+          blueIcon: data.status == 0 ? true : false,
         },
         {
           title: 'Delete',
@@ -341,6 +379,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           svg: 'assets/svg/common/ic_trash_updated.svg',
           danger: true,
           show: data.status == 1 || data.status == 0 ? true : false,
+          redIcon: true,
         },
       ],
       export: true,
