@@ -76,9 +76,19 @@ export class TaUploadFilesComponent implements OnInit {
         break;
       }
       case 'delete': {
-        let deleteId;
-        this.files = this.files.filter((item) => {console.log(data.file['fileId']);item.fileName !== data.file.fileName});
-        this.onFileEvent.emit({ files: this.files, action: data.action, deleteId: data.file['fileId'] });
+        this.files = this.files.filter(
+          (item) => item.fileName !== data.file.fileName
+        );
+        if (data.file['fileId']) {
+          this.onFileEvent.emit({
+            files: this.files,
+            action: data.action,
+            deleteId: data.file['fileId'],
+          });
+        } else {
+          this.onFileEvent.emit({ files: this.files, action: data.action });
+        }
+
         this.currentSlide = this.files.length - 1;
 
         if (
