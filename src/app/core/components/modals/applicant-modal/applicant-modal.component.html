@@ -1,8 +1,11 @@
 <app-ta-modal
-  [modalTitle]="editData?.type !== 'edit' ? 'Add Applicant' : 'Edit Applicant'"
+  [modalTitle]="
+    editData?.type !== 'edit' ? 'Invite Applicant' : 'Edit Applicant'
+  "
   [editData]="editData"
   [editName]="applicantFullName"
   [saveAndAddNew]="editData?.type !== 'edit'"
+  [customTextSaveAndAddNew]="'Send & Invite New'"
   [resendEmail]="editData?.type === 'edit'"
   [isModalValid]="applicantForm.valid && isFormDirty"
   (action)="onModalAction($event)"
@@ -40,7 +43,7 @@
       </div>
     </div>
     <div class="row last-row">
-      <div class="col-6">
+      <div class="col-5">
         <app-ta-input
           formControlName="phone"
           [inputConfig]="{
@@ -54,7 +57,7 @@
           }"
         ></app-ta-input>
       </div>
-      <div class="col-6">
+      <div class="col-7">
         <app-ta-input
           formControlName="email"
           [inputConfig]="{

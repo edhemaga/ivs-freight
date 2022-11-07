@@ -27,8 +27,7 @@ export class ApplicantSignaturePadComponent implements AfterViewInit {
     minWidth: 5,
     canvasWidth: 616,
     canvasHeight: 187,
-    backgroundColor: '#AAAAAA',
-    penColor: '#FFFFFF',
+    penColor: '#6c6c6c',
   };
 
   @Input() signature: any;

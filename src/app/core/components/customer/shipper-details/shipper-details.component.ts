@@ -239,9 +239,33 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
       },
       actions: [
         {
-          title: 'Send Message',
-          name: 'dm',
-          svg: 'assets/svg/common/ic_dm.svg',
+          title: 'Edit',
+          name: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
+        },
+        {
+          title: 'border',
+        },
+        {
+          title: 'Add Contact',
+          name: 'add-contact',
+          svg: 'assets/svg/truckassist-table/customer/contact-column-avatar.svg',
+          show: true,
+        },
+        {
+          title: 'Write Review',
+          name: 'write-review',
+          svg: 'assets/svg/common/review-pen.svg',
+          show: true,
+        },
+        {
+          title: 'border',
+        },
+        {
+          title: 'Share',
+          name: 'share',
+          svg: 'assets/svg/common/share-icon.svg',
           show: true,
         },
         {
@@ -251,19 +275,31 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'Edit',
-          name: 'edit',
-          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          title: 'border',
+        },
+        {
+          title: 'Close Business',
+          name: 'close-business',
+          svg: 'assets/svg/common/close-business-icon.svg',
+          redIcon: true,
           show: true,
         },
-
         {
           title: 'Delete',
           name: 'delete-item',
           svg: 'assets/svg/common/ic_trash_updated.svg',
-          danger: true,
+          redIcon: true,
           show: true,
         },
+
+        /*
+        {
+          title: 'Send Message',
+          name: 'dm',
+          svg: 'assets/svg/common/ic_dm.svg',
+          show: true,
+        },
+        */
       ],
       export: true,
     };

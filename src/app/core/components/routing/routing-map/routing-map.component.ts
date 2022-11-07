@@ -7,6 +7,7 @@ import {
   ChangeDetectorRef,
   HostListener,
   ElementRef,
+  ViewChildren,
 } from '@angular/core';
 import {
   CdkDragDrop,
@@ -46,6 +47,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   @ViewChild('mapToolbar') mapToolbar: any;
   @ViewChild('t2') t2: any;
+  @ViewChildren('dropdownElement') dropdownElement: any;
   dropdownWidth: string = 'w-col-229';
 
   @HostListener('mousemove', ['$event']) onMouseOver(event) {
@@ -258,14 +260,17 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
   dropdownActions: any[] = [
     {
-      title: 'Settings',
+      title: 'Edit',
       name: 'open-settings',
       class: 'regular-text',
       contentType: 'settings',
       show: true,
-      svg: 'assets/svg/common/ic_settings.svg',
+      svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
     },
     {
+      title: 'border'
+    },
+    /*{
       title: 'Report',
       name: 'open-report',
       class: 'regular-text',
@@ -274,14 +279,16 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       svg: 'assets/svg/common/routing/ic_route_report.svg',
       showArrow: true,
       openPopover: true,
-    },
+    },*/
     {
-      title: 'Print',
-      name: 'print-route',
-      class: 'regular-text',
-      contentType: 'print',
-      show: true,
-      svg: 'assets/svg/common/ic_print.svg',
+      title: 'Report',
+      name: 'open-report',
+      svg: 'assets/svg/common/dropdown-arrow.svg',
+      subType: [
+        { subName :'Detailed Route', actionName: 'Detailed Route'}, 
+        { subName : 'State / Country', actionName: 'State / Country'}, 
+        { subName : 'Toll Calculator', actionName: 'Toll Calculator'}, 
+       ]
     },
     {
       title: 'Duplicate',
@@ -300,12 +307,33 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       svg: 'assets/svg/common/routing/ic_route_reverse.svg',
     },
     {
-      title: 'Clear All',
+      title: 'Clear Stops',
       name: 'clear-route-stops',
       class: 'regular-text',
       contentType: 'clear',
       show: true,
       svg: 'assets/svg/common/routing/ic_route_clear.svg',
+      redIcon: true,
+    },
+    {
+      title: 'border'
+    },
+    {
+      title: 'Share',
+      name: 'share',
+      svg: 'assets/svg/common/share-icon.svg',
+      show: true,
+    },
+    {
+      title: 'Print',
+      name: 'print-route',
+      class: 'regular-text',
+      contentType: 'print',
+      show: true,
+      svg: 'assets/svg/common/ic_print.svg',
+    },
+    {
+      title: 'border'
     },
     {
       title: 'Delete',
@@ -317,6 +345,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       show: true,
       danger: true,
       svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
+      redIcon: true,
     },
   ];
 
@@ -880,6 +909,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     this.calculateRouteWidth(route);
 
     this.ref.detectChanges();
+    this.dropdownElement._results.map((item)=>{
+      if ( item.tooltip )
+        {
+          item.tooltip.close();
+        }
+    })
   }
 
   zoomChange(event) {
@@ -1246,26 +1281,37 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     }
   }
 
-  callDropDownAction(event, action: any) {
-    event.stopPropagation();
-    event.preventDefault();
+  callDropDownAction(event, action?:any) {
+    //event.stopPropagation();
+    //event.preventDefault();
+    let currentId = 0;
+    let actionName = '';
 
+    if (action) {
+      currentId = this.dropDownActive;
+      actionName = action.name;
+    }
+    else {
+      currentId = event.id;
+      actionName = event.type;
+    }
+    
     // Edit Call
-    if (action.name === 'duplicate-route') {
-      this.duplicateRoute(this.dropDownActive);
-    } else if (action.name === 'reverse-route-stops') {
-      this.reverseRouteStops(this.dropDownActive);
-    } else if (action.name === 'clear-route-stops') {
-      this.clearRouteStops(this.dropDownActive);
-    } else if (action.name === 'delete') {
+    if (actionName === 'duplicate-route') {
+      this.duplicateRoute(currentId);
+    } else if (actionName === 'reverse-route-stops') {
+      this.reverseRouteStops(currentId);
+    } else if (actionName === 'clear-route-stops') {
+      this.clearRouteStops(currentId);
+    } else if (actionName === 'delete') {
       var routeObj = {
-        id: this.dropDownActive,
+        id: currentId,
         type: 'delete-item',
       };
 
       //this.routingService.deleteRouteById(this.dropDownActive); // ne radi
       this.routingService
-        .deleteRouteById(this.dropDownActive)
+        .deleteRouteById(currentId)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
@@ -1275,7 +1321,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             console.log('deleteRouteById error');
           },
         });
-      console.log('delete route', this.dropDownActive);
+      console.log('delete route', currentId);
 
       // this.modalService.openModal(
       //   ConfirmationModalComponent,
@@ -1287,9 +1333,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       //   }
       // );
     } else if (action.name === 'open-settings') {
-      let route = this.getRouteById(this.dropDownActive);
+      let route = this.getRouteById(currentId);
       this.mapToolbar.editRoute(route);
     }
+    
   }
 
   showMoreOptions(event, route) {
@@ -1856,31 +1903,20 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     event.preventDefault();
 
     this.dropdownActions.map((action, index) => {
-      if (
-        [
-          'open-report',
-          'print-route',
-          'duplicate-route',
-          'reverse-route-stops',
-          'clear-route-stops',
-        ].includes(action.name)
-      ) {
-        if (route.stops.length) {
-          action.disabled = false;
-        } else {
-          action.disabled = true;
-        }
+        
+      if ( route.stops.length == 0 && ['open-report', 'reverse-route-stops', 'clear-route-stops'].includes(action.name) ) {
+        action.disabled = true;
+      } else if ( route.stops.length == 1 && ['open-report', 'reverse-route-stops'].includes(action.name) ) {
+        action.disabled = true;
+      } else {
+        action.disabled = false;
+      }
+      
+
+      if ( this.tableData[this.selectedMapIndex].routes.length == 8 && ['duplicate-route'].includes(action.name) ) {
+        action.disabled = true;
       }
     });
-
-    this.tooltip = tooltip;
-    if (tooltip.isOpen()) {
-      tooltip.close();
-    } else {
-      tooltip.open({ data: this.dropdownActions });
-    }
-
-    this.dropDownActive = tooltip.isOpen() ? route.id : -1;
   }
 
   hoverRoute(route) {

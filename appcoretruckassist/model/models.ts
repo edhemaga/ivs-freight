@@ -240,6 +240,7 @@ export * from './fuelStopShortResponse';
 export * from './fuelTransactionListResponse';
 export * from './fuelTransactionResponse';
 export * from './fuelTransactionResponsePagination';
+export * from './fuelType';
 export * from './fuelledVehicleHistoryListResponse';
 export * from './fuelledVehicleResponse';
 export * from './fuelledVehicleResponsePagination';

@@ -34,8 +34,9 @@
       formControlName="isAgreement"
       [name]="'isAgreement'"
       [label]="'I also understand that JD Freight have the right to:'"
-      [customClass]="
-        selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
+      [customClass]="'bold-12'"
+      [disabledStillCheckMark]="
+        selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
       "
     ></app-ta-checkbox>
   </div>
@@ -94,9 +95,13 @@
               maxLength: 26,
               textTransform: 'capitalize',
               autoFocus: true,
+              isDisabled:
+                selectedMode === 'REVIEW_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' &&
+                  stepFeedbackValues?.isFirstNameValid),
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
-            [incorrectValue]="false"
+            [incorrectValue]="openAnnotationArray[0].lineInputs[0]"
             (incorrectEvent)="incorrectInput($event, 0, 0)"
           ></app-ta-input>
         </div>
@@ -111,9 +116,13 @@
               minLength: 2,
               maxLength: 26,
               textTransform: 'capitalize',
+              isDisabled:
+                selectedMode === 'REVIEW_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' &&
+                  stepFeedbackValues?.isLastNameValid),
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
-            [incorrectValue]="false"
+            [incorrectValue]="openAnnotationArray[0].lineInputs[1]"
             (incorrectEvent)="incorrectInput($event, 1, 0)"
           ></app-ta-input>
         </div>
@@ -127,9 +136,13 @@
               placeholderIcon: 'date',
               isRequired: true,
               customClass: 'datetimeclass',
+              isDisabled:
+                selectedMode === 'REVIEW_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' &&
+                  stepFeedbackValues?.isDoBValid),
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
-            [incorrectValue]="false"
+            [incorrectValue]="openAnnotationArray[0].lineInputs[2]"
             (incorrectEvent)="incorrectInput($event, 2, 0)"
           ></app-ta-input>
         </div>
@@ -145,17 +158,23 @@
           <app-applicant-review-feedback
             formControlName="firstRowReview"
             [displayAnnotationButton]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[0].displayAnnotationButton
             "
             [displayAnnotationTextArea]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[0].displayAnnotationTextArea
             "
             [lineIndex]="0"
             [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
             [feedbackText]="
-              'Check the routing number one more time (one number missing)!!!'
+              selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues?.personalInfoMessage
             "
-            (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+            (annotationBtnClickEvent)="
+              selectedMode === 'REVIEW_MODE' &&
+                getAnnotationBtnClickValue($event)
+            "
           ></app-applicant-review-feedback>
         </div>
       </div>
@@ -174,9 +193,13 @@
               placeholderIcon: 'phone',
               mask: '(000) 000-0000',
               maxLength: 14,
+              isDisabled:
+                selectedMode === 'REVIEW_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' &&
+                  stepFeedbackValues?.isPhoneValid),
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
-            [incorrectValue]="false"
+            [incorrectValue]="openAnnotationArray[1].lineInputs[0]"
             (incorrectEvent)="incorrectInput($event, 0, 1)"
           ></app-ta-input>
         </div>
@@ -208,17 +231,23 @@
           <app-applicant-review-feedback
             formControlName="secondRowReview"
             [displayAnnotationButton]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[1].displayAnnotationButton
             "
             [displayAnnotationTextArea]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[1].displayAnnotationTextArea
             "
             [lineIndex]="1"
             [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
             [feedbackText]="
-              'Check the routing number one more time (one number missing)!!!'
+              selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues?.phoneMessage
             "
-            (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+            (annotationBtnClickEvent)="
+              selectedMode === 'REVIEW_MODE' &&
+                getAnnotationBtnClickValue($event)
+            "
           ></app-applicant-review-feedback>
         </div>
       </div>
@@ -267,7 +296,9 @@
                 (previousAddresses.controls.length > 1 &&
                   helperIndex !== 0 &&
                   i === 0) ||
-                (helperIndex === 0 && i === 1)
+                (helperIndex === 0 &&
+                  i === 1 &&
+                  previousAddresses.at(1).value.address)
               "
             >
               <div class="address-title-container">
@@ -292,6 +323,14 @@
                     ? '32px'
                     : '0'
               }"
+              *ngIf="
+                (previousAddresses.at(i).value.address &&
+                  !isEditingArray[i]?.isEditing) ||
+                (!previousAddresses.at(i).value.address &&
+                  isEditingArray[i]?.isEditing) ||
+                (previousAddresses.at(i).value.address &&
+                  isEditingArray[i]?.isEditing)
+              "
             >
               <div
                 class="d-flex align-items-center right-container line-container"
@@ -333,22 +372,41 @@
                           isRequired: true,
                           placeholderIcon: 'address',
                           textTransform: 'capitalize',
-                          dropdownWidthClass: isEditingArray[i]?.isEditing &&
-                          !isEditingArray[i]?.isEditingAddress &&
-                          !isLastInputDeleted &&
-                          !isEditingArray[i]?.isFirstAddress
-                            ? 'w-col-442'
-                            : isEditingArray[i]?.isEditing &&
-                              !isEditingArray[i]?.isEditingAddress &&
-                              isEditingArray[i]?.isFirstAddress &&
-                              previousAddresses.controls.length === 1
-                            ? 'w-col-480'
-                            : 'w-col-412',
+                          dropdownWidthClass:
+                            isEditingArray[i]?.isEditing &&
+                            !isEditingArray[i]?.isEditingAddress &&
+                            !isLastInputDeleted &&
+                            !isEditingArray[i]?.isFirstAddress
+                              ? 'w-col-442'
+                              : isEditingArray[i]?.isEditing &&
+                                !isEditingArray[i]?.isEditingAddress &&
+                                isEditingArray[i]?.isFirstAddress &&
+                                previousAddresses.controls.length === 1
+                              ? 'w-col-480'
+                              : 'w-col-412',
                           minLength: 6,
                           maxLength: 256,
+                          isDisabled:
+                            selectedMode === 'REVIEW_MODE' ||
+                            (selectedMode === 'FEEDBACK_MODE' &&
+                              i === previousAddresses.controls.length - 1 &&
+                              stepFeedbackValues?.isAddressValid),
                           incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
                         [placeholderType]="'longAddress'"
+                        [incorrectValue]="
+                          openAnnotationArray[6].lineInputs
+                            ? openAnnotationArray[6].lineInputs[0]
+                            : openAnnotationArray[5].lineInputs
+                            ? openAnnotationArray[5].lineInputs[0]
+                            : openAnnotationArray[4].lineInputs
+                            ? openAnnotationArray[4].lineInputs[0]
+                            : openAnnotationArray[3].lineInputs
+                            ? openAnnotationArray[3].lineInputs[0]
+                            : openAnnotationArray[2].lineInputs
+                            ? openAnnotationArray[2].lineInputs[0]
+                            : false
+                        "
                         (incorrectEvent)="incorrectInput($event, 0, i + 2)"
                         (selectedAddress)="
                           handleInputSelect($event, 'PREVIOUS-ADDRESS', i)
@@ -366,9 +424,26 @@
                           minLength: 1,
                           maxLength: 10,
                           textTransform: 'uppercase',
+                          isDisabled:
+                            selectedMode === 'REVIEW_MODE' ||
+                            (selectedMode === 'FEEDBACK_MODE' &&
+                              i === previousAddresses.controls.length - 1 &&
+                              stepFeedbackValues?.isAddressUnitValid),
                           incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
-                        [incorrectValue]="false"
+                        [incorrectValue]="
+                          openAnnotationArray[6].lineInputs
+                            ? openAnnotationArray[6].lineInputs[1]
+                            : openAnnotationArray[5].lineInputs
+                            ? openAnnotationArray[5].lineInputs[1]
+                            : openAnnotationArray[4].lineInputs
+                            ? openAnnotationArray[4].lineInputs[1]
+                            : openAnnotationArray[3].lineInputs
+                            ? openAnnotationArray[3].lineInputs[1]
+                            : openAnnotationArray[2].lineInputs
+                            ? openAnnotationArray[2].lineInputs[1]
+                            : false
+                        "
                         (incorrectEvent)="incorrectInput($event, 1, i + 2)"
                       ></app-ta-input>
                     </div>
@@ -417,6 +492,11 @@
 
                     <div
                       class="d-flex align-items-center justify-content-center delete-btn-container"
+                      [ngClass]="{
+                        disabled:
+                          selectedMode === 'REVIEW_MODE' ||
+                          selectedMode === 'FEEDBACK_MODE'
+                      }"
                       *ngIf="
                         isEditingArray[i]?.isEditing &&
                         !isEditingArray[i]?.isEditingAddress &&
@@ -491,14 +571,21 @@
                     }"
                     [ngStyle]="{
                       'margin-left':
-                        selectedMode === 'APPLICANT_MODE' ||
-                        selectedMode === 'FEEDBACK_MODE'
+                        selectedMode === 'APPLICANT_MODE'
                           ? '26px'
+                          : selectedMode === 'FEEDBACK_MODE'
+                          ? '48px'
                           : '5px'
                     }"
                     *ngIf="!isEditingArray[i]?.isEditing"
                   >
                     <div
+                      *ngIf="
+                        selectedMode === 'APPLICANT_MODE' ||
+                        (selectedMode === 'FEEDBACK_MODE' &&
+                          !stepFeedbackValues.previousAddressesReview[i]
+                            .isPreviousAddressValid)
+                      "
                       ngbTooltip
                       mainTooltip="Edit"
                       tooltipBackground="#6C6C6C"
@@ -516,6 +603,7 @@
                     </div>
 
                     <div
+                      *ngIf="selectedMode === 'APPLICANT_MODE'"
                       ngbTooltip
                       mainTooltip="Delete"
                       tooltipBackground="#EF5350"
@@ -564,7 +652,7 @@
                 <!-- REVIEW AND FEEDBACK -->
 
                 <div
-                  class="review-feedback-container"
+                  class="d-flex review-feedback-container"
                   *ngIf="
                     selectedMode === 'REVIEW_MODE' ||
                     selectedMode === 'FEEDBACK_MODE'
@@ -573,21 +661,39 @@
                   <app-applicant-review-feedback
                     [formControlName]="'cardReview' + (i + 1)"
                     [displayAnnotationButton]="
+                      selectedMode === 'REVIEW_MODE' &&
                       openAnnotationArray[i + 2].displayAnnotationButton
                     "
                     [displayAnnotationTextArea]="
+                      selectedMode === 'REVIEW_MODE' &&
                       openAnnotationArray[i + 2].displayAnnotationTextArea
                     "
                     [lineIndex]="i + 2"
                     [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
                     [feedbackText]="
-                      'Check the routing number one more time (one number missing)!!!'
+                      selectedMode === 'FEEDBACK_MODE' &&
+                      i === previousAddresses?.controls.length - 1
+                        ? stepFeedbackValues?.addressMessage
+                        : i === 3
+                        ? stepFeedbackValues?.previousAddressesReview[3]
+                            ?.previousAddressMessage
+                        : i === 2
+                        ? stepFeedbackValues?.previousAddressesReview[2]
+                            ?.previousAddressMessage
+                        : i === 1
+                        ? stepFeedbackValues?.previousAddressesReview[1]
+                            ?.previousAddressMessage
+                        : i === 0
+                        ? stepFeedbackValues?.previousAddressesReview[0]
+                            ?.previousAddressMessage
+                        : null
                     "
                     [cardsLength]="previousAddresses?.controls.length"
                     [cardsType]="'addresses'"
                     [cardIndex]="i + 2"
                     (annotationBtnClickEvent)="
-                      getAnnotationBtnClickValue($event)
+                      selectedMode === 'REVIEW_MODE' &&
+                        getAnnotationBtnClickValue($event)
                     "
                   ></app-applicant-review-feedback>
                 </div>
@@ -658,9 +764,13 @@
               isRequired: true,
               mask: '000-00-0000',
               maxLength: 11,
+              isDisabled:
+                selectedMode === 'REVIEW_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' &&
+                  stepFeedbackValues?.isSsnValid),
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
-            [incorrectValue]="false"
+            [incorrectValue]="openAnnotationArray[7].lineInputs[0]"
             (incorrectEvent)="incorrectInput($event, 0, 7)"
           ></app-ta-input>
         </div>
@@ -677,13 +787,13 @@
               textTransform: 'uppercase',
               isDropdown: true,
               dropdownWidthClass: 'w-col-416',
-              incorrectInput: selectedMode === 'REVIEW_MODE'
+              isDisabled:
+                selectedMode === 'REVIEW_MODE' ||
+                selectedMode === 'FEEDBACK_MODE'
             }"
             [activeItem]="selectedBank"
             [options]="banksDropdownList"
             [canAddNew]="true"
-            [incorrectValue]="false"
-            (incorrectEvent)="incorrectInput($event, 1, 7)"
             (saveItem)="onSaveNewBank($event)"
             (selectedItem)="handleInputSelect($event, 'BANK')"
           ></app-ta-input-dropdown>
@@ -700,17 +810,23 @@
           <app-applicant-review-feedback
             formControlName="thirdRowReview"
             [displayAnnotationButton]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[7].displayAnnotationButton
             "
             [displayAnnotationTextArea]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[7].displayAnnotationTextArea
             "
             [lineIndex]="7"
             [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
             [feedbackText]="
-              'Check the routing number one more time (one number missing)!!!'
+              selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues?.ssnBankMessage
             "
-            (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+            (annotationBtnClickEvent)="
+              selectedMode === 'REVIEW_MODE' &&
+                getAnnotationBtnClickValue($event)
+            "
           ></app-applicant-review-feedback>
         </div>
       </div>
@@ -725,13 +841,17 @@
               name: 'account-bank',
               type: 'text',
               label: 'Account number',
-              isDisabled: !isBankSelected,
+              isDisabled:
+                (selectedMode === 'APPLICANT_MODE' && !isBankSelected) ||
+                selectedMode === 'REVIEW_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' &&
+                  stepFeedbackValues?.isAccountNumberValid),
               isRequired: isBankSelected,
               maxLength: 17,
               minLength: 5,
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
-            [incorrectValue]="false"
+            [incorrectValue]="openAnnotationArray[8].lineInputs[0]"
             (incorrectEvent)="incorrectInput($event, 0, 8)"
           ></app-ta-input>
         </div>
@@ -742,13 +862,17 @@
               name: 'routing-bank',
               type: 'text',
               label: 'Routing number',
-              isDisabled: !isBankSelected,
+              isDisabled:
+                (selectedMode === 'APPLICANT_MODE' && !isBankSelected) ||
+                selectedMode === 'REVIEW_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' &&
+                  stepFeedbackValues?.isRoutingNumberValid),
               isRequired: isBankSelected,
               minLength: 9,
               maxLength: 9,
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
-            [incorrectValue]="false"
+            [incorrectValue]="openAnnotationArray[8].lineInputs[1]"
             (incorrectEvent)="incorrectInput($event, 1, 8)"
           ></app-ta-input>
         </div>
@@ -764,17 +888,23 @@
           <app-applicant-review-feedback
             formControlName="fourthRowReview"
             [displayAnnotationButton]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[8].displayAnnotationButton
             "
             [displayAnnotationTextArea]="
+              selectedMode === 'REVIEW_MODE' &&
               openAnnotationArray[8].displayAnnotationTextArea
             "
             [lineIndex]="8"
             [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
             [feedbackText]="
-              'Check the routing number one more time (one number missing)!!!'
+              selectedMode === 'FEEDBACK_MODE' &&
+              stepFeedbackValues?.accountRoutingMessage
             "
-            (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+            (annotationBtnClickEvent)="
+              selectedMode === 'REVIEW_MODE' &&
+                getAnnotationBtnClickValue($event)
+            "
           ></app-applicant-review-feedback>
         </div>
       </div>
@@ -808,7 +938,12 @@
 
             <div class="question-radios-box">
               <app-ta-input-radiobuttons
+                #cmp
                 [buttons]="question.answerChoices"
+                [disabled]="
+                  selectedMode === 'REVIEW_MODE' ||
+                  selectedMode === 'FEEDBACK_MODE'
+                "
                 (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
               ></app-ta-input-radiobuttons>
             </div>
@@ -837,9 +972,18 @@
                   textTransform: 'capitalize',
                   placeholder: 'Please explain',
                   placeholderInsteadOfLabel: true,
+                  isDisabled:
+                    selectedMode === 'REVIEW_MODE' ||
+                    (selectedMode === 'FEEDBACK_MODE' &&
+                      ((i === 0 && stepFeedbackValues?.isLegalWorkValid) ||
+                        (i === 1 && stepFeedbackValues?.isAnotherNameValid) ||
+                        (i === 2 && stepFeedbackValues?.isInMilitaryValid) ||
+                        (i === 3 && stepFeedbackValues?.isFelonyValid) ||
+                        (i === 4 && stepFeedbackValues?.isMisdemeanorValid) ||
+                        (i === 5 && stepFeedbackValues?.isDrunkDrivingValid))),
                   incorrectInput: selectedMode === 'REVIEW_MODE'
                 }"
-                [incorrectValue]="false"
+                [incorrectValue]="openAnnotationArray[i + 9].lineInputs[0]"
                 (incorrectEvent)="incorrectInput($event, 0, i + 9)"
               ></app-ta-input>
             </div>
@@ -856,17 +1000,34 @@
               <app-applicant-review-feedback
                 [formControlName]="'questionReview' + (i + 1)"
                 [displayAnnotationButton]="
+                  selectedMode === 'REVIEW_MODE' &&
                   openAnnotationArray[i + 9].displayAnnotationButton
                 "
                 [displayAnnotationTextArea]="
+                  selectedMode === 'REVIEW_MODE' &&
                   openAnnotationArray[i + 9].displayAnnotationTextArea
                 "
                 [lineIndex]="i + 9"
                 [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
                 [feedbackText]="
-                  'Check the routing number one more time (one number missing)!!!'
+                  selectedMode === 'FEEDBACK_MODE' && i === 0
+                    ? stepFeedbackValues?.legalWorkMessage
+                    : i === 1
+                    ? stepFeedbackValues?.anotherNameMessage
+                    : i === 2
+                    ? stepFeedbackValues?.inMilitaryMessage
+                    : i === 3
+                    ? stepFeedbackValues?.felonyMessage
+                    : i === 4
+                    ? stepFeedbackValues?.misdemeanorMessage
+                    : i === 5
+                    ? stepFeedbackValues?.drunkDrivingMessage
+                    : null
                 "
-                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+                (annotationBtnClickEvent)="
+                  selectedMode === 'REVIEW_MODE' &&
+                    getAnnotationBtnClickValue($event)
+                "
               ></app-applicant-review-feedback>
             </div>
           </div>
@@ -883,7 +1044,13 @@
 >
   <app-applicant-next-back-btn
     [nextStep]="true"
-    [filledCorrectly]="personalInfoForm.valid"
+    [mode]="selectedMode"
+    [filledCorrectly]="
+      personalInfoForm.valid &&
+      (selectedMode === 'APPLICANT_MODE' ||
+        (selectedMode === 'FEEDBACK_MODE' && isFeedbackValueUpdated))
+    "
+    [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && hasIncorrectFields"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

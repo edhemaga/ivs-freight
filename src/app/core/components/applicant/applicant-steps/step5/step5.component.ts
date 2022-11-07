@@ -6,16 +6,25 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
-import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+  convertDateToBackend,
+  convertDateFromBackendShortYear,
+} from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
-import { ApplicantListsService } from '../../state/services/applicant-lists.service';
+
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { ViolationModel } from '../../state/model/violations.model';
 import {
+  ApplicantModalResponse,
+  ApplicantResponse,
   CreateTrafficViolationCommand,
+  CreateTrafficViolationReviewCommand,
+  TrafficViolationFeedbackResponse,
   TruckTypeResponse,
 } from 'appcoretruckassist/model/models';
 
@@ -42,6 +51,8 @@ export class Step5Component implements OnInit, OnDestroy {
 
   public violationsArray: ViolationModel[] = [];
 
+  public lastValidLicense: any;
+
   public lastViolationsCard: any;
 
   public vehicleType: TruckTypeResponse[] = [];
@@ -51,53 +62,28 @@ export class Step5Component implements OnInit, OnDestroy {
   public helperIndex: number = 2;
 
   public isEditing: boolean = false;
+  public isReviewingCard: boolean = false;
 
   public formValuesToPatch: any;
+  public previousFormValuesOnEdit: any;
 
   public openAnnotationArray: {
     lineIndex?: number;
     lineInputs?: boolean[];
     displayAnnotationButton?: boolean;
     displayAnnotationTextArea?: boolean;
-  }[] = [
-    {
-      lineIndex: 0,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 1,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 2,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 3,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-  ];
+  }[] = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+  public hasIncorrectFields: boolean = false;
+  public cardsWithIncorrectFields: boolean = false;
+  public previousFormValuesOnReview: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private router: Router,
     private applicantActionsService: ApplicantActionsService,
-    private applicantListsService: ApplicantListsService
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
@@ -105,13 +91,9 @@ export class Step5Component implements OnInit, OnDestroy {
 
     this.getDropdownLists();
 
-    this.hasNoTrafficViolations();
+    this.getStepValuesFromStore();
 
-    this.applicantActionsService.getApplicantInfo$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res.personalInfo.applicantId;
-      });
+    this.hasNoTrafficViolations();
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -145,6 +127,169 @@ export class Step5Component implements OnInit, OnDestroy {
       cardReview9: [null],
       cardReview10: [null],
     });
+  }
+
+  public getStepValuesFromStore(): void {
+    this.applicantQuery.applicant$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        const cdlInformation = res.cdlInformation;
+
+        const lastLicenseAdded: any =
+          cdlInformation?.licences[cdlInformation.licences.length - 1];
+
+        this.lastValidLicense = {
+          license: lastLicenseAdded?.licenseNumber,
+          state: lastLicenseAdded?.state?.stateShortName,
+          classType: lastLicenseAdded?.class?.name,
+          expDate: convertDateFromBackendShortYear(lastLicenseAdded?.expDate),
+        };
+
+        if (res.trafficViolation) {
+          this.patchStepValues(res.trafficViolation);
+        }
+      });
+  }
+
+  public patchStepValues(stepValues: TrafficViolationFeedbackResponse): void {
+    const {
+      noViolationsForPastTwelveMonths,
+      notBeenConvicted,
+      onlyOneHoldLicense,
+      certifyViolations,
+      trafficViolationItems,
+    } = stepValues;
+
+    this.trafficViolationsForm
+      .get('noViolationsForPastTwelveMonths')
+      .patchValue(noViolationsForPastTwelveMonths);
+
+    this.notBeenConvictedForm
+      .get('notBeenConvicted')
+      .patchValue(notBeenConvicted);
+
+    this.onlyOneHoldLicenseForm
+      .get('onlyOneHoldLicense')
+      .patchValue(onlyOneHoldLicense);
+
+    this.certifyForm.get('certify').patchValue(certifyViolations);
+
+    if (!noViolationsForPastTwelveMonths) {
+      console.log('stepValues', stepValues);
+      const lastItemInViolationsArray =
+        trafficViolationItems[trafficViolationItems.length - 1];
+
+      const restOfTheItemsInViolationsArray = [...trafficViolationItems];
+
+      restOfTheItemsInViolationsArray.pop();
+
+      const filteredViolationsArray = restOfTheItemsInViolationsArray.map(
+        (item) => {
+          const itemVehicleTypeName = item.vehicleType.name;
+
+          const itemVehicleType = {
+            ...item.vehicleType,
+          };
+
+          switch (itemVehicleTypeName) {
+            case 'Tow Truck Heavy':
+              itemVehicleType.name = 'Tow Truck';
+              break;
+
+            case 'Car Hauler - Semi Truck':
+              itemVehicleType.name = 'Car Hauler';
+              break;
+
+            case 'Semi Truck w Sleeper':
+              itemVehicleType.name = 'Semi w/Sleeper';
+              break;
+
+            default:
+              break;
+          }
+
+          return {
+            isEditingViolation: false,
+            date: convertDateFromBackendShortYear(item.date),
+            vehicleType: itemVehicleType.name,
+            location: item.location,
+            description: item.description,
+            trafficViolationItemReview: item.trafficViolationItemReview
+              ? item.trafficViolationItemReview
+              : null,
+          };
+        }
+      );
+
+      const lastItemInViolationsArrayVehicleTypeName =
+        lastItemInViolationsArray.vehicleType.name;
+
+      const lastItemVehicleType = {
+        ...lastItemInViolationsArray.vehicleType,
+      };
+
+      switch (lastItemInViolationsArrayVehicleTypeName) {
+        case 'Tow Truck Heavy':
+          lastItemVehicleType.name = 'Tow Truck';
+          break;
+
+        case 'Car Hauler - Semi Truck':
+          lastItemVehicleType.name = 'Car Hauler';
+          break;
+
+        case 'Semi Truck w Sleeper':
+          lastItemVehicleType.name = 'Semi w/Sleeper';
+          break;
+
+        default:
+          break;
+      }
+
+      const filteredLastItemInViolationsArray = {
+        id: lastItemInViolationsArray.id,
+        isEditingViolation: false,
+        date: convertDateFromBackendShortYear(lastItemInViolationsArray.date),
+        vehicleType: lastItemVehicleType.name,
+        location: lastItemInViolationsArray.location,
+        description: lastItemInViolationsArray.description,
+        trafficViolationItemReview:
+          lastItemInViolationsArray.trafficViolationItemReview
+            ? lastItemInViolationsArray.trafficViolationItemReview
+            : null,
+      };
+
+      this.violationsArray = [...filteredViolationsArray];
+
+      this.formValuesToPatch = filteredLastItemInViolationsArray;
+      this.previousFormValuesOnReview = filteredLastItemInViolationsArray;
+      this.previousFormValuesOnEdit = this.violationsArray.length
+        ? filteredLastItemInViolationsArray
+        : {
+            date: null,
+            vehicleType: null,
+            location: null,
+            description: null,
+          };
+
+      for (let i = 0; i < filteredViolationsArray.length; i++) {
+        const firstEmptyObjectInList = this.openAnnotationArray.find(
+          (item) => Object.keys(item).length === 0
+        );
+
+        const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+          firstEmptyObjectInList
+        );
+
+        this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+          lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+          lineInputs: [false],
+          displayAnnotationButton: false,
+          displayAnnotationTextArea: false,
+        };
+      }
+    }
   }
 
   private hasNoTrafficViolations(): void {
@@ -197,7 +342,10 @@ export class Step5Component implements OnInit, OnDestroy {
   }
 
   public handleCheckboxParagraphClick(type: string): void {
-    if (this.selectedMode === 'FEEDBACK_MODE') {
+    if (
+      this.selectedMode === SelectedMode.FEEDBACK ||
+      this.selectedMode === SelectedMode.REVIEW
+    ) {
       return;
     }
 
@@ -269,6 +417,8 @@ export class Step5Component implements OnInit, OnDestroy {
 
     this.helperIndex = 2;
     this.selectedViolationIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
   }
 
   public cancelViolationEditing(event: any): void {
@@ -278,6 +428,8 @@ export class Step5Component implements OnInit, OnDestroy {
 
     this.helperIndex = 2;
     this.selectedViolationIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
   }
 
   public onGetFormStatus(status: string): void {
@@ -294,6 +446,84 @@ export class Step5Component implements OnInit, OnDestroy {
     this.lastViolationsCard = event;
   }
 
+  public onHasIncorrectFields(event: any): void {
+    if (event) {
+      this.hasIncorrectFields = true;
+    } else {
+      this.hasIncorrectFields = false;
+    }
+  }
+
+  public onGetOpenAnnotationArrayValues(event: any): void {
+    this.previousFormValuesOnReview.trafficViolationItemReview = {
+      isDateValid: !event[0].lineInputs[0],
+      isLocationValid: !event[0].lineInputs[2],
+      isDescriptionValid: !event[1].lineInputs[0],
+    };
+  }
+
+  public onGetCardOpenAnnotationArrayValues(event: any): void {
+    this.isReviewingCard = false;
+
+    this.violationsArray[this.selectedViolationIndex].isEditingViolation =
+      false;
+
+    this.violationsArray[
+      this.selectedViolationIndex
+    ].trafficViolationItemReview = {
+      isDateValid: !event[0].lineInputs[0],
+      isLocationValid: !event[0].lineInputs[2],
+      isDescriptionValid: !event[1].lineInputs[0],
+    };
+
+    const hasInvalidFields = JSON.stringify(
+      this.violationsArray[this.selectedViolationIndex]
+        .trafficViolationItemReview
+    );
+
+    if (hasInvalidFields.includes('false')) {
+      this.openAnnotationArray[
+        this.selectedViolationIndex
+      ].displayAnnotationButton = true;
+
+      this.openAnnotationArray[this.selectedViolationIndex].lineInputs[0] =
+        true;
+
+      this.cardsWithIncorrectFields = true;
+    } else {
+      this.openAnnotationArray[
+        this.selectedViolationIndex
+      ].displayAnnotationButton = false;
+
+      this.hasIncorrectFields = false;
+    }
+
+    this.helperIndex = 2;
+    this.selectedViolationIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnReview;
+  }
+
+  public cancelViolationReview(event: any): void {
+    this.isReviewingCard = false;
+
+    this.violationsArray[this.selectedViolationIndex].isEditingViolation =
+      false;
+
+    this.helperIndex = 2;
+    this.selectedViolationIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnReview;
+  }
+
+  public getDropdownLists(): void {
+    this.applicantQuery.applicantDropdownLists$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: ApplicantModalResponse) => {
+        this.vehicleType = res.truckTypes;
+      });
+  }
+
   public incorrectInput(
     event: any,
     inputIndex: number,
@@ -305,15 +535,32 @@ export class Step5Component implements OnInit, OnDestroy {
     );
 
     if (type === 'card') {
-      selectedInputsLine.lineInputs[inputIndex] =
-        !selectedInputsLine.lineInputs[inputIndex];
-
-      selectedInputsLine.displayAnnotationButton =
-        !selectedInputsLine.displayAnnotationButton;
+      if (selectedInputsLine.displayAnnotationButton) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+        selectedInputsLine.displayAnnotationButton = false;
+      }
 
       if (selectedInputsLine.displayAnnotationTextArea) {
         selectedInputsLine.displayAnnotationButton = false;
         selectedInputsLine.displayAnnotationTextArea = false;
+      }
+
+      Object.keys(
+        this.violationsArray[lineIndex].trafficViolationItemReview
+      ).forEach((key) => {
+        this.violationsArray[lineIndex].trafficViolationItemReview[key] = true;
+      });
+
+      const inputFieldsArray = JSON.stringify(
+        this.openAnnotationArray
+          .filter((item) => Object.keys(item).length !== 0)
+          .map((item) => item.lineInputs)
+      );
+
+      if (inputFieldsArray.includes('true')) {
+        this.cardsWithIncorrectFields = true;
+      } else {
+        this.cardsWithIncorrectFields = false;
       }
     } else {
       if (event) {
@@ -352,18 +599,32 @@ export class Step5Component implements OnInit, OnDestroy {
     }
   }
 
-  public getDropdownLists(): void {
-    this.applicantListsService
-      .getDropdownLists()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.vehicleType = data.truckTypes;
-      });
+  public onCardReview(index: number) {
+    if (this.isReviewingCard) {
+      return;
+    }
+
+    this.helperIndex = index;
+    this.selectedViolationIndex = index;
+
+    this.violationsArray[index].isEditingViolation = true;
+
+    this.isReviewingCard = true;
+
+    const selectedViolation = this.violationsArray[index];
+
+    this.formValuesToPatch = selectedViolation;
   }
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
 
     if (event.action === 'back-step') {
@@ -402,15 +663,53 @@ export class Step5Component implements OnInit, OnDestroy {
     const { certify } = this.certifyForm.value;
 
     const filteredViolationsArray = this.violationsArray.map((item) => {
+      const itemVehicleType = item.vehicleType;
+
+      switch (itemVehicleType) {
+        case 'Tow Truck':
+          item.vehicleType = 'Tow Truck Heavy';
+          break;
+
+        case 'Car Hauler':
+          item.vehicleType = 'Car Hauler - Semi Truck';
+          break;
+
+        case 'Semi w/Sleeper':
+          item.vehicleType = 'Semi Truck w Sleeper';
+          break;
+
+        default:
+          break;
+      }
+
       return {
         date: convertDateToBackend(item.date),
         vehicleTypeId: this.vehicleType.find(
           (vehicleItem) => vehicleItem.name === item.vehicleType
         ).id,
-        location: item.location.address,
+        location: item.location,
         description: item.description,
       };
     });
+
+    const lastViolationsCardVehicleType = this.lastViolationsCard?.vehicleType;
+
+    switch (lastViolationsCardVehicleType) {
+      case 'Tow Truck':
+        this.lastViolationsCard.vehicleType = 'Tow Truck Heavy';
+        break;
+
+      case 'Car Hauler':
+        this.lastViolationsCard.vehicleType = 'Car Hauler - Semi Truck';
+        break;
+
+      case 'Semi w/Sleeper':
+        this.lastViolationsCard.vehicleType = 'Semi Truck w Sleeper';
+        break;
+
+      default:
+        break;
+    }
 
     let filteredLastViolationsCard: any;
 
@@ -441,12 +740,50 @@ export class Step5Component implements OnInit, OnDestroy {
         : [...filteredViolationsArray, filteredLastViolationsCard],
     };
 
+    const storeTrafficViolationItems = saveData.trafficViolationItems.map(
+      (item) => {
+        return {
+          ...item,
+          vehicleType: this.vehicleType.find(
+            (vehicleItem) => vehicleItem.id === item.vehicleTypeId
+          ),
+        };
+      }
+    );
+
     this.applicantActionsService
       .createTrafficViolations(saveData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/6`]);
+
+          this.applicantStore.update((store) => {
+            const noViolations = saveData.noViolationsForPastTwelveMonths;
+
+            return {
+              ...store,
+              applicant: {
+                ...store.applicant,
+                trafficViolation: {
+                  ...store.applicant.trafficViolation,
+                  noViolationsForPastTwelveMonths: noViolations,
+                  notBeenConvicted: noViolations
+                    ? false
+                    : saveData.notBeenConvicted,
+                  onlyOneHoldLicense: noViolations
+                    ? false
+                    : saveData.onlyOneHoldLicense,
+                  certifyViolations: noViolations
+                    ? false
+                    : saveData.certifyViolations,
+                  trafficViolationItems: noViolations
+                    ? []
+                    : storeTrafficViolationItems,
+                },
+              },
+            };
+          });
         },
         error: (err) => {
           console.log(err);
@@ -454,7 +791,55 @@ export class Step5Component implements OnInit, OnDestroy {
       });
   }
 
-  /* public onSubmitReview(data: any): void {} */
+  public onSubmitReview(): void {
+    const lastItemReview =
+      this.previousFormValuesOnReview.trafficViolationItemReview;
+
+    const lastItemId = this.previousFormValuesOnReview.id;
+
+    const lastReviewedItemIViolationsArray = {
+      trafficViolationId: lastItemId,
+      isDateValid: lastItemReview ? lastItemReview.isDateValid : true,
+      isVehicleTypeValid: true,
+      isLocationValid: lastItemReview ? lastItemReview.isLocationValid : true,
+      vehicleTypeLocationMessage: this.lastViolationsCard.firstRowReview,
+      isDescriptionValid: lastItemReview
+        ? lastItemReview.isDescriptionValid
+        : true,
+      descriptionMessage: this.lastViolationsCard.secondRowReview,
+    };
+
+    const saveData: CreateTrafficViolationReviewCommand = {
+      applicantId: this.applicantId,
+      trafficViolationReviews: [lastReviewedItemIViolationsArray],
+    };
+
+    console.log('saveData', saveData.trafficViolationReviews[0]);
+
+    this.applicantActionsService
+      .createTrafficViolationsReview(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/6`]);
+          /* 
+            this.applicantStore.update(1, (entity) => {
+            return {
+              ...entity,
+              education: {
+                ...entity.education,
+                educationReview: rest,
+              },
+            };
+          });
+
+          console.log('updatedStore', this.applicantStore); */
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

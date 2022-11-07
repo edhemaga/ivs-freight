@@ -123,16 +123,17 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
 
+    this.getRepairDropdowns();
+
     if (this.editData?.storageData) {
       this.populateForm(this.editData?.storageData);
-    } else {
-      this.getRepairDropdowns();
     }
 
     if (this.editData?.type?.includes('edit')) {
       this.editRepairById(this.editData.id);
     } else {
-      const timeout = setTimeout(() => {
+
+
         if (this.editData?.type?.toLowerCase().includes('trailer')) {
           this.onTypeOfRepair(
             this.typeOfRepair.find((item) => item.name === 'Trailer'),
@@ -144,8 +145,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             'true'
           );
         }
-        clearTimeout(timeout);
-      }, 150);
+
     }
   }
 
@@ -339,16 +339,19 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   }
 
   public onTypeOfRepair(event: any, action?: string) {
+    console.log('function params: ', event, action)
     this.typeOfRepair = this.typeOfRepair.map((item) => {
       if (item.id === event.id) {
         this.repairOrderForm.get('unitType').patchValue(item.name);
       }
       return {
         ...item,
-        checked: item.id == event.id,
+        checked: item.id === event.id,
       };
     });
 
+    this.labelsUnit = this.repairOrderForm.get('unitType').value === 'Trailer' ? this.unitTrailers : this.unitTrucks;
+    console.log('function labels: ', this.labelsUnit)
     if (action) {
       return;
     }
@@ -361,6 +364,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       logoName: 'assets/svg/common/repair-pm/ic_custom_pm.svg',
     });
     this.selectedPMIndex = null;
+
+
   }
 
   public onSelectDropDown(event: any, action: string) {
@@ -831,8 +836,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   }
 
   private editRepairById(id: number) {
-    if (id) {
-      const timeout = setTimeout(() => {
         this.repairService
           .getRepairById(id)
           .pipe(takeUntil(this.destroy$))
@@ -976,9 +979,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
               );
             },
           });
-        clearTimeout(timeout);
-      }, 200);
-    }
   }
 
   private premmapedItems() {

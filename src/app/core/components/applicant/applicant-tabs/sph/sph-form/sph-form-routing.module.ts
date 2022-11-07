@@ -5,7 +5,6 @@ import { SphFormComponent } from './sph-form.component';
 import { Step1Component } from '../../../applicant-tabs/sph/sph-form/sph-form-steps/step1/step1.component';
 import { Step2Component } from './sph-form-steps/step2/step2.component';
 import { Step3Component } from './sph-form-steps/step3/step3.component';
-import { SphFormThankYouComponent } from './sph-form-thank-you/sph-form-thank-you.component';
 
 const routes: Routes = [
   {

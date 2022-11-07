@@ -240,6 +240,30 @@
       }
 
       &.completed-step {
+        &.step-active {
+          .bullet {
+            background: $ta-blue;
+
+            &::before {
+              display: none;
+              visibility: hidden;
+              opacity: 0;
+            }
+
+            p {
+              display: inline-block;
+              visibility: visible;
+              opacity: 1;
+            }
+          }
+
+          .step-text {
+            visibility: visible;
+            opacity: 1;
+            color: $ta-blue;
+          }
+        }
+
         .bullet {
           background: $ta-blue-3;
 
