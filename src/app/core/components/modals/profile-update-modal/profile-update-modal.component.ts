@@ -128,6 +128,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((isFormChange: boolean) => {
         this.isFormDirty = isFormChange;
+        console.log(this.isFormDirty);
       });
   }
 
@@ -249,6 +250,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
   }
 
   public onUploadImage(event: any) {
+    console.log('upload image ', event);
     this.profileUserForm.get('avatar').patchValue(event);
     this.profileUserForm.get('avatar').setErrors(null);
   }
@@ -286,7 +288,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
             email: res.email,
             address: res.address.address,
             addressUnit: res.address.addressUnit,
-            avatar: res.avatar,
+            avatar: res.avatar ? res.avatar : null,
           });
           this.selectedAddress = res.address;
         },
