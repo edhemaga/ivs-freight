@@ -1657,7 +1657,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             emergencyContactRelationship: res.emergencyContactRelationship,
 
             note: res.note,
-            avatar: res.avatar,
+            avatar: res.avatar ? res.avatar : null,
 
             twic: res.twic,
             twicExpDate: res.twicExpDate

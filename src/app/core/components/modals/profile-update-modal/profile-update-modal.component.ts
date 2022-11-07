@@ -136,6 +136,11 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (this.profileUserForm.invalid) {
+      this.inputService.markInvalid(this.profileUserForm);
+      return;
+    }
+
     if (data.action === 'save') {
       this.updateUserProfile();
       this.modalService.setModalSpinner({ action: null, status: true });

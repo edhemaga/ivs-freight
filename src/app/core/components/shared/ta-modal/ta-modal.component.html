@@ -322,7 +322,11 @@
             type="button"
           >
             {{
-              saveSpinnerVisibility
+              applicantText
+                ? saveSpinnerVisibility
+                  ? "Inviting"
+                  : "Invite"
+                : saveSpinnerVisibility
                 ? "Saving"
                 : editData?.type?.includes("edit")
                 ? editData?.type?.includes("fo")
