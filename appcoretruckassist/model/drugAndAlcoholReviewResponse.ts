@@ -17,11 +17,13 @@ export interface DrugAndAlcoholReviewResponse {
     isPhoneValid?: boolean;
     carrierPhoneMessage?: string | null;
     isAddressValid?: boolean;
+    isAddressUnitValid?: boolean;
     addressMessage?: string | null;
     isSapValid?: boolean;
     isSapPhoneValid?: boolean;
     sapPhoneMessage?: string | null;
     isSapAddressValid?: boolean;
+    isSapAddressUnitValid?: boolean;
     sapAddressMessage?: string | null;
     drugAndAlcoholId?: number;
 }

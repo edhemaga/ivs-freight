@@ -11,10 +11,13 @@
  */
 
 
-export interface CreateSevenDaysHosReviewCommand { 
-    isReleaseDateValid?: boolean;
-    isLocationValid?: boolean;
-    releaseDateLocationMessage?: string | null;
+export interface UpdatePspAuthCommand { 
+    isConfirm?: boolean | null;
+    isAuthorize?: boolean | null;
+    isFurtherUnderstand?: boolean | null;
+    isPspReport?: boolean | null;
+    isDisclosureRegardingReport?: boolean | null;
+    signature?: string | null;
     applicantId?: number;
 }
 

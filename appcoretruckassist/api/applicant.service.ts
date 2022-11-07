@@ -32,31 +32,40 @@ import { CreateAccidentRecordReviewCommand } from '../model/models';
 import { CreateApplicantCdlCommand } from '../model/models';
 import { CreateApplicantCdlReviewCommand } from '../model/models';
 import { CreateApplicantCommand } from '../model/models';
+import { CreateAuthorizationReviewCommand } from '../model/models';
+import { CreateCdlCardReviewCommand } from '../model/models';
+import { CreateDisclosureReviewCommand } from '../model/models';
+import { CreateDriverRightsReviewCommand } from '../model/models';
 import { CreateDrugAndAlcoholCommand } from '../model/models';
 import { CreateDrugAndAlcoholReviewCommand } from '../model/models';
 import { CreateEducationCommand } from '../model/models';
 import { CreateEducationReviewCommand } from '../model/models';
+import { CreateMedicalCertificateReviewCommand } from '../model/models';
+import { CreateMvrAuthReviewCommand } from '../model/models';
 import { CreatePersonalInfoReviewCommand } from '../model/models';
 import { CreatePreviousEmployerAccidentHistoryCommand } from '../model/models';
 import { CreatePreviousEmployerDrugAndAlcoholCommand } from '../model/models';
 import { CreateResponse } from '../model/models';
 import { CreateSevenDaysHosCommand } from '../model/models';
 import { CreateSevenDaysHosReviewCommand } from '../model/models';
+import { CreateSsnReviewCommand } from '../model/models';
 import { CreateTrafficViolationCommand } from '../model/models';
 import { CreateTrafficViolationReviewCommand } from '../model/models';
+import { CreateWithUploadsResponse } from '../model/models';
 import { CreateWorkExperienceCommand } from '../model/models';
 import { CreateWorkExperienceReviewCommand } from '../model/models';
 import { DeleteMultipleApplicationsCommand } from '../model/models';
 import { DisclosureReleaseFeedbackResponse } from '../model/models';
 import { DrugAndAlcoholFeedbackResponse } from '../model/models';
 import { EducationFeedbackResponse } from '../model/models';
-import { GetApplicantListQuery } from '../model/models';
 import { GetApplicantListResponse } from '../model/models';
 import { HireApplicantCommand } from '../model/models';
 import { InviteEmployerResponse } from '../model/models';
 import { InvitePreviousEmployerCommand } from '../model/models';
+import { MedicalCertificateFeedbackResponse } from '../model/models';
 import { MoveMultipleToApplicantsCommand } from '../model/models';
 import { MoveToApplicantsCommand } from '../model/models';
+import { MvrAuthFeedbackResponse } from '../model/models';
 import { PersonalInfoFeedbackResponse } from '../model/models';
 import { PreviousEmployerModalResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
@@ -73,8 +82,11 @@ import { UpdateDisclosureReleaseCommand } from '../model/models';
 import { UpdateDriverRightsCommand } from '../model/models';
 import { UpdateDrugAndAlcoholCommand } from '../model/models';
 import { UpdateEducationCommand } from '../model/models';
+import { UpdateHosRulesCommand } from '../model/models';
 import { UpdatePersonalInfoCommand } from '../model/models';
+import { UpdatePspAuthCommand } from '../model/models';
 import { UpdateSevenDaysHosCommand } from '../model/models';
+import { UpdateSphCommand } from '../model/models';
 import { UpdateTrafficViolationCommand } from '../model/models';
 import { UpdateWorkExperienceCommand } from '../model/models';
 import { VerifyApplicantCommand } from '../model/models';
@@ -109,6 +121,19 @@ export class ApplicantService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         if (typeof value === "object" && value instanceof Date === false) {
@@ -925,14 +950,65 @@ export class ApplicantService {
     }
 
     /**
-     * @param getApplicantListQuery 
+     * @param applicantSpecParamsArchived 
+     * @param applicantSpecParamsHired 
+     * @param applicantSpecParamsFavourite 
+     * @param applicantSpecParamsPageIndex 
+     * @param applicantSpecParamsPageSize 
+     * @param applicantSpecParamsCompanyId 
+     * @param applicantSpecParamsSort 
+     * @param applicantSpecParamsSearch 
+     * @param applicantSpecParamsSearch1 
+     * @param applicantSpecParamsSearch2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiApplicantAdminListGet(getApplicantListQuery?: GetApplicantListQuery, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<GetApplicantListResponse>;
-    public apiApplicantAdminListGet(getApplicantListQuery?: GetApplicantListQuery, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<GetApplicantListResponse>>;
-    public apiApplicantAdminListGet(getApplicantListQuery?: GetApplicantListQuery, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<GetApplicantListResponse>>;
-    public apiApplicantAdminListGet(getApplicantListQuery?: GetApplicantListQuery, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiApplicantAdminListGet(applicantSpecParamsArchived?: boolean, applicantSpecParamsHired?: boolean, applicantSpecParamsFavourite?: boolean, applicantSpecParamsPageIndex?: number, applicantSpecParamsPageSize?: number, applicantSpecParamsCompanyId?: number, applicantSpecParamsSort?: string, applicantSpecParamsSearch?: string, applicantSpecParamsSearch1?: string, applicantSpecParamsSearch2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<GetApplicantListResponse>;
+    public apiApplicantAdminListGet(applicantSpecParamsArchived?: boolean, applicantSpecParamsHired?: boolean, applicantSpecParamsFavourite?: boolean, applicantSpecParamsPageIndex?: number, applicantSpecParamsPageSize?: number, applicantSpecParamsCompanyId?: number, applicantSpecParamsSort?: string, applicantSpecParamsSearch?: string, applicantSpecParamsSearch1?: string, applicantSpecParamsSearch2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<GetApplicantListResponse>>;
+    public apiApplicantAdminListGet(applicantSpecParamsArchived?: boolean, applicantSpecParamsHired?: boolean, applicantSpecParamsFavourite?: boolean, applicantSpecParamsPageIndex?: number, applicantSpecParamsPageSize?: number, applicantSpecParamsCompanyId?: number, applicantSpecParamsSort?: string, applicantSpecParamsSearch?: string, applicantSpecParamsSearch1?: string, applicantSpecParamsSearch2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<GetApplicantListResponse>>;
+    public apiApplicantAdminListGet(applicantSpecParamsArchived?: boolean, applicantSpecParamsHired?: boolean, applicantSpecParamsFavourite?: boolean, applicantSpecParamsPageIndex?: number, applicantSpecParamsPageSize?: number, applicantSpecParamsCompanyId?: number, applicantSpecParamsSort?: string, applicantSpecParamsSearch?: string, applicantSpecParamsSearch1?: string, applicantSpecParamsSearch2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (applicantSpecParamsArchived !== undefined && applicantSpecParamsArchived !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>applicantSpecParamsArchived, 'ApplicantSpecParams.Archived');
+        }
+        if (applicantSpecParamsHired !== undefined && applicantSpecParamsHired !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>applicantSpecParamsHired, 'ApplicantSpecParams.Hired');
+        }
+        if (applicantSpecParamsFavourite !== undefined && applicantSpecParamsFavourite !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>applicantSpecParamsFavourite, 'ApplicantSpecParams.Favourite');
+        }
+        if (applicantSpecParamsPageIndex !== undefined && applicantSpecParamsPageIndex !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>applicantSpecParamsPageIndex, 'ApplicantSpecParams.PageIndex');
+        }
+        if (applicantSpecParamsPageSize !== undefined && applicantSpecParamsPageSize !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>applicantSpecParamsPageSize, 'ApplicantSpecParams.PageSize');
+        }
+        if (applicantSpecParamsCompanyId !== undefined && applicantSpecParamsCompanyId !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>applicantSpecParamsCompanyId, 'ApplicantSpecParams.CompanyId');
+        }
+        if (applicantSpecParamsSort !== undefined && applicantSpecParamsSort !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>applicantSpecParamsSort, 'ApplicantSpecParams.Sort');
+        }
+        if (applicantSpecParamsSearch !== undefined && applicantSpecParamsSearch !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>applicantSpecParamsSearch, 'ApplicantSpecParams.Search');
+        }
+        if (applicantSpecParamsSearch1 !== undefined && applicantSpecParamsSearch1 !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>applicantSpecParamsSearch1, 'ApplicantSpecParams.Search1');
+        }
+        if (applicantSpecParamsSearch2 !== undefined && applicantSpecParamsSearch2 !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>applicantSpecParamsSearch2, 'ApplicantSpecParams.Search2');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -958,17 +1034,6 @@ export class ApplicantService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType = 'text';
@@ -976,6 +1041,7 @@ export class ApplicantService {
 
         return this.httpClient.get<GetApplicantListResponse>(`${this.configuration.basePath}/api/applicant/admin/list`,
             {
+                params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -1473,6 +1539,68 @@ export class ApplicantService {
     }
 
     /**
+     * @param createAuthorizationReviewCommand 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantAuthorizationReviewPost(createAuthorizationReviewCommand?: CreateAuthorizationReviewCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
+    public apiApplicantAuthorizationReviewPost(createAuthorizationReviewCommand?: CreateAuthorizationReviewCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
+    public apiApplicantAuthorizationReviewPost(createAuthorizationReviewCommand?: CreateAuthorizationReviewCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
+    public apiApplicantAuthorizationReviewPost(createAuthorizationReviewCommand?: CreateAuthorizationReviewCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.post<object>(`${this.configuration.basePath}/api/applicant/authorization/review`,
+            createAuthorizationReviewCommand,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -1716,6 +1844,317 @@ export class ApplicantService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
+    public apiApplicantCdlcardIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<MvrAuthFeedbackResponse>;
+    public apiApplicantCdlcardIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<MvrAuthFeedbackResponse>>;
+    public apiApplicantCdlcardIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<MvrAuthFeedbackResponse>>;
+    public apiApplicantCdlcardIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiApplicantCdlcardIdGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.get<MvrAuthFeedbackResponse>(`${this.configuration.basePath}/api/applicant/cdlcard/${encodeURIComponent(String(id))}`,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param issueDate 
+     * @param expireDate 
+     * @param files 
+     * @param applicantId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantCdlcardPost(issueDate?: string, expireDate?: string, files?: Array<Blob>, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiApplicantCdlcardPost(issueDate?: string, expireDate?: string, files?: Array<Blob>, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiApplicantCdlcardPost(issueDate?: string, expireDate?: string, files?: Array<Blob>, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiApplicantCdlcardPost(issueDate?: string, expireDate?: string, files?: Array<Blob>, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'multipart/form-data'
+        ];
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (issueDate !== undefined) {
+            formParams = formParams.append('IssueDate', <any>issueDate) as any || formParams;
+        }
+        if (expireDate !== undefined) {
+            formParams = formParams.append('ExpireDate', <any>expireDate) as any || formParams;
+        }
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (applicantId !== undefined) {
+            formParams = formParams.append('ApplicantId', <any>applicantId) as any || formParams;
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.post<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/applicant/cdlcard`,
+            convertFormParamsToString ? formParams.toString() : formParams,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param issueDate 
+     * @param expireDate 
+     * @param files 
+     * @param filesForDeleteIds 
+     * @param cdlCardId 
+     * @param applicantId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantCdlcardPut(issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, cdlCardId?: number, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiApplicantCdlcardPut(issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, cdlCardId?: number, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiApplicantCdlcardPut(issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, cdlCardId?: number, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiApplicantCdlcardPut(issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, cdlCardId?: number, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'multipart/form-data'
+        ];
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (issueDate !== undefined) {
+            formParams = formParams.append('IssueDate', <any>issueDate) as any || formParams;
+        }
+        if (expireDate !== undefined) {
+            formParams = formParams.append('ExpireDate', <any>expireDate) as any || formParams;
+        }
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (filesForDeleteIds) {
+            if (useForm) {
+                filesForDeleteIds.forEach((element) => {
+                    formParams = formParams.append('FilesForDeleteIds', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('FilesForDeleteIds', filesForDeleteIds.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (cdlCardId !== undefined) {
+            formParams = formParams.append('CdlCardId', <any>cdlCardId) as any || formParams;
+        }
+        if (applicantId !== undefined) {
+            formParams = formParams.append('ApplicantId', <any>applicantId) as any || formParams;
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.put<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/applicant/cdlcard`,
+            convertFormParamsToString ? formParams.toString() : formParams,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param createCdlCardReviewCommand 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantCdlcardReviewPost(createCdlCardReviewCommand?: CreateCdlCardReviewCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
+    public apiApplicantCdlcardReviewPost(createCdlCardReviewCommand?: CreateCdlCardReviewCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
+    public apiApplicantCdlcardReviewPost(createCdlCardReviewCommand?: CreateCdlCardReviewCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
+    public apiApplicantCdlcardReviewPost(createCdlCardReviewCommand?: CreateCdlCardReviewCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/applicant/cdlcard/review`,
+            createCdlCardReviewCommand,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
     public apiApplicantDisclosurereleaseIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<DisclosureReleaseFeedbackResponse>;
     public apiApplicantDisclosurereleaseIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<DisclosureReleaseFeedbackResponse>>;
     public apiApplicantDisclosurereleaseIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<DisclosureReleaseFeedbackResponse>>;
@@ -1827,6 +2266,68 @@ export class ApplicantService {
     }
 
     /**
+     * @param createDisclosureReviewCommand 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantDisclosurereleaseReviewPost(createDisclosureReviewCommand?: CreateDisclosureReviewCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
+    public apiApplicantDisclosurereleaseReviewPost(createDisclosureReviewCommand?: CreateDisclosureReviewCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
+    public apiApplicantDisclosurereleaseReviewPost(createDisclosureReviewCommand?: CreateDisclosureReviewCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
+    public apiApplicantDisclosurereleaseReviewPost(createDisclosureReviewCommand?: CreateDisclosureReviewCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.post<object>(`${this.configuration.basePath}/api/applicant/disclosurerelease/review`,
+            createDisclosureReviewCommand,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * @param updateDriverRightsCommand 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -1878,6 +2379,68 @@ export class ApplicantService {
 
         return this.httpClient.put<object>(`${this.configuration.basePath}/api/applicant/driverrights`,
             updateDriverRightsCommand,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param createDriverRightsReviewCommand 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantDriverrightsReviewPost(createDriverRightsReviewCommand?: CreateDriverRightsReviewCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
+    public apiApplicantDriverrightsReviewPost(createDriverRightsReviewCommand?: CreateDriverRightsReviewCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
+    public apiApplicantDriverrightsReviewPost(createDriverRightsReviewCommand?: CreateDriverRightsReviewCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
+    public apiApplicantDriverrightsReviewPost(createDriverRightsReviewCommand?: CreateDriverRightsReviewCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.post<object>(`${this.configuration.basePath}/api/applicant/driverrights/review`,
+            createDriverRightsReviewCommand,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -2420,6 +2983,68 @@ export class ApplicantService {
     }
 
     /**
+     * @param updateHosRulesCommand 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantHosrulesPut(updateHosRulesCommand?: UpdateHosRulesCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
+    public apiApplicantHosrulesPut(updateHosRulesCommand?: UpdateHosRulesCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
+    public apiApplicantHosrulesPut(updateHosRulesCommand?: UpdateHosRulesCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
+    public apiApplicantHosrulesPut(updateHosRulesCommand?: UpdateHosRulesCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.put<object>(`${this.configuration.basePath}/api/applicant/hosrules`,
+            updateHosRulesCommand,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -2473,6 +3098,317 @@ export class ApplicantService {
     }
 
     /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantMedicalcertificateIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<MedicalCertificateFeedbackResponse>;
+    public apiApplicantMedicalcertificateIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<MedicalCertificateFeedbackResponse>>;
+    public apiApplicantMedicalcertificateIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<MedicalCertificateFeedbackResponse>>;
+    public apiApplicantMedicalcertificateIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiApplicantMedicalcertificateIdGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.get<MedicalCertificateFeedbackResponse>(`${this.configuration.basePath}/api/applicant/medicalcertificate/${encodeURIComponent(String(id))}`,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param issueDate 
+     * @param expireDate 
+     * @param files 
+     * @param applicantId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantMedicalcertificatePost(issueDate?: string, expireDate?: string, files?: Array<Blob>, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiApplicantMedicalcertificatePost(issueDate?: string, expireDate?: string, files?: Array<Blob>, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiApplicantMedicalcertificatePost(issueDate?: string, expireDate?: string, files?: Array<Blob>, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiApplicantMedicalcertificatePost(issueDate?: string, expireDate?: string, files?: Array<Blob>, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'multipart/form-data'
+        ];
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (issueDate !== undefined) {
+            formParams = formParams.append('IssueDate', <any>issueDate) as any || formParams;
+        }
+        if (expireDate !== undefined) {
+            formParams = formParams.append('ExpireDate', <any>expireDate) as any || formParams;
+        }
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (applicantId !== undefined) {
+            formParams = formParams.append('ApplicantId', <any>applicantId) as any || formParams;
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.post<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/applicant/medicalcertificate`,
+            convertFormParamsToString ? formParams.toString() : formParams,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param issueDate 
+     * @param expireDate 
+     * @param files 
+     * @param filesForDeleteIds 
+     * @param applicantMedicalId 
+     * @param applicantId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantMedicalcertificatePut(issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantMedicalId?: number, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiApplicantMedicalcertificatePut(issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantMedicalId?: number, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiApplicantMedicalcertificatePut(issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantMedicalId?: number, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiApplicantMedicalcertificatePut(issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantMedicalId?: number, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'multipart/form-data'
+        ];
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (issueDate !== undefined) {
+            formParams = formParams.append('IssueDate', <any>issueDate) as any || formParams;
+        }
+        if (expireDate !== undefined) {
+            formParams = formParams.append('ExpireDate', <any>expireDate) as any || formParams;
+        }
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (filesForDeleteIds) {
+            if (useForm) {
+                filesForDeleteIds.forEach((element) => {
+                    formParams = formParams.append('FilesForDeleteIds', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('FilesForDeleteIds', filesForDeleteIds.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (applicantMedicalId !== undefined) {
+            formParams = formParams.append('ApplicantMedicalId', <any>applicantMedicalId) as any || formParams;
+        }
+        if (applicantId !== undefined) {
+            formParams = formParams.append('ApplicantId', <any>applicantId) as any || formParams;
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.put<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/applicant/medicalcertificate`,
+            convertFormParamsToString ? formParams.toString() : formParams,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param createMedicalCertificateReviewCommand 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantMedicalcertificateReviewPost(createMedicalCertificateReviewCommand?: CreateMedicalCertificateReviewCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
+    public apiApplicantMedicalcertificateReviewPost(createMedicalCertificateReviewCommand?: CreateMedicalCertificateReviewCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
+    public apiApplicantMedicalcertificateReviewPost(createMedicalCertificateReviewCommand?: CreateMedicalCertificateReviewCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
+    public apiApplicantMedicalcertificateReviewPost(createMedicalCertificateReviewCommand?: CreateMedicalCertificateReviewCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/applicant/medicalcertificate/review`,
+            createMedicalCertificateReviewCommand,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -2511,6 +3447,353 @@ export class ApplicantService {
         }
 
         return this.httpClient.get<ApplicantModalResponse>(`${this.configuration.basePath}/api/applicant/modal`,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantMvrIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<MvrAuthFeedbackResponse>;
+    public apiApplicantMvrIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<MvrAuthFeedbackResponse>>;
+    public apiApplicantMvrIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<MvrAuthFeedbackResponse>>;
+    public apiApplicantMvrIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiApplicantMvrIdGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.get<MvrAuthFeedbackResponse>(`${this.configuration.basePath}/api/applicant/mvr/${encodeURIComponent(String(id))}`,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param isEmployee 
+     * @param isPeriodicallyObtained 
+     * @param isInformationCorrect 
+     * @param dontHaveMvr 
+     * @param onlyLicense 
+     * @param signature 
+     * @param files 
+     * @param applicantId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantMvrPost(isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiApplicantMvrPost(isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiApplicantMvrPost(isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiApplicantMvrPost(isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'multipart/form-data'
+        ];
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (isEmployee !== undefined) {
+            formParams = formParams.append('IsEmployee', <any>isEmployee) as any || formParams;
+        }
+        if (isPeriodicallyObtained !== undefined) {
+            formParams = formParams.append('IsPeriodicallyObtained', <any>isPeriodicallyObtained) as any || formParams;
+        }
+        if (isInformationCorrect !== undefined) {
+            formParams = formParams.append('IsInformationCorrect', <any>isInformationCorrect) as any || formParams;
+        }
+        if (dontHaveMvr !== undefined) {
+            formParams = formParams.append('DontHaveMvr', <any>dontHaveMvr) as any || formParams;
+        }
+        if (onlyLicense !== undefined) {
+            formParams = formParams.append('OnlyLicense', <any>onlyLicense) as any || formParams;
+        }
+        if (signature !== undefined) {
+            formParams = formParams.append('Signature', <any>signature) as any || formParams;
+        }
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (applicantId !== undefined) {
+            formParams = formParams.append('ApplicantId', <any>applicantId) as any || formParams;
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.post<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/applicant/mvr`,
+            convertFormParamsToString ? formParams.toString() : formParams,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param isEmployee 
+     * @param isPeriodicallyObtained 
+     * @param isInformationCorrect 
+     * @param dontHaveMvr 
+     * @param onlyLicense 
+     * @param signature 
+     * @param files 
+     * @param filesForDeleteIds 
+     * @param applicantMvrAuthId 
+     * @param applicantId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantMvrAuthId?: number, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantMvrAuthId?: number, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantMvrAuthId?: number, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantMvrAuthId?: number, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'multipart/form-data'
+        ];
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            formParams = formParams.append('Id', <any>id) as any || formParams;
+        }
+        if (isEmployee !== undefined) {
+            formParams = formParams.append('IsEmployee', <any>isEmployee) as any || formParams;
+        }
+        if (isPeriodicallyObtained !== undefined) {
+            formParams = formParams.append('IsPeriodicallyObtained', <any>isPeriodicallyObtained) as any || formParams;
+        }
+        if (isInformationCorrect !== undefined) {
+            formParams = formParams.append('IsInformationCorrect', <any>isInformationCorrect) as any || formParams;
+        }
+        if (dontHaveMvr !== undefined) {
+            formParams = formParams.append('DontHaveMvr', <any>dontHaveMvr) as any || formParams;
+        }
+        if (onlyLicense !== undefined) {
+            formParams = formParams.append('OnlyLicense', <any>onlyLicense) as any || formParams;
+        }
+        if (signature !== undefined) {
+            formParams = formParams.append('Signature', <any>signature) as any || formParams;
+        }
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (filesForDeleteIds) {
+            if (useForm) {
+                filesForDeleteIds.forEach((element) => {
+                    formParams = formParams.append('FilesForDeleteIds', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('FilesForDeleteIds', filesForDeleteIds.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (applicantMvrAuthId !== undefined) {
+            formParams = formParams.append('ApplicantMvrAuthId', <any>applicantMvrAuthId) as any || formParams;
+        }
+        if (applicantId !== undefined) {
+            formParams = formParams.append('ApplicantId', <any>applicantId) as any || formParams;
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.put<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/applicant/mvr`,
+            convertFormParamsToString ? formParams.toString() : formParams,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param createMvrAuthReviewCommand 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantMvrReviewPost(createMvrAuthReviewCommand?: CreateMvrAuthReviewCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
+    public apiApplicantMvrReviewPost(createMvrAuthReviewCommand?: CreateMvrAuthReviewCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
+    public apiApplicantMvrReviewPost(createMvrAuthReviewCommand?: CreateMvrAuthReviewCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
+    public apiApplicantMvrReviewPost(createMvrAuthReviewCommand?: CreateMvrAuthReviewCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/applicant/mvr/review`,
+            createMvrAuthReviewCommand,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -3049,6 +4332,68 @@ export class ApplicantService {
     }
 
     /**
+     * @param updatePspAuthCommand 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantPspPut(updatePspAuthCommand?: UpdatePspAuthCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
+    public apiApplicantPspPut(updatePspAuthCommand?: UpdatePspAuthCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
+    public apiApplicantPspPut(updatePspAuthCommand?: UpdatePspAuthCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
+    public apiApplicantPspPut(updatePspAuthCommand?: UpdatePspAuthCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.put<object>(`${this.configuration.basePath}/api/applicant/psp`,
+            updatePspAuthCommand,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -3277,6 +4622,363 @@ export class ApplicantService {
 
         return this.httpClient.post<object>(`${this.configuration.basePath}/api/applicant/sevendayshos/review`,
             createSevenDaysHosReviewCommand,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param updateSphCommand 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantSphPut(updateSphCommand?: UpdateSphCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
+    public apiApplicantSphPut(updateSphCommand?: UpdateSphCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
+    public apiApplicantSphPut(updateSphCommand?: UpdateSphCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
+    public apiApplicantSphPut(updateSphCommand?: UpdateSphCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.put<object>(`${this.configuration.basePath}/api/applicant/sph`,
+            updateSphCommand,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantSsnIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<MvrAuthFeedbackResponse>;
+    public apiApplicantSsnIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<MvrAuthFeedbackResponse>>;
+    public apiApplicantSsnIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<MvrAuthFeedbackResponse>>;
+    public apiApplicantSsnIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiApplicantSsnIdGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.get<MvrAuthFeedbackResponse>(`${this.configuration.basePath}/api/applicant/ssn/${encodeURIComponent(String(id))}`,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param files 
+     * @param applicantId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantSsnPost(files?: Array<Blob>, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiApplicantSsnPost(files?: Array<Blob>, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiApplicantSsnPost(files?: Array<Blob>, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiApplicantSsnPost(files?: Array<Blob>, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'multipart/form-data'
+        ];
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (applicantId !== undefined) {
+            formParams = formParams.append('ApplicantId', <any>applicantId) as any || formParams;
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.post<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/applicant/ssn`,
+            convertFormParamsToString ? formParams.toString() : formParams,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param files 
+     * @param filesForDeleteIds 
+     * @param applicantSsnCardId 
+     * @param applicantId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantSsnPut(files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantSsnCardId?: number, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiApplicantSsnPut(files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantSsnCardId?: number, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiApplicantSsnPut(files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantSsnCardId?: number, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiApplicantSsnPut(files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantSsnCardId?: number, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'multipart/form-data'
+        ];
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (filesForDeleteIds) {
+            if (useForm) {
+                filesForDeleteIds.forEach((element) => {
+                    formParams = formParams.append('FilesForDeleteIds', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('FilesForDeleteIds', filesForDeleteIds.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (applicantSsnCardId !== undefined) {
+            formParams = formParams.append('ApplicantSsnCardId', <any>applicantSsnCardId) as any || formParams;
+        }
+        if (applicantId !== undefined) {
+            formParams = formParams.append('ApplicantId', <any>applicantId) as any || formParams;
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.put<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/applicant/ssn`,
+            convertFormParamsToString ? formParams.toString() : formParams,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param createSsnReviewCommand 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiApplicantSsnReviewPost(createSsnReviewCommand?: CreateSsnReviewCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
+    public apiApplicantSsnReviewPost(createSsnReviewCommand?: CreateSsnReviewCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
+    public apiApplicantSsnReviewPost(createSsnReviewCommand?: CreateSsnReviewCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
+    public apiApplicantSsnReviewPost(createSsnReviewCommand?: CreateSsnReviewCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/applicant/ssn/review`,
+            createSsnReviewCommand,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

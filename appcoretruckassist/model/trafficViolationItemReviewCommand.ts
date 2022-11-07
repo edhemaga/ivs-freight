@@ -20,6 +20,6 @@ export interface TrafficViolationItemReviewCommand {
     descriptionMessage?: string | null;
     isPrimary?: boolean;
     commonMessage?: string | null;
-    trafficViolationId?: number;
+    itemId?: number;
 }
 

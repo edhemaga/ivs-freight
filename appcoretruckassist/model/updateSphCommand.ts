@@ -11,10 +11,10 @@
  */
 
 
-export interface CreateSevenDaysHosReviewCommand { 
-    isReleaseDateValid?: boolean;
-    isLocationValid?: boolean;
-    releaseDateLocationMessage?: string | null;
+export interface UpdateSphCommand { 
+    authorize?: boolean | null;
+    hasReadAndUnderstood?: boolean | null;
+    signature?: string | null;
     applicantId?: number;
 }
 

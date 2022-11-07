@@ -11,10 +11,10 @@
  */
 
 
-export interface CreateSevenDaysHosReviewCommand { 
-    isReleaseDateValid?: boolean;
-    isLocationValid?: boolean;
-    releaseDateLocationMessage?: string | null;
-    applicantId?: number;
+export interface MedicalCertificateReviewResponse { 
+    id?: number;
+    isFileValid?: boolean;
+    fileMessage?: string | null;
+    medicalCertificateId?: number;
 }
 
