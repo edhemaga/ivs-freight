@@ -20,6 +20,8 @@ export interface EducationReviewResponse {
     isFromValid?: boolean;
     isToValid?: boolean;
     datesMessage?: string | null;
+    isUnableToPreformJobDescriptionValid?: boolean | null;
+    unableToPreformJobDescriptionMessage?: string | null;
     educationId?: number;
 }
 

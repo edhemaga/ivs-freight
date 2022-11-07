@@ -20,8 +20,9 @@ export interface CreateEducationReviewCommand {
     isFromValid?: boolean;
     isToValid?: boolean;
     datesMessage?: string | null;
+    isUnableToPreformJobDescriptionValid?: boolean | null;
+    unableToPreformJobDescriptionMessage?: string | null;
     emergencyContactReviews?: Array<EmergencyContactReviewCommand> | null;
-    educationId?: number;
     applicantId?: number;
 }
 

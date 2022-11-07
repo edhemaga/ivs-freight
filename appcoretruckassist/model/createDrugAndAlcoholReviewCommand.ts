@@ -22,8 +22,8 @@ export interface CreateDrugAndAlcoholReviewCommand {
     isSapPhoneValid?: boolean;
     sapPhoneMessage?: string | null;
     isSapAddressValid?: boolean;
+    isSapAddressUnitValid?: boolean;
     sapAddressMessage?: string | null;
-    drugAndAlcoholId?: number;
     applicantId?: number;
 }
 

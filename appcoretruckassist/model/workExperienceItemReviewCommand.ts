@@ -12,7 +12,7 @@
 
 
 export interface WorkExperienceItemReviewCommand { 
-    workExperienceItemId?: number;
+    itemId?: number;
     isEmployerValid?: boolean;
     employerMessage?: string | null;
     isJobDescriptionValid?: boolean;
@@ -26,8 +26,6 @@ export interface WorkExperienceItemReviewCommand {
     isAddressValid?: boolean;
     isAddressUnitValid?: boolean;
     addressMessage?: string | null;
-    isReasonForLeavingValid?: boolean;
-    reasonForLeavingMessage?: string | null;
     isAccountForPeriodBetweenValid?: boolean;
     accountForPeriodBetweenMessage?: string | null;
     isPrimary?: boolean;

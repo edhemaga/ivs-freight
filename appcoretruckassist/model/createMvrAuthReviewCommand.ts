@@ -9,12 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileReviewCommand } from './fileReviewCommand';
 
 
-export interface CreateSevenDaysHosReviewCommand { 
-    isReleaseDateValid?: boolean;
-    isLocationValid?: boolean;
-    releaseDateLocationMessage?: string | null;
+export interface CreateMvrAuthReviewCommand { 
+    filesReview?: Array<FileReviewCommand> | null;
     applicantId?: number;
 }
 

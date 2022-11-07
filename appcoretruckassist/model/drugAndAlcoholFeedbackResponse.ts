@@ -22,7 +22,7 @@ export interface DrugAndAlcoholFeedbackResponse {
     sapName?: string | null;
     sapPhone?: string | null;
     sapAddress?: AddressEntity;
-    certifyInfomation?: boolean | null;
+    certifyInformation?: boolean | null;
     reviewed?: boolean | null;
     approved?: boolean | null;
     drugAndAlcoholReview?: DrugAndAlcoholReviewResponse;
