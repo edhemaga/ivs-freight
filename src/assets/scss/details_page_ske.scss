@@ -417,6 +417,12 @@ p {
   padding: 0 10px;
   margin-bottom: 16px;
   padding-bottom: 16px;
+
+  &.disabled {
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 }
 // Progress bar details
 .card-details-progress-container {

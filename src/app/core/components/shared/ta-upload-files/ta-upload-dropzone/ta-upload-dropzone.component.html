@@ -3,9 +3,13 @@
   <label for="pdf" class="ta-upload-dropzone-label">
     <svg-icon
       class="ta-upload-dropzone-area"
+      [class.expand]="dropZoneConfig.globalDropZone"
       [src]="dropZoneConfig.dropZoneSvg"
     ></svg-icon>
-    <div class="ta-upload-dropzone-text">
+    <div
+      class="ta-upload-dropzone-text"
+      [class.expand]="dropZoneConfig.globalDropZone"
+    >
       <!-- Files -->
       <span
         *ngIf="dropZoneConfig.dropZoneType === 'files'"
