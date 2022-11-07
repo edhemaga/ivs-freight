@@ -17,75 +17,6 @@ table {
       padding: 2px;
       transition: margin-bottom 0.25s;
 
-      // Hover
-      &:hover {
-        .columns-container {
-          background: #f7f7f7 !important;
-
-          .table-text,
-          .table-name-link,
-          .color-name,
-          .table-progress-text {
-            color: #3c3c3c !important;
-          }
-
-          .table-state {
-            background: #ffffff !important;
-          }
-
-          .table-checkbox-label {
-            background-color: #aaaaaa !important;
-          }
-
-          .contact-container {
-            .contact-count {
-              background: #ffffff !important;
-            }
-
-            .contact-avatar {
-              background-image: url("../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-hover-row.svg");
-            }
-          }
-
-          .raiting-container {
-            .raiting-counter-container {
-              &:hover {
-                .raiting-counter {
-                  color: #6c6c6c !important;
-                }
-              }
-              .raiting-counter {
-                background: #ffffff !important;
-              }
-            }
-
-            .like-icon {
-              background-image: url("../../../../../../assets/svg/truckassist-table/like-row-hover.svg") !important;
-
-              &:hover {
-                background-image: url("../../../../../../assets/svg/truckassist-table/like-icon-hover.svg") !important;
-              }
-            }
-
-            .dislike-icon {
-              background-image: url("../../../../../../assets/svg/truckassist-table/dislike-row-hover.svg") !important;
-
-              &:hover {
-                background-image: url("../../../../../../assets/svg/truckassist-table/dislike-icon-hover.svg") !important;
-              }
-            }
-          }
-
-          .pickup-delivery-location-container {
-            .date-time-container {
-              .time {
-                visibility: visible !important;
-              }
-            }
-          }
-        }
-      }
-
       // Columns
       .columns-container {
         width: 100%;
@@ -510,11 +441,8 @@ table {
 
               .avatar-owner {
                 user-select: none;
-                display: flex;
                 width: 10px;
                 height: 10px;
-                margin-left: -6px;
-                margin-top: 12px;
               }
             }
 
@@ -2442,6 +2370,78 @@ table {
       }
     }
 
+    // Regular Row
+    .regular-row{
+      // Hover
+      &:hover {
+        .columns-container {
+          background: #f7f7f7 !important;
+
+          .table-text,
+          .table-name-link,
+          .color-name,
+          .table-progress-text {
+            color: #3c3c3c !important;
+          }
+
+          .table-state {
+            background: #ffffff !important;
+          }
+
+          .table-checkbox-label {
+            background-color: #aaaaaa !important;
+          }
+
+          .contact-container {
+            .contact-count {
+              background: #ffffff !important;
+            }
+
+            .contact-avatar {
+              background-image: url("../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-hover-row.svg");
+            }
+          }
+
+          .raiting-container {
+            .raiting-counter-container {
+              &:hover {
+                .raiting-counter {
+                  color: #6c6c6c !important;
+                }
+              }
+              .raiting-counter {
+                background: #ffffff !important;
+              }
+            }
+
+            .like-icon {
+              background-image: url("../../../../../../assets/svg/truckassist-table/like-row-hover.svg") !important;
+
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/like-icon-hover.svg") !important;
+              }
+            }
+
+            .dislike-icon {
+              background-image: url("../../../../../../assets/svg/truckassist-table/dislike-row-hover.svg") !important;
+
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/dislike-icon-hover.svg") !important;
+              }
+            }
+          }
+
+          .pickup-delivery-location-container {
+            .date-time-container {
+              .time {
+                visibility: visible !important;
+              }
+            }
+          }
+        }
+      }
+    }
+
     // Selected Row
     .selected-row {
       .columns-container {
@@ -2957,5 +2957,15 @@ table {
 
   &:hover {
     background-image: url("../../../../../../assets/svg/truckassist-table/dropdown/dropdown-select-hover.svg") !important;
+  }
+}
+
+.avatar-is-owner{
+  position: relative;
+
+  .avatar-owner{
+    position: absolute;
+    right: -3px;
+    bottom: -3px;
   }
 }
