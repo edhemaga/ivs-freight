@@ -38,22 +38,15 @@ export class FormService implements OnDestroy {
     // // If it is different, we emit a value to the Subject (if one was provided)
     // // If it is the same, we emit a value to the Subject (if one was provided), or
     // // we mark the form as pristine again.
-    form.valueChanges
-      .pipe(
-        distinctUntilChanged((prev, curr) => {
-          return Object.keys(diff(prev.value, curr.value)).length !== 0;
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => {
-        let current_value = form.value;
-
-        if (Object.keys(diff(this.originalValue, current_value)).length !== 0) {
-          this.formValueChange$.next(true);
-        } else {
-          this.formValueChange$.next(false);
-        }
-      });
+    form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      let current_value = form.value;
+      console.log('different: ', diff(this.originalValue, current_value));
+      if (Object.keys(diff(this.originalValue, current_value)).length !== 0) {
+        this.formValueChange$.next(true);
+      } else {
+        this.formValueChange$.next(false);
+      }
+    });
   }
 
   public resetForm(form: FormGroup): void {
