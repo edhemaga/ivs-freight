@@ -230,7 +230,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       result: this.selectedTestResult ? this.selectedTestResult.id : null,
       note: note,
     };
-
+    console.log('update test: ', newData);
     this.testService
       .updateTest(newData)
       .pipe(takeUntil(this.destroy$))
@@ -258,7 +258,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       result: this.selectedTestResult ? this.selectedTestResult.id : null,
       note: note,
     };
-
+    console.log('add test: ', newData);
     this.testService
       .addTest(newData)
       .pipe(takeUntil(this.destroy$))
@@ -283,12 +283,14 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
         next: (res: TestResponse) => {
           this.drugForm.patchValue({
             testType: res.testType.name,
-            testReasonId: res.testReason.name ? res.testReason.name : null,
+            testReasonId: res.testReason ? res.testReason.name : null,
+            result: res.result ? res.result.name : null,
             testingDate: convertDateFromBackend(res.testingDate),
             note: res.note,
           });
           this.selectedTestType = res.testType;
           this.selectedReasonType = res.testReason;
+          this.selectedTestResult = res.result;
 
           if (this.selectedTestType.name.toLowerCase() === 'drug') {
             this.reasons = this.drugReasons;
