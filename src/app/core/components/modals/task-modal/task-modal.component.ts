@@ -116,7 +116,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.taskForm.invalid) {
+        if (this.taskForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.taskForm);
           return;
         }

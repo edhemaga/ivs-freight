@@ -137,7 +137,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.profileUserForm.invalid) {
+    if (this.profileUserForm.invalid || !this.isFormDirty) {
       this.inputService.markInvalid(this.profileUserForm);
       return;
     }

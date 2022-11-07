@@ -221,7 +221,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       } else {
         // Save & Update
         if (data.action === 'save') {
-          if (this.trailerForm.invalid) {
+          if (this.trailerForm.invalid || !this.isFormDirty) {
             this.inputService.markInvalid(this.trailerForm);
             return;
           }

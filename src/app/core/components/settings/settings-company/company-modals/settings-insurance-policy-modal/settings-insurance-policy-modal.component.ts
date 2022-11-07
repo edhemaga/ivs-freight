@@ -171,7 +171,7 @@ export class SettingsInsurancePolicyModalComponent
       }
       case 'save': {
         // If Form not valid
-        if (this.insurancePolicyForm.invalid) {
+        if (this.insurancePolicyForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.insurancePolicyForm);
           return;
         }

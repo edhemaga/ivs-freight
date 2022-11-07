@@ -121,7 +121,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       note: [null],
     });
 
-    this.formService.checkFormChange(this.contactForm);
+    this.formService.checkFormChange(this.contactForm, 250);
     this.formService.formValueChange$
       .pipe(takeUntil(this.destroy$))
       .subscribe((isFormChange: boolean) => {
@@ -213,7 +213,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.contactForm.invalid) {
+        if (this.contactForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.contactForm);
           return;
         }

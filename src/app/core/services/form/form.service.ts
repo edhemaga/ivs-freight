@@ -28,10 +28,12 @@ export class FormService implements OnDestroy {
     form.statusChanges
       .pipe(
         debounceTime(debounceTimeProp),
+        first(),
         distinctUntilChanged(),
         takeUntil(this.destroy$)
       )
       .subscribe(() => {
+        console.log('form: ', form);
         if (!form.dirty) {
           this.originalValue = form.value;
 
@@ -43,10 +45,16 @@ export class FormService implements OnDestroy {
     // // If it is the same, we emit a value to the Subject (if one was provided), or
     // // we mark the form as pristine again.
     form.valueChanges
-      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+      .pipe(
+        debounceTime(debounceTimeProp),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
+      )
       .subscribe(() => {
         let current_value = form.value;
         console.log('different: ', diff(this.originalValue, current_value));
+        console.log('init: ', this.originalValue);
+        console.log('current: ', current_value);
         if (Object.keys(diff(this.originalValue, current_value)).length !== 0) {
           this.formValueChange$.next(true);
         } else {

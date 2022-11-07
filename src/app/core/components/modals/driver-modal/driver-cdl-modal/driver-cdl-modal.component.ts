@@ -111,7 +111,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.cdlForm.invalid) {
+        if (this.cdlForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.cdlForm);
           return;
         }

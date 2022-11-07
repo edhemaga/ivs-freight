@@ -217,7 +217,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.parkingForm.invalid) {
+        if (this.parkingForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.parkingForm);
           return;
         }

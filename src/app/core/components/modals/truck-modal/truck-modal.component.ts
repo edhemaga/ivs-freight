@@ -281,7 +281,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       } else {
         // Save & Update
         if (data.action === 'save') {
-          if (this.truckForm.invalid) {
+          if (this.truckForm.invalid || !this.isFormDirty) {
             this.inputService.markInvalid(this.truckForm);
             return;
           }

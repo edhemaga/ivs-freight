@@ -221,7 +221,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
     // Save And Add New
     else if (data.action === 'save and add new') {
-      if (this.driverForm.invalid) {
+      if (this.driverForm.invalid || !this.isFormDirty) {
         this.inputService.markInvalid(this.driverForm);
         return;
       }
@@ -234,7 +234,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
     // Save or Update and Close
     else if (data.action === 'save') {
-      if (this.driverForm.invalid) {
+      if (this.driverForm.invalid || !this.isFormDirty) {
         this.inputService.markInvalid(this.driverForm);
         return;
       }

@@ -322,7 +322,11 @@
             type="button"
           >
             {{
-              applicantText
+              profileUpdateText
+                ? saveSpinnerVisibility
+                  ? "Saving"
+                  : "Save Changes"
+                : applicantText
                 ? saveSpinnerVisibility
                   ? "Inviting"
                   : "Invite"
