@@ -169,16 +169,16 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     this.createForm();
     this.isCompanyOwned();
 
-    if (this.editData?.id) {
-      this.skipVinDecocerEdit = true;
-      this.editTruckById(this.editData.id);
-    }
-
     if (this.editData?.storageData) {
       this.skipVinDecocerEdit = true;
       this.populateStorageData(this.editData.storageData);
     } else {
       this.getTruckDropdowns();
+    }
+
+    if (this.editData?.id) {
+      this.skipVinDecocerEdit = true;
+      this.editTruckById(this.editData.id);
     }
 
     this.vinDecoder();
@@ -468,7 +468,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
               next: (res: VinDecodeResponse) => {
-                console.log('vin decoder: ', res);
                 this.truckForm.patchValue({
                   model: res?.model ? res.model : null,
                   year: res?.year ? res.year.toString() : null,
@@ -537,6 +536,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           });
           this.rearWheels = this.frontWheels = res.wheelsTypes;
           this.fuelTypes = res.fuelTypes;
+          this.truckForm.get('fhwaExp').patchValue(res.fhwaExp);
         },
         error: () => {
           this.notificationService.error(
@@ -592,7 +592,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             transmissionModel: res.transmissionModel,
             shifter: res.shifter ? res.shifter.name : null,
             axles: res.axles,
-            fhwaExp: res.fhwaExp,
             insurancePolicy: res.insurancePolicy,
             mileage: res.mileage
               ? convertNumberInThousandSep(res.mileage)
@@ -637,6 +636,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             : null;
           this.selectedFuelType = res.fuelType;
           this.truckStatus = res.status !== 1;
+
+          setTimeout(() => {
+            this.truckForm.get('fhwaExp').patchValue(res.fhwaExp);
+          }, 150);
 
           this.modalService.changeModalStatus({
             name: 'deactivate',

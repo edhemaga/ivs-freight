@@ -82,6 +82,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   private createForm() {
     const cdlCountryTypeValidation =
       this.selectedCountryType === 'US' ? cdlUSValidation : cdlCANADAValidation;
+
     this.cdlForm = this.formBuilder.group({
       cdlNumber: [null, [Validators.required, ...cdlCountryTypeValidation]],
       issueDate: [null, Validators.required],
@@ -89,7 +90,9 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       classType: [null, Validators.required],
       stateId: [null, Validators.required],
       restrictions: [null],
+      restrictionsHelper: [null],
       endorsements: [null],
+      endorsementsHelper: [null],
       note: [null],
       files: [null],
     });
@@ -131,6 +134,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectDropdown(event: any, action: string) {
+    console.log('desio se event: ', event, action);
     switch (action) {
       case 'class': {
         this.selectedClassType = event;
@@ -142,10 +146,29 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       }
       case 'restrictions': {
         this.selectedRestrictions = event;
+        if (this.selectedRestrictions) {
+          this.cdlForm
+            .get('restrictionsHelper')
+            .patchValue(
+              this.selectedRestrictions.length
+                ? JSON.stringify(this.selectedRestrictions)
+                : null
+            );
+        }
+
         break;
       }
       case 'endorsments': {
         this.selectedEndorsments = event;
+        if (this.selectedEndorsments) {
+          this.cdlForm
+            .get('endorsementsHelper')
+            .patchValue(
+              this.selectedEndorsments.length
+                ? JSON.stringify(this.selectedEndorsments)
+                : null
+            );
+        }
         break;
       }
       default: {
@@ -214,11 +237,13 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       stateId: res.state.stateName,
       restrictions: null,
       endorsements: null,
+
       note: res.note,
       file: res.files ? res.files : null,
     });
 
     this.documents = res.files ? (res.files as any) : [];
+
     this.selectedEndorsments = res.cdlEndorsements.map((item) => {
       return {
         ...item,
@@ -226,12 +251,24 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       };
     });
 
+    if (this.selectedEndorsments.length) {
+      this.cdlForm
+        .get('endorsementsHelper')
+        .patchValue(JSON.stringify(this.selectedEndorsments));
+    }
+
     this.selectedRestrictions = res.cdlRestrictions.map((item) => {
       return {
         ...item,
         name: item.code.concat(' ', '-').concat(' ', item.description),
       };
     });
+
+    if (this.selectedRestrictions.length) {
+      this.cdlForm
+        .get('restrictionsHelper')
+        .patchValue(JSON.stringify(this.selectedRestrictions));
+    }
 
     this.selectedClassType = res.classType;
     this.selectedStateType = res.state;
@@ -379,7 +416,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         files: null,
       });
 
-      if(event.deleteId) {
+      if (event.deleteId) {
         this.filesForDelete.push(event.deleteId);
       }
 
