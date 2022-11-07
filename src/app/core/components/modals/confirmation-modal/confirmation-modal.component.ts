@@ -44,9 +44,7 @@ export class ConfirmationModalComponent {
         ...data,
         array: data.array.map((item) => item.id),
       });
-    }
-    // Single Delete
-    else {
+    } else {
       this.confirmationDataSubject.sendConfirmationData(data);
     }
 
