@@ -16,7 +16,6 @@ import {
   einNumberRegex,
   ssnNumberRegex,
   phoneFaxRegex,
-  mileValidation,
   perStopValidation,
   addressValidation,
   addressUnitValidation,

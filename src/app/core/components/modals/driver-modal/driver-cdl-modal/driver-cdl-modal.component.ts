@@ -20,7 +20,6 @@ import {
   cdlCANADAValidation,
   cdlUSValidation,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
-import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 
 @Component({
   selector: 'app-driver-cdl-modal',
@@ -63,8 +62,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService,
-    private DetailsDataService: DetailsDataService
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -77,7 +75,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     }
 
     if (this.editData.type === 'renew-licence') {
-      this.populateCdlForm(this.editData.renewData);
+      this.populateCdlFormOnRenew(this.editData.renewData);
     }
   }
 
@@ -114,7 +112,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.cdlForm);
           return;
         }
-        this.DetailsDataService.setCdlNum(this.cdlForm.get('cdlNumber')?.value);
+
         if (this.editData.type === 'edit-licence') {
           if (this.isFormDirty) {
             this.updateCdl();
@@ -207,11 +205,11 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public populateCdlForm(res: any) {
+  public populateCdlFormOnRenew(res: any) {
     this.cdlForm.patchValue({
       cdlNumber: res.cdlNumber,
-      issueDate: convertDateFromBackend(res.issueDate),
-      expDate: convertDateFromBackend(res.expDate),
+      issueDate: null,
+      expDate: null,
       classType: res.classType.name,
       stateId: res.state.stateName,
       restrictions: null,
@@ -322,7 +320,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   public addCdl() {
     const { issueDate, expDate, note } = this.cdlForm.value;
 
-    const newData: /* CreateCdlCommand */ any = {
+    const newData: any = {
       driverId: this.editData.id,
       ...this.cdlForm.value,
       issueDate: convertDateToBackend(issueDate),
