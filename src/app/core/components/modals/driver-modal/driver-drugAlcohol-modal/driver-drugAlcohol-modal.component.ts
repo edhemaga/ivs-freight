@@ -220,10 +220,12 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
   public onFilesEvent(event: any) {
     this.documents = event.files;
-    this.drugForm.get('files').patchValue(this.documents);
+    this.drugForm.get('files').patchValue(JSON.stringify(event.files));
     if (event.action == 'delete') {
       this.drugForm.get('files').patchValue(null);
-      this.filesForDelete.push(event.deleteId);
+      if(event.deleteId) {
+        this.filesForDelete.push(event.deleteId);
+      }
 
       this.fileModified = true;
     }
