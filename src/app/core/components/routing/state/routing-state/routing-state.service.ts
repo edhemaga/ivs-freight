@@ -231,6 +231,11 @@ export class RoutingStateService implements OnDestroy {
         //   })
         // );
 
+        this.sendUpdatedData({
+          type: 'delete-route',
+          id: routeId
+        });
+
         console.log('deleteRouteById', routeId);
       })
     );

@@ -547,6 +547,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
           this.addRoute(res.mapId, res.data);
         } else if ( res.type == 'edit-route' ) {
           this.getRouteList(this.tableData[this.selectedMapIndex].id, 1, 8);
+        } else if ( res.type == 'delete-route' ) {
+          console.log('delete-route');
+          this.getRouteList(this.tableData[this.selectedMapIndex].id, 1, 8);
         }
       });
   }
@@ -1260,15 +1263,29 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         type: 'delete-item',
       };
 
-      this.modalService.openModal(
-        ConfirmationModalComponent,
-        { size: 'small' },
-        {
-          ...routeObj,
-          template: 'route',
-          type: 'delete',
-        }
-      );
+      //this.routingService.deleteRouteById(this.dropDownActive); // ne radi
+      this.routingService
+        .deleteRouteById(this.dropDownActive)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            console.log('deleteRouteById success');
+          },
+          error: () => {
+            console.log('deleteRouteById error');
+          },
+        });
+      console.log('delete route', this.dropDownActive);
+
+      // this.modalService.openModal(
+      //   ConfirmationModalComponent,
+      //   { size: 'small' },
+      //   {
+      //     ...routeObj,
+      //     template: 'route',
+      //     type: 'delete',
+      //   }
+      // );
     } else if (action.name === 'open-settings') {
       let route = this.getRouteById(this.dropDownActive);
       this.mapToolbar.editRoute(route);
