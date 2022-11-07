@@ -554,7 +554,18 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
           switch (res.type) {
             case 'delete': {
               if (res.template === 'route') {
-                this.deleteRoute(res.id);
+                //this.deleteRoute(res.id);
+                this.routingService
+                  .deleteRouteById(res.id)
+                  .pipe(takeUntil(this.destroy$))
+                  .subscribe({
+                    next: () => {
+                      console.log('deleteRouteById success');
+                    },
+                    error: () => {
+                      console.log('deleteRouteById error');
+                    },
+                  });
               }
               break;
             }
@@ -1310,29 +1321,19 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       };
 
       //this.routingService.deleteRouteById(this.dropDownActive); // ne radi
-      this.routingService
-        .deleteRouteById(currentId)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: () => {
-            console.log('deleteRouteById success');
-          },
-          error: () => {
-            console.log('deleteRouteById error');
-          },
-        });
+      
       console.log('delete route', currentId);
 
-      // this.modalService.openModal(
-      //   ConfirmationModalComponent,
-      //   { size: 'small' },
-      //   {
-      //     ...routeObj,
-      //     template: 'route',
-      //     type: 'delete',
-      //   }
-      // );
-    } else if (action.name === 'open-settings') {
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          ...routeObj,
+          template: 'route',
+          type: 'delete',
+        }
+      );
+    } else if (actionName === 'open-settings') {
       let route = this.getRouteById(currentId);
       this.mapToolbar.editRoute(route);
     }
