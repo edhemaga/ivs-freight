@@ -61,12 +61,19 @@ app-truck-details {
     align-items: center;
     flex-direction: column;
     width: 100%;
+    margin-bottom: 13px;
+
+    &.disabled {
+      margin-bottom: 3px;
+    }
+
     .icon-counter-wrapper {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-top: 3px;
     }
+
     .counter-text-wrapper {
       display: flex;
       align-items: center;
@@ -82,6 +89,18 @@ app-truck-details {
         &::selection {
           color: #6c6c6c;
           background: rgb(108, 108, 108, 0.2);
+        }
+      }
+
+      &.disabled {
+        .details-document-name {
+          color: #b7b7b7;
+        }
+
+        .ta-counter {
+          .ta-counter-number {
+            color: #b7b7b7;
+          }
         }
       }
     }

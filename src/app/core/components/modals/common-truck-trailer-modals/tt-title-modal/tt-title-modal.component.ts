@@ -4,10 +4,8 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import {
-  CreateTitleCommand,
   TitleModalResponse,
   TitleResponse,
-  UpdateTitleCommand,
 } from 'appcoretruckassist';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -17,6 +15,8 @@ import {
   convertDateToBackend,
   convertDateFromBackend,
 } from '../../../../utils/methods.calculations';
+import { CreateTitleCommand } from 'appcoretruckassist/model/createTitleCommand';
+import { UpdateTitleCommand } from 'appcoretruckassist/model/updateTitleCommand';
 
 @Component({
   selector: 'app-tt-title-modal',
@@ -122,8 +122,8 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
       issueDate: convertDateToBackend(issueDate),
       purchaseDate: convertDateToBackend(purchaseDate),
       stateId: this.selectedStateType ? this.selectedStateType.id : null,
-      trailerId: this.editData.modal === 'trailer' ? this.editData.id : null,
-      truckId: this.editData.modal === 'truck' ? this.editData.id : null,
+      trailerId: this.editData.modal === 'trailer' ? this.editData.id : undefined,
+      truckId: this.editData.modal === 'truck' ? this.editData.id : undefined,
     };
 
     this.commonTruckTrailerService

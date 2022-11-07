@@ -13,7 +13,7 @@
             let i = index;
             trackBy: identity
           "
-          [cardDocumentCounter]="1"
+          [cardDocumentCounter]="reg?.files?.length ? reg?.files?.length : 0"
           (resizePage)="toggleResizePage(i, 'registration')"
           [cardNameCommon]="reg.licensePlate"
           [hasCopyIcon]="false"
@@ -33,7 +33,9 @@
               <div class="card-row-endor">
                 <div class="card-item">
                   <div class="card-item-name">State</div>
-                  <div class="card-item-value">{{reg.state.stateShortName}}</div>
+                  <div class="card-item-value">
+                    {{ reg.state.stateShortName }}
+                  </div>
                 </div>
                 <div class="card-item">
                   <div class="card-item-name">Issued</div>
@@ -61,6 +63,41 @@
                 toggler[i + 'registration'] ? 'true' : 'false'
               "
             >
+              <div class="divider"></div>
+              <div
+                class="details-document-container"
+                [class.disabled]="!reg?.files?.length"
+              >
+                <div class="icon-counter-wrapper">
+                  <div
+                    class="counter-text-wrapper"
+                    [class.disabled]="!reg?.files?.length"
+                  >
+                    <app-ta-counter
+                      [countBackgroud]="'#F3F3F3'"
+                      [countHeight]="'24px'"
+                      [countWidth]="'24px'"
+                      [count]="reg?.files?.length ? reg.files.length : 0"
+                    >
+                    </app-ta-counter>
+                    <p class="details-document-name">Document</p>
+                  </div>
+                  <svg-icon
+                    *ngIf="reg?.files?.length"
+                    (click)="onFileAction('download')"
+                    src="assets/svg/common/ic_download.svg"
+                  >
+                  </svg-icon>
+                </div>
+              </div>
+              <div class="card-pdf" [class.disabled]="!reg?.files?.length">
+                <app-ta-upload-files
+                  [files]="reg.files ? reg.files : []"
+                  [customClassName]="'driver-details-pdf'"
+                  [hasCarouselBottomTabs]="true"
+                  [type]="'details'"
+                ></app-ta-upload-files>
+              </div>
               <div class="divider"></div>
               <div class="note-wrapper">
                 <app-ta-input-note
@@ -166,7 +203,9 @@
               <div class="card-row-endor">
                 <div class="card-item">
                   <div class="card-item-name">State</div>
-                  <div class="card-item-value">{{title?.state?.stateShortName}}</div>
+                  <div class="card-item-value">
+                    {{ title?.state?.stateShortName }}
+                  </div>
                 </div>
                 <div class="card-item">
                   <div class="card-item-name">Issued</div>
@@ -181,8 +220,8 @@
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                  [expireDate]="title.issueDate | formatDateP"
-                  [startDate]="title.purchaseDate | formatDateP"
+                    [expireDate]="title.issueDate | formatDateP"
+                    [startDate]="title.purchaseDate | formatDateP"
                     [expiresSettings]="'details'"
                   >
                   </app-truckassist-progress-expiration>
@@ -214,7 +253,7 @@
       <div class="card-width" *ngSwitchCase="'lease-purchase'">
         <app-ta-re-card
           [hasSvg]="'assets/svg/common/green_arrow_down.svg'"
-          (resizePage)="toggleResizePage(5+'lease')"
+          (resizePage)="toggleResizePage(5 + 'lease')"
           [cardNameCommon]="'KSKA FREIGHT, INC'"
           [isCardOpen]="true"
           [expDateClose]="'04/04/27' | formatDateP"
@@ -278,7 +317,7 @@
             <!----------Progress Card---------->
             <div
               class="details-progress-container purchase-progress"
-              [ngClass]="{ 'no-toggler': !toggler[5+'lease'] }"
+              [ngClass]="{ 'no-toggler': !toggler[5 + 'lease'] }"
             >
               <app-ta-currency-progress-bar
                 [template]="'payments'"
@@ -290,7 +329,7 @@
             </div>
 
             <!----------Amortization table Card---------->
-            <div [@showHideCardBody]="toggler[5+'lease'] ? 'true' : 'false'">
+            <div [@showHideCardBody]="toggler[5 + 'lease'] ? 'true' : 'false'">
               <div class="details-document-container amortization-details">
                 <div class="divider"></div>
                 <div class="icon-counter-wrapper">
