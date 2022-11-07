@@ -18,7 +18,7 @@
       align-items: center;
       transform: rotate(0deg);
       fill: #919191;
-      transition: transform 0.2s ease;
+      transition: transform 0.15s ease;
       path{
         fill: #919191;
       }
@@ -127,7 +127,7 @@
         display: flex;
         align-items: center;
         transform: rotate(0deg);
-        transition: all 0.3s ease-in;
+        transition: all 0.15s ease-in;
         svg {
 
           rect{
@@ -218,12 +218,20 @@
       background-color: #1D1D1D;
 
       &.disabledAction{
-        background-color: transparent;
+
+        &.disabledActionMain{
+          background-color: transparent;
+        }
+
+        &.subTypeHolder{
+          cursor: pointer !important;
+          //background-color: #1D1D1D;
+        }
+        
       }
 
-      &.subTypeHolder{
-        cursor: pointer !important;
-        
+      .hoveredSubtype{
+        background-color: #AAAAAA10 !important;
       }
 
       .actionTitle{
@@ -315,13 +323,13 @@
   .openedSubtype{
     background-color: #AAAAAA10;
     border-radius: 2px;
-    transition: all 0.3s ease-in;
+    transition: all 0.15s ease-in;
     .action-select-holder{
       height: 26px;
 
       .actionTitle{
         font-weight: 700;
-        transition: all 0.3s ease-in;
+        transition: all 0.15s ease-in;
       }
   
       .actionIcon{
@@ -355,7 +363,7 @@
 
   .hoveredSubtype{
     background-color: transparent !important;
-    transition: all 0.2s ease-in;
+    transition: all 0.15s ease-in;
   }
 
   .border-holder{
@@ -397,6 +405,7 @@
 
       .subtypeTitle{ 
         color: #6C6C6C !important;
+        cursor: auto !important;
       }
 
       .actionIcon{
@@ -408,6 +417,7 @@
           }
         }
       }
+      cursor: auto !important;
     }
 
     .redIcon{

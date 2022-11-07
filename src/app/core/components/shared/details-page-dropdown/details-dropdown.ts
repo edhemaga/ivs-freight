@@ -40,8 +40,8 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
           opacity: 0,
         })
       ),
-      transition('false <=> true', [animate('.3s ease-in')]),
-      transition('true <=> false', [animate('.3s ease-in')]), 
+      transition('false <=> true', [animate('.15s ease-in')]),
+      transition('true <=> false', [animate('.15s ease-in')]), 
     ])
   ]
 })
@@ -142,6 +142,12 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
       this.options[indx]['openSubtype'] = true;
     }
     
+  }
+
+  dropdownClosed(){
+    this.options.map((item) => {
+      item['openSubtype'] = false;
+    });
   }
 
 }
