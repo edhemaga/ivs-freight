@@ -3,6 +3,11 @@
   cdk-virtual-scroll-viewport{
     width: 100%;
     overflow: hidden !important;
+    top: -3px;
+
+    .cdk-virtual-scroll-content-wrapper{
+      padding-top: 3px;
+    }
   }
   
   // DESCRIPTION

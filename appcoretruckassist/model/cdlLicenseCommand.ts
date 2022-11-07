@@ -18,7 +18,7 @@ export interface CdlLicenseCommand {
     licenseNumber?: string | null;
     country?: CountryType;
     stateId?: number;
-    _class?: ClassType;
+    classType?: ClassType;
     expDate?: string;
     restrictions?: Array<number> | null;
     endorsements?: Array<number> | null;

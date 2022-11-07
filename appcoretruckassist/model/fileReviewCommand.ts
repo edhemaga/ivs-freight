@@ -11,10 +11,9 @@
  */
 
 
-export interface CreateSevenDaysHosReviewCommand { 
-    isReleaseDateValid?: boolean;
-    isLocationValid?: boolean;
-    releaseDateLocationMessage?: string | null;
-    applicantId?: number;
+export interface FileReviewCommand { 
+    storageId?: number;
+    isValid?: boolean;
+    message?: string | null;
 }
 

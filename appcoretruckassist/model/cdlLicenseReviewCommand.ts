@@ -12,19 +12,12 @@
 
 
 export interface CdlLicenseReviewCommand { 
-    isLicenseNumberValid?: boolean;
-    isCountryValid?: boolean;
-    licenseCountryMessage?: string | null;
-    isStateValid?: boolean;
-    isClassValid?: boolean;
+    isLicenseValid?: boolean;
+    licenseMessage?: string | null;
     isExpDateValid?: boolean;
-    stateClassExpDateMessage?: string | null;
-    isEndorsmentsValid?: boolean;
-    endorsmentsMessage?: string | null;
-    isRestrictionsValid?: boolean;
-    restrictionsMessage?: string | null;
+    expDateMessage?: string | null;
     isPrimary?: boolean;
     commonMessage?: string | null;
-    licenceId?: number;
+    itemId?: number;
 }
 
