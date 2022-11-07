@@ -189,7 +189,6 @@ model/createContactPhoneCommand.ts
 model/createDisclosureReviewCommand.ts
 model/createDispatchCommand.ts
 model/createDivisionCompanyCommand.ts
-model/createDriverCommand.ts
 model/createDriverRightsReviewCommand.ts
 model/createDrugAndAlcoholCommand.ts
 model/createDrugAndAlcoholReviewCommand.ts
@@ -197,7 +196,6 @@ model/createEducationCommand.ts
 model/createEducationReviewCommand.ts
 model/createEventCommand.ts
 model/createFuelItemCommand.ts
-model/createInspectionCommand.ts
 model/createInsurancePolicyAddonCommand.ts
 model/createInsurancePolicyCommand.ts
 model/createLoadCommand.ts
@@ -205,14 +203,12 @@ model/createLoadTemplateCommand.ts
 model/createMapCommand.ts
 model/createMedicalCertificateReviewCommand.ts
 model/createMvrAuthReviewCommand.ts
-model/createOffDutyLocationCommand.ts
 model/createOwnerCommand.ts
 model/createParkingCommand.ts
 model/createPersonalInfoReviewCommand.ts
 model/createPreviousEmployerAccidentHistoryCommand.ts
 model/createPreviousEmployerDrugAndAlcoholCommand.ts
 model/createRatingCommand.ts
-model/createRegistrationCommand.ts
 model/createRepairCommand.ts
 model/createRepairShopCommand.ts
 model/createResponse.ts
@@ -224,7 +220,6 @@ model/createShipperCommand.ts
 model/createSsnReviewCommand.ts
 model/createTableConfigCommand.ts
 model/createTerminalCommand.ts
-model/createTitleCommand.ts
 model/createTodoCommand.ts
 model/createTrafficViolationCommand.ts
 model/createTrafficViolationReviewCommand.ts
@@ -608,7 +603,6 @@ model/updateDisclosureReleaseCommand.ts
 model/updateDispatchCommand.ts
 model/updateDispatchStatusCommand.ts
 model/updateDivisionCompanyCommand.ts
-model/updateDriverCommand.ts
 model/updateDriverRightsCommand.ts
 model/updateDrugAndAlcoholCommand.ts
 model/updateEducationCommand.ts
@@ -616,14 +610,12 @@ model/updateEmploymentHistoryCommand.ts
 model/updateEventCommand.ts
 model/updateFactoringCompanyCommand.ts
 model/updateHosRulesCommand.ts
-model/updateInspectionCommand.ts
 model/updateInsurancePolicyAddonCommand.ts
 model/updateInsurancePolicyCommand.ts
 model/updateLoadCommand.ts
 model/updateLoadStatusCommand.ts
 model/updateLoadTemplateCommand.ts
 model/updateMapCommand.ts
-model/updateOffDutyLocationCommand.ts
 model/updateOwnerCommand.ts
 model/updateOwnerHistoryCommand.ts
 model/updatePMTrailerDefaultCommand.ts
@@ -635,7 +627,6 @@ model/updatePMTruckUnitListCommand.ts
 model/updateParkingCommand.ts
 model/updatePersonalInfoCommand.ts
 model/updatePspAuthCommand.ts
-model/updateRegistrationCommand.ts
 model/updateRepairCommand.ts
 model/updateRepairShopCommand.ts
 model/updateReviewCommand.ts
@@ -646,7 +637,6 @@ model/updateShipperCommand.ts
 model/updateSphCommand.ts
 model/updateStopCommand.ts
 model/updateTerminalCommand.ts
-model/updateTitleCommand.ts
 model/updateTodoCommand.ts
 model/updateTodoStatusCommand.ts
 model/updateTrafficViolationCommand.ts

@@ -17,12 +17,10 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { CreateRegistrationCommand } from '../model/models';
-import { CreateResponse } from '../model/models';
+import { CreateWithUploadsResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { RegistrationModalResponse } from '../model/models';
 import { RegistrationResponse } from '../model/models';
-import { UpdateRegistrationCommand } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -52,6 +50,19 @@ export class RegistrationService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         if (typeof value === "object" && value instanceof Date === false) {
@@ -307,14 +318,21 @@ export class RegistrationService {
     }
 
     /**
-     * @param createRegistrationCommand 
+     * @param truckId 
+     * @param trailerId 
+     * @param licensePlate 
+     * @param stateId 
+     * @param issueDate 
+     * @param expDate 
+     * @param note 
+     * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRegistrationPost(createRegistrationCommand?: CreateRegistrationCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiRegistrationPost(createRegistrationCommand?: CreateRegistrationCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiRegistrationPost(createRegistrationCommand?: CreateRegistrationCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiRegistrationPost(createRegistrationCommand?: CreateRegistrationCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiRegistrationPost(truckId?: number, trailerId?: number, licensePlate?: string, stateId?: number, issueDate?: string, expDate?: string, note?: string, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiRegistrationPost(truckId?: number, trailerId?: number, licensePlate?: string, stateId?: number, issueDate?: string, expDate?: string, note?: string, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiRegistrationPost(truckId?: number, trailerId?: number, licensePlate?: string, stateId?: number, issueDate?: string, expDate?: string, note?: string, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiRegistrationPost(truckId?: number, trailerId?: number, licensePlate?: string, stateId?: number, issueDate?: string, expDate?: string, note?: string, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -339,16 +357,54 @@ export class RegistrationService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (truckId !== undefined) {
+            formParams = formParams.append('TruckId', <any>truckId) as any || formParams;
+        }
+        if (trailerId !== undefined) {
+            formParams = formParams.append('TrailerId', <any>trailerId) as any || formParams;
+        }
+        if (licensePlate !== undefined) {
+            formParams = formParams.append('LicensePlate', <any>licensePlate) as any || formParams;
+        }
+        if (stateId !== undefined) {
+            formParams = formParams.append('StateId', <any>stateId) as any || formParams;
+        }
+        if (issueDate !== undefined) {
+            formParams = formParams.append('IssueDate', <any>issueDate) as any || formParams;
+        }
+        if (expDate !== undefined) {
+            formParams = formParams.append('ExpDate', <any>expDate) as any || formParams;
+        }
+        if (note !== undefined) {
+            formParams = formParams.append('Note', <any>note) as any || formParams;
+        }
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
         }
 
         let responseType: 'text' | 'json' = 'json';
@@ -356,8 +412,8 @@ export class RegistrationService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/registration`,
-            createRegistrationCommand,
+        return this.httpClient.post<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/registration`,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -369,14 +425,21 @@ export class RegistrationService {
     }
 
     /**
-     * @param updateRegistrationCommand 
+     * @param id 
+     * @param stateId 
+     * @param licensePlate 
+     * @param issueDate 
+     * @param expDate 
+     * @param note 
+     * @param files 
+     * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRegistrationPut(updateRegistrationCommand?: UpdateRegistrationCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
-    public apiRegistrationPut(updateRegistrationCommand?: UpdateRegistrationCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
-    public apiRegistrationPut(updateRegistrationCommand?: UpdateRegistrationCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
-    public apiRegistrationPut(updateRegistrationCommand?: UpdateRegistrationCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiRegistrationPut(id?: number, stateId?: number, licensePlate?: string, issueDate?: string, expDate?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiRegistrationPut(id?: number, stateId?: number, licensePlate?: string, issueDate?: string, expDate?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiRegistrationPut(id?: number, stateId?: number, licensePlate?: string, issueDate?: string, expDate?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiRegistrationPut(id?: number, stateId?: number, licensePlate?: string, issueDate?: string, expDate?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -401,16 +464,60 @@ export class RegistrationService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            formParams = formParams.append('Id', <any>id) as any || formParams;
+        }
+        if (stateId !== undefined) {
+            formParams = formParams.append('StateId', <any>stateId) as any || formParams;
+        }
+        if (licensePlate !== undefined) {
+            formParams = formParams.append('LicensePlate', <any>licensePlate) as any || formParams;
+        }
+        if (issueDate !== undefined) {
+            formParams = formParams.append('IssueDate', <any>issueDate) as any || formParams;
+        }
+        if (expDate !== undefined) {
+            formParams = formParams.append('ExpDate', <any>expDate) as any || formParams;
+        }
+        if (note !== undefined) {
+            formParams = formParams.append('Note', <any>note) as any || formParams;
+        }
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (filesForDeleteIds) {
+            if (useForm) {
+                filesForDeleteIds.forEach((element) => {
+                    formParams = formParams.append('FilesForDeleteIds', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('FilesForDeleteIds', filesForDeleteIds.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
         }
 
         let responseType: 'text' | 'json' = 'json';
@@ -418,8 +525,8 @@ export class RegistrationService {
             responseType = 'text';
         }
 
-        return this.httpClient.put<object>(`${this.configuration.basePath}/api/registration`,
-            updateRegistrationCommand,
+        return this.httpClient.put<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/registration`,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
