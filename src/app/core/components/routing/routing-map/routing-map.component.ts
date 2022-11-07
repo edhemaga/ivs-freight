@@ -30,6 +30,7 @@ import { ModalService } from './../../shared/ta-modal/modal.service';
 import { distinctUntilChanged, Subject, takeUntil, filter } from 'rxjs';
 import { RoutingStateService } from '../state/routing-state/routing-state.service';
 import { GetMapListResponse, GetRouteListResponse } from 'appcoretruckassist';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 declare var google: any;
 declare const geoXML3: any;
@@ -525,7 +526,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     private ref: ChangeDetectorRef,
     private modalService: ModalService,
     private confirmationService: ConfirmationService,
-    private routingService: RoutingStateService
+    private routingService: RoutingStateService,
+    private DetailsDataService: DetailsDataService
   ) {}
 
   ngOnInit(): void {
@@ -1902,6 +1904,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   toggleDropdown(event, tooltip: any, route: any) {
     event.stopPropagation();
     event.preventDefault();
+  
+    this.DetailsDataService.setNewData(route);
 
     this.dropdownActions.map((action, index) => {
         

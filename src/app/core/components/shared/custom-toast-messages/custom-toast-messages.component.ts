@@ -627,7 +627,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         this.message = noteName;  
       break;
       case 'ROUTE' : 
-        let routeName = this.httpRequest.body.name;
+        let routeName = this.httpRequest.body?.name ? this.httpRequest.body?.name : this.DetailsDataService.mainData.name;
         this.message = routeName;
       break;
       case 'MAP' : 
