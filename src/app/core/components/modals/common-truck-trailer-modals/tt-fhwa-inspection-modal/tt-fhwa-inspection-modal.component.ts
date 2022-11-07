@@ -3,9 +3,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
-import {
-  InspectionResponse
-} from 'appcoretruckassist';
+import { InspectionResponse } from 'appcoretruckassist';
 
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -31,6 +29,8 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
   public fhwaInspectionForm: FormGroup;
 
   public documents: any[] = [];
+  public fileModified: boolean = false;
+  public filesForDelete: any[] = [];
 
   public isFormDirty: boolean;
 
@@ -55,6 +55,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
     this.fhwaInspectionForm = this.formBuilder.group({
       issueDate: [null, Validators.required],
       note: [null],
+      files: [null],
     });
 
     this.formService.checkFormChange(this.fhwaInspectionForm);
@@ -102,6 +103,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
             issueDate: convertDateFromBackend(res.issueDate),
             note: res.note,
           });
+          this.documents = res.files;
         },
         error: () => {},
       });
@@ -109,10 +111,15 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
   private updateInspection() {
     const { issueDate, ...form } = this.fhwaInspectionForm.value;
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
     const newData: UpdateInspectionCommand = {
       ...form,
       issueDate: convertDateToBackend(issueDate),
       id: this.editData.file_id,
+      files: documents ? documents : this.fhwaInspectionForm.value.files,
+      filesForDeleteIds: this.filesForDelete,
     };
 
     this.commonTruckTrailerService
@@ -136,11 +143,16 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
   private addInspection() {
     const { issueDate, ...form } = this.fhwaInspectionForm.value;
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
     const newData: CreateInspectionCommand = {
       ...form,
       issueDate: convertDateToBackend(issueDate),
       truckId: this.editData.modal === 'truck' ? this.editData.id : undefined,
-      trailerId: this.editData.modal === 'trailer' ? this.editData.id : undefined,
+      trailerId:
+        this.editData.modal === 'trailer' ? this.editData.id : undefined,
+      files: documents,
     };
     this.commonTruckTrailerService
       .addInspection(newData, this.editData.tabSelected)
@@ -163,6 +175,17 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
   public onFilesEvent(event: any) {
     this.documents = event.files;
+    this.fhwaInspectionForm
+      .get('files')
+      .patchValue(JSON.stringify(event.files));
+    if (event.action == 'delete') {
+      this.fhwaInspectionForm.get('files').patchValue(null);
+      if (event.deleteId) {
+        this.filesForDelete.push(event.deleteId);
+      }
+
+      this.fileModified = true;
+    }
   }
 
   ngOnDestroy(): void {

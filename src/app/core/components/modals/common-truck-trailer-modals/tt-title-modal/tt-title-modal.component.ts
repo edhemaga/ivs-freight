@@ -31,6 +31,8 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
   public ttTitleForm: FormGroup;
 
   public documents: any[] = [];
+  public fileModified: boolean = false;
+  public filesForDelete: any[] = [];
 
   public stateTypes: any[] = [];
   public selectedStateType: any = null;
@@ -62,6 +64,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
       purchaseDate: [null, Validators.required],
       issueDate: [null, Validators.required],
       note: [null],
+      files: [null]
     });
 
     this.formService.checkFormChange(this.ttTitleForm);
@@ -113,10 +116,24 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
 
   public onFilesEvent(event: any) {
     this.documents = event.files;
+    this.ttTitleForm
+      .get('files')
+      .patchValue(JSON.stringify(event.files));
+    if (event.action == 'delete') {
+      this.ttTitleForm.get('files').patchValue(null);
+      if (event.deleteId) {
+        this.filesForDelete.push(event.deleteId);
+      }
+
+      this.fileModified = true;
+    }
   }
 
   private addTitle() {
     const { issueDate, purchaseDate, ...form } = this.ttTitleForm.value;
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
     const newData: CreateTitleCommand = {
       ...form,
       issueDate: convertDateToBackend(issueDate),
@@ -124,6 +141,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
       stateId: this.selectedStateType ? this.selectedStateType.id : null,
       trailerId: this.editData.modal === 'trailer' ? this.editData.id : undefined,
       truckId: this.editData.modal === 'truck' ? this.editData.id : undefined,
+      files: documents,
     };
 
     this.commonTruckTrailerService
@@ -144,12 +162,17 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
 
   private updateTitle() {
     const { issueDate, purchaseDate, ...form } = this.ttTitleForm.value;
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
     const newData: UpdateTitleCommand = {
       id: this.editData.file_id,
       ...form,
       issueDate: convertDateToBackend(issueDate),
       purchaseDate: convertDateToBackend(purchaseDate),
       stateId: this.selectedStateType ? this.selectedStateType.id : null,
+      files: documents ? documents : this.ttTitleForm.value.files,
+      filesForDeleteIds: this.filesForDelete,
     };
 
     this.commonTruckTrailerService
@@ -186,6 +209,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
             note: res.note,
           });
           this.selectedStateType = res.state;
+          this.documents = res.files;
         },
         error: () => {
           this.notificationService.error("Title can't be load.", 'Error:');

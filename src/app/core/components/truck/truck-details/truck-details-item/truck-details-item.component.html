@@ -127,7 +127,7 @@
             trackBy: identity
           "
           [options]="dataFHWA"
-          [cardDocumentCounter]="1"
+          [cardDocumentCounter]="fhwa?.files?.length ? fhwa.files.length : 0"
           [noteIcons]="
             fhwa.note
               ? 'assets/svg/truckassist-table/note/Note.svg'
@@ -157,6 +157,41 @@
             </div>
             <div [@showHideCardBody]="toggler[i + 'fhwa'] ? 'true' : 'false'">
               <div class="divider"></div>
+              <div
+                class="details-document-container"
+                [class.disabled]="!fhwa?.files?.length"
+              >
+                <div class="icon-counter-wrapper">
+                  <div
+                    class="counter-text-wrapper"
+                    [class.disabled]="!fhwa?.files?.length"
+                  >
+                    <app-ta-counter
+                      [countBackgroud]="'#F3F3F3'"
+                      [countHeight]="'24px'"
+                      [countWidth]="'24px'"
+                      [count]="fhwa?.files?.length ? fhwa.files.length : 0"
+                    >
+                    </app-ta-counter>
+                    <p class="details-document-name">Document</p>
+                  </div>
+                  <svg-icon
+                    *ngIf="fhwa?.files?.length"
+                    (click)="onFileAction('download')"
+                    src="assets/svg/common/ic_download.svg"
+                  >
+                  </svg-icon>
+                </div>
+              </div>
+              <div class="card-pdf" [class.disabled]="!fhwa?.files?.length">
+                <app-ta-upload-files
+                  [files]="fhwa.files ? fhwa.files : []"
+                  [customClassName]="'driver-details-pdf'"
+                  [hasCarouselBottomTabs]="true"
+                  [type]="'details'"
+                ></app-ta-upload-files>
+              </div>
+              <div class="divider"></div>
               <div class="note-wrapper">
                 <app-ta-input-note
                   [formControl]="fhwaNote"
@@ -185,7 +220,7 @@
             let i = index;
             trackBy: identity
           "
-          [cardDocumentCounter]="1"
+          [cardDocumentCounter]="title?.files?.length ? title?.files?.length : 0"
           (resizePage)="toggleResizePage(i, 'titles')"
           [cardNameCommon]="title.number"
           [options]="dataFHWA"
@@ -229,6 +264,41 @@
               </div>
             </div>
             <div [@showHideCardBody]="toggler[i + 'titles'] ? 'true' : 'false'">
+              <div class="divider"></div>
+              <div
+                class="details-document-container"
+                [class.disabled]="!title?.files?.length"
+              >
+                <div class="icon-counter-wrapper">
+                  <div
+                    class="counter-text-wrapper"
+                    [class.disabled]="!title?.files?.length"
+                  >
+                    <app-ta-counter
+                      [countBackgroud]="'#F3F3F3'"
+                      [countHeight]="'24px'"
+                      [countWidth]="'24px'"
+                      [count]="title?.files?.length ? title.files.length : 0"
+                    >
+                    </app-ta-counter>
+                    <p class="details-document-name">Document</p>
+                  </div>
+                  <svg-icon
+                    *ngIf="title?.files?.length"
+                    (click)="onFileAction('download')"
+                    src="assets/svg/common/ic_download.svg"
+                  >
+                  </svg-icon>
+                </div>
+              </div>
+              <div class="card-pdf" [class.disabled]="!title?.files?.length">
+                <app-ta-upload-files
+                  [files]="title.files ? title.files : []"
+                  [customClassName]="'driver-details-pdf'"
+                  [hasCarouselBottomTabs]="true"
+                  [type]="'details'"
+                ></app-ta-upload-files>
+              </div>
               <div class="divider"></div>
               <div class="note-wrapper">
                 <app-ta-input-note
