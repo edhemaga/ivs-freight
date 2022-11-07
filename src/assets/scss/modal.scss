@@ -436,7 +436,6 @@ ngb-modal-window[aria-hidden="true"] {
           &.valid {
             background-color: #3074d3;
             color: #ffffff;
-            // pointer-events: all;
 
             &:hover {
               color: #ffffff;
@@ -447,6 +446,16 @@ ngb-modal-window[aria-hidden="true"] {
 
         .modal-save-btn-add-new {
           min-width: 182px !important;
+
+          &.valid {
+            background-color: #eeeeee;
+            color: #3074d3;
+
+            &:hover {
+              color: #ffffff;
+              background-color: #255bb9;
+            }
+          }
         }
 
         .modal-confirmation-btn {
@@ -883,21 +892,20 @@ body:not(.modal-open) {
   }
 }
 
-
-ngb-modal-window.modal{
+ngb-modal-window.modal {
   overflow: hidden;
 
-  .modal-dialog{
+  .modal-dialog {
     max-width: initial !important;
     margin: 0 !important;
 
-    .modal-container{
+    .modal-container {
       margin: auto;
       margin-top: 5px;
       margin-bottom: 5px;
     }
 
-    .custom-scrollbar-holder{
+    .custom-scrollbar-holder {
       position: fixed;
       top: 0;
       left: 0;
@@ -906,16 +914,10 @@ ngb-modal-window.modal{
 
       transition: all 0.3s;
 
-      .modal-container{
+      .modal-container {
         transition: all 0.3s;
         margin-top: 75px;
       }
-
-      // &:not(.activeToolbar){
-      //   .modal-container{
-      //     margin-top: 75px;
-      //   }
-      // }
     }
   }
 }

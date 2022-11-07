@@ -49,6 +49,7 @@ export interface TruckResponse {
     frontWheels?: EnumValue;
     rearWheels?: EnumValue;
     transmissionModel?: string | null;
+    fuelType?: EnumValue;
     shifter?: EnumValue;
     axles?: number | null;
     insurancePolicy?: string | null;

@@ -36,5 +36,6 @@ export interface GetTruckModalResponse {
     wheelsTypes?: Array<EnumValue> | null;
     brakes?: Array<EnumValue> | null;
     fhwaExp?: number;
+    fuelTypes?: Array<EnumValue> | null;
 }
 

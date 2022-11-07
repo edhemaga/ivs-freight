@@ -23,7 +23,8 @@ export interface UpdateCompanyPayrollCommand {
     team?: PerMileEntity;
     perMileSolo?: number | null;
     perMileTeam?: number | null;
-    perLoad?: number | null;
+    soloPerLoad?: number | null;
+    teamPerLoad?: number | null;
     loadedAndEmptySameRate?: boolean | null;
     defaultSoloDriverCommission?: number | null;
     defaultTeamDriverCommission?: number | null;

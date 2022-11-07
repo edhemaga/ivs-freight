@@ -1208,7 +1208,7 @@
     </div>
   </form>
   <!-------------------------------- Additional Tab Part -------------------------------->
-
+  <!--       height: originTab?.clientHeight + 118 + 'px', -->
   <div
     additional
     [ngClass]="{
@@ -1216,7 +1216,7 @@
       'load-hazardous-container': isHazardousVisible
     }"
     [ngStyle]="{
-      height: originTab?.clientHeight + 118 + 'px',
+      height: additionalPartHeight,
       overflow: 'hidden',
       'owerflow-y': 'scroll'
     }"
