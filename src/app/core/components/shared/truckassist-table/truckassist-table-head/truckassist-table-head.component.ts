@@ -132,7 +132,7 @@ export class TruckassistTableHeadComponent
   }
 
   // Get Active Table Data
-  getActiveTableData(){
+  getActiveTableData() {
     const td = this.tableData.find((t) => t.isActive);
 
     this.tableConfigurationType = td.tableConfiguration;
@@ -203,6 +203,7 @@ export class TruckassistTableHeadComponent
     }
   }
 
+  sortDirection: string = '';
   // Sort
   sortHeaderClick(column: any): void {
     if (
@@ -212,18 +213,16 @@ export class TruckassistTableHeadComponent
       this.viewData.length > 1 &&
       column.sortName
     ) {
-      this.options.config.sortBy = column.field;
-      this.options.config.sortDirection =
-        rotate[this.options.config.sortDirection];
+      this.sortDirection = rotate[this.sortDirection];
 
       this.columns
         .filter((a) => a.sortDirection && a.field !== column.field)
         .forEach((c) => {
           c.sortDirection = '';
-          this.options.config.sortDirection = 'desc';
+          this.sortDirection = 'desc';
         });
 
-      column.sortDirection = this.options.config.sortDirection;
+      column.sortDirection = this.sortDirection;
 
       this.setVisibleColumns();
 
@@ -299,7 +298,7 @@ export class TruckassistTableHeadComponent
       }, 1000);
     }
 
-    if(!event.isResizeing){
+    if (!event.isResizeing) {
       localStorage.setItem(
         `table-${this.tableConfigurationType}-Configuration`,
         JSON.stringify(this.columns)

@@ -1064,7 +1064,7 @@ export class Step6Component implements OnInit, OnDestroy {
 
     const saveData: CreateEducationReviewCommand = {
       applicantId: this.applicantId,
-      educationId: this.educationId,
+      // educationId: this.educationId,
       isSpecialTrainingDescriptionValid:
         !this.openAnnotationArray[0].lineInputs[0],
       specialTrainingDescriptionMessage: questionReview1,

@@ -11,10 +11,7 @@
  */
 
 
-export interface CreateSevenDaysHosReviewCommand { 
-    isReleaseDateValid?: boolean;
-    isLocationValid?: boolean;
-    releaseDateLocationMessage?: string | null;
+export interface CreateDisclosureReviewCommand { 
     applicantId?: number;
 }
 

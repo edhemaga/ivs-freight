@@ -301,7 +301,7 @@
                 }"
                 class="td-content"
               >
-                <div class="avatar-container">
+                <div class="avatar-container" [ngClass]="{'avatar-is-owner': row.isOwner}">
                   <div
                     class="avatar-img"
                     [ngClass]="{
@@ -1514,7 +1514,7 @@
                 }"
                 class="td-content"
               >
-                <div class="avatar-container">
+                <div class="avatar-container" [ngClass]="{'avatar-is-owner': row.isOwner}">
                   <div class="avatar-img" *ngIf="row.avatarImg">
                     <img alt="avatar" [src]="row.avatarImg" />
                   </div>
@@ -2976,6 +2976,7 @@
         </div>
       </tr>
 
+      <!-- Show More -->
       <div class="show-more-container" *ngIf="viewData.length">
         <div class="showing">
           {{ viewData.length }} OF {{ activeTableData.length }} SHOWING

@@ -19,6 +19,6 @@ export interface PreviousEmployerAccidentHistoryItemCommand {
     injuries?: number | null;
     hazmatSpill?: boolean;
     description?: string | null;
-    sphAccidentHistoryId?: number;
+    itemId?: number;
 }
 

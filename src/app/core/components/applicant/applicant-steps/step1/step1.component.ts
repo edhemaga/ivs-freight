@@ -684,7 +684,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
           isPhoneValid,
           phoneMessage,
           isSsnValid,
-          ssnBankMessage,
+          // ssnBankMessage,
           isAccountNumberValid,
           isRoutingNumberValid,
           accountRoutingMessage,
@@ -722,9 +722,9 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.openAnnotationArray[7] = {
           ...this.openAnnotationArray[7],
           lineInputs: [!isSsnValid],
-          displayAnnotationButton:
-            !isSsnValid && !ssnBankMessage ? true : false,
-          displayAnnotationTextArea: ssnBankMessage ? true : false,
+          // displayAnnotationButton:
+          //   !isSsnValid && !ssnBankMessage ? true : false,
+          // displayAnnotationTextArea: ssnBankMessage ? true : false,
         };
         this.openAnnotationArray[8] = {
           ...this.openAnnotationArray[8],
@@ -794,7 +794,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.personalInfoForm.patchValue({
           firstRowReview: personalInfoMessage,
           secondRowReview: phoneMessage,
-          thirdRowReview: ssnBankMessage,
+          // thirdRowReview: ssnBankMessage,
           fourthRowReview: accountRoutingMessage,
 
           questionReview1: legalWorkMessage,
@@ -1660,7 +1660,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     const saveData: CreatePersonalInfoReviewCommand = {
       applicantId: this.applicantId,
-      personalInfoId: this.personalInfoId,
+      // personalInfoId: this.personalInfoId,
       isFirstNameValid: !this.openAnnotationArray[0].lineInputs[0],
       isLastNameValid: !this.openAnnotationArray[0].lineInputs[1],
       isDoBValid: !this.openAnnotationArray[0].lineInputs[2],
@@ -1681,8 +1681,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
           ].get(`cardReview${this.previousAddresses.controls.length}`).value
         : null,
       isSsnValid: !this.openAnnotationArray[7].lineInputs[0],
-      isBankValid: !this.openAnnotationArray[7].lineInputs[1],
-      ssnBankMessage: thirdRowReview,
+      // isBankValid: !this.openAnnotationArray[7].lineInputs[1],
+      // ssnBankMessage: thirdRowReview,
       isAccountNumberValid: !this.openAnnotationArray[8].lineInputs[0],
       isRoutingNumberValid: !this.openAnnotationArray[8].lineInputs[1],
       accountRoutingMessage: fourthRowReview,

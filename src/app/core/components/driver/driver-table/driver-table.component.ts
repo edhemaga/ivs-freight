@@ -747,7 +747,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             : '../../../../../assets/svg/truckassist-table/applicant-done-icon.svg',
       },
       hire: true,
-      favorite: true,
+      favorite: false,
     };
   }
 

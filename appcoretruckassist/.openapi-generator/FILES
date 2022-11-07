@@ -81,6 +81,7 @@ model/apUnit.ts
 model/apiCategory.ts
 model/applicantAdminResponse.ts
 model/applicantCompanyInfoResponse.ts
+model/applicantFileResponse.ts
 model/applicantModalResponse.ts
 model/applicantPersonalInfoReviewResponse.ts
 model/applicantPreviousAddressResponse.ts
@@ -88,7 +89,6 @@ model/applicantPreviousAddressReviewResponse.ts
 model/applicantResponse.ts
 model/applicantShortResponse.ts
 model/applicantShortResponsePagination.ts
-model/applicantSpecParams.ts
 model/applicationStatus.ts
 model/archiveApplicationCommand.ts
 model/archiveMultipleApplicationsCommand.ts
@@ -173,8 +173,10 @@ model/createAccidentRecordReviewCommand.ts
 model/createApplicantCdlCommand.ts
 model/createApplicantCdlReviewCommand.ts
 model/createApplicantCommand.ts
+model/createAuthorizationReviewCommand.ts
 model/createBankCommand.ts
 model/createBrokerCommand.ts
+model/createCdlCardReviewCommand.ts
 model/createCommentCommand.ts
 model/createCompanyAccountCommand.ts
 model/createCompanyAccountLabelCommand.ts
@@ -184,9 +186,11 @@ model/createCompanyOfficeCommand.ts
 model/createCompanyUserCommand.ts
 model/createContactEmailCommand.ts
 model/createContactPhoneCommand.ts
+model/createDisclosureReviewCommand.ts
 model/createDispatchCommand.ts
 model/createDivisionCompanyCommand.ts
 model/createDriverCommand.ts
+model/createDriverRightsReviewCommand.ts
 model/createDrugAndAlcoholCommand.ts
 model/createDrugAndAlcoholReviewCommand.ts
 model/createEducationCommand.ts
@@ -199,6 +203,8 @@ model/createInsurancePolicyCommand.ts
 model/createLoadCommand.ts
 model/createLoadTemplateCommand.ts
 model/createMapCommand.ts
+model/createMedicalCertificateReviewCommand.ts
+model/createMvrAuthReviewCommand.ts
 model/createOffDutyLocationCommand.ts
 model/createOwnerCommand.ts
 model/createParkingCommand.ts
@@ -215,6 +221,7 @@ model/createRouteCommand.ts
 model/createSevenDaysHosCommand.ts
 model/createSevenDaysHosReviewCommand.ts
 model/createShipperCommand.ts
+model/createSsnReviewCommand.ts
 model/createTableConfigCommand.ts
 model/createTerminalCommand.ts
 model/createTitleCommand.ts
@@ -281,6 +288,7 @@ model/eventResponse.ts
 model/eventType.ts
 model/factoringCompany.ts
 model/fileResponse.ts
+model/fileReviewCommand.ts
 model/fleetType.ts
 model/forgotPasswordCommand.ts
 model/fuelCardListResponse.ts
@@ -301,7 +309,6 @@ model/fuelType.ts
 model/fuelledVehicleHistoryListResponse.ts
 model/fuelledVehicleResponse.ts
 model/fuelledVehicleResponsePagination.ts
-model/getApplicantListQuery.ts
 model/getApplicantListResponse.ts
 model/getAvailableCreditEFSQuery.ts
 model/getBrokerListResponse.ts
@@ -379,6 +386,8 @@ model/mapMinimalResponse.ts
 model/mapMinimalResponsePagination.ts
 model/mapResponse.ts
 model/markerNamesResponse.ts
+model/medicalCertificateFeedbackResponse.ts
+model/medicalCertificateReviewResponse.ts
 model/medicalResponse.ts
 model/milesByStateResponse.ts
 model/milesByUnitListResponse.ts
@@ -394,6 +403,7 @@ model/multipleChangeDnuFlagCommand.ts
 model/multipleChangeDnuFlagShippersCommand.ts
 model/multipleChangeTrailerStatusCommand.ts
 model/multipleChangeTruckStatusCommand.ts
+model/mvrAuthFeedbackResponse.ts
 model/mvrResponse.ts
 model/notificationEntity.ts
 model/offDutyLocationResponse.ts
@@ -605,6 +615,7 @@ model/updateEducationCommand.ts
 model/updateEmploymentHistoryCommand.ts
 model/updateEventCommand.ts
 model/updateFactoringCompanyCommand.ts
+model/updateHosRulesCommand.ts
 model/updateInspectionCommand.ts
 model/updateInsurancePolicyAddonCommand.ts
 model/updateInsurancePolicyCommand.ts
@@ -623,6 +634,7 @@ model/updatePMTruckDefaultListCommand.ts
 model/updatePMTruckUnitListCommand.ts
 model/updateParkingCommand.ts
 model/updatePersonalInfoCommand.ts
+model/updatePspAuthCommand.ts
 model/updateRegistrationCommand.ts
 model/updateRepairCommand.ts
 model/updateRepairShopCommand.ts
@@ -631,6 +643,7 @@ model/updateRoadsideInspectionCommand.ts
 model/updateRouteCommand.ts
 model/updateSevenDaysHosCommand.ts
 model/updateShipperCommand.ts
+model/updateSphCommand.ts
 model/updateStopCommand.ts
 model/updateTerminalCommand.ts
 model/updateTitleCommand.ts

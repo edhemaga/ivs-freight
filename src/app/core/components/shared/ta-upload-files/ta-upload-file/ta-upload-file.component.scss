@@ -113,6 +113,9 @@
 
     // No Review Actions
     .ta-upload-file-action-leftside {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       width: 30px;
       height: 30px;
       border-radius: 1px;
@@ -122,9 +125,14 @@
       cursor: pointer;
 
       .ta-upload-action-tag {
-        width: 18px;
-        height: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+        height: 100%;
         svg {
+          display: flex;
           height: 18px;
           width: 18px;
           path {
@@ -134,6 +142,18 @@
 
         &:hover {
           transition: all 0.3s ease-in-out;
+          svg {
+            path {
+              fill: #ffffff;
+            }
+          }
+        }
+      }
+
+      &.active {
+        background-color: #536bc2e6;
+
+        .ta-upload-action-tag {
           svg {
             path {
               fill: #ffffff;
@@ -163,9 +183,14 @@
 
       .ta-upload-action-download,
       .ta-upload-action-delete {
-        width: 18px;
-        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 100%;
+        height: 100%;
         line-height: 15px;
+
         svg {
           height: 18px;
           width: 18px;
@@ -187,6 +212,10 @@
       &.feedback-mode {
         position: relative;
         left: 15px;
+      }
+
+      &.small {
+        width: 30px;
       }
     }
 
@@ -220,11 +249,13 @@
     position: relative;
 
     .ng2-pdf-viewer-container {
+      display: flex;
+      align-items: center;
       overflow: hidden !important;
       background-color: transparent !important;
       width: 160px !important;
       height: 160px !important;
-      border-radius: 2px !important;
+      border-radius: 1px !important;
       box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
       top: 4px !important;
       -webkit-user-select: none !important;
@@ -237,7 +268,7 @@
       .pdfViewer .page,
       canvas {
         width: 160px !important;
-        height: 160px !important;
+        max-height: 160px !important;
         margin: 0 !important;
       }
     }
@@ -247,7 +278,7 @@
       max-height: 160px;
       -o-object-fit: fill;
       object-fit: fill;
-      border-radius: 2px;
+      border-radius: 1px;
       vertical-align: middle;
       margin-top: 6px;
       top: 50%;
@@ -259,6 +290,13 @@
       -ms-user-select: none !important;
       user-select: none !important;
       box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
+
+      &.details_image {
+        left: 49%;
+
+        max-width: 276px;
+        max-height: 276px;
+      }
     }
 
     .ta-upload-file-number-of-pages {
@@ -285,7 +323,7 @@
     .ta-upload-file-tag {
       max-width: 101px;
       height: 18px;
-      border-radius: 2px;
+      border-radius: 1px;
       background-color: rgb(83, 107, 194);
       color: #ffffff;
       font-size: 11px;
@@ -299,6 +337,10 @@
       -moz-user-select: none !important;
       -ms-user-select: none !important;
       user-select: none !important;
+
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
 
       span {
         line-height: 14px;
@@ -326,14 +368,14 @@
         background-color: transparent !important;
         width: 295px !important;
         height: 312px !important;
-        border-radius: 3px !important;
+        border-radius: 1px !important;
 
         .canvasWrapper,
         .pdfViewer,
         .pdfViewer .page,
         canvas {
           width: 295px !important;
-          height: 335px !important;
+          max-height: 335px !important;
           margin: 0 !important;
         }
       }
@@ -362,6 +404,16 @@
       word-wrap: break-word;
       text-align: center;
       margin-bottom: 26px;
+
+      &::-moz-selection {
+        background-color: rgb(108, 108, 108, 0.2) !important;
+        color: #6c6c6c !important;
+      }
+
+      &::selection {
+        background-color: rgb(108, 108, 108, 0.2) !important;
+        color: #6c6c6c !important;
+      }
     }
 
     .ta-upload-file-btn {
@@ -375,6 +427,7 @@
       text-align: center;
       cursor: pointer;
       padding: 6px 0px;
+      user-select: none;
 
       &-delete {
         color: #ef5350;
@@ -406,6 +459,10 @@
     align-self: flex-end;
     position: relative;
 
+    &:hover {
+      background-color: #eeeeee;
+    }
+
     p {
       margin: 0;
     }
@@ -424,25 +481,28 @@
       font-weight: 900;
       color: #ffffff;
       line-height: 18px;
-      opacity: 0.9;
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
+      text-transform: uppercase;
 
       &-jpg,
       &-jpeg,
       &-png {
-        background: rgb(255, 191, 107);
+        background: #ffb74d;
       }
 
       &-pdf {
-        background-color: rgb(255, 107, 107);
+        background-color: #e57373;
+
+        &:hover {
+          background-color: #ef5350;
+        }
       }
 
       &:hover {
         transition: all 0.3s ease-in-out;
-        opacity: 1;
         cursor: auto !important;
       }
     }
@@ -466,18 +526,19 @@
         background-color: rgb(108, 108, 108, 0.2) !important;
         color: #6c6c6c !important;
       }
+
+      &.details_title {
+        max-width: 259px;
+      }
     }
   }
 
-  &:hover {
+  &:hover,
+  &.keep_open {
     transition: all 0.3s ease-in-out;
 
     .ta-upload-file-header {
       display: flex;
-    }
-
-    .ta-upload-file-footer {
-      background-color: #eeeeee;
     }
   }
 
@@ -494,6 +555,98 @@
     .ta-upload-file-delete-template {
       width: 304px;
       height: 320px;
+    }
+  }
+}
+
+.tags_main_holder {
+  min-width: 172px;
+  padding: 2px;
+
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
+
+  cursor: pointer;
+
+  .tags_inner_holder {
+    display: flex;
+    align-items: center;
+
+    height: 26px;
+    margin: 1px 0px;
+    padding-left: 4px;
+
+    border-radius: 1px;
+
+    &.firstRow {
+      margin-top: 0;
+    }
+
+    &.lastRow {
+      margin-bottom: 0;
+    }
+
+    .tag_options_holder {
+      display: flex;
+      align-items: center;
+      padding-right: 4px;
+
+      width: 100%;
+      height: 100%;
+      .tag_name {
+        flex: 1;
+        font-size: 14px;
+        line-height: 18px;
+        color: #6c6c6c;
+
+        &.checked {
+          color: #536bc2;
+        }
+      }
+
+      .checked_icon {
+        opacity: 0;
+        margin-left: 4px;
+
+        &.shown {
+          opacity: 1;
+        }
+
+        svg-icon {
+          svg {
+            display: flex;
+
+            path {
+              fill: #6d82c7;
+            }
+          }
+        }
+      }
+    }
+
+    &:hover {
+      background-color: #f3f3f3;
+
+      .tag_options_holder {
+        .tag_name {
+          color: #3c3c3c;
+
+          &.checked {
+            color: #3551b7;
+          }
+        }
+
+        .checked_icon {
+          svg-icon {
+            svg {
+              path {
+                fill: #536bc2;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
