@@ -54,6 +54,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   public isFormDirty: boolean;
 
   fileModified: boolean = false;
+  public filesForDelete: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -281,9 +282,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   }
 
   public updateCdl() {
-    const { issueDate, expDate } = this.cdlForm.value;
+    const { issueDate, expDate, note } = this.cdlForm.value;
     const newData: any = {
-      driverId: this.editData.id,
       id: this.editData.file_id,
       ...this.cdlForm.value,
       issueDate: convertDateToBackend(issueDate),
@@ -296,10 +296,11 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       endorsements: this.selectedEndorsments
         ? this.selectedEndorsments.map((item) => item.id)
         : [],
+      note: note,
       files: this.documents[0]?.realFile
         ? [this.documents[0]?.realFile]
         : this.cdlForm.value.files,
-      fileModified: this.fileModified,
+      filesForDeleteIds: this.filesForDelete,
     };
 
     this.cdlService
@@ -319,7 +320,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   }
 
   public addCdl() {
-    const { issueDate, expDate } = this.cdlForm.value;
+    const { issueDate, expDate, note } = this.cdlForm.value;
 
     const newData: /* CreateCdlCommand */ any = {
       driverId: this.editData.id,
@@ -334,6 +335,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       endorsements: this.selectedEndorsments
         ? this.selectedEndorsments.map((item) => item.id)
         : [],
+      note: note,
       files: [this.documents[0]?.realFile],
     };
 
@@ -378,6 +380,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       this.cdlForm.patchValue({
         files: null,
       });
+
+      if(event.deleteId) {
+        this.filesForDelete.push(event.deleteId);
+      }
 
       this.fileModified = true;
     }
