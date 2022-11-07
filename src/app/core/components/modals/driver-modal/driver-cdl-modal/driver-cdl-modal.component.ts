@@ -381,7 +381,9 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         files: null,
       });
 
-      this.filesForDelete.push(event.deleteId);
+      if(event.deleteId) {
+        this.filesForDelete.push(event.deleteId);
+      }
 
       this.fileModified = true;
     }
