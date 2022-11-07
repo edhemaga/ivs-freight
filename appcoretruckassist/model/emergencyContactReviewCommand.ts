@@ -16,6 +16,6 @@ export interface EmergencyContactReviewCommand {
     isPhoneValid?: boolean;
     isRelationshipValid?: boolean;
     emergencyContactMessage?: string | null;
-    emergencyContactId?: number;
+    itemId?: number;
 }
 

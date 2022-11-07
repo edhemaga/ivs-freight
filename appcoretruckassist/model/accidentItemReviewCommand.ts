@@ -15,11 +15,10 @@ export interface AccidentItemReviewCommand {
     isLocationValid?: boolean;
     isDateValid?: boolean;
     locationDateMessage?: string | null;
-    isVehicleTypeValid?: boolean;
     isDescriptionValid?: boolean;
-    vehicleTypeDescriptionMessage?: string | null;
+    descriptionMessage?: string | null;
     isPrimary?: boolean;
     commonMessage?: string | null;
-    accidentRecordId?: number;
+    itemId?: number;
 }
 

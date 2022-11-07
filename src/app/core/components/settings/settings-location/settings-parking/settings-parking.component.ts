@@ -145,6 +145,33 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
+          title: 'border'
+        },
+        {
+          title: 'View Details',
+          name: 'view-details',
+          svg: 'assets/svg/common/ic_hazardous-info.svg',
+          show: true,
+        },
+        {
+          title: 'border',
+        },
+        {
+          title: 'Share',
+          name: 'share',
+          svg: 'assets/svg/common/share-icon.svg',
+          show: true,
+        },
+        {
+          title: 'Print',
+          name: 'print',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: true,
+        },
+        {
+          title: 'border'
+        },
+        {
           title: 'Delete',
           name: 'delete-item',
           type: 'driver',
@@ -152,6 +179,7 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
           svg: 'assets/svg/common/ic_trash_updated.svg',
           danger: true,
           show: true,
+          redIcon: true,
         },
       ],
       export: true,

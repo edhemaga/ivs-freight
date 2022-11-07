@@ -7,8 +7,15 @@ import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { UpdateDriverRightsCommand } from 'appcoretruckassist/model/models';
+import {
+  ApplicantResponse,
+  DriverRightsFeedbackResponse,
+  UpdateDriverRightsCommand,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step9',
@@ -28,17 +35,15 @@ export class Step9Component implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private router: Router,
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery,
     private applicantActionsService: ApplicantActionsService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
 
-    this.applicantActionsService.getApplicantInfo$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res.personalInfo.applicantId;
-      });
+    this.getStepValuesFromStore();
   }
 
   public createForm(): void {
@@ -47,9 +52,38 @@ export class Step9Component implements OnInit, OnDestroy {
     });
   }
 
+  public getStepValuesFromStore(): void {
+    this.applicantQuery.applicant$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        if (res.driverRight) {
+          this.patchStepValues(res.driverRight);
+        }
+      });
+  }
+
+  public patchStepValues(stepValues: DriverRightsFeedbackResponse): void {
+    const { understandDriverRights } = stepValues;
+
+    this.driverRightsForm
+      .get('understandYourRights')
+      .patchValue(understandDriverRights);
+  }
+
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (
+        this.selectedMode === SelectedMode.APPLICANT ||
+        this.selectedMode === SelectedMode.FEEDBACK
+      ) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
 
     if (event.action === 'back-step') {
@@ -76,11 +110,28 @@ export class Step9Component implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/10`]);
+
+          this.applicantStore.update((store) => {
+            return {
+              ...store,
+              applicant: {
+                ...store.applicant,
+                driverRight: {
+                  ...store.applicant.driverRight,
+                  understandDriverRights: saveData.understandDriverRights,
+                },
+              },
+            };
+          });
         },
         error: (err) => {
           console.log(err);
         },
       });
+  }
+
+  public onSubmitReview(): void {
+    this.router.navigate([`/application/${this.applicantId}/10`]);
   }
 
   ngOnDestroy(): void {

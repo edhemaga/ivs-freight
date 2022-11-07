@@ -16,6 +16,8 @@ interface RadioButton {
 })
 export class TaInputRadiobuttonsComponent {
   @Input() buttons: RadioButton[] = null;
+  @Input() disabled: boolean = false;
+
   @Output() changedValue: EventEmitter<RadioButton[]> = new EventEmitter<
     RadioButton[]
   >(null);

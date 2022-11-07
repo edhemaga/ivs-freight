@@ -27,7 +27,7 @@ const routes: Routes = [
       {
         path: '2',
         component: Step2Component,
-        data: { title: 'Work Experience', depth: 2 },
+        data: { title: 'Work experience', depth: 2 },
       },
       {
         path: '3',
@@ -42,7 +42,7 @@ const routes: Routes = [
       {
         path: '5',
         component: Step5Component,
-        data: { title: 'Traffic Violations', depth: 5 },
+        data: { title: 'Traffic violations', depth: 5 },
       },
       {
         path: '6',
@@ -52,22 +52,22 @@ const routes: Routes = [
       {
         path: '7',
         component: Step7Component,
-        data: { title: 'Days HOS', depth: 7 },
+        data: { title: '7 Days HOS', depth: 7 },
       },
       {
         path: '8',
         component: Step8Component,
-        data: { title: 'Drug and Alchocol statement', depth: 8 },
+        data: { title: 'Drug & Alcohol statement', depth: 8 },
       },
       {
         path: '9',
         component: Step9Component,
-        data: { title: 'Driver Rights', depth: 9 },
+        data: { title: 'Driver rights', depth: 9 },
       },
       {
         path: '10',
         component: Step10Component,
-        data: { title: 'Disclosure and release', depth: 10 },
+        data: { title: 'Disclosure & release', depth: 10 },
       },
       {
         path: '11',

@@ -12,6 +12,7 @@
 import { WheelsType } from './wheelsType';
 import { Brakes } from './brakes';
 import { ApUnit } from './apUnit';
+import { FuelType } from './fuelType';
 
 
 export interface UpdateTruckCommand { 
@@ -38,6 +39,7 @@ export interface UpdateTruckCommand {
     frontWheels?: WheelsType;
     rearWheels?: WheelsType;
     transmissionModel?: string | null;
+    fuelType?: FuelType;
     shifter?: number | null;
     axles?: number | null;
     insurancePolicy?: string | null;

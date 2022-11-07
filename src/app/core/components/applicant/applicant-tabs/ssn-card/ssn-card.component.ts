@@ -6,6 +6,9 @@ import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
 @Component({
@@ -33,10 +36,13 @@ export class SsnCardComponent implements OnInit {
       displayAnnotationTextArea: false,
     },
   ];
+  public hasIncorrectFields: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery,
     private applicantActionsService: ApplicantActionsService
   ) {}
 
@@ -83,6 +89,18 @@ export class SsnCardComponent implements OnInit {
         selectedInputsLine.displayAnnotationTextArea = false;
       }
     }
+
+    const inputFieldsArray = JSON.stringify(
+      this.openAnnotationArray
+        .filter((item) => Object.keys(item).length !== 0)
+        .map((item) => item.lineInputs)
+    );
+
+    if (inputFieldsArray.includes('true')) {
+      this.hasIncorrectFields = true;
+    } else {
+      this.hasIncorrectFields = false;
+    }
   }
 
   public getAnnotationBtnClickValue(event: any): void {
@@ -99,11 +117,17 @@ export class SsnCardComponent implements OnInit {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
   }
 
   public onSubmit(): void {}
 
-  public onSubmitReview(data: any): void {}
+  public onSubmitReview(): void {}
 }

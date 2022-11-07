@@ -1,10 +1,5 @@
 <app-custom-scrollbar>
-  <div
-    cdkDrag
-    class="modal-container {{ customClass }}"
-    ngBAutofocus
-    (cdkDragStarted)="removeSelections($event)"
-  >
+  <div cdkDrag class="modal-container {{ customClass }}" ngBAutofocus>
     <div class="modal-original-part">
       <!-- Modal Header -->
       <div cdkDragHandle class="modal-header">
@@ -128,31 +123,20 @@
           (click)="onAction('close')"
         ></svg-icon>
       </div>
-    </div>
-    <!-- Divider top -->
-    <div *ngIf="topDivider" class="divider"></div>
-    <!-- Modal body -->
-    <div class="modal-body">
-      <!-- Modal content -->
-      <ng-content select="[origin]"></ng-content>
-      <!-- Divider bottom -->
-      <div *ngIf="bottomDivider" class="divider"></div>
-    </div>
-    <!-- Modal footer Normal -->
-    <div
-      *ngIf="!disableFooter && !confirmationData"
-      class="modal-footer"
-      cdkDragHandle
-      [ngClass]="{
-        'mutliple-buttons': editData?.type?.includes('edit'),
-        'load-template': loadModalTemplate,
-        'map-settings-template': mapSettingsModal || mapRouteModal
-      }"
-    >
-      <!-- Footer Left Side -->
+      <!-- Divider top -->
+      <div *ngIf="topDivider" class="divider"></div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <!-- Modal content -->
+        <ng-content select="[origin]"></ng-content>
+        <!-- Divider bottom -->
+        <div *ngIf="bottomDivider" class="divider"></div>
+      </div>
+      <!-- Modal footer Normal -->
       <div
         *ngIf="!disableFooter && !confirmationData"
         class="modal-footer"
+        cdkDragHandle
         [ngClass]="{
           'mutliple-buttons': editData?.type?.includes('edit'),
           'load-template': loadModalTemplate,
@@ -220,7 +204,8 @@
             {{
               resendEmailSpinnerVisibility
                 ? "Sending"
-                : "Resend Application Email"
+                : "Resend Application
+            Email"
             }}
             <div *ngIf="resendEmailSpinnerVisibility" class="modal-spinner">
               <app-ta-spinner
@@ -279,7 +264,13 @@
             [ngClass]="{ valid: isModalValid }"
             type="button"
           >
-            {{ saveAddNewSpinnerVisibility ? "Saving" : "Save & Add New" }}
+            {{
+              saveAddNewSpinnerVisibility
+                ? "Saving"
+                : customTextSaveAndAddNew
+                ? customTextSaveAndAddNew
+                : "Save & Add New"
+            }}
             <div *ngIf="saveAddNewSpinnerVisibility" class="modal-spinner">
               <app-ta-spinner
                 [size]="'small'"
@@ -397,8 +388,7 @@
           class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
           type="button"
         >
-          Deactivate
-          {{ confirmationData?.template }}
+          Deactivate {{ confirmationData?.template }}
         </button>
         <!-- Hire -->
         <button

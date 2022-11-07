@@ -293,9 +293,21 @@
                             label: 'Vehicle type',
                             isRequired: true,
                             isDropdown: true,
-                            dropdownWidthClass: 'w-col-applicant-t-type'
+                            dropdownWidthClass: 'w-col-302',
+                            dropdownImageInput: {
+                              withText: true,
+                              svg: true,
+                              image: false,
+                              url: selectedVehicleType?.logoName,
+                              template: 'truck',
+                              class: selectedVehicleType?.name
+                                ?.trim()
+                                .replace(' ', '')
+                                .toLowerCase()
+                            },
+                            customClass: 'truck-trailer-dropdown'
                           }"
-                          [options]="truckType"
+                          [options]="vehicleType"
                         ></app-ta-input-dropdown>
                       </div>
 
@@ -311,7 +323,31 @@
                             label: 'Trailer type',
                             isRequired: true,
                             isDropdown: true,
-                            dropdownWidthClass: 'w-col-applicant-t-type'
+                            dropdownWidthClass: 'w-col-302',
+                            customClass: 'truck-trailer-dropdown',
+                            dropdownImageInput: {
+                              withText: true,
+                              svg: true,
+                              image: false,
+                              url: selectedTrailerType?.logoName,
+                              template: 'trailer',
+                              class: selectedTrailerType?.name
+                                ?.toLowerCase()
+                                .includes('liquid')
+                                ? 'tanker-liquid'
+                                : selectedTrailerType?.name
+                                    ?.toLowerCase()
+                                    .includes('rgn')
+                                ? 'low-boy-rgn'
+                                : selectedTrailerType?.name
+                                    ?.toLowerCase()
+                                    .includes('dry-bulk')
+                                ? 'tanker-dry-bulk'
+                                : selectedTrailerType?.name
+                                    ?.trim()
+                                    .replace(' ', '')
+                                    .toLowerCase()
+                            }
                           }"
                           [options]="trailerType"
                         ></app-ta-input-dropdown>
@@ -328,7 +364,6 @@
           <div class="reason-group">
             <app-ta-input-dropdown
               formControlName="reasonForLeaving"
-              [template]="'svgtext-template'"
               [inputConfig]="{
                 name: 'Input Dropdown',
                 type: 'text',

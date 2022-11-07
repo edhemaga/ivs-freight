@@ -4,13 +4,13 @@
     class="d-flex justify-content-end align-items-center step-btn"
     [ngClass]="{
       'filled-correctly': filledCorrectly,
-      'review-btn': selectedMode === 'REVIEW_MODE' && reviewFilledCorrectly
+      'review-btn': selectedMode === 'REVIEW_MODE' && !hasIncorrectFields
     }"
     [ngStyle]="{
       width:
         lastPage ||
         lastSphFormPage ||
-        (selectedMode === 'REVIEW_MODE' && reviewFilledCorrectly)
+        (selectedMode === 'REVIEW_MODE' && !hasIncorrectFields)
           ? '234px'
           : '100px'
     }"
@@ -21,7 +21,7 @@
       [ngStyle]="{
         color: filledCorrectly
           ? '#3551B7'
-          : selectedMode === 'REVIEW_MODE' && reviewFilledCorrectly
+          : selectedMode === 'REVIEW_MODE' && !hasIncorrectFields
           ? '#00967e'
           : '#6c6c6c'
       }"
@@ -32,7 +32,7 @@
           ? 'Finish & Save Profile'
           : lastSphFormPage
           ? 'Finish & Send'
-          : selectedMode === 'REVIEW_MODE' && reviewFilledCorrectly
+          : selectedMode === 'REVIEW_MODE' && !hasIncorrectFields
           ? 'Confirm All'
           : 'Next'
       }}

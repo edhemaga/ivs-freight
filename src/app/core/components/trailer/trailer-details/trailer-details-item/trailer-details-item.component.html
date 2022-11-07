@@ -21,6 +21,8 @@
           [options]="dataTest"
           [expDateClose]="reg.expDate | formatDateP"
           [optionsId]="reg.id"
+          [mainData]="reg"
+          [cardNameCurrent]="'registration'"
           [noteIcons]="
             reg.note
               ? 'assets/svg/truckassist-table/note/Note.svg'
@@ -91,7 +93,7 @@
             let i = index;
             trackBy: identity
           "
-          [options]="dataTest"
+          [options]="dataFHWA"
           [cardNameCommon]="fhwa.issueDate | formatDateP"
           [optionsId]="fhwa.id"
           [cardDocumentCounter]="1"
@@ -153,7 +155,7 @@
           [cardDocumentCounter]="1"
           (resizePage)="toggleResizePage(i, 'title')"
           [cardNameCommon]="title.number"
-          [options]="dataTest"
+          [options]="dataFHWA"
           [optionsId]="title.id"
           [noteIcons]="
             title.note

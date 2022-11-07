@@ -4,20 +4,23 @@ import { RoadsideInspectionListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { RoadsideService } from '../../roadside.service';
-import { RoadsideInactiveState, RoadsideInactiveStore } from './roadside-inactive.store';
+import {
+  RoadsideInactiveState,
+  RoadsideInactiveStore,
+} from './roadside-inactive.store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class RoadsideInactiveResolver implements Resolve<RoadsideInactiveState> {
+export class RoadsideInactiveResolver
+  implements Resolve<RoadsideInactiveState>
+{
   constructor(
     private roadsideService: RoadsideService,
     private roadsideStore: RoadsideInactiveStore
   ) {}
   resolve(): Observable<RoadsideInactiveState | boolean> {
-    return this.roadsideService
-    .getRoadsideList(false, 1, 25)
-    .pipe(
+    return this.roadsideService.getRoadsideList(false, 1, 25).pipe(
       catchError(() => {
         return of('No roadside inactive data...');
       }),
@@ -29,7 +32,7 @@ export class RoadsideInactiveResolver implements Resolve<RoadsideInactiveState> 
             inactive: roadsidePagination.inactive,
           })
         );
-        
+
         this.roadsideStore.set(roadsidePagination.pagination.data);
       })
     );

@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  ViewEncapsulation,
   ViewChild,
   OnDestroy,
 } from '@angular/core';
@@ -10,8 +9,10 @@ import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purcha
 
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { getAccountingFuelColumnDefinition } from '../../../../../assets/utils/settings/accounting-fuel-columns';
+import { getFuelStopColumnDefinition, getFuelTransactionColumnDefinition } from '../../../../../assets/utils/settings/accounting-fuel-columns';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { AfterViewInit } from '@angular/core';
+import { tableSearch } from 'src/app/core/utils/methods.globals';
 
 @Component({
   selector: 'app-fuel-table',
@@ -22,7 +23,7 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
   ],
   providers: [TaThousandSeparatorPipe],
 })
-export class FuelTableComponent implements OnInit, OnDestroy {
+export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
 
   private destroy$ = new Subject<void>();
@@ -59,20 +60,15 @@ export class FuelTableComponent implements OnInit, OnDestroy {
     '#6C6C6C',
   ];
 
+  tableContainerWidth: number = 0;
+  resizeObserver: ResizeObserver;
+
   constructor(
     private modalService: ModalService,
     private tableService: TruckassistTableService,
     private thousandSeparator: TaThousandSeparatorPipe
   ) {}
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   ngOnInit(): void {
-    alert('Nema jos konfiguracija za FUEL_STOP, koristi se trenutno za FUEL_TRANSACTION');
-
     this.sendFuelData();
 
     // Reset Columns
@@ -84,6 +80,177 @@ export class FuelTableComponent implements OnInit, OnDestroy {
         }
       });
 
+    // Resize
+    this.tableService.currentColumnWidth
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response?.event?.width) {
+          this.columns = this.columns.map((c) => {
+            if (c.title === response.columns[response.event.index].title) {
+              c.width = response.event.width;
+            }
+
+            return c;
+          });
+        }
+      });
+
+    // Toaggle Columns
+    this.tableService.currentToaggleColumn
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response?.column) {
+          this.columns = this.columns.map((c) => {
+            if (c.field === response.column.field) {
+              c.hidden = response.column.hidden;
+            }
+
+            return c;
+          });
+        }
+      });
+
+    // Search
+    this.tableService.currentSearchTableData
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (res) {
+          /* this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+          this.backFilterQuery.pageIndex = 1;
+
+          const searchEvent = tableSearch(res, this.backFilterQuery);
+
+          if (searchEvent) {
+            if (searchEvent.action === 'api') {
+              this.driverBackFilter(searchEvent.query, true);
+            } else if (searchEvent.action === 'store') {
+              this.sendDriverData();
+            }
+          } */
+        }
+      });
+
+    // Delete Selected Rows
+    this.tableService.currentDeleteSelectedRows
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any[]) => {
+        if (response.length) {
+          /* let mappedRes = response.map((item) => {
+            return {
+              id: item.id,
+              data: { ...item.tableData, name: item.tableData?.fullName },
+            };
+          });
+          this.modalService.openModal(
+            ConfirmationModalComponent,
+            { size: 'small' },
+            {
+              data: null,
+              array: mappedRes,
+              template: 'driver',
+              type: 'multiple delete',
+              image: true,
+            }
+          ); */
+        }
+      });
+
+    // Fuel Actions
+    this.tableService.currentActionAnimation
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        // On Add Driver Active
+        if (res.animation === 'add' && this.selectedTab === 'active') {
+          /* this.viewData.push(this.mapDriverData(res.data));
+
+          this.viewData = this.viewData.map((driver: any) => {
+            if (driver.id === res.id) {
+              driver.actionAnimation = 'add';
+            }
+
+            return driver;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 2300); */
+        }
+        // On Add Driver Inactive
+        else if (res.animation === 'add' && this.selectedTab === 'inactive') {
+          /* this.updateDataCount(); */
+        }
+        // On Update Driver
+        else if (res.animation === 'update') {
+          /* const updatedDriver = this.mapDriverData(res.data);
+
+          this.viewData = this.viewData.map((driver: any) => {
+            if (driver.id === res.id) {
+              driver = updatedDriver;
+              driver.actionAnimation = 'update';
+            }
+
+            return driver;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000); */
+        }
+        // On Update Driver Status
+        else if (res.animation === 'update-status') {
+          /* let driverIndex: number;
+
+          this.viewData = this.viewData.map((driver: any, index: number) => {
+            if (driver.id === res.id) {
+              driver.actionAnimation =
+                this.selectedTab === 'active' ? 'deactivate' : 'activate';
+              driverIndex = index;
+            }
+
+            return driver;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(driverIndex, 1);
+            clearInterval(inetval);
+          }, 900); */
+        }
+        // On Delete Driver
+        else if (res.animation === 'delete') {
+          /* let driverIndex: number;
+
+          this.viewData = this.viewData.map((driver: any, index: number) => {
+            if (driver.id === res.id) {
+              driver.actionAnimation = 'delete';
+              driverIndex = index;
+            }
+
+            return driver;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(driverIndex, 1);
+            clearInterval(inetval);
+          }, 900); */
+        }
+      });
+
+    
+    // Map
     this.sortTypes = [
       { name: 'Business Name', id: 1, sortName: 'name' },
       { name: 'Location', id: 2, sortName: 'location', isHidden: true },
@@ -101,6 +268,22 @@ export class FuelTableComponent implements OnInit, OnDestroy {
         (this.sortDirection[0]?.toUpperCase() +
           this.sortDirection?.substr(1).toLowerCase())
       : '';
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.observTableContainer();
+    }, 10);
+  }
+
+  observTableContainer() {
+    this.resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        this.tableContainerWidth = entry.contentRect.width;
+      });
+    });
+
+    this.resizeObserver.observe(document.querySelector('.table-container'));
   }
 
   initTableOptions(): void {
@@ -151,6 +334,22 @@ export class FuelTableComponent implements OnInit, OnDestroy {
         ];
   }
 
+  getGridColumns(configType: string) {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
+    );
+
+    if (configType === 'FUEL_TRANSACTION') {
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getFuelTransactionColumnDefinition();
+    } else {
+      return tableColumnsConfig
+        ? tableColumnsConfig
+        : getFuelStopColumnDefinition();
+    }
+  }
+
   sendFuelData() {
     this.initTableOptions();
     
@@ -158,8 +357,8 @@ export class FuelTableComponent implements OnInit, OnDestroy {
       {
         title: 'Transactions',
         field: 'active',
-        length: 8,
-        data: this.getDumyData(8),
+        length: 1,
+        data: [{}],
         gridNameTitle: 'Fuel',
         tableConfiguration: 'FUEL_TRANSACTION',
         isActive: this.selectedTab === 'active',
@@ -168,8 +367,8 @@ export class FuelTableComponent implements OnInit, OnDestroy {
       {
         title: 'Stop',
         field: 'inactive',
-        length: 3,
-        data: this.getDumyData(3),
+        length: 1,
+        data: [{}],
         gridNameTitle: 'Fuel',
         tableConfiguration: 'FUEL_STOP',
         isActive: this.selectedTab === 'inactive',
@@ -182,22 +381,6 @@ export class FuelTableComponent implements OnInit, OnDestroy {
     this.setFuelData(td);
   }
 
-  getGridColumns(configType: string) {
-    const tableColumnsConfig = JSON.parse(
-      localStorage.getItem(`table-${configType}-Configuration`)
-    );
-
-    if (configType === 'FUEL_TRANSACTION') {
-      return tableColumnsConfig
-        ? tableColumnsConfig
-        : getAccountingFuelColumnDefinition();
-    } else {
-      return tableColumnsConfig
-        ? tableColumnsConfig
-        : getAccountingFuelColumnDefinition();
-    }
-  }
-
   setFuelData(td: any) {
     this.viewData = td.data;
     this.columns = td.gridColumns;
@@ -206,112 +389,6 @@ export class FuelTableComponent implements OnInit, OnDestroy {
       data.isSelected = false;
       return data;
     });
-  }
-
-  fuelItemsDumyData = [
-    {
-      categoryId: 911,
-      category: 'Refeer',
-      qty: 29.18,
-      unit: null,
-      price: 4.81,
-      subtotal: 140.41,
-    },
-    {
-      categoryId: 907,
-      category: 'Diesel',
-      qty: 48.09,
-      unit: null,
-      price: 4.81,
-      subtotal: 231.4,
-    },
-  ];
-
-  getDumyData(numberOfCopy: number) {
-    let data: any[] = [
-      {
-        address: {
-          address: '1 International Square, Kansas City, MO 64153, USA',
-          addressUnit: null,
-          city: 'Kansas City',
-          country: 'US',
-          state: 'MO',
-          stateShortName: 'MO',
-          street: 'International Square',
-          streetNumber: '1',
-          zipCode: '64153',
-        },
-        api: 1,
-        apiTransactionId: 979637489,
-        fuelTableItem: this.fuelItemsDumyData
-          .map((item) => item.category?.trim())
-          .join(
-            '<div class="description-dot-container"><span class="description-dot"></span></div>'
-          ),
-        descriptionItems: this.fuelItemsDumyData.map((item) => {
-          return {
-            ...item,
-            description: 'Test',
-            descriptionPrice: item?.price
-              ? '$' + this.thousandSeparator.transform(item.price)
-              : '',
-            descriptionTotalPrice: item?.subtotal
-              ? '$' + this.thousandSeparator.transform(item.subtotal)
-              : '',
-            pmDescription: null,
-          };
-        }),
-        companyId: 1,
-        companyName: 'Test Company',
-        createdAt: '2022-03-24T00:10:11',
-        doc: null,
-        driverFullName: 'Jamarcus Cobb',
-        driverId: 406,
-        fuelItems: [
-          {
-            categoryId: 911,
-            category: 'Refeer',
-            qty: 29.18,
-            unit: null,
-            price: 4.81,
-            subtotal: 140.41,
-          },
-          {
-            categoryId: 907,
-            category: 'Diesel',
-            qty: 48.09,
-            unit: null,
-            price: 4.81,
-            subtotal: 231.4,
-          },
-        ],
-        guid: 'b5821a68-4673-4540-8c1f-de64025568a7',
-        id: 2683,
-        items: 'Refeer<div class="description-dot"></div>Diesel',
-        invoice: '0091585',
-        location: 'SANFORD, NC',
-        latitude: 41.860119,
-        longitude: -79.2168734,
-        name: 'CIRCLE K #2723778',
-        supplierId: 106235,
-        supplierName: null,
-        timezoneOffset: -5,
-        cardNumber: '7083052138884300041',
-        transactionDate: '03/23/22',
-        transactionTime: '10:49 PM',
-        truckId: 200,
-        truckNumber: '1419',
-        updatedAt: '2022-03-24T00:10:11',
-        qty: '77.27',
-        total: 371.81,
-      },
-    ];
-
-    for (let i = 0; i < numberOfCopy; i++) {
-      data.push(data[0]);
-    }
-
-    return data;
   }
 
   onToolBarAction(event: any) {
@@ -340,38 +417,15 @@ export class FuelTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  changeSortDirection(direction) {
-    this.sortDirection = direction;
-
-    this.sortBy = this.sortDirection
-      ? this.activeSortType.sortName +
-        (this.sortDirection[0]?.toUpperCase() +
-          this.sortDirection?.substr(1).toLowerCase())
-      : '';
-
-    //this.sortShippers();
-  }
-
-  changeSortCategory(item) {
-    this.activeSortType = item;
-
-    this.sortBy = this.sortDirection
-      ? this.activeSortType.sortName +
-        (this.sortDirection[0]?.toUpperCase() +
-          this.sortDirection?.substr(1).toLowerCase())
-      : '';
-
-    //this.sortShippers();
-  }
-
-  searchStops(value) {
-    this.searchValue = value;
-    //if ( this.searchValue.length > 3 ) {
-    //this.sortShippers();
-    //}
-  }
-
   selectItem(id) {
     this.mapsComponent.clickedMarker(id);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.tableService.sendActionAnimation({});
+    this.resizeObserver.unobserve(document.querySelector('.table-container'));
+    this.resizeObserver.disconnect();
   }
 }

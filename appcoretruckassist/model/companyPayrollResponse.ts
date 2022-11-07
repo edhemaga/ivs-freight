@@ -23,6 +23,8 @@ export interface CompanyPayrollResponse {
     defaultCommission?: number | null;
     solo?: PerMileEntity;
     team?: PerMileEntity;
+    soloPerLoad?: number | null;
+    teamPerLoad?: number | null;
     perMileSolo?: number | null;
     perMileTeam?: number | null;
     loadedAndEmptySameRate?: boolean | null;

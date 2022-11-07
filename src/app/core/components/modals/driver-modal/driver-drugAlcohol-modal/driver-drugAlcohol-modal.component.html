@@ -77,8 +77,8 @@
             isDisabled: !drugForm.get('testType').value,
             dropdownWidthClass: 'w-col-216'
           }"
-          [options]="reasonTypes"
-          [activeItem]="reasonTypes"
+          [options]="reasons"
+          [activeItem]="selectedReasonType"
           (selectedItem)="onSelectDropdown($event, 'reason')"
         ></app-ta-input-dropdown>
       </div>

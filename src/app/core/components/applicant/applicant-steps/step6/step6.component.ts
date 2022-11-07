@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -6,15 +12,26 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
-import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+  convertDateToBackend,
+  convertDateFromBackendShortYear,
+} from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { ContactModel } from '../../state/model/education.model';
-import { CreateEducationCommand } from 'appcoretruckassist/model/models';
+import {
+  ApplicantResponse,
+  CreateEducationCommand,
+  CreateEducationReviewCommand,
+  EducationFeedbackResponse,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step6',
@@ -22,6 +39,32 @@ import { CreateEducationCommand } from 'appcoretruckassist/model/models';
   styleUrls: ['./step6.component.scss'],
 })
 export class Step6Component implements OnInit, OnDestroy {
+  @ViewChildren('cmp') set content(content: QueryList<any>) {
+    if (content) {
+      const radioButtonsArray = content.toArray();
+
+      this.specialTrainingRadios = radioButtonsArray[0]
+        ? radioButtonsArray[0].buttons
+        : null;
+
+      this.otherTrainingRadios = radioButtonsArray[1]
+        ? radioButtonsArray[1].buttons
+        : null;
+
+      this.knowledgeOfSafetyRegulationsRadios = radioButtonsArray[2]
+        ? radioButtonsArray[2].buttons
+        : null;
+
+      this.driverForCompanyBeforeRadios = radioButtonsArray[3]
+        ? radioButtonsArray[3].buttons
+        : null;
+
+      this.unableForJobRadios = radioButtonsArray[4]
+        ? radioButtonsArray[4].buttons
+        : null;
+    }
+  }
+
   private destroy$ = new Subject<void>();
 
   public selectedMode: string = SelectedMode.APPLICANT;
@@ -33,6 +76,14 @@ export class Step6Component implements OnInit, OnDestroy {
   public markFormInvalid: boolean;
 
   public applicantId: number;
+  public educationId: number;
+  public emergencyContactsId: number[];
+
+  private specialTrainingRadios: any;
+  private otherTrainingRadios: any;
+  private knowledgeOfSafetyRegulationsRadios: any;
+  private driverForCompanyBeforeRadios: any;
+  private unableForJobRadios: any;
 
   public contactsArray: ContactModel[] = [];
 
@@ -63,6 +114,9 @@ export class Step6Component implements OnInit, OnDestroy {
   public highlightGrade: number = -1;
 
   public isEditing: boolean = false;
+  public isReviewingCard: boolean = false;
+
+  public previousFormValuesOnEdit: any;
 
   public formValuesToPatch: any;
 
@@ -206,28 +260,18 @@ export class Step6Component implements OnInit, OnDestroy {
     },
     {
       lineIndex: 2,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 3,
       lineInputs: [false, false],
       displayAnnotationButton: false,
       displayAnnotationTextArea: false,
     },
     {
-      lineIndex: 4,
+      lineIndex: 3,
       lineInputs: [false],
       displayAnnotationButton: false,
       displayAnnotationTextArea: false,
     },
-    {
-      lineIndex: 5,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
+    {},
+    {},
     {},
     {},
     {},
@@ -238,22 +282,23 @@ export class Step6Component implements OnInit, OnDestroy {
     {},
     {},
   ];
+  public hasIncorrectFields: boolean = false;
+  public cardsWithIncorrectFields: boolean = false;
+  public previousFormValuesOnReview: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private router: Router,
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery,
     private applicantActionsService: ApplicantActionsService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
 
-    this.applicantActionsService.getApplicantInfo$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res.personalInfo.applicantId;
-      });
+    this.getStepValuesFromStore();
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -291,6 +336,225 @@ export class Step6Component implements OnInit, OnDestroy {
       cardReview9: [null],
       cardReview10: [null],
     });
+  }
+
+  public getStepValuesFromStore(): void {
+    this.applicantQuery.applicant$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        if (res.education) {
+          this.patchStepValues(res.education);
+        }
+      });
+  }
+
+  public patchStepValues(stepValues: EducationFeedbackResponse): void {
+    console.log('stepValues', stepValues);
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      if (stepValues.educationReview) {
+        const {
+          isSpecialTrainingDescriptionValid,
+          specialTrainingDescriptionMessage,
+          isOtherTrainingDescriptionValid,
+          otherTrainingDescriptionMessage,
+          isFromValid,
+          isToValid,
+          datesMessage,
+        } = stepValues.educationReview;
+
+        this.openAnnotationArray[0] = {
+          ...this.openAnnotationArray[0],
+          lineInputs: [!isSpecialTrainingDescriptionValid],
+          displayAnnotationButton:
+            !isSpecialTrainingDescriptionValid &&
+            !specialTrainingDescriptionMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: specialTrainingDescriptionMessage
+            ? true
+            : false,
+        };
+        this.openAnnotationArray[1] = {
+          ...this.openAnnotationArray[1],
+          lineInputs: [!isOtherTrainingDescriptionValid],
+          displayAnnotationButton:
+            !isOtherTrainingDescriptionValid && !otherTrainingDescriptionMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: otherTrainingDescriptionMessage
+            ? true
+            : false,
+        };
+        this.openAnnotationArray[2] = {
+          ...this.openAnnotationArray[2],
+          lineInputs: [!isFromValid, !isToValid],
+          displayAnnotationButton:
+            (!isFromValid || !isToValid) && !datesMessage ? true : false,
+          displayAnnotationTextArea: datesMessage ? true : false,
+        };
+
+        const inputFieldsArray = JSON.stringify(
+          this.openAnnotationArray
+            .filter((item) => Object.keys(item).length !== 0)
+            .map((item) => item.lineInputs)
+        );
+
+        if (inputFieldsArray.includes('true')) {
+          this.hasIncorrectFields = true;
+        } else {
+          this.hasIncorrectFields = false;
+        }
+
+        this.educationForm.patchValue({
+          questionReview1: specialTrainingDescriptionMessage,
+          questionReview2: otherTrainingDescriptionMessage,
+          questionReview4: datesMessage,
+        });
+      }
+    }
+
+    const {
+      educationReview,
+      highestGrade,
+      collegeGrade,
+      emergencyContacts,
+      specialTraining,
+      specialTrainingDescription,
+      otherTraining,
+      otherTrainingDescription,
+      knowledgeOfSafetyRegulations,
+      driverBefore,
+      from,
+      to,
+      unableForJob,
+      unableForJobDescription,
+      id,
+    } = stepValues;
+
+    this.formStatus = 'VALID';
+
+    this.selectedGrade = highestGrade - 1;
+    this.selectedCollegeGrade = collegeGrade - 1;
+
+    this.educationId = id;
+
+    /*  const { emergencyContactReviews } = educationReview; */
+
+    const lastItemInContactsArray =
+      emergencyContacts[emergencyContacts.length - 1];
+
+    const restOfTheItemsInContactsArray = [...emergencyContacts];
+
+    restOfTheItemsInContactsArray.pop();
+
+    const filteredContactsArray = restOfTheItemsInContactsArray.map((item) => {
+      return {
+        isEditingContact: false,
+        name: item.name,
+        phone: item.phone,
+        relationship: item.relationship,
+        emergencyContactReview: item.emergencyContactReview
+          ? item.emergencyContactReview
+          : null,
+      };
+    });
+
+    const filteredLastItemInContactsArray = {
+      id: lastItemInContactsArray.id,
+      isEditingContact: false,
+      name: lastItemInContactsArray.name,
+      phone: lastItemInContactsArray.phone,
+      relationship: lastItemInContactsArray.relationship,
+      /* emergencyContactReview: emergencyContactReviews
+        ? emergencyContactReviews[emergencyContactReviews.length - 1]
+        : null, */
+      emergencyContactReview: lastItemInContactsArray.emergencyContactReview
+        ? lastItemInContactsArray.emergencyContactReview
+        : null,
+    };
+
+    this.lastContactCard = {
+      name: filteredLastItemInContactsArray.name,
+      phone: filteredLastItemInContactsArray.phone,
+      relationship: filteredLastItemInContactsArray.relationship,
+    };
+
+    this.contactsArray = [...filteredContactsArray];
+
+    this.formValuesToPatch = filteredLastItemInContactsArray;
+    this.previousFormValuesOnReview = filteredLastItemInContactsArray;
+    this.previousFormValuesOnEdit = this.contactsArray.length
+      ? filteredLastItemInContactsArray
+      : {
+          name: null,
+          phone: null,
+          relationship: null,
+        };
+
+    for (let i = 0; i < filteredContactsArray.length; i++) {
+      const firstEmptyObjectInList = this.openAnnotationArray.find(
+        (item) => Object.keys(item).length === 0
+      );
+
+      const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+        firstEmptyObjectInList
+      );
+
+      this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+        lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+        lineInputs: [false],
+        displayAnnotationButton: false,
+        displayAnnotationTextArea: false,
+      };
+    }
+
+    this.educationForm.patchValue({
+      specialTraining,
+      otherTraining,
+      specialTrainingExplain: specialTrainingDescription,
+      otherTrainingExplain: otherTrainingDescription,
+      knowledgeOfSafetyRegulations,
+      driverForCompany: driverBefore,
+      driverForCompanyBeforeExplain:
+        from && convertDateFromBackendShortYear(from),
+      driverForCompanyToExplain: to && convertDateFromBackendShortYear(to),
+      unableForJob,
+      unableForJobExplain: unableForJobDescription,
+    });
+
+    setTimeout(() => {
+      if (specialTraining) {
+        this.specialTrainingRadios[0].checked = true;
+      } else {
+        this.specialTrainingRadios[1].checked = true;
+      }
+
+      if (otherTraining) {
+        this.otherTrainingRadios[0].checked = true;
+      } else {
+        this.otherTrainingRadios[1].checked = true;
+      }
+
+      if (knowledgeOfSafetyRegulations) {
+        this.knowledgeOfSafetyRegulationsRadios[0].checked = true;
+      } else {
+        this.knowledgeOfSafetyRegulationsRadios[1].checked = true;
+      }
+
+      if (driverBefore) {
+        this.driverForCompanyBeforeRadios[0].checked = true;
+      } else {
+        this.driverForCompanyBeforeRadios[1].checked = true;
+      }
+
+      if (unableForJob) {
+        this.unableForJobRadios[0].checked = true;
+      } else {
+        this.unableForJobRadios[1].checked = true;
+      }
+    }, 150);
   }
 
   public handleInputSelect(event: any): void {
@@ -352,12 +616,17 @@ export class Step6Component implements OnInit, OnDestroy {
           this.educationForm.get('driverForCompanyToExplain'),
           false
         );
+
+        this.educationForm.patchValue({
+          driverForCompanyBeforeExplain: null,
+          driverForCompanyToExplain: null,
+        });
       }
     }
   }
 
   public onSchoolGradeClick(gradeIndex: number): void {
-    if (this.selectedMode !== 'APPLICANT_MODE') {
+    if (this.selectedMode !== SelectedMode.APPLICANT) {
       return;
     }
 
@@ -366,7 +635,7 @@ export class Step6Component implements OnInit, OnDestroy {
   }
 
   public onCollegeGradeClick(gradeIndex: number): void {
-    if (this.selectedMode !== 'APPLICANT_MODE') {
+    if (this.selectedMode !== SelectedMode.APPLICANT) {
       return;
     }
 
@@ -428,6 +697,8 @@ export class Step6Component implements OnInit, OnDestroy {
 
     this.helperIndex = 2;
     this.selectedContactIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
   }
 
   public saveEditedContact(event: any): void {
@@ -438,6 +709,8 @@ export class Step6Component implements OnInit, OnDestroy {
 
     this.helperIndex = 2;
     this.selectedContactIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
   }
 
   public onGetFormStatus(status: string): void {
@@ -454,6 +727,71 @@ export class Step6Component implements OnInit, OnDestroy {
     this.lastContactCard = event;
   }
 
+  public onHasIncorrectFields(event: any): void {
+    if (event) {
+      this.hasIncorrectFields = true;
+    } else {
+      this.hasIncorrectFields = false;
+    }
+  }
+
+  public onGetOpenAnnotationArrayValues(event: any): void {
+    this.previousFormValuesOnReview.emergencyContactReview = {
+      isNameValid: !event[0].lineInputs[0],
+      isPhoneValid: !event[0].lineInputs[1],
+      isRelationshipValid: !event[0].lineInputs[2],
+    };
+  }
+
+  public onGetCardOpenAnnotationArrayValues(event: any): void {
+    this.isReviewingCard = false;
+
+    this.contactsArray[this.selectedContactIndex].isEditingContact = false;
+
+    this.contactsArray[this.selectedContactIndex].emergencyContactReview = {
+      isNameValid: !event[0].lineInputs[0],
+      isPhoneValid: !event[0].lineInputs[1],
+      isRelationshipValid: !event[0].lineInputs[2],
+    };
+
+    const hasInvalidFields = JSON.stringify(
+      this.contactsArray[this.selectedContactIndex].emergencyContactReview
+    );
+
+    if (hasInvalidFields.includes('false')) {
+      this.openAnnotationArray[
+        this.selectedContactIndex + 4
+      ].displayAnnotationButton = true;
+
+      this.openAnnotationArray[this.selectedContactIndex + 4].lineInputs[0] =
+        true;
+
+      this.cardsWithIncorrectFields = true;
+    } else {
+      this.openAnnotationArray[
+        this.selectedContactIndex
+      ].displayAnnotationButton = false;
+
+      this.hasIncorrectFields = false;
+    }
+
+    this.helperIndex = 2;
+    this.selectedContactIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnReview;
+  }
+
+  public cancelContactReview(event: any): void {
+    this.isReviewingCard = false;
+
+    this.contactsArray[this.selectedContactIndex].isEditingContact = false;
+
+    this.helperIndex = 2;
+    this.selectedContactIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnReview;
+  }
+
   public incorrectInput(
     event: any,
     inputIndex: number,
@@ -465,15 +803,32 @@ export class Step6Component implements OnInit, OnDestroy {
     );
 
     if (type === 'card') {
-      selectedInputsLine.lineInputs[inputIndex] =
-        !selectedInputsLine.lineInputs[inputIndex];
-
-      selectedInputsLine.displayAnnotationButton =
-        !selectedInputsLine.displayAnnotationButton;
+      if (selectedInputsLine.displayAnnotationButton) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+        selectedInputsLine.displayAnnotationButton = false;
+      }
 
       if (selectedInputsLine.displayAnnotationTextArea) {
         selectedInputsLine.displayAnnotationButton = false;
         selectedInputsLine.displayAnnotationTextArea = false;
+      }
+
+      Object.keys(
+        this.contactsArray[lineIndex - 4].emergencyContactReview
+      ).forEach((key) => {
+        this.contactsArray[lineIndex - 4].emergencyContactReview[key] = true;
+      });
+
+      const inputFieldsArray = JSON.stringify(
+        this.openAnnotationArray
+          .filter((item) => Object.keys(item).length !== 0)
+          .map((item) => item.lineInputs)
+      );
+
+      if (inputFieldsArray.includes('true')) {
+        this.cardsWithIncorrectFields = true;
+      } else {
+        this.cardsWithIncorrectFields = false;
       }
     } else {
       if (event) {
@@ -496,7 +851,42 @@ export class Step6Component implements OnInit, OnDestroy {
           selectedInputsLine.displayAnnotationButton = false;
           selectedInputsLine.displayAnnotationTextArea = false;
         }
+
+        switch (lineIndex) {
+          case 0:
+            this.educationForm.get('questionReview1').patchValue(null);
+            break;
+
+          case 1:
+            this.educationForm.get('questionReview2').patchValue(null);
+            break;
+
+          case 2:
+            if (!isAnyInputInLineIncorrect) {
+              this.educationForm.get('questionReview4').patchValue(null);
+            }
+            break;
+
+          case 3:
+            this.educationForm.get('questionReview5').patchValue(null);
+            break;
+
+          default:
+            break;
+        }
       }
+    }
+
+    const inputFieldsArray = JSON.stringify(
+      this.openAnnotationArray
+        .filter((item) => Object.keys(item).length !== 0)
+        .map((item) => item.lineInputs)
+    );
+
+    if (inputFieldsArray.includes('true')) {
+      this.hasIncorrectFields = true;
+    } else {
+      this.hasIncorrectFields = false;
     }
   }
 
@@ -512,9 +902,32 @@ export class Step6Component implements OnInit, OnDestroy {
     }
   }
 
+  public onCardReview(index: number) {
+    if (this.isReviewingCard) {
+      return;
+    }
+
+    this.helperIndex = index;
+    this.selectedContactIndex = index;
+
+    this.contactsArray[index].isEditingContact = true;
+
+    this.isReviewingCard = true;
+
+    const selectedContact = this.contactsArray[index];
+
+    this.formValuesToPatch = selectedContact;
+  }
+
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      this.onSubmit();
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
 
     if (event.action === 'back-step') {
@@ -572,11 +985,17 @@ export class Step6Component implements OnInit, OnDestroy {
       specialTrainingDescription: specialTrainingExplain,
       otherTrainingDescription: otherTrainingExplain,
       driverBefore: driverForCompany,
-      from: convertDateToBackend(driverForCompanyBeforeExplain),
-      to: convertDateToBackend(driverForCompanyToExplain),
+      from: driverForCompany
+        ? convertDateToBackend(driverForCompanyBeforeExplain)
+        : null,
+      to: driverForCompany
+        ? convertDateToBackend(driverForCompanyToExplain)
+        : null,
       unableForJobDescription: unableForJobExplain,
       emergencyContacts: [...filteredContactsArray, filteredLastContactCard],
     };
+
+    console.log(saveData);
 
     this.applicantActionsService
       .createEducation(saveData)
@@ -584,6 +1003,33 @@ export class Step6Component implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/7`]);
+
+          this.applicantStore.update((store) => {
+            return {
+              ...store,
+              applicant: {
+                ...store.applicant,
+                education: {
+                  ...store.applicant.education,
+                  highestGrade: saveData.highestGrade,
+                  collegeGrade: saveData.collegeGrade,
+                  specialTraining: saveData.specialTraining,
+                  specialTrainingDescription:
+                    saveData.specialTrainingDescription,
+                  otherTraining: saveData.otherTraining,
+                  otherTrainingDescription: saveData.otherTrainingDescription,
+                  knowledgeOfSafetyRegulations:
+                    saveData.knowledgeOfSafetyRegulations,
+                  driverBefore: saveData.driverBefore,
+                  from: saveData.from,
+                  to: saveData.to,
+                  unableForJob: saveData.unableForJob,
+                  unableForJobDescription: saveData.unableForJobDescription,
+                  emergencyContacts: saveData.emergencyContacts,
+                },
+              },
+            };
+          });
         },
         error: (err) => {
           console.log(err);
@@ -591,10 +1037,135 @@ export class Step6Component implements OnInit, OnDestroy {
       });
   }
 
-  /* public onSubmitReview(data: any): void {} */
+  public onSubmitReview(): void {
+    const {
+      questionReview1,
+      questionReview2,
+      questionReview4,
+      questionReview5,
+    } = this.educationForm.value;
+
+    const lastItemReview =
+      this.previousFormValuesOnReview.emergencyContactReview;
+
+    console.log('lastItem', lastItemReview);
+
+    const lastItemId = this.previousFormValuesOnReview.id;
+
+    const lastReviewedItemInContactsArray = {
+      emergencyContactId: lastItemId,
+      isNameValid: lastItemReview ? lastItemReview.isNameValid : true,
+      /*    isPhoneValid: lastItemReview ? !lastItemReview.isPhoneValid : true,
+      isRelationshipValid: lastItemReview
+        ? !lastItemReview.isRelationshipValid
+        : true, */
+      emergencyContactMessage: this.lastContactCard.firstRowReview,
+    };
+
+    const saveData: CreateEducationReviewCommand = {
+      applicantId: this.applicantId,
+      // educationId: this.educationId,
+      isSpecialTrainingDescriptionValid:
+        !this.openAnnotationArray[0].lineInputs[0],
+      specialTrainingDescriptionMessage: questionReview1,
+      isOtherTrainingDescriptionValid:
+        !this.openAnnotationArray[1].lineInputs[0],
+      otherTrainingDescriptionMessage: questionReview2,
+      isFromValid: !this.openAnnotationArray[2].lineInputs[0],
+      isToValid: !this.openAnnotationArray[2].lineInputs[1],
+      datesMessage: questionReview4,
+      emergencyContactReviews: [lastReviewedItemInContactsArray],
+    };
+
+    /*     console.log('saveData', saveData); */
+
+    const { emergencyContactReviews, ...rest } = saveData;
+
+    this.applicantActionsService
+      .createEducationReview(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/7`]);
+
+          /*    this.applicantStore.update(1, (entity) => {
+            return {
+              ...entity,
+              education: {
+                ...entity.education,
+                educationReview: rest,
+              },
+            };
+          }); */
+
+          console.log('updatedStore', this.applicantStore);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 }
+
+/*
+
+    this.contactForm = this.formBuilder.group({
+      cardReview1: [null],
+      cardReview2: [null],
+      cardReview3: [null],
+      cardReview4: [null],
+      cardReview5: [null],
+      cardReview6: [null],
+      cardReview7: [null],
+      cardReview8: [null],
+      cardReview9: [null],
+      cardReview10: [null],
+    }); */
+
+/* public openAnnotationArray: {
+    lineIndex?: number;
+    lineInputs?: boolean[];
+    displayAnnotationButton?: boolean;
+    displayAnnotationTextArea?: boolean;
+  }[] = [
+    {
+      lineIndex: 0,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 1,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 2,
+      lineInputs: [false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 3,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+  ]; */

@@ -21,8 +21,6 @@ import {
   cdlUSValidation,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
-//import { CreateCdlCommand } from 'appcoretruckassist/model/createCdlCommand';
-//import { EditCdlCommand } from 'appcoretruckassist/model/editCdlCommand';
 
 @Component({
   selector: 'app-driver-cdl-modal',
@@ -45,7 +43,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   public restrictions: any[] = [];
 
   public selectedRestrictions: any[] = [];
-  public selectedEndorsment: any[] = [];
+  public selectedEndorsments: any[] = [];
   public selectedClassType: any = null;
 
   public selectedStateType: any = null;
@@ -149,7 +147,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'endorsments': {
-        this.selectedEndorsment = event;
+        this.selectedEndorsments = event;
         break;
       }
       default: {
@@ -223,7 +221,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     });
 
     this.documents = res.files ? (res.files as any) : [];
-    this.selectedEndorsment = res.cdlEndorsements.map((item) => {
+    this.selectedEndorsments = res.cdlEndorsements.map((item) => {
       return {
         ...item,
         name: item.code.concat(' ', '-').concat(' ', item.description),
@@ -261,7 +259,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
           this.documents = res.files ? (res.files as any) : [];
 
-          this.selectedEndorsment = res.cdlEndorsements.map((item) => {
+          this.selectedEndorsments = res.cdlEndorsements.map((item) => {
             return {
               ...item,
               name: item.code.concat(' ', '-').concat(' ', item.description),
@@ -295,8 +293,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       restrictions: this.selectedRestrictions
         ? this.selectedRestrictions.map((item) => item.id)
         : [],
-      endorsements: this.selectedEndorsment
-        ? this.selectedEndorsment.map((item) => item.id)
+      endorsements: this.selectedEndorsments
+        ? this.selectedEndorsments.map((item) => item.id)
         : [],
       note: note,
       files: this.documents[0]?.realFile
@@ -334,8 +332,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       restrictions: this.selectedRestrictions
         ? this.selectedRestrictions.map((item) => item.id)
         : [],
-      endorsements: this.selectedEndorsment
-        ? this.selectedEndorsment.map((item) => item.id)
+      endorsements: this.selectedEndorsments
+        ? this.selectedEndorsments.map((item) => item.id)
         : [],
       note: note,
       files: [this.documents[0]?.realFile],

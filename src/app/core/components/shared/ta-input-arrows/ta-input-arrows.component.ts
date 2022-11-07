@@ -16,6 +16,7 @@ export class TaInputArrowsComponent
   @Input() minimum: number = 1;
   @Input() maximum: number = 12;
   @Input() elementOrder: number;
+  @Input() disabledArrow: boolean;
 
   @Input() inputConfig: ITaInput;
   @Input() selectedMode?: string;
