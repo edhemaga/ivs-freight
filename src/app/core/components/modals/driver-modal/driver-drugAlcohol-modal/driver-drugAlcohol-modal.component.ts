@@ -220,12 +220,9 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
   public onFilesEvent(event: any) {
     this.documents = event.files;
-
+    this.drugForm.get('files').patchValue(this.documents);
     if (event.action == 'delete') {
-      this.drugForm.patchValue({
-        files: null,
-      });
-
+      this.drugForm.get('files').patchValue(null);
       this.filesForDelete.push(event.deleteId);
 
       this.fileModified = true;
@@ -237,6 +234,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     const documents = this.documents.map((item) => {
       return item.realFile;
     });
+
     const newData: any = {
       id: this.editData.file_id,
       testingDate: convertDateToBackend(testingDate),
@@ -301,16 +299,19 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: TestResponse) => {
+          console.log(res);
           this.drugForm.patchValue({
             testType: res.testType.name,
-            testReasonId: res.testReason.name ? res.testReason.name : null,
+            testReasonId: res.testReason ? res.testReason.name : null,
+            result: res.result ? res.result.name : null,
             testingDate: convertDateFromBackend(res.testingDate),
+            files: res.files,
             note: res.note,
           });
           this.selectedTestType = res.testType;
           this.selectedReasonType = res.testReason;
-          this.documents = res.files ? (res.files as any) : [];
-          
+          this.selectedTestResult = res.result;
+          this.documents = res.files;
           if (this.selectedTestType.name.toLowerCase() === 'drug') {
             this.reasons = this.drugReasons;
           } else {
