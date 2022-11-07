@@ -225,7 +225,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.terminalForm.invalid) {
+        if (this.terminalForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.terminalForm);
           return;
         }

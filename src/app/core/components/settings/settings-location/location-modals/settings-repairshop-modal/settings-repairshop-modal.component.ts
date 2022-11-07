@@ -142,7 +142,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.repairShopForm.invalid) {
+        if (this.repairShopForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.repairShopForm);
           return;
         }

@@ -219,7 +219,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.PMform.invalid) {
+        if (this.PMform.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.PMform);
           return;
         }

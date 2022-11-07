@@ -27,7 +27,6 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
-import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
 import { ContactTService } from '../../contacts/state/contact.service';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
@@ -93,7 +92,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private uploadFileService: TaUploadFileService,
     private contactService: ContactTService,
     private formService: FormService
   ) {}
@@ -104,13 +102,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     this.companyContactColorLabels();
     this.followSharedCheckbox();
 
-    const timeout = setTimeout(() => {
-      this.uploadFileService.visibilityDropZone(true);
-      clearTimeout(timeout);
-    }, 300);
-
     if (this.editData) {
-      this.editCompanyContact(this.editData.id);
+      this.getCompanyContactById(this.editData.id);
     }
   }
 
@@ -128,11 +121,11 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       note: [null],
     });
 
-    this.formService.checkFormChange(this.contactForm);
+    this.formService.checkFormChange(this.contactForm, 250);
     this.formService.formValueChange$
       .pipe(takeUntil(this.destroy$))
       .subscribe((isFormChange: boolean) => {
-        this.isFormDirty = isFormChange && !this.disabledFormValidation;
+        this.isFormDirty = isFormChange;
       });
   }
 
@@ -157,7 +150,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   }
 
   public addContactPhones(event: { check: boolean; action: string }) {
-    console.log(event);
     if (event.check) {
       this.contactPhones.push(this.createContactPhones());
       this.isContactPhoneExtExist.push(false);
@@ -221,7 +213,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.contactForm.invalid) {
+        if (this.contactForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.contactForm);
           return;
         }
@@ -311,7 +303,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private editCompanyContact(id: number) {
+  private getCompanyContactById(id: number) {
     this.contactService
       .getCompanyContactById(id)
       .pipe(takeUntil(this.destroy$))
@@ -322,7 +314,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             companyContactLabelId: res.companyContactLabel
               ? res.companyContactLabel.name
               : null,
-            avatar: res.avatar,
+            avatar: res.avatar ? res.avatar : null,
             address: res.address ? res.address.address : null,
             addressUnit: res.address ? res.address.addressUnit : null,
             shared: res.shared,
@@ -378,8 +370,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         : null,
       address: this.selectedAddress?.address ? this.selectedAddress : null,
     };
-
-    console.log(newData);
 
     this.contactService
       .addCompanyContact(newData)

@@ -79,7 +79,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
       }
       case 'save': {
         // If Form not valid
-        if (this.ttTitleForm.invalid) {
+        if (this.ttTitleForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.ttTitleForm);
           return;
         }

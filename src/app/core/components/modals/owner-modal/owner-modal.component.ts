@@ -202,7 +202,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.ownerForm.invalid) {
+        if (this.ownerForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.ownerForm);
           return;
         }

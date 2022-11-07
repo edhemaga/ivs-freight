@@ -80,7 +80,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
       }
       case 'save': {
         // If Form not valid
-        if (this.registrationForm.invalid) {
+        if (this.registrationForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.registrationForm);
           return;
         }

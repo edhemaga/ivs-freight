@@ -107,7 +107,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       }
       case 'save': {
         // If Form not valid
-        if (this.drugForm.invalid) {
+        if (this.drugForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.drugForm);
           return;
         }
@@ -220,7 +220,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
   public onFilesEvent(event: any) {
     this.documents = event.files;
-    console.log('dokumenti: ', this.documents);
+
     switch (event.action) {
       case 'add': {
         this.drugForm.get('files').patchValue(JSON.stringify(event.files));
