@@ -214,7 +214,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.violationForm.invalid) {
+        if (this.violationForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.violationForm);
           return;
         }

@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { BrokerMinimalResponse } from './brokerMinimalResponse';
 import { EnumValue } from './enumValue';
 import { TrailerAccidentResponse } from './trailerAccidentResponse';
@@ -76,5 +77,6 @@ export interface RoadsideInspectionResponse {
     specialChecks?: Array<RoadsideInspectionSpecialCheckResponse> | null;
     createdAt?: string;
     updatedAt?: string;
+    files?: Array<FileResponse> | null;
 }
 

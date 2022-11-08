@@ -118,16 +118,16 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     this.createForm();
     this.isCompanyOwned();
 
-    if (this.editData?.id) {
-      this.skipVinDecocerEdit = true;
-      this.editTrailerById(this.editData.id);
-    }
-
     if (this.editData?.storageData) {
       this.skipVinDecocerEdit = true;
       this.populateStorageData(this.editData.storageData);
     } else {
       this.getTrailerDropdowns();
+    }
+
+    if (this.editData?.id) {
+      this.skipVinDecocerEdit = true;
+      this.editTrailerById(this.editData.id);
     }
 
     this.vinDecoder();
@@ -221,7 +221,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       } else {
         // Save & Update
         if (data.action === 'save') {
-          if (this.trailerForm.invalid) {
+          if (this.trailerForm.invalid || !this.isFormDirty) {
             this.inputService.markInvalid(this.trailerForm);
             return;
           }
@@ -307,6 +307,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           this.tireSize = res.tireSizes;
           this.doorType = res.doorTypes;
           this.reeferUnitType = res.reeferUnits;
+
+          this.trailerForm.get('fhwaExp').patchValue(res.fhwaExp);
         },
         error: () => {
           this.notificationService.error(
@@ -588,6 +590,10 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           this.selectedDoorType = res.doorType ? res.doorType : null;
           this.selectedReeferType = res.reeferUnit ? res.reeferUnit : null;
           this.trailerStatus = res.status !== 1;
+
+          setTimeout(() => {
+            this.trailerForm.get('fhwaExp').patchValue(res.fhwaExp);
+          }, 150);
 
           this.modalService.changeModalStatus({
             name: 'deactivate',

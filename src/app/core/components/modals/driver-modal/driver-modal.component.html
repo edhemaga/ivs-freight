@@ -820,8 +820,8 @@
             [isCardOpen]="true"
           >
             <app-ta-logo-change
-              [imageUrl]="this.driverForm.get('avatar').value"
               [customClass]="'modal-container-M'"
+              [imageUrl]="this.driverForm.get('avatar').value"
               (validationEvent)="onImageValidation($event)"
               (base64ImageEvent)="onUploadImage($event)"
             ></app-ta-logo-change>

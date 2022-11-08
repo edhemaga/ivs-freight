@@ -67,6 +67,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
   @Input() headerSvg: string;
   @Input() saveAndAddNew: boolean;
   @Input() customTextSaveAndAddNew: string;
+  @Input() applicantText: boolean;
+  @Input() profileUpdateText: boolean;
   @Input() customClass: string;
   @Input() isModalValid: boolean;
   @Input() disableFooter: boolean;

@@ -85,7 +85,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save and add new': {
-        if (this.applicantForm.invalid) {
+        if (this.applicantForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.applicantForm);
           return;
         }
@@ -98,7 +98,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.applicantForm.invalid) {
+        if (this.applicantForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.applicantForm);
           return;
         }

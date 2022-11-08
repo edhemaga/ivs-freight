@@ -150,7 +150,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.officeForm.invalid) {
+        if (this.officeForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.officeForm);
           return;
         }

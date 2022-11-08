@@ -12,11 +12,12 @@
 import { FuelTransactionResponse } from './fuelTransactionResponse';
 import { FuelStopExtensionResponse } from './fuelStopExtensionResponse';
 import { AddressEntity } from './addressEntity';
+import { FuelStopFranchiseMinimalResponse } from './fuelStopFranchiseMinimalResponse';
 
 
 export interface FuelStopResponse { 
     id?: number;
-    name?: string | null;
+    fuelStopFranchise?: FuelStopFranchiseMinimalResponse;
     businessName?: string | null;
     store?: string | null;
     phone?: string | null;

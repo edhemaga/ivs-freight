@@ -6,6 +6,7 @@
   [editName]="applicantFullName"
   [saveAndAddNew]="editData?.type !== 'edit'"
   [customTextSaveAndAddNew]="'Send & Invite New'"
+  [applicantText]="true"
   [resendEmail]="editData?.type === 'edit'"
   [isModalValid]="applicantForm.valid && isFormDirty"
   (action)="onModalAction($event)"
