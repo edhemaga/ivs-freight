@@ -391,6 +391,9 @@ export class CustomerTableComponent
         }
       });
 
+      // console.log('Customer Data');
+      // console.log(this.viewData);
+
       // For Testing
       // for (let i = 0; i < 100; i++) {
       //   this.viewData.push(this.viewData[0]);

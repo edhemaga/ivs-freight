@@ -106,7 +106,8 @@ export class DriverDetailsItemComponent
     this.confirmationService.confirmationData$
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (res: Confirmation) => {
+        next: (res: any) => {
+          console.log('confirmation service: ', res);
           switch (res.type) {
             case 'delete': {
               if (res.template === 'cdl') {
@@ -117,6 +118,31 @@ export class DriverDetailsItemComponent
                 this.deleteMvrByIdFunction(res.id);
               } else if (res.template === 'test') {
                 this.deleteTestByIdFunction(res.id);
+              }
+              break;
+            }
+            case 'info': {
+              switch (res.template) {
+                case 'cdl': {
+                  const timeout = setTimeout(() => {
+                    this.modalService.openModal(
+                      DriverCdlModalComponent,
+                      { size: 'small' },
+                      {
+                        id: res.data.driver.id,
+                        file_id: res.data.driver.file_id,
+                        type: 'renew-licence',
+                        renewData: res.data.driver.renewData,
+                      }
+                    );
+                    clearTimeout(timeout);
+                  }, 300);
+
+                  break;
+                }
+                default: {
+                  break;
+                }
               }
               break;
             }
@@ -170,8 +196,7 @@ export class DriverDetailsItemComponent
       let endDate = moment(item.expDate);
       let daysDiff = endDate.diff(moment(), 'days');
       let isBefore = moment(item.expDate).isBefore(moment());
-      
-    
+
       if (moment(item.expDate).isBefore(moment())) {
         this.expiredCard.push(true);
       } else {
@@ -182,21 +207,14 @@ export class DriverDetailsItemComponent
       } else {
         this.activateShow.push(false);
       }
-      /*
-      if ( moment(item.expDate).isBefore(moment()) || endDate.diff(moment(), 'days') <= 365 ) {
+
+      if (daysDiff < -365) {
         this.arrayOfRenewCdl.push(true);
       } else {
         this.arrayOfRenewCdl.push(false);
       }
-      */
-      if ( daysDiff < -365 ) {
-        this.arrayOfRenewCdl.push(true);
-      } else {
-        this.arrayOfRenewCdl.push(false); 
-      }
-
     });
-    
+
     this.dataDropDown = {
       disabledMutedStyle: null,
       toolbarActions: {
@@ -264,8 +282,8 @@ export class DriverDetailsItemComponent
             !this.templateName && this.expiredCard[this.currentIndex] == false
               ? true
               : false,
-          redIcon: this.activateShow[this.currentIndex] == true ? false : true,    
-          blueIcon: this.activateShow[this.currentIndex] == true ? true : false,    
+          redIcon: this.activateShow[this.currentIndex] == true ? false : true,
+          blueIcon: this.activateShow[this.currentIndex] == true ? true : false,
         },
         {
           title: 'Delete',
@@ -340,7 +358,6 @@ export class DriverDetailsItemComponent
       ],
       export: true,
     };
-    
   }
 
   public getCdlById(id: number) {
@@ -402,18 +419,6 @@ export class DriverDetailsItemComponent
     }, 100);
   }
   public openCommand(cdl?: any, modal?: string) {
-    if (modal === 'renew-licence') {
-      this.modalService.openModal(
-        DriverCdlModalComponent,
-        { size: 'small' },
-        {
-          id: this.drivers[0].data.id,
-          file_id: cdl.id,
-          type: 'renew-licence',
-          renewData: cdl,
-        }
-      );
-    }
     if (this.activeCdl.length) {
       let data = this.drivers;
       this.modalService.openModal(
@@ -424,6 +429,12 @@ export class DriverDetailsItemComponent
             ...this.activeCdl[0],
             state: this.activeCdl[0].state.stateShortName,
             data,
+            driver: {
+              id: this.drivers[0].data.id,
+              file_id: cdl.id,
+              type: 'renew-licence',
+              renewData: cdl,
+            },
           },
           template: 'cdl',
           type: 'info',

@@ -345,7 +345,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       } else {
         // Save & Update
         if (data.action === 'save') {
-          if (this.brokerForm.invalid) {
+          if (this.brokerForm.invalid || !this.isFormDirty) {
             this.inputService.markInvalid(this.brokerForm);
             return;
           }

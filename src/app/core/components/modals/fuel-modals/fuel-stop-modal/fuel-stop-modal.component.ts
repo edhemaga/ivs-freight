@@ -80,7 +80,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.fuelStopForm.invalid) {
+        if (this.fuelStopForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.fuelStopForm);
           return;
         }

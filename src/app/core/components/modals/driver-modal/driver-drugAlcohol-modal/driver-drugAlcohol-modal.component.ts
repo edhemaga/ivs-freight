@@ -107,7 +107,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       }
       case 'save': {
         // If Form not valid
-        if (this.drugForm.invalid) {
+        if (this.drugForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.drugForm);
           return;
         }
@@ -220,14 +220,26 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
   public onFilesEvent(event: any) {
     this.documents = event.files;
-    this.drugForm.get('files').patchValue(JSON.stringify(event.files));
-    if (event.action == 'delete') {
-      this.drugForm.get('files').patchValue(null);
-      if(event.deleteId) {
-        this.filesForDelete.push(event.deleteId);
-      }
 
-      this.fileModified = true;
+    switch (event.action) {
+      case 'add': {
+        this.drugForm.get('files').patchValue(JSON.stringify(event.files));
+        break;
+      }
+      case 'delete': {
+        this.drugForm
+          .get('files')
+          .patchValue(event.files.length ? JSON.stringify(event.files) : null);
+        if (event.deleteId) {
+          this.filesForDelete.push(event.deleteId);
+        }
+
+        this.fileModified = true;
+        break;
+      }
+      default: {
+        break;
+      }
     }
   }
 
@@ -307,7 +319,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
             testReasonId: res.testReason ? res.testReason.name : null,
             result: res.result ? res.result.name : null,
             testingDate: convertDateFromBackend(res.testingDate),
-            files: res.files,
+            files: res.files.length ? JSON.stringify(res.files) : null,
             note: res.note,
           });
           this.selectedTestType = res.testType;

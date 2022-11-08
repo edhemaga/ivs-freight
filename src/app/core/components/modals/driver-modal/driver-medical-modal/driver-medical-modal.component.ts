@@ -103,7 +103,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
       }
       case 'save': {
         // If Form not valid
-        if (this.medicalForm.invalid) {
+        if (this.medicalForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.medicalForm);
           return;
         }
@@ -133,7 +133,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
         files: null,
       });
 
-      if(event.deleteId) {
+      if (event.deleteId) {
         this.filesForDelete.push(event.deleteId);
       }
 

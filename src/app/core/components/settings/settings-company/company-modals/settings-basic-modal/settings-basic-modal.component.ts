@@ -438,7 +438,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       }
       case 'save': {
         // If Form not valid
-        if (this.companyForm.invalid) {
+        if (this.companyForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.companyForm);
           return;
         }
