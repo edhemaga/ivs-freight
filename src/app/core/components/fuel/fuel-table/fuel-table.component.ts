@@ -1,18 +1,17 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  OnDestroy,
-} from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { getFuelStopColumnDefinition, getFuelTransactionColumnDefinition } from '../../../../../assets/utils/settings/accounting-fuel-columns';
+import {
+  getFuelStopColumnDefinition,
+  getFuelTransactionColumnDefinition,
+} from '../../../../../assets/utils/settings/accounting-fuel-columns';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { AfterViewInit } from '@angular/core';
 import { tableSearch } from 'src/app/core/utils/methods.globals';
+import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 
 @Component({
   selector: 'app-fuel-table',
@@ -249,7 +248,6 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
 
-    
     // Map
     this.sortTypes = [
       { name: 'Business Name', id: 1, sortName: 'name' },
@@ -352,7 +350,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sendFuelData() {
     this.initTableOptions();
-    
+
     this.tableData = [
       {
         title: 'Transactions',
@@ -392,10 +390,14 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onToolBarAction(event: any) {
+    console.log('toolbar action: ', event);
     if (event.action === 'open-modal') {
       this.modalService.openModal(FuelPurchaseModalComponent, {
         size: 'small',
       });
+      // this.modalService.openModal(FuelStopModalComponent, {
+      //   size: 'small',
+      // });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
 
@@ -406,6 +408,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
+    console.log('table body actions: ', event);
     if (event.type === 'edit') {
       this.modalService.openModal(
         FuelPurchaseModalComponent,
@@ -414,6 +417,15 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
           ...event,
         }
       );
+      // this.modalService.openModal(
+      //   FuelStopModalComponent,
+      //   {
+      //     size: 'small',
+      //   },
+      //   {
+      //     ...event,
+      //   }
+      // );
     }
   }
 
