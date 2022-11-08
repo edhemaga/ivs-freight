@@ -13,6 +13,7 @@
           showVerticalScrollBar: false,
           showHorizontalScrollBar: true
         }"
+        (scrollEvent)="onHorizontalScroll($event)"
       >
         <tr
           class="table-tr"
@@ -1315,11 +1316,10 @@
               [ngClass]="{ 'border-left': showScrollSectionBorder }"
             ></div>
 
-            <!--  (scroll)="onScroll($event)" -->
             <!-- NOT PINED -->
             <div
               class="not-pined-columns"
-              id="scroll-container"
+              id="table-not-pined-scroll-container"
               [ngStyle]="{ 'max-width.px': notPinedMaxWidth }"
             >
               <td class="not-pined-td" *ngFor="let column of notPinedColumns">
