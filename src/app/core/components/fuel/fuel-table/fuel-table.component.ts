@@ -390,14 +390,16 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onToolBarAction(event: any) {
-    console.log('toolbar action: ', event);
     if (event.action === 'open-modal') {
-      this.modalService.openModal(FuelPurchaseModalComponent, {
-        size: 'small',
-      });
-      // this.modalService.openModal(FuelStopModalComponent, {
-      //   size: 'small',
-      // });
+      if (this.selectedTab === 'active') {
+        this.modalService.openModal(FuelPurchaseModalComponent, {
+          size: 'small',
+        });
+      } else {
+        this.modalService.openModal(FuelStopModalComponent, {
+          size: 'small',
+        });
+      }
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
 
@@ -407,25 +409,29 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  public onTableBodyActions(event: any) {
-    console.log('table body actions: ', event);
+  onTableHeadActions(event: any) {}
+
+  onTableBodyActions(event: any) {
     if (event.type === 'edit') {
-      this.modalService.openModal(
-        FuelPurchaseModalComponent,
-        { size: 'small' },
-        {
-          ...event,
-        }
-      );
-      // this.modalService.openModal(
-      //   FuelStopModalComponent,
-      //   {
-      //     size: 'small',
-      //   },
-      //   {
-      //     ...event,
-      //   }
-      // );
+      if (this.selectedTab === 'active') {
+        this.modalService.openModal(
+          FuelPurchaseModalComponent,
+          { size: 'small' },
+          {
+            ...event,
+          }
+        );
+      } else {
+        this.modalService.openModal(
+          FuelStopModalComponent,
+          {
+            size: 'small',
+          },
+          {
+            ...event,
+          }
+        );
+      }
     }
   }
 
