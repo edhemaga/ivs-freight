@@ -65,7 +65,8 @@
 
 .dropdown-main-popover-body{
   background-color: transparent;
-  transition: transform 5.1s ease;
+  transition: transform 0.1s ease;
+
   &.horizontalMargin{
     margin-top: 4px;
   }
@@ -73,6 +74,10 @@
   &.verticalMargin{
     margin-left: 4px;
     margin-top: 3px;
+  }
+
+  &.leftPositionMargin{
+    margin-right: 4px;
   }
 
 }
