@@ -18,7 +18,7 @@
       align-items: center;
       transform: rotate(0deg);
       fill: #919191;
-      transition: transform 0.15s ease;
+      transition: transform 0.1s ease;
       path{
         fill: #919191;
       }
@@ -65,7 +65,7 @@
 
 .dropdown-main-popover-body{
   background-color: transparent;
-
+  transition: transform 5.1s ease;
   &.horizontalMargin{
     margin-top: 4px;
   }
@@ -127,7 +127,7 @@
         display: flex;
         align-items: center;
         transform: rotate(0deg);
-        transition: all 0.15s ease-in;
+        transition: all 0.1s ease-in;
         svg {
 
           rect{
@@ -323,13 +323,13 @@
   .openedSubtype{
     background-color: #AAAAAA10;
     border-radius: 2px;
-    transition: all 0.15s ease-in;
+    transition: all 0.1s ease-in;
     .action-select-holder{
       height: 26px;
 
       .actionTitle{
         font-weight: 700;
-        transition: all 0.15s ease-in;
+        //transition: all 0.3s ease-in;
       }
   
       .actionIcon{
@@ -363,7 +363,7 @@
 
   .hoveredSubtype{
     background-color: transparent !important;
-    transition: all 0.15s ease-in;
+    transition: all 0.1s ease-in;
   }
 
   .border-holder{
