@@ -2,10 +2,12 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   NgZone,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
@@ -21,7 +23,9 @@ export class CustomScrollbarComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
   @ViewChild('bar', { static: false }) private bar: ElementRef;
+  @Output() scrollEvent: EventEmitter<any> = new EventEmitter();
   @Input() scrollBarOptions: any;
+  
 
   scrollTop: number = 5;
   showScrollbar: boolean = false;
@@ -90,7 +94,7 @@ export class CustomScrollbarComponent
                 (e.clientY - this.barClickPosition) * this.scrollRatioFull
               );
             }
-          } 
+          }
           // Table Scroll
           else {
             const offsetBar = e.clientX - this.tableBarClickPosition;
@@ -101,10 +105,11 @@ export class CustomScrollbarComponent
                 this.tableNotPinedBoundingRect.width
             ) {
               this.bar.nativeElement.style.transform = `translateX(${offsetBar}px)`;
+              this.scrollEvent.emit({
+                eventAction: 'scrolling',
+                scrollPosition: offsetBar * this.tableScrollRatioFull
+              });
             }
-
-            this.elRef.nativeElement.children[0].scrollLeft =
-              e.clientX * this.tableScrollRatioFull;
           }
         }
       });
@@ -170,8 +175,12 @@ export class CustomScrollbarComponent
 
       // Table Scroll
       if (this.scrollBarOptions.showHorizontalScrollBar) {
-        const tableFullWidth = this.tableNotPinedContainer.scrollWidth;
-        const tableVisibleWidth = this.tableNotPinedBoundingRect.width;
+        console.log('Ulazi u calculateBarSizeAndPosition');
+
+        const scrollWrapper =  document.querySelector('.not-pined-columns');
+
+        const tableFullWidth = scrollWrapper.scrollWidth;
+        const tableVisibleWidth = scrollWrapper.getBoundingClientRect().width;
 
         this.tableScrollRatio = tableVisibleWidth / tableFullWidth;
 
@@ -179,16 +188,23 @@ export class CustomScrollbarComponent
 
         this.tableScrollWidth = this.tableScrollRatio * tableVisibleWidth;
 
+        console.log('Table Full Width')
+        console.log(tableFullWidth);
+
+        console.log('Table Visible Width')
+        console.log(tableVisibleWidth);
+
         if (tableFullWidth <= tableVisibleWidth) {
           this.showScrollbar = false;
 
           this.chng.detectChanges();
-          return;
         }
 
-        console.log('Show Scroll Bar');
-        console.log(this.showScrollbar);
-      } 
+        this.scrollEvent.emit({
+          eventAction: 'isScrollShowing',
+          isScrollBarShowing: this.showScrollbar
+        });
+      }
       // Regular Scroll
       else {
         const content_height =

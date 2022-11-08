@@ -395,7 +395,7 @@ export class CustomerTableComponent
       // console.log(this.viewData);
 
       // For Testing
-      // for (let i = 0; i < 100; i++) {
+      // for (let i = 0; i < 1000; i++) {
       //   this.viewData.push(this.viewData[0]);
       // }
     } else {
