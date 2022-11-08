@@ -155,10 +155,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData?.type === 'edit') {
-          if (this.isFormDirty) {
-            this.updateCompanyOffice(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateCompanyOffice(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addCompanyOffice();
           this.modalService.setModalSpinner({ action: null, status: true });

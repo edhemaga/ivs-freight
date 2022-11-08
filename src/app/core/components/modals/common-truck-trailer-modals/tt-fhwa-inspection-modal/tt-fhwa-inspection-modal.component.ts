@@ -77,10 +77,8 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData.type === 'edit-inspection') {
-          if (this.isFormDirty) {
-            this.updateInspection();
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateInspection();
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addInspection();
           this.modalService.setModalSpinner({ action: null, status: true });

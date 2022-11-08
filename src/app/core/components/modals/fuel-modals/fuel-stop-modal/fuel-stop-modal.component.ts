@@ -85,10 +85,8 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData) {
-          if (this.isFormDirty) {
-            this.updateFuelStop(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateFuelStop(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addFuelStop();
           this.modalService.setModalSpinner({ action: null, status: true });

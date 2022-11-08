@@ -213,7 +213,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       fuelType: [null],
       shifter: [null],
       axles: [null, axlesValidation],
-      fhwaExp: [12, Validators.required],
+      fhwaExp: [null, Validators.required],
       insurancePolicy: [null, insurancePolicyValidation],
       mileage: [null, mileageValidation],
       engineOilType: [null],
@@ -286,10 +286,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             return;
           }
           if (this.editData?.id) {
-            if (this.isFormDirty) {
-              this.updateTruck(this.editData.id);
-              this.modalService.setModalSpinner({ action: null, status: true });
-            }
+            this.updateTruck(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
           } else {
             this.addTruck();
             this.modalService.setModalSpinner({
@@ -609,6 +607,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             dcInverter: res.dcInverter,
             blower: res.blower,
             pto: res.pto,
+            fhwaExp: res.fhwaExp ? res.fhwaExp : 12,
           });
 
           this.selectedAPUnit = res.apUnit ? res.apUnit : null;
@@ -636,10 +635,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             : null;
           this.selectedFuelType = res.fuelType;
           this.truckStatus = res.status !== 1;
-
-          setTimeout(() => {
-            this.truckForm.get('fhwaExp').patchValue(res.fhwaExp);
-          }, 150);
 
           this.modalService.changeModalStatus({
             name: 'deactivate',
