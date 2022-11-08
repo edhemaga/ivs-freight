@@ -1101,7 +1101,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.editData.company.currency?.id !== 0
           ? this.editData.company.currency.name
           : null,
-      logo: this.editData.company.logo,
+      logo: this.editData.company.logo ? this.editData.company.logo : null,
     });
 
     this.selectedAddress = this.editData.company.address;
@@ -1630,7 +1630,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       dateOfIncorporation: this.editData.company.dateOfIncorporation
         ? convertDateFromBackend(this.editData.company.dateOfIncorporation)
         : null,
-      logo: this.editData.company.logo,
+      logo: this.editData.company.logo ? this.editData.company.logo : null,
       //-------------------- Additional Tab
       departmentContacts: [],
       bankAccounts: [],

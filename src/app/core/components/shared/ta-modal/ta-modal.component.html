@@ -1,4 +1,9 @@
-<app-custom-scrollbar>
+<app-custom-scrollbar
+  [scrollBarOptions]="{
+    showVerticalScrollBar: true,
+    showHorizontalScrollBar: false
+  }"
+>
   <div cdkDrag class="modal-container {{ customClass }}" ngBAutofocus>
     <div class="modal-original-part">
       <!-- Modal Header -->

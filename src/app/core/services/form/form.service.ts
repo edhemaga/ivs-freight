@@ -33,7 +33,6 @@ export class FormService implements OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe(() => {
-        console.log('form: ', form);
         if (!form.dirty) {
           this.originalValue = form.value;
 
@@ -52,9 +51,6 @@ export class FormService implements OnDestroy {
       )
       .subscribe(() => {
         let current_value = form.value;
-        console.log('different: ', diff(this.originalValue, current_value));
-        console.log('init: ', this.originalValue);
-        console.log('current: ', current_value);
         if (Object.keys(diff(this.originalValue, current_value)).length !== 0) {
           this.formValueChange$.next(true);
         } else {
