@@ -4,14 +4,7 @@ import {
 } from '../../../../utils/methods.calculations';
 import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
 import { NotificationService } from '../../../../services/notification/notification.service';
-import {
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RepairTService } from '../../../repair/state/repair.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -116,7 +109,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private ngbActiveModal: NgbActiveModal,
     private sumArrayPipe: SumArraysPipe,
-    private cdRef: ChangeDetectorRef,
     private formService: FormService
   ) {}
 
@@ -132,17 +124,19 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     if (this.editData?.type?.includes('edit')) {
       this.editRepairById(this.editData.id);
     } else {
-      if (this.editData?.type?.toLowerCase().includes('trailer')) {
-        this.onTypeOfRepair(
-          this.typeOfRepair.find((item) => item.name === 'Trailer'),
-          'true'
-        );
-      } else {
-        this.onTypeOfRepair(
-          this.typeOfRepair.find((item) => item.name === 'Truck'),
-          'true'
-        );
-      }
+      setTimeout(() => {
+        if (this.editData?.type?.toLowerCase().includes('trailer')) {
+          this.onTypeOfRepair(
+            this.typeOfRepair.find((item) => item.name === 'Trailer'),
+            'true'
+          );
+        } else {
+          this.onTypeOfRepair(
+            this.typeOfRepair.find((item) => item.name === 'Truck'),
+            'true'
+          );
+        }
+      }, 100);
     }
   }
 
@@ -346,12 +340,15 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         checked: item.id === event.id,
       };
     });
+    console.log(
+      'unit type value: ',
+      this.repairOrderForm.get('unitType').value
+    );
 
     this.labelsUnit =
-      this.repairOrderForm.get('unitType').value === 'Trailer'
-        ? this.unitTrailers
-        : this.unitTrucks;
-    console.log('function labels: ', this.labelsUnit);
+      event.name === 'Trailer' ? [...this.unitTrailers] : [...this.unitTrucks];
+    console.log('labels unit on change:  ', this.labelsUnit);
+
     if (action) {
       return;
     }
@@ -515,7 +512,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           }
 
           // Unit Trucks
-          this.unitTrucks = this.labelsUnit = res.trucks.map((item) => {
+          this.unitTrucks = res.trucks.map((item) => {
             return {
               ...item,
               name: item.truckNumber,
@@ -540,8 +537,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             };
           });
           this.labelsRepairShop = [...res.repairShops];
-
-          this.cdRef.detectChanges();
         },
         error: () => {
           this.notificationService.error("Repair Dropdowns can't be loaded");
