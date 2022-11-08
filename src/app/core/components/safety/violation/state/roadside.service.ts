@@ -45,7 +45,7 @@ export class RoadsideService {
     return this.roadsideServis.apiViolationListMinimalGet(pageIndex, pageSize);
   }
   public updateRoadside(
-    data: UpdateRoadsideInspectionCommand
+    data: any /*UpdateRoadsideInspectionCommand*/
   ): Observable<any> {
     return this.roadsideServis.apiViolationPut(data);
   }
