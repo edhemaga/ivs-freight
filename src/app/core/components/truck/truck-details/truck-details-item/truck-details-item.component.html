@@ -84,7 +84,7 @@
                   </div>
                   <svg-icon
                     *ngIf="reg?.files?.length"
-                    (click)="onFileAction('download')"
+                    (click)="downloadAllFiles('registration', i)"
                     src="assets/svg/common/ic_download.svg"
                   >
                   </svg-icon>
@@ -92,6 +92,7 @@
               </div>
               <div class="card-pdf" [class.disabled]="!reg?.files?.length">
                 <app-ta-upload-files
+                  #registrationUpload
                   [files]="reg.files ? reg.files : []"
                   [customClassName]="'driver-details-pdf'"
                   [hasCarouselBottomTabs]="true"
@@ -177,7 +178,7 @@
                   </div>
                   <svg-icon
                     *ngIf="fhwa?.files?.length"
-                    (click)="onFileAction('download')"
+                    (click)="downloadAllFiles('fhwa', i)"
                     src="assets/svg/common/ic_download.svg"
                   >
                   </svg-icon>
@@ -185,6 +186,7 @@
               </div>
               <div class="card-pdf" [class.disabled]="!fhwa?.files?.length">
                 <app-ta-upload-files
+                  #fhwaUpload
                   [files]="fhwa.files ? fhwa.files : []"
                   [customClassName]="'driver-details-pdf'"
                   [hasCarouselBottomTabs]="true"
@@ -285,7 +287,7 @@
                   </div>
                   <svg-icon
                     *ngIf="title?.files?.length"
-                    (click)="onFileAction('download')"
+                    (click)="downloadAllFiles('title', i)"
                     src="assets/svg/common/ic_download.svg"
                   >
                   </svg-icon>
@@ -293,6 +295,7 @@
               </div>
               <div class="card-pdf" [class.disabled]="!title?.files?.length">
                 <app-ta-upload-files
+                  #titleUpload
                   [files]="title.files ? title.files : []"
                   [customClassName]="'driver-details-pdf'"
                   [hasCarouselBottomTabs]="true"

@@ -6,6 +6,7 @@ import {
   OnDestroy,
   ViewChild,
   Input,
+  ViewChildren,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TruckResponse } from 'appcoretruckassist';
@@ -29,6 +30,9 @@ import { card_component_animation } from '../../../shared/animations/card-compon
 })
 export class TruckDetailsItemComponent implements OnInit, OnDestroy {
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
+  @ViewChildren('fhwaUpload') fhwaUpload: any;
+  @ViewChildren('registrationUpload') registrationUpload: any;
+  @ViewChildren('titleUpload') titleUpload: any;
   @Input() truck: TruckResponse | any = null;
   public note: FormControl = new FormControl();
   public fhwaNote: FormControl = new FormControl();
@@ -104,7 +108,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'View Details',
@@ -117,15 +121,15 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
           name: 'renew',
           svg: 'assets/svg/common/ic_retry_white.svg',
           show: true,
-        },    
+        },
         {
           title: 'Transfer',
           name: 'transfer',
           svg: 'assets/svg/common/dropdown-transfer-icon.svg',
           show: true,
-        },    
+        },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Share',
@@ -138,16 +142,16 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
           name: 'print',
           svg: 'assets/svg/common/ic_fax.svg',
           show: true,
-        },  
+        },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Void',
           name: 'activate-item',
           svg: 'assets/svg/common/ic_cancel_violation.svg',
-          redIcon: true,  
-        },    
+          redIcon: true,
+        },
         {
           title: 'Delete',
           name: 'delete-item',
@@ -182,16 +186,16 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'View Details',
           name: 'view-details',
           svg: 'assets/svg/common/ic_hazardous-info.svg',
           show: true,
-        },  
+        },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Share',
@@ -204,10 +208,10 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
           name: 'print',
           svg: 'assets/svg/common/ic_fax.svg',
           show: true,
-        },  
+        },
         {
-          title: 'border'
-        }, 
+          title: 'border',
+        },
         {
           title: 'Delete',
           name: 'delete-item',
@@ -221,7 +225,6 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
       ],
       export: true,
     };
-    
   }
 
   /**Function retrun id */
@@ -332,6 +335,42 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
     }
     this.accountText = value;
   }
+
+  public downloadAllFiles(type: string, index: number) {
+    switch (type) {
+      case 'fhwa': {
+        if (
+          this.fhwaUpload._results[index] &&
+          this.fhwaUpload._results[index].downloadAllFiles
+        ) {
+          this.fhwaUpload._results[index].downloadAllFiles();
+        }
+        break;
+      }
+      case 'registration': {
+        if (
+          this.registrationUpload._results[index] &&
+          this.registrationUpload._results[index].downloadAllFiles
+        ) {
+          this.registrationUpload._results[index].downloadAllFiles();
+        }
+        break;
+      }
+      case 'title': {
+        if (
+          this.titleUpload._results[index] &&
+          this.titleUpload._results[index].downloadAllFiles
+        ) {
+          this.titleUpload._results[index].downloadAllFiles();
+        }
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

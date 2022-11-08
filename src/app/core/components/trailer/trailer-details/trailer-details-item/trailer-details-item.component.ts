@@ -4,6 +4,8 @@ import {
   OnInit,
   OnDestroy,
   Input,
+  ViewChild,
+  ViewChildren,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TrailerResponse } from 'appcoretruckassist';
@@ -25,6 +27,9 @@ import { card_component_animation } from '../../../shared/animations/card-compon
   animations: [card_component_animation('showHideCardBody')],
 })
 export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
+  @ViewChildren('fhwaUpload') fhwaUpload: any;
+  @ViewChildren('registrationUpload') registrationUpload: any;
+  @ViewChildren('titleUpload') titleUpload: any;
   private destroy$ = new Subject<void>();
   @Input() trailer: TrailerResponse | any = null;
   public note: FormControl = new FormControl();
@@ -98,7 +103,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'View Details',
@@ -111,15 +116,15 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
           name: 'renew',
           svg: 'assets/svg/common/ic_retry_white.svg',
           show: true,
-        },    
+        },
         {
           title: 'Transfer',
           name: 'transfer',
           svg: 'assets/svg/common/dropdown-transfer-icon.svg',
           show: true,
-        },    
+        },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Share',
@@ -132,16 +137,16 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
           name: 'print',
           svg: 'assets/svg/common/ic_fax.svg',
           show: true,
-        },  
+        },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Void',
           name: 'activate-item',
           svg: 'assets/svg/common/ic_cancel_violation.svg',
-          redIcon: true,  
-        },    
+          redIcon: true,
+        },
         {
           title: 'Delete',
           name: 'delete-item',
@@ -175,16 +180,16 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'View Details',
           name: 'view-details',
           svg: 'assets/svg/common/ic_hazardous-info.svg',
           show: true,
-        },  
+        },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Share',
@@ -197,10 +202,10 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
           name: 'print',
           svg: 'assets/svg/common/ic_fax.svg',
           show: true,
-        },  
+        },
         {
-          title: 'border'
-        }, 
+          title: 'border',
+        },
         {
           title: 'Delete',
           name: 'delete-item',
@@ -293,6 +298,42 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
         },
       });
   }
+
+  public downloadAllFiles(type: string, index: number) {
+    switch (type) {
+      case 'fhwa': {
+        if (
+          this.fhwaUpload._results[index] &&
+          this.fhwaUpload._results[index].downloadAllFiles
+        ) {
+          this.fhwaUpload._results[index].downloadAllFiles();
+        }
+        break;
+      }
+      case 'registration': {
+        if (
+          this.registrationUpload._results[index] &&
+          this.registrationUpload._results[index].downloadAllFiles
+        ) {
+          this.registrationUpload._results[index].downloadAllFiles();
+        }
+        break;
+      }
+      case 'title': {
+        if (
+          this.titleUpload._results[index] &&
+          this.titleUpload._results[index].downloadAllFiles
+        ) {
+          this.titleUpload._results[index].downloadAllFiles();
+        }
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
   ngOnDestroy(): void {
     this.tableService.sendActionAnimation({});
     this.destroy$.next();

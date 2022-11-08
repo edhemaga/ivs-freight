@@ -8,6 +8,7 @@ import {
   ViewChild,
   Input,
   SimpleChanges,
+  ViewChildren,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DriverResponse } from 'appcoretruckassist';
@@ -45,6 +46,10 @@ export class DriverDetailsItemComponent
 {
   private destroy$ = new Subject<void>();
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
+  @ViewChildren('cdlUpload') cdlUpload: any;
+  @ViewChildren('testUpload') testUpload: any;
+  @ViewChildren('medicalUpload') medicalUpload: any;
+  @ViewChildren('mvrUpload') mvrUpload: any;
   @Input() drivers: DriverResponse | any = null;
   public cdlNote: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
@@ -570,6 +575,51 @@ export class DriverDetailsItemComponent
   public onFileAction(action: string) {
     onFileActionMethods(action);
   }
+
+  public downloadAllFiles(type: string, index: number) {
+    switch (type) {
+      case 'cdl': {
+        if (
+          this.cdlUpload._results[index] &&
+          this.cdlUpload._results[index].downloadAllFiles
+        ) {
+          this.cdlUpload._results[index].downloadAllFiles();
+        }
+        break;
+      }
+      case 'test': {
+        if (
+          this.testUpload._results[index] &&
+          this.testUpload._results[index].downloadAllFiles
+        ) {
+          this.testUpload._results[index].downloadAllFiles();
+        }
+        break;
+      }
+      case 'medical': {
+        if (
+          this.medicalUpload._results[index] &&
+          this.medicalUpload._results[index].downloadAllFiles
+        ) {
+          this.medicalUpload._results[index].downloadAllFiles();
+        }
+        break;
+      }
+      case 'mvr': {
+        if (
+          this.mvrUpload._results[index] &&
+          this.mvrUpload._results[index].downloadAllFiles
+        ) {
+          this.mvrUpload._results[index].downloadAllFiles();
+        }
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

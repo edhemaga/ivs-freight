@@ -146,6 +146,19 @@ export class TaUploadFilesComponent implements OnInit {
     return item.name;
   }
 
+  public downloadAllFiles() {
+    this.files.map((item) => {
+      fetch(item.url).then((t) => {
+        t.blob().then((b) => {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(b);
+          a.setAttribute('download', item.fileName);
+          a.click();
+        });
+      });
+    });
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

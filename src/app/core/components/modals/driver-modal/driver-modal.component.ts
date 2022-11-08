@@ -85,6 +85,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public driverStatus: boolean = true;
 
   public documents: any[] = [];
+  public fileModified: boolean = false;
+  public filesForDelete: any[] = [];
 
   public isFormDirty: boolean;
 
@@ -311,6 +313,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       mailNotificationPayroll: [true],
       pushNotificationPayroll: [false],
       smsNotificationPayroll: [false],
+      files: [null],
     });
 
     this.inputService.customInputValidator(
@@ -715,6 +718,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public onFilesEvent(event: any) {
     this.documents = event.files;
+    this.driverForm.get('files').patchValue(JSON.stringify(event.files));
+    if (event.action == 'delete') {
+      this.driverForm.get('files').patchValue(null);
+      if (event.deleteId) {
+        this.filesForDelete.push(event.deleteId);
+      }
+
+      this.fileModified = true;
+    }
   }
 
   private einNumberChange() {
@@ -991,6 +1003,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       ...form
     } = this.driverForm.value;
 
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
+
     const newData: CreateDriverCommand = {
       ...form,
       dateOfBirth: convertDateToBackend(
@@ -1214,6 +1230,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           ? teamDriver
           : false
         : null,
+      files: documents,
     };
 
     let driverFullName = newData.firstName + ' ' + newData.lastName;
@@ -1351,6 +1368,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       bussinesName,
       ...form
     } = this.driverForm.value;
+
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
 
     const newData: UpdateDriverCommand = {
       id: id,
@@ -1577,6 +1598,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           ? teamDriver
           : false
         : null,
+      files: documents ? documents : this.driverForm.value.files,
+      filesForDeleteIds: this.filesForDelete,
     };
 
     let driverFullName =
@@ -1717,6 +1740,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.driverFullName = res.firstName.concat(' ', res.lastName);
 
           this.selectedBank = res.bank ? res.bank : null;
+
+          this.documents = res.files;
 
           this.selectedPayType = res.payType
             ? res.payType.id === 0
