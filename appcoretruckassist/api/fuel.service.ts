@@ -19,7 +19,6 @@ import { Observable }                                        from 'rxjs';
 
 import { ActivateDeactivateEFSFuelCard } from '../model/models';
 import { AddFuelCardCommand } from '../model/models';
-import { AddFuelStopCommand } from '../model/models';
 import { AddFuelTransactionCommand } from '../model/models';
 import { ClusterResponse } from '../model/models';
 import { ConnectEFSCommand } from '../model/models';
@@ -31,6 +30,8 @@ import { EditFuelTransactionCommand } from '../model/models';
 import { FuelCardListResponse } from '../model/models';
 import { FuelCardResponse } from '../model/models';
 import { FuelDispatchHistoryResponse } from '../model/models';
+import { FuelStopFranchiseListResponse } from '../model/models';
+import { FuelStopFranchiseResponse } from '../model/models';
 import { FuelStopListResponse } from '../model/models';
 import { FuelStopResponse } from '../model/models';
 import { FuelTransactionListResponse } from '../model/models';
@@ -39,6 +40,7 @@ import { FuelledVehicleHistoryListResponse } from '../model/models';
 import { GetAvailableCreditEFSQuery } from '../model/models';
 import { GetEFSTransactionCommand } from '../model/models';
 import { GetFuelModalResponse } from '../model/models';
+import { GetFuelStopModalResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { SetConnectStatusEFSCommand } from '../model/models';
 
@@ -70,6 +72,19 @@ export class FuelService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         if (typeof value === "object" && value instanceof Date === false) {
@@ -1081,49 +1096,49 @@ export class FuelService {
     }
 
     /**
-     * @param fuelStopSpecParamsPageIndex 
-     * @param fuelStopSpecParamsPageSize 
-     * @param fuelStopSpecParamsCompanyId 
-     * @param fuelStopSpecParamsSort 
-     * @param fuelStopSpecParamsSearch 
-     * @param fuelStopSpecParamsSearch1 
-     * @param fuelStopSpecParamsSearch2 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param companyId 
+     * @param sort 
+     * @param search 
+     * @param search1 
+     * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelFuelstopListGet(fuelStopSpecParamsPageIndex?: number, fuelStopSpecParamsPageSize?: number, fuelStopSpecParamsCompanyId?: number, fuelStopSpecParamsSort?: string, fuelStopSpecParamsSearch?: string, fuelStopSpecParamsSearch1?: string, fuelStopSpecParamsSearch2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<FuelStopListResponse>;
-    public apiFuelFuelstopListGet(fuelStopSpecParamsPageIndex?: number, fuelStopSpecParamsPageSize?: number, fuelStopSpecParamsCompanyId?: number, fuelStopSpecParamsSort?: string, fuelStopSpecParamsSearch?: string, fuelStopSpecParamsSearch1?: string, fuelStopSpecParamsSearch2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<FuelStopListResponse>>;
-    public apiFuelFuelstopListGet(fuelStopSpecParamsPageIndex?: number, fuelStopSpecParamsPageSize?: number, fuelStopSpecParamsCompanyId?: number, fuelStopSpecParamsSort?: string, fuelStopSpecParamsSearch?: string, fuelStopSpecParamsSearch1?: string, fuelStopSpecParamsSearch2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<FuelStopListResponse>>;
-    public apiFuelFuelstopListGet(fuelStopSpecParamsPageIndex?: number, fuelStopSpecParamsPageSize?: number, fuelStopSpecParamsCompanyId?: number, fuelStopSpecParamsSort?: string, fuelStopSpecParamsSearch?: string, fuelStopSpecParamsSearch1?: string, fuelStopSpecParamsSearch2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiFuelFuelstopListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<FuelStopListResponse>;
+    public apiFuelFuelstopListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<FuelStopListResponse>>;
+    public apiFuelFuelstopListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<FuelStopListResponse>>;
+    public apiFuelFuelstopListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
-        if (fuelStopSpecParamsPageIndex !== undefined && fuelStopSpecParamsPageIndex !== null) {
+        if (pageIndex !== undefined && pageIndex !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>fuelStopSpecParamsPageIndex, 'FuelStopSpecParams.PageIndex');
+            <any>pageIndex, 'PageIndex');
         }
-        if (fuelStopSpecParamsPageSize !== undefined && fuelStopSpecParamsPageSize !== null) {
+        if (pageSize !== undefined && pageSize !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>fuelStopSpecParamsPageSize, 'FuelStopSpecParams.PageSize');
+            <any>pageSize, 'PageSize');
         }
-        if (fuelStopSpecParamsCompanyId !== undefined && fuelStopSpecParamsCompanyId !== null) {
+        if (companyId !== undefined && companyId !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>fuelStopSpecParamsCompanyId, 'FuelStopSpecParams.CompanyId');
+            <any>companyId, 'CompanyId');
         }
-        if (fuelStopSpecParamsSort !== undefined && fuelStopSpecParamsSort !== null) {
+        if (sort !== undefined && sort !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>fuelStopSpecParamsSort, 'FuelStopSpecParams.Sort');
+            <any>sort, 'Sort');
         }
-        if (fuelStopSpecParamsSearch !== undefined && fuelStopSpecParamsSearch !== null) {
+        if (search !== undefined && search !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>fuelStopSpecParamsSearch, 'FuelStopSpecParams.Search');
+            <any>search, 'Search');
         }
-        if (fuelStopSpecParamsSearch1 !== undefined && fuelStopSpecParamsSearch1 !== null) {
+        if (search1 !== undefined && search1 !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>fuelStopSpecParamsSearch1, 'FuelStopSpecParams.Search1');
+            <any>search1, 'Search1');
         }
-        if (fuelStopSpecParamsSearch2 !== undefined && fuelStopSpecParamsSearch2 !== null) {
+        if (search2 !== undefined && search2 !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>fuelStopSpecParamsSearch2, 'FuelStopSpecParams.Search2');
+            <any>search2, 'Search2');
         }
 
         let headers = this.defaultHeaders;
@@ -1168,14 +1183,20 @@ export class FuelService {
     }
 
     /**
-     * @param addFuelStopCommand 
+     * @param request 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelFuelstopPost(addFuelStopCommand?: AddFuelStopCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiFuelFuelstopPost(addFuelStopCommand?: AddFuelStopCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiFuelFuelstopPost(addFuelStopCommand?: AddFuelStopCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiFuelFuelstopPost(addFuelStopCommand?: AddFuelStopCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiFuelFuelstopModalGet(request?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<GetFuelStopModalResponse>;
+    public apiFuelFuelstopModalGet(request?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<GetFuelStopModalResponse>>;
+    public apiFuelFuelstopModalGet(request?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<GetFuelStopModalResponse>>;
+    public apiFuelFuelstopModalGet(request?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (request !== undefined && request !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>request, 'request');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -1201,15 +1222,138 @@ export class FuelService {
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.get<GetFuelStopModalResponse>(`${this.configuration.basePath}/api/fuel/fuelstop/modal`,
+            {
+                params: queryParameters,
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param businessName 
+     * @param fuelStopFranchiseId 
+     * @param store 
+     * @param phone 
+     * @param fax 
+     * @param addressCity 
+     * @param addressState 
+     * @param addressCounty 
+     * @param addressAddress 
+     * @param addressStreet 
+     * @param addressStreetNumber 
+     * @param addressCountry 
+     * @param addressZipCode 
+     * @param addressStateShortName 
+     * @param addressAddressUnit 
+     * @param favourite 
+     * @param note 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiFuelFuelstopPost(businessName?: string, fuelStopFranchiseId?: number, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
+    public apiFuelFuelstopPost(businessName?: string, fuelStopFranchiseId?: number, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
+    public apiFuelFuelstopPost(businessName?: string, fuelStopFranchiseId?: number, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
+    public apiFuelFuelstopPost(businessName?: string, fuelStopFranchiseId?: number, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (businessName !== undefined) {
+            formParams = formParams.append('BusinessName', <any>businessName) as any || formParams;
+        }
+        if (fuelStopFranchiseId !== undefined) {
+            formParams = formParams.append('FuelStopFranchiseId', <any>fuelStopFranchiseId) as any || formParams;
+        }
+        if (store !== undefined) {
+            formParams = formParams.append('Store', <any>store) as any || formParams;
+        }
+        if (phone !== undefined) {
+            formParams = formParams.append('Phone', <any>phone) as any || formParams;
+        }
+        if (fax !== undefined) {
+            formParams = formParams.append('Fax', <any>fax) as any || formParams;
+        }
+        if (addressCity !== undefined) {
+            formParams = formParams.append('Address.City', <any>addressCity) as any || formParams;
+        }
+        if (addressState !== undefined) {
+            formParams = formParams.append('Address.State', <any>addressState) as any || formParams;
+        }
+        if (addressCounty !== undefined) {
+            formParams = formParams.append('Address.County', <any>addressCounty) as any || formParams;
+        }
+        if (addressAddress !== undefined) {
+            formParams = formParams.append('Address.Address', <any>addressAddress) as any || formParams;
+        }
+        if (addressStreet !== undefined) {
+            formParams = formParams.append('Address.Street', <any>addressStreet) as any || formParams;
+        }
+        if (addressStreetNumber !== undefined) {
+            formParams = formParams.append('Address.StreetNumber', <any>addressStreetNumber) as any || formParams;
+        }
+        if (addressCountry !== undefined) {
+            formParams = formParams.append('Address.Country', <any>addressCountry) as any || formParams;
+        }
+        if (addressZipCode !== undefined) {
+            formParams = formParams.append('Address.ZipCode', <any>addressZipCode) as any || formParams;
+        }
+        if (addressStateShortName !== undefined) {
+            formParams = formParams.append('Address.StateShortName', <any>addressStateShortName) as any || formParams;
+        }
+        if (addressAddressUnit !== undefined) {
+            formParams = formParams.append('Address.AddressUnit', <any>addressAddressUnit) as any || formParams;
+        }
+        if (favourite !== undefined) {
+            formParams = formParams.append('Favourite', <any>favourite) as any || formParams;
+        }
+        if (note !== undefined) {
+            formParams = formParams.append('Note', <any>note) as any || formParams;
         }
 
         let responseType: 'text' | 'json' = 'json';
@@ -1218,7 +1362,7 @@ export class FuelService {
         }
 
         return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/fuel/fuelstop`,
-            addFuelStopCommand,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -1282,6 +1426,146 @@ export class FuelService {
         return this.httpClient.put<object>(`${this.configuration.basePath}/api/fuel/fuelstop`,
             editFuelStopCommand,
             {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiFuelFuelstopfranchiseIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<FuelStopFranchiseResponse>;
+    public apiFuelFuelstopfranchiseIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<FuelStopFranchiseResponse>>;
+    public apiFuelFuelstopfranchiseIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<FuelStopFranchiseResponse>>;
+    public apiFuelFuelstopfranchiseIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiFuelFuelstopfranchiseIdGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.get<FuelStopFranchiseResponse>(`${this.configuration.basePath}/api/fuel/fuelstopfranchise/${encodeURIComponent(String(id))}`,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param pageIndex 
+     * @param pageSize 
+     * @param companyId 
+     * @param sort 
+     * @param search 
+     * @param search1 
+     * @param search2 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiFuelFuelstopfranchiseListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<FuelStopFranchiseListResponse>;
+    public apiFuelFuelstopfranchiseListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<FuelStopFranchiseListResponse>>;
+    public apiFuelFuelstopfranchiseListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<FuelStopFranchiseListResponse>>;
+    public apiFuelFuelstopfranchiseListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (pageIndex !== undefined && pageIndex !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (companyId !== undefined && companyId !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>companyId, 'CompanyId');
+        }
+        if (sort !== undefined && sort !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>sort, 'Sort');
+        }
+        if (search !== undefined && search !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>search, 'Search');
+        }
+        if (search1 !== undefined && search1 !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>search1, 'Search1');
+        }
+        if (search2 !== undefined && search2 !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>search2, 'Search2');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.get<FuelStopFranchiseListResponse>(`${this.configuration.basePath}/api/fuel/fuelstopfranchise/list`,
+            {
+                params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

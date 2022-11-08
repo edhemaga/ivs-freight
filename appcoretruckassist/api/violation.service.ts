@@ -18,11 +18,15 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { ClusterResponse } from '../model/models';
+import { CreateWithUploadsResponse } from '../model/models';
+import { FileResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { RoadsideInspectionListResponse } from '../model/models';
 import { RoadsideInspectionMinimalListResponse } from '../model/models';
 import { RoadsideInspectionResponse } from '../model/models';
-import { UpdateRoadsideInspectionCommand } from '../model/models';
+import { RoadsideInspectionSpecialCheckCommand } from '../model/models';
+import { ViolationCategory } from '../model/models';
+import { ViolationCommand } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -52,6 +56,19 @@ export class ViolationService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         if (typeof value === "object" && value instanceof Date === false) {
@@ -157,6 +174,59 @@ export class ViolationService {
         return this.httpClient.get<Array<ClusterResponse>>(`${this.configuration.basePath}/api/violation/clusters`,
             {
                 params: queryParameters,
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiViolationFilesIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<Array<FileResponse>>;
+    public apiViolationFilesIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<Array<FileResponse>>>;
+    public apiViolationFilesIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<Array<FileResponse>>>;
+    public apiViolationFilesIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiViolationFilesIdGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.get<Array<FileResponse>>(`${this.configuration.basePath}/api/violation/files/${encodeURIComponent(String(id))}`,
+            {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -633,14 +703,90 @@ export class ViolationService {
     }
 
     /**
-     * @param updateRoadsideInspectionCommand 
+     * @param id 
+     * @param report 
+     * @param categoryReport 
+     * @param inspectionLevel 
+     * @param hMInspectionType 
+     * @param country 
+     * @param state 
+     * @param startTime 
+     * @param endTime 
+     * @param date 
+     * @param driverId 
+     * @param driverFullName 
+     * @param driverLicenceNo 
+     * @param driverState 
+     * @param driverDateOfBirth 
+     * @param coDriverFullName 
+     * @param coDriverLicenceNo 
+     * @param coDriverState 
+     * @param coDriverDateOfBirth 
+     * @param truckUnit 
+     * @param truckType 
+     * @param truckMake 
+     * @param truckPlateNo 
+     * @param truckState 
+     * @param truckVIN 
+     * @param trailerUnit 
+     * @param trailerType 
+     * @param trailerMake 
+     * @param trailerPlateNo 
+     * @param trailerState 
+     * @param trailerVIN 
+     * @param violations 
+     * @param note 
+     * @param policeDepartment 
+     * @param policeOfficer 
+     * @param badgeNo 
+     * @param addressCity 
+     * @param addressState 
+     * @param addressCounty 
+     * @param addressAddress 
+     * @param addressStreet 
+     * @param addressStreetNumber 
+     * @param addressCountry 
+     * @param addressZipCode 
+     * @param addressStateShortName 
+     * @param addressAddressUnit 
+     * @param phone 
+     * @param fax 
+     * @param facility 
+     * @param highway 
+     * @param milePost 
+     * @param originCity 
+     * @param originState 
+     * @param originCounty 
+     * @param originAddress 
+     * @param originStreet 
+     * @param originStreetNumber 
+     * @param originCountry 
+     * @param originZipCode 
+     * @param originStateShortName 
+     * @param originAddressUnit 
+     * @param destinationCity 
+     * @param destinationState 
+     * @param destinationCounty 
+     * @param destinationAddress 
+     * @param destinationStreet 
+     * @param destinationStreetNumber 
+     * @param destinationCountry 
+     * @param destinationZipCode 
+     * @param destinationStateShortName 
+     * @param destinationAddressUnit 
+     * @param brokerId 
+     * @param boL 
+     * @param cargo 
+     * @param specialChecks 
+     * @param files 
+     * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiViolationPut(updateRoadsideInspectionCommand?: UpdateRoadsideInspectionCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiViolationPut(updateRoadsideInspectionCommand?: UpdateRoadsideInspectionCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiViolationPut(updateRoadsideInspectionCommand?: UpdateRoadsideInspectionCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiViolationPut(updateRoadsideInspectionCommand?: UpdateRoadsideInspectionCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiViolationPut(id?: number, report?: string, categoryReport?: ViolationCategory, inspectionLevel?: string, hMInspectionType?: string, country?: string, state?: string, startTime?: string, endTime?: string, date?: string, driverId?: number, driverFullName?: string, driverLicenceNo?: string, driverState?: string, driverDateOfBirth?: string, coDriverFullName?: string, coDriverLicenceNo?: string, coDriverState?: string, coDriverDateOfBirth?: string, truckUnit?: number, truckType?: string, truckMake?: string, truckPlateNo?: string, truckState?: string, truckVIN?: string, trailerUnit?: number, trailerType?: string, trailerMake?: string, trailerPlateNo?: string, trailerState?: string, trailerVIN?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, facility?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiViolationPut(id?: number, report?: string, categoryReport?: ViolationCategory, inspectionLevel?: string, hMInspectionType?: string, country?: string, state?: string, startTime?: string, endTime?: string, date?: string, driverId?: number, driverFullName?: string, driverLicenceNo?: string, driverState?: string, driverDateOfBirth?: string, coDriverFullName?: string, coDriverLicenceNo?: string, coDriverState?: string, coDriverDateOfBirth?: string, truckUnit?: number, truckType?: string, truckMake?: string, truckPlateNo?: string, truckState?: string, truckVIN?: string, trailerUnit?: number, trailerType?: string, trailerMake?: string, trailerPlateNo?: string, trailerState?: string, trailerVIN?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, facility?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiViolationPut(id?: number, report?: string, categoryReport?: ViolationCategory, inspectionLevel?: string, hMInspectionType?: string, country?: string, state?: string, startTime?: string, endTime?: string, date?: string, driverId?: number, driverFullName?: string, driverLicenceNo?: string, driverState?: string, driverDateOfBirth?: string, coDriverFullName?: string, coDriverLicenceNo?: string, coDriverState?: string, coDriverDateOfBirth?: string, truckUnit?: number, truckType?: string, truckMake?: string, truckPlateNo?: string, truckState?: string, truckVIN?: string, trailerUnit?: number, trailerType?: string, trailerMake?: string, trailerPlateNo?: string, trailerState?: string, trailerVIN?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, facility?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiViolationPut(id?: number, report?: string, categoryReport?: ViolationCategory, inspectionLevel?: string, hMInspectionType?: string, country?: string, state?: string, startTime?: string, endTime?: string, date?: string, driverId?: number, driverFullName?: string, driverLicenceNo?: string, driverState?: string, driverDateOfBirth?: string, coDriverFullName?: string, coDriverLicenceNo?: string, coDriverState?: string, coDriverDateOfBirth?: string, truckUnit?: number, truckType?: string, truckMake?: string, truckPlateNo?: string, truckState?: string, truckVIN?: string, trailerUnit?: number, trailerType?: string, trailerMake?: string, trailerPlateNo?: string, trailerState?: string, trailerVIN?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, facility?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -665,16 +811,279 @@ export class ViolationService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            formParams = formParams.append('Id', <any>id) as any || formParams;
+        }
+        if (report !== undefined) {
+            formParams = formParams.append('Report', <any>report) as any || formParams;
+        }
+        if (categoryReport !== undefined) {
+            formParams = formParams.append('CategoryReport', <any>categoryReport) as any || formParams;
+        }
+        if (inspectionLevel !== undefined) {
+            formParams = formParams.append('InspectionLevel', <any>inspectionLevel) as any || formParams;
+        }
+        if (hMInspectionType !== undefined) {
+            formParams = formParams.append('HMInspectionType', <any>hMInspectionType) as any || formParams;
+        }
+        if (country !== undefined) {
+            formParams = formParams.append('Country', <any>country) as any || formParams;
+        }
+        if (state !== undefined) {
+            formParams = formParams.append('State', <any>state) as any || formParams;
+        }
+        if (startTime !== undefined) {
+            formParams = formParams.append('StartTime', <any>startTime) as any || formParams;
+        }
+        if (endTime !== undefined) {
+            formParams = formParams.append('EndTime', <any>endTime) as any || formParams;
+        }
+        if (date !== undefined) {
+            formParams = formParams.append('Date', <any>date) as any || formParams;
+        }
+        if (driverId !== undefined) {
+            formParams = formParams.append('DriverId', <any>driverId) as any || formParams;
+        }
+        if (driverFullName !== undefined) {
+            formParams = formParams.append('Driver_FullName', <any>driverFullName) as any || formParams;
+        }
+        if (driverLicenceNo !== undefined) {
+            formParams = formParams.append('Driver_LicenceNo', <any>driverLicenceNo) as any || formParams;
+        }
+        if (driverState !== undefined) {
+            formParams = formParams.append('Driver_State', <any>driverState) as any || formParams;
+        }
+        if (driverDateOfBirth !== undefined) {
+            formParams = formParams.append('Driver_DateOfBirth', <any>driverDateOfBirth) as any || formParams;
+        }
+        if (coDriverFullName !== undefined) {
+            formParams = formParams.append('CoDriver_FullName', <any>coDriverFullName) as any || formParams;
+        }
+        if (coDriverLicenceNo !== undefined) {
+            formParams = formParams.append('CoDriver_LicenceNo', <any>coDriverLicenceNo) as any || formParams;
+        }
+        if (coDriverState !== undefined) {
+            formParams = formParams.append('CoDriver_State', <any>coDriverState) as any || formParams;
+        }
+        if (coDriverDateOfBirth !== undefined) {
+            formParams = formParams.append('CoDriver_DateOfBirth', <any>coDriverDateOfBirth) as any || formParams;
+        }
+        if (truckUnit !== undefined) {
+            formParams = formParams.append('Truck_Unit', <any>truckUnit) as any || formParams;
+        }
+        if (truckType !== undefined) {
+            formParams = formParams.append('Truck_Type', <any>truckType) as any || formParams;
+        }
+        if (truckMake !== undefined) {
+            formParams = formParams.append('Truck_Make', <any>truckMake) as any || formParams;
+        }
+        if (truckPlateNo !== undefined) {
+            formParams = formParams.append('Truck_PlateNo', <any>truckPlateNo) as any || formParams;
+        }
+        if (truckState !== undefined) {
+            formParams = formParams.append('Truck_State', <any>truckState) as any || formParams;
+        }
+        if (truckVIN !== undefined) {
+            formParams = formParams.append('Truck_VIN', <any>truckVIN) as any || formParams;
+        }
+        if (trailerUnit !== undefined) {
+            formParams = formParams.append('Trailer_Unit', <any>trailerUnit) as any || formParams;
+        }
+        if (trailerType !== undefined) {
+            formParams = formParams.append('Trailer_Type', <any>trailerType) as any || formParams;
+        }
+        if (trailerMake !== undefined) {
+            formParams = formParams.append('Trailer_Make', <any>trailerMake) as any || formParams;
+        }
+        if (trailerPlateNo !== undefined) {
+            formParams = formParams.append('Trailer_PlateNo', <any>trailerPlateNo) as any || formParams;
+        }
+        if (trailerState !== undefined) {
+            formParams = formParams.append('Trailer_State', <any>trailerState) as any || formParams;
+        }
+        if (trailerVIN !== undefined) {
+            formParams = formParams.append('Trailer_VIN', <any>trailerVIN) as any || formParams;
+        }
+        if (violations) {
+            if (useForm) {
+                violations.forEach((element) => {
+                    formParams = formParams.append('Violations', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Violations', violations.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (note !== undefined) {
+            formParams = formParams.append('Note', <any>note) as any || formParams;
+        }
+        if (policeDepartment !== undefined) {
+            formParams = formParams.append('PoliceDepartment', <any>policeDepartment) as any || formParams;
+        }
+        if (policeOfficer !== undefined) {
+            formParams = formParams.append('PoliceOfficer', <any>policeOfficer) as any || formParams;
+        }
+        if (badgeNo !== undefined) {
+            formParams = formParams.append('BadgeNo', <any>badgeNo) as any || formParams;
+        }
+        if (addressCity !== undefined) {
+            formParams = formParams.append('Address.City', <any>addressCity) as any || formParams;
+        }
+        if (addressState !== undefined) {
+            formParams = formParams.append('Address.State', <any>addressState) as any || formParams;
+        }
+        if (addressCounty !== undefined) {
+            formParams = formParams.append('Address.County', <any>addressCounty) as any || formParams;
+        }
+        if (addressAddress !== undefined) {
+            formParams = formParams.append('Address.Address', <any>addressAddress) as any || formParams;
+        }
+        if (addressStreet !== undefined) {
+            formParams = formParams.append('Address.Street', <any>addressStreet) as any || formParams;
+        }
+        if (addressStreetNumber !== undefined) {
+            formParams = formParams.append('Address.StreetNumber', <any>addressStreetNumber) as any || formParams;
+        }
+        if (addressCountry !== undefined) {
+            formParams = formParams.append('Address.Country', <any>addressCountry) as any || formParams;
+        }
+        if (addressZipCode !== undefined) {
+            formParams = formParams.append('Address.ZipCode', <any>addressZipCode) as any || formParams;
+        }
+        if (addressStateShortName !== undefined) {
+            formParams = formParams.append('Address.StateShortName', <any>addressStateShortName) as any || formParams;
+        }
+        if (addressAddressUnit !== undefined) {
+            formParams = formParams.append('Address.AddressUnit', <any>addressAddressUnit) as any || formParams;
+        }
+        if (phone !== undefined) {
+            formParams = formParams.append('Phone', <any>phone) as any || formParams;
+        }
+        if (fax !== undefined) {
+            formParams = formParams.append('Fax', <any>fax) as any || formParams;
+        }
+        if (facility !== undefined) {
+            formParams = formParams.append('Facility', <any>facility) as any || formParams;
+        }
+        if (highway !== undefined) {
+            formParams = formParams.append('Highway', <any>highway) as any || formParams;
+        }
+        if (milePost !== undefined) {
+            formParams = formParams.append('MilePost', <any>milePost) as any || formParams;
+        }
+        if (originCity !== undefined) {
+            formParams = formParams.append('Origin.City', <any>originCity) as any || formParams;
+        }
+        if (originState !== undefined) {
+            formParams = formParams.append('Origin.State', <any>originState) as any || formParams;
+        }
+        if (originCounty !== undefined) {
+            formParams = formParams.append('Origin.County', <any>originCounty) as any || formParams;
+        }
+        if (originAddress !== undefined) {
+            formParams = formParams.append('Origin.Address', <any>originAddress) as any || formParams;
+        }
+        if (originStreet !== undefined) {
+            formParams = formParams.append('Origin.Street', <any>originStreet) as any || formParams;
+        }
+        if (originStreetNumber !== undefined) {
+            formParams = formParams.append('Origin.StreetNumber', <any>originStreetNumber) as any || formParams;
+        }
+        if (originCountry !== undefined) {
+            formParams = formParams.append('Origin.Country', <any>originCountry) as any || formParams;
+        }
+        if (originZipCode !== undefined) {
+            formParams = formParams.append('Origin.ZipCode', <any>originZipCode) as any || formParams;
+        }
+        if (originStateShortName !== undefined) {
+            formParams = formParams.append('Origin.StateShortName', <any>originStateShortName) as any || formParams;
+        }
+        if (originAddressUnit !== undefined) {
+            formParams = formParams.append('Origin.AddressUnit', <any>originAddressUnit) as any || formParams;
+        }
+        if (destinationCity !== undefined) {
+            formParams = formParams.append('Destination.City', <any>destinationCity) as any || formParams;
+        }
+        if (destinationState !== undefined) {
+            formParams = formParams.append('Destination.State', <any>destinationState) as any || formParams;
+        }
+        if (destinationCounty !== undefined) {
+            formParams = formParams.append('Destination.County', <any>destinationCounty) as any || formParams;
+        }
+        if (destinationAddress !== undefined) {
+            formParams = formParams.append('Destination.Address', <any>destinationAddress) as any || formParams;
+        }
+        if (destinationStreet !== undefined) {
+            formParams = formParams.append('Destination.Street', <any>destinationStreet) as any || formParams;
+        }
+        if (destinationStreetNumber !== undefined) {
+            formParams = formParams.append('Destination.StreetNumber', <any>destinationStreetNumber) as any || formParams;
+        }
+        if (destinationCountry !== undefined) {
+            formParams = formParams.append('Destination.Country', <any>destinationCountry) as any || formParams;
+        }
+        if (destinationZipCode !== undefined) {
+            formParams = formParams.append('Destination.ZipCode', <any>destinationZipCode) as any || formParams;
+        }
+        if (destinationStateShortName !== undefined) {
+            formParams = formParams.append('Destination.StateShortName', <any>destinationStateShortName) as any || formParams;
+        }
+        if (destinationAddressUnit !== undefined) {
+            formParams = formParams.append('Destination.AddressUnit', <any>destinationAddressUnit) as any || formParams;
+        }
+        if (brokerId !== undefined) {
+            formParams = formParams.append('BrokerId', <any>brokerId) as any || formParams;
+        }
+        if (boL !== undefined) {
+            formParams = formParams.append('BoL', <any>boL) as any || formParams;
+        }
+        if (cargo !== undefined) {
+            formParams = formParams.append('Cargo', <any>cargo) as any || formParams;
+        }
+        if (specialChecks) {
+            if (useForm) {
+                specialChecks.forEach((element) => {
+                    formParams = formParams.append('SpecialChecks', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('SpecialChecks', specialChecks.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (filesForDeleteIds) {
+            if (useForm) {
+                filesForDeleteIds.forEach((element) => {
+                    formParams = formParams.append('FilesForDeleteIds', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('FilesForDeleteIds', filesForDeleteIds.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
         }
 
         let responseType: 'text' | 'json' = 'json';
@@ -682,8 +1091,8 @@ export class ViolationService {
             responseType = 'text';
         }
 
-        return this.httpClient.put<any>(`${this.configuration.basePath}/api/violation`,
-            updateRoadsideInspectionCommand,
+        return this.httpClient.put<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/violation`,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
