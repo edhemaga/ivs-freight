@@ -330,7 +330,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   }
 
   public onTypeOfRepair(event: any, action?: string) {
-    console.log('function params: ', event, action);
     this.typeOfRepair = this.typeOfRepair.map((item) => {
       if (item.id === event.id) {
         this.repairOrderForm.get('unitType').patchValue(item.name);
@@ -340,14 +339,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         checked: item.id === event.id,
       };
     });
-    console.log(
-      'unit type value: ',
-      this.repairOrderForm.get('unitType').value
-    );
 
     this.labelsUnit =
       event.name === 'Trailer' ? [...this.unitTrailers] : [...this.unitTrucks];
-    console.log('labels unit on change:  ', this.labelsUnit);
 
     if (action) {
       return;
