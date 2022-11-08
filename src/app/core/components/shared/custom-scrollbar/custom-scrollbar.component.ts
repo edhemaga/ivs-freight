@@ -175,8 +175,6 @@ export class CustomScrollbarComponent
 
       // Table Scroll
       if (this.scrollBarOptions.showHorizontalScrollBar) {
-        console.log('Ulazi u calculateBarSizeAndPosition');
-
         const scrollWrapper =  document.querySelector('.not-pined-columns');
 
         const tableFullWidth = scrollWrapper.scrollWidth;
@@ -187,12 +185,6 @@ export class CustomScrollbarComponent
         this.tableScrollRatioFull = tableFullWidth / tableVisibleWidth;
 
         this.tableScrollWidth = this.tableScrollRatio * tableVisibleWidth;
-
-        console.log('Table Full Width')
-        console.log(tableFullWidth);
-
-        console.log('Table Visible Width')
-        console.log(tableVisibleWidth);
 
         if (tableFullWidth <= tableVisibleWidth) {
           this.showScrollbar = false;

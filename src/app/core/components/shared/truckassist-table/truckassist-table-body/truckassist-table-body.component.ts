@@ -255,7 +255,6 @@ export class TruckassistTableBodyComponent
 
   onHorizontalScroll(scrollEvent: any) {
     if(scrollEvent.eventAction === 'scrolling'){
-      console.log('Radi se skrolovanje');
       document.querySelectorAll('#table-not-pined-scroll-container').forEach((el) => {
         el.scrollLeft = scrollEvent.scrollPosition;
       })
@@ -263,9 +262,6 @@ export class TruckassistTableBodyComponent
       this.tableService.sendScroll(scrollEvent.scrollPosition);
     }else if(scrollEvent.eventAction === 'isScrollShowing' && this.showScrollSectionBorder !== scrollEvent.isScrollBarShowing){
       this.showScrollSectionBorder = scrollEvent.isScrollBarShowing;
-
-      console.log('Is scroll showing');
-      console.log(this.showScrollSectionBorder);
 
       this.changeDetectorRef.detectChanges();
     }
