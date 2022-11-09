@@ -436,7 +436,13 @@ export class Step2Component implements OnInit, OnDestroy {
 
   public onEditWorkExperience(index: number): void {
     if (this.isEditing) {
-      return;
+      this.isEditing = false;
+      this.workExperienceArray[
+        this.selectedWorkExperienceIndex
+      ].isEditingWorkHistory = false;
+
+      this.helperIndex = 2;
+      this.selectedWorkExperienceIndex = -1;
     }
 
     this.helperIndex = index;

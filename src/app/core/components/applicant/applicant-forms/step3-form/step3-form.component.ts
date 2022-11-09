@@ -201,7 +201,7 @@ export class Step3FormComponent
             if (this.selectedMode === SelectedMode.APPLICANT) {
               this.startValueChangesMonitoring();
             }
-          }, 100);
+          }, 50);
         }
       }
     }
@@ -302,7 +302,7 @@ export class Step3FormComponent
           name: item.code.concat(' ', '-').concat(' ', item.description),
         };
       });
-    }, 150);
+    }, 50);
   }
 
   public startValueChangesMonitoring(): void {

@@ -129,7 +129,7 @@ export class SphStep2FormComponent
         this.patchForm(changes.formValuesToPatch.currentValue);
 
         this.startValueChangesMonitoring();
-      }, 100);
+      }, 50);
     }
   }
 
@@ -170,7 +170,7 @@ export class SphStep2FormComponent
           this.hazmatSpillRadios[1].checked = false;
         }
       }
-    }, 100);
+    }, 50);
   }
 
   public startValueChangesMonitoring(): void {

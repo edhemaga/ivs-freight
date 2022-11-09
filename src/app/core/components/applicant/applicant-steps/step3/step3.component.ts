@@ -276,7 +276,7 @@ export class Step3Component implements OnInit, OnDestroy {
       } else {
         this.permitRadios[1].checked = true;
       }
-    }, 100);
+    }, 50);
   }
 
   public handleInputSelect(event: any, action: string): void {
@@ -317,7 +317,11 @@ export class Step3Component implements OnInit, OnDestroy {
 
   public onEditLicense(index: number): void {
     if (this.isEditing) {
-      return;
+      this.isEditing = false;
+      this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
+
+      this.helperIndex = 2;
+      this.selectedLicenseIndex = -1;
     }
 
     this.helperIndex = index;

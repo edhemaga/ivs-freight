@@ -378,7 +378,7 @@ export class Step2FormComponent
             this.startValueChangesMonitoring();
             this.startInnerFormValueChangesMonitoring();
           }
-        }, 100);
+        }, 50);
       }
     }
   }
@@ -561,7 +561,7 @@ export class Step2FormComponent
       this.selectedReasonForLeaving = this.reasonsForLeaving.find(
         (item) => item.name === formValue?.reasonForLeaving
       );
-    }, 150);
+    }, 50);
 
     if (formValue?.isDrivingPosition) {
       if (formValue.classesOfEquipment) {
@@ -640,7 +640,7 @@ export class Step2FormComponent
                 item.name === lastItemInClassOfEquipmentArray?.trailerLength
             );
           }
-        }, 100);
+        }, 50);
       }
     }
   }

@@ -304,7 +304,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
       this.selectedReasonForLeaving = this.reasonsForLeaving.find(
         (item) => item.id === reasonForLeaving
       );
-    }, 150);
+    }, 50);
   }
 
   private hasNoSafetyPerformanceToReport(): void {
@@ -439,7 +439,11 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
 
   public onEditAccident(index: number): void {
     if (this.isEditing) {
-      return;
+      this.isEditing = false;
+      this.accidentArray[this.selectedAccidentIndex].isEditingAccident = false;
+
+      this.helperIndex = 2;
+      this.selectedAccidentIndex = -1;
     }
 
     this.helperIndex = index;

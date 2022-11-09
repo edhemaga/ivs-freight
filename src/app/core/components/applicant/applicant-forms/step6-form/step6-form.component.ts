@@ -160,7 +160,7 @@ export class Step6FormComponent
             if (this.selectedMode === SelectedMode.APPLICANT) {
               this.startValueChangesMonitoring();
             }
-          }, 100);
+          }, 50);
         }
       }
     }

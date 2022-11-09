@@ -221,7 +221,7 @@ export class Step4FormComponent
             if (this.selectedMode === SelectedMode.APPLICANT) {
               this.startValueChangesMonitoring();
             }
-          }, 100);
+          }, 50);
         }
       }
     }
@@ -282,17 +282,17 @@ export class Step4FormComponent
         this.hazmatSpillRadios[0].checked = true;
       } else {
         this.hazmatSpillRadios[1].checked = true;
-      }
 
-      if (hazmatSpillValue === null) {
-        this.hazmatSpillRadios[0].checked = false;
-        this.hazmatSpillRadios[1].checked = false;
+        if (hazmatSpillValue === null) {
+          this.hazmatSpillRadios[0].checked = false;
+          this.hazmatSpillRadios[1].checked = false;
+        }
       }
 
       this.selectedVehicleType = this.vehicleType.find(
         (item) => item.name === formValue?.vehicleType
       );
-    }, 150);
+    }, 50);
   }
 
   public startValueChangesMonitoring(): void {

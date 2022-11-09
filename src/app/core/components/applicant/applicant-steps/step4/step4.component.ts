@@ -240,7 +240,11 @@ export class Step4Component implements OnInit, OnDestroy {
 
   public onEditAccident(index: number): void {
     if (this.isEditing) {
-      return;
+      this.isEditing = false;
+      this.accidentArray[this.selectedAccidentIndex].isEditingAccident = false;
+
+      this.helperIndex = 2;
+      this.selectedAccidentIndex = -1;
     }
 
     this.helperIndex = index;

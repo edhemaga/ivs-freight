@@ -384,7 +384,12 @@ export class Step5Component implements OnInit, OnDestroy {
 
   public onEditViolation(index: number): void {
     if (this.isEditing) {
-      return;
+      this.isEditing = false;
+      this.violationsArray[this.selectedViolationIndex].isEditingViolation =
+        false;
+
+      this.helperIndex = 2;
+      this.selectedViolationIndex = -1;
     }
 
     this.helperIndex = index;

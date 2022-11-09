@@ -185,7 +185,7 @@ export class Step5FormComponent
             if (this.selectedMode === SelectedMode.APPLICANT) {
               this.startValueChangesMonitoring();
             }
-          }, 100);
+          }, 50);
         }
       }
     }
@@ -233,7 +233,7 @@ export class Step5FormComponent
       this.selectedVehicleType = this.vehicleType.find(
         (item) => item.name === formValue.vehicleType
       );
-    }, 150);
+    }, 50);
   }
 
   public startValueChangesMonitoring() {
