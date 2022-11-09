@@ -61,6 +61,7 @@ export class Step8Component implements OnInit, OnDestroy {
   public subscription: Subscription;
 
   public stepValues: any;
+  public previousStepValues: any;
 
   public drugTestForm: FormGroup;
   public drugAlcoholStatementForm: FormGroup;
@@ -366,6 +367,28 @@ export class Step8Component implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (!value) {
+          const {
+            motorCarrier,
+            phone,
+            address,
+            addressUnit,
+            sapName,
+            sapPhone,
+            sapAddress,
+            sapAddressUnit,
+          } = this.drugAlcoholStatementForm.value;
+
+          this.previousStepValues = {
+            motorCarrier,
+            phone,
+            address,
+            addressUnit,
+            sapName,
+            sapPhone,
+            sapAddress,
+            sapAddressUnit,
+          };
+
           this.inputService.changeValidators(
             this.drugAlcoholStatementForm.get('motorCarrier'),
             false
@@ -395,19 +418,29 @@ export class Step8Component implements OnInit, OnDestroy {
             this.drugAlcoholStatementForm.get('isAgreement'),
             false
           );
+        } else {
+          const {
+            motorCarrier,
+            phone,
+            address,
+            addressUnit,
+            sapName,
+            sapPhone,
+            sapAddress,
+            sapAddressUnit,
+          } = this.previousStepValues;
 
           this.drugAlcoholStatementForm.patchValue({
-            motorCarrier: null,
-            phone: null,
-            address: null,
-            addressUnit: null,
-            sapName: null,
-            sapPhone: null,
-            sapAddress: null,
-            sapAddressUnit: null,
-            isAgreement: null,
+            motorCarrier,
+            phone,
+            address,
+            addressUnit,
+            sapName,
+            sapPhone,
+            sapAddress,
+            sapAddressUnit,
           });
-        } else {
+
           this.inputService.changeValidators(
             this.drugAlcoholStatementForm.get('motorCarrier')
           );

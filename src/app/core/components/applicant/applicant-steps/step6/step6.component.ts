@@ -667,6 +667,14 @@ export class Step6Component implements OnInit, OnDestroy {
 
     const selectedContact = this.contactsArray[index];
 
+    if (this.lastContactCard) {
+      this.previousFormValuesOnEdit = {
+        name: this.lastContactCard.name,
+        phone: this.lastContactCard.phone,
+        relationship: this.lastContactCard.relationship,
+      };
+    }
+
     this.formValuesToPatch = selectedContact;
   }
 

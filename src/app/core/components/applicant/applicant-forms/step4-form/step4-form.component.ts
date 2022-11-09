@@ -388,6 +388,7 @@ export class Step4FormComponent
     this.hazmatSpillRadios[0].checked = false;
     this.hazmatSpillRadios[1].checked = false;
 
+    this.selectedAddress = null;
     this.selectedVehicleType = null;
 
     this.formService.resetForm(this.accidentForm);

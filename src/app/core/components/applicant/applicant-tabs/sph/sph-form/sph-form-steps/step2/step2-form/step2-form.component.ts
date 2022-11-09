@@ -164,11 +164,11 @@ export class SphStep2FormComponent
         this.hazmatSpillRadios[0].checked = true;
       } else {
         this.hazmatSpillRadios[1].checked = true;
-      }
 
-      if (hazmatSpillValue === null) {
-        this.hazmatSpillRadios[0].checked = false;
-        this.hazmatSpillRadios[1].checked = false;
+        if (hazmatSpillValue === null) {
+          this.hazmatSpillRadios[0].checked = false;
+          this.hazmatSpillRadios[1].checked = false;
+        }
       }
     }, 100);
   }

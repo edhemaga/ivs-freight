@@ -75,6 +75,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
   public stepValues: any;
 
+  public companyName: string;
+
   public applicantId: number;
   public personalInfoId: number;
   public previousAddressesId: number[];
@@ -402,6 +404,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     this.applicantQuery.applicant$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: ApplicantResponse) => {
+        this.companyName = res.companyInfo.name;
+
         this.applicantId = res.id;
 
         this.patchStepValues(res.personalInfo);
@@ -889,6 +893,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
         if (!event.valid) {
           this.previousAddresses.at(index).setErrors({ invalid: true });
+
+          this.isLastAddedPreviousAddressValid = false;
         } else {
           this.previousAddresses.at(index).patchValue({
             address: address.address,
@@ -1039,10 +1045,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     if (this.previousAddresses.controls.length < 2) {
       this.isEditingArray[0].isEditing = true;
       this.isEditingArray[0].isEditingAddress = false;
-    }
-
-    if (this.previousAddresses.controls.length === 1) {
-      this.isLastInputDeleted = false;
     }
   }
 

@@ -42,7 +42,7 @@ import {
 export class Step2Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public applicantId: number;
 
@@ -384,6 +384,8 @@ export class Step2Component implements OnInit, OnDestroy {
             reasonForLeaving: null,
             accountForPeriod: null,
           };
+    } else {
+      this.formStatus = 'VALID';
     }
   }
 
@@ -393,26 +395,31 @@ export class Step2Component implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
-          this.formValuesToPatch = {
-            employer: null,
-            jobDescription: null,
-            fromDate: null,
-            toDate: null,
-            employerPhone: null,
-            employerEmail: null,
-            employerFax: null,
-            employerAddress: null,
-            employerAddressUnit: null,
-            isDrivingPosition: null,
-            cfrPart: null,
-            fmCSA: null,
-            reasonForLeaving: null,
-            accountForPeriod: null,
-          };
-
           this.formStatus = 'VALID';
           this.innerFormStatus = 'VALID';
         } else {
+          if (this.lastWorkExperienceCard) {
+            this.formValuesToPatch = {
+              employer: this.lastWorkExperienceCard?.employer,
+              jobDescription: this.lastWorkExperienceCard?.jobDescription,
+              fromDate: this.lastWorkExperienceCard?.fromDate,
+              toDate: this.lastWorkExperienceCard?.toDate,
+              employerPhone: this.lastWorkExperienceCard?.employerPhone,
+              employerEmail: this.lastWorkExperienceCard?.employerEmail,
+              employerFax: this.lastWorkExperienceCard?.employerFax,
+              employerAddress: this.lastWorkExperienceCard?.employerAddress,
+              employerAddressUnit:
+                this.lastWorkExperienceCard?.employerAddressUnit,
+              isDrivingPosition: this.lastWorkExperienceCard?.isDrivingPosition,
+              classesOfEquipment:
+                this.lastWorkExperienceCard?.classesOfEquipment,
+              cfrPart: this.lastWorkExperienceCard?.cfrPart,
+              fmCSA: this.lastWorkExperienceCard?.fmCSA,
+              reasonForLeaving: this.lastWorkExperienceCard?.reasonForLeaving,
+              accountForPeriod: this.lastWorkExperienceCard?.accountForPeriod,
+            };
+          }
+
           this.formStatus = 'INVALID';
           this.innerFormStatus = 'VALID';
         }
@@ -439,6 +446,26 @@ export class Step2Component implements OnInit, OnDestroy {
     this.workExperienceArray[index].isEditingWorkHistory = true;
 
     const selectedWorkExperience = this.workExperienceArray[index];
+
+    if (this.lastWorkExperienceCard) {
+      this.previousFormValuesOnEdit = {
+        employer: this.lastWorkExperienceCard?.employer,
+        jobDescription: this.lastWorkExperienceCard?.jobDescription,
+        fromDate: this.lastWorkExperienceCard?.fromDate,
+        toDate: this.lastWorkExperienceCard?.toDate,
+        employerPhone: this.lastWorkExperienceCard?.employerPhone,
+        employerEmail: this.lastWorkExperienceCard?.employerEmail,
+        employerFax: this.lastWorkExperienceCard?.employerFax,
+        employerAddress: this.lastWorkExperienceCard?.employerAddress,
+        employerAddressUnit: this.lastWorkExperienceCard?.employerAddressUnit,
+        isDrivingPosition: this.lastWorkExperienceCard?.isDrivingPosition,
+        classesOfEquipment: this.lastWorkExperienceCard?.classesOfEquipment,
+        cfrPart: this.lastWorkExperienceCard?.cfrPart,
+        fmCSA: this.lastWorkExperienceCard?.fmCSA,
+        reasonForLeaving: this.lastWorkExperienceCard?.reasonForLeaving,
+        accountForPeriod: this.lastWorkExperienceCard?.accountForPeriod,
+      };
+    }
 
     this.formValuesToPatch = selectedWorkExperience;
   }
@@ -930,8 +957,8 @@ export class Step2Component implements OnInit, OnDestroy {
     let filteredLastWorkExperienceCard: any;
 
     const lastWorkExperinceCardAddress = {
-      ...this.lastWorkExperienceCard.employerAddress,
-      addressUnit: this.lastWorkExperienceCard.employerAddressUnit,
+      ...this.lastWorkExperienceCard?.employerAddress,
+      addressUnit: this.lastWorkExperienceCard?.employerAddressUnit,
     };
 
     if (!noWorkExperience) {

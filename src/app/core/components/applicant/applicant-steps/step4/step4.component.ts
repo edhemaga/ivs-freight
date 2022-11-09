@@ -212,19 +212,19 @@ export class Step4Component implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value) {
           this.formStatus = 'VALID';
-
-          this.formValuesToPatch = {
-            location: null,
-            date: null,
-            fatalities: 0,
-            injuries: 0,
-            hazmatSpill: null,
-            vehicleType: null,
-            description: null,
-          };
-
-          this.accidentArray = [];
         } else {
+          if (this.lastAccidentCard) {
+            this.formValuesToPatch = {
+              location: this.lastAccidentCard?.location,
+              date: this.lastAccidentCard?.date,
+              hazmatSpill: this.lastAccidentCard?.hazmatSpill,
+              fatalities: this.lastAccidentCard?.fatalities,
+              injuries: this.lastAccidentCard?.injuries,
+              vehicleType: this.lastAccidentCard?.vehicleType,
+              description: this.lastAccidentCard?.description,
+            };
+          }
+
           this.formStatus = 'INVALID';
         }
       });
@@ -250,6 +250,18 @@ export class Step4Component implements OnInit, OnDestroy {
     this.accidentArray[index].isEditingAccident = true;
 
     const selectedAccident = this.accidentArray[index];
+
+    if (this.lastAccidentCard) {
+      this.previousFormValuesOnEdit = {
+        location: this.lastAccidentCard?.location,
+        date: this.lastAccidentCard?.date,
+        hazmatSpill: this.lastAccidentCard?.hazmatSpill,
+        fatalities: this.lastAccidentCard?.fatalities,
+        injuries: this.lastAccidentCard?.injuries,
+        vehicleType: this.lastAccidentCard?.vehicleType,
+        description: this.lastAccidentCard?.description,
+      };
+    }
 
     this.formValuesToPatch = selectedAccident;
   }

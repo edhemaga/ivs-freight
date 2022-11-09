@@ -313,6 +313,7 @@ export class Step5FormComponent
 
     this.formValuesEmitter.emit(saveData);
 
+    this.selectedAddress = null;
     this.selectedVehicleType = null;
 
     this.formService.resetForm(this.violationsForm);

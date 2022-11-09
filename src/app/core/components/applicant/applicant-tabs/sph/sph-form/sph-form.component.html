@@ -14,6 +14,7 @@
             class="text-center step"
             routerLinkActive="step-active"
             [ngClass]="{
+              disabled: !isStepCompletedArray[i].isCompleted,
               'completed-step': isStepCompletedArray[i].isCompleted
             }"
           >

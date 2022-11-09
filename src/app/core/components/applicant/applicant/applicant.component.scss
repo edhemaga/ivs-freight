@@ -12,6 +12,10 @@
     .step {
       width: 130px;
 
+      /* &.disabled {
+        pointer-events: none !important;
+      } */
+
       .bullet {
         position: relative;
         height: 42px;

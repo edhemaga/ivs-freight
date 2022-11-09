@@ -328,6 +328,18 @@ export class Step3Component implements OnInit, OnDestroy {
 
     const selectedLicense = this.licenseArray[index];
 
+    if (this.lastLicenseCard) {
+      this.previousFormValuesOnEdit = {
+        licenseNumber: this.lastLicenseCard.licenseNumber,
+        country: this.lastLicenseCard.country,
+        state: this.lastLicenseCard.state,
+        classType: this.lastLicenseCard.classType,
+        expDate: this.lastLicenseCard.expDate,
+        endorsments: this.lastLicenseCard.endorsments,
+        restrictions: this.lastLicenseCard.restrictions,
+      };
+    }
+
     this.formValuesToPatch = selectedLicense;
   }
 

@@ -314,17 +314,18 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
       .subscribe((value) => {
         if (value) {
           this.formStatus = 'VALID';
-
-          this.accidentArray = [];
-          this.formValuesToPatch = {
-            accidentDate: null,
-            accidentLocation: null,
-            accidentDescription: null,
-            hazmatSpill: null,
-            fatalities: 0,
-            injuries: 0,
-          };
         } else {
+          if (this.lastAccidentCard) {
+            this.formValuesToPatch = {
+              accidentLocation: this.lastAccidentCard?.accidentLocation,
+              accidentDate: this.lastAccidentCard?.accidentDate,
+              hazmatSpill: this.lastAccidentCard?.hazmatSpill,
+              fatalities: this.lastAccidentCard?.fatalities,
+              injuries: this.lastAccidentCard?.injuries,
+              accidentDescription: this.lastAccidentCard?.accidentDescription,
+            };
+          }
+
           this.formStatus = 'INVALID';
         }
       });
@@ -448,6 +449,17 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
     this.accidentArray[index].isEditingAccident = true;
 
     const selectedAccident = this.accidentArray[index];
+
+    if (this.lastAccidentCard) {
+      this.previousFormValuesOnEdit = {
+        accidentLocation: this.lastAccidentCard?.accidentLocation,
+        accidentDate: this.lastAccidentCard?.accidentDate,
+        hazmatSpill: this.lastAccidentCard?.hazmatSpill,
+        fatalities: this.lastAccidentCard?.fatalities,
+        injuries: this.lastAccidentCard?.injuries,
+        accidentDescription: this.lastAccidentCard?.accidentDescription,
+      };
+    }
 
     this.formValuesToPatch = selectedAccident;
   }

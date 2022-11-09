@@ -230,8 +230,11 @@
           </div>
 
           <div
-            class="d-flex flex-column history-panel-form"
             *ngIf="workHistory.isEditingWorkHistory"
+            class="d-flex flex-column history-panel-form"
+            [ngStyle]="{
+              margin: i !== 0 ? '32px auto 0 auto' : '10px auto 0 auto'
+            }"
           >
             <app-step2-form
               [mode]="selectedMode"

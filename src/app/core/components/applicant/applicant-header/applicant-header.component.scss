@@ -190,15 +190,9 @@
           color: $bw6-2;
           transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
 
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-
-          &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
+          -webkit-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
 
           .nav-icon {
             margin-right: 12px;

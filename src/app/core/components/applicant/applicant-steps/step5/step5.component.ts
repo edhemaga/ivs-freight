@@ -89,11 +89,11 @@ export class Step5Component implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
 
+    this.hasNoTrafficViolations();
+
     this.getDropdownLists();
 
     this.getStepValuesFromStore();
-
-    this.hasNoTrafficViolations();
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -289,6 +289,21 @@ export class Step5Component implements OnInit, OnDestroy {
           displayAnnotationTextArea: false,
         };
       }
+    } else {
+      this.inputService.changeValidatorsCheck(
+        this.notBeenConvictedForm.get('notBeenConvicted'),
+        false
+      );
+      this.inputService.changeValidatorsCheck(
+        this.onlyOneHoldLicenseForm.get('onlyOneHoldLicense'),
+        false
+      );
+      this.inputService.changeValidatorsCheck(
+        this.certifyForm.get('certify'),
+        false
+      );
+
+      this.formStatus = 'VALID';
     }
   }
 
@@ -311,21 +326,17 @@ export class Step5Component implements OnInit, OnDestroy {
             false
           );
 
-          this.notBeenConvictedForm.patchValue({ notBeenConvicted: null });
-          this.onlyOneHoldLicenseForm.patchValue({ onlyOneHoldLicense: null });
-          this.certifyForm.patchValue({ certify: null });
-
           this.formStatus = 'VALID';
-
-          this.formValuesToPatch = {
-            date: null,
-            vehicleType: null,
-            location: null,
-            description: null,
-          };
-
-          this.violationsArray = [];
         } else {
+          if (this.lastViolationsCard) {
+            this.formValuesToPatch = {
+              date: this.lastViolationsCard?.date,
+              vehicleType: this.lastViolationsCard?.vehicleType,
+              location: this.lastViolationsCard.location,
+              description: this.lastViolationsCard?.description,
+            };
+          }
+
           this.inputService.changeValidatorsCheck(
             this.notBeenConvictedForm.get('notBeenConvicted')
           );
@@ -383,6 +394,15 @@ export class Step5Component implements OnInit, OnDestroy {
     this.violationsArray[index].isEditingViolation = true;
 
     const selectedViolation = this.violationsArray[index];
+
+    if (this.lastViolationsCard) {
+      this.previousFormValuesOnEdit = {
+        date: this.lastViolationsCard?.date,
+        vehicleType: this.lastViolationsCard?.vehicleType,
+        location: this.lastViolationsCard.location,
+        description: this.lastViolationsCard?.description,
+      };
+    }
 
     this.formValuesToPatch = selectedViolation;
   }
