@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SelectedMode } from '../state/enum/selected-mode.enum';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -8,12 +7,10 @@ import {
   isAnyValueInArrayTrue,
 } from '../state/utils/utils';
 
-import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
-import { ApplicantListsService } from 'src/app/core/components/applicant/state/services/applicant-lists.service';
-
 import { ApplicantQuery } from '../state/store/applicant.query';
 
 import { INavigation } from '../state/model/navigation.model';
+import { SelectedMode } from '../state/enum/selected-mode.enum';
 
 @Component({
   selector: 'app-applicant',
@@ -23,7 +20,7 @@ import { INavigation } from '../state/model/navigation.model';
 export class ApplicantComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode = SelectedMode.REVIEW;
+  public selectedMode = SelectedMode.APPLICANT;
 
   public menuItems: INavigation[] = [
     {
@@ -129,11 +126,7 @@ export class ApplicantComponent implements OnInit, OnDestroy {
     { id: 10, hasIncorrectAnswer: false, sentToReview: false },
   ];
 
-  constructor(
-    private applicantActionsService: ApplicantActionsService,
-    private applicantListsService: ApplicantListsService,
-    private applicantQuery: ApplicantQuery
-  ) {}
+  constructor(private applicantQuery: ApplicantQuery) {}
 
   ngOnInit(): void {
     this.getStepValuesFromStore();
@@ -142,7 +135,7 @@ export class ApplicantComponent implements OnInit, OnDestroy {
   public trackByIdentity = (index: number, item: any): number => index;
 
   public getStepValuesFromStore(): void {
-    this.applicantQuery.fullList$
+    this.applicantQuery.applicant$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         res = JSON.parse(JSON.stringify(res));
@@ -186,43 +179,47 @@ export class ApplicantComponent implements OnInit, OnDestroy {
                 const workExperienceItems =
                   res?.workExperience?.workExperienceItems;
 
-                const workExperienceItemsReview = workExperienceItems.map(
+                const workExperienceItemsReview = workExperienceItems?.map(
                   (item) => item?.workExperienceItemReview
                 );
 
                 let filteredWorkExperienceItemsReview = [];
-
-                for (let i = 0; i < workExperienceItemsReview.length; i++) {
-                  const filteredItem = workExperienceItemsReview[i];
-
-                  delete filteredItem.isPrimary;
-
-                  filteredWorkExperienceItemsReview = [
-                    ...filteredWorkExperienceItemsReview,
-                    filteredItem,
-                  ];
-                }
-
                 let hasIncorrectValue: boolean;
 
-                if (workExperienceItemsReview[0]) {
-                  let incorrectValuesArray = [];
+                if (workExperienceItemsReview) {
+                  if (workExperienceItemsReview[0]) {
+                    let incorrectValuesArray = [];
 
-                  for (let i = 0; i < workExperienceItemsReview.length; i++) {
-                    const objectHasIncorrectValue = isAnyPropertyInObjectFalse(
-                      workExperienceItemsReview[i]
-                    );
+                    for (
+                      let i = 0;
+                      i < workExperienceItemsReview?.length;
+                      i++
+                    ) {
+                      const filteredItem = workExperienceItemsReview[i];
 
-                    incorrectValuesArray = [
-                      ...incorrectValuesArray,
-                      objectHasIncorrectValue,
-                    ];
-                  }
+                      delete filteredItem.isPrimary;
 
-                  if (isAnyValueInArrayTrue(incorrectValuesArray)) {
-                    hasIncorrectValue = true;
-                  } else {
-                    hasIncorrectValue = false;
+                      filteredWorkExperienceItemsReview = [
+                        ...filteredWorkExperienceItemsReview,
+                        filteredItem,
+                      ];
+
+                      const objectHasIncorrectValue =
+                        isAnyPropertyInObjectFalse(
+                          workExperienceItemsReview[i]
+                        );
+
+                      incorrectValuesArray = [
+                        ...incorrectValuesArray,
+                        objectHasIncorrectValue,
+                      ];
+                    }
+
+                    if (isAnyValueInArrayTrue(incorrectValuesArray)) {
+                      hasIncorrectValue = true;
+                    } else {
+                      hasIncorrectValue = false;
+                    }
                   }
                 }
 

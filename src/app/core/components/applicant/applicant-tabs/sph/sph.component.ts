@@ -12,11 +12,11 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
-import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { ApplicantResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-sph',
@@ -39,7 +39,6 @@ export class SphComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private inputService: TaInputService,
     private router: Router,
-    private applicantStore: ApplicantStore,
     private applicantQuery: ApplicantQuery,
     private applicantActionsService: ApplicantActionsService
   ) {}
@@ -47,15 +46,7 @@ export class SphComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
 
-    this.applicantQuery.personalInfoList$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantCardInfo = {
-          name: res.fullName,
-          ssn: res.ssn,
-          dob: convertDateFromBackend(res.doB),
-        };
-      });
+    this.getStepValuesFromStore();
   }
 
   public createForm(): void {
@@ -63,6 +54,20 @@ export class SphComponent implements OnInit, OnDestroy {
       isTested: [false, Validators.requiredTrue],
       hasReadAndUnderstood: [false, Validators.requiredTrue],
     });
+  }
+
+  public getStepValuesFromStore(): void {
+    this.applicantQuery.applicant$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: ApplicantResponse) => {
+        const personalInfo = res.personalInfo;
+
+        this.applicantCardInfo = {
+          name: personalInfo?.fullName,
+          ssn: personalInfo?.ssn,
+          dob: convertDateFromBackend(personalInfo?.doB),
+        };
+      });
   }
 
   public handleCheckboxParagraphClick(type: string): void {

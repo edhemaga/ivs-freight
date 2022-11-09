@@ -12,6 +12,7 @@ import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
+import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
   providedIn: 'root',
@@ -65,7 +66,8 @@ export class MvrTService implements OnDestroy {
 
   /* Observable<CreateMvrResponse> */
   public addMvr(data: any): Observable<any> {
-    return this.mvrService.apiMvrPost(data).pipe(
+    const sortedParams = getFunctionParams(this.mvrService.apiMvrPost, data);
+    return this.mvrService.apiMvrPost(...sortedParams).pipe(
       tap(() => {
         const subDriver = this.driverService
           .getDriverById(data.driverId)
@@ -95,7 +97,8 @@ export class MvrTService implements OnDestroy {
   }
 
   public updateMvr(data: any): Observable<object> {
-    return this.mvrService.apiMvrPut(data).pipe(
+    const sortedParams = getFunctionParams(this.mvrService.apiMvrPut, data);
+    return this.mvrService.apiMvrPut(...sortedParams).pipe(
       tap((res: any) => {
         let driverId = this.driverItemStore.getValue().ids[0];
         const subDriver = this.driverService

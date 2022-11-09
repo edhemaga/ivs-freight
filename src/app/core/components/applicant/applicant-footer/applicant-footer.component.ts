@@ -28,7 +28,10 @@ import { ApplicantQuery } from '../state/store/applicant.query';
 import { SelectedMode } from '../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../state/enum/input-switch-actions.enum';
 import { IdNameList } from '../state/model/lists.model';
-import { ApplicantCompanyInfoResponse } from 'appcoretruckassist';
+import {
+  ApplicantCompanyInfoResponse,
+  ApplicantResponse,
+} from 'appcoretruckassist';
 
 @Component({
   selector: 'app-applicant-footer',
@@ -178,10 +181,10 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
   public getRequestsBoxValuesFromStore() {
     let requestsBoxResponse: any;
 
-    this.applicantQuery.requestsList$
+    this.applicantQuery.applicant$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        requestsBoxResponse = res;
+      .subscribe((res: ApplicantResponse) => {
+        requestsBoxResponse = res.requests;
       });
 
     this.patchRequestsBoxValues(requestsBoxResponse);
@@ -411,9 +414,9 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public getCompanyInfo(): void {
-    this.applicantQuery.companyInfoList$
+    this.applicantQuery.applicant$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
+      .subscribe((res: ApplicantResponse) => {
         this.companyInfo = res?.companyInfo;
 
         this.dateOfApplication = convertDateFromBackend(

@@ -10,15 +10,18 @@ import {
   descriptionValidation,
 } from '../../../../shared/ta-input/ta-input.regex-validations';
 
-import { ApplicantListsQuery } from '../../../state/store/applicant-lists-store/applicant-lists.query';
+import { ApplicantQuery } from '../../../state/store/applicant.query';
 
 import {
   AnswerChoices,
   ApplicantQuestion,
 } from '../../../state/model/applicant-question.model';
-import { EnumValue } from 'appcoretruckassist/model/models';
-import { TrailerType } from '../../../state/model/trailer-type.model';
-import { VehicleType } from '../../../state/model/vehicle-type.model';
+import {
+  ApplicantModalResponse,
+  EnumValue,
+  TrailerTypeResponse,
+  TruckTypeResponse,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-sph-modal',
@@ -32,8 +35,8 @@ export class SphModalComponent implements OnInit, OnDestroy {
   public accidentHistoryForm: FormGroup;
   public drugAndAlcoholTestingHistoryForm: FormGroup;
 
-  public vehicleType: VehicleType[] = [];
-  public trailerType: TrailerType[] = [];
+  public vehicleType: TruckTypeResponse[] = [];
+  public trailerType: TrailerTypeResponse[] = [];
 
   public reasonsForLeaving: EnumValue[] = [];
 
@@ -269,7 +272,7 @@ export class SphModalComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private applicantListsQuery: ApplicantListsQuery
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
@@ -347,10 +350,26 @@ export class SphModalComponent implements OnInit, OnDestroy {
   }
 
   public getDropdownLists(): void {
-    this.applicantListsQuery.dropdownLists$
+    this.applicantQuery.applicantDropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
+      .subscribe((res: ApplicantModalResponse) => {
         this.reasonsForLeaving = res.reasonsForLeave;
+
+        this.vehicleType = res.truckTypes.map((item) => {
+          return {
+            ...item,
+            folder: 'common',
+            subFolder: 'trucks',
+          };
+        });
+
+        this.trailerType = res.trailerTypes.map((item) => {
+          return {
+            ...item,
+            folder: 'common',
+            subFolder: 'trailers',
+          };
+        });
       });
   }
 

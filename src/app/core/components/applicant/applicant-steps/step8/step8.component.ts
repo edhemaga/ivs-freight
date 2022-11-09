@@ -31,6 +31,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import {
   AddressEntity,
+  ApplicantResponse,
   CreateDrugAndAlcoholCommand,
   CreateDrugAndAlcoholReviewCommand,
 } from 'appcoretruckassist/model/models';
@@ -53,13 +54,14 @@ export class Step8Component implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public drugTestRadios: any;
 
   public subscription: Subscription;
 
   public stepValues: any;
+  public previousStepValues: any;
 
   public drugTestForm: FormGroup;
   public drugAlcoholStatementForm: FormGroup;
@@ -140,8 +142,6 @@ export class Step8Component implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
 
-    this.getApplicantId();
-
     this.getStepValuesFromStore();
 
     this.isTestedNegative();
@@ -177,11 +177,13 @@ export class Step8Component implements OnInit, OnDestroy {
   }
 
   public getStepValuesFromStore(): void {
-    this.applicantQuery.drugAndAlcoholList$
+    this.applicantQuery.applicant$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res) {
-          this.patchStepValues(res);
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        if (res.drugAndAlcohol) {
+          this.patchStepValues(res.drugAndAlcohol);
         }
       });
   }
@@ -365,6 +367,28 @@ export class Step8Component implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (!value) {
+          const {
+            motorCarrier,
+            phone,
+            address,
+            addressUnit,
+            sapName,
+            sapPhone,
+            sapAddress,
+            sapAddressUnit,
+          } = this.drugAlcoholStatementForm.value;
+
+          this.previousStepValues = {
+            motorCarrier,
+            phone,
+            address,
+            addressUnit,
+            sapName,
+            sapPhone,
+            sapAddress,
+            sapAddressUnit,
+          };
+
           this.inputService.changeValidators(
             this.drugAlcoholStatementForm.get('motorCarrier'),
             false
@@ -394,19 +418,29 @@ export class Step8Component implements OnInit, OnDestroy {
             this.drugAlcoholStatementForm.get('isAgreement'),
             false
           );
+        } else {
+          const {
+            motorCarrier,
+            phone,
+            address,
+            addressUnit,
+            sapName,
+            sapPhone,
+            sapAddress,
+            sapAddressUnit,
+          } = this.previousStepValues;
 
           this.drugAlcoholStatementForm.patchValue({
-            motorCarrier: null,
-            phone: null,
-            address: null,
-            addressUnit: null,
-            sapName: null,
-            sapPhone: null,
-            sapAddress: null,
-            sapAddressUnit: null,
-            isAgreement: null,
+            motorCarrier,
+            phone,
+            address,
+            addressUnit,
+            sapName,
+            sapPhone,
+            sapAddress,
+            sapAddressUnit,
           });
-        } else {
+
           this.inputService.changeValidators(
             this.drugAlcoholStatementForm.get('motorCarrier')
           );
@@ -430,14 +464,6 @@ export class Step8Component implements OnInit, OnDestroy {
             this.drugAlcoholStatementForm.get('isAgreement')
           );
         }
-      });
-  }
-
-  public getApplicantId(): void {
-    this.applicantQuery.applicantId$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res;
       });
   }
 
@@ -531,7 +557,7 @@ export class Step8Component implements OnInit, OnDestroy {
     }
   }
 
-  public startFeedbackValueChangesMonitoring() {
+  public startFeedbackValueChangesMonitoring(): void {
     if (this.stepFeedbackValues) {
       const filteredIncorrectValues = Object.keys(
         this.stepFeedbackValues
@@ -747,19 +773,22 @@ export class Step8Component implements OnInit, OnDestroy {
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/9`]);
 
-          this.applicantStore.update(1, (entity) => {
+          this.applicantStore.update((store) => {
             return {
-              ...entity,
-              drugAndAlcohol: {
-                ...entity.drugAndAlcohol,
-                positiveTest: saveData.positiveTest,
-                motorCarrier: saveData.motorCarrier,
-                phone: saveData.phone,
-                address: saveData.address,
-                sapName: saveData.sapName,
-                sapPhone: saveData.sapPhone,
-                sapAddress: saveData.sapAddress,
-                certifyInfomation: saveData.certifyInfomation,
+              ...store,
+              applicant: {
+                ...store.applicant,
+                drugAndAlcohol: {
+                  ...store.applicant.drugAndAlcohol,
+                  positiveTest: saveData.positiveTest,
+                  motorCarrier: saveData.motorCarrier,
+                  phone: saveData.phone,
+                  address: saveData.address,
+                  sapName: saveData.sapName,
+                  sapPhone: saveData.sapPhone,
+                  sapAddress: saveData.sapAddress,
+                  certifyInfomation: saveData.certifyInfomation,
+                },
               },
             };
           });
@@ -801,17 +830,20 @@ export class Step8Component implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.applicantStore.update(1, (entity) => {
+          this.router.navigate([`/application/${this.applicantId}/9`]);
+
+          this.applicantStore.update((store) => {
             return {
-              ...entity,
-              drugAndAlcohol: {
-                ...entity.drugAndAlcohol,
-                drugAndAlcoholReview: saveData,
+              ...store,
+              applicant: {
+                ...store.applicant,
+                drugAndAlcohol: {
+                  ...store.applicant.drugAndAlcohol,
+                  drugAndAlcoholReview: saveData,
+                },
               },
             };
           });
-
-          this.router.navigate([`/application/${this.applicantId}/9`]);
         },
         error: (err) => {
           console.log(err);

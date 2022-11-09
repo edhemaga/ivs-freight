@@ -5,22 +5,22 @@ import {
   DriverResponse,
   GetCdlModalResponse,
 } from 'appcoretruckassist';
-import { CdlTService } from '../../../state/cdl.service';
-import { DriverTService } from '../../../state/driver.service';
+import { CdlTService } from '../../../driver/state/cdl.service';
+import { DriverTService } from '../../../driver/state/driver.service';
 import { Subject, takeUntil } from 'rxjs';
-import { ModalService } from '../../../../shared/ta-modal/modal.service';
-import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
-import { NotificationService } from '../../../../../services/notification/notification.service';
-import { FormService } from '../../../../../services/form/form.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
+import { FormService } from '../../../../services/form/form.service';
 import {
   convertDateFromBackend,
   convertDateToBackend,
-} from '../../../../../utils/methods.calculations';
+} from '../../../../utils/methods.calculations';
 import {
   cdlCANADAValidation,
   cdlUSValidation,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
-import { DetailsDataService } from '../../../../../services/details-data/details-data.service';
+import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 //import { CreateCdlCommand } from 'appcoretruckassist/model/createCdlCommand';
 //import { EditCdlCommand } from 'appcoretruckassist/model/editCdlCommand';
 

@@ -15,11 +15,13 @@ import { ApplicantActionsService } from '../../state/services/applicant-actions.
 
 import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
-import { ApplicantListsQuery } from '../../state/store/applicant-lists-store/applicant-lists.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { AccidentModel } from '../../state/model/accident.model';
 import {
+  AccidentRecordFeedbackResponse,
+  ApplicantModalResponse,
+  ApplicantResponse,
   CreateAccidentRecordCommand,
   CreateAccidentRecordReviewCommand,
   TruckTypeResponse,
@@ -33,7 +35,7 @@ import {
 export class Step4Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public accidentForm: FormGroup;
 
@@ -72,14 +74,11 @@ export class Step4Component implements OnInit, OnDestroy {
     private router: Router,
     private applicantActionsService: ApplicantActionsService,
     private applicantStore: ApplicantStore,
-    private applicantQuery: ApplicantQuery,
-    private applicantListsQuery: ApplicantListsQuery
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
     this.createForm();
-
-    this.getApplicantId();
 
     this.getStepValuesFromStore();
 
@@ -108,16 +107,18 @@ export class Step4Component implements OnInit, OnDestroy {
   }
 
   public getStepValuesFromStore(): void {
-    this.applicantQuery.accidentRecordList$
+    this.applicantQuery.applicant$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res) {
-          this.patchStepValues(res);
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        if (res.accidentRecords) {
+          this.patchStepValues(res.accidentRecords);
         }
       });
   }
 
-  public patchStepValues(stepValues: any): void {
+  public patchStepValues(stepValues: AccidentRecordFeedbackResponse): void {
     console.log('stepValues', stepValues);
     const { noAccidentInThreeYears, accidents } = stepValues;
 
@@ -211,19 +212,19 @@ export class Step4Component implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value) {
           this.formStatus = 'VALID';
-
-          this.formValuesToPatch = {
-            location: null,
-            date: null,
-            fatalities: 0,
-            injuries: 0,
-            hazmatSpill: null,
-            vehicleType: null,
-            description: null,
-          };
-
-          this.accidentArray = [];
         } else {
+          if (this.lastAccidentCard) {
+            this.formValuesToPatch = {
+              location: this.lastAccidentCard?.location,
+              date: this.lastAccidentCard?.date,
+              hazmatSpill: this.lastAccidentCard?.hazmatSpill,
+              fatalities: this.lastAccidentCard?.fatalities,
+              injuries: this.lastAccidentCard?.injuries,
+              vehicleType: this.lastAccidentCard?.vehicleType,
+              description: this.lastAccidentCard?.description,
+            };
+          }
+
           this.formStatus = 'INVALID';
         }
       });
@@ -249,6 +250,18 @@ export class Step4Component implements OnInit, OnDestroy {
     this.accidentArray[index].isEditingAccident = true;
 
     const selectedAccident = this.accidentArray[index];
+
+    if (this.lastAccidentCard) {
+      this.previousFormValuesOnEdit = {
+        location: this.lastAccidentCard?.location,
+        date: this.lastAccidentCard?.date,
+        hazmatSpill: this.lastAccidentCard?.hazmatSpill,
+        fatalities: this.lastAccidentCard?.fatalities,
+        injuries: this.lastAccidentCard?.injuries,
+        vehicleType: this.lastAccidentCard?.vehicleType,
+        description: this.lastAccidentCard?.description,
+      };
+    }
 
     this.formValuesToPatch = selectedAccident;
   }
@@ -377,18 +390,10 @@ export class Step4Component implements OnInit, OnDestroy {
   }
 
   public getDropdownLists(): void {
-    this.applicantListsQuery.dropdownLists$
+    this.applicantQuery.applicantDropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
+      .subscribe((res: ApplicantModalResponse) => {
         this.vehicleType = res.truckTypes;
-      });
-  }
-
-  public getApplicantId(): void {
-    this.applicantQuery.applicantId$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res;
       });
   }
 
@@ -563,15 +568,18 @@ export class Step4Component implements OnInit, OnDestroy {
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/5`]);
 
-          this.applicantStore.update(1, (entity) => {
+          this.applicantStore.update((store) => {
             const noAccidents = saveData.noAccidentInThreeYears;
 
             return {
-              ...entity,
-              accidentRecords: {
-                ...entity.accidentRecords,
-                noAccidentInThreeYears: noAccidents,
-                accidents: noAccidents ? null : storeAccidentRecordItems,
+              ...store,
+              applicant: {
+                ...store.applicant,
+                accidentRecords: {
+                  ...store.applicant.accidentRecords,
+                  noAccidentInThreeYears: noAccidents,
+                  accidents: noAccidents ? null : storeAccidentRecordItems,
+                },
               },
             };
           });
@@ -609,8 +617,8 @@ export class Step4Component implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/5`]);
-          /* 
-            this.applicantStore.update(1, (entity) => {
+
+          /* this.applicantStore.update(1, (entity) => {
             return {
               ...entity,
               education: {
@@ -618,9 +626,9 @@ export class Step4Component implements OnInit, OnDestroy {
                 educationReview: rest,
               },
             };
-          });
+          }); */
 
-          console.log('updatedStore', this.applicantStore); */
+          console.log('updatedStore', this.applicantStore);
         },
         error: (err) => {
           console.log(err);

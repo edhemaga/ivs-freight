@@ -19,7 +19,7 @@ import {
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
 
-import { ApplicantListsQuery } from 'src/app/core/components/applicant/state/store/applicant-lists-store/applicant-lists.query';
+import { ApplicantQuery } from 'src/app/core/components/applicant/state/store/applicant.query';
 import { ApplicantSphFormStore } from 'src/app/core/components/applicant/state/store/applicant-sph-form-store/applicant-sph-form.store';
 import { ApplicantSphFormQuery } from 'src/app/core/components/applicant/state/store/applicant-sph-form-store/applicant-sph-form.query';
 
@@ -27,6 +27,7 @@ import { ApplicantQuestion } from 'src/app/core/components/applicant/state/model
 import { InputSwitchActions } from 'src/app/core/components/applicant/state/enum/input-switch-actions.enum';
 import { SphFormAccidentModel } from './../../../../../state/model/accident.model';
 import {
+  ApplicantModalResponse,
   CreatePreviousEmployerAccidentHistoryCommand,
   EnumValue,
   TrailerTypeResponse,
@@ -152,7 +153,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
     private router: Router,
     private inputService: TaInputService,
     private applicantActionsService: ApplicantActionsService,
-    private applicantListsQuery: ApplicantListsQuery,
+    private applicantQuery: ApplicantQuery,
     private applicantSphFormStore: ApplicantSphFormStore,
     private applicantSphFormQuery: ApplicantSphFormQuery
   ) {}
@@ -313,17 +314,18 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
       .subscribe((value) => {
         if (value) {
           this.formStatus = 'VALID';
-
-          this.accidentArray = [];
-          this.formValuesToPatch = {
-            accidentDate: null,
-            accidentLocation: null,
-            accidentDescription: null,
-            hazmatSpill: null,
-            fatalities: 0,
-            injuries: 0,
-          };
         } else {
+          if (this.lastAccidentCard) {
+            this.formValuesToPatch = {
+              accidentLocation: this.lastAccidentCard?.accidentLocation,
+              accidentDate: this.lastAccidentCard?.accidentDate,
+              hazmatSpill: this.lastAccidentCard?.hazmatSpill,
+              fatalities: this.lastAccidentCard?.fatalities,
+              injuries: this.lastAccidentCard?.injuries,
+              accidentDescription: this.lastAccidentCard?.accidentDescription,
+            };
+          }
+
           this.formStatus = 'INVALID';
         }
       });
@@ -448,6 +450,17 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
 
     const selectedAccident = this.accidentArray[index];
 
+    if (this.lastAccidentCard) {
+      this.previousFormValuesOnEdit = {
+        accidentLocation: this.lastAccidentCard?.accidentLocation,
+        accidentDate: this.lastAccidentCard?.accidentDate,
+        hazmatSpill: this.lastAccidentCard?.hazmatSpill,
+        fatalities: this.lastAccidentCard?.fatalities,
+        injuries: this.lastAccidentCard?.injuries,
+        accidentDescription: this.lastAccidentCard?.accidentDescription,
+      };
+    }
+
     this.formValuesToPatch = selectedAccident;
   }
 
@@ -553,9 +566,9 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public getDropdownLists(): void {
-    this.applicantListsQuery.dropdownLists$
+    this.applicantQuery.applicantDropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
+      .subscribe((res: ApplicantModalResponse) => {
         this.vehicleType = res.truckTypes.map((item) => {
           return {
             ...item,

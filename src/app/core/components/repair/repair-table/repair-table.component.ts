@@ -322,6 +322,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
           contentType: 'delete',
           show: true,
           danger: true,
+          redIcon: true,
           svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
         },
       ],

@@ -16,13 +16,15 @@ import { ApplicantActionsService } from '../../state/services/applicant-actions.
 
 import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
-import { ApplicantListsQuery } from '../../state/store/applicant-lists-store/applicant-lists.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { ViolationModel } from '../../state/model/violations.model';
 import {
+  ApplicantModalResponse,
+  ApplicantResponse,
   CreateTrafficViolationCommand,
   CreateTrafficViolationReviewCommand,
+  TrafficViolationFeedbackResponse,
   TruckTypeResponse,
 } from 'appcoretruckassist/model/models';
 
@@ -34,7 +36,7 @@ import {
 export class Step5Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public applicantId: number;
 
@@ -81,22 +83,17 @@ export class Step5Component implements OnInit, OnDestroy {
     private router: Router,
     private applicantActionsService: ApplicantActionsService,
     private applicantStore: ApplicantStore,
-    private applicantQuery: ApplicantQuery,
-    private applicantListsQuery: ApplicantListsQuery
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
     this.createForm();
 
-    this.getDropdownLists();
-
-    this.getApplicantId();
-
-    this.getStepValuesFromStore();
-
     this.hasNoTrafficViolations();
 
-    this.getCdlInformation();
+    this.getDropdownLists();
+
+    this.getStepValuesFromStore();
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -133,16 +130,30 @@ export class Step5Component implements OnInit, OnDestroy {
   }
 
   public getStepValuesFromStore(): void {
-    this.applicantQuery.trafficViolationsList$
+    this.applicantQuery.applicant$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res) {
-          this.patchStepValues(res);
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        const cdlInformation = res.cdlInformation;
+
+        const lastLicenseAdded: any =
+          cdlInformation?.licences[cdlInformation.licences.length - 1];
+
+        this.lastValidLicense = {
+          license: lastLicenseAdded?.licenseNumber,
+          state: lastLicenseAdded?.state?.stateShortName,
+          classType: lastLicenseAdded?.class?.name,
+          expDate: convertDateFromBackendShortYear(lastLicenseAdded?.expDate),
+        };
+
+        if (res.trafficViolation) {
+          this.patchStepValues(res.trafficViolation);
         }
       });
   }
 
-  public patchStepValues(stepValues: any): void {
+  public patchStepValues(stepValues: TrafficViolationFeedbackResponse): void {
     const {
       noViolationsForPastTwelveMonths,
       notBeenConvicted,
@@ -278,6 +289,21 @@ export class Step5Component implements OnInit, OnDestroy {
           displayAnnotationTextArea: false,
         };
       }
+    } else {
+      this.inputService.changeValidatorsCheck(
+        this.notBeenConvictedForm.get('notBeenConvicted'),
+        false
+      );
+      this.inputService.changeValidatorsCheck(
+        this.onlyOneHoldLicenseForm.get('onlyOneHoldLicense'),
+        false
+      );
+      this.inputService.changeValidatorsCheck(
+        this.certifyForm.get('certify'),
+        false
+      );
+
+      this.formStatus = 'VALID';
     }
   }
 
@@ -300,21 +326,17 @@ export class Step5Component implements OnInit, OnDestroy {
             false
           );
 
-          this.notBeenConvictedForm.patchValue({ notBeenConvicted: null });
-          this.onlyOneHoldLicenseForm.patchValue({ onlyOneHoldLicense: null });
-          this.certifyForm.patchValue({ certify: null });
-
           this.formStatus = 'VALID';
-
-          this.formValuesToPatch = {
-            date: null,
-            vehicleType: null,
-            location: null,
-            description: null,
-          };
-
-          this.violationsArray = [];
         } else {
+          if (this.lastViolationsCard) {
+            this.formValuesToPatch = {
+              date: this.lastViolationsCard?.date,
+              vehicleType: this.lastViolationsCard?.vehicleType,
+              location: this.lastViolationsCard.location,
+              description: this.lastViolationsCard?.description,
+            };
+          }
+
           this.inputService.changeValidatorsCheck(
             this.notBeenConvictedForm.get('notBeenConvicted')
           );
@@ -372,6 +394,15 @@ export class Step5Component implements OnInit, OnDestroy {
     this.violationsArray[index].isEditingViolation = true;
 
     const selectedViolation = this.violationsArray[index];
+
+    if (this.lastViolationsCard) {
+      this.previousFormValuesOnEdit = {
+        date: this.lastViolationsCard?.date,
+        vehicleType: this.lastViolationsCard?.vehicleType,
+        location: this.lastViolationsCard.location,
+        description: this.lastViolationsCard?.description,
+      };
+    }
 
     this.formValuesToPatch = selectedViolation;
   }
@@ -506,33 +537,10 @@ export class Step5Component implements OnInit, OnDestroy {
   }
 
   public getDropdownLists(): void {
-    this.applicantListsQuery.dropdownLists$
+    this.applicantQuery.applicantDropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
+      .subscribe((res: ApplicantModalResponse) => {
         this.vehicleType = res.truckTypes;
-      });
-  }
-
-  public getApplicantId(): void {
-    this.applicantQuery.applicantId$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res;
-      });
-  }
-
-  public getCdlInformation(): void {
-    this.applicantQuery.cdlInformationList$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        const lastLicenseAdded: any = res?.licences[res.licences.length - 1];
-
-        this.lastValidLicense = {
-          license: lastLicenseAdded?.licenseNumber,
-          state: lastLicenseAdded?.state?.stateShortName,
-          classType: lastLicenseAdded?.class?.name,
-          expDate: convertDateFromBackendShortYear(lastLicenseAdded?.expDate),
-        };
       });
   }
 
@@ -770,26 +778,29 @@ export class Step5Component implements OnInit, OnDestroy {
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/6`]);
 
-          this.applicantStore.update(1, (entity) => {
+          this.applicantStore.update((store) => {
             const noViolations = saveData.noViolationsForPastTwelveMonths;
 
             return {
-              ...entity,
-              trafficViolation: {
-                ...entity.trafficViolation,
-                noViolationsForPastTwelveMonths: noViolations,
-                notBeenConvicted: noViolations
-                  ? false
-                  : saveData.notBeenConvicted,
-                onlyOneHoldLicense: noViolations
-                  ? false
-                  : saveData.onlyOneHoldLicense,
-                certifyViolations: noViolations
-                  ? false
-                  : saveData.certifyViolations,
-                trafficViolationItems: noViolations
-                  ? []
-                  : storeTrafficViolationItems,
+              ...store,
+              applicant: {
+                ...store.applicant,
+                trafficViolation: {
+                  ...store.applicant.trafficViolation,
+                  noViolationsForPastTwelveMonths: noViolations,
+                  notBeenConvicted: noViolations
+                    ? false
+                    : saveData.notBeenConvicted,
+                  onlyOneHoldLicense: noViolations
+                    ? false
+                    : saveData.onlyOneHoldLicense,
+                  certifyViolations: noViolations
+                    ? false
+                    : saveData.certifyViolations,
+                  trafficViolationItems: noViolations
+                    ? []
+                    : storeTrafficViolationItems,
+                },
               },
             };
           });

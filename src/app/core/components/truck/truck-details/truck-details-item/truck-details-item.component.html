@@ -18,6 +18,7 @@
           [cardNameCommon]="reg.licensePlate"
           [hasCopyIcon]="false"
           [options]="dataEdit"
+          [cardNameCurrent]="'truckRegistration'"
           [noteIcons]="
             reg.note
               ? 'assets/svg/truckassist-table/note/Note.svg'
@@ -71,6 +72,9 @@
                   [minRows]="1"
                   [isVisibleNote]="true"
                   [noteType]="'details-card'"
+                  [note]="reg.note"
+                  [entityId]="reg.id"
+                  [entityType]="'Registration'"
                 ></app-ta-input-note>
               </div>
             </div>
@@ -85,7 +89,7 @@
             let i = index;
             trackBy: identity
           "
-          [options]="dataEdit"
+          [options]="dataFHWA"
           [cardDocumentCounter]="1"
           [noteIcons]="
             fhwa.note
@@ -126,6 +130,9 @@
                   [minRows]="1"
                   [isVisibleNote]="true"
                   [noteType]="'details-card'"
+                  [note]="fhwa.note"
+                  [entityId]="fhwa.id"
+                  [entityType]="'Inspection'"
                 ></app-ta-input-note>
               </div>
             </div>
@@ -144,7 +151,7 @@
           [cardDocumentCounter]="1"
           (resizePage)="toggleResizePage(i, 'titles')"
           [cardNameCommon]="title.number"
-          [options]="dataEdit"
+          [options]="dataFHWA"
           [noteIcons]="
             title.note
               ? 'assets/svg/truckassist-table/note/Note.svg'
@@ -194,6 +201,9 @@
                   [isVisibleDivider]="false"
                   [isVisibleNote]="true"
                   [noteType]="'details-card'"
+                  [note]="title.note"
+                  [entityId]="title.id"
+                  [entityType]="'Title'"
                 ></app-ta-input-note>
               </div>
             </div>

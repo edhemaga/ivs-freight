@@ -4,18 +4,21 @@ import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { anyInputInLineIncorrect } from '../../state/utils/utils';
+import {
+  anyInputInLineIncorrect,
+  isFormValueNotEqual,
+} from '../../state/utils/utils';
 
 import {
   convertDateToBackend,
   convertDateFromBackend,
+  convertDateFromBackendShortYear,
 } from 'src/app/core/utils/methods.calculations';
 
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
 import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
-import { ApplicantListsQuery } from '../../state/store/applicant-lists-store/applicant-lists.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { WorkHistoryModel } from '../../state/model/work-history.model';
@@ -26,6 +29,9 @@ import {
   TrailerTypeResponse,
   TruckTypeResponse,
   CreateWorkExperienceReviewCommand,
+  WorkExperienceFeedbackResponse,
+  ApplicantResponse,
+  ApplicantModalResponse,
 } from 'appcoretruckassist/model/models';
 
 @Component({
@@ -36,7 +42,7 @@ import {
 export class Step2Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public applicantId: number;
 
@@ -77,19 +83,21 @@ export class Step2Component implements OnInit, OnDestroy {
   public cardsWithIncorrectFields: boolean = false;
   public previousFormValuesOnReview: any;
 
+  public lastItemStepValues: any;
+
+  public stepFeedbackValues: any;
+  public isFeedbackValueUpdated: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private applicantActionsService: ApplicantActionsService,
     private applicantStore: ApplicantStore,
-    private applicantQuery: ApplicantQuery,
-    private applicantListsQuery: ApplicantListsQuery
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
     this.createForm();
-
-    this.getApplicantId();
 
     this.getStepValuesFromStore();
 
@@ -118,16 +126,19 @@ export class Step2Component implements OnInit, OnDestroy {
   }
 
   public getStepValuesFromStore(): void {
-    this.applicantQuery.workExperienceList$
+    this.applicantQuery.applicant$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res) {
-          this.patchStepValues(res);
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        if (res.workExperience) {
+          this.patchStepValues(res.workExperience);
         }
       });
   }
 
-  public patchStepValues(stepValues: any): void {
+  public patchStepValues(stepValues: WorkExperienceFeedbackResponse): void {
+    console.log('stepValues', stepValues);
     const { haveWorkExperience, workExperienceItems } = stepValues;
 
     if (this.selectedMode === SelectedMode.REVIEW) {
@@ -199,11 +210,55 @@ export class Step2Component implements OnInit, OnDestroy {
       }
     }
 
+    if (this.selectedMode === SelectedMode.FEEDBACK) {
+      const lastWorkExperienceItem =
+        workExperienceItems[workExperienceItems.length - 1];
+
+      const lastWorkExperienceItemReview =
+        lastWorkExperienceItem.workExperienceItemReview;
+
+      if (lastWorkExperienceItemReview) {
+        this.stepFeedbackValues = lastWorkExperienceItemReview;
+
+        this.lastItemStepValues = lastWorkExperienceItem;
+
+        console.log('this.lastItemStepValues', this.lastItemStepValues);
+        console.log('this.stepFeedbackValues', this.stepFeedbackValues);
+      }
+
+      /*      if (drugAndAlcoholReview) {
+        this.stepFeedbackValues = drugAndAlcoholReview;
+      }
+
+      this.stepValues = stepValues;
+
+      this.startFeedbackValueChangesMonitoring(); */
+    }
+
     this.workExperienceForm
       .get('noWorkExperience')
       .patchValue(haveWorkExperience);
 
     if (!haveWorkExperience) {
+      const itemReviewPlaceholder = {
+        isEmployerValid: true,
+        isJobDescriptionValid: true,
+        isFromValid: true,
+        isToValid: true,
+        isPhoneValid: true,
+        isEmailValid: true,
+        isFaxValid: true,
+        isAddressValid: true,
+        isAddressUnitValid: true,
+        isReasonForLeavingValid: true,
+        isAccountForPeriodBetweenValid: true,
+        employerMessage: null,
+        jobDescriptionMessage: null,
+        contactMessage: null,
+        addressMessage: null,
+        accountForPeriodBetweenMessage: null,
+      };
+
       const lastItemInWorkExperienceArray =
         workExperienceItems[workExperienceItems.length - 1];
 
@@ -249,7 +304,7 @@ export class Step2Component implements OnInit, OnDestroy {
               : [],
             workExperienceItemReview: item.workExperienceItemReview
               ? item.workExperienceItemReview
-              : null,
+              : itemReviewPlaceholder,
           };
         });
 
@@ -302,7 +357,7 @@ export class Step2Component implements OnInit, OnDestroy {
         workExperienceItemReview:
           lastItemInWorkExperienceArray.workExperienceItemReview
             ? lastItemInWorkExperienceArray.workExperienceItemReview
-            : null,
+            : itemReviewPlaceholder,
       };
 
       this.workExperienceArray = JSON.parse(
@@ -329,6 +384,8 @@ export class Step2Component implements OnInit, OnDestroy {
             reasonForLeaving: null,
             accountForPeriod: null,
           };
+    } else {
+      this.formStatus = 'VALID';
     }
   }
 
@@ -338,26 +395,31 @@ export class Step2Component implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
-          this.formValuesToPatch = {
-            employer: null,
-            jobDescription: null,
-            fromDate: null,
-            toDate: null,
-            employerPhone: null,
-            employerEmail: null,
-            employerFax: null,
-            employerAddress: null,
-            employerAddressUnit: null,
-            isDrivingPosition: null,
-            cfrPart: null,
-            fmCSA: null,
-            reasonForLeaving: null,
-            accountForPeriod: null,
-          };
-
           this.formStatus = 'VALID';
           this.innerFormStatus = 'VALID';
         } else {
+          if (this.lastWorkExperienceCard) {
+            this.formValuesToPatch = {
+              employer: this.lastWorkExperienceCard?.employer,
+              jobDescription: this.lastWorkExperienceCard?.jobDescription,
+              fromDate: this.lastWorkExperienceCard?.fromDate,
+              toDate: this.lastWorkExperienceCard?.toDate,
+              employerPhone: this.lastWorkExperienceCard?.employerPhone,
+              employerEmail: this.lastWorkExperienceCard?.employerEmail,
+              employerFax: this.lastWorkExperienceCard?.employerFax,
+              employerAddress: this.lastWorkExperienceCard?.employerAddress,
+              employerAddressUnit:
+                this.lastWorkExperienceCard?.employerAddressUnit,
+              isDrivingPosition: this.lastWorkExperienceCard?.isDrivingPosition,
+              classesOfEquipment:
+                this.lastWorkExperienceCard?.classesOfEquipment,
+              cfrPart: this.lastWorkExperienceCard?.cfrPart,
+              fmCSA: this.lastWorkExperienceCard?.fmCSA,
+              reasonForLeaving: this.lastWorkExperienceCard?.reasonForLeaving,
+              accountForPeriod: this.lastWorkExperienceCard?.accountForPeriod,
+            };
+          }
+
           this.formStatus = 'INVALID';
           this.innerFormStatus = 'VALID';
         }
@@ -384,6 +446,26 @@ export class Step2Component implements OnInit, OnDestroy {
     this.workExperienceArray[index].isEditingWorkHistory = true;
 
     const selectedWorkExperience = this.workExperienceArray[index];
+
+    if (this.lastWorkExperienceCard) {
+      this.previousFormValuesOnEdit = {
+        employer: this.lastWorkExperienceCard?.employer,
+        jobDescription: this.lastWorkExperienceCard?.jobDescription,
+        fromDate: this.lastWorkExperienceCard?.fromDate,
+        toDate: this.lastWorkExperienceCard?.toDate,
+        employerPhone: this.lastWorkExperienceCard?.employerPhone,
+        employerEmail: this.lastWorkExperienceCard?.employerEmail,
+        employerFax: this.lastWorkExperienceCard?.employerFax,
+        employerAddress: this.lastWorkExperienceCard?.employerAddress,
+        employerAddressUnit: this.lastWorkExperienceCard?.employerAddressUnit,
+        isDrivingPosition: this.lastWorkExperienceCard?.isDrivingPosition,
+        classesOfEquipment: this.lastWorkExperienceCard?.classesOfEquipment,
+        cfrPart: this.lastWorkExperienceCard?.cfrPart,
+        fmCSA: this.lastWorkExperienceCard?.fmCSA,
+        reasonForLeaving: this.lastWorkExperienceCard?.reasonForLeaving,
+        accountForPeriod: this.lastWorkExperienceCard?.accountForPeriod,
+      };
+    }
 
     this.formValuesToPatch = selectedWorkExperience;
   }
@@ -457,6 +539,12 @@ export class Step2Component implements OnInit, OnDestroy {
 
   public onGetLastFormValues(event: any): void {
     this.lastWorkExperienceCard = event;
+
+    if (this.selectedMode === SelectedMode.FEEDBACK) {
+      if (event) {
+        this.startFeedbackValueChangesMonitoring();
+      }
+    }
   }
 
   public onHasIncorrectFields(event: any): void {
@@ -564,9 +652,9 @@ export class Step2Component implements OnInit, OnDestroy {
   }
 
   public getDropdownLists(): void {
-    this.applicantListsQuery.dropdownLists$
+    this.applicantQuery.applicantDropdownLists$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
+      .subscribe((res: ApplicantModalResponse) => {
         this.vehicleType = res.truckTypes;
 
         this.trailerType = res.trailerTypes;
@@ -574,14 +662,6 @@ export class Step2Component implements OnInit, OnDestroy {
         this.trailerLengthType = res.trailerLenghts;
 
         this.reasonsForLeaving = res.reasonsForLeave;
-      });
-  }
-
-  public getApplicantId(): void {
-    this.applicantQuery.applicantId$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res;
       });
   }
 
@@ -683,6 +763,129 @@ export class Step2Component implements OnInit, OnDestroy {
     this.formValuesToPatch = selectedWorkExperience;
   }
 
+  public startFeedbackValueChangesMonitoring(): void {
+    if (this.stepFeedbackValues) {
+      const filteredIncorrectValues = Object.keys(
+        this.stepFeedbackValues
+      ).reduce((o, key) => {
+        this.stepFeedbackValues[key] === false &&
+          (o[key] = this.stepFeedbackValues[key]);
+
+        return o;
+      }, {});
+
+      const hasIncorrectValues = Object.keys(filteredIncorrectValues).length;
+
+      if (hasIncorrectValues) {
+        const filteredFieldsWithIncorrectValues = Object.keys(
+          filteredIncorrectValues
+        ).reduce((o, key) => {
+          const keyName = key
+            .replace('Valid', '')
+            .replace('is', '')
+            .trim()
+            .toLowerCase();
+
+          const match = Object.keys(this.lastItemStepValues)
+            .filter((item) => item.toLowerCase().includes(keyName))
+            .pop();
+
+          o[keyName] = this.lastItemStepValues[match];
+
+          if (keyName === 'from') {
+            o['from'] = convertDateFromBackendShortYear(o['from']);
+          }
+
+          if (keyName === 'to') {
+            o['to'] = convertDateFromBackendShortYear(o['to']);
+          }
+
+          if (keyName === 'address') {
+            o['address'] = JSON.stringify({
+              address: this.lastItemStepValues.address.address,
+            });
+          }
+
+          if (keyName === 'addressunit') {
+            o['addressunit'] = this.lastItemStepValues.address.addressUnit;
+          }
+
+          return o;
+        }, {});
+
+        const filteredUpdatedFieldsWithIncorrectValues = Object.keys(
+          filteredFieldsWithIncorrectValues
+        ).reduce((o, key) => {
+          const keyName = key;
+
+          const match = Object.keys(this.lastItemStepValues)
+            .filter((item) => item.toLowerCase().includes(keyName))
+            .pop();
+
+          o[keyName] = this.lastWorkExperienceCard[match];
+
+          if (keyName === 'from') {
+            o['from'] = this.lastWorkExperienceCard.fromDate;
+          }
+
+          if (keyName === 'to') {
+            o['to'] = this.lastWorkExperienceCard.toDate;
+          }
+
+          if (keyName === 'phone') {
+            o['phone'] = this.lastWorkExperienceCard.employerPhone;
+          }
+
+          if (keyName === 'fax') {
+            o['fax'] = this.lastWorkExperienceCard.employerFax;
+          }
+
+          if (keyName === 'email') {
+            o['email'] = this.lastWorkExperienceCard.employerEmail;
+          }
+
+          if (keyName === 'address') {
+            o['address'] = JSON.stringify({
+              address: this.lastWorkExperienceCard.employerAddress?.address,
+            });
+          }
+
+          if (keyName === 'addressunit') {
+            o['addressunit'] = this.lastWorkExperienceCard.employerAddressUnit;
+          }
+
+          if (keyName === 'accountforperiodbetween') {
+            o['accountforperiodbetween'] =
+              this.lastWorkExperienceCard.accountForPeriod;
+          }
+
+          return o;
+        }, {});
+
+        console.log(
+          'filteredFieldsWithIncorrectValues',
+          filteredFieldsWithIncorrectValues
+        );
+
+        console.log(
+          'filteredUpdatedFieldsWithIncorrectValues',
+          filteredUpdatedFieldsWithIncorrectValues
+        );
+
+        const isFormNotEqual = isFormValueNotEqual(
+          filteredFieldsWithIncorrectValues,
+          filteredUpdatedFieldsWithIncorrectValues
+        );
+
+        if (isFormNotEqual) {
+          this.isFeedbackValueUpdated = true;
+        } else {
+          this.isFeedbackValueUpdated = false;
+        }
+      }
+    }
+  }
+
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
       if (this.selectedMode === SelectedMode.APPLICANT) {
@@ -754,8 +957,8 @@ export class Step2Component implements OnInit, OnDestroy {
     let filteredLastWorkExperienceCard: any;
 
     const lastWorkExperinceCardAddress = {
-      ...this.lastWorkExperienceCard.employerAddress,
-      addressUnit: this.lastWorkExperienceCard.employerAddressUnit,
+      ...this.lastWorkExperienceCard?.employerAddress,
+      addressUnit: this.lastWorkExperienceCard?.employerAddressUnit,
     };
 
     if (!noWorkExperience) {
@@ -856,17 +1059,20 @@ export class Step2Component implements OnInit, OnDestroy {
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/3`]);
 
-          this.applicantStore.update(1, (entity) => {
+          this.applicantStore.update((store) => {
             const noWorkExperience = saveData.haveWorkExperience;
 
             return {
-              ...entity,
-              workExperience: {
-                ...entity.workExperience,
-                haveWorkExperience: noWorkExperience,
-                workExperienceItems: noWorkExperience
-                  ? null
-                  : storeWorkExperienceItems,
+              ...store,
+              applicant: {
+                ...store.applicant,
+                workExperience: {
+                  ...store.applicant.workExperience,
+                  haveWorkExperience: noWorkExperience,
+                  workExperienceItems: noWorkExperience
+                    ? null
+                    : storeWorkExperienceItems,
+                },
               },
             };
           });
@@ -966,32 +1172,37 @@ export class Step2Component implements OnInit, OnDestroy {
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/3`]);
 
-          this.applicantStore.update(1, (entity) => {
+          this.applicantStore.update((store) => {
             return {
-              ...entity,
-              workExperience: {
-                ...entity.workExperience,
-                workExperienceItems:
-                  entity.workExperience.workExperienceItems.map(
-                    (item, index) => {
-                      if (
-                        index ===
-                        entity.workExperience.workExperienceItems.length - 1
-                      ) {
+              ...store,
+              applicant: {
+                ...store.applicant,
+                workExperience: {
+                  ...store.applicant.workExperience,
+                  workExperienceItems:
+                    store.applicant.workExperience.workExperienceItems.map(
+                      (item, index) => {
+                        if (
+                          index ===
+                          store.applicant.workExperience.workExperienceItems
+                            .length -
+                            1
+                        ) {
+                          return {
+                            ...item,
+                            workExperienceItemReview:
+                              lastReviewedItemInWorkExperienceArray,
+                          };
+                        }
+
                         return {
                           ...item,
                           workExperienceItemReview:
-                            lastReviewedItemInWorkExperienceArray,
+                            workExperienceArrayReview[index],
                         };
                       }
-
-                      return {
-                        ...item,
-                        workExperienceItemReview:
-                          workExperienceArrayReview[index],
-                      };
-                    }
-                  ),
+                    ),
+                },
               },
             };
           });

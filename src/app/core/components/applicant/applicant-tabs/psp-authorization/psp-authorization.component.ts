@@ -9,11 +9,11 @@ import { convertDateFromBackend } from './../../../../utils/methods.calculations
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
-import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { ApplicantResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-psp-authorization',
@@ -35,7 +35,6 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private router: Router,
-    private applicantStore: ApplicantStore,
     private applicantQuery: ApplicantQuery,
     private applicantActionsService: ApplicantActionsService
   ) {}
@@ -43,15 +42,7 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
 
-    this.applicantQuery.personalInfoList$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantCardInfo = {
-          name: res.fullName,
-          ssn: res.ssn,
-          dob: convertDateFromBackend(res.doB),
-        };
-      });
+    this.getStepValuesFromStore();
   }
 
   public createForm(): void {
@@ -62,6 +53,20 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
       isPspReport: [false, Validators.requiredTrue],
       isDisclosureRegardingReport: [false, Validators.requiredTrue],
     });
+  }
+
+  public getStepValuesFromStore(): void {
+    this.applicantQuery.applicant$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: ApplicantResponse) => {
+        const personalInfo = res.personalInfo;
+
+        this.applicantCardInfo = {
+          name: personalInfo?.fullName,
+          ssn: personalInfo?.ssn,
+          dob: convertDateFromBackend(personalInfo?.doB),
+        };
+      });
   }
 
   public handleCheckboxParagraphClick(type: string): void {

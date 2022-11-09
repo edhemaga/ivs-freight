@@ -93,12 +93,6 @@ export class SphStep2FormComponent
 
   ngOnInit(): void {
     this.createForm();
-
-    if (this.formValuesToPatch) {
-      this.patchForm(this.formValuesToPatch);
-
-      this.startValueChangesMonitoring();
-    }
   }
 
   ngAfterViewInit(): void {
@@ -133,6 +127,8 @@ export class SphStep2FormComponent
     ) {
       setTimeout(() => {
         this.patchForm(changes.formValuesToPatch.currentValue);
+
+        this.startValueChangesMonitoring();
       }, 100);
     }
   }
@@ -168,11 +164,11 @@ export class SphStep2FormComponent
         this.hazmatSpillRadios[0].checked = true;
       } else {
         this.hazmatSpillRadios[1].checked = true;
-      }
 
-      if (hazmatSpillValue === null) {
-        this.hazmatSpillRadios[0].checked = false;
-        this.hazmatSpillRadios[1].checked = false;
+        if (hazmatSpillValue === null) {
+          this.hazmatSpillRadios[0].checked = false;
+          this.hazmatSpillRadios[1].checked = false;
+        }
       }
     }, 100);
   }
@@ -250,8 +246,6 @@ export class SphStep2FormComponent
     this.hazmatSpillRadios[0].checked = false;
     this.hazmatSpillRadios[1].checked = false;
 
-    this.accidentForm.reset();
-
     this.formService.resetForm(this.accidentForm);
 
     this.accidentForm.patchValue({
@@ -290,8 +284,6 @@ export class SphStep2FormComponent
 
     this.isAccidentEdited = false;
 
-    this.accidentForm.reset();
-
     this.subscription.unsubscribe();
   }
 
@@ -302,8 +294,6 @@ export class SphStep2FormComponent
 
     this.hazmatSpillRadios[0].checked = false;
     this.hazmatSpillRadios[1].checked = false;
-
-    this.accidentForm.reset();
 
     this.subscription.unsubscribe();
   }

@@ -11,7 +11,11 @@ import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { UpdateDriverRightsCommand } from 'appcoretruckassist/model/models';
+import {
+  ApplicantResponse,
+  DriverRightsFeedbackResponse,
+  UpdateDriverRightsCommand,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step9',
@@ -21,7 +25,7 @@ import { UpdateDriverRightsCommand } from 'appcoretruckassist/model/models';
 export class Step9Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public applicantId: number;
 
@@ -39,8 +43,6 @@ export class Step9Component implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
 
-    this.getApplicantId();
-
     this.getStepValuesFromStore();
   }
 
@@ -51,29 +53,23 @@ export class Step9Component implements OnInit, OnDestroy {
   }
 
   public getStepValuesFromStore(): void {
-    this.applicantQuery.driverRightsList$
+    this.applicantQuery.applicant$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res) {
-          this.patchStepValues(res);
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        if (res.driverRight) {
+          this.patchStepValues(res.driverRight);
         }
       });
   }
 
-  public patchStepValues(stepValues: any): void {
+  public patchStepValues(stepValues: DriverRightsFeedbackResponse): void {
     const { understandDriverRights } = stepValues;
 
     this.driverRightsForm
       .get('understandYourRights')
       .patchValue(understandDriverRights);
-  }
-
-  public getApplicantId(): void {
-    this.applicantQuery.applicantId$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res;
-      });
   }
 
   public onStepAction(event: any): void {
@@ -115,12 +111,15 @@ export class Step9Component implements OnInit, OnDestroy {
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/10`]);
 
-          this.applicantStore.update(1, (entity) => {
+          this.applicantStore.update((store) => {
             return {
-              ...entity,
-              driverRight: {
-                ...entity.driverRight,
-                understandDriverRights: saveData.understandDriverRights,
+              ...store,
+              applicant: {
+                ...store.applicant,
+                driverRight: {
+                  ...store.applicant.driverRight,
+                  understandDriverRights: saveData.understandDriverRights,
+                },
               },
             };
           });

@@ -27,5 +27,6 @@ export interface GetDriverModalResponse {
     perMileTeam?: number | null;
     defaultSoloDriverCommission?: number | null;
     defaultTeamDriverCommission?: number | null;
+    flatRate?: number | null;
 }
 

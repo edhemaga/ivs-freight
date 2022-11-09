@@ -449,8 +449,11 @@
           </div>
 
           <div
-            class="d-flex flex-column accident-view-form"
             *ngIf="accident.isEditingAccident"
+            class="d-flex flex-column accident-view-form"
+            [ngStyle]="{
+              margin: i !== 0 ? '32px auto 0 auto' : '10px auto 0 auto'
+            }"
           >
             <app-sph-step2-form
               [isEditing]="isEditing"

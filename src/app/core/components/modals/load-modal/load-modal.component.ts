@@ -12,7 +12,16 @@ import {
   Validators,
   AbstractControl,
 } from '@angular/forms';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
@@ -35,8 +44,6 @@ import {
 } from '../../../utils/methods.calculations';
 import moment from 'moment';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
-import { convertNumberInThousandSep } from '../../../utils/methods.calculations';
-
 @Component({
   selector: 'app-load-modal',
   templateUrl: './load-modal.component.html',
@@ -44,10 +51,13 @@ import { convertNumberInThousandSep } from '../../../utils/methods.calculations'
   providers: [ModalService, FormService],
 })
 export class LoadModalComponent implements OnInit, OnDestroy {
+  @ViewChild('originTab') originRef: ElementRef;
   @Input() editData: any;
 
   public loadForm: FormGroup;
   public isFormDirty: boolean;
+
+  public additionalTabHeight: number = 0;
 
   public selectedTab: number = 1;
   public headerTabs = [
@@ -967,16 +977,20 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       this.loadForm.get('dateFrom').patchValue(loadStop.get('dateFrom').value);
       this.loadForm.get('dateTo').patchValue(loadStop.get('dateTo').value);
 
-      this.loadForm
-        .get('timeFrom')
-        .patchValue(
-          moment(loadStop.get('timeFrom').value, 'HH:mm:SS A').toDate()
-        );
-      this.loadForm
-        .get('timeTo')
-        .patchValue(
-          moment(loadStop.get('timeTo').value, 'HH:mm:SS A').toDate()
-        );
+      if (loadStop.get('timeFrom').value) {
+        this.loadForm
+          .get('timeFrom')
+          .patchValue(
+            moment(loadStop.get('timeFrom').value, 'HH:mm:SS A').toDate()
+          );
+      }
+      if (loadStop.get('timeTo').value) {
+        this.loadForm
+          .get('timeTo')
+          .patchValue(
+            moment(loadStop.get('timeTo').value, 'HH:mm:SS A').toDate()
+          );
+      }
     } else {
       this.selectedShipper = null;
       this.loadShipperInputConfig = {
@@ -1145,7 +1159,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public addLoadStop() {
     this.loadStops().push(this.newLoadStop());
     this.drawStopOnMap();
-
     this.closeAllLoadStopExceptActive(
       this.loadStops().controls[this.loadStops().length - 1]
     );
@@ -1523,7 +1536,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         trailerLengthId: this.selectedTrailerLength
           ? this.selectedTrailerLength.id
           : null,
-        year: this.selectedYear ? this.selectedYear.id : null,
+        year: this.selectedYear ? this.selectedYear.name : null,
         liftgate: form.liftgate,
       },
       note: form.note,
@@ -1534,21 +1547,21 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       stops: this.premmapedStops() as any,
     };
 
-    // this.loadService
-    //   .createLoad(newData)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe({
-    //     next: () => {
-    //       this.notificationService.success(
-    //         'Successfully created load',
-    //         'Success'
-    //       );
-    //   this.modalService.setModalSpinner({ action: null, status: false });
-    //     },
-    //     error: (error: any) => {
-    //       this.notificationService.success(`Error: ${error}`, 'Error');
-    //     },
-    //   });
+    this.loadService
+      .createLoad(newData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfully created load',
+            'Success'
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
+        error: (error: any) => {
+          this.notificationService.success(`Error: ${error}`, 'Error');
+        },
+      });
   }
   private updateLoad(id: number) {}
 
@@ -1589,7 +1602,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         trailerLengthId: this.selectedTrailerLength
           ? this.selectedTrailerLength.id
           : null,
-        year: this.selectedYear ? this.selectedYear.id : null,
+        year: this.selectedYear ? this.selectedYear.name : null,
         liftgate: form.liftgate,
       },
       note: form.note,
@@ -1628,20 +1641,39 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         rate:
           item.additionalBillingType === 1
             ? this.loadForm.get('layoverRate').value
+              ? convertThousanSepInNumber(
+                  this.loadForm.get('layoverRate').value
+                )
+              : null
             : item.additionalBillingType === 2
             ? this.loadForm.get('lumperRate').value
+              ? convertThousanSepInNumber(this.loadForm.get('lumperRate').value)
+              : null
             : item.additionalBillingType === 3
             ? this.loadForm.get('fuelSurchargeRate').value
+              ? convertThousanSepInNumber(
+                  this.loadForm.get('fuelSurchargeRate').value
+                )
+              : null
             : item.additionalBillingType === 4
             ? this.loadForm.get('escortRate').value
+              ? convertThousanSepInNumber(this.loadForm.get('escortRate').value)
+              : null
             : item.additionalBillingType === 5
             ? this.loadForm.get('detentionRate').value
+              ? convertThousanSepInNumber(
+                  this.loadForm.get('detentionRate').value
+                )
+              : null
             : null,
       };
     });
   }
 
   private premmapedStops() {
+    const timeTypePicked = this.stopTimeTabs.find(
+      (item) => item.id === this.selectedStopTime
+    ).name;
     return this.loadStops().controls.map((item, index) => {
       return {
         id: null,
@@ -1649,10 +1681,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         stopOrder: item.get('stopOrder').value,
         shipperId: item.get('shipperId').value,
         dateFrom: convertDateToBackend(item.get('dateFrom').value),
-        dateTo: convertDateToBackend(item.get('dateTo').value),
-        timeType: item.get('timeType').value,
-        timeFrom: [null],
-        timeTo: [null],
+        dateTo: item.get('dateTo').value
+          ? convertDateToBackend(item.get('dateTo').value)
+          : null,
+        timeType: timeTypePicked === 'APPT' ? 'Appointment' : timeTypePicked,
+        timeFrom: item.get('timeFrom').value,
+        timeTo: item.get('timeTo').value,
         arrive: null,
         depart: null,
         // From legs

@@ -11,11 +11,11 @@ import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations'
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
-import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { ApplicantResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-mvr-authorization',
@@ -55,7 +55,6 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private router: Router,
-    private applicantStore: ApplicantStore,
     private applicantQuery: ApplicantQuery,
     private applicantActionsService: ApplicantActionsService
   ) {}
@@ -63,24 +62,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
 
-    this.applicantQuery.cdlInformationList$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        const lastLicenseAdded: any = res?.licences[res.licences.length - 1];
-
-        this.lastValidLicense = {
-          license: lastLicenseAdded?.licenseNumber,
-          state: lastLicenseAdded?.state?.stateShortName,
-          classType: lastLicenseAdded?.class?.name,
-          expDate: convertDateFromBackend(lastLicenseAdded?.expDate),
-        };
-      });
-
-    this.applicantQuery.personalInfoList$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.lastValidLicense.name = res.fullName;
-      });
+    this.getStepValuesFromStore();
   }
 
   private createForm(): void {
@@ -96,6 +78,27 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     this.dontHaveMvrForm = this.formBuilder.group({
       dontHaveMvr: [false],
     });
+  }
+
+  public getStepValuesFromStore(): void {
+    this.applicantQuery.applicant$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: ApplicantResponse) => {
+        const personalInfo = res.personalInfo;
+        const cdlInformation = res.cdlInformation;
+
+        const lastLicenseAdded: any =
+          cdlInformation?.licences[cdlInformation.licences.length - 1];
+
+        this.lastValidLicense = {
+          license: lastLicenseAdded?.licenseNumber,
+          state: lastLicenseAdded?.state?.stateShortName,
+          classType: lastLicenseAdded?.class?.name,
+          expDate: convertDateFromBackend(lastLicenseAdded?.expDate),
+        };
+
+        this.lastValidLicense.name = personalInfo?.fullName;
+      });
   }
 
   public handleCheckboxParagraphClick(type: string): void {

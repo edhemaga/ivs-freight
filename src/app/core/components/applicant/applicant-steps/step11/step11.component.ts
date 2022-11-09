@@ -12,7 +12,11 @@ import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { UpdateAuthorizationCommand } from 'appcoretruckassist';
+import {
+  ApplicantResponse,
+  AuthorizationFeedbackResponse,
+  UpdateAuthorizationCommand,
+} from 'appcoretruckassist';
 
 @Component({
   selector: 'app-step11',
@@ -22,7 +26,7 @@ import { UpdateAuthorizationCommand } from 'appcoretruckassist';
 export class Step11Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public authorizationForm: FormGroup;
 
@@ -43,8 +47,6 @@ export class Step11Component implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
 
-    this.getApplicantId();
-
     this.getStepValuesFromStore();
   }
 
@@ -58,16 +60,18 @@ export class Step11Component implements OnInit, OnDestroy {
   }
 
   public getStepValuesFromStore(): void {
-    this.applicantQuery.authorizationList$
+    this.applicantQuery.applicant$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res) {
-          this.patchStepValues(res);
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        if (res.authorization) {
+          this.patchStepValues(res.authorization);
         }
       });
   }
 
-  public patchStepValues(stepValues: any): void {
+  public patchStepValues(stepValues: AuthorizationFeedbackResponse): void {
     const {
       isFirstAuthorization,
       isSecondAuthorization,
@@ -140,14 +144,6 @@ export class Step11Component implements OnInit, OnDestroy {
     this.signature = this.signature?.slice(22);
   }
 
-  public getApplicantId(): void {
-    this.applicantQuery.applicantId$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.applicantId = res;
-      });
-  }
-
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
       if (
@@ -191,16 +187,19 @@ export class Step11Component implements OnInit, OnDestroy {
         next: () => {
           this.router.navigate([`/medical-certificate/${this.applicantId}`]);
 
-          this.applicantStore.update(1, (entity) => {
+          this.applicantStore.update((store) => {
             return {
-              ...entity,
-              authorization: {
-                ...entity.authorization,
-                isFirstAuthorization: saveData.isFirstAuthorization,
-                isSecondAuthorization: saveData.isSecondAuthorization,
-                isThirdAuthorization: saveData.isThirdAuthorization,
-                isFourthAuthorization: saveData.isFourthAuthorization,
-                signature: saveData.signature,
+              ...store,
+              applicant: {
+                ...store.applicant,
+                authorization: {
+                  ...store.applicant.authorization,
+                  isFirstAuthorization: saveData.isFirstAuthorization,
+                  isSecondAuthorization: saveData.isSecondAuthorization,
+                  isThirdAuthorization: saveData.isThirdAuthorization,
+                  isFourthAuthorization: saveData.isFourthAuthorization,
+                  signature: saveData.signature,
+                },
               },
             };
           });
