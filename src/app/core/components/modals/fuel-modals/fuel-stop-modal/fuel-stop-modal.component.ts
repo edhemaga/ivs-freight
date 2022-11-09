@@ -71,7 +71,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
       phone: [null, [Validators.required, phoneFaxRegex]],
       fax: [null, phoneFaxRegex],
       address: [null, [Validators.required, ...addressValidation]],
-      addressUnit: [null, [...addressUnitValidation]],
       note: [null],
     });
 
@@ -135,6 +134,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
   public onSaveNewFuelStop(event: any) {
     this.fuelStopForm.get('businessName').patchValue(event.data.name);
     this.fuelStopForm.get('fuelStopFranchiseId').clearValidators();
+    this.fuelStopForm.get('fuelStopFranchiseId').patchValue(null);
     this.selectedFuelStop = null;
     this.fuelStopForm
       .get('businessName')
@@ -171,7 +171,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         ? this.selectedFuelStop.id
         : null,
     };
-    console.log(newData);
+
     this.fuelService
       .addFuelStop(newData)
       .pipe(takeUntil(this.destroy$))
@@ -184,6 +184,16 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         },
         error: (err: any) => {
           console.log('error... ', err);
+
+          this.fuelStopForm.get('store').setErrors({ fuelStoreNumber: true });
+
+          this.fuelStopForm
+            .get('phone')
+            .setErrors({ fuelStoreCommonMessage: true });
+
+          this.fuelStopForm
+            .get('address')
+            .setErrors({ fuelStoreCommonMessage: true });
         },
       });
   }

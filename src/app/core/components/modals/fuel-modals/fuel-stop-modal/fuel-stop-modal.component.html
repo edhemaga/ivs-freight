@@ -53,10 +53,11 @@
           [inputConfig]="{
             name: 'fuel-store',
             type: 'text',
-            label: 'Store #',
+            label: 'Store No.',
             textTransform: 'uppercase',
             minLength: 2,
-            maxLength: 32
+            maxLength: 32,
+            isDisabled: !fuelStopForm.get('fuelStopFranchiseId').value
           }"
         ></app-ta-input>
       </div>
@@ -98,7 +99,7 @@
       </div>
     </div>
     <div class="row last-row">
-      <div class="col-10">
+      <div class="col-12">
         <app-input-address-dropdown
           formControlName="address"
           [inputConfig]="{
@@ -116,19 +117,6 @@
           [activeAddress]="selectedAddress"
           (selectedAddress)="onHandleAddress($event)"
         ></app-input-address-dropdown>
-      </div>
-      <div class="col-2">
-        <app-ta-input
-          formControlName="addressUnit"
-          [inputConfig]="{
-            name: 'address-unit',
-            type: 'text',
-            label: 'Unit No.',
-            textTransform: 'uppercase',
-            minLength: 1,
-            maxLength: 10
-          }"
-        ></app-ta-input>
       </div>
     </div>
     <!-- Note -->
