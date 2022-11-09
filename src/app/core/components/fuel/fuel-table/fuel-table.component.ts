@@ -292,6 +292,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         showLocationFilter: true,
         showFuelStopFilter: this.selectedTab === 'active',
         showMoneyFilter: true,
+        fuelMoneyFilter: true,
         showCategoryFuelFilter: this.selectedTab === 'active',
         viewModeOptions: this.getViewModeOptions(),
       },
