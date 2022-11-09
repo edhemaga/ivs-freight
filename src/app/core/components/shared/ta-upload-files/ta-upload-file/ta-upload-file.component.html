@@ -106,7 +106,7 @@
       class="ta-upload-file-action-rightside"
       [ngClass]="{
         'feedback-mode': isReview && reviewMode === 'FEEDBACK_MODE',
-        'small': type == 'details'
+        'small': type == 'details' || type == 'todo'
       }"
     >
       <div
@@ -126,7 +126,7 @@
         position="top"
         class="ta-upload-action-delete"
         (click)="isFileDelete = true"
-        *ngIf="type != 'details'"
+        *ngIf="type != 'details' && type != 'todo'"
       >
         <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
       </div>
@@ -173,7 +173,7 @@
     <!-- Image Content -->
     <img
       class="ta-upload-file-image"
-      [class.details_image]="type == 'details'"
+      [class.details_image]="type == 'details' || type == 'todo'"
       *ngIf="file?.extension?.toLowerCase() != 'pdf' && fileExtension != 'pdf'"
       [src]="file?.url"
       [alt]="file?.fileName"
@@ -248,6 +248,7 @@
       *ngIf="!editFile"
       class="ta-upload-file-name"
       [class.details_title]="type == 'details'"
+      [class.todo_title]="type == 'todo'"
     >
       {{ file?.fileName }}
     </p>

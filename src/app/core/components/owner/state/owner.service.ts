@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
 import {
-  CreateOwnerCommand,
   CreateResponse,
   GetOwnerListResponse,
   OwnerModalResponse,
   OwnerResponse,
   OwnerService,
-  UpdateOwnerCommand,
 } from 'appcoretruckassist';
+import { CreateOwnerCommand } from 'appcoretruckassist/model/createOwnerCommand';
+import { UpdateOwnerCommand } from 'appcoretruckassist/model/updateOwnerCommand';
 import { Observable, of, tap } from 'rxjs';
 import { OwnerActiveQuery } from './owner-active-state/owner-active.query';
 import { OwnerActiveStore } from './owner-active-state/owner-active.store';
 import { OwnerInactiveQuery } from './owner-inactive-state/owner-inactive.query';
 import { OwnerInactiveStore } from './owner-inactive-state/owner-inactive.store';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
   providedIn: 'root',
@@ -28,9 +29,10 @@ export class OwnerTService {
     private ownerInactiveQuery: OwnerInactiveQuery
   ) {}
 
-  // Add Owner
-  public addOwner(data: CreateOwnerCommand): Observable<CreateResponse> {
-    return this.ownerService.apiOwnerPost(data).pipe(
+  // Add Owner -- CreateOwnerCommand
+  public addOwner(data: any): Observable<CreateResponse> {
+    const sortedParams = getFunctionParams(this.ownerService.apiOwnerPost, data);
+    return this.ownerService.apiOwnerPost(...sortedParams).pipe(
       tap((res: any) => {
         const subOwner = this.getOwnerById(res.id).subscribe({
           next: (owner: OwnerResponse | any) => {
@@ -63,9 +65,10 @@ export class OwnerTService {
     );
   }
 
-  // Update Owner
-  public updateOwner(data: UpdateOwnerCommand): Observable<any> {
-    return this.ownerService.apiOwnerPut(data).pipe(
+  // Update Owner -- UpdateOwnerCommand
+  public updateOwner(data: any): Observable<any> {
+    const sortedParams = getFunctionParams(this.ownerService.apiOwnerPut, data);
+    return this.ownerService.apiOwnerPut(...sortedParams).pipe(
       tap(() => {
         const subOwner = this.getOwnerById(data.id).subscribe({
           next: (owner: OwnerResponse | any) => {

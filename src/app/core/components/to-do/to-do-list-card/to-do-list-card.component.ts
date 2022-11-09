@@ -370,7 +370,6 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
   }
 
   toggleComment(e: Event, mainIndx: number, indx: number) {
-   
     e.preventDefault();
     e.stopPropagation();
     this.DetailsDataService.setNewData(
@@ -379,6 +378,14 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     console.log(this.scene.children[mainIndx].children[indx], this.scene.children[mainIndx].children[indx]);
     this.scene.children[mainIndx].children[indx]['commentActive'] =
       !this.scene.children[mainIndx].children[indx]['commentActive'];
+  }
+
+  toggleFiles(e: Event, mainIndx: number, indx: number) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    this.scene.children[mainIndx].children[indx]['filesActive'] =
+      !this.scene.children[mainIndx].children[indx]['filesActive'];
   }
 
   toggleLinkShow(e: Event, mainIndx: number, indx: number) {

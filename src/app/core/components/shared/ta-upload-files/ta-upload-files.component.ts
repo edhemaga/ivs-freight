@@ -30,7 +30,7 @@ export class TaUploadFilesComponent implements OnInit {
   @Input() size: string = 'small'; // small | medium | large
   @Input() hasCarouselBottomTabs: boolean;
   @Input() tags: any[] = [];
-  @Input() type: string; // modal | table | details
+  @Input() type: string; // modal | table | details | todo
 
   @Output() onFileEvent: EventEmitter<{
     files: UploadFile[] | UploadFile | any;

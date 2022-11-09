@@ -17,6 +17,7 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { CreateOffDutyLocationCommand } from 'appcoretruckassist/model/createOffDutyLocationCommand';
 import { CreateWithUploadsResponse } from '../model/models';
 import { DriverListResponse } from '../model/models';
 import { DriverMinimalListResponse } from '../model/models';
@@ -24,14 +25,13 @@ import { DriverResponse } from '../model/models';
 import { FileResponse } from '../model/models';
 import { FleetType } from '../model/models';
 import { GetDriverModalResponse } from '../model/models';
-import { OwnerType } from '../model/models';
+import { OwnerType } from 'appcoretruckassist/model/ownerType';
 import { ProblemDetails } from '../model/models';
 import { StatusSetMultipleDriverCommand } from '../model/models';
+import { UpdateOffDutyLocationCommand } from 'appcoretruckassist/model/updateOffDutyLocationCommand';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
-import { CreateOffDutyLocationCommand } from 'appcoretruckassist/model/createOffDutyLocationCommand';
-import { UpdateOffDutyLocationCommand } from 'appcoretruckassist/model/updateOffDutyLocationCommand';
 
 
 

@@ -18,13 +18,12 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { CheckOwnerSsnEinResponse } from '../model/models';
-import { CreateOwnerCommand } from '../model/models';
-import { CreateResponse } from '../model/models';
+import { CreateWithUploadsResponse } from '../model/models';
 import { GetOwnerListResponse } from '../model/models';
 import { OwnerModalResponse } from '../model/models';
 import { OwnerResponse } from '../model/models';
+import { OwnerType } from 'appcoretruckassist/model/ownerType';
 import { ProblemDetails } from '../model/models';
-import { UpdateOwnerCommand } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -54,6 +53,19 @@ export class OwnerService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         if (typeof value === "object" && value instanceof Date === false) {
@@ -538,14 +550,33 @@ export class OwnerService {
     }
 
     /**
-     * @param createOwnerCommand 
+     * @param ownerType 
+     * @param name 
+     * @param ssnEin 
+     * @param addressCity 
+     * @param addressState 
+     * @param addressCounty 
+     * @param addressAddress 
+     * @param addressStreet 
+     * @param addressStreetNumber 
+     * @param addressCountry 
+     * @param addressZipCode 
+     * @param addressStateShortName 
+     * @param addressAddressUnit 
+     * @param phone 
+     * @param email 
+     * @param bankId 
+     * @param accountNumber 
+     * @param routingNumber 
+     * @param note 
+     * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiOwnerPost(createOwnerCommand?: CreateOwnerCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiOwnerPost(createOwnerCommand?: CreateOwnerCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiOwnerPost(createOwnerCommand?: CreateOwnerCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiOwnerPost(createOwnerCommand?: CreateOwnerCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiOwnerPost(ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiOwnerPost(ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiOwnerPost(ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiOwnerPost(ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -570,16 +601,90 @@ export class OwnerService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (ownerType !== undefined) {
+            formParams = formParams.append('OwnerType', <any>ownerType) as any || formParams;
+        }
+        if (name !== undefined) {
+            formParams = formParams.append('Name', <any>name) as any || formParams;
+        }
+        if (ssnEin !== undefined) {
+            formParams = formParams.append('SsnEin', <any>ssnEin) as any || formParams;
+        }
+        if (addressCity !== undefined) {
+            formParams = formParams.append('Address.City', <any>addressCity) as any || formParams;
+        }
+        if (addressState !== undefined) {
+            formParams = formParams.append('Address.State', <any>addressState) as any || formParams;
+        }
+        if (addressCounty !== undefined) {
+            formParams = formParams.append('Address.County', <any>addressCounty) as any || formParams;
+        }
+        if (addressAddress !== undefined) {
+            formParams = formParams.append('Address.Address', <any>addressAddress) as any || formParams;
+        }
+        if (addressStreet !== undefined) {
+            formParams = formParams.append('Address.Street', <any>addressStreet) as any || formParams;
+        }
+        if (addressStreetNumber !== undefined) {
+            formParams = formParams.append('Address.StreetNumber', <any>addressStreetNumber) as any || formParams;
+        }
+        if (addressCountry !== undefined) {
+            formParams = formParams.append('Address.Country', <any>addressCountry) as any || formParams;
+        }
+        if (addressZipCode !== undefined) {
+            formParams = formParams.append('Address.ZipCode', <any>addressZipCode) as any || formParams;
+        }
+        if (addressStateShortName !== undefined) {
+            formParams = formParams.append('Address.StateShortName', <any>addressStateShortName) as any || formParams;
+        }
+        if (addressAddressUnit !== undefined) {
+            formParams = formParams.append('Address.AddressUnit', <any>addressAddressUnit) as any || formParams;
+        }
+        if (phone !== undefined) {
+            formParams = formParams.append('Phone', <any>phone) as any || formParams;
+        }
+        if (email !== undefined) {
+            formParams = formParams.append('Email', <any>email) as any || formParams;
+        }
+        if (bankId !== undefined) {
+            formParams = formParams.append('BankId', <any>bankId) as any || formParams;
+        }
+        if (accountNumber !== undefined) {
+            formParams = formParams.append('AccountNumber', <any>accountNumber) as any || formParams;
+        }
+        if (routingNumber !== undefined) {
+            formParams = formParams.append('RoutingNumber', <any>routingNumber) as any || formParams;
+        }
+        if (note !== undefined) {
+            formParams = formParams.append('Note', <any>note) as any || formParams;
+        }
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
         }
 
         let responseType: 'text' | 'json' = 'json';
@@ -587,8 +692,8 @@ export class OwnerService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/owner`,
-            createOwnerCommand,
+        return this.httpClient.post<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/owner`,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -600,14 +705,35 @@ export class OwnerService {
     }
 
     /**
-     * @param updateOwnerCommand 
+     * @param id 
+     * @param ownerType 
+     * @param name 
+     * @param ssnEin 
+     * @param addressCity 
+     * @param addressState 
+     * @param addressCounty 
+     * @param addressAddress 
+     * @param addressStreet 
+     * @param addressStreetNumber 
+     * @param addressCountry 
+     * @param addressZipCode 
+     * @param addressStateShortName 
+     * @param addressAddressUnit 
+     * @param phone 
+     * @param email 
+     * @param bankId 
+     * @param accountNumber 
+     * @param routingNumber 
+     * @param note 
+     * @param files 
+     * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiOwnerPut(updateOwnerCommand?: UpdateOwnerCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiOwnerPut(updateOwnerCommand?: UpdateOwnerCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiOwnerPut(updateOwnerCommand?: UpdateOwnerCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiOwnerPut(updateOwnerCommand?: UpdateOwnerCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiOwnerPut(id?: number, ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiOwnerPut(id?: number, ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiOwnerPut(id?: number, ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiOwnerPut(id?: number, ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -632,16 +758,102 @@ export class OwnerService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            formParams = formParams.append('Id', <any>id) as any || formParams;
+        }
+        if (ownerType !== undefined) {
+            formParams = formParams.append('OwnerType', <any>ownerType) as any || formParams;
+        }
+        if (name !== undefined) {
+            formParams = formParams.append('Name', <any>name) as any || formParams;
+        }
+        if (ssnEin !== undefined) {
+            formParams = formParams.append('SsnEin', <any>ssnEin) as any || formParams;
+        }
+        if (addressCity !== undefined) {
+            formParams = formParams.append('Address.City', <any>addressCity) as any || formParams;
+        }
+        if (addressState !== undefined) {
+            formParams = formParams.append('Address.State', <any>addressState) as any || formParams;
+        }
+        if (addressCounty !== undefined) {
+            formParams = formParams.append('Address.County', <any>addressCounty) as any || formParams;
+        }
+        if (addressAddress !== undefined) {
+            formParams = formParams.append('Address.Address', <any>addressAddress) as any || formParams;
+        }
+        if (addressStreet !== undefined) {
+            formParams = formParams.append('Address.Street', <any>addressStreet) as any || formParams;
+        }
+        if (addressStreetNumber !== undefined) {
+            formParams = formParams.append('Address.StreetNumber', <any>addressStreetNumber) as any || formParams;
+        }
+        if (addressCountry !== undefined) {
+            formParams = formParams.append('Address.Country', <any>addressCountry) as any || formParams;
+        }
+        if (addressZipCode !== undefined) {
+            formParams = formParams.append('Address.ZipCode', <any>addressZipCode) as any || formParams;
+        }
+        if (addressStateShortName !== undefined) {
+            formParams = formParams.append('Address.StateShortName', <any>addressStateShortName) as any || formParams;
+        }
+        if (addressAddressUnit !== undefined) {
+            formParams = formParams.append('Address.AddressUnit', <any>addressAddressUnit) as any || formParams;
+        }
+        if (phone !== undefined) {
+            formParams = formParams.append('Phone', <any>phone) as any || formParams;
+        }
+        if (email !== undefined) {
+            formParams = formParams.append('Email', <any>email) as any || formParams;
+        }
+        if (bankId !== undefined) {
+            formParams = formParams.append('BankId', <any>bankId) as any || formParams;
+        }
+        if (accountNumber !== undefined) {
+            formParams = formParams.append('AccountNumber', <any>accountNumber) as any || formParams;
+        }
+        if (routingNumber !== undefined) {
+            formParams = formParams.append('RoutingNumber', <any>routingNumber) as any || formParams;
+        }
+        if (note !== undefined) {
+            formParams = formParams.append('Note', <any>note) as any || formParams;
+        }
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (filesForDeleteIds) {
+            if (useForm) {
+                filesForDeleteIds.forEach((element) => {
+                    formParams = formParams.append('FilesForDeleteIds', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('FilesForDeleteIds', filesForDeleteIds.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
         }
 
         let responseType: 'text' | 'json' = 'json';
@@ -649,8 +861,8 @@ export class OwnerService {
             responseType = 'text';
         }
 
-        return this.httpClient.put<any>(`${this.configuration.basePath}/api/owner`,
-            updateOwnerCommand,
+        return this.httpClient.put<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/owner`,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

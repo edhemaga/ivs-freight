@@ -72,8 +72,6 @@ model/accountColorResponse.ts
 model/activateDeactivateEFSFuelCard.ts
 model/addApplicantToFavouriteCommand.ts
 model/addFuelCardCommand.ts
-model/addFuelStopCommand.ts
-model/addFuelTransactionCommand.ts
 model/addressEntity.ts
 model/addressListResponse.ts
 model/addressResponse.ts
@@ -195,7 +193,6 @@ model/createDrugAndAlcoholReviewCommand.ts
 model/createEducationCommand.ts
 model/createEducationReviewCommand.ts
 model/createEventCommand.ts
-model/createFuelItemCommand.ts
 model/createInsurancePolicyAddonCommand.ts
 model/createInsurancePolicyCommand.ts
 model/createLoadCommand.ts
@@ -203,7 +200,6 @@ model/createLoadTemplateCommand.ts
 model/createMapCommand.ts
 model/createMedicalCertificateReviewCommand.ts
 model/createMvrAuthReviewCommand.ts
-model/createOwnerCommand.ts
 model/createParkingCommand.ts
 model/createPersonalInfoReviewCommand.ts
 model/createPreviousEmployerAccidentHistoryCommand.ts
@@ -220,7 +216,6 @@ model/createShipperCommand.ts
 model/createSsnReviewCommand.ts
 model/createTableConfigCommand.ts
 model/createTerminalCommand.ts
-model/createTodoCommand.ts
 model/createTrafficViolationCommand.ts
 model/createTrafficViolationReviewCommand.ts
 model/createTrailerCommand.ts
@@ -263,11 +258,7 @@ model/driverShortResponse.ts
 model/driverShortResponsePagination.ts
 model/drugAndAlcoholFeedbackResponse.ts
 model/drugAndAlcoholReviewResponse.ts
-model/editEFSFuelTransactionCommand.ts
 model/editFuelCardCommand.ts
-model/editFuelItemCommand.ts
-model/editFuelStopCommand.ts
-model/editFuelTransactionCommand.ts
 model/educationFeedbackResponse.ts
 model/educationReviewResponse.ts
 model/emergencyContactCommand.ts
@@ -339,7 +330,6 @@ model/insuranceTypeResponse.ts
 model/inviteEmployerResponse.ts
 model/invitePreviousEmployerCommand.ts
 model/invoiceAgeingResponse.ts
-model/itemFuel.ts
 model/legResponse.ts
 model/loadBillingAdditionalCommand.ts
 model/loadBillingAdditionalResponse.ts
@@ -408,7 +398,6 @@ model/ownerModalResponse.ts
 model/ownerResponse.ts
 model/ownerResponsePagination.ts
 model/ownerShortResponse.ts
-model/ownerType.ts
 model/pMStatus.ts
 model/pMTrailerListResponse.ts
 model/pMTrailerResponse.ts
@@ -616,7 +605,6 @@ model/updateLoadCommand.ts
 model/updateLoadStatusCommand.ts
 model/updateLoadTemplateCommand.ts
 model/updateMapCommand.ts
-model/updateOwnerCommand.ts
 model/updateOwnerHistoryCommand.ts
 model/updatePMTrailerDefaultCommand.ts
 model/updatePMTrailerListDefaultCommand.ts
@@ -637,7 +625,6 @@ model/updateShipperCommand.ts
 model/updateSphCommand.ts
 model/updateStopCommand.ts
 model/updateTerminalCommand.ts
-model/updateTodoCommand.ts
 model/updateTodoStatusCommand.ts
 model/updateTrafficViolationCommand.ts
 model/updateTrailerCommand.ts

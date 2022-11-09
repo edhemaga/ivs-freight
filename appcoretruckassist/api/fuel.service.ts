@@ -19,15 +19,13 @@ import { Observable }                                        from 'rxjs';
 
 import { ActivateDeactivateEFSFuelCard } from '../model/models';
 import { AddFuelCardCommand } from '../model/models';
-import { AddFuelStopCommand } from '../model/models';
-import { AddFuelTransactionCommand } from '../model/models';
 import { ClusterResponse } from '../model/models';
 import { ConnectEFSCommand } from '../model/models';
+import { CreateFuelItemCommand } from 'appcoretruckassist/model/createFuelItemCommand';
 import { CreateResponse } from '../model/models';
-import { EditEFSFuelTransactionCommand } from '../model/models';
+import { CreateWithUploadsResponse } from '../model/models';
 import { EditFuelCardCommand } from '../model/models';
-import { EditFuelStopCommand } from '../model/models';
-import { EditFuelTransactionCommand } from '../model/models';
+import { EditFuelItemCommand } from 'appcoretruckassist/model/editFuelItemCommand';
 import { FuelCardListResponse } from '../model/models';
 import { FuelCardResponse } from '../model/models';
 import { FuelDispatchHistoryResponse } from '../model/models';
@@ -70,6 +68,19 @@ export class FuelService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         if (typeof value === "object" && value instanceof Date === false) {
@@ -557,14 +568,18 @@ export class FuelService {
     }
 
     /**
-     * @param editEFSFuelTransactionCommand 
+     * @param id 
+     * @param truckId 
+     * @param trailerId 
+     * @param files 
+     * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelEFSTransactionPut(editEFSFuelTransactionCommand?: EditEFSFuelTransactionCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiFuelEFSTransactionPut(editEFSFuelTransactionCommand?: EditEFSFuelTransactionCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiFuelEFSTransactionPut(editEFSFuelTransactionCommand?: EditEFSFuelTransactionCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiFuelEFSTransactionPut(editEFSFuelTransactionCommand?: EditEFSFuelTransactionCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiFuelEFSTransactionPut(id?: number, truckId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiFuelEFSTransactionPut(id?: number, truckId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiFuelEFSTransactionPut(id?: number, truckId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiFuelEFSTransactionPut(id?: number, truckId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -589,16 +604,51 @@ export class FuelService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            formParams = formParams.append('Id', <any>id) as any || formParams;
+        }
+        if (truckId !== undefined) {
+            formParams = formParams.append('TruckId', <any>truckId) as any || formParams;
+        }
+        if (trailerId !== undefined) {
+            formParams = formParams.append('TrailerId', <any>trailerId) as any || formParams;
+        }
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (filesForDeleteIds) {
+            if (useForm) {
+                filesForDeleteIds.forEach((element) => {
+                    formParams = formParams.append('FilesForDeleteIds', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('FilesForDeleteIds', filesForDeleteIds.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
         }
 
         let responseType: 'text' | 'json' = 'json';
@@ -606,8 +656,8 @@ export class FuelService {
             responseType = 'text';
         }
 
-        return this.httpClient.put<CreateResponse>(`${this.configuration.basePath}/api/fuel/EFS/transaction`,
-            editEFSFuelTransactionCommand,
+        return this.httpClient.put<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/fuel/EFS/transaction`,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -1168,14 +1218,30 @@ export class FuelService {
     }
 
     /**
-     * @param addFuelStopCommand 
+     * @param businessName 
+     * @param store 
+     * @param phone 
+     * @param fax 
+     * @param addressCity 
+     * @param addressState 
+     * @param addressCounty 
+     * @param addressAddress 
+     * @param addressStreet 
+     * @param addressStreetNumber 
+     * @param addressCountry 
+     * @param addressZipCode 
+     * @param addressStateShortName 
+     * @param addressAddressUnit 
+     * @param favourite 
+     * @param note 
+     * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelFuelstopPost(addFuelStopCommand?: AddFuelStopCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiFuelFuelstopPost(addFuelStopCommand?: AddFuelStopCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiFuelFuelstopPost(addFuelStopCommand?: AddFuelStopCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiFuelFuelstopPost(addFuelStopCommand?: AddFuelStopCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiFuelFuelstopPost(businessName?: string, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiFuelFuelstopPost(businessName?: string, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiFuelFuelstopPost(businessName?: string, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiFuelFuelstopPost(businessName?: string, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -1200,16 +1266,81 @@ export class FuelService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (businessName !== undefined) {
+            formParams = formParams.append('BusinessName', <any>businessName) as any || formParams;
+        }
+        if (store !== undefined) {
+            formParams = formParams.append('Store', <any>store) as any || formParams;
+        }
+        if (phone !== undefined) {
+            formParams = formParams.append('Phone', <any>phone) as any || formParams;
+        }
+        if (fax !== undefined) {
+            formParams = formParams.append('Fax', <any>fax) as any || formParams;
+        }
+        if (addressCity !== undefined) {
+            formParams = formParams.append('Address.City', <any>addressCity) as any || formParams;
+        }
+        if (addressState !== undefined) {
+            formParams = formParams.append('Address.State', <any>addressState) as any || formParams;
+        }
+        if (addressCounty !== undefined) {
+            formParams = formParams.append('Address.County', <any>addressCounty) as any || formParams;
+        }
+        if (addressAddress !== undefined) {
+            formParams = formParams.append('Address.Address', <any>addressAddress) as any || formParams;
+        }
+        if (addressStreet !== undefined) {
+            formParams = formParams.append('Address.Street', <any>addressStreet) as any || formParams;
+        }
+        if (addressStreetNumber !== undefined) {
+            formParams = formParams.append('Address.StreetNumber', <any>addressStreetNumber) as any || formParams;
+        }
+        if (addressCountry !== undefined) {
+            formParams = formParams.append('Address.Country', <any>addressCountry) as any || formParams;
+        }
+        if (addressZipCode !== undefined) {
+            formParams = formParams.append('Address.ZipCode', <any>addressZipCode) as any || formParams;
+        }
+        if (addressStateShortName !== undefined) {
+            formParams = formParams.append('Address.StateShortName', <any>addressStateShortName) as any || formParams;
+        }
+        if (addressAddressUnit !== undefined) {
+            formParams = formParams.append('Address.AddressUnit', <any>addressAddressUnit) as any || formParams;
+        }
+        if (favourite !== undefined) {
+            formParams = formParams.append('Favourite', <any>favourite) as any || formParams;
+        }
+        if (note !== undefined) {
+            formParams = formParams.append('Note', <any>note) as any || formParams;
+        }
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
         }
 
         let responseType: 'text' | 'json' = 'json';
@@ -1217,8 +1348,8 @@ export class FuelService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/fuel/fuelstop`,
-            addFuelStopCommand,
+        return this.httpClient.post<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/fuel/fuelstop`,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -1230,14 +1361,18 @@ export class FuelService {
     }
 
     /**
-     * @param editFuelStopCommand 
+     * @param id 
+     * @param favourite 
+     * @param note 
+     * @param files 
+     * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelFuelstopPut(editFuelStopCommand?: EditFuelStopCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
-    public apiFuelFuelstopPut(editFuelStopCommand?: EditFuelStopCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
-    public apiFuelFuelstopPut(editFuelStopCommand?: EditFuelStopCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
-    public apiFuelFuelstopPut(editFuelStopCommand?: EditFuelStopCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiFuelFuelstopPut(id?: number, favourite?: boolean, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiFuelFuelstopPut(id?: number, favourite?: boolean, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiFuelFuelstopPut(id?: number, favourite?: boolean, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiFuelFuelstopPut(id?: number, favourite?: boolean, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -1262,16 +1397,51 @@ export class FuelService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            formParams = formParams.append('Id', <any>id) as any || formParams;
+        }
+        if (favourite !== undefined) {
+            formParams = formParams.append('Favourite', <any>favourite) as any || formParams;
+        }
+        if (note !== undefined) {
+            formParams = formParams.append('Note', <any>note) as any || formParams;
+        }
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (filesForDeleteIds) {
+            if (useForm) {
+                filesForDeleteIds.forEach((element) => {
+                    formParams = formParams.append('FilesForDeleteIds', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('FilesForDeleteIds', filesForDeleteIds.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
         }
 
         let responseType: 'text' | 'json' = 'json';
@@ -1279,8 +1449,8 @@ export class FuelService {
             responseType = 'text';
         }
 
-        return this.httpClient.put<object>(`${this.configuration.basePath}/api/fuel/fuelstop`,
-            editFuelStopCommand,
+        return this.httpClient.put<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/fuel/fuelstop`,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -1654,14 +1824,21 @@ export class FuelService {
     }
 
     /**
-     * @param addFuelTransactionCommand 
+     * @param driverId 
+     * @param truckId 
+     * @param trailerId 
+     * @param fuelStopStoreId 
+     * @param transactionDate 
+     * @param total 
+     * @param fuelItems 
+     * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelTransactionPost(addFuelTransactionCommand?: AddFuelTransactionCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiFuelTransactionPost(addFuelTransactionCommand?: AddFuelTransactionCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiFuelTransactionPost(addFuelTransactionCommand?: AddFuelTransactionCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiFuelTransactionPost(addFuelTransactionCommand?: AddFuelTransactionCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiFuelTransactionPost(driverId?: number, truckId?: number, trailerId?: number, fuelStopStoreId?: number, transactionDate?: string, total?: number, fuelItems?: Array<CreateFuelItemCommand>, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiFuelTransactionPost(driverId?: number, truckId?: number, trailerId?: number, fuelStopStoreId?: number, transactionDate?: string, total?: number, fuelItems?: Array<CreateFuelItemCommand>, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiFuelTransactionPost(driverId?: number, truckId?: number, trailerId?: number, fuelStopStoreId?: number, transactionDate?: string, total?: number, fuelItems?: Array<CreateFuelItemCommand>, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiFuelTransactionPost(driverId?: number, truckId?: number, trailerId?: number, fuelStopStoreId?: number, transactionDate?: string, total?: number, fuelItems?: Array<CreateFuelItemCommand>, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -1686,16 +1863,60 @@ export class FuelService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (driverId !== undefined) {
+            formParams = formParams.append('DriverId', <any>driverId) as any || formParams;
+        }
+        if (truckId !== undefined) {
+            formParams = formParams.append('TruckId', <any>truckId) as any || formParams;
+        }
+        if (trailerId !== undefined) {
+            formParams = formParams.append('TrailerId', <any>trailerId) as any || formParams;
+        }
+        if (fuelStopStoreId !== undefined) {
+            formParams = formParams.append('FuelStopStoreId', <any>fuelStopStoreId) as any || formParams;
+        }
+        if (transactionDate !== undefined) {
+            formParams = formParams.append('TransactionDate', <any>transactionDate) as any || formParams;
+        }
+        if (total !== undefined) {
+            formParams = formParams.append('Total', <any>total) as any || formParams;
+        }
+        if (fuelItems) {
+            if (useForm) {
+                fuelItems.forEach((element) => {
+                    formParams = formParams.append('FuelItems', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('FuelItems', fuelItems.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
         }
 
         let responseType: 'text' | 'json' = 'json';
@@ -1703,8 +1924,8 @@ export class FuelService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/fuel/transaction`,
-            addFuelTransactionCommand,
+        return this.httpClient.post<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/fuel/transaction`,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -1716,14 +1937,23 @@ export class FuelService {
     }
 
     /**
-     * @param editFuelTransactionCommand 
+     * @param id 
+     * @param truckId 
+     * @param driverId 
+     * @param trailerId 
+     * @param fuelStopStoreId 
+     * @param transactionDate 
+     * @param total 
+     * @param fuelItems 
+     * @param files 
+     * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelTransactionPut(editFuelTransactionCommand?: EditFuelTransactionCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiFuelTransactionPut(editFuelTransactionCommand?: EditFuelTransactionCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiFuelTransactionPut(editFuelTransactionCommand?: EditFuelTransactionCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiFuelTransactionPut(editFuelTransactionCommand?: EditFuelTransactionCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiFuelTransactionPut(id?: number, truckId?: number, driverId?: number, trailerId?: number, fuelStopStoreId?: number, transactionDate?: string, total?: number, fuelItems?: Array<EditFuelItemCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateWithUploadsResponse>;
+    public apiFuelTransactionPut(id?: number, truckId?: number, driverId?: number, trailerId?: number, fuelStopStoreId?: number, transactionDate?: string, total?: number, fuelItems?: Array<EditFuelItemCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiFuelTransactionPut(id?: number, truckId?: number, driverId?: number, trailerId?: number, fuelStopStoreId?: number, transactionDate?: string, total?: number, fuelItems?: Array<EditFuelItemCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiFuelTransactionPut(id?: number, truckId?: number, driverId?: number, trailerId?: number, fuelStopStoreId?: number, transactionDate?: string, total?: number, fuelItems?: Array<EditFuelItemCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -1748,16 +1978,72 @@ export class FuelService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            formParams = formParams.append('Id', <any>id) as any || formParams;
+        }
+        if (truckId !== undefined) {
+            formParams = formParams.append('TruckId', <any>truckId) as any || formParams;
+        }
+        if (driverId !== undefined) {
+            formParams = formParams.append('DriverId', <any>driverId) as any || formParams;
+        }
+        if (trailerId !== undefined) {
+            formParams = formParams.append('TrailerId', <any>trailerId) as any || formParams;
+        }
+        if (fuelStopStoreId !== undefined) {
+            formParams = formParams.append('FuelStopStoreId', <any>fuelStopStoreId) as any || formParams;
+        }
+        if (transactionDate !== undefined) {
+            formParams = formParams.append('TransactionDate', <any>transactionDate) as any || formParams;
+        }
+        if (total !== undefined) {
+            formParams = formParams.append('Total', <any>total) as any || formParams;
+        }
+        if (fuelItems) {
+            if (useForm) {
+                fuelItems.forEach((element) => {
+                    formParams = formParams.append('FuelItems', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('FuelItems', fuelItems.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('Files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('Files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
+        }
+        if (filesForDeleteIds) {
+            if (useForm) {
+                filesForDeleteIds.forEach((element) => {
+                    formParams = formParams.append('FilesForDeleteIds', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('FilesForDeleteIds', filesForDeleteIds.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
         }
 
         let responseType: 'text' | 'json' = 'json';
@@ -1765,8 +2051,8 @@ export class FuelService {
             responseType = 'text';
         }
 
-        return this.httpClient.put<CreateResponse>(`${this.configuration.basePath}/api/fuel/transaction`,
-            editFuelTransactionCommand,
+        return this.httpClient.put<CreateWithUploadsResponse>(`${this.configuration.basePath}/api/fuel/transaction`,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

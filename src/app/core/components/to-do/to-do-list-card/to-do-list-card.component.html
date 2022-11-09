@@ -96,7 +96,8 @@
               [filterTitle]="'Time Filter'"
               [icon]="'pending'"
               [toDoSubType]="'InProgress'"
-              (setFilter)="setFilterEvent($event)"> 
+              (setFilter)="setFilterEvent($event)"
+            >
             </app-filter>
           </div>
           <div class="border-right"></div>
@@ -151,7 +152,8 @@
               [filterTitle]="'Time Filter'"
               [icon]="'pending'"
               [toDoSubType]="'Done'"
-              (setFilter)="setFilterEvent($event)"> 
+              (setFilter)="setFilterEvent($event)"
+            >
             </app-filter>
           </div>
           <div class="border-right"></div>
@@ -231,11 +233,14 @@
                         <svg-icon src="assets/svg/common/ic_web.svg"></svg-icon>
                       </div>
                       <div
-                        class="icon-box lighter-icon"
+                        class="icon-box"
                         ngbTooltip
                         mainTooltip="Documents"
                         position="bottom"
+                        (mousedown)="toggleFiles($event, i, j)"
                         tooltipBackground="#6C6C6C"
+                        [class.blue-icons]="item.filesActive"
+                        [class.lighter-icon]="!item.files?.length"
                       >
                         <svg-icon
                           src="assets/svg/common/ic_attachment.svg"
@@ -295,7 +300,9 @@
                           [options]="dropdownOptions.actions"
                           [id]="item.id"
                           [data]="item"
-                          [placement]="  i == 2 ? 'bottom-right' : 'right-top right-bottom' "
+                          [placement]="
+                            i == 2 ? 'bottom-right' : 'right-top right-bottom'
+                          "
                           [hasVericalDots]="true"
                           (dropDownActions)="dropAct($event)"
                           [customClassDropDown]="'drop-down-details-single'"
@@ -357,6 +364,44 @@
                   </div>
                   <div class="link" [class.closed]="!item.linkActive">
                     {{ item.url }}
+                  </div>
+                </div>
+                <div
+                  class="comment_main_holder"
+                  [@showHideCardBody]="item.filesActive ? 'true' : 'false'"
+                >
+                  <div
+                    class="comment-holder"
+                    [class.no_comments]="!item.files?.length"
+                    [class.show_border]="item.deadline && !item.commentActive"
+                  >
+                    <div class="todo_list_holder files">
+                      <div
+                        class="todo_list_info_holder"
+                        [class.expand]="item.files.length"
+                      >
+                        <div class="todo_list_info_number_hold">
+                          <div class="todo_list_info_number">
+                            {{ item.files?.length }}
+                          </div>
+                        </div>
+                        <div class="todo_list_info_text">Document</div>
+                      </div>
+                      <div class="files_holder" *ngIf="item.files.length">
+                        <app-ta-upload-files
+                          [files]="item.files ? item.files : []"
+                          [size]="
+                            item.files?.length == 2
+                              ? 'medium'
+                              : item.files?.length > 2
+                              ? 'large'
+                              : 'small'
+                          "
+                          [reviewMode]="'REVIEW_MODE'"
+                          [type]="'todo'"
+                        ></app-ta-upload-files>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div

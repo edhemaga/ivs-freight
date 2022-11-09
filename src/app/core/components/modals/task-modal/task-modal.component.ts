@@ -1,4 +1,5 @@
-import { CreateTodoCommand } from '../../../../../../appcoretruckassist';
+import { CreateTodoCommand } from 'appcoretruckassist/model/createTodoCommand';
+import { UpdateTodoCommand } from 'appcoretruckassist/model/updateTodoCommand';
 import { Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -11,7 +12,6 @@ import {
   TodoModalResponse,
   TodoResponse,
   UpdateCommentCommand,
-  UpdateTodoCommand,
 } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
@@ -96,6 +96,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       departmentIds: [null, [...departmentValidation]],
       companyUserIds: [null],
       note: [null],
+      files: [null],
     });
 
     this.inputService.customInputValidator(
@@ -303,7 +304,9 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   private updateTaskById(id: number) {
     const { departmentIds, deadline, companyUserIds, ...form } =
       this.taskForm.value;
-
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
     const newData: UpdateTodoCommand = {
       id: id,
       ...form,
@@ -315,6 +318,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         ? this.selectedCompanyUsers.map((item) => item.id)
         : [],
       status: this.taskStatus.name,
+      files: documents ? documents : this.taskForm.value.files,
+      filesForDeleteIds: this.filesForDelete,
     };
 
     this.todoService.updateTodo(newData);
@@ -324,9 +329,9 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     const { departmentIds, deadline, companyUserIds, ...form } =
       this.taskForm.value;
 
-      const documents = this.documents.map((item) => {
-        return item.realFile;
-      });
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
 
     const newData: CreateTodoCommand = {
       ...form,
@@ -376,6 +381,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             departmentIds: null,
             companyUserIds: null,
             note: res.note,
+            files: res.files.length ? JSON.stringify(res.files) : null,
           });
           this.taskName = res.title;
           this.selectedDepartments = res.departments;
@@ -395,6 +401,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             };
           });
           this.taskStatus = res.status;
+          this.documents = res.files ? (res.files as any) : [];
         },
         error: () => {
           this.notificationService.error("Can't get task.", 'Error:');

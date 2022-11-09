@@ -3,15 +3,16 @@ import { TodoListResponse } from './../../../../../../appcoretruckassist/model/t
 import { Injectable } from '@angular/core';
 import { flatMap, Observable } from 'rxjs';
 import { TodoStore } from './todo.store';
+import { CreateTodoCommand } from 'appcoretruckassist/model/createTodoCommand';
+import { UpdateTodoCommand } from 'appcoretruckassist/model/updateTodoCommand';
 import {
   CreateResponse,
-  CreateTodoCommand,
   TodoModalResponse,
   TodoResponse,
   TodoStatus,
-  UpdateTodoCommand,
   UpdateTodoStatusCommand,
 } from 'appcoretruckassist';
+import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
   providedIn: 'root',
@@ -55,9 +56,11 @@ export class TodoTService {
     return this.todoService.apiTodoStatusPut(todo);
   }
 
-  public updateTodo(data: UpdateTodoCommand) {
+  //UpdateTodoCommand
+  public updateTodo(data: any) {
+    const sortedParams = getFunctionParams(this.todoService.apiTodoPut, data);
     return this.todoService
-      .apiTodoPut(data)
+      .apiTodoPut(...sortedParams)
       .pipe(
         flatMap((param) => {
           return this.getTodoById(data.id);
@@ -68,9 +71,11 @@ export class TodoTService {
       });
   }
 
+  //CreateTodoCommand
   public addTodo(data: CreateTodoCommand) {
+    const sortedParams = getFunctionParams(this.todoService.apiTodoPost, data);
     return this.todoService
-      .apiTodoPost(data)
+      .apiTodoPost(...sortedParams)
       .pipe(
         flatMap((param) => {
           return this.getTodoById(param.id);

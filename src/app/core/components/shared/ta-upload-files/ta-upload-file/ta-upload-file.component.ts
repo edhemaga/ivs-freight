@@ -48,7 +48,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
   @Input() hasNumberOfPages: boolean = false;
   @Input() activePage: number = 1;
   @Input() tags: any[] = [];
-  @Input() type: string; // modal | table | details
+  @Input() type: string; // modal | table | details | todo
 
   @Output() fileAction: EventEmitter<{ file: UploadFile; action: string }> =
     new EventEmitter<{ file: UploadFile; action: string }>(null);
