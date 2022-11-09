@@ -24,9 +24,11 @@
             isRequired: true,
             dropdownWidthClass: 'w-col-256'
           }"
+          [canAddNew]="true"
           [options]="fuelStops"
           [activeItem]="selectedFuelStop"
           (selectedItem)="onSelectDropdown($event, 'fuel-stop')"
+          (saveItem)="onSaveNewFuelStop($event)"
         ></app-ta-input-dropdown>
       </div>
       <div class="col-4">

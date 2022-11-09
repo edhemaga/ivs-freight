@@ -117,10 +117,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         }
 
         if (this.editData.type === 'edit-licence') {
-          if (this.isFormDirty) {
-            this.updateCdl();
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateCdl();
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addCdl();
           this.modalService.setModalSpinner({ action: null, status: true });
