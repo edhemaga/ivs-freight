@@ -1,14 +1,24 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  AfterViewInit,
+} from '@angular/core';
+import { getPayrollDriverMilesDefinition } from 'src/assets/utils/settings/payroll-columns';
+import { DriversActiveQuery } from '../../../driver/state/driver-active-state/driver-active.query';
+import { DriversActiveState } from '../../../driver/state/driver-active-state/driver-active.store';
+import { DriversInactiveQuery } from '../../../driver/state/driver-inactive-state/driver-inactive.query';
+import { DriversInactiveState } from '../../../driver/state/driver-inactive-state/driver-inactive.store';
 
 @Component({
   selector: 'app-payroll',
   templateUrl: './payroll.component.html',
   styleUrls: ['./payroll.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class PayrollComponent implements OnInit, AfterViewInit {
-
   tableOptions: any = {};
 
   selectedTab = 'open';
@@ -18,9 +28,14 @@ export class PayrollComponent implements OnInit, AfterViewInit {
   tableContainerWidth: number = 0;
   viewData: any[] = [];
   resizeObserver: ResizeObserver;
-  
-  constructor() {
-  }
+
+  driversActive: DriversActiveState[] = [];
+  driversInactive: DriversInactiveState[] = [];
+
+  constructor(
+    private driversActiveQuery: DriversActiveQuery,
+    private driversInactiveQuery: DriversInactiveQuery
+  ) {}
 
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -39,21 +54,30 @@ export class PayrollComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-
     this.initTableOptions();
+
+    const driverCount = JSON.parse(localStorage.getItem('driverTableCount'));
+
+    const applicantsData = this.getTabData(null);
+
+    const driverActiveData =
+      this.selectedTab === 'open' ? this.getTabData('active') : [];
+
+    const driverInactiveData =
+      this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
 
     this.tableData = [
       {
         title: 'Open',
         field: 'open',
         length: 0,
-        data: [],
+        data: driverActiveData,
         extended: true,
         gridNameTitle: 'Payroll',
         stateName: 'open',
         tableConfiguration: 'APPLICANT',
         isActive: this.selectedTab === 'open',
-        gridColumns: [],
+        gridColumns: getPayrollDriverMilesDefinition(),
       },
       {
         title: 'Closed',
@@ -66,7 +90,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         tableConfiguration: 'DRIVER',
         isActive: this.selectedTab === 'closed',
         gridColumns: [],
-      }
+      },
     ];
 
     const td = this.tableData.find((t) => t.field === this.selectedTab);
@@ -78,27 +102,46 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     this.columns = td.gridColumns;
 
     if (td.data.length) {
-      // this.viewData = td.data;
-
-      // this.viewData = this.viewData.map((data: any, index: number) => {
-      //   return this.selectedTab === 'applicants'
-      //     ? this.mapApplicantsData(data, index)
-      //     : this.mapDriverData(data);
-      // });
-
-      // For Testing
-      // if (this.selectedTab !== 'applicants') {
-      //   for (let i = 0; i < 1000; i++) {
-      //     this.viewData.push(this.viewData[0]);
-      //   }
-      // }
+      this.viewData = td.data;
+      this.viewData = this.viewData.map((data: any, index: number) => {
+        return this.selectedTab === 'open'
+          ? this.mapApplicantsData(data, index)
+          : this.mapApplicantsData(data, index);
+      });
+     // For Testing
+      if (this.selectedTab !== 'applicants') {
+        for (let i = 0; i < 1000; i++) {
+          this.viewData.push(this.viewData[0]);
+        }
+      }
     } else {
       this.viewData = [];
     }
   }
 
-  public summaryControll() {
+  getTabData(dataType: string) {
+    if (dataType === 'active') {
+      this.driversActive = this.driversActiveQuery.getAll();
+
+      console.log("WHAT IS FINDING DATA");
+      console.log(this.driversActive);
+      return this.driversActive?.length ? this.driversActive : [];
+    } else if (dataType === 'inactive') {
+      this.driversInactive = this.driversInactiveQuery.getAll();
+
+      return this.driversInactive?.length ? this.driversInactive : [];
+    } else {
+      let mockData = [];
+
+      for (let i = 0; i < 10; i++) {
+        mockData.push({});
+      }
+
+      return mockData;
+    }
   }
+
+  public summaryControll() {}
 
   onToolBarAction(event: any) {}
 
@@ -106,7 +149,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     this.tableOptions = {
       toolbarActions: {
         showMoneyFilter: true,
-        hideOpenModalButton: true
+        hideOpenModalButton: true,
       },
       actions: this.getTableActions(),
     };
@@ -196,4 +239,116 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         ];
   }
 
+  mapApplicantsData(data: any, index: number) {
+    return {
+      fullName: 'Angelo Trotter',
+      invited: '04/04/44',
+      accepted: '04/04/44',
+      phone: '(325) 540-1157',
+      dob: '04/04/44',
+      email: 'angelo.T@gmail.com',
+      applicantProgress: [
+        {
+          title: 'App.',
+          status: 'Done',
+          width: 34,
+          class: 'complete-icon',
+          percentage: 34,
+        },
+        {
+          title: 'Mvr',
+          status: 'In Progres',
+          width: 34,
+          class: 'complete-icon',
+          percentage: 34,
+        },
+        {
+          title: 'Psp',
+          status: 'Wrong',
+          width: 29,
+          class: 'wrong-icon',
+          percentage: 34,
+        },
+        {
+          title: 'Sph',
+          status: 'No Started',
+          width: 30,
+          class: 'complete-icon',
+          percentage: 34,
+        },
+        {
+          title: 'Hos',
+          status: 'Done',
+          width: 32,
+          class: 'done-icon',
+          percentage: 34,
+        },
+        {
+          title: 'Ssn',
+          status: 'Done',
+          width: 29,
+          class: 'wrong-icon',
+          percentage: 34,
+        },
+      ],
+      // Complete, Done, Wrong, In Progres, Not Started
+      medical: {
+        class:
+          index === 0
+            ? 'complete-icon'
+            : index === 1
+            ? 'done-icon'
+            : index === 2
+            ? 'wrong-icon'
+            : '',
+        hideProgres: index !== 3,
+        isApplicant: true,
+        expirationDays: '3233',
+        percentage: 34,
+      },
+      cdl: {
+        class:
+          index === 0
+            ? 'complete-icon'
+            : index === 1
+            ? 'done-icon'
+            : index === 2
+            ? 'wrong-icon'
+            : '',
+        hideProgres: index !== 3,
+        isApplicant: true,
+        expirationDays: "22",
+        percentage: 10,
+      },
+      rev: {
+        title:
+          index === 0
+            ? 'Reviewed'
+            : index === 1
+            ? 'Finished'
+            : index === 2
+            ? 'Incomplete'
+            : 'Ready',
+        iconLink:
+          index === 0 || index === 2
+            ? '../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg'
+            : '../../../../../assets/svg/truckassist-table/applicant-done-icon.svg',
+      },
+      hire: true,
+      favorite: false,
+    };
+  }
+
+  getGridColumns(activeTab: string, configType: string) {
+    // const tableColumnsConfig = JSON.parse(
+    //   localStorage.getItem(`table-${configType}-Configuration`)
+    // );
+    // switch(activeTab){
+    // }
+    // if (activeTab === 'applicants') {
+    //   return tableColumnsConfig
+    //     ? tableColumnsConfig
+    //     : getApplicantColumnsDefinition();
+    // }
+  }
 }

@@ -615,7 +615,6 @@ export function getFunctionParams(func, data) {
   var params = [];
 
   result.forEach(element => {
-       
       // Removing any default value
       element = element.replace(/=[\s\S]*/g, '').trim();
 

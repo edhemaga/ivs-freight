@@ -674,4 +674,5 @@ model/workExperienceItemResponse.ts
 model/workExperienceItemReviewCommand.ts
 model/workExperienceItemReviewResponse.ts
 model/yesNoEnum.ts
+param.ts
 variables.ts
