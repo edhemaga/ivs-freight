@@ -1,4 +1,4 @@
-@import 'src/theme/variables.scss';
+@import "src/theme/variables.scss";
 .footer-container {
   margin-top: 60px;
 
@@ -87,7 +87,7 @@
 
     .info-box {
       position: absolute;
-      top: -200px;
+      bottom: 30px;
       width: 350px;
       padding: 12px 0;
       margin-left: -10px;
