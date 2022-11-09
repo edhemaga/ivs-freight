@@ -9,15 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { FuelStopFranchiseMinimalResponse } from './fuelStopFranchiseMinimalResponse';
 
 
-export interface StopResponse { 
-    id?: number;
-    address?: AddressEntity;
-    leg?: number | null;
-    total?: number | null;
-    longitude?: number;
-    latitude?: number;
+export interface GetFuelStopModalResponse { 
+    fuelStopFranchise?: Array<FuelStopFranchiseMinimalResponse> | null;
 }
 

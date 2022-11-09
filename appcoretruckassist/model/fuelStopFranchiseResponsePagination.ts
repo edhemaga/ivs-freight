@@ -9,15 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { FuelStopFranchiseResponse } from './fuelStopFranchiseResponse';
 
 
-export interface StopResponse { 
-    id?: number;
-    address?: AddressEntity;
-    leg?: number | null;
-    total?: number | null;
-    longitude?: number;
-    latitude?: number;
+export interface FuelStopFranchiseResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<FuelStopFranchiseResponse> | null;
 }
 

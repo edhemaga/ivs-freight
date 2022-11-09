@@ -109,15 +109,13 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       }
       case 'save': {
         // If Form not valid
-        if (this.mvrForm.invalid) {
+        if (this.mvrForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.mvrForm);
           return;
         }
         if (this.editData?.type === 'edit-mvr') {
-          if (this.isFormDirty) {
-            this.updateMVR();
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateMVR();
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addMVR();
           this.modalService.setModalSpinner({ action: null, status: true });
@@ -139,10 +137,10 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
         files: null,
       });
 
-      if(event.deleteId) {
+      if (event.deleteId) {
         this.filesForDelete.push(event.deleteId);
       }
-      
+
       this.fileModified = true;
     }
   }
@@ -180,9 +178,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       issueDate: convertDateToBackend(issueDate),
       cdlId: this.selectedCdl.id,
       note: note,
-      files: documents
-        ? documents
-        : this.mvrForm.value.files,
+      files: documents ? documents : this.mvrForm.value.files,
       filesForDeleteIds: this.filesForDelete,
     };
 

@@ -98,7 +98,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'set-map-settings': {
-        if (this.mapSettingsForm.invalid) {
+        if (this.mapSettingsForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.mapSettingsForm);
           return;
         }

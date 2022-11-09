@@ -169,16 +169,16 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     this.createForm();
     this.isCompanyOwned();
 
-    if (this.editData?.id) {
-      this.skipVinDecocerEdit = true;
-      this.editTruckById(this.editData.id);
-    }
-
     if (this.editData?.storageData) {
       this.skipVinDecocerEdit = true;
       this.populateStorageData(this.editData.storageData);
     } else {
       this.getTruckDropdowns();
+    }
+
+    if (this.editData?.id) {
+      this.skipVinDecocerEdit = true;
+      this.editTruckById(this.editData.id);
     }
 
     this.vinDecoder();
@@ -213,7 +213,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       fuelType: [null],
       shifter: [null],
       axles: [null, axlesValidation],
-      fhwaExp: [12, Validators.required],
+      fhwaExp: [null, Validators.required],
       insurancePolicy: [null, insurancePolicyValidation],
       mileage: [null, mileageValidation],
       engineOilType: [null],
@@ -281,15 +281,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       } else {
         // Save & Update
         if (data.action === 'save') {
-          if (this.truckForm.invalid) {
+          if (this.truckForm.invalid || !this.isFormDirty) {
             this.inputService.markInvalid(this.truckForm);
             return;
           }
           if (this.editData?.id) {
-            if (this.isFormDirty) {
-              this.updateTruck(this.editData.id);
-              this.modalService.setModalSpinner({ action: null, status: true });
-            }
+            this.updateTruck(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
           } else {
             this.addTruck();
             this.modalService.setModalSpinner({
@@ -468,7 +466,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
               next: (res: VinDecodeResponse) => {
-                console.log('vin decoder: ', res);
                 this.truckForm.patchValue({
                   model: res?.model ? res.model : null,
                   year: res?.year ? res.year.toString() : null,
@@ -537,6 +534,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           });
           this.rearWheels = this.frontWheels = res.wheelsTypes;
           this.fuelTypes = res.fuelTypes;
+          this.truckForm.get('fhwaExp').patchValue(res.fhwaExp);
         },
         error: () => {
           this.notificationService.error(
@@ -592,7 +590,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             transmissionModel: res.transmissionModel,
             shifter: res.shifter ? res.shifter.name : null,
             axles: res.axles,
-            fhwaExp: res.fhwaExp,
             insurancePolicy: res.insurancePolicy,
             mileage: res.mileage
               ? convertNumberInThousandSep(res.mileage)
@@ -610,6 +607,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             dcInverter: res.dcInverter,
             blower: res.blower,
             pto: res.pto,
+            fhwaExp: res.fhwaExp ? res.fhwaExp : 12,
           });
 
           this.selectedAPUnit = res.apUnit ? res.apUnit : null;

@@ -72,7 +72,6 @@ model/accountColorResponse.ts
 model/activateDeactivateEFSFuelCard.ts
 model/addApplicantToFavouriteCommand.ts
 model/addFuelCardCommand.ts
-model/addFuelStopCommand.ts
 model/addFuelTransactionCommand.ts
 model/addressEntity.ts
 model/addressListResponse.ts
@@ -167,7 +166,6 @@ model/contactEmailType.ts
 model/contactPhoneResponse.ts
 model/contactPhoneType.ts
 model/countryType.ts
-model/createAccidentCommand.ts
 model/createAccidentRecordCommand.ts
 model/createAccidentRecordReviewCommand.ts
 model/createApplicantCdlCommand.ts
@@ -298,6 +296,10 @@ model/fuelCardShortResponse.ts
 model/fuelDispatchHistoryResponse.ts
 model/fuelItemResponse.ts
 model/fuelStopExtensionResponse.ts
+model/fuelStopFranchiseListResponse.ts
+model/fuelStopFranchiseMinimalResponse.ts
+model/fuelStopFranchiseResponse.ts
+model/fuelStopFranchiseResponsePagination.ts
 model/fuelStopListResponse.ts
 model/fuelStopResponse.ts
 model/fuelStopResponsePagination.ts
@@ -321,6 +323,7 @@ model/getCompanyUserListResponse.ts
 model/getDriverModalResponse.ts
 model/getEFSTransactionCommand.ts
 model/getFuelModalResponse.ts
+model/getFuelStopModalResponse.ts
 model/getHazardousMaterialDropdownModalQuery.ts
 model/getMapListResponse.ts
 model/getMvrModalResponse.ts
@@ -339,7 +342,6 @@ model/inspectionResponse.ts
 model/insurancePolicyAddonResponse.ts
 model/insurancePolicyModalResponse.ts
 model/insurancePolicyResponse.ts
-model/insuranceTypeCommand.ts
 model/insuranceTypeResponse.ts
 model/inviteEmployerResponse.ts
 model/invitePreviousEmployerCommand.ts
@@ -490,7 +492,6 @@ model/roadsideInspectionMinimalResponse.ts
 model/roadsideInspectionMinimalResponsePagination.ts
 model/roadsideInspectionResponse.ts
 model/roadsideInspectionResponsePagination.ts
-model/roadsideInspectionSpecialCheckCommand.ts
 model/roadsideInspectionSpecialCheckResponse.ts
 model/routeResponse.ts
 model/routeResponsePagination.ts
@@ -519,7 +520,6 @@ model/signInResponse.ts
 model/signUpCompanyCommand.ts
 model/signUpDriverMobileCommand.ts
 model/signupUserCommand.ts
-model/specialCheck.ts
 model/sphAccidentHistoryItemResponse.ts
 model/sphAccidentHistoryResponse.ts
 model/sphDrugAndAlcoholResponse.ts
@@ -583,7 +583,6 @@ model/truckResponse.ts
 model/truckShortResponse.ts
 model/truckShortResponsePagination.ts
 model/truckTypeResponse.ts
-model/updateAccidentCommand.ts
 model/updateAccidentRecordCommand.ts
 model/updateApplicantCdlCommand.ts
 model/updateApplicantCommand.ts
@@ -639,7 +638,6 @@ model/updateRegistrationCommand.ts
 model/updateRepairCommand.ts
 model/updateRepairShopCommand.ts
 model/updateReviewCommand.ts
-model/updateRoadsideInspectionCommand.ts
 model/updateRouteCommand.ts
 model/updateSevenDaysHosCommand.ts
 model/updateShipperCommand.ts
@@ -666,8 +664,6 @@ model/verifyOwnerCommand.ts
 model/verifyPreviousEmployerCommand.ts
 model/verifyUserCommand.ts
 model/vinDecodeResponse.ts
-model/violationCategory.ts
-model/violationCommand.ts
 model/violationResponse.ts
 model/weatherDataResponse.ts
 model/weatherDaysResponse.ts

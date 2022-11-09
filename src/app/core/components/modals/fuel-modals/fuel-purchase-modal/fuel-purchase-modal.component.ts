@@ -179,15 +179,13 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.fuelForm.invalid) {
+        if (this.fuelForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.fuelForm);
           return;
         }
         if (this.editData) {
-          if (this.isFormDirty) {
-            this.updateFuel(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateFuel(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addFuel();
           this.modalService.setModalSpinner({ action: null, status: true });

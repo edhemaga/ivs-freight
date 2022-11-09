@@ -438,7 +438,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       }
       case 'save': {
         // If Form not valid
-        if (this.companyForm.invalid) {
+        if (this.companyForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.companyForm);
           return;
         }
@@ -447,10 +447,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.addCompanyDivision();
             this.modalService.setModalSpinner({ action: null, status: true });
           } else {
-            if (this.isFormDirty) {
-              this.updateCompanyDivision(this.editData.company.id);
-              this.modalService.setModalSpinner({ action: null, status: true });
-            }
+            this.updateCompanyDivision(this.editData.company.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
           }
         } else {
           this.updateCompany();
@@ -1101,7 +1099,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.editData.company.currency?.id !== 0
           ? this.editData.company.currency.name
           : null,
-      logo: this.editData.company.logo,
+      logo: this.editData.company.logo ? this.editData.company.logo : null,
     });
 
     this.selectedAddress = this.editData.company.address;
@@ -1630,7 +1628,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       dateOfIncorporation: this.editData.company.dateOfIncorporation
         ? convertDateFromBackend(this.editData.company.dateOfIncorporation)
         : null,
-      logo: this.editData.company.logo,
+      logo: this.editData.company.logo ? this.editData.company.logo : null,
       //-------------------- Additional Tab
       departmentContacts: [],
       bankAccounts: [],

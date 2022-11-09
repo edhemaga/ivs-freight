@@ -357,7 +357,7 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.loadForm.invalid) {
+        if (this.loadForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.loadForm);
           return;
         }
@@ -378,7 +378,7 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'load-template': {
-        if (this.loadForm.invalid) {
+        if (this.loadForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.loadForm);
           return;
         }

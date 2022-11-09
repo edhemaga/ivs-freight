@@ -211,15 +211,13 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.accidentForm.invalid) {
+        if (this.accidentForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.accidentForm);
           return;
         }
         if (this.editData) {
-          if (this.isFormDirty) {
-            this.updateAccident(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateAccident(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addAccident();
           this.modalService.setModalSpinner({ action: null, status: true });

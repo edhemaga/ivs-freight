@@ -2650,9 +2650,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
           var stopsArr = [];
           route.stops.map((stop) => {
             var stopAddress = {
-              city: stop.city,
-              state: stop.stateShortName,
-              zipCode: stop.zipCode,
+              city: stop.address.city,
+              state: stop.address.stateShortName,
+              zipCode: stop.address.zipCode,
             };
             console.log('stop', stop);
 

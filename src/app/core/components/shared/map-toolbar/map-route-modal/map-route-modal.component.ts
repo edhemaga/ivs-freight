@@ -92,7 +92,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'create-map-route': {
-        if (this.mapRouteForm.invalid) {
+        if (this.mapRouteForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.mapRouteForm);
           return;
         }

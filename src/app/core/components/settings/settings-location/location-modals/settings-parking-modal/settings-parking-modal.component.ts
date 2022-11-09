@@ -217,15 +217,13 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.parkingForm.invalid) {
+        if (this.parkingForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.parkingForm);
           return;
         }
         if (this.editData?.type === 'edit') {
-          if (this.isFormDirty) {
-            this.updateParking(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateParking(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addParking();
           this.modalService.setModalSpinner({ action: null, status: true });
