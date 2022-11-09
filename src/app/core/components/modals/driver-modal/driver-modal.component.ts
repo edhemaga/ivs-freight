@@ -718,14 +718,25 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public onFilesEvent(event: any) {
     this.documents = event.files;
-    this.driverForm.get('files').patchValue(JSON.stringify(event.files));
-    if (event.action == 'delete') {
-      this.driverForm.get('files').patchValue(null);
-      if (event.deleteId) {
-        this.filesForDelete.push(event.deleteId);
+    switch (event.action) {
+      case 'add': {
+        this.driverForm.get('files').patchValue(JSON.stringify(event.files));
+        break;
       }
+      case 'delete': {
+        this.driverForm
+          .get('files')
+          .patchValue(event.files.length ? JSON.stringify(event.files) : null);
+        if (event.deleteId) {
+          this.filesForDelete.push(event.deleteId);
+        }
 
-      this.fileModified = true;
+        this.fileModified = true;
+        break;
+      }
+      default: {
+        break;
+      }
     }
   }
 
@@ -1695,6 +1706,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             mailNotificationPayroll: res.payroll.mailNotification,
             pushNotificationPayroll: res.payroll.pushNotification,
             smsNotificationPayroll: res.payroll.smsNotification,
+            files: res.files.length ? JSON.stringify(res.files) : null,
           });
 
           this.driverForm

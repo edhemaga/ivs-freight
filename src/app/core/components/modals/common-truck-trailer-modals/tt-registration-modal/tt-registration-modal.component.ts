@@ -118,14 +118,25 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
   public onFilesEvent(event: any) {
     this.documents = event.files;
-    this.registrationForm.get('files').patchValue(JSON.stringify(event.files));
-    if (event.action == 'delete') {
-      this.registrationForm.get('files').patchValue(null);
-      if(event.deleteId) {
-        this.filesForDelete.push(event.deleteId);
+    switch (event.action) {
+      case 'add': {
+        this.registrationForm.get('files').patchValue(JSON.stringify(event.files));
+        break;
       }
+      case 'delete': {
+        this.registrationForm
+          .get('files')
+          .patchValue(event.files.length ? JSON.stringify(event.files) : null);
+        if (event.deleteId) {
+          this.filesForDelete.push(event.deleteId);
+        }
 
-      this.fileModified = true;
+        this.fileModified = true;
+        break;
+      }
+      default: {
+        break;
+      }
     }
   }
 
@@ -209,7 +220,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             licensePlate: res.licensePlate,
             stateId: res.state ? res.state.stateShortName : null,
             note: res.note,
-            files: res.files
+            files: res.files.length ? JSON.stringify(res.files) : null,
           });
 
           this.documents = res.files;

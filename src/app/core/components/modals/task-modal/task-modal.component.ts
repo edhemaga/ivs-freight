@@ -54,6 +54,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   public taskStatus: EnumValue = null;
   public comments: any[] = [];
   public documents: any[] = [];
+  public fileModified: boolean = false;
+  public filesForDelete: any[] = [];
 
   public companyUser: SignInResponse = null;
 
@@ -276,6 +278,26 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   public onFilesEvent(event: any) {
     this.documents = event.files;
+    switch (event.action) {
+      case 'add': {
+        this.taskForm.get('files').patchValue(JSON.stringify(event.files));
+        break;
+      }
+      case 'delete': {
+        this.taskForm
+          .get('files')
+          .patchValue(event.files.length ? JSON.stringify(event.files) : null);
+        if (event.deleteId) {
+          this.filesForDelete.push(event.deleteId);
+        }
+
+        this.fileModified = true;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   private updateTaskById(id: number) {
@@ -302,6 +324,10 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     const { departmentIds, deadline, companyUserIds, ...form } =
       this.taskForm.value;
 
+      const documents = this.documents.map((item) => {
+        return item.realFile;
+      });
+
     const newData: CreateTodoCommand = {
       ...form,
       deadline: deadline ? convertDateToBackend(deadline) : null,
@@ -311,6 +337,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       companyUserIds: this.selectedCompanyUsers
         ? this.selectedCompanyUsers.map((item) => item.id)
         : [],
+      files: documents,
     };
 
     this.todoService.addTodo(newData);
