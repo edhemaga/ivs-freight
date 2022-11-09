@@ -2646,14 +2646,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         this.tableData[mapIndex].routes = [];
 
         var routesArr = routes.pagination.data;
-        routesArr.map((route) => {
+        routesArr.map((route, index) => {
           var stopsArr = [];
           route.stops.map((stop) => {
-            var stopAddress = {
-              city: stop.address.city,
-              state: stop.address.stateShortName,
-              zipCode: stop.address.zipCode,
-            };
             console.log('stop', stop);
 
             var stopObj = {
@@ -2686,6 +2681,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             fuelPrice: '',
             stops: stopsArr,
             color: this.findRouteColor(),
+            isFocused: this.focusedRouteIndex == index
           };
           console.log('newRoute', newRoute);
 
@@ -2698,7 +2694,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         console.log('map routes', this.tableData[mapIndex], mapIndex);
 
         this.tableData[mapIndex].routes.map((item, index) => {
-          this.calculateDistanceBetweenStops(index);
+          //this.calculateDistanceBetweenStops(index);
           this.calculateRouteWidth(item);
           if (item.stops?.length > 1) {
             this.decodeRouteShape(item);
