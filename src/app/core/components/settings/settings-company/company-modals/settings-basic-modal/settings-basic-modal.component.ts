@@ -447,10 +447,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.addCompanyDivision();
             this.modalService.setModalSpinner({ action: null, status: true });
           } else {
-            if (this.isFormDirty) {
-              this.updateCompanyDivision(this.editData.company.id);
-              this.modalService.setModalSpinner({ action: null, status: true });
-            }
+            this.updateCompanyDivision(this.editData.company.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
           }
         } else {
           this.updateCompany();

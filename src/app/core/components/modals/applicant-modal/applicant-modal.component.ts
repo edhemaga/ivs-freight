@@ -104,10 +104,8 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
         }
 
         if (this.editData?.type === 'edit') {
-          if (this.isFormDirty) {
-            this.updateApplicant(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateApplicant(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addApplicant();
           this.modalService.setModalSpinner({ action: null, status: true });

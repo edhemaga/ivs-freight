@@ -12,6 +12,8 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { fuelStoreValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../../services/form/form.service';
+import { FuelTService } from '../../../fuel/state/fuel.service';
+import { GetFuelStopModalResponse } from '../../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
 
 @Component({
   selector: 'app-fuel-stop-modal',
@@ -38,19 +40,20 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private formService: FormService
+    private formService: FormService,
+    private fuelService: FuelTService
   ) {}
 
   ngOnInit() {
     this.createForm();
-
+    this.getModalDropdowns();
     if (this.editData) {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
         id: 1,
       };
-      this.editFuelStop(this.editData.id);
+      this.getFuelStopById(this.editData.id);
     }
   }
 
@@ -85,10 +88,8 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData) {
-          if (this.isFormDirty) {
-            this.updateFuelStop(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateFuelStop(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addFuelStop();
           this.modalService.setModalSpinner({ action: null, status: true });
@@ -116,6 +117,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
   public onSelectDropdown(event: any, action) {
     switch (action) {
       case 'fuel-stop': {
+        console.log(action, event);
         this.selectedFuelStop = event;
         break;
       }
@@ -123,6 +125,10 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  public onSaveNewFuelStop(event: any) {
+    console.log('save new fuel stop: ', event);
   }
 
   public onHandleAddress(event: {
@@ -133,9 +139,29 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
   }
 
   private updateFuelStop(id: number) {}
+
   private addFuelStop() {}
+
   private deleteFuelStopById(id: number) {}
-  private editFuelStop(id: number) {}
+
+  private getFuelStopById(id: number) {}
+
+  private getModalDropdowns() {
+    this.fuelService
+      .getFuelStopModalDropdowns()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: GetFuelStopModalResponse) => {
+          this.fuelStops = res.fuelStopFranchise.map((item) => {
+            return {
+              id: item.id,
+              name: item.businessName,
+            };
+          });
+        },
+        error: () => {},
+      });
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

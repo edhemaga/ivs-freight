@@ -110,10 +110,8 @@ export class AccountModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData) {
-          if (this.isFormDirty) {
-            this.updateCompanyAccount(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateCompanyAccount(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addCompanyAccount();
           this.modalService.setModalSpinner({ action: null, status: true });

@@ -112,10 +112,8 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData?.type === 'edit-drug') {
-          if (this.isFormDirty) {
-            this.updateTest();
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateTest();
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addTest();
           this.modalService.setModalSpinner({ action: null, status: true });

@@ -219,10 +219,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData) {
-          if (this.isFormDirty) {
-            this.updateViolation(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateViolation(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
         break;
       }

@@ -172,10 +172,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData.type.includes('edit')) {
-          if (this.isFormDirty) {
-            this.updateRepair(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateRepair(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addRepair();
           this.modalService.setModalSpinner({ action: null, status: true });

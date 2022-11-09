@@ -222,10 +222,8 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData?.type === 'edit') {
-          if (this.isFormDirty) {
-            this.updateParking(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateParking(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addParking();
           this.modalService.setModalSpinner({ action: null, status: true });

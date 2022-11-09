@@ -114,10 +114,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData?.type === 'edit-mvr') {
-          if (this.isFormDirty) {
-            this.updateMVR();
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateMVR();
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addMVR();
           this.modalService.setModalSpinner({ action: null, status: true });

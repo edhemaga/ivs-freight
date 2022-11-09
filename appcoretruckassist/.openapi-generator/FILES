@@ -166,7 +166,6 @@ model/contactEmailType.ts
 model/contactPhoneResponse.ts
 model/contactPhoneType.ts
 model/countryType.ts
-model/createAccidentCommand.ts
 model/createAccidentRecordCommand.ts
 model/createAccidentRecordReviewCommand.ts
 model/createApplicantCdlCommand.ts
@@ -343,7 +342,6 @@ model/inspectionResponse.ts
 model/insurancePolicyAddonResponse.ts
 model/insurancePolicyModalResponse.ts
 model/insurancePolicyResponse.ts
-model/insuranceTypeCommand.ts
 model/insuranceTypeResponse.ts
 model/inviteEmployerResponse.ts
 model/invitePreviousEmployerCommand.ts
@@ -585,7 +583,6 @@ model/truckResponse.ts
 model/truckShortResponse.ts
 model/truckShortResponsePagination.ts
 model/truckTypeResponse.ts
-model/updateAccidentCommand.ts
 model/updateAccidentRecordCommand.ts
 model/updateApplicantCdlCommand.ts
 model/updateApplicantCommand.ts

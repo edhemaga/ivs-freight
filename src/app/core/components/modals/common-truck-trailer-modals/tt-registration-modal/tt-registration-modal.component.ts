@@ -85,10 +85,8 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData.type === 'edit-registration') {
-          if (this.isFormDirty) {
-            this.updateRegistration();
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateRegistration();
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addRegistration();
           this.modalService.setModalSpinner({ action: null, status: true });
