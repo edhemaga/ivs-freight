@@ -1,4 +1,7 @@
-import { fuelStopValidation } from '../../../shared/ta-input/ta-input.regex-validations';
+import {
+  businessNameValidation,
+  fuelStopValidation,
+} from '../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -14,6 +17,7 @@ import { fuelStoreValidation } from '../../../shared/ta-input/ta-input.regex-val
 import { FormService } from '../../../../services/form/form.service';
 import { FuelTService } from '../../../fuel/state/fuel.service';
 import { GetFuelStopModalResponse } from '../../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
+import { NotificationService } from '../../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-fuel-stop-modal',
@@ -41,7 +45,8 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private formService: FormService,
-    private fuelService: FuelTService
+    private fuelService: FuelTService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -59,9 +64,10 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.fuelStopForm = this.formBuilder.group({
-      name: [null, [Validators.required, ...fuelStopValidation]],
+      businessName: [null, [...businessNameValidation]],
+      fuelStopFranchiseId: [null, [Validators.required, ...fuelStopValidation]],
       store: [null, fuelStoreValidation],
-      favourite: [null],
+      favourite: [false],
       phone: [null, [Validators.required, phoneFaxRegex]],
       fax: [null, phoneFaxRegex],
       address: [null, [Validators.required, ...addressValidation]],
@@ -117,7 +123,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
   public onSelectDropdown(event: any, action) {
     switch (action) {
       case 'fuel-stop': {
-        console.log(action, event);
         this.selectedFuelStop = event;
         break;
       }
@@ -128,7 +133,19 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
   }
 
   public onSaveNewFuelStop(event: any) {
-    console.log('save new fuel stop: ', event);
+    this.fuelStopForm.get('businessName').patchValue(event.data.name);
+    this.fuelStopForm.get('fuelStopFranchiseId').clearValidators();
+    this.selectedFuelStop = null;
+    this.fuelStopForm
+      .get('businessName')
+      .setValidators([Validators.required, ...businessNameValidation]);
+  }
+
+  public clearNewFuelStop() {
+    this.fuelStopForm.get('businessName').patchValue(null);
+    this.fuelStopForm.get('businessName').clearValidators();
+    this.fuelStopForm.get('fuelStopFranchiseId').patchValue(null);
+    this.selectedFuelStop = null;
   }
 
   public onHandleAddress(event: {
@@ -140,7 +157,36 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
 
   private updateFuelStop(id: number) {}
 
-  private addFuelStop() {}
+  private addFuelStop() {
+    const { address, addressUnit, businessName, ...form } =
+      this.fuelStopForm.value;
+    const newData: any = {
+      ...form,
+      address: {
+        ...this.selectedAddress,
+        addressUnit: addressUnit,
+      },
+      businessName: !this.selectedFuelStop ? businessName : null,
+      fuelStopFranchiseId: this.selectedFuelStop
+        ? this.selectedFuelStop.id
+        : null,
+    };
+    console.log(newData);
+    this.fuelService
+      .addFuelStop(newData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Success',
+            'Successfully fuel stop added.'
+          );
+        },
+        error: (err: any) => {
+          console.log('error... ', err);
+        },
+      });
+  }
 
   private deleteFuelStopById(id: number) {}
 

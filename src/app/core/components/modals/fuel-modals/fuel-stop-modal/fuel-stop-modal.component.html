@@ -12,8 +12,23 @@
   >
     <div class="row">
       <div class="col-7">
+        <app-ta-input
+          *ngIf="fuelStopForm.get('businessName').value"
+          formControlName="businessName"
+          [inputConfig]="{
+            name: 'Business Name',
+            type: 'text',
+            label: 'Fuel Stop Name',
+            textTransform: 'uppercase',
+            minLength: 2,
+            maxLength: 64,
+            isRequired: true
+          }"
+          (clear)="clearNewFuelStop()"
+        ></app-ta-input>
         <app-ta-input-dropdown
-          formControlName="name"
+          *ngIf="!fuelStopForm.get('businessName').value"
+          formControlName="fuelStopFranchiseId"
           [inputConfig]="{
             name: 'Input Dropdown Fuel Stop',
             type: 'text',
@@ -21,6 +36,7 @@
             isDropdown: true,
             minLength: 2,
             maxLength: 64,
+            textTransform: 'uppercase',
             isRequired: true,
             dropdownWidthClass: 'w-col-256'
           }"
@@ -63,7 +79,8 @@
             label: 'Phone',
             placeholderIcon: 'phone',
             mask: '(000) 000-0000',
-            maxLength: 14
+            maxLength: 14,
+            isRequired: true
           }"
         ></app-ta-input>
       </div>
