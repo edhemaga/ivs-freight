@@ -160,12 +160,19 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
   private addFuelStop() {
     const { address, addressUnit, businessName, ...form } =
       this.fuelStopForm.value;
+
     const newData: any = {
       ...form,
-      address: {
-        ...this.selectedAddress,
-        addressUnit: addressUnit,
-      },
+      addressCity: this.selectedAddress.city,
+      addressState: this.selectedAddress.state,
+      addressCounty: this.selectedAddress.country,
+      addressAddress: this.selectedAddress.address,
+      addressStreet: this.selectedAddress.street,
+      addressStreetNumber: this.selectedAddress.streetNumber,
+      addressCountry: this.selectedAddress.country,
+      addressZipCode: this.selectedAddress.zipCode,
+      addressStateShortName: this.selectedAddress.stateShortName,
+      addressAddressUnit: addressUnit,
       businessName: !this.selectedFuelStop ? businessName : null,
       fuelStopFranchiseId: this.selectedFuelStop
         ? this.selectedFuelStop.id
