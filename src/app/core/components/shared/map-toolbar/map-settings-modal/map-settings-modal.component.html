@@ -2,7 +2,7 @@
   [modalTitle]="'Map Setings'"
   [isModalValid]="mapSettingsForm.valid && isFormDirty"
   [mapSettingsModal]="true"
-  [resetMapVisibility]="false"
+  [resetMapVisibility]="isFormDirty ? true : false"
   [editData]="editData"
   (action)="onModalAction($event)"
 >

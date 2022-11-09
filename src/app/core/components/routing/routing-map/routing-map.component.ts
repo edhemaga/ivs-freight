@@ -31,6 +31,8 @@ import { distinctUntilChanged, Subject, takeUntil, filter } from 'rxjs';
 import { RoutingStateService } from '../state/routing-state/routing-state.service';
 import { GetMapListResponse, GetRouteListResponse } from 'appcoretruckassist';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { LongLat } from '../../../../../../appcoretruckassist/model/longLat';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 declare var google: any;
 declare const geoXML3: any;
@@ -269,7 +271,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
     },
     {
-      title: 'border'
+      title: 'border',
     },
     /*{
       title: 'Report',
@@ -286,10 +288,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       name: 'open-report',
       svg: 'assets/svg/common/dropdown-arrow.svg',
       subType: [
-        { subName :'Detailed Route', actionName: 'Detailed Route'}, 
-        { subName : 'State / Country', actionName: 'State / Country'}, 
-        { subName : 'Toll Calculator', actionName: 'Toll Calculator'}, 
-       ]
+        { subName: 'Detailed Route', actionName: 'Detailed Route' },
+        { subName: 'State / Country', actionName: 'State / Country' },
+        { subName: 'Toll Calculator', actionName: 'Toll Calculator' },
+      ],
     },
     {
       title: 'Duplicate',
@@ -317,7 +319,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       redIcon: true,
     },
     {
-      title: 'border'
+      title: 'border',
     },
     {
       title: 'Share',
@@ -334,7 +336,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       svg: 'assets/svg/common/ic_print.svg',
     },
     {
-      title: 'border'
+      title: 'border',
     },
     {
       title: 'Delete',
@@ -520,6 +522,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   mapZoomTime: number = 0;
   mapList: any[] = [];
 
+  routePolylines: any = {};
+
   constructor(
     private mapsService: MapsService,
     private formBuilder: FormBuilder,
@@ -527,7 +531,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private confirmationService: ConfirmationService,
     private routingService: RoutingStateService,
-    private DetailsDataService: DetailsDataService
+    private DetailsDataService: DetailsDataService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -583,14 +588,16 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         console.log('updateMap res', res);
 
-        if ( res.type == 'map' ) {
+        if (res.type == 'map') {
           this.updateMapData(res.id, res.data);
-        } else if ( res.type == 'route' ) {
+        } else if (res.type == 'route') {
           this.addRoute(res.mapId, res.data);
-        } else if ( res.type == 'edit-route' ) {
+        } else if (res.type == 'edit-route') {
           this.getRouteList(this.tableData[this.selectedMapIndex].id, 1, 8);
-        } else if ( res.type == 'delete-route' ) {
+        } else if (res.type == 'delete-route') {
           console.log('delete-route');
+          this.getRouteList(this.tableData[this.selectedMapIndex].id, 1, 8);
+        } else if (res.type == 'delete-stop') {
           this.getRouteList(this.tableData[this.selectedMapIndex].id, 1, 8);
         }
       });
@@ -914,6 +921,59 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     event.preventDefault();
 
+    this.routingService
+      .deleteStopById(route.stops[index].id, route.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          console.log('deleteStopById success');
+
+          if ( route.stops.length > 1 ) {
+            this.getRouteShape(route);
+          } else {
+            var stopArr = [];
+            route.stops.map((stop) => {
+              var stopObj = <any>{
+                id: stop.id ? stop.id : 0,
+                address: stop.address,
+                leg: null,
+                total: null,
+                longitude: stop.long,
+                latitude: stop.lat,
+              };
+
+              stopArr.push(stopObj);
+            });
+            
+            var updateRouteObj = {
+              id: route.id,
+              name: route.name,
+              shape: null,
+              stops: stopArr,
+            };
+            console.log('updateRouteObj', updateRouteObj);
+    
+            this.routingService
+              .updateRoute(updateRouteObj)
+              .pipe(takeUntil(this.destroy$))
+              .subscribe({
+                next: () => {
+                  this.notificationService.success(
+                    'Successfuly updated route.',
+                    'Success'
+                  );
+                },
+                error: () => {
+                  this.notificationService.error("Can't update route.", 'Error');
+                },
+              });
+          }
+        },
+        error: () => {
+          console.log('deleteStopById error');
+        },
+      });
+
     const routeIndex = this.getRouteIndexById(route.id);
 
     route.stops.splice(index, 1);
@@ -922,12 +982,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     this.calculateRouteWidth(route);
 
     this.ref.detectChanges();
-    this.dropdownElement._results.map((item)=>{
-      if ( item.tooltip )
-        {
-          item.tooltip.close();
-        }
-    })
+    this.dropdownElement._results.map((item) => {
+      if (item.tooltip) {
+        item.tooltip.close();
+      }
+    });
   }
 
   zoomChange(event) {
@@ -1096,16 +1155,65 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
           event.address.state +
           ' ' +
           (event.address.zipCode ? event.address.zipCode : ''),
-        leg: '60.6',
-        total: '60.6',
-        time: '01:15',
-        totalTime: '01:15',
+        leg: null,
+        total: null,
+        time: null,
+        totalTime: null,
         empty: this.addressFlag == 'Empty' ? true : false,
         lat: event.longLat.latitude,
         long: event.longLat.longitude,
       });
 
+      console.log('stop latitude', event.longLat.latitude);
+      console.log('stop longitude', event.longLat.longitude);
+
       this.insertBeforeActive = -1;
+
+      if (
+        this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex]
+          .stops.length < 2
+      ) {
+        var stopArr = [];
+        this.tableData[this.selectedMapIndex].routes[
+          this.focusedRouteIndex
+        ].stops.map((stop) => {
+          var stopObj = <any>{
+            id: stop.id ? stop.id : 0,
+            address: stop.address,
+            leg: null,
+            total: null,
+            longitude: stop.long,
+            latitude: stop.lat,
+          };
+
+          stopArr.push(stopObj);
+        });
+
+        var updateRouteObj = {
+          id: route.id,
+          name: route.name,
+          shape: route.shape ? route.shape : null,
+          stops: stopArr,
+        };
+        console.log('updateRouteObj', updateRouteObj);
+
+        this.routingService
+          .updateRoute(updateRouteObj)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                'Successfuly updated route.',
+                'Success'
+              );
+            },
+            error: () => {
+              this.notificationService.error("Can't update route.", 'Error');
+            },
+          });
+      } else {
+        this.getRouteShape(route);
+      }
 
       this.calculateDistanceBetweenStops(index);
       this.calculateRouteWidth(route);
@@ -1294,7 +1402,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     }
   }
 
-  callDropDownAction(event, action?:any) {
+  callDropDownAction(event, action?: any) {
     //event.stopPropagation();
     //event.preventDefault();
     let currentId = 0;
@@ -1303,12 +1411,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     if (action) {
       currentId = this.dropDownActive;
       actionName = action.name;
-    }
-    else {
+    } else {
       currentId = event.id;
       actionName = event.type;
     }
-    
+
     // Edit Call
     if (actionName === 'duplicate-route') {
       this.duplicateRoute(currentId);
@@ -1323,7 +1430,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       };
 
       //this.routingService.deleteRouteById(this.dropDownActive); // ne radi
-      
+
       console.log('delete route', currentId);
 
       this.modalService.openModal(
@@ -1339,7 +1446,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       let route = this.getRouteById(currentId);
       this.mapToolbar.editRoute(route);
     }
-    
   }
 
   showMoreOptions(event, route) {
@@ -1712,7 +1818,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       var mapObj = {
         id: map.id,
         title: map.name,
-        field: 'map'+(index+1),
+        field: 'map' + (index + 1),
         length: 0,
         gridNameTitle: 'Routing',
         distanceUnit: 'mi', // mi or km
@@ -1904,21 +2010,30 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   toggleDropdown(event, tooltip: any, route: any) {
     event.stopPropagation();
     event.preventDefault();
-  
+
     this.DetailsDataService.setNewData(route);
 
     this.dropdownActions.map((action, index) => {
-        
-      if ( route.stops.length == 0 && ['open-report', 'reverse-route-stops', 'clear-route-stops'].includes(action.name) ) {
+      if (
+        route.stops.length == 0 &&
+        ['open-report', 'reverse-route-stops', 'clear-route-stops'].includes(
+          action.name
+        )
+      ) {
         action.disabled = true;
-      } else if ( route.stops.length == 1 && ['open-report', 'reverse-route-stops'].includes(action.name) ) {
+      } else if (
+        route.stops.length == 1 &&
+        ['open-report', 'reverse-route-stops'].includes(action.name)
+      ) {
         action.disabled = true;
       } else {
         action.disabled = false;
       }
-      
 
-      if ( this.tableData[this.selectedMapIndex].routes.length == 8 && ['duplicate-route'].includes(action.name) ) {
+      if (
+        this.tableData[this.selectedMapIndex].routes.length == 8 &&
+        ['duplicate-route'].includes(action.name)
+      ) {
         action.disabled = true;
       }
     });
@@ -2522,18 +2637,43 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       .subscribe((routes: GetRouteListResponse) => {
         console.log('getRouteList response', routes);
 
-        const mapIndex = this.tableData.findIndex(
-          (item) => {
-            console.log('mapId', item.id, mapId);
-            return item.id === mapId;
-          }
-        );
+        const mapIndex = this.tableData.findIndex((item) => {
+          console.log('mapId', item.id, mapId);
+          return item.id === mapId;
+        });
 
         var newRoutes = [];
         this.tableData[mapIndex].routes = [];
 
         var routesArr = routes.pagination.data;
         routesArr.map((route) => {
+          var stopsArr = [];
+          route.stops.map((stop) => {
+            var stopAddress = {
+              city: stop.city,
+              state: stop.stateShortName,
+              zipCode: stop.zipCode,
+            };
+            console.log('stop', stop);
+
+            var stopObj = {
+              id: stop.id,
+              address: stop.address,
+              cityAddress:
+                stop.address.city +
+                ', ' +
+                stop.address.state +
+                ' ' +
+                (stop.address.zipCode ? stop.address.zipCode : ''),
+              lat: stop.latitude,
+              long: stop.longitude,
+              leg: stop.leg,
+              total: stop.total,
+            };
+
+            stopsArr.push(stopObj);
+          });
+
           var newRoute = {
             id: route.id,
             name: route.name,
@@ -2544,7 +2684,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             stopTime: '',
             mpg: '',
             fuelPrice: '',
-            stops: [],
+            stops: stopsArr,
             color: this.findRouteColor(),
           };
           console.log('newRoute', newRoute);
@@ -2560,6 +2700,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         this.tableData[mapIndex].routes.map((item, index) => {
           this.calculateDistanceBetweenStops(index);
           this.calculateRouteWidth(item);
+          if (item.stops?.length > 1) {
+            this.decodeRouteShape(item);
+          } else {
+            this.deleteRouteLine(item);
+          }
         });
 
         this.initAddressFields();
@@ -2576,7 +2721,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
       return data;
     });
-    
+
     console.log('tableData', this.tableData);
     this.mapToolbar.getSelectedTabTableData();
   }
@@ -2620,5 +2765,128 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
     this.tableData[this.selectedMapIndex].length =
       this.tableData[this.selectedMapIndex].routes.length;
+  }
+
+  decodeRouteShape(route) {
+    this.routingService
+      .decodeRouteShape(route.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          console.log('decodeRouteShape success', res);
+
+          const polyLineCoordinates = [];
+
+          if ( this.routePolylines[route.id] ) {
+            this.routePolylines[route.id].setMap(null);
+          }
+
+          res.map((item) => {
+            var coordinates = { lat: item.latitude, lng: item.longitude };
+            polyLineCoordinates.push(coordinates);
+          });
+
+          //const polyLineCoordinates = res;
+          this.routePolylines[route.id] = new google.maps.Polyline({
+            path: polyLineCoordinates,
+            geodesic: true,
+            strokeColor: route.color,
+            strokeOpacity: 1.0,
+            strokeWeight: 6,
+          });
+
+          this.routePolylines[route.id].setMap(this.agmMap);
+        },
+        error: () => {
+          console.log('decodeRouteShape error');
+        },
+      });
+  }
+
+  getRouteShape(route) {
+    var stopsLatLong = [];
+    var stopArr = [];
+    route.stops.map((stop) => {
+      stopsLatLong.push({ latitude: stop.lat, longitude: stop.long });
+
+      var stopObj = <any>{
+        id: stop.id ? stop.id : 0,
+        address: stop.address,
+        leg: null,
+        total: null,
+        longitude: stop.long,
+        latitude: stop.lat,
+      };
+
+      stopArr.push(stopObj);
+    });
+
+    this.routingService
+      .getRouteShape(
+        JSON.stringify(stopsLatLong)
+        // truckId,
+        // trailerId,
+        // height,
+        // loadWeight,
+        // hazMat
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((routing) => {
+        console.log('getRouteList apiRoutingGet', routing);
+
+        var totalMiles = 0;
+        var totalTime = 0;
+        var totalPrice = 0;
+        routing.legs.map((leg, index) => {
+          totalMiles = totalMiles + (leg.miles ? leg.miles : 0);
+          totalPrice = totalPrice + (leg.cost ? leg.cost : 0);
+          totalTime =
+            totalTime + (leg.minutes ? leg.hours * 60 + leg.minutes : 0);
+
+          console.log('totalMiles', totalMiles);
+          console.log('leg.miles', leg.miles);
+
+          const minutes = totalTime % 60;
+          const hours = Math.floor(totalTime / 60);
+
+          stopArr[index + 1].leg = leg.miles;
+          stopArr[index + 1].total = totalMiles;
+          stopArr[index + 1].legPrice = leg.cost;
+          stopArr[index + 1].totalPrice = totalPrice;
+          stopArr[index + 1].time = leg.hours + ':' + leg.minutes;
+          stopArr[index + 1].totalTime = hours + ':' + minutes;
+        });
+
+        var updateRouteObj = {
+          id: route.id,
+          name: route.name,
+          shape: routing.shape,
+          stops: stopArr,
+        };
+        console.log('updateRouteObj', updateRouteObj);
+
+        this.routingService
+          .updateRoute(updateRouteObj)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                'Successfuly updated route.',
+                'Success'
+              );
+            },
+            error: () => {
+              this.notificationService.error("Can't update route.", 'Error');
+            },
+          });
+      });
+  }
+
+  deleteRouteLine(route) {
+    console.log('deleteRouteLine', route);
+    if ( this.routePolylines[route.id] ) {
+      this.routePolylines[route.id].setMap(null);
+      this.routePolylines[route.id] = null;
+    }
   }
 }

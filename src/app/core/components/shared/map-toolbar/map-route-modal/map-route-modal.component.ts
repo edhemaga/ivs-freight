@@ -120,6 +120,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
 
       case 'reset-map-routing': {
         console.log('put action reset map');
+        this.resetForm();
         break;
       }
       default: {
@@ -233,6 +234,15 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
           this.notificationService.error("Can't load route.", 'Error');
         },
       });
+  }
+
+  private resetForm() {
+    if (this.editData?.type === 'edit') {
+      this.getRoute(this.editData.id);
+    } else {
+      this.mapRouteForm.reset();
+      this.isFormDirty = false;
+    }
   }
 
   ngOnDestroy(): void {

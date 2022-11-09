@@ -20,5 +20,6 @@ export interface StopResponse {
     total?: number | null;
     longitude?: number;
     latitude?: number;
+    address?: any;
 }
 

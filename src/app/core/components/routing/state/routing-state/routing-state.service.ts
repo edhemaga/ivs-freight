@@ -8,18 +8,21 @@ import {
   MapService,
   RouteService,
   StopService,
+  RoutingService,
   CreateRouteCommand,
   CreateResponse,
   RouteResponse,
-  UpdateRouteCommand
+  UpdateRouteCommand,
+  UpdateStopCommand,
 } from 'appcoretruckassist';
 import { takeUntil, Subject, Observable, tap, BehaviorSubject } from 'rxjs';
 import { MapResponse } from '../../../../../../../appcoretruckassist/model/mapResponse';
+import { NotificationService } from '../../../../services/notification/notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class RoutingStateService implements OnDestroy {
   private destroy$ = new Subject<void>();
-  
+
   private updatedData = new BehaviorSubject<any>({});
   public currentUpdatedData = this.updatedData.asObservable();
 
@@ -28,7 +31,9 @@ export class RoutingStateService implements OnDestroy {
     private http: HttpClient,
     private mapService: MapService,
     private routeService: RouteService,
-    private stopService: StopService
+    private stopService: StopService,
+    private routingService: RoutingService,
+    private notificationService: NotificationService
   ) {}
 
   // get() {
@@ -95,7 +100,7 @@ export class RoutingStateService implements OnDestroy {
               this.sendUpdatedData({
                 type: 'map',
                 data: map,
-                id: data.id
+                id: data.id,
               });
 
               console.log('updateMap response', map);
@@ -167,7 +172,7 @@ export class RoutingStateService implements OnDestroy {
                 type: 'route',
                 data: route,
                 mapId: data.mapId,
-                id: route.id
+                id: route.id,
               });
 
               console.log('addRoute', route);
@@ -199,7 +204,7 @@ export class RoutingStateService implements OnDestroy {
               this.sendUpdatedData({
                 type: 'edit-route',
                 data: route,
-                id: route.id
+                id: route.id,
               });
 
               console.log('updateRoute response', route);
@@ -233,10 +238,57 @@ export class RoutingStateService implements OnDestroy {
 
         this.sendUpdatedData({
           type: 'delete-route',
-          id: routeId
+          id: routeId,
         });
 
         console.log('deleteRouteById', routeId);
+      })
+    );
+  }
+  
+  deleteStopById(stopId: number, routeId: number): Observable<any> {
+    console.log('deleteStopById', stopId, routeId);
+    return this.stopService.apiStopIdDelete(stopId).pipe(
+      tap(() => {
+        this.sendUpdatedData({
+          type: 'delete-stop',
+          id: stopId,
+          routeId: routeId,
+        });
+
+        console.log('deleteStopById', routeId);
+      })
+    );
+  }
+
+  getRouteShape(
+    locations?: string,
+    truckId?: number,
+    trailerId?: number,
+    height?: number,
+    loadWeight?: number,
+    hazMat?: boolean
+  ) {
+    return this.routingService
+      .apiRoutingGet(
+        locations,
+        truckId,
+        trailerId,
+        height,
+        loadWeight,
+        hazMat
+      )
+      .pipe(
+        tap(() => {
+          console.log('getRouteShape', locations);
+        })
+      );
+  }
+
+  decodeRouteShape(routeId: number) {
+    return this.routingService.apiRoutingDecodeRouteIdGet(routeId).pipe(
+      tap(() => {
+        console.log('decodeRouteShape', routeId);
       })
     );
   }

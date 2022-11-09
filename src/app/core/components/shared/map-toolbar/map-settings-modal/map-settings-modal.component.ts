@@ -121,6 +121,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
       }
       case 'reset-map-routing': {
         console.log('put action reset map');
+        this.resetForm();
         break;
       }
       default: {
@@ -197,6 +198,54 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
           this.notificationService.error("Can't load map.", 'Error');
         },
       });
+  }
+
+  private resetForm() {
+    if (this.editData?.type === 'edit') {
+      this.editMap(this.editData.id);
+    } else {
+      this.mapSettingsForm.reset();
+      this.isFormDirty = false;
+    }
+
+    this.distanceTabs = [
+      {
+        id: 1,
+        name: 'Miles',
+        checked: false,
+      },
+      {
+        id: 2,
+        name: 'Km',
+        checked: false,
+      },
+    ];
+  
+    this.addressTabs = [
+      {
+        id: 1,
+        name: 'City',
+        checked: false,
+      },
+      {
+        id: 2,
+        name: 'Address',
+        checked: false,
+      },
+    ];
+  
+    this.borderTabs = [
+      {
+        id: 1,
+        name: 'Open Border',
+        checked: false,
+      },
+      {
+        id: 2,
+        name: 'Closed Border',
+        checked: false,
+      },
+    ];
   }
 
   ngOnDestroy(): void {
