@@ -20,10 +20,9 @@
 </div>
 
 <ng-template #dropdownPopover let-data="data">
-  <div class="dropdown-main-popover-body"  
-    [class.horizontalMargin]="placement.indexOf('-right') > -1"
-    [class.verticalMargin]="placement.indexOf('-right') == -1"
-    [class.leftPositionMargin]="placement.indexOf('left-top') > -1"
+  <div class="dropdown-main-popover-body"   
+    [class.marginForBottom]="placement.indexOf('bottom-') > -1"
+    [class.marginForAuto]="placement.indexOf('auto') > -1"
   >  
     <div class="details-dropdown-body">
       <div *ngFor="let action of options;let i=index; trackBy:identity">
