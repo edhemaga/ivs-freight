@@ -22,7 +22,7 @@ export class FuelItemResolver implements Resolve<FuelStopResponse[]> {
     const id = route.paramMap.get('id');
     let fuelid = parseInt(id);
 
-    return this.fuelService.getFuelById(fuelid).pipe(
+    return this.fuelService.getFuelStopById(fuelid).pipe(
       catchError((error) => {
         this.router.navigate(['/fuel']);
         return of('No fuel data for...' + fuelid);

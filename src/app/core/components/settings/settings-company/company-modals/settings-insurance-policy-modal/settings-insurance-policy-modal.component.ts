@@ -176,10 +176,8 @@ export class SettingsInsurancePolicyModalComponent
           return;
         }
         if (this.editData.type === 'edit') {
-          if (this.isFormDirty) {
-            this.updateInsurancePolicy(this.editData.company.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateInsurancePolicy(this.editData.company.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addInsurancePolicy(this.editData.company);
           this.modalService.setModalSpinner({ action: null, status: true });

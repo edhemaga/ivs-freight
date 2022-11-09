@@ -3,9 +3,7 @@ import {
   AccidentListResponse,
   AccidentResponse,
   AccidentService,
-  CreateAccidentCommand,
   CreateResponse,
-  UpdateAccidentCommand,
 } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 
@@ -41,11 +39,11 @@ export class AccidentTService {
     return of();
   }
 
-  public addAccident(data: CreateAccidentCommand): Observable<CreateResponse> {
+  public addAccident(data: any): Observable<CreateResponse> {
     return this.accidentService.apiAccidentPost(data);
   }
 
-  public updateAccident(data: UpdateAccidentCommand): Observable<any> {
+  public updateAccident(data: any): Observable<any> {
     return this.accidentService.apiAccidentPut(data);
   }
 

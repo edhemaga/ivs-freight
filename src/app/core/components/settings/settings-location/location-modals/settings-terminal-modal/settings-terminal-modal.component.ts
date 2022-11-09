@@ -230,10 +230,8 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData?.type === 'edit') {
-          if (this.isFormDirty) {
-            this.updateTerminal(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateTerminal(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addTerminal();
           this.modalService.setModalSpinner({ action: null, status: true });
