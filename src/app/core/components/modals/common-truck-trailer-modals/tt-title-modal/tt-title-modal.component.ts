@@ -84,10 +84,8 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData.type === 'edit-title') {
-          if (this.isFormDirty) {
-            this.updateTitle();
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateTitle();
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addTitle();
           this.modalService.setModalSpinner({ action: null, status: true });

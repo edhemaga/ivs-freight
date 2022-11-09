@@ -350,13 +350,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             return;
           }
           if (this.editData) {
-            if (this.isFormDirty) {
-              this.updateBroker(this.editData.id);
-              this.modalService.setModalSpinner({
-                action: null,
-                status: true,
-              });
-            }
+            this.updateBroker(this.editData.id);
+            this.modalService.setModalSpinner({
+              action: null,
+              status: true,
+            });
           } else {
             this.addBroker();
             this.modalService.setModalSpinner({

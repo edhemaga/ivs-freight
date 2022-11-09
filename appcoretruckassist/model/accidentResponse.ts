@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { BrokerMinimalResponse } from './brokerMinimalResponse';
 import { TrailerAccidentResponse } from './trailerAccidentResponse';
 import { InsuranceTypeResponse } from './insuranceTypeResponse';
@@ -76,5 +77,6 @@ export interface AccidentResponse {
     totalWeight?: number | null;
     createdAt?: string;
     updatedAt?: string;
+    files?: Array<FileResponse> | null;
 }
 
