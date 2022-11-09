@@ -1,4 +1,4 @@
-@import "src/theme/variables.scss";
+@import 'src/theme/variables.scss';
 .footer-container {
   margin-top: 60px;
 
@@ -28,7 +28,14 @@
       .requests-icon {
         cursor: pointer;
         margin-right: 6px !important;
-        /* margin-top: 12px !important; */
+
+        &.documents-icon {
+          margin-top: 12px !important;
+        }
+
+        &.documents-icon + p {
+          margin-top: 12px !important;
+        }
 
         &:hover {
           svg {
@@ -64,7 +71,6 @@
 
       p {
         cursor: pointer;
-        /* margin-top: 12px !important; */
         height: 18px;
         font-size: 14px;
         color: $bw6-2;
@@ -79,15 +85,11 @@
           color: $ta-blue;
         }
       }
-
-      .document-icon {
-        gap: 12px;
-      }
     }
 
     .info-box {
       position: absolute;
-      bottom: 30px;
+      bottom: 40px;
       width: 350px;
       padding: 12px 0;
       margin-left: -10px;

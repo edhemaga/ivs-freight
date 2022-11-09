@@ -264,6 +264,8 @@
 
   .another-class-group {
     .add-btn {
+      position: relative;
+      bottom: 1px;
       line-height: 18px;
       height: 26px;
       padding: 4px 8px;
@@ -323,6 +325,8 @@
       margin-bottom: 32px;
 
       .add-btn {
+        position: relative;
+        bottom: 1px;
         margin-top: 0;
         height: 26px;
         padding: 4px 8px;
@@ -501,6 +505,8 @@
 
   .btn-container {
     .add-btn {
+      position: relative;
+      bottom: 1px;
       margin-top: 22px;
       height: 26px;
       padding: 4px 8px;
@@ -566,6 +572,8 @@
       margin-bottom: 32px;
 
       .add-btn {
+        position: relative;
+        bottom: 1px;
         margin-top: 0;
         height: 26px;
         padding: 4px 8px;

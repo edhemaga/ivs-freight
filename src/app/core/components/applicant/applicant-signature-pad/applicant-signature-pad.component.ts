@@ -3,7 +3,9 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   Output,
+  SimpleChanges,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
@@ -13,13 +15,19 @@ import {
   SignaturePadComponent,
 } from '@almothafar/angular-signature-pad';
 
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+
+import { SelectedMode } from '../state/enum/selected-mode.enum';
+
 @Component({
   selector: 'app-applicant-signature-pad',
   templateUrl: './applicant-signature-pad.component.html',
   styleUrls: ['./applicant-signature-pad.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ApplicantSignaturePadComponent implements AfterViewInit {
+export class ApplicantSignaturePadComponent
+  implements AfterViewInit, OnChanges
+{
   @ViewChild('signature')
   public signaturePad: SignaturePadComponent;
 
@@ -30,15 +38,31 @@ export class ApplicantSignaturePadComponent implements AfterViewInit {
     penColor: '#6c6c6c',
   };
 
-  @Input() signature: any;
+  public signature: string;
+
+  @Input() mode: string;
+  @Input() signatureImgSrc: any = null;
 
   @Output() signatureEmitter: EventEmitter<any> = new EventEmitter();
 
-  constructor() {}
+  constructor(public imageBase64Service: ImageBase64Service) {}
 
   ngAfterViewInit(): void {
-    this.signaturePad.set('minWidth', 5);
-    this.signaturePad.clear();
+    if (this.mode === SelectedMode.APPLICANT && this.signaturePad) {
+      this.signaturePad.set('minWidth', 5);
+      this.signaturePad.clear();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      changes.signatureImgSrc?.previousValue !==
+      changes.signatureImgSrc?.currentValue
+    ) {
+      this.signatureImgSrc = this.imageBase64Service.sanitizer(
+        changes.signatureImgSrc?.currentValue
+      );
+    }
   }
 
   public drawStart(event: MouseEvent | Touch): void {
@@ -68,6 +92,16 @@ export class ApplicantSignaturePadComponent implements AfterViewInit {
   public onConfirmDrawing(): void {
     this.signature = this.signaturePad.toDataURL();
 
+    this.signatureImgSrc = this.signature;
+
     this.signatureEmitter.emit(this.signature);
+  }
+
+  public onDeleteImageSrc(): void {
+    this.signature = null;
+
+    this.signatureImgSrc = null;
+
+    this.signatureEmitter.emit(null);
   }
 }

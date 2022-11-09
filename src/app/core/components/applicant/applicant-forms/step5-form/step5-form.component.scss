@@ -43,6 +43,8 @@
 
   .btn-container {
     .add-btn {
+      position: relative;
+      bottom: 1px;
       margin-bottom: 22px;
       height: 26px;
       line-height: 18px;
@@ -106,6 +108,8 @@
 
     .btn-container-inside {
       .add-btn {
+        position: relative;
+        bottom: 1px;
         height: 26px;
         padding: 4px 8px;
         border: none;

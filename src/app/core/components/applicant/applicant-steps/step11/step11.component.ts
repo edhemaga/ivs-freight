@@ -6,6 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
@@ -32,7 +33,7 @@ export class Step11Component implements OnInit, OnDestroy {
 
   public applicantId: number;
 
-  public signature: any;
+  public signature: string;
   public signatureImgSrc: string;
 
   constructor(
@@ -41,7 +42,8 @@ export class Step11Component implements OnInit, OnDestroy {
     private router: Router,
     private applicantStore: ApplicantStore,
     private applicantQuery: ApplicantQuery,
-    private applicantActionsService: ApplicantActionsService
+    private applicantActionsService: ApplicantActionsService,
+    private imageBase64Service: ImageBase64Service
   ) {}
 
   ngOnInit(): void {
@@ -88,6 +90,7 @@ export class Step11Component implements OnInit, OnDestroy {
     });
 
     this.signatureImgSrc = signature;
+    this.signature = signature;
   }
 
   public handleCheckboxParagraphClick(type: string): void {
@@ -138,10 +141,11 @@ export class Step11Component implements OnInit, OnDestroy {
   }
 
   public onSignatureAction(event: any): void {
-    this.signatureImgSrc = event;
     this.signature = event;
 
-    this.signature = this.signature?.slice(22);
+    this.signature = this.imageBase64Service.getStringFromBase64(
+      this.signature
+    );
   }
 
   public onStepAction(event: any): void {

@@ -74,6 +74,8 @@
     }
 
     .add-btn {
+      position: relative;
+      bottom: 1px;
       line-height: 18px;
       margin-top: 22px;
       height: 26px;
@@ -140,6 +142,8 @@
       margin-top: 22px;
 
       .add-btn {
+        position: relative;
+        bottom: 1px;
         margin-top: 0;
         height: 26px;
         padding: 4px 8px;
