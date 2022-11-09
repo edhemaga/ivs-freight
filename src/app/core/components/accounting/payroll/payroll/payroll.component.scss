@@ -1,0 +1,17 @@
+.payroll-tables-holder {
+  margin-right: 6px;
+  margin-top: 12px;
+  .card-holder {
+    .ta-card-header {
+      background-color: #fff;
+      border-radius: 3px;
+      height: 32px !important;
+    }
+  }
+}
+
+.table-container {
+    width: calc(100% - 92px);
+    position: absolute;
+    top: 0;
+  }

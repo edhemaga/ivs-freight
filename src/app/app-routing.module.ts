@@ -358,6 +358,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'accounting',
+    loadChildren: () =>
+      import(
+        './core/components/accounting/accounting.module'
+      ).then((m) => m.AccountingModule),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'catalog',
     component: SvgDefinitionsComponent,
   },

@@ -1,0 +1,210 @@
+<div class="acounting_details">
+  <div class="expand_row_item detail_info">
+    <div class="detail_item">#0408</div>
+    <div class="detail_item">{{ selectedUser.firstName }} {{ selectedUser.lastName }}</div>
+    <div class="detail_item">01/03/20 - 01/10/20</div>
+    <div class="d-flex">
+      <div class="accounting_widgets">
+        <div appTaTooltip="Download" class="widget_download" position="bottom-right">
+          <svg-icon src="assets/img/accounting_download.svg"></svg-icon>
+        </div>
+        <div appTaTooltip="Print Selected" class="widget_print" position="bottom-right">
+          <svg-icon src="assets/img/accounting_pring.svg"></svg-icon>
+        </div>
+        <div appTaTooltip="Email Selected" class="widget_letter" position="bottom-right">
+          <svg-icon src="assets/img/accounting_email.svg"></svg-icon>
+        </div>
+      </div>
+      <!-- Rounded switch -->
+      <label class="accounting_switch">
+        <input [(ngModel)]="accountingChecbox" disabled type="checkbox"/>
+        <span
+          #t2="ngbPopover"
+          (click)="toggleCheckbox()"
+          [autoClose]="false"
+          [ngbPopover]="checkboxPopover"
+          [placement]="'bottom'"
+          class="slider round"
+          triggers="manual"
+        >
+          <span *ngIf="!accountingChecbox">Ready</span>
+          <span *ngIf="accountingChecbox">Closed</span>
+        </span>
+      </label>
+    </div>
+  </div>
+  <div class="card transparent-col">
+    <div class="card-body px-3 no-padd">
+      <div class="row accounting_details_row">
+        <!-- Toolbar -->
+        <div class="container toolbar-container dispatcher-search-wrap">
+          <div class="expand_row">
+            <table class="account_details_table big_details_table">
+              <thead>
+              <tr class="transparent_rows">
+                <th>Stops</th>
+                <th>Time</th>
+                <th>Date</th>
+                <th>Leg</th>
+                <th class="loaded_group">Loaded</th>
+                <th class="loaded_group">Empty</th>
+                <th class="loaded_group">Total</th>
+              </tr>
+              </thead>
+              <tbody
+                (cdkDropListDropped)="onDrop($event)"
+                [cdkDropListSortPredicate]="containerPredictPosition"
+                cdkDropList
+              >
+              <ng-template [ngForOf]="selectedUser.route" let-i="index" let-items ngFor>
+                <tr
+                  (cdkDropListEntered)="enterDropList($event)"
+                  *ngIf="items.draggable"
+                  [cdkDragPreviewClass]="'line-drag-row'"
+                  cdkDrag
+                  cdkDragBoundary=".account_details_table"
+                  cdkDragHandle
+                  cdkDragLockAxis="y"
+                  class="dragg_row"
+                >
+                  <td colspan="3">
+                    {{ items.name }} - {{ items.start_period }} - {{ items.end_period }}
+                  </td>
+                  <td></td>
+                  <td class="loaded_group loaded_group_th border_bottom">
+                    {{ items.loaded }} mi.
+                  </td>
+                  <td class="loaded_group loaded_group_th">{{ items.empty }} mi.</td>
+                  <td class="loaded_group loaded_group_th">{{ items.total }} mi.</td>
+                </tr>
+                <tr
+                  (cdkDropListEntered)="enterDropList($event)"
+                  *ngIf="!items.draggable"
+                  [cdkDragDisabled]="true"
+                  [class.low_opacity]="tableCurrentIndex < i"
+                  cdkDrag
+                  cdkDragHandle
+                  cdkDragLockAxis="y"
+                >
+                  <td
+                    [ngClass]="{
+                        normal_items: true,
+                        delivery_items: items.PointType == 'delivery',
+                        pickup_items: items.PointType == 'pickup'
+                      }"
+                  >
+                      <span [ngSwitch]="items.PointType" class="table_td_type_delivery">
+                        <span *ngSwitchCase="'delivery'">Delivery</span>
+                        <span *ngSwitchCase="'pickup'">Pickup</span>
+                        <span *ngSwitchDefault>Start</span>
+                      </span>
+                    <div class="load_name">
+                      {{ items.PointCity }}, {{ items.PointState }} {{ items.PointZip }}
+                    </div>
+                  </td>
+                  <td>{{ items.PointDateTime | date: 'HH:mm aa' }}</td>
+                  <td>{{ items.PointDateTime | date: 'HH:mm aa' }}</td>
+                  <td>
+                    <span *ngIf="items.distanceMiles">{{ items.distanceMiles }} mi.</span>
+                  </td>
+                  <td class="loaded_group loaded_group_td">
+                    <span>0 mi.</span>
+                  </td>
+                  <td class="loaded_group loaded_group_td">
+                    <span>0 mi.</span>
+                  </td>
+                  <td class="loaded_group loaded_group_td">
+                    <span>0 mi.</span>
+                  </td>
+                </tr>
+              </ng-template>
+              </tbody>
+            </table>
+            <div class="accounting_tables_details">
+              <div class="accounting_table_item color_white">
+                <div class="row">
+                  <div class="col-6">
+                    <!-- <app-accounting-tables
+                      [columns]="tableData[1].columns"
+                      [dataItem]="tableData[1].data"
+                      [options]="tableData[1].options"
+                      [tableName]="tableData[1].name"
+                    ></app-accounting-tables> -->
+                    <div [ngClass]="{'table-item-holder-fullscreean': fullscreenActive}"
+                         class="table_item_holder accounting_map">
+                      <div class="load-map-wrapper">
+                       
+                        <div class="map-control">
+                          <!-- <app-map-control (mapMode)="onFullScreen($event)" [fullscreenOnly]="true"></app-map-control> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <!-- <app-accounting-tables
+                      [columns]="tableData[0].columns"
+                      [dataItem]="tableData[0].data"
+                      [options]="tableData[0].options"
+                      [tableName]="tableData[0].name"
+                    ></app-accounting-tables>
+                    <div class="pt-4">
+                      <app-accounting-tables
+                        [columns]="tableData[2].columns"
+                        [dataItem]="tableData[2].data"
+                        [options]="tableData[2].options"
+                        [tableName]="tableData[2].name"
+                      ></app-accounting-tables> -->
+                    </div>
+                    <div class="calculate_table">
+                      <div class="first_flex calc_left">
+                        <div>$0.6 / loaded</div>
+                        <div>$0.5 / empty</div>
+                      </div>
+                      <div class="first_flex calc_right">
+                        <div>
+                          <span>Milage Pay:</span>
+                          <span>$900.50</span>
+                        </div>
+                        <div>
+                          <span>Bonus Pay:</span>
+                          <span>$300</span>
+                        </div>
+                        <div class="salary">
+                          <span>Salary:</span>
+                          <span>$1,020.50</span>
+                        </div>
+                        <div class="credits">
+                          <span>Credits:</span>
+                          <span>$480.50</span>
+                        </div>
+                        <div class="deduction">
+                          <span>Deductions:</span>
+                          <span>$460.50</span>
+                        </div>
+                        <div class="total">
+                          <span>Total:</span>
+                          <span>$1,200.50</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popover for Toogle -->
+<ng-template #checkboxPopover let-data="data">
+  <div class="checkbox_pop">
+    <div class="top-header">Are you sure?</div>
+    <div class="modal-footer">
+      <button (click)="toggleCheckbox()" class="cancel-btn" type="button">No</button>
+      <button (click)="acceptCheckbox()" class="save-btn" ngbAutofocus type="button">Yes</button>
+    </div>
+  </div>
+</ng-template>
