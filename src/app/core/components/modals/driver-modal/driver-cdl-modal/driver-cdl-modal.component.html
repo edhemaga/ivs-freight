@@ -110,7 +110,7 @@
             isDropdown: true,
             label: 'Restrictions',
             multiselectDropdown: true,
-            dropdownWidthClass: 'w-col-455'
+            dropdownWidthClass: 'w-col-456'
           }"
           [options]="restrictions"
           [preloadMultiselectItems]="selectedRestrictions"
@@ -129,10 +129,10 @@
             isDropdown: true,
             label: 'Endorsement',
             multiselectDropdown: true,
-            dropdownWidthClass: 'w-col-455'
+            dropdownWidthClass: 'w-col-456'
           }"
           [options]="endorsements"
-          [preloadMultiselectItems]="selectedEndorsment"
+          [preloadMultiselectItems]="selectedEndorsments"
           (selectedItems)="onSelectDropdown($event, 'endorsments')"
         ></app-ta-input-dropdown>
       </div>

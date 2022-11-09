@@ -941,7 +941,7 @@
                   ).value
                 }"
               >
-                <p>DEF. SOLO DRIVER</p>
+                <p>SOLO</p>
                 <app-ta-input
                   *ngIf="!this.companyForm.get('loadedAndEmptySameRate').value"
                   formControlName="soloLoadedMile"
@@ -949,7 +949,7 @@
                     id: 'Solo Loaded Mile',
                     name: 'Per Mile',
                     type: 'text',
-                    label: 'Loaded Mi',
+                    label: 'Loaded Mile',
                     placeholderIcon: 'dollar',
                     customClass: 'dollar-placeholderIcon',
                     min: 0,
@@ -965,7 +965,7 @@
                     id: 'Solo Empty Mile',
                     name: 'Per Mile',
                     type: 'text',
-                    label: 'Empty Mi',
+                    label: 'Empty Mile',
                     placeholderIcon: 'dollar',
                     customClass: 'dollar-placeholderIcon',
                     min: 0,
@@ -1005,6 +1005,21 @@
                     customClass: 'line-input-26-in-card'
                   }"
                 ></app-ta-input>
+                <app-ta-input
+                  formControlName="soloPerLoad"
+                  [inputConfig]="{
+                    id: 'Solo Per Load',
+                    name: 'Per Load',
+                    label: 'Per Load',
+                    type: 'text',
+                    placeholderIcon: 'dollar',
+                    customClass: 'dollar-placeholderIcon',
+                    thousandSeparator: true,
+                    min: 0,
+                    max: 5000,
+                    customClass: 'line-input-26-in-card'
+                  }"
+                ></app-ta-input>
               </div>
               <div
                 *ngIf="['Team', 'Combined'].includes(selectedFleetType)"
@@ -1015,7 +1030,7 @@
                   ).value
                 }"
               >
-                <p>DEF. TEAM DRIVER</p>
+                <p>TEAM</p>
                 <app-ta-input
                   *ngIf="!this.companyForm.get('loadedAndEmptySameRate').value"
                   formControlName="teamLoadedMile"
@@ -1023,7 +1038,7 @@
                     id: 'Team Loaded Mile',
                     name: 'Per Mile',
                     type: 'text',
-                    label: 'Loaded Mi',
+                    label: 'Loaded Mile',
                     placeholderIcon: 'dollar',
                     customClass: 'dollar-placeholderIcon',
                     min: 0,
@@ -1039,7 +1054,7 @@
                     id: 'Team Empty Mile',
                     name: 'Per Mile',
                     type: 'text',
-                    label: 'Empty Mi',
+                    label: 'Empty Mile',
                     placeholderIcon: 'dollar',
                     customClass: 'dollar-placeholderIcon',
                     min: 0,
@@ -1070,6 +1085,21 @@
                     id: 'Team Per Stop',
                     name: 'Per Stop',
                     label: 'Per Stop',
+                    type: 'text',
+                    placeholderIcon: 'dollar',
+                    customClass: 'dollar-placeholderIcon',
+                    thousandSeparator: true,
+                    min: 0,
+                    max: 5000,
+                    customClass: 'line-input-26-in-card'
+                  }"
+                ></app-ta-input>
+                <app-ta-input
+                  formControlName="teamPerLoad"
+                  [inputConfig]="{
+                    id: 'Team Per Load',
+                    name: 'Per Load',
+                    label: 'Per Load',
                     type: 'text',
                     placeholderIcon: 'dollar',
                     customClass: 'dollar-placeholderIcon',

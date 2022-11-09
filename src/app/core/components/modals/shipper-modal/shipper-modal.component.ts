@@ -233,7 +233,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       } else {
         // Save & Update
         if (data.action === 'save') {
-          if (this.shipperForm.invalid) {
+          if (this.shipperForm.invalid || !this.isFormDirty) {
             this.inputService.markInvalid(this.shipperForm);
             return;
           }
@@ -635,8 +635,11 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             receivingAppointment: reasponse.receivingAppointment,
             receivingOpenTwentyFourHours:
               reasponse.receivingOpenTwentyFourHours,
-            receivingFrom: reasponse.receivingFrom,
-            receivingTo: reasponse.receivingTo,
+            receivingFrom: moment(
+              reasponse.receivingFrom,
+              'HH:mm:SS A'
+            ).toDate(),
+            receivingTo: moment(reasponse.receivingTo, 'HH:mm:SS A').toDate(),
             shippingHoursSameReceiving: reasponse.shippingHoursSameReceiving,
             shippingAppointment: reasponse.shippingAppointment,
             shippingOpenTwentyFourHours: reasponse.shippingOpenTwentyFourHours,

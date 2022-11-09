@@ -26,6 +26,7 @@ import {
   addressValidation,
   phoneFaxRegex,
   addressUnitValidation,
+  businessNameValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -387,7 +388,7 @@ export class Step2FormComponent
 
   private createForm(): void {
     this.workExperienceForm = this.formBuilder.group({
-      employer: [null, Validators.required],
+      employer: [null, [Validators.required, ...businessNameValidation]],
       jobDescription: [null, Validators.required],
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],

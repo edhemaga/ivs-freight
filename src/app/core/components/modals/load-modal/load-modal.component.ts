@@ -15,7 +15,9 @@ import {
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  DoCheck,
   ElementRef,
   Input,
   OnDestroy,
@@ -50,14 +52,12 @@ import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/
   styleUrls: ['./load-modal.component.scss'],
   providers: [ModalService, FormService],
 })
-export class LoadModalComponent implements OnInit, OnDestroy {
+export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('originTab') originRef: ElementRef;
   @Input() editData: any;
 
   public loadForm: FormGroup;
   public isFormDirty: boolean;
-
-  public additionalTabHeight: number = 0;
 
   public selectedTab: number = 1;
   public headerTabs = [
@@ -248,6 +248,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public isHazardousPicked: boolean = false;
   public isHazardousVisible: boolean = false;
 
+  public additionalPartHeight: any;
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -268,6 +270,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
     this.trackBillingPayment();
     this.trackStopInformation();
+  }
+
+  ngAfterViewInit(): void {
+    const timeout = setTimeout(() => {
+      this.additionalPartHeight =
+        this.originRef?.nativeElement?.clientHeight + 118 + 'px';
+      clearTimeout(timeout);
+    }, 150);
   }
 
   private createForm() {
@@ -347,7 +357,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.loadForm.invalid) {
+        if (this.loadForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.loadForm);
           return;
         }
@@ -368,7 +378,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'load-template': {
-        if (this.loadForm.invalid) {
+        if (this.loadForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.loadForm);
           return;
         }

@@ -787,7 +787,7 @@ export class Step8Component implements OnInit, OnDestroy {
                   sapName: saveData.sapName,
                   sapPhone: saveData.sapPhone,
                   sapAddress: saveData.sapAddress,
-                  certifyInfomation: saveData.certifyInfomation,
+                  // certifyInfomation: saveData.certifyInfomation,
                 },
               },
             };
@@ -811,7 +811,7 @@ export class Step8Component implements OnInit, OnDestroy {
 
     const saveData: CreateDrugAndAlcoholReviewCommand = {
       applicantId: this.applicantId,
-      drugAndAlcoholId: this.drugAndAlcoholId,
+      // drugAndAlcoholId: this.drugAndAlcoholId,
       isCarrierValid: !this.openAnnotationArray[0].lineInputs[0],
       isPhoneValid: !this.openAnnotationArray[0].lineInputs[1],
       carrierPhoneMessage: firstRowReview,

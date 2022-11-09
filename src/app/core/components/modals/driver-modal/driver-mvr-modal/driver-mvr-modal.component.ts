@@ -40,6 +40,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   public labelsDrivers: any[] = [];
   public selectedDriver: any = null;
+  public fileModified: boolean = false;
+  public filesForDelete: any[] = [];
 
   private destroy$ = new Subject<void>();
 
@@ -75,6 +77,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       issueDate: [null, Validators.required],
       cdlId: [null, Validators.required],
       note: [null],
+      files: [null],
     });
 
     this.formService.checkFormChange(this.mvrForm);
@@ -106,15 +109,13 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       }
       case 'save': {
         // If Form not valid
-        if (this.mvrForm.invalid) {
+        if (this.mvrForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.mvrForm);
           return;
         }
         if (this.editData?.type === 'edit-mvr') {
-          if (this.isFormDirty) {
-            this.updateMVR();
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateMVR();
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addMVR();
           this.modalService.setModalSpinner({ action: null, status: true });
@@ -130,6 +131,18 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   public onFilesEvent(event: any) {
     this.documents = event.files;
+
+    if (event.action == 'delete') {
+      this.mvrForm.patchValue({
+        files: null,
+      });
+
+      if (event.deleteId) {
+        this.filesForDelete.push(event.deleteId);
+      }
+
+      this.fileModified = true;
+    }
   }
 
   public onSelectDropdown(event: any, action: string) {
@@ -156,12 +169,17 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   private updateMVR() {
     const { issueDate, driver, note } = this.mvrForm.value;
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
     const newData: any = {
       driverId: this.editData.id,
       id: this.editData.file_id,
       issueDate: convertDateToBackend(issueDate),
       cdlId: this.selectedCdl.id,
       note: note,
+      files: documents ? documents : this.mvrForm.value.files,
+      filesForDeleteIds: this.filesForDelete,
     };
 
     this.mvrService
@@ -182,11 +200,15 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   private addMVR() {
     const { issueDate, driver, note } = this.mvrForm.value;
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
     const newData: any = {
       driverId: this.selectedDriver ? this.selectedDriver.id : this.editData.id,
       issueDate: convertDateToBackend(issueDate),
       cdlId: this.selectedCdl.id,
       note: note,
+      files: documents,
     };
 
     this.mvrService
@@ -220,6 +242,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
             id: res.cdlId,
             name: res.cdlNumber,
           };
+
+          this.documents = res.files ? (res.files as any) : [];
         },
         error: () => {
           this.notificationService.error("Can't get Test", 'Error:');

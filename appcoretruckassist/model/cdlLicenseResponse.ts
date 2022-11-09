@@ -21,7 +21,7 @@ export interface CdlLicenseResponse {
     licenseNumber?: string | null;
     country?: EnumValue;
     state?: StateResponse;
-    _class?: EnumValue;
+    classType?: EnumValue;
     expDate?: string;
     cdlRestrictions?: Array<CdlRestrictionResponse> | null;
     cdlEndorsements?: Array<CdlEndorsementResponse> | null;

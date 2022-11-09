@@ -665,7 +665,7 @@ export class Step7Component implements OnInit, OnDestroy {
   public onSubmitReview(): void {
     const saveData: CreateSevenDaysHosReviewCommand = {
       applicantId: this.applicantId,
-      sevenDaysHosId: this.sevenDaysHosId,
+      // sevenDaysHosId: this.sevenDaysHosId,
       isReleaseDateValid: !this.openAnnotationArray[0].lineInputs[0],
       isLocationValid: !this.openAnnotationArray[0].lineInputs[1],
       releaseDateLocationMessage:

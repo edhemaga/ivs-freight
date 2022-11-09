@@ -18,7 +18,6 @@ import {
   einNumberRegex,
   ssnNumberRegex,
   phoneFaxRegex,
-  mileValidation,
   perStopValidation,
   addressValidation,
   addressUnitValidation,
@@ -222,7 +221,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
     // Save And Add New
     else if (data.action === 'save and add new') {
-      if (this.driverForm.invalid) {
+      if (this.driverForm.invalid || !this.isFormDirty) {
         this.inputService.markInvalid(this.driverForm);
         return;
       }
@@ -235,16 +234,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
     // Save or Update and Close
     else if (data.action === 'save') {
-      if (this.driverForm.invalid) {
+      if (this.driverForm.invalid || !this.isFormDirty) {
         this.inputService.markInvalid(this.driverForm);
         return;
       }
       // Update
       if (this.editData?.id) {
-        if (this.isFormDirty) {
-          this.updateDriver(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
-        }
+        this.updateDriver(this.editData.id);
+        this.modalService.setModalSpinner({ action: null, status: true });
       }
       // Save
       else {
@@ -269,7 +266,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       addressUnit: [null, [...addressUnitValidation]],
       dateOfBirth: [null, Validators.required],
       ssn: [null, [Validators.required, ssnNumberRegex]],
-      mvrExpiration: ['5', Validators.required],
+      mvrExpiration: [null, Validators.required],
       bankId: [null, [...bankValidation]],
       account: [null, accountBankValidation],
       routing: [null, routingBankValidation],
@@ -281,10 +278,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       soloLoadedMile: [null],
       soloPerStop: [null, perStopValidation],
       perMileSolo: [null],
+      soloFlatRate: [null, perStopValidation],
       teamEmptyMile: [null],
       teamLoadedMile: [null],
       teamPerStop: [null, perStopValidation],
       perMileTeam: [null],
+      teamFlatRate: [null, perStopValidation],
       commissionSolo: [25],
       commissionTeam: [25],
       isOwner: [false],
@@ -426,97 +425,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.notificationService.error("Can't add new bank", 'Error');
         },
       });
-  }
-
-  private onPayTypeSelected(payType: number): void {
-    if (payType === 1) {
-      if (['Solo', 'Combined'].includes(this.fleetType)) {
-        if (!this.hasMilesSameRate) {
-          this.inputService.changeValidators(
-            this.driverForm.get('soloEmptyMile'),
-            true,
-            [...mileValidation],
-            false
-          );
-          this.inputService.changeValidators(
-            this.driverForm.get('soloLoadedMile'),
-            true,
-            [...mileValidation],
-            false
-          );
-        } else {
-          this.inputService.changeValidators(
-            this.driverForm.get('perMileSolo'),
-            true,
-            [...mileValidation],
-            false
-          );
-        }
-      }
-      if (['Team', 'Combined'].includes(this.fleetType)) {
-        if (!this.hasMilesSameRate) {
-          this.inputService.changeValidators(
-            this.driverForm.get('teamEmptyMile'),
-            true,
-            [...mileValidation],
-            false
-          );
-          this.inputService.changeValidators(
-            this.driverForm.get('teamLoadedMile'),
-            true,
-            [...mileValidation],
-            false
-          );
-        } else {
-          this.inputService.changeValidators(
-            this.driverForm.get('perMileTeam'),
-            true,
-            [...mileValidation],
-            false
-          );
-        }
-      }
-
-      this.validateMiles();
-
-      this.driverForm.get('commissionSolo').patchValue(null);
-      this.driverForm.get('commissionTeam').patchValue(null);
-    }
-
-    if (payType === 2) {
-      this.inputService.changeValidators(
-        this.driverForm.get('soloEmptyMile'),
-        false
-      );
-      this.inputService.changeValidators(
-        this.driverForm.get('soloLoadedMile'),
-        false
-      );
-      this.inputService.changeValidators(
-        this.driverForm.get('soloPerStop'),
-        false
-      );
-
-      this.inputService.changeValidators(
-        this.driverForm.get('teamEmptyMile'),
-        false
-      );
-      this.inputService.changeValidators(
-        this.driverForm.get('teamLoadedMile'),
-        false
-      );
-      this.inputService.changeValidators(
-        this.driverForm.get('teamPerStop'),
-        false
-      );
-
-      this.driverForm
-        .get('commissionSolo')
-        .patchValue(this.payrollCompany.solo.commissionSolo);
-      this.driverForm
-        .get('commissionTeam')
-        .patchValue(this.payrollCompany.team.commissionTeam);
-    }
   }
 
   private onTwicTypeSelected(): void {
@@ -701,10 +609,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       }
       case 'paytype': {
         this.selectedPayType = event;
-        if (!event) {
-          return;
-        }
-        this.onPayTypeSelected(this.selectedPayType.id);
+
         break;
       }
       default: {
@@ -905,9 +810,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         next: (data: GetDriverModalResponse) => {
           this.labelsBank = data.banks;
           this.labelsPayType = data.payTypes;
-          this.driverForm
-            .get('mvrExpiration')
-            .patchValue(data.mvrExpiration.toString());
+          this.driverForm.get('mvrExpiration').patchValue(data.mvrExpiration);
           this.fleetType = data.fleetType;
           this.hasMilesSameRate = data.loadedAndEmptySameRate;
 
@@ -917,11 +820,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
               .patchValue(data.solo?.emptyMile ? data.solo.emptyMile : null, {
                 emitEvent: false,
               });
+
             this.driverForm
               .get('soloLoadedMile')
               .patchValue(data.solo?.loadedMile ? data.solo.loadedMile : null, {
                 emitEvent: false,
               });
+
             this.driverForm
               .get('soloPerStop')
               .patchValue(
@@ -932,14 +837,29 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                   emitEvent: false,
                 }
               );
+
+            this.driverForm
+              .get('soloFlatRate')
+              .patchValue(
+                data.soloFlatRate
+                  ? convertNumberInThousandSep(data.soloFlatRate)
+                  : null,
+                {
+                  emitEvent: false,
+                }
+              );
+
             this.driverForm
               .get('perMileSolo')
               .patchValue(data.perMileSolo, { emitEvent: false });
-            this.driverForm
-              .get('commissionSolo')
-              .patchValue(data.defaultSoloDriverCommission, {
-                emitEvent: false,
-              });
+
+            if (data.defaultSoloDriverCommission) {
+              this.driverForm
+                .get('commissionSolo')
+                .patchValue(data.defaultSoloDriverCommission, {
+                  emitEvent: false,
+                });
+            }
           }
 
           if (['Team', 'Combined'].includes(this.fleetType)) {
@@ -948,11 +868,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
               .patchValue(data.team?.emptyMile ? data.team.emptyMile : null, {
                 emitEvent: false,
               });
+
             this.driverForm
               .get('teamLoadedMile')
               .patchValue(data.team?.loadedMile ? data.team.loadedMile : null, {
                 emitEvent: false,
               });
+
             this.driverForm
               .get('teamPerStop')
               .patchValue(
@@ -963,28 +885,61 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                   emitEvent: false,
                 }
               );
+
+            this.driverForm
+              .get('teamFlatRate')
+              .patchValue(
+                data.teamFlatRate
+                  ? convertNumberInThousandSep(data.teamFlatRate)
+                  : null,
+                {
+                  emitEvent: false,
+                }
+              );
+
             this.driverForm
               .get('perMileTeam')
               .patchValue(data.perMileTeam, { emitEvent: false });
-            this.driverForm
-              .get('commissionTeam')
-              .patchValue(data.defaultTeamDriverCommission, {
-                emitEvent: false,
-              });
+
+            if (data.defaultTeamDriverCommission) {
+              this.driverForm
+                .get('commissionTeam')
+                .patchValue(data.defaultTeamDriverCommission, {
+                  emitEvent: false,
+                });
+            }
           }
 
           this.payrollCompany = {
             solo: {
-              ...data.solo,
+              emptyMile: data.solo.emptyMile,
+              loadedMile: data.solo.loadedMile,
+              perStop: data.solo.perStop
+                ? convertNumberInThousandSep(data.solo.perStop)
+                : null,
               perMileSolo: data.perMileSolo,
-              commissionSolo: data.defaultSoloDriverCommission,
+              commissionSolo: data.defaultSoloDriverCommission
+                ? data.defaultSoloDriverCommission
+                : this.driverForm.get('commissionSolo').value,
+              soloFlatRate: data.soloFlatRate
+                ? convertNumberInThousandSep(data.soloFlatRate)
+                : null,
             },
             team: {
-              ...data.team,
+              emptyMile: data.team.emptyMile,
+              loadedMile: data.team.loadedMile,
+              perStop: data.team.perStop
+                ? convertNumberInThousandSep(data.team.perStop)
+                : null,
               perMileTeam: data.perMileTeam,
-              commissionTeam: data.defaultTeamDriverCommission,
+              commissionTeam: data.defaultTeamDriverCommission
+                ? data.defaultTeamDriverCommission
+                : this.driverForm.get('commissionTeam').value,
+              teamFlatRate: data.teamFlatRate
+                ? convertNumberInThousandSep(data.teamFlatRate)
+                : null,
             },
-            mvrExpiration: data.mvrExpiration.toString(),
+            mvrExpiration: data.mvrExpiration ? data.mvrExpiration : 12,
           };
 
           this.handlingPayrollFleetType(this.fleetType, true);
@@ -1012,6 +967,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       perMileTeam,
       commissionTeam,
 
+      soloFlatRate,
+      teamFlatRate,
+
       soloDriver,
       teamDriver,
 
@@ -1034,7 +992,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       dateOfBirth: convertDateToBackend(
         this.driverForm.get('dateOfBirth').value
       ),
-      mvrExpiration: parseInt(mvrExpiration),
+      mvrExpiration: mvrExpiration,
       ownerId:
         this.driverForm.get('ownerType').value === 'Sole Proprietor'
           ? null
@@ -1056,135 +1014,177 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       bankId: this.selectedBank ? this.selectedBank.id : null,
       payType: this.selectedPayType ? this.selectedPayType.id : null,
       solo: {
-        emptyMile: !this.hasMilesSameRate
-          ? ['Solo', 'Combined'].includes(this.fleetType)
-            ? this.fleetType === 'Combined'
-              ? soloDriver
-                ? soloEmptyMile
+        emptyMile:
+          this.selectedPayType?.name === 'Per Mile'
+            ? !this.hasMilesSameRate
+              ? ['Solo', 'Combined'].includes(this.fleetType)
+                ? this.fleetType === 'Combined'
+                  ? soloDriver
+                    ? soloEmptyMile
+                      ? parseFloat(soloEmptyMile)
+                      : null
+                    : null
+                  : soloEmptyMile
                   ? parseFloat(soloEmptyMile)
                   : null
                 : null
-              : soloEmptyMile
-              ? parseFloat(soloEmptyMile)
               : null
-            : null
-          : null,
-        loadedMile: !this.hasMilesSameRate
-          ? ['Solo', 'Combined'].includes(this.fleetType)
-            ? this.fleetType === 'Combined'
-              ? soloDriver
-                ? soloLoadedMile
+            : null,
+        loadedMile:
+          this.selectedPayType?.name === 'Per Mile'
+            ? !this.hasMilesSameRate
+              ? ['Solo', 'Combined'].includes(this.fleetType)
+                ? this.fleetType === 'Combined'
+                  ? soloDriver
+                    ? soloLoadedMile
+                      ? parseFloat(soloLoadedMile)
+                      : null
+                    : null
+                  : soloLoadedMile
                   ? parseFloat(soloLoadedMile)
                   : null
                 : null
-              : soloLoadedMile
-              ? parseFloat(soloLoadedMile)
               : null
-            : null
-          : null,
-        perStop: !this.hasMilesSameRate
-          ? ['Solo', 'Combined'].includes(this.fleetType)
-            ? this.fleetType === 'Combined'
-              ? soloDriver
-                ? soloPerStop
+            : null,
+        perStop:
+          this.selectedPayType?.name === 'Per Mile'
+            ? !this.hasMilesSameRate
+              ? ['Solo', 'Combined'].includes(this.fleetType)
+                ? this.fleetType === 'Combined'
+                  ? soloDriver
+                    ? soloPerStop
+                      ? convertThousanSepInNumber(soloPerStop)
+                      : null
+                    : null
+                  : soloPerStop
                   ? convertThousanSepInNumber(soloPerStop)
                   : null
                 : null
-              : soloPerStop
-              ? convertThousanSepInNumber(soloPerStop)
               : null
-            : null
-          : null,
+            : null,
       },
-      perMileSolo: this.hasMilesSameRate
-        ? ['Solo', 'Combined'].includes(this.fleetType)
-          ? this.fleetType === 'Combined'
-            ? soloDriver
-              ? perMileSolo
+      perMileSolo:
+        this.selectedPayType?.name === 'Per Mile'
+          ? this.hasMilesSameRate
+            ? ['Solo', 'Combined'].includes(this.fleetType)
+              ? this.fleetType === 'Combined'
+                ? soloDriver
+                  ? perMileSolo
+                    ? parseFloat(perMileSolo)
+                    : null
+                  : null
+                : perMileSolo
                 ? parseFloat(perMileSolo)
                 : null
               : null
-            : perMileSolo
-            ? parseFloat(perMileSolo)
             : null
-          : null
-        : null,
+          : null,
       team: {
-        emptyMile: !this.hasMilesSameRate
-          ? ['Team', 'Combined'].includes(this.fleetType)
-            ? this.fleetType === 'Combined'
-              ? teamDriver
-                ? teamEmptyMile
+        emptyMile:
+          this.selectedPayType?.name === 'Per Mile'
+            ? !this.hasMilesSameRate
+              ? ['Team', 'Combined'].includes(this.fleetType)
+                ? this.fleetType === 'Combined'
+                  ? teamDriver
+                    ? teamEmptyMile
+                      ? parseFloat(teamEmptyMile)
+                      : null
+                    : null
+                  : teamEmptyMile
                   ? parseFloat(teamEmptyMile)
                   : null
                 : null
-              : teamEmptyMile
-              ? parseFloat(teamEmptyMile)
               : null
-            : null
-          : null,
-        loadedMile: !this.hasMilesSameRate
-          ? ['Team', 'Combined'].includes(this.fleetType)
-            ? this.fleetType === 'Combined'
-              ? teamDriver
-                ? teamLoadedMile
+            : null,
+        loadedMile:
+          this.selectedPayType?.name === 'Per Mile'
+            ? !this.hasMilesSameRate
+              ? ['Team', 'Combined'].includes(this.fleetType)
+                ? this.fleetType === 'Combined'
+                  ? teamDriver
+                    ? teamLoadedMile
+                      ? parseFloat(teamLoadedMile)
+                      : null
+                    : null
+                  : teamLoadedMile
                   ? parseFloat(teamLoadedMile)
                   : null
                 : null
-              : teamLoadedMile
-              ? parseFloat(teamLoadedMile)
               : null
-            : null
-          : null,
-        perStop: !this.hasMilesSameRate
-          ? ['Team', 'Combined'].includes(this.fleetType)
-            ? this.fleetType === 'Combined'
-              ? teamDriver
-                ? teamPerStop
+            : null,
+        perStop:
+          this.selectedPayType?.name === 'Per Mile'
+            ? !this.hasMilesSameRate
+              ? ['Team', 'Combined'].includes(this.fleetType)
+                ? this.fleetType === 'Combined'
+                  ? teamDriver
+                    ? teamPerStop
+                      ? convertThousanSepInNumber(teamPerStop)
+                      : null
+                    : null
+                  : teamPerStop
                   ? convertThousanSepInNumber(teamPerStop)
                   : null
                 : null
-              : teamPerStop
-              ? convertThousanSepInNumber(teamPerStop)
               : null
-            : null
-          : null,
+            : null,
       },
-      perMileTeam: this.hasMilesSameRate
-        ? ['Team', 'Combined'].includes(this.fleetType)
-          ? this.fleetType === 'Combined'
-            ? teamDriver
-              ? perMileTeam
+      perMileTeam:
+        this.selectedPayType?.name === 'Per Mile'
+          ? this.hasMilesSameRate
+            ? ['Team', 'Combined'].includes(this.fleetType)
+              ? this.fleetType === 'Combined'
+                ? teamDriver
+                  ? perMileTeam
+                    ? parseFloat(perMileTeam)
+                    : null
+                  : null
+                : perMileTeam
                 ? parseFloat(perMileTeam)
                 : null
               : null
-            : perMileTeam
-            ? parseFloat(perMileTeam)
             : null
-          : null
-        : null,
-      commissionSolo: ['Solo', 'Combined'].includes(this.fleetType)
-        ? this.fleetType === 'Combined'
-          ? soloDriver
-            ? commissionSolo
+          : null,
+      commissionSolo:
+        this.selectedPayType?.name === 'Commission'
+          ? ['Solo', 'Combined'].includes(this.fleetType)
+            ? this.fleetType === 'Combined'
+              ? soloDriver
+                ? commissionSolo
+                  ? parseFloat(commissionSolo)
+                  : null
+                : null
+              : commissionSolo
               ? parseFloat(commissionSolo)
               : null
             : null
-          : commissionSolo
-          ? parseFloat(commissionSolo)
-          : null
-        : null,
-      commissionTeam: ['Team', 'Combined'].includes(this.fleetType)
-        ? this.fleetType === 'Combined'
-          ? commissionTeam
-            ? commissionTeam
+          : null,
+      commissionTeam:
+        this.selectedPayType?.name === 'Commission'
+          ? ['Team', 'Combined'].includes(this.fleetType)
+            ? this.fleetType === 'Combined'
+              ? commissionTeam
+                ? commissionTeam
+                  ? parseFloat(commissionTeam)
+                  : null
+                : null
+              : commissionTeam
               ? parseFloat(commissionTeam)
               : null
             : null
-          : commissionTeam
-          ? parseFloat(commissionTeam)
-          : null
-        : null,
+          : null,
+      soloFlatRate:
+        this.selectedPayType?.name === 'Flat Rate'
+          ? soloFlatRate
+            ? convertThousanSepInNumber(soloFlatRate)
+            : null
+          : null,
+      teamFlatRate:
+        this.selectedPayType?.name === 'Flat Rate'
+          ? teamFlatRate
+            ? convertThousanSepInNumber(teamFlatRate)
+            : null
+          : null,
       general: {
         mailNotification: mailNotificationGeneral,
         pushNotification: pushNotificationGeneral,
@@ -1251,6 +1251,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
               .patchValue(this.payrollCompany.solo.commissionSolo);
 
             this.driverForm
+              .get('soloFlatRate')
+              .patchValue(this.payrollCompany.solo.soloFlatRate);
+
+            this.driverForm
               .get('teamEmptyMile')
               .patchValue(this.payrollCompany.team.emptyMile);
             this.driverForm
@@ -1267,8 +1271,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
               .patchValue(this.payrollCompany.team.commissionTeam);
 
             this.driverForm
+              .get('teamFlatRate')
+              .patchValue(this.payrollCompany.team.teamFlatRate);
+
+            this.driverForm
               .get('mvrExpiration')
-              .patchValue(this.payrollCompany.mvrExpiration.toString());
+              .patchValue(this.payrollCompany.mvrExpiration);
 
             this.driverForm.get('mailNotificationGeneral').patchValue(true);
             this.driverForm.get('mailNotificationPayroll').patchValue(true);
@@ -1311,12 +1319,17 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       soloPerStop,
       perMileSolo,
       commissionSolo,
-      mvrExpiration,
+
       teamEmptyMile,
       teamLoadedMile,
       teamPerStop,
       perMileTeam,
       commissionTeam,
+
+      soloFlatRate,
+      teamFlatRate,
+
+      mvrExpiration,
 
       soloDriver,
       teamDriver,
@@ -1341,7 +1354,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       dateOfBirth: convertDateToBackend(
         this.driverForm.get('dateOfBirth').value
       ),
-      mvrExpiration: parseInt(mvrExpiration),
+      mvrExpiration: mvrExpiration,
       ownerId:
         this.driverForm.get('ownerType').value === 'Sole Proprietor'
           ? null
@@ -1364,135 +1377,177 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       bankId: this.selectedBank ? this.selectedBank.id : null,
       payType: this.selectedPayType ? this.selectedPayType.id : null,
       solo: {
-        emptyMile: !this.hasMilesSameRate
-          ? ['Solo', 'Combined'].includes(this.fleetType)
-            ? this.fleetType === 'Combined'
-              ? soloDriver
-                ? soloEmptyMile
+        emptyMile:
+          this.selectedPayType?.name === 'Per Mile'
+            ? !this.hasMilesSameRate
+              ? ['Solo', 'Combined'].includes(this.fleetType)
+                ? this.fleetType === 'Combined'
+                  ? soloDriver
+                    ? soloEmptyMile
+                      ? parseFloat(soloEmptyMile)
+                      : null
+                    : null
+                  : soloEmptyMile
                   ? parseFloat(soloEmptyMile)
                   : null
                 : null
-              : soloEmptyMile
-              ? parseFloat(soloEmptyMile)
               : null
-            : null
-          : null,
-        loadedMile: !this.hasMilesSameRate
-          ? ['Solo', 'Combined'].includes(this.fleetType)
-            ? this.fleetType === 'Combined'
-              ? soloDriver
-                ? soloLoadedMile
+            : null,
+        loadedMile:
+          this.selectedPayType?.name === 'Per Mile'
+            ? !this.hasMilesSameRate
+              ? ['Solo', 'Combined'].includes(this.fleetType)
+                ? this.fleetType === 'Combined'
+                  ? soloDriver
+                    ? soloLoadedMile
+                      ? parseFloat(soloLoadedMile)
+                      : null
+                    : null
+                  : soloLoadedMile
                   ? parseFloat(soloLoadedMile)
                   : null
                 : null
-              : soloEmptyMile
-              ? parseFloat(soloEmptyMile)
               : null
-            : null
-          : null,
-        perStop: !this.hasMilesSameRate
-          ? ['Solo', 'Combined'].includes(this.fleetType)
-            ? this.fleetType === 'Combined'
-              ? soloDriver
-                ? soloPerStop
+            : null,
+        perStop:
+          this.selectedPayType?.name === 'Per Mile'
+            ? !this.hasMilesSameRate
+              ? ['Solo', 'Combined'].includes(this.fleetType)
+                ? this.fleetType === 'Combined'
+                  ? soloDriver
+                    ? soloPerStop
+                      ? convertThousanSepInNumber(soloPerStop)
+                      : null
+                    : null
+                  : soloPerStop
                   ? convertThousanSepInNumber(soloPerStop)
                   : null
                 : null
-              : soloPerStop
-              ? convertThousanSepInNumber(soloPerStop)
               : null
-            : null
-          : null,
+            : null,
       },
-      perMileSolo: this.hasMilesSameRate
-        ? ['Solo', 'Combined'].includes(this.fleetType)
-          ? this.fleetType === 'Combined'
-            ? soloDriver
-              ? perMileSolo
+      perMileSolo:
+        this.selectedPayType?.name === 'Per Mile'
+          ? this.hasMilesSameRate
+            ? ['Solo', 'Combined'].includes(this.fleetType)
+              ? this.fleetType === 'Combined'
+                ? soloDriver
+                  ? perMileSolo
+                    ? parseFloat(perMileSolo)
+                    : null
+                  : null
+                : perMileSolo
                 ? parseFloat(perMileSolo)
                 : null
               : null
-            : perMileSolo
-            ? parseFloat(perMileSolo)
             : null
-          : null
-        : null,
+          : null,
       team: {
-        emptyMile: !this.hasMilesSameRate
-          ? ['Team', 'Combined'].includes(this.fleetType)
-            ? this.fleetType === 'Combined'
-              ? teamDriver
-                ? teamEmptyMile
+        emptyMile:
+          this.selectedPayType?.name === 'Per Mile'
+            ? !this.hasMilesSameRate
+              ? ['Team', 'Combined'].includes(this.fleetType)
+                ? this.fleetType === 'Combined'
+                  ? teamDriver
+                    ? teamEmptyMile
+                      ? parseFloat(teamEmptyMile)
+                      : null
+                    : null
+                  : teamEmptyMile
                   ? parseFloat(teamEmptyMile)
                   : null
                 : null
-              : teamEmptyMile
-              ? parseFloat(teamEmptyMile)
               : null
-            : null
-          : null,
-        loadedMile: !this.hasMilesSameRate
-          ? ['Team', 'Combined'].includes(this.fleetType)
-            ? this.fleetType === 'Combined'
-              ? teamDriver
-                ? teamLoadedMile
+            : null,
+        loadedMile:
+          this.selectedPayType?.name === 'Per Mile'
+            ? !this.hasMilesSameRate
+              ? ['Team', 'Combined'].includes(this.fleetType)
+                ? this.fleetType === 'Combined'
+                  ? teamDriver
+                    ? teamLoadedMile
+                      ? parseFloat(teamLoadedMile)
+                      : null
+                    : null
+                  : teamLoadedMile
                   ? parseFloat(teamLoadedMile)
                   : null
                 : null
-              : teamLoadedMile
-              ? parseFloat(teamLoadedMile)
               : null
-            : null
-          : null,
-        perStop: !this.hasMilesSameRate
-          ? ['Team', 'Combined'].includes(this.fleetType)
-            ? this.fleetType === 'Combined'
-              ? teamDriver
-                ? teamPerStop
+            : null,
+        perStop:
+          this.selectedPayType?.name === 'Per Mile'
+            ? !this.hasMilesSameRate
+              ? ['Team', 'Combined'].includes(this.fleetType)
+                ? this.fleetType === 'Combined'
+                  ? teamDriver
+                    ? teamPerStop
+                      ? convertThousanSepInNumber(teamPerStop)
+                      : null
+                    : null
+                  : teamPerStop
                   ? convertThousanSepInNumber(teamPerStop)
                   : null
                 : null
-              : teamPerStop
-              ? convertThousanSepInNumber(teamPerStop)
               : null
-            : null
-          : null,
+            : null,
       },
-      perMileTeam: this.hasMilesSameRate
-        ? ['Team', 'Combined'].includes(this.fleetType)
-          ? this.fleetType === 'Combined'
-            ? teamDriver
-              ? perMileTeam
+      perMileTeam:
+        this.selectedPayType?.name === 'Per Mile'
+          ? this.hasMilesSameRate
+            ? ['Team', 'Combined'].includes(this.fleetType)
+              ? this.fleetType === 'Combined'
+                ? teamDriver
+                  ? perMileTeam
+                    ? parseFloat(perMileTeam)
+                    : null
+                  : null
+                : perMileTeam
                 ? parseFloat(perMileTeam)
                 : null
               : null
-            : perMileTeam
-            ? parseFloat(perMileTeam)
             : null
-          : null
-        : null,
-      commissionSolo: ['Solo', 'Combined'].includes(this.fleetType)
-        ? this.fleetType === 'Combined'
-          ? soloDriver
-            ? commissionSolo
+          : null,
+      commissionSolo:
+        this.selectedPayType?.name === 'Commission'
+          ? ['Solo', 'Combined'].includes(this.fleetType)
+            ? this.fleetType === 'Combined'
+              ? soloDriver
+                ? commissionSolo
+                  ? parseFloat(commissionSolo)
+                  : null
+                : null
+              : commissionSolo
               ? parseFloat(commissionSolo)
               : null
             : null
-          : commissionSolo
-          ? parseFloat(commissionSolo)
-          : null
-        : null,
-      commissionTeam: ['Team', 'Combined'].includes(this.fleetType)
-        ? this.fleetType === 'Combined'
-          ? teamDriver
-            ? commissionTeam
+          : null,
+      commissionTeam:
+        this.selectedPayType?.name === 'Commission'
+          ? ['Team', 'Combined'].includes(this.fleetType)
+            ? this.fleetType === 'Combined'
+              ? commissionTeam
+                ? commissionTeam
+                  ? parseFloat(commissionTeam)
+                  : null
+                : null
+              : commissionTeam
               ? parseFloat(commissionTeam)
               : null
             : null
-          : commissionTeam
-          ? parseFloat(commissionTeam)
-          : null
-        : null,
+          : null,
+      soloFlatRate:
+        this.selectedPayType?.name === 'Flat Rate'
+          ? soloFlatRate
+            ? convertThousanSepInNumber(soloFlatRate)
+            : null
+          : null,
+      teamFlatRate:
+        this.selectedPayType?.name === 'Flat Rate'
+          ? teamFlatRate
+            ? convertThousanSepInNumber(teamFlatRate)
+            : null
+          : null,
       general: {
         mailNotification: mailNotificationGeneral,
         pushNotification: pushNotificationGeneral,
@@ -1558,7 +1613,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             addressUnit: res.address ? res.address.addressUnit : null,
             dateOfBirth: convertDateFromBackend(res.dateOfBirth),
             ssn: res.ssn,
-            mvrExpiration: res.mvrExpiration.toString(),
+            mvrExpiration: res.mvrExpiration,
             bankId: res.bank ? res.bank.name : null,
             account: res.account,
             routing: res.routing,
@@ -1598,7 +1653,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             emergencyContactRelationship: res.emergencyContactRelationship,
 
             note: res.note,
-            avatar: res.avatar,
+            avatar: res.avatar ? res.avatar : null,
 
             twic: res.twic,
             twicExpDate: res.twicExpDate
@@ -1630,6 +1685,24 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.driverForm
             .get('teamEmptyMile')
             .patchValue(res.team.emptyMile, { emitEvent: false });
+
+          this.driverForm
+            .get('soloFlatRate')
+            .patchValue(
+              ['Solo', 'Combined'].includes(res.fleetType.name)
+                ? convertNumberInThousandSep(res.soloFlatRate)
+                : null,
+              { emitEvent: false }
+            );
+
+          this.driverForm
+            .get('teamFlatRate')
+            .patchValue(
+              ['Team', 'Combined'].includes(res.fleetType.name)
+                ? convertNumberInThousandSep(res.teamFlatRate)
+                : null,
+              { emitEvent: false }
+            );
 
           res.firstName =
             res.firstName.charAt(0).toUpperCase() + res.firstName.slice(1);

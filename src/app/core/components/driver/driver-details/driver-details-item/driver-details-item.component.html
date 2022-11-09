@@ -14,7 +14,7 @@
         <app-ta-re-card
           *ngFor="let cdl of dataCDl; let i = index; trackBy: identity"
           [options]="dataDropDown"
-          [cardDocumentCounter]="6"
+          [cardDocumentCounter]="cdl?.files?.length ? cdl.files.length : 0"
           [statusActive]="cdl.status"
           (dataDropDopwn)="getCdlById(cdl.id)"
           (resizePage)="toggleResizePage(i, 'cdl')"
@@ -151,30 +151,38 @@
             <div [@showHideCardBody]="toggler[i + 'cdl'] ? 'true' : 'false'">
               <div class="divider"></div>
 
-              <div class="details-document-container">
+              <div
+                class="details-document-container"
+                [class.disabled]="!cdl?.files?.length"
+              >
                 <div class="icon-counter-wrapper">
-                  <div class="counter-text-wrapper">
+                  <div
+                    class="counter-text-wrapper"
+                    [class.disabled]="!cdl?.files?.length"
+                  >
                     <app-ta-counter
                       [countBackgroud]="'#F3F3F3'"
                       [countHeight]="'24px'"
                       [countWidth]="'24px'"
-                      [count]="6"
+                      [count]="cdl?.files?.length ? cdl.files.length : 0"
                     >
                     </app-ta-counter>
                     <p class="details-document-name">Document</p>
                   </div>
                   <svg-icon
+                    *ngIf="cdl?.files?.length"
                     (click)="onFileAction('download')"
                     src="assets/svg/common/ic_download.svg"
                   >
                   </svg-icon>
                 </div>
               </div>
-              <div class="card-pdf">
+              <div class="card-pdf" [class.disabled]="!cdl?.files?.length">
                 <app-ta-upload-files
                   [files]="cdl.files ? cdl.files : []"
                   [customClassName]="'driver-details-pdf'"
                   [hasCarouselBottomTabs]="true"
+                  [type]="'details'"
                 ></app-ta-upload-files>
               </div>
               <div class="divider"></div>
@@ -215,7 +223,7 @@
           [testDate]="test?.testingDate | formatDateP"
           (dataDropDopwn)="getTestById(test.id)"
           (clickedCard)="getNameForDrop($event)"
-          [cardDocumentCounter]="6"
+          [cardDocumentCounter]="test?.files?.length ? test.files.length : 0"
           [weeklyWidth]="'18'"
           [cardNameCurrent]="'test'"
           [noteIcons]="
@@ -250,41 +258,38 @@
           <div class="cards-container">
             <div [@showHideCardBody]="toggler[i + 'test'] ? 'true' : 'false'">
               <div class="divider"></div>
-              <div class="details-document-container">
+              <div
+                class="details-document-container"
+                [class.disabled]="!test?.files?.length"
+              >
                 <div class="icon-counter-wrapper">
-                  <div class="counter-text-wrapper">
+                  <div
+                    class="counter-text-wrapper"
+                    [class.disabled]="!test?.files?.length"
+                  >
                     <app-ta-counter
                       [countBackgroud]="'#F3F3F3'"
                       [countHeight]="'24px'"
                       [countWidth]="'24px'"
-                      [count]="6"
+                      [count]="test?.files?.length ? test.files.length : 0"
                     >
                     </app-ta-counter>
                     <p class="details-document-name">Document</p>
                   </div>
                   <svg-icon
+                    *ngIf="test?.files?.length"
                     (click)="onFileAction('download')"
                     src="assets/svg/common/ic_download.svg"
                   >
                   </svg-icon>
                 </div>
               </div>
-              <div class="card-pdf">
+              <div class="card-pdf" [class.disabled]="!test?.files?.length">
                 <app-ta-upload-files
-                  [files]="[
-                    {
-                      name: 'truckassist - 0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      name: 'truckassist - 1',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    }
-                  ]"
+                  [files]="test.files ? test.files : []"
                   [customClassName]="'driver-details-pdf'"
                   [hasCarouselBottomTabs]="true"
+                  [type]="'details'"
                 ></app-ta-upload-files>
               </div>
               <div class="divider"></div>
@@ -352,41 +357,38 @@
               [@showHideCardBody]="toggler[i + 'medical'] ? 'true' : 'false'"
             >
               <div class="divider"></div>
-              <div class="details-document-container">
+              <div
+                class="details-document-container"
+                [class.disabled]="!med?.files?.length"
+              >
                 <div class="icon-counter-wrapper">
-                  <div class="counter-text-wrapper">
+                  <div
+                    class="counter-text-wrapper"
+                    [class.disabled]="!med?.files?.length"
+                  >
                     <app-ta-counter
                       [countBackgroud]="'#F3F3F3'"
                       [countHeight]="'24px'"
                       [countWidth]="'24px'"
-                      [count]="6"
+                      [count]="med?.files?.length ? med.files.length : 0"
                     >
                     </app-ta-counter>
                     <p class="details-document-name">Document</p>
                   </div>
                   <svg-icon
+                    *ngIf="med?.files?.length"
                     (click)="onFileAction('download')"
                     src="assets/svg/common/ic_download.svg"
                   >
                   </svg-icon>
                 </div>
               </div>
-              <div class="card-pdf">
+              <div class="card-pdf" [class.disabled]="!med?.files?.length">
                 <app-ta-upload-files
-                  [files]="[
-                    {
-                      name: 'truckassist - 0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      name: 'truckassist - 1',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    }
-                  ]"
+                  [files]="med.files ? med.files : []"
                   [customClassName]="'driver-details-pdf'"
                   [hasCarouselBottomTabs]="true"
+                  [type]="'details'"
                 ></app-ta-upload-files>
               </div>
               <div class="divider"></div>
@@ -423,7 +425,7 @@
           [cardNameCurrent]="'mvr'"
           (clickedCard)="getNameForDrop($event)"
           (dataDropDopwn)="getMvrById(mvr.id)"
-          [cardDocumentCounter]="6"
+          [cardDocumentCounter]="mvr?.files?.length ? mvr.files.length : 0"
           [noteIcons]="
             mvr.note
               ? 'assets/svg/truckassist-table/note/Note.svg'
@@ -455,41 +457,38 @@
             </div>
             <div [@showHideCardBody]="toggler[i + 'mvr'] ? 'true' : 'false'">
               <div class="divider"></div>
-              <div class="details-document-container">
-                <div class="icon-counter-wrapper">
+              <div
+                class="details-document-container"
+                [class.disabled]="!mvr?.files?.length"
+              >
+                <div
+                  class="icon-counter-wrapper"
+                  [class.disabled]="!mvr?.files?.length"
+                >
                   <div class="counter-text-wrapper">
                     <app-ta-counter
                       [countBackgroud]="'#F3F3F3'"
                       [countHeight]="'24px'"
                       [countWidth]="'24px'"
-                      [count]="6"
+                      [count]="mvr?.files?.length ? mvr.files.length : 0"
                     >
                     </app-ta-counter>
                     <p class="details-document-name">Document</p>
                   </div>
                   <svg-icon
+                    *ngIf="mvr?.files?.length"
                     (click)="onFileAction('download')"
                     src="assets/svg/common/ic_download.svg"
                   >
                   </svg-icon>
                 </div>
               </div>
-              <div class="card-pdf">
+              <div class="card-pdf" [class.disabled]="!mvr?.files?.length">
                 <app-ta-upload-files
-                  [files]="[
-                    {
-                      name: 'truckassist - 0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      name: 'truckassist - 1',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    }
-                  ]"
+                  [files]="mvr.files ? mvr.files : []"
                   [customClassName]="'driver-details-pdf'"
                   [hasCarouselBottomTabs]="true"
+                  [type]="'details'"
                 ></app-ta-upload-files>
               </div>
               <div class="divider"></div>

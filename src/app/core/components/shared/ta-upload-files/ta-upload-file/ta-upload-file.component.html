@@ -1,4 +1,7 @@
-<div class="ta-upload-file-container {{ customClassName }}">
+<div
+  class="ta-upload-file-container {{ customClassName }}"
+  [class.keep_open]="t2?.isOpen()"
+>
   <!-- File Header Actions -->
 
   <!-- Review Actions -->
@@ -78,7 +81,14 @@
     <!-- Left Side -->
     <div
       class="ta-upload-file-action-leftside"
-      [ngClass]="{ 'no-action-tag': !hasTag }"
+      [ngClass]="{ 'no-action-tag': !hasTag, active: t2?.isOpen() }"
+      #t2="ngbPopover"
+      [ngbPopover]="tagsPopover"
+      [popoverClass]="'tags_popover'"
+      [placement]="'left-top left-bottom'"
+      autoclose="outside"
+      [container]="'body'"
+      triggers="'manual'"
     >
       <div
         ngbTooltip
@@ -95,7 +105,8 @@
     <div
       class="ta-upload-file-action-rightside"
       [ngClass]="{
-        'feedback-mode': isReview && reviewMode === 'FEEDBACK_MODE'
+        'feedback-mode': isReview && reviewMode === 'FEEDBACK_MODE',
+        'small': type == 'details'
       }"
     >
       <div
@@ -115,6 +126,7 @@
         position="top"
         class="ta-upload-action-delete"
         (click)="isFileDelete = true"
+        *ngIf="type != 'details'"
       >
         <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
       </div>
@@ -138,24 +150,33 @@
   <div class="ta-upload-file-content  {{ customClassName }}">
     <!-- Pdf Content -->
     <pdf-viewer
-      *ngIf="file?.extension?.toLowerCase() === 'pdf'"
+      *ngIf="
+        file?.extension?.toLowerCase() === 'pdf' || fileExtension === 'pdf'
+      "
       [src]="file?.url"
       [(page)]="activePage"
-      [render-text]="false"
-      [show-all]="false"
-      [autoresize]="false"
-      [original-size]="true"
-      [fit-to-page]="true"
       style="display: block"
+      [rotation]="0"
+      [original-size]="false"
+      [show-all]="true"
+      [fit-to-page]="false"
+      [zoom]="1"
+      [zoom-scale]="'page-width'"
+      [stick-to-page]="false"
+      [render-text]="true"
+      [external-link-target]="'blank'"
+      [autoresize]="true"
+      [show-borders]="false"
       (after-load-complete)="afterLoadComplete($event)"
     ></pdf-viewer>
 
     <!-- Image Content -->
     <img
       class="ta-upload-file-image"
-      *ngIf="file?.extension?.toLowerCase() !== 'pdf'"
+      [class.details_image]="type == 'details'"
+      *ngIf="file?.extension?.toLowerCase() != 'pdf' && fileExtension != 'pdf'"
       [src]="file?.url"
-      [alt]="file?.name"
+      [alt]="file?.fileName"
     />
 
     <!-- Number of pages -->
@@ -167,7 +188,7 @@
     <div
       *ngIf="hasTag"
       class="ta-upload-file-tag"
-      [ngClass]="{ 'no-tag': !file?.tag }"
+      [ngClass]="{ 'no-tag': !file?.tag || file?.tag == 'No Tag' }"
     >
       <span>{{ file?.tag ? file?.tag : "No Tag" }}</span>
     </div>
@@ -202,17 +223,34 @@
     <div
       *ngIf="!editFile"
       class="ta-upload-file-ext ta-upload-file-ext-{{
-        file?.extension | lowercase
+        file?.extension ? file?.extension : (fileExtension | lowercase)
       }}"
       [ngClass]="{ 'no-tag': !file?.tag }"
       ngbTooltip
-      mainTooltip="numberOfFilePages"
-      tooltipBackground="#6c6c6c"
+      [mainTooltip]="
+        numberOfFilePages &&
+        (file?.extension?.toLowerCase() == 'pdf' || fileExtension === 'pdf')
+          ? numberOfFilePages
+          : ''
+      "
+      [tooltipBackground]="
+        numberOfFilePages &&
+        (file?.extension?.toLowerCase() == 'pdf' || fileExtension === 'pdf')
+          ? '#6c6c6c'
+          : ''
+      "
       position="top"
     >
-      {{ file?.extension | uppercase }}
+      <div *ngIf="file?.extension">{{ file?.extension | uppercase }}</div>
+      <div *ngIf="!file?.extension">{{ file?.url | urlExtension }}</div>
     </div>
-    <p *ngIf="!editFile" class="ta-upload-file-name">{{ file?.fileName }}</p>
+    <p
+      *ngIf="!editFile"
+      class="ta-upload-file-name"
+      [class.details_title]="type == 'details'"
+    >
+      {{ file?.fileName }}
+    </p>
     <!-- Edit mode -->
     <app-ta-input
       *ngIf="editFile"
@@ -221,9 +259,28 @@
         name: 'File Name',
         type: 'text',
         label: null,
-        placeholder: file.name,
+        placeholder: file.fileName,
         textTransform: 'capitalize'
       }"
     ></app-ta-input>
   </div>
 </div>
+
+<ng-template #tagsPopover let-data="data">
+  <div class="tags_main_holder">
+    <div
+      class="tags_inner_holder"
+      *ngFor="let tag of tags; index as i"
+      [class.firstRow]="i == 0"
+      [class.lastRow]="i == tags?.length - 1"
+      (click)="selectTag(tag?.name)"
+    >
+      <div class="tag_options_holder">
+        <div class="tag_name" [class.checked]="tag.checked">{{ tag.name }}</div>
+        <div class="checked_icon" [class.shown]="tag.checked">
+          <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

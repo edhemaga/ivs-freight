@@ -142,15 +142,13 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.repairShopForm.invalid) {
+        if (this.repairShopForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.repairShopForm);
           return;
         }
         if (this.editData?.type === 'edit') {
-          if (this.isFormDirty) {
-            this.updateRepariShop(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateRepariShop(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addRepairShop();
           this.modalService.setModalSpinner({ action: null, status: true });

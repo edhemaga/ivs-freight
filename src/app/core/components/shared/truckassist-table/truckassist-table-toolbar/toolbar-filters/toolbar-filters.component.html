@@ -65,9 +65,15 @@
     </div>
 
     <!-- FUEL STOP FILTER -->
-    <div class="no-filter" *ngIf="options.toolbarActions.showFuelStopFilter">
-      Fuel Stop Filter
-    </div>
+    <app-filter
+      *ngIf="options.toolbarActions.showFuelStopFilter"
+      [type]="'fuelStopFilter'"
+      [icon]="'fuel'"
+      [filterTitle]="'Fuel Stop Filter'"
+      [noLeftIcon]="true"
+      [defFilterHolder]="true"
+    >
+    </app-filter>
 
     <!-- BORDER -->
     <div
@@ -137,9 +143,15 @@
     </div>
 
     <!-- TRUCK FILTER -->
-    <div class="no-filter" *ngIf="options.toolbarActions.showTruckFilter">
-      Truck Filter
-    </div>
+      <app-filter
+        *ngIf="options.toolbarActions.showTruckFilter"
+        [type]="'truckFilter'"
+        [icon]="'truck'"
+        [filterTitle]="'Truck Filter'"
+        [defFilterHolder]="true"
+        [noLeftIcon]="true"
+      >
+      </app-filter>
 
     <!-- BORDER -->
     <div
@@ -150,10 +162,16 @@
     </div>
 
     <!-- TRAILER FILTER -->
-    <div class="no-filter" *ngIf="options.toolbarActions.showTrailerFilter">
-      Trailer Filter
-    </div>
-
+    <app-filter
+        *ngIf="options.toolbarActions.showTrailerFilter"
+        [type]="'trailerFilter'"
+        [icon]="'trailer'"
+        [filterTitle]="'Trailer Filter'"
+        [defFilterHolder]="true"
+        [noLeftIcon]="true"
+      >
+      </app-filter>
+      
     <!-- BORDER -->
     <div
       class="border-container"
@@ -163,9 +181,14 @@
     </div>
 
     <!-- INJURY FILTER -->
-    <div class="no-filter" *ngIf="options.toolbarActions.showInjuryFilter">
-      Injury Filter
-    </div>
+    <app-filter
+      *ngIf="options.toolbarActions.showInjuryFilter"
+      [type]="'injuryFilter'"
+      [icon]="'ic_injury'"
+      [filterTitle]="'Injury Filter'"
+      [swipeFilter]="true"
+    >
+    </app-filter>
 
     <!-- BORDER -->
     <div
@@ -226,20 +249,38 @@
     <!-- BORDER -->
     <div
       class="border-container"
-      *ngIf="options.toolbarActions.showCategoryFilter"
+      *ngIf="options.toolbarActions.showCategoryRepairFilter"
     >
       <div class="border"></div>
     </div>
 
-    <!-- CATEGORY FILTER -->
+    <!-- CATEGORY REPAIR FILTER -->
     <app-filter
-      *ngIf="options.toolbarActions.showCategoryFilter"
+      *ngIf="options.toolbarActions.showCategoryRepairFilter"
       [type]="'categoryRepairFilter'"
       [icon]="'ic_key-repair'"
       [filterTitle]="'Category Repair Filter'"
       [defFilterHolder]="true"
       [noLeftIcon]="false"
       [leftSideIcon]="true"
+    >
+    </app-filter>
+
+    <!-- BORDER -->
+    <div
+      class="border-container"
+      *ngIf="options.toolbarActions.showCategoryFuelFilter"
+    >
+      <div class="border"></div>
+    </div>
+
+    <app-filter
+      *ngIf="options.toolbarActions.showCategoryFuelFilter"
+      [type]="'categoryFuelFilter'"
+      [icon]="'ic_funnel'"
+      [filterTitle]="'Category Filter'"
+      [defFilterHolder]="true"
+      [noLeftIcon]="true"
     >
     </app-filter>
 
@@ -299,10 +340,17 @@
     </div>
 
     <!-- TRUCK TYPE FILTER -->
-    <div class="no-filter" *ngIf="options.toolbarActions.showTruckTypeFilter">
-      Truck Type Filter
-    </div>
-
+    <app-filter
+    *ngIf="options.toolbarActions.showTruckTypeFilter"
+        [type]="'truckTypeFilter'"
+        [icon]="'truck'"
+        [filterTitle]="'Truck Type Filter'"
+        [defFilterHolder]="true"
+        [noLeftIcon]="false"
+        [leftSideIcon]="true"
+        [largeLeftIcon]="true"
+    >
+    </app-filter>
     <!-- BORDER -->
     <div
       class="border-container"
@@ -312,9 +360,17 @@
     </div>
 
     <!-- TRAILER TYPE FILTER -->
-    <div class="no-filter" *ngIf="options.toolbarActions.showTrailerTypeFilter">
-      Trailer Type Filter
-    </div>
+    <app-filter
+      *ngIf="options.toolbarActions.showTrailerTypeFilter"
+      [type]="'trailerTypeFilter'"
+      [icon]="'trailer'"
+      [filterTitle]="'Trailer Type Filter'"
+      [defFilterHolder]="true"
+      [noLeftIcon]="false"
+      [leftSideIcon]="true"
+      [largeLeftIcon]="true"
+    >
+    </app-filter>
 
     <!-- BORDER -->
     <div
@@ -345,6 +401,7 @@
       [filterTitle]="'Money Filter'"
       [subType]="'all'"
       [moneyFilter]="true"
+      [fuelType]="options.toolbarActions.fuelMoneyFilter ? true : false"
     >
     </app-filter>
   </div>

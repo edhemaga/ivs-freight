@@ -12,9 +12,6 @@
 
 
 export interface CreateAuthorizationReviewCommand { 
-    isSignatureValid?: boolean;
-    signatureMessage?: string | null;
-    authorizationId?: number;
     applicantId?: number;
 }
 

@@ -52,13 +52,13 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
         height: '*',
       })
     ),
-    transition('false <=> true', [animate('.2s linear')]),
-    transition('true <=> false', [animate('.2s ease-in-out')]), 
+    transition('false <=> true', [animate('.1s linear')]),
+    transition('true <=> false', [animate('.1s ease-in-out')]), 
   ]), trigger("inOutAnimation", [
     state("in", style({ opacity: 1, scale: 1, height: '28px' })),
     transition(":enter", [
       animate(
-        200,
+        100,
         keyframes([
           style({ opacity: 0, offset: 0, scale: (0.6), height: '0px' }),
           style({ opacity: 0.25, offset: 0.25, scale: (0.7), height: '10px' }),
@@ -70,7 +70,7 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
     ]),
     transition(":leave", [
       animate(
-        200,
+        100,
         keyframes([
           style({ opacity: 1, offset: 0, scale: 1, height: '28px' }),
           style({ opacity: 1, offset: 0.25, scale: (0.9), height: '20px' }),
@@ -84,7 +84,7 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
     state("in", style({ opacity: 1, height: '*'})),
     transition(":enter", [
       animate(
-        200,
+        100,
         keyframes([
           style({ opacity: 0, offset: 0, height: '0px'}),
           style({ opacity: 1, offset: 1, height: '*'}),
@@ -93,7 +93,7 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
     ]),
     transition(":leave", [
       animate(
-        200,
+        100,
         keyframes([
           style({ opacity: 1, offset: 0, }),
           style({ opacity: 0, offset: 1, height: '0px'}),
@@ -2455,6 +2455,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.usaSelectedStates = [...this.filterUsaActiveArray];
         this.canadaSelectedStates = [...this.filterCanadaActiveArray];
         this.setButtonAvailable = false;
+      } else if ( this.swipeFilter ) {
+        this.rangeValue = this.swipeActiveRange;
       }
   }
 

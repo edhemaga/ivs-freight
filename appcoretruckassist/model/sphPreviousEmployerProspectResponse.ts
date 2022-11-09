@@ -27,6 +27,7 @@ export interface SphPreviousEmployerProspectResponse {
     employeeName?: string | null;
     employeeSsn?: string | null;
     employeeDoB?: string;
+    inviteDate?: string | null;
     dateFrom?: string;
     dateTo?: string;
     vehicleType?: TruckTypeResponse;

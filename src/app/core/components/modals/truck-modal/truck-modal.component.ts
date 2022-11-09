@@ -74,6 +74,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public apUnits: any[] = [];
   public brakes: any[] = [];
   public gearRatios: any[] = [];
+  public fuelTypes: any[] = [];
   public tollTransponders: any[] = [
     {
       groupName: 'Grupa 1',
@@ -121,6 +122,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public selectedFrontWheels: any = null;
   public selectedRearWheels: any = null;
 
+  public selectedFuelType: any = null;
+
   public selectedTab: number = 1;
   public tabs: any[] = [
     {
@@ -166,16 +169,16 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     this.createForm();
     this.isCompanyOwned();
 
-    if (this.editData?.id) {
-      this.skipVinDecocerEdit = true;
-      this.editTruckById(this.editData.id);
-    }
-
     if (this.editData?.storageData) {
       this.skipVinDecocerEdit = true;
       this.populateStorageData(this.editData.storageData);
     } else {
       this.getTruckDropdowns();
+    }
+
+    if (this.editData?.id) {
+      this.skipVinDecocerEdit = true;
+      this.editTruckById(this.editData.id);
     }
 
     this.vinDecoder();
@@ -207,9 +210,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       frontWheels: [null],
       rearWheels: [null],
       transmissionModel: [null],
+      fuelType: [null],
       shifter: [null],
       axles: [null, axlesValidation],
-      fhwaExp: [12, Validators.required],
+      fhwaExp: [null, Validators.required],
       insurancePolicy: [null, insurancePolicyValidation],
       mileage: [null, mileageValidation],
       engineOilType: [null],
@@ -277,15 +281,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       } else {
         // Save & Update
         if (data.action === 'save') {
-          if (this.truckForm.invalid) {
+          if (this.truckForm.invalid || !this.isFormDirty) {
             this.inputService.markInvalid(this.truckForm);
             return;
           }
           if (this.editData?.id) {
-            if (this.isFormDirty) {
-              this.updateTruck(this.editData.id);
-              this.modalService.setModalSpinner({ action: null, status: true });
-            }
+            this.updateTruck(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
           } else {
             this.addTruck();
             this.modalService.setModalSpinner({
@@ -434,6 +436,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         this.selectedRearWheels = event;
         break;
       }
+      case 'fuel-type': {
+        this.selectedFuelType = event;
+        break;
+      }
       default: {
         break;
       }
@@ -467,10 +473,16 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                   truckEngineModelId: res.engineModel?.name
                     ? res.engineModel.name
                     : null,
+                  fuelType: this.fuelTypes.find(
+                    (item) => item.name === res.fuelType
+                  ).name,
                 });
                 this.loadingVinDecoder = false;
                 this.selectedTruckMake = res.truckMake;
                 this.selectedtruckEngineModelId = res.engineModel;
+                this.selectedFuelType = this.fuelTypes.find(
+                  (item) => item.name === res.fuelType
+                );
               },
               error: () => {
                 this.notificationService.error(
@@ -521,6 +533,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             };
           });
           this.rearWheels = this.frontWheels = res.wheelsTypes;
+          this.fuelTypes = res.fuelTypes;
+          this.truckForm.get('fhwaExp').patchValue(res.fhwaExp);
         },
         error: () => {
           this.notificationService.error(
@@ -576,11 +590,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             transmissionModel: res.transmissionModel,
             shifter: res.shifter ? res.shifter.name : null,
             axles: res.axles,
-            fhwaExp: res.fhwaExp,
             insurancePolicy: res.insurancePolicy,
             mileage: res.mileage
               ? convertNumberInThousandSep(res.mileage)
               : null,
+            fuelType: res.fuelType ? res.fuelType.name : null,
             engineOilType: res.engineOilType ? res.engineOilType.name : null,
             gearRatio: res.gearRatio ? res.gearRatio.name : null,
             apUnit: res.apUnit ? res.apUnit.name : null,
@@ -593,6 +607,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             dcInverter: res.dcInverter,
             blower: res.blower,
             pto: res.pto,
+            fhwaExp: res.fhwaExp ? res.fhwaExp : 12,
           });
 
           this.selectedAPUnit = res.apUnit ? res.apUnit : null;
@@ -618,6 +633,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           this.selectedtruckEngineModelId = res.truckEngineModel
             ? res.truckEngineModel
             : null;
+          this.selectedFuelType = res.fuelType;
           this.truckStatus = res.status !== 1;
 
           this.modalService.changeModalStatus({
@@ -661,6 +677,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         shifter: res.shifter,
         axles: res.axles,
         fhwaExp: res.fhwaExp,
+        fuelType: res.fuelType,
         insurancePolicy: res.insurancePolicy,
         mileage: res.mileage,
         engineOilType: res.engineOilType,
@@ -695,6 +712,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       this.selectedTruckType = res.selectedTruckType;
       this.selectedtruckEngineModelId = res.selectedtruckEngineModelId;
       this.truckStatus = res.truckStatus;
+      this.selectedFuelType = res.selectedFuelType;
 
       this.modalService.changeModalStatus({
         name: 'deactivate',
@@ -751,6 +769,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             this.truckForm.get('commission').value.toString().replace(/,/g, '')
           )
         : null,
+      fuelType: this.selectedFuelType ? this.selectedFuelType.id : null,
       year: parseInt(this.truckForm.get('year').value),
       purchaseDate: this.truckForm.get('companyOwned').value
         ? this.truckForm.get('purchaseDate').value
@@ -829,6 +848,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             this.truckForm.get('commission').value.toString().replace(/,/g, '')
           )
         : null,
+      fuelType: this.selectedFuelType ? this.selectedFuelType.id : null,
       year: parseInt(this.truckForm.get('year').value),
       purchaseDate: this.truckForm.get('companyOwned').value
         ? this.truckForm.get('purchaseDate').value

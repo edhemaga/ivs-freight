@@ -29,13 +29,17 @@ export class TaUploadFilesComponent implements OnInit {
   @Input() hasNumberOfPages: boolean = false;
   @Input() size: string = 'small'; // small | medium | large
   @Input() hasCarouselBottomTabs: boolean;
+  @Input() tags: any[] = [];
+  @Input() type: string; // modal | table | details
 
   @Output() onFileEvent: EventEmitter<{
     files: UploadFile[] | UploadFile | any;
     action: string;
+    deleteId?: number;
   }> = new EventEmitter<{
     files: UploadFile[] | UploadFile | any;
     action: string;
+    deleteId?: number;
   }>(null);
 
   // Review
@@ -72,8 +76,19 @@ export class TaUploadFilesComponent implements OnInit {
         break;
       }
       case 'delete': {
-        this.files = this.files.filter((item) => item.name !== data.file.name);
-        this.onFileEvent.emit({ files: this.files, action: data.action });
+        this.files = this.files.filter(
+          (item) => item.fileName !== data.file.fileName
+        );
+        if (data.file['fileId']) {
+          this.onFileEvent.emit({
+            files: this.files,
+            action: data.action,
+            deleteId: data.file['fileId'],
+          });
+        } else {
+          this.onFileEvent.emit({ files: this.files, action: data.action });
+        }
+
         this.currentSlide = this.files.length - 1;
 
         if (

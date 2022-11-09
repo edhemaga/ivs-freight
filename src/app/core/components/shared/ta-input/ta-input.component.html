@@ -739,7 +739,8 @@
         !inputConfig?.dropdownImageInput?.withText &&
         !focusInput,
       'multiple-input-values':
-        inputConfig?.multipleInputValues?.options?.length && !focusInput
+        inputConfig?.multipleInputValues?.options?.length && !focusInput,
+      'disable-select-on-focus-out': !focusInput
     }"
     (keypress)="manipulateWithInput($event)"
     (keyup)="onKeyUp($event)"

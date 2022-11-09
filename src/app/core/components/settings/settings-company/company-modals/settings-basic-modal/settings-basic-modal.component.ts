@@ -358,11 +358,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       soloEmptyMile: [null, mileValidation],
       soloLoadedMile: [null, mileValidation],
       soloPerStop: [null, perStopValidation],
+      soloPerLoad: [null, perStopValidation],
       perMileSolo: [null, mileValidation],
 
       teamEmptyMile: [null, mileValidation],
       teamLoadedMile: [null, mileValidation],
       teamPerStop: [null, perStopValidation],
+      teamPerLoad: [null, perStopValidation],
       perMileTeam: [null, mileValidation],
 
       loadedAndEmptySameRate: [false],
@@ -436,7 +438,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       }
       case 'save': {
         // If Form not valid
-        if (this.companyForm.invalid) {
+        if (this.companyForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.companyForm);
           return;
         }
@@ -445,10 +447,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.addCompanyDivision();
             this.modalService.setModalSpinner({ action: null, status: true });
           } else {
-            if (this.isFormDirty) {
-              this.updateCompanyDivision(this.editData.company.id);
-              this.modalService.setModalSpinner({ action: null, status: true });
-            }
+            this.updateCompanyDivision(this.editData.company.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
           }
         } else {
           this.updateCompany();
@@ -973,13 +973,19 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       // Driver & Owner
       driveOwnerPayPeriod,
       driverOwnerEndingIn,
+
       soloEmptyMile,
       soloLoadedMile,
       soloPerStop,
+      soloPerLoad,
+
       teamEmptyMile,
       teamLoadedMile,
       teamPerStop,
+      teamPerLoad,
+
       loadedAndEmptySameRate,
+
       driverSoloDefaultCommission,
       driverTeamDefaultCommission,
       ownerDefaultCommission,
@@ -1093,7 +1099,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.editData.company.currency?.id !== 0
           ? this.editData.company.currency.name
           : null,
-      logo: this.editData.company.logo,
+      logo: this.editData.company.logo ? this.editData.company.logo : null,
     });
 
     this.selectedAddress = this.editData.company.address;
@@ -1191,9 +1197,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       soloEmptyMile,
       soloLoadedMile,
       soloPerStop,
+      soloPerLoad,
       teamEmptyMile,
       teamLoadedMile,
       teamPerStop,
+      teamPerLoad,
       loadedAndEmptySameRate,
       driverSoloDefaultCommission,
       driverTeamDefaultCommission,
@@ -1327,10 +1335,12 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       soloLoadedMile,
       soloPerStop,
       perMileSolo,
+      soloPerLoad,
       teamEmptyMile,
       teamLoadedMile,
       teamPerStop,
       perMileTeam,
+      teamPerLoad,
       loadedAndEmptySameRate,
       driverSoloDefaultCommission,
       driverTeamDefaultCommission,
@@ -1534,7 +1544,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             : null
           : null
         : null,
-
+      soloPerLoad: soloPerLoad ? convertThousanSepInNumber(soloPerLoad) : null,
+      teamPerLoad: teamPerLoad ? convertThousanSepInNumber(teamPerLoad) : null,
       defaultSoloDriverCommission: ['Solo', 'Combined'].includes(
         this.selectedFleetType
       )
@@ -1617,7 +1628,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       dateOfIncorporation: this.editData.company.dateOfIncorporation
         ? convertDateFromBackend(this.editData.company.dateOfIncorporation)
         : null,
-      logo: this.editData.company.logo,
+      logo: this.editData.company.logo ? this.editData.company.logo : null,
       //-------------------- Additional Tab
       departmentContacts: [],
       bankAccounts: [],
@@ -1730,9 +1741,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.companyForm
               .get('accountingPayPeriod')
               .patchValue(payroll.payPeriod.name);
+
             this.companyForm
               .get('accountingEndingIn')
               .patchValue(payroll.endingIn.name);
+
             this.companyForm
               .get('accountingDefaultBase')
               .patchValue(
@@ -1750,9 +1763,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.companyForm
               .get('dispatchPayPeriod')
               .patchValue(payroll.payPeriod.name);
+
             this.companyForm
               .get('dispatchEndingIn')
               .patchValue(payroll.endingIn.name);
+
             this.companyForm
               .get('dispatchDefaultBase')
               .patchValue(
@@ -1773,9 +1788,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.companyForm
               .get('recruitingPayPeriod')
               .patchValue(payroll.payPeriod.name);
+
             this.companyForm
               .get('recruitingEndingIn')
               .patchValue(payroll.endingIn.name);
+
             this.companyForm
               .get('recruitingDefaultBase')
               .patchValue(
@@ -1793,9 +1810,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.companyForm
               .get('repairPayPeriod')
               .patchValue(payroll.payPeriod.name);
+
             this.companyForm
               .get('repairEndingIn')
               .patchValue(payroll.endingIn.name);
+
             this.companyForm
               .get('repairDefaultBase')
               .patchValue(
@@ -1810,9 +1829,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.companyForm
               .get('safetyPayPeriod')
               .patchValue(payroll.payPeriod.name);
+
             this.companyForm
               .get('safetyEndingIn')
               .patchValue(payroll.endingIn.name);
+
             this.companyForm
               .get('safetyDefaultBase')
               .patchValue(
@@ -1830,9 +1851,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.companyForm
               .get('managerPayPeriod')
               .patchValue(payroll.payPeriod.name);
+
             this.companyForm
               .get('managerEndingIn')
               .patchValue(payroll.endingIn.name);
+
             this.companyForm
               .get('managerDefaultBase')
               .patchValue(
@@ -1853,9 +1876,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.companyForm
               .get('companyOwnerPayPeriod')
               .patchValue(payroll.payPeriod.name);
+
             this.companyForm
               .get('companyOwnerEndingIn')
               .patchValue(payroll.endingIn.name);
+
             this.companyForm
               .get('companyOwnerDefaultBase')
               .patchValue(
@@ -1873,9 +1898,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.companyForm
               .get('otherPayPeriod')
               .patchValue(payroll.payPeriod.name);
+
             this.companyForm
               .get('otherEndingIn')
               .patchValue(payroll.endingIn.name);
+
             this.companyForm
               .get('otherDefaultBase')
               .patchValue(
@@ -1892,6 +1919,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.companyForm
               .get('driveOwnerPayPeriod')
               .patchValue(payroll.payPeriod.name);
+
             this.companyForm
               .get('driverOwnerEndingIn')
               .patchValue(payroll.endingIn.name);
@@ -1899,9 +1927,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.companyForm
               .get('soloEmptyMile')
               .patchValue(payroll.solo.emptyMile);
+
             this.companyForm
               .get('soloLoadedMile')
               .patchValue(payroll.solo.loadedMile, { emitEvent: false });
+
             this.companyForm
               .get('soloPerStop')
               .patchValue(
@@ -1912,11 +1942,21 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.companyForm.get('perMileSolo').patchValue(payroll.perMileSolo);
 
             this.companyForm
+              .get('soloPerLoad')
+              .patchValue(
+                payroll.soloPerLoad
+                  ? convertNumberInThousandSep(payroll.soloPerLoad)
+                  : null
+              );
+
+            this.companyForm
               .get('teamEmptyMile')
               .patchValue(payroll.team.emptyMile);
+
             this.companyForm
               .get('teamLoadedMile')
               .patchValue(payroll.team.loadedMile, { emitEvent: false });
+
             this.companyForm
               .get('teamPerStop')
               .patchValue(
@@ -1924,7 +1964,16 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                   ? convertNumberInThousandSep(payroll.team.perStop)
                   : null
               );
+
             this.companyForm.get('perMileTeam').patchValue(payroll.perMileTeam);
+
+            this.companyForm
+              .get('teamPerLoad')
+              .patchValue(
+                payroll.teamPerLoad
+                  ? convertNumberInThousandSep(payroll.teamPerLoad)
+                  : null
+              );
 
             this.companyForm
               .get('loadedAndEmptySameRate')
@@ -1933,6 +1982,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.companyForm
               .get('driverSoloDefaultCommission')
               .patchValue(payroll.defaultSoloDriverCommission);
+
             this.companyForm
               .get('driverTeamDefaultCommission')
               .patchValue(payroll.defaultTeamDriverCommission);

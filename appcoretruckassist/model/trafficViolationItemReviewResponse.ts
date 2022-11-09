@@ -21,6 +21,6 @@ export interface TrafficViolationItemReviewResponse {
     descriptionMessage?: string | null;
     isPrimary?: boolean;
     commonMessage?: string | null;
-    trafficViolationItemId?: number;
+    itemId?: number;
 }
 

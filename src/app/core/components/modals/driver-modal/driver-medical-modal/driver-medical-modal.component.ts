@@ -37,6 +37,8 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
   public selectedDriver: any = null;
   public labelsDrivers: any[] = [];
+  public fileModified: boolean = false;
+  public filesForDelete: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -69,6 +71,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
       issueDate: [null, Validators.required],
       expDate: [null, Validators.required],
       note: [null],
+      files: [null],
     });
 
     this.formService.checkFormChange(this.medicalForm);
@@ -100,15 +103,13 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
       }
       case 'save': {
         // If Form not valid
-        if (this.medicalForm.invalid) {
+        if (this.medicalForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.medicalForm);
           return;
         }
         if (this.editData?.type === 'edit-medical') {
-          if (this.isFormDirty) {
-            this.updateMedical(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateMedical(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addMedical();
           this.modalService.setModalSpinner({ action: null, status: true });
@@ -124,16 +125,32 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
   public onFilesEvent(event: any) {
     this.documents = event.files;
+
+    if (event.action == 'delete') {
+      this.medicalForm.patchValue({
+        files: null,
+      });
+
+      if (event.deleteId) {
+        this.filesForDelete.push(event.deleteId);
+      }
+
+      this.fileModified = true;
+    }
   }
 
   private updateMedical(id: number) {
     const { issueDate, expDate, driver, note } = this.medicalForm.value;
-
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
     const newData: any = {
       id: this.editData.file_id,
       issueDate: convertDateToBackend(issueDate),
       expDate: convertDateToBackend(expDate),
       note: note,
+      files: documents ? documents : this.medicalForm.value.files,
+      filesForDeleteIds: this.filesForDelete,
     };
 
     this.medicalService
@@ -154,11 +171,15 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
   private addMedical() {
     const { issueDate, expDate, driver, note } = this.medicalForm.value;
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
     const newData: any = {
       driverId: this.selectedDriver ? this.selectedDriver.id : this.editData.id,
       issueDate: convertDateToBackend(issueDate),
       expDate: convertDateToBackend(expDate),
       note: note,
+      files: documents,
     };
 
     this.medicalService
@@ -188,6 +209,8 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
             expDate: convertDateFromBackend(res.expDate),
             note: res.note,
           });
+
+          this.documents = res.files ? (res.files as any) : [];
         },
         error: () => {
           this.notificationService.error("Can't get Test", 'Error:');

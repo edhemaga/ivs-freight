@@ -171,15 +171,13 @@ export class SettingsInsurancePolicyModalComponent
       }
       case 'save': {
         // If Form not valid
-        if (this.insurancePolicyForm.invalid) {
+        if (this.insurancePolicyForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.insurancePolicyForm);
           return;
         }
         if (this.editData.type === 'edit') {
-          if (this.isFormDirty) {
-            this.updateInsurancePolicy(this.editData.company.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateInsurancePolicy(this.editData.company.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addInsurancePolicy(this.editData.company);
           this.modalService.setModalSpinner({ action: null, status: true });

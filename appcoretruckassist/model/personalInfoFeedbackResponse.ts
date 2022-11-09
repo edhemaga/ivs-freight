@@ -23,15 +23,15 @@ export interface PersonalInfoFeedbackResponse {
     fullName?: string | null;
     phone?: string | null;
     email?: string | null;
-    doB?: string;
-    isAgreed?: boolean;
+    doB?: string | null;
+    isAgreed?: boolean | null;
     address?: AddressEntity;
     ssn?: string | null;
     bank?: BankResponse;
     bankName?: string | null;
     accountNumber?: string | null;
     routingNumber?: string | null;
-    legalWork?: boolean;
+    legalWork?: boolean | null;
     legalWorkDescription?: string | null;
     anotherName?: boolean | null;
     anotherNameDescription?: string | null;
