@@ -50,6 +50,7 @@
       <div
         class="d-flex flex-column history-panel-container"
         *ngIf="workExperienceArray.length"
+        [ngStyle]="{ 'margin-bottom': isReviewingCard ? 0 : '32px' }"
       >
         <!-- CREATED WORK HISTORY DATA -->
 
@@ -83,27 +84,34 @@
               <p class="m-0 ta-font-bold">to <span>*</span></p>
             </div>
           </div>
-
           <div
             class="d-flex align-items-center history-panel line-container"
             *ngIf="!workHistory.isEditingWorkHistory"
           >
             <div class="d-flex align-items-center info-btn-container">
-              <div class="d-flex align-items-center history-employer">
-                <p class="m-0 ta-font-regular">{{ workHistory.employer }}</p>
-              </div>
-              <div class="d-flex align-items-center history-from-date">
-                <p class="m-0 ta-font-regular">{{ workHistory.fromDate }}</p>
-              </div>
               <div
-                class="d-flex align-items-center history-to-date"
+                class="d-flex align-items-center"
                 [ngStyle]="{
-                  'margin-right':
-                    selectedMode === 'FEEDBACK_MODE' ? '18px' : '20px',
-                  width: selectedMode !== 'APPLICANT_MODE' ? '90px' : '108px'
+                  cursor: selectedMode === 'REVIEW_MODE' ? 'pointer' : 'auto'
                 }"
+                (click)="selectedMode === 'REVIEW_MODE' && onCardReview(i)"
               >
-                <p class="m-0 ta-font-regular">{{ workHistory.toDate }}</p>
+                <div class="d-flex align-items-center history-employer">
+                  <p class="m-0 ta-font-regular">{{ workHistory.employer }}</p>
+                </div>
+                <div class="d-flex align-items-center history-from-date">
+                  <p class="m-0 ta-font-regular">{{ workHistory.fromDate }}</p>
+                </div>
+                <div
+                  class="d-flex align-items-center history-to-date"
+                  [ngStyle]="{
+                    'margin-right':
+                      selectedMode === 'FEEDBACK_MODE' ? '18px' : '20px',
+                    width: selectedMode !== 'APPLICANT_MODE' ? '90px' : '108px'
+                  }"
+                >
+                  <p class="m-0 ta-font-regular">{{ workHistory.toDate }}</p>
+                </div>
               </div>
               <div
                 class="d-flex align-items-center btn-container"
@@ -144,7 +152,6 @@
                     (click)="onDeleteWorkExperience(i)"
                   ></svg-icon>
                 </div>
-
                 <div *ngIf="selectedMode === 'REVIEW_MODE'">
                   <div
                     class="review-icon-box"
@@ -165,11 +172,14 @@
                         'width.px': 18,
                         'height.px': 18
                       }"
-                      (click)="incorrectInput($event, 0, i, 'card')"
+                      (click)="
+                        openAnnotationArray[i].lineInputs[0]
+                          ? incorrectInput($event, 0, i, 'card')
+                          : onCardReview(i)
+                      "
                     ></svg-icon>
                   </div>
                 </div>
-
                 <div *ngIf="selectedMode === 'FEEDBACK_MODE'">
                   <div
                     class="feedback-icon-box"
@@ -224,27 +234,49 @@
             *ngIf="workHistory.isEditingWorkHistory"
           >
             <app-step2-form
+              [mode]="selectedMode"
               [isEditing]="isEditing"
               [formValuesToPatch]="formValuesToPatch"
+              [isReviewingCard]="isReviewingCard"
+              [stepFeedbackValues]="stepFeedbackValues"
               (formValuesEmitter)="getWorkExperienceFormValues($event)"
               (cancelFormEditingEmitter)="cancelWorkExperienceEditing($event)"
               (saveFormEditingEmitter)="saveEditedWorkExperience($event)"
+              (cancelFormReviewingEmitter)="cancelWorkExperienceReview($event)"
+              (cardOpenAnnotationArrayValuesEmitter)="
+                onGetCardOpenAnnotationArrayValues($event)
+              "
             ></app-step2-form>
           </div>
         </div>
       </div>
 
-      <div *ngIf="!isEditing">
+      <div
+        *ngIf="
+          ((selectedMode === 'APPLICANT_MODE' ||
+            selectedMode === 'FEEDBACK_MODE') &&
+            !isEditing) ||
+          (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
+        "
+      >
         <app-step2-form
+          [mode]="selectedMode"
           [isEditing]="isEditing"
           [markFormInvalid]="markFormInvalid"
           [markInnerFormInvalid]="markInnerFormInvalid"
+          [formValuesToPatch]="formValuesToPatch"
+          [isReviewingCard]="isReviewingCard"
+          [stepFeedbackValues]="stepFeedbackValues"
           (formValuesEmitter)="getWorkExperienceFormValues($event)"
           (formStatusEmitter)="onGetFormStatus($event)"
           (innerFormStatusEmitter)="onGetInnerFormStatus($event)"
           (markInvalidEmitter)="onMarkInvalidEmit($event)"
           (markInnerFormInvalidEmitter)="onMarkInnerInvalidEmit($event)"
           (lastFormValuesEmitter)="onGetLastFormValues($event)"
+          (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
+          (openAnnotationArrayValuesEmitter)="
+            onGetOpenAnnotationArrayValues($event)
+          "
         ></app-step2-form>
       </div>
     </div>
@@ -256,7 +288,14 @@
     class="d-flex justify-content-center work-experience-group"
     [formGroup]="workExperienceForm"
     [ngStyle]="{
-      'margin-top': selectedMode !== 'APPLICANT_MODE' ? '22px' : '12px'
+      'margin-top':
+        selectedMode === 'APPLICANT_MODE'
+          ? '12px'
+          : selectedMode === 'REVIEW_MODE' &&
+            workExperienceArray[workExperienceArray.length - 1]
+              ?.isEditingWorkHistory
+          ? 0
+          : '22px'
     }"
     *ngIf="!isEditing"
   >
@@ -264,8 +303,9 @@
       formControlName="noWorkExperience"
       [name]="'noWorkExperience'"
       [label]="'I don’t have work experience'"
-      [customClass]="
-        selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
+      [customClass]="'bold-12'"
+      [disabledStillCheckMark]="
+        selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
       "
     ></app-ta-checkbox>
   </div>
@@ -279,10 +319,16 @@
   <app-applicant-next-back-btn
     [nextStep]="true"
     [filledCorrectly]="
+      selectedMode === 'APPLICANT_MODE' &&
       workExperienceForm.valid &&
       formStatus === 'VALID' &&
       innerFormStatus === 'VALID'
     "
+    [hasIncorrectFields]="
+      selectedMode === 'REVIEW_MODE' &&
+      (hasIncorrectFields || cardsWithIncorrectFields)
+    "
+    [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

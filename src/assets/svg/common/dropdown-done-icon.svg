@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+  <g id="Pay_Status_-_Active" data-name="Pay Status - Active" transform="translate(-92 -828)">
+    <rect id="Rectangle_52465" data-name="Rectangle 52465" width="18" height="18" transform="translate(92 828)" fill="#4db6a2" opacity="0"/>
+    <path id="check-circle" d="M25.1,16.55A8.55,8.55,0,1,1,16.55,8,8.55,8.55,0,0,1,25.1,16.55Zm-9.539,4.527L21.9,14.734a.552.552,0,0,0,0-.78l-.78-.78a.552.552,0,0,0-.78,0l-5.173,5.173-2.415-2.415a.552.552,0,0,0-.78,0l-.78.78a.552.552,0,0,0,0,.78l3.585,3.585A.552.552,0,0,0,15.561,21.077Z" transform="translate(84.45 820.45)" fill="#4db6a2"/>
+  </g>
+</svg>

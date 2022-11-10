@@ -20,7 +20,7 @@
         class="route-card-scroll"
         cdkDropList
         #routeList="cdkDropList"
-        [cdkDropListData]="tableData[selectedMapIndex].routes"
+        [cdkDropListData]="tableData[selectedMapIndex]?.routes"
         [cdkDropListConnectedTo]="[routeFreeDrag]"
         (cdkDropListDropped)="dropRoutes($event)"
       >
@@ -216,25 +216,16 @@
                   ></svg-icon>
                 </div>
               </div>
-              <div
-                #t2="ngbPopover"
+              <app-details-page-dropdown
+                #dropdownElement
                 (click)="toggleDropdown($event, t2, route)"
-                [autoClose]="true"
-                [ngbPopover]="dropdownPopover"
-                [placement]="'right-top right-bottom'"
-                class="show-more table-dropdown-container"
-                [ngClass]="{
-                  'active-drop': dropDownActive === route.id && t2.isOpen()
-                }"
-                [container]="'body'"
-                popoverClass="table-dropdown-popover drop-down-route"
-                triggers="manual"
+                [placement]="'right-top right-bottom'" 
+                [hasVericalDots]="true"
+                [options]="dropdownActions"
+                [id]="route.id"
+                (dropDownActions)="callDropDownAction($event)"
               >
-                <svg-icon
-                  class="dropdown-dots"
-                  src="assets/svg/common/ic_horizontal_dots_details.svg"
-                ></svg-icon>
-              </div>
+              </app-details-page-dropdown> 
             </div>
             <div
               class="route-card-content"
@@ -522,7 +513,6 @@
               *ngIf="
                 !route.hidden &&
                 route.hover &&
-                !t2.isOpen() &&
                 (route.stops.length ||
                   route.truckId ||
                   route.stopTime ||
@@ -536,7 +526,7 @@
                 [ngClass]="{ rotate: route.expanded }"
                 [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
               ></svg-icon>
-            </div>
+            </div>  
           </div>
         </ng-container>
       </div>
@@ -1316,7 +1306,7 @@
               let j = index
             "
           >
-            <agm-direction
+            <!-- <agm-direction
               [renderOptions]="{
                 preserveViewport: true,
                 polylineOptions: {
@@ -1352,7 +1342,7 @@
                 lng: route.stops[j + 1].long
               }"
               [visible]="!route.hidden"
-            ></agm-direction>
+            ></agm-direction> -->
           </div>
         </div>
       </div>

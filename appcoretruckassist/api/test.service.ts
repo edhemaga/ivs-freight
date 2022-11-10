@@ -27,11 +27,11 @@ import { CreateWithUploadsResponse } from '../model/models';
 import { GetTestModalResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { TestResponse } from '../model/models';
-import { TestResult } from 'appcoretruckassist/model/testResult';
-import { TestType } from 'appcoretruckassist/model/testType';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
+import { TestType } from '../model/testType';
+import { TestResult } from '../model/testResult';
 
 @Injectable({
   providedIn: 'root',
@@ -655,6 +655,7 @@ export class TestService {
    * @param result
    * @param note
    * @param files
+   * @param filesForDeleteIds
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
@@ -666,6 +667,7 @@ export class TestService {
     result?: TestResult,
     note?: string,
     files?: Array<Blob>,
+    filesForDeleteIds?: Array<number>,
     observe?: 'body',
     reportProgress?: boolean,
     options?: {
@@ -680,6 +682,7 @@ export class TestService {
     result?: TestResult,
     note?: string,
     files?: Array<Blob>,
+    filesForDeleteIds?: Array<number>,
     observe?: 'response',
     reportProgress?: boolean,
     options?: {
@@ -694,6 +697,7 @@ export class TestService {
     result?: TestResult,
     note?: string,
     files?: Array<Blob>,
+    filesForDeleteIds?: Array<number>,
     observe?: 'events',
     reportProgress?: boolean,
     options?: {
@@ -708,6 +712,7 @@ export class TestService {
     result?: TestResult,
     note?: string,
     files?: Array<Blob>,
+    filesForDeleteIds?: Array<number>,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: {
@@ -791,6 +796,21 @@ export class TestService {
           (formParams.append(
             'Files',
             files.join(COLLECTION_FORMATS['csv'])
+          ) as any) || formParams;
+      }
+    }
+    if (filesForDeleteIds) {
+      if (useForm) {
+        filesForDeleteIds.forEach((element) => {
+          formParams =
+            (formParams.append('FilesForDeleteIds', <any>element) as any) ||
+            formParams;
+        });
+      } else {
+        formParams =
+          (formParams.append(
+            'FilesForDeleteIds',
+            filesForDeleteIds.join(COLLECTION_FORMATS['csv'])
           ) as any) || formParams;
       }
     }

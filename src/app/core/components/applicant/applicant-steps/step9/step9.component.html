@@ -210,8 +210,9 @@
         formControlName="understandYourRights"
         [name]="'understandYourRights'"
         [label]="'I read and understand the above-mentioned rights'"
-        [customClass]="
-          selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
+        [customClass]="'bold-12'"
+        [disabledStillCheckMark]="
+          selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
         "
       >
       </app-ta-checkbox>
@@ -226,7 +227,11 @@
 >
   <app-applicant-next-back-btn
     [nextStep]="true"
-    [filledCorrectly]="driverRightsForm.valid"
+    [filledCorrectly]="
+      (selectedMode === 'APPLICANT_MODE' || selectedMode === 'FEEDBACK_MODE') &&
+      driverRightsForm.valid
+    "
+    [mode]="selectedMode"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

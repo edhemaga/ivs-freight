@@ -56,9 +56,9 @@
 }
 
 .permile-fields {
-  grid-template-columns: auto repeat(3, 145px) !important;
+  grid-template-columns: 42px repeat(4, 130px) !important;
 
   &.permile-fields-same-rate {
-    grid-template-columns: auto repeat(2, 223px) !important;
+    grid-template-columns: 42px repeat(3, 177px) !important;
   }
 }

@@ -43,25 +43,6 @@
     text-transform: lowercase;
   }
 
-  &.disabled {
-    background-color: $input-background-color-disabled !important;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    pointer-events: none;
-  }
-
-  &.disabled-filled {
-    background-color: $input-background-color-disabled !important;
-    color: $input-text-color-filled-disabled !important;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    pointer-events: none;
-  }
-
   &:hover {
     background-color: $input-background-color-normal-hover;
     color: $input-text-color-normal-hover;
@@ -225,6 +206,25 @@
     color: $input-text-color-invalid-focus-out !important;
   }
 
+  &.disabled {
+    background-color: $input-background-color-disabled !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  &.disabled-filled {
+    background-color: $input-background-color-disabled !important;
+    color: $input-text-color-filled-disabled !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+  }
+
   &.blue-input-color {
     color: $input-text-color-blue !important;
   }
@@ -324,6 +324,15 @@
     &:hover {
       background-color: $input-background-color-normal-hover !important;
       color: $input-text-color-normal-hover !important;
+    }
+  }
+
+  &.disable-select-on-focus-out {
+    &::-moz-selection {
+      background-color: transparent !important;
+    }
+    &::selection {
+      background-color: transparent !important;
     }
   }
 }

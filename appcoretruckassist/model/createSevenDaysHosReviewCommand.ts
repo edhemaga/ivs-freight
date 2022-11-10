@@ -15,7 +15,6 @@ export interface CreateSevenDaysHosReviewCommand {
     isReleaseDateValid?: boolean;
     isLocationValid?: boolean;
     releaseDateLocationMessage?: string | null;
-    sevenDaysHosId?: number;
     applicantId?: number;
 }
 

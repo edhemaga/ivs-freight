@@ -122,7 +122,7 @@ export class TaUploadDropzoneComponent {
       this.files = [
         ...this.files,
         {
-          name: file.name,
+          fileName: file.name,
           url: base64Content,
           extension: fileNameArray[fileNameArray.length - 1],
           guid: null,

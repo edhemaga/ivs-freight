@@ -16,10 +16,10 @@ import {
 import { FormControl } from '@angular/forms';
 import { DriverResponse } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
-import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
-import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
+import { DriverCdlModalComponent } from '../../modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverMedicalModalComponent } from '../../modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
+import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
 import moment from 'moment';
 import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
 import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
@@ -197,7 +197,7 @@ export class DriverDetailsCardComponent
     private cdRef: ChangeDetectorRef,
     private tableService: TruckassistTableService,
     private driverMinimalQuery: DriversMinimalListQuery,
-    private imageBase64Service: ImageBase64Service,
+    public imageBase64Service: ImageBase64Service,
     private cdlService: CdlTService,
     private medicalService: MedicalTService,
     private mvrService: MvrTService,

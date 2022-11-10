@@ -1190,7 +1190,16 @@
       <!-- Note -->
       <app-ta-input-note
         formControlName="note"
-        [isVisibleNote]="loadForm.get('note').value"
+        [isVisibleNote]="
+          loadForm.get('note').value && loadForm.get('note').value != 'null'
+            ? loadForm.get('note').value
+            : false
+        "
+        [note]="
+          loadForm.get('note').value && loadForm.get('note').value != 'null'
+            ? loadForm.get('note').value
+            : ''
+        "
       ></app-ta-input-note>
     </div>
     <!-------------------------------- LTL Tab -------------------------------->
@@ -1199,13 +1208,18 @@
     </div>
   </form>
   <!-------------------------------- Additional Tab Part -------------------------------->
+  <!--       height: originTab?.clientHeight + 118 + 'px', -->
   <div
     additional
     [ngClass]="{
       'load-map-container': !isHazardousVisible,
       'load-hazardous-container': isHazardousVisible
     }"
-    [ngStyle]="{ height: originTab?.nativeElement?.height }"
+    [ngStyle]="{
+      height: additionalPartHeight,
+      overflow: 'hidden',
+      'owerflow-y': 'scroll'
+    }"
   >
     <!-- Hazardous -->
     <app-load-modal-hazardous

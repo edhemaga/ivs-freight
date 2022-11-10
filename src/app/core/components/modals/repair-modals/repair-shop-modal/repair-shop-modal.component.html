@@ -269,7 +269,18 @@
     <!-- Note -->
     <app-ta-input-note
       formControlName="note"
-      [isVisibleNote]="repairShopForm.get('note').value"
+      [isVisibleNote]="
+        repairShopForm.get('note').value &&
+        repairShopForm.get('note').value != 'null'
+          ? repairShopForm.get('note').value
+          : false
+      "
+      [note]="
+        repairShopForm.get('note').value &&
+        repairShopForm.get('note').value != 'null'
+          ? repairShopForm.get('note').value
+          : ''
+      "
     ></app-ta-input-note>
   </form>
 </app-ta-modal>

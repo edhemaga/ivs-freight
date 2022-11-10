@@ -18,6 +18,13 @@
 
     .ta-upload-dropzone-area {
       pointer-events: none;
+
+      &.expand {
+        svg {
+          width: 200px;
+          height: 200px;
+        }
+      }
     }
 
     .ta-upload-dropzone-text {

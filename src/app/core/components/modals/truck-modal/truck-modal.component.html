@@ -237,7 +237,18 @@
           </div>
           <app-ta-input-note
             formControlName="note"
-            [isVisibleNote]="truckForm.get('note').value"
+            [isVisibleNote]="
+              truckForm.get('note').value &&
+              truckForm.get('note').value != 'null'
+                ? truckForm.get('note').value
+                : false
+            "
+            [note]="
+              truckForm.get('note').value &&
+              truckForm.get('note').value != 'null'
+                ? truckForm.get('note').value
+                : ''
+            "
           ></app-ta-input-note>
         </div>
         <!-------------------------------- Additional Tab -------------------------------->
@@ -304,21 +315,7 @@
           </div>
 
           <!-- Third Row -->
-          <div class="truck-additional-two-columns">
-            <app-ta-input-dropdown
-              formControlName="apUnit"
-              [inputConfig]="{
-                name: 'Input Dropdown',
-                type: 'text',
-                label: 'AP Unit',
-                isDropdown: true,
-                dropdownWidthClass: 'w-col-196'
-              }"
-              [options]="apUnits"
-              [activeItem]="selectedAPUnit"
-              (selectedItem)="onSelectDropdown($event, 'ap-unit')"
-            ></app-ta-input-dropdown>
-
+          <div class="truck-additional-three-columns">
             <app-ta-input
               formControlName="transmissionModel"
               [inputConfig]="{
@@ -327,10 +324,20 @@
                 label: 'Transmission Model'
               }"
             ></app-ta-input>
-          </div>
-
-          <!-- Fourth Row -->
-          <div class="truck-additional-three-columns">
+            <app-ta-input-dropdown
+              formControlName="fuelType"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Fuel Type',
+                isDropdown: true,
+                isDisabled: truckForm.get('fuelType').value,
+                dropdownWidthClass: 'w-col-134'
+              }"
+              [options]="fuelTypes"
+              [activeItem]="selectedFuelType"
+              (selectedItem)="onSelectDropdown($event, 'fuel-type')"
+            ></app-ta-input-dropdown>
             <app-ta-input
               formControlName="fuelTankSize"
               [inputConfig]="{
@@ -340,6 +347,23 @@
                 thousandSeparator: true
               }"
             ></app-ta-input>
+          </div>
+
+          <!-- Fourth Row -->
+          <div class="truck-additional-three-columns">
+            <app-ta-input-dropdown
+              formControlName="apUnit"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'AP Unit',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-164'
+              }"
+              [options]="apUnits"
+              [activeItem]="selectedAPUnit"
+              (selectedItem)="onSelectDropdown($event, 'ap-unit')"
+            ></app-ta-input-dropdown>
             <app-ta-input
               formControlName="axles"
               [inputConfig]="{

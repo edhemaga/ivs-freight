@@ -40,6 +40,8 @@ export interface CreateDriverCommand {
     perMileTeam?: number | null;
     commissionSolo?: number | null;
     commissionTeam?: number | null;
+    soloFlatRate?: number | null;
+    teamFlatRate?: number | null;
     isOwner?: boolean;
     ownerId?: number | null;
     ownerType?: OwnerType;

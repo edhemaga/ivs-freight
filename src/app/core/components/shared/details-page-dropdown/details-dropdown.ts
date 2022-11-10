@@ -10,6 +10,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { animate, style, transition, trigger, state, keyframes } from '@angular/animations';
 
 @Component({
   selector: 'app-details-page-dropdown',
@@ -17,6 +18,32 @@ import { DetailsDataService } from '../../../services/details-data/details-data.
   styleUrls: ['./details-dropdown.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations:[
+    trigger('SubtypeAnimation', [
+      state(
+        'true',
+        style({
+          height: '*',
+          overflow: 'hidden',
+          opacity: 1,
+          'padding-bottom' : '4px',
+          'padding-top' : '5px'
+        })
+      ),
+      state(
+        'false',
+        style({
+          height: '0px',
+          overflow: 'hidden',
+          'padding-bottom' : '0px',
+          'padding-top' : '0px',
+          opacity: 0,
+        })
+      ),
+      transition('false <=> true', [animate('.1s ease-in')]),
+      transition('true <=> false', [animate('.1s ease-in')]), 
+    ])
+  ]
 })
 export class DetailsDropdownComponent implements OnInit, OnChanges {
   @Input() options: any;
@@ -24,11 +51,14 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
   @Input() customClassDropDown: string;
   @Input() hasVericalDots: boolean;
   @Input() data: any;
+  @Input() leftIcon: any = false;
   @Input() public placement: string = 'bottom-right';
   @Output() dropDownActions: EventEmitter<any> = new EventEmitter();
+  @Output() openModalAction: EventEmitter<any> = new EventEmitter();
   dropContent: any[] = [];
   tooltip: any;
   dropDownActive: number = -1;
+  subtypeHovered: any = false;
 
   constructor(private DetailsDataService: DetailsDataService) {}
 
@@ -74,6 +104,11 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
   onAction(action: any, event?: any) {
     event.stopPropagation();
     event.preventDefault();
+
+    if ( action.disabled ){
+      return false;
+    }
+
     this.dropDownActions.emit({
       id: this.id,
       data: this.data,
@@ -82,4 +117,37 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
 
     this.tooltip.close();
   }
+
+  subTypeAction(actionData: any, action: any, event?: any){
+    event.stopPropagation();
+    event.preventDefault();
+
+    if ( actionData.disabled ){
+      return false;
+    }
+
+    let actionName = action.actionName;
+    this.openModalAction.emit(actionName);
+
+    this.tooltip.close();
+  }
+
+  openSubtype(indx){
+    if (this.options[indx]['openSubtype']) {
+      this.options[indx]['openSubtype'] = false;
+    } else {
+      this.options.map((item) => {
+        item['openSubtype'] = false;
+      });
+      this.options[indx]['openSubtype'] = true;
+    }
+    
+  }
+
+  dropdownClosed(){
+    this.options.map((item) => {
+      item['openSubtype'] = false;
+    });
+  }
+
 }

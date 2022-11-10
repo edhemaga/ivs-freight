@@ -1,6 +1,9 @@
 <div
   class="ta-input-arrows-container"
-  [ngClass]="{ applicant: type === 'applicant' }"
+  [ngClass]="{
+    applicant: type === 'applicant',
+    'disabled-arrow': disabledArrow
+  }"
 >
   <p
     class="m-0 ta-font-regular"

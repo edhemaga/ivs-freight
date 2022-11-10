@@ -130,7 +130,18 @@ export class SettingsInsurancepolicyComponent implements OnChanges, OnDestroy {
           svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
           show: true,
         },
-
+        {
+          title: 'border'
+        },
+        {
+          title: 'View Details',
+          name: 'view-details',
+          svg: 'assets/svg/common/ic_hazardous-info.svg',
+          show: true,
+        },
+        {
+          title: 'border'
+        },
         {
           title: 'Delete',
           name: 'delete-item',
@@ -139,6 +150,7 @@ export class SettingsInsurancepolicyComponent implements OnChanges, OnDestroy {
           svg: 'assets/svg/common/ic_trash.svg',
           danger: true,
           show: true,
+          redIcon: true,
         },
       ],
       export: true,

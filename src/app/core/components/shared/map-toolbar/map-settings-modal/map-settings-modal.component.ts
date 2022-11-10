@@ -1,9 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../../services/form/form.service';
 import { ModalService } from '../../ta-modal/modal.service';
 import { TaInputService } from '../../ta-input/ta-input.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
+import { RoutingStateService } from '../../../routing/state/routing-state/routing-state.service';
+import { UpdateMapCommand } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-map-settings-modal',
@@ -13,6 +16,7 @@ import { TaInputService } from '../../ta-input/ta-input.service';
 export class MapSettingsModalComponent implements OnInit, OnDestroy {
   public mapSettingsForm: FormGroup;
   public isFormDirty: boolean = false;
+  @Input() editData: any;
 
   public distanceTabs: { id: number; name: string; checked: boolean }[] = [
     {
@@ -59,11 +63,17 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private formService: FormService,
     private modalService: ModalService,
-    private inputService: TaInputService
+    private inputService: TaInputService,
+    private notificationService: NotificationService,
+    private routingService: RoutingStateService
   ) {}
 
   ngOnInit() {
     this.createForm();
+
+    if (this.editData?.type === 'edit') {
+      this.editMap(this.editData.id);
+    }
   }
 
   private createForm() {
@@ -88,14 +98,22 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'set-map-settings': {
-        if (this.mapSettingsForm.invalid) {
+        if (this.mapSettingsForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.mapSettingsForm);
           return;
         }
-        this.modalService.setModalSpinner({
-          action: 'set-map-settings',
-          status: true,
-        });
+
+        console.log('editData', this.editData);
+
+        if (this.editData?.type === 'edit') {
+          if (this.isFormDirty) {
+            this.updateMap(this.editData.id);
+            this.modalService.setModalSpinner({
+              action: 'set-map-settings',
+              status: true,
+            });
+          }
+        }
 
         console.log('put action set map');
 
@@ -103,6 +121,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
       }
       case 'reset-map-routing': {
         console.log('put action reset map');
+        this.resetForm();
         break;
       }
       default: {
@@ -135,6 +154,98 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  private updateMap(id: number) {
+    const form = this.mapSettingsForm.value;
+
+    const newData: UpdateMapCommand = {
+      id: id,
+      name: form.mapName
+    };
+
+    this.routingService
+      .updateMap(newData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly updated map',
+            'Success'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't update map.",
+            'Error'
+          );
+        },
+      });
+  }
+
+  private editMap(id: number) {
+    this.routingService
+      .getMapById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          this.mapSettingsForm.patchValue({
+            mapName: res.name
+          });
+          console.log('getMapById', res);
+        },
+        error: () => {
+          this.notificationService.error("Can't load map.", 'Error');
+        },
+      });
+  }
+
+  private resetForm() {
+    if (this.editData?.type === 'edit') {
+      this.editMap(this.editData.id);
+    } else {
+      this.mapSettingsForm.reset();
+      this.isFormDirty = false;
+    }
+
+    this.distanceTabs = [
+      {
+        id: 1,
+        name: 'Miles',
+        checked: false,
+      },
+      {
+        id: 2,
+        name: 'Km',
+        checked: false,
+      },
+    ];
+  
+    this.addressTabs = [
+      {
+        id: 1,
+        name: 'City',
+        checked: false,
+      },
+      {
+        id: 2,
+        name: 'Address',
+        checked: false,
+      },
+    ];
+  
+    this.borderTabs = [
+      {
+        id: 1,
+        name: 'Open Border',
+        checked: false,
+      },
+      {
+        id: 2,
+        name: 'Closed Border',
+        checked: false,
+      },
+    ];
   }
 
   ngOnDestroy(): void {

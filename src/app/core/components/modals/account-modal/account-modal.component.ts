@@ -105,15 +105,13 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       }
       case 'save': {
         // If Form not valid
-        if (this.accountForm.invalid) {
+        if (this.accountForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.accountForm);
           return;
         }
         if (this.editData) {
-          if (this.isFormDirty) {
-            this.updateCompanyAccount(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateCompanyAccount(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addCompanyAccount();
           this.modalService.setModalSpinner({ action: null, status: true });

@@ -14,6 +14,6 @@
 export interface LoadBillingAdditionalCommand { 
     id?: number | null;
     additionalBillingType?: number;
-    rate?: number;
+    rate?: number | null;
 }
 

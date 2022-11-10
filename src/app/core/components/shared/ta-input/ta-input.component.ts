@@ -63,6 +63,8 @@ export class TaInputComponent
   @Output('commandEvent') commandEvent: EventEmitter<any> =
     new EventEmitter<any>();
 
+  @Output('clear') clearInputEvent: EventEmitter<boolean> = new EventEmitter<any>();
+
   public focusInput: boolean = false;
   public touchedInput: boolean = false;
 
@@ -443,6 +445,7 @@ export class TaInputComponent
       }
 
       this.inputService.onClearInput$.next(true);
+      this.clearInputEvent.emit(true)
     }
   }
 
@@ -1137,7 +1140,11 @@ export class TaInputComponent
       }
     }
 
-    if (['per stop'].includes(this.inputConfig.name.toLowerCase())) {
+    if (
+      ['per stop', 'flat rate', 'per load'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
       if (
         this.inputService
           .getInputRegexPattern('per stop')

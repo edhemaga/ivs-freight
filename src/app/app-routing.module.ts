@@ -40,6 +40,7 @@ import { RoadsideInactiveResolver } from './core/components/safety/violation/sta
 import { AccidentActiveResolver } from './core/components/safety/accident/state/accident-state/accident-active/accident-active.resolver';
 import { AccidentInactiveResolver } from './core/components/safety/accident/state/accident-state/accident-inactive/accident-inactive.resolver';
 import { AccidentNonReportedResolver } from './core/components/safety/accident/state/accident-state/accident-non-reported/accident-non-reported.resolver';
+import { ApplicantResolver } from './core/components/applicant/state/resolver/applicant.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -94,9 +95,7 @@ const routes: Routes = [
   {
     path: 'user',
     loadChildren: () =>
-      import('./core/components/user/user.module').then(
-        (m) => m.UserModule
-      ),
+      import('./core/components/user/user.module').then((m) => m.UserModule),
     data: { title: 'User' },
     resolve: {
       user: UserResolver,
@@ -258,7 +257,7 @@ const routes: Routes = [
     resolve: {
       accidentActive: AccidentActiveResolver,
       accidentInactive: AccidentInactiveResolver,
-      accidentNonReported: AccidentNonReportedResolver
+      accidentNonReported: AccidentNonReportedResolver,
     },
   },
   {
@@ -285,6 +284,7 @@ const routes: Routes = [
         (m) => m.ApplicantModule
       ),
     canActivate: [AuthGuard],
+    resolve: { applicant: ApplicantResolver },
   },
   {
     path: 'medical-certificate/:id',
@@ -320,7 +320,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'sph-form',
+    path: 'sph-form/1',
     loadChildren: () =>
       import(
         './core/components/applicant/applicant-tabs/sph/sph-form/sph-form.module'

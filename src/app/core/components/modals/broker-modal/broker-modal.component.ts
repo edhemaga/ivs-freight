@@ -345,18 +345,16 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       } else {
         // Save & Update
         if (data.action === 'save') {
-          if (this.brokerForm.invalid) {
+          if (this.brokerForm.invalid || !this.isFormDirty) {
             this.inputService.markInvalid(this.brokerForm);
             return;
           }
           if (this.editData) {
-            if (this.isFormDirty) {
-              this.updateBroker(this.editData.id);
-              this.modalService.setModalSpinner({
-                action: null,
-                status: true,
-              });
-            }
+            this.updateBroker(this.editData.id);
+            this.modalService.setModalSpinner({
+              action: null,
+              status: true,
+            });
           } else {
             this.addBroker();
             this.modalService.setModalSpinner({
@@ -864,6 +862,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (reasponse: BrokerResponse) => {
+          console.log(reasponse);
           this.brokerForm.patchValue({
             businessName: reasponse.businessName,
             dbaName: reasponse.dbaName,
@@ -906,7 +905,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 ? convertNumberInThousandSep(reasponse.creditLimit)
                 : null,
             availableCredit: reasponse.availableCredit,
-            payTerm: reasponse.payTerm.name ? reasponse.payTerm.name : null,
+            payTerm: reasponse.payTerm ? reasponse.payTerm.name : null,
             note: reasponse.note,
             ban: reasponse.ban,
             dnu: reasponse.dnu,

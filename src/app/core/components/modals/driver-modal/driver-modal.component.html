@@ -142,7 +142,7 @@
           <!-- Payroll -->
           <app-ta-custom-card
             [cardName]="'Payroll'"
-            [isCardOpen]="true && !driverForm.get('isOwner').value"
+            [isCardOpen]="!driverForm.get('isOwner').value"
             [animationMarginParams]="{
               marginTop: '18px',
               marginBottom: '22px'
@@ -417,6 +417,71 @@
               </div>
             </div>
 
+            <!--Flat Rate -->
+            <div
+              *ngIf="
+                selectedPayType?.name.toLowerCase() === 'flat rate' &&
+                !driverForm.get('isOwner').value
+              "
+              class="row"
+            >
+              <div
+                *ngIf="
+                  (this.driverForm.get('soloDriver').value &&
+                    fleetType === 'Combined') ||
+                  fleetType === 'Solo'
+                "
+                [ngClass]="
+                  fleetType === 'Combined' &&
+                  this.driverForm.get('teamDriver').value
+                    ? 'col-6'
+                    : 'col-12'
+                "
+              >
+                <app-ta-input
+                  formControlName="soloFlatRate"
+                  [inputConfig]="{
+                    name: 'Flat Rate',
+                    label: 'Solo Rate',
+                    type: 'text',
+                    placeholderIcon: 'dollar',
+                    customClass: 'dollar-placeholderIcon',
+                    thousandSeparator: true,
+                    isRequired: true,
+                    min: 0,
+                    max: 5000
+                  }"
+                ></app-ta-input>
+              </div>
+              <div
+                *ngIf="
+                  (this.driverForm.get('teamDriver').value &&
+                    fleetType === 'Combined') ||
+                  fleetType === 'Team'
+                "
+                [ngClass]="
+                  fleetType === 'Combined' &&
+                  this.driverForm.get('soloDriver').value
+                    ? 'col-6'
+                    : 'col-12'
+                "
+              >
+                <app-ta-input
+                  formControlName="teamFlatRate"
+                  [inputConfig]="{
+                    name: 'Flat Rate',
+                    label: 'Team Rate',
+                    type: 'text',
+                    placeholderIcon: 'dollar',
+                    customClass: 'dollar-placeholderIcon',
+                    thousandSeparator: true,
+                    isRequired: true,
+                    min: 0,
+                    max: 5000
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
             <!-- Bank -->
             <div class="custom-bank-row custom-bank-row-driver">
               <div class="bank-field">
@@ -642,6 +707,45 @@
                 [files]="documents"
                 [size]="'medium'"
                 (onFileEvent)="onFilesEvent($event)"
+                [hasTag]="true"
+                [tags]="[
+                  {
+                    name: 'No Tag',
+                    checked: true
+                  },
+                  {
+                    name: 'HOS Agreement',
+                    checked: false
+                  },
+                  {
+                    name: 'Unsafe Driving Agreement',
+                    checked: false
+                  },
+                  {
+                    name: 'Maintenance Agreement',
+                    checked: false
+                  },
+                  {
+                    name: 'Application',
+                    checked: false
+                  },
+                  {
+                    name: 'MVR Auth',
+                    checked: false
+                  },
+                  {
+                    name: 'PSP Auth',
+                    checked: false
+                  },
+                  {
+                    name: 'HOS Rules',
+                    checked: false
+                  },
+                  {
+                    name: 'SPH Auth',
+                    checked: false
+                  }
+                ]"
               ></app-ta-upload-files>
             </app-ta-custom-card>
           </div>
@@ -664,8 +768,7 @@
                   isRequired: true,
                   textTransform: 'capitalize',
                   minLength: 2,
-                  maxLength: 24,
-                  customClass: 'line-input-26-in-card'
+                  maxLength: 24
                 }"
               ></app-ta-input>
               <app-ta-input
@@ -677,8 +780,7 @@
                   isRequired: true,
                   placeholderIcon: 'phone',
                   mask: '(000) 000-0000',
-                  maxLength: 14,
-                  customClass: 'line-input-26-in-card'
+                  maxLength: 14
                 }"
               ></app-ta-input>
               <app-ta-input
@@ -689,8 +791,7 @@
                   label: 'Relationship',
                   textTransform: 'capitalize',
                   minLength: 2,
-                  maxLength: 24,
-                  customClass: 'line-input-26-in-card'
+                  maxLength: 24
                 }"
               ></app-ta-input>
             </div>
@@ -698,8 +799,18 @@
           <!-- Note -->
           <app-ta-input-note
             formControlName="note"
-            [isVisibleNote]="driverForm.get('note').value"
-            [note]="driverForm.get('note').value"
+            [isVisibleNote]="
+              driverForm.get('note').value &&
+              driverForm.get('note').value != 'null'
+                ? driverForm.get('note').value
+                : false
+            "
+            [note]="
+              driverForm.get('note').value &&
+              driverForm.get('note').value != 'null'
+                ? driverForm.get('note').value
+                : ''
+            "
           ></app-ta-input-note>
         </div>
         <!-------------------------------- Additional Tab -------------------------------->
@@ -709,8 +820,8 @@
             [isCardOpen]="true"
           >
             <app-ta-logo-change
-              [imageUrl]="this.driverForm.get('avatar').value"
               [customClass]="'modal-container-M'"
+              [imageUrl]="this.driverForm.get('avatar').value"
               (validationEvent)="onImageValidation($event)"
               (base64ImageEvent)="onUploadImage($event)"
             ></app-ta-logo-change>

@@ -291,10 +291,11 @@
                       </div>
                       <div class="icon-box dots">
                         <app-details-page-dropdown
+                          (click)="toggleDropdownActions(item)"
                           [options]="dropdownOptions.actions"
                           [id]="item.id"
                           [data]="item"
-                          [placement]="'bottom-right'"
+                          [placement]="  i == 2 ? 'bottom-right' : 'right-top right-bottom' "
                           [hasVericalDots]="true"
                           (dropDownActions)="dropAct($event)"
                           [customClassDropDown]="'drop-down-details-single'"

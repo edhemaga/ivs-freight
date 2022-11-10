@@ -66,6 +66,9 @@ export class TaModalComponent implements OnInit, OnDestroy {
   @Input() confirmationData: any;
   @Input() headerSvg: string;
   @Input() saveAndAddNew: boolean;
+  @Input() customTextSaveAndAddNew: string;
+  @Input() applicantText: boolean;
+  @Input() profileUpdateText: boolean;
   @Input() customClass: string;
   @Input() isModalValid: boolean;
   @Input() disableFooter: boolean;
@@ -395,7 +398,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     this.onTabHeaderChange.emit(event);
   }
 
-  public removeSelections(e){
+  public removeSelections(e) {
     let selection = window.getSelection();
     selection.removeAllRanges();
   }

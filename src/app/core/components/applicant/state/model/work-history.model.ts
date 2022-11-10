@@ -1,6 +1,6 @@
 export interface WorkHistoryModel {
   id?: number;
-  applicantId: string;
+  applicantId?: string;
   employer: string;
   jobDescription: string;
   fromDate: string;
@@ -20,6 +20,7 @@ export interface WorkHistoryModel {
   reasonForLeaving: string;
   accountForPeriod: string;
   isEditingWorkHistory: boolean;
+  workExperienceItemReview: any;
 }
 
 export interface AnotherClassOfEquipmentModel {

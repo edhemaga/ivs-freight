@@ -7,6 +7,7 @@ import {
   ChangeDetectorRef,
   HostListener,
   ElementRef,
+  ViewChildren,
 } from '@angular/core';
 import {
   CdkDragDrop,
@@ -27,6 +28,11 @@ import {
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { ModalService } from './../../shared/ta-modal/modal.service';
 import { distinctUntilChanged, Subject, takeUntil, filter } from 'rxjs';
+import { RoutingStateService } from '../state/routing-state/routing-state.service';
+import { GetMapListResponse, GetRouteListResponse } from 'appcoretruckassist';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { LongLat } from '../../../../../../appcoretruckassist/model/longLat';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 declare var google: any;
 declare const geoXML3: any;
@@ -45,6 +51,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   @ViewChild('mapToolbar') mapToolbar: any;
   @ViewChild('t2') t2: any;
   @ViewChild('inputAddress') inputAddress: any;
+  @ViewChildren('dropdownElement') dropdownElement: any;
   dropdownWidth: string = 'w-col-229';
 
   @HostListener('mousemove', ['$event']) onMouseOver(event) {
@@ -199,20 +206,81 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
   selectedTab: string = 'map1';
   selectedMapIndex: number = 0;
-  tableOptions: any = {};
 
-  tableData: any[] = [];
+  //tableOptions: any = {};
+  tableOptions: any = {
+    disabledMutedStyle: null,
+    toolbarActions: {
+      hideLocationFilter: true,
+      hideViewMode: true,
+      showMapView: false,
+    },
+    config: {
+      showSort: true,
+      sortBy: '',
+      sortDirection: '',
+      disabledColumns: [0],
+      minWidth: 60,
+    },
+  };
+
+  //tableData: any[] = [];
+  tableData: any[] = [
+    {
+      title: 'Map 1',
+      field: 'map1',
+      length: 0,
+      gridNameTitle: 'Routing',
+      distanceUnit: 'mi', // mi or km
+      borderType: 'open', // open or closed
+      addressType: 'city', // city or address,
+      routes: [],
+    },
+    {
+      title: 'Map 2',
+      field: 'map2',
+      length: 0,
+      gridNameTitle: 'Routing',
+      distanceUnit: 'mi', // mi or km
+      borderType: 'open', // open or closed
+      addressType: 'city', // city or address,
+      routes: [],
+    },
+    {
+      title: 'Map 3',
+      field: 'map3',
+      length: 0,
+      gridNameTitle: 'Routing',
+      distanceUnit: 'mi', // mi or km
+      borderType: 'open', // open or closed
+      addressType: 'city', // city or address,
+      routes: [],
+    },
+    {
+      title: 'Map 4',
+      field: 'map4',
+      length: 0,
+      gridNameTitle: 'Routing',
+      distanceUnit: 'mi', // mi or km
+      borderType: 'open', // open or closed
+      addressType: 'city', // city or address,
+      routes: [],
+    },
+  ];
 
   dropdownActions: any[] = [
     {
-      title: 'Settings',
+      title: 'Edit',
       name: 'open-settings',
       class: 'regular-text',
       contentType: 'settings',
       show: true,
-      svg: 'assets/svg/common/ic_settings.svg',
+      svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
     },
     {
+      title: 'border',
+    },
+    /*{
       title: 'Report',
       name: 'open-report',
       class: 'regular-text',
@@ -221,14 +289,16 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       svg: 'assets/svg/common/routing/ic_route_report.svg',
       showArrow: true,
       openPopover: true,
-    },
+    },*/
     {
-      title: 'Print',
-      name: 'print-route',
-      class: 'regular-text',
-      contentType: 'print',
-      show: true,
-      svg: 'assets/svg/common/ic_print.svg',
+      title: 'Report',
+      name: 'open-report',
+      svg: 'assets/svg/common/dropdown-arrow.svg',
+      subType: [
+        { subName: 'Detailed Route', actionName: 'Detailed Route' },
+        { subName: 'State / Country', actionName: 'State / Country' },
+        { subName: 'Toll Calculator', actionName: 'Toll Calculator' },
+      ],
     },
     {
       title: 'Duplicate',
@@ -247,12 +317,33 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       svg: 'assets/svg/common/routing/ic_route_reverse.svg',
     },
     {
-      title: 'Clear All',
+      title: 'Clear Stops',
       name: 'clear-route-stops',
       class: 'regular-text',
       contentType: 'clear',
       show: true,
       svg: 'assets/svg/common/routing/ic_route_clear.svg',
+      redIcon: true,
+    },
+    {
+      title: 'border',
+    },
+    {
+      title: 'Share',
+      name: 'share',
+      svg: 'assets/svg/common/share-icon.svg',
+      show: true,
+    },
+    {
+      title: 'Print',
+      name: 'print-route',
+      class: 'regular-text',
+      contentType: 'print',
+      show: true,
+      svg: 'assets/svg/common/ic_print.svg',
+    },
+    {
+      title: 'border',
     },
     {
       title: 'Delete',
@@ -264,6 +355,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       show: true,
       danger: true,
       svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
+      redIcon: true,
     },
   ];
 
@@ -435,28 +527,38 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   changedFreeMoveTime: any;
 
   mapZoomTime: number = 0;
+  mapList: any[] = [];
+
+  routePolylines: any = {};
 
   constructor(
     private mapsService: MapsService,
     private formBuilder: FormBuilder,
     private ref: ChangeDetectorRef,
     private modalService: ModalService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private routingService: RoutingStateService,
+    private DetailsDataService: DetailsDataService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
-    this.initTableOptions();
+    //this.initTableOptions();
 
     this.addressForm = this.formBuilder.group({
       address: [null, [...addressValidation]],
     });
 
-    this.initAddressFields();
+    //this.initAddressFields();
 
-    this.tableData[this.selectedMapIndex].routes.map((item, index) => {
-      this.calculateDistanceBetweenStops(index);
-      this.calculateRouteWidth(item);
-    });
+    var companyUserId = JSON.parse(localStorage.getItem('user')).companyUserId;
+    console.log('companyUserId', companyUserId);
+    this.getMapList(companyUserId, 1, 4);
+
+    // this.tableData[this.selectedMapIndex].routes.map((item, index) => {
+    //   this.calculateDistanceBetweenStops(index);
+    //   this.calculateRouteWidth(item);
+    // });
 
     // Confirmation Subscribe
     this.confirmationService.confirmationData$
@@ -466,7 +568,18 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
           switch (res.type) {
             case 'delete': {
               if (res.template === 'route') {
-                this.deleteRoute(res.id);
+                //this.deleteRoute(res.id);
+                this.routingService
+                  .deleteRouteById(res.id)
+                  .pipe(takeUntil(this.destroy$))
+                  .subscribe({
+                    next: () => {
+                      console.log('deleteRouteById success');
+                    },
+                    error: () => {
+                      console.log('deleteRouteById error');
+                    },
+                  });
               }
               break;
             }
@@ -475,6 +588,25 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             }
           }
         },
+      });
+
+    this.routingService.currentUpdatedData
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        console.log('updateMap res', res);
+
+        if (res.type == 'map') {
+          this.updateMapData(res.id, res.data);
+        } else if (res.type == 'route') {
+          this.addRoute(res.mapId, res.data);
+        } else if (res.type == 'edit-route') {
+          this.getRouteList(this.tableData[this.selectedMapIndex].id, 1, 8);
+        } else if (res.type == 'delete-route') {
+          console.log('delete-route');
+          this.getRouteList(this.tableData[this.selectedMapIndex].id, 1, 8);
+        } else if (res.type == 'delete-stop') {
+          this.getRouteList(this.tableData[this.selectedMapIndex].id, 1, 8);
+        }
       });
   }
 
@@ -796,6 +928,59 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     event.preventDefault();
 
+    this.routingService
+      .deleteStopById(route.stops[index].id, route.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          console.log('deleteStopById success');
+
+          if ( route.stops.length > 1 ) {
+            this.getRouteShape(route);
+          } else {
+            var stopArr = [];
+            route.stops.map((stop) => {
+              var stopObj = <any>{
+                id: stop.id ? stop.id : 0,
+                address: stop.address,
+                leg: null,
+                total: null,
+                longitude: stop.long,
+                latitude: stop.lat,
+              };
+
+              stopArr.push(stopObj);
+            });
+            
+            var updateRouteObj = {
+              id: route.id,
+              name: route.name,
+              shape: null,
+              stops: stopArr,
+            };
+            console.log('updateRouteObj', updateRouteObj);
+    
+            this.routingService
+              .updateRoute(updateRouteObj)
+              .pipe(takeUntil(this.destroy$))
+              .subscribe({
+                next: () => {
+                  this.notificationService.success(
+                    'Successfuly updated route.',
+                    'Success'
+                  );
+                },
+                error: () => {
+                  this.notificationService.error("Can't update route.", 'Error');
+                },
+              });
+          }
+        },
+        error: () => {
+          console.log('deleteStopById error');
+        },
+      });
+
     const routeIndex = this.getRouteIndexById(route.id);
 
     route.stops.splice(index, 1);
@@ -804,6 +989,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     this.calculateRouteWidth(route);
 
     this.ref.detectChanges();
+    this.dropdownElement._results.map((item) => {
+      if (item.tooltip) {
+        item.tooltip.close();
+      }
+    });
   }
 
   zoomChange(event) {
@@ -972,16 +1162,65 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
           event.address.state +
           ' ' +
           (event.address.zipCode ? event.address.zipCode : ''),
-        leg: '60.6',
-        total: '60.6',
-        time: '01:15',
-        totalTime: '01:15',
+        leg: null,
+        total: null,
+        time: null,
+        totalTime: null,
         empty: this.addressFlag == 'Empty' ? true : false,
         lat: event.longLat.latitude,
         long: event.longLat.longitude,
       });
 
+      console.log('stop latitude', event.longLat.latitude);
+      console.log('stop longitude', event.longLat.longitude);
+
       this.insertBeforeActive = -1;
+
+      if (
+        this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex]
+          .stops.length < 2
+      ) {
+        var stopArr = [];
+        this.tableData[this.selectedMapIndex].routes[
+          this.focusedRouteIndex
+        ].stops.map((stop) => {
+          var stopObj = <any>{
+            id: stop.id ? stop.id : 0,
+            address: stop.address,
+            leg: null,
+            total: null,
+            longitude: stop.long,
+            latitude: stop.lat,
+          };
+
+          stopArr.push(stopObj);
+        });
+
+        var updateRouteObj = {
+          id: route.id,
+          name: route.name,
+          shape: route.shape ? route.shape : null,
+          stops: stopArr,
+        };
+        console.log('updateRouteObj', updateRouteObj);
+
+        this.routingService
+          .updateRoute(updateRouteObj)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                'Successfuly updated route.',
+                'Success'
+              );
+            },
+            error: () => {
+              this.notificationService.error("Can't update route.", 'Error');
+            },
+          });
+      } else {
+        this.getRouteShape(route);
+      }
 
       this.calculateDistanceBetweenStops(index);
       this.calculateRouteWidth(route);
@@ -1170,22 +1409,36 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     }
   }
 
-  callDropDownAction(event, action: any) {
-    event.stopPropagation();
-    event.preventDefault();
+  callDropDownAction(event, action?: any) {
+    //event.stopPropagation();
+    //event.preventDefault();
+    let currentId = 0;
+    let actionName = '';
+
+    if (action) {
+      currentId = this.dropDownActive;
+      actionName = action.name;
+    } else {
+      currentId = event.id;
+      actionName = event.type;
+    }
 
     // Edit Call
-    if (action.name === 'duplicate-route') {
-      this.duplicateRoute(this.dropDownActive);
-    } else if (action.name === 'reverse-route-stops') {
-      this.reverseRouteStops(this.dropDownActive);
-    } else if (action.name === 'clear-route-stops') {
-      this.clearRouteStops(this.dropDownActive);
-    } else if (action.name === 'delete') {
+    if (actionName === 'duplicate-route') {
+      this.duplicateRoute(currentId);
+    } else if (actionName === 'reverse-route-stops') {
+      this.reverseRouteStops(currentId);
+    } else if (actionName === 'clear-route-stops') {
+      this.clearRouteStops(currentId);
+    } else if (actionName === 'delete') {
       var routeObj = {
-        id: this.dropDownActive,
+        id: currentId,
         type: 'delete-item',
       };
+
+      //this.routingService.deleteRouteById(this.dropDownActive); // ne radi
+
+      console.log('delete route', currentId);
 
       this.modalService.openModal(
         ConfirmationModalComponent,
@@ -1196,8 +1449,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
           type: 'delete',
         }
       );
-    } else if (action.name === 'open-settings') {
-      let route = this.getRouteById(this.dropDownActive);
+    } else if (actionName === 'open-settings') {
+      let route = this.getRouteById(currentId);
       this.mapToolbar.editRoute(route);
     }
   }
@@ -1568,48 +1821,66 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       },
     };
 
-    this.tableData = [
-      {
-        title: 'Map 1',
-        field: 'map1',
+    this.tableData = this.mapList.map((map, index) => {
+      var mapObj = {
+        id: map.id,
+        title: map.name,
+        field: 'map' + (index + 1),
         length: 0,
         gridNameTitle: 'Routing',
         distanceUnit: 'mi', // mi or km
         borderType: 'open', // open or closed
         addressType: 'city', // city or address,
         routes: [],
-      },
-      {
-        title: 'Map 2',
-        field: 'map2',
-        length: 0,
-        gridNameTitle: 'Routing',
-        distanceUnit: 'mi', // mi or km
-        borderType: 'open', // open or closed
-        addressType: 'city', // city or address,
-        routes: [],
-      },
-      {
-        title: 'Map 3',
-        field: 'map3',
-        length: 0,
-        gridNameTitle: 'Routing',
-        distanceUnit: 'mi', // mi or km
-        borderType: 'open', // open or closed
-        addressType: 'city', // city or address,
-        routes: [],
-      },
-      {
-        title: 'Map 4',
-        field: 'map4',
-        length: 0,
-        gridNameTitle: 'Routing',
-        distanceUnit: 'mi', // mi or km
-        borderType: 'open', // open or closed
-        addressType: 'city', // city or address,
-        routes: [],
-      },
-    ];
+      };
+
+      return mapObj;
+    });
+
+    console.log('tableData', this.tableData);
+
+    // this.tableData = [
+    //   {
+    //     title: 'Map 1',
+    //     field: 'map1',
+    //     length: 0,
+    //     gridNameTitle: 'Routing',
+    //     distanceUnit: 'mi', // mi or km
+    //     borderType: 'open', // open or closed
+    //     addressType: 'city', // city or address,
+    //     routes: [],
+    //   },
+    //   {
+    //     title: 'Map 2',
+    //     field: 'map2',
+    //     length: 0,
+    //     gridNameTitle: 'Routing',
+    //     distanceUnit: 'mi', // mi or km
+    //     borderType: 'open', // open or closed
+    //     addressType: 'city', // city or address,
+    //     routes: [],
+    //   },
+    //   {
+    //     title: 'Map 3',
+    //     field: 'map3',
+    //     length: 0,
+    //     gridNameTitle: 'Routing',
+    //     distanceUnit: 'mi', // mi or km
+    //     borderType: 'open', // open or closed
+    //     addressType: 'city', // city or address,
+    //     routes: [],
+    //   },
+    //   {
+    //     title: 'Map 4',
+    //     field: 'map4',
+    //     length: 0,
+    //     gridNameTitle: 'Routing',
+    //     distanceUnit: 'mi', // mi or km
+    //     borderType: 'open', // open or closed
+    //     addressType: 'city', // city or address,
+    //     routes: [],
+    //   },
+    // ];
   }
 
   zoomMap(zoom) {
@@ -1747,32 +2018,32 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     event.preventDefault();
 
+    this.DetailsDataService.setNewData(route);
+
     this.dropdownActions.map((action, index) => {
       if (
-        [
-          'open-report',
-          'print-route',
-          'duplicate-route',
-          'reverse-route-stops',
-          'clear-route-stops',
-        ].includes(action.name)
+        route.stops.length == 0 &&
+        ['open-report', 'reverse-route-stops', 'clear-route-stops'].includes(
+          action.name
+        )
       ) {
-        if (route.stops.length) {
-          action.disabled = false;
-        } else {
-          action.disabled = true;
-        }
+        action.disabled = true;
+      } else if (
+        route.stops.length == 1 &&
+        ['open-report', 'reverse-route-stops'].includes(action.name)
+      ) {
+        action.disabled = true;
+      } else {
+        action.disabled = false;
+      }
+
+      if (
+        this.tableData[this.selectedMapIndex].routes.length == 8 &&
+        ['duplicate-route'].includes(action.name)
+      ) {
+        action.disabled = true;
       }
     });
-
-    this.tooltip = tooltip;
-    if (tooltip.isOpen()) {
-      tooltip.close();
-    } else {
-      tooltip.open({ data: this.dropdownActions });
-    }
-
-    this.dropDownActive = tooltip.isOpen() ? route.id : -1;
   }
 
   hoverRoute(route) {
@@ -2333,6 +2604,314 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
     if (event) {
       this.addNewStop(event);
+    }
+  }
+
+  getMapList(
+    companyUserId?: number,
+    pageIndex?: number,
+    pageSize?: number,
+    companyId?: number,
+    sort?: string,
+    search?: string,
+    search1?: string,
+    search2?: string
+  ) {
+    this.routingService
+      .getMapList(
+        companyUserId,
+        pageIndex,
+        pageSize,
+        companyId,
+        sort,
+        search,
+        search1,
+        search2
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((maps: GetMapListResponse | any) => {
+        console.log('getMapList response', maps);
+
+        this.mapList = maps.pagination.data;
+        this.initTableOptions();
+
+        this.mapList.map((item) => {
+          this.getRouteList(item.id, 1, 8);
+        });
+      });
+  }
+
+  getRouteList(
+    mapId?: number,
+    pageIndex?: number,
+    pageSize?: number,
+    companyId?: number,
+    sort?: string,
+    search?: string,
+    search1?: string,
+    search2?: string
+  ) {
+    this.routingService
+      .getRouteList(
+        mapId,
+        pageIndex,
+        pageSize,
+        companyId,
+        sort,
+        search,
+        search1,
+        search2
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((routes: GetRouteListResponse) => {
+        console.log('getRouteList response', routes);
+
+        const mapIndex = this.tableData.findIndex((item) => {
+          console.log('mapId', item.id, mapId);
+          return item.id === mapId;
+        });
+
+        var newRoutes = [];
+        this.tableData[mapIndex].routes = [];
+
+        var routesArr = routes.pagination.data;
+        routesArr.map((route, index) => {
+          var stopsArr = [];
+          route.stops.map((stop) => {
+            console.log('stop', stop);
+
+            var stopObj = {
+              id: stop.id,
+              address: stop.address,
+              cityAddress:
+                stop.address.city +
+                ', ' +
+                stop.address.state +
+                ' ' +
+                (stop.address.zipCode ? stop.address.zipCode : ''),
+              lat: stop.latitude,
+              long: stop.longitude,
+              leg: stop.leg,
+              total: stop.total,
+            };
+
+            stopsArr.push(stopObj);
+          });
+
+          var newRoute = {
+            id: route.id,
+            name: route.name,
+            hidden: false,
+            expanded: false,
+            routeType: 'Practical',
+            truckId: '',
+            stopTime: '',
+            mpg: '',
+            fuelPrice: '',
+            stops: stopsArr,
+            color: this.findRouteColor(),
+            isFocused: this.focusedRouteIndex == index
+          };
+          console.log('newRoute', newRoute);
+
+          this.tableData[mapIndex].routes.push(newRoute);
+        });
+        console.log('getRouteList routesArr', routesArr);
+        console.log('getRouteList newRoutes', newRoutes);
+
+        //this.tableData[mapIndex].routes = newRoutes;
+        console.log('map routes', this.tableData[mapIndex], mapIndex);
+
+        this.tableData[mapIndex].routes.map((item, index) => {
+          //this.calculateDistanceBetweenStops(index);
+          this.calculateRouteWidth(item);
+          if (item.stops?.length > 1) {
+            this.decodeRouteShape(item);
+          } else {
+            this.deleteRouteLine(item);
+          }
+        });
+
+        this.initAddressFields();
+      });
+  }
+
+  updateMapData(dataId: number, updatedData: any) {
+    console.log('updateMapData', updatedData);
+    this.tableData = this.tableData.map((data: any) => {
+      if (data.id === dataId) {
+        data.title = updatedData.name;
+        console.log('updateMapData name', data.name);
+      }
+
+      return data;
+    });
+
+    console.log('tableData', this.tableData);
+    this.mapToolbar.getSelectedTabTableData();
+  }
+
+  addRoute(mapId: number, updatedData: any) {
+    this.addressInputs.push(
+      this.formBuilder.group({
+        address: [],
+      })
+    );
+
+    var newRoute = {
+      id: updatedData.id,
+      name: updatedData.name,
+      hidden: false,
+      expanded: false,
+      routeType: 'Practical',
+      truckId: '',
+      stopTime: '',
+      mpg: '',
+      fuelPrice: '',
+      stops: [],
+      color: this.findRouteColor(),
+    };
+
+    console.log('updatedData', updatedData);
+
+    this.getRouteList(mapId, 1, 8);
+
+    // if (this.tableData[this.selectedMapIndex].routes.length < 8) {
+    //   this.tableData[this.selectedMapIndex].routes.push(newRoute);
+    // }
+
+    this.showHideDuplicate();
+
+    // this.calculateRouteWidth(
+    //   this.tableData[this.selectedMapIndex].routes[
+    //     this.tableData[this.selectedMapIndex].routes.length - 1
+    //   ]
+    // );
+
+    this.tableData[this.selectedMapIndex].length =
+      this.tableData[this.selectedMapIndex].routes.length;
+  }
+
+  decodeRouteShape(route) {
+    this.routingService
+      .decodeRouteShape(route.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          console.log('decodeRouteShape success', res);
+
+          const polyLineCoordinates = [];
+
+          if ( this.routePolylines[route.id] ) {
+            this.routePolylines[route.id].setMap(null);
+          }
+
+          res.map((item) => {
+            var coordinates = { lat: item.latitude, lng: item.longitude };
+            polyLineCoordinates.push(coordinates);
+          });
+
+          //const polyLineCoordinates = res;
+          this.routePolylines[route.id] = new google.maps.Polyline({
+            path: polyLineCoordinates,
+            geodesic: true,
+            strokeColor: route.color,
+            strokeOpacity: 1.0,
+            strokeWeight: 6,
+          });
+
+          this.routePolylines[route.id].setMap(this.agmMap);
+        },
+        error: () => {
+          console.log('decodeRouteShape error');
+        },
+      });
+  }
+
+  getRouteShape(route) {
+    var stopsLatLong = [];
+    var stopArr = [];
+    route.stops.map((stop) => {
+      stopsLatLong.push({ latitude: stop.lat, longitude: stop.long });
+
+      var stopObj = <any>{
+        id: stop.id ? stop.id : 0,
+        address: stop.address,
+        leg: null,
+        total: null,
+        longitude: stop.long,
+        latitude: stop.lat,
+      };
+
+      stopArr.push(stopObj);
+    });
+
+    this.routingService
+      .getRouteShape(
+        JSON.stringify(stopsLatLong)
+        // truckId,
+        // trailerId,
+        // height,
+        // loadWeight,
+        // hazMat
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((routing) => {
+        console.log('getRouteList apiRoutingGet', routing);
+
+        var totalMiles = 0;
+        var totalTime = 0;
+        var totalPrice = 0;
+        routing.legs.map((leg, index) => {
+          totalMiles = totalMiles + (leg.miles ? leg.miles : 0);
+          totalPrice = totalPrice + (leg.cost ? leg.cost : 0);
+          totalTime =
+            totalTime + (leg.minutes ? leg.hours * 60 + leg.minutes : 0);
+
+          console.log('totalMiles', totalMiles);
+          console.log('leg.miles', leg.miles);
+
+          const minutes = totalTime % 60;
+          const hours = Math.floor(totalTime / 60);
+
+          stopArr[index + 1].leg = leg.miles;
+          stopArr[index + 1].total = totalMiles;
+          stopArr[index + 1].legPrice = leg.cost;
+          stopArr[index + 1].totalPrice = totalPrice;
+          stopArr[index + 1].time = leg.hours + ':' + leg.minutes;
+          stopArr[index + 1].totalTime = hours + ':' + minutes;
+        });
+
+        var updateRouteObj = {
+          id: route.id,
+          name: route.name,
+          shape: routing.shape,
+          stops: stopArr,
+        };
+        console.log('updateRouteObj', updateRouteObj);
+
+        this.routingService
+          .updateRoute(updateRouteObj)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                'Successfuly updated route.',
+                'Success'
+              );
+            },
+            error: () => {
+              this.notificationService.error("Can't update route.", 'Error');
+            },
+          });
+      });
+  }
+
+  deleteRouteLine(route) {
+    console.log('deleteRouteLine', route);
+    if ( this.routePolylines[route.id] ) {
+      this.routePolylines[route.id].setMap(null);
+      this.routePolylines[route.id] = null;
     }
   }
 }

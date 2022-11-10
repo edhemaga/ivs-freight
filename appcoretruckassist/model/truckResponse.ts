@@ -31,6 +31,7 @@ export interface TruckResponse {
     truckType?: TruckTypeResponse;
     vin?: string | null;
     truckMake?: TruckMakeResponse;
+    truckLength?: EnumValue;
     model?: string | null;
     year?: number;
     color?: ColorResponse;
@@ -49,6 +50,7 @@ export interface TruckResponse {
     frontWheels?: EnumValue;
     rearWheels?: EnumValue;
     transmissionModel?: string | null;
+    fuelType?: EnumValue;
     shifter?: EnumValue;
     axles?: number | null;
     insurancePolicy?: string | null;

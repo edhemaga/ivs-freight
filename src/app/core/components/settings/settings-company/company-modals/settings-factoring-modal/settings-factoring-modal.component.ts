@@ -85,15 +85,13 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
       }
       case 'save': {
         // If Form not valid
-        if (this.factoringForm.invalid) {
+        if (this.factoringForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.factoringForm);
           return;
         }
 
-        if (this.isFormDirty) {
-          this.updateFactoringCompany(this.editData.company);
-          this.modalService.setModalSpinner({ action: null, status: true });
-        }
+        this.updateFactoringCompany(this.editData.company);
+        this.modalService.setModalSpinner({ action: null, status: true });
 
         break;
       }

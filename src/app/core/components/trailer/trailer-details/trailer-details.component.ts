@@ -186,17 +186,48 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
       },
       actions: [
         {
+          title: 'Edit',
+          name: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
+          disabled: data.status == 0 ? true : false,
+        },
+        {
+          title: 'border',
+        },
+        {
+          title: 'View Details',
+          name: 'view-details',
+          svg: 'assets/svg/common/ic_hazardous-info.svg',
+          show: true,
+        },
+        {
+          title: 'Add New',
+          svg: 'assets/svg/common/dropdown-arrow.svg',
+          disabled: data.status == 0 ? true : false,
+          subType: [
+              { subName :'Registration', actionName: 'Registration'}, 
+              { subName : 'FHWA Inspection', actionName: 'FHWA Inspection'}, 
+              { subName : 'Title', actionName: 'Title'}, 
+              { subName: 'Lease / Rent', actionName: 'Lease / Rent'}],
+        },
+        {
+          title: 'border'
+        },
+        {
+          title: 'Share',
+          name: 'share',
+          svg: 'assets/svg/common/share-icon.svg',
+          show: true,
+        },
+        {
           title: 'Print',
           name: 'print-truck',
           svg: 'assets/svg/common/ic_fax.svg',
           show: true,
         },
-
         {
-          title: 'Edit',
-          name: 'edit',
-          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-          show: true,
+          title: 'border'
         },
         {
           title: data.status == 0 ? 'Activate' : 'Deactivate',
@@ -205,6 +236,8 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
           activate: data.status == 0 ? true : false,
           deactivate: data.status == 1 ? true : false,
           show: data.status == 1 || data.status == 0 ? true : false,
+          redIcon: data.status == 1 ? true : false,
+          blueIcon: data.status == 0 ? true : false,
         },
         {
           title: 'Delete',
@@ -213,7 +246,8 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
           svg: 'assets/svg/common/ic_trash_updated.svg',
           danger: true,
           show: true,
-        },
+          redIcon: true,
+        }
       ],
       export: true,
     };

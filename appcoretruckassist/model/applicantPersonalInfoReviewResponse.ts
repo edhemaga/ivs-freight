@@ -24,8 +24,7 @@ export interface ApplicantPersonalInfoReviewResponse {
     isAddressUnitValid?: boolean;
     addressMessage?: string | null;
     isSsnValid?: boolean;
-    isBankValid?: boolean;
-    ssnBankMessage?: string | null;
+    ssnMessage?: string | null;
     isAccountNumberValid?: boolean;
     isRoutingNumberValid?: boolean;
     accountRoutingMessage?: string | null;

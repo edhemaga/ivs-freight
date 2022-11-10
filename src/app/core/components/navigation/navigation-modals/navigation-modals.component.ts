@@ -22,11 +22,14 @@ import { UserModalComponent } from '../../modals/user-modal/user-modal.component
 import { TaskModalComponent } from '../../modals/task-modal/task-modal.component';
 import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
-import { AccidentModalComponent } from '../../safety/accident/accident-modal/accident-modal.component';
+import { AccidentModalComponent } from '../../modals/accident-modal/accident-modal.component';
 import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { LoadModalComponent } from '../../modals/load-modal/load-modal.component';
 import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
+import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
+import { DriverMedicalModalComponent } from '../../modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
+import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 
 @Component({
   selector: 'app-navigation-modals',
@@ -172,6 +175,22 @@ export class NavigationModalsComponent {
       case 'accident': {
         this.modalService.openModal(AccidentModalComponent, {
           size: 'large-xl',
+        });
+        break;
+      }
+      case 'mvr': {
+        this.modalService.openModal(DriverMvrModalComponent, { size: 'small' });
+        break;
+      }
+      case 'test': {
+        this.modalService.openModal(DriverDrugAlcoholModalComponent, {
+          size: 'small',
+        });
+        break;
+      }
+      case 'medical': {
+        this.modalService.openModal(DriverMedicalModalComponent, {
+          size: 'small',
         });
         break;
       }
