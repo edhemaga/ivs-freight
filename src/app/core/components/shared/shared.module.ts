@@ -115,6 +115,7 @@ import { LoadModalStatusesComponent } from '../modals/load-modal/load-modal-stat
 import { MapSettingsModalComponent } from './map-toolbar/map-settings-modal/map-settings-modal.component';
 import { MapRouteModalComponent } from './map-toolbar/map-route-modal/map-route-modal.component';
 import { ObserversModule } from '@angular/cdk/observers';
+import { PayrollStatusesComponent } from './payroll-statuses/payroll-statuses.component';
 
 export function playerFactory() {
   return import('lottie-web');
