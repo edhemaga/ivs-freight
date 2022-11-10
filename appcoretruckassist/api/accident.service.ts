@@ -11,37 +11,31 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
-        }       from '@angular/common/http';
-import { CustomHttpParameterCodec }                          from '../encoder';
-import { Observable }                                        from 'rxjs';
+import { Inject, Injectable, Optional } from '@angular/core';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpParams,
+  HttpResponse,
+  HttpEvent,
+  HttpParameterCodec,
+} from '@angular/common/http';
+import { CustomHttpParameterCodec } from '../encoder';
+import { Observable } from 'rxjs';
 
-// @ts-ignore
-import { AccidentListResponse } from '../model/accidentListResponse';
-// @ts-ignore
-import { AccidentMinimalListResponse } from '../model/accidentMinimalListResponse';
-// @ts-ignore
-import { AccidentModalResponse } from '../model/accidentModalResponse';
-// @ts-ignore
-import { AccidentResponse } from '../model/accidentResponse';
-// @ts-ignore
-import { ClusterResponse } from '../model/clusterResponse';
-// @ts-ignore
-import { CreateWithUploadsResponse } from '../model/createWithUploadsResponse';
-// @ts-ignore
-import { FileResponse } from '../model/fileResponse';
-// @ts-ignore
+import { AccidentListResponse } from '../model/models';
+import { AccidentMinimalListResponse } from '../model/models';
+import { AccidentModalResponse } from '../model/models';
+import { AccidentResponse } from '../model/models';
+import { ClusterResponse } from '../model/models';
+import { CreateWithUploadsResponse } from '../model/models';
+import { FileResponse } from '../model/models';
+
+import { ProblemDetails } from '../model/models';
+
+import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
+import { Configuration } from '../configuration';
 import { InsuranceTypeCommand } from '../model/insuranceTypeCommand';
-// @ts-ignore
-import { ProblemDetails } from '../model/problemDetails';
-
-// @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
-
-
 
 @Injectable({
   providedIn: 'root'

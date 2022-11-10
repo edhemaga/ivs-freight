@@ -9,11 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TrailerTypeResponse } from './trailerTypeResponse';
 
 
-export interface FuelStopFranchiseMinimalResponse { 
+export interface TrailerDispatchModalResponse { 
     id?: number;
-    businessName?: string | null;
-    count?: number | null;
+    trailerNumber?: string | null;
+    status?: number;
+    owner?: string | null;
+    trailerType?: TrailerTypeResponse;
+    allowedTruckIds?: Array<number> | null;
 }
 

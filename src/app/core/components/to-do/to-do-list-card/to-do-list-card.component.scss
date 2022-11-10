@@ -131,7 +131,7 @@
   }
 
   .card-main-to-do-holder {
-    margin: 8px 0;
+    margin: 4px 0 8px 0;
 
     gridster-preview {
       background-color: #eeeeee;
@@ -170,7 +170,7 @@
       }
 
       .smooth-dnd-draggable-wrapper {
-        margin-top: 4px;
+        margin-top: 8px;
         flex: 0 0 33.3%;
 
         .smooth-dnd-container.vertical {

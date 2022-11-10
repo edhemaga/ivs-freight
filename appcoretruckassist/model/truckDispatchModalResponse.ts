@@ -9,11 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ColorResponse } from './colorResponse';
+import { TruckTypeResponse } from './truckTypeResponse';
 
 
-export interface FuelStopFranchiseMinimalResponse { 
+export interface TruckDispatchModalResponse { 
     id?: number;
-    businessName?: string | null;
-    count?: number | null;
+    truckNumber?: string | null;
+    status?: number;
+    owner?: string | null;
+    color?: ColorResponse;
+    truckType?: TruckTypeResponse;
+    allowedTrailerIds?: Array<number> | null;
 }
 
