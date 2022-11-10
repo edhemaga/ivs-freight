@@ -385,7 +385,7 @@ export class TaInputDropdownComponent
                     blackInput: false,
                   };
                   clearTimeout(timeout);
-                }, 150);
+                }, 200);
               }
             }
             this.popoverRef.close();
@@ -571,7 +571,7 @@ export class TaInputDropdownComponent
               blackInput: false,
             };
             clearTimeout(timeout);
-          }, 150);
+          }, 200);
         }
       }
     }

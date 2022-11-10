@@ -40,22 +40,6 @@
     top: 5px;
   }
 
-  &.disabled-empty {
-    svg {
-      path {
-        fill: $input-placeholder-icon-disabled !important;
-      }
-    }
-  }
-
-  &.disabled-filled {
-    svg {
-      path {
-        fill: $input-placeholder-icon-disabled-filled !important;
-      }
-    }
-  }
-
   &.cursor-pointer {
     cursor: pointer;
   }
@@ -147,6 +131,26 @@
 
   &.input-dropdown {
     display: none !important;
+  }
+
+  &.disabled-empty {
+    svg {
+      path {
+        fill: $input-placeholder-icon-disabled !important;
+      }
+    }
+  }
+
+  &.disabled-filled {
+    svg {
+      path {
+        fill: $input-placeholder-icon-disabled-filled !important;
+      }
+    }
+
+    &::after {
+      background-color: $input-placeholder-icon-disabled-filled !important;
+    }
   }
 
   //------------------------- Custom class -------------------------

@@ -363,7 +363,7 @@ export function playerFactory() {
     LoadModalStatusesComponent,
     MapSettingsModalComponent,
     MapRouteModalComponent,
-    PayrollStatusesComponent
+    PayrollStatusesComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
