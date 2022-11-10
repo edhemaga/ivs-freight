@@ -389,14 +389,9 @@
                       </div>
                       <div class="files_holder" *ngIf="item.files.length">
                         <app-ta-upload-files
+                          [customClassName]="'todo-details'"
                           [files]="item.files ? item.files : []"
-                          [size]="
-                            item.files?.length == 2
-                              ? 'medium'
-                              : item.files?.length > 2
-                              ? 'large'
-                              : 'small'
-                          "
+                          [size]="'large'"
                           [reviewMode]="'REVIEW_MODE'"
                           [type]="'todo'"
                         ></app-ta-upload-files>
