@@ -54,8 +54,6 @@ export class PayrollComponent implements OnInit, AfterViewInit {
       });
     });
 
-    console.log("tableContainerWidth", this.tableContainerWidth);
-
     this.resizeObserver.observe(document.querySelector('.table-container'));
   }
 
