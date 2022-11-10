@@ -196,6 +196,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     {
       'api' : 'map',
       'value' : 'MAP',
+    },
+    {
+      'api' : 'stop',
+      'value' : 'STOP'
     }
     
   ]
@@ -749,6 +753,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       case 'MAP' : 
         let mapName = this.httpRequest.body.name;
         this.message = mapName;
+      break;
+      case 'STOP' : 
+        let stopName = this.DetailsDataService.stopName ? this.DetailsDataService.stopName  : '';
+        this.message = stopName;
       break;
     }
 

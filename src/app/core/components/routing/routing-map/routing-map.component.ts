@@ -921,6 +921,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     event.preventDefault();
 
+    this.DetailsDataService.setStopName(route.stops[index]['cityAddress']);
     this.routingService
       .deleteStopById(route.stops[index].id, route.id)
       .pipe(takeUntil(this.destroy$))

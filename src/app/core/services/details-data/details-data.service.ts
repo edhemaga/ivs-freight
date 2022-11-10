@@ -11,6 +11,7 @@ export class DetailsDataService {
   public mainData: any;
   public cdlNum: any;
   public leftMenuOpened: any = false;
+  public stopName: any;
 
   constructor() {}
 
@@ -42,5 +43,9 @@ export class DetailsDataService {
     } else {
       this.mainData.raiting.hasDislike = mod;
     }
+  }
+
+  setStopName(mod){
+    this.stopName = mod;
   }
 }
