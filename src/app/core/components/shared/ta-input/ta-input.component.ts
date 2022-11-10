@@ -63,6 +63,8 @@ export class TaInputComponent
   @Output('commandEvent') commandEvent: EventEmitter<any> =
     new EventEmitter<any>();
 
+  @Output('clear') clearInputEvent: EventEmitter<boolean> = new EventEmitter<any>();
+
   public focusInput: boolean = false;
   public touchedInput: boolean = false;
 
@@ -443,6 +445,7 @@ export class TaInputComponent
       }
 
       this.inputService.onClearInput$.next(true);
+      this.clearInputEvent.emit(true)
     }
   }
 

@@ -36,6 +36,14 @@ export class InputErrorPipe implements PipeTransform {
         errorMessageValue = "Passwords don't match.";
       }
 
+      if (value['fuelStoreNumber']) {
+        errorMessageValue = 'Store already added.';
+      }
+
+      if (value['fuelStoreCommonMessage']) {
+        errorMessageValue = 'Already in use by other fuel stop.';
+      }
+
       if (value['pattern']?.requiredPattern) {
         switch (inputName.toLowerCase()) {
           case 'phone': {

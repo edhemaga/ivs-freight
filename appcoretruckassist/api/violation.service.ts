@@ -30,12 +30,12 @@ import { ProblemDetails } from '../model/models';
 import { RoadsideInspectionListResponse } from '../model/models';
 import { RoadsideInspectionMinimalListResponse } from '../model/models';
 import { RoadsideInspectionResponse } from '../model/models';
-import { RoadsideInspectionSpecialCheckCommand } from 'appcoretruckassist/model/roadsideInspectionSpecialCheckCommand';
-import { ViolationCategory } from 'appcoretruckassist/model/violationCategory';
-import { ViolationCommand } from 'appcoretruckassist/model/violationCommand';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
+import { ViolationCategory } from '../model/violationCategory';
+import { ViolationCommand } from '../model/violationCommand';
+import { RoadsideInspectionSpecialCheckCommand } from '../model/roadsideInspectionSpecialCheckCommand';
 
 @Injectable({
   providedIn: 'root',
