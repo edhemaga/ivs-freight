@@ -5,7 +5,9 @@ import { ModalService } from '../../ta-modal/modal.service';
 import { TaInputService } from '../../ta-input/ta-input.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckTService } from '../../../truck/state/truck.service';
-import { TruckListResponse } from 'appcoretruckassist';
+import { TruckListResponse, CreateRouteCommand, UpdateRouteCommand } from 'appcoretruckassist';
+import { RoutingStateService } from '../../../routing/state/routing-state/routing-state.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-map-route-modal',
@@ -49,12 +51,18 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
     private formService: FormService,
     private modalService: ModalService,
     private inputService: TaInputService,
-    private truckService: TruckTService
+    private truckService: TruckTService,
+    private routingService: RoutingStateService,
+    private notificationService: NotificationService,
   ) {}
 
   ngOnInit() {
     this.createForm();
     this.getTrucks();
+
+    if (this.editData?.type === 'edit') {
+      this.getRoute(this.editData.id);
+    }
   }
 
   private createForm() {
@@ -88,10 +96,22 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.mapRouteForm);
           return;
         }
-        this.modalService.setModalSpinner({
-          action: 'create-map-route',
-          status: true,
-        });
+
+        if (this.editData?.type === 'edit') {
+          if (this.isFormDirty) {
+            this.updateRoute(this.editData.id);
+            this.modalService.setModalSpinner({
+              action: 'create-map-route',
+              status: true,
+            });
+          }
+        } else {
+          this.addRoute();
+          this.modalService.setModalSpinner({
+            action: 'create-map-route',
+            status: true,
+          });
+        }
 
         console.log('put action create map');
 
@@ -100,6 +120,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
 
       case 'reset-map-routing': {
         console.log('put action reset map');
+        this.resetForm();
         break;
       }
       default: {
@@ -138,6 +159,90 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
           };
         });
       });
+  }
+
+  private addRoute() {
+    const form = this.mapRouteForm.value;
+
+    const newData: CreateRouteCommand = {
+      name: form.routeName,
+      mapId: this.editData.mapId
+    };
+
+    this.routingService
+      .addRoute(newData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly added route.',
+            'Success'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't add route.",
+            'Error'
+          );
+        },
+      });
+  }
+
+  private updateRoute(id: number) {
+    const form = this.mapRouteForm.value;
+
+    const newData: any = {
+      id: id,
+      name: form.routeName,
+      shape: this.editData.shape ? this.editData.shape : '',
+      stops: this.editData.stops ? this.editData.stops : []
+    };
+
+    console.log('updateRoute newData', newData);
+
+    this.routingService
+      .updateRoute(newData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly updated route.',
+            'Success'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't update route.",
+            'Error'
+          );
+        },
+      });
+  }
+
+  private getRoute(id: number) {
+    this.routingService
+      .getRouteById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          this.mapRouteForm.patchValue({
+            routeName: res.name
+          });
+          console.log('getRouteById', res);
+        },
+        error: () => {
+          this.notificationService.error("Can't load route.", 'Error');
+        },
+      });
+  }
+
+  private resetForm() {
+    if (this.editData?.type === 'edit') {
+      this.getRoute(this.editData.id);
+    } else {
+      this.mapRouteForm.reset();
+      this.isFormDirty = false;
+    }
   }
 
   ngOnDestroy(): void {

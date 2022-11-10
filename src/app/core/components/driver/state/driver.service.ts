@@ -1,6 +1,6 @@
 import { CdlService } from './../../../../../../appcoretruckassist/api/cdl.service';
 import { DriverService } from './../../../../../../appcoretruckassist/api/driver.service';
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, of, Subject, tap, takeUntil } from 'rxjs';
 import {
   CheckOwnerSsnEinResponse,
@@ -25,7 +25,7 @@ import { DriversDetailsListStore } from './driver-details-list-state/driver-deta
 @Injectable({
   providedIn: 'root',
 })
-export class DriverTService implements OnDestroy {
+export class DriverTService {
   public currentIndex: number;
   public driversList: any;
   public driverId: number;
@@ -404,9 +404,5 @@ export class DriverTService implements OnDestroy {
         // });
       })
     );
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

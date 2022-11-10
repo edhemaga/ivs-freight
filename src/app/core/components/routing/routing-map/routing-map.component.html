@@ -20,7 +20,7 @@
         class="route-card-scroll"
         cdkDropList
         #routeList="cdkDropList"
-        [cdkDropListData]="tableData[selectedMapIndex].routes"
+        [cdkDropListData]="tableData[selectedMapIndex]?.routes"
         [cdkDropListConnectedTo]="[routeFreeDrag]"
         (cdkDropListDropped)="dropRoutes($event)"
       >
@@ -1303,7 +1303,7 @@
               let j = index
             "
           >
-            <agm-direction
+            <!-- <agm-direction
               [renderOptions]="{
                 preserveViewport: true,
                 polylineOptions: {
@@ -1339,7 +1339,7 @@
                 lng: route.stops[j + 1].long
               }"
               [visible]="!route.hidden"
-            ></agm-direction>
+            ></agm-direction> -->
           </div>
         </div>
       </div>

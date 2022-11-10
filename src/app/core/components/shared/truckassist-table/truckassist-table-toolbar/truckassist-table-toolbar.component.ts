@@ -8,6 +8,7 @@ import {
   EventEmitter,
   OnDestroy,
 } from '@angular/core';
+import { TableType } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 
@@ -36,24 +37,28 @@ export class TruckassistTableToolbarComponent
       svgPath: 'assets/svg/truckassist-table/lock.svg',
       width: 14,
       height: 16,
+      show: true
     },
     {
       text: 'Import',
       svgPath: 'assets/svg/truckassist-table/import.svg',
       width: 16,
       height: 16,
+      show: true
     },
     {
       text: 'Export',
       svgPath: 'assets/svg/truckassist-table/export.svg',
       width: 16,
       height: 16,
+      show: true
     },
     {
       text: 'Reset Columns',
       svgPath: 'assets/svg/truckassist-table/new-reset-icon.svg',
       width: 16,
       height: 16,
+      show: true
     },
     {
       text: 'Columns',
@@ -66,6 +71,7 @@ export class TruckassistTableToolbarComponent
         width: 6,
         height: 8,
       },
+      show: true
     },
   ];
   tableRowsSelected: any[] = [];
@@ -77,6 +83,7 @@ export class TruckassistTableToolbarComponent
   columnsOptions: any[] = [];
   isMapShowning: boolean = false;
   tableConfigurationType: string = '';
+  showResetOption: boolean;
 
   constructor(private tableService: TruckassistTableService) {}
 
@@ -153,8 +160,14 @@ export class TruckassistTableToolbarComponent
   }
 
   // Get Active Table Data
-  getActiveTableData(){
+  getActiveTableData() {
     const td = this.tableData.find((t) => t.isActive);
+
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${td.tableConfiguration}-Configuration`)
+    );
+
+    this.optionsPopupContent[3].show = tableColumnsConfig ? true : false;
 
     this.tableConfigurationType = td.tableConfiguration;
   }
@@ -279,9 +292,26 @@ export class TruckassistTableToolbarComponent
     } else if (action.text === 'Columns') {
       action.active = !action.active;
     } else if (action.text === 'Reset Columns') {
-      localStorage.removeItem(`table-${this.tableConfigurationType}-Configuration`);
+      localStorage.removeItem(
+        `table-${this.tableConfigurationType}-Configuration`
+      );
 
       this.tableService.sendResetColumns(true);
+
+      /* this.tableService
+        .deleteTableConfig(this.tableConfigurationType as TableType)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          console.log(
+            'Brise se konfiguracija tabele: ' + this.tableConfigurationType
+          );
+
+          localStorage.removeItem(
+            `table-${this.tableConfigurationType}-Configuration`
+          );
+
+          this.tableService.sendResetColumns(true);
+        }); */
     } else {
       alert('Treba da se odradi!');
     }
@@ -323,8 +353,6 @@ export class TruckassistTableToolbarComponent
       if (!column.isPined) {
         column.hidden = !column.hidden;
 
-        console.log('Sakrila se ili se dodala kolona');
-
         localStorage.setItem(
           `table-${this.tableConfigurationType}-Configuration`,
           JSON.stringify(this.columns)
@@ -334,6 +362,8 @@ export class TruckassistTableToolbarComponent
           column: column,
           index: index,
         });
+
+        this.getActiveTableData();
       }
     }, 10);
   }

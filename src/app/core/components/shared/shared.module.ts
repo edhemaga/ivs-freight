@@ -214,6 +214,7 @@ export function playerFactory() {
     AutoclosePopoverComponent,
     InputAddressDropdownComponent,
     TaCustomCardV2Component,
+    PayrollStatusesComponent,
   ],
   imports: [
     CommonModule,
@@ -361,6 +362,7 @@ export function playerFactory() {
     LoadModalStatusesComponent,
     MapSettingsModalComponent,
     MapRouteModalComponent,
+    PayrollStatusesComponent
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
