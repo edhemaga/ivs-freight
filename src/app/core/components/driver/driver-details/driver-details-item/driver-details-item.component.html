@@ -14,7 +14,7 @@
         <app-ta-re-card
           *ngFor="let cdl of dataCDl; let i = index; trackBy: identity"
           [options]="dataDropDown"
-          [cardDocumentCounter]="cdl?.files?.length ? cdl.files.length : 0"
+          [cardDocumentCounter]="cdl?.files?.length ? cdl.files.length : null"
           [statusActive]="cdl.status"
           (dataDropDopwn)="getCdlById(cdl.id)"
           (resizePage)="toggleResizePage(i, 'cdl')"
@@ -149,11 +149,11 @@
               </div>
             </div>
             <div [@showHideCardBody]="toggler[i + 'cdl'] ? 'true' : 'false'">
-              <div class="divider"></div>
-
+              <div class="divider" *ngIf="cdl?.files?.length"></div>
               <div
                 class="details-document-container"
                 [class.disabled]="!cdl?.files?.length"
+                *ngIf="cdl?.files?.length"
               >
                 <div class="icon-counter-wrapper">
                   <div
@@ -177,7 +177,11 @@
                   </svg-icon>
                 </div>
               </div>
-              <div class="card-pdf" [class.disabled]="!cdl?.files?.length">
+              <div
+                class="card-pdf"
+                [class.disabled]="!cdl?.files?.length"
+                [class.pagination]="cdl.files?.length > 1"
+              >
                 <app-ta-upload-files
                   #cdlUpload
                   [files]="cdl.files ? cdl.files : []"
@@ -224,7 +228,7 @@
           [testDate]="test?.testingDate | formatDateP"
           (dataDropDopwn)="getTestById(test.id)"
           (clickedCard)="getNameForDrop($event)"
-          [cardDocumentCounter]="test?.files?.length ? test.files.length : 0"
+          [cardDocumentCounter]="test?.files?.length ? test.files.length : null"
           [weeklyWidth]="'18'"
           [cardNameCurrent]="'test'"
           [noteIcons]="
@@ -258,10 +262,11 @@
           <div [ngClass]="{ 'second-progress': toggler[i + 'test'] }"></div>
           <div class="cards-container">
             <div [@showHideCardBody]="toggler[i + 'test'] ? 'true' : 'false'">
-              <div class="divider"></div>
+              <div class="divider" *ngIf="test?.files?.length"></div>
               <div
                 class="details-document-container"
                 [class.disabled]="!test?.files?.length"
+                *ngIf="test?.files?.length"
               >
                 <div class="icon-counter-wrapper">
                   <div
@@ -285,7 +290,11 @@
                   </svg-icon>
                 </div>
               </div>
-              <div class="card-pdf" [class.disabled]="!test?.files?.length">
+              <div
+                class="card-pdf"
+                [class.disabled]="!test?.files?.length"
+                [class.pagination]="test.files?.length > 1"
+              >
                 <app-ta-upload-files
                   #testUpload
                   [files]="test.files ? test.files : []"
@@ -331,6 +340,7 @@
           (dataDropDopwn)="getMedicalById(med.id)"
           (clickedCard)="getNameForDrop($event)"
           [cardNameCurrent]="'medical'"
+          [cardDocumentCounter]="med?.files?.length ? med.files.length : null"
           [noteIcons]="
             med.note
               ? 'assets/svg/truckassist-table/note/Note.svg'
@@ -358,10 +368,11 @@
             <div
               [@showHideCardBody]="toggler[i + 'medical'] ? 'true' : 'false'"
             >
-              <div class="divider"></div>
+              <div class="divider" *ngIf="med?.files?.length"></div>
               <div
                 class="details-document-container"
                 [class.disabled]="!med?.files?.length"
+                *ngIf="med?.files?.length"
               >
                 <div class="icon-counter-wrapper">
                   <div
@@ -385,7 +396,11 @@
                   </svg-icon>
                 </div>
               </div>
-              <div class="card-pdf" [class.disabled]="!med?.files?.length">
+              <div
+                class="card-pdf"
+                [class.disabled]="!med?.files?.length"
+                [class.pagination]="med.files?.length > 1"
+              >
                 <app-ta-upload-files
                   #medicalUpload
                   [files]="med.files ? med.files : []"
@@ -428,7 +443,7 @@
           [cardNameCurrent]="'mvr'"
           (clickedCard)="getNameForDrop($event)"
           (dataDropDopwn)="getMvrById(mvr.id)"
-          [cardDocumentCounter]="mvr?.files?.length ? mvr.files.length : 0"
+          [cardDocumentCounter]="mvr?.files?.length ? mvr.files.length : null"
           [noteIcons]="
             mvr.note
               ? 'assets/svg/truckassist-table/note/Note.svg'
@@ -459,10 +474,11 @@
               </div>
             </div>
             <div [@showHideCardBody]="toggler[i + 'mvr'] ? 'true' : 'false'">
-              <div class="divider"></div>
+              <div class="divider" *ngIf="mvr?.files?.length"></div>
               <div
                 class="details-document-container"
                 [class.disabled]="!mvr?.files?.length"
+                *ngIf="mvr?.files?.length"
               >
                 <div
                   class="icon-counter-wrapper"
@@ -486,7 +502,11 @@
                   </svg-icon>
                 </div>
               </div>
-              <div class="card-pdf" [class.disabled]="!mvr?.files?.length">
+              <div
+                class="card-pdf"
+                [class.disabled]="!mvr?.files?.length"
+                [class.pagination]="mvr.files?.length > 1"
+              >
                 <app-ta-upload-files
                   #mvrUpload
                   [files]="mvr.files ? mvr.files : []"

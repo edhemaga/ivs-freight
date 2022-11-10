@@ -416,7 +416,10 @@ p {
 .card-pdf {
   padding: 0 10px;
   margin-bottom: 16px;
-  padding-bottom: 16px;
+
+  &.pagination {
+    padding-bottom: 16px;
+  }
 
   &.disabled {
     height: 0 !important;
@@ -480,122 +483,122 @@ p {
             color: $bw6-2;
             background: rgb(108, 108, 108, 0.2);
           }
-    
+
           &::selection {
             color: $bw6-2;
             background: rgb(108, 108, 108, 0.2);
           }
-    
+
           span {
             &::-moz-selection {
               color: $bw6-2;
               background: rgb(108, 108, 108, 0.2);
             }
-    
+
             &::selection {
               color: $bw6-2;
               background: rgb(108, 108, 108, 0.2);
             }
           }
-    
+
           span[style*="color: rgb(83, 107, 194)"],
           span[style*="color: rgb(83, 107, 194)"] span {
             &::-moz-selection {
               color: $bw6-2 !important;
               background: rgb(83, 107, 194, 0.2) !important;
             }
-    
+
             &::selection {
               color: $bw6-2;
               background: rgb(83, 107, 194, 0.2) !important;
             }
           }
-    
+
           span[style*="color: rgb(38, 166, 144)"],
           span[style*="color: rgb(38, 166, 144)"] span {
             &::-moz-selection {
               color: $bw6-2;
               background: rgb(38, 166, 144, 0.2) !important;
             }
-    
+
             &::selection {
               color: $bw6-2;
               background: rgb(38, 166, 144, 0.2) !important;
             }
           }
-    
+
           span[style*="color: rgb(239, 83, 80)"],
           span[style*="color: rgb(239, 83, 80)"] span {
             &::-moz-selection {
               color: $bw6-2;
               background: rgb(239, 83, 80, 0.2) !important;
             }
-    
+
             &::selection {
               color: $bw6-2;
               background: rgb(239, 83, 80, 0.2) !important;
             }
           }
-    
+
           span[style*="color: rgb(255, 167, 38)"],
           span[style*="color: rgb(255, 167, 38)"] span {
             &::-moz-selection {
               color: $bw6-2;
               background: rgb(255, 167, 38, 0.2) !important;
             }
-    
+
             &::selection {
               color: $bw6-2;
               background: rgb(255, 167, 38, 0.2) !important;
             }
           }
-    
+
           span[style*="color: rgb(83, 107, 194)"],
           span[style*="color: rgb(83, 107, 194)"] span {
             &::-moz-selection {
               color: $bw6-2 !important;
               background: rgb(83, 107, 194, 0.2) !important;
             }
-    
+
             &::selection {
               color: $bw6-2;
               background: rgb(83, 107, 194, 0.2) !important;
             }
           }
-    
+
           span[style*="color: rgb(38, 166, 144)"],
           span[style*="color: rgb(38, 166, 144)"] span {
             &::-moz-selection {
               color: $bw6-2;
               background: rgb(38, 166, 144, 0.2) !important;
             }
-    
+
             &::selection {
               color: $bw6-2;
               background: rgb(38, 166, 144, 0.2) !important;
             }
           }
-    
+
           span[style*="color: rgb(239, 83, 80)"],
           span[style*="color: rgb(239, 83, 80)"] span {
             &::-moz-selection {
               color: $bw6-2;
               background: rgb(239, 83, 80, 0.2) !important;
             }
-    
+
             &::selection {
               color: $bw6-2;
               background: rgb(239, 83, 80, 0.2) !important;
             }
           }
-    
+
           span[style*="color: rgb(255, 167, 38)"],
           span[style*="color: rgb(255, 167, 38)"] span {
             &::-moz-selection {
               color: $bw6-2;
               background: rgb(255, 167, 38, 0.2) !important;
             }
-    
+
             &::selection {
               color: $bw6-2;
               background: rgb(255, 167, 38, 0.2) !important;

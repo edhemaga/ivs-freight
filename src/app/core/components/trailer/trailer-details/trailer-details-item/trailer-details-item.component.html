@@ -92,7 +92,11 @@
                   </svg-icon>
                 </div>
               </div>
-              <div class="card-pdf" [class.disabled]="!reg?.files?.length">
+              <div
+                class="card-pdf"
+                [class.disabled]="!reg?.files?.length"
+                [class.pagination]="reg.files?.length > 1"
+              >
                 <app-ta-upload-files
                   #registrationUpload
                   [files]="reg.files ? reg.files : []"
@@ -186,7 +190,11 @@
                   </svg-icon>
                 </div>
               </div>
-              <div class="card-pdf" [class.disabled]="!fhwa?.files?.length">
+              <div
+                class="card-pdf"
+                [class.disabled]="!fhwa?.files?.length"
+                [class.pagination]="fhwa.files?.length > 1"
+              >
                 <app-ta-upload-files
                   #fhwaUpload
                   [files]="fhwa.files ? fhwa.files : []"
@@ -296,7 +304,11 @@
                   </svg-icon>
                 </div>
               </div>
-              <div class="card-pdf" [class.disabled]="!title?.files?.length">
+              <div
+                class="card-pdf"
+                [class.disabled]="!title?.files?.length"
+                [class.pagination]="title.files?.length > 1"
+              >
                 <app-ta-upload-files
                   #titleUpload
                   [files]="title.files ? title.files : []"

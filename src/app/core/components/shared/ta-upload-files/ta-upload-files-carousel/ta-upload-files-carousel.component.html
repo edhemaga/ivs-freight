@@ -17,7 +17,10 @@
 
   <!-- Carousel Button Tabs -->
 
-  <div *ngIf="hasCarouselBottomTabs" class="carousel-tabs-control">
+  <div
+    *ngIf="hasCarouselBottomTabs && files?.length > 1"
+    class="carousel-tabs-control"
+  >
     <div
       *ngFor="let len of files; let ind = index; trackBy: identity"
       class="carousel-tab"
