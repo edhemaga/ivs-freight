@@ -16,7 +16,7 @@ export class AccidentNonReportedResolver implements Resolve<AccidentNonReportedS
   ) {}
   resolve(): Observable<AccidentNonReportedState | boolean> {
     return this.accidentService
-    .getAccidentList(undefined, false, 1, 25)
+    .getAccidentList(false, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 1, 25)
     .pipe(
       catchError(() => {
         return of('No accident non reported data...');
