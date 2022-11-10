@@ -13,13 +13,17 @@
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec }       from '@angular/common/http';
+         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
+        }       from '@angular/common/http';
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ProblemDetails } from '../model/models';
-import { VinDecodeResponse } from '../model/models';
+// @ts-ignore
+import { ProblemDetails } from '../model/problemDetails';
+// @ts-ignore
+import { VinDecodeResponse } from '../model/vinDecodeResponse';
 
+// @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
@@ -35,11 +39,15 @@ export class VinDecodeService {
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
 
-    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
+    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string|string[], @Optional() configuration: Configuration) {
         if (configuration) {
             this.configuration = configuration;
         }
         if (typeof this.configuration.basePath !== 'string') {
+            if (Array.isArray(basePath) && basePath.length > 0) {
+                basePath = basePath[0];
+            }
+
             if (typeof basePath !== 'string') {
                 basePath = this.basePath;
             }
@@ -49,6 +57,7 @@ export class VinDecodeService {
     }
 
 
+    // @ts-ignore
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         if (typeof value === "object" && value instanceof Date === false) {
             httpParams = this.addToHttpParamsRecursive(httpParams, value);
@@ -68,8 +77,7 @@ export class VinDecodeService {
                 (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
             } else if (value instanceof Date) {
                 if (key != null) {
-                    httpParams = httpParams.append(key,
-                        (value as Date).toISOString().substr(0, 10));
+                    httpParams = httpParams.append(key, (value as Date).toISOString().substr(0, 10));
                 } else {
                    throw Error("key may not be null if value is Date");
                 }
@@ -91,10 +99,10 @@ export class VinDecodeService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDecodeVinVinTypeGet(vin: string, vinType: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<VinDecodeResponse>;
-    public apiDecodeVinVinTypeGet(vin: string, vinType: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<VinDecodeResponse>>;
-    public apiDecodeVinVinTypeGet(vin: string, vinType: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<VinDecodeResponse>>;
-    public apiDecodeVinVinTypeGet(vin: string, vinType: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiDecodeVinVinTypeGet(vin: string, vinType: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<VinDecodeResponse>;
+    public apiDecodeVinVinTypeGet(vin: string, vinType: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<VinDecodeResponse>>;
+    public apiDecodeVinVinTypeGet(vin: string, vinType: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<VinDecodeResponse>>;
+    public apiDecodeVinVinTypeGet(vin: string, vinType: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (vin === null || vin === undefined) {
             throw new Error('Required parameter vin was null or undefined when calling apiDecodeVinVinTypeGet.');
         }
@@ -102,40 +110,53 @@ export class VinDecodeService {
             throw new Error('Required parameter vinType was null or undefined when calling apiDecodeVinVinTypeGet.');
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.get<VinDecodeResponse>(`${this.configuration.basePath}/api/decode/${encodeURIComponent(String(vin))}/${encodeURIComponent(String(vinType))}`,
+        let localVarPath = `/api/decode/${this.configuration.encodeParam({name: "vin", value: vin, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/${this.configuration.encodeParam({name: "vinType", value: vinType, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<VinDecodeResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }

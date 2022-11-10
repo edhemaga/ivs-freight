@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
+import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 import {
   addressValidation,
   departmentValidation,
@@ -11,9 +11,9 @@ import {
   fullNameValidation,
   phoneFaxRegex,
   vinNumberValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+} from '../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../../services/form/form.service';
+import { FormService } from '../../../services/form/form.service';
 
 @Component({
   selector: 'app-violation-modal',
@@ -219,10 +219,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData) {
-          if (this.isFormDirty) {
-            this.updateViolation(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateViolation(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         }
         break;
       }

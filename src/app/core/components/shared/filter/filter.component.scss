@@ -615,8 +615,8 @@
         svg-icon {
           svg {
             display: flex;
-            width: 16.38px !important;
-            height: 12.66px !important;
+            width: 12.74px !important;
+            height: 9.85px !important; 
 
             path {
               fill: #6F9EE0 !important;
@@ -628,7 +628,7 @@
       .icon-delete {
         position: absolute;
         width: 21px;
-        height: 21px;
+        height: 23px;
         border-radius: 1px;
         display: none;
         justify-content: center;
@@ -1251,7 +1251,7 @@
 
   .user-profile-img {
     width: 28px !important;
-
+    height: 28px !important;
     &.active {
       .state-short-holder {
         color: #536bc2;

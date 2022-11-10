@@ -157,7 +157,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       insurancePolicy: [null, insurancePolicyValidation],
       purchaseDate: [null],
       purchasePrice: [null],
-      fhwaExp: [12, Validators.required],
+      fhwaExp: [null, Validators.required],
     });
 
     this.formService.checkFormChange(this.trailerForm);
@@ -226,10 +226,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             return;
           }
           if (this.editData?.id) {
-            if (this.isFormDirty) {
-              this.updateTrailer(this.editData.id);
-              this.modalService.setModalSpinner({ action: null, status: true });
-            }
+            this.updateTrailer(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
           } else {
             this.addTrailer();
             this.modalService.setModalSpinner({
@@ -576,6 +574,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             purchasePrice: res.purchasePrice
               ? convertNumberInThousandSep(res.purchasePrice)
               : null,
+            fhwaExp: res.fhwaExp ? res.fhwaExp : 12,
           });
 
           this.selectedTrailerType = res.trailerType ? res.trailerType : null;
@@ -590,10 +589,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           this.selectedDoorType = res.doorType ? res.doorType : null;
           this.selectedReeferType = res.reeferUnit ? res.reeferUnit : null;
           this.trailerStatus = res.status !== 1;
-
-          setTimeout(() => {
-            this.trailerForm.get('fhwaExp').patchValue(res.fhwaExp);
-          }, 150);
 
           this.modalService.changeModalStatus({
             name: 'deactivate',

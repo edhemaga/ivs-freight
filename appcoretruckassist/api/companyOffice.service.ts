@@ -13,18 +13,27 @@
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec }       from '@angular/common/http';
+         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
+        }       from '@angular/common/http';
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { CompanyOfficeListResponse } from '../model/models';
-import { CompanyOfficeModalResponse } from '../model/models';
-import { CompanyOfficeResponse } from '../model/models';
-import { CreateCompanyOfficeCommand } from '../model/models';
-import { CreateResponse } from '../model/models';
-import { ProblemDetails } from '../model/models';
-import { UpdateCompanyOfficeCommand } from '../model/models';
+// @ts-ignore
+import { CompanyOfficeListResponse } from '../model/companyOfficeListResponse';
+// @ts-ignore
+import { CompanyOfficeModalResponse } from '../model/companyOfficeModalResponse';
+// @ts-ignore
+import { CompanyOfficeResponse } from '../model/companyOfficeResponse';
+// @ts-ignore
+import { CreateCompanyOfficeCommand } from '../model/createCompanyOfficeCommand';
+// @ts-ignore
+import { CreateResponse } from '../model/createResponse';
+// @ts-ignore
+import { ProblemDetails } from '../model/problemDetails';
+// @ts-ignore
+import { UpdateCompanyOfficeCommand } from '../model/updateCompanyOfficeCommand';
 
+// @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
@@ -40,11 +49,15 @@ export class CompanyOfficeService {
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
 
-    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
+    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string|string[], @Optional() configuration: Configuration) {
         if (configuration) {
             this.configuration = configuration;
         }
         if (typeof this.configuration.basePath !== 'string') {
+            if (Array.isArray(basePath) && basePath.length > 0) {
+                basePath = basePath[0];
+            }
+
             if (typeof basePath !== 'string') {
                 basePath = this.basePath;
             }
@@ -54,6 +67,7 @@ export class CompanyOfficeService {
     }
 
 
+    // @ts-ignore
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         if (typeof value === "object" && value instanceof Date === false) {
             httpParams = this.addToHttpParamsRecursive(httpParams, value);
@@ -73,8 +87,7 @@ export class CompanyOfficeService {
                 (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
             } else if (value instanceof Date) {
                 if (key != null) {
-                    httpParams = httpParams.append(key,
-                        (value as Date).toISOString().substr(0, 10));
+                    httpParams = httpParams.append(key, (value as Date).toISOString().substr(0, 10));
                 } else {
                    throw Error("key may not be null if value is Date");
                 }
@@ -95,48 +108,61 @@ export class CompanyOfficeService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCompanyofficeCheckNameNameGet(name: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<boolean>;
-    public apiCompanyofficeCheckNameNameGet(name: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<boolean>>;
-    public apiCompanyofficeCheckNameNameGet(name: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<boolean>>;
-    public apiCompanyofficeCheckNameNameGet(name: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiCompanyofficeCheckNameNameGet(name: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<boolean>;
+    public apiCompanyofficeCheckNameNameGet(name: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<boolean>>;
+    public apiCompanyofficeCheckNameNameGet(name: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<boolean>>;
+    public apiCompanyofficeCheckNameNameGet(name: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (name === null || name === undefined) {
             throw new Error('Required parameter name was null or undefined when calling apiCompanyofficeCheckNameNameGet.');
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.get<boolean>(`${this.configuration.basePath}/api/companyoffice/check/name/${encodeURIComponent(String(name))}`,
+        let localVarPath = `/api/companyoffice/check/name/${this.configuration.encodeParam({name: "name", value: name, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        return this.httpClient.request<boolean>('get', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -148,48 +174,61 @@ export class CompanyOfficeService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCompanyofficeIdDelete(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiCompanyofficeIdDelete(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiCompanyofficeIdDelete(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiCompanyofficeIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiCompanyofficeIdDelete(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiCompanyofficeIdDelete(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiCompanyofficeIdDelete(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiCompanyofficeIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiCompanyofficeIdDelete.');
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.delete<any>(`${this.configuration.basePath}/api/companyoffice/${encodeURIComponent(String(id))}`,
+        let localVarPath = `/api/companyoffice/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -201,48 +240,61 @@ export class CompanyOfficeService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCompanyofficeIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CompanyOfficeResponse>;
-    public apiCompanyofficeIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CompanyOfficeResponse>>;
-    public apiCompanyofficeIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CompanyOfficeResponse>>;
-    public apiCompanyofficeIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiCompanyofficeIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CompanyOfficeResponse>;
+    public apiCompanyofficeIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CompanyOfficeResponse>>;
+    public apiCompanyofficeIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CompanyOfficeResponse>>;
+    public apiCompanyofficeIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiCompanyofficeIdGet.');
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.get<CompanyOfficeResponse>(`${this.configuration.basePath}/api/companyoffice/${encodeURIComponent(String(id))}`,
+        let localVarPath = `/api/companyoffice/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<CompanyOfficeResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -254,54 +306,67 @@ export class CompanyOfficeService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCompanyofficeListDelete(ids?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiCompanyofficeListDelete(ids?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiCompanyofficeListDelete(ids?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiCompanyofficeListDelete(ids?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiCompanyofficeListDelete(ids?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiCompanyofficeListDelete(ids?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiCompanyofficeListDelete(ids?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiCompanyofficeListDelete(ids?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let queryParameters = new HttpParams({encoder: this.encoder});
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (ids) {
             ids.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
                   <any>element, 'Ids');
             })
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.delete<any>(`${this.configuration.basePath}/api/companyoffice/list`,
+        let localVarPath = `/api/companyoffice/list`;
+        return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
-                params: queryParameters,
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -319,76 +384,89 @@ export class CompanyOfficeService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCompanyofficeListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CompanyOfficeListResponse>;
-    public apiCompanyofficeListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CompanyOfficeListResponse>>;
-    public apiCompanyofficeListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CompanyOfficeListResponse>>;
-    public apiCompanyofficeListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiCompanyofficeListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CompanyOfficeListResponse>;
+    public apiCompanyofficeListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CompanyOfficeListResponse>>;
+    public apiCompanyofficeListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CompanyOfficeListResponse>>;
+    public apiCompanyofficeListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let queryParameters = new HttpParams({encoder: this.encoder});
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (pageIndex !== undefined && pageIndex !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageIndex, 'PageIndex');
         }
         if (pageSize !== undefined && pageSize !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
         }
         if (companyId !== undefined && companyId !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>companyId, 'CompanyId');
         }
         if (sort !== undefined && sort !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
         }
         if (search !== undefined && search !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>search, 'Search');
         }
         if (search1 !== undefined && search1 !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>search1, 'Search1');
         }
         if (search2 !== undefined && search2 !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>search2, 'Search2');
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.get<CompanyOfficeListResponse>(`${this.configuration.basePath}/api/companyoffice/list`,
+        let localVarPath = `/api/companyoffice/list`;
+        return this.httpClient.request<CompanyOfficeListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
-                params: queryParameters,
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -399,45 +477,58 @@ export class CompanyOfficeService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCompanyofficeModalGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CompanyOfficeModalResponse>;
-    public apiCompanyofficeModalGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CompanyOfficeModalResponse>>;
-    public apiCompanyofficeModalGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CompanyOfficeModalResponse>>;
-    public apiCompanyofficeModalGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiCompanyofficeModalGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CompanyOfficeModalResponse>;
+    public apiCompanyofficeModalGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CompanyOfficeModalResponse>>;
+    public apiCompanyofficeModalGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CompanyOfficeModalResponse>>;
+    public apiCompanyofficeModalGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.get<CompanyOfficeModalResponse>(`${this.configuration.basePath}/api/companyoffice/modal`,
+        let localVarPath = `/api/companyoffice/modal`;
+        return this.httpClient.request<CompanyOfficeModalResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -449,32 +540,37 @@ export class CompanyOfficeService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCompanyofficePost(createCompanyOfficeCommand?: CreateCompanyOfficeCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiCompanyofficePost(createCompanyOfficeCommand?: CreateCompanyOfficeCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiCompanyofficePost(createCompanyOfficeCommand?: CreateCompanyOfficeCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiCompanyofficePost(createCompanyOfficeCommand?: CreateCompanyOfficeCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiCompanyofficePost(createCompanyOfficeCommand?: CreateCompanyOfficeCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
+    public apiCompanyofficePost(createCompanyOfficeCommand?: CreateCompanyOfficeCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
+    public apiCompanyofficePost(createCompanyOfficeCommand?: CreateCompanyOfficeCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
+    public apiCompanyofficePost(createCompanyOfficeCommand?: CreateCompanyOfficeCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -482,24 +578,32 @@ export class CompanyOfficeService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/companyoffice`,
-            createCompanyOfficeCommand,
+        let localVarPath = `/api/companyoffice`;
+        return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: createCompanyOfficeCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -511,32 +615,37 @@ export class CompanyOfficeService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCompanyofficePut(updateCompanyOfficeCommand?: UpdateCompanyOfficeCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiCompanyofficePut(updateCompanyOfficeCommand?: UpdateCompanyOfficeCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiCompanyofficePut(updateCompanyOfficeCommand?: UpdateCompanyOfficeCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiCompanyofficePut(updateCompanyOfficeCommand?: UpdateCompanyOfficeCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiCompanyofficePut(updateCompanyOfficeCommand?: UpdateCompanyOfficeCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiCompanyofficePut(updateCompanyOfficeCommand?: UpdateCompanyOfficeCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiCompanyofficePut(updateCompanyOfficeCommand?: UpdateCompanyOfficeCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiCompanyofficePut(updateCompanyOfficeCommand?: UpdateCompanyOfficeCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -544,24 +653,32 @@ export class CompanyOfficeService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.put<any>(`${this.configuration.basePath}/api/companyoffice`,
-            updateCompanyOfficeCommand,
+        let localVarPath = `/api/companyoffice`;
+        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: updateCompanyOfficeCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }

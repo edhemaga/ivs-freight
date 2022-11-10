@@ -2,7 +2,8 @@
   [modalTitle]="editData?.id ? 'Route Settings' : 'Create New Route'"
   [isModalValid]="mapRouteForm.valid && isFormDirty"
   [mapRouteModal]="true"
-  [resetMapVisibility]="true"
+  [resetMapVisibility]="isFormDirty ? true : false"
+  [editData]="editData"
   (action)="onModalAction($event)"
 >
   <form origin [formGroup]="mapRouteForm" class="form-container">

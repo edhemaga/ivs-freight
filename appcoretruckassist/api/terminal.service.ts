@@ -13,17 +13,25 @@
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec }       from '@angular/common/http';
+         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
+        }       from '@angular/common/http';
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { CreateResponse } from '../model/models';
-import { CreateTerminalCommand } from '../model/models';
-import { ProblemDetails } from '../model/models';
-import { TerminalListResponse } from '../model/models';
-import { TerminalResponse } from '../model/models';
-import { UpdateTerminalCommand } from '../model/models';
+// @ts-ignore
+import { CreateResponse } from '../model/createResponse';
+// @ts-ignore
+import { CreateTerminalCommand } from '../model/createTerminalCommand';
+// @ts-ignore
+import { ProblemDetails } from '../model/problemDetails';
+// @ts-ignore
+import { TerminalListResponse } from '../model/terminalListResponse';
+// @ts-ignore
+import { TerminalResponse } from '../model/terminalResponse';
+// @ts-ignore
+import { UpdateTerminalCommand } from '../model/updateTerminalCommand';
 
+// @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
@@ -39,11 +47,15 @@ export class TerminalService {
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
 
-    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
+    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string|string[], @Optional() configuration: Configuration) {
         if (configuration) {
             this.configuration = configuration;
         }
         if (typeof this.configuration.basePath !== 'string') {
+            if (Array.isArray(basePath) && basePath.length > 0) {
+                basePath = basePath[0];
+            }
+
             if (typeof basePath !== 'string') {
                 basePath = this.basePath;
             }
@@ -53,6 +65,7 @@ export class TerminalService {
     }
 
 
+    // @ts-ignore
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         if (typeof value === "object" && value instanceof Date === false) {
             httpParams = this.addToHttpParamsRecursive(httpParams, value);
@@ -72,8 +85,7 @@ export class TerminalService {
                 (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
             } else if (value instanceof Date) {
                 if (key != null) {
-                    httpParams = httpParams.append(key,
-                        (value as Date).toISOString().substr(0, 10));
+                    httpParams = httpParams.append(key, (value as Date).toISOString().substr(0, 10));
                 } else {
                    throw Error("key may not be null if value is Date");
                 }
@@ -94,48 +106,61 @@ export class TerminalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTerminalCheckNameNameGet(name: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<boolean>;
-    public apiTerminalCheckNameNameGet(name: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<boolean>>;
-    public apiTerminalCheckNameNameGet(name: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<boolean>>;
-    public apiTerminalCheckNameNameGet(name: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiTerminalCheckNameNameGet(name: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<boolean>;
+    public apiTerminalCheckNameNameGet(name: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<boolean>>;
+    public apiTerminalCheckNameNameGet(name: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<boolean>>;
+    public apiTerminalCheckNameNameGet(name: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (name === null || name === undefined) {
             throw new Error('Required parameter name was null or undefined when calling apiTerminalCheckNameNameGet.');
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.get<boolean>(`${this.configuration.basePath}/api/terminal/check/name/${encodeURIComponent(String(name))}`,
+        let localVarPath = `/api/terminal/check/name/${this.configuration.encodeParam({name: "name", value: name, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        return this.httpClient.request<boolean>('get', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -147,48 +172,61 @@ export class TerminalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTerminalIdDelete(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiTerminalIdDelete(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiTerminalIdDelete(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiTerminalIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiTerminalIdDelete(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiTerminalIdDelete(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiTerminalIdDelete(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiTerminalIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiTerminalIdDelete.');
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.delete<any>(`${this.configuration.basePath}/api/terminal/${encodeURIComponent(String(id))}`,
+        let localVarPath = `/api/terminal/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -200,48 +238,61 @@ export class TerminalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTerminalIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<TerminalResponse>;
-    public apiTerminalIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<TerminalResponse>>;
-    public apiTerminalIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<TerminalResponse>>;
-    public apiTerminalIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiTerminalIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TerminalResponse>;
+    public apiTerminalIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TerminalResponse>>;
+    public apiTerminalIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TerminalResponse>>;
+    public apiTerminalIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiTerminalIdGet.');
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.get<TerminalResponse>(`${this.configuration.basePath}/api/terminal/${encodeURIComponent(String(id))}`,
+        let localVarPath = `/api/terminal/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<TerminalResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -253,54 +304,67 @@ export class TerminalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTerminalListDelete(ids?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiTerminalListDelete(ids?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiTerminalListDelete(ids?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiTerminalListDelete(ids?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiTerminalListDelete(ids?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiTerminalListDelete(ids?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiTerminalListDelete(ids?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiTerminalListDelete(ids?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let queryParameters = new HttpParams({encoder: this.encoder});
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (ids) {
             ids.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
                   <any>element, 'Ids');
             })
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.delete<any>(`${this.configuration.basePath}/api/terminal/list`,
+        let localVarPath = `/api/terminal/list`;
+        return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
-                params: queryParameters,
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -318,76 +382,89 @@ export class TerminalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTerminalListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<TerminalListResponse>;
-    public apiTerminalListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<TerminalListResponse>>;
-    public apiTerminalListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<TerminalListResponse>>;
-    public apiTerminalListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiTerminalListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TerminalListResponse>;
+    public apiTerminalListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TerminalListResponse>>;
+    public apiTerminalListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TerminalListResponse>>;
+    public apiTerminalListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let queryParameters = new HttpParams({encoder: this.encoder});
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (pageIndex !== undefined && pageIndex !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageIndex, 'PageIndex');
         }
         if (pageSize !== undefined && pageSize !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
         }
         if (companyId !== undefined && companyId !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>companyId, 'CompanyId');
         }
         if (sort !== undefined && sort !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
         }
         if (search !== undefined && search !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>search, 'Search');
         }
         if (search1 !== undefined && search1 !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>search1, 'Search1');
         }
         if (search2 !== undefined && search2 !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>search2, 'Search2');
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.get<TerminalListResponse>(`${this.configuration.basePath}/api/terminal/list`,
+        let localVarPath = `/api/terminal/list`;
+        return this.httpClient.request<TerminalListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
-                params: queryParameters,
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -399,32 +476,37 @@ export class TerminalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTerminalPost(createTerminalCommand?: CreateTerminalCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiTerminalPost(createTerminalCommand?: CreateTerminalCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiTerminalPost(createTerminalCommand?: CreateTerminalCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiTerminalPost(createTerminalCommand?: CreateTerminalCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiTerminalPost(createTerminalCommand?: CreateTerminalCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
+    public apiTerminalPost(createTerminalCommand?: CreateTerminalCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
+    public apiTerminalPost(createTerminalCommand?: CreateTerminalCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
+    public apiTerminalPost(createTerminalCommand?: CreateTerminalCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -432,24 +514,32 @@ export class TerminalService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/terminal`,
-            createTerminalCommand,
+        let localVarPath = `/api/terminal`;
+        return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: createTerminalCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -461,32 +551,37 @@ export class TerminalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTerminalPut(updateTerminalCommand?: UpdateTerminalCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiTerminalPut(updateTerminalCommand?: UpdateTerminalCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiTerminalPut(updateTerminalCommand?: UpdateTerminalCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiTerminalPut(updateTerminalCommand?: UpdateTerminalCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiTerminalPut(updateTerminalCommand?: UpdateTerminalCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiTerminalPut(updateTerminalCommand?: UpdateTerminalCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiTerminalPut(updateTerminalCommand?: UpdateTerminalCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiTerminalPut(updateTerminalCommand?: UpdateTerminalCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -494,24 +589,32 @@ export class TerminalService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.put<any>(`${this.configuration.basePath}/api/terminal`,
-            updateTerminalCommand,
+        let localVarPath = `/api/terminal`;
+        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: updateTerminalCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }

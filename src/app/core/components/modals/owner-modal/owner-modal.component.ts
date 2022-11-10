@@ -207,10 +207,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData?.id) {
-          if (this.isFormDirty) {
-            this.updateOwner(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateOwner(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addOwner();
           this.modalService.setModalSpinner({

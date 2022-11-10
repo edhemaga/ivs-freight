@@ -2,10 +2,8 @@ import { Injectable } from '@angular/core';
 import {
   AccidentListResponse,
   AccidentResponse,
-  AccidentService,
-  CreateAccidentCommand,
+  /* AccidentService, */
   CreateResponse,
-  UpdateAccidentCommand,
 } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 
@@ -13,7 +11,7 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root',
 })
 export class AccidentTService {
-  constructor(private accidentService: AccidentService) {}
+  constructor(private accidentService: /* AccidentService */ any) {}
 
   // Get Accident List
   public getAccidentList(
@@ -65,11 +63,11 @@ export class AccidentTService {
     return of();
   }
 
-  public addAccident(data: CreateAccidentCommand): Observable<CreateResponse> {
+  public addAccident(data: any): Observable<CreateResponse> {
     return this.accidentService.apiAccidentPost(data);
   }
 
-  public updateAccident(data: UpdateAccidentCommand): Observable<any> {
+  public updateAccident(data: any): Observable<any> {
     return this.accidentService.apiAccidentPut(data);
   }
 

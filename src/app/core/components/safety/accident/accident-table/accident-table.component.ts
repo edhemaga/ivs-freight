@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { AccidentModalComponent } from '../accident-modal/accident-modal.component';
+import { AccidentModalComponent } from '../../../modals/accident-modal/accident-modal.component';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { getAccidentColumns } from '../../../../../../assets/utils/settings/safety-columns';
 import { AfterViewInit } from '@angular/core';
@@ -208,7 +208,7 @@ export class AccidentTableComponent
           });
 
           this.updateDataCount();
-          
+
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
 
@@ -385,9 +385,7 @@ export class AccidentTableComponent
       localStorage.getItem(`table-${configType}-Configuration`)
     );
 
-    return tableColumnsConfig
-        ? tableColumnsConfig
-        : getAccidentColumns();
+    return tableColumnsConfig ? tableColumnsConfig : getAccidentColumns();
   }
 
   // Set Accident Data
@@ -432,7 +430,7 @@ export class AccidentTableComponent
       this.modalService.openModal(AccidentModalComponent, { size: 'large-xl' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
-      
+
       this.sendAccidentData();
     } else if (event.action === 'view-mode') {
       this.activeViewMode = event.mode;

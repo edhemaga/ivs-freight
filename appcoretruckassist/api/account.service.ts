@@ -13,31 +13,53 @@
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec }       from '@angular/common/http';
+         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
+        }       from '@angular/common/http';
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { DriverForgotPasswordCommand } from '../model/models';
-import { ForgotPasswordCommand } from '../model/models';
-import { LoginMobileCommand } from '../model/models';
-import { ProblemDetails } from '../model/models';
-import { ReSendSignUpUserCommand } from '../model/models';
-import { ReSendVerifyDriverCommand } from '../model/models';
-import { RefreshTokenCommand } from '../model/models';
-import { SelectCompanyCommand } from '../model/models';
-import { SelectCompanyResponse } from '../model/models';
-import { SetNewPasswordCommand } from '../model/models';
-import { SignInCommand } from '../model/models';
-import { SignInResponse } from '../model/models';
-import { SignUpCompanyCommand } from '../model/models';
-import { SignUpDriverMobileCommand } from '../model/models';
-import { SignupUserCommand } from '../model/models';
-import { VerifyDriverCommand } from '../model/models';
-import { VerifyForgotPasswordCommand } from '../model/models';
-import { VerifyForgotPasswordDriverCommand } from '../model/models';
-import { VerifyOwnerCommand } from '../model/models';
-import { VerifyUserCommand } from '../model/models';
+// @ts-ignore
+import { DriverForgotPasswordCommand } from '../model/driverForgotPasswordCommand';
+// @ts-ignore
+import { ForgotPasswordCommand } from '../model/forgotPasswordCommand';
+// @ts-ignore
+import { LoginMobileCommand } from '../model/loginMobileCommand';
+// @ts-ignore
+import { ProblemDetails } from '../model/problemDetails';
+// @ts-ignore
+import { ReSendSignUpUserCommand } from '../model/reSendSignUpUserCommand';
+// @ts-ignore
+import { ReSendVerifyDriverCommand } from '../model/reSendVerifyDriverCommand';
+// @ts-ignore
+import { RefreshTokenCommand } from '../model/refreshTokenCommand';
+// @ts-ignore
+import { SelectCompanyCommand } from '../model/selectCompanyCommand';
+// @ts-ignore
+import { SelectCompanyResponse } from '../model/selectCompanyResponse';
+// @ts-ignore
+import { SetNewPasswordCommand } from '../model/setNewPasswordCommand';
+// @ts-ignore
+import { SignInCommand } from '../model/signInCommand';
+// @ts-ignore
+import { SignInResponse } from '../model/signInResponse';
+// @ts-ignore
+import { SignUpCompanyCommand } from '../model/signUpCompanyCommand';
+// @ts-ignore
+import { SignUpDriverMobileCommand } from '../model/signUpDriverMobileCommand';
+// @ts-ignore
+import { SignupUserCommand } from '../model/signupUserCommand';
+// @ts-ignore
+import { VerifyDriverCommand } from '../model/verifyDriverCommand';
+// @ts-ignore
+import { VerifyForgotPasswordCommand } from '../model/verifyForgotPasswordCommand';
+// @ts-ignore
+import { VerifyForgotPasswordDriverCommand } from '../model/verifyForgotPasswordDriverCommand';
+// @ts-ignore
+import { VerifyOwnerCommand } from '../model/verifyOwnerCommand';
+// @ts-ignore
+import { VerifyUserCommand } from '../model/verifyUserCommand';
 
+// @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
@@ -53,11 +75,15 @@ export class AccountService {
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
 
-    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
+    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string|string[], @Optional() configuration: Configuration) {
         if (configuration) {
             this.configuration = configuration;
         }
         if (typeof this.configuration.basePath !== 'string') {
+            if (Array.isArray(basePath) && basePath.length > 0) {
+                basePath = basePath[0];
+            }
+
             if (typeof basePath !== 'string') {
                 basePath = this.basePath;
             }
@@ -67,6 +93,7 @@ export class AccountService {
     }
 
 
+    // @ts-ignore
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         if (typeof value === "object" && value instanceof Date === false) {
             httpParams = this.addToHttpParamsRecursive(httpParams, value);
@@ -86,8 +113,7 @@ export class AccountService {
                 (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
             } else if (value instanceof Date) {
                 if (key != null) {
-                    httpParams = httpParams.append(key,
-                        (value as Date).toISOString().substr(0, 10));
+                    httpParams = httpParams.append(key, (value as Date).toISOString().substr(0, 10));
                 } else {
                    throw Error("key may not be null if value is Date");
                 }
@@ -108,32 +134,37 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountForgotpasswordPut(forgotPasswordCommand?: ForgotPasswordCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
-    public apiAccountForgotpasswordPut(forgotPasswordCommand?: ForgotPasswordCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
-    public apiAccountForgotpasswordPut(forgotPasswordCommand?: ForgotPasswordCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
-    public apiAccountForgotpasswordPut(forgotPasswordCommand?: ForgotPasswordCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccountForgotpasswordPut(forgotPasswordCommand?: ForgotPasswordCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
+    public apiAccountForgotpasswordPut(forgotPasswordCommand?: ForgotPasswordCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
+    public apiAccountForgotpasswordPut(forgotPasswordCommand?: ForgotPasswordCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public apiAccountForgotpasswordPut(forgotPasswordCommand?: ForgotPasswordCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -141,24 +172,32 @@ export class AccountService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.put<object>(`${this.configuration.basePath}/api/account/forgotpassword`,
-            forgotPasswordCommand,
+        let localVarPath = `/api/account/forgotpassword`;
+        return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: forgotPasswordCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -170,32 +209,37 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountLoginPost(signInCommand?: SignInCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<SignInResponse>;
-    public apiAccountLoginPost(signInCommand?: SignInCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<SignInResponse>>;
-    public apiAccountLoginPost(signInCommand?: SignInCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<SignInResponse>>;
-    public apiAccountLoginPost(signInCommand?: SignInCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccountLoginPost(signInCommand?: SignInCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<SignInResponse>;
+    public apiAccountLoginPost(signInCommand?: SignInCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<SignInResponse>>;
+    public apiAccountLoginPost(signInCommand?: SignInCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<SignInResponse>>;
+    public apiAccountLoginPost(signInCommand?: SignInCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -203,24 +247,32 @@ export class AccountService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.post<SignInResponse>(`${this.configuration.basePath}/api/account/login`,
-            signInCommand,
+        let localVarPath = `/api/account/login`;
+        return this.httpClient.request<SignInResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: signInCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -232,32 +284,37 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountMobileForgotpasswordPut(driverForgotPasswordCommand?: DriverForgotPasswordCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
-    public apiAccountMobileForgotpasswordPut(driverForgotPasswordCommand?: DriverForgotPasswordCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
-    public apiAccountMobileForgotpasswordPut(driverForgotPasswordCommand?: DriverForgotPasswordCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
-    public apiAccountMobileForgotpasswordPut(driverForgotPasswordCommand?: DriverForgotPasswordCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccountMobileForgotpasswordPut(driverForgotPasswordCommand?: DriverForgotPasswordCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
+    public apiAccountMobileForgotpasswordPut(driverForgotPasswordCommand?: DriverForgotPasswordCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
+    public apiAccountMobileForgotpasswordPut(driverForgotPasswordCommand?: DriverForgotPasswordCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public apiAccountMobileForgotpasswordPut(driverForgotPasswordCommand?: DriverForgotPasswordCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -265,24 +322,32 @@ export class AccountService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.put<object>(`${this.configuration.basePath}/api/account/mobile/forgotpassword`,
-            driverForgotPasswordCommand,
+        let localVarPath = `/api/account/mobile/forgotpassword`;
+        return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: driverForgotPasswordCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -294,32 +359,37 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountMobileLoginPost(loginMobileCommand?: LoginMobileCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<SignInResponse>;
-    public apiAccountMobileLoginPost(loginMobileCommand?: LoginMobileCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<SignInResponse>>;
-    public apiAccountMobileLoginPost(loginMobileCommand?: LoginMobileCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<SignInResponse>>;
-    public apiAccountMobileLoginPost(loginMobileCommand?: LoginMobileCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccountMobileLoginPost(loginMobileCommand?: LoginMobileCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<SignInResponse>;
+    public apiAccountMobileLoginPost(loginMobileCommand?: LoginMobileCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<SignInResponse>>;
+    public apiAccountMobileLoginPost(loginMobileCommand?: LoginMobileCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<SignInResponse>>;
+    public apiAccountMobileLoginPost(loginMobileCommand?: LoginMobileCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -327,24 +397,32 @@ export class AccountService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.post<SignInResponse>(`${this.configuration.basePath}/api/account/mobile/login`,
-            loginMobileCommand,
+        let localVarPath = `/api/account/mobile/login`;
+        return this.httpClient.request<SignInResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: loginMobileCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -356,32 +434,37 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountMobileResendverifydriverPut(reSendVerifyDriverCommand?: ReSendVerifyDriverCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiAccountMobileResendverifydriverPut(reSendVerifyDriverCommand?: ReSendVerifyDriverCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiAccountMobileResendverifydriverPut(reSendVerifyDriverCommand?: ReSendVerifyDriverCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiAccountMobileResendverifydriverPut(reSendVerifyDriverCommand?: ReSendVerifyDriverCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccountMobileResendverifydriverPut(reSendVerifyDriverCommand?: ReSendVerifyDriverCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiAccountMobileResendverifydriverPut(reSendVerifyDriverCommand?: ReSendVerifyDriverCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiAccountMobileResendverifydriverPut(reSendVerifyDriverCommand?: ReSendVerifyDriverCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiAccountMobileResendverifydriverPut(reSendVerifyDriverCommand?: ReSendVerifyDriverCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -389,24 +472,32 @@ export class AccountService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.put<any>(`${this.configuration.basePath}/api/account/mobile/resendverifydriver`,
-            reSendVerifyDriverCommand,
+        let localVarPath = `/api/account/mobile/resendverifydriver`;
+        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: reSendVerifyDriverCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -418,32 +509,37 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountMobileSignupdriverPut(signUpDriverMobileCommand?: SignUpDriverMobileCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiAccountMobileSignupdriverPut(signUpDriverMobileCommand?: SignUpDriverMobileCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiAccountMobileSignupdriverPut(signUpDriverMobileCommand?: SignUpDriverMobileCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiAccountMobileSignupdriverPut(signUpDriverMobileCommand?: SignUpDriverMobileCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccountMobileSignupdriverPut(signUpDriverMobileCommand?: SignUpDriverMobileCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiAccountMobileSignupdriverPut(signUpDriverMobileCommand?: SignUpDriverMobileCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiAccountMobileSignupdriverPut(signUpDriverMobileCommand?: SignUpDriverMobileCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiAccountMobileSignupdriverPut(signUpDriverMobileCommand?: SignUpDriverMobileCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -451,24 +547,32 @@ export class AccountService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.put<any>(`${this.configuration.basePath}/api/account/mobile/signupdriver`,
-            signUpDriverMobileCommand,
+        let localVarPath = `/api/account/mobile/signupdriver`;
+        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: signUpDriverMobileCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -480,32 +584,37 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountMobileVerifydriverPut(verifyDriverCommand?: VerifyDriverCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiAccountMobileVerifydriverPut(verifyDriverCommand?: VerifyDriverCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiAccountMobileVerifydriverPut(verifyDriverCommand?: VerifyDriverCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiAccountMobileVerifydriverPut(verifyDriverCommand?: VerifyDriverCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccountMobileVerifydriverPut(verifyDriverCommand?: VerifyDriverCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiAccountMobileVerifydriverPut(verifyDriverCommand?: VerifyDriverCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiAccountMobileVerifydriverPut(verifyDriverCommand?: VerifyDriverCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiAccountMobileVerifydriverPut(verifyDriverCommand?: VerifyDriverCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -513,24 +622,32 @@ export class AccountService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.put<any>(`${this.configuration.basePath}/api/account/mobile/verifydriver`,
-            verifyDriverCommand,
+        let localVarPath = `/api/account/mobile/verifydriver`;
+        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: verifyDriverCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -542,32 +659,37 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountMobileVerifyforgotpasswordPut(verifyForgotPasswordDriverCommand?: VerifyForgotPasswordDriverCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiAccountMobileVerifyforgotpasswordPut(verifyForgotPasswordDriverCommand?: VerifyForgotPasswordDriverCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiAccountMobileVerifyforgotpasswordPut(verifyForgotPasswordDriverCommand?: VerifyForgotPasswordDriverCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiAccountMobileVerifyforgotpasswordPut(verifyForgotPasswordDriverCommand?: VerifyForgotPasswordDriverCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccountMobileVerifyforgotpasswordPut(verifyForgotPasswordDriverCommand?: VerifyForgotPasswordDriverCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiAccountMobileVerifyforgotpasswordPut(verifyForgotPasswordDriverCommand?: VerifyForgotPasswordDriverCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiAccountMobileVerifyforgotpasswordPut(verifyForgotPasswordDriverCommand?: VerifyForgotPasswordDriverCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiAccountMobileVerifyforgotpasswordPut(verifyForgotPasswordDriverCommand?: VerifyForgotPasswordDriverCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -575,24 +697,32 @@ export class AccountService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.put<any>(`${this.configuration.basePath}/api/account/mobile/verifyforgotpassword`,
-            verifyForgotPasswordDriverCommand,
+        let localVarPath = `/api/account/mobile/verifyforgotpassword`;
+        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: verifyForgotPasswordDriverCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -604,32 +734,37 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountRefreshPost(refreshTokenCommand?: RefreshTokenCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiAccountRefreshPost(refreshTokenCommand?: RefreshTokenCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiAccountRefreshPost(refreshTokenCommand?: RefreshTokenCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiAccountRefreshPost(refreshTokenCommand?: RefreshTokenCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccountRefreshPost(refreshTokenCommand?: RefreshTokenCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiAccountRefreshPost(refreshTokenCommand?: RefreshTokenCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiAccountRefreshPost(refreshTokenCommand?: RefreshTokenCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiAccountRefreshPost(refreshTokenCommand?: RefreshTokenCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -637,24 +772,32 @@ export class AccountService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/api/account/refresh`,
-            refreshTokenCommand,
+        let localVarPath = `/api/account/refresh`;
+        return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: refreshTokenCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -666,32 +809,37 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountResendsignupuserPut(reSendSignUpUserCommand?: ReSendSignUpUserCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiAccountResendsignupuserPut(reSendSignUpUserCommand?: ReSendSignUpUserCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiAccountResendsignupuserPut(reSendSignUpUserCommand?: ReSendSignUpUserCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiAccountResendsignupuserPut(reSendSignUpUserCommand?: ReSendSignUpUserCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccountResendsignupuserPut(reSendSignUpUserCommand?: ReSendSignUpUserCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiAccountResendsignupuserPut(reSendSignUpUserCommand?: ReSendSignUpUserCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiAccountResendsignupuserPut(reSendSignUpUserCommand?: ReSendSignUpUserCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiAccountResendsignupuserPut(reSendSignUpUserCommand?: ReSendSignUpUserCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -699,24 +847,32 @@ export class AccountService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.put<any>(`${this.configuration.basePath}/api/account/resendsignupuser`,
-            reSendSignUpUserCommand,
+        let localVarPath = `/api/account/resendsignupuser`;
+        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: reSendSignUpUserCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -728,32 +884,37 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountSelectcompanyPost(selectCompanyCommand?: SelectCompanyCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<SelectCompanyResponse>;
-    public apiAccountSelectcompanyPost(selectCompanyCommand?: SelectCompanyCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<SelectCompanyResponse>>;
-    public apiAccountSelectcompanyPost(selectCompanyCommand?: SelectCompanyCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<SelectCompanyResponse>>;
-    public apiAccountSelectcompanyPost(selectCompanyCommand?: SelectCompanyCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccountSelectcompanyPost(selectCompanyCommand?: SelectCompanyCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<SelectCompanyResponse>;
+    public apiAccountSelectcompanyPost(selectCompanyCommand?: SelectCompanyCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<SelectCompanyResponse>>;
+    public apiAccountSelectcompanyPost(selectCompanyCommand?: SelectCompanyCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<SelectCompanyResponse>>;
+    public apiAccountSelectcompanyPost(selectCompanyCommand?: SelectCompanyCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -761,24 +922,32 @@ export class AccountService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.post<SelectCompanyResponse>(`${this.configuration.basePath}/api/account/selectcompany`,
-            selectCompanyCommand,
+        let localVarPath = `/api/account/selectcompany`;
+        return this.httpClient.request<SelectCompanyResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: selectCompanyCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -790,32 +959,37 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountSetnewpasswordPut(setNewPasswordCommand?: SetNewPasswordCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
-    public apiAccountSetnewpasswordPut(setNewPasswordCommand?: SetNewPasswordCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
-    public apiAccountSetnewpasswordPut(setNewPasswordCommand?: SetNewPasswordCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
-    public apiAccountSetnewpasswordPut(setNewPasswordCommand?: SetNewPasswordCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccountSetnewpasswordPut(setNewPasswordCommand?: SetNewPasswordCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
+    public apiAccountSetnewpasswordPut(setNewPasswordCommand?: SetNewPasswordCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
+    public apiAccountSetnewpasswordPut(setNewPasswordCommand?: SetNewPasswordCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public apiAccountSetnewpasswordPut(setNewPasswordCommand?: SetNewPasswordCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -823,24 +997,32 @@ export class AccountService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.put<object>(`${this.configuration.basePath}/api/account/setnewpassword`,
-            setNewPasswordCommand,
+        let localVarPath = `/api/account/setnewpassword`;
+        return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: setNewPasswordCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -852,32 +1034,37 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountSignupcompanyPost(signUpCompanyCommand?: SignUpCompanyCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
-    public apiAccountSignupcompanyPost(signUpCompanyCommand?: SignUpCompanyCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
-    public apiAccountSignupcompanyPost(signUpCompanyCommand?: SignUpCompanyCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
-    public apiAccountSignupcompanyPost(signUpCompanyCommand?: SignUpCompanyCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccountSignupcompanyPost(signUpCompanyCommand?: SignUpCompanyCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
+    public apiAccountSignupcompanyPost(signUpCompanyCommand?: SignUpCompanyCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
+    public apiAccountSignupcompanyPost(signUpCompanyCommand?: SignUpCompanyCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public apiAccountSignupcompanyPost(signUpCompanyCommand?: SignUpCompanyCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -885,24 +1072,32 @@ export class AccountService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.post<object>(`${this.configuration.basePath}/api/account/signupcompany`,
-            signUpCompanyCommand,
+        let localVarPath = `/api/account/signupcompany`;
+        return this.httpClient.request<object>('post', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: signUpCompanyCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -914,32 +1109,37 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountSignupuserPut(signupUserCommand?: SignupUserCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiAccountSignupuserPut(signupUserCommand?: SignupUserCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiAccountSignupuserPut(signupUserCommand?: SignupUserCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiAccountSignupuserPut(signupUserCommand?: SignupUserCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccountSignupuserPut(signupUserCommand?: SignupUserCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiAccountSignupuserPut(signupUserCommand?: SignupUserCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiAccountSignupuserPut(signupUserCommand?: SignupUserCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiAccountSignupuserPut(signupUserCommand?: SignupUserCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -947,24 +1147,32 @@ export class AccountService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.put<any>(`${this.configuration.basePath}/api/account/signupuser`,
-            signupUserCommand,
+        let localVarPath = `/api/account/signupuser`;
+        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: signupUserCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -976,32 +1184,37 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountVerifyforgotpasswordPut(verifyForgotPasswordCommand?: VerifyForgotPasswordCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
-    public apiAccountVerifyforgotpasswordPut(verifyForgotPasswordCommand?: VerifyForgotPasswordCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
-    public apiAccountVerifyforgotpasswordPut(verifyForgotPasswordCommand?: VerifyForgotPasswordCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
-    public apiAccountVerifyforgotpasswordPut(verifyForgotPasswordCommand?: VerifyForgotPasswordCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccountVerifyforgotpasswordPut(verifyForgotPasswordCommand?: VerifyForgotPasswordCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
+    public apiAccountVerifyforgotpasswordPut(verifyForgotPasswordCommand?: VerifyForgotPasswordCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
+    public apiAccountVerifyforgotpasswordPut(verifyForgotPasswordCommand?: VerifyForgotPasswordCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public apiAccountVerifyforgotpasswordPut(verifyForgotPasswordCommand?: VerifyForgotPasswordCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -1009,24 +1222,32 @@ export class AccountService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.put<object>(`${this.configuration.basePath}/api/account/verifyforgotpassword`,
-            verifyForgotPasswordCommand,
+        let localVarPath = `/api/account/verifyforgotpassword`;
+        return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: verifyForgotPasswordCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -1038,32 +1259,37 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountVerifyownerPut(verifyOwnerCommand?: VerifyOwnerCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
-    public apiAccountVerifyownerPut(verifyOwnerCommand?: VerifyOwnerCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
-    public apiAccountVerifyownerPut(verifyOwnerCommand?: VerifyOwnerCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
-    public apiAccountVerifyownerPut(verifyOwnerCommand?: VerifyOwnerCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccountVerifyownerPut(verifyOwnerCommand?: VerifyOwnerCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
+    public apiAccountVerifyownerPut(verifyOwnerCommand?: VerifyOwnerCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
+    public apiAccountVerifyownerPut(verifyOwnerCommand?: VerifyOwnerCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public apiAccountVerifyownerPut(verifyOwnerCommand?: VerifyOwnerCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -1071,24 +1297,32 @@ export class AccountService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.put<object>(`${this.configuration.basePath}/api/account/verifyowner`,
-            verifyOwnerCommand,
+        let localVarPath = `/api/account/verifyowner`;
+        return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: verifyOwnerCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -1100,32 +1334,37 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountVerifyuserPut(verifyUserCommand?: VerifyUserCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiAccountVerifyuserPut(verifyUserCommand?: VerifyUserCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiAccountVerifyuserPut(verifyUserCommand?: VerifyUserCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiAccountVerifyuserPut(verifyUserCommand?: VerifyUserCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiAccountVerifyuserPut(verifyUserCommand?: VerifyUserCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiAccountVerifyuserPut(verifyUserCommand?: VerifyUserCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiAccountVerifyuserPut(verifyUserCommand?: VerifyUserCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiAccountVerifyuserPut(verifyUserCommand?: VerifyUserCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
@@ -1133,24 +1372,32 @@ export class AccountService {
         const consumes: string[] = [
             'application/json',
             'text/json',
-            'application/_*+json'
+            'application/*+json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.put<any>(`${this.configuration.basePath}/api/account/verifyuser`,
-            verifyUserCommand,
+        let localVarPath = `/api/account/verifyuser`;
+        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: verifyUserCommand,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }

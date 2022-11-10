@@ -121,10 +121,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData?.type === 'edit') {
-          if (this.isFormDirty) {
-            this.updateTaskById(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateTaskById(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addTask();
           this.modalService.setModalSpinner({ action: null, status: true });
