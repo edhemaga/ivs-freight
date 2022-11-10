@@ -455,6 +455,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
           : this.DetailsDataService.mainData?.firstName.toUpperCase() +
             ' ' +
             this.DetailsDataService.mainData?.lastName.toUpperCase();
+             
         let dateFromData = this.httpRequest.body.getAll('IssueDate')[0];
         let issuedDate = dateFromData
           ? moment(dateFromData).format('MM/DD/YY')

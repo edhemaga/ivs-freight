@@ -40,8 +40,8 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
           opacity: 0,
         })
       ),
-      transition('false <=> true', [animate('.3s ease-in')]),
-      transition('true <=> false', [animate('.3s ease-in')]), 
+      transition('false <=> true', [animate('.1s ease-in')]),
+      transition('true <=> false', [animate('.1s ease-in')]), 
     ])
   ]
 })
@@ -51,6 +51,7 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
   @Input() customClassDropDown: string;
   @Input() hasVericalDots: boolean;
   @Input() data: any;
+  @Input() leftIcon: any = false;
   @Input() public placement: string = 'bottom-right';
   @Output() dropDownActions: EventEmitter<any> = new EventEmitter();
   @Output() openModalAction: EventEmitter<any> = new EventEmitter();
@@ -141,6 +142,12 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
       this.options[indx]['openSubtype'] = true;
     }
     
+  }
+
+  dropdownClosed(){
+    this.options.map((item) => {
+      item['openSubtype'] = false;
+    });
   }
 
 }

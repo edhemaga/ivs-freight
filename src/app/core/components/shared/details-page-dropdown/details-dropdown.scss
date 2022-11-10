@@ -16,8 +16,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
-
+      transform: rotate(0deg);
       fill: #919191;
+      transition: transform 0.1s ease;
       path{
         fill: #919191;
       }
@@ -39,13 +40,24 @@
 
   &.active-drop{
     background-color: #42424220;
+    
     .dropdown-dots {
       cursor: pointer;
       svg {
+        transform: rotate(90deg);
           path {
             fill: #424242 !important;
           }
       }
+    }
+
+    &:hover{
+      background-color: #424242;
+      svg {
+        path {
+          fill: #DADADA !important;
+        }
+    }
     }
   }
 
@@ -53,20 +65,21 @@
 
 .dropdown-main-popover-body{
   background-color: transparent;
+  transition: transform 0.1s ease;
+  margin: 0px 4px 4px 4px;
 
-  &.horizontalMargin{
-    margin-top: 4px;
+  &.marginForAuto{
+    margin: 4px 4px 4px 4px; 
   }
 
-  &.verticalMargin{
-    margin-left: 4px;
-    margin-top: 7px;
+  &.marginForBottom{
+    margin: 4px 0px 4px 4px; 
   }
 
 }
 
 .details-dropdown-body {
-  padding: 4px;
+  padding: 4px 4px 0.1px 4px;
   
   background-color: #2F2F2F;
   border-radius: 3px;
@@ -115,7 +128,7 @@
         display: flex;
         align-items: center;
         transform: rotate(0deg);
-        transition: all 0.3s ease-in;
+        transition: all 0.1s ease-in;
         svg {
 
           rect{
@@ -186,7 +199,7 @@
 
     }
 
-    &.rightIcon{
+    &.leftIcon{
       
       .actionTitle{
         margin-right: 22px;
@@ -205,8 +218,25 @@
       cursor: pointer;
       background-color: #1D1D1D;
 
+      &.disabledAction{
+
+        &.disabledActionMain{
+          background-color: transparent;
+        }
+
+        &.subTypeHolder{
+          cursor: pointer !important;
+          //background-color: #1D1D1D;
+        }
+        
+      }
+
+      .hoveredSubtype{
+        background-color: #AAAAAA10 !important;
+      }
+
       .actionTitle{
-        color: #CCCCCC;
+        color: #fff;
       }
 
       .actionIcon{
@@ -281,20 +311,26 @@
 
     }
 
-
+    &.leftIcon{
+      .actionIcon{
+        position: absolute;
+        left: 0px;
+        margin: 0px 4px;
+      }
+    }
     
   }
 
   .openedSubtype{
     background-color: #AAAAAA10;
     border-radius: 2px;
-    transition: all 0.3s ease-in;
+    transition: all 0.1s ease-in;
     .action-select-holder{
       height: 26px;
 
       .actionTitle{
         font-weight: 700;
-        transition: all 0.3s ease-in;
+        //transition: all 0.3s ease-in;
       }
   
       .actionIcon{
@@ -328,7 +364,7 @@
 
   .hoveredSubtype{
     background-color: transparent !important;
-    transition: all 0.2s ease-in;
+    transition: all 0.1s ease-in;
   }
 
   .border-holder{
@@ -370,6 +406,7 @@
 
       .subtypeTitle{ 
         color: #6C6C6C !important;
+        cursor: auto !important;
       }
 
       .actionIcon{
@@ -381,6 +418,7 @@
           }
         }
       }
+      cursor: auto !important;
     }
 
     .redIcon{
@@ -429,7 +467,7 @@
       }
 
     }
-
+    cursor: auto !important;
   }
   
 
