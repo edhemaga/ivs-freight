@@ -19,5 +19,6 @@ export interface UpdateStopCommand {
     total?: number | null;
     longitude?: number;
     latitude?: number;
+    orderNumber?: number;
 }
 

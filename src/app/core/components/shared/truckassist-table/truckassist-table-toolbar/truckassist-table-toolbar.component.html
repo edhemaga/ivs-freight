@@ -126,7 +126,7 @@
   </div>
 
   <!-- OPEN MODAL BUTTON -->
-  <div class="modal-open-container" (click)="onToolBarAction('open-modal')">
+  <div class="modal-open-container" (click)="onToolBarAction('open-modal')" *ngIf="!options.toolbarActions.hideOpenModalButton">
     <svg-icon
       [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
       [src]="'assets/svg/truckassist-table/plus-icon.svg'"
@@ -136,11 +136,13 @@
 
 <ng-template #optionsPopover let-data="data" data-toggle="popover">
   <div class="options-container">
+    <!-- TOOLBAR OPTIONS -->
     <div
       (click)="onOptions(option)"
       [ngClass]="{ 'active-option': option.active }"
       *ngFor="let option of optionsPopupContent"
       class="options"
+      [ngStyle]="{'display': !option.show ? 'none' : 'flex'}"
     >
       <div class="icon">
         <svg-icon
@@ -165,6 +167,7 @@
       </div>
     </div>
 
+    <!-- COLUMNS LIST  -->
     <div class="columns-options" *ngIf="optionsPopupContent[4].active">
       <div
         (click)="onToaggleColumn(column, i)"
