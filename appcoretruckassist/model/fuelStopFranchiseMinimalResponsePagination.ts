@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FuelStopFranchiseMinimalResponse } from './fuelStopFranchiseMinimalResponse';
 
 
-export interface FuelStopFranchiseMinimalResponse { 
-    id?: number;
-    businessName?: string | null;
-    count?: number | null;
+export interface FuelStopFranchiseMinimalResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<FuelStopFranchiseMinimalResponse> | null;
 }
 

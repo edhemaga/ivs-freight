@@ -18,6 +18,7 @@ import { FormService } from '../../../../services/form/form.service';
 import { FuelTService } from '../../../fuel/state/fuel.service';
 import { GetFuelStopModalResponse } from '../../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
 import { NotificationService } from '../../../../services/notification/notification.service';
+import { FuelStopResponse } from '../../../../../../../appcoretruckassist/model/fuelStopResponse';
 
 @Component({
   selector: 'app-fuel-stop-modal',
@@ -40,6 +41,8 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
 
   public isFormDirty: boolean;
 
+  public fuelStopName: string = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -52,12 +55,13 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getModalDropdowns();
-    if (this.editData) {
+    if (this.editData?.type === 'edit') {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 1,
+        id: 7,
       };
+      console.log('edit data: ', this.editData);
       this.getFuelStopById(this.editData.id);
     }
   }
@@ -207,7 +211,37 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
 
   private deleteFuelStopById(id: number) {}
 
-  private getFuelStopById(id: number) {}
+  private getFuelStopById(id: number) {
+    this.fuelService
+      .getFuelStopById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: FuelStopResponse) => {
+          console.log('res: ', res);
+          this.fuelStopForm.patchValue({
+            businessName: res.businessName,
+            fuelStopFranchiseId: res.fuelStopFranchise
+              ? res.fuelStopFranchise.businessName
+              : null,
+            store: res.store,
+            favourite: res.fuelStopExtensions[0].favourite,
+            phone: res.phone,
+            fax: res.fax,
+            address: res.address.address,
+            note: res.fuelStopExtensions[0].note,
+          });
+          this.selectedFuelStop = res.fuelStopFranchise;
+          this.selectedAddress = res.address;
+
+          this.fuelStopName = res.fuelStopFranchise
+            ? res.fuelStopFranchise.businessName
+            : res.businessName;
+        },
+        error: (err: any) => {
+          console.log('err in get fuel stop by id: ', err);
+        },
+      });
+  }
 
   private getModalDropdowns() {
     this.fuelService
@@ -215,10 +249,11 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: GetFuelStopModalResponse) => {
-          this.fuelStops = res.fuelStopFranchise.map((item) => {
+          this.fuelStops = res.pagination.data.map((item) => {
             return {
               id: item.id,
               name: item.businessName,
+              count: item.count,
             };
           });
         },

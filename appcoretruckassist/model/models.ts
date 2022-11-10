@@ -241,6 +241,7 @@ export * from './fuelItemResponse';
 export * from './fuelStopExtensionResponse';
 export * from './fuelStopFranchiseListResponse';
 export * from './fuelStopFranchiseMinimalResponse';
+export * from './fuelStopFranchiseMinimalResponsePagination';
 export * from './fuelStopFranchiseResponse';
 export * from './fuelStopFranchiseResponsePagination';
 export * from './fuelStopListResponse';

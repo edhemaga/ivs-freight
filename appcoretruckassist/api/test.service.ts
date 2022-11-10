@@ -30,8 +30,8 @@ import { TestResponse } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
-import { TestResult } from '../model/testResult';
 import { TestType } from '../model/testType';
+import { TestResult } from '../model/testResult';
 
 @Injectable({
   providedIn: 'root',

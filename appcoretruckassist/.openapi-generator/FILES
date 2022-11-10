@@ -298,6 +298,7 @@ model/fuelItemResponse.ts
 model/fuelStopExtensionResponse.ts
 model/fuelStopFranchiseListResponse.ts
 model/fuelStopFranchiseMinimalResponse.ts
+model/fuelStopFranchiseMinimalResponsePagination.ts
 model/fuelStopFranchiseResponse.ts
 model/fuelStopFranchiseResponsePagination.ts
 model/fuelStopListResponse.ts
