@@ -5,6 +5,7 @@ import {
   ViewEncapsulation,
   AfterViewInit,
 } from '@angular/core';
+import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
 import { getPayrollDriverMilesDefinition } from 'src/assets/utils/settings/payroll-columns';
 import { DriversActiveQuery } from '../../../driver/state/driver-active-state/driver-active.query';
 import { DriversActiveState } from '../../../driver/state/driver-active-state/driver-active.store';
@@ -17,6 +18,7 @@ import { DriversInactiveState } from '../../../driver/state/driver-inactive-stat
   styleUrls: ['./payroll.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  providers: [NameInitialsPipe]
 })
 export class PayrollComponent implements OnInit, AfterViewInit {
   tableOptions: any = {};
@@ -31,10 +33,12 @@ export class PayrollComponent implements OnInit, AfterViewInit {
 
   driversActive: DriversActiveState[] = [];
   driversInactive: DriversInactiveState[] = [];
+  mapingIndex: number = 0;
 
   constructor(
     private driversActiveQuery: DriversActiveQuery,
-    private driversInactiveQuery: DriversInactiveQuery
+    private driversInactiveQuery: DriversInactiveQuery,
+    private nameInitialsPipe: NameInitialsPipe,
   ) {}
 
   ngAfterViewInit(): void {
@@ -49,6 +53,8 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         this.tableContainerWidth = entry.contentRect.width;
       });
     });
+
+    console.log("tableContainerWidth", this.tableContainerWidth);
 
     this.resizeObserver.observe(document.querySelector('.table-container'));
   }
@@ -109,11 +115,11 @@ export class PayrollComponent implements OnInit, AfterViewInit {
           : this.mapApplicantsData(data, index);
       });
      // For Testing
-      if (this.selectedTab !== 'applicants') {
-        for (let i = 0; i < 1000; i++) {
-          this.viewData.push(this.viewData[0]);
-        }
-      }
+      // if (this.selectedTab !== 'applicants') {
+      //   for (let i = 0; i < 1000; i++) {
+      //     this.viewData.push(this.viewData[0]);
+      //   }
+      // }
     } else {
       this.viewData = [];
     }
@@ -242,10 +248,17 @@ export class PayrollComponent implements OnInit, AfterViewInit {
   mapApplicantsData(data: any, index: number) {
     return {
       fullName: 'Angelo Trotter',
-      invited: '04/04/44',
-      accepted: '04/04/44',
-      phone: '(325) 540-1157',
+      payroll: 'LA59OSK',
+      period: '04/04/44',
+      total: '2,300.2',
+      empty: '500',
+      salary: "2,300.2",
+      loaded: '1,500.2',
+      "MI Pay": "$1,842.06",
       dob: '04/04/44',
+      textShortName: this.nameInitialsPipe.transform('Angelo Trotter'),
+      avatarColor: this.getAvatarColors(),
+      status: "444 DAYS",
       email: 'angelo.T@gmail.com',
       applicantProgress: [
         {
@@ -336,6 +349,45 @@ export class PayrollComponent implements OnInit, AfterViewInit {
       },
       hire: true,
       favorite: false,
+    };
+  }
+  // Get Avatar Color
+  getAvatarColors() {
+    let textColors: string[] = [
+      '#6D82C7',
+      '#4DB6A2',
+      '#E57373',
+      '#E3B00F',
+      '#BA68C8',
+      '#BEAB80',
+      '#81C784',
+      '#FF8A65',
+      '#64B5F6',
+      '#F26EC2',
+      '#A1887F',
+      '#919191',
+    ];
+
+    let backgroundColors: string[] = [
+      '#DAE0F1',
+      '#D2EDE8',
+      '#F9DCDC',
+      '#F8EBC2',
+      '#EED9F1',
+      '#EFEADF',
+      '#DFF1E0',
+      '#FFE2D8',
+      '#D8ECFD',
+      '#FCDAF0',
+      '#E7E1DF',
+      '#E3E3E3',
+    ];
+
+    this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0;
+
+    return {
+      background: backgroundColors[this.mapingIndex],
+      color: textColors[this.mapingIndex],
     };
   }
 
