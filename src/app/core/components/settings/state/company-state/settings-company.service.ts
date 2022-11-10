@@ -5,21 +5,22 @@ import { SettingsBasicModalComponent } from '../../settings-company/company-moda
 import { SettingsInsurancePolicyModalComponent } from '../../settings-company/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
 import { SettingsFactoringModalComponent } from '../../settings-company/company-modals/settings-factoring-modal/settings-factoring-modal.component';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { CreateInsurancePolicyCommand } from 'appcoretruckassist/model/createInsurancePolicyCommand';
+import { UpdateInsurancePolicyCommand } from 'appcoretruckassist/model/updateInsurancePolicyCommand';
 import {
   CompanyModalResponse,
   CompanyResponse,
   CompanyService,
   CreateDivisionCompanyCommand,
-  CreateInsurancePolicyCommand,
   CreateResponse,
   InsurancePolicyModalResponse,
   UpdateCompanyCommand,
   UpdateDivisionCompanyCommand,
   UpdateFactoringCompanyCommand,
-  UpdateInsurancePolicyCommand,
 } from 'appcoretruckassist';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { CompanyStore } from './company-settings.store';
+import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsCompanyService implements OnDestroy {
@@ -230,10 +231,12 @@ export class SettingsCompanyService implements OnDestroy {
     );
   }
 
+  //CreateInsurancePolicyCommand
   public addInsurancePolicy(
-    data: CreateInsurancePolicyCommand
+    data: any
   ): Observable<CreateResponse> {
-    return this.settingService.apiCompanyInsurancepolicyPost(data).pipe(
+    const sortedParams = getFunctionParams(this.settingService.apiCompanyInsurancepolicyPost, data);
+    return this.settingService.apiCompanyInsurancepolicyPost(...sortedParams).pipe(
       tap((res: any) => {
         const companySub = this.getCompany()
           .pipe(takeUntil(this.destroy$))
@@ -253,10 +256,12 @@ export class SettingsCompanyService implements OnDestroy {
     );
   }
 
+  //UpdateInsurancePolicyCommand
   public updateInsurancePolicy(
-    data: UpdateInsurancePolicyCommand
+    data: any
   ): Observable<object> {
-    return this.settingService.apiCompanyInsurancepolicyPut(data).pipe(
+    const sortedParams = getFunctionParams(this.settingService.apiCompanyInsurancepolicyPut, data);
+    return this.settingService.apiCompanyInsurancepolicyPut(...sortedParams).pipe(
       tap((res: any) => {
         const companySub = this.getCompany()
           .pipe(takeUntil(this.destroy$))
