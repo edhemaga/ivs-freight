@@ -186,10 +186,19 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       value: 'PASSWORD',
     },
     {
-      api: 'note',
-      value: 'NOTE',
+      'api' : 'note',
+      'value' : 'NOTE'
     },
-  ];
+    {
+      'api' : 'route',
+      'value' : 'ROUTE'
+    },
+    {
+      'api' : 'map',
+      'value' : 'MAP',
+    }
+    
+  ]
   constructor(
     protected toastrService: ToastrService,
     public toastPackage: ToastPackage,
@@ -729,9 +738,17 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
           let noteTrailerNum = this.DetailsDataService.mainData?.trailerNumber;
           noteName = 'Trailer - ' + noteTrailerNum;
         }
-
-        this.message = noteName;
-        break;
+      
+        this.message = noteName;  
+      break;
+      case 'ROUTE' : 
+        let routeName = this.httpRequest.body?.name ? this.httpRequest.body?.name : this.DetailsDataService.mainData.name;
+        this.message = routeName;
+      break;
+      case 'MAP' : 
+        let mapName = this.httpRequest.body.name;
+        this.message = mapName;
+      break;
     }
 
     if (this.actionType == 'DRIVER' && !this.message) {
