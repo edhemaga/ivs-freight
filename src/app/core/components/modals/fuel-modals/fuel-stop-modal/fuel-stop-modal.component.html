@@ -2,6 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Fuel Stop' : 'Edit Fuel Stop'"
   [editData]="editData"
   [editName]="fuelStopName"
+  [disableDelete]="true"
   [isModalValid]="fuelStopForm.valid && isFormDirty"
   (action)="onModalAction($event)"
 >
@@ -22,14 +23,14 @@
             textTransform: 'uppercase',
             minLength: 2,
             maxLength: 64,
-            isRequired: true,
-            isDisabled: selectedFuelStop && editData?.type === 'edit'
+            isRequired: true
           }"
           (clear)="clearNewFuelStop()"
         ></app-ta-input>
         <app-ta-input-dropdown
           *ngIf="!fuelStopForm.get('businessName').value"
           formControlName="fuelStopFranchiseId"
+          [template]="'text-counter'"
           [inputConfig]="{
             name: 'Input Dropdown Fuel Stop',
             type: 'text',
@@ -61,7 +62,7 @@
             maxLength: 32,
             isDisabled:
               !fuelStopForm.get('fuelStopFranchiseId').value ||
-              (selectedFuelStop && editData?.type === 'edit')
+              !selectedFuelStop
           }"
         ></app-ta-input>
       </div>

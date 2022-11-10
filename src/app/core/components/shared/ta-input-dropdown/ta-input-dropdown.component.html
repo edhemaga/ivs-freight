@@ -588,6 +588,42 @@
           ></div>
         </div>
       </div>
+      <!--------------------------- Template Text - Counter --------------------------->
+      <div *ngSwitchCase="'text-counter'">
+        <div
+          *ngFor="let option of options; trackBy: identity"
+          class="dropdown-option dropdown-option-text-counter"
+          [ngClass]="{
+            disabled: option?.disabled,
+            'no-result':
+              options.length === 1 && options[0].name === 'No Results',
+            'add-new': option.name === 'Add New',
+            'add-new-divider': option.name === 'Add New' && options.length > 1,
+            active:
+              option.id ===
+              (activeItem?.duplicateId
+                ? activeItem?.duplicateId
+                : activeItem?.id),
+            'active-repair-truck-trailer': option?.status === 1,
+            routing_dropdown: inputConfig.name == 'RoutingAddress'
+          }"
+          (click)="onActiveItem(option)"
+        >
+          <span>
+            {{
+              option.name
+                | taHighlight
+                  : [{ index: 45632, text: getSuperControl.value }]
+                  : false
+            }}
+          </span>
+          <span
+            *ngIf="option.name !== 'Add New' && option.name !== 'No Results'"
+            class="option-counter"
+            >{{ option.count }}</span
+          >
+        </div>
+      </div>
       <!--------------------------- Default Template - Render Only Text --------------------------->
       <div *ngSwitchDefault>
         <div
