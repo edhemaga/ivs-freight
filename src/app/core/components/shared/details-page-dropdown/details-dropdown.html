@@ -19,8 +19,8 @@
   ></svg-icon>
 </div>
 
-<ng-template #dropdownPopover let-data="data">
-  <div class="dropdown-main-popover-body">  
+<ng-template #dropdownPopover let-data="data" >
+  <div class="dropdown-main-popover-body"  >  
     <div class="details-dropdown-body">
       <div *ngFor="let action of options;let i=index; trackBy:identity">
         <div class="action-holder" [class.leftIcon]="leftIcon" [class.disabledAction]="action.disabled" [class.disabledActionMain]="action.disabled" *ngIf="action.title != 'border' && action.title != 'Add New' && action.title != 'Request' && action.title != 'Report' && !action.hide" (click)="onAction(action,$event)">
