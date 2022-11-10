@@ -219,7 +219,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.PMform.invalid) {
+        if (this.PMform.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.PMform);
           return;
         }
@@ -252,27 +252,25 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             break;
           }
           case 'edit': {
-            if (this.isFormDirty) {
-              switch (this.editData.header) {
-                case 'Truck': {
-                  this.addUpdatePMTruckUnit();
-                  this.modalService.setModalSpinner({
-                    action: null,
-                    status: true,
-                  });
-                  break;
-                }
-                case 'Trailer': {
-                  this.addUpdatePMTrailerUnit();
-                  this.modalService.setModalSpinner({
-                    action: null,
-                    status: true,
-                  });
-                  break;
-                }
-                default: {
-                  break;
-                }
+            switch (this.editData.header) {
+              case 'Truck': {
+                this.addUpdatePMTruckUnit();
+                this.modalService.setModalSpinner({
+                  action: null,
+                  status: true,
+                });
+                break;
+              }
+              case 'Trailer': {
+                this.addUpdatePMTrailerUnit();
+                this.modalService.setModalSpinner({
+                  action: null,
+                  status: true,
+                });
+                break;
+              }
+              default: {
+                break;
               }
             }
 

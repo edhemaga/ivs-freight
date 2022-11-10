@@ -345,18 +345,16 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       } else {
         // Save & Update
         if (data.action === 'save') {
-          if (this.brokerForm.invalid) {
+          if (this.brokerForm.invalid || !this.isFormDirty) {
             this.inputService.markInvalid(this.brokerForm);
             return;
           }
           if (this.editData) {
-            if (this.isFormDirty) {
-              this.updateBroker(this.editData.id);
-              this.modalService.setModalSpinner({
-                action: null,
-                status: true,
-              });
-            }
+            this.updateBroker(this.editData.id);
+            this.modalService.setModalSpinner({
+              action: null,
+              status: true,
+            });
           } else {
             this.addBroker();
             this.modalService.setModalSpinner({

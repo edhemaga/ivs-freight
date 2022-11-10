@@ -105,9 +105,7 @@ export class TaReCardComponent implements OnInit {
   }
 
   toggleDropdown(){
-    //console.log("heeeeeeeeer", this.mainData);
     let currentDate = moment().format('MM/DD/YYYY');
-    console.log("cardNameCurrent", this.cardNameCurrent); 
     if ( this.cardNameCurrent == 'registration' ) {
       let expDate = moment(this.mainData?.expDate).format('MM/DD/YYYY');
       

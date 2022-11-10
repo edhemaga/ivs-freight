@@ -1,4 +1,9 @@
-<app-custom-scrollbar>
+<app-custom-scrollbar
+  [scrollBarOptions]="{
+    showVerticalScrollBar: true,
+    showHorizontalScrollBar: false
+  }"
+>
   <div cdkDrag class="modal-container {{ customClass }}" ngBAutofocus>
     <div class="modal-original-part">
       <!-- Modal Header -->
@@ -304,7 +309,7 @@
             [ngClass]="{ valid: isModalValid }"
             type="button"
           >
-            {{ setMapRouteSpinnerVisibility ? "Saving" : "Create" }}
+            {{ setMapRouteSpinnerVisibility ? "Saving" : editData.id ? 'Save Changes' : "Create" }}
             <div *ngIf="setMapRouteSpinnerVisibility" class="modal-spinner">
               <app-ta-spinner
                 [size]="'small'"
@@ -322,7 +327,15 @@
             type="button"
           >
             {{
-              saveSpinnerVisibility
+              profileUpdateText
+                ? saveSpinnerVisibility
+                  ? "Saving"
+                  : "Save Changes"
+                : applicantText
+                ? saveSpinnerVisibility
+                  ? "Inviting"
+                  : "Invite"
+                : saveSpinnerVisibility
                 ? "Saving"
                 : editData?.type?.includes("edit")
                 ? editData?.type?.includes("fo")

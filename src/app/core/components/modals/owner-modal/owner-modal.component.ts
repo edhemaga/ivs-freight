@@ -202,15 +202,13 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        if (this.ownerForm.invalid) {
+        if (this.ownerForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.ownerForm);
           return;
         }
         if (this.editData?.id) {
-          if (this.isFormDirty) {
-            this.updateOwner(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateOwner(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addOwner();
           this.modalService.setModalSpinner({

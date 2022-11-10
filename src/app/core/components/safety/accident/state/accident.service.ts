@@ -2,10 +2,8 @@ import { Injectable } from '@angular/core';
 import {
   AccidentListResponse,
   AccidentResponse,
-  AccidentService,
-  CreateAccidentCommand,
+  /* AccidentService, */
   CreateResponse,
-  UpdateAccidentCommand,
 } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 
@@ -13,12 +11,24 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root',
 })
 export class AccidentTService {
-  constructor(private accidentService: AccidentService) {}
+  constructor(private accidentService: /* AccidentService */ any) {}
 
   // Get Accident List
   public getAccidentList(
     active?: boolean,
     reported?: boolean,
+    dateFrom?: string,
+    dateTo?: string,
+    _long?: number,
+    lat?: number,
+    distance?: number,
+    driverIds?: Array<number>,
+    truckIds?: Array<number>,
+    trailerIds?: Array<number>,
+    injury?: number,
+    fatality?: number,
+    towing?: boolean,
+    hazMat?: boolean,
     pageIndex?: number,
     pageSize?: number,
     companyId?: number,
@@ -27,25 +37,37 @@ export class AccidentTService {
     search1?: string,
     search2?: string
   ): Observable<AccidentListResponse> {
-    // return this.accidentService.apiAccidentListGet(
-    //   active,
-    //   reported,
-    //   pageIndex,
-    //   pageSize,
-    //   companyId,
-    //   sort,
-    //   search,
-    //   search1,
-    //   search2
-    // );
+    return this.accidentService.apiAccidentListGet(
+      active,
+      reported,
+      dateFrom,
+      dateTo,
+      _long,
+      lat,
+      distance,
+      driverIds,
+      truckIds,
+      trailerIds,
+      injury,
+      fatality,
+      towing,
+      hazMat,
+      pageIndex,
+      pageSize,
+      companyId,
+      sort,
+      search,
+      search1,
+      search2
+    );
     return of();
   }
 
-  public addAccident(data: CreateAccidentCommand): Observable<CreateResponse> {
+  public addAccident(data: any): Observable<CreateResponse> {
     return this.accidentService.apiAccidentPost(data);
   }
 
-  public updateAccident(data: UpdateAccidentCommand): Observable<any> {
+  public updateAccident(data: any): Observable<any> {
     return this.accidentService.apiAccidentPut(data);
   }
 

@@ -16,25 +16,26 @@ export class RoadsideService {
   // Get Roadside List
   public getRoadsideList(
     active?: boolean,
+    categoryReport?: number,
     pageIndex?: number,
     pageSize?: number,
     companyId?: number,
     sort?: string,
     search?: string,
     search1?: string,
-    search2?: string
+    search2?: string,
   ): Observable<RoadsideInspectionListResponse> {
-    // return this.roadsideServis.apiViolationListGet(
-    //   active,
-    //   pageIndex,
-    //   pageSize,
-    //   companyId,
-    //   sort,
-    //   search,
-    //   search1,
-    //   search2
-    // );
-    return of();
+    return this.roadsideServis.apiViolationListGet(
+      active,
+      categoryReport,
+      pageIndex,
+      pageSize,
+      companyId,
+      sort,
+      search,
+      search1,
+      search2
+    );
   }
 
   // Get Roadside Minimal List
@@ -45,7 +46,7 @@ export class RoadsideService {
     return this.roadsideServis.apiViolationListMinimalGet(pageIndex, pageSize);
   }
   public updateRoadside(
-    data: UpdateRoadsideInspectionCommand
+    data: any /*UpdateRoadsideInspectionCommand*/
   ): Observable<any> {
     return this.roadsideServis.apiViolationPut(data);
   }

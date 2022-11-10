@@ -103,15 +103,13 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
       }
       case 'save': {
         // If Form not valid
-        if (this.medicalForm.invalid) {
+        if (this.medicalForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.medicalForm);
           return;
         }
         if (this.editData?.type === 'edit-medical') {
-          if (this.isFormDirty) {
-            this.updateMedical(this.editData.id);
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateMedical(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addMedical();
           this.modalService.setModalSpinner({ action: null, status: true });

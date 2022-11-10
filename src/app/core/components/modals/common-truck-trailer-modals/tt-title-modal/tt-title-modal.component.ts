@@ -82,15 +82,13 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
       }
       case 'save': {
         // If Form not valid
-        if (this.ttTitleForm.invalid) {
+        if (this.ttTitleForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.ttTitleForm);
           return;
         }
         if (this.editData.type === 'edit-title') {
-          if (this.isFormDirty) {
-            this.updateTitle();
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateTitle();
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addTitle();
           this.modalService.setModalSpinner({ action: null, status: true });

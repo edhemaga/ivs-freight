@@ -1,6 +1,7 @@
 <app-ta-modal
   [modalTitle]="'Profile Update'"
   [isModalValid]="profileUserForm.valid && isFormDirty"
+  [profileUpdateText]="true"
   (action)="onModalAction($event)"
 >
   <div origin>

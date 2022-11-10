@@ -4,7 +4,6 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -43,6 +42,7 @@ export class TruckassistTableBodyComponent
   private destroy$ = new Subject<void>();
   @ViewChild('tableScrollRef', { static: false })
   public virtualScrollViewport: CdkVirtualScrollViewport;
+
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
 
   @Input() viewData: any[];
@@ -62,12 +62,10 @@ export class TruckassistTableBodyComponent
   showScrollSectionBorder: boolean = false;
   activeTableData: any = {};
   notPinedMaxWidth: number = 0;
-  showMoreContainerWidth: number = 220;
   dropContent: any[] = [];
   tooltip: any;
   dropDownActive: number = -1;
   progressData: any[] = [];
-  checkForScrollTimeout: any;
   viewDataEmpty: boolean;
   viewDataTimeOut: any;
   rowData: any;
@@ -225,7 +223,6 @@ export class TruckassistTableBodyComponent
     if (!changes?.options?.firstChange && changes?.options) {
       this.options = changes.options.currentValue;
 
-
       this.setDropContent();
     }
   }
@@ -254,13 +251,19 @@ export class TruckassistTableBodyComponent
     this.getNotPinedMaxWidth();
   }
 
-  // Lisiner For Scrolling Of Not Pined Section Of Table
-  // @HostListener('window:scroll', ['$event'])
-  // onScroll(event: any) {
-  //   if (event.target.className === 'not-pined-columns') {
-  //     this.tableService.sendScroll(event.path[0].scrollLeft);
-  //   }
-  // }
+  onHorizontalScroll(scrollEvent: any) {
+    if(scrollEvent.eventAction === 'scrolling'){
+      document.querySelectorAll('#table-not-pined-scroll-container').forEach((el) => {
+        el.scrollLeft = scrollEvent.scrollPosition;
+      })
+  
+      this.tableService.sendScroll(scrollEvent.scrollPosition);
+    }else if(scrollEvent.eventAction === 'isScrollShowing' && this.showScrollSectionBorder !== scrollEvent.isScrollBarShowing){
+      this.showScrollSectionBorder = scrollEvent.isScrollBarShowing;
+
+      this.changeDetectorRef.detectChanges();
+    }
+  }
 
   // Get Table Sections
   getTableSections() {
@@ -311,31 +314,6 @@ export class TruckassistTableBodyComponent
         tableContainer.clientWidth - (this.pinedWidth + this.actionsWidth) - 8;
 
       this.changeDetectorRef.detectChanges();
-
-      this.checkForScroll();
-    }
-  }
-
-  // Check If Scroll Exists On Not Pined Section Of Table
-  checkForScroll() {
-    const div = document.getElementById('scroll-container');
-    const pinedColumns = document.querySelector('.pined-columns');
-    const actionColumns = document.querySelector('.actions-columns');
-
-    if (div) {
-      this.checkForScrollTimeout = setTimeout(() => {
-        this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
-
-        let notPinedWidth =
-          div.clientWidth <= this.notPinedMaxWidth
-            ? div.clientWidth
-            : this.notPinedMaxWidth;
-
-        this.showMoreContainerWidth +=
-          pinedColumns.clientWidth + actionColumns.clientWidth + notPinedWidth;
-
-        this.changeDetectorRef.detectChanges();
-      }, 100);
     }
   }
 
@@ -425,7 +403,7 @@ export class TruckassistTableBodyComponent
   // Set Dropdown Content
   setDropContent() {
     this.dropContent = [];
-    
+
     if (this.options.actions.length) {
       for (let i = 0; i < this.options.actions.length; i++) {
         this.dropContent.push(this.options.actions[i]);
@@ -495,7 +473,7 @@ export class TruckassistTableBodyComponent
   }
 
   // Show Media
-  onShowMedia(row: any){
+  onShowMedia(row: any) {
     if (this.activeMedia !== row.id) {
       this.activeMedia = row.id;
     } else {
@@ -504,7 +482,7 @@ export class TruckassistTableBodyComponent
   }
 
   // Show Insurance
-  onShowInsurance(row: any){
+  onShowInsurance(row: any) {
     if (this.activeInsurance !== row.id) {
       this.activeInsurance = row.id;
     } else {
@@ -535,6 +513,8 @@ export class TruckassistTableBodyComponent
     this.destroy$.next();
     this.destroy$.complete();
     this.tableService.sendRowsSelected([]);
+
+    console.log('Poziva se ngOnDestroy table body')
   }
 
   // --------------------------------TODO---------------------------------

@@ -11,23 +11,31 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec }       from '@angular/common/http';
-import { CustomHttpParameterCodec }                          from '../encoder';
-import { Observable }                                        from 'rxjs';
+import { Inject, Injectable, Optional } from '@angular/core';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpParams,
+  HttpResponse,
+  HttpEvent,
+  HttpParameterCodec,
+} from '@angular/common/http';
+import { CustomHttpParameterCodec } from '../encoder';
+import { Observable } from 'rxjs';
 
 import { ClusterResponse } from '../model/models';
+import { CreateWithUploadsResponse } from '../model/models';
+import { FileResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { RoadsideInspectionListResponse } from '../model/models';
 import { RoadsideInspectionMinimalListResponse } from '../model/models';
 import { RoadsideInspectionResponse } from '../model/models';
-import { UpdateRoadsideInspectionCommand } from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
-
-
+import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
+import { Configuration } from '../configuration';
+import { ViolationCategory } from '../model/violationCategory';
+import { ViolationCommand } from '../model/violationCommand';
+import { RoadsideInspectionSpecialCheckCommand } from '../model/roadsideInspectionSpecialCheckCommand';
 
 @Injectable({
   providedIn: 'root'
@@ -39,11 +47,15 @@ export class ViolationService {
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
 
-    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
+    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string|string[], @Optional() configuration: Configuration) {
         if (configuration) {
             this.configuration = configuration;
         }
         if (typeof this.configuration.basePath !== 'string') {
+            if (Array.isArray(basePath) && basePath.length > 0) {
+                basePath = basePath[0];
+            }
+
             if (typeof basePath !== 'string') {
                 basePath = this.basePath;
             }
@@ -52,7 +64,21 @@ export class ViolationService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    // @ts-ignore
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         if (typeof value === "object" && value instanceof Date === false) {
             httpParams = this.addToHttpParamsRecursive(httpParams, value);
@@ -72,8 +98,7 @@ export class ViolationService {
                 (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
             } else if (value instanceof Date) {
                 if (key != null) {
-                    httpParams = httpParams.append(key,
-                        (value as Date).toISOString().substr(0, 10));
+                    httpParams = httpParams.append(key, (value as Date).toISOString().substr(0, 10));
                 } else {
                    throw Error("key may not be null if value is Date");
                 }
@@ -98,68 +123,81 @@ export class ViolationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiViolationClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<Array<ClusterResponse>>;
-    public apiViolationClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<Array<ClusterResponse>>>;
-    public apiViolationClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<Array<ClusterResponse>>>;
-    public apiViolationClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiViolationClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<ClusterResponse>>;
+    public apiViolationClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<ClusterResponse>>>;
+    public apiViolationClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<ClusterResponse>>>;
+    public apiViolationClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let queryParameters = new HttpParams({encoder: this.encoder});
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (northEastLatitude !== undefined && northEastLatitude !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>northEastLatitude, 'NorthEastLatitude');
         }
         if (northEastLongitude !== undefined && northEastLongitude !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>northEastLongitude, 'NorthEastLongitude');
         }
         if (southWestLatitude !== undefined && southWestLatitude !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>southWestLatitude, 'SouthWestLatitude');
         }
         if (southWestLongitude !== undefined && southWestLongitude !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>southWestLongitude, 'SouthWestLongitude');
         }
         if (zoomLevel !== undefined && zoomLevel !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>zoomLevel, 'ZoomLevel');
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.get<Array<ClusterResponse>>(`${this.configuration.basePath}/api/violation/clusters`,
+        let localVarPath = `/api/violation/clusters`;
+        return this.httpClient.request<Array<ClusterResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
-                params: queryParameters,
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -171,48 +209,127 @@ export class ViolationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiViolationIdDelete(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiViolationIdDelete(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiViolationIdDelete(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiViolationIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiViolationFilesIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<FileResponse>>;
+    public apiViolationFilesIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<FileResponse>>>;
+    public apiViolationFilesIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<FileResponse>>>;
+    public apiViolationFilesIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiViolationFilesIdGet.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/violation/files/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<Array<FileResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiViolationIdDelete(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiViolationIdDelete(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiViolationIdDelete(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiViolationIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiViolationIdDelete.');
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.delete<any>(`${this.configuration.basePath}/api/violation/${encodeURIComponent(String(id))}`,
+        let localVarPath = `/api/violation/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -224,48 +341,61 @@ export class ViolationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiViolationIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<RoadsideInspectionResponse>;
-    public apiViolationIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<RoadsideInspectionResponse>>;
-    public apiViolationIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<RoadsideInspectionResponse>>;
-    public apiViolationIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiViolationIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RoadsideInspectionResponse>;
+    public apiViolationIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RoadsideInspectionResponse>>;
+    public apiViolationIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RoadsideInspectionResponse>>;
+    public apiViolationIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiViolationIdGet.');
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.get<RoadsideInspectionResponse>(`${this.configuration.basePath}/api/violation/${encodeURIComponent(String(id))}`,
+        let localVarPath = `/api/violation/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<RoadsideInspectionResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -277,54 +407,67 @@ export class ViolationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiViolationListDelete(ids?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiViolationListDelete(ids?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiViolationListDelete(ids?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiViolationListDelete(ids?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiViolationListDelete(ids?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiViolationListDelete(ids?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiViolationListDelete(ids?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiViolationListDelete(ids?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let queryParameters = new HttpParams({encoder: this.encoder});
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (ids) {
             ids.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
                   <any>element, 'Ids');
             })
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.delete<any>(`${this.configuration.basePath}/api/violation/list`,
+        let localVarPath = `/api/violation/list`;
+        return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
-                params: queryParameters,
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -344,84 +487,97 @@ export class ViolationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiViolationListGet(active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<RoadsideInspectionListResponse>;
-    public apiViolationListGet(active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<RoadsideInspectionListResponse>>;
-    public apiViolationListGet(active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<RoadsideInspectionListResponse>>;
-    public apiViolationListGet(active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiViolationListGet(active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RoadsideInspectionListResponse>;
+    public apiViolationListGet(active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RoadsideInspectionListResponse>>;
+    public apiViolationListGet(active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RoadsideInspectionListResponse>>;
+    public apiViolationListGet(active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let queryParameters = new HttpParams({encoder: this.encoder});
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (active !== undefined && active !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>active, 'Active');
         }
         if (categoryReport !== undefined && categoryReport !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>categoryReport, 'CategoryReport');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageIndex, 'PageIndex');
         }
         if (pageSize !== undefined && pageSize !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
         }
         if (companyId !== undefined && companyId !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>companyId, 'CompanyId');
         }
         if (sort !== undefined && sort !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
         }
         if (search !== undefined && search !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>search, 'Search');
         }
         if (search1 !== undefined && search1 !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>search1, 'Search1');
         }
         if (search2 !== undefined && search2 !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>search2, 'Search2');
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.get<RoadsideInspectionListResponse>(`${this.configuration.basePath}/api/violation/list`,
+        let localVarPath = `/api/violation/list`;
+        return this.httpClient.request<RoadsideInspectionListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
-                params: queryParameters,
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -439,76 +595,89 @@ export class ViolationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<RoadsideInspectionMinimalListResponse>;
-    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<RoadsideInspectionMinimalListResponse>>;
-    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<RoadsideInspectionMinimalListResponse>>;
-    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RoadsideInspectionMinimalListResponse>;
+    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RoadsideInspectionMinimalListResponse>>;
+    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RoadsideInspectionMinimalListResponse>>;
+    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let queryParameters = new HttpParams({encoder: this.encoder});
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (pageIndex !== undefined && pageIndex !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageIndex, 'PageIndex');
         }
         if (pageSize !== undefined && pageSize !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
         }
         if (companyId !== undefined && companyId !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>companyId, 'CompanyId');
         }
         if (sort !== undefined && sort !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
         }
         if (search !== undefined && search !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>search, 'Search');
         }
         if (search1 !== undefined && search1 !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>search1, 'Search1');
         }
         if (search2 !== undefined && search2 !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>search2, 'Search2');
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.get<RoadsideInspectionMinimalListResponse>(`${this.configuration.basePath}/api/violation/list/minimal`,
+        let localVarPath = `/api/violation/list/minimal`;
+        return this.httpClient.request<RoadsideInspectionMinimalListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
-                params: queryParameters,
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -532,100 +701,113 @@ export class ViolationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiViolationListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<RoadsideInspectionListResponse>;
-    public apiViolationListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<RoadsideInspectionListResponse>>;
-    public apiViolationListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<RoadsideInspectionListResponse>>;
-    public apiViolationListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiViolationListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RoadsideInspectionListResponse>;
+    public apiViolationListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RoadsideInspectionListResponse>>;
+    public apiViolationListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RoadsideInspectionListResponse>>;
+    public apiViolationListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let queryParameters = new HttpParams({encoder: this.encoder});
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (northEastLatitude !== undefined && northEastLatitude !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>northEastLatitude, 'NorthEastLatitude');
         }
         if (northEastLongitude !== undefined && northEastLongitude !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>northEastLongitude, 'NorthEastLongitude');
         }
         if (southWestLatitude !== undefined && southWestLatitude !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>southWestLatitude, 'SouthWestLatitude');
         }
         if (southWestLongitude !== undefined && southWestLongitude !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>southWestLongitude, 'SouthWestLongitude');
         }
         if (active !== undefined && active !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>active, 'Active');
         }
         if (categoryReport !== undefined && categoryReport !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>categoryReport, 'CategoryReport');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageIndex, 'PageIndex');
         }
         if (pageSize !== undefined && pageSize !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
         }
         if (companyId !== undefined && companyId !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>companyId, 'CompanyId');
         }
         if (sort !== undefined && sort !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
         }
         if (search !== undefined && search !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>search, 'Search');
         }
         if (search1 !== undefined && search1 !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>search1, 'Search1');
         }
         if (search2 !== undefined && search2 !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>search2, 'Search2');
         }
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
 
-        return this.httpClient.get<RoadsideInspectionListResponse>(`${this.configuration.basePath}/api/violation/listmap`,
+        let localVarPath = `/api/violation/listmap`;
+        return this.httpClient.request<RoadsideInspectionListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
-                params: queryParameters,
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -633,61 +815,397 @@ export class ViolationService {
     }
 
     /**
-     * @param updateRoadsideInspectionCommand 
+     * @param id 
+     * @param report 
+     * @param categoryReport 
+     * @param inspectionLevel 
+     * @param hMInspectionType 
+     * @param country 
+     * @param state 
+     * @param startTime 
+     * @param endTime 
+     * @param date 
+     * @param driverId 
+     * @param driverFullName 
+     * @param driverLicenceNo 
+     * @param driverState 
+     * @param driverDateOfBirth 
+     * @param coDriverFullName 
+     * @param coDriverLicenceNo 
+     * @param coDriverState 
+     * @param coDriverDateOfBirth 
+     * @param truckUnit 
+     * @param truckType 
+     * @param truckMake 
+     * @param truckPlateNo 
+     * @param truckState 
+     * @param truckVIN 
+     * @param trailerUnit 
+     * @param trailerType 
+     * @param trailerMake 
+     * @param trailerPlateNo 
+     * @param trailerState 
+     * @param trailerVIN 
+     * @param violations 
+     * @param note 
+     * @param policeDepartment 
+     * @param policeOfficer 
+     * @param badgeNo 
+     * @param addressCity 
+     * @param addressState 
+     * @param addressCounty 
+     * @param addressAddress 
+     * @param addressStreet 
+     * @param addressStreetNumber 
+     * @param addressCountry 
+     * @param addressZipCode 
+     * @param addressStateShortName 
+     * @param addressAddressUnit 
+     * @param phone 
+     * @param fax 
+     * @param facility 
+     * @param highway 
+     * @param milePost 
+     * @param originCity 
+     * @param originState 
+     * @param originCounty 
+     * @param originAddress 
+     * @param originStreet 
+     * @param originStreetNumber 
+     * @param originCountry 
+     * @param originZipCode 
+     * @param originStateShortName 
+     * @param originAddressUnit 
+     * @param destinationCity 
+     * @param destinationState 
+     * @param destinationCounty 
+     * @param destinationAddress 
+     * @param destinationStreet 
+     * @param destinationStreetNumber 
+     * @param destinationCountry 
+     * @param destinationZipCode 
+     * @param destinationStateShortName 
+     * @param destinationAddressUnit 
+     * @param brokerId 
+     * @param boL 
+     * @param cargo 
+     * @param specialChecks 
+     * @param files 
+     * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiViolationPut(updateRoadsideInspectionCommand?: UpdateRoadsideInspectionCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiViolationPut(updateRoadsideInspectionCommand?: UpdateRoadsideInspectionCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiViolationPut(updateRoadsideInspectionCommand?: UpdateRoadsideInspectionCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiViolationPut(updateRoadsideInspectionCommand?: UpdateRoadsideInspectionCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiViolationPut(id?: number, report?: string, categoryReport?: ViolationCategory, inspectionLevel?: string, hMInspectionType?: string, country?: string, state?: string, startTime?: string, endTime?: string, date?: string, driverId?: number, driverFullName?: string, driverLicenceNo?: string, driverState?: string, driverDateOfBirth?: string, coDriverFullName?: string, coDriverLicenceNo?: string, coDriverState?: string, coDriverDateOfBirth?: string, truckUnit?: number, truckType?: string, truckMake?: string, truckPlateNo?: string, truckState?: string, truckVIN?: string, trailerUnit?: number, trailerType?: string, trailerMake?: string, trailerPlateNo?: string, trailerState?: string, trailerVIN?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, facility?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiViolationPut(id?: number, report?: string, categoryReport?: ViolationCategory, inspectionLevel?: string, hMInspectionType?: string, country?: string, state?: string, startTime?: string, endTime?: string, date?: string, driverId?: number, driverFullName?: string, driverLicenceNo?: string, driverState?: string, driverDateOfBirth?: string, coDriverFullName?: string, coDriverLicenceNo?: string, coDriverState?: string, coDriverDateOfBirth?: string, truckUnit?: number, truckType?: string, truckMake?: string, truckPlateNo?: string, truckState?: string, truckVIN?: string, trailerUnit?: number, trailerType?: string, trailerMake?: string, trailerPlateNo?: string, trailerState?: string, trailerVIN?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, facility?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiViolationPut(id?: number, report?: string, categoryReport?: ViolationCategory, inspectionLevel?: string, hMInspectionType?: string, country?: string, state?: string, startTime?: string, endTime?: string, date?: string, driverId?: number, driverFullName?: string, driverLicenceNo?: string, driverState?: string, driverDateOfBirth?: string, coDriverFullName?: string, coDriverLicenceNo?: string, coDriverState?: string, coDriverDateOfBirth?: string, truckUnit?: number, truckType?: string, truckMake?: string, truckPlateNo?: string, truckState?: string, truckVIN?: string, trailerUnit?: number, trailerType?: string, trailerMake?: string, trailerPlateNo?: string, trailerState?: string, trailerVIN?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, facility?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiViolationPut(id?: number, report?: string, categoryReport?: ViolationCategory, inspectionLevel?: string, hMInspectionType?: string, country?: string, state?: string, startTime?: string, endTime?: string, date?: string, driverId?: number, driverFullName?: string, driverLicenceNo?: string, driverState?: string, driverDateOfBirth?: string, coDriverFullName?: string, coDriverLicenceNo?: string, coDriverState?: string, coDriverDateOfBirth?: string, truckUnit?: number, truckType?: string, truckMake?: string, truckPlateNo?: string, truckState?: string, truckVIN?: string, trailerUnit?: number, trailerType?: string, trailerMake?: string, trailerPlateNo?: string, trailerState?: string, trailerVIN?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, facility?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let headers = this.defaultHeaders;
+        let localVarHeaders = this.defaultHeaders;
 
-        let credential: string | undefined;
+        let localVarCredential: string | undefined;
         // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
                 'application/json',
                 'text/json'
             ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
         }
 
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
 
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
+        if (id !== undefined) {
+            localVarFormParams = localVarFormParams.append('Id', <any>id) as any || localVarFormParams;
+        }
+        if (report !== undefined) {
+            localVarFormParams = localVarFormParams.append('Report', <any>report) as any || localVarFormParams;
+        }
+        if (categoryReport !== undefined) {
+            localVarFormParams = localVarFormParams.append('CategoryReport', <any>categoryReport) as any || localVarFormParams;
+        }
+        if (inspectionLevel !== undefined) {
+            localVarFormParams = localVarFormParams.append('InspectionLevel', <any>inspectionLevel) as any || localVarFormParams;
+        }
+        if (hMInspectionType !== undefined) {
+            localVarFormParams = localVarFormParams.append('HMInspectionType', <any>hMInspectionType) as any || localVarFormParams;
+        }
+        if (country !== undefined) {
+            localVarFormParams = localVarFormParams.append('Country', <any>country) as any || localVarFormParams;
+        }
+        if (state !== undefined) {
+            localVarFormParams = localVarFormParams.append('State', <any>state) as any || localVarFormParams;
+        }
+        if (startTime !== undefined) {
+            localVarFormParams = localVarFormParams.append('StartTime', <any>startTime) as any || localVarFormParams;
+        }
+        if (endTime !== undefined) {
+            localVarFormParams = localVarFormParams.append('EndTime', <any>endTime) as any || localVarFormParams;
+        }
+        if (date !== undefined) {
+            localVarFormParams = localVarFormParams.append('Date', <any>date) as any || localVarFormParams;
+        }
+        if (driverId !== undefined) {
+            localVarFormParams = localVarFormParams.append('DriverId', <any>driverId) as any || localVarFormParams;
+        }
+        if (driverFullName !== undefined) {
+            localVarFormParams = localVarFormParams.append('Driver_FullName', <any>driverFullName) as any || localVarFormParams;
+        }
+        if (driverLicenceNo !== undefined) {
+            localVarFormParams = localVarFormParams.append('Driver_LicenceNo', <any>driverLicenceNo) as any || localVarFormParams;
+        }
+        if (driverState !== undefined) {
+            localVarFormParams = localVarFormParams.append('Driver_State', <any>driverState) as any || localVarFormParams;
+        }
+        if (driverDateOfBirth !== undefined) {
+            localVarFormParams = localVarFormParams.append('Driver_DateOfBirth', <any>driverDateOfBirth) as any || localVarFormParams;
+        }
+        if (coDriverFullName !== undefined) {
+            localVarFormParams = localVarFormParams.append('CoDriver_FullName', <any>coDriverFullName) as any || localVarFormParams;
+        }
+        if (coDriverLicenceNo !== undefined) {
+            localVarFormParams = localVarFormParams.append('CoDriver_LicenceNo', <any>coDriverLicenceNo) as any || localVarFormParams;
+        }
+        if (coDriverState !== undefined) {
+            localVarFormParams = localVarFormParams.append('CoDriver_State', <any>coDriverState) as any || localVarFormParams;
+        }
+        if (coDriverDateOfBirth !== undefined) {
+            localVarFormParams = localVarFormParams.append('CoDriver_DateOfBirth', <any>coDriverDateOfBirth) as any || localVarFormParams;
+        }
+        if (truckUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('Truck_Unit', <any>truckUnit) as any || localVarFormParams;
+        }
+        if (truckType !== undefined) {
+            localVarFormParams = localVarFormParams.append('Truck_Type', <any>truckType) as any || localVarFormParams;
+        }
+        if (truckMake !== undefined) {
+            localVarFormParams = localVarFormParams.append('Truck_Make', <any>truckMake) as any || localVarFormParams;
+        }
+        if (truckPlateNo !== undefined) {
+            localVarFormParams = localVarFormParams.append('Truck_PlateNo', <any>truckPlateNo) as any || localVarFormParams;
+        }
+        if (truckState !== undefined) {
+            localVarFormParams = localVarFormParams.append('Truck_State', <any>truckState) as any || localVarFormParams;
+        }
+        if (truckVIN !== undefined) {
+            localVarFormParams = localVarFormParams.append('Truck_VIN', <any>truckVIN) as any || localVarFormParams;
+        }
+        if (trailerUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('Trailer_Unit', <any>trailerUnit) as any || localVarFormParams;
+        }
+        if (trailerType !== undefined) {
+            localVarFormParams = localVarFormParams.append('Trailer_Type', <any>trailerType) as any || localVarFormParams;
+        }
+        if (trailerMake !== undefined) {
+            localVarFormParams = localVarFormParams.append('Trailer_Make', <any>trailerMake) as any || localVarFormParams;
+        }
+        if (trailerPlateNo !== undefined) {
+            localVarFormParams = localVarFormParams.append('Trailer_PlateNo', <any>trailerPlateNo) as any || localVarFormParams;
+        }
+        if (trailerState !== undefined) {
+            localVarFormParams = localVarFormParams.append('Trailer_State', <any>trailerState) as any || localVarFormParams;
+        }
+        if (trailerVIN !== undefined) {
+            localVarFormParams = localVarFormParams.append('Trailer_VIN', <any>trailerVIN) as any || localVarFormParams;
+        }
+        if (violations) {
+            violations.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Violations', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (policeDepartment !== undefined) {
+            localVarFormParams = localVarFormParams.append('PoliceDepartment', <any>policeDepartment) as any || localVarFormParams;
+        }
+        if (policeOfficer !== undefined) {
+            localVarFormParams = localVarFormParams.append('PoliceOfficer', <any>policeOfficer) as any || localVarFormParams;
+        }
+        if (badgeNo !== undefined) {
+            localVarFormParams = localVarFormParams.append('BadgeNo', <any>badgeNo) as any || localVarFormParams;
+        }
+        if (addressCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.City', <any>addressCity) as any || localVarFormParams;
+        }
+        if (addressState !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.State', <any>addressState) as any || localVarFormParams;
+        }
+        if (addressCounty !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.County', <any>addressCounty) as any || localVarFormParams;
+        }
+        if (addressAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Address', <any>addressAddress) as any || localVarFormParams;
+        }
+        if (addressStreet !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Street', <any>addressStreet) as any || localVarFormParams;
+        }
+        if (addressStreetNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StreetNumber', <any>addressStreetNumber) as any || localVarFormParams;
+        }
+        if (addressCountry !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Country', <any>addressCountry) as any || localVarFormParams;
+        }
+        if (addressZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.ZipCode', <any>addressZipCode) as any || localVarFormParams;
+        }
+        if (addressStateShortName !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StateShortName', <any>addressStateShortName) as any || localVarFormParams;
+        }
+        if (addressAddressUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.AddressUnit', <any>addressAddressUnit) as any || localVarFormParams;
+        }
+        if (phone !== undefined) {
+            localVarFormParams = localVarFormParams.append('Phone', <any>phone) as any || localVarFormParams;
+        }
+        if (fax !== undefined) {
+            localVarFormParams = localVarFormParams.append('Fax', <any>fax) as any || localVarFormParams;
+        }
+        if (facility !== undefined) {
+            localVarFormParams = localVarFormParams.append('Facility', <any>facility) as any || localVarFormParams;
+        }
+        if (highway !== undefined) {
+            localVarFormParams = localVarFormParams.append('Highway', <any>highway) as any || localVarFormParams;
+        }
+        if (milePost !== undefined) {
+            localVarFormParams = localVarFormParams.append('MilePost', <any>milePost) as any || localVarFormParams;
+        }
+        if (originCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('Origin.City', <any>originCity) as any || localVarFormParams;
+        }
+        if (originState !== undefined) {
+            localVarFormParams = localVarFormParams.append('Origin.State', <any>originState) as any || localVarFormParams;
+        }
+        if (originCounty !== undefined) {
+            localVarFormParams = localVarFormParams.append('Origin.County', <any>originCounty) as any || localVarFormParams;
+        }
+        if (originAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('Origin.Address', <any>originAddress) as any || localVarFormParams;
+        }
+        if (originStreet !== undefined) {
+            localVarFormParams = localVarFormParams.append('Origin.Street', <any>originStreet) as any || localVarFormParams;
+        }
+        if (originStreetNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('Origin.StreetNumber', <any>originStreetNumber) as any || localVarFormParams;
+        }
+        if (originCountry !== undefined) {
+            localVarFormParams = localVarFormParams.append('Origin.Country', <any>originCountry) as any || localVarFormParams;
+        }
+        if (originZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('Origin.ZipCode', <any>originZipCode) as any || localVarFormParams;
+        }
+        if (originStateShortName !== undefined) {
+            localVarFormParams = localVarFormParams.append('Origin.StateShortName', <any>originStateShortName) as any || localVarFormParams;
+        }
+        if (originAddressUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('Origin.AddressUnit', <any>originAddressUnit) as any || localVarFormParams;
+        }
+        if (destinationCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('Destination.City', <any>destinationCity) as any || localVarFormParams;
+        }
+        if (destinationState !== undefined) {
+            localVarFormParams = localVarFormParams.append('Destination.State', <any>destinationState) as any || localVarFormParams;
+        }
+        if (destinationCounty !== undefined) {
+            localVarFormParams = localVarFormParams.append('Destination.County', <any>destinationCounty) as any || localVarFormParams;
+        }
+        if (destinationAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('Destination.Address', <any>destinationAddress) as any || localVarFormParams;
+        }
+        if (destinationStreet !== undefined) {
+            localVarFormParams = localVarFormParams.append('Destination.Street', <any>destinationStreet) as any || localVarFormParams;
+        }
+        if (destinationStreetNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('Destination.StreetNumber', <any>destinationStreetNumber) as any || localVarFormParams;
+        }
+        if (destinationCountry !== undefined) {
+            localVarFormParams = localVarFormParams.append('Destination.Country', <any>destinationCountry) as any || localVarFormParams;
+        }
+        if (destinationZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('Destination.ZipCode', <any>destinationZipCode) as any || localVarFormParams;
+        }
+        if (destinationStateShortName !== undefined) {
+            localVarFormParams = localVarFormParams.append('Destination.StateShortName', <any>destinationStateShortName) as any || localVarFormParams;
+        }
+        if (destinationAddressUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('Destination.AddressUnit', <any>destinationAddressUnit) as any || localVarFormParams;
+        }
+        if (brokerId !== undefined) {
+            localVarFormParams = localVarFormParams.append('BrokerId', <any>brokerId) as any || localVarFormParams;
+        }
+        if (boL !== undefined) {
+            localVarFormParams = localVarFormParams.append('BoL', <any>boL) as any || localVarFormParams;
+        }
+        if (cargo !== undefined) {
+            localVarFormParams = localVarFormParams.append('Cargo', <any>cargo) as any || localVarFormParams;
+        }
+        if (specialChecks) {
+            specialChecks.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('SpecialChecks', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (filesForDeleteIds) {
+            filesForDeleteIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('FilesForDeleteIds', <any>element) as any || localVarFormParams;
+            })
         }
 
-        return this.httpClient.put<any>(`${this.configuration.basePath}/api/violation`,
-            updateRoadsideInspectionCommand,
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/violation`;
+        return this.httpClient.request<CreateWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
-                responseType: <any>responseType,
+                context: localVarHttpContext,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
+                responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
+                headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress
             }

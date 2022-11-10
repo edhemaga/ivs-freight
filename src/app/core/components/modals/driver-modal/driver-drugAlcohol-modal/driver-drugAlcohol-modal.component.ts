@@ -107,15 +107,13 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       }
       case 'save': {
         // If Form not valid
-        if (this.drugForm.invalid) {
+        if (this.drugForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.drugForm);
           return;
         }
         if (this.editData?.type === 'edit-drug') {
-          if (this.isFormDirty) {
-            this.updateTest();
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateTest();
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addTest();
           this.modalService.setModalSpinner({ action: null, status: true });

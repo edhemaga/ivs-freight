@@ -73,15 +73,13 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
       }
       case 'save': {
         // If Form not valid
-        if (this.fhwaInspectionForm.invalid) {
+        if (this.fhwaInspectionForm.invalid || !this.isFormDirty) {
           this.inputService.markInvalid(this.fhwaInspectionForm);
           return;
         }
         if (this.editData.type === 'edit-inspection') {
-          if (this.isFormDirty) {
-            this.updateInspection();
-            this.modalService.setModalSpinner({ action: null, status: true });
-          }
+          this.updateInspection();
+          this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addInspection();
           this.modalService.setModalSpinner({ action: null, status: true });

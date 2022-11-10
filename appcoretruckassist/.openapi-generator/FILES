@@ -72,6 +72,7 @@ model/accountColorResponse.ts
 model/activateDeactivateEFSFuelCard.ts
 model/addApplicantToFavouriteCommand.ts
 model/addFuelCardCommand.ts
+model/addFuelTransactionCommand.ts
 model/addressEntity.ts
 model/addressListResponse.ts
 model/addressResponse.ts
@@ -165,7 +166,6 @@ model/contactEmailType.ts
 model/contactPhoneResponse.ts
 model/contactPhoneType.ts
 model/countryType.ts
-model/createAccidentCommand.ts
 model/createAccidentRecordCommand.ts
 model/createAccidentRecordReviewCommand.ts
 model/createApplicantCdlCommand.ts
@@ -187,12 +187,15 @@ model/createContactPhoneCommand.ts
 model/createDisclosureReviewCommand.ts
 model/createDispatchCommand.ts
 model/createDivisionCompanyCommand.ts
+model/createDriverCommand.ts
 model/createDriverRightsReviewCommand.ts
 model/createDrugAndAlcoholCommand.ts
 model/createDrugAndAlcoholReviewCommand.ts
 model/createEducationCommand.ts
 model/createEducationReviewCommand.ts
 model/createEventCommand.ts
+model/createFuelItemCommand.ts
+model/createInspectionCommand.ts
 model/createInsurancePolicyAddonCommand.ts
 model/createInsurancePolicyCommand.ts
 model/createLoadCommand.ts
@@ -200,11 +203,14 @@ model/createLoadTemplateCommand.ts
 model/createMapCommand.ts
 model/createMedicalCertificateReviewCommand.ts
 model/createMvrAuthReviewCommand.ts
+model/createOffDutyLocationCommand.ts
+model/createOwnerCommand.ts
 model/createParkingCommand.ts
 model/createPersonalInfoReviewCommand.ts
 model/createPreviousEmployerAccidentHistoryCommand.ts
 model/createPreviousEmployerDrugAndAlcoholCommand.ts
 model/createRatingCommand.ts
+model/createRegistrationCommand.ts
 model/createRepairCommand.ts
 model/createRepairShopCommand.ts
 model/createResponse.ts
@@ -216,6 +222,8 @@ model/createShipperCommand.ts
 model/createSsnReviewCommand.ts
 model/createTableConfigCommand.ts
 model/createTerminalCommand.ts
+model/createTitleCommand.ts
+model/createTodoCommand.ts
 model/createTrafficViolationCommand.ts
 model/createTrafficViolationReviewCommand.ts
 model/createTrailerCommand.ts
@@ -258,7 +266,11 @@ model/driverShortResponse.ts
 model/driverShortResponsePagination.ts
 model/drugAndAlcoholFeedbackResponse.ts
 model/drugAndAlcoholReviewResponse.ts
+model/editEFSFuelTransactionCommand.ts
 model/editFuelCardCommand.ts
+model/editFuelItemCommand.ts
+model/editFuelStopCommand.ts
+model/editFuelTransactionCommand.ts
 model/educationFeedbackResponse.ts
 model/educationReviewResponse.ts
 model/emergencyContactCommand.ts
@@ -284,6 +296,11 @@ model/fuelCardShortResponse.ts
 model/fuelDispatchHistoryResponse.ts
 model/fuelItemResponse.ts
 model/fuelStopExtensionResponse.ts
+model/fuelStopFranchiseListResponse.ts
+model/fuelStopFranchiseMinimalResponse.ts
+model/fuelStopFranchiseMinimalResponsePagination.ts
+model/fuelStopFranchiseResponse.ts
+model/fuelStopFranchiseResponsePagination.ts
 model/fuelStopListResponse.ts
 model/fuelStopResponse.ts
 model/fuelStopResponsePagination.ts
@@ -307,6 +324,7 @@ model/getCompanyUserListResponse.ts
 model/getDriverModalResponse.ts
 model/getEFSTransactionCommand.ts
 model/getFuelModalResponse.ts
+model/getFuelStopModalResponse.ts
 model/getHazardousMaterialDropdownModalQuery.ts
 model/getMapListResponse.ts
 model/getMvrModalResponse.ts
@@ -325,11 +343,11 @@ model/inspectionResponse.ts
 model/insurancePolicyAddonResponse.ts
 model/insurancePolicyModalResponse.ts
 model/insurancePolicyResponse.ts
-model/insuranceTypeCommand.ts
 model/insuranceTypeResponse.ts
 model/inviteEmployerResponse.ts
 model/invitePreviousEmployerCommand.ts
 model/invoiceAgeingResponse.ts
+model/itemFuel.ts
 model/legResponse.ts
 model/loadBillingAdditionalCommand.ts
 model/loadBillingAdditionalResponse.ts
@@ -398,6 +416,7 @@ model/ownerModalResponse.ts
 model/ownerResponse.ts
 model/ownerResponsePagination.ts
 model/ownerShortResponse.ts
+model/ownerType.ts
 model/pMStatus.ts
 model/pMTrailerListResponse.ts
 model/pMTrailerResponse.ts
@@ -474,7 +493,6 @@ model/roadsideInspectionMinimalResponse.ts
 model/roadsideInspectionMinimalResponsePagination.ts
 model/roadsideInspectionResponse.ts
 model/roadsideInspectionResponsePagination.ts
-model/roadsideInspectionSpecialCheckCommand.ts
 model/roadsideInspectionSpecialCheckResponse.ts
 model/routeResponse.ts
 model/routeResponsePagination.ts
@@ -503,7 +521,6 @@ model/signInResponse.ts
 model/signUpCompanyCommand.ts
 model/signUpDriverMobileCommand.ts
 model/signupUserCommand.ts
-model/specialCheck.ts
 model/sphAccidentHistoryItemResponse.ts
 model/sphAccidentHistoryResponse.ts
 model/sphDrugAndAlcoholResponse.ts
@@ -543,6 +560,7 @@ model/trafficViolationItemReviewCommand.ts
 model/trafficViolationItemReviewResponse.ts
 model/trailerAccidentResponse.ts
 model/trailerAutocompleteModelResponse.ts
+model/trailerDispatchModalResponse.ts
 model/trailerLengthResponse.ts
 model/trailerListResponse.ts
 model/trailerMakeResponse.ts
@@ -556,6 +574,7 @@ model/trailerTypeResponse.ts
 model/transponderGroup.ts
 model/truckAccidentResponse.ts
 model/truckAutocompleteModelResponse.ts
+model/truckDispatchModalResponse.ts
 model/truckEngineModelResponse.ts
 model/truckGrossWeightResponse.ts
 model/truckListResponse.ts
@@ -567,7 +586,6 @@ model/truckResponse.ts
 model/truckShortResponse.ts
 model/truckShortResponsePagination.ts
 model/truckTypeResponse.ts
-model/updateAccidentCommand.ts
 model/updateAccidentRecordCommand.ts
 model/updateApplicantCdlCommand.ts
 model/updateApplicantCommand.ts
@@ -592,6 +610,7 @@ model/updateDisclosureReleaseCommand.ts
 model/updateDispatchCommand.ts
 model/updateDispatchStatusCommand.ts
 model/updateDivisionCompanyCommand.ts
+model/updateDriverCommand.ts
 model/updateDriverRightsCommand.ts
 model/updateDrugAndAlcoholCommand.ts
 model/updateEducationCommand.ts
@@ -599,12 +618,15 @@ model/updateEmploymentHistoryCommand.ts
 model/updateEventCommand.ts
 model/updateFactoringCompanyCommand.ts
 model/updateHosRulesCommand.ts
+model/updateInspectionCommand.ts
 model/updateInsurancePolicyAddonCommand.ts
 model/updateInsurancePolicyCommand.ts
 model/updateLoadCommand.ts
 model/updateLoadStatusCommand.ts
 model/updateLoadTemplateCommand.ts
 model/updateMapCommand.ts
+model/updateOffDutyLocationCommand.ts
+model/updateOwnerCommand.ts
 model/updateOwnerHistoryCommand.ts
 model/updatePMTrailerDefaultCommand.ts
 model/updatePMTrailerListDefaultCommand.ts
@@ -615,16 +637,18 @@ model/updatePMTruckUnitListCommand.ts
 model/updateParkingCommand.ts
 model/updatePersonalInfoCommand.ts
 model/updatePspAuthCommand.ts
+model/updateRegistrationCommand.ts
 model/updateRepairCommand.ts
 model/updateRepairShopCommand.ts
 model/updateReviewCommand.ts
-model/updateRoadsideInspectionCommand.ts
 model/updateRouteCommand.ts
 model/updateSevenDaysHosCommand.ts
 model/updateShipperCommand.ts
 model/updateSphCommand.ts
 model/updateStopCommand.ts
 model/updateTerminalCommand.ts
+model/updateTitleCommand.ts
+model/updateTodoCommand.ts
 model/updateTodoStatusCommand.ts
 model/updateTrafficViolationCommand.ts
 model/updateTrailerCommand.ts
@@ -643,8 +667,6 @@ model/verifyOwnerCommand.ts
 model/verifyPreviousEmployerCommand.ts
 model/verifyUserCommand.ts
 model/vinDecodeResponse.ts
-model/violationCategory.ts
-model/violationCommand.ts
 model/violationResponse.ts
 model/weatherDataResponse.ts
 model/weatherDaysResponse.ts
@@ -655,4 +677,5 @@ model/workExperienceItemResponse.ts
 model/workExperienceItemReviewCommand.ts
 model/workExperienceItemReviewResponse.ts
 model/yesNoEnum.ts
+param.ts
 variables.ts
