@@ -1,5 +1,5 @@
 import { RepairOrderModalComponent } from '../modals/repair-modals/repair-order-modal/repair-order-modal.component';
-import { AccidentModalComponent } from '../safety/accident/accident-modal/accident-modal.component';
+import { AccidentModalComponent } from '../modals/accident-modal/accident-modal.component';
 import { RouterModule } from '@angular/router';
 import { TaModalComponent } from './ta-modal/ta-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
@@ -72,7 +72,7 @@ import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
 import { FilterComponent } from './filter/filter.component';
 import { FuelPurchaseModalComponent } from '../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from '../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
-import { ViolationModalComponent } from '../safety/violation/violation-modal/violation-modal.component';
+import { ViolationModalComponent } from '../modals/violation-modal/violation-modal.component';
 import { TtRegistrationModalComponent } from '../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { PipesModule } from '../../pipes/pipes.module';
@@ -114,7 +114,7 @@ import { LoadModalHazardousComponent } from '../modals/load-modal/load-modal-haz
 import { LoadModalStatusesComponent } from '../modals/load-modal/load-modal-statuses/load-modal-statuses.component';
 import { MapSettingsModalComponent } from './map-toolbar/map-settings-modal/map-settings-modal.component';
 import { MapRouteModalComponent } from './map-toolbar/map-route-modal/map-route-modal.component';
-import {ObserversModule} from '@angular/cdk/observers';
+import { ObserversModule } from '@angular/cdk/observers';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -250,7 +250,7 @@ export function playerFactory() {
     TaNoteModule,
     AgmSnazzyInfoWindowModule,
     TaSpinnerModule,
-    ObserversModule
+    ObserversModule,
   ],
   exports: [
     // Modules

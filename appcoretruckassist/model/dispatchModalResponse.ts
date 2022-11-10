@@ -9,17 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TruckMinimalResponse } from './truckMinimalResponse';
+import { TrailerDispatchModalResponse } from './trailerDispatchModalResponse';
 import { DispatchBoardResponse } from './dispatchBoardResponse';
-import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { EnumValue } from './enumValue';
+import { TruckDispatchModalResponse } from './truckDispatchModalResponse';
 import { DriverMinimalResponse } from './driverMinimalResponse';
 import { LoadShortResponse } from './loadShortResponse';
 
 
 export interface DispatchModalResponse { 
-    trucks?: Array<TruckMinimalResponse> | null;
-    trailers?: Array<TrailerMinimalResponse> | null;
+    trucks?: Array<TruckDispatchModalResponse> | null;
+    trailers?: Array<TrailerDispatchModalResponse> | null;
     drivers?: Array<DriverMinimalResponse> | null;
     dispatchBoards?: Array<DispatchBoardResponse> | null;
     loads?: Array<LoadShortResponse> | null;

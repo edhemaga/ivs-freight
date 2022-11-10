@@ -9,10 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FuelStopFranchiseMinimalResponse } from './fuelStopFranchiseMinimalResponse';
+import { FuelStopFranchiseMinimalResponsePagination } from './fuelStopFranchiseMinimalResponsePagination';
 
 
 export interface GetFuelStopModalResponse { 
-    fuelStopFranchise?: Array<FuelStopFranchiseMinimalResponse> | null;
+    pagination?: FuelStopFranchiseMinimalResponsePagination;
 }
 

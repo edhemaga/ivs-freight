@@ -31,6 +31,7 @@ export interface TruckResponse {
     truckType?: TruckTypeResponse;
     vin?: string | null;
     truckMake?: TruckMakeResponse;
+    truckLength?: EnumValue;
     model?: string | null;
     year?: number;
     color?: ColorResponse;
