@@ -6,7 +6,7 @@
   [ngbPopover]="dropdownPopover"
   [placement]="placement"
   class="details-dropdown-container"
-  [ngClass]="{ 'active-drop': dropDownActive === id }"
+  [ngClass]="{ 'active-drop': dropDownActive === id, 'rightRotation' : leftIcon, 'leftRotation' : !leftIcon }"
   popoverClass="details-dropdown-popover {{customClassDropDown}}"
   triggers="manual"
   [container]="'body'"

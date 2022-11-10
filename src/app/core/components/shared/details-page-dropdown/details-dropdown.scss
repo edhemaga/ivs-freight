@@ -41,15 +41,31 @@
   &.active-drop{
     background-color: #42424220;
     
-    .dropdown-dots {
-      cursor: pointer;
-      svg {
-        transform: rotate(90deg);
-          path {
-            fill: #424242 !important;
-          }
+    &.rightRotation{
+      .dropdown-dots {
+        cursor: pointer;
+        svg {
+          transform: rotate(-90deg);
+            path {
+              fill: #424242;
+            }
+        }
       }
     }
+
+    &.leftRotation{
+      .dropdown-dots {
+        cursor: pointer;
+        svg {
+          transform: rotate(90deg);
+            path {
+              fill: #424242;
+            }
+        }
+      }
+    }
+
+    
 
     &:hover{
       background-color: #424242;
@@ -64,6 +80,7 @@
 }
 
 @keyframes scaleItem {
+
   /*
   0% {
     transform: scale(0.4);
@@ -71,8 +88,8 @@
   100% {
     transform: scale(1);
   }
-  */
-  /*
+  
+  
     0% {
       transform: scaleY(0);
     }
