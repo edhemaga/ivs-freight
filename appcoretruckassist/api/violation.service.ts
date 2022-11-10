@@ -11,31 +11,39 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional } from '@angular/core';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpParams,
-  HttpResponse,
-  HttpEvent,
-  HttpParameterCodec,
-} from '@angular/common/http';
-import { CustomHttpParameterCodec } from '../encoder';
-import { Observable } from 'rxjs';
+import { Inject, Injectable, Optional }                      from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams,
+         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
+        }       from '@angular/common/http';
+import { CustomHttpParameterCodec }                          from '../encoder';
+import { Observable }                                        from 'rxjs';
 
-import { ClusterResponse } from '../model/models';
-import { CreateWithUploadsResponse } from '../model/models';
-import { FileResponse } from '../model/models';
-import { ProblemDetails } from '../model/models';
-import { RoadsideInspectionListResponse } from '../model/models';
-import { RoadsideInspectionMinimalListResponse } from '../model/models';
-import { RoadsideInspectionResponse } from '../model/models';
-
-import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
-import { Configuration } from '../configuration';
-import { ViolationCategory } from '../model/violationCategory';
-import { ViolationCommand } from '../model/violationCommand';
+// @ts-ignore
+import { ClusterResponse } from '../model/clusterResponse';
+// @ts-ignore
+import { CreateWithUploadsResponse } from '../model/createWithUploadsResponse';
+// @ts-ignore
+import { FileResponse } from '../model/fileResponse';
+// @ts-ignore
+import { ProblemDetails } from '../model/problemDetails';
+// @ts-ignore
+import { RoadsideInspectionListResponse } from '../model/roadsideInspectionListResponse';
+// @ts-ignore
+import { RoadsideInspectionMinimalListResponse } from '../model/roadsideInspectionMinimalListResponse';
+// @ts-ignore
+import { RoadsideInspectionResponse } from '../model/roadsideInspectionResponse';
+// @ts-ignore
 import { RoadsideInspectionSpecialCheckCommand } from '../model/roadsideInspectionSpecialCheckCommand';
+// @ts-ignore
+import { ViolationCategory } from '../model/violationCategory';
+// @ts-ignore
+import { ViolationCommand } from '../model/violationCommand';
+
+// @ts-ignore
+import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
+import { Configuration }                                     from '../configuration';
+
+
 
 @Injectable({
   providedIn: 'root'
