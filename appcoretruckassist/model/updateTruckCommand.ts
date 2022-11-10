@@ -22,6 +22,7 @@ export interface UpdateTruckCommand {
     truckTypeId?: number;
     vin?: string | null;
     truckMakeId?: number;
+    truckLengthId?: number | null;
     model?: string | null;
     year?: number;
     colorId?: number | null;

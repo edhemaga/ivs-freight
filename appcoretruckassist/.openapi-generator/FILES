@@ -298,6 +298,7 @@ model/fuelItemResponse.ts
 model/fuelStopExtensionResponse.ts
 model/fuelStopFranchiseListResponse.ts
 model/fuelStopFranchiseMinimalResponse.ts
+model/fuelStopFranchiseMinimalResponsePagination.ts
 model/fuelStopFranchiseResponse.ts
 model/fuelStopFranchiseResponsePagination.ts
 model/fuelStopListResponse.ts
@@ -559,6 +560,7 @@ model/trafficViolationItemReviewCommand.ts
 model/trafficViolationItemReviewResponse.ts
 model/trailerAccidentResponse.ts
 model/trailerAutocompleteModelResponse.ts
+model/trailerDispatchModalResponse.ts
 model/trailerLengthResponse.ts
 model/trailerListResponse.ts
 model/trailerMakeResponse.ts
@@ -572,6 +574,7 @@ model/trailerTypeResponse.ts
 model/transponderGroup.ts
 model/truckAccidentResponse.ts
 model/truckAutocompleteModelResponse.ts
+model/truckDispatchModalResponse.ts
 model/truckEngineModelResponse.ts
 model/truckGrossWeightResponse.ts
 model/truckListResponse.ts

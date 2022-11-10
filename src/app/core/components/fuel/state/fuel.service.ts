@@ -5,6 +5,7 @@ import { FuelService } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
 import { GetFuelStopModalResponse } from '../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
 import { CreateResponse } from '../../../../../../appcoretruckassist/model/createResponse';
+import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
   providedIn: 'root',
@@ -17,11 +18,19 @@ export class FuelTService {
   }
 
   public addFuelStop(data: any): Observable<CreateResponse> {
-    return this.fuelService.apiFuelFuelstopPost(data);
+    const sortedParams = getFunctionParams(
+      this.fuelService.apiFuelFuelstopPost,
+      data
+    );
+    return this.fuelService.apiFuelFuelstopPost(...sortedParams);
   }
 
   public updateFuelStop(data: any): Observable<object> {
-    return this.fuelService.apiFuelFuelstopPut(data);
+    const sortedParams = getFunctionParams(
+      this.fuelService.apiFuelFuelstopPut,
+      data
+    );
+    return this.fuelService.apiFuelFuelstopPut(...sortedParams);
   }
 
   public getFuelStopModalDropdowns(): Observable<GetFuelStopModalResponse> {

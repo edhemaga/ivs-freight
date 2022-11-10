@@ -22,7 +22,7 @@ import { UserModalComponent } from '../../modals/user-modal/user-modal.component
 import { TaskModalComponent } from '../../modals/task-modal/task-modal.component';
 import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
-import { AccidentModalComponent } from '../../safety/accident/accident-modal/accident-modal.component';
+import { AccidentModalComponent } from '../../modals/accident-modal/accident-modal.component';
 import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { LoadModalComponent } from '../../modals/load-modal/load-modal.component';
