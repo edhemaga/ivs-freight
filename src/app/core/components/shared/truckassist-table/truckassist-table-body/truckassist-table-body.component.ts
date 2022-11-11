@@ -3,9 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
-  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -515,6 +513,8 @@ export class TruckassistTableBodyComponent
     this.destroy$.next();
     this.destroy$.complete();
     this.tableService.sendRowsSelected([]);
+
+    console.log('Poziva se ngOnDestroy table body')
   }
 
   // --------------------------------TODO---------------------------------
