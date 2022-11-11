@@ -17,7 +17,10 @@ import { FormService } from '../../../services/form/form.service';
 import { RoadsideService } from '../../safety/violation/state/roadside.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { RoadsideInspectionResponse } from '../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
-import { convertDateFromBackend } from '../../../utils/methods.calculations';
+import {
+  convertDateFromBackend,
+  convertDateToBackend,
+} from '../../../utils/methods.calculations';
 import moment from 'moment';
 import { AccidentTService } from '../../safety/accident/state/accident.service';
 import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';
@@ -114,6 +117,9 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
   public selectedViolationCustomer: any = null;
   public labelsViolationCustomer: any[] = [];
 
+  public selectedCounty: any = null;
+  public labelsCounty: any[] = [];
+
   public documents: any[] = [];
 
   public isFormDirty: boolean;
@@ -142,6 +148,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.violationForm = this.formBuilder.group({
       report: [null, Validators.required],
+      categoryReport: [null],
       inspectionLevel: [null],
       hmInspectionType: [null],
       county: [null],
@@ -246,6 +253,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     sms: boolean;
     description: string;
     extraDescription: string;
+    basic: string;
+    reason: string;
   }) {
     return this.formBuilder.group({
       code: [data.code],
@@ -256,6 +265,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       sms: [data.sms],
       description: [data.description, [...descriptionValidation]],
       extraDescription: [data.extraDescription, [...descriptionValidation]],
+      basic: [data.basic],
+      reason: [data.reason],
     });
   }
 
@@ -268,6 +279,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     sms: boolean;
     description: string;
     extraDescription: string;
+    basic: string;
+    reason: string;
   }) {
     this.violations.push(this.createViolation(data));
   }
@@ -295,8 +308,20 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onSelectDropDown(event: any) {
-    this.selectedViolationCustomer = event;
+  public onSelectDropDown(event: any, action: string) {
+    switch (action) {
+      case 'customer': {
+        this.selectedViolationCustomer = event;
+        break;
+      }
+      case 'county': {
+        this.selectedCounty = event;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   public onFilesEvent(event) {
@@ -311,7 +336,170 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     return item.id;
   }
 
-  private updateViolation(id: number) {}
+  private updateViolation(id: number) {
+    const { ...form } = this.violationForm.value;
+
+    const newData: any = {
+      id: id,
+      report: form.report,
+      categoryReport: form.categoryReport,
+      inspectionLevel: form.inspectionLevel,
+      hMInspectionType: form.hmInspectionType,
+      country: this.selectedCounty ? this.selectedCounty.id : null,
+      state: form.state,
+      startTime: form.startTime,
+      endTime: form.endTime,
+      date: form.date ? convertDateToBackend(form.date) : null,
+      driverId: null,
+      driverFullName: form.driverName,
+      driverLicenceNo: form.driverLicenceNumber,
+      driverState: form.driverState,
+      driverDateOfBirth: form.driverDOB
+        ? convertDateToBackend(form.driverDOB)
+        : null,
+      coDriverFullName: form.coDriverName,
+      coDriverLicenceNo: form.coDriverLicenceNumber,
+      coDriverState: form.coDriverState,
+      coDriverDateOfBirth: form.coDriverDOB
+        ? convertDateToBackend(form.coDriverDOB)
+        : null,
+      truckUnit: form.truck_Unit,
+      truckType: form.truck_Type,
+      truckMake: form.truck_Make,
+      truckPlateNo: form.truck_PlateNo,
+      truckState: form.truck_State,
+      truckVIN: form.truck_VIN,
+      trailerUnit: form.trailer_Unit,
+      trailerType: form.trailer_Type,
+      trailerMake: form.trailer_Make,
+      trailerPlateNo: form.trailer_PlateNo,
+      trailerState: form.trailer_State,
+      trailerVIN: form.trailer_VIN,
+      violations: this.premmapedViolations(), //ViolationCommand
+      note: form.note,
+      policeDepartment: form.policeDepartment,
+      policeOfficer: form.policeOfficer,
+      badgeNo: form.badgeNo,
+      addressCity: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.city
+        : null,
+      addressState: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.state
+        : null,
+      addressCounty: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.county
+        : null,
+      addressAddress: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.address
+        : null,
+      addressStreet: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.street
+        : null,
+      addressStreetNumber: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.streetNumber
+        : null,
+      addressCountry: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.country
+        : null,
+      addressZipCode: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.zipCode
+        : null,
+      addressStateShortName: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.stateShortName
+        : null,
+      addressAddressUnit: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.addressUnit
+        : null,
+      phone: form.phone,
+      fax: form.fax,
+      facility: form.facility,
+      highway: form.highway,
+      milePost: form.milePost,
+      originCity: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.city
+        : null,
+      originState: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.state
+        : null,
+      originCounty: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.county
+        : null,
+      originAddress: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.address
+        : null,
+      originStreet: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.street
+        : null,
+      originStreetNumber: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.streetNumber
+        : null,
+      originCountry: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.country
+        : null,
+      originZipCode: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.zipCode
+        : null,
+      originStateShortName: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.stateShortName
+        : null,
+      originAddressUnit: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.addressUnit
+        : null,
+      destinationCity: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.city
+        : null,
+      destinationState: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.state
+        : null,
+      destinationCounty: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.county
+        : null,
+      destinationAddress: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.address
+        : null,
+      destinationStreet: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.street
+        : null,
+      destinationStreetNumber: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.streetNumber
+        : null,
+      destinationCountry: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.country
+        : null,
+      destinationZipCode: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.zipCode
+        : null,
+      destinationStateShortName: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.stateShortName
+        : null,
+      destinationAddressUnit: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.addressUnit
+        : null,
+      brokerId: this.selectedViolationCustomer
+        ? this.selectedViolationCustomer.id
+        : null,
+      boL: form.boL,
+      cargo: form.cargo,
+      specialChecks: this.premmapedSpecialChecks(),
+      files: [],
+      filesForDeleteIds: [],
+    };
+
+    this.roadsideService
+      .updateRoadside(newData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Success',
+            'Successfully update roadside.'
+          );
+        },
+        error: (err: any) => {
+          this.notificationService.error('Error', err);
+        },
+      });
+  }
 
   private editViolationById(id: number) {
     this.roadsideService
@@ -321,6 +509,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         next: (res: RoadsideInspectionResponse) => {
           this.violationForm.patchValue({
             report: res.report,
+            categoryReport: res.categoryReport ? res.categoryReport.name : null,
             inspectionLevel: res.inspectionLevel,
             hmInspectionType: res.hmInspectionType,
             county: null, //TODO: Wait for backend
@@ -399,6 +588,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                         res.violations[i].extraDescription
                       )
                     : res.violations[i].description,
+                  basic: res.violations[i].basic,
+                  reason: res.violations[i].reason,
                 })
               );
             }
@@ -441,6 +632,37 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
           this.notificationService.error('Error', err);
         },
       });
+  }
+
+  private premmapedSpecialChecks() {
+    return this.specialChecks.map((item) => {
+      return {
+        specialCheck: {
+          id: item.id,
+          name: item.name,
+        },
+        active: item.active,
+      };
+    });
+  }
+
+  private premmapedViolations() {
+    return this.violations.controls.map((item) => {
+      return {
+        code: item.get('code').value,
+        category: item.get('category').value,
+        unit: item.get('unit').value,
+        sw: item.get('sw').value,
+        oos: item.get('oos').value,
+        sms: item.get('sms').value,
+        description: item.get('description').value,
+        extraDescription: item
+          .get('extraDescription')
+          .value.replace(item.get('description').value, ''),
+        basic: item.get('basic').value,
+        reason: item.get('reason').value,
+      };
+    });
   }
 
   ngOnDestroy(): void {

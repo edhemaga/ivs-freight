@@ -68,6 +68,9 @@
                 isDropdown: true,
                 dropdownWidthClass: 'w-col-275'
               }"
+              [options]="labelsCounty"
+              [activeItem]="selectedCounty"
+              (selectedItem)="onSelectDropdown($event, 'county')"
             ></app-ta-input-dropdown>
             <app-ta-input-dropdown
               formControlName="state"
@@ -654,7 +657,7 @@
                   dropdownWidthClass: 'w-col-273'
                 }"
                 [options]="labelsViolationCustomer"
-                (selectedItem)="onSelectDropDown($event)"
+                (selectedItem)="onSelectDropDown($event, 'customer')"
               ></app-ta-input-dropdown>
               <app-ta-input
                 formControlName="boL"
