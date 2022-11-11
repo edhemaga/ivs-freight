@@ -49,7 +49,6 @@ export class TaCustomCardComponent implements OnChanges {
   noActive: string;
 
   @Input() set isCardOpen(value: boolean) {
-    console.log('IS CARD OPEN', value);
     this.noActive = value ? 'active' : 'innactive';
     this._isCardOpen = value;
   }

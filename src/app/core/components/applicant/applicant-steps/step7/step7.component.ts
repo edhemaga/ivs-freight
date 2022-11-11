@@ -65,12 +65,13 @@ export class Step7Component implements OnInit, OnDestroy {
 
   public subscription: Subscription;
 
+  public stepHasValues: boolean = false;
   public stepValues: any;
 
   public sevenDaysHosForm: FormGroup;
 
   public applicantId: number;
-  public sevenDaysHosId: number;
+  public applicantInviteDate: string;
 
   public selectedAddress: AddressEntity = null;
 
@@ -183,6 +184,8 @@ export class Step7Component implements OnInit, OnDestroy {
     this.createSevenDaysHos();
 
     this.getStepValuesFromStore();
+
+    this.getLastSevenDays();
   }
 
   public get hosArray(): FormArray {
@@ -211,8 +214,12 @@ export class Step7Component implements OnInit, OnDestroy {
       .subscribe((res: ApplicantResponse) => {
         this.applicantId = res.id;
 
+        this.applicantInviteDate = res.inviteDate;
+
         if (res.sevenDaysHos) {
           this.patchStepValues(res.sevenDaysHos);
+
+          this.stepHasValues = true;
         }
       });
   }
@@ -290,9 +297,6 @@ export class Step7Component implements OnInit, OnDestroy {
         hos[i].date
       );
     }
-
-    this.sevenDaysHosId = id;
-
     this.sevenDaysHosForm.patchValue({
       isValidHos: releasedFromWork,
       startDate: convertDateFromBackendShortYear(releasedDate),
@@ -323,6 +327,11 @@ export class Step7Component implements OnInit, OnDestroy {
         this.intendToWorkForAnotherEmployerRadios[1].checked = true;
       }
     });
+  }
+
+  public getLastSevenDays(): void {
+    const asd = null;
+    console.log(asd);
   }
 
   public handleCheckboxParagraphClick(type: string): void {
@@ -615,11 +624,14 @@ export class Step7Component implements OnInit, OnDestroy {
     };
 
     const selectMatchingBackendMethod = () => {
-      if (this.selectedMode === SelectedMode.APPLICANT) {
+      if (this.selectedMode === SelectedMode.APPLICANT && !this.stepHasValues) {
         return this.applicantActionsService.createSevenDaysHos(saveData);
       }
 
-      if (this.selectedMode === SelectedMode.FEEDBACK) {
+      if (
+        (this.selectedMode === SelectedMode.APPLICANT && this.stepHasValues) ||
+        this.selectedMode === SelectedMode.FEEDBACK
+      ) {
         return this.applicantActionsService.updateSevenDaysHos(saveData);
       }
     };
@@ -665,7 +677,6 @@ export class Step7Component implements OnInit, OnDestroy {
   public onSubmitReview(): void {
     const saveData: CreateSevenDaysHosReviewCommand = {
       applicantId: this.applicantId,
-      // sevenDaysHosId: this.sevenDaysHosId,
       isReleaseDateValid: !this.openAnnotationArray[0].lineInputs[0],
       isLocationValid: !this.openAnnotationArray[0].lineInputs[1],
       releaseDateLocationMessage:

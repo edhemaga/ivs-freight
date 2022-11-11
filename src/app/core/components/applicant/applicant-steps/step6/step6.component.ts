@@ -8,9 +8,13 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, Subscription } from 'rxjs';
 
-import { anyInputInLineIncorrect } from '../../state/utils/utils';
+import {
+  anyInputInLineIncorrect,
+  isFormValueNotEqual,
+  isAnyPropertyInObjectFalse,
+} from '../../state/utils/utils';
 
 import {
   convertDateToBackend,
@@ -67,7 +71,9 @@ export class Step6Component implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.FEEDBACK;
+
+  public subscription: Subscription;
 
   public educationForm: FormGroup;
   public contactForm: FormGroup;
@@ -76,8 +82,12 @@ export class Step6Component implements OnInit, OnDestroy {
   public markFormInvalid: boolean;
 
   public applicantId: number;
-  public educationId: number;
+
   public emergencyContactsId: number[];
+
+  public stepValues: any;
+  public lastItemStepValues: any;
+  public stepHasValues: boolean = false;
 
   private specialTrainingRadios: any;
   private otherTrainingRadios: any;
@@ -282,9 +292,14 @@ export class Step6Component implements OnInit, OnDestroy {
     {},
     {},
   ];
+  public questionsHaveIncorrectFields: boolean = false;
   public hasIncorrectFields: boolean = false;
   public cardsWithIncorrectFields: boolean = false;
   public previousFormValuesOnReview: any;
+
+  public stepFeedbackValues: any;
+  public isUpperFormFeedbackValueUpdated: boolean = true;
+  public isBottomFormFeedbackValueUpdated: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -346,77 +361,15 @@ export class Step6Component implements OnInit, OnDestroy {
 
         if (res.education) {
           this.patchStepValues(res.education);
+
+          this.stepHasValues = true;
         }
       });
   }
 
   public patchStepValues(stepValues: EducationFeedbackResponse): void {
     console.log('stepValues', stepValues);
-    if (this.selectedMode === SelectedMode.REVIEW) {
-      if (stepValues.educationReview) {
-        const {
-          isSpecialTrainingDescriptionValid,
-          specialTrainingDescriptionMessage,
-          isOtherTrainingDescriptionValid,
-          otherTrainingDescriptionMessage,
-          isFromValid,
-          isToValid,
-          datesMessage,
-        } = stepValues.educationReview;
-
-        this.openAnnotationArray[0] = {
-          ...this.openAnnotationArray[0],
-          lineInputs: [!isSpecialTrainingDescriptionValid],
-          displayAnnotationButton:
-            !isSpecialTrainingDescriptionValid &&
-            !specialTrainingDescriptionMessage
-              ? true
-              : false,
-          displayAnnotationTextArea: specialTrainingDescriptionMessage
-            ? true
-            : false,
-        };
-        this.openAnnotationArray[1] = {
-          ...this.openAnnotationArray[1],
-          lineInputs: [!isOtherTrainingDescriptionValid],
-          displayAnnotationButton:
-            !isOtherTrainingDescriptionValid && !otherTrainingDescriptionMessage
-              ? true
-              : false,
-          displayAnnotationTextArea: otherTrainingDescriptionMessage
-            ? true
-            : false,
-        };
-        this.openAnnotationArray[2] = {
-          ...this.openAnnotationArray[2],
-          lineInputs: [!isFromValid, !isToValid],
-          displayAnnotationButton:
-            (!isFromValid || !isToValid) && !datesMessage ? true : false,
-          displayAnnotationTextArea: datesMessage ? true : false,
-        };
-
-        const inputFieldsArray = JSON.stringify(
-          this.openAnnotationArray
-            .filter((item) => Object.keys(item).length !== 0)
-            .map((item) => item.lineInputs)
-        );
-
-        if (inputFieldsArray.includes('true')) {
-          this.hasIncorrectFields = true;
-        } else {
-          this.hasIncorrectFields = false;
-        }
-
-        this.educationForm.patchValue({
-          questionReview1: specialTrainingDescriptionMessage,
-          questionReview2: otherTrainingDescriptionMessage,
-          questionReview4: datesMessage,
-        });
-      }
-    }
-
     const {
-      educationReview,
       highestGrade,
       collegeGrade,
       emergencyContacts,
@@ -430,17 +383,13 @@ export class Step6Component implements OnInit, OnDestroy {
       to,
       unableForJob,
       unableForJobDescription,
-      id,
+      educationReview,
     } = stepValues;
 
     this.formStatus = 'VALID';
 
     this.selectedGrade = highestGrade - 1;
     this.selectedCollegeGrade = collegeGrade - 1;
-
-    this.educationId = id;
-
-    /*  const { emergencyContactReviews } = educationReview; */
 
     const lastItemInContactsArray =
       emergencyContacts[emergencyContacts.length - 1];
@@ -467,9 +416,6 @@ export class Step6Component implements OnInit, OnDestroy {
       name: lastItemInContactsArray.name,
       phone: lastItemInContactsArray.phone,
       relationship: lastItemInContactsArray.relationship,
-      /* emergencyContactReview: emergencyContactReviews
-        ? emergencyContactReviews[emergencyContactReviews.length - 1]
-        : null, */
       emergencyContactReview: lastItemInContactsArray.emergencyContactReview
         ? lastItemInContactsArray.emergencyContactReview
         : null,
@@ -481,7 +427,7 @@ export class Step6Component implements OnInit, OnDestroy {
       relationship: filteredLastItemInContactsArray.relationship,
     };
 
-    this.contactsArray = [...filteredContactsArray];
+    this.contactsArray = JSON.parse(JSON.stringify(filteredContactsArray));
 
     this.formValuesToPatch = filteredLastItemInContactsArray;
     this.previousFormValuesOnReview = filteredLastItemInContactsArray;
@@ -555,6 +501,132 @@ export class Step6Component implements OnInit, OnDestroy {
         this.unableForJobRadios[1].checked = true;
       }
     }, 50);
+
+    if (this.selectedMode === SelectedMode.REVIEW) {
+      if (stepValues.educationReview) {
+        const {
+          isSpecialTrainingDescriptionValid,
+          specialTrainingDescriptionMessage,
+          isOtherTrainingDescriptionValid,
+          otherTrainingDescriptionMessage,
+          isFromValid,
+          isToValid,
+          datesMessage,
+          isUnableToPreformJobDescriptionValid,
+          unableToPreformJobDescriptionMessage,
+        } = stepValues.educationReview;
+
+        this.openAnnotationArray[0] = {
+          ...this.openAnnotationArray[0],
+          lineInputs: [!isSpecialTrainingDescriptionValid],
+          displayAnnotationButton:
+            !isSpecialTrainingDescriptionValid &&
+            !specialTrainingDescriptionMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: specialTrainingDescriptionMessage
+            ? true
+            : false,
+        };
+        this.openAnnotationArray[1] = {
+          ...this.openAnnotationArray[1],
+          lineInputs: [!isOtherTrainingDescriptionValid],
+          displayAnnotationButton:
+            !isOtherTrainingDescriptionValid && !otherTrainingDescriptionMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: otherTrainingDescriptionMessage
+            ? true
+            : false,
+        };
+        this.openAnnotationArray[2] = {
+          ...this.openAnnotationArray[2],
+          lineInputs: [!isFromValid, !isToValid],
+          displayAnnotationButton:
+            (!isFromValid || !isToValid) && !datesMessage ? true : false,
+          displayAnnotationTextArea: datesMessage ? true : false,
+        };
+        this.openAnnotationArray[3] = {
+          ...this.openAnnotationArray[3],
+          lineInputs: [!isUnableToPreformJobDescriptionValid],
+          displayAnnotationButton:
+            !isUnableToPreformJobDescriptionValid &&
+            !unableToPreformJobDescriptionMessage
+              ? true
+              : false,
+          displayAnnotationTextArea: unableToPreformJobDescriptionMessage
+            ? true
+            : false,
+        };
+
+        const inputFieldsArray = JSON.stringify(
+          this.openAnnotationArray
+            .filter((item) => Object.keys(item).length !== 0)
+            .map((item) => item.lineInputs)
+        );
+
+        if (inputFieldsArray.includes('true')) {
+          this.questionsHaveIncorrectFields = true;
+        } else {
+          this.questionsHaveIncorrectFields = false;
+        }
+
+        this.educationForm.patchValue({
+          questionReview1: specialTrainingDescriptionMessage,
+          questionReview2: otherTrainingDescriptionMessage,
+          questionReview4: datesMessage,
+          questionReview5: unableToPreformJobDescriptionMessage,
+        });
+      }
+    }
+
+    if (this.selectedMode === SelectedMode.FEEDBACK) {
+      if (educationReview) {
+        this.stepFeedbackValues = {
+          ...this.stepFeedbackValues,
+          ...educationReview,
+        };
+      }
+
+      const lastContactsItem = emergencyContacts[emergencyContacts.length - 1];
+
+      console.log('lastContactsItem', lastContactsItem);
+
+      const lastContactsItemReview = lastContactsItem.emergencyContactReview;
+
+      console.log('lastContactsItemReview', lastContactsItemReview);
+
+      this.stepFeedbackValues = {
+        ...this.stepFeedbackValues,
+        lastContactsItemReview: {
+          isNameValid: lastContactsItemReview
+            ? lastContactsItemReview?.isNameValid
+            : true,
+          isPhoneValid: lastContactsItemReview
+            ? lastContactsItemReview?.isPhoneValid
+            : true,
+          isRelationshipValid: lastContactsItemReview
+            ? lastContactsItemReview?.isRelationshipValid
+            : true,
+          emergencyContactMessage: lastContactsItemReview
+            ? lastContactsItemReview.emergencyContactMessage
+            : null,
+        },
+      };
+
+      const hasIncorrectValue = isAnyPropertyInObjectFalse(
+        this.stepFeedbackValues
+      );
+
+      if (hasIncorrectValue) {
+        this.startUpperFormFeedbackValueChangesMonitoring();
+      }
+
+      console.log('this.stepFeedbackValues', this.stepFeedbackValues);
+
+      this.stepValues = stepValues;
+      this.lastItemStepValues = lastContactsItem;
+    }
   }
 
   public handleInputSelect(event: any): void {
@@ -737,6 +809,12 @@ export class Step6Component implements OnInit, OnDestroy {
 
   public onGetLastFormValues(event: any): void {
     this.lastContactCard = event;
+
+    if (this.selectedMode === SelectedMode.FEEDBACK) {
+      if (event) {
+        this.startBottomFormFeedbackValueChangesMonitoring();
+      }
+    }
   }
 
   public onHasIncorrectFields(event: any): void {
@@ -896,9 +974,9 @@ export class Step6Component implements OnInit, OnDestroy {
     );
 
     if (inputFieldsArray.includes('true')) {
-      this.hasIncorrectFields = true;
+      this.questionsHaveIncorrectFields = true;
     } else {
-      this.hasIncorrectFields = false;
+      this.questionsHaveIncorrectFields = false;
     }
   }
 
@@ -931,9 +1009,168 @@ export class Step6Component implements OnInit, OnDestroy {
     this.formValuesToPatch = selectedContact;
   }
 
+  public startUpperFormFeedbackValueChangesMonitoring(): void {
+    if (this.stepFeedbackValues) {
+      const filteredIncorrectValues = Object.keys(
+        this.stepFeedbackValues
+      ).reduce((o, key) => {
+        this.stepFeedbackValues[key] === false &&
+          (o[key] = this.stepFeedbackValues[key]);
+
+        return o;
+      }, {});
+
+      const hasIncorrectValues = Object.keys(filteredIncorrectValues).length;
+
+      if (hasIncorrectValues) {
+        this.subscription = this.educationForm.valueChanges
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((updatedFormValues) => {
+            const filteredFieldsWithIncorrectValues = Object.keys(
+              filteredIncorrectValues
+            ).reduce((o, key) => {
+              const keyName = key
+                .replace('Valid', '')
+                .replace('is', '')
+                .trim()
+                .toLowerCase();
+
+              const match = Object.keys(this.stepValues)
+                .filter((item) => item.toLowerCase().includes(keyName))
+                .pop();
+
+              o[keyName] = this.stepValues[match];
+
+              if (keyName === 'from') {
+                o['from'] = convertDateFromBackendShortYear(o['from']);
+              }
+
+              if (keyName === 'to') {
+                o['to'] = convertDateFromBackendShortYear(o['to']);
+              }
+
+              if (keyName === 'unabletopreformjobdescription') {
+                o['unabletopreformjobdescription'] =
+                  this.stepValues.unableForJobDescription;
+              }
+
+              return o;
+            }, {});
+
+            const filteredUpdatedFieldsWithIncorrectValues = Object.keys(
+              filteredFieldsWithIncorrectValues
+            ).reduce((o, key) => {
+              const keyName = key;
+
+              if (keyName === 'specialtrainingdescription') {
+                o['specialtrainingdescription'] =
+                  updatedFormValues.specialTrainingExplain;
+              }
+
+              if (keyName === 'othertrainingdescription') {
+                o['othertrainingdescription'] =
+                  updatedFormValues.otherTrainingExplain;
+              }
+
+              if (keyName === 'from') {
+                o['from'] = updatedFormValues.driverForCompanyBeforeExplain;
+              }
+
+              if (keyName === 'to') {
+                o['to'] = updatedFormValues.driverForCompanyToExplain;
+              }
+
+              if (keyName === 'unabletopreformjobdescription') {
+                o['unabletopreformjobdescription'] =
+                  updatedFormValues.unableForJobExplain;
+              }
+
+              return o;
+            }, {});
+
+            const isFormNotEqual = isFormValueNotEqual(
+              filteredFieldsWithIncorrectValues,
+              filteredUpdatedFieldsWithIncorrectValues
+            );
+
+            if (isFormNotEqual) {
+              this.isUpperFormFeedbackValueUpdated = true;
+            } else {
+              this.isUpperFormFeedbackValueUpdated = false;
+            }
+          });
+      }
+    }
+  }
+
+  public startBottomFormFeedbackValueChangesMonitoring(): void {
+    if (this.stepFeedbackValues) {
+      const filteredContactIncorrectValues = Object.keys(
+        this.stepFeedbackValues?.lastContactsItemReview
+      ).reduce((o, key) => {
+        this.stepFeedbackValues.lastContactsItemReview[key] === false &&
+          (o[key] = this.stepFeedbackValues?.lastContactsItemReview[key]);
+
+        return o;
+      }, {});
+
+      const contactHasIncorrectValues = Object.keys(
+        filteredContactIncorrectValues
+      ).length;
+
+      if (contactHasIncorrectValues) {
+        const filteredFieldsWithIncorrectValues = Object.keys(
+          filteredContactIncorrectValues
+        ).reduce((o, key) => {
+          const keyName = key
+            .replace('Valid', '')
+            .replace('is', '')
+            .trim()
+            .toLowerCase();
+
+          const match = Object.keys(this.lastItemStepValues)
+            .filter((item) => item.toLowerCase().includes(keyName))
+            .pop();
+
+          o[keyName] = this.lastItemStepValues[match];
+
+          return o;
+        }, {});
+
+        const filteredUpdatedFieldsWithIncorrectValues = Object.keys(
+          filteredFieldsWithIncorrectValues
+        ).reduce((o, key) => {
+          const keyName = key;
+
+          const match = Object.keys(this.lastItemStepValues)
+            .filter((item) => item.toLowerCase().includes(keyName))
+            .pop();
+
+          o[keyName] = this.lastContactCard[match];
+
+          return o;
+        }, {});
+
+        const isFormNotEqual = isFormValueNotEqual(
+          filteredFieldsWithIncorrectValues,
+          filteredUpdatedFieldsWithIncorrectValues
+        );
+
+        if (isFormNotEqual) {
+          this.isBottomFormFeedbackValueUpdated = true;
+        } else {
+          this.isBottomFormFeedbackValueUpdated = false;
+        }
+      }
+    }
+  }
+
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      if (this.selectedMode === SelectedMode.APPLICANT) {
+      if (
+        this.selectedMode === SelectedMode.APPLICANT ||
+        this.selectedMode === SelectedMode.FEEDBACK
+      ) {
         this.onSubmit();
       }
 
@@ -948,13 +1185,24 @@ export class Step6Component implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
+    if (this.selectedMode === SelectedMode.FEEDBACK) {
+      if (
+        !this.isUpperFormFeedbackValueUpdated ||
+        !this.isBottomFormFeedbackValueUpdated
+      ) {
+        return;
+      }
+    }
+
     if (this.educationForm.invalid) {
       this.inputService.markInvalid(this.educationForm);
+
       return;
     }
 
     if (this.formStatus === 'INVALID') {
       this.markFormInvalid = true;
+
       return;
     }
 
@@ -1007,10 +1255,20 @@ export class Step6Component implements OnInit, OnDestroy {
       emergencyContacts: [...filteredContactsArray, filteredLastContactCard],
     };
 
-    console.log(saveData);
+    const selectMatchingBackendMethod = () => {
+      if (this.selectedMode === SelectedMode.APPLICANT && !this.stepHasValues) {
+        return this.applicantActionsService.createEducation(saveData);
+      }
 
-    this.applicantActionsService
-      .createEducation(saveData)
+      if (
+        (this.selectedMode === SelectedMode.APPLICANT && this.stepHasValues) ||
+        this.selectedMode === SelectedMode.FEEDBACK
+      ) {
+        return this.applicantActionsService.updateEducation(saveData);
+      }
+    };
+
+    selectMatchingBackendMethod()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
@@ -1060,23 +1318,20 @@ export class Step6Component implements OnInit, OnDestroy {
     const lastItemReview =
       this.previousFormValuesOnReview.emergencyContactReview;
 
-    console.log('lastItem', lastItemReview);
-
     const lastItemId = this.previousFormValuesOnReview.id;
 
     const lastReviewedItemInContactsArray = {
-      emergencyContactId: lastItemId,
+      itemId: lastItemId,
       isNameValid: lastItemReview ? lastItemReview.isNameValid : true,
-      /*    isPhoneValid: lastItemReview ? !lastItemReview.isPhoneValid : true,
+      isPhoneValid: lastItemReview ? lastItemReview.isPhoneValid : true,
       isRelationshipValid: lastItemReview
-        ? !lastItemReview.isRelationshipValid
-        : true, */
+        ? lastItemReview.isRelationshipValid
+        : true,
       emergencyContactMessage: this.lastContactCard.firstRowReview,
     };
 
     const saveData: CreateEducationReviewCommand = {
       applicantId: this.applicantId,
-      // educationId: this.educationId,
       isSpecialTrainingDescriptionValid:
         !this.openAnnotationArray[0].lineInputs[0],
       specialTrainingDescriptionMessage: questionReview1,
@@ -1086,12 +1341,13 @@ export class Step6Component implements OnInit, OnDestroy {
       isFromValid: !this.openAnnotationArray[2].lineInputs[0],
       isToValid: !this.openAnnotationArray[2].lineInputs[1],
       datesMessage: questionReview4,
+      isUnableToPreformJobDescriptionValid:
+        !this.openAnnotationArray[3].lineInputs[0],
+      unableToPreformJobDescriptionMessage: questionReview5,
       emergencyContactReviews: [lastReviewedItemInContactsArray],
     };
 
-    /*     console.log('saveData', saveData); */
-
-    const { emergencyContactReviews, ...rest } = saveData;
+    console.log('saveData', saveData);
 
     this.applicantActionsService
       .createEducationReview(saveData)
@@ -1100,17 +1356,46 @@ export class Step6Component implements OnInit, OnDestroy {
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/7`]);
 
-          /*    this.applicantStore.update(1, (entity) => {
+          const { emergencyContactReviews, ...stepValuesReview } = saveData;
+
+          this.applicantStore.update((store) => {
             return {
-              ...entity,
-              education: {
-                ...entity.education,
-                educationReview: rest,
+              ...store,
+              applicant: {
+                ...store.applicant,
+                education: {
+                  ...store.applicant.education,
+                  educationReview: stepValuesReview,
+                  emergencyContacts:
+                    store.applicant.education.emergencyContacts.map(
+                      (item, index) => {
+                        if (
+                          index ===
+                          store.applicant.education.emergencyContacts.length - 1
+                        ) {
+                          return {
+                            ...item,
+                            emergencyContactReview: {
+                              ...item.emergencyContactReview,
+                              isNameValid:
+                                lastReviewedItemInContactsArray.isNameValid,
+                              isPhoneValid:
+                                lastReviewedItemInContactsArray.isPhoneValid,
+                              isRelationshipValid:
+                                lastReviewedItemInContactsArray.isRelationshipValid,
+                              emergencyContactMessage:
+                                lastReviewedItemInContactsArray.emergencyContactMessage,
+                            },
+                          };
+                        }
+
+                        return item;
+                      }
+                    ),
+                },
               },
             };
-          }); */
-
-          console.log('updatedStore', this.applicantStore);
+          });
         },
         error: (err) => {
           console.log(err);

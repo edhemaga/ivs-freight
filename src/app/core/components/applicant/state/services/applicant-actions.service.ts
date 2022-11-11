@@ -9,6 +9,7 @@ import { ApplicantSphFormStore } from '../store/applicant-sph-form-store/applica
 
 import {
   VerifyApplicantCommand,
+  CreateDisclosureReviewCommand,
   AcceptApplicationCommand,
   ApplicantResponse,
   UpdatePersonalInfoCommand,
@@ -40,6 +41,9 @@ import {
   UpdateDrugAndAlcoholCommand,
   UpdateSevenDaysHosCommand,
   ApplicantModalResponse,
+  CreateAuthorizationReviewCommand,
+  CreateDriverRightsReviewCommand,
+  UpdateEducationCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -114,6 +118,10 @@ export class ApplicantActionsService {
     return this.applicantService.apiApplicantPersonalPut(data);
   }
 
+  public updateEducation(data: UpdateEducationCommand): Observable<object> {
+    return this.applicantService.apiApplicantEducationPut(data);
+  }
+
   public updateSevenDaysHos(
     data: UpdateSevenDaysHosCommand
   ): Observable<object> {
@@ -132,13 +140,13 @@ export class ApplicantActionsService {
     return this.applicantService.apiApplicantDriverrightsPut(data);
   }
 
-  public createDisclosureAndRelease(
+  public updateDisclosureAndRelease(
     data: UpdateDisclosureReleaseCommand
   ): Observable<CreateResponse> {
     return this.applicantService.apiApplicantDisclosurereleasePut(data);
   }
 
-  public createAuthorization(
+  public updateAuthorization(
     data: UpdateAuthorizationCommand
   ): Observable<object> {
     return this.applicantService.apiApplicantAuthorizationPut(data);
@@ -192,6 +200,24 @@ export class ApplicantActionsService {
     data: CreateDrugAndAlcoholReviewCommand
   ): Observable<object> {
     return this.applicantService.apiApplicantDrugandalcoholReviewPost(data);
+  }
+
+  public createDriverRightsReview(
+    data: CreateDriverRightsReviewCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantDriverrightsReviewPost(data);
+  }
+
+  public createDisclosureAndReleaseReview(
+    data: CreateDisclosureReviewCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantDisclosurereleaseReviewPost(data);
+  }
+
+  public createAuthorizationReview(
+    data: CreateAuthorizationReviewCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantAuthorizationReviewPost(data);
   }
 
   public invitePreviousEmployerSphForm(

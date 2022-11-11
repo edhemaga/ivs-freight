@@ -42,7 +42,7 @@ import {
 export class Step2Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public applicantId: number;
 
@@ -1095,7 +1095,7 @@ export class Step2Component implements OnInit, OnDestroy {
         const itemReview = item.workExperienceItemReview;
 
         return {
-          workExperienceItemId: item.id,
+          itemId: item.id,
           isPrimary: false,
           commonMessage: this.workExperienceForm.get(`cardReview${index + 1}`)
             .value,
@@ -1132,7 +1132,7 @@ export class Step2Component implements OnInit, OnDestroy {
     const lastItemId = this.previousFormValuesOnReview.id;
 
     const lastReviewedItemInWorkExperienceArray = {
-      workExperienceItemId: lastItemId,
+      itemId: lastItemId,
       isPrimary: true,
       commonMessage: null,
       isEmployerValid: lastItemReview ? lastItemReview.isEmployerValid : true,

@@ -16,6 +16,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import {
   ApplicantResponse,
   AuthorizationFeedbackResponse,
+  CreateAuthorizationReviewCommand,
   UpdateAuthorizationCommand,
 } from 'appcoretruckassist';
 
@@ -185,7 +186,7 @@ export class Step11Component implements OnInit, OnDestroy {
     };
 
     this.applicantActionsService
-      .createAuthorization(saveData)
+      .updateAuthorization(saveData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
@@ -215,7 +216,34 @@ export class Step11Component implements OnInit, OnDestroy {
   }
 
   public onSubmitReview(): void {
-    this.router.navigate([`/medical-certificate/${this.applicantId}`]);
+    const saveData: CreateAuthorizationReviewCommand = {
+      applicantId: this.applicantId,
+    };
+
+    this.applicantActionsService
+      .createAuthorizationReview(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/medical-certificate/${this.applicantId}`]);
+
+          this.applicantStore.update((store) => {
+            return {
+              ...store,
+              applicant: {
+                ...store.applicant,
+                authorization: {
+                  ...store.applicant.authorization,
+                  reviewed: true,
+                },
+              },
+            };
+          });
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   ngOnDestroy(): void {
