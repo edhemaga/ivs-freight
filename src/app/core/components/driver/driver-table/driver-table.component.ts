@@ -84,26 +84,26 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.tableService
-      .getTableConfig('DRIVER')
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        console.log('Get Driver Table Config');
-        console.log(res);
+    // this.tableService
+    //   .getTableConfig('DRIVER')
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((res) => {
+    //     console.log('Get Driver Table Config');
+    //     console.log(res);
 
-        /* const driverConfig = JSON.parse(res.config);
+    //     const driverConfig = JSON.parse(res.config);
 
-        localStorage.setItem(
-          `table-${res.tableType}-Configuration`,
-          JSON.stringify(driverConfig)
-        );
+    //     localStorage.setItem(
+    //       `table-${res.tableType}-Configuration`,
+    //       JSON.stringify(driverConfig)
+    //     );
 
-        this.sendDriverData();
+    //     this.sendDriverData();
 
-        setTimeout(() => {
-          this.observTableContainer();
-        }, 100); */
-      });
+    //     setTimeout(() => {
+    //       this.observTableContainer();
+    //     }, 100);
+    //   });
 
     this.sendDriverData();
 
