@@ -33,7 +33,10 @@ export class FuelTService {
     return this.fuelService.apiFuelFuelstopPut(...sortedParams);
   }
 
-  public getFuelStopModalDropdowns(): Observable<GetFuelStopModalResponse> {
-    return this.fuelService.apiFuelFuelstopModalGet();
+  public getFuelStopModalDropdowns(
+    pageIndex: number = 1,
+    pageSize: number = 25
+  ): Observable<GetFuelStopModalResponse> {
+    return this.fuelService.apiFuelFuelstopModalGet(pageIndex, pageSize);
   }
 }

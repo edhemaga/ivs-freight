@@ -61,7 +61,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         ...this.editData,
         id: 7,
       };
-      console.log('edit data: ', this.editData);
       this.getFuelStopById(this.editData.id);
     }
   }
@@ -105,13 +104,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         }
         break;
       }
-      case 'delete': {
-        if (this.editData) {
-          this.deleteFuelStopById(this.editData.id);
-          this.modalService.setModalSpinner({ action: 'delete', status: true });
-        }
-        break;
-      }
+
       default: {
         break;
       }
@@ -159,7 +152,11 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     if (event.valid) this.selectedAddress = event.address;
   }
 
-  private updateFuelStop(id: number) {}
+  private updateFuelStop(id: number) {
+    if (this.selectedFuelStop) {
+      return;
+    }
+  }
 
   private addFuelStop() {
     const { address, addressUnit, businessName, ...form } =
@@ -192,10 +189,9 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             'Success',
             'Successfully fuel stop added.'
           );
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: (err: any) => {
-          console.log('error... ', err);
-
           this.fuelStopForm.get('store').setErrors({ fuelStoreNumber: true });
 
           this.fuelStopForm
@@ -209,15 +205,12 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private deleteFuelStopById(id: number) {}
-
   private getFuelStopById(id: number) {
     this.fuelService
       .getFuelStopById(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: FuelStopResponse) => {
-          console.log('res: ', res);
           this.fuelStopForm.patchValue({
             businessName: res.businessName,
             fuelStopFranchiseId: res.fuelStopFranchise
@@ -238,14 +231,14 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             : res.businessName;
         },
         error: (err: any) => {
-          console.log('err in get fuel stop by id: ', err);
+          console.log(err);
         },
       });
   }
 
-  private getModalDropdowns() {
+  private getModalDropdowns(pageIndex: number = 1, pageSize: number = 25) {
     this.fuelService
-      .getFuelStopModalDropdowns()
+      .getFuelStopModalDropdowns(pageIndex, pageSize)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: GetFuelStopModalResponse) => {

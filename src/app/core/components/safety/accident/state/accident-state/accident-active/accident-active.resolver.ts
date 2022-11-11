@@ -17,7 +17,7 @@ export class AccidentActiveResolver implements Resolve<AccidentActiveState> {
   resolve(): Observable<AccidentActiveState | boolean> {
 
     return this.accidentService
-    .getAccidentList(true, true, 1, 25)
+    .getAccidentList(true, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 1, 25)
     .pipe(
       catchError(() => {
         return of('No accident active data...');
