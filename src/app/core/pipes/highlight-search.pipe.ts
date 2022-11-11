@@ -8,7 +8,11 @@ import { HighlightText } from '../model/searchFilter';
 export class HighlightSearchPipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
 
-  transform(text: any, chips: HighlightText[]): SafeHtml {
+  transform(
+    text: any,
+    chips: HighlightText[],
+    secure: boolean = true
+  ): SafeHtml {
     if (text && chips && chips.length) {
       text = text.toString();
       chips = chips.sort((a, b) => {
@@ -35,7 +39,8 @@ export class HighlightSearchPipe implements PipeTransform {
           return text;
         }
       });
-      return this.sanitizer.bypassSecurityTrustHtml(text);
+
+      return secure ? this.sanitizer.bypassSecurityTrustHtml(text) : text;
     }
     return text;
   }

@@ -40,6 +40,7 @@ export class TaCustomCardComponent implements OnChanges {
   @Input() hasDownload: string = null;
   @Input() customTextAction: string = null;
   @Input() hasDeleteAction: boolean;
+  @Input() hasPayrollStatus: boolean;
 
   @Input() controlName: FormControl;
 

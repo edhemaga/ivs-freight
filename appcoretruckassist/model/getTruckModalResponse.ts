@@ -23,6 +23,7 @@ import { OwnerShortResponse } from './ownerShortResponse';
 export interface GetTruckModalResponse { 
     truckTypes?: Array<TruckTypeResponse> | null;
     truckMakes?: Array<TruckMakeResponse> | null;
+    truckLengths?: Array<EnumValue> | null;
     tireSizes?: Array<TireSizeResponse> | null;
     colors?: Array<ColorResponse> | null;
     owners?: Array<OwnerShortResponse> | null;

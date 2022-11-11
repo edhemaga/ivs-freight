@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { ViolationModalComponent } from '../violation-modal/violation-modal.component';
+import { ViolationModalComponent } from '../../../modals/violation-modal/violation-modal.component';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { Subject, takeUntil } from 'rxjs';
 import { RoadsideInactiveState } from '../state/roadside-state/roadside-inactive/roadside-inactive.store';
@@ -326,8 +326,8 @@ export class ViolationTableComponent
     );
 
     return tableColumnsConfig
-        ? tableColumnsConfig
-        : getRoadsideInspectionColums();
+      ? tableColumnsConfig
+      : getRoadsideInspectionColums();
   }
 
   // Set Roadside Inspection Table Data

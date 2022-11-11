@@ -14,5 +14,6 @@
 export interface FuelStopFranchiseMinimalResponse { 
     id?: number;
     businessName?: string | null;
+    count?: number | null;
 }
 

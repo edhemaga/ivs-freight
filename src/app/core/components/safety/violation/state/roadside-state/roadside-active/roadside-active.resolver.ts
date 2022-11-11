@@ -18,11 +18,12 @@ export class RoadsideActiveResolver implements Resolve<RoadsideActiveState> {
     private roadsideStore: RoadsideActiveStore
   ) {}
   resolve(): Observable<RoadsideActiveState | boolean> {
-    return this.roadsideService.getRoadsideList(true, 1, 25).pipe(
+    return this.roadsideService.getRoadsideList(true, 1, 1, 25).pipe(
       catchError(() => {
         return of('No roadside active data...');
       }),
       tap((roadsidePagination: RoadsideInspectionListResponse) => {
+        console.log(roadsidePagination);
         localStorage.setItem(
           'roadsideTableCount',
           JSON.stringify({

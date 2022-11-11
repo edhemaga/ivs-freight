@@ -1,0 +1,224 @@
+.acounting_table {
+  thead {
+    tr {
+      background-color: #eeeeee;;
+    }
+  }
+
+  .expand_row {
+    display: flex;
+    justify-content: space-between;
+    min-height: 32px;
+
+    .columnName {
+      padding-left: 10px;
+
+      line-height: 32px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #919191;
+    }
+
+    .expand_row {
+      height: 100%;
+      width: 200px;
+
+      cursor: pointer;
+    }
+  }
+
+  .name_column {
+    display: flex;;
+    font-weight: bold;
+    font-size: 14px;
+
+    .profile-icon {
+      margin-right: 5px;
+      border-radius: 3px;
+    }
+
+    .userName {
+      width: 100%;
+      max-width: 120px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .pay_column {
+    font-size: 12px;
+  }
+
+  .salary_column {
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .status_column {
+    display: inline;
+    padding: 3px 6px;
+    background-color: #919191;
+    border-radius: 100%;
+    color: #fff;
+    font-size: 13px;
+
+    &.pending_r {
+      background-color: #24C1A1;
+    }
+  }
+
+  .dispatcher-search-wrap {
+    background-color: transparent;
+    border: none;
+
+    .header_hold {
+      display: flex;
+
+      ::ng-deep .search-panel {
+        background-color: #FFFFFFb3;
+
+        svg {
+          path {
+            fill: #B7B7B7;
+          }
+        }
+      }
+
+      .columnName {
+        position: relative;
+        flex: 1;
+        margin-left: 6px;
+        border-radius: 3px;
+
+        background-color: #ffffffB3;
+        cursor: pointer;
+
+        &:after {
+          content: "";
+          position: absolute;
+          right: 12px;
+          top: 50%;
+          width: 15px;
+          height: 8px;
+
+          background-image: url('../../../assets/img/down-gray.svg');
+          background-repeat: no-repeat;
+          background-size: 16px 9px;
+
+          transform: translateY(-50%);
+          transition: all 0.3s;
+        }
+      }
+
+      &.active {
+        .columnName {
+          background-color: #fff;
+
+          &:after {
+            transform: translateY(-50%) rotate(180deg);
+          }
+        }
+
+        ::ng-deep .search-panel {
+          background-color: #FFF !important;
+
+          svg {
+            path {
+              fill: #B7B7B7 !important;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .accounting_list_row {
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .accounting-table {
+    width: 100%;
+
+    tr {
+      padding: 0 10px;
+      cursor: pointer;
+
+      &.active {
+        background-color: #E5E5E5 !important;
+        color: #6C6C6C;
+
+        td {
+          opacity: 1 !important;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        td {
+          opacity: 0.7;
+        }
+
+        &:first-child {
+          td:first-child {
+            border-top-left-radius: 2px;
+          }
+
+          td:last-child {
+            border-top-right-radius: 2px;
+          }
+        }
+
+        background-color: #fff;
+
+        &:not(.active):hover {
+          td {
+            opacity: 1;
+          }
+
+          background-color: #F9F9F9;
+        }
+      }
+    }
+
+    th {
+      color: #919191;
+    }
+
+    td, th {
+      padding: 8px 0 5px 10px;
+    }
+
+    .bottom_pagination {
+      display: flex;
+      padding: 10px 10px;
+      font-size: 12px;
+      background-color: #fff;
+
+      justify-content: space-between;
+
+      .pag_btns {
+        color: #919191;
+      }
+
+      .pagination_buttons {
+        display: flex;
+
+        justify-content: space-between;
+
+        .pag_show_all {
+          margin: 0 10px;
+          color: #D1D1D1;
+          font-weight: bold;
+
+          &:hover {
+            color: #919191;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}

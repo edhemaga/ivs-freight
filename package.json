@@ -104,6 +104,7 @@
     "@types/jquery": "^3.5.13",
     "@types/node": "^12.11.1",
     "@types/uuid": "^8.3.4",
+    "akita-schematics": "^2.0.1",
     "jasmine-core": "~4.0.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
