@@ -122,6 +122,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     this.createForm();
 
     if (this.editData) {
+      console.log(this.editData);
       this.editViolationById(this.editData.id);
     }
 
