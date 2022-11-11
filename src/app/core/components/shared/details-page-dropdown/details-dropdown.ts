@@ -42,7 +42,21 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
       ),
       transition('false <=> true', [animate('.1s ease-in')]),
       transition('true <=> false', [animate('.1s ease-in')]), 
-    ])
+    ]),
+    trigger('showAnimation', [
+      transition(':enter', [
+        style({ height: '10px', overflow: 'hidden', }),
+        animate('300ms ease', style({ height: '26px', overflow: 'auto',})),
+      ]),
+      transition(':leave', [animate('300ms ease', style({ height: 0 }))]),
+    ]),
+    trigger('borderShowAnimation', [
+      transition(':enter', [
+        style({ height: '0px', opacity: 0 }),
+        animate('300ms ease', style({ height: '*', opacity: 1 })),
+      ]),
+      transition(':leave', [animate('300ms ease', style({ height: 0 }))]),
+    ]),
   ]
 })
 export class DetailsDropdownComponent implements OnInit, OnChanges {
