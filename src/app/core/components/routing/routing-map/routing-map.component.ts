@@ -939,7 +939,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             this.getRouteShape(route);
           } else {
             var stopArr = [];
-            route.stops.map((stop) => {
+            route.stops.map((stop, stopIndex) => {
               var stopObj = <any>{
                 id: stop.id ? stop.id : 0,
                 address: stop.address,
@@ -947,6 +947,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 total: null,
                 longitude: stop.long,
                 latitude: stop.lat,
+                orderNumber: stopIndex+1
               };
 
               stopArr.push(stopObj);
@@ -1183,7 +1184,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         var stopArr = [];
         this.tableData[this.selectedMapIndex].routes[
           this.focusedRouteIndex
-        ].stops.map((stop) => {
+        ].stops.map((stop, stopIndex) => {
           var stopObj = <any>{
             id: stop.id ? stop.id : 0,
             address: stop.address,
@@ -1191,6 +1192,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             total: null,
             longitude: stop.long,
             latitude: stop.lat,
+            orderNumber: stopIndex+1
           };
 
           stopArr.push(stopObj);
@@ -2831,7 +2833,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   getRouteShape(route) {
     var stopsLatLong = [];
     var stopArr = [];
-    route.stops.map((stop) => {
+    route.stops.map((stop, stopIndex) => {
       stopsLatLong.push({ latitude: stop.lat, longitude: stop.long });
 
       var stopObj = <any>{
@@ -2841,6 +2843,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         total: null,
         longitude: stop.long,
         latitude: stop.lat,
+        orderNumber: stopIndex+1
       };
 
       stopArr.push(stopObj);
