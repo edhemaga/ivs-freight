@@ -100,7 +100,22 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
         ])
       )
     ])
-  ])],
+  ]),
+  trigger('showAnimation', [
+    transition(':enter', [
+      style({ height: '10px', overflow: 'hidden', }),
+      animate('300ms ease', style({ height: '28px', overflow: 'auto',})),
+    ]),
+    transition(':leave', [animate('300ms ease', style({ height: 0 }))]),
+  ]),
+  trigger('borderShowAnimation', [
+    transition(':enter', [
+      style({ height: '0px', opacity: 0 }),
+      animate('300ms ease', style({ height: '*', opacity: 1 })),
+    ]),
+    transition(':leave', [animate('300ms ease', style({ height: 0 }))]),
+  ]),
+],
 })
 export class FilterComponent implements OnInit, AfterViewInit {
   private destroy$ = new Subject<void>();

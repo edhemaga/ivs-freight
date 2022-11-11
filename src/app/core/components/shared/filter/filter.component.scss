@@ -1,3 +1,16 @@
+@keyframes opacityAnimation {
+
+  0% {
+    opacity: 0;
+    max-height: 0px;
+  }
+  100% {
+    opacity: 1;
+    max-height: 650px;
+  }
+ 
+}
+
 .user-icon {
   position: relative;
   width: 26px;
@@ -162,9 +175,11 @@
     }
   }
 }
+
+
+
 .filter-holder {
   position: relative;
-  //left: -10px;
   width: 260px;
   padding: 7px 6px 6px 6px;
   border-radius: 3px;
@@ -175,6 +190,7 @@
   align-items: flex-start;
   flex-direction: column;
   overflow: hidden;
+  animation: opacityAnimation 0.3s; 
 
   .filter-header {
     position: relative;
@@ -2277,9 +2293,12 @@
   z-index: 1071;
 }
 
-.main-popover-body{
+
+
+.filter-main-popover-body{
   position: relative;
   left: -10px;
+ 
 }
 
 .popover {
