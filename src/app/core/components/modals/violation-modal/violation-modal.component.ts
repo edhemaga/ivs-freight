@@ -14,6 +14,13 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
+import { RoadsideService } from '../../safety/violation/state/roadside.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { RoadsideInspectionResponse } from '../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
+import { convertDateFromBackend } from '../../../utils/methods.calculations';
+import moment from 'moment';
+import { AccidentTService } from '../../safety/accident/state/accident.service';
+import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';
 
 @Component({
   selector: 'app-violation-modal',
@@ -111,30 +118,25 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
   public isFormDirty: boolean;
 
+  public violationModalName: string = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private formService: FormService
+    private formService: FormService,
+    private roadsideService: RoadsideService,
+    private accidentTService: AccidentTService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
     this.createForm();
+    this.getModalDropdowns();
 
     if (this.editData) {
-      console.log(this.editData);
       this.editViolationById(this.editData.id);
     }
-
-    this.addViolation({
-      code: '392.2-SLLS3',
-      category: 'Vehicle Maintenance',
-      unit: 'Trailer',
-      sw: '10+2',
-      oos: true,
-      sms: false,
-      description: 'Allowing or requiring a driver to use i…',
-    });
   }
 
   private createForm() {
@@ -142,7 +144,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       report: [null, Validators.required],
       inspectionLevel: [null],
       hmInspectionType: [null],
-      country: [null],
+      county: [null],
       state: [null],
       startTime: [null],
       endTime: [null],
@@ -183,7 +185,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       facility: [null],
       highway: [null],
       milePost: [null],
-      location: [null, [...addressValidation]],
+      origin: [null, [...addressValidation]],
       destination: [null, [...addressValidation]],
       customer: [null],
       boL: [null],
@@ -243,6 +245,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     oos: boolean;
     sms: boolean;
     description: string;
+    extraDescription: string;
   }) {
     return this.formBuilder.group({
       code: [data.code],
@@ -252,6 +255,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       oos: [data.oos],
       sms: [data.sms],
       description: [data.description, [...descriptionValidation]],
+      extraDescription: [data.extraDescription, [...descriptionValidation]],
     });
   }
 
@@ -263,6 +267,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     oos: boolean;
     sms: boolean;
     description: string;
+    extraDescription: string;
   }) {
     this.violations.push(this.createViolation(data));
   }
@@ -308,7 +313,135 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
   private updateViolation(id: number) {}
 
-  private editViolationById(id: number) {}
+  private editViolationById(id: number) {
+    this.roadsideService
+      .getRoadsideById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: RoadsideInspectionResponse) => {
+          this.violationForm.patchValue({
+            report: res.report,
+            inspectionLevel: res.inspectionLevel,
+            hmInspectionType: res.hmInspectionType,
+            county: null, //TODO: Wait for backend
+            state: res.state ? res.state.stateShortName : null,
+            startTime: res.startTime,
+            endTime: res.endTime,
+            date: res.date ? convertDateFromBackend(res.date) : null,
+            // Driver
+            driverName: res.driver_FullName,
+            driverLicenceNumber: res.driver_LicenceNo,
+            driverState: res.driver_State,
+            driverDOB: res.driver_DateOfBirth
+              ? convertDateFromBackend(res.driver_DateOfBirth)
+              : null,
+            // Co Driver
+            coDriverName: res.coDriver_FullName,
+            coDriverLicenceNumber: res.coDriver_LicenceNo,
+            coDriverState: res.coDriver_State,
+            coDriverDOB: res.coDriver_DateOfBirth
+              ? convertDateFromBackend(res.coDriver_DateOfBirth)
+              : null,
+            // Truck
+            truck_Unit: res.truck_Unit,
+            truck_Type: res.truck_Type,
+            truck_Make: res.truck_Make,
+            truck_PlateNo: res.truck_PlateNo,
+            truck_State: res.truck_State,
+            truck_VIN: res.truck_VIN,
+            // Trailer
+            trailer_Unit: res.trailer_Unit,
+            trailer_Type: res.trailer_Type,
+            trailer_Make: res.trailer_Make,
+            trailer_PlateNo: res.trailer_PlateNo,
+            trailer_State: res.trailer_State,
+            trailer_VIN: res.trailer_VIN,
+            // Violation
+            violations: [],
+            note: res.note,
+            policeDepartment: res.policeDepartment,
+            policeOfficer: res.policeOfficer,
+            badgeNo: res.badgeNo,
+            address: res.address ? res.address.address : null,
+            phone: res.phone,
+            fax: res.fax,
+            facility: res.facility,
+            highway: res.highway,
+            milePost: res.milePost,
+            origin: res.origin ? res.origin.address : null,
+            destination: res.destination ? res.destination.address : null,
+            customer: res.broker ? res.broker.businessName : null,
+            boL: res.boL,
+            cargo: res.cargo,
+          });
+
+          this.selectedAuthorityAddress = res.address;
+          this.selectedAuthorityOrigin = res.origin;
+          this.selectedAuthorityDestination = res.destination;
+          this.selectedViolationCustomer = res.broker;
+
+          this.violationModalName = res.report;
+
+          if (res.violations.length) {
+            for (let i = 0; i < res.violations.length; i++) {
+              this.violations.push(
+                this.createViolation({
+                  code: res.violations[i].code,
+                  category: res.violations[i].category,
+                  unit: res.violations[i].unit,
+                  sw: res.violations[i].sw,
+                  oos: res.violations[i].oos,
+                  sms: res.violations[i].sms,
+                  description: res.violations[i].description,
+                  extraDescription: res.violations[i].extraDescription
+                    ? res.violations[i].description?.concat(
+                        '.',
+                        res.violations[i].extraDescription
+                      )
+                    : res.violations[i].description,
+                })
+              );
+            }
+          }
+
+          if (res.specialChecks.length) {
+            for (let i = 0; i < this.specialChecks.length; i++) {
+              for (let j = 0; j < res.specialChecks.length; j++) {
+                if (
+                  this.specialChecks[i].name ===
+                  res.specialChecks[j].specialChecks.name
+                ) {
+                  this.specialChecks[i].active = res.specialChecks[j].active;
+                  break;
+                }
+              }
+            }
+          }
+        },
+        error: (err: any) => {
+          this.notificationService.error('Error', err);
+        },
+      });
+  }
+
+  private getModalDropdowns() {
+    this.accidentTService
+      .getModalDropdowns()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: AccidentModalResponse) => {
+          this.labelsViolationCustomer = res.brokers.map((item) => {
+            return {
+              id: item.id,
+              name: item.businessName,
+            };
+          });
+        },
+        error: (err: any) => {
+          this.notificationService.error('Error', err);
+        },
+      });
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();
