@@ -20,11 +20,12 @@ export class RoadsideInactiveResolver
     private roadsideStore: RoadsideInactiveStore
   ) {}
   resolve(): Observable<RoadsideInactiveState | boolean> {
-    return this.roadsideService.getRoadsideList(false, 1, 25).pipe(
+    return this.roadsideService.getRoadsideList(false, 1, 1, 25).pipe(
       catchError(() => {
         return of('No roadside inactive data...');
       }),
       tap((roadsidePagination: RoadsideInspectionListResponse) => {
+        console.log('inactive: ', roadsidePagination);
         localStorage.setItem(
           'roadsideTableCount',
           JSON.stringify({
