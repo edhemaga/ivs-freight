@@ -6,13 +6,18 @@
 
   &.datetimeclass {
     &:not(.invalid-focus-out-filled):not(.valid) {
-      background-color: #eeeeee;
+      background-color: $input-background-color-normal;
     }
     border-radius: 2px !important;
 
     &.invalid-focus-out-filled {
       background-color: $input-background-color-invalid-focus-out !important;
     }
+
+    &.datetimepickerdisabled{
+      background-color: $input-background-color-disabled !important;
+    }
+
   }
 
   &.address-flag {

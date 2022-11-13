@@ -28,13 +28,13 @@ ngb-modal-window[aria-hidden="true"] {
     max-width: -moz-max-content !important;
     max-width: max-content !important;
 
-    &.modal-large-xl {
-      bottom: 6%;
-    }
+    // &.modal-large-xl {
+    //   bottom: 6%;
+    // }
 
-    &.modal-sph-applicant {
-      bottom: 3%;
-    }
+    // &.modal-sph-applicant {
+    //   bottom: 3%;
+    // }
 
     @media (min-width: 576px) {
       max-width: -webkit-max-content !important;
@@ -522,6 +522,13 @@ ngb-modal-window[aria-hidden="true"] {
 }
 
 body.modal-open {
+  app-root {
+    .custom-scrollbar-holder {
+      .right-bar-scroll {
+        display: none !important;
+      }
+    }
+  }
   .modal-backdrop {
     &.fade {
       transition: background-color 2s ease-out !important;
@@ -915,7 +922,7 @@ ngb-modal-window.modal {
       transition: all 0.3s;
 
       .modal-container {
-        margin-top: 75px;
+        margin: 75px auto 60px auto;
       }
     }
   }
