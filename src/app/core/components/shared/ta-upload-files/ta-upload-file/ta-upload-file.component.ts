@@ -107,8 +107,8 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
   public afterLoadComplete(pdf: PDFDocumentProxy) {
     this.numberOfFilePages =
       pdf._pdfInfo.numPages === 1
-        ? pdf._pdfInfo.numPages.toString().concat(' ', 'PAGE')
-        : pdf._pdfInfo.numPages.toString().concat(' ', 'PAGES');
+        ? pdf._pdfInfo.numPages.toString().concat(' ', 'page')
+        : pdf._pdfInfo.numPages.toString().concat(' ', 'pages');
   }
 
   public onAction(action: string) {
