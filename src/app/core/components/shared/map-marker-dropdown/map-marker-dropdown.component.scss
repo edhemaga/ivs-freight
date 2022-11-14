@@ -25,7 +25,7 @@
 }
 
 .marker-business-name {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     color: $bw6-2;
     text-transform: uppercase;
@@ -178,16 +178,16 @@
 
   .copied {
     .marker-info-text {
-      animation-duration: 300ms;
+      animation-duration: 2100ms;
       animation-name: change;
     }
     .copy-icon {
       svg {
         path {
-          animation-duration: 300ms;
+          animation-duration: 2100ms;
           animation-name: changeSVG;
           &:hover {
-            animation-duration: 300ms;
+            animation-duration: 2100ms;
             animation-name: changeSVG;
           }
         }
@@ -197,6 +197,15 @@
 
   .blue-text {
     color: #536BC2;
+
+    &::-moz-selection {
+      color: #536BC2;
+      background: #536BC233;
+    }
+    &::selection {
+        color: #536BC2;
+        background: #536BC233;
+    }
   }
 
   .font-weight-normal {

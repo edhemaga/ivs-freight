@@ -99,6 +99,8 @@
 }
 
 .routing-container {
+    padding-right: 0px !important;
+
     .marker-container {
         top: -25px!important;
     
@@ -191,7 +193,7 @@
         align-items: center;
         justify-content: space-between;
         height: 18px;
-        margin: 2px 4px 0px 2px;
+        margin: 2px 0px 0px 2px;
 
         .header-content-container {
             display: flex;

@@ -105,7 +105,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     } else if (key === 40 || key === 38) {
       /* Up and Down arrow */
       event.preventDefault();
-      if (this.focusedRouteIndex != null) {
+      if (this.focusedRouteIndex != null && !this.inputAddress?.addressExpanded) {
         this.onUpAndDownArrow(event);
       }
     } else if (key === 119) {
@@ -163,7 +163,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       if (this.focusedRouteIndex != null) {
         var inputInFocus = this.checkInputFocus(this.focusedRouteIndex);
 
-        if (inputInFocus || this.stopPickerLocation?.lat) {
+        if (this.inputAddress?.addressExpanded || inputInFocus || this.stopPickerLocation?.lat) {
           this.changeEmptyLoaded();
         }
       }
@@ -2129,7 +2129,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         route.mpg ||
         route.fuelPrice)
     ) {
-      widthNumber += 10;
+      widthNumber += 11;
     }
 
     route.width = widthNumber + 'px';
