@@ -92,6 +92,7 @@ export class DriverTService {
   /* Observable<CreateDriverResponse> */
   // Create Driver
   public addDriver(data: any /*CreateDriverCommand*/): Observable<any> {
+    console.log(data, 'addriver data')
     const sortedParams = getFunctionParams(this.driverService.apiDriverPost, data);
     return this.driverService.apiDriverPost(...sortedParams).pipe(
       tap((res: any) => {

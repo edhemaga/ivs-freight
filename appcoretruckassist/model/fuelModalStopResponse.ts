@@ -9,25 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FuelStopExtensionResponse } from './fuelStopExtensionResponse';
 import { AddressEntity } from './addressEntity';
 
 
-export interface FuelStopShortResponse { 
+export interface FuelModalStopResponse { 
     id?: number;
-    companyId?: number | null;
     businessName?: string | null;
     store?: string | null;
-    phone?: string | null;
-    fax?: string | null;
     address?: AddressEntity;
-    pricePerGallon?: number | null;
-    lowestPricePerGallon?: number | null;
-    highestPricePerGallon?: number | null;
-    longitude?: number | null;
-    latitude?: number | null;
-    fuelStopCompany?: Array<FuelStopExtensionResponse> | null;
-    createdAt?: string;
-    updatedAt?: string;
 }
 
