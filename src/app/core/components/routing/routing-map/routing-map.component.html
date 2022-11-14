@@ -1425,7 +1425,11 @@
                       cy="2"
                       r="2"
                       transform="translate(1115 985)"
-                      fill="#fff"
+                      [ngStyle]="{
+                        fill: tableData[selectedMapIndex].routes[
+                          focusedRouteIndex
+                        ].color
+                      }"
                     />
                   </g>
                   <g

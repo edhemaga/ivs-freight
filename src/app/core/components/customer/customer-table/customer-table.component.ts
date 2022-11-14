@@ -826,9 +826,38 @@ export class CustomerTableComponent
   }
 
   updateMapList(mapListResponse) {
-    this.mapListData = mapListResponse.pagination.data;
-    this.tableData[1].length = mapListResponse.pagination.count;
-    this.ref.detectChanges();
+    var newMapList = mapListResponse.pagination.data;
+    var listChanged = false;
+
+    newMapList.map((item) => {
+      let itemIndex = this.mapListData.findIndex(
+        (item2) =>
+          item2.id === item.id
+      );
+
+      if ( itemIndex == -1 ) {
+        this.mapListData.push(item);
+        listChanged = true;
+      }
+    });
+
+    this.mapListData.map((item, index) => {
+      let itemIndex = newMapList.findIndex(
+        (item2) =>
+          item2.id === item.id
+      );
+
+      if ( itemIndex == -1 ) {
+        this.mapListData.splice(index, 1);
+        listChanged = true;
+      }
+    });
+
+    if ( listChanged || mapListResponse.changedSort ) {
+      this.mapListData = mapListResponse.pagination.data;
+      this.tableData[1].length = mapListResponse.pagination.count;
+      this.ref.detectChanges();
+    }
   }
 
   ngOnDestroy(): void {

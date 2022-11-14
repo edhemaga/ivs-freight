@@ -28,7 +28,9 @@ export class MapListCardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (!this.sortCategory?.name) {
-      this.sortCategory = { name: 'Business Name', id: 1, sortName: 'name' };
+      //this.sortCategory = { name: 'Business Name', id: 1, sortName: 'name' };
+
+      this.sortCategory = this.mapsService.sortCategory;
     }
 
     // this.sortCategory = this.mapsService.sortCategory;

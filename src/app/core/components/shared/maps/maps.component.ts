@@ -75,7 +75,7 @@ export class MapsComponent implements OnInit, OnDestroy {
   public markerSelected: boolean = false;
   public mapLatitude: number = 41.860119;
   public mapLongitude: number = -87.660156;
-  public sortBy: any;
+  public sortBy: string = 'nameAsc';
   public searchValue: string = '';
   public mapMarkers: any[] = [];
   public mapCircle: any = {
@@ -112,6 +112,9 @@ export class MapsComponent implements OnInit, OnDestroy {
   public clusterMarkers: any[] = [];
   public clustersTimeout: any;
 
+  public searchText: string = '';
+  public firstClusterCall: boolean = true;
+
   constructor(
     private ref: ChangeDetectorRef,
     private formBuilder: FormBuilder,
@@ -125,6 +128,25 @@ export class MapsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.showHideMarkers();
     this.markersDropAnimation();
+
+    this.addMapListSearchListener();
+  }
+
+  addMapListSearchListener() {
+    this.mapsService.searchTextChange
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((text) => {
+        this.searchText = text;
+        this.getClusters(true);
+      });
+
+    this.mapsService.sortChange
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((category) => {
+        this.sortBy = category;
+        console.log('sortCategoryChange', category);
+        this.getClusters(true);
+      });
   }
 
   public getMapInstance(map) {
@@ -135,9 +157,13 @@ export class MapsComponent implements OnInit, OnDestroy {
         // update the coordinates here
 
         clearTimeout(this.clustersTimeout);
-
+        
         this.clustersTimeout = setTimeout(() => {
-          this.getClusters();
+          this.getClusters(this.firstClusterCall);
+          
+          if ( this.firstClusterCall ) {
+            this.firstClusterCall = false;
+          }
         }, 500);
       });
     }
@@ -353,7 +379,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     }
   }
 
-  callClusters(clustersObj) {
+  callClusters(clustersObj, changedSearchOrSort) {
     //this.viewData = [];
 
     if (this.mapType == 'repairShop') {
@@ -393,25 +419,23 @@ export class MapsComponent implements OnInit, OnDestroy {
           });
 
           this.viewData.map((item) => {
-            if (markersToShow.includes(item.id)) {
+            if (markersToShow.includes(item.id) && !item.showMarker) {
               item.showMarker = true;
-            } else {
+            } else if (!markersToShow.includes(item.id) && item.showMarker) {
               item.showMarker = false;
             }
           });
 
           this.clusterMarkers.map((cluster) => {
-            if (clustersToShow.includes(cluster.latitude)) {
-              if ( !cluster.showMarker ) {
-                cluster.fadeIn = true;
-                setTimeout(() => {
-                  cluster.fadeIn = false;
-                  this.ref.detectChanges();
-                }, 200);
-              }
+            if (clustersToShow.includes(cluster.latitude) && !cluster.showMarker) {
+              cluster.fadeIn = true;
+              setTimeout(() => {
+                cluster.fadeIn = false;
+                this.ref.detectChanges();
+              }, 200);
 
               cluster.showMarker = true;
-            } else {
+            } else if (!clustersToShow.includes(cluster.latitude) && cluster.showMarker) {
               cluster.fadeOut = true;
               setTimeout(() => {
                 cluster.fadeOut = false;
@@ -431,7 +455,12 @@ export class MapsComponent implements OnInit, OnDestroy {
           clustersObj.northEastLatitude,
           clustersObj.northEastLongitude,
           clustersObj.southWestLatitude,
-          clustersObj.southWestLongitude
+          clustersObj.southWestLongitude,
+          null,
+          null,
+          null,
+          this.sortBy,
+          this.searchText
         )
         .pipe(takeUntil(this.destroy$))
         .subscribe((mapListResponse: any) => {
@@ -446,6 +475,8 @@ export class MapsComponent implements OnInit, OnDestroy {
               dislikeCount: data?.downCount ? data.downCount : '0',
             }
           });
+
+          mapListData.changedSort = changedSearchOrSort;
 
           this.updateMapList.emit(mapListData);
           // this.mapsService.updateMapList(mapListResponse);
@@ -468,6 +499,8 @@ export class MapsComponent implements OnInit, OnDestroy {
                   item.longitude === clusterItem.longitude
               );
 
+              console.log('clusterItem', clusterIndex);
+
               if (clusterIndex == -1) {
                 this.clusterMarkers.push(clusterItem);
               }
@@ -488,25 +521,23 @@ export class MapsComponent implements OnInit, OnDestroy {
           });
 
           this.viewData.map((item) => {
-            if (markersToShow.includes(item.id)) {
+            if (markersToShow.includes(item.id) && !item.showMarker) {
               item.showMarker = true;
-            } else {
+            } else if (!markersToShow.includes(item.id) && item.showMarker) {
               item.showMarker = false;
             }
           });
 
           this.clusterMarkers.map((cluster) => {
-            if (clustersToShow.includes(cluster.latitude)) {
-              if ( !cluster.showMarker ) {
-                cluster.fadeIn = true;
-                setTimeout(() => {
-                  cluster.fadeIn = false;
-                  this.ref.detectChanges();
-                }, 200);
-              }
+            if (clustersToShow.includes(cluster.latitude) && !cluster.showMarker) {
+              cluster.fadeIn = true;
+              setTimeout(() => {
+                cluster.fadeIn = false;
+                this.ref.detectChanges();
+              }, 200);
 
               cluster.showMarker = true;
-            } else {
+            } else if (!clustersToShow.includes(cluster.latitude) && cluster.showMarker) {
               cluster.fadeOut = true;
               setTimeout(() => {
                 cluster.fadeOut = false;
@@ -521,12 +552,20 @@ export class MapsComponent implements OnInit, OnDestroy {
           this.ref.detectChanges();
         });
 
+        console.log('sortName', this.sortBy);
       this.shipperService
         .getShipperMapList(
           clustersObj.northEastLatitude,
           clustersObj.northEastLongitude,
           clustersObj.southWestLatitude,
-          clustersObj.southWestLongitude
+          clustersObj.southWestLongitude,
+          null,
+          null,
+          null,
+          null,
+          null,
+          this.sortBy,
+          this.searchText
         )
         .pipe(takeUntil(this.destroy$))
         .subscribe((mapListResponse: any) => {
@@ -541,6 +580,8 @@ export class MapsComponent implements OnInit, OnDestroy {
               dislikeCount: data?.downCount ? data.downCount : '0',
             }
           });
+
+          mapListData.changedSort = changedSearchOrSort;
 
           this.updateMapList.emit(mapListData);
           // this.mapsService.updateMapList(mapListResponse);
@@ -728,7 +769,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     }
   }
 
-  getClusters() {
+  getClusters(changedSearchOrSort?) {
     var bounds = this.agmMap.getBounds();
     var ne = bounds.getNorthEast(); // LatLng of the north-east corner
     var sw = bounds.getSouthWest(); // LatLng of the south-west corder
@@ -747,7 +788,7 @@ export class MapsComponent implements OnInit, OnDestroy {
       zoomLevel: this.mapZoom,
     };
 
-    this.callClusters(clustersObject);
+    this.callClusters(clustersObject, changedSearchOrSort);
   }
 
   ngOnDestroy(): void {

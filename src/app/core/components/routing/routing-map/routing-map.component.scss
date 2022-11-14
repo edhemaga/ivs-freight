@@ -1014,6 +1014,11 @@
 .stop-picker-marker-animation-backwards {
     animation-duration: 200ms;
     animation-name: stop-picker-animation-backwards;
+
+    #Ellipse_9166 {
+        animation-duration: 200ms;
+        animation-name: stop-picker-animation;
+    }
 }
 
 @-webkit-keyframes stop-picker-animation {
