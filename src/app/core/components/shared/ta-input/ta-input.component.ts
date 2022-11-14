@@ -1851,6 +1851,7 @@ export class TaInputComponent
   }
 
   setDateTimeModel(direction: string) {
+    if(this.selectionInput == -1) this.selectionInput = 0;
     if (this.inputConfig.name === 'datepicker') {
       if (direction == 'up') {
         if (this.selectionInput == 0) {

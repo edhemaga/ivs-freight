@@ -45,7 +45,8 @@ export class NotificationService {
       httpRequest.url.indexOf('applicant') > -1 ||
       httpRequest.url.indexOf('application') > -1 ||
       httpRequest.url.indexOf('dispatch') > -1 ||
-      httpRequest.url.indexOf('division') > -1
+      httpRequest.url.indexOf('division') > -1 ||
+      httpRequest.url.indexOf('tableconfig') > -1
     ) {
       return false;
     }
@@ -69,7 +70,8 @@ export class NotificationService {
       httpRequest.url.indexOf('applicant') > -1 ||
       httpRequest.url.indexOf('application') > -1 ||
       httpRequest.url.indexOf('dispatch') > -1 ||
-      httpRequest.url.indexOf('division') > -1
+      httpRequest.url.indexOf('division') > -1 ||
+      httpRequest.url.indexOf('tableconfig') > -1
     ) {
       return false;
     }
