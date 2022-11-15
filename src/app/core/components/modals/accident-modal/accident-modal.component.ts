@@ -12,6 +12,11 @@ import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
+import { AccidentTService } from '../../safety/accident/state/accident.service';
+import { AccidentResponse } from '../../../../../../appcoretruckassist/model/accidentResponse';
+import { convertDateFromBackend } from '../../../utils/methods.calculations';
+import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-accident-modal',
@@ -46,36 +51,42 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
   public documents: any[] = [];
   public media: any[] = [];
 
-  public labelsViolationCustomer: any[] = [];
+  public labelsAccidentCustomer: any[] = [];
   public labelsTrailerUnits: any[] = [];
-  public labelsInsuranceType: any[] = [];
 
+  public labelsInsuranceType: any[] = [];
   public selectedInsuranceType: any[] = [];
 
-  public selectedViolationCustomer: any = null;
+  public selectedAccidentCustomer: any = null;
   public selectedTrailerUnit: any = null;
 
-  public addressLocation: AddressEntity = null;
-  public addressDestination: AddressEntity = null;
-  public addressOrigin: AddressEntity = null;
-  public addressAuthority: AddressEntity = null;
+  public selectedAddressLocation: AddressEntity = null;
+  public selectedAddressDestination: AddressEntity = null;
+  public selectedAddressOrigin: AddressEntity = null;
+  public selectedAddressAuthority: AddressEntity = null;
 
   public isLocationAndShippingOpen: boolean = true;
 
   public isFormDirty: boolean;
 
+  public accidentModalName: string = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private formService: FormService
+    private formService: FormService,
+    private accidentTService: AccidentTService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
+    this.createForm();
+    this.getModalDropdowns();
+
     if (this.editData) {
       this.editAccidentById(this.editData.id);
     }
-    this.createForm();
   }
 
   private createForm() {
@@ -107,23 +118,8 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       trailerPlateNumber: [null],
       trailerState: [null],
       trailerVIN: [null, [...vinNumberValidation]],
-      violations: this.formBuilder.array([
-        this.formBuilder.group({
-          categoryId: ['Crash Indicator'],
-          sw: ['2'],
-          hm: [true],
-          description: [
-            'Involves tow-away but no injury or fatality',
-            [...descriptionValidation],
-          ],
-        }),
-      ]),
+      violations: this.formBuilder.array([]),
       insurance: this.formBuilder.array([]),
-      insuranceType: [null],
-      insuranceClaimNumber: [null],
-      insuranceAdjuster: [null],
-      insurancePhone: [null, phoneFaxRegex],
-      insuranceEmail: [null],
       note: [null],
       roadwayTrafficWay: [null],
       weatherCondition: [null],
@@ -131,23 +127,17 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       roadSurfaceCondition: [null],
       lightCondition: [null],
       reportingAgency: [null],
-      authorityPoliceOffice: [null],
-      authorityBadgeNumber: [null],
+      policeOfficer: [null],
+      bagdeNo: [null],
       authorityAddress: [null, [...addressValidation]],
-      authorityPhone: [null, phoneFaxRegex],
-      authorityFax: [null, phoneFaxRegex],
-      shippingOriginLocation: [null, [...addressValidation]],
-      shippingDestinationLocation: [null, [...addressValidation]],
-      shippingCustomer: [null],
-      shippingBOL: [null],
-      shippingCargo: [null],
+      phoneOfficer: [null, phoneFaxRegex],
+      fax: [null, phoneFaxRegex],
+      origin: [null, [...addressValidation]],
+      destination: [null, [...addressValidation]],
+      customer: [null],
+      boL: [null],
+      cargo: [null],
     });
-
-    this.inputService.customInputValidator(
-      this.accidentForm.get('insuranceEmail'),
-      'email',
-      this.destroy$
-    );
 
     this.formService.checkFormChange(this.accidentForm);
     this.formService.formValueChange$
@@ -175,13 +165,21 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     return this.accidentForm.get('insurance') as FormArray;
   }
 
-  private createInsurance(): FormGroup {
+  private createInsurance(data?: {
+    insuranceType: string;
+    claimNumber: string;
+    insuranceAdjuster: string;
+    phone: string;
+    email: string;
+  }): FormGroup {
     return this.formBuilder.group({
-      insuranceType: [null],
-      claimNumber: [null],
-      insuranceAdjuster: [null],
-      phone: [null, phoneFaxRegex],
-      email: [null],
+      insuranceType: [data?.insuranceType ? data.insuranceType : null],
+      claimNumber: [data?.claimNumber ? data.claimNumber : null],
+      insuranceAdjuster: [
+        data?.insuranceAdjuster ? data.insuranceAdjuster : null,
+      ],
+      phone: [data?.phone ? data.phone : null, phoneFaxRegex],
+      email: [data?.email ? data.email : null],
     });
   }
 
@@ -228,11 +226,133 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public editAccidentById(id: number) {}
+  public editAccidentById(id: number) {
+    this.accidentTService
+      .getAccidentById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: AccidentResponse) => {
+          console.log;
+          this.accidentForm.patchValue({
+            report: res.report,
+            federallyRecordable: res.federallyRecordable,
+            stateRecordable: res.stateRecordable,
+            injury: res.injury,
+            fatality: res.fatality,
+            towing: res.towing,
+            hazmat: res.hazMat,
+            vehicleNumber: res.vehicloNo,
+            location: res.addressAccident ? res.addressAccident.address : null,
+            date: res.date ? convertDateFromBackend(res.date) : null,
+            time: res.time,
+            driverName: res.driver_FullName,
+            driverLicenceNumber: res.driver_LicenceNo,
+            driverState: res.driver_State,
+            driverDOB: res.driver_DateOfBirth
+              ? convertDateFromBackend(res.driver_DateOfBirth)
+              : null,
+            truckUnit: res.truck_Unit,
+            truckType: res.truck_Type,
+            truckMake: res.truck_Make,
+            truckPlateNumber: res.truck_PlateNo,
+            truckState: res.truck_State,
+            truckVIN: res.truck_VIN,
+            trailerUnit: res.trailer_Unit,
+            trailerType: res.trailer_Type,
+            trailerMake: res.trailer_Make,
+            trailerPlateNumber: res.trailer_PlateNo,
+            trailerState: res.trailer_State,
+            trailerVIN: res.trailer_VIN,
+            violations: [],
+            insurance: [],
+            note: null,
+            roadwayTrafficWay: res.roadwayTrafficway,
+            weatherCondition: res.weatherCondition,
+            roadAccessControl: res.roadAccessControl,
+            roadSurfaceCondition: res.roadSurfaceCondition,
+            lightCondition: res.lightCondition,
+            reportingAgency: res.reportingAgency,
+            policeOfficer: res.policeOfficer,
+            bagdeNo: res.bagdeNo,
+            authorityAddress: res.addressAuthority
+              ? res.addressAuthority.address
+              : null,
+            phoneOfficer: res.phoneOfficer,
+            fax: res.fax,
+            origin: res.origin ? res.origin.address : null,
+            destination: res.destination ? res.destination.address : null,
+            customer: res.broker ? res.broker.businessName : null,
+            boL: res.boL,
+            cargo: res.cargo,
+          });
+
+          this.accidentModalName = res.report;
+
+          this.selectedAddressLocation = res.addressAccident;
+          this.selectedAddressAuthority = res.addressAuthority;
+          this.selectedAddressOrigin = res.origin;
+          this.selectedAddressDestination = res.destination;
+
+          this.selectedAccidentCustomer = res.broker;
+
+          if (res.insuranceType.length) {
+            for (let i = 0; i < res.insuranceType.length; i++) {
+              this.insurances.push(
+                this.createInsurance({
+                  insuranceType: res.insuranceType[i].insTypes
+                    ? res.insuranceType[i].insTypes.name
+                    : null,
+                  claimNumber: res.insuranceType[i].claimNo.toString(),
+                  insuranceAdjuster: res.insuranceType[i].insAdjuster,
+                  phone: res.insuranceType[i].phone,
+                  email: res.insuranceType[i].email,
+                })
+              );
+            }
+          }
+
+          // [
+          //   this.formBuilder.group({
+          //     categoryId: ['Crash Indicator'],
+          //     sw: ['2'],
+          //     hm: [true],
+          //     description: [
+          //       'Involves tow-away but no injury or fatality',
+          //       [...descriptionValidation],
+          //     ],
+          //   }),
+          // ]
+        },
+        error: (err: any) => {
+          this.notificationService.error('Error', err);
+        },
+      });
+  }
 
   private updateAccident(id: number) {}
 
   private addAccident() {}
+
+  private getModalDropdowns() {
+    this.accidentTService
+      .getModalDropdowns()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: AccidentModalResponse) => {
+          console.log(res);
+          this.labelsTrailerUnits = res.trailers.map((item) => {
+            return {
+              id: item.id,
+              name: item.trailerNumber,
+            };
+          });
+          this.labelsInsuranceType = res.insuranceType;
+        },
+        error: (err: any) => {
+          this.notificationService.error('Error', err);
+        },
+      });
+  }
 
   public onHandleAddress(
     event: {
@@ -243,19 +363,19 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
   ) {
     switch (action) {
       case 'address-authority': {
-        if (event.valid) this.addressAuthority = event;
+        if (event.valid) this.selectedAddressAuthority = event;
         break;
       }
       case 'address-origin': {
-        if (event.valid) this.addressOrigin = event;
+        if (event.valid) this.selectedAddressOrigin = event;
         break;
       }
       case 'address-destination': {
-        if (event.valid) this.addressDestination = event;
+        if (event.valid) this.selectedAddressDestination = event;
         break;
       }
       case 'location': {
-        if (event.valid) this.addressLocation = event;
+        if (event.valid) this.selectedAddressLocation = event;
         break;
       }
       default: {
@@ -283,7 +403,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
   public onSelectDropDown(event: any, action: string, index?: number) {
     switch (action) {
       case 'shipping-customer': {
-        this.selectedViolationCustomer = event;
+        this.selectedAccidentCustomer = event;
         break;
       }
       case 'trailer-unit': {
