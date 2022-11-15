@@ -2,7 +2,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { ShipperResponse } from 'appcoretruckassist';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
-import { ShipperDetailsQuery } from '../state/shipper-state/shipper-details-state/shipper.details.query';
 import { Subject, take, takeUntil } from 'rxjs';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 import { NotificationService } from '../../../services/notification/notification.service';
@@ -121,7 +120,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         nameDefault: 'Load',
         template: 'load',
         icon: true,
-        length: data?.loadStops?.length ? data.loadStops.length : 0,
+        // length: data?.loadStops?.length ? data.loadStops.length : 0,
         hide: true,
         hasArrow: true,
         customText: 'Date',

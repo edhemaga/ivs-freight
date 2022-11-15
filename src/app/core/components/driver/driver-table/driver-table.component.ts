@@ -13,7 +13,7 @@ import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-mo
 
 import { DriversInactiveState } from '../state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
-import { DriverListResponse, TableConfigResponse } from 'appcoretruckassist';
+import { DriverListResponse } from 'appcoretruckassist';
 
 import {
   Confirmation,
@@ -84,27 +84,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.tableService
-      .getTableConfig('DRIVER')
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        console.log('Get Driver Table Config');
-        console.log(res);
-
-        /* const driverConfig = JSON.parse(res.config);
-
-        localStorage.setItem(
-          `table-${res.tableType}-Configuration`,
-          JSON.stringify(driverConfig)
-        );
-
-        this.sendDriverData();
-
-        setTimeout(() => {
-          this.observTableContainer();
-        }, 100); */
-      });
-
     this.sendDriverData();
 
     // Confirmation Subscribe
@@ -1097,16 +1076,5 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tableService.sendActionAnimation({});
     this.resizeObserver.unobserve(document.querySelector('.table-container'));
     this.resizeObserver.disconnect();
-
-    console.log('Poziva se ngOnDestroy driver table');
-
-    /* const driverConfig = localStorage.getItem(`table-DRIVER-Configuration`);
-
-    this.tableService
-      .sendTableConfig({
-        tableType: 'DRIVER',
-        config: driverConfig,
-      })
-      .subscribe(); */
   }
 }

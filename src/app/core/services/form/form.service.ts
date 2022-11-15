@@ -1,11 +1,10 @@
-import { Subject, takeUntil, debounce } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
   debounceTime,
   distinctUntilChanged,
-  first,
-  skip,
+  first
 } from 'rxjs/operators';
 import { diff } from 'deep-object-diff';
 
@@ -51,7 +50,7 @@ export class FormService implements OnDestroy {
       )
       .subscribe(() => {
         let current_value = form.value;
-        console.log('different: ', diff(this.originalValue, current_value));
+
         if (Object.keys(diff(this.originalValue, current_value)).length !== 0) {
           this.formValueChange$.next(true);
         } else {

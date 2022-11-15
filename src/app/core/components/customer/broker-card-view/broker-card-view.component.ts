@@ -1,6 +1,5 @@
 import { BrokerResponse } from 'appcoretruckassist';
 import { BrokerMinimalListQuery } from './../state/broker-details-state/broker-minimal-list-state/broker-minimal.query';
-import { BrokerDetailsQuery } from './../state/broker-details-state/broker-details.query';
 import {
   Component,
   Input,

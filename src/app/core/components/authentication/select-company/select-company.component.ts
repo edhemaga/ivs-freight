@@ -6,8 +6,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 
 //import {SelectCompany} from '../../model/select-company';
 
@@ -27,8 +26,7 @@ export class SelectCompanyComponent
   private destroy$ = new Subject<void>();
 
   constructor(
-    @Inject(DOCUMENT) private document: HTMLDocument,
-    private router: Router
+    @Inject(DOCUMENT) private document: HTMLDocument
   ) {}
 
   ngOnInit(): void {
@@ -58,9 +56,9 @@ export class SelectCompanyComponent
   }
 
   onCompanySelect() {
-    const selected = this.apiData.find(
-      (x: any) => x.companyId.toString() === this.selectedCompanyID
-    );
+    // const selected = this.apiData.find(
+    //   (x: any) => x.companyId.toString() === this.selectedCompanyID
+    // );
     // this.auth
     //   .onCompanySelect(selected.companyId)
     //   .pipe(takeUntil(this.destroy$))

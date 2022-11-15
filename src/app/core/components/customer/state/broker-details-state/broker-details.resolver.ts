@@ -5,7 +5,6 @@ import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
 import { BrokerTService } from '../broker-state/broker.service';
-import { BrokerDetailsQuery } from './broker-details.query';
 import { BrokerDetailsStore } from './broker-details.store';
 import { BrokerDetailsListQuery } from './broker-details-list-state/broker-details-list.query';
 import { BrokerDetailsListStore } from './broker-details-list-state/broker-details-list.store';
@@ -16,7 +15,6 @@ import { BrokerDetailsListStore } from './broker-details-list-state/broker-detai
 export class BrokerDetailsResolver implements Resolve<BrokerResponse[]> {
   constructor(
     private brokerService: BrokerTService,
-    private brokerDetailsQuery: BrokerDetailsQuery,
     private brokerDetailsStore: BrokerDetailsStore,
     private router: Router,
     private bls: BrokerDetailsListStore,

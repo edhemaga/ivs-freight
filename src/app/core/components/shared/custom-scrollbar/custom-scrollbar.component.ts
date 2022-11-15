@@ -14,6 +14,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { SharedService } from '../../../services/shared/shared.service';
 import { AfterViewInit } from '@angular/core';
 
+let hasTablePageHeight = false;
 @Component({
   selector: 'app-custom-scrollbar',
   templateUrl: './custom-scrollbar.component.html',
@@ -25,7 +26,6 @@ export class CustomScrollbarComponent
   @ViewChild('bar', { static: false }) private bar: ElementRef;
   @Output() scrollEvent: EventEmitter<any> = new EventEmitter();
   @Input() scrollBarOptions: any;
-  
 
   scrollTop: number = 5;
   showScrollbar: boolean = false;
@@ -57,74 +57,17 @@ export class CustomScrollbarComponent
   ) {}
 
   ngOnInit(): void {
-    let hasTablePageHeight = false;
-
-    // this.sharedService.emitUpdateScrollHeight
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((res) => {
-    //     hasTablePageHeight = res.tablePageHeight;
-
-    //     this.calculateBarSizeAndPosition(
-    //       this.elRef.nativeElement.children[0],
-    //       res.tablePageHeight
-    //     );
-    //   });
-
     this.ngZone.runOutsideAngular(() => {
-      document.addEventListener('mouseup', () => {
-        this.isMouseDown = false;
-      });
+      document.addEventListener('mouseup', this.onMouseUpHandler);
 
-      document.addEventListener('mousemove', (e) => {
-        if (this.isMouseDown) {
-          // Regular Scroll
-          if (this.scrollBarOptions.showVerticalScrollBar) {
-            const offsetBar = e.clientY - this.barClickPosition;
-            if (
-              offsetBar > -1 &&
-              e.clientY + this.barClickRestHeight < window.innerHeight
-            ) {
-              this.bar.nativeElement.style.transform = `translateY(${offsetBar}px)`;
-            }
-            this.elRef.nativeElement.children[0].scrollTop =
-              (e.clientY - this.barClickPosition) * this.scrollRatioFull;
-
-            if (hasTablePageHeight) {
-              this.sharedService.emitTableScrolling.emit(
-                (e.clientY - this.barClickPosition) * this.scrollRatioFull
-              );
-            }
-          }
-          // Table Scroll
-          else {
-            const offsetBar = e.clientX - this.tableBarClickPosition;
-
-            if (
-              offsetBar > -1 &&
-              e.clientX + this.tableBarClickRestWidth <
-                this.tableNotPinedBoundingRect.width
-            ) {
-              this.bar.nativeElement.style.transform = `translateX(${offsetBar}px)`;
-              this.scrollEvent.emit({
-                eventAction: 'scrolling',
-                scrollPosition: offsetBar * this.tableScrollRatioFull
-              });
-            }
-          }
-        }
-      });
+      document.addEventListener('mousemove', this.onMouseMoveHandler);
 
       this.elRef.nativeElement.children[0].addEventListener(
         'scroll',
-        this.setScrollEvent.bind(this)
+        this.setScrollEvent
       );
 
-      window.addEventListener('resize', (e: any) => {
-        if (!this.isMouseDown && !hasTablePageHeight)
-          this.calculateBarSizeAndPosition(
-            this.elRef.nativeElement.children[0]
-          );
-      });
+      window.addEventListener('resize', this.onResizeHandler);
     });
   }
 
@@ -141,19 +84,12 @@ export class CustomScrollbarComponent
     }
   }
 
-  public setScrollEvent(e: any) {
+  public setScrollEvent = (e: any) => {
     if (!this.isMouseDown)
       this.calculateBarSizeAndPosition(this.elRef.nativeElement.children[0]);
-  }
+  };
 
   setDraggingStart(e: MouseEvent) {
-    this.ngZone.runOutsideAngular(() => {
-      this.elRef.nativeElement.children[0].removeEventListener(
-        'scroll',
-        this.setScrollEvent.bind(this)
-      );
-    });
-
     const style = window.getComputedStyle(this.bar.nativeElement);
     const matrix = new DOMMatrixReadOnly(style.transform);
 
@@ -168,14 +104,12 @@ export class CustomScrollbarComponent
   }
 
   calculateBarSizeAndPosition(elem: any, pageHeight?: number) {
-    //this.chng.detectChanges();
-
     setTimeout(() => {
       this.showScrollbar = true;
 
       // Table Scroll
       if (this.scrollBarOptions.showHorizontalScrollBar) {
-        const scrollWrapper =  document.querySelector('.not-pined-columns');
+        const scrollWrapper = document.querySelector('.not-pined-columns');
 
         const tableFullWidth = scrollWrapper.scrollWidth;
         const tableVisibleWidth = scrollWrapper.getBoundingClientRect().width;
@@ -194,7 +128,7 @@ export class CustomScrollbarComponent
 
         this.scrollEvent.emit({
           eventAction: 'isScrollShowing',
-          isScrollBarShowing: this.showScrollbar
+          isScrollBarShowing: this.showScrollbar,
         });
       }
       // Regular Scroll
@@ -224,7 +158,59 @@ export class CustomScrollbarComponent
     }, 100);
   }
 
+
+  onMouseUpHandler = () => {
+    this.isMouseDown = false;
+  };
+
+  onResizeHandler = () => {
+    if (!this.isMouseDown && !hasTablePageHeight)
+      this.calculateBarSizeAndPosition(this.elRef.nativeElement.children[0]);
+  };
+
+  onMouseMoveHandler = (e) => {
+    if (this.isMouseDown) {
+      // Regular Scroll
+      if (this.scrollBarOptions.showVerticalScrollBar) {
+        const offsetBar = e.clientY - this.barClickPosition;
+        if (
+          offsetBar > -1 &&
+          e.clientY + this.barClickRestHeight < window.innerHeight
+        ) {
+          this.bar.nativeElement.style.transform = `translateY(${offsetBar}px)`;
+        }
+        this.elRef.nativeElement.children[0].scrollTop =
+          (e.clientY - this.barClickPosition) * this.scrollRatioFull;
+
+        if (hasTablePageHeight) {
+          this.sharedService.emitTableScrolling.emit(
+            (e.clientY - this.barClickPosition) * this.scrollRatioFull
+          );
+        }
+      }
+      // Table Scroll
+      else {
+        const offsetBar = e.clientX - this.tableBarClickPosition;
+
+        if (
+          offsetBar > -1 &&
+          e.clientX + this.tableBarClickRestWidth <
+            this.tableNotPinedBoundingRect.width
+        ) {
+          this.bar.nativeElement.style.transform = `translateX(${offsetBar}px)`;
+          this.scrollEvent.emit({
+            eventAction: 'scrolling',
+            scrollPosition: offsetBar * this.tableScrollRatioFull,
+          });
+        }
+      }
+    }
+  };
+
   ngOnDestroy(): void {
+    document.removeEventListener('mouseup', this.onMouseUpHandler);
+    document.removeEventListener('mousemove', this.onMouseMoveHandler);
+    window.removeEventListener('resize', this.onResizeHandler);
     this.destroy$.next();
     this.destroy$.complete();
   }

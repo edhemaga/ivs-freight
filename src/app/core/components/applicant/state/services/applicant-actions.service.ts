@@ -4,7 +4,6 @@ import { Observable, tap } from 'rxjs';
 
 import { ApplicantService } from '../../../../../../../appcoretruckassist';
 
-import { ApplicantStore } from '../store/applicant.store';
 import { ApplicantSphFormStore } from '../store/applicant-sph-form-store/applicant-sph-form.store';
 
 import {
@@ -48,7 +47,6 @@ import {
 export class ApplicantActionsService {
   constructor(
     private applicantService: ApplicantService,
-    private applicantStore: ApplicantStore,
     private applicantSphFormStore: ApplicantSphFormStore
   ) {}
 

@@ -69,7 +69,7 @@ import {
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   @Input() editData: any;
-
+ 
   public companyForm: FormGroup;
 
   public selectedTab: number = 1;
@@ -269,7 +269,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       this.createDivisionForm();
 
       if (this.editData.type === 'edit-division') {
-        this.editCompanyDivision();
+        setTimeout(() => {
+          this.editCompanyDivision();
+        });
       }
     } else {
       this.onPrefferedLoadCheck({ name: 'FTL' });
@@ -279,14 +281,18 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     if (this.editData.type === 'edit-company') {
-      this.editCompany();
+      setTimeout(() => {
+        this.editCompany();
+      });
     }
 
     if (this.editData?.type === 'payroll-tab') {
       const timeout = setTimeout(() => {
         this.tabChange({ id: 3 });
 
-        this.editCompany();
+        setTimeout(() => {
+          this.editCompany();
+        });
         clearTimeout(timeout);
       }, 150);
     }

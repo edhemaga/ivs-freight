@@ -275,7 +275,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   }
 
   public addTest() {
-    const { testingDate, driver, note } = this.drugForm.value;
+    const { testingDate, note } = this.drugForm.value;
     const documents = this.documents.map((item) => {
       return item.realFile;
     });

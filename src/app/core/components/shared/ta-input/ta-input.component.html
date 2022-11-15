@@ -44,7 +44,10 @@
     'dropdown-label-active': selectedDropdownLabelColor && !editInputMode,
     'hazardous-mode': inputConfig.placeholderIcon
       ?.toLowerCase()
-      ?.includes('hazardous')
+      ?.includes('hazardous'),
+    datetimepickerdisabled:
+      inputConfig.isDisabled &&
+      (inputConfig.name === 'datepicker' || inputConfig.name === 'timepicker')
   }"
 >
   <!-- Input Clear -->

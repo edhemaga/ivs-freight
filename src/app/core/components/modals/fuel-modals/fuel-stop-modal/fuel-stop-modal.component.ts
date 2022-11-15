@@ -5,7 +5,6 @@ import {
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
-  addressUnitValidation,
   addressValidation,
   phoneFaxRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';

@@ -2,16 +2,17 @@ import { Injectable } from '@angular/core';
 import {
   AccidentListResponse,
   AccidentResponse,
-  /* AccidentService, */
+  AccidentService,
   CreateResponse,
 } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
+import { AccidentModalResponse } from '../../../../../../../appcoretruckassist/model/accidentModalResponse';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccidentTService {
-  constructor(private accidentService: /* AccidentService */ any) {}
+  constructor(private accidentService: AccidentService) {}
 
   // Get Accident List
   public getAccidentList(
@@ -37,7 +38,7 @@ export class AccidentTService {
     search1?: string,
     search2?: string
   ): Observable<AccidentListResponse> {
-    return this.accidentService.apiAccidentListGet(
+    /* return this.accidentService.apiAccidentListGet(
       active,
       reported,
       dateFrom,
@@ -59,19 +60,26 @@ export class AccidentTService {
       search,
       search1,
       search2
-    );
+    ); */
     return of();
   }
 
   public addAccident(data: any): Observable<CreateResponse> {
-    return this.accidentService.apiAccidentPost(data);
+    /* return this.accidentService.apiAccidentPost(data); */
+    return of();
   }
 
   public updateAccident(data: any): Observable<any> {
-    return this.accidentService.apiAccidentPut(data);
+    /* return this.accidentService.apiAccidentPut(data); */
+    return of();
   }
 
   public getAccidentById(id: number): Observable<AccidentResponse> {
-    return this.accidentService.apiAccidentIdGet(id);
+    /* return this.accidentService.apiAccidentIdGet(id); */
+    return of();
+  }
+
+  public getModalDropdowns(): Observable<AccidentModalResponse> {
+    return this.accidentService.apiAccidentModalGet();
   }
 }

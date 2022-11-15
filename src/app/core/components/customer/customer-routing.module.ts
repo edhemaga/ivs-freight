@@ -1,4 +1,3 @@
-import { ShipperDetailsModule } from './shipper-details/shipper-details.module';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BrokerCardComponent } from './broker-card/broker-card.component';

@@ -15,5 +15,6 @@ export interface FileResponse {
     fileId?: number;
     fileName?: string | null;
     url?: string | null;
+    fileSize?: number | null;
 }
 

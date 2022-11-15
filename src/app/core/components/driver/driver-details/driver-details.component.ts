@@ -18,11 +18,9 @@ import {
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { DriversMinimalListStore } from '../state/driver-details-minimal-list-state/driver-minimal-list.store';
 import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
-import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { CdlTService } from '../state/cdl.service';
-import { of, Subject, take, takeUntil } from 'rxjs';
-import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
+import { Subject, take, takeUntil } from 'rxjs';
 import { DriversDetailsListQuery } from '../state/driver-details-list-state/driver-details-list.query';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 

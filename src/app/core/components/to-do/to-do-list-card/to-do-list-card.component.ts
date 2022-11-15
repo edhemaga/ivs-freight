@@ -21,7 +21,6 @@ import {
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { NotificationService } from '../../../services/notification/notification.service';
-import { ImageBase64Service } from '../../../utils/base64.image';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 
@@ -173,7 +172,6 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     private todoQuery: TodoQuery,
     private notificationService: NotificationService,
     private confirmationService: ConfirmationService,
-    private imageBase64Service: ImageBase64Service,
     private DetailsDataService: DetailsDataService
   ) {}
 
@@ -559,6 +557,16 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
       } else {
         event.data.commentActive = true;
       }
+    } else if ( event.type === 'link' ) {
+
+      let url: string = '';
+      if (!/^http[s]?:\/\//.test(event.data.url)) {
+          url += 'http://';
+      }
+
+      url += event.data.url;
+      window.open(url, '_blank');
+     
     } else {
       this.modalService.openModal(
         TaskModalComponent,
@@ -682,14 +690,20 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     let newTitle = '';
     let newIcon = '';
     let newName = '';
-    let messageAndLinkStatus = true;
+    
+    let messageStatus = true;
+    let linkStatus = true;
 
     this.DetailsDataService.setNewData(data); 
 
-    if ( data.todoUsers.length == 0 || data.departments.length == 0 || !data.url) {
-      messageAndLinkStatus = false;
+    if ( data.todoUsers.length == 0 || data.departments.length == 0 ) {
+      messageStatus = false;
     }
-  
+    
+    if ( !data.url ) {
+      linkStatus = false;
+    }
+
     if ( data.status.name == "Todo" ) {
       newTitle = 'Mark as Ongoing';
       newIcon = 'assets/svg/detail-cards/refresh.svg';
@@ -720,13 +734,13 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
         }
         
       } else if ( index == 3 ) {
-        if ( !messageAndLinkStatus ) {
+        if ( !messageStatus ) {
           action.disabled = true;
         } else {
           action.disabled = false;
         }
       } else if ( index == 4 ) {
-        if ( !messageAndLinkStatus ) {
+        if ( !linkStatus ) {
           action.disabled = true;
           action.title = 'No Link'
         } else {
