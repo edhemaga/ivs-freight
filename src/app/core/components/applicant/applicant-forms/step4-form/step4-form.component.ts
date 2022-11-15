@@ -195,34 +195,34 @@ export class Step4FormComponent
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.mode?.previousValue !== changes.mode?.currentValue) {
       this.selectedMode = changes.mode?.currentValue;
+    }
 
-      if (this.selectedMode === SelectedMode.APPLICANT) {
-        if (
-          changes.markFormInvalid?.previousValue !==
-          changes.markFormInvalid?.currentValue
-        ) {
-          this.inputService.markInvalid(this.accidentForm);
-
-          this.markInvalidEmitter.emit(false);
-        }
-      }
-
+    if (this.selectedMode === SelectedMode.APPLICANT) {
       if (
-        this.selectedMode === SelectedMode.REVIEW ||
-        this.selectedMode === SelectedMode.APPLICANT
+        changes.markFormInvalid?.previousValue !==
+        changes.markFormInvalid?.currentValue
       ) {
-        if (
-          changes.formValuesToPatch?.previousValue !==
-          changes.formValuesToPatch?.currentValue
-        ) {
-          setTimeout(() => {
-            this.patchForm(changes.formValuesToPatch.currentValue);
+        this.inputService.markInvalid(this.accidentForm);
 
-            if (this.selectedMode === SelectedMode.APPLICANT) {
-              this.startValueChangesMonitoring();
-            }
-          }, 50);
-        }
+        this.markInvalidEmitter.emit(false);
+      }
+    }
+
+    if (
+      this.selectedMode === SelectedMode.REVIEW ||
+      this.selectedMode === SelectedMode.APPLICANT
+    ) {
+      if (
+        changes.formValuesToPatch?.previousValue !==
+        changes.formValuesToPatch?.currentValue
+      ) {
+        setTimeout(() => {
+          this.patchForm(changes.formValuesToPatch.currentValue);
+
+          if (this.selectedMode === SelectedMode.APPLICANT) {
+            this.startValueChangesMonitoring();
+          }
+        }, 50);
       }
     }
   }
@@ -245,12 +245,8 @@ export class Step4FormComponent
   public patchForm(formValue: any): void {
     if (this.selectedMode === SelectedMode.REVIEW) {
       if (formValue.accidentRecordReview) {
-        const {
-          isLocationValid,
-          isDateValid,
-          isVehicleTypeValid,
-          isDescriptionValid,
-        } = formValue.accidentRecordReview;
+        const { isLocationValid, isDateValid, isDescriptionValid } =
+          formValue.accidentRecordReview;
 
         this.openAnnotationArray[10] = {
           ...this.openAnnotationArray[10],
@@ -258,7 +254,7 @@ export class Step4FormComponent
         };
         this.openAnnotationArray[11] = {
           ...this.openAnnotationArray[11],
-          lineInputs: [!isVehicleTypeValid, !isDescriptionValid],
+          lineInputs: [false, !isDescriptionValid],
         };
       }
     }

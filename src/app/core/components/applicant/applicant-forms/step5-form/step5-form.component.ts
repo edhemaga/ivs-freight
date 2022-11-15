@@ -160,33 +160,37 @@ export class Step5FormComponent
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.mode?.previousValue !== changes.mode?.currentValue) {
       this.selectedMode = changes.mode?.currentValue;
+    }
 
-      if (this.selectedMode === SelectedMode.APPLICANT) {
-        if (
-          changes.markFormInvalid?.previousValue !==
-          changes.markFormInvalid?.currentValue
-        ) {
-          this.inputService.markInvalid(this.violationsForm);
-          this.markInvalidEmitter.emit(false);
-        }
-      }
-
+    if (this.selectedMode === SelectedMode.APPLICANT) {
       if (
-        this.selectedMode === SelectedMode.REVIEW ||
-        this.selectedMode === SelectedMode.APPLICANT
+        changes.markFormInvalid?.previousValue !==
+        changes.markFormInvalid?.currentValue
       ) {
-        if (
-          changes.formValuesToPatch?.previousValue !==
-          changes.formValuesToPatch?.currentValue
-        ) {
-          setTimeout(() => {
-            this.patchForm(changes.formValuesToPatch.currentValue);
+        console.log(
+          '  changes.markFormInvalid?.currentValue',
+          changes.markFormInvalid?.currentValue
+        );
+        this.inputService.markInvalid(this.violationsForm);
+        this.markInvalidEmitter.emit(false);
+      }
+    }
 
-            if (this.selectedMode === SelectedMode.APPLICANT) {
-              this.startValueChangesMonitoring();
-            }
-          }, 50);
-        }
+    if (
+      this.selectedMode === SelectedMode.REVIEW ||
+      this.selectedMode === SelectedMode.APPLICANT
+    ) {
+      if (
+        changes.formValuesToPatch?.previousValue !==
+        changes.formValuesToPatch?.currentValue
+      ) {
+        setTimeout(() => {
+          this.patchForm(changes.formValuesToPatch.currentValue);
+
+          if (this.selectedMode === SelectedMode.APPLICANT) {
+            this.startValueChangesMonitoring();
+          }
+        }, 50);
       }
     }
   }

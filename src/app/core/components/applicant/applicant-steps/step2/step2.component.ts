@@ -42,7 +42,7 @@ import {
 export class Step2Component implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public applicantId: number;
 
@@ -54,6 +54,8 @@ export class Step2Component implements OnInit, OnDestroy {
   public markInnerFormInvalid: boolean;
 
   public workExperienceArray: WorkHistoryModel[] = [];
+
+  public stepHasValues: boolean = false;
 
   public lastWorkExperienceCard: any;
 
@@ -133,6 +135,8 @@ export class Step2Component implements OnInit, OnDestroy {
 
         if (res.workExperience) {
           this.patchStepValues(res.workExperience);
+
+          this.stepHasValues = true;
         }
       });
   }
@@ -250,7 +254,6 @@ export class Step2Component implements OnInit, OnDestroy {
         isFaxValid: true,
         isAddressValid: true,
         isAddressUnitValid: true,
-        isReasonForLeavingValid: true,
         isAccountForPeriodBetweenValid: true,
         employerMessage: null,
         jobDescriptionMessage: null,
@@ -572,7 +575,6 @@ export class Step2Component implements OnInit, OnDestroy {
       isFaxValid: !event[2].lineInputs[2],
       isAddressValid: !event[3].lineInputs[0],
       isAddressUnitValid: !event[3].lineInputs[1],
-      isReasonForLeavingValid: !event[5].lineInputs[0],
       isAccountForPeriodBetweenValid: !event[6].lineInputs[0],
     };
   }
@@ -596,7 +598,6 @@ export class Step2Component implements OnInit, OnDestroy {
       isFaxValid: !event[2].lineInputs[2],
       isAddressValid: !event[3].lineInputs[0],
       isAddressUnitValid: !event[3].lineInputs[1],
-      isReasonForLeavingValid: !event[5].lineInputs[0],
       isAccountForPeriodBetweenValid: !event[6].lineInputs[0],
     };
 
@@ -894,7 +895,10 @@ export class Step2Component implements OnInit, OnDestroy {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      if (this.selectedMode === SelectedMode.APPLICANT) {
+      if (
+        this.selectedMode === SelectedMode.APPLICANT ||
+        this.selectedMode === SelectedMode.FEEDBACK
+      ) {
         this.onSubmit();
       }
 
@@ -1058,8 +1062,20 @@ export class Step2Component implements OnInit, OnDestroy {
       }
     );
 
-    this.applicantActionsService
-      .createWorkExperience(saveData)
+    const selectMatchingBackendMethod = () => {
+      if (this.selectedMode === SelectedMode.APPLICANT && !this.stepHasValues) {
+        return this.applicantActionsService.createWorkExperience(saveData);
+      }
+
+      if (
+        (this.selectedMode === SelectedMode.APPLICANT && this.stepHasValues) ||
+        this.selectedMode === SelectedMode.FEEDBACK
+      ) {
+        return this.applicantActionsService.updateWorkExperience(saveData);
+      }
+    };
+
+    selectMatchingBackendMethod()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
@@ -1114,9 +1130,6 @@ export class Step2Component implements OnInit, OnDestroy {
           isAddressValid: itemReview ? itemReview.isAddressValid : true,
           isAddressUnitValid: itemReview ? itemReview.isAddressUnitValid : true,
           addressMessage: null,
-          isReasonForLeavingValid: itemReview
-            ? itemReview.isReasonForLeavingValid
-            : true,
           reasonForLeavingMessage: null,
           isAccountForPeriodBetweenValid: itemReview
             ? itemReview.isAccountForPeriodBetweenValid
@@ -1152,9 +1165,6 @@ export class Step2Component implements OnInit, OnDestroy {
         ? lastItemReview.isAddressUnitValid
         : true,
       addressMessage: this.lastWorkExperienceCard.fourthRowReview,
-      isReasonForLeavingValid: lastItemReview
-        ? lastItemReview.isReasonForLeavingValid
-        : true,
       reasonForLeavingMessage: this.lastWorkExperienceCard.sixthRowReview,
       isAccountForPeriodBetweenValid: lastItemReview
         ? lastItemReview.isAccountForPeriodBetweenValid

@@ -51,6 +51,8 @@ export class Step5Component implements OnInit, OnDestroy {
 
   public violationsArray: ViolationModel[] = [];
 
+  public stepHasValues: boolean = false;
+
   public lastValidLicense: any;
 
   public lastViolationsCard: any;
@@ -58,7 +60,6 @@ export class Step5Component implements OnInit, OnDestroy {
   public vehicleType: TruckTypeResponse[] = [];
 
   public selectedViolationIndex: number;
-
   public helperIndex: number = 2;
 
   public isEditing: boolean = false;
@@ -137,18 +138,20 @@ export class Step5Component implements OnInit, OnDestroy {
 
         const cdlInformation = res.cdlInformation;
 
-        const lastLicenseAdded: any =
+        const lastLicenseAdded =
           cdlInformation?.licences[cdlInformation.licences.length - 1];
 
         this.lastValidLicense = {
           license: lastLicenseAdded?.licenseNumber,
           state: lastLicenseAdded?.state?.stateShortName,
-          classType: lastLicenseAdded?.class?.name,
+          classType: lastLicenseAdded?.classType.name,
           expDate: convertDateFromBackendShortYear(lastLicenseAdded?.expDate),
         };
 
         if (res.trafficViolation) {
           this.patchStepValues(res.trafficViolation);
+
+          this.stepHasValues = true;
         }
       });
   }
@@ -260,7 +263,9 @@ export class Step5Component implements OnInit, OnDestroy {
             : null,
       };
 
-      this.violationsArray = [...filteredViolationsArray];
+      this.violationsArray = JSON.parse(
+        JSON.stringify(filteredViolationsArray)
+      );
 
       this.formValuesToPatch = filteredLastItemInViolationsArray;
       this.previousFormValuesOnReview = filteredLastItemInViolationsArray;
@@ -643,7 +648,10 @@ export class Step5Component implements OnInit, OnDestroy {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      if (this.selectedMode === SelectedMode.APPLICANT) {
+      if (
+        this.selectedMode === SelectedMode.APPLICANT ||
+        this.selectedMode === SelectedMode.FEEDBACK
+      ) {
         this.onSubmit();
       }
 
@@ -658,6 +666,11 @@ export class Step5Component implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
+    if (this.formStatus === 'INVALID') {
+      this.markFormInvalid = true;
+      return;
+    }
+
     if (this.notBeenConvictedForm.invalid) {
       this.inputService.markInvalid(this.notBeenConvictedForm);
       return;
@@ -670,11 +683,6 @@ export class Step5Component implements OnInit, OnDestroy {
 
     if (this.certifyForm.invalid) {
       this.inputService.markInvalid(this.certifyForm);
-      return;
-    }
-
-    if (this.formStatus === 'INVALID') {
-      this.markFormInvalid = true;
       return;
     }
 
@@ -776,8 +784,20 @@ export class Step5Component implements OnInit, OnDestroy {
       }
     );
 
-    this.applicantActionsService
-      .createTrafficViolations(saveData)
+    const selectMatchingBackendMethod = () => {
+      if (this.selectedMode === SelectedMode.APPLICANT && !this.stepHasValues) {
+        return this.applicantActionsService.createTrafficViolations(saveData);
+      }
+
+      if (
+        (this.selectedMode === SelectedMode.APPLICANT && this.stepHasValues) ||
+        this.selectedMode === SelectedMode.FEEDBACK
+      ) {
+        return this.applicantActionsService.updateTrafficViolations(saveData);
+      }
+    };
+
+    selectMatchingBackendMethod()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
@@ -823,7 +843,9 @@ export class Step5Component implements OnInit, OnDestroy {
     const lastItemId = this.previousFormValuesOnReview.id;
 
     const lastReviewedItemIViolationsArray = {
-      trafficViolationId: lastItemId,
+      itemId: lastItemId,
+      isPrimary: true,
+      commonMessage: null,
       isDateValid: lastItemReview ? lastItemReview.isDateValid : true,
       isVehicleTypeValid: true,
       isLocationValid: lastItemReview ? lastItemReview.isLocationValid : true,
@@ -841,24 +863,26 @@ export class Step5Component implements OnInit, OnDestroy {
 
     console.log('saveData', saveData.trafficViolationReviews[0]);
 
+    console.log('store', this.applicantStore);
+
     this.applicantActionsService
       .createTrafficViolationsReview(saveData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/6`]);
-          /* 
-            this.applicantStore.update(1, (entity) => {
-            return {
-              ...entity,
-              education: {
-                ...entity.education,
-                educationReview: rest,
-              },
-            };
-          });
 
-          console.log('updatedStore', this.applicantStore); */
+          /*   this.applicantStore.update(store => {
+            return {
+              ...store,
+              applicant: {
+                ...store.applicant,
+                trafficViolation : {
+                  ...store.applicant.trafficViolation,
+                }
+              }
+            }
+          }) */
         },
         error: (err) => {
           console.log(err);

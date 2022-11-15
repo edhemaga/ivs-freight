@@ -20,7 +20,7 @@ import { SelectedMode } from '../state/enum/selected-mode.enum';
 export class ApplicantComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public selectedMode = SelectedMode.REVIEW;
+  public selectedMode = SelectedMode.APPLICANT;
 
   public menuItems: INavigation[] = [
     {

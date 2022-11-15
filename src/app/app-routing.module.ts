@@ -293,6 +293,7 @@ const routes: Routes = [
         './core/components/applicant/applicant-tabs/medical-certificate/medical-certificate.module'
       ).then((m) => m.MedicalCertificateModule),
     canActivate: [AuthGuard],
+    resolve: { applicant: ApplicantResolver },
   },
   {
     path: 'mvr-authorization/:id',
@@ -301,6 +302,7 @@ const routes: Routes = [
         './core/components/applicant/applicant-tabs/mvr-authorization/mvr-authorization.module'
       ).then((m) => m.MvrAuthorizationModule),
     canActivate: [AuthGuard],
+    resolve: { applicant: ApplicantResolver },
   },
   {
     path: 'psp-authorization/:id',
@@ -309,6 +311,7 @@ const routes: Routes = [
         './core/components/applicant/applicant-tabs/psp-authorization/psp-authorization.module'
       ).then((m) => m.PspAuthorizationModule),
     canActivate: [AuthGuard],
+    resolve: { applicant: ApplicantResolver },
   },
   {
     path: 'sph/:id',
@@ -318,6 +321,7 @@ const routes: Routes = [
       ),
 
     canActivate: [AuthGuard],
+    resolve: { applicant: ApplicantResolver },
   },
   {
     path: 'sph-form/1',
@@ -340,6 +344,7 @@ const routes: Routes = [
         './core/components/applicant/applicant-tabs/hos-rules/hos-rules.module'
       ).then((m) => m.HosRulesModule),
     canActivate: [AuthGuard],
+    resolve: { applicant: ApplicantResolver },
   },
   {
     path: 'ssn-card/:id',
@@ -348,6 +353,7 @@ const routes: Routes = [
         './core/components/applicant/applicant-tabs/ssn-card/ssn-card.module'
       ).then((m) => m.SsnCardModule),
     canActivate: [AuthGuard],
+    resolve: { applicant: ApplicantResolver },
   },
   {
     path: 'cdl-card/:id',
@@ -356,13 +362,14 @@ const routes: Routes = [
         './core/components/applicant/applicant-tabs/cdl-card/cdl-card.module'
       ).then((m) => m.CdlCardModule),
     canActivate: [AuthGuard],
+    resolve: { applicant: ApplicantResolver },
   },
   {
     path: 'accounting',
     loadChildren: () =>
-      import(
-        './core/components/accounting/accounting.module'
-      ).then((m) => m.AccountingModule),
+      import('./core/components/accounting/accounting.module').then(
+        (m) => m.AccountingModule
+      ),
     canActivate: [AuthGuard],
   },
   {

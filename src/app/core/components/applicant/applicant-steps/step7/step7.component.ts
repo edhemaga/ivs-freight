@@ -12,6 +12,8 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 
 import { addressValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 
+import moment from 'moment';
+
 import {
   anyInputInLineIncorrect,
   isFormValueNotEqual,
@@ -88,13 +90,13 @@ export class Step7Component implements OnInit, OnDestroy {
 
   public sevenDaysHosDateData: string[] = [
     'Date',
-    '01/22/21',
-    '01/21/21',
-    '01/20/21',
-    '01/19/21',
-    '01/18/21',
-    '01/17/21',
-    '01/16/21',
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
   ];
 
   public totalHours: { id: number; value: number }[] = [];
@@ -185,7 +187,7 @@ export class Step7Component implements OnInit, OnDestroy {
 
     this.getStepValuesFromStore();
 
-    this.getLastSevenDays();
+    this.getLastSevenDaysFromDateOfInvitation();
   }
 
   public get hosArray(): FormArray {
@@ -329,9 +331,22 @@ export class Step7Component implements OnInit, OnDestroy {
     });
   }
 
-  public getLastSevenDays(): void {
-    const asd = null;
-    console.log(asd);
+  public getLastSevenDaysFromDateOfInvitation(): void {
+    const startDay =
+      moment(new Date(this.applicantInviteDate)).subtract(7, 'days').unix() *
+      1000;
+
+    const daysArray = new Array(7).fill(null).map((_, index) => {
+      return moment(new Date(startDay + index * 86400000)).format('MM/DD/YY');
+    });
+
+    this.sevenDaysHosDateData = this.sevenDaysHosDateData.map((item, index) => {
+      if (index === 0) {
+        return item;
+      }
+
+      return daysArray[index - 1];
+    });
   }
 
   public handleCheckboxParagraphClick(type: string): void {

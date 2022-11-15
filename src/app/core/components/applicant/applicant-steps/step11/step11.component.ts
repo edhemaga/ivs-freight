@@ -142,11 +142,11 @@ export class Step11Component implements OnInit, OnDestroy {
   }
 
   public onSignatureAction(event: any): void {
-    this.signature = event;
-
-    this.signature = this.imageBase64Service.getStringFromBase64(
-      this.signature
-    );
+    if (event) {
+      this.signature = this.imageBase64Service.getStringFromBase64(event);
+    } else {
+      this.signature = null;
+    }
   }
 
   public onStepAction(event: any): void {
@@ -171,6 +171,10 @@ export class Step11Component implements OnInit, OnDestroy {
   public onSubmit(): void {
     if (this.authorizationForm.invalid) {
       this.inputService.markInvalid(this.authorizationForm);
+      return;
+    }
+
+    if (!this.signature) {
       return;
     }
 

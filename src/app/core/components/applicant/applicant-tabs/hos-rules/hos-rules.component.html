@@ -122,7 +122,9 @@
               'Please confirm that you have read and understood the content of this notice'
             "
             [customClass]="'bold-12'"
-            [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
+            [disabledStillCheckMark]="
+              selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+            "
           >
           </app-ta-checkbox>
         </div>

@@ -176,33 +176,33 @@ export class Step3FormComponent
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.mode?.previousValue !== changes.mode?.currentValue) {
       this.selectedMode = changes.mode?.currentValue;
+    }
 
-      if (this.selectedMode === SelectedMode.APPLICANT) {
-        if (
-          changes.markFormInvalid?.previousValue !==
-          changes.markFormInvalid?.currentValue
-        ) {
-          this.inputService.markInvalid(this.licenseForm);
-          this.markInvalidEmitter.emit(false);
-        }
-      }
-
+    if (this.selectedMode === SelectedMode.APPLICANT) {
       if (
-        this.selectedMode === SelectedMode.REVIEW ||
-        this.selectedMode === SelectedMode.APPLICANT
+        changes.markFormInvalid?.previousValue !==
+        changes.markFormInvalid?.currentValue
       ) {
-        if (
-          changes.formValuesToPatch?.previousValue !==
-          changes.formValuesToPatch?.currentValue
-        ) {
-          setTimeout(() => {
-            this.patchForm(changes.formValuesToPatch.currentValue);
+        this.inputService.markInvalid(this.licenseForm);
+        this.markInvalidEmitter.emit(false);
+      }
+    }
 
-            if (this.selectedMode === SelectedMode.APPLICANT) {
-              this.startValueChangesMonitoring();
-            }
-          }, 50);
-        }
+    if (
+      this.selectedMode === SelectedMode.REVIEW ||
+      this.selectedMode === SelectedMode.APPLICANT
+    ) {
+      if (
+        changes.formValuesToPatch?.previousValue !==
+        changes.formValuesToPatch?.currentValue
+      ) {
+        setTimeout(() => {
+          this.patchForm(changes.formValuesToPatch.currentValue);
+
+          if (this.selectedMode === SelectedMode.APPLICANT) {
+            this.startValueChangesMonitoring();
+          }
+        }, 50);
       }
     }
   }
@@ -227,31 +227,15 @@ export class Step3FormComponent
   public patchForm(formValue: any): void {
     if (this.selectedMode === SelectedMode.REVIEW) {
       if (formValue.licenseReview) {
-        const {
-          isLicenseNumberValid,
-          isCountryValid,
-          isStateValid,
-          isClassValid,
-          isExpDateValid,
-          isRestrictionsValid,
-          isEndorsmentsValid,
-        } = formValue.licenseReview;
+        const { isLicenseValid, isExpDateValid } = formValue.licenseReview;
 
         this.openAnnotationArray[10] = {
           ...this.openAnnotationArray[10],
-          lineInputs: [!isLicenseNumberValid, !isCountryValid],
+          lineInputs: [!isLicenseValid, false],
         };
         this.openAnnotationArray[11] = {
           ...this.openAnnotationArray[11],
-          lineInputs: [!isStateValid, !isClassValid, !isExpDateValid],
-        };
-        this.openAnnotationArray[12] = {
-          ...this.openAnnotationArray[12],
-          lineInputs: [!isRestrictionsValid],
-        };
-        this.openAnnotationArray[13] = {
-          ...this.openAnnotationArray[13],
-          lineInputs: [!isEndorsmentsValid],
+          lineInputs: [false, false, !isExpDateValid],
         };
       }
     }

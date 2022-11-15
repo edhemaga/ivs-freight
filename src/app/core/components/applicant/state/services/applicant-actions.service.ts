@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { Observable, tap } from 'rxjs';
 
+import { getFunctionParams } from 'src/app/core/utils/methods.globals';
+
 import { ApplicantService } from '../../../../../../../appcoretruckassist';
 
 import { ApplicantStore } from '../store/applicant.store';
@@ -44,6 +46,14 @@ import {
   CreateAuthorizationReviewCommand,
   CreateDriverRightsReviewCommand,
   UpdateEducationCommand,
+  UpdateTrafficViolationCommand,
+  UpdateAccidentRecordCommand,
+  UpdateApplicantCdlCommand,
+  CreateWithUploadsResponse,
+  UpdateWorkExperienceCommand,
+  UpdatePspAuthCommand,
+  UpdateSphCommand,
+  UpdateHosRulesCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -110,12 +120,78 @@ export class ApplicantActionsService {
     return this.applicantService.apiApplicantDrugandalcoholPost(data);
   }
 
+  public createMedicalCertificate(
+    data: any
+  ): Observable<CreateWithUploadsResponse> {
+    const sortedParams = getFunctionParams(
+      this.applicantService.apiApplicantMedicalcertificatePost,
+      data
+    );
+
+    return this.applicantService.apiApplicantMedicalcertificatePost(
+      ...sortedParams
+    );
+  }
+
+  public createMvrAuthorization(
+    data: any
+  ): Observable<CreateWithUploadsResponse> {
+    const sortedParams = getFunctionParams(
+      this.applicantService.apiApplicantMvrPost,
+      data
+    );
+
+    return this.applicantService.apiApplicantMvrPost(...sortedParams);
+  }
+
+  public createSsnCard(data: any): Observable<CreateWithUploadsResponse> {
+    const sortedParams = getFunctionParams(
+      this.applicantService.apiApplicantSsnPost,
+      data
+    );
+
+    return this.applicantService.apiApplicantSsnPost(...sortedParams);
+  }
+
+  public createCdlCard(data: any): Observable<CreateWithUploadsResponse> {
+    const sortedParams = getFunctionParams(
+      this.applicantService.apiApplicantCdlcardPost,
+      data
+    );
+
+    return this.applicantService.apiApplicantCdlcardPost(...sortedParams);
+  }
+
   /* BACKEND PUT ACTION FUNCTIONS - APPLICANT & FEEDBACK MODE */
 
   public updatePersonalInfo(
     data: UpdatePersonalInfoCommand
   ): Observable<object> {
     return this.applicantService.apiApplicantPersonalPut(data);
+  }
+
+  public updateWorkExperience(
+    data: UpdateWorkExperienceCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantWorkexperiencePut(data);
+  }
+
+  public updateCdlInformation(
+    data: UpdateApplicantCdlCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantCdlPut(data);
+  }
+
+  public updateAccidentRecord(
+    data: UpdateAccidentRecordCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantAccidentrecordPut(data);
+  }
+
+  public updateTrafficViolations(
+    data: UpdateTrafficViolationCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantTrafficviolationPut(data);
   }
 
   public updateEducation(data: UpdateEducationCommand): Observable<object> {
@@ -152,7 +228,63 @@ export class ApplicantActionsService {
     return this.applicantService.apiApplicantAuthorizationPut(data);
   }
 
-  /* BACKEND POST ACTION FUNCTIONS -  REVIEW MODE */
+  public updateMedicalCertificate(
+    data: any
+  ): Observable<CreateWithUploadsResponse> {
+    const sortedParams = getFunctionParams(
+      this.applicantService.apiApplicantMedicalcertificatePut,
+      data
+    );
+
+    return this.applicantService.apiApplicantMedicalcertificatePut(
+      ...sortedParams
+    );
+  }
+
+  public updateMvrAuthorization(
+    data: any
+  ): Observable<CreateWithUploadsResponse> {
+    const sortedParams = getFunctionParams(
+      this.applicantService.apiApplicantMvrPut,
+      data
+    );
+
+    return this.applicantService.apiApplicantMvrPut(...sortedParams);
+  }
+
+  public updatePspAuthorization(
+    data: UpdatePspAuthCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantPspPut(data);
+  }
+
+  public updateSph(data: UpdateSphCommand): Observable<object> {
+    return this.applicantService.apiApplicantSphPut(data);
+  }
+
+  public updateHosRules(data: UpdateHosRulesCommand): Observable<object> {
+    return this.applicantService.apiApplicantHosrulesPut(data);
+  }
+
+  public updateSsnCard(data: any): Observable<CreateWithUploadsResponse> {
+    const sortedParams = getFunctionParams(
+      this.applicantService.apiApplicantSsnPut,
+      data
+    );
+
+    return this.applicantService.apiApplicantSsnPut(...sortedParams);
+  }
+
+  public updateCdlCard(data: any) {
+    const sortedParams = getFunctionParams(
+      this.applicantService.apiApplicantCdlcardPut,
+      data
+    );
+
+    return this.applicantService.apiApplicantCdlcardPut(...sortedParams);
+  }
+
+  /* BACKEND POST ACTION FUNCTIONS - REVIEW MODE */
 
   public createPersonalInfoReview(
     data: CreatePersonalInfoReviewCommand
