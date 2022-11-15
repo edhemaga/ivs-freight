@@ -13,6 +13,7 @@ import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 import { EditFuelStopCommand } from '../../../../../../appcoretruckassist/model/editFuelStopCommand';
 import { AddFuelStopCommand } from '../../../../../../appcoretruckassist/model/addFuelStopCommand';
 import { UpdateFuelStopCommand } from '../../../../../../appcoretruckassist/model/updateFuelStopCommand';
+import { FuelStore } from './fule-state/fuel-state.store';
 
 @Injectable({
   providedIn: 'root',
