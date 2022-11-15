@@ -1,6 +1,11 @@
 import { Subject, takeUntil } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import validator from 'validator';
 import { NotificationService } from '../../../services/notification/notification.service';
 
@@ -31,11 +36,18 @@ export class TaInputService {
       Object.keys(formGroup.controls).forEach((key: any) => {
         formGroup.get(key).markAsTouched();
         formGroup.get(key).updateValueAndValidity();
+
+        if ((<FormArray>formGroup.get(key)).controls) {
+          for (const nestedFormGroup of (<FormArray>formGroup.get(key))
+            .controls) {
+            this.markInvalid(<FormGroup>nestedFormGroup);
+          }
+        }
       });
 
       this.notificationService.warning(
-        'Please fill all required fields.',
-        'Warning:'
+        'Warning:',
+        'Please fill all required fields.'
       );
 
       return false;
