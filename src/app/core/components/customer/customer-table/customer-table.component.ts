@@ -829,14 +829,14 @@ export class CustomerTableComponent
     var newMapList = mapListResponse.pagination.data;
     var listChanged = false;
 
-    newMapList.map((item) => {
+    newMapList.map((item, index) => {
       let itemIndex = this.mapListData.findIndex(
         (item2) =>
           item2.id === item.id
       );
 
       if ( itemIndex == -1 ) {
-        this.mapListData.push(item);
+        this.mapListData.splice(index, 0, item);
         listChanged = true;
       }
     });
@@ -854,7 +854,7 @@ export class CustomerTableComponent
     });
 
     if ( listChanged || mapListResponse.changedSort ) {
-      this.mapListData = mapListResponse.pagination.data;
+      //this.mapListData = mapListResponse.pagination.data;
       this.tableData[1].length = mapListResponse.pagination.count;
       this.ref.detectChanges();
     }
