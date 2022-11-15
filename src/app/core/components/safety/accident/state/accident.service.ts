@@ -38,7 +38,7 @@ export class AccidentTService {
     search1?: string,
     search2?: string
   ): Observable<AccidentListResponse> {
-    return this.accidentService.apiAccidentListGet(
+    /* return this.accidentService.apiAccidentListGet(
       active,
       reported,
       dateFrom,
@@ -60,20 +60,23 @@ export class AccidentTService {
       search,
       search1,
       search2
-    );
+    ); */
     return of();
   }
 
   public addAccident(data: any): Observable<CreateResponse> {
-    return this.accidentService.apiAccidentPost(data);
+    /* return this.accidentService.apiAccidentPost(data); */
+    return of();
   }
 
   public updateAccident(data: any): Observable<any> {
-    return this.accidentService.apiAccidentPut(data);
+    /* return this.accidentService.apiAccidentPut(data); */
+    return of();
   }
 
   public getAccidentById(id: number): Observable<AccidentResponse> {
-    return this.accidentService.apiAccidentIdGet(id);
+    /* return this.accidentService.apiAccidentIdGet(id); */
+    return of();
   }
 
   public getModalDropdowns(): Observable<AccidentModalResponse> {

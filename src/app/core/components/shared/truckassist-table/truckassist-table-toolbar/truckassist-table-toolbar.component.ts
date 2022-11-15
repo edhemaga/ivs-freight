@@ -37,28 +37,28 @@ export class TruckassistTableToolbarComponent
       svgPath: 'assets/svg/truckassist-table/lock.svg',
       width: 14,
       height: 16,
-      show: true
+      show: true,
     },
     {
       text: 'Import',
       svgPath: 'assets/svg/truckassist-table/import.svg',
       width: 16,
       height: 16,
-      show: true
+      show: true,
     },
     {
       text: 'Export',
       svgPath: 'assets/svg/truckassist-table/export.svg',
       width: 16,
       height: 16,
-      show: true
+      show: true,
     },
     {
       text: 'Reset Columns',
       svgPath: 'assets/svg/truckassist-table/new-reset-icon.svg',
       width: 16,
       height: 16,
-      show: true
+      show: true,
     },
     {
       text: 'Columns',
@@ -71,7 +71,7 @@ export class TruckassistTableToolbarComponent
         width: 6,
         height: 8,
       },
-      show: true
+      show: true,
     },
   ];
   tableRowsSelected: any[] = [];
@@ -82,7 +82,7 @@ export class TruckassistTableToolbarComponent
   timeOutToaggleColumn: any;
   columnsOptions: any[] = [];
   isMapShowning: boolean = false;
-  tableConfigurationType: string = '';
+  tableConfigurationType: TableType;
   showResetOption: boolean;
 
   constructor(private tableService: TruckassistTableService) {}
@@ -260,6 +260,8 @@ export class TruckassistTableToolbarComponent
     if (optionsPopup.isOpen()) {
       optionsPopup.close();
     } else {
+      this.getActiveTableData();
+
       optionsPopup.open({});
     }
 
@@ -284,6 +286,19 @@ export class TruckassistTableToolbarComponent
         toaggleUnlockTable: true,
       });
 
+      if (this.tableLocked) {
+        const tableConfig = localStorage.getItem(
+          `table-${this.tableConfigurationType}-Configuration`
+        );
+
+        this.tableService
+          .sendTableConfig({
+            tableType: this.tableConfigurationType,
+            config: tableConfig,
+          })
+          .subscribe(() => {});
+      }
+
       /* if (!this.tableLocked) {
         this.setInactivityTimer();
       } else {
@@ -299,7 +314,7 @@ export class TruckassistTableToolbarComponent
       this.tableService.sendResetColumns(true);
 
       /* this.tableService
-        .deleteTableConfig(this.tableConfigurationType as TableType)
+        .deleteTableConfig(this.tableConfigurationType)
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
           console.log(
@@ -376,5 +391,18 @@ export class TruckassistTableToolbarComponent
     this.tableService.sendToaggleColumn(null);
     this.tableService.sendResetColumns(false);
     clearTimeout(this.inactiveTimeOutInterval);
+
+    const tableConfig = localStorage.getItem(
+      `table-${this.tableConfigurationType}-Configuration`
+    );
+
+    if (tableConfig) {
+      this.tableService
+        .sendTableConfig({
+          tableType: this.tableConfigurationType,
+          config: tableConfig,
+        })
+        .subscribe(() => {});
+    }
   }
 }
