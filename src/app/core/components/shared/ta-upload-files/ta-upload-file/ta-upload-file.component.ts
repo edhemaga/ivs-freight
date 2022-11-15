@@ -21,6 +21,7 @@ import {
 import { TaInputComponent } from '../../ta-input/ta-input.component';
 import { TaInputService } from '../../ta-input/ta-input.service';
 import { UrlExtensionPipe } from 'src/app/core/pipes/url-extension.pipe';
+import { ByteConvertPipe } from 'src/app/core/pipes/byte-convert.pipe';
 
 export interface UploadFile {
   fileName: string;
@@ -30,6 +31,7 @@ export interface UploadFile {
   size?: number | string;
   tag?: string;
   realFile?: File;
+  fileSize?: number;
 }
 @Component({
   selector: 'app-ta-upload-file',
@@ -37,7 +39,7 @@ export interface UploadFile {
   styleUrls: ['./ta-upload-file.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [UrlExtensionPipe],
+  providers: [UrlExtensionPipe, ByteConvertPipe],
 })
 export class TaUploadFileComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -67,7 +69,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
   public editFile: boolean = false;
   public fileNewName: FormControl = new FormControl();
-  public numberOfFilePages: string = '0';
+  public numberOfFilePages: string = '0 pages';
 
   public isFileDelete: boolean = false;
 
@@ -77,7 +79,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
   constructor(
     private inputService: TaInputService,
-    private urlExt: UrlExtensionPipe,
+    private urlExt: UrlExtensionPipe
   ) {}
 
   ngOnInit(): void {

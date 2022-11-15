@@ -373,14 +373,14 @@
     //-------------- Driver Details Single PDF
     &.driver-details-pdf {
       width: 303px;
-      height: 343px;
+      height: 303px;
       position: relative;
 
       .ng2-pdf-viewer-container {
         overflow: visible !important;
         background-color: transparent !important;
         width: 295px !important;
-        height: 312px !important;
+        height: 295px !important;
         border-radius: 1px !important;
 
         .canvasWrapper,
@@ -388,7 +388,7 @@
         .pdfViewer .page,
         canvas {
           width: 295px !important;
-          max-height: 335px !important;
+          max-height: 295px !important;
           margin: 0 !important;
           border-radius: 1px !important;
 
@@ -627,16 +627,39 @@
   // --------------------- Custom Classes ---------------------
   &.driver-details-pdf {
     width: 303px;
-    height: 343px;
-    grid-template-rows: 343px;
+    height: 303px;
+    grid-template-rows: 303px;
 
     .ta-upload-file-footer {
-      bottom: 33px;
+      opacity: 0;
+      bottom: 37px;
+      right: -4px;
+
+      width: 295px;
+      border-radius: 1px;
+      cursor: default;
+      transition: 0.3s all ease-in-out;
+
+      .footer_info {
+        left: 0 !important;
+      }
+
+      .ta-upload-file-name {
+        font-weight: 600 !important;
+      }
+    }
+
+    &:hover {
+      .ta-upload-file-footer {
+        opacity: 1;
+        background-color: rgba(255, 255, 255, 0.9) !important;
+        transition: 0.3s all ease-in-out;
+      }
     }
 
     .ta-upload-file-delete-template {
-      width: 304px;
-      height: 320px;
+      width: 295px;
+      height: 295px;
     }
   }
 
@@ -646,8 +669,30 @@
     grid-template-rows: 200px;
 
     .ta-upload-file-footer {
-      margin-right: 8px;
-      bottom: 33px;
+      opacity: 0;
+      bottom: 37px;
+      right: -4px;
+
+      width: 192px;
+      border-radius: 1px;
+      cursor: default;
+      transition: 0.3s all ease-in-out;
+
+      .footer_info {
+        left: 0 !important;
+      }
+
+      .ta-upload-file-name {
+        font-weight: 600 !important;
+      }
+    }
+
+    &:hover {
+      .ta-upload-file-footer {
+        opacity: 1;
+        background-color: rgba(255, 255, 255, 0.9) !important;
+        transition: 0.3s all ease-in-out;
+      }
     }
 
     .ta-upload-file-delete-template {

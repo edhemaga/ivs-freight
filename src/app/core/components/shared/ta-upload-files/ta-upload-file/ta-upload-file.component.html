@@ -246,8 +246,19 @@
             numberOfFilePages &&
             (file?.extension?.toLowerCase() == 'pdf' || fileExtension === 'pdf')
           "
+          *ngIf="!file.realFile"
         >
-          15 KB
+          {{ file?.fileSize | byteConvert }}
+        </div>
+        <div
+          class="file_size"
+          [class.has_pages]="
+            numberOfFilePages &&
+            (file?.extension?.toLowerCase() == 'pdf' || fileExtension === 'pdf')
+          "
+          *ngIf="file.realFile"
+        >
+          {{ file?.size | byteConvert }}
         </div>
       </div>
     </div>

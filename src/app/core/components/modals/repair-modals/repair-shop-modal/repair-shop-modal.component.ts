@@ -61,6 +61,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   ];
 
   public isFormDirty: boolean;
+  public documents: any[] = [];
+  public fileModified: boolean = false;
+  public filesForDelete: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -103,6 +106,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       routing: [null, routingBankValidation],
       account: [null, accountBankValidation],
       note: [null],
+      files: [null],
     });
 
     this.inputService.customInputValidator(
@@ -328,6 +332,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
           this.selectedBank = res.bank;
           this.isPhoneExtExist = !!res.phoneExt;
           this.isRepairShopFavourite = res.pinned;
+          this.documents = res.files;
 
           this.services = res.serviceTypes.map((item) => {
             return {
@@ -361,6 +366,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     let { address, addressUnit, openHours, bankId, ...form } =
       this.repairShopForm.value;
 
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
+
     openHours = openHours.map((item) => {
       if (item.isDay) {
         return {
@@ -388,6 +397,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
           active: item.active,
         };
       }),
+      files: documents,
     };
 
     this.shopService
@@ -409,6 +419,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   private updateRepairShop(id: number) {
     let { address, addressUnit, openHours, bankId, ...form } =
       this.repairShopForm.value;
+
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
 
     openHours = openHours.map((item) => {
       if (item.isDay) {
@@ -438,6 +452,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
           active: item.active,
         };
       }),
+      files: documents ? documents : this.repairShopForm.value.files,
+      filesForDeleteIds: this.filesForDelete,
     };
 
     this.shopService
@@ -503,6 +519,32 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
           );
         },
       });
+  }
+
+  public onFilesEvent(event: any) {
+    this.documents = event.files;
+    switch (event.action) {
+      case 'add': {
+        this.repairShopForm
+          .get('files')
+          .patchValue(JSON.stringify(event.files));
+        break;
+      }
+      case 'delete': {
+        this.repairShopForm
+          .get('files')
+          .patchValue(event.files.length ? JSON.stringify(event.files) : null);
+        if (event.deleteId) {
+          this.filesForDelete.push(event.deleteId);
+        }
+
+        this.fileModified = true;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   ngOnDestroy(): void {
