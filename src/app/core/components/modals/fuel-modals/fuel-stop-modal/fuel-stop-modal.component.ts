@@ -9,7 +9,7 @@ import {
   phoneFaxRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { AddressEntity } from 'appcoretruckassist';
+import { AddressEntity, UpdateFuelStopCommand } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { fuelStoreValidation } from '../../../shared/ta-input/ta-input.regex-validations';
@@ -18,6 +18,7 @@ import { FuelTService } from '../../../fuel/state/fuel.service';
 import { GetFuelStopModalResponse } from '../../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
 import { NotificationService } from '../../../../services/notification/notification.service';
 import { FuelStopResponse } from '../../../../../../../appcoretruckassist/model/fuelStopResponse';
+import { AddFuelStopCommand } from '../../../../../../../appcoretruckassist/model/addFuelStopCommand';
 
 @Component({
   selector: 'app-fuel-stop-modal',
@@ -42,6 +43,8 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
 
   public fuelStopName: string = null;
 
+  public companyId: number = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -58,8 +61,9 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
         ...this.editData,
-        id: 7,
+        id: 2,
       };
+
       this.getFuelStopById(this.editData.id);
     }
   }
@@ -119,6 +123,11 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     switch (action) {
       case 'fuel-stop': {
         this.selectedFuelStop = event;
+
+        event
+          ? this.fuelStopForm.get('store').setValidators(Validators.required)
+          : this.fuelStopForm.get('store').clearValidators();
+
         break;
       }
       default: {
@@ -152,27 +161,43 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
   }
 
   private updateFuelStop(id: number) {
-    if (this.selectedFuelStop) {
-      return;
-    }
+    const { address, addressUnit, businessName, ...form } =
+      this.fuelStopForm.value;
+
+    const newData: UpdateFuelStopCommand = {
+      id: id,
+      ...form,
+      address: this.selectedAddress,
+      businessName: !this.selectedFuelStop ? businessName : null,
+      fuelStopFranchiseId: this.selectedFuelStop
+        ? this.selectedFuelStop.id
+        : null,
+    };
+
+    this.fuelService
+      .updateFuelStop(newData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Success',
+            'Successfully fuel stop updated.'
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
+        error: (error: any) => {
+          this.notificationService.error('Error', error);
+        },
+      });
   }
 
   private addFuelStop() {
     const { address, addressUnit, businessName, ...form } =
       this.fuelStopForm.value;
 
-    const newData: any = {
+    const newData: AddFuelStopCommand = {
       ...form,
-      addressCity: this.selectedAddress.city,
-      addressState: this.selectedAddress.state,
-      addressCounty: this.selectedAddress.country,
-      addressAddress: this.selectedAddress.address,
-      addressStreet: this.selectedAddress.street,
-      addressStreetNumber: this.selectedAddress.streetNumber,
-      addressCountry: this.selectedAddress.country,
-      addressZipCode: this.selectedAddress.zipCode,
-      addressStateShortName: this.selectedAddress.stateShortName,
-      addressAddressUnit: addressUnit,
+      address: this.selectedAddress,
       businessName: !this.selectedFuelStop ? businessName : null,
       fuelStopFranchiseId: this.selectedFuelStop
         ? this.selectedFuelStop.id
@@ -190,7 +215,8 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
           );
           this.modalService.setModalSpinner({ action: null, status: false });
         },
-        error: (err: any) => {
+        error: (error: any) => {
+          this.notificationService.error('Error', error);
           this.fuelStopForm.get('store').setErrors({ fuelStoreNumber: true });
 
           this.fuelStopForm
@@ -210,6 +236,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: FuelStopResponse) => {
+          console.log('get by id: ', res);
           this.fuelStopForm.patchValue({
             businessName: res.businessName,
             fuelStopFranchiseId: res.fuelStopFranchise
@@ -222,15 +249,28 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             address: res.address.address,
             note: res.fuelStopExtensions[0].note,
           });
+
+          this.companyId = res.companyId;
+
           this.selectedFuelStop = res.fuelStopFranchise;
           this.selectedAddress = res.address;
 
           this.fuelStopName = res.fuelStopFranchise
             ? res.fuelStopFranchise.businessName
             : res.businessName;
+
+          if (!res.fuelStopFranchise) {
+            this.fuelStopForm.get('fuelStopFranchiseId').clearValidators();
+            this.fuelStopForm
+              .get('fuelStopFranchiseId')
+              .updateValueAndValidity();
+            this.fuelStopForm
+              .get('businessName')
+              .setValidators(Validators.required);
+          }
         },
-        error: (err: any) => {
-          console.log(err);
+        error: (error: any) => {
+          this.notificationService.error('Error', error);
         },
       });
   }
@@ -249,7 +289,9 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             };
           });
         },
-        error: () => {},
+        error: (error: any) => {
+          this.notificationService.error('Error', error);
+        },
       });
   }
 
