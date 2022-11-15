@@ -361,21 +361,7 @@ export class ApplicantActionsService {
   public verifyPreviousEmployerSphForm(
     data: VerifyPreviousEmployerCommand
   ): Observable<SphPreviousEmployerProspectResponse> {
-    return this.applicantService
-      .apiApplicantPreviousemployerVerifyPost(data)
-      .pipe(
-        tap((res) => {
-          this.applicantSphFormStore.set({
-            1: {
-              companyInfo: null,
-              verifyData: null,
-              step1: res,
-              step2: null,
-              step3: null,
-            },
-          });
-        })
-      );
+    return this.applicantService.apiApplicantPreviousemployerVerifyPost(data);
   }
 
   public createAccidentHistorySphForm(

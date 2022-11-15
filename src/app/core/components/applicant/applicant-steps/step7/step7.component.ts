@@ -21,7 +21,7 @@ import {
 
 import {
   convertDateToBackend,
-  convertDateFromBackendShortYear,
+  convertDateFromBackend,
 } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -295,13 +295,11 @@ export class Step7Component implements OnInit, OnDestroy {
         value: hos[i].hours,
       };
 
-      this.sevenDaysHosDateData[i + 1] = convertDateFromBackendShortYear(
-        hos[i].date
-      );
+      this.sevenDaysHosDateData[i + 1] = convertDateFromBackend(hos[i].date);
     }
     this.sevenDaysHosForm.patchValue({
       isValidHos: releasedFromWork,
-      startDate: convertDateFromBackendShortYear(releasedDate),
+      startDate: convertDateFromBackend(releasedDate),
       address: location.address,
       anotherEmployer: workingForAnotherEmployer,
       intendToWorkAnotherEmployer: intendToWorkForAnotherEmployer,
@@ -520,7 +518,7 @@ export class Step7Component implements OnInit, OnDestroy {
                 .toLowerCase();
 
               if (keyName === 'releasedate') {
-                o['startDate'] = convertDateFromBackendShortYear(
+                o['startDate'] = convertDateFromBackend(
                   this.stepValues.releasedDate
                 );
               }

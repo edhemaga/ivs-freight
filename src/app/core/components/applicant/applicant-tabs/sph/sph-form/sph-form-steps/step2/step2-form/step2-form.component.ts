@@ -107,6 +107,8 @@ export class SphStep2FormComponent
     this.accidentForm.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
+        res.accidentLocation = this.selectedAddress;
+
         this.lastFormValuesEmitter.emit(res);
       });
   }
@@ -150,7 +152,7 @@ export class SphStep2FormComponent
   public patchForm(formValue: any): void {
     this.accidentForm.patchValue({
       accidentDate: formValue.accidentDate,
-      accidentLocation: formValue.accidentLocation,
+      accidentLocation: formValue.accidentLocation.address,
       accidentDescription: formValue.accidentDescription,
       hazmatSpill: formValue.hazmatSpill,
       fatalities: formValue.fatalities,
@@ -158,6 +160,8 @@ export class SphStep2FormComponent
     });
 
     setTimeout(() => {
+      this.selectedAddress = formValue.accidentLocation;
+
       const hazmatSpillValue = this.accidentForm.get('hazmatSpill').value;
 
       if (hazmatSpillValue) {
@@ -183,8 +187,10 @@ export class SphStep2FormComponent
           isEditingAccident,
           ...previousFormValues
         } = this.formValuesToPatch;
-        /* 
-        previousFormValues.accidentLocation = accidentLocation.address; */
+
+        previousFormValues.accidentLocation = accidentLocation?.address;
+
+        updatedFormValues.accidentLocation = this.selectedAddress?.address;
 
         this.editingCardAddress = accidentLocation;
 
@@ -237,7 +243,7 @@ export class SphStep2FormComponent
     const saveData: SphFormAccidentModel = {
       ...registerForm,
       accidentLocation: this.selectedAddress,
-      accidentState: this.selectedAddress.state,
+      accidentState: this.selectedAddress.stateShortName,
       isEditingAccident: false,
     };
 
@@ -245,6 +251,8 @@ export class SphStep2FormComponent
 
     this.hazmatSpillRadios[0].checked = false;
     this.hazmatSpillRadios[1].checked = false;
+
+    this.selectedAddress = null;
 
     this.formService.resetForm(this.accidentForm);
 
@@ -280,6 +288,8 @@ export class SphStep2FormComponent
     this.hazmatSpillRadios[0].checked = false;
     this.hazmatSpillRadios[1].checked = false;
 
+    this.selectedAddress = null;
+
     this.saveFormEditingEmitter.emit(saveData);
 
     this.isAccidentEdited = false;
@@ -294,6 +304,8 @@ export class SphStep2FormComponent
 
     this.hazmatSpillRadios[0].checked = false;
     this.hazmatSpillRadios[1].checked = false;
+
+    this.selectedAddress = null;
 
     this.subscription.unsubscribe();
   }

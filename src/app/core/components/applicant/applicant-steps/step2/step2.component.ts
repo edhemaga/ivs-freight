@@ -12,7 +12,6 @@ import {
 import {
   convertDateToBackend,
   convertDateFromBackend,
-  convertDateFromBackendShortYear,
 } from 'src/app/core/utils/methods.calculations';
 
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
@@ -800,11 +799,11 @@ export class Step2Component implements OnInit, OnDestroy {
           o[keyName] = this.lastItemStepValues[match];
 
           if (keyName === 'from') {
-            o['from'] = convertDateFromBackendShortYear(o['from']);
+            o['from'] = convertDateFromBackend(o['from']);
           }
 
           if (keyName === 'to') {
-            o['to'] = convertDateFromBackendShortYear(o['to']);
+            o['to'] = convertDateFromBackend(o['to']);
           }
 
           if (keyName === 'address') {

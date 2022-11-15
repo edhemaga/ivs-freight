@@ -41,6 +41,7 @@ import { AccidentActiveResolver } from './core/components/safety/accident/state/
 import { AccidentInactiveResolver } from './core/components/safety/accident/state/accident-state/accident-inactive/accident-inactive.resolver';
 import { AccidentNonReportedResolver } from './core/components/safety/accident/state/accident-state/accident-non-reported/accident-non-reported.resolver';
 import { ApplicantResolver } from './core/components/applicant/state/resolver/applicant.resolver';
+import { ApplicantSphFormResolver } from './core/components/applicant/state/resolver/applicant-sph-form.resolver';
 import { FuelResolver } from './core/components/fuel/state/fule-state/fuel-state.resolver';
 
 const routes: Routes = [
@@ -335,6 +336,7 @@ const routes: Routes = [
       ).then((m) => m.SphFormModule),
 
     canActivate: [AuthGuard],
+    resolve: { applicantSphForm: ApplicantSphFormResolver },
   },
   {
     path: 'sph-form-end',

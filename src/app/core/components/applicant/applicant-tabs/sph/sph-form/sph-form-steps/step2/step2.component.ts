@@ -19,9 +19,8 @@ import {
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
 
+import { ApplicantStore } from 'src/app/core/components/applicant/state/store/applicant.store';
 import { ApplicantQuery } from 'src/app/core/components/applicant/state/store/applicant.query';
-import { ApplicantSphFormStore } from 'src/app/core/components/applicant/state/store/applicant-sph-form-store/applicant-sph-form.store';
-import { ApplicantSphFormQuery } from 'src/app/core/components/applicant/state/store/applicant-sph-form-store/applicant-sph-form.query';
 
 import { ApplicantQuestion } from 'src/app/core/components/applicant/state/model/applicant-question.model';
 import { InputSwitchActions } from 'src/app/core/components/applicant/state/enum/input-switch-actions.enum';
@@ -64,6 +63,8 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
 
   public selectedAccidentIndex: number;
   public helperIndex: number = 2;
+
+  public previousEmployerProspectId: number;
 
   public isEditing: boolean = false;
 
@@ -153,9 +154,8 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
     private router: Router,
     private inputService: TaInputService,
     private applicantActionsService: ApplicantActionsService,
-    private applicantQuery: ApplicantQuery,
-    private applicantSphFormStore: ApplicantSphFormStore,
-    private applicantSphFormQuery: ApplicantSphFormQuery
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {
@@ -166,6 +166,8 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
     this.hasNoSafetyPerformanceToReport();
 
     this.getStepValuesFromStore();
+
+    console.log(this.applicantStore);
   }
 
   ngAfterViewInit(): void {
@@ -195,17 +197,17 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public getStepValuesFromStore(): void {
-    let stepValuesResponse: any;
-
-    this.applicantSphFormQuery.stepTwoList$
+    this.applicantQuery.applicantSphForm$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        stepValuesResponse = res;
-      });
+        this.previousEmployerProspectId = res.id;
 
-    if (stepValuesResponse) {
-      this.patchStepValues(stepValuesResponse);
-    }
+        if (res.sphAccidentHistory) {
+          this.patchStepValues(res.sphAccidentHistory);
+
+          /*  this.stepHasValues = true; */
+        }
+      });
   }
 
   public patchStepValues(stepValues: any): void {
@@ -429,45 +431,6 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public onDeleteAccident(index: number): void {
-    if (this.isEditing) {
-      return;
-    }
-
-    this.accidentArray.splice(index, 1);
-  }
-
-  public onEditAccident(index: number): void {
-    if (this.isEditing) {
-      this.isEditing = false;
-      this.accidentArray[this.selectedAccidentIndex].isEditingAccident = false;
-
-      this.helperIndex = 2;
-      this.selectedAccidentIndex = -1;
-    }
-
-    this.helperIndex = index;
-    this.selectedAccidentIndex = index;
-
-    this.isEditing = true;
-    this.accidentArray[index].isEditingAccident = true;
-
-    const selectedAccident = this.accidentArray[index];
-
-    if (this.lastAccidentCard) {
-      this.previousFormValuesOnEdit = {
-        accidentLocation: this.lastAccidentCard?.accidentLocation,
-        accidentDate: this.lastAccidentCard?.accidentDate,
-        hazmatSpill: this.lastAccidentCard?.hazmatSpill,
-        fatalities: this.lastAccidentCard?.fatalities,
-        injuries: this.lastAccidentCard?.injuries,
-        accidentDescription: this.lastAccidentCard?.accidentDescription,
-      };
-    }
-
-    this.formValuesToPatch = selectedAccident;
-  }
-
   public onCloseWarningBox(): void {
     this.accidentHistoryForm
       .get('applicantWorkForCompanyExplain')
@@ -509,10 +472,8 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
       reemployment: null,
       noAccidents: null,
       accidents: [],
-      /*       previousEmployerProspectId: number; */
+      previousEmployerProspectId: this.previousEmployerProspectId,
     };
-
-    console.log('saveData', saveData);
 
     this.applicantActionsService
       .createAccidentHistorySphForm(saveData)
@@ -525,6 +486,45 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
           console.log(err);
         },
       });
+  }
+
+  public onDeleteAccident(index: number): void {
+    if (this.isEditing) {
+      return;
+    }
+
+    this.accidentArray.splice(index, 1);
+  }
+
+  public onEditAccident(index: number): void {
+    if (this.isEditing) {
+      this.isEditing = false;
+      this.accidentArray[this.selectedAccidentIndex].isEditingAccident = false;
+
+      this.helperIndex = 2;
+      this.selectedAccidentIndex = -1;
+    }
+
+    this.helperIndex = index;
+    this.selectedAccidentIndex = index;
+
+    this.isEditing = true;
+    this.accidentArray[index].isEditingAccident = true;
+
+    const selectedAccident = this.accidentArray[index];
+
+    if (this.lastAccidentCard) {
+      this.previousFormValuesOnEdit = {
+        accidentLocation: this.lastAccidentCard?.accidentLocation,
+        accidentDate: this.lastAccidentCard?.accidentDate,
+        hazmatSpill: this.lastAccidentCard?.hazmatSpill,
+        fatalities: this.lastAccidentCard?.fatalities,
+        injuries: this.lastAccidentCard?.injuries,
+        accidentDescription: this.lastAccidentCard?.accidentDescription,
+      };
+    }
+
+    this.formValuesToPatch = selectedAccident;
   }
 
   public getAccidentFormValues(event: any): void {
@@ -599,18 +599,20 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
     }
 
     if (event.action === 'back-step') {
-      this.router.navigate(['/sph-form/1']);
+      this.router.navigate(['/sph-form/1/1']);
     }
   }
 
   public onSubmit(): void {
-    if (this.accidentHistoryForm.invalid) {
-      this.inputService.markInvalid(this.accidentHistoryForm);
-      return;
-    }
+    if (this.accidentHistoryForm.invalid || this.formStatus === 'INVALID') {
+      if (this.accidentHistoryForm.invalid) {
+        this.inputService.markInvalid(this.accidentHistoryForm);
+      }
 
-    if (this.formStatus === 'INVALID') {
-      this.markFormInvalid = true;
+      if (this.formStatus === 'INVALID') {
+        this.markFormInvalid = true;
+      }
+
       return;
     }
 
@@ -626,7 +628,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
     const filteredAccidentArray = this.accidentArray.map((item) => {
       return {
         date: convertDateToBackend(item.accidentDate),
-        location: item.accidentLocation.address,
+        location: item.accidentLocation,
         description: item.accidentDescription,
         hazmatSpill: item.hazmatSpill,
         injuries: item.injuries,
@@ -643,15 +645,15 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
       fatalities: this.lastAccidentCard.fatalities,
     };
 
-    const saveData /* : CreatePreviousEmployerAccidentHistoryCommand */ = {
-      /* previousEmployerProspectId: , */
+    const saveData: CreatePreviousEmployerAccidentHistoryCommand = {
+      previousEmployerProspectId: this.previousEmployerProspectId,
       workForCompany: applicantWorkForCompany,
-      workFrom: applicantWorkForCompanyBeforeExplain,
-      workTo: applicantWorkForCompanyToExplain,
+      workFrom: convertDateToBackend(applicantWorkForCompanyBeforeExplain),
+      workTo: convertDateToBackend(applicantWorkForCompanyToExplain),
       driveForCompany: motorVehicleForCompany,
       vehicleType: motorVehicleForCompany ? this.selectedVehicleType.id : null,
       trailerType: motorVehicleForCompany ? this.selectedTrailerType.id : null,
-      reasonForLeaving: this.selectedReasonForLeaving.id,
+      reasonForLeaving: this.selectedReasonForLeaving?.id,
       reemployment: consideredForEmploymentAgain,
       noAccidents: noSafetyPerformance,
       accidents: noSafetyPerformance
@@ -659,26 +661,29 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
         : [...filteredAccidentArray, filteredLastAccidentCard],
     };
 
-    /* this.applicantActionsService
+    console.log('saveData', saveData);
+
+    this.applicantActionsService
       .createAccidentHistorySphForm(saveData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.router.navigate(['/applicant/previousemployer/welcome/3']);
+          this.router.navigate(['/sph-form/3']);
+
+          this.applicantStore.update((store) => {
+            return {
+              ...store,
+              applicantSphForm: {
+                ...store.applicantSphForm,
+                sphAccidentHistory: saveData,
+              },
+            };
+          });
         },
         error: (err) => {
           console.log(err);
         },
-      }); */
-
-    this.applicantSphFormStore.update(1, (entity) => {
-      return {
-        ...entity,
-        step2: saveData,
-      };
-    });
-
-    console.log('saveData', saveData);
+      });
   }
 
   ngOnDestroy(): void {

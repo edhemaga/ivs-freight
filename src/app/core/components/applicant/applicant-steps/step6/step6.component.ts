@@ -18,7 +18,7 @@ import {
 
 import {
   convertDateToBackend,
-  convertDateFromBackendShortYear,
+  convertDateFromBackend,
 } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -71,7 +71,7 @@ export class Step6Component implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public subscription: Subscription;
 
@@ -463,9 +463,8 @@ export class Step6Component implements OnInit, OnDestroy {
       otherTrainingExplain: otherTrainingDescription,
       knowledgeOfSafetyRegulations,
       driverForCompany: driverBefore,
-      driverForCompanyBeforeExplain:
-        from && convertDateFromBackendShortYear(from),
-      driverForCompanyToExplain: to && convertDateFromBackendShortYear(to),
+      driverForCompanyBeforeExplain: from && convertDateFromBackend(from),
+      driverForCompanyToExplain: to && convertDateFromBackend(to),
       unableForJob,
       unableForJobExplain: unableForJobDescription,
     });
@@ -1042,11 +1041,11 @@ export class Step6Component implements OnInit, OnDestroy {
               o[keyName] = this.stepValues[match];
 
               if (keyName === 'from') {
-                o['from'] = convertDateFromBackendShortYear(o['from']);
+                o['from'] = convertDateFromBackend(o['from']);
               }
 
               if (keyName === 'to') {
-                o['to'] = convertDateFromBackendShortYear(o['to']);
+                o['to'] = convertDateFromBackend(o['to']);
               }
 
               if (keyName === 'unabletopreformjobdescription') {

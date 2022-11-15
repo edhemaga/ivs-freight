@@ -20,7 +20,6 @@ import {
 import {
   convertDateToBackend,
   convertDateFromBackend,
-  convertDateFromBackendShortYear,
 } from 'src/app/core/utils/methods.calculations';
 
 import {
@@ -1316,7 +1315,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
               o[keyName] = this.stepValues[match];
 
               if (keyName === 'dob') {
-                o['dob'] = convertDateFromBackendShortYear(o['dob']);
+                o['dob'] = convertDateFromBackend(o['dob']);
               }
 
               if (keyName === 'address') {

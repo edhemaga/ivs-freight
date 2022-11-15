@@ -615,13 +615,15 @@ export class Step3Component implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    if (this.formStatus === 'INVALID') {
-      this.markFormInvalid = true;
-      return;
-    }
+    if (this.permitForm.invalid || this.formStatus === 'INVALID') {
+      if (this.permitForm.invalid) {
+        this.inputService.markInvalid(this.permitForm);
+      }
 
-    if (this.permitForm.invalid) {
-      this.inputService.markInvalid(this.permitForm);
+      if (this.formStatus === 'INVALID') {
+        this.markFormInvalid = true;
+      }
+
       return;
     }
 
