@@ -118,6 +118,7 @@
           *ngFor="let item of selectedUser; let indx = index"
           class="user-main-holder"
           [@inOutAnimation]="'in'"
+          [@showAnimation]="activeFilter ? 'true' : 'false'" 
           (click)="removeFromSelectedUser(item, indx)"
         >
           <div class="user-profile-img" *ngIf="type == 'userFilter'">
@@ -187,6 +188,7 @@
             *ngFor="let item of usaSelectedStates; let indx = index"
             class="user-main-holder holder-bottom-margin"
             [@inOutAnimation]="'in'"
+            [@showAnimation]="activeFilter ? 'true' : 'false'" 
             (click)="removeFromSelectedUser(item, indx)"
           >
             <div class="user-profile-img active state-border-radius">
