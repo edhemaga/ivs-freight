@@ -21,7 +21,6 @@ import {
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { NotificationService } from '../../../services/notification/notification.service';
-import { ImageBase64Service } from '../../../utils/base64.image';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 
@@ -173,7 +172,6 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     private todoQuery: TodoQuery,
     private notificationService: NotificationService,
     private confirmationService: ConfirmationService,
-    private imageBase64Service: ImageBase64Service,
     private DetailsDataService: DetailsDataService
   ) {}
 

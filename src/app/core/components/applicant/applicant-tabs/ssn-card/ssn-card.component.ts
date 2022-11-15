@@ -1,13 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
-
-import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
-
-import { ApplicantStore } from '../../state/store/applicant.store';
-import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
@@ -39,11 +33,7 @@ export class SsnCardComponent implements OnInit {
   public hasIncorrectFields: boolean = false;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private applicantStore: ApplicantStore,
-    private applicantQuery: ApplicantQuery,
-    private applicantActionsService: ApplicantActionsService
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {

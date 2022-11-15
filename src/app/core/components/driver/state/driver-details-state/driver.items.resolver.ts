@@ -1,4 +1,3 @@
-import { DriversMinimalListStore } from './../driver-details-minimal-list-state/driver-minimal-list.store';
 import { Injectable } from '@angular/core';
 
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
@@ -8,7 +7,6 @@ import { catchError, tap, take } from 'rxjs/operators';
 import { DriverTService } from '../driver.service';
 import { DriversItemStore } from './driver-details.store';
 import {
-  DriverDetailsListState,
   DriversDetailsListStore,
 } from '../driver-details-list-state/driver-details-list.store';
 import { DriversDetailsListQuery } from '../driver-details-list-state/driver-details-list.query';
@@ -24,7 +22,6 @@ export class DriverItemResolver implements Resolve<DriverResponse[]> {
     private driverItemStore: DriversItemStore,
     private driverDetailsListQuery: DriversDetailsListQuery,
     private driverDetailsListStore: DriversDetailsListStore,
-    private driverMiniamLS: DriversMinimalListStore,
     private router: Router
   ) {}
   resolve(route: ActivatedRouteSnapshot): Observable<any> {

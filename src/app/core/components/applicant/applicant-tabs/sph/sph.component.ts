@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -10,7 +9,6 @@ import { SphModalComponent } from './sph-modal/sph-modal.component';
 
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
@@ -38,9 +36,7 @@ export class SphComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private modalService: ModalService,
     private inputService: TaInputService,
-    private router: Router,
-    private applicantQuery: ApplicantQuery,
-    private applicantActionsService: ApplicantActionsService
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {

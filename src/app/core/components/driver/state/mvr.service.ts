@@ -1,6 +1,6 @@
 import { MvrService } from './../../../../../../appcoretruckassist/api/mvr.service';
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, tap, takeUntil, Subject, of } from 'rxjs';
+import { Observable, tap, takeUntil, Subject } from 'rxjs';
 import {
   DriverResponse,
   GetMvrModalResponse,
@@ -10,7 +10,6 @@ import { DriverTService } from './driver.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
 import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 

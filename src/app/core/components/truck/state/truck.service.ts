@@ -207,9 +207,9 @@ export class TruckTService implements OnDestroy {
   }
 
   public deleteTruckList(trucksToDelete: any[]): Observable<any> {
-    let deleteOnBack = trucksToDelete.map((truck: any) => {
-      return truck.id;
-    });
+    // let deleteOnBack = trucksToDelete.map((truck: any) => {
+    //   return truck.id;
+    // });
 
     // return this.truckService.apiTruckListDelete({ ids: deleteOnBack }).pipe(
     //   tap(() => {

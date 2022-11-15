@@ -12,7 +12,6 @@ import { catchError, take } from 'rxjs/operators';
 import { TrailerTService } from '../trailer.service';
 
 import { TrailerItemState, TrailerItemStore } from './trailer-details.store';
-import { TrailerDetailsQuery } from './trailer-details.query';
 import { TrailersDetailsListQuery } from '../trailer-details-list-state/trailer-details-list.query';
 import { TrailerDetailsListStore } from '../trailer-details-list-state/trailer-details-list.store';
 
