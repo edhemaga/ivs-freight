@@ -1487,22 +1487,60 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       newRoute.color = this.findRouteColor();
 
       if (this.tableData[this.selectedMapIndex].routes.length < 8) {
-        this.tableData[this.selectedMapIndex].routes.push(newRoute);
+        //this.tableData[this.selectedMapIndex].routes.push(newRoute);
       }
 
       this.showHideDuplicate();
 
-      this.tableData[this.selectedMapIndex].length =
-        this.tableData[this.selectedMapIndex].routes.length;
+      const newData: any = {
+        name: route.name,
+        mapId: this.tableData[this.selectedMapIndex].id,
+      };
+      this.routingService
+        .addRoute(newData)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (res) => {
+            console.log('duplicate route res', res);
 
-      this.calculateDistanceBetweenStops(
-        this.tableData[this.selectedMapIndex].routes.length - 1
-      );
-      this.calculateRouteWidth(
-        this.tableData[this.selectedMapIndex].routes[
-          this.tableData[this.selectedMapIndex].routes.length - 1
-        ]
-      );
+            var updateRouteObj = {
+              id: res.id,
+              name: route.name,
+              shape: route.shape,
+              stops: route.stops,
+            };
+      
+            this.routingService
+              .updateRoute(updateRouteObj)
+              .pipe(takeUntil(this.destroy$))
+              .subscribe({
+                next: () => {
+                  this.notificationService.success(
+                    'Successfuly updated route.',
+                    'Success'
+                  );
+                },
+                error: () => {
+                  this.notificationService.error("Can't update route.", 'Error');
+                },
+              });
+          },
+          error: () => {
+            this.notificationService.error("Can't add route.", 'Error');
+          },
+        });
+
+      // this.tableData[this.selectedMapIndex].length =
+      //   this.tableData[this.selectedMapIndex].routes.length;
+
+      // this.calculateDistanceBetweenStops(
+      //   this.tableData[this.selectedMapIndex].routes.length - 1
+      // );
+      // this.calculateRouteWidth(
+      //   this.tableData[this.selectedMapIndex].routes[
+      //     this.tableData[this.selectedMapIndex].routes.length - 1
+      //   ]
+      // );
     }
   }
 
@@ -1559,7 +1597,29 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     }
 
     if (route && route.stops && route.stops.length) {
-      route.stops = [];
+      var updateRouteObj = {
+        id: route.id,
+        name: route.name,
+        shape: route.shape,
+        stops: [],
+      };
+
+      this.routingService
+        .updateRoute(updateRouteObj)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.notificationService.success(
+              'Successfuly updated route.',
+              'Success'
+            );
+          },
+          error: () => {
+            this.notificationService.error("Can't update route.", 'Error');
+          },
+        });
+
+      //route.stops = [];
     }
   }
 
@@ -2278,7 +2338,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         this.stopPickerLocation.editIndex
       );
     }
-    
+
     this.stopPickerLocation = {};
 
     this.ref.detectChanges();
