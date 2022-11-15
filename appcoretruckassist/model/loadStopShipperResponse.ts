@@ -9,12 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { LoadResponse } from './loadResponse';
 import { EnumValue } from './enumValue';
+import { LoadShipperDetailsResponse } from './loadShipperDetailsResponse';
 
 
 export interface LoadStopShipperResponse { 
-    load?: LoadResponse;
+    load?: LoadShipperDetailsResponse;
     stopType?: EnumValue;
     stopOrder?: number;
     dateFrom?: string;

@@ -15,6 +15,7 @@ export interface ApplicantFileResponse {
     fileId?: number;
     fileName?: string | null;
     url?: string | null;
+    fileSize?: number | null;
     storageId?: number;
     review?: object;
 }

@@ -9,12 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FuelModalStopResponse } from './fuelModalStopResponse';
 
 
-export interface FileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
+export interface FuelModalStopResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<FuelModalStopResponse> | null;
 }
 
