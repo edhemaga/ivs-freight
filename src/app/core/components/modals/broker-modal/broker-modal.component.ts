@@ -10,13 +10,14 @@ import {
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { BrokerModalResponse } from '../../../../../../appcoretruckassist';
+import { CreateBrokerCommand } from 'appcoretruckassist/model/createBrokerCommand';
+import { UpdateBrokerCommand } from 'appcoretruckassist/model/updateBrokerCommand';
+
 import {
   BrokerResponse,
-  CreateBrokerCommand,
   CreateRatingCommand,
   CreateReviewCommand,
   SignInResponse,
-  UpdateBrokerCommand,
   UpdateReviewCommand,
 } from 'appcoretruckassist';
 import {
@@ -155,6 +156,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   public disableOneMoreReview: boolean = false;
 
+  public documents: any[] = [];
+  public fileModified: boolean = false;
+  public filesForDelete: any[] = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -212,6 +217,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       ban: [null],
       dnu: [null],
       brokerContacts: this.formBuilder.array([]),
+      files: [null],
     });
 
     this.inputService.customInputValidator(
@@ -733,6 +739,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       ...form
     } = this.brokerForm.value;
 
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
+
     let brAddresses = this.selectedBrokerAddress();
 
     let newData: CreateBrokerCommand = {
@@ -746,6 +756,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         ? parseFloat(creditLimit.toString().replace(/,/g, ''))
         : null,
       payTerm: this.selectedPayTerm ? this.selectedPayTerm.id : null,
+      files: documents,
     };
 
     for (let index = 0; index < brokerContacts.length; index++) {
@@ -796,6 +807,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       ...form
     } = this.brokerForm.value;
 
+    const documents = this.documents.map((item) => {
+      return item.realFile;
+    });
+
     let brAddresses = this.selectedBrokerAddress();
 
     let newData: UpdateBrokerCommand = {
@@ -811,6 +826,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         ? parseFloat(creditLimit.toString().replace(/,/g, ''))
         : null,
       payTerm: this.selectedPayTerm ? this.selectedPayTerm.id : null,
+      files: documents ? documents : this.brokerForm.value.files,
+      filesForDeleteIds: this.filesForDelete,
     };
 
     for (let index = 0; index < brokerContacts.length; index++) {
@@ -861,7 +878,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       .getBrokerById(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (reasponse: BrokerResponse) => {
+        next: (reasponse: any /*BrokerResponse*/) => {
           console.log(reasponse);
           this.brokerForm.patchValue({
             businessName: reasponse.businessName,
@@ -924,6 +941,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           });
 
           this.brokerBanStatus = reasponse.ban;
+          this.documents = reasponse.files;
 
           this.selectedPhysicalAddress = reasponse.mainAddress
             ? reasponse.mainAddress
@@ -1368,6 +1386,30 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       }
     }
     return { mainAddress, billingAddress, mainPoBox, billingPoBox };
+  }
+
+  public onFilesEvent(event: any) {
+    this.documents = event.files;
+    switch (event.action) {
+      case 'add': {
+        this.brokerForm.get('files').patchValue(JSON.stringify(event.files));
+        break;
+      }
+      case 'delete': {
+        this.brokerForm
+          .get('files')
+          .patchValue(event.files.length ? JSON.stringify(event.files) : null);
+        if (event.deleteId) {
+          this.filesForDelete.push(event.deleteId);
+        }
+
+        this.fileModified = true;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   ngOnDestroy(): void {

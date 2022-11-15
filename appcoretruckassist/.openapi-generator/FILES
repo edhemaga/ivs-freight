@@ -99,7 +99,6 @@ model/bankListResponse.ts
 model/bankResponse.ts
 model/bankResponsePagination.ts
 model/brakes.ts
-model/brokerContactCommand.ts
 model/brokerContactGroupResponse.ts
 model/brokerContactResponse.ts
 model/brokerContactShortResponse.ts
@@ -172,7 +171,6 @@ model/createApplicantCdlReviewCommand.ts
 model/createApplicantCommand.ts
 model/createAuthorizationReviewCommand.ts
 model/createBankCommand.ts
-model/createBrokerCommand.ts
 model/createCdlCardReviewCommand.ts
 model/createCommentCommand.ts
 model/createCompanyAccountCommand.ts
@@ -206,7 +204,6 @@ model/createReviewCommand.ts
 model/createRouteCommand.ts
 model/createSevenDaysHosCommand.ts
 model/createSevenDaysHosReviewCommand.ts
-model/createShipperCommand.ts
 model/createSsnReviewCommand.ts
 model/createTableConfigCommand.ts
 model/createTerminalCommand.ts
@@ -217,7 +214,6 @@ model/createTruckCommand.ts
 model/createWithUploadsResponse.ts
 model/createWorkExperienceCommand.ts
 model/createWorkExperienceReviewCommand.ts
-model/creditType.ts
 model/dayOfWeek.ts
 model/deleteMultipleApplicationsCommand.ts
 model/departmentContactResponse.ts
@@ -479,7 +475,6 @@ model/setConnectStatusEFSCommand.ts
 model/setNewPasswordCommand.ts
 model/sevenDaysHosFeedbackResponse.ts
 model/sevenDaysHosReviewResponse.ts
-model/shipperContactCommand.ts
 model/shipperContactResponse.ts
 model/shipperListResponse.ts
 model/shipperLoadDetailsResponse.ts
@@ -567,7 +562,6 @@ model/updateAuthorizationCommand.ts
 model/updateBankAccountCommand.ts
 model/updateBankCardCommand.ts
 model/updateBankCommand.ts
-model/updateBrokerCommand.ts
 model/updateCommentCommand.ts
 model/updateCompanyAccountCommand.ts
 model/updateCompanyAccountLabelCommand.ts
@@ -608,7 +602,6 @@ model/updatePspAuthCommand.ts
 model/updateReviewCommand.ts
 model/updateRouteCommand.ts
 model/updateSevenDaysHosCommand.ts
-model/updateShipperCommand.ts
 model/updateSphCommand.ts
 model/updateStopCommand.ts
 model/updateTerminalCommand.ts

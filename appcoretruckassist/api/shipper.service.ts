@@ -21,9 +21,9 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { ClusterResponse } from '../model/clusterResponse';
 // @ts-ignore
-import { CreateResponse } from '../model/createResponse';
+import { CreateWithUploadsResponse } from '../model/createWithUploadsResponse';
 // @ts-ignore
-import { CreateShipperCommand } from '../model/createShipperCommand';
+import { FileResponse } from '../model/fileResponse';
 // @ts-ignore
 import { MapMarkerListResponse } from '../model/mapMarkerListResponse';
 // @ts-ignore
@@ -32,6 +32,8 @@ import { MultipleChangeBanFlagShippersCommand } from '../model/multipleChangeBan
 import { MultipleChangeDnuFlagShippersCommand } from '../model/multipleChangeDnuFlagShippersCommand';
 // @ts-ignore
 import { ProblemDetails } from '../model/problemDetails';
+// @ts-ignore
+import { ShipperContactCommand } from '../model/shipperContactCommand';
 // @ts-ignore
 import { ShipperListResponse } from '../model/shipperListResponse';
 // @ts-ignore
@@ -44,8 +46,6 @@ import { ShipperModalResponse } from '../model/shipperModalResponse';
 import { ShipperResponse } from '../model/shipperResponse';
 // @ts-ignore
 import { StatusSetMultipleShipperCommand } from '../model/statusSetMultipleShipperCommand';
-// @ts-ignore
-import { UpdateShipperCommand } from '../model/updateShipperCommand';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -559,6 +559,72 @@ export class ShipperService {
             {
                 context: localVarHttpContext,
                 body: multipleChangeDnuFlagShippersCommand,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiShipperFilesIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<FileResponse>>;
+    public apiShipperFilesIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<FileResponse>>>;
+    public apiShipperFilesIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<FileResponse>>>;
+    public apiShipperFilesIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiShipperFilesIdGet.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/shipper/files/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<Array<FileResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1463,14 +1529,38 @@ export class ShipperService {
     }
 
     /**
-     * @param createShipperCommand 
+     * @param businessName 
+     * @param phone 
+     * @param phoneExt 
+     * @param email 
+     * @param addressCity 
+     * @param addressState 
+     * @param addressCounty 
+     * @param addressAddress 
+     * @param addressStreet 
+     * @param addressStreetNumber 
+     * @param addressCountry 
+     * @param addressZipCode 
+     * @param addressStateShortName 
+     * @param addressAddressUnit 
+     * @param receivingAppointment 
+     * @param receivingFrom 
+     * @param receivingTo 
+     * @param shippingAppointment 
+     * @param shippingFrom 
+     * @param shippingTo 
+     * @param receivingOpenTwentyFourHours 
+     * @param shippingOpenTwentyFourHours 
+     * @param note 
+     * @param shipperContacts 
+     * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiShipperPost(createShipperCommand?: CreateShipperCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
-    public apiShipperPost(createShipperCommand?: CreateShipperCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
-    public apiShipperPost(createShipperCommand?: CreateShipperCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
-    public apiShipperPost(createShipperCommand?: CreateShipperCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiShipperPost(businessName?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, receivingAppointment?: boolean, receivingFrom?: string, receivingTo?: string, shippingAppointment?: boolean, shippingFrom?: string, shippingTo?: string, receivingOpenTwentyFourHours?: boolean, shippingOpenTwentyFourHours?: boolean, note?: string, shipperContacts?: Array<ShipperContactCommand>, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiShipperPost(businessName?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, receivingAppointment?: boolean, receivingFrom?: string, receivingTo?: string, shippingAppointment?: boolean, shippingFrom?: string, shippingTo?: string, receivingOpenTwentyFourHours?: boolean, shippingOpenTwentyFourHours?: boolean, note?: string, shipperContacts?: Array<ShipperContactCommand>, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiShipperPost(businessName?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, receivingAppointment?: boolean, receivingFrom?: string, receivingTo?: string, shippingAppointment?: boolean, shippingFrom?: string, shippingTo?: string, receivingOpenTwentyFourHours?: boolean, shippingOpenTwentyFourHours?: boolean, note?: string, shipperContacts?: Array<ShipperContactCommand>, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiShipperPost(businessName?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, receivingAppointment?: boolean, receivingFrom?: string, receivingTo?: string, shippingAppointment?: boolean, shippingFrom?: string, shippingTo?: string, receivingOpenTwentyFourHours?: boolean, shippingOpenTwentyFourHours?: boolean, note?: string, shipperContacts?: Array<ShipperContactCommand>, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1500,16 +1590,103 @@ export class ShipperService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (businessName !== undefined) {
+            localVarFormParams = localVarFormParams.append('BusinessName', <any>businessName) as any || localVarFormParams;
+        }
+        if (phone !== undefined) {
+            localVarFormParams = localVarFormParams.append('Phone', <any>phone) as any || localVarFormParams;
+        }
+        if (phoneExt !== undefined) {
+            localVarFormParams = localVarFormParams.append('PhoneExt', <any>phoneExt) as any || localVarFormParams;
+        }
+        if (email !== undefined) {
+            localVarFormParams = localVarFormParams.append('Email', <any>email) as any || localVarFormParams;
+        }
+        if (addressCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.City', <any>addressCity) as any || localVarFormParams;
+        }
+        if (addressState !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.State', <any>addressState) as any || localVarFormParams;
+        }
+        if (addressCounty !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.County', <any>addressCounty) as any || localVarFormParams;
+        }
+        if (addressAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Address', <any>addressAddress) as any || localVarFormParams;
+        }
+        if (addressStreet !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Street', <any>addressStreet) as any || localVarFormParams;
+        }
+        if (addressStreetNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StreetNumber', <any>addressStreetNumber) as any || localVarFormParams;
+        }
+        if (addressCountry !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Country', <any>addressCountry) as any || localVarFormParams;
+        }
+        if (addressZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.ZipCode', <any>addressZipCode) as any || localVarFormParams;
+        }
+        if (addressStateShortName !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StateShortName', <any>addressStateShortName) as any || localVarFormParams;
+        }
+        if (addressAddressUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.AddressUnit', <any>addressAddressUnit) as any || localVarFormParams;
+        }
+        if (receivingAppointment !== undefined) {
+            localVarFormParams = localVarFormParams.append('ReceivingAppointment', <any>receivingAppointment) as any || localVarFormParams;
+        }
+        if (receivingFrom !== undefined) {
+            localVarFormParams = localVarFormParams.append('ReceivingFrom', <any>receivingFrom) as any || localVarFormParams;
+        }
+        if (receivingTo !== undefined) {
+            localVarFormParams = localVarFormParams.append('ReceivingTo', <any>receivingTo) as any || localVarFormParams;
+        }
+        if (shippingAppointment !== undefined) {
+            localVarFormParams = localVarFormParams.append('ShippingAppointment', <any>shippingAppointment) as any || localVarFormParams;
+        }
+        if (shippingFrom !== undefined) {
+            localVarFormParams = localVarFormParams.append('ShippingFrom', <any>shippingFrom) as any || localVarFormParams;
+        }
+        if (shippingTo !== undefined) {
+            localVarFormParams = localVarFormParams.append('ShippingTo', <any>shippingTo) as any || localVarFormParams;
+        }
+        if (receivingOpenTwentyFourHours !== undefined) {
+            localVarFormParams = localVarFormParams.append('ReceivingOpenTwentyFourHours', <any>receivingOpenTwentyFourHours) as any || localVarFormParams;
+        }
+        if (shippingOpenTwentyFourHours !== undefined) {
+            localVarFormParams = localVarFormParams.append('ShippingOpenTwentyFourHours', <any>shippingOpenTwentyFourHours) as any || localVarFormParams;
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (shipperContacts) {
+            shipperContacts.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('ShipperContacts', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -1524,10 +1701,10 @@ export class ShipperService {
         }
 
         let localVarPath = `/api/shipper`;
-        return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createShipperCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1538,14 +1715,40 @@ export class ShipperService {
     }
 
     /**
-     * @param updateShipperCommand 
+     * @param id 
+     * @param businessName 
+     * @param phone 
+     * @param phoneExt 
+     * @param email 
+     * @param addressCity 
+     * @param addressState 
+     * @param addressCounty 
+     * @param addressAddress 
+     * @param addressStreet 
+     * @param addressStreetNumber 
+     * @param addressCountry 
+     * @param addressZipCode 
+     * @param addressStateShortName 
+     * @param addressAddressUnit 
+     * @param receivingAppointment 
+     * @param receivingFrom 
+     * @param receivingTo 
+     * @param shippingAppointment 
+     * @param shippingFrom 
+     * @param shippingTo 
+     * @param receivingOpenTwentyFourHours 
+     * @param shippingOpenTwentyFourHours 
+     * @param note 
+     * @param shipperContacts 
+     * @param files 
+     * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiShipperPut(updateShipperCommand?: UpdateShipperCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiShipperPut(updateShipperCommand?: UpdateShipperCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiShipperPut(updateShipperCommand?: UpdateShipperCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiShipperPut(updateShipperCommand?: UpdateShipperCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiShipperPut(id?: number, businessName?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, receivingAppointment?: boolean, receivingFrom?: string, receivingTo?: string, shippingAppointment?: boolean, shippingFrom?: string, shippingTo?: string, receivingOpenTwentyFourHours?: boolean, shippingOpenTwentyFourHours?: boolean, note?: string, shipperContacts?: Array<ShipperContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiShipperPut(id?: number, businessName?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, receivingAppointment?: boolean, receivingFrom?: string, receivingTo?: string, shippingAppointment?: boolean, shippingFrom?: string, shippingTo?: string, receivingOpenTwentyFourHours?: boolean, shippingOpenTwentyFourHours?: boolean, note?: string, shipperContacts?: Array<ShipperContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiShipperPut(id?: number, businessName?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, receivingAppointment?: boolean, receivingFrom?: string, receivingTo?: string, shippingAppointment?: boolean, shippingFrom?: string, shippingTo?: string, receivingOpenTwentyFourHours?: boolean, shippingOpenTwentyFourHours?: boolean, note?: string, shipperContacts?: Array<ShipperContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiShipperPut(id?: number, businessName?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, receivingAppointment?: boolean, receivingFrom?: string, receivingTo?: string, shippingAppointment?: boolean, shippingFrom?: string, shippingTo?: string, receivingOpenTwentyFourHours?: boolean, shippingOpenTwentyFourHours?: boolean, note?: string, shipperContacts?: Array<ShipperContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1575,16 +1778,111 @@ export class ShipperService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            localVarFormParams = localVarFormParams.append('Id', <any>id) as any || localVarFormParams;
+        }
+        if (businessName !== undefined) {
+            localVarFormParams = localVarFormParams.append('BusinessName', <any>businessName) as any || localVarFormParams;
+        }
+        if (phone !== undefined) {
+            localVarFormParams = localVarFormParams.append('Phone', <any>phone) as any || localVarFormParams;
+        }
+        if (phoneExt !== undefined) {
+            localVarFormParams = localVarFormParams.append('PhoneExt', <any>phoneExt) as any || localVarFormParams;
+        }
+        if (email !== undefined) {
+            localVarFormParams = localVarFormParams.append('Email', <any>email) as any || localVarFormParams;
+        }
+        if (addressCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.City', <any>addressCity) as any || localVarFormParams;
+        }
+        if (addressState !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.State', <any>addressState) as any || localVarFormParams;
+        }
+        if (addressCounty !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.County', <any>addressCounty) as any || localVarFormParams;
+        }
+        if (addressAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Address', <any>addressAddress) as any || localVarFormParams;
+        }
+        if (addressStreet !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Street', <any>addressStreet) as any || localVarFormParams;
+        }
+        if (addressStreetNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StreetNumber', <any>addressStreetNumber) as any || localVarFormParams;
+        }
+        if (addressCountry !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Country', <any>addressCountry) as any || localVarFormParams;
+        }
+        if (addressZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.ZipCode', <any>addressZipCode) as any || localVarFormParams;
+        }
+        if (addressStateShortName !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StateShortName', <any>addressStateShortName) as any || localVarFormParams;
+        }
+        if (addressAddressUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.AddressUnit', <any>addressAddressUnit) as any || localVarFormParams;
+        }
+        if (receivingAppointment !== undefined) {
+            localVarFormParams = localVarFormParams.append('ReceivingAppointment', <any>receivingAppointment) as any || localVarFormParams;
+        }
+        if (receivingFrom !== undefined) {
+            localVarFormParams = localVarFormParams.append('ReceivingFrom', <any>receivingFrom) as any || localVarFormParams;
+        }
+        if (receivingTo !== undefined) {
+            localVarFormParams = localVarFormParams.append('ReceivingTo', <any>receivingTo) as any || localVarFormParams;
+        }
+        if (shippingAppointment !== undefined) {
+            localVarFormParams = localVarFormParams.append('ShippingAppointment', <any>shippingAppointment) as any || localVarFormParams;
+        }
+        if (shippingFrom !== undefined) {
+            localVarFormParams = localVarFormParams.append('ShippingFrom', <any>shippingFrom) as any || localVarFormParams;
+        }
+        if (shippingTo !== undefined) {
+            localVarFormParams = localVarFormParams.append('ShippingTo', <any>shippingTo) as any || localVarFormParams;
+        }
+        if (receivingOpenTwentyFourHours !== undefined) {
+            localVarFormParams = localVarFormParams.append('ReceivingOpenTwentyFourHours', <any>receivingOpenTwentyFourHours) as any || localVarFormParams;
+        }
+        if (shippingOpenTwentyFourHours !== undefined) {
+            localVarFormParams = localVarFormParams.append('ShippingOpenTwentyFourHours', <any>shippingOpenTwentyFourHours) as any || localVarFormParams;
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (shipperContacts) {
+            shipperContacts.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('ShipperContacts', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (filesForDeleteIds) {
+            filesForDeleteIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('FilesForDeleteIds', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -1599,10 +1897,10 @@ export class ShipperService {
         }
 
         let localVarPath = `/api/shipper`;
-        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: updateShipperCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
