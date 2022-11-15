@@ -127,9 +127,14 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
       case 'fuel-stop': {
         this.selectedFuelStop = event;
 
-        event
-          ? this.fuelStopForm.get('store').setValidators(Validators.required)
-          : this.fuelStopForm.get('store').clearValidators();
+        if (event) {
+          this.fuelStopForm
+            .get('store')
+            .setValidators([Validators.required, ...fuelStoreValidation]);
+          this.fuelStopForm.get('store').updateValueAndValidity();
+        } else {
+          this.fuelStopForm.get('store').clearValidators();
+        }
 
         break;
       }
@@ -227,10 +232,13 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(
         takeUntil(this.destroy$),
         switchMap((value: string) => {
-          return this.fuelService.checkFuelStopFranchise(
-            this.selectedFuelStop.id,
-            value
-          );
+          if (value) {
+            return this.fuelService.checkFuelStopFranchise(
+              this.selectedFuelStop.id,
+              value
+            );
+          }
+          return of(false);
         })
       )
       .subscribe((isTrue: boolean) => {
