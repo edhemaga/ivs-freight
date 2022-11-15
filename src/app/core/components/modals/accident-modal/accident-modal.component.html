@@ -1,7 +1,7 @@
 <app-ta-modal
   [modalTitle]="editData ? 'Edit Accident' : 'Add Accident'"
   [editData]="editData"
-  [editName]="editData?.id"
+  [editName]="accidentModalName"
   [isModalValid]="accidentForm.valid && isFormDirty"
   [customClass]="'modal-container-XL'"
   [disableDelete]="true"
@@ -293,6 +293,7 @@
                   dropdownWidthClass: 'w-col-100'
                 }"
                 [options]="labelsTrailerUnits"
+                [activeItem]="selectedTrailerUnit"
                 (selectedItem)="onSelectDropDown($event, 'trailer-unit')"
               ></app-ta-input-dropdown>
               <app-ta-input
@@ -401,6 +402,7 @@
                           textTransform: 'capitalize',
                           hideErrorMessage: true,
                           hideRequiredCheck: true,
+                          blackInput: true,
                           customClass: 'line-input-26-in-card'
                         }"
                       ></app-ta-input>
@@ -447,9 +449,11 @@
                         dropdownWidthClass: 'w-col-136',
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
+                        blackInput: true,
                         customClass: 'line-input-26-in-card'
                       }"
                       [options]="labelsInsuranceType"
+                      [activeItem]="selectedInsuranceType"
                       (selectedItem)="
                         onSelectDropDown($event, 'insurance-type', ind)
                       "
@@ -463,6 +467,7 @@
                         textTransform: 'capitalize',
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
+                        blackInput: true,
                         customClass: 'line-input-26-in-card'
                       }"
                     ></app-ta-input>
@@ -475,6 +480,7 @@
                         textTransform: 'capitalize',
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
+                        blackInput: true,
                         customClass: 'line-input-26-in-card'
                       }"
                     ></app-ta-input>
@@ -488,6 +494,7 @@
                         maxLength: 14,
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
+                        blackInput: true,
                         customClass: 'line-input-26-in-card'
                       }"
                     ></app-ta-input>
@@ -502,6 +509,7 @@
                         textTransform: 'lowercase',
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
+                        blackInput: true,
                         customClass: 'line-input-26-in-card'
                       }"
                     ></app-ta-input>
@@ -579,7 +587,8 @@
                   [inputConfig]="{
                     name: 'Roadway Trafficway',
                     type: 'text',
-                    label: 'Roadway Trafficway'
+                    label: 'Roadway Trafficway',
+                    isDisabled: true
                   }"
                 ></app-ta-input>
               </div>
@@ -589,7 +598,8 @@
                   [inputConfig]="{
                     name: 'Weather Condition',
                     type: 'text',
-                    label: 'Weather Condition'
+                    label: 'Weather Condition',
+                    isDisabled: true
                   }"
                 ></app-ta-input>
               </div>
@@ -601,7 +611,8 @@
                   [inputConfig]="{
                     name: 'Road Access Control',
                     type: 'text',
-                    label: 'Road Access Control'
+                    label: 'Road Access Control',
+                    isDisabled: true
                   }"
                 ></app-ta-input>
               </div>
@@ -611,7 +622,8 @@
                   [inputConfig]="{
                     name: 'Road Surface Condition',
                     type: 'text',
-                    label: 'Road Surface Condition'
+                    label: 'Road Surface Condition',
+                    isDisabled: true
                   }"
                 ></app-ta-input>
               </div>
@@ -621,7 +633,8 @@
                   [inputConfig]="{
                     name: 'Light Condition',
                     type: 'text',
-                    label: 'Light Condition'
+                    label: 'Light Condition',
+                    isDisabled: true
                   }"
                 ></app-ta-input>
               </div>
@@ -646,7 +659,7 @@
                 }"
               ></app-ta-input>
               <app-ta-input
-                formControlName="authorityPoliceOffice"
+                formControlName="policeOfficer"
                 [inputConfig]="{
                   name: 'Police Officer',
                   type: 'text',
@@ -654,7 +667,7 @@
                 }"
               ></app-ta-input>
               <app-ta-input
-                formControlName="authorityBadgeNumber"
+                formControlName="bagdeNo"
                 [inputConfig]="{
                   name: 'Badge Number',
                   type: 'text',
@@ -683,7 +696,7 @@
                 (selectedAddress)="onHandleAddress($event, 'address-authority')"
               ></app-input-address-dropdown>
               <app-ta-input
-                formControlName="authorityPhone"
+                formControlName="phoneOfficer"
                 [inputConfig]="{
                   name: 'Phone',
                   type: 'text',
@@ -694,7 +707,7 @@
                 }"
               ></app-ta-input>
               <app-ta-input
-                formControlName="authorityFax"
+                formControlName="fax"
                 [inputConfig]="{
                   name: 'Fax',
                   type: 'text',
@@ -717,7 +730,7 @@
             <div class="row">
               <div class="col-6">
                 <app-input-address-dropdown
-                  formControlName="shippingOriginLocation"
+                  formControlName="origin"
                   [inputConfig]="{
                     name: 'Address',
                     type: 'text',
@@ -735,7 +748,7 @@
               </div>
               <div class="col-6">
                 <app-input-address-dropdown
-                  formControlName="shippingDestinationLocation"
+                  formControlName="destination"
                   [inputConfig]="{
                     name: 'Address',
                     type: 'text',
@@ -756,7 +769,7 @@
             </div>
             <div class="violation-modal-location-shipping-row-3">
               <app-ta-input-dropdown
-                formControlName="shippingCustomer"
+                formControlName="customer"
                 [inputConfig]="{
                   name: 'Input Dropdown',
                   type: 'text',
@@ -764,11 +777,11 @@
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-273'
                 }"
-                [options]="labelsViolationCustomer"
+                [options]="labelsAccidentCustomer"
                 (selectedItem)="onSelectDropDown($event, 'shipping-customer')"
               ></app-ta-input-dropdown>
               <app-ta-input
-                formControlName="shippingBOL"
+                formControlName="boL"
                 [inputConfig]="{
                   name: 'BoL',
                   type: 'text',
@@ -776,7 +789,7 @@
                 }"
               ></app-ta-input>
               <app-ta-input
-                formControlName="shippingCargo"
+                formControlName="cargo"
                 [inputConfig]="{
                   name: 'Cargo',
                   type: 'text',
