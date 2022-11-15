@@ -436,7 +436,7 @@ export class ViolationTableComponent
         this.modalService.openModal(
           ViolationModalComponent,
           { size: 'large-xl' },
-          { id: 1, type: 'edit' }
+          { id: event.id, type: 'edit', data: event.data }
         );
       }
     }

@@ -41,6 +41,7 @@ import { AccidentActiveResolver } from './core/components/safety/accident/state/
 import { AccidentInactiveResolver } from './core/components/safety/accident/state/accident-state/accident-inactive/accident-inactive.resolver';
 import { AccidentNonReportedResolver } from './core/components/safety/accident/state/accident-state/accident-non-reported/accident-non-reported.resolver';
 import { ApplicantResolver } from './core/components/applicant/state/resolver/applicant.resolver';
+import { FuelResolver } from './core/components/fuel/state/fule-state/fuel-state.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -186,6 +187,9 @@ const routes: Routes = [
     loadChildren: () =>
       import('./core/components/fuel/fuel.module').then((m) => m.FuelModule),
     canActivate: [AuthGuard],
+    resolve: {
+      fuel: FuelResolver,
+    },
   },
   {
     path: 'owner',
@@ -360,9 +364,9 @@ const routes: Routes = [
   {
     path: 'accounting',
     loadChildren: () =>
-      import(
-        './core/components/accounting/accounting.module'
-      ).then((m) => m.AccountingModule),
+      import('./core/components/accounting/accounting.module').then(
+        (m) => m.AccountingModule
+      ),
     canActivate: [AuthGuard],
   },
   {

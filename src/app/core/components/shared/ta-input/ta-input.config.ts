@@ -36,7 +36,6 @@ export interface ITaInput {
   hideRequiredCheck?: boolean;
   hideErrorMessage?: boolean;
   thousandSeparator?: boolean; // type of input must be 'text'
-
   loadingSpinner?: {
     size?: string; // small, big
     color?: string; // black, gray, white, blueLight, blueDark

@@ -121,7 +121,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         nameDefault: 'Load',
         template: 'load',
         icon: true,
-        length: data?.loadStops?.length ? data.loadStops.length : 0,
+        // length: data?.loadStops?.length ? data.loadStops.length : 0,
         hide: true,
         hasArrow: true,
         customText: 'Date',

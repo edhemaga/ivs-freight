@@ -9,12 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DispatchShortResponse } from './dispatchShortResponse';
+import { LoadStopResponse } from './loadStopResponse';
 
 
-export interface FileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
+export interface LoadShipperDetailsResponse { 
+    id?: number;
+    loadNumber?: string | null;
+    dispatch?: DispatchShortResponse;
+    stops?: Array<LoadStopResponse> | null;
 }
 
