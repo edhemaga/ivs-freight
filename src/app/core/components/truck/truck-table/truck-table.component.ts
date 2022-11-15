@@ -18,7 +18,6 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { NotificationService } from '../../../services/notification/notification.service';
 import {
   closeAnimationAction,
   tableSearch,
@@ -61,7 +60,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private truckActiveQuery: TruckActiveQuery,
     private truckInactiveQuery: TruckInactiveQuery,
     private truckService: TruckTService,
-    private notificationService: NotificationService,
     private thousandSeparator: TaThousandSeparatorPipe,
     private confirmationService: ConfirmationService
   ) {}

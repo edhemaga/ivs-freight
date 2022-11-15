@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TruckResponse, TruckMinimalResponse } from 'appcoretruckassist';
+import { TruckResponse } from 'appcoretruckassist';
 import { Subject, take, takeUntil } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
@@ -15,8 +15,6 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TrucksDetailsListQuery } from '../state/truck-details-list-state/truck-details-list.query';
 import { TrucksMinimalListQuery } from '../state/truck-details-minima-list-state/truck-details-minimal.query';
 import { TrucksMinimalListStore } from '../state/truck-details-minima-list-state/truck-details-minimal.store';
-import { TruckDetailsQuery } from '../state/truck-details-state/truck.details.query';
-import { TruckItemStore } from '../state/truck-details-state/truck.details.store';
 import { TruckTService } from '../state/truck.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
@@ -52,8 +50,6 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     private dropService: DropDownService,
     private confirmationService: ConfirmationService,
     private truckMinimalListQuery: TrucksMinimalListQuery,
-    private truckItemStore: TruckItemStore,
-    private trq: TruckDetailsQuery,
     private truckMinimalStore: TrucksMinimalListStore,
     private DetailsDataService: DetailsDataService
   ) {}

@@ -11,7 +11,6 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
-import { NotificationService } from '../../../services/notification/notification.service';
 import { FormService } from '../../../services/form/form.service';
 import { AccidentTService } from '../../safety/accident/state/accident.service';
 import { AccidentResponse } from '../../../../../../appcoretruckassist/model/accidentResponse';
@@ -74,7 +73,6 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private notificationService: NotificationService,
     private modalService: ModalService,
     private formService: FormService,
     private accidentTService: AccidentTService

@@ -9,8 +9,6 @@ import {
 } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
 import { LoadMinimalListResponse } from '../../../../../../appcoretruckassist/model/loadMinimalListResponse';
-import { LoadDetailsListQuery } from './load-details-state/load-details-list-state/load-d-list.query';
-import { LoadDetailsListStore } from './load-details-state/load-details-list-state/load-d-list.store';
 import { LoadModalResponse } from '../../../../../../appcoretruckassist/model/loadModalResponse';
 import { CreateLoadCommand } from '../../../../../../appcoretruckassist/model/createLoadCommand';
 import { UpdateLoadCommand } from '../../../../../../appcoretruckassist/model/updateLoadCommand';
@@ -21,9 +19,7 @@ import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/
 })
 export class LoadTService {
   constructor(
-    private loadServices: LoadService,
-    private ldlStore: LoadDetailsListStore,
-    private ldlQuery: LoadDetailsListQuery
+    private loadServices: LoadService
   ) {}
 
   // Get Load List
