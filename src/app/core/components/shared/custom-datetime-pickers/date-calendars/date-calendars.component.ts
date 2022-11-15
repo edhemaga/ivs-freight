@@ -1,6 +1,5 @@
 import { CalendarScrollService } from './../calendar-scroll.service';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import calendarJson from '../../../../../../assets/calendarjson/calendar.json';
 
 import { RANGE, STARTING_YEAR } from './calendar_strategy';
 import { Subject, Subscription, takeUntil } from 'rxjs';
@@ -67,18 +66,7 @@ export class DateCalendarsComponent implements OnInit {
     'November',
     'December',
   ];
-  calendarData: any = calendarJson;
-  calendarYears: any[] = Object.keys(calendarJson);
   selectedYear: any;
-
-  // @ViewChild("monthsScrollRef", { static: true })
-  // public virtualScrollViewport: CdkVirtualScrollViewport;
-
-  // @ViewChild(CdkVirtualScrollViewport)
-  // set monthsScrollRef(monthsScrollRef: CdkVirtualScrollViewport) {
-
-  // }
-
   scrollTodayDate: boolean;
   selectedMonth: any;
   private activeMonth = 0;
@@ -111,16 +99,6 @@ export class DateCalendarsComponent implements OnInit {
     this.activeMonth = month;
   }
 
-  ngAfterViewChecked() {
-    // console.log(this.virtualScrollViewport);
-    // if( !this.scrollTodayDate ){
-    //   this.scrollTodayDate = true;
-    //   setTimeout(() =>{
-    //     this.virtualScrollViewport.scrollToIndex(100);
-    //   }, 200);
-    // }
-  }
-
   getMonth(index: number): string {
     return MONTHS[index];
   }
@@ -128,34 +106,19 @@ export class DateCalendarsComponent implements OnInit {
   public setListPreview(): void {
     if (this.listPreview === 'full_list') {
       this.setListPreviewValue.emit('month_list');
-      console.log("CLICK ON SET PREVIEW --------------");
-      console.log(Math.floor(this.activeIndex / 12));
       this.calendarService.setAutoIndex = Math.floor(this.activeIndex / 12);
     }
   }
 
   public setListPreviewToFull(num) {
     this.setListPreviewValue.emit('full_list');
-    console.log(this.activeIndex);
-    console.log(num);
-    console.log(this.activeIndex * 12 + num);
     this.calendarService.setAutoIndex = this.activeIndex * 12 + num;
-  }
-
-  public scrollToDate(): void {
-    setTimeout(() => {
-      //this.virtualScrollViewport.scrollToIndex(this.currentIndex);
-    });
   }
 
   public selectCurrentDay() {
     const new_date = moment(new Date()).format();
     this.calendarService.dateChanged.next(new_date);
     this.setListPreviewValue.emit('full_list');
-  }
-
-  public scrollIndexChange(e): void {
-    console.log(e);
   }
 
   ngOnDestroy() {

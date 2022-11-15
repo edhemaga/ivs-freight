@@ -9,7 +9,6 @@ import {
 import { Observable, of } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
 import { TruckTService } from '../truck.service';
-import { TruckDetailsQuery } from './truck.details.query';
 import { TruckItemState, TruckItemStore } from './truck.details.store';
 import { TrucksDetailsListQuery } from '../truck-details-list-state/truck-details-list.query';
 import { TrucksDetailsListStore } from '../truck-details-list-state/truck-details-list.store';

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { catchError, tap, take } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { ShipperTService } from '../../shipper.service';
 import { ShipperMinimalListStore } from './shipper-minimal.store';
 

@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, mergeMap } from 'rxjs';
 import { scrollButtonAnimation } from './app.component.animation';
+import { GpsServiceService } from './global/services/gps-service.service';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +19,9 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     public titleService: Title,
-    private activatedRoute: ActivatedRoute
-  ) { }
+    private activatedRoute: ActivatedRoute,
+    private gpsService: GpsServiceService
+  ) {}
 
   ngOnInit() {
     this.router.events

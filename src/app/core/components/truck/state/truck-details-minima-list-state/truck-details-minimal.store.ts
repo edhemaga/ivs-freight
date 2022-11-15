@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { TruckResponse, TruckMinimalResponse } from 'appcoretruckassist';
+import { TruckMinimalResponse } from 'appcoretruckassist';
 
 export interface TruckMinimalListState
   extends EntityState<TruckMinimalResponse, number> {}

@@ -154,7 +154,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private inputServiceReset: TaInputResetService,
     private driverTService: DriverTService,
     private notificationService: NotificationService,
     private modalService: ModalService,

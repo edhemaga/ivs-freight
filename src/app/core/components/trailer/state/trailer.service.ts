@@ -214,9 +214,9 @@ export class TrailerTService implements OnDestroy {
   }
 
   public deleteTrailerList(trailerToDelete: any[]): Observable<any> {
-    let deleteOnBack = trailerToDelete.map((trailer: any) => {
-      return trailer.id;
-    });
+    // let deleteOnBack = trailerToDelete.map((trailer: any) => {
+    //   return trailer.id;
+    // });
 
     // return this.trailerService.apiTrailerListDelete({ ids: deleteOnBack }).pipe(
     //   tap(() => {

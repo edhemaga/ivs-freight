@@ -20,7 +20,6 @@ import { DispatchBoardLocalResponse } from '../state/dispatcher.model';
 import { DispatcherStoreService } from '../state/dispatcher.service';
 import {
   CreateDispatchCommand,
-  DispatchResponse,
   SwitchDispatchCommand,
   UpdateDispatchCommand,
 } from 'appcoretruckassist';
@@ -513,7 +512,7 @@ export class DispatchboardTablesComponent implements OnInit {
       ? JSON.parse(JSON.stringify(this.dData.dispatches[index]))
       : {};
 
-    const dataId = oldData.id;
+    //const dataId = oldData.id;
     let oldUpdateData: CreateDispatchCommand | UpdateDispatchCommand = {
       status: oldData.status
         ? (oldData.status?.statusValue.name as DispatchStatus)
