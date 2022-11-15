@@ -15,6 +15,7 @@ export * from './accountColorResponse';
 export * from './activateDeactivateEFSFuelCard';
 export * from './addApplicantToFavouriteCommand';
 export * from './addFuelCardCommand';
+export * from './addFuelStopCommand';
 export * from './addFuelTransactionCommand';
 export * from './addressEntity';
 export * from './addressListResponse';
