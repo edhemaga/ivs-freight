@@ -47,21 +47,21 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
     trigger('showAnimation', [
       transition(':enter', [
         style({ height: '10px', overflow: 'hidden', }),
-        animate('1000ms cubic-bezier(0, 0, 0.60, 1.99)', style({ height: '26px', overflow: 'auto',})),
+        animate('200ms cubic-bezier(0, 0, 0.60, 1.99)', style({ height: '26px', overflow: 'auto',})),
       ]),
       transition(':leave', [animate('300ms cubic-bezier(0.68, -0.6, 0.32, 1.6)', style({ height: 0 }))]),
     ]),
     trigger('hideAnimation', [
       transition(':enter', [
         style({ height: '26px', overflow: 'hidden', }),
-        animate('3000ms ease', style({ height: '10px', overflow: 'auto',})),
+        animate('200ms ease', style({ height: '10px', overflow: 'auto',})),
       ]),
       transition(':leave', [animate('300ms ease', style({ height: 0 }))]),
     ]),
     trigger('borderShowAnimation', [
       transition(':enter', [
         style({ height: '0px', opacity: 0 }),
-        animate('300ms ease', style({ height: '*', opacity: 1 })),
+        animate('200ms ease', style({ height: '*', opacity: 1 })),
       ]),
       transition(':leave', [animate('300ms ease', style({ height: 0 }))]),
     ]),
@@ -198,7 +198,7 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
       this.options.map((item) => {
         item['openSubtype'] = false;
       });
-    }, 1200)
+    }, 200)
     
   }
 

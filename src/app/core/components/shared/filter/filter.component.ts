@@ -102,18 +102,31 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
     ])
   ]),
   trigger('showAnimation', [
-    transition(':enter', [
-      style({ height: '10px', overflow: 'hidden', }),
-      animate('300ms ease', style({ height: '28px', overflow: 'auto',})),
-    ]),
-    transition(':leave', [animate('300ms ease', style({ height: 0 }))]),
-  ]),
-  trigger('borderShowAnimation', [
-    transition(':enter', [
-      style({ height: '0px', opacity: 0 }),
-      animate('300ms ease', style({ height: '*', opacity: 1 })),
-    ]),
-    transition(':leave', [animate('300ms ease', style({ height: 0 }))]),
+    state(
+      'true',
+      style({
+        height: '*',
+        overflow: 'auto',
+        opacity: 1,
+      })
+    ),
+    state(
+      'false',
+      style({
+        height: '10px',
+        overflow: 'hidden',
+        opacity: '0.5',
+      })
+    ),
+    state(
+      'null',
+      style({
+        height: '0px',
+        overflow: 'hidden'
+      })
+    ),
+    transition('false <=> true', [animate('200ms cubic-bezier(0, 0, 0.60, 1.99)')]),
+    transition('true <=> false', [animate('200ms ease')]), 
   ]),
 ],
 })
@@ -1182,6 +1195,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
   @Output() setFilter = new EventEmitter<any>();
 
   resizeObserver: ResizeObserver;
+
+  isAnimated: any = false;
 
   constructor(private formBuilder: FormBuilder, private thousandSeparator: TaThousandSeparatorPipe,private elementRef: ElementRef, private cdRef: ChangeDetectorRef) {}
 
@@ -2377,7 +2392,36 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   onFilterClose(){
-      this.activeFilter = false;
+
+    if ( !this.activeFilter ) {
+      return false;
+    }
+
+    if ( this.isAnimated ) {
+      this.isAnimated = true;
+      this.cdRef.detectChanges(); 
+      this.autoClose.tooltip.open();
+    }
+
+    this.activeFilter = false;
+
+    let mainElementHolder; 
+
+    if ( this.type == 'timeFilter' ){
+      mainElementHolder = document.querySelector('.time-filter-holder'); 
+    } else {
+      mainElementHolder = document.querySelector('.filter-holder'); 
+    }
+
+    mainElementHolder?.classList.add('closeFilterAnimation');
+    
+     
+    setTimeout(()=>{
+        this.isAnimated = false;
+        this.autoClose.tooltip.close();
+        mainElementHolder?.classList.remove('closeFilterAnimation');
+      }, 190) 
+  
       if ( this.defFilterHolder && this.type != 'stateFilter'){
         
         let mainArray: any[] = [];
@@ -2477,6 +2521,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   onFilterShown(){
     this.activeFilter = true;
+    this.isAnimated = true;
       let filterSearchHead = document.querySelector('.search-input-header');
       let filterTextHead = document.querySelector('.filter-text-part');
       filterSearchHead?.classList.remove('activeSearch');
