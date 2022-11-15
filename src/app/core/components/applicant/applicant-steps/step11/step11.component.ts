@@ -169,12 +169,14 @@ export class Step11Component implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    if (this.authorizationForm.invalid) {
-      this.inputService.markInvalid(this.authorizationForm);
-      return;
-    }
+    if (this.authorizationForm.invalid || !this.signature) {
+      if (this.authorizationForm.invalid) {
+        this.inputService.markInvalid(this.authorizationForm);
+      }
 
-    if (!this.signature) {
+      /*  if (!this.signature) {
+      } */
+
       return;
     }
 

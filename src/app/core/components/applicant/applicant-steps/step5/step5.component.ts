@@ -666,23 +666,28 @@ export class Step5Component implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    if (this.formStatus === 'INVALID') {
-      this.markFormInvalid = true;
-      return;
-    }
+    if (
+      this.notBeenConvictedForm.invalid ||
+      this.onlyOneHoldLicenseForm.invalid ||
+      this.certifyForm.invalid ||
+      this.formStatus === 'INVALID'
+    ) {
+      if (this.formStatus === 'INVALID') {
+        this.markFormInvalid = true;
+      }
 
-    if (this.notBeenConvictedForm.invalid) {
-      this.inputService.markInvalid(this.notBeenConvictedForm);
-      return;
-    }
+      if (this.notBeenConvictedForm.invalid) {
+        this.inputService.markInvalid(this.notBeenConvictedForm);
+      }
 
-    if (this.onlyOneHoldLicenseForm.invalid) {
-      this.inputService.markInvalid(this.onlyOneHoldLicenseForm);
-      return;
-    }
+      if (this.onlyOneHoldLicenseForm.invalid) {
+        this.inputService.markInvalid(this.onlyOneHoldLicenseForm);
+      }
 
-    if (this.certifyForm.invalid) {
-      this.inputService.markInvalid(this.certifyForm);
+      if (this.certifyForm.invalid) {
+        this.inputService.markInvalid(this.certifyForm);
+      }
+
       return;
     }
 

@@ -1193,14 +1193,14 @@ export class Step6Component implements OnInit, OnDestroy {
       }
     }
 
-    if (this.educationForm.invalid) {
-      this.inputService.markInvalid(this.educationForm);
+    if (this.educationForm.invalid || this.formStatus === 'INVALID') {
+      if (this.educationForm.invalid) {
+        this.inputService.markInvalid(this.educationForm);
+      }
 
-      return;
-    }
-
-    if (this.formStatus === 'INVALID') {
-      this.markFormInvalid = true;
+      if (this.formStatus === 'INVALID') {
+        this.markFormInvalid = true;
+      }
 
       return;
     }
@@ -1310,7 +1310,8 @@ export class Step6Component implements OnInit, OnDestroy {
     const {
       questionReview1,
       questionReview2,
-      questionReview4
+      questionReview4,
+      questionReview5,
     } = this.educationForm.value;
 
     const lastItemReview =
@@ -1406,61 +1407,3 @@ export class Step6Component implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 }
-
-/*
-
-    this.contactForm = this.formBuilder.group({
-      cardReview1: [null],
-      cardReview2: [null],
-      cardReview3: [null],
-      cardReview4: [null],
-      cardReview5: [null],
-      cardReview6: [null],
-      cardReview7: [null],
-      cardReview8: [null],
-      cardReview9: [null],
-      cardReview10: [null],
-    }); */
-
-/* public openAnnotationArray: {
-    lineIndex?: number;
-    lineInputs?: boolean[];
-    displayAnnotationButton?: boolean;
-    displayAnnotationTextArea?: boolean;
-  }[] = [
-    {
-      lineIndex: 0,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 1,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 2,
-      lineInputs: [false, false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 3,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-  ]; */

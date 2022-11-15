@@ -135,12 +135,15 @@ export class SphComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    if (this.sphForm.invalid) {
-      this.inputService.markInvalid(this.sphForm);
-      return;
-    }
+    if (this.sphForm.invalid || !this.signature) {
+      if (this.sphForm.invalid) {
+        this.inputService.markInvalid(this.sphForm);
+      }
 
-    if (!this.signature) {
+      /* if (!this.signature) {
+        
+      } */
+
       return;
     }
 

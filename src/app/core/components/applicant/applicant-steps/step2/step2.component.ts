@@ -912,13 +912,15 @@ export class Step2Component implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    if (this.formStatus === 'INVALID') {
-      this.markFormInvalid = true;
-      return;
-    }
+    if (this.formStatus === 'INVALID' || this.innerFormStatus === 'INVALID') {
+      if (this.formStatus === 'INVALID') {
+        this.markFormInvalid = true;
+      }
 
-    if (this.innerFormStatus === 'INVALID') {
-      this.markInnerFormInvalid = true;
+      if (this.innerFormStatus === 'INVALID') {
+        this.markInnerFormInvalid = true;
+      }
+
       return;
     }
 

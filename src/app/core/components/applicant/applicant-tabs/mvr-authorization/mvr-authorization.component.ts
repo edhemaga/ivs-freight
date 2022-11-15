@@ -290,12 +290,15 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    if (this.mvrAuthorizationForm.invalid) {
-      this.inputService.markInvalid(this.mvrAuthorizationForm);
-      return;
-    }
+    if (this.mvrAuthorizationForm.invalid || !this.signature) {
+      if (this.mvrAuthorizationForm.invalid) {
+        this.inputService.markInvalid(this.mvrAuthorizationForm);
+      }
 
-    if (!this.signature) {
+      /* if (!this.signature) {
+        
+      } */
+
       return;
     }
 

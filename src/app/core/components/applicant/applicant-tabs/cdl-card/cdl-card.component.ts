@@ -1,12 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
 import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
+
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { ApplicantResponse } from 'appcoretruckassist';
@@ -52,7 +58,11 @@ export class CdlCardComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private inputService: TaInputService
+    private inputService: TaInputService,
+    private router: Router,
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery,
+    private applicantActionsService: ApplicantActionsService
   ) {}
 
   ngOnInit(): void {

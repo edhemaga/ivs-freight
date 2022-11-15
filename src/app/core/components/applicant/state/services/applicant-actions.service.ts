@@ -6,8 +6,6 @@ import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 import { ApplicantService } from '../../../../../../../appcoretruckassist';
 
-import { ApplicantSphFormStore } from '../store/applicant-sph-form-store/applicant-sph-form.store';
-
 import {
   VerifyApplicantCommand,
   CreateDisclosureReviewCommand,
@@ -59,10 +57,7 @@ import {
   providedIn: 'root',
 })
 export class ApplicantActionsService {
-  constructor(
-    private applicantService: ApplicantService,
-    private applicantSphFormStore: ApplicantSphFormStore
-  ) {}
+  constructor(private applicantService: ApplicantService) {}
 
   /* BACKEND POST ACTION FUNCTIONS -  APPLICANT MODE */
 

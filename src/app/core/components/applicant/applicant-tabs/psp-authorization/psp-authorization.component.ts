@@ -149,12 +149,15 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    if (this.pspAuthorizationForm.invalid) {
-      this.inputService.markInvalid(this.pspAuthorizationForm);
-      return;
-    }
+    if (this.pspAuthorizationForm.invalid || !this.signature) {
+      if (this.pspAuthorizationForm.invalid) {
+        this.inputService.markInvalid(this.pspAuthorizationForm);
+      }
 
-    if (!this.signature) {
+      /*  if (!this.signature) {
+        
+      } */
+
       return;
     }
 

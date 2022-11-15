@@ -1632,6 +1632,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     const {
       firstRowReview,
       secondRowReview,
+      thirdRowReview,
       fourthRowReview,
       questionReview1,
       questionReview2,
