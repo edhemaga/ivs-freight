@@ -16,6 +16,7 @@ import { AccidentTService } from '../../safety/accident/state/accident.service';
 import { AccidentResponse } from '../../../../../../appcoretruckassist/model/accidentResponse';
 import { convertDateFromBackend } from '../../../utils/methods.calculations';
 import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-accident-modal',
@@ -75,7 +76,8 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private formService: FormService,
-    private accidentTService: AccidentTService
+    private accidentTService: AccidentTService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
