@@ -4,12 +4,10 @@ import { DispatchSortService } from './../../../services/dispatchboard/dispatchs
 import { SignalRService } from './../../../services/dispatchboard/app-signalr.service';
 /// <reference types="@types/googlemaps" />
 import {
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   HostListener,
   Input,
-  NgZone,
   OnChanges,
   OnInit,
   Output,
@@ -236,8 +234,6 @@ export class AppDispatcherTableNewComponent implements OnInit, OnChanges {
     private signalRService: SignalRService,
     public sortService: DispatchSortService,
     private toastr: ToastrService,
-    private zone: NgZone,
-    private changes: ChangeDetectorRef,
     private searchDateService: SearchDataService,
     public dispatcherStoreService: DispatcherStoreService
   ) {}
@@ -1048,10 +1044,10 @@ export class AppDispatcherTableNewComponent implements OnInit, OnChanges {
   }
 
   openAddLoad(item: any) {
-    const data = {
-      truckNumber: item.truckNumber,
-      dispatchBoardId: item.id,
-    };
+    // const data = {
+    //   truckNumber: item.truckNumber,
+    //   dispatchBoardId: item.id,
+    // };
   }
 
   addDispatchItem(event, item, isTrue?, dispatchId?) {
@@ -1093,22 +1089,22 @@ export class AppDispatcherTableNewComponent implements OnInit, OnChanges {
   }
 
   addLoad() {
-    const data = {
-      type: 'new',
-      id: null,
-    };
+    // const data = {
+    //   type: 'new',
+    //   id: null,
+    // };
   }
 
   removeItem(id: number, item: any, ev?: any) {
-    const data = {
-      name: 'delete',
-      type: 'remove-item',
-      item,
-      text: null,
-      category: 'remove item',
-      id,
-      index: this.gridIndex,
-    };
+    // const data = {
+    //   name: 'delete',
+    //   type: 'remove-item',
+    //   item,
+    //   text: null,
+    //   category: 'remove item',
+    //   id,
+    //   index: this.gridIndex,
+    // };
   }
 
   dropDriver(event: CdkDragDrop<string[]>, rowIndex) {
@@ -1455,8 +1451,6 @@ export class AppDispatcherTableNewComponent implements OnInit, OnChanges {
     const minutes = maxValue - minValue;
     const m = minutes % 60;
     const h = (minutes - m) / 60;
-    const suffix = h >= 12 ? 'PM' : 'AM';
-    const formatedH = h > 12 ? h - 12 : h;
     return h.toString() + ':' + (m < 10 ? '0' : '') + m.toString();
   }
 

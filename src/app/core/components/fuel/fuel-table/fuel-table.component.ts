@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Subject, takeUntil, Observable } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -10,9 +10,7 @@ import {
 } from '../../../../../assets/utils/settings/accounting-fuel-columns';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { AfterViewInit } from '@angular/core';
-import { tableSearch } from 'src/app/core/utils/methods.globals';
 import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
-import { FuelState } from '../state/fule-state/fuel-state.store';
 import { FuelQuery } from '../state/fule-state/fuel-state.query';
 import {
   FuelStopListResponse,

@@ -1,6 +1,5 @@
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
-  ChangeDetectorRef,
   Component,
   Input,
   OnInit,
@@ -81,8 +80,7 @@ export class DispatcherHistoryComponent implements OnInit {
 
   constructor(
     private activeModal: NgbActiveModal,
-    private loadService: AppLoadService,
-    private changeRef: ChangeDetectorRef
+    private loadService: AppLoadService
   ) {}
 
   ngAfterViewInit(): void {}

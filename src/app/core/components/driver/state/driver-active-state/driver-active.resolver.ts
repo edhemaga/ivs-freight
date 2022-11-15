@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { DriverListResponse, TableConfigResponse } from 'appcoretruckassist';
-import { nextTick } from 'process';
-import { forkJoin, Observable, of } from 'rxjs';
+import { DriverListResponse } from 'appcoretruckassist';
+import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriverTService } from '../driver.service';
 import { DriversActiveState, DriversActiveStore } from './driver-active.store';
 
@@ -14,8 +12,7 @@ import { DriversActiveState, DriversActiveStore } from './driver-active.store';
 export class DriverActiveResolver implements Resolve<DriversActiveState> {
   constructor(
     private driverService: DriverTService,
-    private store: DriversActiveStore,
-    private tableService: TruckassistTableService
+    private store: DriversActiveStore
   ) {}
 
   resolve(): Observable<DriversActiveState | boolean> {

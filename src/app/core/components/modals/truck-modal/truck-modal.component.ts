@@ -10,7 +10,6 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';

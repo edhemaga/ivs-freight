@@ -1,5 +1,4 @@
 import { ShipperItemStore } from './shipper-details.store';
-import { ShipperDetailsQuery } from './shipper.details.query';
 import { ShipperResponse } from './../../../../../../../../appcoretruckassist/model/shipperResponse';
 
 import { Injectable } from '@angular/core';
@@ -16,7 +15,6 @@ import { ShipperDetailsListStore } from './shipper-details-list-state/shipper-de
 export class ShipperSingleResolver implements Resolve<ShipperResponse[]> {
   constructor(
     private shipperService: ShipperTService,
-    private shipperDetailsQuery: ShipperDetailsQuery,
     private shipperDetailsStore: ShipperItemStore,
     private router: Router,
     private sls: ShipperDetailsListStore,

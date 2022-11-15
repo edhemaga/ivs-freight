@@ -72,6 +72,7 @@ model/accountColorResponse.ts
 model/activateDeactivateEFSFuelCard.ts
 model/addApplicantToFavouriteCommand.ts
 model/addFuelCardCommand.ts
+model/addFuelStopCommand.ts
 model/addFuelTransactionCommand.ts
 model/addressEntity.ts
 model/addressListResponse.ts

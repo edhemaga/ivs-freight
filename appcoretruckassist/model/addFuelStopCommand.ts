@@ -14,6 +14,7 @@ import { AddressEntity } from './addressEntity';
 
 export interface AddFuelStopCommand { 
     businessName?: string | null;
+    fuelStopFranchiseId?: number | null;
     store?: string | null;
     phone?: string | null;
     fax?: string | null;

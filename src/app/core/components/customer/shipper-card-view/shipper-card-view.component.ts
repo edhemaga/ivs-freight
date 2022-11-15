@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ShipperMinimalListQuery } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
-import { ShipperQuery } from '../state/shipper-state/shipper.query';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 
 @Component({
@@ -25,7 +24,6 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
   public note: FormControl = new FormControl();
   public shipperTabs: any[] = [];
   constructor(
-    private shipperQuery: ShipperQuery,
     private detailsPageDriverSer: DetailsPageService,
     private shipperMinimalListQuery: ShipperMinimalListQuery
   ) {}

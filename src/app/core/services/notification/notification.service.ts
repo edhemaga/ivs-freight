@@ -1,7 +1,7 @@
 import { HttpHandler, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService, IndividualConfig } from 'ngx-toastr';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 const notificationOptions: Partial<IndividualConfig> = {
   progressBar: false,
@@ -21,7 +21,6 @@ const notificationOptions: Partial<IndividualConfig> = {
 export class NotificationService {
   constructor(
     public toastr: ToastrService,
-    private router: Router,
     private activated_route: ActivatedRoute
   ) {}
 

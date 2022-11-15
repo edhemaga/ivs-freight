@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -8,7 +9,6 @@ import { convertDateFromBackend } from './../../../../utils/methods.calculations
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
-4;
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 import { ApplicantStore } from '../../state/store/applicant.store';

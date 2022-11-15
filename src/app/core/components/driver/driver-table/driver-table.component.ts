@@ -13,7 +13,7 @@ import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-mo
 
 import { DriversInactiveState } from '../state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
-import { DriverListResponse, TableConfigResponse } from 'appcoretruckassist';
+import { DriverListResponse } from 'appcoretruckassist';
 
 import {
   Confirmation,

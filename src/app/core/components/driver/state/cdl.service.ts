@@ -9,7 +9,7 @@ import {
   GetCdlModalResponse,
 } from 'appcoretruckassist';
 /* import { CreateCdlResponse } from 'appcoretruckassist/model/createCdlResponse'; */
-import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';

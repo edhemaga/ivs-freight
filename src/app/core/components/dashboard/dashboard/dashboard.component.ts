@@ -1,5 +1,4 @@
-import { HttpClient } from '@angular/common/http';
-import { map, takeUntil, takeWhile } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,13 +6,11 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { Observable, Subject, interval, merge, combineLatest } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { DashboardService } from '../../../services/dashboard/dashboard.service';
 import { SharedService } from '../../../services/shared/shared.service';
 import { DashboardStats } from '../state/dashboard.model';
-import { DashboardStoreService } from '../state/dashboard.service';
-import { DashboardQuery } from '../state/dashboard.query';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
 
@@ -172,12 +169,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private dashboardStoreService: DashboardStoreService,
-    private dashboardQuery: DashboardQuery,
     private dashboardService: DashboardService,
     private sharedService: SharedService,
-    private route: ActivatedRoute,
-    private http: HttpClient
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {

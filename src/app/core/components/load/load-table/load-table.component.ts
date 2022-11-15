@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { tableSearch } from 'src/app/core/utils/methods.globals';
 import { LoadModalComponent } from '../../modals/load-modal/load-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import {
@@ -150,12 +149,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: any[]) => {
         if (response.length) {
-          let mappedRes = response.map((item) => {
-            return {
-              id: item.id,
-              data: { ...item.tableData, name: item.tableData?.fullName },
-            };
-          });
+          // let mappedRes = response.map((item) => {
+          //   return {
+          //     id: item.id,
+          //     data: { ...item.tableData, name: item.tableData?.fullName },
+          //   };
+          // });
           /* this.modalService.openModal(
             ConfirmationModalComponent,
             { size: 'small' },

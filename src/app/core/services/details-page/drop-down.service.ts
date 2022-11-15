@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
 import { DriverCdlModalComponent } from '../../components/modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../../components/modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../../components/modals/driver-modal/driver-medical-modal/driver-medical-modal.component';

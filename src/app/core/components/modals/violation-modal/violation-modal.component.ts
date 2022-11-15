@@ -21,7 +21,6 @@ import {
   convertDateFromBackend,
   convertDateToBackend,
 } from '../../../utils/methods.calculations';
-import moment from 'moment';
 import { AccidentTService } from '../../safety/accident/state/accident.service';
 import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';
 
@@ -270,21 +269,6 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public addViolation(data: {
-    code: string;
-    category: string;
-    unit: string;
-    sw: string;
-    oos: boolean;
-    sms: boolean;
-    description: string;
-    extraDescription: string;
-    basic: string;
-    reason: string;
-  }) {
-    this.violations.push(this.createViolation(data));
-  }
-
   public onHandleAddress(
     event: {
       address: AddressEntity | any;
@@ -494,6 +478,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             'Success',
             'Successfully update roadside.'
           );
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: (err: any) => {
           this.notificationService.error('Error', err);

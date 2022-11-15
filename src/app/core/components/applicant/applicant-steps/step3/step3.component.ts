@@ -31,10 +31,8 @@ import {
   ApplicantModalResponse,
   ApplicantResponse,
   CdlEndorsementResponse,
-  CdlFeedbackResponse,
   CdlRestrictionResponse,
   CountryType,
-  CreateApplicantCdlCommand,
   CreateApplicantCdlReviewCommand,
   EnumValue,
 } from 'appcoretruckassist/model/models';
