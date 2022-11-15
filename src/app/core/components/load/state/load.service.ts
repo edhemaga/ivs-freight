@@ -53,18 +53,18 @@ export class LoadTService {
       status,
       dispatcherId,
       dispatchId,
-      brokerId,
-      dateFrom,
-      dateTo,
-      revenueFrom,
-      revenueTo,
-      pageIndex,
-      pageSize,
-      companyId,
-      sort,
-      search,
-      search1,
-      search2
+      brokerId
+      // // dateFrom,
+      // dateTo,
+      // revenueFrom,
+      // revenueTo,
+      // pageIndex,
+      // pageSize,
+      // companyId,
+      // sort,
+      // search,
+      // search1,
+      // search2
     );
   }
   //Get Load minimal list

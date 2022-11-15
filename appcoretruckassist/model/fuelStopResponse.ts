@@ -17,6 +17,7 @@ import { FuelStopFranchiseMinimalResponse } from './fuelStopFranchiseMinimalResp
 
 export interface FuelStopResponse { 
     id?: number;
+    companyId?: number | null;
     fuelStopFranchise?: FuelStopFranchiseMinimalResponse;
     businessName?: string | null;
     store?: string | null;

@@ -2,16 +2,17 @@ import { Injectable } from '@angular/core';
 import {
   AccidentListResponse,
   AccidentResponse,
-  /* AccidentService, */
+  AccidentService,
   CreateResponse,
 } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
+import { AccidentModalResponse } from '../../../../../../../appcoretruckassist/model/accidentModalResponse';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccidentTService {
-  constructor(private accidentService: /* AccidentService */ any) {}
+  constructor(private accidentService: AccidentService) {}
 
   // Get Accident List
   public getAccidentList(
@@ -73,5 +74,9 @@ export class AccidentTService {
 
   public getAccidentById(id: number): Observable<AccidentResponse> {
     return this.accidentService.apiAccidentIdGet(id);
+  }
+
+  public getModalDropdowns(): Observable<AccidentModalResponse> {
+    return this.accidentService.apiAccidentModalGet();
   }
 }

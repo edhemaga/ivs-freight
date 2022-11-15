@@ -35,6 +35,8 @@ import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
 import { ShipperListResponse } from '../model/shipperListResponse';
 // @ts-ignore
+import { ShipperLoadsResponse } from '../model/shipperLoadsResponse';
+// @ts-ignore
 import { ShipperMinimalListResponse } from '../model/shipperMinimalListResponse';
 // @ts-ignore
 import { ShipperModalResponse } from '../model/shipperModalResponse';
@@ -1169,6 +1171,161 @@ export class ShipperService {
 
         let localVarPath = `/api/shipper/listmap`;
         return this.httpClient.request<ShipperListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param loadType 
+     * @param statusType 
+     * @param status 
+     * @param dispatcherId 
+     * @param dispatchId 
+     * @param brokerId 
+     * @param shipperId 
+     * @param dateFrom 
+     * @param dateTo 
+     * @param revenueFrom 
+     * @param revenueTo 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param companyId 
+     * @param sort 
+     * @param search 
+     * @param search1 
+     * @param search2 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiShipperLoadsGet(loadType?: number, statusType?: number, status?: number, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<ShipperLoadsResponse>;
+    public apiShipperLoadsGet(loadType?: number, statusType?: number, status?: number, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<ShipperLoadsResponse>>;
+    public apiShipperLoadsGet(loadType?: number, statusType?: number, status?: number, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<ShipperLoadsResponse>>;
+    public apiShipperLoadsGet(loadType?: number, statusType?: number, status?: number, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (loadType !== undefined && loadType !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>loadType, 'LoadType');
+        }
+        if (statusType !== undefined && statusType !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>statusType, 'StatusType');
+        }
+        if (status !== undefined && status !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>status, 'Status');
+        }
+        if (dispatcherId !== undefined && dispatcherId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dispatcherId, 'DispatcherId');
+        }
+        if (dispatchId !== undefined && dispatchId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dispatchId, 'DispatchId');
+        }
+        if (brokerId !== undefined && brokerId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>brokerId, 'BrokerId');
+        }
+        if (shipperId !== undefined && shipperId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>shipperId, 'ShipperId');
+        }
+        if (dateFrom !== undefined && dateFrom !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dateFrom, 'DateFrom');
+        }
+        if (dateTo !== undefined && dateTo !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dateTo, 'DateTo');
+        }
+        if (revenueFrom !== undefined && revenueFrom !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>revenueFrom, 'RevenueFrom');
+        }
+        if (revenueTo !== undefined && revenueTo !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>revenueTo, 'RevenueTo');
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (companyId !== undefined && companyId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>companyId, 'CompanyId');
+        }
+        if (sort !== undefined && sort !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sort, 'Sort');
+        }
+        if (search !== undefined && search !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
+        }
+        if (search1 !== undefined && search1 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search1, 'Search1');
+        }
+        if (search2 !== undefined && search2 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search2, 'Search2');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/shipper/loads`;
+        return this.httpClient.request<ShipperLoadsResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
