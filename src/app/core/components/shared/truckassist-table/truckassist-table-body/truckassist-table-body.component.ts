@@ -23,6 +23,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { SharedService } from '../../../../services/shared/shared.service';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
+import { TableType } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-truckassist-table-body',
@@ -61,6 +62,7 @@ export class TruckassistTableBodyComponent
   showItemDrop: number = -1;
   showScrollSectionBorder: boolean = false;
   activeTableData: any = {};
+  tableConfigurationType: TableType;
   notPinedMaxWidth: number = 0;
   dropContent: any[] = [];
   tooltip: any;
@@ -91,13 +93,29 @@ export class TruckassistTableBodyComponent
 
   // --------------------------------NgOnInit---------------------------------
   ngOnInit(): void {
+    // Get Selected Tab Data
+    this.getSelectedTabTableData();
+
+    // Get Table Configuration
+    // this.tableService
+    //   .getTableConfig(this.tableConfigurationType)
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((res) => {
+    //     console.log('Get Table Config');
+    //     console.log(res);
+
+    //     const driverConfig = JSON.parse(res.config);
+
+    //     localStorage.setItem(
+    //       `table-${res.tableType}-Configuration`,
+    //       JSON.stringify(driverConfig)
+    //     );
+    //   });
+
     this.viewDataEmpty = this.viewData.length ? false : true;
 
     // Get Table Sections(Pined, Not Pined, Actions)
     this.getTableSections();
-
-    // Get Selected Tab Data
-    this.getSelectedTabTableData();
 
     // Set Dropdown Content
     this.setDropContent();
@@ -252,13 +270,18 @@ export class TruckassistTableBodyComponent
   }
 
   onHorizontalScroll(scrollEvent: any) {
-    if(scrollEvent.eventAction === 'scrolling'){
-      document.querySelectorAll('#table-not-pined-scroll-container').forEach((el) => {
-        el.scrollLeft = scrollEvent.scrollPosition;
-      })
-  
+    if (scrollEvent.eventAction === 'scrolling') {
+      document
+        .querySelectorAll('#table-not-pined-scroll-container')
+        .forEach((el) => {
+          el.scrollLeft = scrollEvent.scrollPosition;
+        });
+
       this.tableService.sendScroll(scrollEvent.scrollPosition);
-    }else if(scrollEvent.eventAction === 'isScrollShowing' && this.showScrollSectionBorder !== scrollEvent.isScrollBarShowing){
+    } else if (
+      scrollEvent.eventAction === 'isScrollShowing' &&
+      this.showScrollSectionBorder !== scrollEvent.isScrollBarShowing
+    ) {
       this.showScrollSectionBorder = scrollEvent.isScrollBarShowing;
 
       this.changeDetectorRef.detectChanges();
@@ -302,6 +325,8 @@ export class TruckassistTableBodyComponent
       this.activeTableData = this.tableData.find(
         (t) => t.field === this.selectedTab
       );
+
+      this.tableConfigurationType = this.activeTableData.tableConfiguration;
     }
   }
 
@@ -513,8 +538,6 @@ export class TruckassistTableBodyComponent
     this.destroy$.next();
     this.destroy$.complete();
     this.tableService.sendRowsSelected([]);
-
-    console.log('Poziva se ngOnDestroy table body')
   }
 
   // --------------------------------TODO---------------------------------

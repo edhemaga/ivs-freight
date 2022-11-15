@@ -220,7 +220,6 @@ model/createSevenDaysHosCommand.ts
 model/createSevenDaysHosReviewCommand.ts
 model/createShipperCommand.ts
 model/createSsnReviewCommand.ts
-model/createTableConfigCommand.ts
 model/createTerminalCommand.ts
 model/createTitleCommand.ts
 model/createTodoCommand.ts
@@ -653,6 +652,7 @@ model/updateSevenDaysHosCommand.ts
 model/updateShipperCommand.ts
 model/updateSphCommand.ts
 model/updateStopCommand.ts
+model/updateTableConfigCommand.ts
 model/updateTerminalCommand.ts
 model/updateTitleCommand.ts
 model/updateTodoCommand.ts

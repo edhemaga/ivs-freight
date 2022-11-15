@@ -19,13 +19,13 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CreateTableConfigCommand } from '../model/createTableConfigCommand';
-// @ts-ignore
 import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
 import { TableConfigResponse } from '../model/tableConfigResponse';
 // @ts-ignore
 import { TableType } from '../model/tableType';
+// @ts-ignore
+import { UpdateTableConfigCommand } from '../model/updateTableConfigCommand';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -98,14 +98,14 @@ export class TableConfigService {
     }
 
     /**
-     * @param createTableConfigCommand 
+     * @param updateTableConfigCommand 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTableconfigPost(createTableConfigCommand?: CreateTableConfigCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
-    public apiTableconfigPost(createTableConfigCommand?: CreateTableConfigCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public apiTableconfigPost(createTableConfigCommand?: CreateTableConfigCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
-    public apiTableconfigPost(createTableConfigCommand?: CreateTableConfigCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiTableconfigPut(updateTableConfigCommand?: UpdateTableConfigCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
+    public apiTableconfigPut(updateTableConfigCommand?: UpdateTableConfigCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
+    public apiTableconfigPut(updateTableConfigCommand?: UpdateTableConfigCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public apiTableconfigPut(updateTableConfigCommand?: UpdateTableConfigCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -159,76 +159,10 @@ export class TableConfigService {
         }
 
         let localVarPath = `/api/tableconfig`;
-        return this.httpClient.request<object>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createTableConfigCommand,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param tableType 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiTableconfigTableTypeDelete(tableType: TableType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TableConfigResponse>;
-    public apiTableconfigTableTypeDelete(tableType: TableType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TableConfigResponse>>;
-    public apiTableconfigTableTypeDelete(tableType: TableType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TableConfigResponse>>;
-    public apiTableconfigTableTypeDelete(tableType: TableType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-        if (tableType === null || tableType === undefined) {
-            throw new Error('Required parameter tableType was null or undefined when calling apiTableconfigTableTypeDelete.');
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/tableconfig/`;
-        return this.httpClient.request<TableConfigResponse>('delete', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
+                body: updateTableConfigCommand,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

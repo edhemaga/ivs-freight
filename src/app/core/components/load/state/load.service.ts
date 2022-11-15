@@ -53,8 +53,8 @@ export class LoadTService {
       status,
       dispatcherId,
       dispatchId,
-      brokerId,
-      // dateFrom,
+      brokerId
+      // // dateFrom,
       // dateTo,
       // revenueFrom,
       // revenueTo,
