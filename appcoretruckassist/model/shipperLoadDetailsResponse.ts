@@ -9,12 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { LoadStopShipperResponse } from './loadStopShipperResponse';
 
 
-export interface FileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
+export interface ShipperLoadDetailsResponse { 
+    stops?: Array<LoadStopShipperResponse> | null;
 }
 

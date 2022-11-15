@@ -220,7 +220,6 @@ model/createSevenDaysHosCommand.ts
 model/createSevenDaysHosReviewCommand.ts
 model/createShipperCommand.ts
 model/createSsnReviewCommand.ts
-model/createTableConfigCommand.ts
 model/createTerminalCommand.ts
 model/createTitleCommand.ts
 model/createTodoCommand.ts
@@ -295,6 +294,8 @@ model/fuelCardResponsePagination.ts
 model/fuelCardShortResponse.ts
 model/fuelDispatchHistoryResponse.ts
 model/fuelItemResponse.ts
+model/fuelModalStopResponse.ts
+model/fuelModalStopResponsePagination.ts
 model/fuelStopExtensionResponse.ts
 model/fuelStopFranchiseListResponse.ts
 model/fuelStopFranchiseMinimalResponse.ts
@@ -365,6 +366,7 @@ model/loadRequirementsCommand.ts
 model/loadRequirementsResponse.ts
 model/loadResponse.ts
 model/loadResponsePagination.ts
+model/loadShipperDetailsResponse.ts
 model/loadShortResponse.ts
 model/loadStatus.ts
 model/loadStatusHistoryResponse.ts
@@ -509,6 +511,9 @@ model/sevenDaysHosReviewResponse.ts
 model/shipperContactCommand.ts
 model/shipperContactResponse.ts
 model/shipperListResponse.ts
+model/shipperLoadDetailsResponse.ts
+model/shipperLoadDetailsResponsePagination.ts
+model/shipperLoadsResponse.ts
 model/shipperMinimalListResponse.ts
 model/shipperMinimalResponse.ts
 model/shipperMinimalResponsePagination.ts
@@ -617,6 +622,7 @@ model/updateEducationCommand.ts
 model/updateEmploymentHistoryCommand.ts
 model/updateEventCommand.ts
 model/updateFactoringCompanyCommand.ts
+model/updateFuelStopCommand.ts
 model/updateHosRulesCommand.ts
 model/updateInspectionCommand.ts
 model/updateInsurancePolicyAddonCommand.ts
@@ -646,6 +652,7 @@ model/updateSevenDaysHosCommand.ts
 model/updateShipperCommand.ts
 model/updateSphCommand.ts
 model/updateStopCommand.ts
+model/updateTableConfigCommand.ts
 model/updateTerminalCommand.ts
 model/updateTitleCommand.ts
 model/updateTodoCommand.ts

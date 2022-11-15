@@ -9,12 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TableType } from './tableType';
 
 
-export interface FileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
+export interface UpdateTableConfigCommand { 
+    tableType?: TableType;
+    config?: string | null;
 }
 
