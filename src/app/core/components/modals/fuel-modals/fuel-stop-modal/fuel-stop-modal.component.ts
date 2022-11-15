@@ -11,7 +11,7 @@ import {
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity, UpdateFuelStopCommand } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { Subject, takeUntil } from 'rxjs';
+import { of, Subject, switchMap, takeUntil } from 'rxjs';
 import { fuelStoreValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../../services/form/form.service';
 import { FuelTService } from '../../../fuel/state/fuel.service';
@@ -57,6 +57,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getModalDropdowns();
+
     if (this.editData?.type === 'edit') {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
       this.editData = {
@@ -66,6 +67,9 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
 
       this.getFuelStopById(this.editData.id);
     }
+
+    this.trackFuelStopPhone();
+    this.trackFuelStopFranchise();
   }
 
   private createForm() {
@@ -107,7 +111,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         }
         break;
       }
-
       default: {
         break;
       }
@@ -158,6 +161,85 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     valid: boolean;
   }): void {
     if (event.valid) this.selectedAddress = event.address;
+
+    if (this.selectedAddress) {
+      this.trackFuelStopAddress(this.selectedAddress);
+    }
+  }
+
+  private trackFuelStopAddress(address: AddressEntity) {
+    this.fuelService
+      .checkFuelStopAddress(
+        address?.city,
+        address?.state,
+        address?.county,
+        address?.address,
+        address?.street,
+        address?.streetNumber,
+        address?.country,
+        address?.zipCode,
+        address?.stateShortName,
+        address?.addressUnit
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (isTrue: boolean) => {
+          if (isTrue) {
+            this.fuelStopForm
+              .get('address')
+              .setErrors({ fuelStoreCommonMessage: isTrue });
+          } else {
+            this.fuelStopForm.get('address').setErrors(null);
+          }
+        },
+        error: (err: any) => {
+          this.notificationService.error('Error', err);
+        },
+      });
+  }
+
+  private trackFuelStopPhone() {
+    this.fuelStopForm
+      .get('phone')
+      .valueChanges.pipe(
+        takeUntil(this.destroy$),
+        switchMap((value: string) => {
+          if (value.length === 14)
+            return this.fuelService.checkFuelStopPhone(value);
+
+          return of(false);
+        })
+      )
+      .subscribe((isTrue: boolean) => {
+        if (isTrue) {
+          this.fuelStopForm
+            .get('phone')
+            .setErrors({ fuelStoreCommonMessage: isTrue });
+        } else {
+          this.fuelStopForm.get('phone').setErrors(null);
+        }
+      });
+  }
+
+  private trackFuelStopFranchise() {
+    this.fuelStopForm
+      .get('store')
+      .valueChanges.pipe(
+        takeUntil(this.destroy$),
+        switchMap((value: string) => {
+          return this.fuelService.checkFuelStopFranchise(
+            this.selectedFuelStop.id,
+            value
+          );
+        })
+      )
+      .subscribe((isTrue: boolean) => {
+        if (isTrue) {
+          this.fuelStopForm.get('store').setErrors({ fuelStore: isTrue });
+        } else {
+          this.fuelStopForm.get('store').setErrors(null);
+        }
+      });
   }
 
   private updateFuelStop(id: number) {
@@ -216,17 +298,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: (error: any) => {
-          console.log(error);
           this.notificationService.error('Error', error);
-          this.fuelStopForm.get('store').setErrors({ fuelStoreNumber: true });
-
-          this.fuelStopForm
-            .get('phone')
-            .setErrors({ fuelStoreCommonMessage: true });
-
-          this.fuelStopForm
-            .get('address')
-            .setErrors({ fuelStoreCommonMessage: true });
         },
       });
   }
@@ -237,19 +309,24 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: FuelStopResponse) => {
-          console.log('get by id: ', res);
           this.fuelStopForm.patchValue({
             businessName: res.businessName,
             fuelStopFranchiseId: res.fuelStopFranchise
               ? res.fuelStopFranchise.businessName
               : null,
-            store: res.store,
             favourite: res.fuelStopExtensions[0].favourite,
-            phone: res.phone,
+
             fax: res.fax,
             address: res.address.address,
             note: res.fuelStopExtensions[0].note,
           });
+
+          this.fuelStopForm
+            .get('phone')
+            .patchValue(res.phone, { emitEvent: false });
+          this.fuelStopForm
+            .get('store')
+            .patchValue(res.store, { emitEvent: false });
 
           this.companyId = res.companyId;
 
@@ -299,7 +376,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
           this.fuelStops = this.fuelStops.filter(
             (v, i, a) => a.findIndex((v2) => v2.id === v.id) === i
           );
-          console.log(this.fuelStops);
         },
         error: (error: any) => {
           this.notificationService.error('Error', error);

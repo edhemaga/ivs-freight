@@ -40,4 +40,44 @@ export class FuelTService {
   ): Observable<GetFuelStopModalResponse> {
     return this.fuelService.apiFuelFuelstopModalGet(pageIndex, pageSize);
   }
+
+  public checkFuelStopAddress(
+    addressEntityCity: string,
+    addressEntityState: string,
+    addressEntityCounty: string,
+    addressEntityAddress: string,
+    addressEntityStreet: string,
+    addressEntityStreetNumber: string,
+    addressEntityCountry: string,
+    addressEntityZipCode: string,
+    addressEntityStateShortName: string,
+    addressEntityAddressUnit: string
+  ): Observable<boolean> {
+    return this.fuelService.apiFuelFuelstopCheckAddressGet(
+      addressEntityCity,
+      addressEntityState,
+      addressEntityCounty,
+      addressEntityAddress,
+      addressEntityStreet,
+      addressEntityStreetNumber,
+      addressEntityCountry,
+      addressEntityZipCode,
+      addressEntityStateShortName,
+      addressEntityAddressUnit
+    );
+  }
+
+  public checkFuelStopPhone(data: string): Observable<boolean> {
+    return this.fuelService.apiFuelFuelstopCheckPhonePhoneGet(data);
+  }
+
+  public checkFuelStopFranchise(
+    franchiseId: number,
+    store: string
+  ): Observable<boolean> {
+    return this.fuelService.apiFuelFuelstopCheckStoreFranchiseIdStoreGet(
+      franchiseId,
+      store
+    );
+  }
 }
