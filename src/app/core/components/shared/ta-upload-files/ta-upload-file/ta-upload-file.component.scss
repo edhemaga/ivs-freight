@@ -256,6 +256,7 @@
     .ng2-pdf-viewer-container {
       display: flex;
       align-items: center;
+      justify-content: center;
       overflow: visible !important;
       background-color: transparent !important;
       width: 160px !important;
@@ -387,10 +388,12 @@
         .pdfViewer,
         .pdfViewer .page,
         canvas {
-          width: 295px !important;
+          max-width: 295px !important;
           max-height: 295px !important;
           margin: 0 !important;
           border-radius: 1px !important;
+          width: auto !important;
+          min-width: 229px;
 
           &:not(:first-child) {
             opacity: 0;
@@ -416,10 +419,12 @@
         .pdfViewer,
         .pdfViewer .page,
         canvas {
-          width: 178px !important;
+          max-width: 192px !important;
           max-height: 192px !important;
           margin: 0 !important;
           border-radius: 1px !important;
+          width: auto !important;
+          min-width: 150px;
 
           &:not(:first-child) {
             opacity: 0;
