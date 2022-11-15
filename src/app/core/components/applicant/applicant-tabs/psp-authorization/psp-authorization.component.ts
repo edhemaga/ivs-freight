@@ -1,13 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
 import { convertDateFromBackend } from './../../../../utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
@@ -34,9 +32,7 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private router: Router,
-    private applicantQuery: ApplicantQuery,
-    private applicantActionsService: ApplicantActionsService
+    private applicantQuery: ApplicantQuery
   ) {}
 
   ngOnInit(): void {

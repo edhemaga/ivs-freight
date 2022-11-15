@@ -416,7 +416,6 @@ export class Step6Component implements OnInit, OnDestroy {
     }
 
     const {
-      educationReview,
       highestGrade,
       collegeGrade,
       emergencyContacts,
@@ -1041,8 +1040,7 @@ export class Step6Component implements OnInit, OnDestroy {
     const {
       questionReview1,
       questionReview2,
-      questionReview4,
-      questionReview5,
+      questionReview4
     } = this.educationForm.value;
 
     const lastItemReview =

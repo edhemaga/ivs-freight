@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { catchError, tap, take } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { LoadTService } from '../../load.service';
 import { LoadMinimalListStore } from './load-details-minimal.store';
 import { LoadMinimalListResponse } from '../../../../../../../../appcoretruckassist/model/loadMinimalListResponse';

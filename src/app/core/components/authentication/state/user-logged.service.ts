@@ -1,9 +1,8 @@
-import { AuthQuery } from './auth.query';
 import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class UserLoggedService {
-  constructor(private authQuery: AuthQuery) {}
+  constructor() {}
 
   getAccessToken() {
     //const user = this.authquery.getEntity(1);

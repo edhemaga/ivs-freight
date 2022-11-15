@@ -1,9 +1,7 @@
 import {
   Component,
   OnInit,
-  ChangeDetectionStrategy,
   Input,
-  OnChanges,
   SimpleChanges,
 } from '@angular/core';
 

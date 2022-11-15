@@ -23,7 +23,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
   private startX: number;
   private startWidth: number;
   private column: HTMLElement;
-  private table: any;
+  table: any;
   private pressed: boolean;
   resizer: any;
   newColumnWidth: number;

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import * as signalR from '@microsoft/signalr';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { environment } from 'src/environments/environment';

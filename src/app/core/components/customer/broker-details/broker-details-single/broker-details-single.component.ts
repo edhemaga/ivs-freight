@@ -44,7 +44,7 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
 
   public getStops(data: BrokerResponse) {
     let datas;
-    let dataStops = data.loads.map((item) => {
+    data.loads.map((item) => {
       datas = item.stops.map((itemStop) => {
         if (itemStop.stopType.name === 'Pickup') {
           return {

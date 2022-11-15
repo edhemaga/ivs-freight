@@ -6,7 +6,7 @@ import {Directive, ElementRef, HostListener, Input} from '@angular/core';
 export class InputRestrictionDirective {
   @Input('appInputrestriction') InputRestriction: string;
 
-  private element: ElementRef;
+  element: ElementRef;
 
   constructor(element: ElementRef) {
     this.element = element;
