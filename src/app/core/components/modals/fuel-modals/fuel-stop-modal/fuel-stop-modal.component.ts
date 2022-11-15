@@ -216,6 +216,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: (error: any) => {
+          console.log(error);
           this.notificationService.error('Error', error);
           this.fuelStopForm.get('store').setErrors({ fuelStoreNumber: true });
 
@@ -275,19 +276,30 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  public paginationPage(pageIndex: number) {
+    this.getModalDropdowns(pageIndex, 25);
+  }
+
   private getModalDropdowns(pageIndex: number = 1, pageSize: number = 25) {
     this.fuelService
       .getFuelStopModalDropdowns(pageIndex, pageSize)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: GetFuelStopModalResponse) => {
-          this.fuelStops = res.pagination.data.map((item) => {
-            return {
-              id: item.id,
-              name: item.businessName,
-              count: item.count,
-            };
-          });
+          this.fuelStops = [
+            ...this.fuelStops,
+            ...res.pagination.data.map((item) => {
+              return {
+                id: item.id,
+                name: item.businessName,
+                count: item.count,
+              };
+            }),
+          ];
+          this.fuelStops = this.fuelStops.filter(
+            (v, i, a) => a.findIndex((v2) => v2.id === v.id) === i
+          );
+          console.log(this.fuelStops);
         },
         error: (error: any) => {
           this.notificationService.error('Error', error);
