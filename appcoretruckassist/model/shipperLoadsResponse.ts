@@ -9,12 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ShipperLoadDetailsResponsePagination } from './shipperLoadDetailsResponsePagination';
 
 
-export interface FileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
+export interface ShipperLoadsResponse { 
+    loads?: ShipperLoadDetailsResponsePagination;
 }
 

@@ -9,12 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AddressEntity } from './addressEntity';
 
 
-export interface FileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
+export interface FuelModalStopResponse { 
+    id?: number;
+    businessName?: string | null;
+    store?: string | null;
+    address?: AddressEntity;
 }
 

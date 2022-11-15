@@ -15,6 +15,7 @@ import { AddressEntity } from './addressEntity';
 
 export interface FuelStopShortResponse { 
     id?: number;
+    companyId?: number | null;
     businessName?: string | null;
     store?: string | null;
     phone?: string | null;
