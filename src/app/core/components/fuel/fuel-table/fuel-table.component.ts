@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, Observable } from 'rxjs';
 import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -12,6 +12,12 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
 import { AfterViewInit } from '@angular/core';
 import { tableSearch } from 'src/app/core/utils/methods.globals';
 import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
+import { FuelState } from '../state/fule-state/fuel-state.store';
+import { FuelQuery } from '../state/fule-state/fuel-state.query';
+import {
+  FuelStopListResponse,
+  FuelTransactionListResponse,
+} from 'appcoretruckassist';
 
 @Component({
   selector: 'app-fuel-table',
@@ -61,11 +67,13 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
+  fuelData: FuelTransactionListResponse | FuelStopListResponse;
 
   constructor(
     private modalService: ModalService,
     private tableService: TruckassistTableService,
-    private thousandSeparator: TaThousandSeparatorPipe
+    private thousandSeparator: TaThousandSeparatorPipe,
+    private fuelQuery: FuelQuery
   ) {}
   ngOnInit(): void {
     this.sendFuelData();
@@ -352,12 +360,16 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
   sendFuelData() {
     this.initTableOptions();
 
+    const fuelCount = JSON.parse(localStorage.getItem('fuelTableCount'));
+
+    this.getTabData();
+
     this.tableData = [
       {
         title: 'Transactions',
         field: 'active',
-        length: 1,
-        data: [{}],
+        length: fuelCount.fuelTransactions,
+        data: this.fuelData,
         gridNameTitle: 'Fuel',
         tableConfiguration: 'FUEL_TRANSACTION',
         isActive: this.selectedTab === 'active',
@@ -366,8 +378,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
       {
         title: 'Stop',
         field: 'inactive',
-        length: 1,
-        data: [{}],
+        length: fuelCount.fuelStops,
+        data: this.fuelData,
         gridNameTitle: 'Fuel',
         tableConfiguration: 'FUEL_STOP',
         isActive: this.selectedTab === 'inactive',
@@ -375,19 +387,42 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
       },
     ];
 
+    console.log(this.tableData);
+
     const td = this.tableData.find((t) => t.field === this.selectedTab);
 
     this.setFuelData(td);
   }
 
+  getTabData() {
+    if (this.selectedTab === 'active') {
+      return this.fuelQuery.fuelTransactions$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((data) => {
+          this.fuelData = data.pagination.data;
+        });
+    } else {
+      return this.fuelQuery.fuelStops$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((data) => {
+          this.fuelData = data.pagination.data;
+        });
+    }
+  }
+
   setFuelData(td: any) {
-    this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    this.viewData = this.viewData.map((data) => {
-      data.isSelected = false;
-      return data;
-    });
+    if (td.data.length) {
+      this.viewData = td.data;
+
+      this.viewData = this.viewData.map((data) => {
+        data.isSelected = false;
+        return data;
+      });
+    } else {
+      this.viewData = [];
+    }
   }
 
   onToolBarAction(event: any) {
@@ -410,7 +445,19 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  onTableHeadActions(event: any) {}
+  onTableHeadActions(event: any) {
+    if (event.action === 'sort') {
+      if (event.direction) {
+       /*  this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+        this.backFilterQuery.pageIndex = 1;
+        this.backFilterQuery.sort = event.direction;
+
+        this.driverBackFilter(this.backFilterQuery); */
+      } else {
+        this.sendFuelData();
+      }
+    }
+  }
 
   onTableBodyActions(event: any) {
     if (event.type === 'edit') {

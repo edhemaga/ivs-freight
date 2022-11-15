@@ -41,15 +41,31 @@
   &.active-drop{
     background-color: #42424220;
     
-    .dropdown-dots {
-      cursor: pointer;
-      svg {
-        transform: rotate(90deg);
-          path {
-            fill: #424242 !important;
-          }
+    &.rightRotation{
+      .dropdown-dots {
+        cursor: pointer;
+        svg {
+          transform: rotate(-90deg);
+            path {
+              fill: #424242;
+            }
+        }
       }
     }
+
+    &.leftRotation{
+      .dropdown-dots {
+        cursor: pointer;
+        svg {
+          transform: rotate(90deg);
+            path {
+              fill: #424242;
+            }
+        }
+      }
+    }
+
+    
 
     &:hover{
       background-color: #424242;
@@ -64,31 +80,20 @@
 }
 
 @keyframes scaleItem {
-  /*
+
   0% {
-    transform: scale(0.4);
+    opacity: 0;
   }
   100% {
-    transform: scale(1);
+    opacity: 1;
   }
-  */
-  /*
-    0% {
-      transform: scaleY(0);
-    }
-    80% {
-      transform: scaleY(1);
-    }
-    100% {
-      transform: scaleY(1);
-    }
-  */
+ 
 }
 
 .dropdown-main-popover-body{
   background-color: transparent;
   transition: transform 0.1s ease;
-  animation: scaleItem 0.1s;
+  animation: scaleItem 0.3s; 
   margin-top: 4px;
 }
 

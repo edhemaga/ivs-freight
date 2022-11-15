@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -38,7 +37,7 @@ import { ImageBase64Service } from '../../../utils/base64.image';
   ],
 })
 export class TaInputComponent
-  implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor
+  implements OnInit, OnDestroy, ControlValueAccessor
 {
   private destroy$ = new Subject<void>();
   @ViewChild('input', { static: true }) public input: ElementRef;
@@ -63,7 +62,8 @@ export class TaInputComponent
   @Output('commandEvent') commandEvent: EventEmitter<any> =
     new EventEmitter<any>();
 
-  @Output('clear') clearInputEvent: EventEmitter<boolean> = new EventEmitter<any>();
+  @Output('clear') clearInputEvent: EventEmitter<boolean> =
+    new EventEmitter<any>();
 
   public focusInput: boolean = false;
   public touchedInput: boolean = false;
@@ -202,19 +202,6 @@ export class TaInputComponent
     this.inputResetService.resetInputSubject.next(false);
 
     this.resetDateTimeInputs();
-  }
-
-  ngAfterViewInit() {
-    // const timeout = setTimeout(() => {
-    //   if (
-    //     this.inputConfig.autoFocus &&
-    //     ['datepicker', 'timepicker'].includes(this.inputConfig.name) &&
-    //     !this.getSuperControl.value
-    //   ) {
-    //     this.toggleDropdownOptions();
-    //   }
-    //   clearTimeout(timeout);
-    // }, 600);
   }
 
   public setTimeDateInput(date) {
@@ -445,7 +432,7 @@ export class TaInputComponent
       }
 
       this.inputService.onClearInput$.next(true);
-      this.clearInputEvent.emit(true)
+      this.clearInputEvent.emit(true);
     }
   }
 
@@ -1851,6 +1838,7 @@ export class TaInputComponent
   }
 
   setDateTimeModel(direction: string) {
+    if(this.selectionInput == -1) this.selectionInput = 0;
     if (this.inputConfig.name === 'datepicker') {
       if (direction == 'up') {
         if (this.selectionInput == 0) {
