@@ -1,24 +1,24 @@
 <div class="repair-details-container">
-   <div *ngFor="let item of fuelConfig; trackBy: identity">
-      <app-ta-details-header
-         [route]="'/fuel'"
-         [tooltipHeaderName]="'Back to Fuel List'"
-         [headerText]="item.name"
-         [hasIcon]="item.icon"
-         [hidePlus]="item.hide"
-         [counterData]="item.length"
-         [options]="fuelDrop"
-         [customText]="item.customText"
-         [arrayIcons]="item.icons"
-         [statusInactive]="item.status"
-         [hasDateArrow]="true"
-      >
-      </app-ta-details-header>
-   </div>
-   <div class="repair-details-cmp">
-      <div>
-         <app-fuel-details-item [fuelData]="fuelConfig">
-         </app-fuel-details-item>
-      </div>
-   </div>
+    <div *ngFor="let item of fuelConfig; trackBy: identity">
+        <app-ta-details-header
+            [route]="'/fuel'"
+            [tooltipHeaderName]="'Back to Fuel List'"
+            [headerText]="item.name"
+            [hasIcon]="item.icon"
+            [hidePlus]="item.hide"
+            [counterData]="item.length"
+            [options]="fuelDrop"
+            [customText]="item.customText"
+            [arrayIcons]="item.icons"
+            [statusInactive]="item.status"
+            [hasDateArrow]="true"
+        >
+        </app-ta-details-header>
+    </div>
+    <div class="repair-details-cmp">
+        <div>
+            <app-fuel-details-item [fuelData]="fuelConfig">
+            </app-fuel-details-item>
+        </div>
+    </div>
 </div>

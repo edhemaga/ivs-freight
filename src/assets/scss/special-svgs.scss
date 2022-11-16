@@ -1,676 +1,676 @@
 // --------------------- TRUCKS ---------------------
 .trucks {
-   &.semitruck {
-      &:hover {
-         background-color: #97d568 !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.semisleeper {
-      &:hover {
-         background-color: #ffb74d !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.boxtruck {
-      &:hover {
-         background-color: #fb6f6f !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.cargovan {
-      &:hover {
-         background-color: #68c3ff !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.towtruck {
-      &:hover {
-         background-color: #ba68c8 !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.carhauler {
-      &:hover {
-         background-color: #59a5a5 !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.spotter {
-      &:hover {
-         background-color: #415fc1 !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.bus {
-      .bus {
-         width: auto !important;
-         max-width: auto !important;
-         margin: 0 !important;
-         padding: 0 !important;
-         margin-right: 29px !important;
-      }
-
-      &:hover {
-         background-color: #ff7043 !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   // For all svgs
-   &:hover {
-      svg {
-         path,
-      // Car Hauler
-      #Rectangle_1321,
-      #Ellipse_492,
-      // Tow Truck
-      #Rectangle_1320 {
-            fill: #ffffff;
+    &.semitruck {
+        &:hover {
+            background-color: #97d568 !important;
             transition: all 0.3s ease-in-out;
-         }
-      }
+        }
+    }
 
-      .svgtext-template-text {
-         color: #ffffff;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-}
-
-// --------------------- TRAILERS ---------------------
-.trailers {
-   &.reefer {
-      &:hover {
-         background-color: #ef6e6e !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.dryvan {
-      &:hover {
-         background-color: #5673aa !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.sidekit {
-      &:hover {
-         background-color: #76a77d !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.conestog {
-      &:hover {
-         background-color: #484848 !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.dumper {
-      &:hover {
-         background-color: #8fdee1 !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.trailerContainer {
-      .container {
-         width: auto !important;
-         max-width: auto !important;
-         margin: 0 !important;
-         padding: 0 !important;
-         margin-right: 6px !important;
-      }
-
-      &:hover {
-         background-color: #ffbe7d !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.tanker {
-      &:hover {
-         background-color: #81ccff !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.carhauler {
-      &:hover {
-         background-color: #668888 !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.flatbed {
-      &:hover {
-         background-color: #af88ea !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.lowboyrgn {
-      &:hover {
-         background-color: #955fa2 !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.chassis {
-      &:hover {
-         background-color: #547556 !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   &.stepdeck {
-      &:hover {
-         background-color: #f2dd75 !important;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-
-   // For all svgs
-   &:hover {
-      svg {
-         path {
-            fill: #ffffff;
+    &.semisleeper {
+        &:hover {
+            background-color: #ffb74d !important;
             transition: all 0.3s ease-in-out;
-         }
-      }
+        }
+    }
 
-      .svgtext-template-text {
-         color: #ffffff;
-         transition: all 0.3s ease-in-out;
-      }
-   }
-}
+    &.boxtruck {
+        &:hover {
+            background-color: #fb6f6f !important;
+            transition: all 0.3s ease-in-out;
+        }
+    }
 
-// --------------------- Colors ---------------------
-.colors {
-   .black {
-      svg {
-         #droplet {
-            fill: #6c6c6c;
-         }
-      }
-   }
-   .brown {
-      svg {
-         #droplet {
-            fill: #a1887f;
-         }
-      }
-   }
-   .darkgreen {
-      svg {
-         #droplet {
-            fill: #4db6a2;
-         }
-      }
-   }
-   .lightgreen {
-      svg {
-         #droplet {
-            fill: #81c784;
-         }
-      }
-   }
-   .darkblue {
-      svg {
-         #droplet {
-            fill: #546fd2;
-         }
-      }
-   }
-   .lightblue {
-      svg {
-         #droplet {
-            fill: #64b5f6;
-         }
-      }
-   }
-   .gray {
-      svg {
-         #droplet {
-            fill: #aaaaaa;
-         }
-      }
-   }
-   .purple {
-      svg {
-         #droplet {
-            fill: #ba68c8;
-         }
-      }
-   }
-   .gold {
-      svg {
-         #droplet {
-            fill: #bcad79;
-         }
-      }
-   }
-   .silver {
-      svg {
-         #droplet {
-            fill: #dadada;
-         }
-      }
-   }
-   .red {
-      svg {
-         #droplet {
-            fill: #f96b69;
-         }
-      }
-   }
-   .pink {
-      svg {
-         #droplet {
-            fill: #f26ec2;
-         }
-      }
-   }
-   .white {
-      svg {
-         #droplet {
-            fill: #f1f1f1;
-         }
-      }
-   }
-   .orange {
-      svg {
-         #droplet {
-            fill: #ff8a65;
-         }
-      }
-   }
-   .yellow {
-      svg {
-         #droplet {
-            fill: #ffd54f;
-         }
-      }
-   }
+    &.cargovan {
+        &:hover {
+            background-color: #68c3ff !important;
+            transition: all 0.3s ease-in-out;
+        }
+    }
 
-   &:hover {
-      transition: all 0.3s ease-in-out;
-      .black {
-         svg {
-            #droplet {
-               fill: #3c3c3c;
-            }
-         }
-      }
-      .brown {
-         svg {
-            #droplet {
-               fill: #8d6e63;
-            }
-         }
-      }
-      .darkgreen {
-         svg {
-            #droplet {
-               fill: #26a690;
-            }
-         }
-      }
-      .lightgreen {
-         svg {
-            #droplet {
-               fill: #66bb6a;
-            }
-         }
-      }
-      .darkblue {
-         svg {
-            #droplet {
-               fill: #304fc1;
-            }
-         }
-      }
-      .lightblue {
-         svg {
-            #droplet {
-               fill: #42a5f5;
-            }
-         }
-      }
-      .gray {
-         svg {
-            #droplet {
-               fill: #919191;
-            }
-         }
-      }
-      .purple {
-         svg {
-            #droplet {
-               fill: #ab47bc;
-            }
-         }
-      }
-      .gold {
-         svg {
-            #droplet {
-               fill: #aa9c6e;
-            }
-         }
-      }
-      .silver {
-         svg {
-            #droplet {
-               fill: #b7b7b7;
-            }
-         }
-      }
-      .red {
-         svg {
-            #droplet {
-               fill: #ef5350;
-            }
-         }
-      }
-      .pink {
-         svg {
-            #droplet {
-               fill: #fa4daa;
-            }
-         }
-      }
-      .white {
-         svg {
-            #droplet {
-               fill: #ffffff;
-            }
-         }
-      }
-      .orange {
-         svg {
-            #droplet {
-               fill: #ff7043;
-            }
-         }
-      }
-      .yellow {
-         svg {
-            #droplet {
-               fill: #ffca28;
-            }
-         }
-      }
-   }
-}
+    &.towtruck {
+        &:hover {
+            background-color: #ba68c8 !important;
+            transition: all 0.3s ease-in-out;
+        }
+    }
 
-// --------------------- Dropdown Option Hovered ---------------------
-.dropdown-option-hovered {
-   //--------------------  Trucks --------------------
-   &.trucks {
-      &.semitruck {
-         background-color: #97d568 !important;
-         transition: all 0.3s ease-in-out;
-      }
+    &.carhauler {
+        &:hover {
+            background-color: #59a5a5 !important;
+            transition: all 0.3s ease-in-out;
+        }
+    }
 
-      &.semisleeper {
-         background-color: #ffb74d !important;
-         transition: all 0.3s ease-in-out;
-      }
+    &.spotter {
+        &:hover {
+            background-color: #415fc1 !important;
+            transition: all 0.3s ease-in-out;
+        }
+    }
 
-      &.boxtruck {
-         background-color: #fb6f6f !important;
-         transition: all 0.3s ease-in-out;
-      }
-
-      &.cargovan {
-         background-color: #68c3ff !important;
-         transition: all 0.3s ease-in-out;
-      }
-
-      &.towtruck {
-         background-color: #ba68c8 !important;
-         transition: all 0.3s ease-in-out;
-      }
-
-      &.carhauler {
-         background-color: #59a5a5 !important;
-         transition: all 0.3s ease-in-out;
-      }
-
-      &.spotter {
-         background-color: #415fc1 !important;
-         transition: all 0.3s ease-in-out;
-      }
-
-      &.bus {
-         .bus {
+    &.bus {
+        .bus {
             width: auto !important;
             max-width: auto !important;
             margin: 0 !important;
             padding: 0 !important;
             margin-right: 29px !important;
-         }
+        }
 
-         background-color: #ff7043 !important;
-         transition: all 0.3s ease-in-out;
-      }
-      // For all svgs
-      svg {
-         path,
+        &:hover {
+            background-color: #ff7043 !important;
+            transition: all 0.3s ease-in-out;
+        }
+    }
+
+    // For all svgs
+    &:hover {
+        svg {
+            path,
       // Car Hauler
       #Rectangle_1321,
       #Ellipse_492,
       // Tow Truck
       #Rectangle_1320 {
-            fill: #ffffff;
+                fill: #ffffff;
+                transition: all 0.3s ease-in-out;
+            }
+        }
+
+        .svgtext-template-text {
+            color: #ffffff;
             transition: all 0.3s ease-in-out;
-         }
-      }
+        }
+    }
+}
 
-      .svgtext-template-text {
-         color: #ffffff;
-         transition: all 0.3s ease-in-out;
-      }
-   }
+// --------------------- TRAILERS ---------------------
+.trailers {
+    &.reefer {
+        &:hover {
+            background-color: #ef6e6e !important;
+            transition: all 0.3s ease-in-out;
+        }
+    }
 
-   //--------------------  Trailers --------------------
-   &.trailers {
-      &.reefer {
-         background-color: #ef6e6e !important;
-         transition: all 0.3s ease-in-out;
-      }
+    &.dryvan {
+        &:hover {
+            background-color: #5673aa !important;
+            transition: all 0.3s ease-in-out;
+        }
+    }
 
-      &.dryvan {
-         background-color: #5673aa !important;
-         transition: all 0.3s ease-in-out;
-      }
+    &.sidekit {
+        &:hover {
+            background-color: #76a77d !important;
+            transition: all 0.3s ease-in-out;
+        }
+    }
 
-      &.sidekit {
-         background-color: #76a77d !important;
-         transition: all 0.3s ease-in-out;
-      }
+    &.conestog {
+        &:hover {
+            background-color: #484848 !important;
+            transition: all 0.3s ease-in-out;
+        }
+    }
 
-      &.conestog {
-         background-color: #484848 !important;
-         transition: all 0.3s ease-in-out;
-      }
+    &.dumper {
+        &:hover {
+            background-color: #8fdee1 !important;
+            transition: all 0.3s ease-in-out;
+        }
+    }
 
-      &.dumper {
-         background-color: #8fdee1 !important;
-         transition: all 0.3s ease-in-out;
-      }
-
-      &.trailerContainer {
-         .container {
+    &.trailerContainer {
+        .container {
             width: auto !important;
             max-width: auto !important;
             margin: 0 !important;
             padding: 0 !important;
             margin-right: 6px !important;
-         }
+        }
 
-         background-color: #ffbe7d !important;
-         transition: all 0.3s ease-in-out;
-      }
-
-      &.tanker {
-         background-color: #81ccff !important;
-         transition: all 0.3s ease-in-out;
-      }
-
-      &.carhauler {
-         background-color: #668888 !important;
-         transition: all 0.3s ease-in-out;
-      }
-
-      &.flatbed {
-         background-color: #af88ea !important;
-         transition: all 0.3s ease-in-out;
-      }
-
-      &.lowboyrgn {
-         background-color: #955fa2 !important;
-         transition: all 0.3s ease-in-out;
-      }
-
-      &.chassis {
-         background-color: #547556 !important;
-         transition: all 0.3s ease-in-out;
-      }
-
-      &.stepdeck {
-         background-color: #f2dd75 !important;
-         transition: all 0.3s ease-in-out;
-      }
-
-      // For all svgs
-      svg {
-         path {
-            fill: #ffffff;
+        &:hover {
+            background-color: #ffbe7d !important;
             transition: all 0.3s ease-in-out;
-         }
-      }
+        }
+    }
 
-      .svgtext-template-text {
-         color: #ffffff;
-         transition: all 0.3s ease-in-out;
-      }
-   }
+    &.tanker {
+        &:hover {
+            background-color: #81ccff !important;
+            transition: all 0.3s ease-in-out;
+        }
+    }
 
-   //-------------------- Colors --------------------
-   .black {
-      svg {
-         #droplet {
-            fill: #3c3c3c;
-         }
-      }
-   }
-   .brown {
-      svg {
-         #droplet {
-            fill: #8d6e63;
-         }
-      }
-   }
-   .darkgreen {
-      svg {
-         #droplet {
-            fill: #26a690;
-         }
-      }
-   }
-   .lightgreen {
-      svg {
-         #droplet {
-            fill: #66bb6a;
-         }
-      }
-   }
-   .darkblue {
-      svg {
-         #droplet {
-            fill: #304fc1;
-         }
-      }
-   }
-   .lightblue {
-      svg {
-         #droplet {
-            fill: #42a5f5;
-         }
-      }
-   }
-   .gray {
-      svg {
-         #droplet {
-            fill: #919191;
-         }
-      }
-   }
-   .purple {
-      svg {
-         #droplet {
-            fill: #ab47bc;
-         }
-      }
-   }
-   .gold {
-      svg {
-         #droplet {
-            fill: #aa9c6e;
-         }
-      }
-   }
-   .silver {
-      svg {
-         #droplet {
-            fill: #b7b7b7;
-         }
-      }
-   }
-   .red {
-      svg {
-         #droplet {
-            fill: #ef5350;
-         }
-      }
-   }
-   .pink {
-      svg {
-         #droplet {
-            fill: #fa4daa;
-         }
-      }
-   }
-   .white {
-      svg {
-         #droplet {
-            fill: #ffffff;
-         }
-      }
-   }
-   .orange {
-      svg {
-         #droplet {
-            fill: #ff7043;
-         }
-      }
-   }
-   .yellow {
-      svg {
-         #droplet {
-            fill: #ffca28;
-         }
-      }
-   }
+    &.carhauler {
+        &:hover {
+            background-color: #668888 !important;
+            transition: all 0.3s ease-in-out;
+        }
+    }
+
+    &.flatbed {
+        &:hover {
+            background-color: #af88ea !important;
+            transition: all 0.3s ease-in-out;
+        }
+    }
+
+    &.lowboyrgn {
+        &:hover {
+            background-color: #955fa2 !important;
+            transition: all 0.3s ease-in-out;
+        }
+    }
+
+    &.chassis {
+        &:hover {
+            background-color: #547556 !important;
+            transition: all 0.3s ease-in-out;
+        }
+    }
+
+    &.stepdeck {
+        &:hover {
+            background-color: #f2dd75 !important;
+            transition: all 0.3s ease-in-out;
+        }
+    }
+
+    // For all svgs
+    &:hover {
+        svg {
+            path {
+                fill: #ffffff;
+                transition: all 0.3s ease-in-out;
+            }
+        }
+
+        .svgtext-template-text {
+            color: #ffffff;
+            transition: all 0.3s ease-in-out;
+        }
+    }
+}
+
+// --------------------- Colors ---------------------
+.colors {
+    .black {
+        svg {
+            #droplet {
+                fill: #6c6c6c;
+            }
+        }
+    }
+    .brown {
+        svg {
+            #droplet {
+                fill: #a1887f;
+            }
+        }
+    }
+    .darkgreen {
+        svg {
+            #droplet {
+                fill: #4db6a2;
+            }
+        }
+    }
+    .lightgreen {
+        svg {
+            #droplet {
+                fill: #81c784;
+            }
+        }
+    }
+    .darkblue {
+        svg {
+            #droplet {
+                fill: #546fd2;
+            }
+        }
+    }
+    .lightblue {
+        svg {
+            #droplet {
+                fill: #64b5f6;
+            }
+        }
+    }
+    .gray {
+        svg {
+            #droplet {
+                fill: #aaaaaa;
+            }
+        }
+    }
+    .purple {
+        svg {
+            #droplet {
+                fill: #ba68c8;
+            }
+        }
+    }
+    .gold {
+        svg {
+            #droplet {
+                fill: #bcad79;
+            }
+        }
+    }
+    .silver {
+        svg {
+            #droplet {
+                fill: #dadada;
+            }
+        }
+    }
+    .red {
+        svg {
+            #droplet {
+                fill: #f96b69;
+            }
+        }
+    }
+    .pink {
+        svg {
+            #droplet {
+                fill: #f26ec2;
+            }
+        }
+    }
+    .white {
+        svg {
+            #droplet {
+                fill: #f1f1f1;
+            }
+        }
+    }
+    .orange {
+        svg {
+            #droplet {
+                fill: #ff8a65;
+            }
+        }
+    }
+    .yellow {
+        svg {
+            #droplet {
+                fill: #ffd54f;
+            }
+        }
+    }
+
+    &:hover {
+        transition: all 0.3s ease-in-out;
+        .black {
+            svg {
+                #droplet {
+                    fill: #3c3c3c;
+                }
+            }
+        }
+        .brown {
+            svg {
+                #droplet {
+                    fill: #8d6e63;
+                }
+            }
+        }
+        .darkgreen {
+            svg {
+                #droplet {
+                    fill: #26a690;
+                }
+            }
+        }
+        .lightgreen {
+            svg {
+                #droplet {
+                    fill: #66bb6a;
+                }
+            }
+        }
+        .darkblue {
+            svg {
+                #droplet {
+                    fill: #304fc1;
+                }
+            }
+        }
+        .lightblue {
+            svg {
+                #droplet {
+                    fill: #42a5f5;
+                }
+            }
+        }
+        .gray {
+            svg {
+                #droplet {
+                    fill: #919191;
+                }
+            }
+        }
+        .purple {
+            svg {
+                #droplet {
+                    fill: #ab47bc;
+                }
+            }
+        }
+        .gold {
+            svg {
+                #droplet {
+                    fill: #aa9c6e;
+                }
+            }
+        }
+        .silver {
+            svg {
+                #droplet {
+                    fill: #b7b7b7;
+                }
+            }
+        }
+        .red {
+            svg {
+                #droplet {
+                    fill: #ef5350;
+                }
+            }
+        }
+        .pink {
+            svg {
+                #droplet {
+                    fill: #fa4daa;
+                }
+            }
+        }
+        .white {
+            svg {
+                #droplet {
+                    fill: #ffffff;
+                }
+            }
+        }
+        .orange {
+            svg {
+                #droplet {
+                    fill: #ff7043;
+                }
+            }
+        }
+        .yellow {
+            svg {
+                #droplet {
+                    fill: #ffca28;
+                }
+            }
+        }
+    }
+}
+
+// --------------------- Dropdown Option Hovered ---------------------
+.dropdown-option-hovered {
+    //--------------------  Trucks --------------------
+    &.trucks {
+        &.semitruck {
+            background-color: #97d568 !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.semisleeper {
+            background-color: #ffb74d !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.boxtruck {
+            background-color: #fb6f6f !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.cargovan {
+            background-color: #68c3ff !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.towtruck {
+            background-color: #ba68c8 !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.carhauler {
+            background-color: #59a5a5 !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.spotter {
+            background-color: #415fc1 !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.bus {
+            .bus {
+                width: auto !important;
+                max-width: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                margin-right: 29px !important;
+            }
+
+            background-color: #ff7043 !important;
+            transition: all 0.3s ease-in-out;
+        }
+        // For all svgs
+        svg {
+            path,
+      // Car Hauler
+      #Rectangle_1321,
+      #Ellipse_492,
+      // Tow Truck
+      #Rectangle_1320 {
+                fill: #ffffff;
+                transition: all 0.3s ease-in-out;
+            }
+        }
+
+        .svgtext-template-text {
+            color: #ffffff;
+            transition: all 0.3s ease-in-out;
+        }
+    }
+
+    //--------------------  Trailers --------------------
+    &.trailers {
+        &.reefer {
+            background-color: #ef6e6e !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.dryvan {
+            background-color: #5673aa !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.sidekit {
+            background-color: #76a77d !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.conestog {
+            background-color: #484848 !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.dumper {
+            background-color: #8fdee1 !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.trailerContainer {
+            .container {
+                width: auto !important;
+                max-width: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                margin-right: 6px !important;
+            }
+
+            background-color: #ffbe7d !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.tanker {
+            background-color: #81ccff !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.carhauler {
+            background-color: #668888 !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.flatbed {
+            background-color: #af88ea !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.lowboyrgn {
+            background-color: #955fa2 !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.chassis {
+            background-color: #547556 !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        &.stepdeck {
+            background-color: #f2dd75 !important;
+            transition: all 0.3s ease-in-out;
+        }
+
+        // For all svgs
+        svg {
+            path {
+                fill: #ffffff;
+                transition: all 0.3s ease-in-out;
+            }
+        }
+
+        .svgtext-template-text {
+            color: #ffffff;
+            transition: all 0.3s ease-in-out;
+        }
+    }
+
+    //-------------------- Colors --------------------
+    .black {
+        svg {
+            #droplet {
+                fill: #3c3c3c;
+            }
+        }
+    }
+    .brown {
+        svg {
+            #droplet {
+                fill: #8d6e63;
+            }
+        }
+    }
+    .darkgreen {
+        svg {
+            #droplet {
+                fill: #26a690;
+            }
+        }
+    }
+    .lightgreen {
+        svg {
+            #droplet {
+                fill: #66bb6a;
+            }
+        }
+    }
+    .darkblue {
+        svg {
+            #droplet {
+                fill: #304fc1;
+            }
+        }
+    }
+    .lightblue {
+        svg {
+            #droplet {
+                fill: #42a5f5;
+            }
+        }
+    }
+    .gray {
+        svg {
+            #droplet {
+                fill: #919191;
+            }
+        }
+    }
+    .purple {
+        svg {
+            #droplet {
+                fill: #ab47bc;
+            }
+        }
+    }
+    .gold {
+        svg {
+            #droplet {
+                fill: #aa9c6e;
+            }
+        }
+    }
+    .silver {
+        svg {
+            #droplet {
+                fill: #b7b7b7;
+            }
+        }
+    }
+    .red {
+        svg {
+            #droplet {
+                fill: #ef5350;
+            }
+        }
+    }
+    .pink {
+        svg {
+            #droplet {
+                fill: #fa4daa;
+            }
+        }
+    }
+    .white {
+        svg {
+            #droplet {
+                fill: #ffffff;
+            }
+        }
+    }
+    .orange {
+        svg {
+            #droplet {
+                fill: #ff7043;
+            }
+        }
+    }
+    .yellow {
+        svg {
+            #droplet {
+                fill: #ffca28;
+            }
+        }
+    }
 }

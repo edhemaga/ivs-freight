@@ -4,7 +4,7 @@ import { CompanyState, CompanyStore } from './company-settings.store';
 
 @Injectable({ providedIn: 'root' })
 export class CompanyQuery extends QueryEntity<CompanyState> {
-   constructor(protected companyStore: CompanyStore) {
-      super(companyStore);
-   }
+    constructor(protected companyStore: CompanyStore) {
+        super(companyStore);
+    }
 }

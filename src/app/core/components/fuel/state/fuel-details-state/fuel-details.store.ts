@@ -7,7 +7,7 @@ export interface FuelItemState extends EntityState<FuelStopResponse, number> {}
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'fuelItem' })
 export class FuelItemStore extends EntityStore<FuelItemState> {
-   constructor() {
-      super();
-   }
+    constructor() {
+        super();
+    }
 }

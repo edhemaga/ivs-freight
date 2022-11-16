@@ -1,36 +1,38 @@
 <div class="select_company_main">
-   <img
-      alt=""
-      class="select_company_main_logo"
-      src="assets/svg/common/truckassist-main-logo.png"
-   />
-   <p class="select_company_main_title">Welcome to <span>Truck Assist</span></p>
-   <p class="select_company_main_info">Please select a company</p>
-   <div class="select_company_main_wrapper">
-      <owl-carousel-o [options]="customOptions">
-         <ng-container *ngFor="let slide of apiData; let i = index">
-            <ng-template [id]="slide.companyId" carouselSlide class="slide">
-               <img
-                  [id]="slide.companyId"
-                  [ngStyle]="{
-                     display: slide.companyLogo ? 'initial' : 'none'
-                  }"
-                  [src]="slide.companyLogo"
-                  alt=""
-               />
-               <span
-                  [ngStyle]="{
-                     display: slide.companyLogo ? 'none' : 'initial'
-                  }"
-                  class="select_company_main_no-url"
-                  >{{ slide.companyName }}</span
-               >
-            </ng-template>
-         </ng-container>
-      </owl-carousel-o>
-   </div>
-   <div (click)="onCompanySelect()" class="select_company_main_button">
-      Select
-   </div>
-   <div class="select_company_main_footer"></div>
+    <img
+        alt=""
+        class="select_company_main_logo"
+        src="assets/svg/common/truckassist-main-logo.png"
+    />
+    <p class="select_company_main_title">
+        Welcome to <span>Truck Assist</span>
+    </p>
+    <p class="select_company_main_info">Please select a company</p>
+    <div class="select_company_main_wrapper">
+        <owl-carousel-o [options]="customOptions">
+            <ng-container *ngFor="let slide of apiData; let i = index">
+                <ng-template [id]="slide.companyId" carouselSlide class="slide">
+                    <img
+                        [id]="slide.companyId"
+                        [ngStyle]="{
+                            display: slide.companyLogo ? 'initial' : 'none'
+                        }"
+                        [src]="slide.companyLogo"
+                        alt=""
+                    />
+                    <span
+                        [ngStyle]="{
+                            display: slide.companyLogo ? 'none' : 'initial'
+                        }"
+                        class="select_company_main_no-url"
+                        >{{ slide.companyName }}</span
+                    >
+                </ng-template>
+            </ng-container>
+        </owl-carousel-o>
+    </div>
+    <div (click)="onCompanySelect()" class="select_company_main_button">
+        Select
+    </div>
+    <div class="select_company_main_footer"></div>
 </div>

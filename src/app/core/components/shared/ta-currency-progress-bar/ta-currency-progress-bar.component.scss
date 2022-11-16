@@ -1,66 +1,66 @@
 .currency-progress-bar {
-   display: flex;
-   flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-   .progress-bar-information {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .progress-bar-information {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
-      .currency-name {
-         font-size: 14px;
-         font-weight: 500;
-         color: #6c6c6c;
-      }
-      .currency-name-payments {
-         font-size: 14px;
-         font-weight: 600;
-         color: #6c6c6c;
-         &::-moz-selection {
+        .currency-name {
+            font-size: 14px;
+            font-weight: 500;
             color: #6c6c6c;
-            background: rgb(108, 108, 108, 0.2);
-         }
-         &::selection {
+        }
+        .currency-name-payments {
+            font-size: 14px;
+            font-weight: 600;
             color: #6c6c6c;
-            background: rgb(108, 108, 108, 0.2);
-         }
-      }
-      .name-left {
-         font-size: 14px;
-         font-weight: 400;
-         color: #6c6c6c;
-         &::-moz-selection {
+            &::-moz-selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
+        .name-left {
+            font-size: 14px;
+            font-weight: 400;
             color: #6c6c6c;
-            background: rgb(108, 108, 108, 0.2);
-         }
-         &::selection {
+            &::-moz-selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
+        .currency-price-payments {
+            font-size: 14px;
+            font-weight: 600;
             color: #6c6c6c;
-            background: rgb(108, 108, 108, 0.2);
-         }
-      }
-      .currency-price-payments {
-         font-size: 14px;
-         font-weight: 600;
-         color: #6c6c6c;
-         &::-moz-selection {
+            &::-moz-selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
+        .currency-price {
+            font-size: 14px;
+            font-weight: 600;
             color: #6c6c6c;
-            background: rgb(108, 108, 108, 0.2);
-         }
-         &::selection {
-            color: #6c6c6c;
-            background: rgb(108, 108, 108, 0.2);
-         }
-      }
-      .currency-price {
-         font-size: 14px;
-         font-weight: 600;
-         color: #6c6c6c;
-      }
-   }
+        }
+    }
 
-   .progress-bar-line {
-      height: 8px;
-      border-radius: 2px;
-      overflow: hidden;
-   }
+    .progress-bar-line {
+        height: 8px;
+        border-radius: 2px;
+        overflow: hidden;
+    }
 }

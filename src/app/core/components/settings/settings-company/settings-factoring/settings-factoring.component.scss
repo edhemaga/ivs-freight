@@ -1,139 +1,139 @@
 @import '../../settings.global.scss';
 
 .settings-factoring {
-   width: 100%;
-   display: grid;
-   grid-template-rows: 32px auto;
-   row-gap: 12px;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 32px auto;
+    row-gap: 12px;
 
-   .settings-body {
-      &.gradient {
-         background-image: linear-gradient(180deg, #f1f1f1, #ffffff);
-      }
-   }
+    .settings-body {
+        &.gradient {
+            background-image: linear-gradient(180deg, #f1f1f1, #ffffff);
+        }
+    }
 }
 .settings-trash-button {
-   svg {
-      path {
-         fill: #b7b7b7;
-      }
-   }
+    svg {
+        path {
+            fill: #b7b7b7;
+        }
+    }
 }
 .notice-template-data-default {
-   display: grid;
-   grid-template-columns: 245px;
-   row-gap: 15px;
-   padding: 0 10px;
+    display: grid;
+    grid-template-columns: 245px;
+    row-gap: 15px;
+    padding: 0 10px;
 
-   .notice-item-value {
-      font-size: 14px;
-      font-weight: 400;
-      color: #6c6c6c;
-      &::-moz-selection {
-         color: $settings-gray-dark;
-         background: rgb(108, 108, 108, 0.2);
-      }
-      &::selection {
-         color: $settings-gray-dark;
-         background: rgb(108, 108, 108, 0.2);
-      }
-   }
+    .notice-item-value {
+        font-size: 14px;
+        font-weight: 400;
+        color: #6c6c6c;
+        &::-moz-selection {
+            color: $settings-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+        }
+        &::selection {
+            color: $settings-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+        }
+    }
 }
 .notice-template-data-change {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   flex-direction: column;
-   .bottom-notice-item {
-      padding-bottom: 0 !important;
-   }
-   .notice-change-item {
-      padding-bottom: 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      .notice-item-header {
-         font-size: 12px;
-         font-weight: 700;
-         color: #6c6c6c;
-         text-align: center;
-         width: 215px;
-         &::-moz-selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-         }
-         &::selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-         }
-      }
-      .notice-item-middle {
-         font-size: 16px;
-         font-weight: 800;
-         color: #6c6c6c;
-         width: 310px;
-         text-align: center;
-         &::-moz-selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-         }
-         &::selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-         }
-      }
-      .bottom-data-notice {
-         font-size: 14px;
-         font-weight: 400;
-         color: #6c6c6c;
-         width: 154px;
-         text-align: center;
-         &::-moz-selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-         }
-         &::selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-         }
-      }
-      .notice-item-bottom {
-         font-size: 14px;
-         font-weight: 400;
-         text-align: center;
-         color: #536bc2;
-         width: 190px;
-         a {
-            text-decoration: none;
-            color: #536bc2;
-            &:hover {
-               color: #6d82c7;
-            }
-         }
-         &::-moz-selection {
-            color: #536bc2;
-            background: rgb(83, 107, 194, 0.2);
-         }
-         &::selection {
-            color: #536bc2;
-            background: rgb(83, 107, 194, 0.2);
-         }
-         .phone-notice-item {
-            font-weight: 800 !important;
-            text-decoration: underline;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    .bottom-notice-item {
+        padding-bottom: 0 !important;
+    }
+    .notice-change-item {
+        padding-bottom: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .notice-item-header {
+            font-size: 12px;
+            font-weight: 700;
+            color: #6c6c6c;
+            text-align: center;
+            width: 215px;
             &::-moz-selection {
-               color: #536bc2;
-               background: rgb(83, 107, 194, 0.2);
+                color: $settings-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
             }
             &::selection {
-               color: #536bc2;
-               background: rgb(83, 107, 194, 0.2);
+                color: $settings-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
             }
-         }
-      }
-   }
+        }
+        .notice-item-middle {
+            font-size: 16px;
+            font-weight: 800;
+            color: #6c6c6c;
+            width: 310px;
+            text-align: center;
+            &::-moz-selection {
+                color: $settings-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: $settings-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
+        .bottom-data-notice {
+            font-size: 14px;
+            font-weight: 400;
+            color: #6c6c6c;
+            width: 154px;
+            text-align: center;
+            &::-moz-selection {
+                color: $settings-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: $settings-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
+        .notice-item-bottom {
+            font-size: 14px;
+            font-weight: 400;
+            text-align: center;
+            color: #536bc2;
+            width: 190px;
+            a {
+                text-decoration: none;
+                color: #536bc2;
+                &:hover {
+                    color: #6d82c7;
+                }
+            }
+            &::-moz-selection {
+                color: #536bc2;
+                background: rgb(83, 107, 194, 0.2);
+            }
+            &::selection {
+                color: #536bc2;
+                background: rgb(83, 107, 194, 0.2);
+            }
+            .phone-notice-item {
+                font-weight: 800 !important;
+                text-decoration: underline;
+                &::-moz-selection {
+                    color: #536bc2;
+                    background: rgb(83, 107, 194, 0.2);
+                }
+                &::selection {
+                    color: #536bc2;
+                    background: rgb(83, 107, 194, 0.2);
+                }
+            }
+        }
+    }
 }
 .copy-icon {
-   margin-left: 1px !important;
+    margin-left: 1px !important;
 }

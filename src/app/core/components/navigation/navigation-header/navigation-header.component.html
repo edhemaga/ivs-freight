@@ -1,59 +1,59 @@
 <div class="nav-header">
-   <div class="nav-header-top">
-      <svg-icon
-         class="nav-header-top-logo"
-         src="{{ isNavigationHovered | changeLogo }}"
-      ></svg-icon>
-   </div>
-   <div
-      class="nav-header-bottom"
-      [ngClass]="{ 'expand-width': isNavigationHovered }"
-   >
-      <div
-         class="nav-header-bottom-plus"
-         (click)="onAction('Open Panel')"
-         ngbTooltip
-         mainTooltip="Add New"
-         tooltipBackground="#6c6c6c"
-         position="right"
-      >
-         <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
-      </div>
+    <div class="nav-header-top">
+        <svg-icon
+            class="nav-header-top-logo"
+            src="{{ isNavigationHovered | changeLogo }}"
+        ></svg-icon>
+    </div>
+    <div
+        class="nav-header-bottom"
+        [ngClass]="{ 'expand-width': isNavigationHovered }"
+    >
+        <div
+            class="nav-header-bottom-plus"
+            (click)="onAction('Open Panel')"
+            ngbTooltip
+            mainTooltip="Add New"
+            tooltipBackground="#6c6c6c"
+            position="right"
+        >
+            <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
+        </div>
 
-      <div
-         class="nav-header-bottom-rightSide"
-         [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
-      >
-         <div
-            class="nav-header-bottom-rightSide-search"
-            (click)="onAction('Search')"
-            ngbTooltip
-            mainTooltip="Find Anything"
-            tooltipBackground="#6c6c6c"
-            position="top"
-         >
-            <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
-         </div>
-         <div
-            class="nav-header-bottom-rightSide-notes"
-            (click)="onAction('Notes')"
-            ngbTooltip
-            mainTooltip="Notes"
-            tooltipBackground="#6c6c6c"
-            position="top"
-         >
-            <svg-icon src="assets/svg/common/ic_note.svg"></svg-icon>
-         </div>
-         <div
-            class="nav-header-bottom-rightSide-bell"
-            (click)="onAction('Bell')"
-            ngbTooltip
-            mainTooltip="Notification"
-            tooltipBackground="#6c6c6c"
-            position="top"
-         >
-            <svg-icon src="assets/svg/common/ic_bell.svg"></svg-icon>
-         </div>
-      </div>
-   </div>
+        <div
+            class="nav-header-bottom-rightSide"
+            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+        >
+            <div
+                class="nav-header-bottom-rightSide-search"
+                (click)="onAction('Search')"
+                ngbTooltip
+                mainTooltip="Find Anything"
+                tooltipBackground="#6c6c6c"
+                position="top"
+            >
+                <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+            </div>
+            <div
+                class="nav-header-bottom-rightSide-notes"
+                (click)="onAction('Notes')"
+                ngbTooltip
+                mainTooltip="Notes"
+                tooltipBackground="#6c6c6c"
+                position="top"
+            >
+                <svg-icon src="assets/svg/common/ic_note.svg"></svg-icon>
+            </div>
+            <div
+                class="nav-header-bottom-rightSide-bell"
+                (click)="onAction('Bell')"
+                ngbTooltip
+                mainTooltip="Notification"
+                tooltipBackground="#6c6c6c"
+                position="top"
+            >
+                <svg-icon src="assets/svg/common/ic_bell.svg"></svg-icon>
+            </div>
+        </div>
+    </div>
 </div>

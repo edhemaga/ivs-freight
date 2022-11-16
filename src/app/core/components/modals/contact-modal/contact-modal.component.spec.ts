@@ -6,22 +6,22 @@ import { DebugElement } from '@angular/core';
 import { ContactModalComponent } from './contact-modal.component';
 
 describe('ContactModalComponent', () => {
-   let component: ContactModalComponent;
-   let fixture: ComponentFixture<ContactModalComponent>;
+    let component: ContactModalComponent;
+    let fixture: ComponentFixture<ContactModalComponent>;
 
-   beforeEach(async(() => {
-      TestBed.configureTestingModule({
-         declarations: [ContactModalComponent],
-      }).compileComponents();
-   }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [ContactModalComponent],
+        }).compileComponents();
+    }));
 
-   beforeEach(() => {
-      fixture = TestBed.createComponent(ContactModalComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-   });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(ContactModalComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-   it('should create', () => {
-      expect(component).toBeTruthy();
-   });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

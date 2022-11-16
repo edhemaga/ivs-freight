@@ -8,7 +8,12 @@ import { CdlCardRoutingModule } from './cdl-card-routing.module';
 import { ApplicantModule } from '../../applicant.module';
 
 @NgModule({
-   declarations: [CdlCardComponent],
-   imports: [CommonModule, SharedModule, CdlCardRoutingModule, ApplicantModule],
+    declarations: [CdlCardComponent],
+    imports: [
+        CommonModule,
+        SharedModule,
+        CdlCardRoutingModule,
+        ApplicantModule,
+    ],
 })
 export class CdlCardModule {}

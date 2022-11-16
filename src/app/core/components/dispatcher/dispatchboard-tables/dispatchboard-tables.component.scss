@@ -1,492 +1,492 @@
 @import 'src/theme/variables';
 
 $trailer_collors: 'e94c4c', 'eec860', '47b5ff', '253f6a', 'af88ea', '822c97',
-   'ffaf47', '48b857', '44bec2', '508181', '4c83e2', '5ba160', 'e94949',
-   '243e6a', 'ef6e6e', '5673aa', '76a77d', '484848', '8fdee1', 'ffbe7d',
-   '81ccff', '668888', '955fa2', '547556', 'f2dd75';
+    'ffaf47', '48b857', '44bec2', '508181', '4c83e2', '5ba160', 'e94949',
+    '243e6a', 'ef6e6e', '5673aa', '76a77d', '484848', '8fdee1', 'ffbe7d',
+    '81ccff', '668888', '955fa2', '547556', 'f2dd75';
 $truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181',
-   '668888', '90659b', '78c7fc', 'ef6e6e', 'ffc061', '90bc6f';
+    '668888', '90659b', '78c7fc', 'ef6e6e', 'ffc061', '90bc6f';
 
 .cdk-drag-animating {
-   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
-   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .example-box {
-   .app-ta-input-dropdown-holder {
-      .input-custom-group .input-control {
-         height: 28px !important;
-      }
-   }
+    .app-ta-input-dropdown-holder {
+        .input-custom-group .input-control {
+            height: 28px !important;
+        }
+    }
 }
 
 .scrollholder {
-   position: relative;
-   max-width: 1510px;
+    position: relative;
+    max-width: 1510px;
 
-   .inside-holder {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      overflow: auto;
+    .inside-holder {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        overflow: auto;
 
-      thead.hideVisibility {
-         visibility: hidden;
-      }
+        thead.hideVisibility {
+            visibility: hidden;
+        }
 
-      .inside-table {
-         width: 1510px !important;
-      }
+        .inside-table {
+            width: 1510px !important;
+        }
 
-      &::-webkit-scrollbar {
-         display: none;
-         /* for Chrome, Safari, and Opera */
-      }
+        &::-webkit-scrollbar {
+            display: none;
+            /* for Chrome, Safari, and Opera */
+        }
 
-      .abs {
-         position: absolute;
-         background-color: rgb(238, 238, 238);
-         z-index: 10;
+        .abs {
+            position: absolute;
+            background-color: rgb(238, 238, 238);
+            z-index: 10;
 
-         &.cdk-drag-handle {
-            cursor: grab;
-            &:active {
-               cursor: grabbing;
+            &.cdk-drag-handle {
+                cursor: grab;
+                &:active {
+                    cursor: grabbing;
+                }
             }
-         }
 
-         &.theads-dispatch {
-            display: flex;
-            align-items: center;
-         }
+            &.theads-dispatch {
+                display: flex;
+                align-items: center;
+            }
 
-         &:first-child {
-            left: 0px;
-         }
+            &:first-child {
+                left: 0px;
+            }
 
-         &:nth-child(2) {
-            left: 76px;
-         }
-      }
+            &:nth-child(2) {
+                left: 76px;
+            }
+        }
 
-      .abs-right {
-         width: 30px;
-         position: absolute;
-         background-color: rgb(238, 238, 238);
+        .abs-right {
+            width: 30px;
+            position: absolute;
+            background-color: rgb(238, 238, 238);
 
-         &:nth-child(12) {
-            right: 68px;
-         }
+            &:nth-child(12) {
+                right: 68px;
+            }
 
-         &:nth-child(13) {
-            right: 34px;
-         }
+            &:nth-child(13) {
+                right: 34px;
+            }
 
-         &:nth-child(14) {
-            right: 0px;
-         }
-      }
+            &:nth-child(14) {
+                right: 0px;
+            }
+        }
 
-      .empty-box-field {
-         background-color: #ffffff33 !important;
-      }
-   }
+        .empty-box-field {
+            background-color: #ffffff33 !important;
+        }
+    }
 }
 
 td.truck-field,
 td.trailer-field,
 td.driver-field {
-   .dispatch-dropdown.ng-select {
-      height: 32px !important;
-      position: absolute;
-      width: 100%;
-      right: 0;
-      width: 100%;
-      min-width: 80px;
+    .dispatch-dropdown.ng-select {
+        height: 32px !important;
+        position: absolute;
+        width: 100%;
+        right: 0;
+        width: 100%;
+        min-width: 80px;
 
-      z-index: 100;
+        z-index: 100;
 
-      .ng-select-container .ng-value-container .ng-input {
-         bottom: 0;
-      }
+        .ng-select-container .ng-value-container .ng-input {
+            bottom: 0;
+        }
 
-      .ng-select-container .ng-value-container .ng-input > input {
-         height: 32px !important;
-         padding-left: 6px;
-      }
+        .ng-select-container .ng-value-container .ng-input > input {
+            height: 32px !important;
+            padding-left: 6px;
+        }
 
-      .ng-dropdown-panel.ng-select-bottom {
-         width: 100% !important;
-         margin-top: 0 !important;
-      }
-   }
+        .ng-dropdown-panel.ng-select-bottom {
+            width: 100% !important;
+            margin-top: 0 !important;
+        }
+    }
 }
 
 .dispatch-dropdown.ng-select.ng-select-opened {
-   position: relative;
-   left: 50%;
-   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.15) !important;
-   background-color: #fff;
-   z-index: 10;
-   border-top-left-radius: 3px;
-   border-top-right-radius: 3px;
-   transition: none !important;
-   transform: translateX(-50%);
+    position: relative;
+    left: 50%;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.15) !important;
+    background-color: #fff;
+    z-index: 10;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    transition: none !important;
+    transform: translateX(-50%);
 
-   .disp_selected {
-      background-color: #fff;
-   }
+    .disp_selected {
+        background-color: #fff;
+    }
 }
 
 .dispatch-dropdown.ng-select {
-   position: relative;
-   right: 18px;
-   width: calc(100% + 2rem);
-   padding-bottom: 0 !important;
-   margin-left: 3px;
-   margin-right: 6px;
+    position: relative;
+    right: 18px;
+    width: calc(100% + 2rem);
+    padding-bottom: 0 !important;
+    margin-left: 3px;
+    margin-right: 6px;
 
-   .ng-select-container {
-      align-items: center;
-      min-height: 38px;
-      padding-left: 7px;
-      background-color: unset;
-      border-top-left-radius: 3px;
-      border-top-right-radius: 3px;
-   }
+    .ng-select-container {
+        align-items: center;
+        min-height: 38px;
+        padding-left: 7px;
+        background-color: unset;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+    }
 
-   .ng-select-container.ng-has-value {
-      color: #606060;
-      padding-left: 22px;
-   }
+    .ng-select-container.ng-has-value {
+        color: #606060;
+        padding-left: 22px;
+    }
 
-   &.ng-select-top {
-      &::before {
-         top: auto !important;
-         bottom: -10px;
+    &.ng-select-top {
+        &::before {
+            top: auto !important;
+            bottom: -10px;
 
-         transform: scale(1.8, 1) translateX(-50%) rotate(180deg);
-      }
+            transform: scale(1.8, 1) translateX(-50%) rotate(180deg);
+        }
 
-      .ng-dropdown-panel,
-      .ng-option {
-         border-radius: 3px 3px 0 0;
-      }
+        .ng-dropdown-panel,
+        .ng-option {
+            border-radius: 3px 3px 0 0;
+        }
 
-      &.ng-select-opened {
-         top: auto !important;
-         bottom: 38px;
-         border-radius: 0 0 3px 3px;
-      }
-   }
+        &.ng-select-opened {
+            top: auto !important;
+            bottom: 38px;
+            border-radius: 0 0 3px 3px;
+        }
+    }
 
-   .ng-dropdown-panel.ng-select-top {
-      top: auto !important;
-      bottom: 100%;
-      box-shadow: 0 -1px 4px 0px rgba(0, 0, 0, 0.15) !important;
-   }
+    .ng-dropdown-panel.ng-select-top {
+        top: auto !important;
+        bottom: 100%;
+        box-shadow: 0 -1px 4px 0px rgba(0, 0, 0, 0.15) !important;
+    }
 
-   .ng-dropdown-panel.ng-select-bottom {
-      top: calc(100% - 0em) !important;
-   }
+    .ng-dropdown-panel.ng-select-bottom {
+        top: calc(100% - 0em) !important;
+    }
 
-   .ng-dropdown-panel.ng-select-bottom {
-      top: calc(100% - 0em) !important;
-   }
+    .ng-dropdown-panel.ng-select-bottom {
+        top: calc(100% - 0em) !important;
+    }
 
-   .ng-value-container {
-      border-top: none !important;
-      padding-bottom: 0 !important;
-      //margin-top: -15px; // Ovo kreira problem na ostalim dropdownima
-   }
+    .ng-value-container {
+        border-top: none !important;
+        padding-bottom: 0 !important;
+        //margin-top: -15px; // Ovo kreira problem na ostalim dropdownima
+    }
 
-   .ng-select-container::after {
-      display: none !important;
-   }
+    .ng-select-container::after {
+        display: none !important;
+    }
 
-   .ng-arrow-wrapper {
-      display: none;
-   }
+    .ng-arrow-wrapper {
+        display: none;
+    }
 
-   .ng-dropdown-panel {
-      box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.15) !important;
-      // box-shadow: $box-shadow !important;
-      border-radius: 0 0 3px 3px;
-   }
+    .ng-dropdown-panel {
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.15) !important;
+        // box-shadow: $box-shadow !important;
+        border-radius: 0 0 3px 3px;
+    }
 
-   .ng-option {
-      // border-top: 1px solid #f4f5f7;
-      border-bottom-left-radius: 3px;
-      border-bottom-right-radius: 3px;
-      padding: 0 6px;
+    .ng-option {
+        // border-top: 1px solid #f4f5f7;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        padding: 0 6px;
 
-      span {
-         font-size: 14px;
-         color: #b7b7b7;
-      }
-   }
+        span {
+            font-size: 14px;
+            color: #b7b7b7;
+        }
+    }
 
-   .ng-option:hover {
-      background-color: #f9f9f9 !important;
-   }
+    .ng-option:hover {
+        background-color: #f9f9f9 !important;
+    }
 
-   .ng-input {
-      padding: 5px 0;
-   }
+    .ng-input {
+        padding: 5px 0;
+    }
 
-   .ng-option-marked {
-      background: inherit !important;
-   }
+    .ng-option-marked {
+        background: inherit !important;
+    }
 }
 
 .unlocked {
-   .dispatcher-close:hover {
-      #main_circle {
-         fill: #b7b7b7;
-      }
-   }
+    .dispatcher-close:hover {
+        #main_circle {
+            fill: #b7b7b7;
+        }
+    }
 
-   .drag-span {
-      position: relative;
+    .drag-span {
+        position: relative;
 
-      @each $truck_col in $truck_collors {
-         &.truck_#{$truck_col} {
-            background: linear-gradient(
-               to right,
-               unquote('#' + $truck_col + '80') 50%,
-               transparent 50%
-            );
+        @each $truck_col in $truck_collors {
+            &.truck_#{$truck_col} {
+                background: linear-gradient(
+                    to right,
+                    unquote('#' + $truck_col + '80') 50%,
+                    transparent 50%
+                );
 
-            .dispatcher-close {
-               svg {
-                  #main_circle {
-                     fill: unquote('#' + $truck_col + '80');
-                  }
-               }
+                .dispatcher-close {
+                    svg {
+                        #main_circle {
+                            fill: unquote('#' + $truck_col + '80');
+                        }
+                    }
 
-               &:hover {
-                  #main_circle {
-                     fill: unquote('#' + $truck_col);
-                  }
-               }
+                    &:hover {
+                        #main_circle {
+                            fill: unquote('#' + $truck_col);
+                        }
+                    }
+                }
             }
-         }
-      }
+        }
 
-      @each $trailer_col in $trailer_collors {
-         &.trailer_#{$trailer_col} {
-            background: linear-gradient(
-               to right,
-               unquote('#' + $trailer_col + '80') 50%,
-               transparent 50%
-            );
+        @each $trailer_col in $trailer_collors {
+            &.trailer_#{$trailer_col} {
+                background: linear-gradient(
+                    to right,
+                    unquote('#' + $trailer_col + '80') 50%,
+                    transparent 50%
+                );
 
-            .dispatcher-close {
-               svg {
-                  #main_circle {
-                     fill: unquote('#' + $trailer_col + '80');
-                  }
-               }
+                .dispatcher-close {
+                    svg {
+                        #main_circle {
+                            fill: unquote('#' + $trailer_col + '80');
+                        }
+                    }
 
-               &:hover {
-                  #main_circle {
-                     fill: unquote('#' + $trailer_col);
-                  }
-               }
+                    &:hover {
+                        #main_circle {
+                            fill: unquote('#' + $trailer_col);
+                        }
+                    }
+                }
             }
-         }
-      }
+        }
 
-      &:hover {
-         .select_span {
-            color: #fff !important;
-         }
-      }
-   }
+        &:hover {
+            .select_span {
+                color: #fff !important;
+            }
+        }
+    }
 
-   .no-color {
-      &:hover {
-         background: linear-gradient(to right, #dadada 50%, transparent 50%);
-         //background-position: right bottom !important;
-         transition: all 0.2s ease-out;
-         background-size: 200% 100% !important;
-      }
-   }
+    .no-color {
+        &:hover {
+            background: linear-gradient(to right, #dadada 50%, transparent 50%);
+            //background-position: right bottom !important;
+            transition: all 0.2s ease-out;
+            background-size: 200% 100% !important;
+        }
+    }
 }
 
 .locked {
-   .drag-span {
-      @each $truck_col in $truck_collors {
-         &.truck_#{$truck_col} {
-            .select_span {
-               color: unquote('#' + $truck_col) !important;
-               &::-moz-selection {
-                  color: unquote('#' + $truck_col) !important;
-                  background: unquote('#' + $truck_col) !important;
-               }
+    .drag-span {
+        @each $truck_col in $truck_collors {
+            &.truck_#{$truck_col} {
+                .select_span {
+                    color: unquote('#' + $truck_col) !important;
+                    &::-moz-selection {
+                        color: unquote('#' + $truck_col) !important;
+                        background: unquote('#' + $truck_col) !important;
+                    }
 
-               &::selection {
-                  color: unquote('#' + $truck_col) !important;
-                  background: unquote('#' + $truck_col) !important;
-               }
+                    &::selection {
+                        color: unquote('#' + $truck_col) !important;
+                        background: unquote('#' + $truck_col) !important;
+                    }
+                }
             }
-         }
-      }
+        }
 
-      @each $trailer_col in $trailer_collors {
-         &.trailer_#{$trailer_col} {
-            .select_span {
-               color: unquote('#' + $trailer_col) !important;
-               &::-moz-selection {
-                  color: unquote('#' + $trailer_col) !important;
-                  background: unquote('#' + $trailer_col) !important;
-               }
+        @each $trailer_col in $trailer_collors {
+            &.trailer_#{$trailer_col} {
+                .select_span {
+                    color: unquote('#' + $trailer_col) !important;
+                    &::-moz-selection {
+                        color: unquote('#' + $trailer_col) !important;
+                        background: unquote('#' + $trailer_col) !important;
+                    }
 
-               &::selection {
-                  color: unquote('#' + $trailer_col) !important;
-                  background: unquote('#' + $trailer_col) !important;
-               }
+                    &::selection {
+                        color: unquote('#' + $trailer_col) !important;
+                        background: unquote('#' + $trailer_col) !important;
+                    }
+                }
             }
-         }
-      }
-   }
+        }
+    }
 
-   // .select_span{
-   //   padding-bottom: 0px;
-   //   transition: padding-bottom 0.3s;
-   //   &:hover{
-   //     padding-bottom: 10px;
-   //   }
-   // }
+    // .select_span{
+    //   padding-bottom: 0px;
+    //   transition: padding-bottom 0.3s;
+    //   &:hover{
+    //     padding-bottom: 10px;
+    //   }
+    // }
 
-   .no-color {
-      &:hover {
-         // background: linear-gradient(to right, #DADADA 50%, transparent 50%) !important;
-         // //background-position: right bottom !important;
-         // transition: all 0.2s ease-out;
-         // background-size: 200% 100% !important;
+    .no-color {
+        &:hover {
+            // background: linear-gradient(to right, #DADADA 50%, transparent 50%) !important;
+            // //background-position: right bottom !important;
+            // transition: all 0.2s ease-out;
+            // background-size: 200% 100% !important;
 
-         .select_span {
-            color: #b7b7b7 !important;
-         }
-      }
-   }
+            .select_span {
+                color: #b7b7b7 !important;
+            }
+        }
+    }
 }
 
 .phoneemail-field {
-   position: relative;
-   width: 176px !important;
-   min-width: 176px !important;
-   max-width: 176px !important;
+    position: relative;
+    width: 176px !important;
+    min-width: 176px !important;
+    max-width: 176px !important;
 
-   .phone-em-hold {
-      height: 32px;
-      background-color: #fff;
-      padding: 2px;
-      border-radius: 3px;
-   }
+    .phone-em-hold {
+        height: 32px;
+        background-color: #fff;
+        padding: 2px;
+        border-radius: 3px;
+    }
 
-   .button-switch-email-phone {
-      display: none;
-      position: absolute;
-      right: -1px;
-      top: 3px;
-      border: none;
-      background-color: transparent;
+    .button-switch-email-phone {
+        display: none;
+        position: absolute;
+        right: -1px;
+        top: 3px;
+        border: none;
+        background-color: transparent;
 
-      svg-icon {
-         width: 24px;
-         height: 24px;
-         display: flex;
-
-         svg {
+        svg-icon {
             width: 24px;
             height: 24px;
-         }
-      }
+            display: flex;
 
-      &:hover {
-         svg-icon {
             svg {
-               rect {
-                  fill: #b7b7b7;
-               }
+                width: 24px;
+                height: 24px;
             }
-         }
-      }
-   }
+        }
 
-   &:hover {
-      .button-switch-email-phone {
-         display: block;
-      }
-   }
+        &:hover {
+            svg-icon {
+                svg {
+                    rect {
+                        fill: #b7b7b7;
+                    }
+                }
+            }
+        }
+    }
+
+    &:hover {
+        .button-switch-email-phone {
+            display: block;
+        }
+    }
 }
 
 .k-grid-toolbar {
-   background-color: transparent !important;
+    background-color: transparent !important;
 
-   .item_dispatch_head {
-      padding-left: 0 !important;
-      padding-right: 0 !important;
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
+    .item_dispatch_head {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
 
-      .board_infos {
-         display: flex;
-         align-items: center;
+        .board_infos {
+            display: flex;
+            align-items: center;
 
-         .board_infos_count {
-            font-weight: bold;
-            color: #919191;
+            .board_infos_count {
+                font-weight: bold;
+                color: #919191;
+                font-size: 12px;
+                padding-left: 10px;
+
+                &:first-child,
+                &:nth-child(2) {
+                    width: 90px;
+                    padding-left: 6px;
+                }
+
+                &::-moz-selection,
+                span::-moz-selection {
+                    color: #919191 !important;
+                    background: #91919122 !important;
+                }
+
+                &::selection,
+                span::selection {
+                    color: #6c6c6c !important;
+                    background: #91919122 !important;
+                }
+            }
+        }
+
+        .board_name {
             font-size: 12px;
-            padding-left: 10px;
+            font-weight: bold;
+            color: #6c6c6c;
+            text-transform: uppercase;
 
-            &:first-child,
-            &:nth-child(2) {
-               width: 90px;
-               padding-left: 6px;
+            &::-moz-selection {
+                color: #919191 !important;
+                background: #91919122 !important;
             }
 
-            &::-moz-selection,
-            span::-moz-selection {
-               color: #919191 !important;
-               background: #91919122 !important;
+            &::selection {
+                color: #6c6c6c !important;
+                background: #91919122 !important;
             }
-
-            &::selection,
-            span::selection {
-               color: #6c6c6c !important;
-               background: #91919122 !important;
-            }
-         }
-      }
-
-      .board_name {
-         font-size: 12px;
-         font-weight: bold;
-         color: #6c6c6c;
-         text-transform: uppercase;
-
-         &::-moz-selection {
-            color: #919191 !important;
-            background: #91919122 !important;
-         }
-
-         &::selection {
-            color: #6c6c6c !important;
-            background: #91919122 !important;
-         }
-      }
-   }
+        }
+    }
 }
 
 // GRIDSTER TEST
 
 gridster {
-   height: 300px !important;
+    height: 300px !important;
 }

@@ -1,106 +1,106 @@
 <div class="map-list-container">
-   <div class="map-list">
-      <div class="map-list-header" [formGroup]="searchForm">
-         <div class="map-list-search">
-            <app-ta-input
-               formControlName="search"
-               [inputConfig]="{
-                  name: 'search',
-                  type: 'text',
-                  label: 'Search',
-                  placeholderIcon: 'ic_search',
-                  placeholderInsteadOfLabel: true,
-                  blackInput: true
-               }"
-            ></app-ta-input>
-         </div>
-
-         <div class="map-list-sort-container">
-            <div
-               class="map-list-sort-text"
-               *ngIf="searchForm?.get('search').value?.length < 3"
-            >
-               Sort by
-            </div>
-            <div
-               class="map-list-sort-text search-results-text"
-               *ngIf="searchForm?.get('search').value?.length >= 3"
-            >
-               <div class="marker-bold-text">
-                  {{ mapListContent.length }}
-               </div>
-               results
+    <div class="map-list">
+        <div class="map-list-header" [formGroup]="searchForm">
+            <div class="map-list-search">
+                <app-ta-input
+                    formControlName="search"
+                    [inputConfig]="{
+                        name: 'search',
+                        type: 'text',
+                        label: 'Search',
+                        placeholderIcon: 'ic_search',
+                        placeholderInsteadOfLabel: true,
+                        blackInput: true
+                    }"
+                ></app-ta-input>
             </div>
 
-            <div class="map-list-sort">
-               <div
-                  class="map-list-sort-category-container"
-                  #t2="ngbPopover"
-                  [ngbPopover]="sortPopover"
-                  [placement]="['right-top']"
-                  [triggers]="'manual'"
-                  autoClose="outside"
-                  [container]="'body'"
-                  [popoverClass]="'map-list-sort-popover'"
-                  (click)="openPopover(t2)"
-               >
-                  <div
-                     class="map-list-sort-category marker-info-text"
-                     *ngIf="activeSortType?.name"
-                  >
-                     {{ activeSortType.name }}
-                  </div>
-               </div>
-               <div
-                  class="map-list-sort-arrows"
-                  (click)="changeSortingDirection()"
-               >
-                  <svg-icon
-                     src="assets/svg/common/ic_sort_arrows.svg"
-                     class="sort-arrows-svg"
-                     [ngClass]="{ 'blue-svg': sortDirection == 'asc' }"
-                  ></svg-icon>
-               </div>
+            <div class="map-list-sort-container">
+                <div
+                    class="map-list-sort-text"
+                    *ngIf="searchForm?.get('search').value?.length < 3"
+                >
+                    Sort by
+                </div>
+                <div
+                    class="map-list-sort-text search-results-text"
+                    *ngIf="searchForm?.get('search').value?.length >= 3"
+                >
+                    <div class="marker-bold-text">
+                        {{ mapListContent.length }}
+                    </div>
+                    results
+                </div>
+
+                <div class="map-list-sort">
+                    <div
+                        class="map-list-sort-category-container"
+                        #t2="ngbPopover"
+                        [ngbPopover]="sortPopover"
+                        [placement]="['right-top']"
+                        [triggers]="'manual'"
+                        autoClose="outside"
+                        [container]="'body'"
+                        [popoverClass]="'map-list-sort-popover'"
+                        (click)="openPopover(t2)"
+                    >
+                        <div
+                            class="map-list-sort-category marker-info-text"
+                            *ngIf="activeSortType?.name"
+                        >
+                            {{ activeSortType.name }}
+                        </div>
+                    </div>
+                    <div
+                        class="map-list-sort-arrows"
+                        (click)="changeSortingDirection()"
+                    >
+                        <svg-icon
+                            src="assets/svg/common/ic_sort_arrows.svg"
+                            class="sort-arrows-svg"
+                            [ngClass]="{ 'blue-svg': sortDirection == 'asc' }"
+                        ></svg-icon>
+                    </div>
+                </div>
             </div>
-         </div>
-         <div class="marker-divider"></div>
-      </div>
-      <div class="map-list-body">
-         <ng-content></ng-content>
-      </div>
-      <div
-         class="map-list-resize-button"
-         (click)="resizeMapList()"
-         *ngIf="showExpandButton"
-      >
-         <svg-icon
-            src="assets/svg/common/fill_arrow_down.svg"
-            class="map-list-resize-svg"
-            [ngClass]="{ rotate: mapListExpanded }"
-            [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
-         ></svg-icon>
-      </div>
-   </div>
+            <div class="marker-divider"></div>
+        </div>
+        <div class="map-list-body">
+            <ng-content></ng-content>
+        </div>
+        <div
+            class="map-list-resize-button"
+            (click)="resizeMapList()"
+            *ngIf="showExpandButton"
+        >
+            <svg-icon
+                src="assets/svg/common/fill_arrow_down.svg"
+                class="map-list-resize-svg"
+                [ngClass]="{ rotate: mapListExpanded }"
+                [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
+            ></svg-icon>
+        </div>
+    </div>
 </div>
 
 <ng-template #sortPopover>
-   <div class="sort-filter-holder">
-      <div
-         class="sort-items-holder"
-         *ngFor="let item of sortTypes; let i = index"
-         (click)="changeSortType(item)"
-         [ngClass]="{
-            'sort-item-active': item.id == activeSortType.id,
-            'hide-sort-item': item.isHidden
-         }"
-      >
-         <div class="sort-items">
-            {{ item.name }}
-            <svg-icon
-               *ngIf="item.id == activeSortType.id"
-               src="assets/svg/truckassist-table/check-new.svg"
-            ></svg-icon>
-         </div>
-      </div>
-   </div>
+    <div class="sort-filter-holder">
+        <div
+            class="sort-items-holder"
+            *ngFor="let item of sortTypes; let i = index"
+            (click)="changeSortType(item)"
+            [ngClass]="{
+                'sort-item-active': item.id == activeSortType.id,
+                'hide-sort-item': item.isHidden
+            }"
+        >
+            <div class="sort-items">
+                {{ item.name }}
+                <svg-icon
+                    *ngIf="item.id == activeSortType.id"
+                    src="assets/svg/truckassist-table/check-new.svg"
+                ></svg-icon>
+            </div>
+        </div>
+    </div>
 </ng-template>

@@ -5,7 +5,7 @@ import { UserRoutes } from './user.routing';
 import { UserTableComponent } from './user-table/user-table.component';
 
 @NgModule({
-   imports: [CommonModule, UserRoutes, TruckassistTableModule],
-   declarations: [UserTableComponent],
+    imports: [CommonModule, UserRoutes, TruckassistTableModule],
+    declarations: [UserTableComponent],
 })
 export class UserModule {}

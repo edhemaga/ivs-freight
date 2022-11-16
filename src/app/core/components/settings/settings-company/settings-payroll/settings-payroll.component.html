@@ -1,248 +1,299 @@
 <div class="settings-payroll">
-   <div class="settings-header">
-      <div class="settings-name">
-         <p>Payroll</p>
-      </div>
+    <div class="settings-header">
+        <div class="settings-name">
+            <p>Payroll</p>
+        </div>
 
-      <div class="settings-header-button">
-         <div class="border-left"></div>
-         <svg-icon
-            src="ic_pen.svg"
-            class="settings-edit-button"
-            (click)="
-               onAction({
-                  modalName: 'basic',
-                  type: 'payroll-tab',
-                  company: payrollData
-               })
-            "
-         ></svg-icon>
-      </div>
-   </div>
-   <div class="settings-body">
-      <!-- Driver & Owner -->
-      <div
-         *ngIf="payrollData?.companyPayrolls?.length"
-         class="cards-custom-payroll"
-      >
-         <app-ta-custom-card
-            *ngFor="
-               let payroll of payrollData.companyPayrolls;
-               let i = index;
-               trackBy: identity
-            "
-            [cardName]="payroll?.department?.name"
-            [bodyTemplate]="'card'"
-            [isCardOpen]="false"
-            [hasDivider]="i > 0 ? true : false"
-            [textBottomPossiton]="'-2px'"
-            [hasWeeklyStatus]="payroll?.payPeriod?.name"
-         >
-            <!-- Driver & Owner -->
-            <div
-               class="payroll-template-data"
-               *ngIf="payroll?.department?.name === 'Driver&Owner'"
+        <div class="settings-header-button">
+            <div class="border-left"></div>
+            <svg-icon
+                src="ic_pen.svg"
+                class="settings-edit-button"
+                (click)="
+                    onAction({
+                        modalName: 'basic',
+                        type: 'payroll-tab',
+                        company: payrollData
+                    })
+                "
+            ></svg-icon>
+        </div>
+    </div>
+    <div class="settings-body">
+        <!-- Driver & Owner -->
+        <div
+            *ngIf="payrollData?.companyPayrolls?.length"
+            class="cards-custom-payroll"
+        >
+            <app-ta-custom-card
+                *ngFor="
+                    let payroll of payrollData.companyPayrolls;
+                    let i = index;
+                    trackBy: identity
+                "
+                [cardName]="payroll?.department?.name"
+                [bodyTemplate]="'card'"
+                [isCardOpen]="false"
+                [hasDivider]="i > 0 ? true : false"
+                [textBottomPossiton]="'-2px'"
+                [hasWeeklyStatus]="payroll?.payPeriod?.name"
             >
-               <div
-                  class="payroll-template-item"
-                  *ngIf="payroll?.solo.emptyMile"
-               >
-                  <span class="payroll-name">Solo Empty Mile</span>
-                  <span class="payroll-value"
-                     >${{ payroll?.solo.emptyMile | taThousandSeparator }}</span
-                  >
-               </div>
-               <div
-                  class="payroll-template-item"
-                  *ngIf="payroll?.solo.loadedMile"
-               >
-                  <span class="payroll-name">Solo Loaded Mile</span>
-                  <span class="payroll-value"
-                     >${{
-                        payroll?.solo.loadedMile | taThousandSeparator
-                     }}</span
-                  >
-               </div>
-               <div class="payroll-template-item" *ngIf="payroll?.solo.perStop">
-                  <span class="payroll-name">Solo Per Stop</span>
-                  <span class="payroll-value"
-                     >${{ payroll?.solo.perStop | taThousandSeparator }}</span
-                  >
-               </div>
-               <div
-                  class="payroll-template-item"
-                  *ngIf="payroll?.team.emptyMile"
-               >
-                  <span class="payroll-name">Team Empty Mile</span>
-                  <span class="payroll-value"
-                     >${{ payroll?.team.emptyMile | taThousandSeparator }}</span
-                  >
-               </div>
-               <div
-                  class="payroll-template-item"
-                  *ngIf="payroll?.team.loadedMile"
-               >
-                  <span class="payroll-name">Team Loaded Mile</span>
-                  <span class="payroll-value"
-                     >${{
-                        payroll?.team.loadedMile | taThousandSeparator
-                     }}</span
-                  >
-               </div>
-               <div
-                  class="payroll-template-item"
-                  *ngIf="payroll?.team.teamPerStop"
-               >
-                  <span class="payroll-name">Team Per Stop</span>
-                  <span class="payroll-value"
-                     >${{ payroll?.team.perStop | taThousandSeparator }}</span
-                  >
-               </div>
-               <div
-                  class="payroll-template-item"
-                  *ngIf="payroll.defaultSoloDriverCommission"
-               >
-                  <span class="payroll-name">Solo Commision</span>
-                  <span class="payroll-value"
-                     >{{ payroll?.defaultSoloDriverCommission }}%</span
-                  >
-               </div>
-               <div
-                  class="payroll-template-item"
-                  *ngIf="payroll?.defaultTeamDriverCommission"
-               >
-                  <span class="payroll-name">Team Commision</span>
-                  <span class="payroll-value"
-                     >{{ payroll?.defaultTeamDriverCommission }}%</span
-                  >
-               </div>
-               <div
-                  class="payroll-template-item"
-                  *ngIf="payroll?.defaultOwnerCommission"
-               >
-                  <span class="payroll-name">Owner Commision</span>
-                  <span class="payroll-value"
-                     >{{ payroll?.defaultOwnerCommission }}%</span
-                  >
-               </div>
-            </div>
-            <!-- Accouting -->
-            <div
-               class="payroll-template-data"
-               *ngIf="payroll?.department?.name === 'Accounting'"
-            >
-               <div class="payroll-template-item" *ngIf="payroll?.defaultBase">
-                  <span class="payroll-name">Salary</span>
-                  <span class="payroll-value"
-                     >${{ payroll?.defaultBase | taThousandSeparator }}</span
-                  >
-               </div>
-            </div>
+                <!-- Driver & Owner -->
+                <div
+                    class="payroll-template-data"
+                    *ngIf="payroll?.department?.name === 'Driver&Owner'"
+                >
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.solo.emptyMile"
+                    >
+                        <span class="payroll-name">Solo Empty Mile</span>
+                        <span class="payroll-value"
+                            >${{
+                                payroll?.solo.emptyMile | taThousandSeparator
+                            }}</span
+                        >
+                    </div>
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.solo.loadedMile"
+                    >
+                        <span class="payroll-name">Solo Loaded Mile</span>
+                        <span class="payroll-value"
+                            >${{
+                                payroll?.solo.loadedMile | taThousandSeparator
+                            }}</span
+                        >
+                    </div>
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.solo.perStop"
+                    >
+                        <span class="payroll-name">Solo Per Stop</span>
+                        <span class="payroll-value"
+                            >${{
+                                payroll?.solo.perStop | taThousandSeparator
+                            }}</span
+                        >
+                    </div>
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.team.emptyMile"
+                    >
+                        <span class="payroll-name">Team Empty Mile</span>
+                        <span class="payroll-value"
+                            >${{
+                                payroll?.team.emptyMile | taThousandSeparator
+                            }}</span
+                        >
+                    </div>
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.team.loadedMile"
+                    >
+                        <span class="payroll-name">Team Loaded Mile</span>
+                        <span class="payroll-value"
+                            >${{
+                                payroll?.team.loadedMile | taThousandSeparator
+                            }}</span
+                        >
+                    </div>
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.team.teamPerStop"
+                    >
+                        <span class="payroll-name">Team Per Stop</span>
+                        <span class="payroll-value"
+                            >${{
+                                payroll?.team.perStop | taThousandSeparator
+                            }}</span
+                        >
+                    </div>
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll.defaultSoloDriverCommission"
+                    >
+                        <span class="payroll-name">Solo Commision</span>
+                        <span class="payroll-value"
+                            >{{ payroll?.defaultSoloDriverCommission }}%</span
+                        >
+                    </div>
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.defaultTeamDriverCommission"
+                    >
+                        <span class="payroll-name">Team Commision</span>
+                        <span class="payroll-value"
+                            >{{ payroll?.defaultTeamDriverCommission }}%</span
+                        >
+                    </div>
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.defaultOwnerCommission"
+                    >
+                        <span class="payroll-name">Owner Commision</span>
+                        <span class="payroll-value"
+                            >{{ payroll?.defaultOwnerCommission }}%</span
+                        >
+                    </div>
+                </div>
+                <!-- Accouting -->
+                <div
+                    class="payroll-template-data"
+                    *ngIf="payroll?.department?.name === 'Accounting'"
+                >
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.defaultBase"
+                    >
+                        <span class="payroll-name">Salary</span>
+                        <span class="payroll-value"
+                            >${{
+                                payroll?.defaultBase | taThousandSeparator
+                            }}</span
+                        >
+                    </div>
+                </div>
 
-            <div
-               class="payroll-template-data"
-               *ngIf="payroll?.department?.name === 'Recruitment'"
-            >
-               <div class="payroll-template-item" *ngIf="payroll?.defaultBase">
-                  <span class="payroll-name">Salary</span>
-                  <span class="payroll-value"
-                     >${{ payroll?.defaultBase | taThousandSeparator }}</span
-                  >
-               </div>
-            </div>
+                <div
+                    class="payroll-template-data"
+                    *ngIf="payroll?.department?.name === 'Recruitment'"
+                >
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.defaultBase"
+                    >
+                        <span class="payroll-name">Salary</span>
+                        <span class="payroll-value"
+                            >${{
+                                payroll?.defaultBase | taThousandSeparator
+                            }}</span
+                        >
+                    </div>
+                </div>
 
-            <div
-               class="payroll-template-data"
-               *ngIf="payroll?.department?.name === 'Safety'"
-            >
-               <div class="payroll-template-item" *ngIf="payroll?.defaultBase">
-                  <span class="payroll-name">Salary</span>
-                  <span class="payroll-value"
-                     >${{ payroll?.defaultBase | taThousandSeparator }}</span
-                  >
-               </div>
-            </div>
+                <div
+                    class="payroll-template-data"
+                    *ngIf="payroll?.department?.name === 'Safety'"
+                >
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.defaultBase"
+                    >
+                        <span class="payroll-name">Salary</span>
+                        <span class="payroll-value"
+                            >${{
+                                payroll?.defaultBase | taThousandSeparator
+                            }}</span
+                        >
+                    </div>
+                </div>
 
-            <div
-               class="payroll-template-data"
-               *ngIf="payroll?.department?.name === 'Repair'"
-            >
-               <div class="payroll-template-item" *ngIf="payroll?.defaultBase">
-                  <span class="payroll-name">Salary</span>
-                  <span class="payroll-value"
-                     >${{ payroll?.defaultBase | taThousandSeparator }}</span
-                  >
-               </div>
-            </div>
+                <div
+                    class="payroll-template-data"
+                    *ngIf="payroll?.department?.name === 'Repair'"
+                >
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.defaultBase"
+                    >
+                        <span class="payroll-name">Salary</span>
+                        <span class="payroll-value"
+                            >${{
+                                payroll?.defaultBase | taThousandSeparator
+                            }}</span
+                        >
+                    </div>
+                </div>
 
-            <div
-               class="payroll-template-data"
-               *ngIf="payroll?.department?.name === 'Other'"
-            >
-               <div class="payroll-template-item" *ngIf="payroll?.defaultBase">
-                  <span class="payroll-name">Salary</span>
-                  <span class="payroll-value"
-                     >${{ payroll?.defaultBase | taThousandSeparator }}</span
-                  >
-               </div>
-            </div>
+                <div
+                    class="payroll-template-data"
+                    *ngIf="payroll?.department?.name === 'Other'"
+                >
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.defaultBase"
+                    >
+                        <span class="payroll-name">Salary</span>
+                        <span class="payroll-value"
+                            >${{
+                                payroll?.defaultBase | taThousandSeparator
+                            }}</span
+                        >
+                    </div>
+                </div>
 
-            <div
-               class="payroll-template-data"
-               *ngIf="payroll?.department?.name === 'CompanyOwner'"
-            >
-               <div class="payroll-template-item" *ngIf="payroll?.defaultBase">
-                  <span class="payroll-name">Salary</span>
-                  <span class="payroll-value"
-                     >${{ payroll?.defaultBase | taThousandSeparator }}</span
-                  >
-               </div>
-            </div>
-            <div
-               class="payroll-template-data"
-               *ngIf="payroll?.department?.name === 'Dispatch'"
-            >
-               <div class="payroll-template-item" *ngIf="payroll?.defaultBase">
-                  <span class="payroll-name">Base</span>
-                  <span class="payroll-value"
-                     >${{ payroll?.defaultBase | taThousandSeparator }}</span
-                  >
-               </div>
-               <div
-                  class="payroll-template-item"
-                  *ngIf="payroll?.defaultCommission"
-               >
-                  <span class="payroll-name">Load Commison</span>
-                  <span class="payroll-value"
-                     >${{
-                        payroll?.defaultCommission | taThousandSeparator
-                     }}</span
-                  >
-               </div>
-            </div>
-            <div
-               class="payroll-template-data"
-               *ngIf="payroll?.department?.name === 'Manager'"
-            >
-               <div class="payroll-template-item" *ngIf="payroll?.defaultBase">
-                  <span class="payroll-name">Base</span>
-                  <span class="payroll-value"
-                     >${{ payroll?.defaultBase | taThousandSeparator }}</span
-                  >
-               </div>
-               <div
-                  class="payroll-template-item"
-                  *ngIf="payroll?.defaultCommission"
-               >
-                  <span class="payroll-name">Revenue Commison</span>
-                  <span class="payroll-value"
-                     >${{
-                        payroll?.defaultCommission | taThousandSeparator
-                     }}</span
-                  >
-               </div>
-            </div>
-         </app-ta-custom-card>
-      </div>
-   </div>
+                <div
+                    class="payroll-template-data"
+                    *ngIf="payroll?.department?.name === 'CompanyOwner'"
+                >
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.defaultBase"
+                    >
+                        <span class="payroll-name">Salary</span>
+                        <span class="payroll-value"
+                            >${{
+                                payroll?.defaultBase | taThousandSeparator
+                            }}</span
+                        >
+                    </div>
+                </div>
+                <div
+                    class="payroll-template-data"
+                    *ngIf="payroll?.department?.name === 'Dispatch'"
+                >
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.defaultBase"
+                    >
+                        <span class="payroll-name">Base</span>
+                        <span class="payroll-value"
+                            >${{
+                                payroll?.defaultBase | taThousandSeparator
+                            }}</span
+                        >
+                    </div>
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.defaultCommission"
+                    >
+                        <span class="payroll-name">Load Commison</span>
+                        <span class="payroll-value"
+                            >${{
+                                payroll?.defaultCommission | taThousandSeparator
+                            }}</span
+                        >
+                    </div>
+                </div>
+                <div
+                    class="payroll-template-data"
+                    *ngIf="payroll?.department?.name === 'Manager'"
+                >
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.defaultBase"
+                    >
+                        <span class="payroll-name">Base</span>
+                        <span class="payroll-value"
+                            >${{
+                                payroll?.defaultBase | taThousandSeparator
+                            }}</span
+                        >
+                    </div>
+                    <div
+                        class="payroll-template-item"
+                        *ngIf="payroll?.defaultCommission"
+                    >
+                        <span class="payroll-name">Revenue Commison</span>
+                        <span class="payroll-value"
+                            >${{
+                                payroll?.defaultCommission | taThousandSeparator
+                            }}</span
+                        >
+                    </div>
+                </div>
+            </app-ta-custom-card>
+        </div>
+    </div>
 </div>

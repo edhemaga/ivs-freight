@@ -9,18 +9,18 @@ import { TruckassistTableModule } from '../../../shared/truckassist-table/trucka
 import { SharedModule } from '../../../shared/shared.module';
 
 @NgModule({
-   declarations: [
-      ViolationDetailsPageComponent,
-      ViolationDetailsSingleComponent,
-      ViolationCardViewComponent,
-   ],
-   exports: [ViolationCardViewComponent, SharedModule],
-   imports: [
-      CommonModule,
-      ViolationDetailsRoutes,
-      TruckassistProgressExpirationModule,
-      SharedModule,
-      TruckassistTableModule,
-   ],
+    declarations: [
+        ViolationDetailsPageComponent,
+        ViolationDetailsSingleComponent,
+        ViolationCardViewComponent,
+    ],
+    exports: [ViolationCardViewComponent, SharedModule],
+    imports: [
+        CommonModule,
+        ViolationDetailsRoutes,
+        TruckassistProgressExpirationModule,
+        SharedModule,
+        TruckassistTableModule,
+    ],
 })
 export class ViolationDetailsModule {}

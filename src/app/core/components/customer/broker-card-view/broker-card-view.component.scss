@@ -1,173 +1,173 @@
 @import '../broker-details/broker-details-single/broker-details-single.component.scss';
 .header-bottom {
-   font-size: 18px;
-   font-weight: 500;
-   color: #6c6c6c;
-   &::-moz-selection {
-      color: $color-gray-dark;
-      background: rgb(183, 183, 183, 0.2);
-   }
-   &::selection {
-      color: $color-gray-dark;
-      background: rgb(183, 183, 183, 0.2);
-   }
+    font-size: 18px;
+    font-weight: 500;
+    color: #6c6c6c;
+    &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+    }
+    &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+    }
 }
 .additional-template-broker-data {
-   display: grid;
-   grid-template-columns: 150px 150px;
-   column-gap: 60px;
-   padding: 0 10px;
-   margin-top: -6px;
-   .addition-template-item {
-      display: flex;
-      flex-direction: column;
-   }
-   .header {
-      font-size: 12px;
-      font-weight: 600;
-      color: #6c6c6c;
-      &::-moz-selection {
-         color: $color-gray-dark;
-         background: rgb(183, 183, 183, 0.2);
-      }
-      &::selection {
-         color: $color-gray-dark;
-         background: rgb(183, 183, 183, 0.2);
-      }
-   }
-   .value {
-      font-size: 12px;
-      font-weight: 400;
-      color: #6c6c6c;
-      &::-moz-selection {
-         color: $color-gray-dark;
-         background: rgb(183, 183, 183, 0.2);
-      }
-      &::selection {
-         color: $color-gray-dark;
-         background: rgb(183, 183, 183, 0.2);
-      }
-   }
-   .charts-value {
-      font-size: 18px !important;
-      font-weight: 600 !important;
-      line-height: 18px;
-      &::-moz-selection {
-         color: $color-gray-dark;
-         background: rgb(183, 183, 183, 0.2);
-      }
-      &::selection {
-         color: $color-gray-dark;
-         background: rgb(183, 183, 183, 0.2);
-      }
-   }
-   .header-svg-wrapper {
-      display: flex;
-      align-items: center;
-      .header {
-         margin-left: 6px;
-      }
-      svg {
-         display: flex;
-      }
-   }
+    display: grid;
+    grid-template-columns: 150px 150px;
+    column-gap: 60px;
+    padding: 0 10px;
+    margin-top: -6px;
+    .addition-template-item {
+        display: flex;
+        flex-direction: column;
+    }
+    .header {
+        font-size: 12px;
+        font-weight: 600;
+        color: #6c6c6c;
+        &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+        }
+    }
+    .value {
+        font-size: 12px;
+        font-weight: 400;
+        color: #6c6c6c;
+        &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+        }
+    }
+    .charts-value {
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        line-height: 18px;
+        &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+        }
+    }
+    .header-svg-wrapper {
+        display: flex;
+        align-items: center;
+        .header {
+            margin-left: 6px;
+        }
+        svg {
+            display: flex;
+        }
+    }
 }
 .charts-broker-template {
-   padding: 0 4px !important;
-   margin-top: 6px;
+    padding: 0 4px !important;
+    margin-top: 6px;
 }
 .invoice-ageing-template {
-   display: grid;
-   grid-template-columns: 150px 150px;
-   grid-column-gap: 60px;
-   column-gap: 60px;
-   padding: 0 10px;
-   margin-top: -6px;
-   .invoice-ageing-template-item {
-      display: flex;
-      flex-direction: column;
-      .header-name {
-         font-size: 14px;
-         font-weight: 600;
-         color: #6c6c6c;
-         &::-moz-selection {
-            color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-         }
-         &::selection {
-            color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-         }
-      }
-      .value-ageing {
-         font-size: 28px;
-         font-weight: 600;
-         color: #6c6c6c;
-         line-height: 28px;
-         &::-moz-selection {
-            color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-         }
-         &::selection {
-            color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-         }
-      }
-   }
+    display: grid;
+    grid-template-columns: 150px 150px;
+    grid-column-gap: 60px;
+    column-gap: 60px;
+    padding: 0 10px;
+    margin-top: -6px;
+    .invoice-ageing-template-item {
+        display: flex;
+        flex-direction: column;
+        .header-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #6c6c6c;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+        .value-ageing {
+            font-size: 28px;
+            font-weight: 600;
+            color: #6c6c6c;
+            line-height: 28px;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+    }
 }
 .progress-container {
-   width: 408px;
-   height: 8px;
-   border-radius: 2px;
-   margin-left: 10px;
-   margin-top: 8px;
-   margin-bottom: 16px;
+    width: 408px;
+    height: 8px;
+    border-radius: 2px;
+    margin-left: 10px;
+    margin-top: 8px;
+    margin-bottom: 16px;
 }
 .invoice-agein-unlimited {
-   white-space: nowrap;
-   font-size: 18px;
-   font-weight: 500;
-   color: #6c6c6c;
-   display: flex;
-   align-items: flex-end;
-   &::-moz-selection {
-      color: $color-gray-dark;
-      background: rgb(183, 183, 183, 0.2);
-   }
-   &::selection {
-      color: $color-gray-dark;
-      background: rgb(183, 183, 183, 0.2);
-   }
-   .avg-days-invoice {
-      margin-left: 6px;
-      font-weight: 600 !important;
-      &::-moz-selection {
-         color: $color-gray-dark;
-         background: rgb(183, 183, 183, 0.2);
-      }
-      &::selection {
-         color: $color-gray-dark;
-         background: rgb(183, 183, 183, 0.2);
-      }
-   }
+    white-space: nowrap;
+    font-size: 18px;
+    font-weight: 500;
+    color: #6c6c6c;
+    display: flex;
+    align-items: flex-end;
+    &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+    }
+    &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+    }
+    .avg-days-invoice {
+        margin-left: 6px;
+        font-weight: 600 !important;
+        &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+        }
+    }
 }
 .credit-perctange {
-   display: flex;
-   align-items: flex-end;
-   justify-content: space-between;
-   width: 408px;
-   .percntage-broker {
-      font-size: 18px;
-      font-weight: 600;
-      color: $color-gray-dark;
-      line-height: 16px;
-      &::-moz-selection {
-         color: $color-gray-dark;
-         background: rgb(183, 183, 183, 0.2);
-      }
-      &::selection {
-         color: $color-gray-dark;
-         background: rgb(183, 183, 183, 0.2);
-      }
-   }
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 408px;
+    .percntage-broker {
+        font-size: 18px;
+        font-weight: 600;
+        color: $color-gray-dark;
+        line-height: 16px;
+        &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+        }
+    }
 }

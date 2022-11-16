@@ -1,106 +1,106 @@
 @import 'src/theme/variables.scss';
 
 .ta-input-arrows-container {
-   width: 100%;
-   display: flex;
-   align-items: center;
-   gap: 12px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 
-   p {
-      font-size: 14px;
-      line-height: 18px;
-      color: $bw6-2;
-      user-select: none !important;
-      position: relative;
+    p {
+        font-size: 14px;
+        line-height: 18px;
+        color: $bw6-2;
+        user-select: none !important;
+        position: relative;
 
-      span {
-         color: #ef5350;
-         position: absolute;
-         top: -6px;
-         right: -6px;
-      }
-   }
+        span {
+            color: #ef5350;
+            position: absolute;
+            top: -6px;
+            right: -6px;
+        }
+    }
 
-   .btn-container {
-      width: 42px;
-      height: 18px;
-      position: relative;
-      bottom: 1px;
+    .btn-container {
+        width: 42px;
+        height: 18px;
+        position: relative;
+        bottom: 1px;
 
-      .minus-icon,
-      .plus-icon {
-         cursor: pointer;
+        .minus-icon,
+        .plus-icon {
+            cursor: pointer;
 
-         svg {
-            transition: transform 0.2s ease-in-out;
-
-            rect {
-               transition: fill 0.2s ease-in-out;
-               fill: $bw-9;
-            }
-
-            path {
-               fill: $white;
-            }
-         }
-
-         &.minus-icon {
-            margin-right: 6px;
-         }
-
-         &:hover {
             svg {
-               transform: scale(1.2);
+                transition: transform 0.2s ease-in-out;
 
-               rect {
-                  fill: $bw4;
-               }
+                rect {
+                    transition: fill 0.2s ease-in-out;
+                    fill: $bw-9;
+                }
+
+                path {
+                    fill: $white;
+                }
             }
-         }
-      }
-   }
 
-   // Custom width for component input
-
-   .input-container {
-      width: 32px;
-   }
-
-   .driver-mvr-container {
-      width: 129px;
-   }
-
-   .truck-fhwa-container {
-      width: 123px;
-   }
-
-   &.applicant {
-      gap: 0;
-
-      p {
-         margin-right: 12px !important;
-      }
-
-      .btn-container {
-         margin-right: 6px;
-      }
-   }
-
-   &.disabled-arrow {
-      p {
-         color: $bw5 !important;
-      }
-
-      .minus-icon,
-      .plus-icon {
-         cursor: auto !important;
-         pointer-events: none !important;
-
-         svg {
-            rect {
-               fill: $ta-light-grey !important;
+            &.minus-icon {
+                margin-right: 6px;
             }
-         }
-      }
-   }
+
+            &:hover {
+                svg {
+                    transform: scale(1.2);
+
+                    rect {
+                        fill: $bw4;
+                    }
+                }
+            }
+        }
+    }
+
+    // Custom width for component input
+
+    .input-container {
+        width: 32px;
+    }
+
+    .driver-mvr-container {
+        width: 129px;
+    }
+
+    .truck-fhwa-container {
+        width: 123px;
+    }
+
+    &.applicant {
+        gap: 0;
+
+        p {
+            margin-right: 12px !important;
+        }
+
+        .btn-container {
+            margin-right: 6px;
+        }
+    }
+
+    &.disabled-arrow {
+        p {
+            color: $bw5 !important;
+        }
+
+        .minus-icon,
+        .plus-icon {
+            cursor: auto !important;
+            pointer-events: none !important;
+
+            svg {
+                rect {
+                    fill: $ta-light-grey !important;
+                }
+            }
+        }
+    }
 }

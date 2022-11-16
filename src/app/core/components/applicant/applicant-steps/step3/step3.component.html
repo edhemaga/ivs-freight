@@ -1,396 +1,412 @@
 <div class="d-flex flex-column align-items-center step-container">
-   <h1 class="m-0 step-title text-center ta-font-bold">CDL Information</h1>
+    <h1 class="m-0 step-title text-center ta-font-bold">CDL Information</h1>
 
-   <!-- TOP SECTION -->
+    <!-- TOP SECTION -->
 
-   <div class="d-flex text-center top-section">
-      <p
-         class="m-0 ta-font-regular"
-         [ngStyle]="{
-            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-         }"
-      >
-         No person who operates a commercial motor vehicle shall at any time
-         have more than one driver’s license (49 CFR<br />
-         383.21). I certify that I do not have more than one motor vehicle
-         license, the information for which is listed below.
-      </p>
-   </div>
-
-   <!-- CREATED LICENSE DATA -->
-
-   <div
-      class="d-flex flex-column justify-content-center license-view-container"
-      *ngIf="licenseArray.length"
-      [formGroup]="licenseForm"
-   >
-      <div
-         class="d-flex flex-column"
-         *ngFor="
-            let license of licenseArray;
-            let i = index;
-            trackBy: trackByIdentity
-         "
-      >
-         <div
-            class="d-flex align-items-center title-container"
-            *ngIf="
-               (licenseArray.length > 0 && helperIndex !== 0 && i === 0) ||
-               (helperIndex === 0 && i === 1) ||
-               (i === helperIndex + 1 && selectedLicenseIndex > -1)
-            "
-         >
-            <div class="d-flex align-items-center license-title-box">
-               <p class="m-0 ta-font-bold">LICENSE # <span>*</span></p>
-            </div>
-            <div class="d-flex align-items-center state-title-box">
-               <p class="m-0 ta-font-bold">STATE <span>*</span></p>
-            </div>
-            <div class="d-flex align-items-center class-title-box">
-               <p class="m-0 ta-font-bold">CLASS <span>*</span></p>
-            </div>
-            <div class="d-flex align-items-center date-title-box">
-               <p class="m-0 ta-font-bold">EXP. DATE <span>*</span></p>
-            </div>
-         </div>
-
-         <div
-            class="d-flex align-items-center license-info-container line-container"
-            *ngIf="!license.isEditingLicense"
-         >
-            <div class="d-flex align-items-center info-btn-container">
-               <div
-                  class="d-flex align-items-center"
-                  [ngStyle]="{
-                     cursor: selectedMode === 'REVIEW_MODE' ? 'pointer' : 'auto'
-                  }"
-                  (click)="selectedMode === 'REVIEW_MODE' && onCardReview(i)"
-               >
-                  <div class="d-flex align-items-center license-box">
-                     <p class="m-0 ta-font-regular">
-                        {{ license.licenseNumber }}
-                     </p>
-                  </div>
-                  <div class="d-flex align-items-center state-box">
-                     <p class="m-0 ta-font-regular">
-                        {{ license.state }}
-                     </p>
-                  </div>
-                  <div class="d-flex align-items-center class-box">
-                     <p class="m-0 ta-font-regular">
-                        {{ license.classType }}
-                     </p>
-                  </div>
-                  <div
-                     class="d-flex align-items-center date-box"
-                     [ngStyle]="{
-                        width:
-                           selectedMode === 'FEEDBACK_MODE' ? '115px' : '136px'
-                     }"
-                  >
-                     <p class="m-0 ta-font-regular">
-                        {{ license.expDate }}
-                     </p>
-                  </div>
-               </div>
-               <div
-                  class="d-flex align-items-center btn-container"
-                  [ngClass]="{
-                     active: selectedMode === 'REVIEW_MODE'
-                  }"
-               >
-                  <div
-                     ngbTooltip
-                     mainTooltip="Edit"
-                     tooltipBackground="#6C6C6C"
-                     position="top"
-                  >
-                     <svg-icon
-                        class="edit-icon"
-                        src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                        [svgStyle]="{
-                           'width.px': 18,
-                           'height.px': 18
-                        }"
-                        (click)="onEditLicense(i)"
-                     ></svg-icon>
-                  </div>
-
-                  <div
-                     ngbTooltip
-                     mainTooltip="Delete"
-                     tooltipBackground="#EF5350"
-                     position="top"
-                  >
-                     <svg-icon
-                        class="delete-icon"
-                        src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                        [svgStyle]="{
-                           'width.px': 18,
-                           'height.px': 18
-                        }"
-                        (click)="onDeleteLicense(i)"
-                     ></svg-icon>
-                  </div>
-
-                  <div *ngIf="selectedMode === 'REVIEW_MODE'">
-                     <div
-                        class="review-icon-box"
-                        ngbTooltip
-                        mainTooltip="Mark Incorrect"
-                        tooltipBackground="#F44336"
-                        position="top"
-                     >
-                        <svg-icon
-                           class="review-icon"
-                           [ngClass]="{
-                              active:
-                                 openAnnotationArray[i]
-                                    .displayAnnotationButton ||
-                                 openAnnotationArray[i]
-                                    .displayAnnotationTextArea
-                           }"
-                           src="assets/svg/ic_x.svg"
-                           [svgStyle]="{
-                              'width.px': 18,
-                              'height.px': 18
-                           }"
-                           (click)="
-                              openAnnotationArray[i].lineInputs[0]
-                                 ? incorrectInput($event, 0, i, 'card')
-                                 : onCardReview(i)
-                           "
-                        ></svg-icon>
-                     </div>
-                  </div>
-
-                  <div *ngIf="selectedMode === 'FEEDBACK_MODE'">
-                     <div
-                        class="feedback-icon-box"
-                        ngbTooltip
-                        mainTooltip="Marked Incorrect"
-                        tooltipBackground="#F44336"
-                        position="top"
-                     >
-                        <svg-icon
-                           class="feedback-icon"
-                           src="assets/svg/common/ic_danger.svg"
-                           [svgStyle]="{
-                              'width.px': 18,
-                              'height.px': 18
-                           }"
-                        ></svg-icon>
-                     </div>
-                  </div>
-               </div>
-            </div>
-
-            <!-- REVIEW AND FEEDBACK -->
-
-            <div
-               class="review-feedback-container"
-               *ngIf="
-                  selectedMode === 'REVIEW_MODE' ||
-                  selectedMode === 'FEEDBACK_MODE'
-               "
-            >
-               <app-applicant-review-feedback
-                  [formControlName]="'cardReview' + (i + 1)"
-                  [displayAnnotationButton]="
-                     openAnnotationArray[i].displayAnnotationButton
-                  "
-                  [displayAnnotationTextArea]="
-                     openAnnotationArray[i].displayAnnotationTextArea
-                  "
-                  [lineIndex]="i"
-                  [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                  [feedbackText]="'Check the number'"
-                  [cardsLength]="licenseArray.length"
-                  [cardsType]="'cdlInformation'"
-                  [cardIndex]="i"
-                  (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-               ></app-applicant-review-feedback>
-            </div>
-         </div>
-
-         <div
-            *ngIf="license.isEditingLicense"
-            class="d-flex flex-column license-view-form"
+    <div class="d-flex text-center top-section">
+        <p
+            class="m-0 ta-font-regular"
             [ngStyle]="{
-               margin: i !== 0 ? '32px auto 0 auto' : '10px auto 0 auto'
+                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
             }"
-         >
-            <app-step3-form
-               [mode]="selectedMode"
-               [isEditing]="isEditing"
-               [formValuesToPatch]="formValuesToPatch"
-               [isReviewingCard]="isReviewingCard"
-               (formValuesEmitter)="getLicenseFormValues($event)"
-               (cancelFormEditingEmitter)="cancelLicenseEditing($event)"
-               (saveFormEditingEmitter)="saveEditedLicense($event)"
-               (cancelFormReviewingEmitter)="cancelLicenseReview($event)"
-               (cardOpenAnnotationArrayValuesEmitter)="
-                  onGetCardOpenAnnotationArrayValues($event)
-               "
-            ></app-step3-form>
-         </div>
-      </div>
-   </div>
+        >
+            No person who operates a commercial motor vehicle shall at any time
+            have more than one driver’s license (49 CFR<br />
+            383.21). I certify that I do not have more than one motor vehicle
+            license, the information for which is listed below.
+        </p>
+    </div>
 
-   <!-- FORM SECTION -->
+    <!-- CREATED LICENSE DATA -->
 
-   <div
-      class="d-flex flex-column justify-content-center form-section"
-      [ngStyle]="{ 'margin-top': isReviewingCard ? 0 : '22px' }"
-   >
-      <form
-         *ngIf="
-            (selectedMode === 'APPLICANT_MODE' && !isEditing) ||
-            (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
-         "
-      >
-         <app-step3-form
-            [mode]="selectedMode"
-            [isEditing]="isEditing"
-            [formValuesToPatch]="formValuesToPatch"
-            [markFormInvalid]="markFormInvalid"
-            [isReviewingCard]="isReviewingCard"
-            (formValuesEmitter)="getLicenseFormValues($event)"
-            (formStatusEmitter)="onGetFormStatus($event)"
-            (markInvalidEmitter)="onMarkInvalidEmit($event)"
-            (lastFormValuesEmitter)="onGetLastFormValues($event)"
-            (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
-            (openAnnotationArrayValuesEmitter)="
-               onGetOpenAnnotationArrayValues($event)
+    <div
+        class="d-flex flex-column justify-content-center license-view-container"
+        *ngIf="licenseArray.length"
+        [formGroup]="licenseForm"
+    >
+        <div
+            class="d-flex flex-column"
+            *ngFor="
+                let license of licenseArray;
+                let i = index;
+                trackBy: trackByIdentity
             "
-         ></app-step3-form>
-      </form>
-
-      <!-- PERMIT -->
-
-      <div
-         class="d-flex flex-column permit-container"
-         [ngStyle]="{
-            'margin-top':
-               selectedMode === 'APPLICANT_MODE'
-                  ? '22px'
-                  : selectedMode === 'REVIEW_MODE' && isReviewingCard
-                  ? 0
-                  : '32px'
-         }"
-         [formGroup]="permitForm"
-         *ngIf="!isEditing"
-      >
-         <div class="d-flex align-items-center justify-content-between">
-            <div class="permit-title-box">
-               <p
-                  class="m-0 ta-font-regular"
-                  [ngClass]="
-                     selectedMode === 'FEEDBACK_MODE'
-                        ? 'question-title-feedback'
-                        : 'question-title'
-                  "
-               >
-                  Has your permit, CDL or privilege to operate a motor vehicle
-                  ever been denided, suspended, or revoked?
-                  <span class="required-star">*</span>
-               </p>
+        >
+            <div
+                class="d-flex align-items-center title-container"
+                *ngIf="
+                    (licenseArray.length > 0 && helperIndex !== 0 && i === 0) ||
+                    (helperIndex === 0 && i === 1) ||
+                    (i === helperIndex + 1 && selectedLicenseIndex > -1)
+                "
+            >
+                <div class="d-flex align-items-center license-title-box">
+                    <p class="m-0 ta-font-bold">LICENSE # <span>*</span></p>
+                </div>
+                <div class="d-flex align-items-center state-title-box">
+                    <p class="m-0 ta-font-bold">STATE <span>*</span></p>
+                </div>
+                <div class="d-flex align-items-center class-title-box">
+                    <p class="m-0 ta-font-bold">CLASS <span>*</span></p>
+                </div>
+                <div class="d-flex align-items-center date-title-box">
+                    <p class="m-0 ta-font-bold">EXP. DATE <span>*</span></p>
+                </div>
             </div>
-
-            <div class="permit-radios-box">
-               <app-ta-input-radiobuttons
-                  #cmp
-                  [buttons]="answerChoices"
-                  [disabled]="selectedMode === 'REVIEW_MODE'"
-                  (changedValue)="handleInputSelect($event, 'PERMIT')"
-               ></app-ta-input-radiobuttons>
-            </div>
-         </div>
-
-         <!-- EXPLAIN -->
-
-         <div
-            class="d-flex explain-container line-container"
-            *ngIf="permitForm.get('permit')?.value"
-         >
-            <div class="w-100">
-               <app-ta-input
-                  formControlName="permitExplain"
-                  [inputConfig]="{
-                     name: 'Explain',
-                     type: 'text',
-                     label: 'Please explain',
-                     isRequired: true,
-                     textTransform: 'capitalize',
-                     placeholder: 'Please explain',
-                     placeholderInsteadOfLabel: true,
-                     isDisabled: selectedMode === 'REVIEW_MODE',
-                     incorrectInput: selectedMode === 'REVIEW_MODE'
-                  }"
-                  [incorrectValue]="false"
-                  (incorrectEvent)="incorrectInput($event, 0, 14)"
-               ></app-ta-input>
-            </div>
-
-            <!-- REVIEW AND FEEDBACK -->
 
             <div
-               class="review-feedback-container"
-               *ngIf="
-                  selectedMode === 'REVIEW_MODE' ||
-                  selectedMode === 'FEEDBACK_MODE'
-               "
+                class="d-flex align-items-center license-info-container line-container"
+                *ngIf="!license.isEditingLicense"
             >
-               <app-applicant-review-feedback
-                  formControlName="fifthRowReview"
-                  [displayAnnotationButton]="
-                     openAnnotationArray[14].displayAnnotationButton
-                  "
-                  [displayAnnotationTextArea]="
-                     openAnnotationArray[14].displayAnnotationTextArea
-                  "
-                  [lineIndex]="14"
-                  d
-                  [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                  [feedbackText]="
-                     'Check the routing number one more time (one number missing)!!!'
-                  "
-                  (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-               ></app-applicant-review-feedback>
+                <div class="d-flex align-items-center info-btn-container">
+                    <div
+                        class="d-flex align-items-center"
+                        [ngStyle]="{
+                            cursor:
+                                selectedMode === 'REVIEW_MODE'
+                                    ? 'pointer'
+                                    : 'auto'
+                        }"
+                        (click)="
+                            selectedMode === 'REVIEW_MODE' && onCardReview(i)
+                        "
+                    >
+                        <div class="d-flex align-items-center license-box">
+                            <p class="m-0 ta-font-regular">
+                                {{ license.licenseNumber }}
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center state-box">
+                            <p class="m-0 ta-font-regular">
+                                {{ license.state }}
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center class-box">
+                            <p class="m-0 ta-font-regular">
+                                {{ license.classType }}
+                            </p>
+                        </div>
+                        <div
+                            class="d-flex align-items-center date-box"
+                            [ngStyle]="{
+                                width:
+                                    selectedMode === 'FEEDBACK_MODE'
+                                        ? '115px'
+                                        : '136px'
+                            }"
+                        >
+                            <p class="m-0 ta-font-regular">
+                                {{ license.expDate }}
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        class="d-flex align-items-center btn-container"
+                        [ngClass]="{
+                            active: selectedMode === 'REVIEW_MODE'
+                        }"
+                    >
+                        <div
+                            ngbTooltip
+                            mainTooltip="Edit"
+                            tooltipBackground="#6C6C6C"
+                            position="top"
+                        >
+                            <svg-icon
+                                class="edit-icon"
+                                src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                                [svgStyle]="{
+                                    'width.px': 18,
+                                    'height.px': 18
+                                }"
+                                (click)="onEditLicense(i)"
+                            ></svg-icon>
+                        </div>
+
+                        <div
+                            ngbTooltip
+                            mainTooltip="Delete"
+                            tooltipBackground="#EF5350"
+                            position="top"
+                        >
+                            <svg-icon
+                                class="delete-icon"
+                                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                                [svgStyle]="{
+                                    'width.px': 18,
+                                    'height.px': 18
+                                }"
+                                (click)="onDeleteLicense(i)"
+                            ></svg-icon>
+                        </div>
+
+                        <div *ngIf="selectedMode === 'REVIEW_MODE'">
+                            <div
+                                class="review-icon-box"
+                                ngbTooltip
+                                mainTooltip="Mark Incorrect"
+                                tooltipBackground="#F44336"
+                                position="top"
+                            >
+                                <svg-icon
+                                    class="review-icon"
+                                    [ngClass]="{
+                                        active:
+                                            openAnnotationArray[i]
+                                                .displayAnnotationButton ||
+                                            openAnnotationArray[i]
+                                                .displayAnnotationTextArea
+                                    }"
+                                    src="assets/svg/ic_x.svg"
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    (click)="
+                                        openAnnotationArray[i].lineInputs[0]
+                                            ? incorrectInput(
+                                                  $event,
+                                                  0,
+                                                  i,
+                                                  'card'
+                                              )
+                                            : onCardReview(i)
+                                    "
+                                ></svg-icon>
+                            </div>
+                        </div>
+
+                        <div *ngIf="selectedMode === 'FEEDBACK_MODE'">
+                            <div
+                                class="feedback-icon-box"
+                                ngbTooltip
+                                mainTooltip="Marked Incorrect"
+                                tooltipBackground="#F44336"
+                                position="top"
+                            >
+                                <svg-icon
+                                    class="feedback-icon"
+                                    src="assets/svg/common/ic_danger.svg"
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                ></svg-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- REVIEW AND FEEDBACK -->
+
+                <div
+                    class="review-feedback-container"
+                    *ngIf="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                    <app-applicant-review-feedback
+                        [formControlName]="'cardReview' + (i + 1)"
+                        [displayAnnotationButton]="
+                            openAnnotationArray[i].displayAnnotationButton
+                        "
+                        [displayAnnotationTextArea]="
+                            openAnnotationArray[i].displayAnnotationTextArea
+                        "
+                        [lineIndex]="i"
+                        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                        [feedbackText]="'Check the number'"
+                        [cardsLength]="licenseArray.length"
+                        [cardsType]="'cdlInformation'"
+                        [cardIndex]="i"
+                        (annotationBtnClickEvent)="
+                            getAnnotationBtnClickValue($event)
+                        "
+                    ></app-applicant-review-feedback>
+                </div>
             </div>
-         </div>
-      </div>
-   </div>
+
+            <div
+                *ngIf="license.isEditingLicense"
+                class="d-flex flex-column license-view-form"
+                [ngStyle]="{
+                    margin: i !== 0 ? '32px auto 0 auto' : '10px auto 0 auto'
+                }"
+            >
+                <app-step3-form
+                    [mode]="selectedMode"
+                    [isEditing]="isEditing"
+                    [formValuesToPatch]="formValuesToPatch"
+                    [isReviewingCard]="isReviewingCard"
+                    (formValuesEmitter)="getLicenseFormValues($event)"
+                    (cancelFormEditingEmitter)="cancelLicenseEditing($event)"
+                    (saveFormEditingEmitter)="saveEditedLicense($event)"
+                    (cancelFormReviewingEmitter)="cancelLicenseReview($event)"
+                    (cardOpenAnnotationArrayValuesEmitter)="
+                        onGetCardOpenAnnotationArrayValues($event)
+                    "
+                ></app-step3-form>
+            </div>
+        </div>
+    </div>
+
+    <!-- FORM SECTION -->
+
+    <div
+        class="d-flex flex-column justify-content-center form-section"
+        [ngStyle]="{ 'margin-top': isReviewingCard ? 0 : '22px' }"
+    >
+        <form
+            *ngIf="
+                (selectedMode === 'APPLICANT_MODE' && !isEditing) ||
+                (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
+            "
+        >
+            <app-step3-form
+                [mode]="selectedMode"
+                [isEditing]="isEditing"
+                [formValuesToPatch]="formValuesToPatch"
+                [markFormInvalid]="markFormInvalid"
+                [isReviewingCard]="isReviewingCard"
+                (formValuesEmitter)="getLicenseFormValues($event)"
+                (formStatusEmitter)="onGetFormStatus($event)"
+                (markInvalidEmitter)="onMarkInvalidEmit($event)"
+                (lastFormValuesEmitter)="onGetLastFormValues($event)"
+                (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
+                (openAnnotationArrayValuesEmitter)="
+                    onGetOpenAnnotationArrayValues($event)
+                "
+            ></app-step3-form>
+        </form>
+
+        <!-- PERMIT -->
+
+        <div
+            class="d-flex flex-column permit-container"
+            [ngStyle]="{
+                'margin-top':
+                    selectedMode === 'APPLICANT_MODE'
+                        ? '22px'
+                        : selectedMode === 'REVIEW_MODE' && isReviewingCard
+                        ? 0
+                        : '32px'
+            }"
+            [formGroup]="permitForm"
+            *ngIf="!isEditing"
+        >
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="permit-title-box">
+                    <p
+                        class="m-0 ta-font-regular"
+                        [ngClass]="
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? 'question-title-feedback'
+                                : 'question-title'
+                        "
+                    >
+                        Has your permit, CDL or privilege to operate a motor
+                        vehicle ever been denided, suspended, or revoked?
+                        <span class="required-star">*</span>
+                    </p>
+                </div>
+
+                <div class="permit-radios-box">
+                    <app-ta-input-radiobuttons
+                        #cmp
+                        [buttons]="answerChoices"
+                        [disabled]="selectedMode === 'REVIEW_MODE'"
+                        (changedValue)="handleInputSelect($event, 'PERMIT')"
+                    ></app-ta-input-radiobuttons>
+                </div>
+            </div>
+
+            <!-- EXPLAIN -->
+
+            <div
+                class="d-flex explain-container line-container"
+                *ngIf="permitForm.get('permit')?.value"
+            >
+                <div class="w-100">
+                    <app-ta-input
+                        formControlName="permitExplain"
+                        [inputConfig]="{
+                            name: 'Explain',
+                            type: 'text',
+                            label: 'Please explain',
+                            isRequired: true,
+                            textTransform: 'capitalize',
+                            placeholder: 'Please explain',
+                            placeholderInsteadOfLabel: true,
+                            isDisabled: selectedMode === 'REVIEW_MODE',
+                            incorrectInput: selectedMode === 'REVIEW_MODE'
+                        }"
+                        [incorrectValue]="false"
+                        (incorrectEvent)="incorrectInput($event, 0, 14)"
+                    ></app-ta-input>
+                </div>
+
+                <!-- REVIEW AND FEEDBACK -->
+
+                <div
+                    class="review-feedback-container"
+                    *ngIf="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                    <app-applicant-review-feedback
+                        formControlName="fifthRowReview"
+                        [displayAnnotationButton]="
+                            openAnnotationArray[14].displayAnnotationButton
+                        "
+                        [displayAnnotationTextArea]="
+                            openAnnotationArray[14].displayAnnotationTextArea
+                        "
+                        [lineIndex]="14"
+                        d
+                        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                        [feedbackText]="
+                            'Check the routing number one more time (one number missing)!!!'
+                        "
+                        (annotationBtnClickEvent)="
+                            getAnnotationBtnClickValue($event)
+                        "
+                    ></app-applicant-review-feedback>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- NEXT BTN -->
 
 <div
-   class="d-flex justify-content-center align-items-center next-btn-container"
+    class="d-flex justify-content-center align-items-center next-btn-container"
 >
-   <app-applicant-next-back-btn
-      [nextStep]="true"
-      [filledCorrectly]="
-         selectedMode === 'APPLICANT_MODE' &&
-         permitForm.valid &&
-         formStatus === 'VALID'
-      "
-      [hasIncorrectFields]="
-         selectedMode === 'REVIEW_MODE' &&
-         (hasIncorrectFields || cardsWithIncorrectFields)
-      "
-      [mode]="selectedMode"
-      (stepEvent)="onStepAction($event)"
-   ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [nextStep]="true"
+        [filledCorrectly]="
+            selectedMode === 'APPLICANT_MODE' &&
+            permitForm.valid &&
+            formStatus === 'VALID'
+        "
+        [hasIncorrectFields]="
+            selectedMode === 'REVIEW_MODE' &&
+            (hasIncorrectFields || cardsWithIncorrectFields)
+        "
+        [mode]="selectedMode"
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>
 
 <!-- BACK BTN -->
 
 <div
-   class="d-flex justify-content-center align-items-center back-btn-container"
+    class="d-flex justify-content-center align-items-center back-btn-container"
 >
-   <app-applicant-next-back-btn
-      [backStep]="true"
-      (stepEvent)="onStepAction($event)"
-   ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [backStep]="true"
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>

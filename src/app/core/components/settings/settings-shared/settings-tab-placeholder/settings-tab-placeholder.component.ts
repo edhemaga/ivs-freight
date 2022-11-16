@@ -1,26 +1,26 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-   selector: 'app-settings-tab-placeholder',
-   templateUrl: './settings-tab-placeholder.component.html',
-   styleUrls: ['./settings-tab-placeholder.component.scss'],
+    selector: 'app-settings-tab-placeholder',
+    templateUrl: './settings-tab-placeholder.component.html',
+    styleUrls: ['./settings-tab-placeholder.component.scss'],
 })
 export class SettingsTabPlaceholderComponent {
-   @Input() name: string = null;
-   @Input() phone: string = null;
-   @Input() email: string = null;
-   @Input() address: string = null;
+    @Input() name: string = null;
+    @Input() phone: string = null;
+    @Input() email: string = null;
+    @Input() address: string = null;
 
-   @Input() companyOwnedSVG: string = null;
-   @Input() hasDots: boolean = true;
-   @Input() hasNote: boolean = false;
-   @Input() hasAttachment: boolean = false;
+    @Input() companyOwnedSVG: string = null;
+    @Input() hasDots: boolean = true;
+    @Input() hasNote: boolean = false;
+    @Input() hasAttachment: boolean = false;
 
-   @Input() customClass: string = null;
+    @Input() customClass: string = null;
 
-   @Output() onActionEvent: EventEmitter<any> = new EventEmitter<any>();
+    @Output() onActionEvent: EventEmitter<any> = new EventEmitter<any>();
 
-   public onAction() {
-      this.onActionEvent.emit();
-   }
+    public onAction() {
+        this.onActionEvent.emit();
+    }
 }

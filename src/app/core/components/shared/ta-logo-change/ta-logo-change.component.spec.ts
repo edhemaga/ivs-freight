@@ -6,22 +6,22 @@ import { DebugElement } from '@angular/core';
 import { TaLogoChangeComponent } from './ta-logo-change.component';
 
 describe('TaLogoChangeComponent', () => {
-   let component: TaLogoChangeComponent;
-   let fixture: ComponentFixture<TaLogoChangeComponent>;
+    let component: TaLogoChangeComponent;
+    let fixture: ComponentFixture<TaLogoChangeComponent>;
 
-   beforeEach(async(() => {
-      TestBed.configureTestingModule({
-         declarations: [TaLogoChangeComponent],
-      }).compileComponents();
-   }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [TaLogoChangeComponent],
+        }).compileComponents();
+    }));
 
-   beforeEach(() => {
-      fixture = TestBed.createComponent(TaLogoChangeComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-   });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(TaLogoChangeComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-   it('should create', () => {
-      expect(component).toBeTruthy();
-   });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

@@ -1,110 +1,110 @@
 <app-ta-modal
-   [modalTitle]="
-      editData?.type !== 'edit-title' ? 'Add New Title' : 'Edit Title'
-   "
-   [editData]="editData"
-   [editName]="
-      editData?.modal === 'trailer'
-         ? 'Trailer ' + editData?.payload?.trailerNumber
-         : 'Truck ' + editData?.payload?.truckNumber
-   "
-   [specificCaseModalName]="true"
-   [isModalValid]="ttTitleForm.valid && isFormDirty"
-   (action)="onModalAction($event)"
+    [modalTitle]="
+        editData?.type !== 'edit-title' ? 'Add New Title' : 'Edit Title'
+    "
+    [editData]="editData"
+    [editName]="
+        editData?.modal === 'trailer'
+            ? 'Trailer ' + editData?.payload?.trailerNumber
+            : 'Truck ' + editData?.payload?.truckNumber
+    "
+    [specificCaseModalName]="true"
+    [isModalValid]="ttTitleForm.valid && isFormDirty"
+    (action)="onModalAction($event)"
 >
-   <form
-      origin
-      [formGroup]="ttTitleForm"
-      class="form-container form-container-without-mb"
-   >
-      <div class="row">
-         <div class="col-6">
-            <app-ta-input
-               formControlName="number"
-               [inputConfig]="{
-                  name: 'Title Number',
-                  type: 'text',
-                  label: 'Title No.',
-                  isRequired: true,
-                  textTransform: 'capitalize',
-                  autoFocus: editData?.type !== 'edit-title'
-               }"
-            ></app-ta-input>
-         </div>
-         <div class="col-6">
-            <app-ta-input-dropdown
-               formControlName="stateId"
-               [inputConfig]="{
-                  name: 'Input Dropdown',
-                  type: 'text',
-                  label: 'State',
-                  isRequired: true,
-                  isDropdown: true,
-                  dropdownWidthClass: 'w-col-228'
-               }"
-               [options]="stateTypes"
-               [activeItem]="selectedStateType"
-               (selectedItem)="onSelectDropdown($event, 'state')"
-            ></app-ta-input-dropdown>
-         </div>
-      </div>
-      <div class="row last-row">
-         <div class="col-6">
-            <app-ta-input
-               formControlName="purchaseDate"
-               [inputConfig]="{
-                  name: 'datepicker',
-                  type: 'text',
-                  label: 'Purchase Date',
-                  placeholderIcon: 'date',
-                  isDropdown: true,
-                  isRequired: true,
-                  customClass: 'datetimeclass'
-               }"
-            ></app-ta-input>
-         </div>
-         <div class="col-6">
-            <app-ta-input
-               formControlName="issueDate"
-               [inputConfig]="{
-                  name: 'datepicker',
-                  type: 'text',
-                  isDropdown: true,
-                  label: 'Issue Date',
-                  placeholderIcon: 'date',
-                  isRequired: true,
-                  customClass: 'datetimeclass'
-               }"
-            ></app-ta-input>
-         </div>
-      </div>
-      <div class="ta-card-body-overflow-none">
-         <app-ta-custom-card
-            [hasCounter]="documents.length ? documents.length : 0"
-            [cardName]="'Documents'"
-            [isCardOpen]="documents.length > 0"
-         >
-            <app-ta-upload-files
-               [files]="documents"
-               (onFileEvent)="onFilesEvent($event)"
-            ></app-ta-upload-files>
-         </app-ta-custom-card>
-      </div>
+    <form
+        origin
+        [formGroup]="ttTitleForm"
+        class="form-container form-container-without-mb"
+    >
+        <div class="row">
+            <div class="col-6">
+                <app-ta-input
+                    formControlName="number"
+                    [inputConfig]="{
+                        name: 'Title Number',
+                        type: 'text',
+                        label: 'Title No.',
+                        isRequired: true,
+                        textTransform: 'capitalize',
+                        autoFocus: editData?.type !== 'edit-title'
+                    }"
+                ></app-ta-input>
+            </div>
+            <div class="col-6">
+                <app-ta-input-dropdown
+                    formControlName="stateId"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'State',
+                        isRequired: true,
+                        isDropdown: true,
+                        dropdownWidthClass: 'w-col-228'
+                    }"
+                    [options]="stateTypes"
+                    [activeItem]="selectedStateType"
+                    (selectedItem)="onSelectDropdown($event, 'state')"
+                ></app-ta-input-dropdown>
+            </div>
+        </div>
+        <div class="row last-row">
+            <div class="col-6">
+                <app-ta-input
+                    formControlName="purchaseDate"
+                    [inputConfig]="{
+                        name: 'datepicker',
+                        type: 'text',
+                        label: 'Purchase Date',
+                        placeholderIcon: 'date',
+                        isDropdown: true,
+                        isRequired: true,
+                        customClass: 'datetimeclass'
+                    }"
+                ></app-ta-input>
+            </div>
+            <div class="col-6">
+                <app-ta-input
+                    formControlName="issueDate"
+                    [inputConfig]="{
+                        name: 'datepicker',
+                        type: 'text',
+                        isDropdown: true,
+                        label: 'Issue Date',
+                        placeholderIcon: 'date',
+                        isRequired: true,
+                        customClass: 'datetimeclass'
+                    }"
+                ></app-ta-input>
+            </div>
+        </div>
+        <div class="ta-card-body-overflow-none">
+            <app-ta-custom-card
+                [hasCounter]="documents.length ? documents.length : 0"
+                [cardName]="'Documents'"
+                [isCardOpen]="documents.length > 0"
+            >
+                <app-ta-upload-files
+                    [files]="documents"
+                    (onFileEvent)="onFilesEvent($event)"
+                ></app-ta-upload-files>
+            </app-ta-custom-card>
+        </div>
 
-      <app-ta-input-note
-         formControlName="note"
-         [isVisibleNote]="
-            ttTitleForm.get('note').value &&
-            ttTitleForm.get('note').value != 'null'
-               ? ttTitleForm.get('note').value
-               : false
-         "
-         [note]="
-            ttTitleForm.get('note').value &&
-            ttTitleForm.get('note').value != 'null'
-               ? ttTitleForm.get('note').value
-               : ''
-         "
-      ></app-ta-input-note>
-   </form>
+        <app-ta-input-note
+            formControlName="note"
+            [isVisibleNote]="
+                ttTitleForm.get('note').value &&
+                ttTitleForm.get('note').value != 'null'
+                    ? ttTitleForm.get('note').value
+                    : false
+            "
+            [note]="
+                ttTitleForm.get('note').value &&
+                ttTitleForm.get('note').value != 'null'
+                    ? ttTitleForm.get('note').value
+                    : ''
+            "
+        ></app-ta-input-note>
+    </form>
 </app-ta-modal>

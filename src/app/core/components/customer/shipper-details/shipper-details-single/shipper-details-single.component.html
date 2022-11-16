@@ -1,221 +1,242 @@
 <div class="repair-component">
-   <div *ngFor="let shipperData of shipper; trackBy: identity">
-      <div [ngSwitch]="shipperData?.template">
-         <div *ngSwitchCase="'general'">
-            <app-shipper-card-view [shipper]="shipperData?.data">
-            </app-shipper-card-view>
-         </div>
-         <div *ngSwitchCase="'load'" class="load">
-            <div
-               class="repair-container"
-               *ngIf="shipperData.data.loadStops.length"
-            >
-               <div class="repair-header">
-                  <span class="repaier-headers">LOAD</span>
-                  <span class="repaier-headers">DRIVER</span>
-                  <span class="repaier-headers">TRUCK</span>
-                  <span class="repaier-headers">TRAILER</span>
-                  <span class="repaier-headers">ARRIVE</span>
-                  <span class="repaier-headers">DEPART</span>
-                  <span class="repaier-headers">WAIT</span>
-               </div>
-               <div class="divider"></div>
-               <div
-                  class="repair-items-wrapper"
-                  *ngFor="
-                     let loads of shipperData.data.loadStops;
-                     trackBy: identity
-                  "
-               >
-                  <div class="repair-items">
-                     <div class="items-header">
-                        <div class="icon-svg-repair">
-                           <svg-icon
-                              class="arrow-ri"
-                              *ngIf="loads.stopType.name === 'Pickup'"
-                              src="assets/svg/common/ic_arrow-right-line.svg"
-                           ></svg-icon>
-                           <svg-icon
-                              class="arrow-le"
-                              *ngIf="loads.stopType.name === 'Delivery'"
-                              src="assets/svg/common/ic_arrow-line-left.svg"
-                           ></svg-icon>
-                           <span class="unit">{{ loads?.load?.id }}</span>
+    <div *ngFor="let shipperData of shipper; trackBy: identity">
+        <div [ngSwitch]="shipperData?.template">
+            <div *ngSwitchCase="'general'">
+                <app-shipper-card-view [shipper]="shipperData?.data">
+                </app-shipper-card-view>
+            </div>
+            <div *ngSwitchCase="'load'" class="load">
+                <div
+                    class="repair-container"
+                    *ngIf="shipperData.data.loadStops.length"
+                >
+                    <div class="repair-header">
+                        <span class="repaier-headers">LOAD</span>
+                        <span class="repaier-headers">DRIVER</span>
+                        <span class="repaier-headers">TRUCK</span>
+                        <span class="repaier-headers">TRAILER</span>
+                        <span class="repaier-headers">ARRIVE</span>
+                        <span class="repaier-headers">DEPART</span>
+                        <span class="repaier-headers">WAIT</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div
+                        class="repair-items-wrapper"
+                        *ngFor="
+                            let loads of shipperData.data.loadStops;
+                            trackBy: identity
+                        "
+                    >
+                        <div class="repair-items">
+                            <div class="items-header">
+                                <div class="icon-svg-repair">
+                                    <svg-icon
+                                        class="arrow-ri"
+                                        *ngIf="loads.stopType.name === 'Pickup'"
+                                        src="assets/svg/common/ic_arrow-right-line.svg"
+                                    ></svg-icon>
+                                    <svg-icon
+                                        class="arrow-le"
+                                        *ngIf="
+                                            loads.stopType.name === 'Delivery'
+                                        "
+                                        src="assets/svg/common/ic_arrow-line-left.svg"
+                                    ></svg-icon>
+                                    <span class="unit">{{
+                                        loads?.load?.id
+                                    }}</span>
+                                </div>
+                                <span class="date"
+                                    >{{
+                                        loads?.load?.dispatch.driver?.firstName
+                                            .length > 6
+                                            ? loads?.load?.dispatch.driver
+                                                  ?.firstName[0] + '.'
+                                            : loads?.load?.dispatch.driver
+                                                  ?.firstName
+                                    }}
+                                    {{
+                                        loads?.load?.dispatch.driver?.lastName
+                                    }}</span
+                                >
+                                <span class="date">{{
+                                    loads?.load?.dispatch.truck?.truckNumber
+                                }}</span>
+                                <span class="date">{{
+                                    loads?.load?.dispatch.trailer?.trailerNumber
+                                }}</span>
+                                <div class="time-date">
+                                    <span class="date">{{
+                                        loads?.arrive | formatDateP
+                                    }}</span>
+                                    <span class="time">
+                                        {{ loads?.arrive | formatTime }}</span
+                                    >
+                                </div>
+                                <div class="time-date">
+                                    <span class="date">{{
+                                        loads?.depart | formatDateP
+                                    }}</span>
+                                    <span class="time">
+                                        {{ loads?.depart | formatTime }}</span
+                                    >
+                                </div>
+                                <span class="wait-time"
+                                    ><span
+                                        class="hours"
+                                        *ngIf="loads?.wait.days > 0"
+                                        >{{ loads?.wait.days }} d
+                                    </span>
+                                    <span
+                                        class="hours"
+                                        *ngIf="loads?.wait.hours > 0"
+                                        >{{ loads?.wait.hours }} h</span
+                                    >
+                                    <span
+                                        class="hours"
+                                        *ngIf="
+                                            loads?.wait.hours <= 0 &&
+                                            loads?.wait.days <= 0
+                                        "
+                                        >{{ loads?.wait.minutes }} min</span
+                                    >
+                                </span>
+                            </div>
                         </div>
-                        <span class="date"
-                           >{{
-                              loads?.load?.dispatch.driver?.firstName.length > 6
-                                 ? loads?.load?.dispatch.driver?.firstName[0] +
-                                   '.'
-                                 : loads?.load?.dispatch.driver?.firstName
-                           }}
-                           {{ loads?.load?.dispatch.driver?.lastName }}</span
+                        <div class="divider"></div>
+                    </div>
+                </div>
+            </div>
+            <div *ngSwitchCase="'contact'" class="contact">
+                <div *ngIf="shipperContacts.length" class="contact-wrapper">
+                    <app-ta-custom-card
+                        *ngFor="
+                            let shipperContact of shipperContacts;
+                            trackBy: identity
+                        "
+                        [bodyTemplate]="'card'"
+                        [hasDivider]="false"
+                        [cardName]="shipperContact.department.name"
+                        [isCardOpen]="true"
+                        class="shipper-contact-container"
+                    >
+                        <div
+                            *ngIf="shipperContact"
+                            class="parking-template-data"
                         >
-                        <span class="date">{{
-                           loads?.load?.dispatch.truck?.truckNumber
-                        }}</span>
-                        <span class="date">{{
-                           loads?.load?.dispatch.trailer?.trailerNumber
-                        }}</span>
-                        <div class="time-date">
-                           <span class="date">{{
-                              loads?.arrive | formatDateP
-                           }}</span>
-                           <span class="time">
-                              {{ loads?.arrive | formatTime }}</span
-                           >
+                            <div
+                                class="parking-template-item parking-template-email parking-name"
+                            >
+                                <span class="parking-template-name">{{
+                                    shipperContact?.fullName
+                                }}</span>
+                                <div class="svg-wrapper">
+                                    <span
+                                        ngbTooltip
+                                        mainTooltip="Edit"
+                                        position="top"
+                                        tooltipBackground="#6C6C6C"
+                                    >
+                                        <svg-icon
+                                            src="ic_pen.svg"
+                                            class="svg-icon-edit"
+                                        ></svg-icon>
+                                    </span>
+                                    <span
+                                        ngbTooltip
+                                        mainTooltip="Delete"
+                                        position="top"
+                                        tooltipBackground="#6C6C6C"
+                                    >
+                                        <svg-icon
+                                            src="assets/svg/common/ic_trash.svg"
+                                            class="svg-icon-trash"
+                                        ></svg-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="parking-template-item">
+                                <svg-icon
+                                    src="assets/svg/common/ic_phone.svg"
+                                ></svg-icon>
+                                <span class="parking-template-text">{{
+                                    shipperContact?.phone | formatPhoneP
+                                }}</span>
+                            </div>
+                            <div class="parking-template-item">
+                                <div class="parking-template-item">
+                                    <svg-icon
+                                        src="assets/svg/common/ic_phone-extension.svg"
+                                    ></svg-icon>
+                                    <span class="parking-template-text">{{
+                                        shipperContact?.phoneExt
+                                    }}</span>
+                                </div>
+                            </div>
+                            <div
+                                class="parking-template-item parking-template-email"
+                            >
+                                <svg-icon
+                                    src="assets/svg/common/ic_email.svg"
+                                ></svg-icon>
+                                <span class="parking-template-text">{{
+                                    shipperContact?.email
+                                }}</span>
+                            </div>
                         </div>
-                        <div class="time-date">
-                           <span class="date">{{
-                              loads?.depart | formatDateP
-                           }}</span>
-                           <span class="time">
-                              {{ loads?.depart | formatTime }}</span
-                           >
+                        <div class="divider"></div>
+                    </app-ta-custom-card>
+                </div>
+            </div>
+            <div *ngSwitchCase="'review'">
+                <div class="likes-count-container">
+                    <div class="likes-item">
+                        <div class="ic-counter">
+                            <svg-icon
+                                class="like"
+                                src="assets/svg/common/ic_dislike.svg"
+                            ></svg-icon>
+                            <app-ta-counter
+                                [countBackgroud]="'#F3F3F3'"
+                                [countColor]="'#919191'"
+                                [countHeight]="'24px'"
+                                [countWidth]="'24px'"
+                                [count]="shipperLikes"
+                            >
+                            </app-ta-counter>
                         </div>
-                        <span class="wait-time"
-                           ><span class="hours" *ngIf="loads?.wait.days > 0"
-                              >{{ loads?.wait.days }} d
-                           </span>
-                           <span class="hours" *ngIf="loads?.wait.hours > 0"
-                              >{{ loads?.wait.hours }} h</span
-                           >
-                           <span
-                              class="hours"
-                              *ngIf="
-                                 loads?.wait.hours <= 0 && loads?.wait.days <= 0
-                              "
-                              >{{ loads?.wait.minutes }} min</span
-                           >
-                        </span>
-                     </div>
-                  </div>
-                  <div class="divider"></div>
-               </div>
-            </div>
-         </div>
-         <div *ngSwitchCase="'contact'" class="contact">
-            <div *ngIf="shipperContacts.length" class="contact-wrapper">
-               <app-ta-custom-card
-                  *ngFor="
-                     let shipperContact of shipperContacts;
-                     trackBy: identity
-                  "
-                  [bodyTemplate]="'card'"
-                  [hasDivider]="false"
-                  [cardName]="shipperContact.department.name"
-                  [isCardOpen]="true"
-                  class="shipper-contact-container"
-               >
-                  <div *ngIf="shipperContact" class="parking-template-data">
-                     <div
-                        class="parking-template-item parking-template-email parking-name"
-                     >
-                        <span class="parking-template-name">{{
-                           shipperContact?.fullName
-                        }}</span>
-                        <div class="svg-wrapper">
-                           <span
-                              ngbTooltip
-                              mainTooltip="Edit"
-                              position="top"
-                              tooltipBackground="#6C6C6C"
-                           >
-                              <svg-icon
-                                 src="ic_pen.svg"
-                                 class="svg-icon-edit"
-                              ></svg-icon>
-                           </span>
-                           <span
-                              ngbTooltip
-                              mainTooltip="Delete"
-                              position="top"
-                              tooltipBackground="#6C6C6C"
-                           >
-                              <svg-icon
-                                 src="assets/svg/common/ic_trash.svg"
-                                 class="svg-icon-trash"
-                              ></svg-icon>
-                           </span>
+                        <div class="border-vertical"></div>
+                        <div class="ic-counter">
+                            <app-ta-counter
+                                [countBackgroud]="'#F3F3F3'"
+                                [countColor]="'#919191'"
+                                [countHeight]="'24px'"
+                                [countWidth]="'24px'"
+                                [count]="shipperDislike"
+                            >
+                            </app-ta-counter>
+                            <svg-icon
+                                class="dislike"
+                                src="assets/svg/common/ic_dislike.svg"
+                            ></svg-icon>
                         </div>
-                     </div>
-                     <div class="parking-template-item">
-                        <svg-icon
-                           src="assets/svg/common/ic_phone.svg"
-                        ></svg-icon>
-                        <span class="parking-template-text">{{
-                           shipperContact?.phone | formatPhoneP
-                        }}</span>
-                     </div>
-                     <div class="parking-template-item">
-                        <div class="parking-template-item">
-                           <svg-icon
-                              src="assets/svg/common/ic_phone-extension.svg"
-                           ></svg-icon>
-                           <span class="parking-template-text">{{
-                              shipperContact?.phoneExt
-                           }}</span>
-                        </div>
-                     </div>
-                     <div class="parking-template-item parking-template-email">
-                        <svg-icon
-                           src="assets/svg/common/ic_email.svg"
-                        ></svg-icon>
-                        <span class="parking-template-text">{{
-                           shipperContact?.email
-                        }}</span>
-                     </div>
-                  </div>
-                  <div class="divider"></div>
-               </app-ta-custom-card>
+                    </div>
+                </div>
+                <div class="review-container">
+                    <div
+                        *ngIf="!reviewsRepair.length"
+                        class="no-reviews-details"
+                    >
+                        No review
+                    </div>
+                    <app-ta-user-review
+                        *ngIf="reviewsRepair.length"
+                        [reviewData]="reviewsRepair"
+                        [isNewReview]="reviewsRepair[0].isNewReview"
+                        (changeReviewsEvent)="changeReviewsEvent($event)"
+                    ></app-ta-user-review>
+                </div>
             </div>
-         </div>
-         <div *ngSwitchCase="'review'">
-            <div class="likes-count-container">
-               <div class="likes-item">
-                  <div class="ic-counter">
-                     <svg-icon
-                        class="like"
-                        src="assets/svg/common/ic_dislike.svg"
-                     ></svg-icon>
-                     <app-ta-counter
-                        [countBackgroud]="'#F3F3F3'"
-                        [countColor]="'#919191'"
-                        [countHeight]="'24px'"
-                        [countWidth]="'24px'"
-                        [count]="shipperLikes"
-                     >
-                     </app-ta-counter>
-                  </div>
-                  <div class="border-vertical"></div>
-                  <div class="ic-counter">
-                     <app-ta-counter
-                        [countBackgroud]="'#F3F3F3'"
-                        [countColor]="'#919191'"
-                        [countHeight]="'24px'"
-                        [countWidth]="'24px'"
-                        [count]="shipperDislike"
-                     >
-                     </app-ta-counter>
-                     <svg-icon
-                        class="dislike"
-                        src="assets/svg/common/ic_dislike.svg"
-                     ></svg-icon>
-                  </div>
-               </div>
-            </div>
-            <div class="review-container">
-               <div *ngIf="!reviewsRepair.length" class="no-reviews-details">
-                  No review
-               </div>
-               <app-ta-user-review
-                  *ngIf="reviewsRepair.length"
-                  [reviewData]="reviewsRepair"
-                  [isNewReview]="reviewsRepair[0].isNewReview"
-                  (changeReviewsEvent)="changeReviewsEvent($event)"
-               ></app-ta-user-review>
-            </div>
-         </div>
-      </div>
-   </div>
+        </div>
+    </div>
 </div>

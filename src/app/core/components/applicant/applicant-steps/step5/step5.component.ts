@@ -7,8 +7,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import {
-   convertDateToBackend,
-   convertDateFromBackend,
+    convertDateToBackend,
+    convertDateFromBackend,
 } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -20,879 +20,895 @@ import { ApplicantQuery } from '../../state/store/applicant.query';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { ViolationModel } from '../../state/model/violations.model';
 import {
-   ApplicantModalResponse,
-   ApplicantResponse,
-   CreateTrafficViolationCommand,
-   CreateTrafficViolationReviewCommand,
-   TrafficViolationFeedbackResponse,
-   TruckTypeResponse,
+    ApplicantModalResponse,
+    ApplicantResponse,
+    CreateTrafficViolationCommand,
+    CreateTrafficViolationReviewCommand,
+    TrafficViolationFeedbackResponse,
+    TruckTypeResponse,
 } from 'appcoretruckassist/model/models';
 
 @Component({
-   selector: 'app-step5',
-   templateUrl: './step5.component.html',
-   styleUrls: ['./step5.component.scss'],
+    selector: 'app-step5',
+    templateUrl: './step5.component.html',
+    styleUrls: ['./step5.component.scss'],
 })
 export class Step5Component implements OnInit, OnDestroy {
-   private destroy$ = new Subject<void>();
+    private destroy$ = new Subject<void>();
 
-   public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
-   public applicantId: number;
+    public applicantId: number;
 
-   public violationsForm: FormGroup;
-   public trafficViolationsForm: FormGroup;
-   public notBeenConvictedForm: FormGroup;
-   public onlyOneHoldLicenseForm: FormGroup;
-   public certifyForm: FormGroup;
+    public violationsForm: FormGroup;
+    public trafficViolationsForm: FormGroup;
+    public notBeenConvictedForm: FormGroup;
+    public onlyOneHoldLicenseForm: FormGroup;
+    public certifyForm: FormGroup;
 
-   public formStatus: string = 'INVALID';
-   public markFormInvalid: boolean;
+    public formStatus: string = 'INVALID';
+    public markFormInvalid: boolean;
 
-   public violationsArray: ViolationModel[] = [];
+    public violationsArray: ViolationModel[] = [];
 
-   public stepHasValues: boolean = false;
+    public stepHasValues: boolean = false;
 
-   public lastValidLicense: any;
+    public lastValidLicense: any;
 
-   public lastViolationsCard: any;
+    public lastViolationsCard: any;
 
-   public vehicleType: TruckTypeResponse[] = [];
+    public vehicleType: TruckTypeResponse[] = [];
 
-   public selectedViolationIndex: number;
-   public helperIndex: number = 2;
+    public selectedViolationIndex: number;
+    public helperIndex: number = 2;
 
-   public isEditing: boolean = false;
-   public isReviewingCard: boolean = false;
+    public isEditing: boolean = false;
+    public isReviewingCard: boolean = false;
 
-   public formValuesToPatch: any;
-   public previousFormValuesOnEdit: any;
+    public formValuesToPatch: any;
+    public previousFormValuesOnEdit: any;
 
-   public openAnnotationArray: {
-      lineIndex?: number;
-      lineInputs?: boolean[];
-      displayAnnotationButton?: boolean;
-      displayAnnotationTextArea?: boolean;
-   }[] = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
-   public hasIncorrectFields: boolean = false;
-   public cardsWithIncorrectFields: boolean = false;
-   public previousFormValuesOnReview: any;
+    public openAnnotationArray: {
+        lineIndex?: number;
+        lineInputs?: boolean[];
+        displayAnnotationButton?: boolean;
+        displayAnnotationTextArea?: boolean;
+    }[] = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+    public hasIncorrectFields: boolean = false;
+    public cardsWithIncorrectFields: boolean = false;
+    public previousFormValuesOnReview: any;
 
-   constructor(
-      private formBuilder: FormBuilder,
-      private inputService: TaInputService,
-      private router: Router,
-      private applicantActionsService: ApplicantActionsService,
-      private applicantStore: ApplicantStore,
-      private applicantQuery: ApplicantQuery
-   ) {}
+    constructor(
+        private formBuilder: FormBuilder,
+        private inputService: TaInputService,
+        private router: Router,
+        private applicantActionsService: ApplicantActionsService,
+        private applicantStore: ApplicantStore,
+        private applicantQuery: ApplicantQuery
+    ) {}
 
-   ngOnInit(): void {
-      this.createForm();
+    ngOnInit(): void {
+        this.createForm();
 
-      this.hasNoTrafficViolations();
+        this.hasNoTrafficViolations();
 
-      this.getDropdownLists();
+        this.getDropdownLists();
 
-      this.getStepValuesFromStore();
-   }
+        this.getStepValuesFromStore();
+    }
 
-   public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, item: any): number => index;
 
-   public createForm(): void {
-      this.trafficViolationsForm = this.formBuilder.group({
-         noViolationsForPastTwelveMonths: [false],
-      });
+    public createForm(): void {
+        this.trafficViolationsForm = this.formBuilder.group({
+            noViolationsForPastTwelveMonths: [false],
+        });
 
-      this.notBeenConvictedForm = this.formBuilder.group({
-         notBeenConvicted: [false, Validators.requiredTrue],
-      });
+        this.notBeenConvictedForm = this.formBuilder.group({
+            notBeenConvicted: [false, Validators.requiredTrue],
+        });
 
-      this.onlyOneHoldLicenseForm = this.formBuilder.group({
-         onlyOneHoldLicense: [false, Validators.requiredTrue],
-      });
+        this.onlyOneHoldLicenseForm = this.formBuilder.group({
+            onlyOneHoldLicense: [false, Validators.requiredTrue],
+        });
 
-      this.certifyForm = this.formBuilder.group({
-         certify: [false, Validators.requiredTrue],
-      });
+        this.certifyForm = this.formBuilder.group({
+            certify: [false, Validators.requiredTrue],
+        });
 
-      this.violationsForm = this.formBuilder.group({
-         cardReview1: [null],
-         cardReview2: [null],
-         cardReview3: [null],
-         cardReview4: [null],
-         cardReview5: [null],
-         cardReview6: [null],
-         cardReview7: [null],
-         cardReview8: [null],
-         cardReview9: [null],
-         cardReview10: [null],
-      });
-   }
+        this.violationsForm = this.formBuilder.group({
+            cardReview1: [null],
+            cardReview2: [null],
+            cardReview3: [null],
+            cardReview4: [null],
+            cardReview5: [null],
+            cardReview6: [null],
+            cardReview7: [null],
+            cardReview8: [null],
+            cardReview9: [null],
+            cardReview10: [null],
+        });
+    }
 
-   public getStepValuesFromStore(): void {
-      this.applicantQuery.applicant$
-         .pipe(takeUntil(this.destroy$))
-         .subscribe((res: ApplicantResponse) => {
-            this.applicantId = res.id;
+    public getStepValuesFromStore(): void {
+        this.applicantQuery.applicant$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: ApplicantResponse) => {
+                this.applicantId = res.id;
 
-            const cdlInformation = res.cdlInformation;
+                const cdlInformation = res.cdlInformation;
 
-            const lastLicenseAdded =
-               cdlInformation?.licences[cdlInformation.licences.length - 1];
+                const lastLicenseAdded =
+                    cdlInformation?.licences[
+                        cdlInformation.licences.length - 1
+                    ];
 
-            this.lastValidLicense = {
-               license: lastLicenseAdded?.licenseNumber,
-               state: lastLicenseAdded?.state?.stateShortName,
-               classType: lastLicenseAdded?.classType.name,
-               expDate: convertDateFromBackend(lastLicenseAdded?.expDate),
-            };
+                this.lastValidLicense = {
+                    license: lastLicenseAdded?.licenseNumber,
+                    state: lastLicenseAdded?.state?.stateShortName,
+                    classType: lastLicenseAdded?.classType.name,
+                    expDate: convertDateFromBackend(lastLicenseAdded?.expDate),
+                };
 
-            if (res.trafficViolation) {
-               this.patchStepValues(res.trafficViolation);
+                if (res.trafficViolation) {
+                    this.patchStepValues(res.trafficViolation);
 
-               this.stepHasValues = true;
-            }
-         });
-   }
+                    this.stepHasValues = true;
+                }
+            });
+    }
 
-   public patchStepValues(stepValues: TrafficViolationFeedbackResponse): void {
-      const {
-         noViolationsForPastTwelveMonths,
-         notBeenConvicted,
-         onlyOneHoldLicense,
-         certifyViolations,
-         trafficViolationItems,
-      } = stepValues;
+    public patchStepValues(stepValues: TrafficViolationFeedbackResponse): void {
+        const {
+            noViolationsForPastTwelveMonths,
+            notBeenConvicted,
+            onlyOneHoldLicense,
+            certifyViolations,
+            trafficViolationItems,
+        } = stepValues;
 
-      this.trafficViolationsForm
-         .get('noViolationsForPastTwelveMonths')
-         .patchValue(noViolationsForPastTwelveMonths);
+        this.trafficViolationsForm
+            .get('noViolationsForPastTwelveMonths')
+            .patchValue(noViolationsForPastTwelveMonths);
 
-      this.notBeenConvictedForm
-         .get('notBeenConvicted')
-         .patchValue(notBeenConvicted);
+        this.notBeenConvictedForm
+            .get('notBeenConvicted')
+            .patchValue(notBeenConvicted);
 
-      this.onlyOneHoldLicenseForm
-         .get('onlyOneHoldLicense')
-         .patchValue(onlyOneHoldLicense);
+        this.onlyOneHoldLicenseForm
+            .get('onlyOneHoldLicense')
+            .patchValue(onlyOneHoldLicense);
 
-      this.certifyForm.get('certify').patchValue(certifyViolations);
+        this.certifyForm.get('certify').patchValue(certifyViolations);
 
-      if (!noViolationsForPastTwelveMonths) {
-         console.log('stepValues', stepValues);
-         const lastItemInViolationsArray =
-            trafficViolationItems[trafficViolationItems.length - 1];
+        if (!noViolationsForPastTwelveMonths) {
+            console.log('stepValues', stepValues);
+            const lastItemInViolationsArray =
+                trafficViolationItems[trafficViolationItems.length - 1];
 
-         const restOfTheItemsInViolationsArray = [...trafficViolationItems];
+            const restOfTheItemsInViolationsArray = [...trafficViolationItems];
 
-         restOfTheItemsInViolationsArray.pop();
+            restOfTheItemsInViolationsArray.pop();
 
-         const filteredViolationsArray = restOfTheItemsInViolationsArray.map(
-            (item) => {
-               const itemVehicleTypeName = item.vehicleType.name;
+            const filteredViolationsArray = restOfTheItemsInViolationsArray.map(
+                (item) => {
+                    const itemVehicleTypeName = item.vehicleType.name;
 
-               const itemVehicleType = {
-                  ...item.vehicleType,
-               };
+                    const itemVehicleType = {
+                        ...item.vehicleType,
+                    };
 
-               switch (itemVehicleTypeName) {
-                  case 'Tow Truck Heavy':
-                     itemVehicleType.name = 'Tow Truck';
-                     break;
+                    switch (itemVehicleTypeName) {
+                        case 'Tow Truck Heavy':
+                            itemVehicleType.name = 'Tow Truck';
+                            break;
 
-                  case 'Car Hauler - Semi Truck':
-                     itemVehicleType.name = 'Car Hauler';
-                     break;
+                        case 'Car Hauler - Semi Truck':
+                            itemVehicleType.name = 'Car Hauler';
+                            break;
 
-                  case 'Semi Truck w Sleeper':
-                     itemVehicleType.name = 'Semi w/Sleeper';
-                     break;
+                        case 'Semi Truck w Sleeper':
+                            itemVehicleType.name = 'Semi w/Sleeper';
+                            break;
 
-                  default:
-                     break;
-               }
+                        default:
+                            break;
+                    }
 
-               return {
-                  isEditingViolation: false,
-                  date: convertDateFromBackend(item.date),
-                  vehicleType: itemVehicleType.name,
-                  location: item.location,
-                  description: item.description,
-                  trafficViolationItemReview: item.trafficViolationItemReview
-                     ? item.trafficViolationItemReview
-                     : null,
-               };
-            }
-         );
-
-         const lastItemInViolationsArrayVehicleTypeName =
-            lastItemInViolationsArray.vehicleType.name;
-
-         const lastItemVehicleType = {
-            ...lastItemInViolationsArray.vehicleType,
-         };
-
-         switch (lastItemInViolationsArrayVehicleTypeName) {
-            case 'Tow Truck Heavy':
-               lastItemVehicleType.name = 'Tow Truck';
-               break;
-
-            case 'Car Hauler - Semi Truck':
-               lastItemVehicleType.name = 'Car Hauler';
-               break;
-
-            case 'Semi Truck w Sleeper':
-               lastItemVehicleType.name = 'Semi w/Sleeper';
-               break;
-
-            default:
-               break;
-         }
-
-         const filteredLastItemInViolationsArray = {
-            id: lastItemInViolationsArray.id,
-            isEditingViolation: false,
-            date: convertDateFromBackend(lastItemInViolationsArray.date),
-            vehicleType: lastItemVehicleType.name,
-            location: lastItemInViolationsArray.location,
-            description: lastItemInViolationsArray.description,
-            trafficViolationItemReview:
-               lastItemInViolationsArray.trafficViolationItemReview
-                  ? lastItemInViolationsArray.trafficViolationItemReview
-                  : null,
-         };
-
-         this.violationsArray = JSON.parse(
-            JSON.stringify(filteredViolationsArray)
-         );
-
-         this.formValuesToPatch = filteredLastItemInViolationsArray;
-         this.previousFormValuesOnReview = filteredLastItemInViolationsArray;
-         this.previousFormValuesOnEdit = this.violationsArray.length
-            ? filteredLastItemInViolationsArray
-            : {
-                 date: null,
-                 vehicleType: null,
-                 location: null,
-                 description: null,
-              };
-
-         for (let i = 0; i < filteredViolationsArray.length; i++) {
-            const firstEmptyObjectInList = this.openAnnotationArray.find(
-               (item) => Object.keys(item).length === 0
+                    return {
+                        isEditingViolation: false,
+                        date: convertDateFromBackend(item.date),
+                        vehicleType: itemVehicleType.name,
+                        location: item.location,
+                        description: item.description,
+                        trafficViolationItemReview:
+                            item.trafficViolationItemReview
+                                ? item.trafficViolationItemReview
+                                : null,
+                    };
+                }
             );
 
-            const indexOfFirstEmptyObjectInList =
-               this.openAnnotationArray.indexOf(firstEmptyObjectInList);
+            const lastItemInViolationsArrayVehicleTypeName =
+                lastItemInViolationsArray.vehicleType.name;
 
-            this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-               lineIndex: this.openAnnotationArray.indexOf(
-                  firstEmptyObjectInList
-               ),
-               lineInputs: [false],
-               displayAnnotationButton: false,
-               displayAnnotationTextArea: false,
+            const lastItemVehicleType = {
+                ...lastItemInViolationsArray.vehicleType,
             };
-         }
-      } else {
-         this.inputService.changeValidatorsCheck(
-            this.notBeenConvictedForm.get('notBeenConvicted'),
-            false
-         );
-         this.inputService.changeValidatorsCheck(
-            this.onlyOneHoldLicenseForm.get('onlyOneHoldLicense'),
-            false
-         );
-         this.inputService.changeValidatorsCheck(
-            this.certifyForm.get('certify'),
-            false
-         );
 
-         this.formStatus = 'VALID';
-      }
-   }
+            switch (lastItemInViolationsArrayVehicleTypeName) {
+                case 'Tow Truck Heavy':
+                    lastItemVehicleType.name = 'Tow Truck';
+                    break;
 
-   private hasNoTrafficViolations(): void {
-      this.trafficViolationsForm
-         .get('noViolationsForPastTwelveMonths')
-         .valueChanges.pipe(takeUntil(this.destroy$))
-         .subscribe((value) => {
-            if (value) {
-               this.inputService.changeValidatorsCheck(
-                  this.notBeenConvictedForm.get('notBeenConvicted'),
-                  false
-               );
-               this.inputService.changeValidatorsCheck(
-                  this.onlyOneHoldLicenseForm.get('onlyOneHoldLicense'),
-                  false
-               );
-               this.inputService.changeValidatorsCheck(
-                  this.certifyForm.get('certify'),
-                  false
-               );
+                case 'Car Hauler - Semi Truck':
+                    lastItemVehicleType.name = 'Car Hauler';
+                    break;
 
-               this.formStatus = 'VALID';
-            } else {
-               if (this.lastViolationsCard) {
-                  this.formValuesToPatch = {
-                     date: this.lastViolationsCard?.date,
-                     vehicleType: this.lastViolationsCard?.vehicleType,
-                     location: this.lastViolationsCard.location,
-                     description: this.lastViolationsCard?.description,
+                case 'Semi Truck w Sleeper':
+                    lastItemVehicleType.name = 'Semi w/Sleeper';
+                    break;
+
+                default:
+                    break;
+            }
+
+            const filteredLastItemInViolationsArray = {
+                id: lastItemInViolationsArray.id,
+                isEditingViolation: false,
+                date: convertDateFromBackend(lastItemInViolationsArray.date),
+                vehicleType: lastItemVehicleType.name,
+                location: lastItemInViolationsArray.location,
+                description: lastItemInViolationsArray.description,
+                trafficViolationItemReview:
+                    lastItemInViolationsArray.trafficViolationItemReview
+                        ? lastItemInViolationsArray.trafficViolationItemReview
+                        : null,
+            };
+
+            this.violationsArray = JSON.parse(
+                JSON.stringify(filteredViolationsArray)
+            );
+
+            this.formValuesToPatch = filteredLastItemInViolationsArray;
+            this.previousFormValuesOnReview = filteredLastItemInViolationsArray;
+            this.previousFormValuesOnEdit = this.violationsArray.length
+                ? filteredLastItemInViolationsArray
+                : {
+                      date: null,
+                      vehicleType: null,
+                      location: null,
+                      description: null,
                   };
-               }
 
-               this.inputService.changeValidatorsCheck(
-                  this.notBeenConvictedForm.get('notBeenConvicted')
-               );
-               this.inputService.changeValidatorsCheck(
-                  this.onlyOneHoldLicenseForm.get('onlyOneHoldLicense')
-               );
-               this.inputService.changeValidatorsCheck(
-                  this.certifyForm.get('certify')
-               );
+            for (let i = 0; i < filteredViolationsArray.length; i++) {
+                const firstEmptyObjectInList = this.openAnnotationArray.find(
+                    (item) => Object.keys(item).length === 0
+                );
 
-               this.formStatus = 'INVALID';
+                const indexOfFirstEmptyObjectInList =
+                    this.openAnnotationArray.indexOf(firstEmptyObjectInList);
+
+                this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+                    lineIndex: this.openAnnotationArray.indexOf(
+                        firstEmptyObjectInList
+                    ),
+                    lineInputs: [false],
+                    displayAnnotationButton: false,
+                    displayAnnotationTextArea: false,
+                };
             }
-         });
-   }
+        } else {
+            this.inputService.changeValidatorsCheck(
+                this.notBeenConvictedForm.get('notBeenConvicted'),
+                false
+            );
+            this.inputService.changeValidatorsCheck(
+                this.onlyOneHoldLicenseForm.get('onlyOneHoldLicense'),
+                false
+            );
+            this.inputService.changeValidatorsCheck(
+                this.certifyForm.get('certify'),
+                false
+            );
 
-   public handleCheckboxParagraphClick(type: string): void {
-      if (
-         this.selectedMode === SelectedMode.FEEDBACK ||
-         this.selectedMode === SelectedMode.REVIEW
-      ) {
-         return;
-      }
+            this.formStatus = 'VALID';
+        }
+    }
 
-      if (type === 'notBeenConvicted') {
-         this.notBeenConvictedForm.patchValue({
-            notBeenConvicted:
-               !this.notBeenConvictedForm.get('notBeenConvicted').value,
-         });
-      }
+    private hasNoTrafficViolations(): void {
+        this.trafficViolationsForm
+            .get('noViolationsForPastTwelveMonths')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) {
+                    this.inputService.changeValidatorsCheck(
+                        this.notBeenConvictedForm.get('notBeenConvicted'),
+                        false
+                    );
+                    this.inputService.changeValidatorsCheck(
+                        this.onlyOneHoldLicenseForm.get('onlyOneHoldLicense'),
+                        false
+                    );
+                    this.inputService.changeValidatorsCheck(
+                        this.certifyForm.get('certify'),
+                        false
+                    );
 
-      if (type === 'certify') {
-         this.certifyForm.patchValue({
-            certify: !this.certifyForm.get('certify').value,
-         });
-      }
-   }
+                    this.formStatus = 'VALID';
+                } else {
+                    if (this.lastViolationsCard) {
+                        this.formValuesToPatch = {
+                            date: this.lastViolationsCard?.date,
+                            vehicleType: this.lastViolationsCard?.vehicleType,
+                            location: this.lastViolationsCard.location,
+                            description: this.lastViolationsCard?.description,
+                        };
+                    }
 
-   public onDeleteViolation(index: number): void {
-      if (this.isEditing) {
-         return;
-      }
+                    this.inputService.changeValidatorsCheck(
+                        this.notBeenConvictedForm.get('notBeenConvicted')
+                    );
+                    this.inputService.changeValidatorsCheck(
+                        this.onlyOneHoldLicenseForm.get('onlyOneHoldLicense')
+                    );
+                    this.inputService.changeValidatorsCheck(
+                        this.certifyForm.get('certify')
+                    );
 
-      this.violationsArray.splice(index, 1);
-   }
+                    this.formStatus = 'INVALID';
+                }
+            });
+    }
 
-   public onEditViolation(index: number): void {
-      if (this.isEditing) {
-         this.isEditing = false;
-         this.violationsArray[this.selectedViolationIndex].isEditingViolation =
+    public handleCheckboxParagraphClick(type: string): void {
+        if (
+            this.selectedMode === SelectedMode.FEEDBACK ||
+            this.selectedMode === SelectedMode.REVIEW
+        ) {
+            return;
+        }
+
+        if (type === 'notBeenConvicted') {
+            this.notBeenConvictedForm.patchValue({
+                notBeenConvicted:
+                    !this.notBeenConvictedForm.get('notBeenConvicted').value,
+            });
+        }
+
+        if (type === 'certify') {
+            this.certifyForm.patchValue({
+                certify: !this.certifyForm.get('certify').value,
+            });
+        }
+    }
+
+    public onDeleteViolation(index: number): void {
+        if (this.isEditing) {
+            return;
+        }
+
+        this.violationsArray.splice(index, 1);
+    }
+
+    public onEditViolation(index: number): void {
+        if (this.isEditing) {
+            this.isEditing = false;
+            this.violationsArray[
+                this.selectedViolationIndex
+            ].isEditingViolation = false;
+
+            this.helperIndex = 2;
+            this.selectedViolationIndex = -1;
+        }
+
+        this.helperIndex = index;
+        this.selectedViolationIndex = index;
+
+        this.isEditing = true;
+        this.violationsArray[index].isEditingViolation = true;
+
+        const selectedViolation = this.violationsArray[index];
+
+        if (this.lastViolationsCard) {
+            this.previousFormValuesOnEdit = {
+                date: this.lastViolationsCard?.date,
+                vehicleType: this.lastViolationsCard?.vehicleType,
+                location: this.lastViolationsCard.location,
+                description: this.lastViolationsCard?.description,
+            };
+        }
+
+        this.formValuesToPatch = selectedViolation;
+    }
+
+    public getViolationFormValues(event: any): void {
+        this.violationsArray = [...this.violationsArray, event];
+
+        this.helperIndex = 2;
+
+        const firstEmptyObjectInList = this.openAnnotationArray.find(
+            (item) => Object.keys(item).length === 0
+        );
+
+        const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+            firstEmptyObjectInList
+        );
+
+        this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+            lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+            lineInputs: [false],
+            displayAnnotationButton: false,
+            displayAnnotationTextArea: false,
+        };
+    }
+
+    public saveEditedViolation(event: any): void {
+        this.isEditing = false;
+        this.violationsArray[this.selectedViolationIndex].isEditingViolation =
             false;
 
-         this.helperIndex = 2;
-         this.selectedViolationIndex = -1;
-      }
+        this.violationsArray[this.selectedViolationIndex] = event;
 
-      this.helperIndex = index;
-      this.selectedViolationIndex = index;
+        this.helperIndex = 2;
+        this.selectedViolationIndex = -1;
 
-      this.isEditing = true;
-      this.violationsArray[index].isEditingViolation = true;
+        this.formValuesToPatch = this.previousFormValuesOnEdit;
+    }
 
-      const selectedViolation = this.violationsArray[index];
+    public cancelViolationEditing(event: any): void {
+        this.isEditing = false;
+        this.violationsArray[this.selectedViolationIndex].isEditingViolation =
+            false;
 
-      if (this.lastViolationsCard) {
-         this.previousFormValuesOnEdit = {
-            date: this.lastViolationsCard?.date,
-            vehicleType: this.lastViolationsCard?.vehicleType,
-            location: this.lastViolationsCard.location,
-            description: this.lastViolationsCard?.description,
-         };
-      }
+        this.helperIndex = 2;
+        this.selectedViolationIndex = -1;
 
-      this.formValuesToPatch = selectedViolation;
-   }
+        this.formValuesToPatch = this.previousFormValuesOnEdit;
+    }
 
-   public getViolationFormValues(event: any): void {
-      this.violationsArray = [...this.violationsArray, event];
+    public onGetFormStatus(status: string): void {
+        this.formStatus = status;
+    }
 
-      this.helperIndex = 2;
+    public onMarkInvalidEmit(event: any): void {
+        if (!event) {
+            this.markFormInvalid = false;
+        }
+    }
 
-      const firstEmptyObjectInList = this.openAnnotationArray.find(
-         (item) => Object.keys(item).length === 0
-      );
+    public onGetLastFormValues(event: any): void {
+        this.lastViolationsCard = event;
+    }
 
-      const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
-         firstEmptyObjectInList
-      );
+    public onHasIncorrectFields(event: any): void {
+        if (event) {
+            this.hasIncorrectFields = true;
+        } else {
+            this.hasIncorrectFields = false;
+        }
+    }
 
-      this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-         lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
-         lineInputs: [false],
-         displayAnnotationButton: false,
-         displayAnnotationTextArea: false,
-      };
-   }
+    public onGetOpenAnnotationArrayValues(event: any): void {
+        this.previousFormValuesOnReview.trafficViolationItemReview = {
+            isDateValid: !event[0].lineInputs[0],
+            isLocationValid: !event[0].lineInputs[2],
+            isDescriptionValid: !event[1].lineInputs[0],
+        };
+    }
 
-   public saveEditedViolation(event: any): void {
-      this.isEditing = false;
-      this.violationsArray[this.selectedViolationIndex].isEditingViolation =
-         false;
+    public onGetCardOpenAnnotationArrayValues(event: any): void {
+        this.isReviewingCard = false;
 
-      this.violationsArray[this.selectedViolationIndex] = event;
+        this.violationsArray[this.selectedViolationIndex].isEditingViolation =
+            false;
 
-      this.helperIndex = 2;
-      this.selectedViolationIndex = -1;
-
-      this.formValuesToPatch = this.previousFormValuesOnEdit;
-   }
-
-   public cancelViolationEditing(event: any): void {
-      this.isEditing = false;
-      this.violationsArray[this.selectedViolationIndex].isEditingViolation =
-         false;
-
-      this.helperIndex = 2;
-      this.selectedViolationIndex = -1;
-
-      this.formValuesToPatch = this.previousFormValuesOnEdit;
-   }
-
-   public onGetFormStatus(status: string): void {
-      this.formStatus = status;
-   }
-
-   public onMarkInvalidEmit(event: any): void {
-      if (!event) {
-         this.markFormInvalid = false;
-      }
-   }
-
-   public onGetLastFormValues(event: any): void {
-      this.lastViolationsCard = event;
-   }
-
-   public onHasIncorrectFields(event: any): void {
-      if (event) {
-         this.hasIncorrectFields = true;
-      } else {
-         this.hasIncorrectFields = false;
-      }
-   }
-
-   public onGetOpenAnnotationArrayValues(event: any): void {
-      this.previousFormValuesOnReview.trafficViolationItemReview = {
-         isDateValid: !event[0].lineInputs[0],
-         isLocationValid: !event[0].lineInputs[2],
-         isDescriptionValid: !event[1].lineInputs[0],
-      };
-   }
-
-   public onGetCardOpenAnnotationArrayValues(event: any): void {
-      this.isReviewingCard = false;
-
-      this.violationsArray[this.selectedViolationIndex].isEditingViolation =
-         false;
-
-      this.violationsArray[
-         this.selectedViolationIndex
-      ].trafficViolationItemReview = {
-         isDateValid: !event[0].lineInputs[0],
-         isLocationValid: !event[0].lineInputs[2],
-         isDescriptionValid: !event[1].lineInputs[0],
-      };
-
-      const hasInvalidFields = JSON.stringify(
-         this.violationsArray[this.selectedViolationIndex]
-            .trafficViolationItemReview
-      );
-
-      if (hasInvalidFields.includes('false')) {
-         this.openAnnotationArray[
+        this.violationsArray[
             this.selectedViolationIndex
-         ].displayAnnotationButton = true;
+        ].trafficViolationItemReview = {
+            isDateValid: !event[0].lineInputs[0],
+            isLocationValid: !event[0].lineInputs[2],
+            isDescriptionValid: !event[1].lineInputs[0],
+        };
 
-         this.openAnnotationArray[this.selectedViolationIndex].lineInputs[0] =
-            true;
+        const hasInvalidFields = JSON.stringify(
+            this.violationsArray[this.selectedViolationIndex]
+                .trafficViolationItemReview
+        );
 
-         this.cardsWithIncorrectFields = true;
-      } else {
-         this.openAnnotationArray[
-            this.selectedViolationIndex
-         ].displayAnnotationButton = false;
+        if (hasInvalidFields.includes('false')) {
+            this.openAnnotationArray[
+                this.selectedViolationIndex
+            ].displayAnnotationButton = true;
 
-         this.hasIncorrectFields = false;
-      }
+            this.openAnnotationArray[
+                this.selectedViolationIndex
+            ].lineInputs[0] = true;
 
-      this.helperIndex = 2;
-      this.selectedViolationIndex = -1;
-
-      this.formValuesToPatch = this.previousFormValuesOnReview;
-   }
-
-   public cancelViolationReview(event: any): void {
-      this.isReviewingCard = false;
-
-      this.violationsArray[this.selectedViolationIndex].isEditingViolation =
-         false;
-
-      this.helperIndex = 2;
-      this.selectedViolationIndex = -1;
-
-      this.formValuesToPatch = this.previousFormValuesOnReview;
-   }
-
-   public getDropdownLists(): void {
-      this.applicantQuery.applicantDropdownLists$
-         .pipe(takeUntil(this.destroy$))
-         .subscribe((res: ApplicantModalResponse) => {
-            this.vehicleType = res.truckTypes;
-         });
-   }
-
-   public incorrectInput(
-      event: any,
-      inputIndex: number,
-      lineIndex: number,
-      type?: string
-   ): void {
-      const selectedInputsLine = this.openAnnotationArray.find(
-         (item) => item.lineIndex === lineIndex
-      );
-
-      if (type === 'card') {
-         if (selectedInputsLine.displayAnnotationButton) {
-            selectedInputsLine.lineInputs[inputIndex] = false;
-            selectedInputsLine.displayAnnotationButton = false;
-         }
-
-         if (selectedInputsLine.displayAnnotationTextArea) {
-            selectedInputsLine.displayAnnotationButton = false;
-            selectedInputsLine.displayAnnotationTextArea = false;
-         }
-
-         Object.keys(
-            this.violationsArray[lineIndex].trafficViolationItemReview
-         ).forEach((key) => {
-            this.violationsArray[lineIndex].trafficViolationItemReview[key] =
-               true;
-         });
-
-         const inputFieldsArray = JSON.stringify(
-            this.openAnnotationArray
-               .filter((item) => Object.keys(item).length !== 0)
-               .map((item) => item.lineInputs)
-         );
-
-         if (inputFieldsArray.includes('true')) {
             this.cardsWithIncorrectFields = true;
-         } else {
-            this.cardsWithIncorrectFields = false;
-         }
-      } else {
-         if (event) {
-            selectedInputsLine.lineInputs[inputIndex] = true;
+        } else {
+            this.openAnnotationArray[
+                this.selectedViolationIndex
+            ].displayAnnotationButton = false;
 
-            if (!selectedInputsLine.displayAnnotationTextArea) {
-               selectedInputsLine.displayAnnotationButton = true;
-               selectedInputsLine.displayAnnotationTextArea = false;
-            }
-         }
+            this.hasIncorrectFields = false;
+        }
 
-         if (!event) {
-            selectedInputsLine.lineInputs[inputIndex] = false;
+        this.helperIndex = 2;
+        this.selectedViolationIndex = -1;
 
-            const lineInputItems = selectedInputsLine.lineInputs;
-            const isAnyInputInLineIncorrect =
-               anyInputInLineIncorrect(lineInputItems);
+        this.formValuesToPatch = this.previousFormValuesOnReview;
+    }
 
-            if (!isAnyInputInLineIncorrect) {
-               selectedInputsLine.displayAnnotationButton = false;
-               selectedInputsLine.displayAnnotationTextArea = false;
-            }
-         }
-      }
-   }
+    public cancelViolationReview(event: any): void {
+        this.isReviewingCard = false;
 
-   public getAnnotationBtnClickValue(event: any): void {
-      if (event.type === 'open') {
-         this.openAnnotationArray[event.lineIndex].displayAnnotationButton =
+        this.violationsArray[this.selectedViolationIndex].isEditingViolation =
             false;
-         this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
-            true;
-      } else {
-         this.openAnnotationArray[event.lineIndex].displayAnnotationButton =
-            true;
-         this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
-            false;
-      }
-   }
 
-   public onCardReview(index: number) {
-      if (this.isReviewingCard) {
-         return;
-      }
+        this.helperIndex = 2;
+        this.selectedViolationIndex = -1;
 
-      this.helperIndex = index;
-      this.selectedViolationIndex = index;
+        this.formValuesToPatch = this.previousFormValuesOnReview;
+    }
 
-      this.violationsArray[index].isEditingViolation = true;
+    public getDropdownLists(): void {
+        this.applicantQuery.applicantDropdownLists$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: ApplicantModalResponse) => {
+                this.vehicleType = res.truckTypes;
+            });
+    }
 
-      this.isReviewingCard = true;
+    public incorrectInput(
+        event: any,
+        inputIndex: number,
+        lineIndex: number,
+        type?: string
+    ): void {
+        const selectedInputsLine = this.openAnnotationArray.find(
+            (item) => item.lineIndex === lineIndex
+        );
 
-      const selectedViolation = this.violationsArray[index];
+        if (type === 'card') {
+            if (selectedInputsLine.displayAnnotationButton) {
+                selectedInputsLine.lineInputs[inputIndex] = false;
+                selectedInputsLine.displayAnnotationButton = false;
+            }
 
-      this.formValuesToPatch = selectedViolation;
-   }
+            if (selectedInputsLine.displayAnnotationTextArea) {
+                selectedInputsLine.displayAnnotationButton = false;
+                selectedInputsLine.displayAnnotationTextArea = false;
+            }
 
-   public onStepAction(event: any): void {
-      if (event.action === 'next-step') {
-         if (
-            this.selectedMode === SelectedMode.APPLICANT ||
-            this.selectedMode === SelectedMode.FEEDBACK
-         ) {
-            this.onSubmit();
-         }
+            Object.keys(
+                this.violationsArray[lineIndex].trafficViolationItemReview
+            ).forEach((key) => {
+                this.violationsArray[lineIndex].trafficViolationItemReview[
+                    key
+                ] = true;
+            });
 
-         if (this.selectedMode === SelectedMode.REVIEW) {
-            this.onSubmitReview();
-         }
-      }
+            const inputFieldsArray = JSON.stringify(
+                this.openAnnotationArray
+                    .filter((item) => Object.keys(item).length !== 0)
+                    .map((item) => item.lineInputs)
+            );
 
-      if (event.action === 'back-step') {
-         this.router.navigate([`/application/${this.applicantId}/4`]);
-      }
-   }
+            if (inputFieldsArray.includes('true')) {
+                this.cardsWithIncorrectFields = true;
+            } else {
+                this.cardsWithIncorrectFields = false;
+            }
+        } else {
+            if (event) {
+                selectedInputsLine.lineInputs[inputIndex] = true;
 
-   public onSubmit(): void {
-      if (
-         this.notBeenConvictedForm.invalid ||
-         this.onlyOneHoldLicenseForm.invalid ||
-         this.certifyForm.invalid ||
-         this.formStatus === 'INVALID'
-      ) {
-         if (this.formStatus === 'INVALID') {
-            this.markFormInvalid = true;
-         }
+                if (!selectedInputsLine.displayAnnotationTextArea) {
+                    selectedInputsLine.displayAnnotationButton = true;
+                    selectedInputsLine.displayAnnotationTextArea = false;
+                }
+            }
 
-         if (this.notBeenConvictedForm.invalid) {
-            this.inputService.markInvalid(this.notBeenConvictedForm);
-         }
+            if (!event) {
+                selectedInputsLine.lineInputs[inputIndex] = false;
 
-         if (this.onlyOneHoldLicenseForm.invalid) {
-            this.inputService.markInvalid(this.onlyOneHoldLicenseForm);
-         }
+                const lineInputItems = selectedInputsLine.lineInputs;
+                const isAnyInputInLineIncorrect =
+                    anyInputInLineIncorrect(lineInputItems);
 
-         if (this.certifyForm.invalid) {
-            this.inputService.markInvalid(this.certifyForm);
-         }
+                if (!isAnyInputInLineIncorrect) {
+                    selectedInputsLine.displayAnnotationButton = false;
+                    selectedInputsLine.displayAnnotationTextArea = false;
+                }
+            }
+        }
+    }
 
-         return;
-      }
+    public getAnnotationBtnClickValue(event: any): void {
+        if (event.type === 'open') {
+            this.openAnnotationArray[event.lineIndex].displayAnnotationButton =
+                false;
+            this.openAnnotationArray[
+                event.lineIndex
+            ].displayAnnotationTextArea = true;
+        } else {
+            this.openAnnotationArray[event.lineIndex].displayAnnotationButton =
+                true;
+            this.openAnnotationArray[
+                event.lineIndex
+            ].displayAnnotationTextArea = false;
+        }
+    }
 
-      const { noViolationsForPastTwelveMonths } =
-         this.trafficViolationsForm.value;
+    public onCardReview(index: number) {
+        if (this.isReviewingCard) {
+            return;
+        }
 
-      const { notBeenConvicted } = this.notBeenConvictedForm.value;
+        this.helperIndex = index;
+        this.selectedViolationIndex = index;
 
-      const { onlyOneHoldLicense } = this.onlyOneHoldLicenseForm.value;
+        this.violationsArray[index].isEditingViolation = true;
 
-      const { certify } = this.certifyForm.value;
+        this.isReviewingCard = true;
 
-      const filteredViolationsArray = this.violationsArray.map((item) => {
-         const itemVehicleType = item.vehicleType;
+        const selectedViolation = this.violationsArray[index];
 
-         switch (itemVehicleType) {
+        this.formValuesToPatch = selectedViolation;
+    }
+
+    public onStepAction(event: any): void {
+        if (event.action === 'next-step') {
+            if (
+                this.selectedMode === SelectedMode.APPLICANT ||
+                this.selectedMode === SelectedMode.FEEDBACK
+            ) {
+                this.onSubmit();
+            }
+
+            if (this.selectedMode === SelectedMode.REVIEW) {
+                this.onSubmitReview();
+            }
+        }
+
+        if (event.action === 'back-step') {
+            this.router.navigate([`/application/${this.applicantId}/4`]);
+        }
+    }
+
+    public onSubmit(): void {
+        if (
+            this.notBeenConvictedForm.invalid ||
+            this.onlyOneHoldLicenseForm.invalid ||
+            this.certifyForm.invalid ||
+            this.formStatus === 'INVALID'
+        ) {
+            if (this.formStatus === 'INVALID') {
+                this.markFormInvalid = true;
+            }
+
+            if (this.notBeenConvictedForm.invalid) {
+                this.inputService.markInvalid(this.notBeenConvictedForm);
+            }
+
+            if (this.onlyOneHoldLicenseForm.invalid) {
+                this.inputService.markInvalid(this.onlyOneHoldLicenseForm);
+            }
+
+            if (this.certifyForm.invalid) {
+                this.inputService.markInvalid(this.certifyForm);
+            }
+
+            return;
+        }
+
+        const { noViolationsForPastTwelveMonths } =
+            this.trafficViolationsForm.value;
+
+        const { notBeenConvicted } = this.notBeenConvictedForm.value;
+
+        const { onlyOneHoldLicense } = this.onlyOneHoldLicenseForm.value;
+
+        const { certify } = this.certifyForm.value;
+
+        const filteredViolationsArray = this.violationsArray.map((item) => {
+            const itemVehicleType = item.vehicleType;
+
+            switch (itemVehicleType) {
+                case 'Tow Truck':
+                    item.vehicleType = 'Tow Truck Heavy';
+                    break;
+
+                case 'Car Hauler':
+                    item.vehicleType = 'Car Hauler - Semi Truck';
+                    break;
+
+                case 'Semi w/Sleeper':
+                    item.vehicleType = 'Semi Truck w Sleeper';
+                    break;
+
+                default:
+                    break;
+            }
+
+            return {
+                date: convertDateToBackend(item.date),
+                vehicleTypeId: this.vehicleType.find(
+                    (vehicleItem) => vehicleItem.name === item.vehicleType
+                ).id,
+                location: item.location,
+                description: item.description,
+            };
+        });
+
+        const lastViolationsCardVehicleType =
+            this.lastViolationsCard?.vehicleType;
+
+        switch (lastViolationsCardVehicleType) {
             case 'Tow Truck':
-               item.vehicleType = 'Tow Truck Heavy';
-               break;
+                this.lastViolationsCard.vehicleType = 'Tow Truck Heavy';
+                break;
 
             case 'Car Hauler':
-               item.vehicleType = 'Car Hauler - Semi Truck';
-               break;
+                this.lastViolationsCard.vehicleType = 'Car Hauler - Semi Truck';
+                break;
 
             case 'Semi w/Sleeper':
-               item.vehicleType = 'Semi Truck w Sleeper';
-               break;
+                this.lastViolationsCard.vehicleType = 'Semi Truck w Sleeper';
+                break;
 
             default:
-               break;
-         }
+                break;
+        }
 
-         return {
-            date: convertDateToBackend(item.date),
-            vehicleTypeId: this.vehicleType.find(
-               (vehicleItem) => vehicleItem.name === item.vehicleType
-            ).id,
-            location: item.location,
-            description: item.description,
-         };
-      });
+        let filteredLastViolationsCard: any;
 
-      const lastViolationsCardVehicleType =
-         this.lastViolationsCard?.vehicleType;
-
-      switch (lastViolationsCardVehicleType) {
-         case 'Tow Truck':
-            this.lastViolationsCard.vehicleType = 'Tow Truck Heavy';
-            break;
-
-         case 'Car Hauler':
-            this.lastViolationsCard.vehicleType = 'Car Hauler - Semi Truck';
-            break;
-
-         case 'Semi w/Sleeper':
-            this.lastViolationsCard.vehicleType = 'Semi Truck w Sleeper';
-            break;
-
-         default:
-            break;
-      }
-
-      let filteredLastViolationsCard: any;
-
-      if (!noViolationsForPastTwelveMonths) {
-         filteredLastViolationsCard = {
-            date: convertDateToBackend(this.lastViolationsCard.date),
-            vehicleTypeId: this.vehicleType.find(
-               (vehicleItem) =>
-                  vehicleItem.name === this.lastViolationsCard.vehicleType
-            ).id,
-            location: this.lastViolationsCard.location,
-            description: this.lastViolationsCard.description,
-         };
-      }
-
-      const saveData: CreateTrafficViolationCommand = {
-         applicantId: this.applicantId,
-         noViolationsForPastTwelveMonths,
-         notBeenConvicted: noViolationsForPastTwelveMonths
-            ? false
-            : notBeenConvicted,
-         onlyOneHoldLicense: noViolationsForPastTwelveMonths
-            ? false
-            : onlyOneHoldLicense,
-         certifyViolations: noViolationsForPastTwelveMonths ? false : certify,
-         trafficViolationItems: noViolationsForPastTwelveMonths
-            ? []
-            : [...filteredViolationsArray, filteredLastViolationsCard],
-      };
-
-      const storeTrafficViolationItems = saveData.trafficViolationItems.map(
-         (item) => {
-            return {
-               ...item,
-               vehicleType: this.vehicleType.find(
-                  (vehicleItem) => vehicleItem.id === item.vehicleTypeId
-               ),
+        if (!noViolationsForPastTwelveMonths) {
+            filteredLastViolationsCard = {
+                date: convertDateToBackend(this.lastViolationsCard.date),
+                vehicleTypeId: this.vehicleType.find(
+                    (vehicleItem) =>
+                        vehicleItem.name === this.lastViolationsCard.vehicleType
+                ).id,
+                location: this.lastViolationsCard.location,
+                description: this.lastViolationsCard.description,
             };
-         }
-      );
+        }
 
-      const selectMatchingBackendMethod = () => {
-         if (
-            this.selectedMode === SelectedMode.APPLICANT &&
-            !this.stepHasValues
-         ) {
-            return this.applicantActionsService.createTrafficViolations(
-               saveData
-            );
-         }
+        const saveData: CreateTrafficViolationCommand = {
+            applicantId: this.applicantId,
+            noViolationsForPastTwelveMonths,
+            notBeenConvicted: noViolationsForPastTwelveMonths
+                ? false
+                : notBeenConvicted,
+            onlyOneHoldLicense: noViolationsForPastTwelveMonths
+                ? false
+                : onlyOneHoldLicense,
+            certifyViolations: noViolationsForPastTwelveMonths
+                ? false
+                : certify,
+            trafficViolationItems: noViolationsForPastTwelveMonths
+                ? []
+                : [...filteredViolationsArray, filteredLastViolationsCard],
+        };
 
-         if (
-            (this.selectedMode === SelectedMode.APPLICANT &&
-               this.stepHasValues) ||
-            this.selectedMode === SelectedMode.FEEDBACK
-         ) {
-            return this.applicantActionsService.updateTrafficViolations(
-               saveData
-            );
-         }
-      };
+        const storeTrafficViolationItems = saveData.trafficViolationItems.map(
+            (item) => {
+                return {
+                    ...item,
+                    vehicleType: this.vehicleType.find(
+                        (vehicleItem) => vehicleItem.id === item.vehicleTypeId
+                    ),
+                };
+            }
+        );
 
-      selectMatchingBackendMethod()
-         .pipe(takeUntil(this.destroy$))
-         .subscribe({
-            next: () => {
-               this.router.navigate([`/application/${this.applicantId}/6`]);
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.APPLICANT &&
+                !this.stepHasValues
+            ) {
+                return this.applicantActionsService.createTrafficViolations(
+                    saveData
+                );
+            }
 
-               this.applicantStore.update((store) => {
-                  const noViolations = saveData.noViolationsForPastTwelveMonths;
+            if (
+                (this.selectedMode === SelectedMode.APPLICANT &&
+                    this.stepHasValues) ||
+                this.selectedMode === SelectedMode.FEEDBACK
+            ) {
+                return this.applicantActionsService.updateTrafficViolations(
+                    saveData
+                );
+            }
+        };
 
-                  return {
-                     ...store,
-                     applicant: {
-                        ...store.applicant,
-                        trafficViolation: {
-                           ...store.applicant.trafficViolation,
-                           noViolationsForPastTwelveMonths: noViolations,
-                           notBeenConvicted: noViolations
-                              ? false
-                              : saveData.notBeenConvicted,
-                           onlyOneHoldLicense: noViolations
-                              ? false
-                              : saveData.onlyOneHoldLicense,
-                           certifyViolations: noViolations
-                              ? false
-                              : saveData.certifyViolations,
-                           trafficViolationItems: noViolations
-                              ? []
-                              : storeTrafficViolationItems,
-                        },
-                     },
-                  };
-               });
-            },
-            error: (err) => {
-               console.log(err);
-            },
-         });
-   }
+        selectMatchingBackendMethod()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([
+                        `/application/${this.applicantId}/6`,
+                    ]);
 
-   public onSubmitReview(): void {
-      const lastItemReview =
-         this.previousFormValuesOnReview.trafficViolationItemReview;
+                    this.applicantStore.update((store) => {
+                        const noViolations =
+                            saveData.noViolationsForPastTwelveMonths;
 
-      const lastItemId = this.previousFormValuesOnReview.id;
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                trafficViolation: {
+                                    ...store.applicant.trafficViolation,
+                                    noViolationsForPastTwelveMonths:
+                                        noViolations,
+                                    notBeenConvicted: noViolations
+                                        ? false
+                                        : saveData.notBeenConvicted,
+                                    onlyOneHoldLicense: noViolations
+                                        ? false
+                                        : saveData.onlyOneHoldLicense,
+                                    certifyViolations: noViolations
+                                        ? false
+                                        : saveData.certifyViolations,
+                                    trafficViolationItems: noViolations
+                                        ? []
+                                        : storeTrafficViolationItems,
+                                },
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
+    }
 
-      const lastReviewedItemIViolationsArray = {
-         itemId: lastItemId,
-         isPrimary: true,
-         commonMessage: null,
-         isDateValid: lastItemReview ? lastItemReview.isDateValid : true,
-         isVehicleTypeValid: true,
-         isLocationValid: lastItemReview
-            ? lastItemReview.isLocationValid
-            : true,
-         vehicleTypeLocationMessage: this.lastViolationsCard.firstRowReview,
-         isDescriptionValid: lastItemReview
-            ? lastItemReview.isDescriptionValid
-            : true,
-         descriptionMessage: this.lastViolationsCard.secondRowReview,
-      };
+    public onSubmitReview(): void {
+        const lastItemReview =
+            this.previousFormValuesOnReview.trafficViolationItemReview;
 
-      const saveData: CreateTrafficViolationReviewCommand = {
-         applicantId: this.applicantId,
-         trafficViolationReviews: [lastReviewedItemIViolationsArray],
-      };
+        const lastItemId = this.previousFormValuesOnReview.id;
 
-      console.log('saveData', saveData.trafficViolationReviews[0]);
+        const lastReviewedItemIViolationsArray = {
+            itemId: lastItemId,
+            isPrimary: true,
+            commonMessage: null,
+            isDateValid: lastItemReview ? lastItemReview.isDateValid : true,
+            isVehicleTypeValid: true,
+            isLocationValid: lastItemReview
+                ? lastItemReview.isLocationValid
+                : true,
+            vehicleTypeLocationMessage: this.lastViolationsCard.firstRowReview,
+            isDescriptionValid: lastItemReview
+                ? lastItemReview.isDescriptionValid
+                : true,
+            descriptionMessage: this.lastViolationsCard.secondRowReview,
+        };
 
-      console.log('store', this.applicantStore);
+        const saveData: CreateTrafficViolationReviewCommand = {
+            applicantId: this.applicantId,
+            trafficViolationReviews: [lastReviewedItemIViolationsArray],
+        };
 
-      this.applicantActionsService
-         .createTrafficViolationsReview(saveData)
-         .pipe(takeUntil(this.destroy$))
-         .subscribe({
-            next: () => {
-               this.router.navigate([`/application/${this.applicantId}/6`]);
+        console.log('saveData', saveData.trafficViolationReviews[0]);
 
-               /*   this.applicantStore.update(store => {
+        console.log('store', this.applicantStore);
+
+        this.applicantActionsService
+            .createTrafficViolationsReview(saveData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([
+                        `/application/${this.applicantId}/6`,
+                    ]);
+
+                    /*   this.applicantStore.update(store => {
             return {
               ...store,
               applicant: {
@@ -903,15 +919,15 @@ export class Step5Component implements OnInit, OnDestroy {
               }
             }
           }) */
-            },
-            error: (err) => {
-               console.log(err);
-            },
-         });
-   }
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
+    }
 
-   ngOnDestroy(): void {
-      this.destroy$.next();
-      this.destroy$.complete();
-   }
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 }

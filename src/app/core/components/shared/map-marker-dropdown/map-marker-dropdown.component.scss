@@ -1,340 +1,340 @@
 @import 'src/theme/variables.scss';
 
 @keyframes change {
-   from {
-      color: #6c6c6c;
-   }
-   to {
-      color: #3551b7;
-   }
+    from {
+        color: #6c6c6c;
+    }
+    to {
+        color: #3551b7;
+    }
 }
 @keyframes changeSVG {
-   from {
-      fill: #6c6c6c;
-   }
-   to {
-      fill: #3551b7;
-   }
+    from {
+        fill: #6c6c6c;
+    }
+    to {
+        fill: #3551b7;
+    }
 }
 
 .marker-tool-tip {
-   padding: 8px;
-   background: #fff;
-   box-shadow: $box-shadow;
-   border-radius: 3px;
+    padding: 8px;
+    background: #fff;
+    box-shadow: $box-shadow;
+    border-radius: 3px;
 }
 
 .marker-business-name {
-   font-size: 18px;
-   font-weight: 700;
-   color: $bw6-2;
-   text-transform: uppercase;
-   line-height: 22px;
+    font-size: 18px;
+    font-weight: 700;
+    color: $bw6-2;
+    text-transform: uppercase;
+    line-height: 22px;
 }
 
 .marker-expanded-view {
-   overflow: hidden;
-   transition: height 0.2s ease-in-out;
+    overflow: hidden;
+    transition: height 0.2s ease-in-out;
 
-   &.unopened {
-      height: 0px;
-      transition: height 0.2s ease-in-out;
-   }
+    &.unopened {
+        height: 0px;
+        transition: height 0.2s ease-in-out;
+    }
 }
 
 .marker-title {
-   font-size: 14px;
-   font-weight: 800;
-   line-height: 18px;
-   color: $bw6-2;
-   margin-top: 6px;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 18px;
+    color: $bw6-2;
+    margin-top: 6px;
 
-   &::-moz-selection {
-      color: $bw6-2;
-      background: #6c6c6c33;
-   }
-   &::selection {
-      color: $bw6-2;
-      background: #6c6c6c33;
-   }
+    &::-moz-selection {
+        color: $bw6-2;
+        background: #6c6c6c33;
+    }
+    &::selection {
+        color: $bw6-2;
+        background: #6c6c6c33;
+    }
 }
 
 .marker-dual-info-container {
-   //display: flex;
-   //justify-content: space-between;
+    //display: flex;
+    //justify-content: space-between;
 
-   display: inline-block;
-   width: 50%;
+    display: inline-block;
+    width: 50%;
 
-   padding: 0px 4px 0px 4px;
+    padding: 0px 4px 0px 4px;
 
-   .load-text {
-      &::-moz-selection {
-         color: $bw6-2;
-         background: #6c6c6c33;
-      }
-      &::selection {
-         color: $bw6-2;
-         background: #6c6c6c33;
-      }
-   }
+    .load-text {
+        &::-moz-selection {
+            color: $bw6-2;
+            background: #6c6c6c33;
+        }
+        &::selection {
+            color: $bw6-2;
+            background: #6c6c6c33;
+        }
+    }
 }
 
 .marker-container-expand {
-   position: absolute;
-   right: 8px;
-   bottom: 8px;
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
 
-   cursor: pointer;
+    cursor: pointer;
 
-   .marker-expand-svg {
-      display: inline-block;
-      transition: all 0.2s ease-in-out;
+    .marker-expand-svg {
+        display: inline-block;
+        transition: all 0.2s ease-in-out;
 
-      &:hover {
-         svg {
-            path {
-               fill: $bw6-2;
-            }
-         }
-      }
-
-      &.rotate {
-         transform: rotate(180deg);
-
-         svg {
-            path {
-               //fill: $bc1;
-               fill: #3074d3;
-            }
-         }
-
-         &:hover {
+        &:hover {
             svg {
-               path {
-                  fill: #3551b7;
-               }
+                path {
+                    fill: $bw6-2;
+                }
             }
-         }
-      }
-   }
+        }
+
+        &.rotate {
+            transform: rotate(180deg);
+
+            svg {
+                path {
+                    //fill: $bc1;
+                    fill: #3074d3;
+                }
+            }
+
+            &:hover {
+                svg {
+                    path {
+                        fill: #3551b7;
+                    }
+                }
+            }
+        }
+    }
 }
 
 .marker-expanded-info-container {
-   margin-top: 12px;
+    margin-top: 12px;
 }
 
 .data-count {
-   height: 24px;
-   min-width: 24px;
-   border-radius: 2px;
-   background: $ta-light-grey-4;
-   padding: 3px 4px;
-   margin-right: 4px;
-   font-size: 14px;
-   font-weight: 800;
-   color: $bw6-2;
-   line-height: 18px;
+    height: 24px;
+    min-width: 24px;
+    border-radius: 2px;
+    background: $ta-light-grey-4;
+    padding: 3px 4px;
+    margin-right: 4px;
+    font-size: 14px;
+    font-weight: 800;
+    color: $bw6-2;
+    line-height: 18px;
 }
 
 .marker-info-container-all {
-   padding-left: 4px;
+    padding-left: 4px;
 }
 
 .marker-info-container {
-   display: flex;
-   margin-top: 12px;
+    display: flex;
+    margin-top: 12px;
 
-   &:hover {
-      .copy-icon {
-         display: flex;
-      }
-   }
+    &:hover {
+        .copy-icon {
+            display: flex;
+        }
+    }
 }
 
 .marker-info-svg {
-   margin-right: 6px;
+    margin-right: 6px;
 }
 
 .tooltip-copy {
-   margin-left: 6px;
+    margin-left: 6px;
 }
 
 .copy-icon {
-   display: none;
-   position: relative;
-   //margin-left: 6px;
-   bottom: 1px;
-   height: 18px;
-   cursor: pointer;
-   svg {
-      &:hover {
-         path {
-            fill: #6c6c6c;
-         }
-      }
-   }
+    display: none;
+    position: relative;
+    //margin-left: 6px;
+    bottom: 1px;
+    height: 18px;
+    cursor: pointer;
+    svg {
+        &:hover {
+            path {
+                fill: #6c6c6c;
+            }
+        }
+    }
 }
 
 .copied {
-   .marker-info-text {
-      animation-duration: 300ms;
-      animation-name: change;
-   }
-   .copy-icon {
-      svg {
-         path {
-            animation-duration: 300ms;
-            animation-name: changeSVG;
-            &:hover {
-               animation-duration: 300ms;
-               animation-name: changeSVG;
+    .marker-info-text {
+        animation-duration: 300ms;
+        animation-name: change;
+    }
+    .copy-icon {
+        svg {
+            path {
+                animation-duration: 300ms;
+                animation-name: changeSVG;
+                &:hover {
+                    animation-duration: 300ms;
+                    animation-name: changeSVG;
+                }
             }
-         }
-      }
-   }
+        }
+    }
 }
 
 .blue-text {
-   color: #536bc2;
+    color: #536bc2;
 }
 
 .font-weight-normal {
-   font-weight: 400;
+    font-weight: 400;
 }
 
 .marker-date-holder {
-   display: flex;
-   justify-content: flex-start;
-   align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 
-   &.pointer {
-      cursor: pointer;
-   }
+    &.pointer {
+        cursor: pointer;
+    }
 
-   .date-svg {
-      position: relative;
-      display: flex;
-      margin-right: 6px;
-   }
+    .date-svg {
+        position: relative;
+        display: flex;
+        margin-right: 6px;
+    }
 
-   &:hover {
-      .date-svg {
-         svg {
-            path {
-               fill: #6c6c6c;
+    &:hover {
+        .date-svg {
+            svg {
+                path {
+                    fill: #6c6c6c;
+                }
             }
-         }
-      }
-   }
+        }
+    }
 
-   &.accident-date {
-      svg {
-         path {
-            fill: #b7b7b7 !important;
-         }
-      }
-   }
+    &.accident-date {
+        svg {
+            path {
+                fill: #b7b7b7 !important;
+            }
+        }
+    }
 }
 
 .marker-repair-icons-container {
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
 
-   .marker-repair-svg {
-      svg {
-         path {
-            fill: #dadada;
-         }
-      }
-
-      &.active {
-         svg {
+    .marker-repair-svg {
+        svg {
             path {
-               fill: #919191;
+                fill: #dadada;
             }
-         }
-      }
-   }
+        }
+
+        &.active {
+            svg {
+                path {
+                    fill: #919191;
+                }
+            }
+        }
+    }
 }
 
 .marker-accident-container {
-   width: 100%;
+    width: 100%;
 
-   .accident-svg-container {
-      margin-right: 22px;
-   }
+    .accident-svg-container {
+        margin-right: 22px;
+    }
 }
 
 .marker-fuel-stop-container {
-   display: flex;
-   justify-content: space-between;
-   width: 100%;
-   padding: 12px 8px 4px 4px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 8px 4px 4px;
 
-   .fuel-price-colors-container {
-      .fuel-price-text-container {
-         display: flex;
-         justify-content: space-between;
-         align-items: center;
+    .fuel-price-colors-container {
+        .fuel-price-text-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
 
-         .fuel-price-text {
-            font-size: 11px;
-            font-weight: 500;
-            color: #aaaaaa;
-            line-height: 14px;
+            .fuel-price-text {
+                font-size: 11px;
+                font-weight: 500;
+                color: #aaaaaa;
+                line-height: 14px;
 
-            &::-moz-selection {
-               color: #aaaaaa;
-               background: #aaaaaa33;
+                &::-moz-selection {
+                    color: #aaaaaa;
+                    background: #aaaaaa33;
+                }
+                &::selection {
+                    color: #aaaaaa;
+                    background: #aaaaaa33;
+                }
             }
-            &::selection {
-               color: #aaaaaa;
-               background: #aaaaaa33;
+        }
+
+        .fuel-price-colors {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 228px;
+
+            .fuel-price-level {
+                width: 44px;
+                height: 8px;
+
+                &.first-color {
+                    border-radius: 2px 0 0 2px;
+                }
+
+                &.last-color {
+                    border-radius: 0 2px 2px 0;
+                }
             }
-         }
-      }
 
-      .fuel-price-colors {
-         position: relative;
-         display: flex;
-         justify-content: space-between;
-         align-items: center;
-         width: 228px;
+            .fuel-price-svg {
+                position: absolute;
+                left: 50%;
+                top: 50%;
 
-         .fuel-price-level {
-            width: 44px;
-            height: 8px;
+                transform: translate(-50%, -50%);
 
-            &.first-color {
-               border-radius: 2px 0 0 2px;
+                svg {
+                    #Ellipse_635 {
+                        fill: #fff;
+                    }
+
+                    #Ellipse_636 {
+                        fill: #fff;
+                        stroke: #fec107;
+                    }
+                }
             }
-
-            &.last-color {
-               border-radius: 0 2px 2px 0;
-            }
-         }
-
-         .fuel-price-svg {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-
-            transform: translate(-50%, -50%);
-
-            svg {
-               #Ellipse_635 {
-                  fill: #fff;
-               }
-
-               #Ellipse_636 {
-                  fill: #fff;
-                  stroke: #fec107;
-               }
-            }
-         }
-      }
-   }
+        }
+    }
 }

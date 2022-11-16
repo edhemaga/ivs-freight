@@ -1,14 +1,14 @@
 <div [class.active]="gps_expanded" class="gps_main_hold">
-   <div class="d-flex hold_all_no_map">
-      <div (click)="setResizeGpsMain(rowIndex)" class="svg_icon_holder">
-         <svg-icon
-            *ngIf="gpsData"
-            appTooltip="Moving direction"
-            position="bottom-right"
-            src="{{ gpsData.marker }}"
-            tooltipBackground="#919191"
-         ></svg-icon
-         ><!--
+    <div class="d-flex hold_all_no_map">
+        <div (click)="setResizeGpsMain(rowIndex)" class="svg_icon_holder">
+            <svg-icon
+                *ngIf="gpsData"
+                appTooltip="Moving direction"
+                position="bottom-right"
+                src="{{ gpsData.marker }}"
+                tooltipBackground="#919191"
+            ></svg-icon
+            ><!--
             <svg-icon
                 appTooltip="Moving direction"
                 tooltipBackground="#919191"
@@ -22,12 +22,12 @@
                 *ngIf="gpsFlag && gps != 'idle' && gps != 'stop'"
                 [src]="'../../assets/img/svgs/GPS/Moving Directions/'+gps+'.svg'"
             ></svg-icon> -->
-      </div>
-      <app-gps-statistic
-         (click)="showMap = !showMap"
-         *ngIf="gps_expanded"
-      ></app-gps-statistic>
-      <!-- <div class="gps_info_hold" *ngIf="gps_expanded">
+        </div>
+        <app-gps-statistic
+            (click)="showMap = !showMap"
+            *ngIf="gps_expanded"
+        ></app-gps-statistic>
+        <!-- <div class="gps_info_hold" *ngIf="gps_expanded">
         <div class="gps_info_header d-flex">
             <div class="gps_full_mileage">842 mi.</div>
             <div class="gps_temp_mileage">490 mi.</div>
@@ -46,52 +46,52 @@
             </div>
         </div>
     </div> -->
-   </div>
-   <div *ngIf="showMap && gps_expanded" @mapAnimation class="gps_map_holder">
-      <div class="stops_holder">
-         <div
-            *ngFor="let stops of mapPoints; let indx = index"
-            [class.active]="indx == mapPoints.length - 1"
-            class="stops_item d-flex"
-         >
-            <div class="stop_location">
-               {{ stops.PointCity }}, {{ stops.PointState }}
-            </div>
-            <div class="stop_mileage">{{ stops.PointMileage }} mi.</div>
-            <div class="stop_mileage full_mileage">
-               {{ stops.PointMileageTotal }} mi.
-            </div>
-            <div class="stop_count">
-               <span [class.delivery]="stops.PointType == 'delivery'">{{
-                  stops.PointOrder
-               }}</span>
-               <!-- <div class="gps_main_stops" [class.delivery]="stops.PointType == 'delivery'" ></div> -->
-            </div>
-         </div>
-         <div
-            [ngStyle]="{ height: (mapPoints.length - 1) * 20 + 'px' }"
-            class="gps_info_percentage"
-         >
-            <div class="gps_info_perc_size"></div>
+    </div>
+    <div *ngIf="showMap && gps_expanded" @mapAnimation class="gps_map_holder">
+        <div class="stops_holder">
             <div
-               *ngFor="let stops of mapPoints; let indx = index"
-               [class.delivery]="stops.PointType == 'delivery'"
-               [ngStyle]="{ bottom: indx * 20 - 5 + 'px' }"
-               class="gps_main_stops"
-            ></div>
-         </div>
-      </div>
-      <div class="map_hold">
-         <agm-map
-            (mapReady)="getMapInstance($event)"
-            [clickableIcons]="false"
-            [controlSize]="20"
-            [restriction]="mapRestrictions"
-            [streetViewControl]="false"
-            [styles]="styles"
-            [zoom]="2"
-         >
-         </agm-map>
-      </div>
-   </div>
+                *ngFor="let stops of mapPoints; let indx = index"
+                [class.active]="indx == mapPoints.length - 1"
+                class="stops_item d-flex"
+            >
+                <div class="stop_location">
+                    {{ stops.PointCity }}, {{ stops.PointState }}
+                </div>
+                <div class="stop_mileage">{{ stops.PointMileage }} mi.</div>
+                <div class="stop_mileage full_mileage">
+                    {{ stops.PointMileageTotal }} mi.
+                </div>
+                <div class="stop_count">
+                    <span [class.delivery]="stops.PointType == 'delivery'">{{
+                        stops.PointOrder
+                    }}</span>
+                    <!-- <div class="gps_main_stops" [class.delivery]="stops.PointType == 'delivery'" ></div> -->
+                </div>
+            </div>
+            <div
+                [ngStyle]="{ height: (mapPoints.length - 1) * 20 + 'px' }"
+                class="gps_info_percentage"
+            >
+                <div class="gps_info_perc_size"></div>
+                <div
+                    *ngFor="let stops of mapPoints; let indx = index"
+                    [class.delivery]="stops.PointType == 'delivery'"
+                    [ngStyle]="{ bottom: indx * 20 - 5 + 'px' }"
+                    class="gps_main_stops"
+                ></div>
+            </div>
+        </div>
+        <div class="map_hold">
+            <agm-map
+                (mapReady)="getMapInstance($event)"
+                [clickableIcons]="false"
+                [controlSize]="20"
+                [restriction]="mapRestrictions"
+                [streetViewControl]="false"
+                [styles]="styles"
+                [zoom]="2"
+            >
+            </agm-map>
+        </div>
+    </div>
 </div>

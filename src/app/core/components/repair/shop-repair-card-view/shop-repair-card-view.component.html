@@ -1,212 +1,245 @@
 <div class="cards-item-wrapper-1">
-   <app-ta-details-header-card
-      [cardDetailsDate]="repairShopCardViewData?.createdAt | formatDateP"
-      [tooltipNext]="'Next Repair'"
-      [tooltipPrevious]="'Previous Repair'"
-      [searchInputName]="'Search Repair Shop'"
-      [searchName]="'Listed to Favourites'"
-      [options]="shopsDropdowns"
-      (selectValue)="onSelectedShop($event)"
-      (changeEvent)="onChangeShop($event)"
-      [dateChecked]="
-         repairShopCardViewData?.lastVisited
-            ? (repairShopCardViewData?.lastVisited
-              | formatDateP: 'difference-days')
-            : false
-      "
-      [haveDropSVG]="true"
-   >
-      <div class="repair-information-wrapper">
-         <div class="repair-information-item">
-            <svg-icon
-               class="repair-icon"
-               src="assets/svg/common/ic_phone.svg"
-            ></svg-icon>
+    <app-ta-details-header-card
+        [cardDetailsDate]="repairShopCardViewData?.createdAt | formatDateP"
+        [tooltipNext]="'Next Repair'"
+        [tooltipPrevious]="'Previous Repair'"
+        [searchInputName]="'Search Repair Shop'"
+        [searchName]="'Listed to Favourites'"
+        [options]="shopsDropdowns"
+        (selectValue)="onSelectedShop($event)"
+        (changeEvent)="onChangeShop($event)"
+        [dateChecked]="
+            repairShopCardViewData?.lastVisited
+                ? (repairShopCardViewData?.lastVisited
+                  | formatDateP: 'difference-days')
+                : false
+        "
+        [haveDropSVG]="true"
+    >
+        <div class="repair-information-wrapper">
+            <div class="repair-information-item">
+                <svg-icon
+                    class="repair-icon"
+                    src="assets/svg/common/ic_phone.svg"
+                ></svg-icon>
 
-            <app-ta-copy
-               [copyValue]="repairShopCardViewData?.phone"
-            ></app-ta-copy>
-         </div>
-         <div
-            class="repair-information-item"
-            *ngIf="repairShopCardViewData?.email"
-         >
-            <svg-icon
-               class="repair-icon"
-               src="assets/svg/common/ic_email.svg"
-            ></svg-icon>
-            <app-ta-copy
-               [copyValue]="repairShopCardViewData?.email"
-            ></app-ta-copy>
-         </div>
-         <div class="repair-information-item">
-            <svg-icon
-               class="repair-icon"
-               src="assets/svg/common/ic_address.svg"
-            ></svg-icon>
-
-            <app-ta-copy
-               [copyValue]="repairShopCardViewData?.address?.address"
-            ></app-ta-copy>
-         </div>
-      </div>
-   </app-ta-details-header-card>
-   <div class="wrapper-additional-cards">
-      <div class="repair-cards">
-         <app-ta-custom-card
-            [bodyTemplate]="'card'"
-            [hasDivider]="false"
-            [cardName]="'Working Hours'"
-            [isCardOpen]="true"
-         >
+                <app-ta-copy
+                    [copyValue]="repairShopCardViewData?.phone"
+                ></app-ta-copy>
+            </div>
             <div
-               class="working-hours-container"
-               *ngIf="repairShopCardViewData?.openHours"
+                class="repair-information-item"
+                *ngIf="repairShopCardViewData?.email"
             >
-               <div
-                  class="open-now-wrapper"
-                  *ngIf="repairShopCardViewData?.openHoursToday"
-               >
-                  <div class="open-now-icon-text">
-                     <div class="open-header">
-                        {{
-                           repairShopCardViewData?.openHoursToday === 'Closed'
-                              ? 'Closed'
-                              : 'Open Now'
-                        }}
-                     </div>
-                     <svg-icon
-                        class="icon-repair-shop-circle"
-                        [ngClass]="{
-                           'close-repair':
-                              repairShopCardViewData?.openHoursToday ===
-                              'Closed'
-                        }"
-                        src="assets/svg/common/ic_open-now.svg"
-                     ></svg-icon>
-                  </div>
-                  <div
-                     *ngIf="repairShopCardViewData?.openHoursToday != 'Closed'"
-                     class="open-time"
-                  >
-                     {{
-                        repairShopCardViewData?.openHoursToday.substring(0, 5) +
-                           ' AM'
-                     }}
-                     {{
-                        repairShopCardViewData?.openHoursToday.substring(
-                           6,
-                           13
-                        ) + ' PM'
-                     }}
-                  </div>
-                  <div
-                     *ngIf="repairShopCardViewData?.openHoursToday === 'Closed'"
-                     class="open-time-next"
-                  >
-                     Opens in
-                     {{ repairShopCardViewData?.openHours[1]?.dayOfWeek }}
-                     {{
-                        repairShopCardViewData?.openHours[1]?.startTime + ' AM'
-                     }}
-                  </div>
-               </div>
-               <div class="open-hours-wrapper">
-                  <div
-                     class="working-days"
-                     *ngIf="repairShopCardViewData?.openHours[1]?.startTime"
-                  >
-                     <div class="open-header">Monday - Friday</div>
-                     <div class="open-working-days-value">
-                        {{ repairShopCardViewData?.openHours[1]?.startTime }}
-                        AM -
-                        {{ repairShopCardViewData?.openHours[1]?.endTime }}
-                        PM
-                     </div>
-                  </div>
-                  <div
-                     class="working-days"
-                     *ngIf="repairShopCardViewData?.openHours[6]?.startTime"
-                  >
-                     <div class="open-header">Saturday</div>
-                     <div class="open-working-days-value">
-                        {{ repairShopCardViewData?.openHours[6]?.startTime }}
-                        AM -
-                        {{ repairShopCardViewData?.openHours[6]?.endTime }}
-                        PM
-                     </div>
-                  </div>
-
-                  <div
-                     class="working-days"
-                     *ngIf="
-                        !repairShopCardViewData?.openHours[6]?.startTime &&
-                        !repairShopCardViewData?.openHours[0]?.startTime
-                     "
-                  >
-                     <div class="open-header">Saturday - Sunday</div>
-                     <div class="open-working-days-value">Closed</div>
-                  </div>
-               </div>
-               <div
-                  *ngIf="repairShopCardViewData?.openHours[6]?.startTime"
-                  class="open-now-wrapper sunday"
-               >
-                  <div class="open-header">Sunday</div>
-                  <div class="open-working-days-value">
-                     {{
-                        repairShopCardViewData?.openHours[0]?.startTime
-                           ? repairShopCardViewData?.openHours[0]?.startTime
-                           : 'Closed'
-                     }}
-                  </div>
-               </div>
+                <svg-icon
+                    class="repair-icon"
+                    src="assets/svg/common/ic_email.svg"
+                ></svg-icon>
+                <app-ta-copy
+                    [copyValue]="repairShopCardViewData?.email"
+                ></app-ta-copy>
             </div>
-         </app-ta-custom-card>
+            <div class="repair-information-item">
+                <svg-icon
+                    class="repair-icon"
+                    src="assets/svg/common/ic_address.svg"
+                ></svg-icon>
 
-         <app-ta-custom-card
-            [bodyTemplate]="'card'"
-            [cardName]="'Service'"
-            [hasCounter]="count"
-            [isCardOpen]="true"
-         >
-            <div class="service-container">
-               <div
-                  *ngFor="
-                     let service of repairShopCardViewData?.serviceTypes;
-                     let i = index;
-                     trackBy: identity
-                  "
-               >
-                  <div class="service-item">
-                     <svg-icon
-                        [ngClass]="{ disabled: !service.active }"
-                        src="assets/svg/common/repair-services/{{
-                           service.logoName
-                        }}"
-                     ></svg-icon>
-
-                     <span
-                        [ngClass]="{ 'cross-out': !service.active }"
-                        class="service-type"
-                        >{{ service.serviceType.name }}</span
-                     >
-                  </div>
-               </div>
+                <app-ta-copy
+                    [copyValue]="repairShopCardViewData?.address?.address"
+                ></app-ta-copy>
             </div>
-         </app-ta-custom-card>
-         <app-ta-custom-card
-            [bodyTemplate]="'card'"
-            [cardName]="'Repair Expenses'"
-            [isCardOpen]="true"
-            [tooltipName]="'View in Modal'"
-            [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-         >
-            <div class="charts-template perfomance">
-               <app-ta-tab-switch [type]="'type2-modal-popup'" [tabs]="tabs">
-               </app-ta-tab-switch>
+        </div>
+    </app-ta-details-header-card>
+    <div class="wrapper-additional-cards">
+        <div class="repair-cards">
+            <app-ta-custom-card
+                [bodyTemplate]="'card'"
+                [hasDivider]="false"
+                [cardName]="'Working Hours'"
+                [isCardOpen]="true"
+            >
+                <div
+                    class="working-hours-container"
+                    *ngIf="repairShopCardViewData?.openHours"
+                >
+                    <div
+                        class="open-now-wrapper"
+                        *ngIf="repairShopCardViewData?.openHoursToday"
+                    >
+                        <div class="open-now-icon-text">
+                            <div class="open-header">
+                                {{
+                                    repairShopCardViewData?.openHoursToday ===
+                                    'Closed'
+                                        ? 'Closed'
+                                        : 'Open Now'
+                                }}
+                            </div>
+                            <svg-icon
+                                class="icon-repair-shop-circle"
+                                [ngClass]="{
+                                    'close-repair':
+                                        repairShopCardViewData?.openHoursToday ===
+                                        'Closed'
+                                }"
+                                src="assets/svg/common/ic_open-now.svg"
+                            ></svg-icon>
+                        </div>
+                        <div
+                            *ngIf="
+                                repairShopCardViewData?.openHoursToday !=
+                                'Closed'
+                            "
+                            class="open-time"
+                        >
+                            {{
+                                repairShopCardViewData?.openHoursToday.substring(
+                                    0,
+                                    5
+                                ) + ' AM'
+                            }}
+                            {{
+                                repairShopCardViewData?.openHoursToday.substring(
+                                    6,
+                                    13
+                                ) + ' PM'
+                            }}
+                        </div>
+                        <div
+                            *ngIf="
+                                repairShopCardViewData?.openHoursToday ===
+                                'Closed'
+                            "
+                            class="open-time-next"
+                        >
+                            Opens in
+                            {{
+                                repairShopCardViewData?.openHours[1]?.dayOfWeek
+                            }}
+                            {{
+                                repairShopCardViewData?.openHours[1]
+                                    ?.startTime + ' AM'
+                            }}
+                        </div>
+                    </div>
+                    <div class="open-hours-wrapper">
+                        <div
+                            class="working-days"
+                            *ngIf="
+                                repairShopCardViewData?.openHours[1]?.startTime
+                            "
+                        >
+                            <div class="open-header">Monday - Friday</div>
+                            <div class="open-working-days-value">
+                                {{
+                                    repairShopCardViewData?.openHours[1]
+                                        ?.startTime
+                                }}
+                                AM -
+                                {{
+                                    repairShopCardViewData?.openHours[1]
+                                        ?.endTime
+                                }}
+                                PM
+                            </div>
+                        </div>
+                        <div
+                            class="working-days"
+                            *ngIf="
+                                repairShopCardViewData?.openHours[6]?.startTime
+                            "
+                        >
+                            <div class="open-header">Saturday</div>
+                            <div class="open-working-days-value">
+                                {{
+                                    repairShopCardViewData?.openHours[6]
+                                        ?.startTime
+                                }}
+                                AM -
+                                {{
+                                    repairShopCardViewData?.openHours[6]
+                                        ?.endTime
+                                }}
+                                PM
+                            </div>
+                        </div>
 
-               <!-- <div id="chart">
+                        <div
+                            class="working-days"
+                            *ngIf="
+                                !repairShopCardViewData?.openHours[6]
+                                    ?.startTime &&
+                                !repairShopCardViewData?.openHours[0]?.startTime
+                            "
+                        >
+                            <div class="open-header">Saturday - Sunday</div>
+                            <div class="open-working-days-value">Closed</div>
+                        </div>
+                    </div>
+                    <div
+                        *ngIf="repairShopCardViewData?.openHours[6]?.startTime"
+                        class="open-now-wrapper sunday"
+                    >
+                        <div class="open-header">Sunday</div>
+                        <div class="open-working-days-value">
+                            {{
+                                repairShopCardViewData?.openHours[0]?.startTime
+                                    ? repairShopCardViewData?.openHours[0]
+                                          ?.startTime
+                                    : 'Closed'
+                            }}
+                        </div>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+
+            <app-ta-custom-card
+                [bodyTemplate]="'card'"
+                [cardName]="'Service'"
+                [hasCounter]="count"
+                [isCardOpen]="true"
+            >
+                <div class="service-container">
+                    <div
+                        *ngFor="
+                            let service of repairShopCardViewData?.serviceTypes;
+                            let i = index;
+                            trackBy: identity
+                        "
+                    >
+                        <div class="service-item">
+                            <svg-icon
+                                [ngClass]="{ disabled: !service.active }"
+                                src="assets/svg/common/repair-services/{{
+                                    service.logoName
+                                }}"
+                            ></svg-icon>
+
+                            <span
+                                [ngClass]="{ 'cross-out': !service.active }"
+                                class="service-type"
+                                >{{ service.serviceType.name }}</span
+                            >
+                        </div>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+            <app-ta-custom-card
+                [bodyTemplate]="'card'"
+                [cardName]="'Repair Expenses'"
+                [isCardOpen]="true"
+                [tooltipName]="'View in Modal'"
+                [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+            >
+                <div class="charts-template perfomance">
+                    <app-ta-tab-switch
+                        [type]="'type2-modal-popup'"
+                        [tabs]="tabs"
+                    >
+                    </app-ta-tab-switch>
+
+                    <!-- <div id="chart">
             <app-ta-chart
               [chartConfig]="{
                 legendAttributes: [
@@ -300,25 +333,25 @@
             >
             </app-ta-chart>
           </div> -->
-            </div>
-         </app-ta-custom-card>
+                </div>
+            </app-ta-custom-card>
 
-         <!--------Note--------->
-         <div class="divider"></div>
-         <div class="note-cards">
-            <app-ta-input-note
-               [formControl]="noteControl"
-               [isVisibleArrow]="true"
-               [minRows]="1"
-               [isVisibleDivider]="false"
-               [placeholder]="'Write something.'"
-               [customClass]="'note-small'"
-               [note]="repairShopCardViewData.note"
-            ></app-ta-input-note>
-         </div>
-      </div>
-      <div *ngIf="templateCard">
-         <!-- dizajn za ovaj deo -->
-      </div>
-   </div>
+            <!--------Note--------->
+            <div class="divider"></div>
+            <div class="note-cards">
+                <app-ta-input-note
+                    [formControl]="noteControl"
+                    [isVisibleArrow]="true"
+                    [minRows]="1"
+                    [isVisibleDivider]="false"
+                    [placeholder]="'Write something.'"
+                    [customClass]="'note-small'"
+                    [note]="repairShopCardViewData.note"
+                ></app-ta-input-note>
+            </div>
+        </div>
+        <div *ngIf="templateCard">
+            <!-- dizajn za ovaj deo -->
+        </div>
+    </div>
 </div>

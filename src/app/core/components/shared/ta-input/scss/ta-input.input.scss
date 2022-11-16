@@ -1,365 +1,365 @@
 @import './ta-input.colors.scss';
 // -------------------- Input Control --------------------
 .input-control {
-   width: 100%;
-   border: none;
-   outline: none;
-   border-radius: 2px !important;
-   height: 26px;
-   padding: 4px 6px;
-   font-size: 14px;
-   font-weight: 400;
-   background-color: $input-background-color-normal;
-   color: $input-text-color-normal;
-   white-space: nowrap;
-   overflow: hidden;
-   text-overflow: ellipsis;
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 2px !important;
+    height: 26px;
+    padding: 4px 6px;
+    font-size: 14px;
+    font-weight: 400;
+    background-color: $input-background-color-normal;
+    color: $input-text-color-normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
-   &.datetimeclass:not(.disabled-filled) {
-      letter-spacing: 1px;
-      pointer-events: none;
-      opacity: 0;
-   }
+    &.datetimeclass:not(.disabled-filled) {
+        letter-spacing: 1px;
+        pointer-events: none;
+        opacity: 0;
+    }
 
-   &::-moz-selection {
-      background-color: $input-background-selection-normal !important;
-      color: $input-text-selection-normal !important;
-   }
+    &::-moz-selection {
+        background-color: $input-background-selection-normal !important;
+        color: $input-text-selection-normal !important;
+    }
 
-   &::selection {
-      background-color: $input-background-selection-normal !important;
-      color: $input-text-selection-normal !important;
-   }
+    &::selection {
+        background-color: $input-background-selection-normal !important;
+        color: $input-text-selection-normal !important;
+    }
 
-   &.center {
-      text-align: center;
-   }
+    &.center {
+        text-align: center;
+    }
 
-   &.uppercase {
-      text-transform: uppercase;
-   }
+    &.uppercase {
+        text-transform: uppercase;
+    }
 
-   &.lowercase {
-      text-transform: lowercase;
-   }
+    &.lowercase {
+        text-transform: lowercase;
+    }
 
-   &:hover {
-      background-color: $input-background-color-normal-hover;
-      color: $input-text-color-normal-hover;
-   }
+    &:hover {
+        background-color: $input-background-color-normal-hover;
+        color: $input-text-color-normal-hover;
+    }
 
-   // Hover "label placehoder color change"
-   &:hover ~ .input-label {
-      transition: all 0.3s ease-in-out;
-      color: $input-label-color-hover;
-   }
+    // Hover "label placehoder color change"
+    &:hover ~ .input-label {
+        transition: all 0.3s ease-in-out;
+        color: $input-label-color-hover;
+    }
 
-   &:focus,
-   &.focused {
-      transition: all 0.3s ease-in-out;
-      background-color: $input-background-color-normal-focus;
-      color: $input-text-color-normal-focus;
+    &:focus,
+    &.focused {
+        transition: all 0.3s ease-in-out;
+        background-color: $input-background-color-normal-focus;
+        color: $input-text-color-normal-focus;
 
-      &::-webkit-input-placeholder {
-         color: $input-placeholder-color-normal-focus;
-      }
-      &::-moz-placeholder {
-         color: $input-placeholder-color-normal-focus;
-      }
+        &::-webkit-input-placeholder {
+            color: $input-placeholder-color-normal-focus;
+        }
+        &::-moz-placeholder {
+            color: $input-placeholder-color-normal-focus;
+        }
 
-      &:-ms-input-placeholder {
-         color: $input-placeholder-color-normal-focus;
-      }
+        &:-ms-input-placeholder {
+            color: $input-placeholder-color-normal-focus;
+        }
 
-      &::-ms-input-placeholder {
-         color: $input-placeholder-color-normal-focus;
-      }
+        &::-ms-input-placeholder {
+            color: $input-placeholder-color-normal-focus;
+        }
 
-      &::placeholder {
-         color: $input-placeholder-color-normal-focus;
-      }
-   }
+        &::placeholder {
+            color: $input-placeholder-color-normal-focus;
+        }
+    }
 
-   &.password-eye,
-   &.address-flag,
-   &.input-commands,
-   &.dropdown-label-active {
-      background-color: $input-background-color-normal-focus !important;
-      color: $input-text-color-normal-focus;
+    &.password-eye,
+    &.address-flag,
+    &.input-commands,
+    &.dropdown-label-active {
+        background-color: $input-background-color-normal-focus !important;
+        color: $input-text-color-normal-focus;
 
-      &::-moz-selection {
-         background-color: $input-background-selection-normal-focus !important;
-      }
+        &::-moz-selection {
+            background-color: $input-background-selection-normal-focus !important;
+        }
 
-      &::selection {
-         background-color: $input-background-selection-normal-focus !important;
-      }
-   }
+        &::selection {
+            background-color: $input-background-selection-normal-focus !important;
+        }
+    }
 
-   &.password-eye-invalid {
-      background-color: $input-background-color-invalid-focus !important;
-      color: $input-text-color-normal-focus;
+    &.password-eye-invalid {
+        background-color: $input-background-color-invalid-focus !important;
+        color: $input-text-color-normal-focus;
 
-      &::-moz-selection {
-         background-color: $input-background-selection-invalid-focus !important;
-      }
+        &::-moz-selection {
+            background-color: $input-background-selection-invalid-focus !important;
+        }
 
-      &::selection {
-         background-color: $input-background-selection-invalid-focus !important;
-      }
-   }
+        &::selection {
+            background-color: $input-background-selection-invalid-focus !important;
+        }
+    }
 
-   &.has-input-icon {
-      padding-left: 37px;
-   }
+    &.has-input-icon {
+        padding-left: 37px;
+    }
 
-   &.dropdown-input-image-truck {
-      padding-left: 63px;
-   }
+    &.dropdown-input-image-truck {
+        padding-left: 63px;
+    }
 
-   &.dropdown-input-image-trailer {
-      padding-left: 68px;
-   }
+    &.dropdown-input-image-trailer {
+        padding-left: 68px;
+    }
 
-   &.dropdown-input-image-color {
-      padding-left: 29px;
-   }
+    &.dropdown-input-image-color {
+        padding-left: 29px;
+    }
 
-   &.valid-focus-in-datepicker {
-      background-color: $input-background-color-valid-focus !important;
+    &.valid-focus-in-datepicker {
+        background-color: $input-background-color-valid-focus !important;
 
-      span,
-      span .border-picker {
-         color: $input-text-color-normal-focus !important;
-      }
-   }
+        span,
+        span .border-picker {
+            color: $input-text-color-normal-focus !important;
+        }
+    }
 
-   &.dropdown-input-image-user {
-      padding-left: 30px;
-   }
+    &.dropdown-input-image-user {
+        padding-left: 30px;
+    }
 
-   &.valid-focus-in,
-   &.dropdown-placeholder-active,
-   &.multiSelect-dropdown-active {
-      background-color: $input-background-color-valid-focus !important;
-      color: $input-text-color-normal-focus !important;
+    &.valid-focus-in,
+    &.dropdown-placeholder-active,
+    &.multiSelect-dropdown-active {
+        background-color: $input-background-color-valid-focus !important;
+        color: $input-text-color-normal-focus !important;
 
-      &::-webkit-input-placeholder {
-         color: $input-placeholder-color-valid-focus;
-      }
-      &::-moz-placeholder {
-         color: $input-placeholder-color-valid-focus;
-      }
+        &::-webkit-input-placeholder {
+            color: $input-placeholder-color-valid-focus;
+        }
+        &::-moz-placeholder {
+            color: $input-placeholder-color-valid-focus;
+        }
 
-      &:-ms-input-placeholder {
-         color: $input-placeholder-color-valid-focus;
-      }
+        &:-ms-input-placeholder {
+            color: $input-placeholder-color-valid-focus;
+        }
 
-      &::-ms-input-placeholder {
-         color: $input-placeholder-color-valid-focus;
-      }
+        &::-ms-input-placeholder {
+            color: $input-placeholder-color-valid-focus;
+        }
 
-      &::placeholder {
-         color: $input-placeholder-color-valid-focus;
-      }
+        &::placeholder {
+            color: $input-placeholder-color-valid-focus;
+        }
 
-      &::-moz-selection {
-         background-color: $input-background-selection-valid-focus !important;
-         color: $input-text-color-normal-focus !important;
-      }
+        &::-moz-selection {
+            background-color: $input-background-selection-valid-focus !important;
+            color: $input-text-color-normal-focus !important;
+        }
 
-      &::selection {
-         background-color: $input-background-selection-valid-focus !important;
-         color: $input-text-color-normal-focus !important;
-      }
-   }
+        &::selection {
+            background-color: $input-background-selection-valid-focus !important;
+            color: $input-text-color-normal-focus !important;
+        }
+    }
 
-   &.valid-focus-out-filled {
-      background-color: $input-background-color-valid-focus-out !important;
-      color: $input-text-color-valid-focus-out !important;
-   }
+    &.valid-focus-out-filled {
+        background-color: $input-background-color-valid-focus-out !important;
+        color: $input-text-color-valid-focus-out !important;
+    }
 
-   &.valid-focus-out-filled-datepicker {
-      background-color: $input-background-color-valid-focus-out !important;
-      span,
-      span .border-picker {
-         color: $input-text-color-valid-focus-out !important;
-      }
-   }
+    &.valid-focus-out-filled-datepicker {
+        background-color: $input-background-color-valid-focus-out !important;
+        span,
+        span .border-picker {
+            color: $input-text-color-valid-focus-out !important;
+        }
+    }
 
-   &.invalid-focus-in {
-      background-color: $input-background-color-invalid-focus !important;
+    &.invalid-focus-in {
+        background-color: $input-background-color-invalid-focus !important;
 
-      &::-moz-selection {
-         background-color: $input-background-selection-invalid-focus !important;
-         color: $input-text-color-normal-focus !important;
-      }
+        &::-moz-selection {
+            background-color: $input-background-selection-invalid-focus !important;
+            color: $input-text-color-normal-focus !important;
+        }
 
-      &::selection {
-         background-color: $input-background-selection-invalid-focus !important;
-         color: $input-text-color-normal-focus !important;
-      }
-   }
+        &::selection {
+            background-color: $input-background-selection-invalid-focus !important;
+            color: $input-text-color-normal-focus !important;
+        }
+    }
 
-   &.invalid-focus-out-filled {
-      background-color: $input-background-color-invalid-focus-out !important;
-      color: $input-text-color-invalid-focus-out !important;
-   }
+    &.invalid-focus-out-filled {
+        background-color: $input-background-color-invalid-focus-out !important;
+        color: $input-text-color-invalid-focus-out !important;
+    }
 
-   &.disabled {
-      background-color: $input-background-color-disabled !important;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      pointer-events: none;
-   }
+    &.disabled {
+        background-color: $input-background-color-disabled !important;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        pointer-events: none;
+    }
 
-   &.disabled-filled {
-      background-color: $input-background-color-disabled !important;
-      color: $input-text-color-filled-disabled !important;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      pointer-events: none;
-   }
+    &.disabled-filled {
+        background-color: $input-background-color-disabled !important;
+        color: $input-text-color-filled-disabled !important;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        pointer-events: none;
+    }
 
-   &.blue-input-color {
-      color: $input-text-color-blue !important;
-   }
+    &.blue-input-color {
+        color: $input-text-color-blue !important;
+    }
 
-   &.dropdown-input-image-without-text-transparent,
-   &.multiple-input-values {
-      color: $input-transparent-color !important;
-   }
+    &.dropdown-input-image-without-text-transparent,
+    &.multiple-input-values {
+        color: $input-transparent-color !important;
+    }
 
-   &.load-dispatches-ttd,
-   &.load-broker-contact,
-   &.load-shipper {
-      position: absolute;
-      bottom: 1.5px;
-      background-color: transparent !important;
-      display: grid;
-      align-items: center;
-   }
+    &.load-dispatches-ttd,
+    &.load-broker-contact,
+    &.load-shipper {
+        position: absolute;
+        bottom: 1.5px;
+        background-color: transparent !important;
+        display: grid;
+        align-items: center;
+    }
 
-   &.load-dispatches-ttd {
-      grid-template-columns: repeat(3, 128px);
+    &.load-dispatches-ttd {
+        grid-template-columns: repeat(3, 128px);
 
-      span:last-child {
-         .multiple-input-text {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            width: 98px;
-         }
-      }
+        span:last-child {
+            .multiple-input-text {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                width: 98px;
+            }
+        }
 
-      span {
-         -webkit-user-select: none;
-         -moz-user-select: none;
-         -ms-user-select: none;
-         user-select: none;
-      }
-   }
+        span {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    }
 
-   &.load-broker-contact {
-      grid-template-columns: repeat(3, 120px);
-   }
+    &.load-broker-contact {
+        grid-template-columns: repeat(3, 120px);
+    }
 
-   &.load-shipper {
-      grid-template-columns: 300px 1fr;
-      -moz-column-gap: 2px;
-      column-gap: 2px;
-      padding-right: 25px;
-   }
+    &.load-shipper {
+        grid-template-columns: 300px 1fr;
+        -moz-column-gap: 2px;
+        column-gap: 2px;
+        padding-right: 25px;
+    }
 
-   //------------------------- Custom class -------------------------
-   &.input-32 {
-      height: 32px;
-   }
+    //------------------------- Custom class -------------------------
+    &.input-32 {
+        height: 32px;
+    }
 
-   &.input-32-font-20 {
-      font-weight: 700;
-      font-size: 20px;
-   }
+    &.input-32-font-20 {
+        font-weight: 700;
+        font-size: 20px;
+    }
 
-   &.input-30 {
-      height: 30px;
-   }
+    &.input-30 {
+        height: 30px;
+    }
 
-   &.input-22 {
-      height: 22px;
-      font-size: 11px;
-      font-weight: 400;
-   }
+    &.input-22 {
+        height: 22px;
+        font-size: 11px;
+        font-weight: 400;
+    }
 
-   &.details-pages {
-      background-color: $input-background-color-normal-focus !important;
+    &.details-pages {
+        background-color: $input-background-color-normal-focus !important;
 
-      &::-webkit-input-placeholder {
-         color: $input-placeholder-color-normal-focus !important;
-      }
-      &::-moz-placeholder {
-         color: $input-placeholder-color-normal-focus !important;
-      }
+        &::-webkit-input-placeholder {
+            color: $input-placeholder-color-normal-focus !important;
+        }
+        &::-moz-placeholder {
+            color: $input-placeholder-color-normal-focus !important;
+        }
 
-      &:-ms-input-placeholder {
-         color: $input-placeholder-color-normal-focus !important;
-      }
+        &:-ms-input-placeholder {
+            color: $input-placeholder-color-normal-focus !important;
+        }
 
-      &::-ms-input-placeholder {
-         color: $input-placeholder-color-normal-focus !important;
-      }
+        &::-ms-input-placeholder {
+            color: $input-placeholder-color-normal-focus !important;
+        }
 
-      &::placeholder {
-         color: $input-placeholder-color-normal-focus !important;
-      }
-   }
+        &::placeholder {
+            color: $input-placeholder-color-normal-focus !important;
+        }
+    }
 
-   &.load-stop-details {
-      background-color: $input-background-color-load-stop-details-focus-out !important;
+    &.load-stop-details {
+        background-color: $input-background-color-load-stop-details-focus-out !important;
 
-      &:hover {
-         background-color: $input-background-color-normal-hover !important;
-         color: $input-text-color-normal-hover !important;
-      }
-   }
+        &:hover {
+            background-color: $input-background-color-normal-hover !important;
+            color: $input-text-color-normal-hover !important;
+        }
+    }
 
-   &.disable-select-on-focus-out {
-      &::-moz-selection {
-         background-color: transparent !important;
-      }
-      &::selection {
-         background-color: transparent !important;
-      }
-   }
+    &.disable-select-on-focus-out {
+        &::-moz-selection {
+            background-color: transparent !important;
+        }
+        &::selection {
+            background-color: transparent !important;
+        }
+    }
 }
 
 //------------------------- Input Number Hide Arrows -------------------------
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
-   -webkit-appearance: none;
-   -moz-appearance: none;
-   appearance: none;
-   margin: 0 !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0 !important;
 }
 
 input[type='number']::-webkit-inner-spin-button:hover,
 input[type='number']::-webkit-outer-spin-button:hover,
 input[type='number']::-webkit-inner-spin-button:focus,
 input[type='number']::-webkit-outer-spin-button:focus {
-   -webkit-appearance: none;
-   -moz-appearance: none;
-   appearance: none;
-   margin: 0 !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0 !important;
 }
 
 input[type='number'] {
-   -moz-appearance: textfield !important;
+    -moz-appearance: textfield !important;
 }
 input[type='number']:hover,
 input[type='number']:focus {
-   -moz-appearance: textfield !important;
+    -moz-appearance: textfield !important;
 }

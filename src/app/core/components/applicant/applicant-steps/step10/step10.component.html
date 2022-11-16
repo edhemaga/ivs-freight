@@ -1,289 +1,299 @@
 <div class="d-flex flex-column align-items-center step-container">
-   <h1 class="m-0 step-title text-center noselect ta-font-bold">
-      Disclosure & release
-   </h1>
+    <h1 class="m-0 step-title text-center noselect ta-font-bold">
+        Disclosure & release
+    </h1>
 
-   <!-- FORM SECTION -->
+    <!-- FORM SECTION -->
 
-   <div class="d-flex flex-column form-section">
-      <form [formGroup]="disclosureReleaseForm">
-         <div
-            class="d-flex flex-column align-items-center justify-content-center checkbox-container"
-         >
-            <app-ta-checkbox
-               formControlName="isFirstDisclosure"
-               [name]="'isFirstDisclosure'"
-               [label]="
-                  '1. Because I must drive as an essential function of my employment or potential employment, I hereby give'
-               "
-               [customClass]="'disclosure-release'"
-               [disabledStillCheckMark]="
-                  selectedMode === 'REVIEW_MODE' ||
-                  selectedMode === 'FEEDBACK_MODE'
-               "
+    <div class="d-flex flex-column form-section">
+        <form [formGroup]="disclosureReleaseForm">
+            <div
+                class="d-flex flex-column align-items-center justify-content-center checkbox-container"
             >
-            </app-ta-checkbox>
+                <app-ta-checkbox
+                    formControlName="isFirstDisclosure"
+                    [name]="'isFirstDisclosure'"
+                    [label]="
+                        '1. Because I must drive as an essential function of my employment or potential employment, I hereby give'
+                    "
+                    [customClass]="'disclosure-release'"
+                    [disabledStillCheckMark]="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                </app-ta-checkbox>
 
-            <p
-               class="m-0 text-center ta-font-regular"
-               [ngStyle]="{
-                  color: disclosureReleaseForm.get('isFirstDisclosure').value
-                     ? '#3c3c3c'
-                     : '#6c6c6c',
-                  cursor:
-                     selectedMode === 'REVIEW_MODE' ||
-                     selectedMode === 'FEEDBACK_MODE'
-                        ? 'auto'
-                        : 'pointer'
-               }"
-               (click)="handleCheckboxParagraphClick('isFirstDisclosure')"
+                <p
+                    class="m-0 text-center ta-font-regular"
+                    [ngStyle]="{
+                        color: disclosureReleaseForm.get('isFirstDisclosure')
+                            .value
+                            ? '#3c3c3c'
+                            : '#6c6c6c',
+                        cursor:
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? 'auto'
+                                : 'pointer'
+                    }"
+                    (click)="handleCheckboxParagraphClick('isFirstDisclosure')"
+                >
+                    permission to JD FREIGHTInc. to obtain my state driving
+                    record (also known as my motor vehicle record or MVR) in
+                    accordance with the Fair Credit Reporting Act (FCRA) and the
+                    Federal Driver’s Privacy Protection Act (DPPA).
+                </p>
+            </div>
+
+            <div
+                class="d-flex flex-column align-items-center justify-content-center checkbox-container"
             >
-               permission to JD FREIGHTInc. to obtain my state driving record
-               (also known as my motor vehicle record or MVR) in accordance with
-               the Fair Credit Reporting Act (FCRA) and the Federal Driver’s
-               Privacy Protection Act (DPPA).
-            </p>
-         </div>
+                <app-ta-checkbox
+                    formControlName="isSecondDisclosure"
+                    [name]="'isSecondDisclosure'"
+                    [label]="
+                        '2. I acknowledge and understand that my driving record is a consumer report that contains public record'
+                    "
+                    [customClass]="'disclosure-release'"
+                    [disabledStillCheckMark]="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                </app-ta-checkbox>
 
-         <div
-            class="d-flex flex-column align-items-center justify-content-center checkbox-container"
-         >
-            <app-ta-checkbox
-               formControlName="isSecondDisclosure"
-               [name]="'isSecondDisclosure'"
-               [label]="
-                  '2. I acknowledge and understand that my driving record is a consumer report that contains public record'
-               "
-               [customClass]="'disclosure-release'"
-               [disabledStillCheckMark]="
-                  selectedMode === 'REVIEW_MODE' ||
-                  selectedMode === 'FEEDBACK_MODE'
-               "
+                <p
+                    class="m-0 text-center ta-font-regular"
+                    [ngStyle]="{
+                        color: disclosureReleaseForm.get('isSecondDisclosure')
+                            .value
+                            ? '#3c3c3c'
+                            : '#6c6c6c',
+                        cursor:
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? 'auto'
+                                : 'pointer'
+                    }"
+                    (click)="handleCheckboxParagraphClick('isSecondDisclosure')"
+                >
+                    information.
+                </p>
+            </div>
+
+            <div
+                class="d-flex flex-column align-items-center justify-content-center checkbox-container"
             >
-            </app-ta-checkbox>
+                <app-ta-checkbox
+                    formControlName="isThirdDisclosure"
+                    [name]="'isThirdDisclosure'"
+                    [label]="
+                        '3. I authorize, without reservation any party or agency contacted by JD FREIGHT Inc. to furnish JD FREIGHT Inc.'
+                    "
+                    [customClass]="'disclosure-release'"
+                    [disabledStillCheckMark]="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                </app-ta-checkbox>
 
-            <p
-               class="m-0 text-center ta-font-regular"
-               [ngStyle]="{
-                  color: disclosureReleaseForm.get('isSecondDisclosure').value
-                     ? '#3c3c3c'
-                     : '#6c6c6c',
-                  cursor:
-                     selectedMode === 'REVIEW_MODE' ||
-                     selectedMode === 'FEEDBACK_MODE'
-                        ? 'auto'
-                        : 'pointer'
-               }"
-               (click)="handleCheckboxParagraphClick('isSecondDisclosure')"
+                <p
+                    class="m-0 text-center ta-font-regular"
+                    [ngStyle]="{
+                        color: disclosureReleaseForm.get('isThirdDisclosure')
+                            .value
+                            ? '#3c3c3c'
+                            : '#6c6c6c',
+                        cursor:
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? 'auto'
+                                : 'pointer'
+                    }"
+                    (click)="handleCheckboxParagraphClick('isThirdDisclosure')"
+                >
+                    a copy of my state driving record.
+                </p>
+            </div>
+
+            <div
+                class="d-flex flex-column align-items-center justify-content-center checkbox-container"
             >
-               information.
-            </p>
-         </div>
+                <app-ta-checkbox
+                    formControlName="isFourthDisclosure"
+                    [name]="'isFourthDisclosure'"
+                    [label]="
+                        '4. I understand that I have the right to request a copy of my driving record and to know the source or sources of'
+                    "
+                    [customClass]="'disclosure-release'"
+                    [disabledStillCheckMark]="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                </app-ta-checkbox>
 
-         <div
-            class="d-flex flex-column align-items-center justify-content-center checkbox-container"
-         >
-            <app-ta-checkbox
-               formControlName="isThirdDisclosure"
-               [name]="'isThirdDisclosure'"
-               [label]="
-                  '3. I authorize, without reservation any party or agency contacted by JD FREIGHT Inc. to furnish JD FREIGHT Inc.'
-               "
-               [customClass]="'disclosure-release'"
-               [disabledStillCheckMark]="
-                  selectedMode === 'REVIEW_MODE' ||
-                  selectedMode === 'FEEDBACK_MODE'
-               "
+                <p
+                    class="m-0 text-center ta-font-regular"
+                    [ngStyle]="{
+                        color: disclosureReleaseForm.get('isFourthDisclosure')
+                            .value
+                            ? '#3c3c3c'
+                            : '#6c6c6c',
+                        cursor:
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? 'auto'
+                                : 'pointer'
+                    }"
+                    (click)="handleCheckboxParagraphClick('isFourthDisclosure')"
+                >
+                    my driving record, for a two-year period preceding my
+                    request.
+                </p>
+            </div>
+
+            <div
+                class="d-flex flex-column align-items-center justify-content-center checkbox-container"
             >
-            </app-ta-checkbox>
+                <app-ta-checkbox
+                    formControlName="isFifthDisclosure"
+                    [name]="'isFifthDisclosure'"
+                    [label]="
+                        '5. This authorization shall remain on file by JD FREIGHT Inc. for the duration of my and will serve as ongoing'
+                    "
+                    [customClass]="'disclosure-release'"
+                    [disabledStillCheckMark]="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                </app-ta-checkbox>
 
-            <p
-               class="m-0 text-center ta-font-regular"
-               [ngStyle]="{
-                  color: disclosureReleaseForm.get('isThirdDisclosure').value
-                     ? '#3c3c3c'
-                     : '#6c6c6c',
-                  cursor:
-                     selectedMode === 'REVIEW_MODE' ||
-                     selectedMode === 'FEEDBACK_MODE'
-                        ? 'auto'
-                        : 'pointer'
-               }"
-               (click)="handleCheckboxParagraphClick('isThirdDisclosure')"
+                <p
+                    class="m-0 text-center ta-font-regular"
+                    [ngStyle]="{
+                        color: disclosureReleaseForm.get('isFifthDisclosure')
+                            .value
+                            ? '#3c3c3c'
+                            : '#6c6c6c',
+                        cursor:
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? 'auto'
+                                : 'pointer'
+                    }"
+                    (click)="handleCheckboxParagraphClick('isFifthDisclosure')"
+                >
+                    authorization for JD FREIGHT Inc. to procure my state
+                    driving record at any time during my employment period.
+                </p>
+            </div>
+
+            <div
+                class="d-flex flex-column align-items-center justify-content-center checkbox-container"
             >
-               a copy of my state driving record.
-            </p>
-         </div>
+                <app-ta-checkbox
+                    formControlName="isSixthDisclosure"
+                    [name]="'isSixthDisclosure'"
+                    [label]="
+                        '6. I understand that JD FREIGHT Inc. may take adverse action affecting my employment, based on information'
+                    "
+                    [customClass]="'disclosure-release'"
+                    [disabledStillCheckMark]="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                </app-ta-checkbox>
 
-         <div
-            class="d-flex flex-column align-items-center justify-content-center checkbox-container"
-         >
-            <app-ta-checkbox
-               formControlName="isFourthDisclosure"
-               [name]="'isFourthDisclosure'"
-               [label]="
-                  '4. I understand that I have the right to request a copy of my driving record and to know the source or sources of'
-               "
-               [customClass]="'disclosure-release'"
-               [disabledStillCheckMark]="
-                  selectedMode === 'REVIEW_MODE' ||
-                  selectedMode === 'FEEDBACK_MODE'
-               "
+                <p
+                    class="m-0 text-center ta-font-regular"
+                    [ngStyle]="{
+                        color: disclosureReleaseForm.get('isSixthDisclosure')
+                            .value
+                            ? '#3c3c3c'
+                            : '#6c6c6c',
+                        cursor:
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? 'auto'
+                                : 'pointer'
+                    }"
+                    (click)="handleCheckboxParagraphClick('isSixthDisclosure')"
+                >
+                    in my driving record.If such adverse action is taken, I
+                    acknowledge that my rights are as follows:
+                </p>
+            </div>
+
+            <div
+                class="d-flex flex-column align-items-center text-center group-text"
+                [ngStyle]="{
+                    color:
+                        selectedMode === 'FEEDBACK_MODE' ? '#3c3c3c' : '#6C6C6C'
+                }"
             >
-            </app-ta-checkbox>
+                <p class="m-0 ta-font-regular">
+                    - Employer must notify me in writing of any such adverse
+                    action
+                </p>
 
-            <p
-               class="m-0 text-center ta-font-regular"
-               [ngStyle]="{
-                  color: disclosureReleaseForm.get('isFourthDisclosure').value
-                     ? '#3c3c3c'
-                     : '#6c6c6c',
-                  cursor:
-                     selectedMode === 'REVIEW_MODE' ||
-                     selectedMode === 'FEEDBACK_MODE'
-                        ? 'auto'
-                        : 'pointer'
-               }"
-               (click)="handleCheckboxParagraphClick('isFourthDisclosure')"
-            >
-               my driving record, for a two-year period preceding my request.
-            </p>
-         </div>
+                <p class="m-0 ta-font-regular">
+                    - I have the right to receive a copy of the driving record
+                    upon which the adverse action was based.
+                </p>
 
-         <div
-            class="d-flex flex-column align-items-center justify-content-center checkbox-container"
-         >
-            <app-ta-checkbox
-               formControlName="isFifthDisclosure"
-               [name]="'isFifthDisclosure'"
-               [label]="
-                  '5. This authorization shall remain on file by JD FREIGHT Inc. for the duration of my and will serve as ongoing'
-               "
-               [customClass]="'disclosure-release'"
-               [disabledStillCheckMark]="
-                  selectedMode === 'REVIEW_MODE' ||
-                  selectedMode === 'FEEDBACK_MODE'
-               "
-            >
-            </app-ta-checkbox>
+                <p class="m-0 ta-font-regular">
+                    - I have the right to receive a summary of my rights under
+                    the Fair Credit Reporting Act. I have the right to know the
+                    name, address and phone number of the consumer reporting
+                    agency that provided my driving record to JD FREIGHT Inc.
+                </p>
 
-            <p
-               class="m-0 text-center ta-font-regular"
-               [ngStyle]="{
-                  color: disclosureReleaseForm.get('isFifthDisclosure').value
-                     ? '#3c3c3c'
-                     : '#6c6c6c',
-                  cursor:
-                     selectedMode === 'REVIEW_MODE' ||
-                     selectedMode === 'FEEDBACK_MODE'
-                        ? 'auto'
-                        : 'pointer'
-               }"
-               (click)="handleCheckboxParagraphClick('isFifthDisclosure')"
-            >
-               authorization for JD FREIGHT Inc. to procure my state driving
-               record at any time during my employment period.
-            </p>
-         </div>
+                <p class="m-0 ta-font-regular">
+                    - I have the right to obtain a free copy of my driving
+                    record from the agency that provided it, if such request is
+                    made within 60 days from the date that Employer took adverse
+                    action.
+                </p>
 
-         <div
-            class="d-flex flex-column align-items-center justify-content-center checkbox-container"
-         >
-            <app-ta-checkbox
-               formControlName="isSixthDisclosure"
-               [name]="'isSixthDisclosure'"
-               [label]="
-                  '6. I understand that JD FREIGHT Inc. may take adverse action affecting my employment, based on information'
-               "
-               [customClass]="'disclosure-release'"
-               [disabledStillCheckMark]="
-                  selectedMode === 'REVIEW_MODE' ||
-                  selectedMode === 'FEEDBACK_MODE'
-               "
-            >
-            </app-ta-checkbox>
-
-            <p
-               class="m-0 text-center ta-font-regular"
-               [ngStyle]="{
-                  color: disclosureReleaseForm.get('isSixthDisclosure').value
-                     ? '#3c3c3c'
-                     : '#6c6c6c',
-                  cursor:
-                     selectedMode === 'REVIEW_MODE' ||
-                     selectedMode === 'FEEDBACK_MODE'
-                        ? 'auto'
-                        : 'pointer'
-               }"
-               (click)="handleCheckboxParagraphClick('isSixthDisclosure')"
-            >
-               in my driving record.If such adverse action is taken, I
-               acknowledge that my rights are as follows:
-            </p>
-         </div>
-
-         <div
-            class="d-flex flex-column align-items-center text-center group-text"
-            [ngStyle]="{
-               color: selectedMode === 'FEEDBACK_MODE' ? '#3c3c3c' : '#6C6C6C'
-            }"
-         >
-            <p class="m-0 ta-font-regular">
-               - Employer must notify me in writing of any such adverse action
-            </p>
-
-            <p class="m-0 ta-font-regular">
-               - I have the right to receive a copy of the driving record upon
-               which the adverse action was based.
-            </p>
-
-            <p class="m-0 ta-font-regular">
-               - I have the right to receive a summary of my rights under the
-               Fair Credit Reporting Act. I have the right to know the name,
-               address and phone number of the consumer reporting agency that
-               provided my driving record to JD FREIGHT Inc.
-            </p>
-
-            <p class="m-0 ta-font-regular">
-               - I have the right to obtain a free copy of my driving record
-               from the agency that provided it, if such request is made within
-               60 days from the date that Employer took adverse action.
-            </p>
-
-            <p class="m-0 ta-font-regular">
-               - I have the right to dispute the accuracy or completeness of my
-               driving record with the consumer reporting agency that provided
-               it, and request that errors be corrected.
-            </p>
-         </div>
-      </form>
-   </div>
+                <p class="m-0 ta-font-regular">
+                    - I have the right to dispute the accuracy or completeness
+                    of my driving record with the consumer reporting agency that
+                    provided it, and request that errors be corrected.
+                </p>
+            </div>
+        </form>
+    </div>
 </div>
 
 <!-- NEXT BTN -->
 
 <div
-   class="d-flex justify-content-center align-items-center next-btn-container"
+    class="d-flex justify-content-center align-items-center next-btn-container"
 >
-   <app-applicant-next-back-btn
-      [nextStep]="true"
-      [filledCorrectly]="
-         (selectedMode === 'APPLICANT_MODE' ||
-            selectedMode === 'FEEDBACK_MODE') &&
-         disclosureReleaseForm.valid
-      "
-      [mode]="selectedMode"
-      (stepEvent)="onStepAction($event)"
-   ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [nextStep]="true"
+        [filledCorrectly]="
+            (selectedMode === 'APPLICANT_MODE' ||
+                selectedMode === 'FEEDBACK_MODE') &&
+            disclosureReleaseForm.valid
+        "
+        [mode]="selectedMode"
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>
 
 <!-- BACK BTN -->
 
 <div
-   class="d-flex justify-content-center align-items-center back-btn-container"
+    class="d-flex justify-content-center align-items-center back-btn-container"
 >
-   <app-applicant-next-back-btn
-      [backStep]="true"
-      (stepEvent)="onStepAction($event)"
-   ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [backStep]="true"
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>

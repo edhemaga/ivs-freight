@@ -4,14 +4,14 @@ import { RepairDState, RepairDStore } from './repair-d.store';
 
 @Injectable({ providedIn: 'root' })
 export class RepairDQuery extends QueryEntity<RepairDState> {
-   repairShop$ = this.select('repairShop');
+    repairShop$ = this.select('repairShop');
 
-   repairList$ = this.select('repairList');
+    repairList$ = this.select('repairList');
 
-   repairShopMinimal$ = this.select('repairShopMinimal');
+    repairShopMinimal$ = this.select('repairShopMinimal');
 
-   repairedVehicleList$ = this.select('repairedVehicleList');
-   constructor(protected repairDStore: RepairDStore) {
-      super(repairDStore);
-   }
+    repairedVehicleList$ = this.select('repairedVehicleList');
+    constructor(protected repairDStore: RepairDStore) {
+        super(repairDStore);
+    }
 }

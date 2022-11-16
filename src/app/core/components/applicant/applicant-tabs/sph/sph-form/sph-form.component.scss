@@ -1,194 +1,196 @@
 @import 'src/theme/variables.scss';
 
 .sph-form-container {
-   min-height: 100vh;
-   position: relative;
-   background: $white;
-   padding-top: 22px;
+    min-height: 100vh;
+    position: relative;
+    background: $white;
+    padding-top: 22px;
 
-   .step-progress-bar {
-      width: 362px;
-      margin: 0 auto;
+    .step-progress-bar {
+        width: 362px;
+        margin: 0 auto;
 
-      .step {
-         width: 120px;
+        .step {
+            width: 120px;
 
-         /* &.disabled {
+            /* &.disabled {
         pointer-events: none !important;
       } */
 
-         .bullet {
-            position: relative;
-            height: 42px;
-            width: 42px;
-            background: $bw-9;
-            border-radius: 3px;
-            cursor: pointer;
-            transition: background 0.3s ease-in-out;
-
-            p {
-               font-size: 27px;
-               color: $white;
-               display: inline-flex;
-               user-select: none;
-               visibility: visible;
-               opacity: 1;
-               transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
-            }
-
-            &:hover {
-               background: $bw4;
-            }
-         }
-
-         .step-text {
-            margin: 6px auto 0 auto !important;
-            color: $bw5;
-            font-size: 14px;
-            line-height: 14px;
-            cursor: pointer;
-            visibility: visible;
-            opacity: 1;
-            transition: color 0.3s ease-in-out, visibility 0.3s ease-in-out,
-               opacity 0.3s ease-in-out;
-
-            &::-moz-selection {
-               color: $bw5;
-               background: rgb(145, 145, 145, 0.2);
-            }
-
-            &::selection {
-               color: $bw5;
-               background: rgb(145, 145, 145, 0.2);
-            }
-
-            &:hover {
-               color: $bw6-2;
-
-               &::-moz-selection {
-                  color: $bw6-2;
-                  background: rgb(108, 108, 108, 0.2);
-               }
-
-               &::selection {
-                  color: $bw6-2;
-                  background: rgb(108, 108, 108, 0.2);
-               }
-            }
-         }
-
-         .bullet-2 + .step-text {
-            width: 78px;
-         }
-
-         .bullet-1::after,
-         .bullet-2::after {
-            content: '';
-            position: absolute;
-            bottom: 19px;
-            right: -81px;
-            width: 60px;
-            margin: 0 12px;
-            height: 2px;
-            background: $bw-9;
-         }
-
-         .bullet-1::before,
-         .bullet-2::before,
-         .bullet-3::before {
-            content: '';
-            display: none;
-            visibility: hidden;
-            user-select: none;
-            opacity: 1;
-            vertical-align: middle;
-            width: 20px;
-            height: 14.29px;
-            background: url(/assets/svg/applicant/check.svg);
-            background-size: cover;
-            transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
-         }
-
-         &.step-active {
-            pointer-events: none;
-
             .bullet {
-               background: $ta-blue;
+                position: relative;
+                height: 42px;
+                width: 42px;
+                background: $bw-9;
+                border-radius: 3px;
+                cursor: pointer;
+                transition: background 0.3s ease-in-out;
+
+                p {
+                    font-size: 27px;
+                    color: $white;
+                    display: inline-flex;
+                    user-select: none;
+                    visibility: visible;
+                    opacity: 1;
+                    transition: visibility 0.3s ease-in-out,
+                        opacity 0.3s ease-in-out;
+                }
+
+                &:hover {
+                    background: $bw4;
+                }
             }
 
             .step-text {
-               color: $ta-blue;
-            }
-         }
+                margin: 6px auto 0 auto !important;
+                color: $bw5;
+                font-size: 14px;
+                line-height: 14px;
+                cursor: pointer;
+                visibility: visible;
+                opacity: 1;
+                transition: color 0.3s ease-in-out, visibility 0.3s ease-in-out,
+                    opacity 0.3s ease-in-out;
 
-         &.completed-step {
+                &::-moz-selection {
+                    color: $bw5;
+                    background: rgb(145, 145, 145, 0.2);
+                }
+
+                &::selection {
+                    color: $bw5;
+                    background: rgb(145, 145, 145, 0.2);
+                }
+
+                &:hover {
+                    color: $bw6-2;
+
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+            }
+
+            .bullet-2 + .step-text {
+                width: 78px;
+            }
+
+            .bullet-1::after,
+            .bullet-2::after {
+                content: '';
+                position: absolute;
+                bottom: 19px;
+                right: -81px;
+                width: 60px;
+                margin: 0 12px;
+                height: 2px;
+                background: $bw-9;
+            }
+
+            .bullet-1::before,
+            .bullet-2::before,
+            .bullet-3::before {
+                content: '';
+                display: none;
+                visibility: hidden;
+                user-select: none;
+                opacity: 1;
+                vertical-align: middle;
+                width: 20px;
+                height: 14.29px;
+                background: url(/assets/svg/applicant/check.svg);
+                background-size: cover;
+                transition: visibility 0.3s ease-in-out,
+                    opacity 0.3s ease-in-out;
+            }
+
             &.step-active {
-               .bullet {
-                  background: $ta-blue;
+                pointer-events: none;
 
-                  &::before {
-                     display: none;
-                     visibility: hidden;
-                     opacity: 0;
-                  }
+                .bullet {
+                    background: $ta-blue;
+                }
 
-                  p {
-                     display: inline-block;
-                     visibility: visible;
-                     opacity: 1;
-                  }
-               }
-
-               .step-text {
-                  visibility: visible;
-                  opacity: 1;
-                  color: $ta-blue;
-               }
+                .step-text {
+                    color: $ta-blue;
+                }
             }
 
-            .bullet {
-               background: $ta-blue-3;
+            &.completed-step {
+                &.step-active {
+                    .bullet {
+                        background: $ta-blue;
 
-               &::before {
-                  display: inline-block;
-                  visibility: visible;
-                  opacity: 1;
-               }
+                        &::before {
+                            display: none;
+                            visibility: hidden;
+                            opacity: 0;
+                        }
 
-               p {
-                  display: none;
-                  visibility: hidden;
-                  opacity: 0;
-               }
+                        p {
+                            display: inline-block;
+                            visibility: visible;
+                            opacity: 1;
+                        }
+                    }
 
-               &:hover {
-                  background: $ta-light-blue;
+                    .step-text {
+                        visibility: visible;
+                        opacity: 1;
+                        color: $ta-blue;
+                    }
+                }
 
-                  &::before {
-                     display: none;
-                     visibility: hidden;
-                     opacity: 0;
-                  }
+                .bullet {
+                    background: $ta-blue-3;
 
-                  p {
-                     display: inline-flex;
-                     visibility: visible;
-                     opacity: 1;
-                  }
-               }
+                    &::before {
+                        display: inline-block;
+                        visibility: visible;
+                        opacity: 1;
+                    }
 
-               &:hover + .step-text {
-                  visibility: visible;
-                  opacity: 1;
-                  color: $ta-light-blue;
-               }
+                    p {
+                        display: none;
+                        visibility: hidden;
+                        opacity: 0;
+                    }
+
+                    &:hover {
+                        background: $ta-light-blue;
+
+                        &::before {
+                            display: none;
+                            visibility: hidden;
+                            opacity: 0;
+                        }
+
+                        p {
+                            display: inline-flex;
+                            visibility: visible;
+                            opacity: 1;
+                        }
+                    }
+
+                    &:hover + .step-text {
+                        visibility: visible;
+                        opacity: 1;
+                        color: $ta-light-blue;
+                    }
+                }
+
+                .step-text {
+                    visibility: hidden;
+                    opacity: 0;
+                }
             }
-
-            .step-text {
-               visibility: hidden;
-               opacity: 0;
-            }
-         }
-      }
-   }
+        }
+    }
 }

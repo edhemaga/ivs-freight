@@ -12,65 +12,65 @@ import { AccountActivatedPageComponent } from './account-activated-page/account-
 import { RegisterUserComponent } from './register-user/register-user.component';
 
 const routes: Routes = [
-   {
-      path: '',
-      redirectTo: 'login',
-      pathMatch: 'full',
-   },
-   {
-      path: 'login',
-      component: LoginComponent,
-      data: { title: 'Login' },
-   },
-   {
-      path: 'register',
-      component: RegisterComponent,
-      data: { title: 'Register' },
-   },
-   {
-      path: 'register/thank-you',
-      component: ThankYouComponent,
-      data: { title: 'Thank You' },
-   },
-   {
-      path: 'register/account-activated',
-      component: AccountActivatedPageComponent,
-      data: { title: 'Account Activated' },
-   },
-   {
-      path: 'forgot-password',
-      component: ForgotPasswordComponent,
-      data: { title: 'Forgot Password' },
-   },
-   {
-      path: 'forgot-password/check-email',
-      component: PleaseCheckEmailPageComponent,
-      data: { title: 'Check Email' },
-   },
-   {
-      path: 'forgot-password/create-new-password',
-      component: CreateNewPasswordPageComponent,
-      data: { title: 'Create New Password' },
-   },
-   {
-      path: 'forgot-password/password-changed',
-      component: PasswordChangedPageComponent,
-      data: { title: 'Password Changed' },
-   },
-   {
-      path: 'register-user',
-      component: RegisterUserComponent,
-      data: { title: 'Register User' },
-   },
-   {
-      path: 'register-user/account-activated',
-      component: AccountActivatedPageComponent,
-      data: { title: 'Account Activated' },
-   },
+    {
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full',
+    },
+    {
+        path: 'login',
+        component: LoginComponent,
+        data: { title: 'Login' },
+    },
+    {
+        path: 'register',
+        component: RegisterComponent,
+        data: { title: 'Register' },
+    },
+    {
+        path: 'register/thank-you',
+        component: ThankYouComponent,
+        data: { title: 'Thank You' },
+    },
+    {
+        path: 'register/account-activated',
+        component: AccountActivatedPageComponent,
+        data: { title: 'Account Activated' },
+    },
+    {
+        path: 'forgot-password',
+        component: ForgotPasswordComponent,
+        data: { title: 'Forgot Password' },
+    },
+    {
+        path: 'forgot-password/check-email',
+        component: PleaseCheckEmailPageComponent,
+        data: { title: 'Check Email' },
+    },
+    {
+        path: 'forgot-password/create-new-password',
+        component: CreateNewPasswordPageComponent,
+        data: { title: 'Create New Password' },
+    },
+    {
+        path: 'forgot-password/password-changed',
+        component: PasswordChangedPageComponent,
+        data: { title: 'Password Changed' },
+    },
+    {
+        path: 'register-user',
+        component: RegisterUserComponent,
+        data: { title: 'Register User' },
+    },
+    {
+        path: 'register-user/account-activated',
+        component: AccountActivatedPageComponent,
+        data: { title: 'Account Activated' },
+    },
 ];
 
 @NgModule({
-   imports: [RouterModule.forChild(routes)],
-   exports: [RouterModule],
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
 export class AuthRoutingModule {}

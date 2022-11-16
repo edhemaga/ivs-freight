@@ -1,309 +1,325 @@
 <app-ta-modal
-   [modalTitle]="
-      editData.cdlStatus
-         ? editData.cdlStatus.concat(' ', 'CDL')
-         : (editData?.type === 'info'
-              ? editData?.subType === 'archive'
-                 ? editData?.subType?.substring(0, 1).toUpperCase() +
-                   editData?.subType?.substring(1)
-                 : 'Move'
-              : editData?.type === 'multiple delete'
-              ? 'Delete'
-              : editData?.type?.substring(0, 1).toUpperCase() +
-                editData?.type?.substring(1)) +
-           ' ' +
-           'Confirmation'
-   "
-   [editName]="
-      editData.cdlStatus
-         ? editData.data.data?.firstName?.concat(
-              ' ',
-              editData.data.data?.lastName
-           )
-         : ''
-   "
-   [specificCaseModalName]="editData.modalHeader"
-   [customClass]="'modal-container-XS'"
-   [bottomDivider]="true"
-   [headerSvg]="
-      editData?.type === 'multiple delete' ? 'delete' : editData?.type
-   "
-   [confirmationData]="editData"
-   (confirmationAction)="onModalAction($event)"
+    [modalTitle]="
+        editData.cdlStatus
+            ? editData.cdlStatus.concat(' ', 'CDL')
+            : (editData?.type === 'info'
+                  ? editData?.subType === 'archive'
+                      ? editData?.subType?.substring(0, 1).toUpperCase() +
+                        editData?.subType?.substring(1)
+                      : 'Move'
+                  : editData?.type === 'multiple delete'
+                  ? 'Delete'
+                  : editData?.type?.substring(0, 1).toUpperCase() +
+                    editData?.type?.substring(1)) +
+              ' ' +
+              'Confirmation'
+    "
+    [editName]="
+        editData.cdlStatus
+            ? editData.data.data?.firstName?.concat(
+                  ' ',
+                  editData.data.data?.lastName
+              )
+            : ''
+    "
+    [specificCaseModalName]="editData.modalHeader"
+    [customClass]="'modal-container-XS'"
+    [bottomDivider]="true"
+    [headerSvg]="
+        editData?.type === 'multiple delete' ? 'delete' : editData?.type
+    "
+    [confirmationData]="editData"
+    (confirmationAction)="onModalAction($event)"
 >
-   <div origin class="confirmation-modal">
-      <!-- Rating Header -->
-      <p
-         *ngIf="editData.rating && editData?.type === 'delete'"
-         class="confirmation-header"
-      >
-         Are you sure you want to delete rating for this
-         {{ editData?.template }}?
-      </p>
+    <div origin class="confirmation-modal">
+        <!-- Rating Header -->
+        <p
+            *ngIf="editData.rating && editData?.type === 'delete'"
+            class="confirmation-header"
+        >
+            Are you sure you want to delete rating for this
+            {{ editData?.template }}?
+        </p>
 
-      <!-- Info Header -->
-      <p
-         *ngIf="editData.subTypeStatus && editData?.type === 'info'"
-         class="confirmation-header"
-      >
-         Are you sure you want to {{ editData?.subTypeStatus }} this
-         {{ editData?.template }}
-         {{ editData?.subTypeStatus === 'move' ? 'to' : 'from' }}
-         {{
-            editData?.subType === 'archive'
-               ? 'archive'
-               : editData?.subType === 'dnu'
-               ? 'do not use list'
-               : 'ban list'
-         }}?
-      </p>
+        <!-- Info Header -->
+        <p
+            *ngIf="editData.subTypeStatus && editData?.type === 'info'"
+            class="confirmation-header"
+        >
+            Are you sure you want to {{ editData?.subTypeStatus }} this
+            {{ editData?.template }}
+            {{ editData?.subTypeStatus === 'move' ? 'to' : 'from' }}
+            {{
+                editData?.subType === 'archive'
+                    ? 'archive'
+                    : editData?.subType === 'dnu'
+                    ? 'do not use list'
+                    : 'ban list'
+            }}?
+        </p>
 
-      <!-- Normal Header -->
-      <p
-         *ngIf="
-            !editData.rating &&
-            !editData.subTypeStatus &&
-            editData.subType !== 'cdl void'
-         "
-         class="confirmation-header"
-      >
-         Are you sure you want to
-         {{
-            editData?.type === 'info'
-               ? editData?.subType
-               : editData?.type === 'multiple delete'
-               ? 'delete' + ' ' + editData.array.length
-               : editData.type
-         }}
-         {{ editData?.type === 'multiple delete' ? null : 'this' }}
-         {{
-            editData?.type === 'multiple delete'
-               ? editData?.template + 's'
-               : editData?.template
-         }}?
-      </p>
-
-      <!-- Renew CDL -->
-      <p
-         *ngIf="
-            editData.subType === 'cdl void' &&
-            editData?.type === 'info' &&
-            editData.template === 'cdl'
-         "
-         class="confirmation-header"
-      >
-         <span class="renew-cdl-person-name">{{
-            editData.data.data?.firstName?.concat(
-               ' ',
-               editData.data.data?.lastName
-            )
-         }}</span>
-         has active CDL. <br />
-         You need to void current CDL first.
-      </p>
-
-      <!---------------------------------------------- Confirmation Body For Object ---------------------------------------------->
-      <div *ngIf="editData.data" class="confirmation-body">
-         <!-- Svg -->
-         <svg-icon
-            class="confirmation-svg"
-            *ngIf="editData?.svg && editData?.data?.avatar"
-            [src]="editData?.data?.avatar"
-         ></svg-icon>
-         <!-- Image -->
-         <img
-            *ngIf="editData?.image && editData?.data?.avatar"
-            [src]="imageBase64Service.sanitizer(editData?.data?.avatar)"
-            [alt]="editData?.data?.name?.substring(0, 1)"
-            class="confirmation-img"
-         />
-         <!-- Initial name, if avatar not upload -->
-         <div
-            *ngIf="editData?.image && !editData?.data?.avatar"
-            class="no-profile-image"
-         >
-            <app-profile-images
-               [indx]="0"
-               [size]="'confirmation'"
-               [name]="editData?.data?.name"
-            >
-            </app-profile-images>
-         </div>
-         <!---------------------------------------------- Different templates for body --------------------------------------------->
-         <!-- Driver, Owner -->
-         <div
-            *ngIf="['driver', 'owner'].includes(editData?.template)"
-            class="confirmation-info"
-         >
-            <p class="confirmation-text-1">{{ editData?.data?.name }}</p>
-            <p class="confirmation-text-2">SSN: {{ editData?.data?.ssn }}</p>
-         </div>
-         <!-- Truck, Trailer -->
-         <div
-            *ngIf="['truck', 'trailer'].includes(editData?.template)"
-            class="confirmation-info"
-         >
-            <p class="confirmation-text-1">Unit {{ editData?.data?.number }}</p>
-            <p class="confirmation-text-2">VIN: {{ editData?.data?.vin }}</p>
-         </div>
-         <!-- Shipper, Repair Shop -->
-         <div
+        <!-- Normal Header -->
+        <p
             *ngIf="
-               [
-                  'shipper',
-                  'repair shop',
-                  'Company Parking',
-                  'Company Office',
-                  'Company Repair Shop',
-                  'Company Terminal'
-               ].includes(editData?.template)
+                !editData.rating &&
+                !editData.subTypeStatus &&
+                editData.subType !== 'cdl void'
             "
-            class="confirmation-info"
-         >
-            <p class="confirmation-text-1">{{ editData?.data?.name }}</p>
-            <p class="confirmation-text-2">
-               Address: {{ editData?.data?.address?.address }}
-            </p>
-         </div>
+            class="confirmation-header"
+        >
+            Are you sure you want to
+            {{
+                editData?.type === 'info'
+                    ? editData?.subType
+                    : editData?.type === 'multiple delete'
+                    ? 'delete' + ' ' + editData.array.length
+                    : editData.type
+            }}
+            {{ editData?.type === 'multiple delete' ? null : 'this' }}
+            {{
+                editData?.type === 'multiple delete'
+                    ? editData?.template + 's'
+                    : editData?.template
+            }}?
+        </p>
 
-         <!-- Broker -->
-         <div
-            *ngIf="['broker'].includes(editData?.template)"
-            class="confirmation-info"
-         >
-            <p class="confirmation-text-1">
-               {{ editData?.data?.businessName }}
-            </p>
-            <p class="confirmation-text-2">
-               Phone: {{ editData?.data?.phone }}
-            </p>
-         </div>
-         <!-- CDL -->
-         <div
-            *ngIf="['cdl'].includes(editData?.template)"
-            class="confirmation-info"
-         >
-            <p class="confirmation-text-1 confirmation-flex">
-               <span class="confirmation-state">{{
-                  editData?.data?.state
-               }}</span>
-               {{ editData?.data?.cdlNumber }}
-            </p>
-            <p class="confirmation-text-2">
-               Expires: {{ editData?.data.expDate | formatDateP }}
-            </p>
-            <div
-               *ngIf="editData.subType === 'cdl void'"
-               class="confirmation-text-3 cdl-void-message"
-            >
-               This action can be undone by voiding or deleting active CDL and
-               activate or renew old one.
-            </div>
-         </div>
-         <!-- Medical, Mvr, Test -->
-         <div
-            *ngIf="['mvr', 'test', 'medical'].includes(editData?.template)"
-            class="confirmation-info"
-         >
-            <p
-               class="confirmation-text-1"
-               *ngIf="editData?.template === 'test'"
-            >
-               {{ editData?.data?.testTypeName }} Test ({{
-                  editData?.data?.reasonName
-               }})
-            </p>
-            <p
-               class="confirmation-text-1"
-               *ngIf="editData?.template === 'medical'"
-            >
-               Issued: {{ editData?.data?.issueDate | formatDateP }}
-            </p>
-            <p class="confirmation-text-1" *ngIf="editData?.template === 'mvr'">
-               CDL: {{ editData?.data.cdlNumber }}
-            </p>
-            <p class="confirmation-text-2">
-               {{
-                  editData?.template === 'test' || editData?.template === 'mvr'
-                     ? 'Issued'
-                     : 'Expires'
-               }}:
-               <span *ngIf="editData?.template === 'test'">{{
-                  editData?.data.testingDate | formatDateP
-               }}</span>
-               <span *ngIf="editData?.template === 'medical'">{{
-                  editData?.data.expDate | formatDateP
-               }}</span>
-               <span *ngIf="editData?.template === 'mvr'">{{
-                  editData?.data.issueDate | formatDateP
-               }}</span>
-            </p>
-         </div>
-      </div>
+        <!-- Renew CDL -->
+        <p
+            *ngIf="
+                editData.subType === 'cdl void' &&
+                editData?.type === 'info' &&
+                editData.template === 'cdl'
+            "
+            class="confirmation-header"
+        >
+            <span class="renew-cdl-person-name">{{
+                editData.data.data?.firstName?.concat(
+                    ' ',
+                    editData.data.data?.lastName
+                )
+            }}</span>
+            has active CDL. <br />
+            You need to void current CDL first.
+        </p>
 
-      <!---------------------------------------------- Confirmation Body for Array ---------------------------------------------->
-      <div *ngIf="editData.array?.length" class="confirmation-array-body">
-         <div
-            *ngFor="let item of editData.array; trackBy: identity"
-            class="confirmation-body"
-         >
+        <!---------------------------------------------- Confirmation Body For Object ---------------------------------------------->
+        <div *ngIf="editData.data" class="confirmation-body">
             <!-- Svg -->
             <svg-icon
-               class="confirmation-svg"
-               *ngIf="editData?.svg && item?.data?.avatar"
-               [src]="item?.data?.avatar"
+                class="confirmation-svg"
+                *ngIf="editData?.svg && editData?.data?.avatar"
+                [src]="editData?.data?.avatar"
             ></svg-icon>
             <!-- Image -->
             <img
-               *ngIf="editData?.image && item?.data?.avatar"
-               [src]="imageBase64Service.sanitizer(item?.data?.avatar)"
-               [alt]="item?.data?.name?.substring(0, 1)"
-               class="confirmation-img"
+                *ngIf="editData?.image && editData?.data?.avatar"
+                [src]="imageBase64Service.sanitizer(editData?.data?.avatar)"
+                [alt]="editData?.data?.name?.substring(0, 1)"
+                class="confirmation-img"
             />
             <!-- Initial name, if avatar not upload -->
             <div
-               *ngIf="editData?.image && !item?.data?.avatar"
-               class="no-profile-image"
+                *ngIf="editData?.image && !editData?.data?.avatar"
+                class="no-profile-image"
             >
-               <app-profile-images
-                  [indx]="0"
-                  [size]="'confirmation'"
-                  [name]="item?.data?.name"
-               >
-               </app-profile-images>
+                <app-profile-images
+                    [indx]="0"
+                    [size]="'confirmation'"
+                    [name]="editData?.data?.name"
+                >
+                </app-profile-images>
             </div>
             <!---------------------------------------------- Different templates for body --------------------------------------------->
             <!-- Driver, Owner -->
             <div
-               *ngIf="['driver', 'owner'].includes(editData?.template)"
-               class="confirmation-info"
+                *ngIf="['driver', 'owner'].includes(editData?.template)"
+                class="confirmation-info"
             >
-               <p class="confirmation-text-1">{{ item?.data?.name }}</p>
-               <p class="confirmation-text-2">SSN: {{ item?.data?.ssn }}</p>
+                <p class="confirmation-text-1">{{ editData?.data?.name }}</p>
+                <p class="confirmation-text-2">
+                    SSN: {{ editData?.data?.ssn }}
+                </p>
             </div>
             <!-- Truck, Trailer -->
             <div
-               *ngIf="['truck', 'trailer'].includes(editData?.template)"
-               class="confirmation-info"
+                *ngIf="['truck', 'trailer'].includes(editData?.template)"
+                class="confirmation-info"
             >
-               <p class="confirmation-text-1">Unit {{ item?.data?.number }}</p>
-               <p class="confirmation-text-2">VIN: {{ item?.data?.vin }}</p>
+                <p class="confirmation-text-1">
+                    Unit {{ editData?.data?.number }}
+                </p>
+                <p class="confirmation-text-2">
+                    VIN: {{ editData?.data?.vin }}
+                </p>
             </div>
             <!-- Shipper, Repair Shop -->
             <div
-               *ngIf="
-                  ['shipper', 'repair shop', 'parking'].includes(
-                     editData?.template
-                  )
-               "
-               class="confirmation-info"
+                *ngIf="
+                    [
+                        'shipper',
+                        'repair shop',
+                        'Company Parking',
+                        'Company Office',
+                        'Company Repair Shop',
+                        'Company Terminal'
+                    ].includes(editData?.template)
+                "
+                class="confirmation-info"
             >
-               <p class="confirmation-text-1">{{ item?.data?.name }}</p>
-               <p class="confirmation-text-2">
-                  Address: {{ item?.data?.address?.address }}
-               </p>
+                <p class="confirmation-text-1">{{ editData?.data?.name }}</p>
+                <p class="confirmation-text-2">
+                    Address: {{ editData?.data?.address?.address }}
+                </p>
             </div>
-         </div>
-      </div>
-   </div>
+
+            <!-- Broker -->
+            <div
+                *ngIf="['broker'].includes(editData?.template)"
+                class="confirmation-info"
+            >
+                <p class="confirmation-text-1">
+                    {{ editData?.data?.businessName }}
+                </p>
+                <p class="confirmation-text-2">
+                    Phone: {{ editData?.data?.phone }}
+                </p>
+            </div>
+            <!-- CDL -->
+            <div
+                *ngIf="['cdl'].includes(editData?.template)"
+                class="confirmation-info"
+            >
+                <p class="confirmation-text-1 confirmation-flex">
+                    <span class="confirmation-state">{{
+                        editData?.data?.state
+                    }}</span>
+                    {{ editData?.data?.cdlNumber }}
+                </p>
+                <p class="confirmation-text-2">
+                    Expires: {{ editData?.data.expDate | formatDateP }}
+                </p>
+                <div
+                    *ngIf="editData.subType === 'cdl void'"
+                    class="confirmation-text-3 cdl-void-message"
+                >
+                    This action can be undone by voiding or deleting active CDL
+                    and activate or renew old one.
+                </div>
+            </div>
+            <!-- Medical, Mvr, Test -->
+            <div
+                *ngIf="['mvr', 'test', 'medical'].includes(editData?.template)"
+                class="confirmation-info"
+            >
+                <p
+                    class="confirmation-text-1"
+                    *ngIf="editData?.template === 'test'"
+                >
+                    {{ editData?.data?.testTypeName }} Test ({{
+                        editData?.data?.reasonName
+                    }})
+                </p>
+                <p
+                    class="confirmation-text-1"
+                    *ngIf="editData?.template === 'medical'"
+                >
+                    Issued: {{ editData?.data?.issueDate | formatDateP }}
+                </p>
+                <p
+                    class="confirmation-text-1"
+                    *ngIf="editData?.template === 'mvr'"
+                >
+                    CDL: {{ editData?.data.cdlNumber }}
+                </p>
+                <p class="confirmation-text-2">
+                    {{
+                        editData?.template === 'test' ||
+                        editData?.template === 'mvr'
+                            ? 'Issued'
+                            : 'Expires'
+                    }}:
+                    <span *ngIf="editData?.template === 'test'">{{
+                        editData?.data.testingDate | formatDateP
+                    }}</span>
+                    <span *ngIf="editData?.template === 'medical'">{{
+                        editData?.data.expDate | formatDateP
+                    }}</span>
+                    <span *ngIf="editData?.template === 'mvr'">{{
+                        editData?.data.issueDate | formatDateP
+                    }}</span>
+                </p>
+            </div>
+        </div>
+
+        <!---------------------------------------------- Confirmation Body for Array ---------------------------------------------->
+        <div *ngIf="editData.array?.length" class="confirmation-array-body">
+            <div
+                *ngFor="let item of editData.array; trackBy: identity"
+                class="confirmation-body"
+            >
+                <!-- Svg -->
+                <svg-icon
+                    class="confirmation-svg"
+                    *ngIf="editData?.svg && item?.data?.avatar"
+                    [src]="item?.data?.avatar"
+                ></svg-icon>
+                <!-- Image -->
+                <img
+                    *ngIf="editData?.image && item?.data?.avatar"
+                    [src]="imageBase64Service.sanitizer(item?.data?.avatar)"
+                    [alt]="item?.data?.name?.substring(0, 1)"
+                    class="confirmation-img"
+                />
+                <!-- Initial name, if avatar not upload -->
+                <div
+                    *ngIf="editData?.image && !item?.data?.avatar"
+                    class="no-profile-image"
+                >
+                    <app-profile-images
+                        [indx]="0"
+                        [size]="'confirmation'"
+                        [name]="item?.data?.name"
+                    >
+                    </app-profile-images>
+                </div>
+                <!---------------------------------------------- Different templates for body --------------------------------------------->
+                <!-- Driver, Owner -->
+                <div
+                    *ngIf="['driver', 'owner'].includes(editData?.template)"
+                    class="confirmation-info"
+                >
+                    <p class="confirmation-text-1">{{ item?.data?.name }}</p>
+                    <p class="confirmation-text-2">
+                        SSN: {{ item?.data?.ssn }}
+                    </p>
+                </div>
+                <!-- Truck, Trailer -->
+                <div
+                    *ngIf="['truck', 'trailer'].includes(editData?.template)"
+                    class="confirmation-info"
+                >
+                    <p class="confirmation-text-1">
+                        Unit {{ item?.data?.number }}
+                    </p>
+                    <p class="confirmation-text-2">
+                        VIN: {{ item?.data?.vin }}
+                    </p>
+                </div>
+                <!-- Shipper, Repair Shop -->
+                <div
+                    *ngIf="
+                        ['shipper', 'repair shop', 'parking'].includes(
+                            editData?.template
+                        )
+                    "
+                    class="confirmation-info"
+                >
+                    <p class="confirmation-text-1">{{ item?.data?.name }}</p>
+                    <p class="confirmation-text-2">
+                        Address: {{ item?.data?.address?.address }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </app-ta-modal>

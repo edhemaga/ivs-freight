@@ -10,15 +10,15 @@ import { AgmCoreModule } from '@agm/core';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-   declarations: [RepairTableComponent, RepairCardComponent],
-   imports: [
-      CommonModule,
-      RepairRoutingModule,
-      TruckassistTableModule,
-      AngularSvgIconModule,
-      SharedModule,
-      AgmCoreModule,
-      AgmSnazzyInfoWindowModule,
-   ],
+    declarations: [RepairTableComponent, RepairCardComponent],
+    imports: [
+        CommonModule,
+        RepairRoutingModule,
+        TruckassistTableModule,
+        AngularSvgIconModule,
+        SharedModule,
+        AgmCoreModule,
+        AgmSnazzyInfoWindowModule,
+    ],
 })
 export class RepairModule {}

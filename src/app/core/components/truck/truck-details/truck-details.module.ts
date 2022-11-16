@@ -8,17 +8,17 @@ import { TruckDetailsCardComponent } from '../truck-details-card/truck-details-c
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-   declarations: [
-      TruckDetailsComponent,
-      TruckDetailsItemComponent,
-      TruckDetailsCardComponent,
-   ],
-   exports: [TruckDetailsCardComponent, SharedModule],
-   imports: [
-      CommonModule,
-      TruckDetailsRoutes,
-      TruckassistProgressExpirationModule,
-      SharedModule,
-   ],
+    declarations: [
+        TruckDetailsComponent,
+        TruckDetailsItemComponent,
+        TruckDetailsCardComponent,
+    ],
+    exports: [TruckDetailsCardComponent, SharedModule],
+    imports: [
+        CommonModule,
+        TruckDetailsRoutes,
+        TruckassistProgressExpirationModule,
+        SharedModule,
+    ],
 })
 export class TruckDetailsModule {}

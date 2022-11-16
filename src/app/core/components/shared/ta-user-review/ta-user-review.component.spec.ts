@@ -6,22 +6,22 @@ import { DebugElement } from '@angular/core';
 import { TaUserReviewComponent } from './ta-user-review.component';
 
 describe('TaUserReviewComponent', () => {
-   let component: TaUserReviewComponent;
-   let fixture: ComponentFixture<TaUserReviewComponent>;
+    let component: TaUserReviewComponent;
+    let fixture: ComponentFixture<TaUserReviewComponent>;
 
-   beforeEach(async(() => {
-      TestBed.configureTestingModule({
-         declarations: [TaUserReviewComponent],
-      }).compileComponents();
-   }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [TaUserReviewComponent],
+        }).compileComponents();
+    }));
 
-   beforeEach(() => {
-      fixture = TestBed.createComponent(TaUserReviewComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-   });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(TaUserReviewComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-   it('should create', () => {
-      expect(component).toBeTruthy();
-   });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

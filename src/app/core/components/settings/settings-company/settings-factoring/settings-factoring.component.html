@@ -1,99 +1,99 @@
 <div class="settings-factoring">
-   <div class="settings-header">
-      <div class="settings-name">
-         <p>Factoring Company</p>
-      </div>
+    <div class="settings-header">
+        <div class="settings-name">
+            <p>Factoring Company</p>
+        </div>
 
-      <div
-         [ngClass]="{
-            'no-factoring-data': !factoringData?.factoringCompany?.name
-         }"
-         class="settings-header-buttons"
-         *ngIf="factoringData.email"
-      >
-         <div class="settings-header-button">
-            <svg-icon
-               src="ic_pen.svg"
-               class="settings-edit-button"
-               (click)="
-                  onAction({
-                     modalName: 'factoring',
-                     type: factoringData.factoringCompany?.name
-                        ? 'edit'
-                        : 'new',
-                     company: factoringData
-                  })
-               "
-            ></svg-icon>
-         </div>
-         <div
-            class="settings-header-button"
-            *ngIf="factoringData?.factoringCompany?.name"
-         >
+        <div
+            [ngClass]="{
+                'no-factoring-data': !factoringData?.factoringCompany?.name
+            }"
+            class="settings-header-buttons"
+            *ngIf="factoringData.email"
+        >
+            <div class="settings-header-button">
+                <svg-icon
+                    src="ic_pen.svg"
+                    class="settings-edit-button"
+                    (click)="
+                        onAction({
+                            modalName: 'factoring',
+                            type: factoringData.factoringCompany?.name
+                                ? 'edit'
+                                : 'new',
+                            company: factoringData
+                        })
+                    "
+                ></svg-icon>
+            </div>
+            <div
+                class="settings-header-button"
+                *ngIf="factoringData?.factoringCompany?.name"
+            >
+                <div class="border-left"></div>
+                <svg-icon
+                    src="assets/svg/common/ic_trash.svg"
+                    class="settings-trash-button"
+                    (click)="onDeleteFactoringCompany()"
+                ></svg-icon>
+            </div>
+        </div>
+        <div class="settings-header-button" *ngIf="!factoringData.email">
             <div class="border-left"></div>
             <svg-icon
-               src="assets/svg/common/ic_trash.svg"
-               class="settings-trash-button"
-               (click)="onDeleteFactoringCompany()"
+                src="assets/svg/common/ic_plus.svg"
+                class="settings-plus-button"
+                (click)="onAction({ modalName: 'basic', type: 'new' })"
             ></svg-icon>
-         </div>
-      </div>
-      <div class="settings-header-button" *ngIf="!factoringData.email">
-         <div class="border-left"></div>
-         <svg-icon
-            src="assets/svg/common/ic_plus.svg"
-            class="settings-plus-button"
-            (click)="onAction({ modalName: 'basic', type: 'new' })"
-         ></svg-icon>
-      </div>
-   </div>
-   <div class="settings-body">
-      <app-ta-re-card
-         [cardNameCommon]="factoringData?.factoringCompany?.name"
-         [haveHeaderText]="true"
-         [haveDots]="false"
-         [hasFooter]="false"
-         *ngIf="factoringData?.factoringCompany?.name"
-      >
-         <div class="settings-body-items">
-            <div class="single-item">
-               <svg-icon
-                  class="company-icons"
-                  src="assets/svg/common/ic_phone.svg"
-               ></svg-icon>
-               <app-ta-copy
-                  [copyValue]="factoringData?.factoringCompany?.phone"
-               >
-               </app-ta-copy>
+        </div>
+    </div>
+    <div class="settings-body">
+        <app-ta-re-card
+            [cardNameCommon]="factoringData?.factoringCompany?.name"
+            [haveHeaderText]="true"
+            [haveDots]="false"
+            [hasFooter]="false"
+            *ngIf="factoringData?.factoringCompany?.name"
+        >
+            <div class="settings-body-items">
+                <div class="single-item">
+                    <svg-icon
+                        class="company-icons"
+                        src="assets/svg/common/ic_phone.svg"
+                    ></svg-icon>
+                    <app-ta-copy
+                        [copyValue]="factoringData?.factoringCompany?.phone"
+                    >
+                    </app-ta-copy>
+                </div>
+                <div class="single-item">
+                    <svg-icon
+                        class="company-icons"
+                        src="assets/svg/common/ic_email.svg"
+                    ></svg-icon>
+                    <app-ta-copy
+                        [copyValue]="factoringData?.factoringCompany?.email"
+                    >
+                    </app-ta-copy>
+                </div>
+                <div class="single-item">
+                    <svg-icon
+                        class="company-icons"
+                        src="assets/svg/truckassist-table/location-icon.svg"
+                    ></svg-icon>
+                    <span class="single-item-address">{{
+                        factoringData?.factoringCompany?.address?.address
+                    }}</span>
+                </div>
             </div>
-            <div class="single-item">
-               <svg-icon
-                  class="company-icons"
-                  src="assets/svg/common/ic_email.svg"
-               ></svg-icon>
-               <app-ta-copy
-                  [copyValue]="factoringData?.factoringCompany?.email"
-               >
-               </app-ta-copy>
-            </div>
-            <div class="single-item">
-               <svg-icon
-                  class="company-icons"
-                  src="assets/svg/truckassist-table/location-icon.svg"
-               ></svg-icon>
-               <span class="single-item-address">{{
-                  factoringData?.factoringCompany?.address?.address
-               }}</span>
-            </div>
-         </div>
-         <app-ta-custom-card
-            [cardName]="'Notice of Assigment'"
-            [bodyTemplate]="'card'"
-            [isCardOpen]="true"
-            [hasDivider]="true"
-            [textBottomPossiton]="'-2px'"
-         >
-            <!-- <div
+            <app-ta-custom-card
+                [cardName]="'Notice of Assigment'"
+                [bodyTemplate]="'card'"
+                [isCardOpen]="true"
+                [hasDivider]="true"
+                [textBottomPossiton]="'-2px'"
+            >
+                <!-- <div
           class="notice-template-data-default"
 
         >
@@ -102,7 +102,7 @@
               {{ factoringData?.factoringCompany?.noticeOfAssigment }}
             </div>
           </div> -->
-            <!-- <div class="notice-template-item">
+                <!-- <div class="notice-template-item">
             <div class="notice-item-value">
               {{
                 factoringData?.factoringCompany?.noticeAssigment.param1 +
@@ -137,8 +137,8 @@
               {{ factoringData?.factoringCompany?.noticeAssigment.param2 }} <a href="tel:+{{factoringData?.factoringCompany?.noticeAssigment.phone }}"><span class="phone-notice-item">{{factoringData.noticeAssigment.phone }}</span></a>
             </div>
           </div> -->
-            <!-- </div> -->
-         </app-ta-custom-card>
-      </app-ta-re-card>
-   </div>
+                <!-- </div> -->
+            </app-ta-custom-card>
+        </app-ta-re-card>
+    </div>
 </div>

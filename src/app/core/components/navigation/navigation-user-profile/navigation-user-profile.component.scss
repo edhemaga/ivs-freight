@@ -1,147 +1,147 @@
 @import '../navigation.design.scss';
 
 .user-panel {
-   position: absolute;
-   bottom: 10px;
-   left: 7px;
-   z-index: 99;
-   width: 184px;
-   height: 202px;
-   padding: 2px 4px;
-   border-radius: 3px 3px 3px 20px;
-   box-shadow: $nav-boxshadow;
-   background-color: $nav-white;
-   -webkit-user-select: none;
-   -moz-user-select: none;
-   -ms-user-select: none;
-   user-select: none;
+    position: absolute;
+    bottom: 10px;
+    left: 7px;
+    z-index: 99;
+    width: 184px;
+    height: 202px;
+    padding: 2px 4px;
+    border-radius: 3px 3px 3px 20px;
+    box-shadow: $nav-boxshadow;
+    background-color: $nav-white;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 
-   p {
-      margin: 0;
-      font-size: $nav-font-size;
-      font-weight: $nav-font-medium;
-      color: $nav-text-color;
-   }
+    p {
+        margin: 0;
+        font-size: $nav-font-size;
+        font-weight: $nav-font-medium;
+        color: $nav-text-color;
+    }
 
-   .user-content {
-      display: flex;
-      align-items: center;
-      height: 30px;
-      width: 176px;
-      padding: 4px 6px;
-      transition: $nav-transition;
+    .user-content {
+        display: flex;
+        align-items: center;
+        height: 30px;
+        width: 176px;
+        padding: 4px 6px;
+        transition: $nav-transition;
 
-      .user-content-hover {
-         display: none;
-      }
+        .user-content-hover {
+            display: none;
+        }
 
-      .user-content-text {
-         margin-left: 12px;
-      }
+        .user-content-text {
+            margin-left: 12px;
+        }
 
-      .user-content-svg {
-         position: relative;
-         bottom: 1px;
-      }
-
-      .user-content-logout {
-         color: $nav-important;
-      }
-
-      &:nth-child(1) {
-         margin-top: 0px !important;
-      }
-
-      &:hover {
-         .user-content-hover {
-            display: inline;
-            height: 28px;
-            width: 176px;
-            content: '';
-            background: $nav-hover-color;
-            position: absolute;
-            z-index: -1;
-            left: 4px;
-            border-radius: 3px;
-         }
-
-         .user-content-svg {
-            svg {
-               path {
-                  fill: $nav-svg-hover;
-               }
-            }
-         }
-
-         .user-content-logout {
-            color: $nav-important-hover !important;
-
-            svg {
-               #person-to-portal {
-                  fill: $nav-important !important;
-               }
-            }
-         }
-
-         .user-content-status {
-            svg {
-               #minus-circle {
-                  fill: $user-busy-status-hover !important;
-               }
-               #check-circle {
-                  fill: $user-active-status-hover !important;
-               }
-            }
-         }
-
-         .user-content-text {
-            color: $nav-text-color-hover;
-         }
-      }
-   }
-
-   .panel-user {
-      display: flex;
-      align-items: center;
-      height: 40px;
-      position: relative;
-      top: 8px;
-      right: -1px;
-
-      .panel-image {
-         width: 32px;
-         height: 32px;
-         object-fit: fill;
-      }
-
-      .panel-name {
-         position: relative;
-         top: 1px;
-         p {
-            margin-left: 6px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            width: 140px;
-            overflow: hidden;
-
-            &:nth-child(1) {
-               font-weight: $nav-font-semibold;
-            }
-            &:nth-child(2) {
-               font-size: $nav-font-size-small;
-               font-weight: $nav-font-regular;
-            }
-         }
-
-         .nav-footer-user-company {
+        .user-content-svg {
             position: relative;
-            top: 2px;
-         }
+            bottom: 1px;
+        }
 
-         .nav-footer-user-name {
+        .user-content-logout {
+            color: $nav-important;
+        }
+
+        &:nth-child(1) {
+            margin-top: 0px !important;
+        }
+
+        &:hover {
+            .user-content-hover {
+                display: inline;
+                height: 28px;
+                width: 176px;
+                content: '';
+                background: $nav-hover-color;
+                position: absolute;
+                z-index: -1;
+                left: 4px;
+                border-radius: 3px;
+            }
+
+            .user-content-svg {
+                svg {
+                    path {
+                        fill: $nav-svg-hover;
+                    }
+                }
+            }
+
+            .user-content-logout {
+                color: $nav-important-hover !important;
+
+                svg {
+                    #person-to-portal {
+                        fill: $nav-important !important;
+                    }
+                }
+            }
+
+            .user-content-status {
+                svg {
+                    #minus-circle {
+                        fill: $user-busy-status-hover !important;
+                    }
+                    #check-circle {
+                        fill: $user-active-status-hover !important;
+                    }
+                }
+            }
+
+            .user-content-text {
+                color: $nav-text-color-hover;
+            }
+        }
+    }
+
+    .panel-user {
+        display: flex;
+        align-items: center;
+        height: 40px;
+        position: relative;
+        top: 8px;
+        right: -1px;
+
+        .panel-image {
+            width: 32px;
+            height: 32px;
+            object-fit: fill;
+        }
+
+        .panel-name {
             position: relative;
-            top: -1px;
-         }
-      }
-   }
+            top: 1px;
+            p {
+                margin-left: 6px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                width: 140px;
+                overflow: hidden;
+
+                &:nth-child(1) {
+                    font-weight: $nav-font-semibold;
+                }
+                &:nth-child(2) {
+                    font-size: $nav-font-size-small;
+                    font-weight: $nav-font-regular;
+                }
+            }
+
+            .nav-footer-user-company {
+                position: relative;
+                top: 2px;
+            }
+
+            .nav-footer-user-name {
+                position: relative;
+                top: -1px;
+            }
+        }
+    }
 }

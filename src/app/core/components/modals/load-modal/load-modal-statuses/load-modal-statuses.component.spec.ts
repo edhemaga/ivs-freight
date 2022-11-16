@@ -6,22 +6,22 @@ import { DebugElement } from '@angular/core';
 import { LoadModalStatusesComponent } from './load-modal-statuses.component';
 
 describe('LoadModalStatusesComponent', () => {
-   let component: LoadModalStatusesComponent;
-   let fixture: ComponentFixture<LoadModalStatusesComponent>;
+    let component: LoadModalStatusesComponent;
+    let fixture: ComponentFixture<LoadModalStatusesComponent>;
 
-   beforeEach(async(() => {
-      TestBed.configureTestingModule({
-         declarations: [LoadModalStatusesComponent],
-      }).compileComponents();
-   }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [LoadModalStatusesComponent],
+        }).compileComponents();
+    }));
 
-   beforeEach(() => {
-      fixture = TestBed.createComponent(LoadModalStatusesComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-   });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(LoadModalStatusesComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-   it('should create', () => {
-      expect(component).toBeTruthy();
-   });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

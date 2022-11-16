@@ -6,22 +6,22 @@ import { DebugElement } from '@angular/core';
 import { RepairOrderModalComponent } from './repair-order-modal.component';
 
 describe('RepairOrderModalComponent', () => {
-   let component: RepairOrderModalComponent;
-   let fixture: ComponentFixture<RepairOrderModalComponent>;
+    let component: RepairOrderModalComponent;
+    let fixture: ComponentFixture<RepairOrderModalComponent>;
 
-   beforeEach(async(() => {
-      TestBed.configureTestingModule({
-         declarations: [RepairOrderModalComponent],
-      }).compileComponents();
-   }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [RepairOrderModalComponent],
+        }).compileComponents();
+    }));
 
-   beforeEach(() => {
-      fixture = TestBed.createComponent(RepairOrderModalComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-   });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(RepairOrderModalComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-   it('should create', () => {
-      expect(component).toBeTruthy();
-   });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

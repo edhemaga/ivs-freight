@@ -1,49 +1,52 @@
 import {
-   Component,
-   EventEmitter,
-   Input,
-   OnChanges,
-   OnInit,
-   Output,
-   SimpleChanges,
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
 } from '@angular/core';
 
 @Component({
-   selector: 'app-toolbar-filters',
-   templateUrl: './toolbar-filters.component.html',
-   styleUrls: ['./toolbar-filters.component.scss'],
+    selector: 'app-toolbar-filters',
+    templateUrl: './toolbar-filters.component.html',
+    styleUrls: ['./toolbar-filters.component.scss'],
 })
 export class ToolbarFiltersComponent implements OnInit, OnChanges {
-   @Output() toolbarFilter: EventEmitter<any> = new EventEmitter();
-   @Input() options: any;
-   @Input() activeTableData: any;
+    @Output() toolbarFilter: EventEmitter<any> = new EventEmitter();
+    @Input() options: any;
+    @Input() activeTableData: any;
 
-   constructor() {}
+    constructor() {}
 
-   // --------------------------------NgOnInit---------------------------------
-   ngOnInit(): void {}
+    // --------------------------------NgOnInit---------------------------------
+    ngOnInit(): void {}
 
-   // --------------------------------NgOnChanges---------------------------------
-   ngOnChanges(changes: SimpleChanges) {
-      if (!changes?.options?.firstChange && changes?.options) {
-         this.options = changes.options.currentValue;
-      }
+    // --------------------------------NgOnChanges---------------------------------
+    ngOnChanges(changes: SimpleChanges) {
+        if (!changes?.options?.firstChange && changes?.options) {
+            this.options = changes.options.currentValue;
+        }
 
-      if (!changes?.activeTableData?.firstChange && changes?.activeTableData) {
-         this.activeTableData = changes.activeTableData.currentValue;
-      }
-   }
+        if (
+            !changes?.activeTableData?.firstChange &&
+            changes?.activeTableData
+        ) {
+            this.activeTableData = changes.activeTableData.currentValue;
+        }
+    }
 
-   changeModeView(modeView: string) {
-      this.options.toolbarActions.viewModeOptions =
-         this.options.toolbarActions.viewModeOptions.map((viewMode: any) => {
-            viewMode.active = viewMode.name === modeView;
+    changeModeView(modeView: string) {
+        this.options.toolbarActions.viewModeOptions =
+            this.options.toolbarActions.viewModeOptions.map((viewMode: any) => {
+                viewMode.active = viewMode.name === modeView;
 
-            return viewMode;
-         });
+                return viewMode;
+            });
 
-      this.toolbarFilter.emit({
-         mode: modeView,
-      });
-   }
+        this.toolbarFilter.emit({
+            mode: modeView,
+        });
+    }
 }

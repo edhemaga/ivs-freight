@@ -1,57 +1,57 @@
 <div class="upload-carousel {{ customClass }} {{ customDetailsPageClass }}">
-   <div class="ta-upload-files-carousel">
-      <div
-         class="carousel-slider"
-         [ngClass]="{
-            'multiple-slider': ['medium', 'large'].includes(
-               this.customClass?.toLowerCase()
-            )
-         }"
-         [ngStyle]="{
-            transform: 'translateX(' + translateXMultipleSlides + 'px)'
-         }"
-      >
-         <ng-content></ng-content>
-      </div>
-   </div>
+    <div class="ta-upload-files-carousel">
+        <div
+            class="carousel-slider"
+            [ngClass]="{
+                'multiple-slider': ['medium', 'large'].includes(
+                    this.customClass?.toLowerCase()
+                )
+            }"
+            [ngStyle]="{
+                transform: 'translateX(' + translateXMultipleSlides + 'px)'
+            }"
+        >
+            <ng-content></ng-content>
+        </div>
+    </div>
 
-   <!-- Carousel Button Tabs -->
+    <!-- Carousel Button Tabs -->
 
-   <div *ngIf="hasCarouselBottomTabs" class="carousel-tabs-control">
-      <div
-         *ngFor="let len of files; let ind = index; trackBy: identity"
-         class="carousel-tab"
-         [ngClass]="{ 'active-tab': currentSlide === ind }"
-      ></div>
-   </div>
+    <div *ngIf="hasCarouselBottomTabs" class="carousel-tabs-control">
+        <div
+            *ngFor="let len of files; let ind = index; trackBy: identity"
+            class="carousel-tab"
+            [ngClass]="{ 'active-tab': currentSlide === ind }"
+        ></div>
+    </div>
 
-   <!-- Carousel Buttons Left & Right -->
-   <div
-      class="ta-upload-carousel-control-bg prev"
-      [hidden]="
-         (files.length < 2 && customClass === 'small') ||
-         (files.length < 3 && customClass === 'medium') ||
-         (files.length < 4 && customClass === 'large')
-      "
-      (click)="onAction('prev')"
-   >
-      <svg-icon
-         class="ta-upload-files-control"
-         src="assets/svg/common/arrow-left.svg"
-      ></svg-icon>
-   </div>
-   <div
-      class="ta-upload-carousel-control-bg next"
-      [hidden]="
-         (files.length < 2 && customClass === 'small') ||
-         (files.length < 3 && customClass === 'medium') ||
-         (files.length < 4 && customClass === 'large')
-      "
-      (click)="onAction('next')"
-   >
-      <svg-icon
-         class="ta-upload-files-control ta-upload-files-carousel-right"
-         src="assets/svg/common/arrow-left.svg"
-      ></svg-icon>
-   </div>
+    <!-- Carousel Buttons Left & Right -->
+    <div
+        class="ta-upload-carousel-control-bg prev"
+        [hidden]="
+            (files.length < 2 && customClass === 'small') ||
+            (files.length < 3 && customClass === 'medium') ||
+            (files.length < 4 && customClass === 'large')
+        "
+        (click)="onAction('prev')"
+    >
+        <svg-icon
+            class="ta-upload-files-control"
+            src="assets/svg/common/arrow-left.svg"
+        ></svg-icon>
+    </div>
+    <div
+        class="ta-upload-carousel-control-bg next"
+        [hidden]="
+            (files.length < 2 && customClass === 'small') ||
+            (files.length < 3 && customClass === 'medium') ||
+            (files.length < 4 && customClass === 'large')
+        "
+        (click)="onAction('next')"
+    >
+        <svg-icon
+            class="ta-upload-files-control ta-upload-files-carousel-right"
+            src="assets/svg/common/arrow-left.svg"
+        ></svg-icon>
+    </div>
 </div>

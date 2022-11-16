@@ -13,14 +13,19 @@ import { SphStep2FormComponent } from './sph-form-steps/step2/step2-form/step2-f
 import { SphFormThankYouComponent } from './sph-form-thank-you/sph-form-thank-you.component';
 
 @NgModule({
-   declarations: [
-      SphFormComponent,
-      Step1Component,
-      Step2Component,
-      Step3Component,
-      SphStep2FormComponent,
-      SphFormThankYouComponent,
-   ],
-   imports: [CommonModule, SharedModule, SphFormRoutingModule, ApplicantModule],
+    declarations: [
+        SphFormComponent,
+        Step1Component,
+        Step2Component,
+        Step3Component,
+        SphStep2FormComponent,
+        SphFormThankYouComponent,
+    ],
+    imports: [
+        CommonModule,
+        SharedModule,
+        SphFormRoutingModule,
+        ApplicantModule,
+    ],
 })
 export class SphFormModule {}

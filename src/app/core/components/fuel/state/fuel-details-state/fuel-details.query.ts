@@ -4,7 +4,7 @@ import { FuelItemState, FuelItemStore } from './fuel-details.store';
 
 @Injectable({ providedIn: 'root' })
 export class FuelDetailsQuery extends QueryEntity<FuelItemState> {
-   constructor(protected fuelItemStore: FuelItemStore) {
-      super(fuelItemStore);
-   }
+    constructor(protected fuelItemStore: FuelItemStore) {
+        super(fuelItemStore);
+    }
 }

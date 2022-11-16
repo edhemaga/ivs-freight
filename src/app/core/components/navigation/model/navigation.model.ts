@@ -1,37 +1,37 @@
 export interface Navigation {
-   id: number;
-   name: string;
-   image: string;
-   route: any;
-   arrow?: string;
-   isRouteActive: boolean;
-   isSubrouteActive?: boolean;
+    id: number;
+    name: string;
+    image: string;
+    route: any;
+    arrow?: string;
+    isRouteActive: boolean;
+    isSubrouteActive?: boolean;
 }
 export interface NavigationSubRoute {
-   name: string;
-   route: string;
+    name: string;
+    route: string;
 }
 
 export interface NavigationSubRoutes {
-   routeId: number;
-   routes: string | [];
-   activeRouteFlegId?: number;
+    routeId: number;
+    routes: string | [];
+    activeRouteFlegId?: number;
 }
 export interface NavigationModal {
-   id: number;
-   name: string;
-   path: string;
+    id: number;
+    name: string;
+    path: string;
 }
 export interface NavigationUserPanel {
-   id: number;
-   name: string;
-   image: string;
-   action: string;
+    id: number;
+    name: string;
+    image: string;
+    action: string;
 }
 export interface FooterData {
-   id: number;
-   image: string | any;
-   text: string | {};
-   route?: string;
-   isRouteActive?: boolean;
+    id: number;
+    image: string | any;
+    text: string | {};
+    route?: string;
+    isRouteActive?: boolean;
 }

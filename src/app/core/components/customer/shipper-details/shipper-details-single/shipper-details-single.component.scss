@@ -1,181 +1,181 @@
 @import '../shipper-details.component.scss';
 app-shipper-details-single {
-   .note-cards {
-      padding: 0 7px;
-      .note-body {
-         padding: 0 4px !important;
-         // margin-bottom: 7px !important;
-         .note-textarea {
-            color: #6c6c6c !important;
-            font-weight: 500 !important;
-            &::-moz-selection {
-               color: $bw6-2;
-               background: rgb(108, 108, 108, 0.2);
+    .note-cards {
+        padding: 0 7px;
+        .note-body {
+            padding: 0 4px !important;
+            // margin-bottom: 7px !important;
+            .note-textarea {
+                color: #6c6c6c !important;
+                font-weight: 500 !important;
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+
+                span[style*='color: rgb(83, 107, 194)'],
+                span[style*='color: rgb(83, 107, 194)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2 !important;
+                        background: rgb(83, 107, 194, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(83, 107, 194, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(38, 166, 144)'],
+                span[style*='color: rgb(38, 166, 144)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(38, 166, 144, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(38, 166, 144, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(239, 83, 80)'],
+                span[style*='color: rgb(239, 83, 80)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(239, 83, 80, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(239, 83, 80, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(255, 167, 38)'],
+                span[style*='color: rgb(255, 167, 38)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(255, 167, 38, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(255, 167, 38, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(83, 107, 194)'],
+                span[style*='color: rgb(83, 107, 194)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2 !important;
+                        background: rgb(83, 107, 194, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(83, 107, 194, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(38, 166, 144)'],
+                span[style*='color: rgb(38, 166, 144)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(38, 166, 144, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(38, 166, 144, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(239, 83, 80)'],
+                span[style*='color: rgb(239, 83, 80)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(239, 83, 80, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(239, 83, 80, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(255, 167, 38)'],
+                span[style*='color: rgb(255, 167, 38)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(255, 167, 38, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(255, 167, 38, 0.2) !important;
+                    }
+                }
             }
+        }
+    }
+    .hours {
+        &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+        }
+        &::selection {
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+        }
+    }
+    .contact-wrapper {
+        background-color: $color-white;
+        border-radius: 3px;
+        padding: 8px 6px;
+        width: 340px;
+        height: fit-content;
+    }
 
-            &::selection {
-               color: $bw6-2;
-               background: rgb(108, 108, 108, 0.2);
+    .second {
+        margin-top: 12px !important;
+    }
+
+    .repair-header {
+        grid-template-columns: 80px 107px 62px 86px 69px 84px !important;
+        column-gap: 29px !important;
+        grid-auto-flow: column;
+    }
+
+    .no-contant {
+        font-size: 14px;
+        font-weight: 700;
+        color: #919191;
+        padding-left: 6px;
+    }
+
+    .shipper-contact-container {
+        &:last-child {
+            .divider {
+                display: none;
             }
-
-            span {
-               &::-moz-selection {
-                  color: $bw6-2;
-                  background: rgb(108, 108, 108, 0.2);
-               }
-
-               &::selection {
-                  color: $bw6-2;
-                  background: rgb(108, 108, 108, 0.2);
-               }
-            }
-
-            span[style*='color: rgb(83, 107, 194)'],
-            span[style*='color: rgb(83, 107, 194)'] span {
-               &::-moz-selection {
-                  color: $bw6-2 !important;
-                  background: rgb(83, 107, 194, 0.2) !important;
-               }
-
-               &::selection {
-                  color: $bw6-2;
-                  background: rgb(83, 107, 194, 0.2) !important;
-               }
-            }
-
-            span[style*='color: rgb(38, 166, 144)'],
-            span[style*='color: rgb(38, 166, 144)'] span {
-               &::-moz-selection {
-                  color: $bw6-2;
-                  background: rgb(38, 166, 144, 0.2) !important;
-               }
-
-               &::selection {
-                  color: $bw6-2;
-                  background: rgb(38, 166, 144, 0.2) !important;
-               }
-            }
-
-            span[style*='color: rgb(239, 83, 80)'],
-            span[style*='color: rgb(239, 83, 80)'] span {
-               &::-moz-selection {
-                  color: $bw6-2;
-                  background: rgb(239, 83, 80, 0.2) !important;
-               }
-
-               &::selection {
-                  color: $bw6-2;
-                  background: rgb(239, 83, 80, 0.2) !important;
-               }
-            }
-
-            span[style*='color: rgb(255, 167, 38)'],
-            span[style*='color: rgb(255, 167, 38)'] span {
-               &::-moz-selection {
-                  color: $bw6-2;
-                  background: rgb(255, 167, 38, 0.2) !important;
-               }
-
-               &::selection {
-                  color: $bw6-2;
-                  background: rgb(255, 167, 38, 0.2) !important;
-               }
-            }
-
-            span[style*='color: rgb(83, 107, 194)'],
-            span[style*='color: rgb(83, 107, 194)'] span {
-               &::-moz-selection {
-                  color: $bw6-2 !important;
-                  background: rgb(83, 107, 194, 0.2) !important;
-               }
-
-               &::selection {
-                  color: $bw6-2;
-                  background: rgb(83, 107, 194, 0.2) !important;
-               }
-            }
-
-            span[style*='color: rgb(38, 166, 144)'],
-            span[style*='color: rgb(38, 166, 144)'] span {
-               &::-moz-selection {
-                  color: $bw6-2;
-                  background: rgb(38, 166, 144, 0.2) !important;
-               }
-
-               &::selection {
-                  color: $bw6-2;
-                  background: rgb(38, 166, 144, 0.2) !important;
-               }
-            }
-
-            span[style*='color: rgb(239, 83, 80)'],
-            span[style*='color: rgb(239, 83, 80)'] span {
-               &::-moz-selection {
-                  color: $bw6-2;
-                  background: rgb(239, 83, 80, 0.2) !important;
-               }
-
-               &::selection {
-                  color: $bw6-2;
-                  background: rgb(239, 83, 80, 0.2) !important;
-               }
-            }
-
-            span[style*='color: rgb(255, 167, 38)'],
-            span[style*='color: rgb(255, 167, 38)'] span {
-               &::-moz-selection {
-                  color: $bw6-2;
-                  background: rgb(255, 167, 38, 0.2) !important;
-               }
-
-               &::selection {
-                  color: $bw6-2;
-                  background: rgb(255, 167, 38, 0.2) !important;
-               }
-            }
-         }
-      }
-   }
-   .hours {
-      &::-moz-selection {
-         color: $color-gray-dark;
-         background: rgb(108, 108, 108, 0.2);
-      }
-      &::selection {
-         color: $color-gray-dark;
-         background: rgb(108, 108, 108, 0.2);
-      }
-   }
-   .contact-wrapper {
-      background-color: $color-white;
-      border-radius: 3px;
-      padding: 8px 6px;
-      width: 340px;
-      height: fit-content;
-   }
-
-   .second {
-      margin-top: 12px !important;
-   }
-
-   .repair-header {
-      grid-template-columns: 80px 107px 62px 86px 69px 84px !important;
-      column-gap: 29px !important;
-      grid-auto-flow: column;
-   }
-
-   .no-contant {
-      font-size: 14px;
-      font-weight: 700;
-      color: #919191;
-      padding-left: 6px;
-   }
-
-   .shipper-contact-container {
-      &:last-child {
-         .divider {
-            display: none;
-         }
-      }
-   }
+        }
+    }
 }

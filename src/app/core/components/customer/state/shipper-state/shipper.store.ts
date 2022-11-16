@@ -7,7 +7,7 @@ export interface ShipperState extends EntityState<ShipperResponse, number> {}
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'shipper' })
 export class ShipperStore extends EntityStore<ShipperState> {
-   constructor() {
-      super();
-   }
+    constructor() {
+        super();
+    }
 }

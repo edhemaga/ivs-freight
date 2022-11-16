@@ -1,225 +1,225 @@
 .acounting_table {
-   thead {
-      tr {
-         background-color: #eeeeee;
-      }
-   }
+    thead {
+        tr {
+            background-color: #eeeeee;
+        }
+    }
 
-   .expand_row {
-      display: flex;
-      justify-content: space-between;
-      min-height: 32px;
+    .expand_row {
+        display: flex;
+        justify-content: space-between;
+        min-height: 32px;
 
-      .columnName {
-         padding-left: 10px;
+        .columnName {
+            padding-left: 10px;
 
-         line-height: 32px;
-         font-size: 16px;
-         font-weight: bold;
-         color: #919191;
-      }
+            line-height: 32px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #919191;
+        }
 
-      .expand_row {
-         height: 100%;
-         width: 200px;
+        .expand_row {
+            height: 100%;
+            width: 200px;
 
-         cursor: pointer;
-      }
-   }
-
-   .name_column {
-      display: flex;
-      font-weight: bold;
-      font-size: 14px;
-
-      .profile-icon {
-         margin-right: 5px;
-         border-radius: 3px;
-      }
-
-      .userName {
-         width: 100%;
-         max-width: 120px;
-         overflow: hidden;
-         white-space: nowrap;
-         text-overflow: ellipsis;
-      }
-   }
-
-   .pay_column {
-      font-size: 12px;
-   }
-
-   .salary_column {
-      font-size: 12px;
-      font-weight: bold;
-   }
-
-   .status_column {
-      display: inline;
-      padding: 3px 6px;
-      background-color: #919191;
-      border-radius: 100%;
-      color: #fff;
-      font-size: 13px;
-
-      &.pending_r {
-         background-color: #24c1a1;
-      }
-   }
-
-   .dispatcher-search-wrap {
-      background-color: transparent;
-      border: none;
-
-      .header_hold {
-         display: flex;
-
-         ::ng-deep .search-panel {
-            background-color: #ffffffb3;
-
-            svg {
-               path {
-                  fill: #b7b7b7;
-               }
-            }
-         }
-
-         .columnName {
-            position: relative;
-            flex: 1;
-            margin-left: 6px;
-            border-radius: 3px;
-
-            background-color: #ffffffb3;
             cursor: pointer;
+        }
+    }
 
-            &:after {
-               content: '';
-               position: absolute;
-               right: 12px;
-               top: 50%;
-               width: 15px;
-               height: 8px;
+    .name_column {
+        display: flex;
+        font-weight: bold;
+        font-size: 14px;
 
-               background-image: url('../../../assets/img/down-gray.svg');
-               background-repeat: no-repeat;
-               background-size: 16px 9px;
+        .profile-icon {
+            margin-right: 5px;
+            border-radius: 3px;
+        }
 
-               transform: translateY(-50%);
-               transition: all 0.3s;
-            }
-         }
+        .userName {
+            width: 100%;
+            max-width: 120px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
 
-         &.active {
-            .columnName {
-               background-color: #fff;
+    .pay_column {
+        font-size: 12px;
+    }
 
-               &:after {
-                  transform: translateY(-50%) rotate(180deg);
-               }
-            }
+    .salary_column {
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .status_column {
+        display: inline;
+        padding: 3px 6px;
+        background-color: #919191;
+        border-radius: 100%;
+        color: #fff;
+        font-size: 13px;
+
+        &.pending_r {
+            background-color: #24c1a1;
+        }
+    }
+
+    .dispatcher-search-wrap {
+        background-color: transparent;
+        border: none;
+
+        .header_hold {
+            display: flex;
 
             ::ng-deep .search-panel {
-               background-color: #fff !important;
+                background-color: #ffffffb3;
 
-               svg {
-                  path {
-                     fill: #b7b7b7 !important;
-                  }
-               }
-            }
-         }
-      }
-   }
-
-   .accounting_list_row {
-      border-radius: 3px;
-      overflow: hidden;
-   }
-
-   .accounting-table {
-      width: 100%;
-
-      tr {
-         padding: 0 10px;
-         cursor: pointer;
-
-         &.active {
-            background-color: #e5e5e5 !important;
-            color: #6c6c6c;
-
-            td {
-               opacity: 1 !important;
-            }
-         }
-      }
-
-      tbody {
-         tr {
-            td {
-               opacity: 0.7;
+                svg {
+                    path {
+                        fill: #b7b7b7;
+                    }
+                }
             }
 
-            &:first-child {
-               td:first-child {
-                  border-top-left-radius: 2px;
-               }
+            .columnName {
+                position: relative;
+                flex: 1;
+                margin-left: 6px;
+                border-radius: 3px;
 
-               td:last-child {
-                  border-top-right-radius: 2px;
-               }
+                background-color: #ffffffb3;
+                cursor: pointer;
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    right: 12px;
+                    top: 50%;
+                    width: 15px;
+                    height: 8px;
+
+                    background-image: url('../../../assets/img/down-gray.svg');
+                    background-repeat: no-repeat;
+                    background-size: 16px 9px;
+
+                    transform: translateY(-50%);
+                    transition: all 0.3s;
+                }
             }
 
-            background-color: #fff;
+            &.active {
+                .columnName {
+                    background-color: #fff;
 
-            &:not(.active):hover {
-               td {
-                  opacity: 1;
-               }
+                    &:after {
+                        transform: translateY(-50%) rotate(180deg);
+                    }
+                }
 
-               background-color: #f9f9f9;
+                ::ng-deep .search-panel {
+                    background-color: #fff !important;
+
+                    svg {
+                        path {
+                            fill: #b7b7b7 !important;
+                        }
+                    }
+                }
             }
-         }
-      }
+        }
+    }
 
-      th {
-         color: #919191;
-      }
+    .accounting_list_row {
+        border-radius: 3px;
+        overflow: hidden;
+    }
 
-      td,
-      th {
-         padding: 8px 0 5px 10px;
-      }
+    .accounting-table {
+        width: 100%;
 
-      .bottom_pagination {
-         display: flex;
-         padding: 10px 10px;
-         font-size: 12px;
-         background-color: #fff;
+        tr {
+            padding: 0 10px;
+            cursor: pointer;
 
-         justify-content: space-between;
+            &.active {
+                background-color: #e5e5e5 !important;
+                color: #6c6c6c;
 
-         .pag_btns {
+                td {
+                    opacity: 1 !important;
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                td {
+                    opacity: 0.7;
+                }
+
+                &:first-child {
+                    td:first-child {
+                        border-top-left-radius: 2px;
+                    }
+
+                    td:last-child {
+                        border-top-right-radius: 2px;
+                    }
+                }
+
+                background-color: #fff;
+
+                &:not(.active):hover {
+                    td {
+                        opacity: 1;
+                    }
+
+                    background-color: #f9f9f9;
+                }
+            }
+        }
+
+        th {
             color: #919191;
-         }
+        }
 
-         .pagination_buttons {
+        td,
+        th {
+            padding: 8px 0 5px 10px;
+        }
+
+        .bottom_pagination {
             display: flex;
+            padding: 10px 10px;
+            font-size: 12px;
+            background-color: #fff;
 
             justify-content: space-between;
 
-            .pag_show_all {
-               margin: 0 10px;
-               color: #d1d1d1;
-               font-weight: bold;
-
-               &:hover {
-                  color: #919191;
-                  cursor: pointer;
-               }
+            .pag_btns {
+                color: #919191;
             }
-         }
-      }
-   }
+
+            .pagination_buttons {
+                display: flex;
+
+                justify-content: space-between;
+
+                .pag_show_all {
+                    margin: 0 10px;
+                    color: #d1d1d1;
+                    font-weight: bold;
+
+                    &:hover {
+                        color: #919191;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
 }

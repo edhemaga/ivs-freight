@@ -1,25 +1,25 @@
 <div
-   #t2="ngbPopover"
-   popoverClass="load-modal-statuses"
-   [ngbPopover]="taInputDropdownPopover"
-   [placement]="['bottom-left']"
-   [container]="'body'"
-   ngbTooltip
-   class="ftl-load-status"
-   [ngStyle]="{ color: active.color }"
+    #t2="ngbPopover"
+    popoverClass="load-modal-statuses"
+    [ngbPopover]="taInputDropdownPopover"
+    [placement]="['bottom-left']"
+    [container]="'body'"
+    ngbTooltip
+    class="ftl-load-status"
+    [ngStyle]="{ color: active.color }"
 >
-   {{ active?.name }}
+    {{ active?.name }}
 </div>
 
 <ng-template #taInputDropdownPopover>
-   <div *ngIf="mode === 'Edit'" class="load-modal-status-container">
-      <div
-         *ngFor="let status of statuses; trackBy: identity"
-         class="dropdown-option"
-         (click)="onSelectLoadStatus(status)"
-         [ngStyle]="{ color: status.color }"
-      >
-         {{ status.name }}
-      </div>
-   </div>
+    <div *ngIf="mode === 'Edit'" class="load-modal-status-container">
+        <div
+            *ngFor="let status of statuses; trackBy: identity"
+            class="dropdown-option"
+            (click)="onSelectLoadStatus(status)"
+            [ngStyle]="{ color: status.color }"
+        >
+            {{ status.name }}
+        </div>
+    </div>
 </ng-template>

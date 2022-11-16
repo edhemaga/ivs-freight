@@ -1,171 +1,171 @@
 .ta-ngx-slider,
 .custom-slider-commission {
-   margin-top: 18px;
-   display: flex;
-   flex-direction: column;
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
 
-   .custom-slider-text {
-      font-size: 11px;
-      font-weight: 600;
-      color: #6c6c6c;
-      margin-bottom: 10px !important;
+    .custom-slider-text {
+        font-size: 11px;
+        font-weight: 600;
+        color: #6c6c6c;
+        margin-bottom: 10px !important;
 
-      &::-moz-selection {
-         background-color: rgb(108, 108, 108, 0.2);
-         color: #6c6c6c;
-      }
+        &::-moz-selection {
+            background-color: rgb(108, 108, 108, 0.2);
+            color: #6c6c6c;
+        }
 
-      &::selection {
-         background-color: rgb(108, 108, 108, 0.2);
-         color: #6c6c6c;
-      }
-   }
+        &::selection {
+            background-color: rgb(108, 108, 108, 0.2);
+            color: #6c6c6c;
+        }
+    }
 
-   .ngx-slider {
-      margin: 0 !important;
+    .ngx-slider {
+        margin: 0 !important;
 
-      // FULL LINE
-      .ngx-slider-bar {
-         height: 6px;
-         background: #f3f3f3 !important;
-      }
-
-      // ACTIVE LINE
-      .ngx-slider-selection {
-         background-color: #97a8dc !important;
-      }
-
-      // Number
-      .ngx-slider-bubble {
-         cursor: pointer;
-         color: #536bc2 !important;
-         font-size: 12px !important;
-         box-shadow: 0 0 4px rgb(0 0 0 / 15%) !important;
-         border-radius: 2px;
-         background-color: #ffffff;
-         font-weight: bold !important;
-         position: absolute;
-         top: -7.5px;
-         width: 50px;
-         height: 20px;
-         z-index: 1;
-         text-align: center;
-         padding-left: 4px;
-         outline: none;
-         border: none;
-         &::after {
-            content: '%';
-         }
-      }
-
-      // Pointer
-      .ngx-slider-pointer {
-         width: 44px;
-         height: 22px;
-         background-color: transparent !important;
-
-         border-radius: 20px !important;
-         top: -8.5px;
-
-         &::after {
-            content: none !important;
-         }
-      }
-   }
-   //------------------------- Different Templates of NGX-SLIDER ---------------------------
-
-   //-------------- Driver Modal --------------
-   &.custom-driver-modal {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      -moz-column-gap: 12px;
-      column-gap: 12px;
-      align-items: center;
-      margin-top: 1px;
-
-      .custom-slider-text {
-         font-size: 14px;
-         font-weight: 600;
-         position: relative;
-         top: 1px;
-         margin: 0 !important;
-      }
-   }
-   //-------------- Truck Modal --------------
-   &.custom-truck-modal {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      align-items: center;
-      column-gap: 12px;
-      margin: 0 !important;
-
-      .custom-slider-text {
-         margin: 0 !important;
-      }
-   }
-
-   //-------------- Logo Change --------------
-   &.custom-slider-logo-change {
-      width: 264px;
-      position: relative;
-      bottom: 2px;
-
-      &.modal-container-S {
-         width: 264px;
-      }
-
-      &.modal-container-M {
-         width: 424px;
-      }
-
-      &.modal-container-XL {
-         width: 644px;
-      }
-
-      .ngx-slider {
-         margin: 0 !important;
-
-         .ngx-slider-bar {
+        // FULL LINE
+        .ngx-slider-bar {
             height: 6px;
             background: #f3f3f3 !important;
-         }
+        }
 
-         .ngx-slider-selection {
-            background: #b7b7b7 !important;
-         }
-         .ngx-slider-bubble {
-            display: none;
-         }
+        // ACTIVE LINE
+        .ngx-slider-selection {
+            background-color: #97a8dc !important;
+        }
 
-         .ngx-slider-pointer {
-            width: 18px;
-            height: 18px;
-            top: -6px !important;
-            background-color: #ffffff !important;
-            box-shadow: 0 0 4px rgb(0, 0, 0, 0.15) !important;
+        // Number
+        .ngx-slider-bubble {
+            cursor: pointer;
+            color: #536bc2 !important;
+            font-size: 12px !important;
+            box-shadow: 0 0 4px rgb(0 0 0 / 15%) !important;
+            border-radius: 2px;
+            background-color: #ffffff;
+            font-weight: bold !important;
+            position: absolute;
+            top: -7.5px;
+            width: 50px;
+            height: 20px;
+            z-index: 1;
+            text-align: center;
+            padding-left: 4px;
+            outline: none;
+            border: none;
+            &::after {
+                content: '%';
+            }
+        }
+
+        // Pointer
+        .ngx-slider-pointer {
+            width: 44px;
+            height: 22px;
+            background-color: transparent !important;
+
             border-radius: 20px !important;
+            top: -8.5px;
 
             &::after {
-               content: none !important;
+                content: none !important;
             }
-         }
-      }
-   }
+        }
+    }
+    //------------------------- Different Templates of NGX-SLIDER ---------------------------
 
-   //-------------- Dispatch Manager --------------
-   &.custom-slider-dispatch-manager {
-      position: relative;
-      bottom: 32px;
-   }
+    //-------------- Driver Modal --------------
+    &.custom-driver-modal {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        -moz-column-gap: 12px;
+        column-gap: 12px;
+        align-items: center;
+        margin-top: 1px;
 
-   //-------------- Class for adding percentage .0 --------------
-   &.custom-slider-with-percentage {
-      .ngx-slider {
-         .ngx-slider-bubble {
-            &::after {
-               content: '.0%' !important;
+        .custom-slider-text {
+            font-size: 14px;
+            font-weight: 600;
+            position: relative;
+            top: 1px;
+            margin: 0 !important;
+        }
+    }
+    //-------------- Truck Modal --------------
+    &.custom-truck-modal {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        column-gap: 12px;
+        margin: 0 !important;
+
+        .custom-slider-text {
+            margin: 0 !important;
+        }
+    }
+
+    //-------------- Logo Change --------------
+    &.custom-slider-logo-change {
+        width: 264px;
+        position: relative;
+        bottom: 2px;
+
+        &.modal-container-S {
+            width: 264px;
+        }
+
+        &.modal-container-M {
+            width: 424px;
+        }
+
+        &.modal-container-XL {
+            width: 644px;
+        }
+
+        .ngx-slider {
+            margin: 0 !important;
+
+            .ngx-slider-bar {
+                height: 6px;
+                background: #f3f3f3 !important;
             }
-         }
-      }
-   }
+
+            .ngx-slider-selection {
+                background: #b7b7b7 !important;
+            }
+            .ngx-slider-bubble {
+                display: none;
+            }
+
+            .ngx-slider-pointer {
+                width: 18px;
+                height: 18px;
+                top: -6px !important;
+                background-color: #ffffff !important;
+                box-shadow: 0 0 4px rgb(0, 0, 0, 0.15) !important;
+                border-radius: 20px !important;
+
+                &::after {
+                    content: none !important;
+                }
+            }
+        }
+    }
+
+    //-------------- Dispatch Manager --------------
+    &.custom-slider-dispatch-manager {
+        position: relative;
+        bottom: 32px;
+    }
+
+    //-------------- Class for adding percentage .0 --------------
+    &.custom-slider-with-percentage {
+        .ngx-slider {
+            .ngx-slider-bubble {
+                &::after {
+                    content: '.0%' !important;
+                }
+            }
+        }
+    }
 }

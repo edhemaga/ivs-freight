@@ -1,41 +1,41 @@
 .repair-shop-star {
-   position: relative;
-   bottom: 1px;
-   cursor: pointer;
+    position: relative;
+    bottom: 1px;
+    cursor: pointer;
 
-   &:hover {
-      transition: all 0.3s ease-in-out;
-      svg {
-         path {
-            fill: #6c6c6c;
-         }
-      }
-   }
-
-   &.active {
-      svg {
-         path {
-            fill: #6d82c7;
-         }
-      }
-
-      &:hover {
-         transition: all 0.3s ease-in-out;
-         svg {
+    &:hover {
+        transition: all 0.3s ease-in-out;
+        svg {
             path {
-               fill: #536bc2;
+                fill: #6c6c6c;
             }
-         }
-      }
-   }
+        }
+    }
+
+    &.active {
+        svg {
+            path {
+                fill: #6d82c7;
+            }
+        }
+
+        &:hover {
+            transition: all 0.3s ease-in-out;
+            svg {
+                path {
+                    fill: #536bc2;
+                }
+            }
+        }
+    }
 }
 
 .custom-bank-row {
-   margin-bottom: 22px !important;
+    margin-bottom: 22px !important;
 }
 
 .open-hours-card-repair-shop {
-   ::ng-deep .content-holder {
-      margin: 0px !important;
-   }
+    ::ng-deep .content-holder {
+        margin: 0px !important;
+    }
 }

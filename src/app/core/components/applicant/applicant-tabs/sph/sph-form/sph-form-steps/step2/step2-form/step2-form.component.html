@@ -1,164 +1,164 @@
 <div class="d-flex flex-column step-form" [formGroup]="accidentForm">
-   <!-- DATE, LOCATION -->
+    <!-- DATE, LOCATION -->
 
-   <div class="d-flex">
-      <div class="group date-group">
-         <app-ta-input
-            formControlName="accidentDate"
-            [inputConfig]="{
-               name: 'datepicker',
-               type: 'text',
-               label: 'Date',
-               placeholderIcon: 'date',
-               isRequired: true,
-               customClass: 'datetimeclass'
+    <div class="d-flex">
+        <div class="group date-group">
+            <app-ta-input
+                formControlName="accidentDate"
+                [inputConfig]="{
+                    name: 'datepicker',
+                    type: 'text',
+                    label: 'Date',
+                    placeholderIcon: 'date',
+                    isRequired: true,
+                    customClass: 'datetimeclass'
+                }"
+            ></app-ta-input>
+        </div>
+        <div class="group location-group">
+            <app-input-address-dropdown
+                formControlName="accidentLocation"
+                [inputConfig]="{
+                    name: 'Address',
+                    type: 'text',
+                    label: 'Location',
+                    isRequired: true,
+                    placeholderIcon: 'address',
+                    textTransform: 'capitalize',
+                    dropdownWidthClass: 'w-col-445',
+                    minLength: 12,
+                    maxLength: 256
+                }"
+                [placeholderType]="'shortAddress'"
+                [activeAddress]="selectedAddress"
+                (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+            ></app-input-address-dropdown>
+        </div>
+    </div>
+
+    <!-- DESCRIPTION -->
+
+    <div class="d-flex">
+        <div class="group description-group">
+            <app-ta-input
+                formControlName="accidentDescription"
+                [inputConfig]="{
+                    name: 'Description',
+                    type: 'text',
+                    label: 'Description',
+                    minLength: 2,
+                    maxLength: 160,
+                    textTransform: 'capitalize',
+                    isRequired: true
+                }"
+            ></app-ta-input>
+        </div>
+    </div>
+
+    <!-- HAZMAT SPILL, INJURIES, FATALITIES -->
+
+    <div class="d-flex">
+        <div
+            class="d-flex align-items-center justify-content-between group hazmat-spill-group"
+        >
+            <div class="title-box">
+                <p class="m-0 ta-font-regular">
+                    Hazmat spill <span class="required-star">*</span>
+                </p>
+            </div>
+            <div class="radios-box">
+                <app-ta-input-radiobuttons
+                    #cmp
+                    [buttons]="hazmatAnswerChoices"
+                    (changedValue)="handleInputSelect($event, 'HAZMAT-SPILL')"
+                ></app-ta-input-radiobuttons>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center fatalities-injuries-group">
+            <div class="d-flex align-items-center injuries-group">
+                <app-ta-input-arrows
+                    formControlName="injuries"
+                    [inputConfig]="{
+                        name: 'FatalInjuries',
+                        type: 'text',
+                        blackInput: true,
+                        hideRequiredCheck: true,
+                        hideClear: true,
+                        hideErrorMessage: true,
+                        textAlign: 'center'
+                    }"
+                    [name]="'Injuries #'"
+                    [type]="'applicant'"
+                    [elementOrder]="0"
+                    [minimum]="0"
+                ></app-ta-input-arrows>
+            </div>
+            <div class="d-flex align-items-center fatalities-group">
+                <app-ta-input-arrows
+                    formControlName="fatalities"
+                    [inputConfig]="{
+                        name: 'FatalInjuries',
+                        type: 'text',
+                        blackInput: true,
+                        hideRequiredCheck: true,
+                        hideClear: true,
+                        hideErrorMessage: true,
+                        textAlign: 'center'
+                    }"
+                    [name]="'Fatalities #'"
+                    [type]="'applicant'"
+                    [elementOrder]="1"
+                    [minimum]="0"
+                ></app-ta-input-arrows>
+            </div>
+        </div>
+    </div>
+
+    <!-- BTN CONTAINER -->
+
+    <div class="d-flex justify-content-center align-items-center btn-container">
+        <button
+            type="button"
+            class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
+            (click)="onAddAnotherAccident()"
+            [ngClass]="{
+                disabled: accidentForm.invalid
             }"
-         ></app-ta-input>
-      </div>
-      <div class="group location-group">
-         <app-input-address-dropdown
-            formControlName="accidentLocation"
-            [inputConfig]="{
-               name: 'Address',
-               type: 'text',
-               label: 'Location',
-               isRequired: true,
-               placeholderIcon: 'address',
-               textTransform: 'capitalize',
-               dropdownWidthClass: 'w-col-445',
-               minLength: 12,
-               maxLength: 256
-            }"
-            [placeholderType]="'shortAddress'"
-            [activeAddress]="selectedAddress"
-            (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-         ></app-input-address-dropdown>
-      </div>
-   </div>
-
-   <!-- DESCRIPTION -->
-
-   <div class="d-flex">
-      <div class="group description-group">
-         <app-ta-input
-            formControlName="accidentDescription"
-            [inputConfig]="{
-               name: 'Description',
-               type: 'text',
-               label: 'Description',
-               minLength: 2,
-               maxLength: 160,
-               textTransform: 'capitalize',
-               isRequired: true
-            }"
-         ></app-ta-input>
-      </div>
-   </div>
-
-   <!-- HAZMAT SPILL, INJURIES, FATALITIES -->
-
-   <div class="d-flex">
-      <div
-         class="d-flex align-items-center justify-content-between group hazmat-spill-group"
-      >
-         <div class="title-box">
-            <p class="m-0 ta-font-regular">
-               Hazmat spill <span class="required-star">*</span>
-            </p>
-         </div>
-         <div class="radios-box">
-            <app-ta-input-radiobuttons
-               #cmp
-               [buttons]="hazmatAnswerChoices"
-               (changedValue)="handleInputSelect($event, 'HAZMAT-SPILL')"
-            ></app-ta-input-radiobuttons>
-         </div>
-      </div>
-
-      <div class="d-flex align-items-center fatalities-injuries-group">
-         <div class="d-flex align-items-center injuries-group">
-            <app-ta-input-arrows
-               formControlName="injuries"
-               [inputConfig]="{
-                  name: 'FatalInjuries',
-                  type: 'text',
-                  blackInput: true,
-                  hideRequiredCheck: true,
-                  hideClear: true,
-                  hideErrorMessage: true,
-                  textAlign: 'center'
-               }"
-               [name]="'Injuries #'"
-               [type]="'applicant'"
-               [elementOrder]="0"
-               [minimum]="0"
-            ></app-ta-input-arrows>
-         </div>
-         <div class="d-flex align-items-center fatalities-group">
-            <app-ta-input-arrows
-               formControlName="fatalities"
-               [inputConfig]="{
-                  name: 'FatalInjuries',
-                  type: 'text',
-                  blackInput: true,
-                  hideRequiredCheck: true,
-                  hideClear: true,
-                  hideErrorMessage: true,
-                  textAlign: 'center'
-               }"
-               [name]="'Fatalities #'"
-               [type]="'applicant'"
-               [elementOrder]="1"
-               [minimum]="0"
-            ></app-ta-input-arrows>
-         </div>
-      </div>
-   </div>
-
-   <!-- BTN CONTAINER -->
-
-   <div class="d-flex justify-content-center align-items-center btn-container">
-      <button
-         type="button"
-         class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
-         (click)="onAddAnotherAccident()"
-         [ngClass]="{
-            disabled: accidentForm.invalid
-         }"
-         *ngIf="!isEditing"
-      >
-         <svg-icon
-            class="plus-icon"
-            src="assets/svg/common/ic_plus.svg
+            *ngIf="!isEditing"
+        >
+            <svg-icon
+                class="plus-icon"
+                src="assets/svg/common/ic_plus.svg
       "
-            [svgStyle]="{
-               'width.px': 18,
-               'height.px': 18
-            }"
-         ></svg-icon>
+                [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                }"
+            ></svg-icon>
 
-         Add Another Accident
-      </button>
+            Add Another Accident
+        </button>
 
-      <div
-         class="d-flex align-items-center mx-auto justify-content-center btn-container"
-         *ngIf="isEditing"
-      >
-         <button
-            type="button"
-            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
-            (click)="onCancelEditAccident()"
-         >
-            Cancel
-         </button>
-         <button
-            type="button"
-            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
-            (click)="onSaveEditedAccident()"
-            [ngClass]="{ disabled: !isAccidentEdited }"
-         >
-            Save Changes
-         </button>
-      </div>
-   </div>
+        <div
+            class="d-flex align-items-center mx-auto justify-content-center btn-container"
+            *ngIf="isEditing"
+        >
+            <button
+                type="button"
+                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+                (click)="onCancelEditAccident()"
+            >
+                Cancel
+            </button>
+            <button
+                type="button"
+                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+                (click)="onSaveEditedAccident()"
+                [ngClass]="{ disabled: !isAccidentEdited }"
+            >
+                Save Changes
+            </button>
+        </div>
+    </div>
 </div>

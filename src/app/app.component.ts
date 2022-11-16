@@ -6,47 +6,47 @@ import { scrollButtonAnimation } from './app.component.animation';
 import { GpsServiceService } from './global/services/gps-service.service';
 
 @Component({
-   selector: 'app-root',
-   templateUrl: './app.component.html',
-   styleUrls: ['./app.component.scss'],
-   animations: [scrollButtonAnimation('scrollButtonAnimation')],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    animations: [scrollButtonAnimation('scrollButtonAnimation')],
 })
 export class AppComponent implements OnInit {
-   public showScrollButton = false;
+    public showScrollButton = false;
 
-   public currentPage: string = 'login';
+    public currentPage: string = 'login';
 
-   constructor(
-      private router: Router,
-      public titleService: Title,
-      private activatedRoute: ActivatedRoute,
-      private gpsService: GpsServiceService
-   ) {}
+    constructor(
+        private router: Router,
+        public titleService: Title,
+        private activatedRoute: ActivatedRoute,
+        private gpsService: GpsServiceService
+    ) {}
 
-   ngOnInit() {
-      this.router.events
-         .pipe(
-            filter((event) => event instanceof NavigationEnd),
-            map(() => this.activatedRoute),
-            map((route: any) => {
-               while (route.firstChild) {
-                  route = route.firstChild;
-               }
-               return route;
-            }),
-            filter((route) => route.outlet === 'primary'),
-            mergeMap((route: any) => route.data)
-         )
-         .subscribe((event: any) => {
-            this.currentPage = event?.title?.toLowerCase();
-            this.titleService.setTitle('TruckAssist' + ' | ' + event.title);
-         });
-   }
+    ngOnInit() {
+        this.router.events
+            .pipe(
+                filter((event) => event instanceof NavigationEnd),
+                map(() => this.activatedRoute),
+                map((route: any) => {
+                    while (route.firstChild) {
+                        route = route.firstChild;
+                    }
+                    return route;
+                }),
+                filter((route) => route.outlet === 'primary'),
+                mergeMap((route: any) => route.data)
+            )
+            .subscribe((event: any) => {
+                this.currentPage = event?.title?.toLowerCase();
+                this.titleService.setTitle('TruckAssist' + ' | ' + event.title);
+            });
+    }
 
-   /**
-    * Top function
-    */
-   public top() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-   }
+    /**
+     * Top function
+     */
+    public top() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 }

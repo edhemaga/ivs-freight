@@ -1,204 +1,204 @@
 .modal-open {
-   overflow: hidden !important;
+    overflow: hidden !important;
 
-   .table-container {
-      padding-right: 16px;
-   }
+    .table-container {
+        padding-right: 16px;
+    }
 
-   &::-webkit-scrollbar-track {
-      background-color: rgba(0, 0, 0, 0.3);
-   }
+    &::-webkit-scrollbar-track {
+        background-color: rgba(0, 0, 0, 0.3);
+    }
 
-   &::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.3);
-   }
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.3);
+    }
 }
 
 .modal-container {
-   width: 480px;
-   height: auto;
-   overflow: hidden;
-   position: relative;
+    width: 480px;
+    height: auto;
+    overflow: hidden;
+    position: relative;
 
-   .drop-zone-active {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      top: 0%;
-      left: 0%;
-      z-index: 99999999999;
+    .drop-zone-active {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        z-index: 99999999999;
 
-      .drop-zone-title {
-         position: absolute;
-         z-index: 9999;
-         top: 15px;
-         left: 12px;
-         color: #6c6c6c;
-         font-size: 18px;
-         font-weight: 800;
-         margin: 0;
-      }
+        .drop-zone-title {
+            position: absolute;
+            z-index: 9999;
+            top: 15px;
+            left: 12px;
+            color: #6c6c6c;
+            font-size: 18px;
+            font-weight: 800;
+            margin: 0;
+        }
 
-      .ta-modal-dropzone {
-         position: absolute;
-         top: 0;
-         border: 4px dashed #e5e5e5;
-      }
-
-      &-hovered {
-         .ta-modal-dropzone {
+        .ta-modal-dropzone {
             position: absolute;
             top: 0;
-            border: 4px dashed #ffffff;
-            background-color: #eeeeee;
+            border: 4px dashed #e5e5e5;
+        }
 
-            .ta-modal-dropzone-label {
-               background-color: #eeeeee;
+        &-hovered {
+            .ta-modal-dropzone {
+                position: absolute;
+                top: 0;
+                border: 4px dashed #ffffff;
+                background-color: #eeeeee;
+
+                .ta-modal-dropzone-label {
+                    background-color: #eeeeee;
+                }
+
+                .ta-modal-dropzone-text {
+                    color: #6c6c6c;
+                }
             }
+        }
 
-            .ta-modal-dropzone-text {
-               color: #6c6c6c;
+        // Upload Part Override
+        .ta-modal-dropzone-area {
+            transform: scale(2);
+        }
+
+        .ta-modal-dropzone-text {
+            position: absolute !important;
+            top: 84% !important;
+            text-align: center;
+            left: 40%;
+            left: 50% !important;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    &.modal-container-load {
+        width: 1726px;
+        display: flex;
+
+        .divider {
+            width: 841px;
+        }
+
+        .modal-original-part {
+            width: 866px;
+        }
+
+        .modal-additional-part {
+            width: 860px;
+        }
+    }
+
+    &.modal-container-XS {
+        width: 360px;
+
+        .divider {
+            width: 335px;
+        }
+
+        .confirmation-modal-body {
+            padding: 22px 6px;
+        }
+    }
+
+    &.modal-container-M {
+        width: 640px;
+
+        .divider {
+            width: 615px;
+        }
+    }
+
+    &.modal-container-L {
+        width: 710px;
+
+        .divider {
+            width: 685px;
+        }
+    }
+
+    &.modal-container-XL {
+        width: 860px;
+
+        .divider {
+            width: 836px;
+        }
+    }
+
+    &.modal-container-sph-applicant {
+        width: 940px;
+        height: 960px;
+
+        overflow-y: scroll;
+        scrollbar-width: none !important; /* Firefox */
+
+        &::-webkit-scrollbar {
+            width: 2px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: transparent;
+            border: 6px solid transparent;
+            border-radius: 1px;
+        }
+        &::-webkit-scrollbar-track {
+            padding: 0;
+            position: relative;
+            right: 0;
+            top: 0;
+            background: transparent;
+        }
+
+        .divider {
+            display: none;
+        }
+    }
+
+    .divider {
+        width: 455px;
+        height: 2px;
+        content: '';
+        border-radius: 1px;
+        background-color: #f3f3f3;
+        margin: 0 auto;
+    }
+
+    .modal-spinner {
+        position: absolute;
+        bottom: 7px;
+        right: 8px;
+    }
+
+    //   Ovveride global settings for row > columns
+    .form-container {
+        .row {
+            & > * {
+                &:nth-child(odd) {
+                    padding-left: 12px;
+                    padding-right: 12px;
+                }
+                &:nth-child(even) {
+                    padding-left: 0px;
+                    padding-right: 12px;
+                }
             }
-         }
-      }
+        }
+    }
 
-      // Upload Part Override
-      .ta-modal-dropzone-area {
-         transform: scale(2);
-      }
+    .modal-footer {
+        & > * {
+            margin: 0px !important;
+        }
 
-      .ta-modal-dropzone-text {
-         position: absolute !important;
-         top: 84% !important;
-         text-align: center;
-         left: 40%;
-         left: 50% !important;
-         transform: translate(-50%, -50%);
-      }
-   }
-
-   &.modal-container-load {
-      width: 1726px;
-      display: flex;
-
-      .divider {
-         width: 841px;
-      }
-
-      .modal-original-part {
-         width: 866px;
-      }
-
-      .modal-additional-part {
-         width: 860px;
-      }
-   }
-
-   &.modal-container-XS {
-      width: 360px;
-
-      .divider {
-         width: 335px;
-      }
-
-      .confirmation-modal-body {
-         padding: 22px 6px;
-      }
-   }
-
-   &.modal-container-M {
-      width: 640px;
-
-      .divider {
-         width: 615px;
-      }
-   }
-
-   &.modal-container-L {
-      width: 710px;
-
-      .divider {
-         width: 685px;
-      }
-   }
-
-   &.modal-container-XL {
-      width: 860px;
-
-      .divider {
-         width: 836px;
-      }
-   }
-
-   &.modal-container-sph-applicant {
-      width: 940px;
-      height: 960px;
-
-      overflow-y: scroll;
-      scrollbar-width: none !important; /* Firefox */
-
-      &::-webkit-scrollbar {
-         width: 2px;
-      }
-      &::-webkit-scrollbar-thumb {
-         background-color: transparent;
-         border: 6px solid transparent;
-         border-radius: 1px;
-      }
-      &::-webkit-scrollbar-track {
-         padding: 0;
-         position: relative;
-         right: 0;
-         top: 0;
-         background: transparent;
-      }
-
-      .divider {
-         display: none;
-      }
-   }
-
-   .divider {
-      width: 455px;
-      height: 2px;
-      content: '';
-      border-radius: 1px;
-      background-color: #f3f3f3;
-      margin: 0 auto;
-   }
-
-   .modal-spinner {
-      position: absolute;
-      bottom: 7px;
-      right: 8px;
-   }
-
-   //   Ovveride global settings for row > columns
-   .form-container {
-      .row {
-         & > * {
-            &:nth-child(odd) {
-               padding-left: 12px;
-               padding-right: 12px;
-            }
-            &:nth-child(even) {
-               padding-left: 0px;
-               padding-right: 12px;
-            }
-         }
-      }
-   }
-
-   .modal-footer {
-      & > * {
-         margin: 0px !important;
-      }
-
-      .ta-modal-footer-right-side,
-      .ta-modal-footer-left-side {
-         display: flex;
-         align-items: center;
-         gap: 6px;
-      }
-   }
+        .ta-modal-footer-right-side,
+        .ta-modal-footer-left-side {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    }
 }

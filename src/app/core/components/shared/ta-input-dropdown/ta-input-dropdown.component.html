@@ -1,800 +1,857 @@
 <div
-   [ngClass]="{
-      'multiselect-dropdown':
-         inputConfig.multiselectDropdown && multiselectItems.length > 0,
-      focus: isMultiSelectInputFocus,
-      disabled: inputConfig.isDisabled
-   }"
+    [ngClass]="{
+        'multiselect-dropdown':
+            inputConfig.multiselectDropdown && multiselectItems.length > 0,
+        focus: isMultiSelectInputFocus,
+        disabled: inputConfig.isDisabled
+    }"
 >
-   <p *ngIf="multiselectItems.length > 0" class="multiselect-label">
-      {{ multiSelectLabel }}
-   </p>
+    <p *ngIf="multiselectItems.length > 0" class="multiselect-label">
+        {{ multiSelectLabel }}
+    </p>
 
-   <!-- Multiselect arrow -->
-   <svg-icon
-      *ngIf="inputConfig.multiSelectDropdownActive"
-      class="multiselect-arrow"
-      [ngClass]="{
-         valid: !isMultiSelectInputFocus && multiselectItems.length > 0,
-         disabled: inputConfig.isDisabled
-      }"
-      src="assets/svg/common/ic_arrow_down_updated.svg"
-      (click)="toggleMultiselectDropdown()"
-   ></svg-icon>
+    <!-- Multiselect arrow -->
+    <svg-icon
+        *ngIf="inputConfig.multiSelectDropdownActive"
+        class="multiselect-arrow"
+        [ngClass]="{
+            valid: !isMultiSelectInputFocus && multiselectItems.length > 0,
+            disabled: inputConfig.isDisabled
+        }"
+        src="assets/svg/common/ic_arrow_down_updated.svg"
+        (click)="toggleMultiselectDropdown()"
+    ></svg-icon>
 
-   <!-- Multiselect clear all -->
-   <div
-      *ngIf="multiselectItems.length > 0 && !inputConfig.isDisabled"
-      class="input-clear input-clear-multiselect"
-      [ngClass]="{
-         'valid-focus-in': !getSuperControl.value && isMultiSelectInputFocus
-      }"
-      ngbTooltip
-      mainTooltip="Clear All"
-      tooltipBackground="#6c6c6c"
-      position="bottom"
-      (click)="deleteAllMultiSelectItems()"
-   >
-      <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
-   </div>
+    <!-- Multiselect clear all -->
+    <div
+        *ngIf="multiselectItems.length > 0 && !inputConfig.isDisabled"
+        class="input-clear input-clear-multiselect"
+        [ngClass]="{
+            'valid-focus-in': !getSuperControl.value && isMultiSelectInputFocus
+        }"
+        ngbTooltip
+        mainTooltip="Clear All"
+        tooltipBackground="#6c6c6c"
+        position="bottom"
+        (click)="deleteAllMultiSelectItems()"
+    >
+        <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
+    </div>
 
-   <!-- Multiselect items -->
-   <div
-      *ngIf="
-         inputConfig.multiselectDropdown &&
-         multiselectItems.length > 0 &&
-         template === 'multiselect'
-      "
-      class="multiselect-items {{ multiselectTemplate }}"
-   >
-      <span
-         class="multiselect-item"
-         *ngFor="
-            let multiSelect of multiselectItems;
-            trackBy: identity;
-            let ind = index
-         "
-      >
-         {{ multiSelect.name }}
-         <div
-            *ngIf="!inputConfig.isDisabled"
-            ngbTooltip
-            mainTooltip="Clear"
-            tooltipBackground="#6c6c6c"
-            position="top"
-            class="multiselect-item-clear"
-            (click)="removeMultiSelectItem(ind)"
-         >
-            <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
-         </div>
-      </span>
-   </div>
+    <!-- Multiselect items -->
+    <div
+        *ngIf="
+            inputConfig.multiselectDropdown &&
+            multiselectItems.length > 0 &&
+            template === 'multiselect'
+        "
+        class="multiselect-items {{ multiselectTemplate }}"
+    >
+        <span
+            class="multiselect-item"
+            *ngFor="
+                let multiSelect of multiselectItems;
+                trackBy: identity;
+                let ind = index
+            "
+        >
+            {{ multiSelect.name }}
+            <div
+                *ngIf="!inputConfig.isDisabled"
+                ngbTooltip
+                mainTooltip="Clear"
+                tooltipBackground="#6c6c6c"
+                position="top"
+                class="multiselect-item-clear"
+                (click)="removeMultiSelectItem(ind)"
+            >
+                <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
+            </div>
+        </span>
+    </div>
 
-   <!-- Dropdown search -->
-   <app-ta-input
-      #t2="ngbPopover"
-      #input
-      popoverClass="ta-input-dropdown"
-      [formControl]="getSuperControl | formControl"
-      [inputConfig]="inputConfig"
-      [ngbPopover]="taInputDropdownPopover"
-      [placement]="['bottom-left']"
-      [container]="'body'"
-      [incorrectValue]="incorrectValue"
-      [selectedDropdownLabelColor]="
-         inputConfig.dropdownLabel
-            ? activeItem
-               ? activeItem
-               : activeItemColor
-            : null
-      "
-      (commandEvent)="commandEvent($event)"
-      (incorrectEvent)="onIncorrectInput($event)"
-      (blurInput)="onBlurInput($event)"
-   ></app-ta-input>
+    <!-- Dropdown search -->
+    <app-ta-input
+        #t2="ngbPopover"
+        #input
+        popoverClass="ta-input-dropdown"
+        [formControl]="getSuperControl | formControl"
+        [inputConfig]="inputConfig"
+        [ngbPopover]="taInputDropdownPopover"
+        [placement]="['bottom-left']"
+        [container]="'body'"
+        [incorrectValue]="incorrectValue"
+        [selectedDropdownLabelColor]="
+            inputConfig.dropdownLabel
+                ? activeItem
+                    ? activeItem
+                    : activeItemColor
+                : null
+        "
+        (commandEvent)="commandEvent($event)"
+        (incorrectEvent)="onIncorrectInput($event)"
+        (blurInput)="onBlurInput($event)"
+    ></app-ta-input>
 </div>
 
 <ng-template #taInputDropdownPopover>
-   <!--------------------------- Dropdown options --------------------------->
-   <div
-      *ngIf="
-         (inputConfig.name != 'Address' &&
-            inputConfig.name != 'RoutingAddress' &&
-            !inputConfig.isDisabled) ||
-         ((inputConfig.name == 'Address' ||
-            inputConfig.name == 'RoutingAddress') &&
-            !inputConfig.isDisabled &&
-            getSuperControl.value?.length)
-      "
-      class="dropdown-options  {{ inputConfig.dropdownWidthClass }}"
-      [ngClass]="{
-         scroll: options | taDropdownCount: template,
-         'dropdown-options-groups':
-            template === 'groups' || template === 'load-broker-contact'
-      }"
-      (scroll)="onScrollDropdown($event.target)"
-   >
-      <div [ngSwitch]="template">
-         <!--------------------------- SVG Template (Render svgs or text if svgs doesn't exist ) --------------------------->
-         <div *ngSwitchCase="'svg-template'">
-            <div
-               *ngFor="let option of options; trackBy: identity"
-               class="dropdown-option"
-               [ngClass]="{
-                  disabled: option?.disabled,
-                  'no-result':
-                     options.length === 1 && options[0].name === 'No Results',
-                  'add-new': option.name === 'Add New',
-                  'add-new-divider':
-                     option.name === 'Add New' && options.length > 1,
-                  active: option.id === activeItem?.id
-               }"
-               (click)="onActiveItem(option)"
-            >
-               <svg-icon
-                  *ngIf="option.logoName"
-                  class="svg-template-logo"
-                  [ngClass]="{ active: option.id === activeItem?.id }"
-                  [src]="option.logoName"
-               ></svg-icon>
-               <div
-                  [innerHtml]="
-                     option.name
-                        | taHighlight
-                           : [
-                                {
-                                   index: 45632,
-                                   text: getSuperControl.value
-                                }
-                             ]
-                  "
-               ></div>
-            </div>
-         </div>
-         <!--------------------------- Svg Text Template (display flex) --------------------------->
-         <div *ngSwitchCase="'svgtext-template'">
-            <div
-               *ngFor="let option of options; trackBy: identity"
-               class="dropdown-option svg-text-template {{
-                  option?.subFolder
-               }} {{ option.name.trim().replace(' ', '').toLowerCase() }}"
-               [ngClass]="{
-                  disabled: option?.disabled,
-                  'no-result':
-                     options.length === 1 && options[0].name === 'No Results',
-                  'add-new': option.name === 'Add New',
-                  'add-new-divider':
-                     option.name === 'Add New' && options.length > 1,
-                  active: option.id === activeItem?.id,
-                  trailerContainer: option.name === 'Container',
-                  semisleeper: option.name === 'Semi w/Sleeper',
-                  lowboyrgn: option.name === 'Low Boy/RGN'
-               }"
-               (click)="onActiveItem(option)"
-            >
-               <svg-icon
-                  class="svgtext-template-logo {{
-                     option.name.trim().replace(' ', '').toLowerCase()
-                  }}"
-                  [ngClass]="{
-                     active: option.id === activeItem?.id,
-                     'hide-hover-icons':
-                        inputConfig?.customClass === 'truck-trailer-dropdown' &&
-                        !['No Results', 'Add New'].includes(option.name),
-                     'no-svg': !option?.logoName,
-                     'hazardous-svg': option?.logoName?.includes('hazardous')
-                  }"
-                  [src]="
-                     option?.logoName | taSvg: option?.folder:option?.subFolder
-                  "
-               ></svg-icon>
-               <div
-                  class="svgtext-template-text"
-                  [ngClass]="{
-                     'truck-text': option?.subFolder === 'trucks',
-                     'move-hover-text':
-                        inputConfig?.customClass === 'truck-trailer-dropdown' &&
-                        !['No Results', 'Add New'].includes(option.name)
-                  }"
-                  [innerHtml]="
-                     option.name
-                        | taHighlight
-                           : [
-                                {
-                                   index: 45632,
-                                   text: getSuperControl.value
-                                }
-                             ]
-                  "
-               ></div>
-            </div>
-         </div>
-         <!--------------------------- Details template (truck, trailer... details-pages)  --------------------------->
-         <div *ngSwitchCase="'details-template'">
-            <div
-               *ngFor="let option of options; trackBy: identity"
-               class="dropdown-option details-template"
-               [ngClass]="{
-                  disabled: option?.disabled,
-                  'no-result':
-                     options.length === 1 && options[0].name === 'No Results'
-               }"
-               (click)="onActiveItem(option)"
-            >
-               <div
-                  class="details-template-text"
-                  [ngClass]="{
-                     active: sort === 'active-drivers' && option?.status === 1
-                  }"
-                  [innerHtml]="
-                     option.name
-                        | taHighlight
-                           : [
-                                {
-                                   index: 45632,
-                                   text: getSuperControl.value
-                                }
-                             ]
-                  "
-               ></div>
-               <svg-icon
-                  class="details-template-logo"
-                  [src]="option.svg | taSvg: option.folder"
-               ></svg-icon>
-            </div>
-         </div>
-         <!--------------------------- Grouping template (can see on contact modal)  --------------------------->
-         <div *ngSwitchCase="'groups'">
-            <div
-               *ngFor="let option of options; trackBy: identity; let i = index"
-               class="dropdown-groups"
-               [ngClass]="{ 'last-group': i === options.length - 1 }"
-            >
-               <p
-                  *ngIf="
-                     options.length !== 1 && options[0].name !== 'No Results'
-                  "
-                  class="dropdown-group-header"
-               >
-                  {{ option.groupName }}
-               </p>
-               <div
-                  *ngFor="let item of option?.items; trackBy: identity"
-                  class="dropdown-subgroup-options"
-                  [ngClass]="{
-                     'no-result':
-                        options.length === 1 && item.name === 'No Results'
-                  }"
-                  (click)="onActiveItem(item)"
-               >
-                  <img
-                     *ngIf="item.svg"
-                     class="dropdown-subgroup-image"
-                     [src]="item.svg"
-                     [alt]="item.name"
-                  />
-                  <div
-                     class="dropdown-subgroup-text"
-                     [ngClass]="{
-                        active: item.id === activeItem?.id,
+    <!--------------------------- Dropdown options --------------------------->
+    <div
+        *ngIf="
+            (inputConfig.name != 'Address' &&
+                inputConfig.name != 'RoutingAddress' &&
+                !inputConfig.isDisabled) ||
+            ((inputConfig.name == 'Address' ||
+                inputConfig.name == 'RoutingAddress') &&
+                !inputConfig.isDisabled &&
+                getSuperControl.value?.length)
+        "
+        class="dropdown-options  {{ inputConfig.dropdownWidthClass }}"
+        [ngClass]="{
+            scroll: options | taDropdownCount: template,
+            'dropdown-options-groups':
+                template === 'groups' || template === 'load-broker-contact'
+        }"
+        (scroll)="onScrollDropdown($event.target)"
+    >
+        <div [ngSwitch]="template">
+            <!--------------------------- SVG Template (Render svgs or text if svgs doesn't exist ) --------------------------->
+            <div *ngSwitchCase="'svg-template'">
+                <div
+                    *ngFor="let option of options; trackBy: identity"
+                    class="dropdown-option"
+                    [ngClass]="{
+                        disabled: option?.disabled,
                         'no-result':
-                           options.length === 1 && item.name === 'No Results'
-                     }"
-                     [innerHtml]="
-                        item.name
-                           | taHighlight
-                              : [
-                                   {
-                                      index: 45632,
-                                      text: getSuperControl.value
-                                   }
-                                ]
-                     "
-                  ></div>
-               </div>
-            </div>
-         </div>
-         <!--------------------------- Multiselect Template --------------------------->
-         <div *ngSwitchCase="'multiselect'">
-            <div
-               *ngFor="let option of options; trackBy: identity"
-               class="dropdown-option"
-               [ngClass]="{
-                  disabled: option?.disabled,
-                  'no-result':
-                     options.length === 1 && options[0].name === 'No Results',
-                  active: option?.active,
-                  'last-active': lastActiveMultiselectItem?.id === option.id
-               }"
-               (click)="onMultiselectSelect(option)"
-               [innerHtml]="
-                  option.name
-                     | taHighlight
-                        : [
-                             {
-                                index: 45632,
-                                text: getSuperControl.value
-                             }
-                          ]
-               "
-            ></div>
-         </div>
-         <!--------------------------- Labels Template --------------------------->
-         <div *ngSwitchCase="'labels'">
-            <div
-               *ngFor="let option of options; trackBy: identity"
-               class="dropdown-option labels-template"
-               [ngClass]="{
-                  disabled: option?.disabled,
-                  'no-result':
-                     options.length === 1 && options[0].name === 'No Results',
-                  'add-new': option.name === 'Add New',
-                  'add-new-divider':
-                     option.name === 'Add New' && options.length > 1,
-                  'active-label':
-                     option.id === activeItem?.id && labelMode === 'Label'
-               }"
-               (click)="onActiveItem(option)"
-            >
-               <div
-                  *ngIf="!['No Results', 'Add New'].includes(option.name)"
-                  class="labels-template-left-side"
-               >
-                  <svg-icon
-                     class="labels-template-logo"
-                     src="assets/svg/common/ic_dynamic_label.svg"
-                     appHoverSvg
-                     [fill]="option?.code ? option.code.toString() : '#b7b7b7'"
-                     [fillHover]="option?.hoverCode ? option.hoverCode : null"
-                  ></svg-icon>
-                  <div class="labels-template-vertical-divider"></div>
-               </div>
-               <div class="labels-template-right-side">
-                  <div
-                     class="labels-template-text"
-                     [ngClass]="{
+                            options.length === 1 &&
+                            options[0].name === 'No Results',
                         'add-new': option.name === 'Add New',
                         'add-new-divider':
-                           option.name === 'Add New' && options.length > 1
-                     }"
-                     [innerHtml]="
-                        option.name
-                           | taHighlight
-                              : [
-                                   {
-                                      index: 45632,
-                                      text: getSuperControl.value
-                                   }
-                                ]
-                     "
-                  ></div>
-                  <div
-                     *ngIf="!['No Results', 'Add New'].includes(option.name)"
-                     class="labels-template-counter"
-                  >
-                     {{ option.count }}
-                  </div>
-               </div>
+                            option.name === 'Add New' && options.length > 1,
+                        active: option.id === activeItem?.id
+                    }"
+                    (click)="onActiveItem(option)"
+                >
+                    <svg-icon
+                        *ngIf="option.logoName"
+                        class="svg-template-logo"
+                        [ngClass]="{ active: option.id === activeItem?.id }"
+                        [src]="option.logoName"
+                    ></svg-icon>
+                    <div
+                        [innerHtml]="
+                            option.name
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                    ></div>
+                </div>
             </div>
-         </div>
-         <!--------------------------- Dispatch Template --------------------------->
-         <div *ngSwitchCase="'dispatch'">
-            <div
-               *ngFor="
-                  let option of options;
-                  let indx = index;
-                  trackBy: identity
-               "
-               class="dropdown-option"
-               (mouseleave)="hoveredOption = -1"
-               (mouseover)="hoveredOption = indx"
-               [ngStyle]="{
-                  'background-color':
-                     hoveredOption == indx ? '#' + option.colorD : 'inherit',
-                  color: hoveredOption != indx ? '#' + option.colorD : '#fff'
-               }"
-               [ngClass]="{
-                  disabled: option?.disabled,
-                  'no-result':
-                     options.length === 1 && options[0].name === 'No Results',
-                  'add-new': option.name === 'Add New',
-                  'add-new-divider':
-                     option.name === 'Add New' && options.length > 1,
-                  active: option.id === activeItem?.id,
-                  'active-repair-truck-trailer': option?.status === 1
-               }"
-               (click)="onActiveItem(option)"
-               [innerHtml]="
-                  option.name
-                     | taHighlight
-                        : [
-                             {
-                                index: 45632,
-                                text: getSuperControl.value
-                             }
-                          ]
-               "
-            ></div>
-         </div>
-         <!--------------------------- Load Dispatcher Template (user avatar + user name) --------------------------->
-         <div *ngSwitchCase="'load-dispatcher'">
-            <div
-               *ngFor="let option of options; trackBy: identity"
-               class="dropdown-option load-dispatcher-template"
-               [ngClass]="{
-                  disabled: option?.disabled,
-                  'no-result':
-                     options.length === 1 && options[0].name === 'No Results',
-                  active: option.id === activeItem?.id
-               }"
-               (click)="onActiveItem(option)"
-            >
-               <img
-                  *ngIf="option.logoName"
-                  class="svg-template-logo"
-                  [ngClass]="{ active: option.id === activeItem?.id }"
-                  [src]="this.imageBase64Service.sanitizer(option.logoName)"
-                  [alt]="option.name"
-               />
-               <div *ngIf="!option.logoName" class="no-profile-image">
-                  <app-profile-images
-                     [indx]="0"
-                     [size]="'small'"
-                     [type]="'user'"
-                     [name]="option.name"
-                  >
-                  </app-profile-images>
-               </div>
-               <div
-                  [innerHtml]="
-                     option.name
-                        | taHighlight
-                           : [
-                                {
-                                   index: 45632,
-                                   text: getSuperControl.value
-                                }
-                             ]
-                  "
-               ></div>
-            </div>
-         </div>
-         <!--------------------------- Load Combine Truck-Trailer-Driver Template --------------------------->
-         <div *ngSwitchCase="'load-dispatches-ttd'">
-            <div
-               *ngFor="let option of options; trackBy: identity"
-               class="dropdown-option load-dispatches-ttd-template"
-               [ngClass]="{
-                  disabled: option?.disabled,
-                  'no-result':
-                     options.length === 1 && options[0].name === 'No Results',
-                  active: option.id === activeItem?.id
-               }"
-               (click)="onActiveItem(option)"
-            >
-               <!-- Truck -->
-               <div
-                  class="load-dispatch-truck"
-                  [innerHtml]="
-                     option.truck.name
-                        | taHighlight
-                           : [
-                                {
-                                   index: 45632,
-                                   text: getSuperControl.value
-                                }
-                             ]
-                  "
-               ></div>
-               <!-- Trailer -->
-               <div
-                  class="load-dispatch-trailer"
-                  [innerHtml]="
-                     option.trailer.name
-                        | taHighlight
-                           : [
-                                {
-                                   index: 45632,
-                                   text: getSuperControl.value
-                                }
-                             ]
-                  "
-               ></div>
-               <!-- Driver -->
-               <div class="load-dispatches-driver">
-                  <img
-                     *ngIf="option.driver.logoName"
-                     class="svg-template-logo"
-                     [ngClass]="{
-                        active: option.driver.id === activeItem?.driver?.id
-                     }"
-                     [src]="
-                        this.imageBase64Service.sanitizer(
-                           option.driver.logoName
-                        )
-                     "
-                     [alt]="option.driver.name"
-                  />
-                  <div *ngIf="!option.driver.logoName" class="no-profile-image">
-                     <app-profile-images
-                        [indx]="0"
-                        [size]="'small'"
-                        [name]="option.driver.name"
-                     >
-                     </app-profile-images>
-                  </div>
-                  <div
-                     class="load-dispatch-driver"
-                     [innerHtml]="
-                        option.driver.name
-                           | taHighlight
-                              : [
-                                   {
-                                      index: 45632,
-                                      text: getSuperControl.value
-                                   }
-                                ]
-                     "
-                  ></div>
-               </div>
-            </div>
-         </div>
-         <!--------------------------- Load Broker Template --------------------------->
-         <div *ngSwitchCase="'load-broker'">
-            <div
-               *ngFor="let option of options; trackBy: identity"
-               class="dropdown-option load-broker-template"
-               [ngClass]="{
-                  disabled: option?.disabled || option.dnu || option.ban,
-                  'no-result':
-                     options.length === 1 && options[0].name === 'No Results',
-                  'add-new': option.name === 'Add New',
-                  'add-new-divider':
-                     option.name === 'Add New' && options.length > 1,
-                  active: option.id === activeItem?.id
-               }"
-               (click)="onActiveItem(option)"
-            >
-               <svg-icon
-                  *ngIf="option.name !== 'Add New'"
-                  class="load-broker-status"
-                  [src]="option.logoName"
-                  [ngClass]="{
-                     'dnu-status': option.dnu,
-                     'low-status':
-                        option?.status?.toLowerCase() === 'low' &&
-                        !option.dnu &&
-                        !option.ban,
-                     'medium-status':
-                        option?.status?.toLowerCase() === 'medium' &&
-                        !option.dnu &&
-                        !option.ban
-                  }"
-               ></svg-icon>
-               <div
-                  [innerHtml]="
-                     option.name
-                        | taHighlight
-                           : [
-                                {
-                                   index: 45632,
-                                   text: getSuperControl.value
-                                }
-                             ]
-                  "
-               ></div>
-            </div>
-         </div>
-
-         <!--------------------------- Load Broker Contact Template --------------------------->
-         <div *ngSwitchCase="'load-broker-contact'">
-            <div
-               *ngFor="let option of options; trackBy: identity; let i = index"
-               class="dropdown-groups load-broker-contact-groups"
-               [ngClass]="{ 'last-group': i === options.length - 1 }"
-            >
-               <p
-                  *ngIf="
-                     options.length !== 1 && options[0].name !== 'No Results'
-                  "
-                  class="dropdown-group-header"
-                  [ngClass]="{
-                     'add-new': option.name === 'Add New',
-                     'add-new-divider':
-                        option.name === 'Add New' && options.length > 1
-                  }"
-               >
-                  {{
-                     option.name === 'Add New'
-                        ? option.name
-                        : option?.department?.name
-                  }}
-               </p>
-               <div
-                  *ngFor="let item of option?.contacts; trackBy: identity"
-                  class="dropdown-subgroup-options"
-                  [ngClass]="{
-                     'no-result':
-                        options.length === 1 && item.name === 'No Results'
-                  }"
-                  (click)="onActiveItem(item)"
-               >
-                  <div
-                     class="dropdown-subgroup-text"
-                     [ngClass]="{
+            <!--------------------------- Svg Text Template (display flex) --------------------------->
+            <div *ngSwitchCase="'svgtext-template'">
+                <div
+                    *ngFor="let option of options; trackBy: identity"
+                    class="dropdown-option svg-text-template {{
+                        option?.subFolder
+                    }} {{ option.name.trim().replace(' ', '').toLowerCase() }}"
+                    [ngClass]="{
+                        disabled: option?.disabled,
                         'no-result':
-                           options.length === 1 && item.name === 'No Results',
-                        'active-without-check': item.id === activeItem?.id
-                     }"
-                     [innerHtml]="
-                        item.name
-                           | taHighlight
-                              : [
-                                   {
-                                      index: 45632,
-                                      text: getSuperControl.value
-                                   }
-                                ]
-                     "
-                  ></div>
-
-                  <div
-                     class="dropdown-subgroup-text"
-                     [ngClass]="{
-                        'active-without-check': item.id === activeItem?.id
-                     }"
-                     [innerHtml]="
-                        item.phone
-                           | taHighlight
-                              : [
-                                   {
-                                      index: 45632,
-                                      text: getSuperControl.value
-                                   }
-                                ]
-                     "
-                  ></div>
-
-                  <div
-                     class="dropdown-subgroup-text"
-                     [ngClass]="{
-                        active: item.id === activeItem?.id
-                     }"
-                     [innerHtml]="
-                        item.extensionPhone
-                           | taHighlight
-                              : [
-                                   {
-                                      index: 45632,
-                                      text: getSuperControl.value
-                                   }
-                                ]
-                     "
-                  ></div>
-               </div>
+                            options.length === 1 &&
+                            options[0].name === 'No Results',
+                        'add-new': option.name === 'Add New',
+                        'add-new-divider':
+                            option.name === 'Add New' && options.length > 1,
+                        active: option.id === activeItem?.id,
+                        trailerContainer: option.name === 'Container',
+                        semisleeper: option.name === 'Semi w/Sleeper',
+                        lowboyrgn: option.name === 'Low Boy/RGN'
+                    }"
+                    (click)="onActiveItem(option)"
+                >
+                    <svg-icon
+                        class="svgtext-template-logo {{
+                            option.name.trim().replace(' ', '').toLowerCase()
+                        }}"
+                        [ngClass]="{
+                            active: option.id === activeItem?.id,
+                            'hide-hover-icons':
+                                inputConfig?.customClass ===
+                                    'truck-trailer-dropdown' &&
+                                !['No Results', 'Add New'].includes(
+                                    option.name
+                                ),
+                            'no-svg': !option?.logoName,
+                            'hazardous-svg':
+                                option?.logoName?.includes('hazardous')
+                        }"
+                        [src]="
+                            option?.logoName
+                                | taSvg: option?.folder:option?.subFolder
+                        "
+                    ></svg-icon>
+                    <div
+                        class="svgtext-template-text"
+                        [ngClass]="{
+                            'truck-text': option?.subFolder === 'trucks',
+                            'move-hover-text':
+                                inputConfig?.customClass ===
+                                    'truck-trailer-dropdown' &&
+                                !['No Results', 'Add New'].includes(option.name)
+                        }"
+                        [innerHtml]="
+                            option.name
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                    ></div>
+                </div>
             </div>
-         </div>
-
-         <!--------------------------- Load Shipper Template --------------------------->
-         <div *ngSwitchCase="'load-shipper'">
-            <div
-               *ngFor="let option of options; trackBy: identity"
-               class="dropdown-option load-shipper-template"
-               [ngClass]="{
-                  disabled: option?.disabled,
-                  'no-result':
-                     options.length === 1 && options[0].name === 'No Results',
-                  'add-new': option.name === 'Add New',
-                  'add-new-divider':
-                     option.name === 'Add New' && options.length > 1,
-                  active: option.id === activeItem?.id
-               }"
-               (click)="onActiveItem(option)"
-            >
-               <div
-                  [innerHtml]="
-                     option.name
-                        | taHighlight
-                           : [
-                                {
-                                   index: 45632,
-                                   text: getSuperControl.value
-                                }
-                             ]
-                  "
-               ></div>
-
-               <div
-                  [innerHtml]="
-                     option.address
-                        | taHighlight
-                           : [
-                                {
-                                   index: 45632,
-                                   text: getSuperControl.value
-                                }
-                             ]
-                  "
-               ></div>
+            <!--------------------------- Details template (truck, trailer... details-pages)  --------------------------->
+            <div *ngSwitchCase="'details-template'">
+                <div
+                    *ngFor="let option of options; trackBy: identity"
+                    class="dropdown-option details-template"
+                    [ngClass]="{
+                        disabled: option?.disabled,
+                        'no-result':
+                            options.length === 1 &&
+                            options[0].name === 'No Results'
+                    }"
+                    (click)="onActiveItem(option)"
+                >
+                    <div
+                        class="details-template-text"
+                        [ngClass]="{
+                            active:
+                                sort === 'active-drivers' &&
+                                option?.status === 1
+                        }"
+                        [innerHtml]="
+                            option.name
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                    ></div>
+                    <svg-icon
+                        class="details-template-logo"
+                        [src]="option.svg | taSvg: option.folder"
+                    ></svg-icon>
+                </div>
             </div>
-         </div>
-         <!--------------------------- Template Text - Counter --------------------------->
-         <div *ngSwitchCase="'text-counter'">
-            <div
-               *ngFor="let option of options; trackBy: identity"
-               class="dropdown-option dropdown-option-text-counter"
-               [ngClass]="{
-                  disabled: option?.disabled,
-                  'no-result':
-                     options.length === 1 && options[0].name === 'No Results',
-                  'add-new': option.name === 'Add New',
-                  'add-new-divider':
-                     option.name === 'Add New' && options.length > 1,
-                  active:
-                     option.id ===
-                     (activeItem?.duplicateId
-                        ? activeItem?.duplicateId
-                        : activeItem?.id),
-                  'active-repair-truck-trailer': option?.status === 1,
-                  routing_dropdown: inputConfig.name == 'RoutingAddress'
-               }"
-               (click)="onActiveItem(option)"
-            >
-               <span>
-                  {{
-                     option.name
-                        | taHighlight
-                           : [
-                                {
-                                   index: 45632,
-                                   text: getSuperControl.value
-                                }
-                             ]
-                           : false
-                  }}
-               </span>
-               <span
-                  *ngIf="
-                     option.name !== 'Add New' && option.name !== 'No Results'
-                  "
-                  class="option-counter"
-                  >{{ option.count }}</span
-               >
+            <!--------------------------- Grouping template (can see on contact modal)  --------------------------->
+            <div *ngSwitchCase="'groups'">
+                <div
+                    *ngFor="
+                        let option of options;
+                        trackBy: identity;
+                        let i = index
+                    "
+                    class="dropdown-groups"
+                    [ngClass]="{ 'last-group': i === options.length - 1 }"
+                >
+                    <p
+                        *ngIf="
+                            options.length !== 1 &&
+                            options[0].name !== 'No Results'
+                        "
+                        class="dropdown-group-header"
+                    >
+                        {{ option.groupName }}
+                    </p>
+                    <div
+                        *ngFor="let item of option?.items; trackBy: identity"
+                        class="dropdown-subgroup-options"
+                        [ngClass]="{
+                            'no-result':
+                                options.length === 1 &&
+                                item.name === 'No Results'
+                        }"
+                        (click)="onActiveItem(item)"
+                    >
+                        <img
+                            *ngIf="item.svg"
+                            class="dropdown-subgroup-image"
+                            [src]="item.svg"
+                            [alt]="item.name"
+                        />
+                        <div
+                            class="dropdown-subgroup-text"
+                            [ngClass]="{
+                                active: item.id === activeItem?.id,
+                                'no-result':
+                                    options.length === 1 &&
+                                    item.name === 'No Results'
+                            }"
+                            [innerHtml]="
+                                item.name
+                                    | taHighlight
+                                        : [
+                                              {
+                                                  index: 45632,
+                                                  text: getSuperControl.value
+                                              }
+                                          ]
+                            "
+                        ></div>
+                    </div>
+                </div>
             </div>
-         </div>
-         <!--------------------------- Default Template - Render Only Text --------------------------->
-         <div *ngSwitchDefault>
-            <div
-               *ngFor="let option of options; trackBy: identity"
-               class="dropdown-option"
-               [ngClass]="{
-                  disabled: option?.disabled,
-                  'no-result':
-                     options.length === 1 && options[0].name === 'No Results',
-                  'add-new': option.name === 'Add New',
-                  'add-new-divider':
-                     option.name === 'Add New' && options.length > 1,
-                  active:
-                     option.id ===
-                     (activeItem?.duplicateId
-                        ? activeItem?.duplicateId
-                        : activeItem?.id),
-                  'active-repair-truck-trailer': option?.status === 1,
-                  routing_dropdown: inputConfig.name == 'RoutingAddress'
-               }"
-               (click)="onActiveItem(option)"
-               [innerHtml]="
-                  option.name
-                     | taHighlight
-                        : [
-                             {
-                                index: 45632,
-                                text: getSuperControl.value
-                             }
-                          ]
-               "
-            ></div>
-         </div>
-      </div>
-   </div>
+            <!--------------------------- Multiselect Template --------------------------->
+            <div *ngSwitchCase="'multiselect'">
+                <div
+                    *ngFor="let option of options; trackBy: identity"
+                    class="dropdown-option"
+                    [ngClass]="{
+                        disabled: option?.disabled,
+                        'no-result':
+                            options.length === 1 &&
+                            options[0].name === 'No Results',
+                        active: option?.active,
+                        'last-active':
+                            lastActiveMultiselectItem?.id === option.id
+                    }"
+                    (click)="onMultiselectSelect(option)"
+                    [innerHtml]="
+                        option.name
+                            | taHighlight
+                                : [
+                                      {
+                                          index: 45632,
+                                          text: getSuperControl.value
+                                      }
+                                  ]
+                    "
+                ></div>
+            </div>
+            <!--------------------------- Labels Template --------------------------->
+            <div *ngSwitchCase="'labels'">
+                <div
+                    *ngFor="let option of options; trackBy: identity"
+                    class="dropdown-option labels-template"
+                    [ngClass]="{
+                        disabled: option?.disabled,
+                        'no-result':
+                            options.length === 1 &&
+                            options[0].name === 'No Results',
+                        'add-new': option.name === 'Add New',
+                        'add-new-divider':
+                            option.name === 'Add New' && options.length > 1,
+                        'active-label':
+                            option.id === activeItem?.id &&
+                            labelMode === 'Label'
+                    }"
+                    (click)="onActiveItem(option)"
+                >
+                    <div
+                        *ngIf="!['No Results', 'Add New'].includes(option.name)"
+                        class="labels-template-left-side"
+                    >
+                        <svg-icon
+                            class="labels-template-logo"
+                            src="assets/svg/common/ic_dynamic_label.svg"
+                            appHoverSvg
+                            [fill]="
+                                option?.code
+                                    ? option.code.toString()
+                                    : '#b7b7b7'
+                            "
+                            [fillHover]="
+                                option?.hoverCode ? option.hoverCode : null
+                            "
+                        ></svg-icon>
+                        <div class="labels-template-vertical-divider"></div>
+                    </div>
+                    <div class="labels-template-right-side">
+                        <div
+                            class="labels-template-text"
+                            [ngClass]="{
+                                'add-new': option.name === 'Add New',
+                                'add-new-divider':
+                                    option.name === 'Add New' &&
+                                    options.length > 1
+                            }"
+                            [innerHtml]="
+                                option.name
+                                    | taHighlight
+                                        : [
+                                              {
+                                                  index: 45632,
+                                                  text: getSuperControl.value
+                                              }
+                                          ]
+                            "
+                        ></div>
+                        <div
+                            *ngIf="
+                                !['No Results', 'Add New'].includes(option.name)
+                            "
+                            class="labels-template-counter"
+                        >
+                            {{ option.count }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--------------------------- Dispatch Template --------------------------->
+            <div *ngSwitchCase="'dispatch'">
+                <div
+                    *ngFor="
+                        let option of options;
+                        let indx = index;
+                        trackBy: identity
+                    "
+                    class="dropdown-option"
+                    (mouseleave)="hoveredOption = -1"
+                    (mouseover)="hoveredOption = indx"
+                    [ngStyle]="{
+                        'background-color':
+                            hoveredOption == indx
+                                ? '#' + option.colorD
+                                : 'inherit',
+                        color:
+                            hoveredOption != indx ? '#' + option.colorD : '#fff'
+                    }"
+                    [ngClass]="{
+                        disabled: option?.disabled,
+                        'no-result':
+                            options.length === 1 &&
+                            options[0].name === 'No Results',
+                        'add-new': option.name === 'Add New',
+                        'add-new-divider':
+                            option.name === 'Add New' && options.length > 1,
+                        active: option.id === activeItem?.id,
+                        'active-repair-truck-trailer': option?.status === 1
+                    }"
+                    (click)="onActiveItem(option)"
+                    [innerHtml]="
+                        option.name
+                            | taHighlight
+                                : [
+                                      {
+                                          index: 45632,
+                                          text: getSuperControl.value
+                                      }
+                                  ]
+                    "
+                ></div>
+            </div>
+            <!--------------------------- Load Dispatcher Template (user avatar + user name) --------------------------->
+            <div *ngSwitchCase="'load-dispatcher'">
+                <div
+                    *ngFor="let option of options; trackBy: identity"
+                    class="dropdown-option load-dispatcher-template"
+                    [ngClass]="{
+                        disabled: option?.disabled,
+                        'no-result':
+                            options.length === 1 &&
+                            options[0].name === 'No Results',
+                        active: option.id === activeItem?.id
+                    }"
+                    (click)="onActiveItem(option)"
+                >
+                    <img
+                        *ngIf="option.logoName"
+                        class="svg-template-logo"
+                        [ngClass]="{ active: option.id === activeItem?.id }"
+                        [src]="
+                            this.imageBase64Service.sanitizer(option.logoName)
+                        "
+                        [alt]="option.name"
+                    />
+                    <div *ngIf="!option.logoName" class="no-profile-image">
+                        <app-profile-images
+                            [indx]="0"
+                            [size]="'small'"
+                            [type]="'user'"
+                            [name]="option.name"
+                        >
+                        </app-profile-images>
+                    </div>
+                    <div
+                        [innerHtml]="
+                            option.name
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                    ></div>
+                </div>
+            </div>
+            <!--------------------------- Load Combine Truck-Trailer-Driver Template --------------------------->
+            <div *ngSwitchCase="'load-dispatches-ttd'">
+                <div
+                    *ngFor="let option of options; trackBy: identity"
+                    class="dropdown-option load-dispatches-ttd-template"
+                    [ngClass]="{
+                        disabled: option?.disabled,
+                        'no-result':
+                            options.length === 1 &&
+                            options[0].name === 'No Results',
+                        active: option.id === activeItem?.id
+                    }"
+                    (click)="onActiveItem(option)"
+                >
+                    <!-- Truck -->
+                    <div
+                        class="load-dispatch-truck"
+                        [innerHtml]="
+                            option.truck.name
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                    ></div>
+                    <!-- Trailer -->
+                    <div
+                        class="load-dispatch-trailer"
+                        [innerHtml]="
+                            option.trailer.name
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                    ></div>
+                    <!-- Driver -->
+                    <div class="load-dispatches-driver">
+                        <img
+                            *ngIf="option.driver.logoName"
+                            class="svg-template-logo"
+                            [ngClass]="{
+                                active:
+                                    option.driver.id === activeItem?.driver?.id
+                            }"
+                            [src]="
+                                this.imageBase64Service.sanitizer(
+                                    option.driver.logoName
+                                )
+                            "
+                            [alt]="option.driver.name"
+                        />
+                        <div
+                            *ngIf="!option.driver.logoName"
+                            class="no-profile-image"
+                        >
+                            <app-profile-images
+                                [indx]="0"
+                                [size]="'small'"
+                                [name]="option.driver.name"
+                            >
+                            </app-profile-images>
+                        </div>
+                        <div
+                            class="load-dispatch-driver"
+                            [innerHtml]="
+                                option.driver.name
+                                    | taHighlight
+                                        : [
+                                              {
+                                                  index: 45632,
+                                                  text: getSuperControl.value
+                                              }
+                                          ]
+                            "
+                        ></div>
+                    </div>
+                </div>
+            </div>
+            <!--------------------------- Load Broker Template --------------------------->
+            <div *ngSwitchCase="'load-broker'">
+                <div
+                    *ngFor="let option of options; trackBy: identity"
+                    class="dropdown-option load-broker-template"
+                    [ngClass]="{
+                        disabled: option?.disabled || option.dnu || option.ban,
+                        'no-result':
+                            options.length === 1 &&
+                            options[0].name === 'No Results',
+                        'add-new': option.name === 'Add New',
+                        'add-new-divider':
+                            option.name === 'Add New' && options.length > 1,
+                        active: option.id === activeItem?.id
+                    }"
+                    (click)="onActiveItem(option)"
+                >
+                    <svg-icon
+                        *ngIf="option.name !== 'Add New'"
+                        class="load-broker-status"
+                        [src]="option.logoName"
+                        [ngClass]="{
+                            'dnu-status': option.dnu,
+                            'low-status':
+                                option?.status?.toLowerCase() === 'low' &&
+                                !option.dnu &&
+                                !option.ban,
+                            'medium-status':
+                                option?.status?.toLowerCase() === 'medium' &&
+                                !option.dnu &&
+                                !option.ban
+                        }"
+                    ></svg-icon>
+                    <div
+                        [innerHtml]="
+                            option.name
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                    ></div>
+                </div>
+            </div>
+
+            <!--------------------------- Load Broker Contact Template --------------------------->
+            <div *ngSwitchCase="'load-broker-contact'">
+                <div
+                    *ngFor="
+                        let option of options;
+                        trackBy: identity;
+                        let i = index
+                    "
+                    class="dropdown-groups load-broker-contact-groups"
+                    [ngClass]="{ 'last-group': i === options.length - 1 }"
+                >
+                    <p
+                        *ngIf="
+                            options.length !== 1 &&
+                            options[0].name !== 'No Results'
+                        "
+                        class="dropdown-group-header"
+                        [ngClass]="{
+                            'add-new': option.name === 'Add New',
+                            'add-new-divider':
+                                option.name === 'Add New' && options.length > 1
+                        }"
+                    >
+                        {{
+                            option.name === 'Add New'
+                                ? option.name
+                                : option?.department?.name
+                        }}
+                    </p>
+                    <div
+                        *ngFor="let item of option?.contacts; trackBy: identity"
+                        class="dropdown-subgroup-options"
+                        [ngClass]="{
+                            'no-result':
+                                options.length === 1 &&
+                                item.name === 'No Results'
+                        }"
+                        (click)="onActiveItem(item)"
+                    >
+                        <div
+                            class="dropdown-subgroup-text"
+                            [ngClass]="{
+                                'no-result':
+                                    options.length === 1 &&
+                                    item.name === 'No Results',
+                                'active-without-check':
+                                    item.id === activeItem?.id
+                            }"
+                            [innerHtml]="
+                                item.name
+                                    | taHighlight
+                                        : [
+                                              {
+                                                  index: 45632,
+                                                  text: getSuperControl.value
+                                              }
+                                          ]
+                            "
+                        ></div>
+
+                        <div
+                            class="dropdown-subgroup-text"
+                            [ngClass]="{
+                                'active-without-check':
+                                    item.id === activeItem?.id
+                            }"
+                            [innerHtml]="
+                                item.phone
+                                    | taHighlight
+                                        : [
+                                              {
+                                                  index: 45632,
+                                                  text: getSuperControl.value
+                                              }
+                                          ]
+                            "
+                        ></div>
+
+                        <div
+                            class="dropdown-subgroup-text"
+                            [ngClass]="{
+                                active: item.id === activeItem?.id
+                            }"
+                            [innerHtml]="
+                                item.extensionPhone
+                                    | taHighlight
+                                        : [
+                                              {
+                                                  index: 45632,
+                                                  text: getSuperControl.value
+                                              }
+                                          ]
+                            "
+                        ></div>
+                    </div>
+                </div>
+            </div>
+
+            <!--------------------------- Load Shipper Template --------------------------->
+            <div *ngSwitchCase="'load-shipper'">
+                <div
+                    *ngFor="let option of options; trackBy: identity"
+                    class="dropdown-option load-shipper-template"
+                    [ngClass]="{
+                        disabled: option?.disabled,
+                        'no-result':
+                            options.length === 1 &&
+                            options[0].name === 'No Results',
+                        'add-new': option.name === 'Add New',
+                        'add-new-divider':
+                            option.name === 'Add New' && options.length > 1,
+                        active: option.id === activeItem?.id
+                    }"
+                    (click)="onActiveItem(option)"
+                >
+                    <div
+                        [innerHtml]="
+                            option.name
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                    ></div>
+
+                    <div
+                        [innerHtml]="
+                            option.address
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                    ></div>
+                </div>
+            </div>
+            <!--------------------------- Template Text - Counter --------------------------->
+            <div *ngSwitchCase="'text-counter'">
+                <div
+                    *ngFor="let option of options; trackBy: identity"
+                    class="dropdown-option dropdown-option-text-counter"
+                    [ngClass]="{
+                        disabled: option?.disabled,
+                        'no-result':
+                            options.length === 1 &&
+                            options[0].name === 'No Results',
+                        'add-new': option.name === 'Add New',
+                        'add-new-divider':
+                            option.name === 'Add New' && options.length > 1,
+                        active:
+                            option.id ===
+                            (activeItem?.duplicateId
+                                ? activeItem?.duplicateId
+                                : activeItem?.id),
+                        'active-repair-truck-trailer': option?.status === 1,
+                        routing_dropdown: inputConfig.name == 'RoutingAddress'
+                    }"
+                    (click)="onActiveItem(option)"
+                >
+                    <span>
+                        {{
+                            option.name
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                                    : false
+                        }}
+                    </span>
+                    <span
+                        *ngIf="
+                            option.name !== 'Add New' &&
+                            option.name !== 'No Results'
+                        "
+                        class="option-counter"
+                        >{{ option.count }}</span
+                    >
+                </div>
+            </div>
+            <!--------------------------- Default Template - Render Only Text --------------------------->
+            <div *ngSwitchDefault>
+                <div
+                    *ngFor="let option of options; trackBy: identity"
+                    class="dropdown-option"
+                    [ngClass]="{
+                        disabled: option?.disabled,
+                        'no-result':
+                            options.length === 1 &&
+                            options[0].name === 'No Results',
+                        'add-new': option.name === 'Add New',
+                        'add-new-divider':
+                            option.name === 'Add New' && options.length > 1,
+                        active:
+                            option.id ===
+                            (activeItem?.duplicateId
+                                ? activeItem?.duplicateId
+                                : activeItem?.id),
+                        'active-repair-truck-trailer': option?.status === 1,
+                        routing_dropdown: inputConfig.name == 'RoutingAddress'
+                    }"
+                    (click)="onActiveItem(option)"
+                    [innerHtml]="
+                        option.name
+                            | taHighlight
+                                : [
+                                      {
+                                          index: 45632,
+                                          text: getSuperControl.value
+                                      }
+                                  ]
+                    "
+                ></div>
+            </div>
+        </div>
+    </div>
 </ng-template>

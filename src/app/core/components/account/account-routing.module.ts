@@ -3,15 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { AccountTableComponent } from './account-table/account-table.component';
 
 const routes: Routes = [
-   {
-      path: '',
-      component: AccountTableComponent,
-      data: { title: 'Account' },
-   },
+    {
+        path: '',
+        component: AccountTableComponent,
+        data: { title: 'Account' },
+    },
 ];
 
 @NgModule({
-   imports: [RouterModule.forChild(routes)],
-   exports: [RouterModule],
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
 export class AccountRoutingModule {}

@@ -5,34 +5,34 @@ import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { TrailerTService } from '../trailer.service';
 import {
-   TrailerInactiveState,
-   TrailerInactiveStore,
+    TrailerInactiveState,
+    TrailerInactiveStore,
 } from './trailer-inactive.store';
 
 @Injectable({
-   providedIn: 'root',
+    providedIn: 'root',
 })
 export class TrailerInactiveResolver implements Resolve<TrailerInactiveState> {
-   constructor(
-      private trailerService: TrailerTService,
-      private trailerStore: TrailerInactiveStore
-   ) {}
-   resolve(): Observable<TrailerInactiveState | boolean> {
-      return this.trailerService.getTrailers(0, 1, 25).pipe(
-         catchError(() => {
-            return of('No inactive trailer...');
-         }),
-         tap((trailerPagination: TrailerListResponse) => {
-            localStorage.setItem(
-               'trailerTableCount',
-               JSON.stringify({
-                  active: trailerPagination.activeCount,
-                  inactive: trailerPagination.inactiveCount,
-               })
-            );
+    constructor(
+        private trailerService: TrailerTService,
+        private trailerStore: TrailerInactiveStore
+    ) {}
+    resolve(): Observable<TrailerInactiveState | boolean> {
+        return this.trailerService.getTrailers(0, 1, 25).pipe(
+            catchError(() => {
+                return of('No inactive trailer...');
+            }),
+            tap((trailerPagination: TrailerListResponse) => {
+                localStorage.setItem(
+                    'trailerTableCount',
+                    JSON.stringify({
+                        active: trailerPagination.activeCount,
+                        inactive: trailerPagination.inactiveCount,
+                    })
+                );
 
-            this.trailerStore.set(trailerPagination.pagination.data);
-         })
-      );
-   }
+                this.trailerStore.set(trailerPagination.pagination.data);
+            })
+        );
+    }
 }

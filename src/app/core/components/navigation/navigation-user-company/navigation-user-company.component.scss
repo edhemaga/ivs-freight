@@ -1,89 +1,89 @@
 @import '../navigation.design.scss';
 
 .user-company {
-   height: 171px;
-   width: 184px;
-   border-radius: 3px;
-   border-top-left-radius: 20px;
-   font-weight: $nav-font-medium;
-   font-size: $nav-font-size;
-   color: $nav-text-color;
-   background-color: $nav-white;
-   box-shadow: $nav-boxshadow;
-   position: absolute;
-   bottom: 11px;
-   right: 8px;
-   z-index: 99;
+    height: 171px;
+    width: 184px;
+    border-radius: 3px;
+    border-top-left-radius: 20px;
+    font-weight: $nav-font-medium;
+    font-size: $nav-font-size;
+    color: $nav-text-color;
+    background-color: $nav-white;
+    box-shadow: $nav-boxshadow;
+    position: absolute;
+    bottom: 11px;
+    right: 8px;
+    z-index: 99;
 
-   padding: 4px;
+    padding: 4px;
 
-   p {
-      margin: 0;
-   }
+    p {
+        margin: 0;
+    }
 
-   .user-company-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 6px;
+    .user-company-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 6px;
 
-      .user-company-header-svg {
-         transition: all 0.3s ease-in-out;
-         height: 32px;
-         width: 32px;
-         background: $nav-hover-darker;
-         border-radius: 50%;
+        .user-company-header-svg {
+            transition: all 0.3s ease-in-out;
+            height: 32px;
+            width: 32px;
+            background: $nav-hover-darker;
+            border-radius: 50%;
 
-         svg {
-            position: relative;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            path {
-               fill: $nav-svg;
-            }
-         }
-      }
-
-      .user-company-header-text {
-         font-weight: $nav-font-bold;
-         color: $nav-text-color-darker;
-         margin-left: 6px;
-      }
-
-      &:hover {
-         .user-company-header-svg {
-            transition: $nav-transition;
-            background-color: $nav-hover-lightcolor;
             svg {
-               path {
-                  fill: $nav-svg-hover;
-               }
+                position: relative;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                path {
+                    fill: $nav-svg;
+                }
             }
-         }
-      }
-   }
+        }
 
-   .user-company-content {
-      padding: 5px 14px 5px 8px;
+        .user-company-header-text {
+            font-weight: $nav-font-bold;
+            color: $nav-text-color-darker;
+            margin-left: 6px;
+        }
 
-      .user-company-text {
-         font-size: 14px;
-         font-weight: 500;
-         line-height: 18px;
-      }
+        &:hover {
+            .user-company-header-svg {
+                transition: $nav-transition;
+                background-color: $nav-hover-lightcolor;
+                svg {
+                    path {
+                        fill: $nav-svg-hover;
+                    }
+                }
+            }
+        }
+    }
 
-      .user-company-text-active {
-         color: $nav-active-lighter !important;
-      }
+    .user-company-content {
+        padding: 5px 14px 5px 8px;
 
-      &:hover {
-         background-color: $nav-hover-color;
-         color: $nav-text-color-hover;
-         border-radius: 3px;
+        .user-company-text {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 18px;
+        }
 
-         .user-company-text-active {
-            color: $nav-active !important;
-         }
-      }
-   }
+        .user-company-text-active {
+            color: $nav-active-lighter !important;
+        }
+
+        &:hover {
+            background-color: $nav-hover-color;
+            color: $nav-text-color-hover;
+            border-radius: 3px;
+
+            .user-company-text-active {
+                color: $nav-active !important;
+            }
+        }
+    }
 }

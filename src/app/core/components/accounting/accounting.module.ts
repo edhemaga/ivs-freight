@@ -8,18 +8,18 @@ import { AccountingPayrollComponent } from './accounting-payroll/accounting-payr
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
 
 @NgModule({
-   declarations: [
-      AccountingIndexComponent,
-      PayrollComponent,
-      AccountingPayrollComponent,
-   ],
-   imports: [
-      CommonModule,
-      AccountingRoutingModule,
-      SharedModule,
-      TruckassistTableModule,
-   ],
-   entryComponents: [AccountingIndexComponent],
-   exports: [AccountingIndexComponent],
+    declarations: [
+        AccountingIndexComponent,
+        PayrollComponent,
+        AccountingPayrollComponent,
+    ],
+    imports: [
+        CommonModule,
+        AccountingRoutingModule,
+        SharedModule,
+        TruckassistTableModule,
+    ],
+    entryComponents: [AccountingIndexComponent],
+    exports: [AccountingIndexComponent],
 })
 export class AccountingModule {}

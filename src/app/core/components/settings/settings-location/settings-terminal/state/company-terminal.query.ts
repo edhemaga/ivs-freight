@@ -4,7 +4,7 @@ import { TerminalState, TerminalStore } from './company-terminal.store';
 
 @Injectable({ providedIn: 'root' })
 export class TerminalQuery extends QueryEntity<TerminalState> {
-   constructor(protected terminalStore: TerminalStore) {
-      super(terminalStore);
-   }
+    constructor(protected terminalStore: TerminalStore) {
+        super(terminalStore);
+    }
 }

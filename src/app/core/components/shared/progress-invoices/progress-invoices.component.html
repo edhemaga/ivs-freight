@@ -1,34 +1,34 @@
 <div class="progress-text-wrapper">
-   <div class="text-broker-wrapper">
-      <span class="days">{{ invoiceDays }} days</span>
-      <span class="invoice-days"
-         >{{ invoiceCounter }} <span class="inv">Inv.</span></span
-      >
-      <span class="cost-total-ageing"
-         >{{ invoiceTotal | formatCurrency }}
-      </span>
-   </div>
-   <div [ngSwitch]="template">
-      <div
-         *ngSwitchCase="'light-blue'"
-         class="app-progress-invoices light-blue-inv"
-      >
-         <div class="inside-progress inside-progress-light-blue"></div>
-      </div>
-      <div
-         *ngSwitchCase="'mid-blue'"
-         class="app-progress-invoices mid-orange-inv"
-      >
-         <div class="inside-progress inside-progress-mid-orange"></div>
-      </div>
-      <div
-         *ngSwitchCase="'dark-blue'"
-         class="app-progress-invoices dark-orange-inv"
-      >
-         <div class="inside-progress inside-progress-dark-orange"></div>
-      </div>
-      <div *ngSwitchCase="'danger'" class="app-progress-invoices danger-inv">
-         <div class="inside-progress inside-progress-danger-broker"></div>
-      </div>
-   </div>
+    <div class="text-broker-wrapper">
+        <span class="days">{{ invoiceDays }} days</span>
+        <span class="invoice-days"
+            >{{ invoiceCounter }} <span class="inv">Inv.</span></span
+        >
+        <span class="cost-total-ageing"
+            >{{ invoiceTotal | formatCurrency }}
+        </span>
+    </div>
+    <div [ngSwitch]="template">
+        <div
+            *ngSwitchCase="'light-blue'"
+            class="app-progress-invoices light-blue-inv"
+        >
+            <div class="inside-progress inside-progress-light-blue"></div>
+        </div>
+        <div
+            *ngSwitchCase="'mid-blue'"
+            class="app-progress-invoices mid-orange-inv"
+        >
+            <div class="inside-progress inside-progress-mid-orange"></div>
+        </div>
+        <div
+            *ngSwitchCase="'dark-blue'"
+            class="app-progress-invoices dark-orange-inv"
+        >
+            <div class="inside-progress inside-progress-dark-orange"></div>
+        </div>
+        <div *ngSwitchCase="'danger'" class="app-progress-invoices danger-inv">
+            <div class="inside-progress inside-progress-danger-broker"></div>
+        </div>
+    </div>
 </div>

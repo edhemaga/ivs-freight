@@ -1,171 +1,175 @@
 <div class="card-container-cmp" [ngClass]="{ 'card-flex': !isCardOpen }">
-   <div
-      ngbTooltip
-      [mainTooltip]="isCardOpen ? 'Close Card' : 'Open Card'"
-      position="top"
-      [tooltipBackground]="isCardOpen ? 'rgba(0,0,0,0)' : '#6C6C6C'"
-      class="tooltipClose"
-   >
-      <div
-         class="name-dots disable-selection"
-         [ngStyle]="{ padding: paddingDots }"
-      >
-         <div
-            class="text-icon-common"
-            (click)="toggleCard($event)"
-            [ngClass]="{ copied: copiedCommon }"
-         >
-            <div class="content-wrapper">
-               <span
-                  ngbTooltip
-                  [mainTooltip]="stateTooltipName"
-                  position="top"
-                  tooltipBackground="#6C6C6C"
-                  class="tooltipShortName"
-               >
-                  <div
-                     *ngIf="shortName"
-                     [ngClass]="{ 'card-close-title': !isCardOpen }"
-                     class="weekly-status"
-                     [style.width.px]="weeklyWidth"
-                  >
-                     {{ shortName }}
-                  </div>
-               </span>
-               <span
-                  *ngIf="hasSvg && isCardOpen"
-                  [ngClass]="{ 'card-close-icon': !isCardOpen }"
-                  class="icon-common"
-               >
-                  <svg-icon
-                     class="svg-left"
-                     *ngIf="hasSvg"
-                     [src]="hasSvg"
-                  ></svg-icon>
-               </span>
-               <span
-                  class="card-name-cmp"
-                  [ngClass]="{
-                     'has-svgIcon': hasSvg,
-                     'card-close-title': !isCardOpen
-                  }"
-               >
-                  <span
-                     *ngIf="isCardOpen || haveHeaderText"
-                     class="open-name disable-selection"
-                     >{{ cardNameCommon }}</span
-                  >
-
-                  <span
-                     [ngClass]="{ 'card-close-title': !isCardOpen }"
-                     class="open-name"
-                     *ngIf="(!isCardOpen && expDateClose) || testDate"
-                     ><span *ngIf="!isDeactivated && !testDate"
-                        >Expired on {{ expDateClose }}</span
-                     >
-                     <span *ngIf="isDeactivated && !testDate"
-                        >Voided on {{ voidedDate }}</span
-                     >
-                     <span *ngIf="testDate && !isCardOpen">{{ testDate }}</span>
-                  </span>
-                  <span *ngIf="cardSecondName" class="second-name">
-                     {{ cardSecondName }}</span
-                  >
-               </span>
-               <span
-                  *ngIf="hasCopyIcon"
-                  ngbTooltip
-                  [mainTooltip]="copiedCommon ? 'Copied' : 'Copy'"
-                  position="top"
-                  [autoClose]="false"
-                  (click)="copyText(cardNameCommon, $event)"
-                  [tooltipBackground]="copiedCommon ? '#536BC2' : '#6c6c6c'"
-               >
-                  <svg-icon
-                     *ngIf="isCardOpen && hasCopyIcon"
-                     (mouseleave)="copiedCommon = false"
-                     class="card-icon-common"
-                     src="assets/svg/common/ic_copy.svg"
-                  ></svg-icon>
-               </span>
-               <span
-                  *ngIf="settingsIcon && isCardOpen"
-                  ngbTooltip
-                  [mainTooltip]="'Company Owned'"
-                  position="bottom"
-                  [tooltipBackground]="'#6c6c6c'"
-               >
-                  <svg-icon
-                     *ngIf="settingsIcon && isCardOpen"
-                     src="{{ settingsIcon }}"
-                     class="settings-icon"
-                  >
-                  </svg-icon>
-               </span>
-            </div>
-         </div>
-         <div
-            *ngIf="haveDots"
-            (click)="clickedCardName(cardNameCurrent)"
-            class="dots-common-cards"
-         >
-            <app-details-page-dropdown
-               [options]="options.actions"
-               [id]="optionsId"
-               (click)="sendData(data)"
-               [placement]="
-                  setPositionDrop
-                     ? 'bottom-right left auto'
-                     : 'right-top right auto'
-               "
-               [leftIcon]="setPositionDrop ? false : true"
-               (dropDownActions)="dropAct($event)"
-               [customClassDropDown]="'drop-down-details-single'"
-               (click)="toggleDropdown()"
+    <div
+        ngbTooltip
+        [mainTooltip]="isCardOpen ? 'Close Card' : 'Open Card'"
+        position="top"
+        [tooltipBackground]="isCardOpen ? 'rgba(0,0,0,0)' : '#6C6C6C'"
+        class="tooltipClose"
+    >
+        <div
+            class="name-dots disable-selection"
+            [ngStyle]="{ padding: paddingDots }"
+        >
+            <div
+                class="text-icon-common"
+                (click)="toggleCard($event)"
+                [ngClass]="{ copied: copiedCommon }"
             >
-            </app-details-page-dropdown>
-         </div>
-      </div>
-   </div>
-   <div
-      class="card-body-cmp"
-      [@.disabled]="animationsDisabled"
-      [ngClass]="{ active: isCardOpen }"
-   >
-      <div [@showHideCardBody]="isCardOpen ? 'true' : 'false'">
-         <ng-content></ng-content>
-      </div>
-   </div>
-   <div
-      class="card-footer-cmp"
-      [ngClass]="{ 'hide-padding': resPage }"
-      *ngIf="isCardOpen && hasFooter"
-   >
-      <div class="icon-counter">
-         <svg-icon
-            *ngIf="!resPage"
-            class="note-icon"
-            src="{{ noteIcons }}"
-         ></svg-icon>
-         <svg-icon
-            *ngIf="!resPage && cardDocumentCounter"
-            class="attachment-icon"
-            src="assets/svg/common/ic_attachment.svg"
-         ></svg-icon>
-         <p *ngIf="!resPage" class="card-document-counter">
-            {{ cardDocumentCounter }}
-         </p>
-      </div>
-      <div
-         (click)="resizePageFun()"
-         [ngClass]="{ 'rotate-common': resPage }"
-         class="resize-icon"
-      >
-         <span class="hide-text" *ngIf="resPage">HIDE DETAILS</span>
-         <svg-icon
-            class="resize-icon-svg"
-            src="assets/svg/common/resize-arrow.svg"
-         ></svg-icon>
-      </div>
-   </div>
+                <div class="content-wrapper">
+                    <span
+                        ngbTooltip
+                        [mainTooltip]="stateTooltipName"
+                        position="top"
+                        tooltipBackground="#6C6C6C"
+                        class="tooltipShortName"
+                    >
+                        <div
+                            *ngIf="shortName"
+                            [ngClass]="{ 'card-close-title': !isCardOpen }"
+                            class="weekly-status"
+                            [style.width.px]="weeklyWidth"
+                        >
+                            {{ shortName }}
+                        </div>
+                    </span>
+                    <span
+                        *ngIf="hasSvg && isCardOpen"
+                        [ngClass]="{ 'card-close-icon': !isCardOpen }"
+                        class="icon-common"
+                    >
+                        <svg-icon
+                            class="svg-left"
+                            *ngIf="hasSvg"
+                            [src]="hasSvg"
+                        ></svg-icon>
+                    </span>
+                    <span
+                        class="card-name-cmp"
+                        [ngClass]="{
+                            'has-svgIcon': hasSvg,
+                            'card-close-title': !isCardOpen
+                        }"
+                    >
+                        <span
+                            *ngIf="isCardOpen || haveHeaderText"
+                            class="open-name disable-selection"
+                            >{{ cardNameCommon }}</span
+                        >
+
+                        <span
+                            [ngClass]="{ 'card-close-title': !isCardOpen }"
+                            class="open-name"
+                            *ngIf="(!isCardOpen && expDateClose) || testDate"
+                            ><span *ngIf="!isDeactivated && !testDate"
+                                >Expired on {{ expDateClose }}</span
+                            >
+                            <span *ngIf="isDeactivated && !testDate"
+                                >Voided on {{ voidedDate }}</span
+                            >
+                            <span *ngIf="testDate && !isCardOpen">{{
+                                testDate
+                            }}</span>
+                        </span>
+                        <span *ngIf="cardSecondName" class="second-name">
+                            {{ cardSecondName }}</span
+                        >
+                    </span>
+                    <span
+                        *ngIf="hasCopyIcon"
+                        ngbTooltip
+                        [mainTooltip]="copiedCommon ? 'Copied' : 'Copy'"
+                        position="top"
+                        [autoClose]="false"
+                        (click)="copyText(cardNameCommon, $event)"
+                        [tooltipBackground]="
+                            copiedCommon ? '#536BC2' : '#6c6c6c'
+                        "
+                    >
+                        <svg-icon
+                            *ngIf="isCardOpen && hasCopyIcon"
+                            (mouseleave)="copiedCommon = false"
+                            class="card-icon-common"
+                            src="assets/svg/common/ic_copy.svg"
+                        ></svg-icon>
+                    </span>
+                    <span
+                        *ngIf="settingsIcon && isCardOpen"
+                        ngbTooltip
+                        [mainTooltip]="'Company Owned'"
+                        position="bottom"
+                        [tooltipBackground]="'#6c6c6c'"
+                    >
+                        <svg-icon
+                            *ngIf="settingsIcon && isCardOpen"
+                            src="{{ settingsIcon }}"
+                            class="settings-icon"
+                        >
+                        </svg-icon>
+                    </span>
+                </div>
+            </div>
+            <div
+                *ngIf="haveDots"
+                (click)="clickedCardName(cardNameCurrent)"
+                class="dots-common-cards"
+            >
+                <app-details-page-dropdown
+                    [options]="options.actions"
+                    [id]="optionsId"
+                    (click)="sendData(data)"
+                    [placement]="
+                        setPositionDrop
+                            ? 'bottom-right left auto'
+                            : 'right-top right auto'
+                    "
+                    [leftIcon]="setPositionDrop ? false : true"
+                    (dropDownActions)="dropAct($event)"
+                    [customClassDropDown]="'drop-down-details-single'"
+                    (click)="toggleDropdown()"
+                >
+                </app-details-page-dropdown>
+            </div>
+        </div>
+    </div>
+    <div
+        class="card-body-cmp"
+        [@.disabled]="animationsDisabled"
+        [ngClass]="{ active: isCardOpen }"
+    >
+        <div [@showHideCardBody]="isCardOpen ? 'true' : 'false'">
+            <ng-content></ng-content>
+        </div>
+    </div>
+    <div
+        class="card-footer-cmp"
+        [ngClass]="{ 'hide-padding': resPage }"
+        *ngIf="isCardOpen && hasFooter"
+    >
+        <div class="icon-counter">
+            <svg-icon
+                *ngIf="!resPage"
+                class="note-icon"
+                src="{{ noteIcons }}"
+            ></svg-icon>
+            <svg-icon
+                *ngIf="!resPage && cardDocumentCounter"
+                class="attachment-icon"
+                src="assets/svg/common/ic_attachment.svg"
+            ></svg-icon>
+            <p *ngIf="!resPage" class="card-document-counter">
+                {{ cardDocumentCounter }}
+            </p>
+        </div>
+        <div
+            (click)="resizePageFun()"
+            [ngClass]="{ 'rotate-common': resPage }"
+            class="resize-icon"
+        >
+            <span class="hide-text" *ngIf="resPage">HIDE DETAILS</span>
+            <svg-icon
+                class="resize-icon-svg"
+                src="assets/svg/common/resize-arrow.svg"
+            ></svg-icon>
+        </div>
+    </div>
 </div>

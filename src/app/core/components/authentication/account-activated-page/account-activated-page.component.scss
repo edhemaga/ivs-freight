@@ -1,106 +1,106 @@
 @import 'src/theme/variables';
 
 .account-activated-container {
-   background-color: $white;
-   min-height: 100vh;
-   padding-top: 60px;
+    background-color: $white;
+    min-height: 100vh;
+    padding-top: 60px;
 
-   .account-activated-text {
-      h1 {
-         font-weight: 800;
-         font-size: 52px;
-         height: 63px;
-         width: 537px;
-         color: $ta-blue;
-         margin-bottom: 30px !important;
-
-         &::-moz-selection {
+    .account-activated-text {
+        h1 {
+            font-weight: 800;
+            font-size: 52px;
+            height: 63px;
+            width: 537px;
             color: $ta-blue;
-            background: rgb(83, 107, 194, 0.2);
-         }
-
-         &::selection {
-            color: $ta-blue;
-            background: rgb(83, 107, 194, 0.2);
-         }
-
-         span {
-            color: $bw6-2;
+            margin-bottom: 30px !important;
 
             &::-moz-selection {
-               color: $bw6-2;
-               background: rgb(108, 108, 108, 0.2);
+                color: $ta-blue;
+                background: rgb(83, 107, 194, 0.2);
             }
 
             &::selection {
-               color: $bw6-2;
-               background: rgb(108, 108, 108, 0.2);
+                color: $ta-blue;
+                background: rgb(83, 107, 194, 0.2);
             }
-         }
-      }
 
-      h2 {
-         font-weight: bold;
-         font-size: 20px;
-         line-height: 24px;
-         height: 48px;
-         color: $bw6-2;
-         margin-bottom: 60px !important;
-         text-transform: uppercase;
+            span {
+                color: $bw6-2;
 
-         &::-moz-selection {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+            }
+        }
+
+        h2 {
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 24px;
+            height: 48px;
             color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-         }
+            margin-bottom: 60px !important;
+            text-transform: uppercase;
 
-         &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-         }
-      }
-   }
+            &::-moz-selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
 
-   .account-activated-img {
-      margin-bottom: 60px;
-   }
+            &::selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
+    }
 
-   .sign-in-btn {
-      width: 240px;
-      margin: 0 auto;
-      height: 42px;
-      border-radius: 2px;
-      background-color: $ta-light-blue;
-      font-weight: 600;
-      font-size: 14px;
-      color: $white;
-      border: none;
-      outline: none;
-      transition: background 0.3s ease-in-out;
+    .account-activated-img {
+        margin-bottom: 60px;
+    }
 
-      &:hover {
-         background: $ta-blue;
-      }
-   }
+    .sign-in-btn {
+        width: 240px;
+        margin: 0 auto;
+        height: 42px;
+        border-radius: 2px;
+        background-color: $ta-light-blue;
+        font-weight: 600;
+        font-size: 14px;
+        color: $white;
+        border: none;
+        outline: none;
+        transition: background 0.3s ease-in-out;
 
-   .copyright {
-      height: 42px;
-      border-top: 0.1rem solid $ta-gray-02;
-      margin-top: 60px;
+        &:hover {
+            background: $ta-blue;
+        }
+    }
 
-      p {
-         color: $ta-blue-2;
-         font-weight: 400;
-         font-size: 14px;
+    .copyright {
+        height: 42px;
+        border-top: 0.1rem solid $ta-gray-02;
+        margin-top: 60px;
 
-         &::-moz-selection {
+        p {
             color: $ta-blue-2;
-            background: rgb(53, 81, 183, 0.2);
-         }
+            font-weight: 400;
+            font-size: 14px;
 
-         &::selection {
-            color: $ta-blue-2;
-            background: rgb(53, 81, 183, 0.2);
-         }
-      }
-   }
+            &::-moz-selection {
+                color: $ta-blue-2;
+                background: rgb(53, 81, 183, 0.2);
+            }
+
+            &::selection {
+                color: $ta-blue-2;
+                background: rgb(53, 81, 183, 0.2);
+            }
+        }
+    }
 }

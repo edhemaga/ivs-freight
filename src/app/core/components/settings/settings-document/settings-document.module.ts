@@ -4,7 +4,7 @@ import { SettingsDocumentComponent } from './settings-document.component';
 import { SettingsDocumentRoutes } from './settings-document.routing';
 
 @NgModule({
-   imports: [CommonModule, SettingsDocumentRoutes],
-   declarations: [SettingsDocumentComponent],
+    imports: [CommonModule, SettingsDocumentRoutes],
+    declarations: [SettingsDocumentComponent],
 })
 export class SettingsDocumentModule {}

@@ -1,256 +1,256 @@
 .ta-custom-card-v2 {
-   display: block;
+    display: block;
 
-   // CARD HEADER
-   .ta-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin: 4px 0px;
-      padding-right: 5px;
-      height: 26px;
-      cursor: pointer;
+    // CARD HEADER
+    .ta-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 4px 0px;
+        padding-right: 5px;
+        height: 26px;
+        cursor: pointer;
 
-      .header-content {
-         display: flex;
-         align-items: center;
-
-         &.counter {
-            position: relative;
-            left: 1px;
-         }
-
-         .header-text {
-            color: #919191;
-            font-weight: 800;
-            font-size: 14px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            line-height: 18px;
-
-            &.no-counter {
-               margin-left: 6px;
-            }
-
-            &.active {
-               color: #6c6c6c;
-               transition: all 0.3s ease-in-out;
-            }
-         }
-
-         // LEFT SIDE NEAR NAME SVG
-         .header-svg {
-            margin-left: 4px;
-            margin-right: 6px;
-            width: 18px;
-            height: 18px;
-            position: relative;
+        .header-content {
             display: flex;
-            bottom: -2px;
-            svg {
-               path {
-                  fill: #aaaaaa;
-               }
-            }
-         }
+            align-items: center;
 
-         .header-svg-bank {
-            margin-left: 12px !important;
-            svg {
-               path {
-                  fill: #cccccc;
-               }
-               &:hover {
-                  path {
-                     fill: #cccccc !important;
-                  }
-               }
+            &.counter {
+                position: relative;
+                left: 1px;
             }
-            &:hover {
-               svg {
-                  path {
-                     fill: #cccccc;
-                  }
-               }
-            }
-         }
-      }
 
-      // CARD RIGHT SIDE ACTIONS
-      .header-actions {
-         display: flex;
-         align-items: center;
-         gap: 12px;
-         .total-miles-time {
+            .header-text {
+                color: #919191;
+                font-weight: 800;
+                font-size: 14px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                line-height: 18px;
+
+                &.no-counter {
+                    margin-left: 6px;
+                }
+
+                &.active {
+                    color: #6c6c6c;
+                    transition: all 0.3s ease-in-out;
+                }
+            }
+
+            // LEFT SIDE NEAR NAME SVG
+            .header-svg {
+                margin-left: 4px;
+                margin-right: 6px;
+                width: 18px;
+                height: 18px;
+                position: relative;
+                display: flex;
+                bottom: -2px;
+                svg {
+                    path {
+                        fill: #aaaaaa;
+                    }
+                }
+            }
+
+            .header-svg-bank {
+                margin-left: 12px !important;
+                svg {
+                    path {
+                        fill: #cccccc;
+                    }
+                    &:hover {
+                        path {
+                            fill: #cccccc !important;
+                        }
+                    }
+                }
+                &:hover {
+                    svg {
+                        path {
+                            fill: #cccccc;
+                        }
+                    }
+                }
+            }
+        }
+
+        // CARD RIGHT SIDE ACTIONS
+        .header-actions {
             display: flex;
-            column-gap: 54px;
-            position: relative;
-            top: 2px;
-            .item-miles {
-               font-size: 14px;
-               font-weight: 400;
-               color: #6c6c6c;
-               user-select: none;
+            align-items: center;
+            gap: 12px;
+            .total-miles-time {
+                display: flex;
+                column-gap: 54px;
+                position: relative;
+                top: 2px;
+                .item-miles {
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #6c6c6c;
+                    user-select: none;
+                }
             }
-         }
-         // ARROW
-         .header-arrow {
-            width: 18px;
-            height: 20px;
-            line-height: 18px;
-            svg {
-               transform: rotate(0deg);
-               transition: all 0.3s ease-in-out;
-               path {
-                  fill: #b7b7b7;
-               }
+            // ARROW
+            .header-arrow {
+                width: 18px;
+                height: 20px;
+                line-height: 18px;
+                svg {
+                    transform: rotate(0deg);
+                    transition: all 0.3s ease-in-out;
+                    path {
+                        fill: #b7b7b7;
+                    }
+                }
+
+                &.rotate {
+                    svg {
+                        transform: rotate(180deg);
+                        transition: all 0.3s ease-in-out;
+                    }
+                }
             }
+        }
 
-            &.rotate {
-               svg {
-                  transform: rotate(180deg);
-                  transition: all 0.3s ease-in-out;
-               }
-            }
-         }
-      }
-
-      &:hover {
-         transition: all 0.3s ease-in-out;
-         .header-content {
-            .header-text {
-               color: #6c6c6c;
-            }
-         }
-
-         .header-arrow {
-            svg {
-               path {
-                  fill: #aaaaaa;
-               }
-            }
-         }
-      }
-
-      &.active {
-         transition: all 0.3s ease-in;
-         .header-text {
-            color: #6c6c6c;
-         }
-
-         &:hover {
-            transition: all 0.3s ease-in;
-            .header-text {
-               color: #3c3c3c !important;
-            }
-         }
-      }
-
-      &.no-data {
-         cursor: auto !important;
-         &:hover {
+        &:hover {
+            transition: all 0.3s ease-in-out;
             .header-content {
-               .header-text {
-                  color: #919191 !important;
-               }
+                .header-text {
+                    color: #6c6c6c;
+                }
             }
 
             .header-arrow {
-               svg {
-                  path {
-                     fill: #aaaaaa;
-                  }
-               }
+                svg {
+                    path {
+                        fill: #aaaaaa;
+                    }
+                }
             }
-         }
-      }
+        }
 
-      &.disabled {
-         .header-text {
-            color: #b7b7b7 !important;
-         }
-         .header-arrow {
-            display: none !important;
-         }
-      }
+        &.active {
+            transition: all 0.3s ease-in;
+            .header-text {
+                color: #6c6c6c;
+            }
 
-      &.cursor {
-         cursor: pointer;
-      }
-   }
+            &:hover {
+                transition: all 0.3s ease-in;
+                .header-text {
+                    color: #3c3c3c !important;
+                }
+            }
+        }
 
-   // CARD BODY
-   .ta-card-body {
-      overflow: hidden;
-      transition: max-height 0.3s ease-in-out;
+        &.no-data {
+            cursor: auto !important;
+            &:hover {
+                .header-content {
+                    .header-text {
+                        color: #919191 !important;
+                    }
+                }
 
-      &.unopened {
-         max-height: 0;
-      }
+                .header-arrow {
+                    svg {
+                        path {
+                            fill: #aaaaaa;
+                        }
+                    }
+                }
+            }
+        }
 
-      &.active {
-         transition: max-height 0.3s ease-in-out;
-         max-height: 600px;
-      }
+        &.disabled {
+            .header-text {
+                color: #b7b7b7 !important;
+            }
+            .header-arrow {
+                display: none !important;
+            }
+        }
 
-      &.scroll {
-         overflow-y: scroll !important;
-         scrollbar-width: none !important; /* Firefox */
+        &.cursor {
+            cursor: pointer;
+        }
+    }
 
-         &::-webkit-scrollbar {
-            width: 3px;
-         }
-         &::-webkit-scrollbar-thumb {
-            background-color: transparent;
-            border: 6px solid #6c6c6c;
-            border-radius: 1px;
-         }
-         &::-webkit-scrollbar-track {
-            padding: 0;
-            position: relative;
-            right: 0;
-            top: 0;
-            background: transparent;
-         }
+    // CARD BODY
+    .ta-card-body {
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
 
-         &::-moz-selection {
-            background-color: rgb(229, 229, 229, 0.2);
-            color: #6c6c6c;
-         }
-      }
-   }
+        &.unopened {
+            max-height: 0;
+        }
+
+        &.active {
+            transition: max-height 0.3s ease-in-out;
+            max-height: 600px;
+        }
+
+        &.scroll {
+            overflow-y: scroll !important;
+            scrollbar-width: none !important; /* Firefox */
+
+            &::-webkit-scrollbar {
+                width: 3px;
+            }
+            &::-webkit-scrollbar-thumb {
+                background-color: transparent;
+                border: 6px solid #6c6c6c;
+                border-radius: 1px;
+            }
+            &::-webkit-scrollbar-track {
+                padding: 0;
+                position: relative;
+                right: 0;
+                top: 0;
+                background: transparent;
+            }
+
+            &::-moz-selection {
+                background-color: rgb(229, 229, 229, 0.2);
+                color: #6c6c6c;
+            }
+        }
+    }
 }
 .time-date-load-container {
-   display: flex;
-   align-items: center;
-   background-color: #f9f9f9;
-   border-radius: 2px;
-   margin-left: 12px;
-   padding: 2px 6px;
-   .text {
-      font-size: 14px;
-      font-weight: 400;
-      color: #6c6c6c;
-      line-height: 16px;
-      &::-moz-selection {
-         color: #6c6c6c;
-         background: rgb(108, 108, 108, 0.2);
-      }
-      &::selection {
-         color: #6c6c6c;
-         background: rgb(108, 108, 108, 0.2);
-      }
-   }
-   .appointment-svg {
-      display: flex;
-      margin-left: 7px;
-   }
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    border-radius: 2px;
+    margin-left: 12px;
+    padding: 2px 6px;
+    .text {
+        font-size: 14px;
+        font-weight: 400;
+        color: #6c6c6c;
+        line-height: 16px;
+        &::-moz-selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+        }
+        &::selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+        }
+    }
+    .appointment-svg {
+        display: flex;
+        margin-left: 7px;
+    }
 }
 .bold-open-wait {
-   font-size: 14px;
-   font-weight: 600 !important;
-   color: #6c6c6c;
-   user-select: none;
+    font-size: 14px;
+    font-weight: 600 !important;
+    color: #6c6c6c;
+    user-select: none;
 }

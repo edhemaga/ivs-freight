@@ -16,26 +16,26 @@ import { SettingsSharedModule } from '../settings-shared/settings-shared.module'
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-   imports: [
-      CommonModule,
-      ReactiveFormsModule,
-      SettingsLocationRoutes,
-      SharedModule,
-      SettingsSharedModule,
-      TruckassistProgressExpirationModule,
-   ],
-   declarations: [
-      SettingsLocationComponent,
-      SettingsParkingComponent,
-      SettingsOfficeComponent,
-      SettingsRepairShopComponent,
-      SettingsTerminalComponent,
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        SettingsLocationRoutes,
+        SharedModule,
+        SettingsSharedModule,
+        TruckassistProgressExpirationModule,
+    ],
+    declarations: [
+        SettingsLocationComponent,
+        SettingsParkingComponent,
+        SettingsOfficeComponent,
+        SettingsRepairShopComponent,
+        SettingsTerminalComponent,
 
-      // Modals
-      SettingsParkingModalComponent,
-      SettingsOfficeModalComponent,
-      SettingsRepairshopModalComponent,
-      SettingsTerminalModalComponent,
-   ],
+        // Modals
+        SettingsParkingModalComponent,
+        SettingsOfficeModalComponent,
+        SettingsRepairshopModalComponent,
+        SettingsTerminalModalComponent,
+    ],
 })
 export class SettingsLocationModule {}

@@ -1,71 +1,71 @@
 <div class="table-container">
-   <app-truckassist-table-toolbar
-      (toolBarAction)="onToolBarAction($event)"
-      [options]="tableOptions"
-      [tableData]="tableData"
-      [selectedTab]="selectedTab"
-      [columns]="columns"
-      [tableContainerWidth]="tableContainerWidth"
-   ></app-truckassist-table-toolbar>
+    <app-truckassist-table-toolbar
+        (toolBarAction)="onToolBarAction($event)"
+        [options]="tableOptions"
+        [tableData]="tableData"
+        [selectedTab]="selectedTab"
+        [columns]="columns"
+        [tableContainerWidth]="tableContainerWidth"
+    ></app-truckassist-table-toolbar>
 
-   <div *ngIf="activeViewMode == 'List'">
-      <app-truckassist-table-head
-         [options]="tableOptions"
-         [viewData]="viewData"
-         [columns]="columns"
-         [tableData]="tableData"
-         (headActions)="onTableHeadActions($event)"
-         [tableContainerWidth]="tableContainerWidth"
-      ></app-truckassist-table-head>
+    <div *ngIf="activeViewMode == 'List'">
+        <app-truckassist-table-head
+            [options]="tableOptions"
+            [viewData]="viewData"
+            [columns]="columns"
+            [tableData]="tableData"
+            (headActions)="onTableHeadActions($event)"
+            [tableContainerWidth]="tableContainerWidth"
+        ></app-truckassist-table-head>
 
-      <app-truckassist-table-body
-         [viewData]="viewData"
-         [columns]="columns"
-         [options]="tableOptions"
-         [selectedTab]="selectedTab"
-         (bodyActions)="onTableBodyActions($event)"
-         [tableData]="tableData"
-         [tableContainerWidth]="tableContainerWidth"
-      ></app-truckassist-table-body>
-   </div>
-
-   <div class="customer-map-container" *ngIf="activeViewMode == 'Map'">
-      <app-map-list
-         [type]="'shipper'"
-         [columns]="columns"
-         [mapListContent]="viewData"
-         (headActions)="onTableHeadActions($event)"
-      >
-         <app-map-list-card
-            *ngFor="let latlong of viewData; let i = index"
-            #listCard
-            [title]="latlong?.businessName"
-            [isSelected]="latlong?.isSelected"
-            [status]="latlong?.status"
-            [item]="latlong"
-            [index]="i"
-            [address]="latlong.address"
-            [rating]="latlong?.raiting"
-            [type]="'shipper'"
-            [dropdownActions]="tableOptions.actions"
+        <app-truckassist-table-body
+            [viewData]="viewData"
+            [columns]="columns"
+            [options]="tableOptions"
+            [selectedTab]="selectedTab"
             (bodyActions)="onTableBodyActions($event)"
-            (clickedMarker)="selectItem(latlong.id)"
-            [ngStyle]="{
-               display:
-                  locationFilterOn && latlong?.isShown == false
-                     ? 'none'
-                     : 'flex',
-               'justify-content': 'center'
-            }"
-         ></app-map-list-card>
-      </app-map-list>
+            [tableData]="tableData"
+            [tableContainerWidth]="tableContainerWidth"
+        ></app-truckassist-table-body>
+    </div>
 
-      <app-maps
-         #mapsComponent
-         [_viewData]="viewData"
-         [dropdownActions]="tableOptions.actions"
-         [mapType]="'shipper'"
-         (callDropDownAction)="onTableBodyActions($event)"
-      ></app-maps>
-   </div>
+    <div class="customer-map-container" *ngIf="activeViewMode == 'Map'">
+        <app-map-list
+            [type]="'shipper'"
+            [columns]="columns"
+            [mapListContent]="viewData"
+            (headActions)="onTableHeadActions($event)"
+        >
+            <app-map-list-card
+                *ngFor="let latlong of viewData; let i = index"
+                #listCard
+                [title]="latlong?.businessName"
+                [isSelected]="latlong?.isSelected"
+                [status]="latlong?.status"
+                [item]="latlong"
+                [index]="i"
+                [address]="latlong.address"
+                [rating]="latlong?.raiting"
+                [type]="'shipper'"
+                [dropdownActions]="tableOptions.actions"
+                (bodyActions)="onTableBodyActions($event)"
+                (clickedMarker)="selectItem(latlong.id)"
+                [ngStyle]="{
+                    display:
+                        locationFilterOn && latlong?.isShown == false
+                            ? 'none'
+                            : 'flex',
+                    'justify-content': 'center'
+                }"
+            ></app-map-list-card>
+        </app-map-list>
+
+        <app-maps
+            #mapsComponent
+            [_viewData]="viewData"
+            [dropdownActions]="tableOptions.actions"
+            [mapType]="'shipper'"
+            (callDropDownAction)="onTableBodyActions($event)"
+        ></app-maps>
+    </div>
 </div>

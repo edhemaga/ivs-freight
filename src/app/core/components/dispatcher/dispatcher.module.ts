@@ -23,38 +23,38 @@ import { HosFilterPipe } from './pipes/hos-filter.pipe';
 import { TooltipWidthPipe } from './pipes/tooltip-width.pipe';
 
 export function playerFactory() {
-   return import('lottie-web');
+    return import('lottie-web');
 }
 
 @NgModule({
-   declarations: [
-      DispatcherTableComponent,
-      AppAddLoadTableComponent,
-      AppDispatcherTableNewComponent,
-      DispatcherGpsTableComponent,
-      DispatcherNoteComponent,
-      DispatcherHistoryComponent,
-      DispatcherDropdownComponent,
-      DispatcherParkingComponent,
-      DispatchboardTablesComponent,
-      ColorFinderPipe,
-      NestedComponent,
-      HosFilterPipe,
-      TooltipWidthPipe,
-   ],
-   imports: [
-      CommonModule,
-      DispatchRoutingModule,
-      SharedModule,
-      AgmSnazzyInfoWindowModule,
-      LottieModule.forRoot({ player: playerFactory }),
-      PipesModule,
-      TaNoteModule,
-      TruckassistSearchModule,
-      GridsterModule,
-   ],
-   entryComponents: [],
-   exports: [],
-   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [
+        DispatcherTableComponent,
+        AppAddLoadTableComponent,
+        AppDispatcherTableNewComponent,
+        DispatcherGpsTableComponent,
+        DispatcherNoteComponent,
+        DispatcherHistoryComponent,
+        DispatcherDropdownComponent,
+        DispatcherParkingComponent,
+        DispatchboardTablesComponent,
+        ColorFinderPipe,
+        NestedComponent,
+        HosFilterPipe,
+        TooltipWidthPipe,
+    ],
+    imports: [
+        CommonModule,
+        DispatchRoutingModule,
+        SharedModule,
+        AgmSnazzyInfoWindowModule,
+        LottieModule.forRoot({ player: playerFactory }),
+        PipesModule,
+        TaNoteModule,
+        TruckassistSearchModule,
+        GridsterModule,
+    ],
+    entryComponents: [],
+    exports: [],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class DispatcherModule {}

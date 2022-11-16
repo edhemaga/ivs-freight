@@ -1,114 +1,114 @@
 <app-ta-modal
-   [modalTitle]="
-      editData?.type !== 'edit-registration'
-         ? 'Add New Registration'
-         : 'Edit Registration'
-   "
-   [editData]="editData"
-   [editName]="
-      editData?.modal === 'trailer'
-         ? 'Trailer ' + editData?.payload?.trailerNumber
-         : 'Truck ' + editData?.payload?.truckNumber
-   "
-   [specificCaseModalName]="true"
-   [isModalValid]="registrationForm.valid && isFormDirty"
-   (action)="onModalAction($event)"
+    [modalTitle]="
+        editData?.type !== 'edit-registration'
+            ? 'Add New Registration'
+            : 'Edit Registration'
+    "
+    [editData]="editData"
+    [editName]="
+        editData?.modal === 'trailer'
+            ? 'Trailer ' + editData?.payload?.trailerNumber
+            : 'Truck ' + editData?.payload?.truckNumber
+    "
+    [specificCaseModalName]="true"
+    [isModalValid]="registrationForm.valid && isFormDirty"
+    (action)="onModalAction($event)"
 >
-   <form
-      origin
-      [formGroup]="registrationForm"
-      class="form-container form-container-without-mb"
-   >
-      <div class="row">
-         <div class="col-6">
-            <app-ta-input
-               formControlName="licensePlate"
-               [inputConfig]="{
-                  name: 'License Plate',
-                  type: 'text',
-                  label: 'License plate',
-                  minLength: 5,
-                  maxLength: 7,
-                  isRequired: true,
-                  autoFocus: editData?.type !== 'edit-registration',
-                  textTransform: 'uppercase'
-               }"
-            ></app-ta-input>
-         </div>
-         <div class="col-6">
-            <app-ta-input-dropdown
-               formControlName="stateId"
-               [inputConfig]="{
-                  name: 'Input Dropdown',
-                  type: 'text',
-                  label: 'State',
-                  isRequired: true,
-                  isDropdown: true,
-                  dropdownWidthClass: 'w-col-228'
-               }"
-               [options]="stateTypes"
-               [activeItem]="selectedStateType"
-               (selectedItem)="onSelectDropdown($event, 'state')"
-            ></app-ta-input-dropdown>
-         </div>
-      </div>
-      <div class="row last-row">
-         <div class="col-6">
-            <app-ta-input
-               formControlName="issueDate"
-               [inputConfig]="{
-                  name: 'datepicker',
-                  type: 'text',
-                  label: 'Issue Date',
-                  placeholderIcon: 'date',
-                  isDropdown: true,
-                  isRequired: true,
-                  customClass: 'datetimeclass'
-               }"
-            ></app-ta-input>
-         </div>
-         <div class="col-6">
-            <app-ta-input
-               formControlName="expDate"
-               [inputConfig]="{
-                  name: 'datepicker',
-                  type: 'text',
-                  isDropdown: true,
-                  label: 'Expiry Date',
-                  placeholderIcon: 'date',
-                  isRequired: true,
-                  customClass: 'datetimeclass'
-               }"
-            ></app-ta-input>
-         </div>
-      </div>
-      <div class="ta-card-body-overflow-none">
-         <app-ta-custom-card
-            [hasCounter]="documents.length ? documents.length : 0"
-            [cardName]="'Documents'"
-            [isCardOpen]="documents.length > 0"
-         >
-            <app-ta-upload-files
-               [files]="documents"
-               (onFileEvent)="onFilesEvent($event)"
-            ></app-ta-upload-files>
-         </app-ta-custom-card>
-      </div>
+    <form
+        origin
+        [formGroup]="registrationForm"
+        class="form-container form-container-without-mb"
+    >
+        <div class="row">
+            <div class="col-6">
+                <app-ta-input
+                    formControlName="licensePlate"
+                    [inputConfig]="{
+                        name: 'License Plate',
+                        type: 'text',
+                        label: 'License plate',
+                        minLength: 5,
+                        maxLength: 7,
+                        isRequired: true,
+                        autoFocus: editData?.type !== 'edit-registration',
+                        textTransform: 'uppercase'
+                    }"
+                ></app-ta-input>
+            </div>
+            <div class="col-6">
+                <app-ta-input-dropdown
+                    formControlName="stateId"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'State',
+                        isRequired: true,
+                        isDropdown: true,
+                        dropdownWidthClass: 'w-col-228'
+                    }"
+                    [options]="stateTypes"
+                    [activeItem]="selectedStateType"
+                    (selectedItem)="onSelectDropdown($event, 'state')"
+                ></app-ta-input-dropdown>
+            </div>
+        </div>
+        <div class="row last-row">
+            <div class="col-6">
+                <app-ta-input
+                    formControlName="issueDate"
+                    [inputConfig]="{
+                        name: 'datepicker',
+                        type: 'text',
+                        label: 'Issue Date',
+                        placeholderIcon: 'date',
+                        isDropdown: true,
+                        isRequired: true,
+                        customClass: 'datetimeclass'
+                    }"
+                ></app-ta-input>
+            </div>
+            <div class="col-6">
+                <app-ta-input
+                    formControlName="expDate"
+                    [inputConfig]="{
+                        name: 'datepicker',
+                        type: 'text',
+                        isDropdown: true,
+                        label: 'Expiry Date',
+                        placeholderIcon: 'date',
+                        isRequired: true,
+                        customClass: 'datetimeclass'
+                    }"
+                ></app-ta-input>
+            </div>
+        </div>
+        <div class="ta-card-body-overflow-none">
+            <app-ta-custom-card
+                [hasCounter]="documents.length ? documents.length : 0"
+                [cardName]="'Documents'"
+                [isCardOpen]="documents.length > 0"
+            >
+                <app-ta-upload-files
+                    [files]="documents"
+                    (onFileEvent)="onFilesEvent($event)"
+                ></app-ta-upload-files>
+            </app-ta-custom-card>
+        </div>
 
-      <app-ta-input-note
-         formControlName="note"
-         [isVisibleNote]="
-            registrationForm.get('note').value &&
-            registrationForm.get('note').value != 'null'
-               ? registrationForm.get('note').value
-               : false
-         "
-         [note]="
-            registrationForm.get('note').value &&
-            registrationForm.get('note').value != 'null'
-               ? registrationForm.get('note').value
-               : ''
-         "
-      ></app-ta-input-note>
-   </form>
+        <app-ta-input-note
+            formControlName="note"
+            [isVisibleNote]="
+                registrationForm.get('note').value &&
+                registrationForm.get('note').value != 'null'
+                    ? registrationForm.get('note').value
+                    : false
+            "
+            [note]="
+                registrationForm.get('note').value &&
+                registrationForm.get('note').value != 'null'
+                    ? registrationForm.get('note').value
+                    : ''
+            "
+        ></app-ta-input-note>
+    </form>
 </app-ta-modal>

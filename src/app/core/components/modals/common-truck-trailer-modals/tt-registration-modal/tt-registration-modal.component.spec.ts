@@ -6,22 +6,22 @@ import { DebugElement } from '@angular/core';
 import { TtRegistrationModalComponent } from './tt-registration-modal.component';
 
 describe('TtRegistrationModalComponent', () => {
-   let component: TtRegistrationModalComponent;
-   let fixture: ComponentFixture<TtRegistrationModalComponent>;
+    let component: TtRegistrationModalComponent;
+    let fixture: ComponentFixture<TtRegistrationModalComponent>;
 
-   beforeEach(async(() => {
-      TestBed.configureTestingModule({
-         declarations: [TtRegistrationModalComponent],
-      }).compileComponents();
-   }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [TtRegistrationModalComponent],
+        }).compileComponents();
+    }));
 
-   beforeEach(() => {
-      fixture = TestBed.createComponent(TtRegistrationModalComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-   });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(TtRegistrationModalComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-   it('should create', () => {
-      expect(component).toBeTruthy();
-   });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

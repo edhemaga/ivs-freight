@@ -1,451 +1,486 @@
 <div class="settings-general">
-   <div class="settings-header">
-      <div
-         *ngIf="!toggleSelect && optionsCompany"
-         class="current-active-item-company"
-         (click)="onPickItem($event)"
-      >
-         <div class="division-name-wrapper">
-            <div class="current-active-name">
-               {{ (optionsCompany | detailActiveItem).name }}
+    <div class="settings-header">
+        <div
+            *ngIf="!toggleSelect && optionsCompany"
+            class="current-active-item-company"
+            (click)="onPickItem($event)"
+        >
+            <div class="division-name-wrapper">
+                <div class="current-active-name">
+                    {{ (optionsCompany | detailActiveItem).name }}
+                </div>
+                <span *ngIf="companyDivision" class="division-company"
+                    >Division Co.</span
+                >
             </div>
-            <span *ngIf="companyDivision" class="division-company"
-               >Division Co.</span
-            >
-         </div>
 
-         <svg-icon
-            *ngIf="hasArrow || companyDivision"
-            class="arrow-down"
-            src="assets/svg/common/calendar/arrow-right.svg"
-         ></svg-icon>
-      </div>
-      <!-- Input dropdown -->
-      <app-ta-input-dropdown
-         class="dropInputCompany"
-         *ngIf="toggleSelect"
-         [formControl]="inputFormControl"
-         [inputConfig]="{
-            name: 'Input Dropdown',
-            type: 'text',
-            isDropdown: true,
-            dropdownWidthClass: 'w-col-510',
-            textTransform: 'capitalize',
-            customClass: 'input-32 input-32-font-20 details-pages'
-         }"
-         [isDetailsPages]="toggleSelect"
-         (selectedItem)="onSelectItem($event)"
-         [options]="optionsCompany"
-         [template]="'details-template'"
-      >
-      </app-ta-input-dropdown>
-      <div class="settings-header-buttons">
-         <div class="settings-header-button">
             <svg-icon
-               src="ic_pen.svg"
-               class="settings-edit-button"
-               (click)="
-                  onAction({
-                     modalName: 'basic',
-                     type: companyData?.divisions?.length
-                        ? 'edit-company'
-                        : 'edit-division',
-                     company: companyData
-                  })
-               "
+                *ngIf="hasArrow || companyDivision"
+                class="arrow-down"
+                src="assets/svg/common/calendar/arrow-right.svg"
             ></svg-icon>
-         </div>
-         <div class="settings-header-button">
-            <div class="border-left"></div>
-            <svg-icon
-               src="assets/svg/common/ic_plus.svg"
-               class="settings-plus-button"
-               (click)="
-                  onAction({
-                     modalName: 'basic',
-                     type: 'new-division',
-                     company: null
-                  })
-               "
-            ></svg-icon>
-         </div>
-      </div>
-   </div>
-
-   <div class="settings-body">
-      <div class="basic-details">
-         <!-- Header -->
-         <div class="basic-header">
-            <div class="basic-header-logo-top">
-               <div class="basic-logo-text">
-                  This logo will be used on invoices
-               </div>
-               <svg-icon class="basic-logo-edit" src="ic_pen.svg"></svg-icon>
+        </div>
+        <!-- Input dropdown -->
+        <app-ta-input-dropdown
+            class="dropInputCompany"
+            *ngIf="toggleSelect"
+            [formControl]="inputFormControl"
+            [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-510',
+                textTransform: 'capitalize',
+                customClass: 'input-32 input-32-font-20 details-pages'
+            }"
+            [isDetailsPages]="toggleSelect"
+            (selectedItem)="onSelectItem($event)"
+            [options]="optionsCompany"
+            [template]="'details-template'"
+        >
+        </app-ta-input-dropdown>
+        <div class="settings-header-buttons">
+            <div class="settings-header-button">
+                <svg-icon
+                    src="ic_pen.svg"
+                    class="settings-edit-button"
+                    (click)="
+                        onAction({
+                            modalName: 'basic',
+                            type: companyData?.divisions?.length
+                                ? 'edit-company'
+                                : 'edit-division',
+                            company: companyData
+                        })
+                    "
+                ></svg-icon>
             </div>
-            <img
-               *ngIf="companyData.logo"
-               [src]="imageBase64Service.sanitizer(companyData.logo)"
-               [alt]="companyData.logo?.name?.substring(0, 1)"
-               class="company-logo-img"
-            />
-            <div
-               *ngIf="!companyData.logo"
-               [ngStyle]="{
-                  'font-size': changeFont ? '22px' : '48px',
-                  'margin-top': changeFont ? '60px' : '30px'
-               }"
-               class="no-company-logo"
+            <div class="settings-header-button">
+                <div class="border-left"></div>
+                <svg-icon
+                    src="assets/svg/common/ic_plus.svg"
+                    class="settings-plus-button"
+                    (click)="
+                        onAction({
+                            modalName: 'basic',
+                            type: 'new-division',
+                            company: null
+                        })
+                    "
+                ></svg-icon>
+            </div>
+        </div>
+    </div>
+
+    <div class="settings-body">
+        <div class="basic-details">
+            <!-- Header -->
+            <div class="basic-header">
+                <div class="basic-header-logo-top">
+                    <div class="basic-logo-text">
+                        This logo will be used on invoices
+                    </div>
+                    <svg-icon
+                        class="basic-logo-edit"
+                        src="ic_pen.svg"
+                    ></svg-icon>
+                </div>
+                <img
+                    *ngIf="companyData.logo"
+                    [src]="imageBase64Service.sanitizer(companyData.logo)"
+                    [alt]="companyData.logo?.name?.substring(0, 1)"
+                    class="company-logo-img"
+                />
+                <div
+                    *ngIf="!companyData.logo"
+                    [ngStyle]="{
+                        'font-size': changeFont ? '22px' : '48px',
+                        'margin-top': changeFont ? '60px' : '30px'
+                    }"
+                    class="no-company-logo"
+                >
+                    {{ companyData?.name }}
+                </div>
+            </div>
+            <!-- Middle -->
+            <div class="basic-middle">
+                <div class="basic-data first-element-company">
+                    <svg-icon
+                        class="basic-data-svg"
+                        src="assets/svg/common/ic_address.svg"
+                    ></svg-icon>
+                    <p class="basic-data-value">
+                        {{ companyData?.address?.address }}
+                    </p>
+                </div>
+                <div class="basic-data">
+                    <svg-icon
+                        class="basic-data-svg"
+                        src="assets/svg/common/ic_phone.svg"
+                    ></svg-icon>
+                    <app-ta-copy [copyValue]="companyData?.phone">
+                    </app-ta-copy>
+                </div>
+
+                <div class="basic-data">
+                    <svg-icon
+                        class="basic-data-svg"
+                        src="assets/svg/common/ic_email.svg"
+                    ></svg-icon>
+                    <app-ta-copy [copyValue]="companyData?.email">
+                    </app-ta-copy>
+                </div>
+
+                <div class="basic-data">
+                    <svg-icon
+                        class="basic-data-svg"
+                        src="assets/svg/common/ic_fax.svg"
+                    ></svg-icon>
+                    <app-ta-copy [copyValue]="companyData?.fax"> </app-ta-copy>
+                </div>
+                <div class="basic-data">
+                    <svg-icon
+                        class="basic-data-svg"
+                        src="assets/svg/common/ic_web.svg"
+                    ></svg-icon>
+                    <p class="basic-data-value">{{ companyData?.webUrl }}</p>
+                </div>
+            </div>
+            <!-- Bottom -->
+            <div class="basic-bottom">
+                <div class="basic-bottom-card">
+                    <p class="bottom-card-left">USDOT</p>
+                    <p class="bottom-card-right">{{ companyData?.usDot }}</p>
+                </div>
+                <div class="basic-bottom-card">
+                    <p class="bottom-card-left">EIN</p>
+                    <p class="bottom-card-right">
+                        {{ companyData?.ein | formatEinP }}
+                    </p>
+                </div>
+                <div class="basic-bottom-card">
+                    <p class="bottom-card-left">MC</p>
+                    <p class="bottom-card-right">{{ companyData?.mc }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="cards-custom">
+            <app-ta-custom-card
+                [cardName]="'Additional Details'"
+                [bodyTemplate]="'card'"
+                [isCardOpen]="true"
             >
-               {{ companyData?.name }}
-            </div>
-         </div>
-         <!-- Middle -->
-         <div class="basic-middle">
-            <div class="basic-data first-element-company">
-               <svg-icon
-                  class="basic-data-svg"
-                  src="assets/svg/common/ic_address.svg"
-               ></svg-icon>
-               <p class="basic-data-value">
-                  {{ companyData?.address?.address }}
-               </p>
-            </div>
-            <div class="basic-data">
-               <svg-icon
-                  class="basic-data-svg"
-                  src="assets/svg/common/ic_phone.svg"
-               ></svg-icon>
-               <app-ta-copy [copyValue]="companyData?.phone"> </app-ta-copy>
-            </div>
-
-            <div class="basic-data">
-               <svg-icon
-                  class="basic-data-svg"
-                  src="assets/svg/common/ic_email.svg"
-               ></svg-icon>
-               <app-ta-copy [copyValue]="companyData?.email"> </app-ta-copy>
-            </div>
-
-            <div class="basic-data">
-               <svg-icon
-                  class="basic-data-svg"
-                  src="assets/svg/common/ic_fax.svg"
-               ></svg-icon>
-               <app-ta-copy [copyValue]="companyData?.fax"> </app-ta-copy>
-            </div>
-            <div class="basic-data">
-               <svg-icon
-                  class="basic-data-svg"
-                  src="assets/svg/common/ic_web.svg"
-               ></svg-icon>
-               <p class="basic-data-value">{{ companyData?.webUrl }}</p>
-            </div>
-         </div>
-         <!-- Bottom -->
-         <div class="basic-bottom">
-            <div class="basic-bottom-card">
-               <p class="bottom-card-left">USDOT</p>
-               <p class="bottom-card-right">{{ companyData?.usDot }}</p>
-            </div>
-            <div class="basic-bottom-card">
-               <p class="bottom-card-left">EIN</p>
-               <p class="bottom-card-right">
-                  {{ companyData?.ein | formatEinP }}
-               </p>
-            </div>
-            <div class="basic-bottom-card">
-               <p class="bottom-card-left">MC</p>
-               <p class="bottom-card-right">{{ companyData?.mc }}</p>
-            </div>
-         </div>
-      </div>
-      <div class="cards-custom">
-         <app-ta-custom-card
-            [cardName]="'Additional Details'"
-            [bodyTemplate]="'card'"
-            [isCardOpen]="true"
-         >
-            <div class="additional-template-data">
-               <div class="additional-template-item">
-                  <p class="additional-template-value-name">IFTA</p>
-                  <p class="additional-template-value">
-                     {{ companyData?.ifta }}
-                  </p>
-               </div>
-               <div class="additional-template-item">
-                  <p class="additional-template-value-name">IRP</p>
-                  <p class="additional-template-value">
-                     {{ companyData?.irp }}
-                  </p>
-               </div>
-               <div class="additional-template-item">
-                  <p class="additional-template-value-name">Toll</p>
-                  <p class="additional-template-value">
-                     {{ companyData?.toll }}
-                  </p>
-               </div>
-               <div class="additional-template-item">
-                  <p class="additional-template-value-name">SCAC</p>
-                  <p class="additional-template-value">
-                     {{ companyData?.scac }}
-                  </p>
-               </div>
-               <div class="additional-template-item">
-                  <p class="additional-template-value-name">Time Zone</p>
-                  <p
-                     *ngIf="companyData?.timeZone?.name"
-                     class="additional-template-value"
-                  >
-                     {{ timeZoneName }}
-                  </p>
-               </div>
-               <div class="additional-template-item">
-                  <p class="additional-template-value-name">Currency</p>
-                  <p
-                     *ngIf="companyData?.currency?.name"
-                     class="additional-template-value"
-                  >
-                     {{
-                        companyData?.currency?.name.includes('US')
-                           ? 'USD ($)'
-                           : 'CAD ($)'
-                     }}
-                  </p>
-               </div>
-            </div>
-         </app-ta-custom-card>
-         <app-ta-custom-card
-            [cardName]="'Department Contact'"
-            [bodyTemplate]="'card'"
-            [isCardOpen]="true"
-            [textBottomPossiton]="'-1px'"
-            *ngIf="companyData?.departmentContacts?.length"
-            [hasCounter]="companyData?.departmentContacts?.length"
-         >
-            <div class="department-template-data">
-               <div class="department-template-item">
-                  <span class="department-header-name">Department</span>
-               </div>
-               <div class="department-template-item">
-                  <span class="department-header-name">Phone</span>
-               </div>
-               <div class="department-template-item">
-                  <span class="department-header-name">Ext.</span>
-               </div>
-               <div class="department-template-item">
-                  <span class="department-header-name">Email</span>
-               </div>
-            </div>
-            <div
-               class="department-template-body"
-               *ngFor="
-                  let department of companyData?.departmentContacts;
-                  trackBy: identity
-               "
+                <div class="additional-template-data">
+                    <div class="additional-template-item">
+                        <p class="additional-template-value-name">IFTA</p>
+                        <p class="additional-template-value">
+                            {{ companyData?.ifta }}
+                        </p>
+                    </div>
+                    <div class="additional-template-item">
+                        <p class="additional-template-value-name">IRP</p>
+                        <p class="additional-template-value">
+                            {{ companyData?.irp }}
+                        </p>
+                    </div>
+                    <div class="additional-template-item">
+                        <p class="additional-template-value-name">Toll</p>
+                        <p class="additional-template-value">
+                            {{ companyData?.toll }}
+                        </p>
+                    </div>
+                    <div class="additional-template-item">
+                        <p class="additional-template-value-name">SCAC</p>
+                        <p class="additional-template-value">
+                            {{ companyData?.scac }}
+                        </p>
+                    </div>
+                    <div class="additional-template-item">
+                        <p class="additional-template-value-name">Time Zone</p>
+                        <p
+                            *ngIf="companyData?.timeZone?.name"
+                            class="additional-template-value"
+                        >
+                            {{ timeZoneName }}
+                        </p>
+                    </div>
+                    <div class="additional-template-item">
+                        <p class="additional-template-value-name">Currency</p>
+                        <p
+                            *ngIf="companyData?.currency?.name"
+                            class="additional-template-value"
+                        >
+                            {{
+                                companyData?.currency?.name.includes('US')
+                                    ? 'USD ($)'
+                                    : 'CAD ($)'
+                            }}
+                        </p>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+            <app-ta-custom-card
+                [cardName]="'Department Contact'"
+                [bodyTemplate]="'card'"
+                [isCardOpen]="true"
+                [textBottomPossiton]="'-1px'"
+                *ngIf="companyData?.departmentContacts?.length"
+                [hasCounter]="companyData?.departmentContacts?.length"
             >
-               <span class="body-value-department">{{
-                  department.department.name
-               }}</span>
-               <app-ta-copy [copyValue]="department?.phone"> </app-ta-copy>
+                <div class="department-template-data">
+                    <div class="department-template-item">
+                        <span class="department-header-name">Department</span>
+                    </div>
+                    <div class="department-template-item">
+                        <span class="department-header-name">Phone</span>
+                    </div>
+                    <div class="department-template-item">
+                        <span class="department-header-name">Ext.</span>
+                    </div>
+                    <div class="department-template-item">
+                        <span class="department-header-name">Email</span>
+                    </div>
+                </div>
+                <div
+                    class="department-template-body"
+                    *ngFor="
+                        let department of companyData?.departmentContacts;
+                        trackBy: identity
+                    "
+                >
+                    <span class="body-value-department">{{
+                        department.department.name
+                    }}</span>
+                    <app-ta-copy [copyValue]="department?.phone"> </app-ta-copy>
 
-               <span class="body-value">{{ department.extensionPhone }}</span>
-               <app-ta-copy [copyValue]="department?.email"> </app-ta-copy>
-            </div>
-         </app-ta-custom-card>
-         <app-ta-custom-card
-            [cardName]="'Bank Account'"
-            [bodyTemplate]="'card'"
-            [isCardOpen]="true"
-            *ngIf="companyData?.bankAccounts?.length"
-         >
-            <div
-               class="additional-template-data"
-               *ngFor="let bank of companyData?.bankAccounts; trackBy: identity"
+                    <span class="body-value">{{
+                        department.extensionPhone
+                    }}</span>
+                    <app-ta-copy [copyValue]="department?.email"> </app-ta-copy>
+                </div>
+            </app-ta-custom-card>
+            <app-ta-custom-card
+                [cardName]="'Bank Account'"
+                [bodyTemplate]="'card'"
+                [isCardOpen]="true"
+                *ngIf="companyData?.bankAccounts?.length"
             >
-               <div class="additional-template-item">
-                  <p class="additional-template-value-name">Bank Name</p>
-                  <svg-icon
-                     class="additional-template-value bank-logo-settings"
-                     src="{{ 'assets/svg/common/banks/' + bank.bank.logoName }}"
-                  ></svg-icon>
-               </div>
-               <div class="additional-template-item">
-                  <p class="additional-template-value-name">Routing</p>
-                  <app-ta-copy [copyValue]="bank?.routing"> </app-ta-copy>
-               </div>
-               <div class="additional-template-item">
-                  <p class="additional-template-value-name">Account</p>
-                  <app-ta-copy
-                     [hasEye]="true"
-                     [accountCompany]="true"
-                     (showHide)="isAccountVisible = !isAccountVisible"
-                     [copyValue]="bank?.account"
-                  >
-                  </app-ta-copy>
-               </div>
-            </div>
-         </app-ta-custom-card>
-         <app-ta-custom-card
-            [cardName]="'Bank Card'"
-            [bodyTemplate]="'card'"
-            [hasCounter]="companyData?.bankCards?.length"
-            [isCardOpen]="true"
-            *ngIf="companyData?.bankCards?.length"
-            [textBottomPossiton]="'-1px'"
-         >
-            <div class="bank-card-template-data">
-               <div class="bank-card-template-item">
-                  <p class="bank-card-name-header">Nickname</p>
-               </div>
-               <div class="bank-card-template-item">
-                  <p class="bank-card-name-header">Card #</p>
-               </div>
-               <div class="bank-card-template-item">
-                  <p class="bank-card-name-header">CVC</p>
-               </div>
-               <div class="bank-card-template-item">
-                  <p class="bank-card-name-header">Exp.</p>
-               </div>
-            </div>
-            <div
-               class="bank-card-template-data-body"
-               *ngFor="let bankC of companyData?.bankCards; trackBy: identity"
+                <div
+                    class="additional-template-data"
+                    *ngFor="
+                        let bank of companyData?.bankAccounts;
+                        trackBy: identity
+                    "
+                >
+                    <div class="additional-template-item">
+                        <p class="additional-template-value-name">Bank Name</p>
+                        <svg-icon
+                            class="additional-template-value bank-logo-settings"
+                            src="{{
+                                'assets/svg/common/banks/' + bank.bank.logoName
+                            }}"
+                        ></svg-icon>
+                    </div>
+                    <div class="additional-template-item">
+                        <p class="additional-template-value-name">Routing</p>
+                        <app-ta-copy [copyValue]="bank?.routing"> </app-ta-copy>
+                    </div>
+                    <div class="additional-template-item">
+                        <p class="additional-template-value-name">Account</p>
+                        <app-ta-copy
+                            [hasEye]="true"
+                            [accountCompany]="true"
+                            (showHide)="isAccountVisible = !isAccountVisible"
+                            [copyValue]="bank?.account"
+                        >
+                        </app-ta-copy>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+            <app-ta-custom-card
+                [cardName]="'Bank Card'"
+                [bodyTemplate]="'card'"
+                [hasCounter]="companyData?.bankCards?.length"
+                [isCardOpen]="true"
+                *ngIf="companyData?.bankCards?.length"
+                [textBottomPossiton]="'-1px'"
             >
-               <div class="bank-card-template-item-body">
-                  <p class="item-body-nick-name">{{ bankC?.nickname }}</p>
-                  <div class="item-body-icon-text">
-                     <svg-icon
-                        class="svg-bank"
-                        src="assets/svg/common/ic_visa.svg"
-                     ></svg-icon>
+                <div class="bank-card-template-data">
+                    <div class="bank-card-template-item">
+                        <p class="bank-card-name-header">Nickname</p>
+                    </div>
+                    <div class="bank-card-template-item">
+                        <p class="bank-card-name-header">Card #</p>
+                    </div>
+                    <div class="bank-card-template-item">
+                        <p class="bank-card-name-header">CVC</p>
+                    </div>
+                    <div class="bank-card-template-item">
+                        <p class="bank-card-name-header">Exp.</p>
+                    </div>
+                </div>
+                <div
+                    class="bank-card-template-data-body"
+                    *ngFor="
+                        let bankC of companyData?.bankCards;
+                        trackBy: identity
+                    "
+                >
+                    <div class="bank-card-template-item-body">
+                        <p class="item-body-nick-name">{{ bankC?.nickname }}</p>
+                        <div class="item-body-icon-text">
+                            <svg-icon
+                                class="svg-bank"
+                                src="assets/svg/common/ic_visa.svg"
+                            ></svg-icon>
 
-                     <p class="item-body-cvc">
-                        {{ bankC?.card | hidePassword: 'card' }}
-                     </p>
-                  </div>
+                            <p class="item-body-cvc">
+                                {{ bankC?.card | hidePassword: 'card' }}
+                            </p>
+                        </div>
 
-                  <p class="item-body-cvc">
-                     {{ bankC?.cvc | hidePassword: 'cvc' }}
-                  </p>
-                  <p class="item-body-nick-name">
-                     {{ bankC?.expireDate | formatDateP: 'short-format' }}
-                  </p>
-               </div>
-            </div>
-         </app-ta-custom-card>
-         <app-ta-custom-card
-            [cardName]="'Load Format & Customer Billing'"
-            [bodyTemplate]="'card'"
-            [isCardOpen]="true"
-         >
-            <div class="additional-template-data">
-               <div class="additional-template-item">
-                  <p class="additional-template-value-name">Load Format</p>
-                  <p class="additional-template-value">
-                     {{ companyData?.additionalInfo?.prefix }}
-                     {{ companyData?.additionalInfo?.starting }}
-                     {{ companyData?.additionalInfo?.sufix }}
-                  </p>
-               </div>
+                        <p class="item-body-cvc">
+                            {{ bankC?.cvc | hidePassword: 'cvc' }}
+                        </p>
+                        <p class="item-body-nick-name">
+                            {{
+                                bankC?.expireDate | formatDateP: 'short-format'
+                            }}
+                        </p>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+            <app-ta-custom-card
+                [cardName]="'Load Format & Customer Billing'"
+                [bodyTemplate]="'card'"
+                [isCardOpen]="true"
+            >
+                <div class="additional-template-data">
+                    <div class="additional-template-item">
+                        <p class="additional-template-value-name">
+                            Load Format
+                        </p>
+                        <p class="additional-template-value">
+                            {{ companyData?.additionalInfo?.prefix }}
+                            {{ companyData?.additionalInfo?.starting }}
+                            {{ companyData?.additionalInfo?.sufix }}
+                        </p>
+                    </div>
 
-               <div class="additional-template-item">
-                  <p class="additional-template-value-name">Pref. Load Type</p>
-                  <p class="additional-template-value">
-                     {{ companyData?.additionalInfo?.preferredLoadType }}
-                  </p>
-               </div>
+                    <div class="additional-template-item">
+                        <p class="additional-template-value-name">
+                            Pref. Load Type
+                        </p>
+                        <p class="additional-template-value">
+                            {{ companyData?.additionalInfo?.preferredLoadType }}
+                        </p>
+                    </div>
 
-               <div class="additional-template-item">
-                  <p class="additional-template-value-name">Auto Invoicing</p>
-                  <p class="additional-template-value">
-                     {{
-                        companyData?.additionalInfo?.autoInvoicing
-                           ? 'On'
-                           : 'Off'
-                     }}
-                  </p>
-               </div>
+                    <div class="additional-template-item">
+                        <p class="additional-template-value-name">
+                            Auto Invoicing
+                        </p>
+                        <p class="additional-template-value">
+                            {{
+                                companyData?.additionalInfo?.autoInvoicing
+                                    ? 'On'
+                                    : 'Off'
+                            }}
+                        </p>
+                    </div>
 
-               <div
-                  class="additional-template-item"
-                  *ngIf="companyData?.additionalInfo?.customerPayTerm"
-               >
-                  <p class="additional-template-value-name">
-                     Customer Pay Term
-                  </p>
-                  <p class="additional-template-value">
-                     {{ companyData?.additionalInfo?.customerPayTerm }}
-                     days
-                  </p>
-               </div>
+                    <div
+                        class="additional-template-item"
+                        *ngIf="companyData?.additionalInfo?.customerPayTerm"
+                    >
+                        <p class="additional-template-value-name">
+                            Customer Pay Term
+                        </p>
+                        <p class="additional-template-value">
+                            {{ companyData?.additionalInfo?.customerPayTerm }}
+                            days
+                        </p>
+                    </div>
 
-               <div
-                  class="additional-template-item"
-                  *ngIf="companyData?.additionalInfo?.customerCredit"
-               >
-                  <p class="additional-template-value-name">Customer Credit</p>
-                  <p class="additional-template-value">
-                     ${{ companyData?.additionalInfo?.customerCredit }}
-                  </p>
-               </div>
+                    <div
+                        class="additional-template-item"
+                        *ngIf="companyData?.additionalInfo?.customerCredit"
+                    >
+                        <p class="additional-template-value-name">
+                            Customer Credit
+                        </p>
+                        <p class="additional-template-value">
+                            ${{ companyData?.additionalInfo?.customerCredit }}
+                        </p>
+                    </div>
 
-               <div class="additional-template-item">
-                  <p class="additional-template-value-name">
-                     Factory by Default
-                  </p>
-                  <p class="additional-template-value">
-                     {{
-                        companyData?.additionalInfo?.factorByDefault
-                           ? 'On'
-                           : 'Off'
-                     }}
-                  </p>
-               </div>
-            </div>
-         </app-ta-custom-card>
-         <app-ta-custom-card
-            [cardName]="'Expiration'"
-            [bodyTemplate]="'card'"
-            [isCardOpen]="true"
-         >
-            <div class="additional-template-data">
-               <div class="additional-template-item">
-                  <p class="additional-template-value-name">MVR</p>
-                  <p class="additional-template-value">
-                     {{ companyData?.additionalInfo?.mvrMonths }}
-                     {{
-                        companyData?.additionalInfo?.mvrMonths > 1
-                           ? 'months'
-                           : 'month'
-                     }}
-                  </p>
-               </div>
-               <div class="additional-template-item">
-                  <p class="additional-template-value-name">Truck Inspection</p>
-                  <p class="additional-template-value">
-                     {{ companyData?.additionalInfo?.truckInspectionMonths }}
-                     {{
-                        companyData?.additionalInfo?.truckInspectionMonths > 1
-                           ? 'months'
-                           : 'month'
-                     }}
-                  </p>
-               </div>
-               <div class="additional-template-item">
-                  <p class="additional-template-value-name">
-                     Trailer Inspection
-                  </p>
-                  <p class="additional-template-value">
-                     {{ companyData?.additionalInfo?.trailerInspectionMonths }}
-                     {{
-                        companyData?.additionalInfo?.trailerInspectionMonths > 1
-                           ? 'months'
-                           : 'month'
-                     }}
-                  </p>
-               </div>
-            </div>
-         </app-ta-custom-card>
-      </div>
-   </div>
+                    <div class="additional-template-item">
+                        <p class="additional-template-value-name">
+                            Factory by Default
+                        </p>
+                        <p class="additional-template-value">
+                            {{
+                                companyData?.additionalInfo?.factorByDefault
+                                    ? 'On'
+                                    : 'Off'
+                            }}
+                        </p>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+            <app-ta-custom-card
+                [cardName]="'Expiration'"
+                [bodyTemplate]="'card'"
+                [isCardOpen]="true"
+            >
+                <div class="additional-template-data">
+                    <div class="additional-template-item">
+                        <p class="additional-template-value-name">MVR</p>
+                        <p class="additional-template-value">
+                            {{ companyData?.additionalInfo?.mvrMonths }}
+                            {{
+                                companyData?.additionalInfo?.mvrMonths > 1
+                                    ? 'months'
+                                    : 'month'
+                            }}
+                        </p>
+                    </div>
+                    <div class="additional-template-item">
+                        <p class="additional-template-value-name">
+                            Truck Inspection
+                        </p>
+                        <p class="additional-template-value">
+                            {{
+                                companyData?.additionalInfo
+                                    ?.truckInspectionMonths
+                            }}
+                            {{
+                                companyData?.additionalInfo
+                                    ?.truckInspectionMonths > 1
+                                    ? 'months'
+                                    : 'month'
+                            }}
+                        </p>
+                    </div>
+                    <div class="additional-template-item">
+                        <p class="additional-template-value-name">
+                            Trailer Inspection
+                        </p>
+                        <p class="additional-template-value">
+                            {{
+                                companyData?.additionalInfo
+                                    ?.trailerInspectionMonths
+                            }}
+                            {{
+                                companyData?.additionalInfo
+                                    ?.trailerInspectionMonths > 1
+                                    ? 'months'
+                                    : 'month'
+                            }}
+                        </p>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+        </div>
+    </div>
 </div>

@@ -1,39 +1,39 @@
 @import './ta-input.colors.scss';
 
 .input-invalid-danger-mark {
-   position: absolute;
-   right: 4px;
-   top: 0px;
-   line-height: 24px;
-   svg {
-      width: 18px;
-      height: 18px;
-      path {
-         fill: $input-danger-mark-path-fill;
-      }
-   }
+    position: absolute;
+    right: 4px;
+    top: 0px;
+    line-height: 24px;
+    svg {
+        width: 18px;
+        height: 18px;
+        path {
+            fill: $input-danger-mark-path-fill;
+        }
+    }
 
-   &:hover ~ .input-label {
-      color: $input-label-color-hover;
-   }
+    &:hover ~ .input-label {
+        color: $input-label-color-hover;
+    }
 
-   &:hover ~ .input-control {
-      background-color: $input-background-color-normal-hover;
-      color: $input-text-color-normal-hover;
-   }
+    &:hover ~ .input-control {
+        background-color: $input-background-color-normal-hover;
+        color: $input-text-color-normal-hover;
+    }
 
-   // Custom class
-   &.input-32 {
-      position: absolute;
-      right: 6px;
-      top: 4px;
-   }
+    // Custom class
+    &.input-32 {
+        position: absolute;
+        right: 6px;
+        top: 4px;
+    }
 
-   &.input-30 {
-      top: 2px;
-   }
+    &.input-30 {
+        top: 2px;
+    }
 
-   &.line-input-26-in-card {
-      top: 1px;
-   }
+    &.line-input-26-in-card {
+        top: 1px;
+    }
 }

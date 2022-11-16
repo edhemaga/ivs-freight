@@ -7,7 +7,7 @@ export interface BrokerItemState extends EntityState<BrokerResponse, number> {}
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'brokerItem' })
 export class BrokerDetailsStore extends EntityStore<BrokerItemState> {
-   constructor() {
-      super();
-   }
+    constructor() {
+        super();
+    }
 }

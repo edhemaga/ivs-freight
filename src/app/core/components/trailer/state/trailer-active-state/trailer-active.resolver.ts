@@ -7,29 +7,29 @@ import { TrailerTService } from '../trailer.service';
 import { TrailerActiveState, TrailerActiveStore } from './trailer-active.store';
 
 @Injectable({
-   providedIn: 'root',
+    providedIn: 'root',
 })
 export class TrailerActiveResolver implements Resolve<TrailerActiveState> {
-   constructor(
-      private trailerService: TrailerTService,
-      private trailerStore: TrailerActiveStore
-   ) {}
-   resolve(): Observable<TrailerActiveState | boolean> {
-      return this.trailerService.getTrailers(1, 1, 25).pipe(
-         catchError(() => {
-            return of('No active trailer...');
-         }),
-         tap((trailerPagination: TrailerListResponse) => {
-            localStorage.setItem(
-               'trailerTableCount',
-               JSON.stringify({
-                  active: trailerPagination.activeCount,
-                  inactive: trailerPagination.inactiveCount,
-               })
-            );
+    constructor(
+        private trailerService: TrailerTService,
+        private trailerStore: TrailerActiveStore
+    ) {}
+    resolve(): Observable<TrailerActiveState | boolean> {
+        return this.trailerService.getTrailers(1, 1, 25).pipe(
+            catchError(() => {
+                return of('No active trailer...');
+            }),
+            tap((trailerPagination: TrailerListResponse) => {
+                localStorage.setItem(
+                    'trailerTableCount',
+                    JSON.stringify({
+                        active: trailerPagination.activeCount,
+                        inactive: trailerPagination.inactiveCount,
+                    })
+                );
 
-            this.trailerStore.set(trailerPagination.pagination.data);
-         })
-      );
-   }
+                this.trailerStore.set(trailerPagination.pagination.data);
+            })
+        );
+    }
 }

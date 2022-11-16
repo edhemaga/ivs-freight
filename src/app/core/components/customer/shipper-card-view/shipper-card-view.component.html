@@ -1,132 +1,137 @@
 <div class="cards-item-wrapper-1">
-   <app-ta-details-header-card
-      [cardDetailsDate]="shipper?.createdAt | formatDateP"
-      [tooltipNext]="'Next Shipper'"
-      [tooltipPrevious]="'Previous Shipper'"
-      [searchInputName]="'Search Shipper'"
-      [dateChecked]="'5 days ago'"
-      [options]="shipperDropdowns"
-      (selectValue)="onSelectedShipper($event)"
-      (changeEvent)="onChangeShipper($event)"
-   >
-      <div class="repair-information-wrapper">
-         <div class="repair-information-item" *ngIf="shipper?.phone">
-            <span
-               tooltipBackground="#6c6c6c"
-               ngbTooltip
-               mainTooltip="Call"
-               position="top"
-               class="semi-tooltip"
-            >
-               <svg-icon
-                  class="repair-icon"
-                  src="assets/svg/common/ic_phone.svg"
-               ></svg-icon>
-            </span>
-            <app-ta-copy [copyValue]="shipper?.phone"></app-ta-copy>
-         </div>
-         <div class="repair-information-item" *ngIf="shipper?.email">
-            <span
-               tooltipBackground="#6c6c6c"
-               ngbTooltip
-               mainTooltip="Send Email"
-               position="top"
-               class="semi-tooltip"
-            >
-               <svg-icon
-                  class="repair-icon"
-                  src="assets/svg/common/ic_email.svg"
-               ></svg-icon>
-            </span>
-            <app-ta-copy [copyValue]="shipper?.email"></app-ta-copy>
-         </div>
-         <div class="repair-information-item">
-            <svg-icon
-               class="repair-icon"
-               src="assets/svg/common/ic_address.svg"
-            ></svg-icon>
-            <app-ta-copy [copyValue]="shipper?.address?.address"></app-ta-copy>
-         </div>
-      </div>
-   </app-ta-details-header-card>
-   <div class="wrapper-additional-cards">
-      <div class="repair-cards">
-         <app-ta-custom-card
-            [bodyTemplate]="'card'"
-            [hasDivider]="false"
-            [cardName]="'Avillable Hours'"
-            [isCardOpen]="true"
-         >
-            <div class="hours-template">
-               <div class="hours-item">
-                  <span class="name-item">Receiving Hours</span>
-                  <div *ngIf="shipper?.receivingFrom" class="icon-wrapper">
-                     <svg-icon
-                        *ngIf="shipper?.receivingAppointment"
-                        class="svg-appoiment"
-                        src="assets/svg/common/ic_appoiment.svg"
-                     ></svg-icon>
-                     <span class="value-item"
-                        >{{ shipper?.receivingFrom }} AM -
-                        {{ shipper?.receivingTo }} PM</span
-                     >
-                  </div>
-                  <span
-                     *ngIf="shipper?.receivingOpenTwentyFourHours"
-                     class="value-item"
-                     >24h</span
-                  >
-               </div>
-               <div class="hours-item">
-                  <span class="name-item">Shipping Hours</span>
-                  <div *ngIf="shipper?.shippingFrom" class="icon-wrapper">
-                     <svg-icon
-                        *ngIf="shipper?.shippingAppointment"
-                        class="svg-appoiment"
-                        src="assets/svg/common/ic_appoiment.svg"
-                     ></svg-icon>
-                     <span class="value-item"
-                        >{{ shipper?.shippingFrom }} AM -
-                        {{ shipper?.shippingTo }} PM</span
-                     >
-                  </div>
-                  <span
-                     *ngIf="shipper?.shippingOpenTwentyFourHours"
-                     class="value-item"
-                     >24h</span
-                  >
-               </div>
+    <app-ta-details-header-card
+        [cardDetailsDate]="shipper?.createdAt | formatDateP"
+        [tooltipNext]="'Next Shipper'"
+        [tooltipPrevious]="'Previous Shipper'"
+        [searchInputName]="'Search Shipper'"
+        [dateChecked]="'5 days ago'"
+        [options]="shipperDropdowns"
+        (selectValue)="onSelectedShipper($event)"
+        (changeEvent)="onChangeShipper($event)"
+    >
+        <div class="repair-information-wrapper">
+            <div class="repair-information-item" *ngIf="shipper?.phone">
+                <span
+                    tooltipBackground="#6c6c6c"
+                    ngbTooltip
+                    mainTooltip="Call"
+                    position="top"
+                    class="semi-tooltip"
+                >
+                    <svg-icon
+                        class="repair-icon"
+                        src="assets/svg/common/ic_phone.svg"
+                    ></svg-icon>
+                </span>
+                <app-ta-copy [copyValue]="shipper?.phone"></app-ta-copy>
             </div>
-         </app-ta-custom-card>
-         <app-ta-custom-card
-            [bodyTemplate]="'card'"
-            [hasDivider]="true"
-            [cardName]="'Average Waiting Time'"
-            [tooltipName]="'View in Modal'"
-            [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-            [isCardOpen]="true"
-         >
-            <div class="charts-template perfomance">
-               <app-ta-tab-switch
-                  [tabs]="shipperTabs"
-                  [type]="'type2-modal-popup'"
-               >
-               </app-ta-tab-switch>
+            <div class="repair-information-item" *ngIf="shipper?.email">
+                <span
+                    tooltipBackground="#6c6c6c"
+                    ngbTooltip
+                    mainTooltip="Send Email"
+                    position="top"
+                    class="semi-tooltip"
+                >
+                    <svg-icon
+                        class="repair-icon"
+                        src="assets/svg/common/ic_email.svg"
+                    ></svg-icon>
+                </span>
+                <app-ta-copy [copyValue]="shipper?.email"></app-ta-copy>
             </div>
-         </app-ta-custom-card>
-         <!--------Note--------->
-         <div class="divider"></div>
-         <div class="note-cards">
-            <app-ta-input-note
-               [formControl]="note"
-               [isVisibleArrow]="true"
-               [minRows]="1"
-               [isVisibleDivider]="false"
-               [placeholder]="'Write something.'"
-               [customClass]="'note-small'"
-               [noteType]="'details-card'"
-            ></app-ta-input-note>
-         </div>
-      </div>
-   </div>
+            <div class="repair-information-item">
+                <svg-icon
+                    class="repair-icon"
+                    src="assets/svg/common/ic_address.svg"
+                ></svg-icon>
+                <app-ta-copy
+                    [copyValue]="shipper?.address?.address"
+                ></app-ta-copy>
+            </div>
+        </div>
+    </app-ta-details-header-card>
+    <div class="wrapper-additional-cards">
+        <div class="repair-cards">
+            <app-ta-custom-card
+                [bodyTemplate]="'card'"
+                [hasDivider]="false"
+                [cardName]="'Avillable Hours'"
+                [isCardOpen]="true"
+            >
+                <div class="hours-template">
+                    <div class="hours-item">
+                        <span class="name-item">Receiving Hours</span>
+                        <div
+                            *ngIf="shipper?.receivingFrom"
+                            class="icon-wrapper"
+                        >
+                            <svg-icon
+                                *ngIf="shipper?.receivingAppointment"
+                                class="svg-appoiment"
+                                src="assets/svg/common/ic_appoiment.svg"
+                            ></svg-icon>
+                            <span class="value-item"
+                                >{{ shipper?.receivingFrom }} AM -
+                                {{ shipper?.receivingTo }} PM</span
+                            >
+                        </div>
+                        <span
+                            *ngIf="shipper?.receivingOpenTwentyFourHours"
+                            class="value-item"
+                            >24h</span
+                        >
+                    </div>
+                    <div class="hours-item">
+                        <span class="name-item">Shipping Hours</span>
+                        <div *ngIf="shipper?.shippingFrom" class="icon-wrapper">
+                            <svg-icon
+                                *ngIf="shipper?.shippingAppointment"
+                                class="svg-appoiment"
+                                src="assets/svg/common/ic_appoiment.svg"
+                            ></svg-icon>
+                            <span class="value-item"
+                                >{{ shipper?.shippingFrom }} AM -
+                                {{ shipper?.shippingTo }} PM</span
+                            >
+                        </div>
+                        <span
+                            *ngIf="shipper?.shippingOpenTwentyFourHours"
+                            class="value-item"
+                            >24h</span
+                        >
+                    </div>
+                </div>
+            </app-ta-custom-card>
+            <app-ta-custom-card
+                [bodyTemplate]="'card'"
+                [hasDivider]="true"
+                [cardName]="'Average Waiting Time'"
+                [tooltipName]="'View in Modal'"
+                [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+                [isCardOpen]="true"
+            >
+                <div class="charts-template perfomance">
+                    <app-ta-tab-switch
+                        [tabs]="shipperTabs"
+                        [type]="'type2-modal-popup'"
+                    >
+                    </app-ta-tab-switch>
+                </div>
+            </app-ta-custom-card>
+            <!--------Note--------->
+            <div class="divider"></div>
+            <div class="note-cards">
+                <app-ta-input-note
+                    [formControl]="note"
+                    [isVisibleArrow]="true"
+                    [minRows]="1"
+                    [isVisibleDivider]="false"
+                    [placeholder]="'Write something.'"
+                    [customClass]="'note-small'"
+                    [noteType]="'details-card'"
+                ></app-ta-input-note>
+            </div>
+        </div>
+    </div>
 </div>
