@@ -1,61 +1,61 @@
 .custom-scrollbar-holder {
-    position: relative;
-    height: 100vh;
-    overflow: auto;
+  position: relative;
+  height: 100vh;
+  overflow: auto;
 
-    scrollbar-width: none !important; /* Firefox */
-    -ms-overflow-style: none !important;
-    &::-webkit-scrollbar {
-        display: none !important; /* Safari and Chrome */
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important;
+  &::-webkit-scrollbar {
+    display: none !important; /* Safari and Chrome */
+  }
+
+  ::-webkit-scrollbar-thumb,
+  ::-webkit-scrollbar {
+    width: 1px !important;
+    display: none !important;
+  }
+
+  .right-bar-scroll {
+    height: 100%;
+    position: fixed;
+    right: 0;
+    top: 0;
+    user-select: none;
+
+    .right-bar {
+      position: absolute;
+      right: 3px;
+      width: 6px;
+      min-height: 30px;
+      border-radius: 1px;
+      background-color: #aaaaaa;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.55);
+        //@debug: grabbing;
+      }
     }
+  }
 
-    ::-webkit-scrollbar-thumb,
-    ::-webkit-scrollbar {
-        width: 1px !important;
-        display: none !important;
+  .horizontal-scroll-bar {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    user-select: none;
+    margin-top: -15px;
+
+    .horizontal-bar {
+      position: absolute;
+      left: 0px;
+      width: 6px;
+      height: 6px;
+      min-width: 30px;
+      border-radius: 1px;
+      background-color: #aaaaaa;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.55);
+      }
     }
-
-    .right-bar-scroll {
-        height: 100%;
-        position: fixed;
-        right: 0;
-        top: 0;
-        user-select: none;
-
-        .right-bar {
-            position: absolute;
-            right: 3px;
-            width: 6px;
-            min-height: 30px;
-            border-radius: 1px;
-            background-color: #aaaaaa;
-
-            &:hover {
-                background: rgba(0, 0, 0, 0.55);
-                //@debug: grabbing;
-            }
-        }
-    }
-
-    .horizontal-scroll-bar {
-        width: 100%;
-        position: absolute;
-        left: 0;
-        user-select: none;
-        margin-top: -15px;
-
-        .horizontal-bar {
-            position: absolute;
-            left: 0px;
-            width: 6px;
-            height: 6px;
-            min-width: 30px;
-            border-radius: 1px;
-            background-color: #aaaaaa;
-
-            &:hover {
-                background: rgba(0, 0, 0, 0.55);
-            }
-        }
-    }
+  }
 }

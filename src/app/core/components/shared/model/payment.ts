@@ -1,3 +1,3 @@
 export class Payment {
-    bank: string;
+  bank: string;
 }

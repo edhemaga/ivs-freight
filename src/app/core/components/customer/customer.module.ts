@@ -12,17 +12,17 @@ import { AgmCoreModule } from '@agm/core';
 import { BrokerDetailsModule } from './broker-details/broker-details.module';
 
 @NgModule({
-    declarations: [CustomerTableComponent, BrokerCardComponent],
-    imports: [
-        CommonModule,
-        TruckassistTableModule,
-        CustomerRoutingModule,
-        ShipperDetailsModule,
-        BrokerDetailsModule,
-        AngularSvgIconModule,
-        SharedModule,
-        AgmCoreModule,
-        AgmSnazzyInfoWindowModule,
-    ],
+  declarations: [CustomerTableComponent, BrokerCardComponent],
+  imports: [
+    CommonModule, 
+    TruckassistTableModule, 
+    CustomerRoutingModule, 
+    ShipperDetailsModule,
+    BrokerDetailsModule,
+    AngularSvgIconModule, 
+    SharedModule,
+    AgmCoreModule, 
+    AgmSnazzyInfoWindowModule, 
+  ],
 })
 export class CustomerModule {}

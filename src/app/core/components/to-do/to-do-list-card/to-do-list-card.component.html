@@ -1,554 +1,441 @@
 <div class="todo-list-holder">
-    <div class="todo-tollbar">
-        <div class="toolbar">
-            <div class="toolbar-title">
-                To-Do ({{ scene.children[0].children?.length }})
-            </div>
-            <div class="toolbar-menu-holder">
-                <div class="toolbar-icons-frame">
-                    <div
-                        class="box-icons search-icon"
-                        ngbTooltip
-                        mainTooltip="Search"
-                        position="bottom"
-                        tooltipBackground="#6C6C6C"
-                    >
-                        <app-truckassist-search
-                            [selectedTabData]="searchToDoOptions"
-                        ></app-truckassist-search>
-                    </div>
-                    <div class="border-right"></div>
-                    <div class="box-icons">
-                        <app-filter
-                            [type]="'timeFilter'"
-                            [filterTitle]="'Time Filter'"
-                            [icon]="'pending'"
-                            [toDoSubType]="'Todo'"
-                            (setFilter)="setFilterEvent($event)"
-                        >
-                        </app-filter>
-                    </div>
-                    <div class="border-right"></div>
-                    <div class="box-icons">
-                        <app-filter
-                            [type]="'userFilter'"
-                            [searchState]="true"
-                            [filterTitle]="'User Filter'"
-                            [defFilterHolder]="true"
-                            [toDoSubType]="'Todo'"
-                            (setFilter)="setFilterEvent($event)"
-                        >
-                        </app-filter>
-                    </div>
-                    <div class="border-right"></div>
-                    <div class="box-icons">
-                        <app-filter
-                            [type]="'departmentFilter'"
-                            [icon]="'tab'"
-                            [filterTitle]="'Department Filter'"
-                            [defFilterHolder]="true"
-                            [noLeftIcon]="true"
-                            [toDoSubType]="'Todo'"
-                            (setFilter)="setFilterEvent($event)"
-                        >
-                        </app-filter>
-                    </div>
-                </div>
-                <div class="toolbar-icons-frame">
-                    <div class="border-right"></div>
-                    <div
-                        class="plus-box"
-                        (click)="openModalTodo()"
-                        ngbTooltip
-                        mainTooltip="Add New"
-                        position="bottom"
-                        tooltipBackground="#6C6C6C"
-                    >
-                        <svg-icon
-                            src="assets/svg/truckassist-table/dropdown/content/add.svg"
-                        >
-                        </svg-icon>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="toolbar">
-            <div class="toolbar-title">
-                Ongoing ({{ scene.children[1].children?.length }})
-            </div>
-            <div class="toolbar-menu-holder">
-                <div class="toolbar-icons-frame">
-                    <div
-                        class="box-icons search-icon"
-                        ngbTooltip
-                        mainTooltip="Search"
-                        position="bottom"
-                        tooltipBackground="#6C6C6C"
-                    >
-                        <app-truckassist-search
-                            [selectedTabData]="searchOnGoingOptions"
-                        ></app-truckassist-search>
-                    </div>
-                    <div class="border-right"></div>
-                    <div class="box-icons">
-                        <app-filter
-                            [type]="'timeFilter'"
-                            [filterTitle]="'Time Filter'"
-                            [icon]="'pending'"
-                            [toDoSubType]="'InProgress'"
-                            (setFilter)="setFilterEvent($event)"
-                        >
-                        </app-filter>
-                    </div>
-                    <div class="border-right"></div>
-                    <div class="box-icons">
-                        <app-filter
-                            [type]="'userFilter'"
-                            [searchState]="true"
-                            [filterTitle]="'User Filter'"
-                            [defFilterHolder]="true"
-                            [toDoSubType]="'InProgress'"
-                            (setFilter)="setFilterEvent($event)"
-                        >
-                        </app-filter>
-                    </div>
-                    <div class="border-right"></div>
-                    <div class="box-icons">
-                        <app-filter
-                            [type]="'departmentFilter'"
-                            [icon]="'tab'"
-                            [filterTitle]="'Department Filter'"
-                            [defFilterHolder]="true"
-                            [noLeftIcon]="true"
-                            [toDoSubType]="'InProgress'"
-                            (setFilter)="setFilterEvent($event)"
-                        >
-                        </app-filter>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="toolbar">
-            <div class="toolbar-title">
-                Done ({{ scene.children[2].children?.length }})
-            </div>
-            <div class="toolbar-menu-holder">
-                <div class="toolbar-icons-frame">
-                    <div
-                        class="box-icons search-icon"
-                        ngbTooltip
-                        mainTooltip="Search"
-                        position="bottom"
-                        tooltipBackground="#6C6C6C"
-                    >
-                        <app-truckassist-search
-                            [selectedTabData]="searchDoneOptions"
-                        ></app-truckassist-search>
-                    </div>
-                    <div class="border-right"></div>
-                    <div class="box-icons">
-                        <app-filter
-                            [type]="'timeFilter'"
-                            [filterTitle]="'Time Filter'"
-                            [icon]="'pending'"
-                            [toDoSubType]="'Done'"
-                            (setFilter)="setFilterEvent($event)"
-                        >
-                        </app-filter>
-                    </div>
-                    <div class="border-right"></div>
-                    <div class="box-icons">
-                        <app-filter
-                            [type]="'userFilter'"
-                            [searchState]="true"
-                            [filterTitle]="'User Filter'"
-                            [defFilterHolder]="true"
-                            [toDoSubType]="'Done'"
-                            (setFilter)="setFilterEvent($event)"
-                        >
-                        </app-filter>
-                    </div>
-                    <div class="border-right"></div>
-                    <div class="box-icons">
-                        <app-filter
-                            [type]="'departmentFilter'"
-                            [icon]="'tab'"
-                            [filterTitle]="'Department Filter'"
-                            [defFilterHolder]="true"
-                            [noLeftIcon]="true"
-                            [toDoSubType]="'Done'"
-                            (setFilter)="setFilterEvent($event)"
-                        >
-                        </app-filter>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="card-main-to-do-holder">
-        <smooth-dnd-container
-            [orientation]="'horizontal'"
-            [dragHandleSelector]="'.column-drag-handle'"
-        >
-            <smooth-dnd-draggable
-                *ngFor="let column of scene.children; let i = index"
+  <div class="todo-tollbar">
+    <div class="toolbar">
+      <div class="toolbar-title">
+        To-Do ({{ scene.children[0].children?.length }})
+      </div>
+      <div class="toolbar-menu-holder">
+        <div class="toolbar-icons-frame">
+          <div
+            class="box-icons search-icon"
+            ngbTooltip
+            mainTooltip="Search"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+          >
+            <app-truckassist-search
+              [selectedTabData]="searchToDoOptions"
+            ></app-truckassist-search>
+          </div>
+          <div class="border-right"></div>
+          <div class="box-icons">
+            <app-filter
+              [type]="'timeFilter'"
+              [filterTitle]="'Time Filter'"
+              [icon]="'pending'"
+              [toDoSubType]="'Todo'"
+              (setFilter)="setFilterEvent($event)"
             >
-                <span class="column-drag-handle"></span>
-                <div [ngClass]="column.props.className">
-                    <div class="card-column-header"></div>
-                    <smooth-dnd-container
-                        [groupName]="'col'"
-                        (drop)="onCardDrop(column.id, $event)"
-                        [getChildPayload]="getCardPayload(column.id)"
-                        [dragClass]="'card-ghost'"
-                        [dropClass]="'card-ghost-drop'"
-                        (dragStart)="dragStart($event)"
-                        (dragEnd)="log('drag end', $event)"
-                        [dragBeginDelay]="0"
-                        [animationDuration]="100"
-                        [dropPlaceholder]="{
-                            className: 'dropShadowClass, showOnTop: true'
-                        }"
-                    >
-                        <smooth-dnd-draggable
-                            *ngFor="let item of column.children; let j = index"
-                        >
-                            <div
-                                class="list-holder"
-                                (mouseenter)="setIndex(i, j)"
-                            >
-                                <div class="list-top-holder">
-                                    <div class="list-items-frame">
-                                        <div class="list-title">
-                                            {{ item.title }}
-                                        </div>
-                                        <div class="icons-frame">
-                                            <div
-                                                (mousedown)="
-                                                    item.url
-                                                        ? toggleLinkShow(
-                                                              $event,
-                                                              i,
-                                                              j
-                                                          )
-                                                        : ''
-                                                "
-                                                ngbTooltip
-                                                [mainTooltip]="
-                                                    item.url
-                                                        ? 'Hyperlink'
-                                                        : 'No Hyperlink'
-                                                "
-                                                position="bottom"
-                                                tooltipBackground="#6C6C6C"
-                                                class="icon-box"
-                                                [class.lighter-icon]="!item.url"
-                                                [class.blue-icons]="
-                                                    item.linkActive
-                                                "
-                                            >
-                                                <svg-icon
-                                                    src="assets/svg/common/ic_web.svg"
-                                                ></svg-icon>
-                                            </div>
-                                            <div
-                                                class="icon-box lighter-icon"
-                                                ngbTooltip
-                                                mainTooltip="Documents"
-                                                position="bottom"
-                                                tooltipBackground="#6C6C6C"
-                                            >
-                                                <svg-icon
-                                                    src="assets/svg/common/ic_attachment.svg"
-                                                ></svg-icon>
-                                            </div>
-                                            <div
-                                                class="icon-box"
-                                                ngbTooltip
-                                                mainTooltip="Comments"
-                                                position="bottom"
-                                                tooltipBackground="#6C6C6C"
-                                                (mousedown)="
-                                                    toggleComment($event, i, j)
-                                                "
-                                                [class.blue-icons]="
-                                                    item.commentActive
-                                                "
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="18"
-                                                    height="18"
-                                                    viewBox="0 0 19 19"
-                                                >
-                                                    <g
-                                                        id="Comment_-_Count"
-                                                        data-name="Comment - Count"
-                                                        transform="translate(0.5 2.5)"
-                                                    >
-                                                        <path
-                                                            id="Path_10563"
-                                                            data-name="Path 10563"
-                                                            d="M963.974,510.676H950.584a2.274,2.274,0,0,0-2.305,2.237v10.5a2.274,2.274,0,0,0,2.305,2.237h.82l1.574,2.645a.792.792,0,0,0,1.351,0l1.574-2.645h8.07a2.275,2.275,0,0,0,2.305-2.237v-10.5a2.274,2.274,0,0,0-2.305-2.237"
-                                                            transform="translate(-948.279 -512.676)"
-                                                            fill="#aaa"
-                                                            stroke="rgba(0,0,0,0)"
-                                                            stroke-width="1"
-                                                        />
-                                                    </g>
-                                                    <text
-                                                        x="50%"
-                                                        y="48.5%"
-                                                        dominant-baseline="middle"
-                                                        text-anchor="middle"
-                                                        id="_1"
-                                                        data-name="1"
-                                                        fill="#fff"
-                                                        font-size="11"
-                                                        font-family="Montserrat-Bold, Montserrat"
-                                                        font-weight="700"
-                                                    >
-                                                        <tspan
-                                                            class="number-comments"
-                                                        >
-                                                            {{
-                                                                item.comments
-                                                                    .length
-                                                            }}
-                                                        </tspan>
-                                                    </text>
-                                                </svg>
-                                            </div>
-                                            <div class="icon-box dots">
-                                                <app-details-page-dropdown
-                                                    (click)="
-                                                        toggleDropdownActions(
-                                                            item
-                                                        )
-                                                    "
-                                                    [options]="
-                                                        dropdownOptions.actions
-                                                    "
-                                                    [id]="item.id"
-                                                    [data]="item"
-                                                    [placement]="
-                                                        i == 2
-                                                            ? 'bottom-right'
-                                                            : 'right-top right-bottom'
-                                                    "
-                                                    [hasVericalDots]="true"
-                                                    (dropDownActions)="
-                                                        dropAct($event)
-                                                    "
-                                                    [customClassDropDown]="
-                                                        'drop-down-details-single'
-                                                    "
-                                                >
-                                                </app-details-page-dropdown>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="options-frame"
-                                        *ngIf="
-                                            item.departments?.length &&
-                                            !item.todoUsers?.length
-                                        "
-                                    >
-                                        <div
-                                            class="dispatch-box"
-                                            *ngFor="let dep of item.departments"
-                                        >
-                                            {{ dep.name }}
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="options-frame"
-                                        *ngIf="
-                                            !item.departments?.length &&
-                                            !item.todoUsers?.length
-                                        "
-                                    >
-                                        <div class="dispatch-box everybody">
-                                            Everybody
-                                        </div>
-                                    </div>
-                                    <div class="main_users_hold">
-                                        <div
-                                            class="assigned_user_hold"
-                                            *ngIf="item.todoUsers?.length"
-                                        >
-                                            <div
-                                                class="assigned_user_hold_inner"
-                                                *ngFor="
-                                                    let user of item.todoUsers;
-                                                    let indx = index
-                                                "
-                                            >
-                                                <img
-                                                    *ngIf="user?.avatar"
-                                                    class="user_avatar"
-                                                    [src]="
-                                                        imageBase64Service.sanitizer(
-                                                            user?.avatar
-                                                        )
-                                                    "
-                                                />
-                                                <div
-                                                    class="user_profile_image"
-                                                    *ngIf="!user.avatar"
-                                                >
-                                                    <app-profile-images
-                                                        [indx]="indx"
-                                                        [name]="
-                                                            user.firstName +
-                                                            ' ' +
-                                                            user.lastName
-                                                        "
-                                                        [size]="'medium'"
-                                                        [type]="'user'"
-                                                    >
-                                                    </app-profile-images>
-                                                </div>
-                                                <div
-                                                    class="user_tooltip_name_hold"
-                                                >
-                                                    <div
-                                                        class="user_tooltip_name"
-                                                    >
-                                                        {{
-                                                            user.firstName +
-                                                                ' ' +
-                                                                user.lastName
-                                                        }}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="list-text"
-                                        *ngIf="item.description"
-                                    >
-                                        {{ item.description }}
-                                    </div>
-                                    <div
-                                        class="link"
-                                        [class.closed]="!item.linkActive"
-                                    >
-                                        {{ item.url }}
-                                    </div>
-                                </div>
-                                <div
-                                    class="comment_main_holder"
-                                    [@showHideCardBody]="
-                                        item.commentActive ? 'true' : 'false'
-                                    "
-                                >
-                                    <div
-                                        class="comment-holder"
-                                        [class.no_comments]="
-                                            !item.comments?.length
-                                        "
-                                        [class.show_border]="item.deadline"
-                                    >
-                                        <div
-                                            class="todo_list_holder"
-                                            [class.expand]="
-                                                newComment ||
-                                                item.comments?.length
-                                            "
-                                        >
-                                            <div class="todo_list_info_holder">
-                                                <div
-                                                    class="todo_list_info_number_hold"
-                                                >
-                                                    <div
-                                                        class="todo_list_info_number"
-                                                    >
-                                                        {{
-                                                            item.comments.length
-                                                        }}
-                                                    </div>
-                                                </div>
-                                                <div
-                                                    class="todo_list_info_text"
-                                                >
-                                                    Comment
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="todo_list_add_comment_hold"
-                                                *ngIf="
-                                                    !newComment ||
-                                                    (i != currentHoldIndex &&
-                                                        j != currentChildIndex)
-                                                "
-                                                (click)="addNewComment(i, j)"
-                                            >
-                                                <div
-                                                    class="todo_list_add_comment_text"
-                                                >
-                                                    ADD COMMENT
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <app-ta-user-review
-                                            (changeReviewsEvent)="
-                                                changeReviewsEvent($event)
-                                            "
-                                            [reviewData]="item.comments"
-                                            *ngIf="item.comments.length"
-                                        >
-                                        </app-ta-user-review>
-                                        <div
-                                            class="add_comment_holder"
-                                            [class.shrink_hold]="!newComment"
-                                            [class.move_comment_hold]="
-                                                item.comments.length
-                                            "
-                                        >
-                                            <app-ta-user-review
-                                                (changeReviewsEvent)="
-                                                    commentEvent($event)
-                                                "
-                                                [reviewData]="comments"
-                                                [isNewReview]="true"
-                                                *ngIf="
-                                                    newComment &&
-                                                    comments.length &&
-                                                    i == currentHoldIndex &&
-                                                    j == currentChildIndex
-                                                "
-                                            >
-                                            </app-ta-user-review>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    class="todo_deadline_hold"
-                                    *ngIf="item.deadline"
-                                >
-                                    <app-truckassist-progress-expiration
-                                        [expireDate]="
-                                            item.deadline | formatDateP
-                                        "
-                                        [startDate]="
-                                            item.createdAt | formatDateP
-                                        "
-                                        [expiresSettings]="'todo-list'"
-                                    >
-                                    </app-truckassist-progress-expiration>
-                                </div>
-                            </div>
-                        </smooth-dnd-draggable>
-                    </smooth-dnd-container>
-                </div>
-            </smooth-dnd-draggable>
-        </smooth-dnd-container>
+            </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div class="box-icons">
+            <app-filter
+              [type]="'userFilter'"
+              [searchState]="true"
+              [filterTitle]="'User Filter'"
+              [defFilterHolder]="true"
+              [toDoSubType]="'Todo'"
+              (setFilter)="setFilterEvent($event)"
+            >
+            </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div class="box-icons">
+            <app-filter
+              [type]="'departmentFilter'"
+              [icon]="'tab'"
+              [filterTitle]="'Department Filter'"
+              [defFilterHolder]="true"
+              [noLeftIcon]="true"
+              [toDoSubType]="'Todo'"
+              (setFilter)="setFilterEvent($event)"
+            >
+            </app-filter>
+          </div>
+        </div>
+        <div class="toolbar-icons-frame">
+          <div class="border-right"></div>
+          <div
+            class="plus-box"
+            (click)="openModalTodo()"
+            ngbTooltip
+            mainTooltip="Add New"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+          >
+            <svg-icon
+              src="assets/svg/truckassist-table/dropdown/content/add.svg"
+            >
+            </svg-icon>
+          </div>
+        </div>
+      </div>
     </div>
+    <div class="toolbar">
+      <div class="toolbar-title">
+        Ongoing ({{ scene.children[1].children?.length }})
+      </div>
+      <div class="toolbar-menu-holder">
+        <div class="toolbar-icons-frame">
+          <div
+            class="box-icons search-icon"
+            ngbTooltip
+            mainTooltip="Search"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+          >
+            <app-truckassist-search
+              [selectedTabData]="searchOnGoingOptions"
+            ></app-truckassist-search>
+          </div>
+          <div class="border-right"></div>
+          <div class="box-icons">
+            <app-filter
+              [type]="'timeFilter'"
+              [filterTitle]="'Time Filter'"
+              [icon]="'pending'"
+              [toDoSubType]="'InProgress'"
+              (setFilter)="setFilterEvent($event)"> 
+            </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div class="box-icons">
+            <app-filter
+              [type]="'userFilter'"
+              [searchState]="true"
+              [filterTitle]="'User Filter'"
+              [defFilterHolder]="true"
+              [toDoSubType]="'InProgress'"
+              (setFilter)="setFilterEvent($event)"
+            >
+            </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div class="box-icons">
+            <app-filter
+              [type]="'departmentFilter'"
+              [icon]="'tab'"
+              [filterTitle]="'Department Filter'"
+              [defFilterHolder]="true"
+              [noLeftIcon]="true"
+              [toDoSubType]="'InProgress'"
+              (setFilter)="setFilterEvent($event)"
+            >
+            </app-filter>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="toolbar">
+      <div class="toolbar-title">
+        Done ({{ scene.children[2].children?.length }})
+      </div>
+      <div class="toolbar-menu-holder">
+        <div class="toolbar-icons-frame">
+          <div
+            class="box-icons search-icon"
+            ngbTooltip
+            mainTooltip="Search"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+          >
+            <app-truckassist-search
+              [selectedTabData]="searchDoneOptions"
+            ></app-truckassist-search>
+          </div>
+          <div class="border-right"></div>
+          <div class="box-icons">
+            <app-filter
+              [type]="'timeFilter'"
+              [filterTitle]="'Time Filter'"
+              [icon]="'pending'"
+              [toDoSubType]="'Done'"
+              (setFilter)="setFilterEvent($event)"> 
+            </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div class="box-icons">
+            <app-filter
+              [type]="'userFilter'"
+              [searchState]="true"
+              [filterTitle]="'User Filter'"
+              [defFilterHolder]="true"
+              [toDoSubType]="'Done'"
+              (setFilter)="setFilterEvent($event)"
+            >
+            </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div class="box-icons">
+            <app-filter
+              [type]="'departmentFilter'"
+              [icon]="'tab'"
+              [filterTitle]="'Department Filter'"
+              [defFilterHolder]="true"
+              [noLeftIcon]="true"
+              [toDoSubType]="'Done'"
+              (setFilter)="setFilterEvent($event)"
+            >
+            </app-filter>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-main-to-do-holder">
+    <smooth-dnd-container
+      [orientation]="'horizontal'"
+      [dragHandleSelector]="'.column-drag-handle'"
+    >
+      <smooth-dnd-draggable
+        *ngFor="let column of scene.children; let i = index"
+      >
+        <span class="column-drag-handle"></span>
+        <div [ngClass]="column.props.className">
+          <div class="card-column-header"></div>
+          <smooth-dnd-container
+            [groupName]="'col'"
+            (drop)="onCardDrop(column.id, $event)"
+            [getChildPayload]="getCardPayload(column.id)"
+            [dragClass]="'card-ghost'"
+            [dropClass]="'card-ghost-drop'"
+            (dragStart)="dragStart($event)"
+            (dragEnd)="log('drag end', $event)"
+            [dragBeginDelay]="0"
+            [animationDuration]="100"
+            [dropPlaceholder]="{
+              className: 'dropShadowClass, showOnTop: true'
+            }"
+          >
+            <smooth-dnd-draggable
+              *ngFor="let item of column.children; let j = index"
+            >
+              <div class="list-holder" (mouseenter)="setIndex(i, j)">
+                <div class="list-top-holder">
+                  <div class="list-items-frame">
+                    <div class="list-title">{{ item.title }}</div>
+                    <div class="icons-frame">
+                      <div
+                        (mousedown)="
+                          item.url ? toggleLinkShow($event, i, j) : ''
+                        "
+                        ngbTooltip
+                        [mainTooltip]="item.url ? 'Hyperlink' : 'No Hyperlink'"
+                        position="bottom"
+                        tooltipBackground="#6C6C6C"
+                        class="icon-box"
+                        [class.lighter-icon]="!item.url"
+                        [class.blue-icons]="item.linkActive"
+                      >
+                        <svg-icon src="assets/svg/common/ic_web.svg"></svg-icon>
+                      </div>
+                      <div
+                        class="icon-box lighter-icon"
+                        ngbTooltip
+                        mainTooltip="Documents"
+                        position="bottom"
+                        tooltipBackground="#6C6C6C"
+                      >
+                        <svg-icon
+                          src="assets/svg/common/ic_attachment.svg"
+                        ></svg-icon>
+                      </div>
+                      <div
+                        class="icon-box"
+                        ngbTooltip
+                        mainTooltip="Comments"
+                        position="bottom"
+                        tooltipBackground="#6C6C6C"
+                        (mousedown)="toggleComment($event, i, j)"
+                        [class.blue-icons]="item.commentActive"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="18"
+                          height="18"
+                          viewBox="0 0 19 19"
+                        >
+                          <g
+                            id="Comment_-_Count"
+                            data-name="Comment - Count"
+                            transform="translate(0.5 2.5)"
+                          >
+                            <path
+                              id="Path_10563"
+                              data-name="Path 10563"
+                              d="M963.974,510.676H950.584a2.274,2.274,0,0,0-2.305,2.237v10.5a2.274,2.274,0,0,0,2.305,2.237h.82l1.574,2.645a.792.792,0,0,0,1.351,0l1.574-2.645h8.07a2.275,2.275,0,0,0,2.305-2.237v-10.5a2.274,2.274,0,0,0-2.305-2.237"
+                              transform="translate(-948.279 -512.676)"
+                              fill="#aaa"
+                              stroke="rgba(0,0,0,0)"
+                              stroke-width="1"
+                            />
+                          </g>
+                          <text
+                            x="50%"
+                            y="48.5%"
+                            dominant-baseline="middle"
+                            text-anchor="middle"
+                            id="_1"
+                            data-name="1"
+                            fill="#fff"
+                            font-size="11"
+                            font-family="Montserrat-Bold, Montserrat"
+                            font-weight="700"
+                          >
+                            <tspan class="number-comments">
+                              {{ item.comments.length }}
+                            </tspan>
+                          </text>
+                        </svg>
+                      </div>
+                      <div class="icon-box dots">
+                        <app-details-page-dropdown
+                          (click)="toggleDropdownActions(item)"
+                          [options]="dropdownOptions.actions"
+                          [id]="item.id"
+                          [data]="item"
+                          [placement]="  i == 2 ? 'bottom-right' : 'right-top right-bottom' "
+                          [hasVericalDots]="true"
+                          (dropDownActions)="dropAct($event)"
+                          [customClassDropDown]="'drop-down-details-single'"
+                        >
+                        </app-details-page-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="options-frame"
+                    *ngIf="item.departments?.length && !item.todoUsers?.length"
+                  >
+                    <div
+                      class="dispatch-box"
+                      *ngFor="let dep of item.departments"
+                    >
+                      {{ dep.name }}
+                    </div>
+                  </div>
+                  <div
+                    class="options-frame"
+                    *ngIf="!item.departments?.length && !item.todoUsers?.length"
+                  >
+                    <div class="dispatch-box everybody">Everybody</div>
+                  </div>
+                  <div class="main_users_hold">
+                    <div
+                      class="assigned_user_hold"
+                      *ngIf="item.todoUsers?.length"
+                    >
+                      <div
+                        class="assigned_user_hold_inner"
+                        *ngFor="let user of item.todoUsers; let indx = index"
+                      >
+                        <img
+                          *ngIf="user?.avatar"
+                          class="user_avatar"
+                          [src]="imageBase64Service.sanitizer(user?.avatar)"
+                        />
+                        <div class="user_profile_image" *ngIf="!user.avatar">
+                          <app-profile-images
+                            [indx]="indx"
+                            [name]="user.firstName + ' ' + user.lastName"
+                            [size]="'medium'"
+                            [type]="'user'"
+                          >
+                          </app-profile-images>
+                        </div>
+                        <div class="user_tooltip_name_hold">
+                          <div class="user_tooltip_name">
+                            {{ user.firstName + " " + user.lastName }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="list-text" *ngIf="item.description">
+                    {{ item.description }}
+                  </div>
+                  <div class="link" [class.closed]="!item.linkActive">
+                    {{ item.url }}
+                  </div>
+                </div>
+                <div
+                  class="comment_main_holder"
+                  [@showHideCardBody]="item.commentActive ? 'true' : 'false'"
+                >
+                  <div
+                    class="comment-holder"
+                    [class.no_comments]="!item.comments?.length"
+                    [class.show_border]="item.deadline"
+                  >
+                    <div
+                      class="todo_list_holder"
+                      [class.expand]="newComment || item.comments?.length"
+                    >
+                      <div class="todo_list_info_holder">
+                        <div class="todo_list_info_number_hold">
+                          <div class="todo_list_info_number">
+                            {{ item.comments.length }}
+                          </div>
+                        </div>
+                        <div class="todo_list_info_text">Comment</div>
+                      </div>
+                      <div
+                        class="todo_list_add_comment_hold"
+                        *ngIf="
+                          !newComment ||
+                          (i != currentHoldIndex && j != currentChildIndex)
+                        "
+                        (click)="addNewComment(i, j)"
+                      >
+                        <div class="todo_list_add_comment_text">
+                          ADD COMMENT
+                        </div>
+                      </div>
+                    </div>
+                    <app-ta-user-review
+                      (changeReviewsEvent)="changeReviewsEvent($event)"
+                      [reviewData]="item.comments"
+                      *ngIf="item.comments.length"
+                    >
+                    </app-ta-user-review>
+                    <div
+                      class="add_comment_holder"
+                      [class.shrink_hold]="!newComment"
+                      [class.move_comment_hold]="item.comments.length"
+                    >
+                      <app-ta-user-review
+                        (changeReviewsEvent)="commentEvent($event)"
+                        [reviewData]="comments"
+                        [isNewReview]="true"
+                        *ngIf="
+                          newComment &&
+                          comments.length &&
+                          i == currentHoldIndex &&
+                          j == currentChildIndex
+                        "
+                      >
+                      </app-ta-user-review>
+                    </div>
+                  </div>
+                </div>
+                <div class="todo_deadline_hold" *ngIf="item.deadline">
+                  <app-truckassist-progress-expiration
+                    [expireDate]="item.deadline | formatDateP"
+                    [startDate]="item.createdAt | formatDateP"
+                    [expiresSettings]="'todo-list'"
+                  >
+                  </app-truckassist-progress-expiration>
+                </div>
+              </div>
+            </smooth-dnd-draggable>
+          </smooth-dnd-container>
+        </div>
+      </smooth-dnd-draggable>
+    </smooth-dnd-container>
+  </div>
 
-    <!-- <div class="widgets-holder">
+  <!-- <div class="widgets-holder">
     <div class="widgets-title-holder">
       <div class="widgets-title-frame">
         <div class="widgets-title">Widgets</div>

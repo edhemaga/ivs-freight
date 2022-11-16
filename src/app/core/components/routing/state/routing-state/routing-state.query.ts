@@ -4,13 +4,12 @@ import { RoutingStateStore, RoutingStateState } from './routing-state.store';
 import { RoutingState } from './routing-state.model';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root'
 })
-export class RoutingStateQuery extends QueryEntity<
-    RoutingStateState,
-    RoutingState
-> {
-    constructor(protected store: RoutingStateStore) {
-        super(store);
-    }
+export class RoutingStateQuery extends QueryEntity<RoutingStateState, RoutingState> {
+
+  constructor(protected store: RoutingStateStore) {
+    super(store);
+  }
+
 }

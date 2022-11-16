@@ -4,7 +4,7 @@ import { OwnerInactiveState, OwnerInactiveStore } from './owner-inactive.store';
 
 @Injectable({ providedIn: 'root' })
 export class OwnerInactiveQuery extends QueryEntity<OwnerInactiveState> {
-    constructor(protected ownerStore: OwnerInactiveStore) {
-        super(ownerStore);
-    }
+  constructor(protected ownerStore: OwnerInactiveStore) {
+    super(ownerStore);
+  }
 }

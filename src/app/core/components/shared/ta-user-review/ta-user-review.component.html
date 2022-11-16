@@ -1,131 +1,125 @@
 <div
-    *ngFor="let data of reviewData; trackBy: identity; let ind = index"
-    class="ta-user-review"
-    [ngClass]="{ 'edit-review': data.isEditMode, separate: ind }"
+  *ngFor="let data of reviewData; trackBy: identity; let ind = index"
+  class="ta-user-review"
+  [ngClass]="{ 'edit-review': data.isEditMode,
+  'separate': ind
+   }"
 >
-    <div class="ta-review-header" *ngIf="!data.isEditMode">
-        <div class="ta-user-information">
-            <img
-                *ngIf="data.companyUser?.avatar"
-                class="ta-user-image"
-                [src]="imageBase64Service.sanitizer(data.companyUser.avatar)"
-                [alt]="data.companyUser.fullName.substring(0, 1)"
-            />
+  <div class="ta-review-header" *ngIf="!data.isEditMode">
+    <div class="ta-user-information">
+      <img
+        *ngIf="data.companyUser?.avatar"
+        class="ta-user-image"
+        [src]="imageBase64Service.sanitizer(data.companyUser.avatar)"
+        [alt]="data.companyUser.fullName.substring(0, 1)"
+      />
 
-            <div *ngIf="!data.companyUser?.avatar" class="no-profile-image">
-                <app-profile-images
-                    [indx]="0"
-                    [size]="'medium'"
-                    [type]="'user'"
-                    [name]="data.companyUser.fullName"
-                >
-                </app-profile-images>
-            </div>
+      <div *ngIf="!data.companyUser?.avatar" class="no-profile-image">
+        <app-profile-images
+          [indx]="0"
+          [size]="'medium'"
+          [type]="'user'"
+          [name]="data.companyUser.fullName"
+        >
+        </app-profile-images>
+      </div>
 
-            <div class="ta-user-data">
-                <div class="ta-user-name-rating">
-                    <p class="ta-user-fullname">
-                        {{ data.companyUser.fullName }}
-                    </p>
-                    <svg-icon
-                        *ngIf="data.rating && !data.isEditMode"
-                        class="ta-user-reaction"
-                        [ngClass]="{ like: data.rating === 1 }"
-                        src="assets/svg/common/ic_{{
-                            data.rating === 1 ? 'review_like' : 'dislike'
-                        }}.svg"
-                    ></svg-icon>
-                </div>
-                <div class="ta-user-datetime">
-                    <div class="ta-user-date">
-                        {{ data.createdAt | date: 'shortDate' }}
-                    </div>
-                    <div class="ta-user-time">
-                        {{ data.updatedAt | date: 'shortTime' }}
-                    </div>
-                </div>
-            </div>
+      <div class="ta-user-data">
+        <div class="ta-user-name-rating">
+          <p class="ta-user-fullname">{{ data.companyUser.fullName }}</p>
+          <svg-icon
+            *ngIf="data.rating && !data.isEditMode"
+            class="ta-user-reaction"
+            [ngClass]="{ like: data.rating === 1 }"
+            src="assets/svg/common/ic_{{
+              data.rating === 1 ? 'review_like' : 'dislike'
+            }}.svg"
+          ></svg-icon>
         </div>
-        <!-- No Edit Mode Actions -->
-        <div *ngIf="!data.prohibitEditingOthers" class="ta-user-actions">
-            <div
-                ngbTooltip
-                mainTooltip="Edit"
-                position="top"
-                tooltipBackground="#424242"
-                *ngIf="!data.isEditMode"
-                class="action-edit"
-                (click)="onAction(data, 'edit', ind)"
-            >
-                <svg-icon src="ic_pen.svg"></svg-icon>
-            </div>
-            <div
-                ngbTooltip
-                mainTooltip="Delete"
-                position="top"
-                tooltipBackground="#EF5350"
-                *ngIf="!data.isEditMode"
-                class="action-delete"
-                (click)="onAction(data, 'delete', ind)"
-            >
-                <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
-            </div>
+        <div class="ta-user-datetime">
+          <div class="ta-user-date">
+            {{ data.createdAt | date: "shortDate" }}
+          </div>
+          <div class="ta-user-time">
+            {{ data.updatedAt | date: "shortTime" }}
+          </div>
         </div>
+      </div>
     </div>
-    <!-- Edit Mode -->
-    <div class="ta-review-message">
-        <div *ngIf="!data.isEditMode" class="message">
-            {{ data.commentContent }}
-        </div>
-
-        <input
-            #reviewMessage
-            type="text"
-            class="review-textarea"
-            placeholder="Type something"
-            [class.show]="data.isEditMode"
-            (input)="inputValueChange($event, ind)"
-            (keyup)="
-                keyUp($event, data, !data.isNewReview ? 'update' : 'add', ind)
-            "
-        />
-
-        <div class="review_options_hold" *ngIf="data.isEditMode">
-            <div class="review_prop_hold">
-                <div class="review_option_icon">
-                    <svg-icon
-                        src="assets/svg/common/ic_{{
-                            data.isNewReview ? 'plus' : 'pen'
-                        }}.svg"
-                    ></svg-icon>
-                </div>
-                <div class="review_option_text">
-                    {{ data.isNewReview ? 'ADD COMMENT' : 'EDIT COMMENT' }}
-                </div>
-            </div>
-            <div class="review_buttons">
-                <div
-                    class="review_button close"
-                    (click)="onAction(data, 'cancel', ind)"
-                >
-                    <div class="review_button_text">CANCEL</div>
-                </div>
-                <div
-                    class="review_button save"
-                    [class.value_changed]="valueChanged"
-                    (click)="
-                        valueChanged
-                            ? onAction(
-                                  data,
-                                  !data.isNewReview ? 'update' : 'add',
-                                  ind
-                              )
-                            : ''
-                    "
-                >
-                    <div class="review_button_text">SAVE</div>
-                </div>
-            </div>
-        </div>
+    <!-- No Edit Mode Actions -->
+    <div *ngIf="!data.prohibitEditingOthers" class="ta-user-actions">
+      <div
+        ngbTooltip
+        mainTooltip="Edit"
+        position="top"
+        tooltipBackground="#424242"
+        *ngIf="!data.isEditMode"
+        class="action-edit"
+        (click)="onAction(data, 'edit', ind)"
+      >
+        <svg-icon src="ic_pen.svg"></svg-icon>
+      </div>
+      <div
+        ngbTooltip
+        mainTooltip="Delete"
+        position="top"
+        tooltipBackground="#EF5350"
+        *ngIf="!data.isEditMode"
+        class="action-delete"
+        (click)="onAction(data, 'delete', ind)"
+      >
+        <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+      </div>
     </div>
+  </div>
+  <!-- Edit Mode -->
+  <div class="ta-review-message">
+    <div *ngIf="!data.isEditMode" class="message">
+      {{ data.commentContent }}
+    </div>
+
+    <input
+      #reviewMessage
+      type="text"
+      class="review-textarea"
+      placeholder="Type something"
+      [class.show]="data.isEditMode"
+      (input)="inputValueChange($event, ind)"
+      (keyup)="keyUp($event, data, !data.isNewReview ? 'update' : 'add', ind)"
+    />
+
+    <div class="review_options_hold" *ngIf="data.isEditMode">
+      <div class="review_prop_hold">
+        <div class="review_option_icon">
+          <svg-icon
+            src="assets/svg/common/ic_{{
+              data.isNewReview ? 'plus' : 'pen'
+            }}.svg"
+          ></svg-icon>
+        </div>
+        <div class="review_option_text">
+          {{ data.isNewReview ? "ADD COMMENT" : "EDIT COMMENT" }}
+        </div>
+      </div>
+      <div class="review_buttons">
+        <div
+          class="review_button close"
+          (click)="onAction(data, 'cancel', ind)"
+        >
+          <div class="review_button_text">CANCEL</div>
+        </div>
+        <div
+          class="review_button save"
+          [class.value_changed]="valueChanged"
+          (click)="
+            valueChanged
+              ? onAction(data, !data.isNewReview ? 'update' : 'add', ind)
+              : ''
+          "
+        >
+          <div class="review_button_text">SAVE</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

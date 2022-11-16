@@ -1,717 +1,675 @@
 <table *ngIf="viewData.length">
-    <thead [ngClass]="{ 'set-cursor-resize': rezaizeing }">
-        <!-- Pined -->
-        <tr class="tr pined-columns-container">
-            <th
-                [resizeColumn]="column.resizable && !locked"
-                [index]="i"
-                [tableSection]="'pined'"
-                [tableColumn]="column"
-                (resizeing)="onResize($event)"
-                *ngFor="let column of pinedColumns; let i = index"
-                cdkDragBoundary="tr"
-                [cdkDragPreviewClass]="'cdk-drag-preview'"
-                [ngStyle]="{
-                    width: column.width + 'px',
-                    'min-width.px': column?.minWidth
-                        ? column.minWidth
-                        : 'unset',
-                    'margin-left': column.moveRight ? 'auto' : 'unset'
-                }"
-                [ngClass]="{
-                    'set-center':
-                        column.ngTemplate === 'checkbox' || column.thSetCenter,
-                    'column-unlocket': !locked,
-                    'resize-hit-limit': resizeHitLimit === i && resizeIsPined
-                }"
-            >
-                <!-- Selected Row Count -->
-                <div
-                    *ngIf="column.ngTemplate === 'checkbox'"
-                    class="selected-rows-count"
-                    #op="ngbPopover"
-                    (click)="onSelectedOptions(op)"
-                    [autoClose]="true"
-                    [ngbPopover]="optionsPopover"
-                    [placement]="'right-top'"
-                    popoverClass="{{
-                        mySelection.length
-                            ? 'has-selected-options-popover'
-                            : 'selected-options-popover'
-                    }}"
-                    triggers="manual"
-                    [ngClass]="{ 'has-selected': mySelection.length }"
-                >
-                    {{ mySelection.length ? mySelection.length : '' }}
-                </div>
-
-                <!-- Title -->
-                <div
-                    *ngIf="
-                        column.ngTemplate !== 'checkbox' &&
-                        column.name !== '' &&
-                        column.ngTemplate !== 'applicant-progress' &&
-                        column.ngTemplate !== 'sw-tw-total' &&
-                        column.ngTemplate !== 'citation' &&
-                        column.ngTemplate !== 'accident-citation'
-                    "
-                    class="th-title"
-                    (click)="sortHeaderClick(column)"
-                    [ngStyle]="{
-                        'width.px':
-                            column.resizable && !locked
-                                ? column.width - 55
-                                : column.width - 20,
-                        'min-width.px': rezaizeing ? column.width : 'unset'
-                    }"
-                    [ngClass]="{
-                        'sort-active':
-                            column.sortDirection !== '' && column.sortDirection,
-                        'th-title-locked-cursor': locked,
-                        'set-center-th-title': column.setCenter
-                    }"
-                >
-                    {{ column.name }}
-                </div>
-
-                <!-- Special Title -->
-                <div
-                    class="special-title"
-                    *ngIf="column.ngTemplate === 'applicant-progress'"
-                    (click)="sortHeaderClick(column)"
-                    [ngStyle]="{
-                        'min-width.px':
-                            column.resizable && !locked
-                                ? column.width - 100
-                                : column.width
-                    }"
-                    [ngClass]="{
-                        'sort-active':
-                            column.sortDirection !== '' && column.sortDirection,
-                        'th-title-locked-cursor': locked
-                    }"
-                >
-                    <div
-                        class="title"
-                        *ngFor="let title of column.headTitle"
-                        [ngStyle]="{
-                            'width.px': title.width
-                        }"
-                    >
-                        {{ title.title }}
-                    </div>
-                </div>
-
-                <!-- Sw Tw Title -->
-                <div
-                    *ngIf="column.ngTemplate === 'sw-tw-total'"
-                    class="sw-tw-title-container"
-                    (click)="sortHeaderClick(column)"
-                    [ngClass]="{
-                        'sort-active':
-                            column.sortDirection !== '' && column.sortDirection,
-                        'th-title-locked-cursor': locked
-                    }"
-                >
-                    <div class="sw-tw-title">SW</div>
-                    <div class="sw-tw-title">TW</div>
-                    <div class="sw-tw-title">TOTAL</div>
-                </div>
-
-                <!-- Citation Icons -->
-                <div
-                    *ngIf="column.ngTemplate === 'citation'"
-                    class="citation-container"
-                    (click)="sortHeaderClick(column)"
-                    [ngClass]="{
-                        'sort-active':
-                            column.sortDirection !== '' && column.sortDirection,
-                        'th-title-locked-cursor': locked
-                    }"
-                >
-                    <div class="citation-wrapper">
-                        <div class="icon-container">
-                            <svg-icon
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                [src]="
-                                    '../../../../../../assets/svg/truckassist-table/cop-head-icon.svg'
-                                "
-                            ></svg-icon>
-                        </div>
-                        <div class="icon-container">
-                            <svg-icon
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                [src]="
-                                    '../../../../../../assets/svg/truckassist-table/oss-head-icon.svg'
-                                "
-                            ></svg-icon>
-                        </div>
-                        <div class="icon-container">
-                            <svg-icon
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                [src]="
-                                    '../../../../../../assets/svg/truckassist-table/money-head-icon.svg'
-                                "
-                            ></svg-icon>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Accident Citation Icons -->
-                <div
-                    *ngIf="column.ngTemplate === 'accident-citation'"
-                    class="accident-citation-container"
-                    (click)="sortHeaderClick(column)"
-                    [ngClass]="{
-                        'sort-active':
-                            column.sortDirection !== '' && column.sortDirection,
-                        'th-title-locked-cursor': locked
-                    }"
-                >
-                    <div class="accident-citation-wrapper">
-                        <div class="icon-container has-margin">
-                            <svg-icon
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                [src]="
-                                    '../../../../../../assets/svg/truckassist-table/accident-crash-vehicles-icon.svg'
-                                "
-                            ></svg-icon>
-                        </div>
-                        <div class="icon-container has-margin">
-                            <svg-icon
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                [src]="
-                                    '../../../../../../assets/svg/truckassist-table/accident-injured-icon.svg'
-                                "
-                            ></svg-icon>
-                        </div>
-                        <div class="icon-container has-margin">
-                            <svg-icon
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                [src]="
-                                    '../../../../../../assets/svg/truckassist-table/accident-rip-icon.svg'
-                                "
-                            ></svg-icon>
-                        </div>
-                        <div class="icon-container has-margin">
-                            <svg-icon
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                [src]="
-                                    '../../../../../../assets/svg/truckassist-table/accident-hook-icon.svg'
-                                "
-                            ></svg-icon>
-                        </div>
-                        <div class="icon-container">
-                            <svg-icon
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                [src]="
-                                    '../../../../../../assets/svg/truckassist-table/accident-hazmat-icon.svg'
-                                "
-                            ></svg-icon>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Icons -->
-                <div
-                    *ngIf="
-                        column?.headIconStyle &&
-                        column.ngTemplate !== 'applicant-progress'
-                    "
-                    [ngClass]="{ 'icon-hover': column.ngTemplate !== 'hire' }"
-                    class="icons"
-                >
-                    <svg-icon
-                        [svgStyle]="{
-                            'width.px': column.headIconStyle.width,
-                            'height.px': column.headIconStyle.height
-                        }"
-                        [src]="
-                            column.headIconStyle.imgPath
-                                ? column.headIconStyle.imgPath
-                                : ''
-                        "
-                    ></svg-icon>
-                </div>
-
-                <!-- Sort -->
-                <div
-                    class="sort-indicator-container"
-                    *ngIf="
-                        column.sortable &&
-                        column.sortDirection !== '' &&
-                        column.sortDirection &&
-                        locked &&
-                        viewData.length > 1
-                    "
-                >
-                    <svg-icon
-                        [svgStyle]="{
-                            'width.px': 12,
-                            'height.px': 12
-                        }"
-                        [src]="
-                            column.sortDirection === 'asc'
-                                ? 'assets/svg/truckassist-table/ascending-sort.svg'
-                                : 'assets/svg/truckassist-table/descending-sort.svg'
-                        "
-                    ></svg-icon>
-                </div>
-
-                <!-- Pin System -->
-                <div
-                    class="pin-remove-container"
-                    *ngIf="
-                        !locked &&
-                        !rezaizeing &&
-                        column.ngTemplate !== 'checkbox' &&
-                        i !== 0 &&
-                        i !== 1
-                    "
-                >
-                    <!-- Pin -->
-                    <svg-icon
-                        class="pin-icon"
-                        (click)="onPinColumn(column)"
-                        [svgStyle]="{
-                            'width.px': 9,
-                            'height.px': 12
-                        }"
-                        [src]="'assets/svg/truckassist-table/pin.svg'"
-                        [ngClass]="{
-                            pined: column.isPined,
-                            hide: !column.isPined && reordering
-                        }"
-                    ></svg-icon>
-                </div>
-            </th>
-        </tr>
-
-        <!-- Border -->
-        <div class="not-pined-border"></div>
-
-        <!-- Not Pined -->
-        <tr
-            cdkDropListOrientation="horizontal"
-            cdkDropList
-            (cdkDropListDropped)="onReorder($event)"
-            class="tr not-pined-columns-container"
-            [ngStyle]="{ 'max-width.px': notPinedMaxWidth }"
-            id="scroll"
+  <thead [ngClass]="{ 'set-cursor-resize': rezaizeing }">
+    <!-- Pined -->
+    <tr class="tr pined-columns-container">
+      <th
+        [resizeColumn]="column.resizable && !locked"
+        [index]="i"
+        [tableSection]="'pined'"
+        [tableColumn]="column"
+        (resizeing)="onResize($event)"
+        *ngFor="let column of pinedColumns; let i = index"
+        cdkDragBoundary="tr"
+        [cdkDragPreviewClass]="'cdk-drag-preview'"
+        [ngStyle]="{
+          width: column.width + 'px',
+          'min-width.px': column?.minWidth ? column.minWidth : 'unset',
+          'margin-left': column.moveRight ? 'auto' : 'unset'
+        }"
+        [ngClass]="{
+          'set-center': column.ngTemplate === 'checkbox' || column.thSetCenter,
+          'column-unlocket': !locked,
+          'resize-hit-limit': resizeHitLimit === i && resizeIsPined
+        }"
+      >
+        <!-- Selected Row Count -->
+        <div
+          *ngIf="column.ngTemplate === 'checkbox'"
+          class="selected-rows-count"
+          #op="ngbPopover"
+          (click)="onSelectedOptions(op)"
+          [autoClose]="true"
+          [ngbPopover]="optionsPopover"
+          [placement]="'right-top'"
+          popoverClass="{{
+            mySelection.length
+              ? 'has-selected-options-popover'
+              : 'selected-options-popover'
+          }}"
+          triggers="manual"
+          [ngClass]="{ 'has-selected': mySelection.length }"
         >
-            <div class="scroll-container">
-                <th
-                    [resizeColumn]="column.resizable && !locked"
-                    [index]="i"
-                    [tableColumn]="column"
-                    [tableSection]="'not-pined'"
-                    (resizeing)="onResize($event)"
-                    *ngFor="let column of notPinedColumns; let i = index"
-                    cdkDrag
-                    (cdkDragStarted)="reordering = true"
-                    (cdkDragEnded)="reordering = false"
-                    [cdkDragDisabled]="locked || rezaizeing || column.isAction"
-                    cdkDragBoundary="tr"
-                    [cdkDragPreviewClass]="'cdk-drag-preview'"
-                    [ngStyle]="{
-                        width: column.width + 'px',
-                        'min-width.px': column?.minWidth
-                            ? column.minWidth
-                            : 'unset'
-                    }"
-                    [ngClass]="{
-                        'set-center':
-                            column.ngTemplate === 'checkbox' ||
-                            column.thSetCenter,
-                        'column-unlocket': !locked,
-                        'column-locked': locked,
-                        'resize-hit-limit':
-                            resizeHitLimit === i && !resizeIsPined
-                    }"
-                >
-                    <!-- Title -->
-                    <div
-                        *ngIf="
-                            column.ngTemplate !== 'checkbox' &&
-                            column.name !== '' &&
-                            column.ngTemplate !== 'applicant-progress' &&
-                            column.ngTemplate !== 'sw-tw-total' &&
-                            column.ngTemplate !== 'citation' &&
-                            column.ngTemplate !== 'accident-citation'
-                        "
-                        class="th-title"
-                        (click)="sortHeaderClick(column)"
-                        [ngStyle]="{
-                            'width.px':
-                                column.resizable && !locked
-                                    ? column.width - 55
-                                    : column.width - 20
-                        }"
-                        [ngClass]="{
-                            'sort-active':
-                                column.sortDirection !== '' &&
-                                column.sortDirection,
-                            'th-title-locked-cursor': locked,
-                            'set-center-th-title': column.setCenter
-                        }"
-                    >
-                        {{ column.name }}
-                    </div>
+          {{ mySelection.length ? mySelection.length : "" }}
+        </div>
 
-                    <!-- Special Title -->
-                    <div
-                        class="special-title"
-                        *ngIf="column.ngTemplate === 'applicant-progress'"
-                        (click)="sortHeaderClick(column)"
-                        [ngStyle]="{
-                            'min-width.px':
-                                column.resizable && !locked
-                                    ? column.width - 100
-                                    : column.width
-                        }"
-                        [ngClass]="{
-                            'sort-active':
-                                column.sortDirection !== '' &&
-                                column.sortDirection,
-                            'th-title-locked-cursor': locked
-                        }"
-                    >
-                        <div
-                            class="title"
-                            *ngFor="let title of column.headTitle"
-                            [ngStyle]="{
-                                'width.px': title.width
-                            }"
-                        >
-                            {{ title.title }}
-                        </div>
-                    </div>
+        <!-- Title -->
+        <div
+          *ngIf="
+            column.ngTemplate !== 'checkbox' &&
+            column.name !== '' &&
+            column.ngTemplate !== 'applicant-progress' &&
+            column.ngTemplate !== 'sw-tw-total' &&
+            column.ngTemplate !== 'citation' &&
+            column.ngTemplate !== 'accident-citation'
+          "
+          class="th-title"
+          (click)="sortHeaderClick(column)"
+          [ngStyle]="{
+            'width.px':
+              column.resizable && !locked
+                ? column.width - 55
+                : column.width - 20,
+            'min-width.px': rezaizeing ? column.width : 'unset'
+          }"
+          [ngClass]="{
+            'sort-active': column.sortDirection !== '' && column.sortDirection,
+            'th-title-locked-cursor': locked,
+            'set-center-th-title': column.setCenter
+          }"
+        >
+          {{ column.name }}
+        </div>
 
-                    <!-- Sw Tw Title -->
-                    <div
-                        *ngIf="column.ngTemplate === 'sw-tw-total'"
-                        class="sw-tw-title-container"
-                        (click)="sortHeaderClick(column)"
-                        [ngClass]="{
-                            'sort-active':
-                                column.sortDirection !== '' &&
-                                column.sortDirection,
-                            'th-title-locked-cursor': locked
-                        }"
-                    >
-                        <div class="sw-tw-title">SW</div>
-                        <div class="sw-tw-title">TW</div>
-                        <div class="sw-tw-title">TOTAL</div>
-                    </div>
+        <!-- Special Title -->
+        <div
+          class="special-title"
+          *ngIf="column.ngTemplate === 'applicant-progress'"
+          (click)="sortHeaderClick(column)"
+          [ngStyle]="{
+            'min-width.px':
+              column.resizable && !locked ? column.width - 100 : column.width
+          }"
+          [ngClass]="{
+            'sort-active': column.sortDirection !== '' && column.sortDirection,
+            'th-title-locked-cursor': locked
+          }"
+        >
+          <div
+            class="title"
+            *ngFor="let title of column.headTitle"
+            [ngStyle]="{
+              'width.px': title.width
+            }"
+          >
+            {{ title.title }}
+          </div>
+        </div>
 
-                    <!-- Citation Icons -->
-                    <div
-                        *ngIf="column.ngTemplate === 'citation'"
-                        class="citation-container"
-                        (click)="sortHeaderClick(column)"
-                        [ngClass]="{
-                            'sort-active':
-                                column.sortDirection !== '' &&
-                                column.sortDirection,
-                            'th-title-locked-cursor': locked
-                        }"
-                    >
-                        <div class="citation-wrapper">
-                            <div class="icon-container">
-                                <svg-icon
-                                    [svgStyle]="{
-                                        'width.px': 18,
-                                        'height.px': 18
-                                    }"
-                                    [src]="
-                                        '../../../../../../assets/svg/truckassist-table/cop-head-icon.svg'
-                                    "
-                                ></svg-icon>
-                            </div>
-                            <div class="icon-container">
-                                <svg-icon
-                                    [svgStyle]="{
-                                        'width.px': 18,
-                                        'height.px': 18
-                                    }"
-                                    [src]="
-                                        '../../../../../../assets/svg/truckassist-table/oss-head-icon.svg'
-                                    "
-                                ></svg-icon>
-                            </div>
-                            <div class="icon-container">
-                                <svg-icon
-                                    [svgStyle]="{
-                                        'width.px': 18,
-                                        'height.px': 18
-                                    }"
-                                    [src]="
-                                        '../../../../../../assets/svg/truckassist-table/money-head-icon.svg'
-                                    "
-                                ></svg-icon>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Sw Tw Title -->
+        <div
+          *ngIf="column.ngTemplate === 'sw-tw-total'"
+          class="sw-tw-title-container"
+          (click)="sortHeaderClick(column)"
+          [ngClass]="{
+            'sort-active': column.sortDirection !== '' && column.sortDirection,
+            'th-title-locked-cursor': locked
+          }"
+        >
+          <div class="sw-tw-title">SW</div>
+          <div class="sw-tw-title">TW</div>
+          <div class="sw-tw-title">TOTAL</div>
+        </div>
 
-                    <!-- Accident Citation Icons -->
-                    <div
-                        *ngIf="column.ngTemplate === 'accident-citation'"
-                        class="accident-citation-container"
-                        (click)="sortHeaderClick(column)"
-                        [ngClass]="{
-                            'sort-active':
-                                column.sortDirection !== '' &&
-                                column.sortDirection,
-                            'th-title-locked-cursor': locked
-                        }"
-                    >
-                        <div class="accident-citation-wrapper">
-                            <div class="icon-container has-margin">
-                                <svg-icon
-                                    [svgStyle]="{
-                                        'width.px': 18,
-                                        'height.px': 18
-                                    }"
-                                    [src]="
-                                        '../../../../../../assets/svg/truckassist-table/accident-crash-vehicles-icon.svg'
-                                    "
-                                ></svg-icon>
-                            </div>
-                            <div class="icon-container has-margin">
-                                <svg-icon
-                                    [svgStyle]="{
-                                        'width.px': 18,
-                                        'height.px': 18
-                                    }"
-                                    [src]="
-                                        '../../../../../../assets/svg/truckassist-table/accident-injured-icon.svg'
-                                    "
-                                ></svg-icon>
-                            </div>
-                            <div class="icon-container has-margin">
-                                <svg-icon
-                                    [svgStyle]="{
-                                        'width.px': 18,
-                                        'height.px': 18
-                                    }"
-                                    [src]="
-                                        '../../../../../../assets/svg/truckassist-table/accident-rip-icon.svg'
-                                    "
-                                ></svg-icon>
-                            </div>
-                            <div class="icon-container has-margin">
-                                <svg-icon
-                                    [svgStyle]="{
-                                        'width.px': 18,
-                                        'height.px': 18
-                                    }"
-                                    [src]="
-                                        '../../../../../../assets/svg/truckassist-table/accident-hook-icon.svg'
-                                    "
-                                ></svg-icon>
-                            </div>
-                            <div class="icon-container">
-                                <svg-icon
-                                    [svgStyle]="{
-                                        'width.px': 18,
-                                        'height.px': 18
-                                    }"
-                                    [src]="
-                                        '../../../../../../assets/svg/truckassist-table/accident-hazmat-icon.svg'
-                                    "
-                                ></svg-icon>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Icons -->
-                    <div
-                        *ngIf="
-                            column?.headIconStyle &&
-                            column.ngTemplate !== 'applicant-progress'
-                        "
-                        class="icons"
-                    >
-                        <svg-icon
-                            [svgStyle]="{
-                                'width.px': column.headIconStyle.width,
-                                'height.px': column.headIconStyle.height
-                            }"
-                            [src]="
-                                column.headIconStyle.imgPath
-                                    ? column.headIconStyle.imgPath
-                                    : ''
-                            "
-                        ></svg-icon>
-                    </div>
-
-                    <!-- Sort -->
-                    <div
-                        class="sort-indicator-container"
-                        *ngIf="
-                            column.sortable &&
-                            column.sortDirection !== '' &&
-                            column.sortDirection &&
-                            locked &&
-                            viewData.length > 1
-                        "
-                    >
-                        <svg-icon
-                            [svgStyle]="{
-                                'width.px': 12,
-                                'height.px': 12
-                            }"
-                            [src]="
-                                column.sortDirection === 'asc'
-                                    ? 'assets/svg/truckassist-table/ascending-sort.svg'
-                                    : 'assets/svg/truckassist-table/descending-sort.svg'
-                            "
-                        ></svg-icon>
-                    </div>
-
-                    <!-- Pin System -->
-                    <div
-                        class="pin-remove-container"
-                        *ngIf="
-                            !locked &&
-                            !rezaizeing &&
-                            column.ngTemplate !== 'checkbox'
-                        "
-                    >
-                        <!-- Remove -->
-                        <svg-icon
-                            (click)="onRemoveColumn(column)"
-                            *ngIf="!reordering"
-                            class="x-icon"
-                            [svgStyle]="{
-                                'width.px': 10,
-                                'height.px': 10
-                            }"
-                            [src]="'assets/svg/truckassist-table/x.svg'"
-                        ></svg-icon>
-
-                        <!-- Pin -->
-                        <svg-icon
-                            class="pin-icon"
-                            (click)="onPinColumn(column)"
-                            [svgStyle]="{
-                                'width.px': 9,
-                                'height.px': 12
-                            }"
-                            [src]="'assets/svg/truckassist-table/pin.svg'"
-                            [ngClass]="{
-                                pined: column.isPined,
-                                hide: !column.isPined && reordering
-                            }"
-                        ></svg-icon>
-                    </div>
-                </th>
+        <!-- Citation Icons -->
+        <div
+          *ngIf="column.ngTemplate === 'citation'"
+          class="citation-container"
+          (click)="sortHeaderClick(column)"
+          [ngClass]="{
+            'sort-active': column.sortDirection !== '' && column.sortDirection,
+            'th-title-locked-cursor': locked
+          }"
+        >
+          <div class="citation-wrapper">
+            <div class="icon-container">
+              <svg-icon
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                [src]="
+                  '../../../../../../assets/svg/truckassist-table/cop-head-icon.svg'
+                "
+              ></svg-icon>
             </div>
-        </tr>
-
-        <!-- Border -->
-        <div class="not-pined-border" [ngStyle]="{ width: 3 + 'px' }"></div>
-
-        <!-- Actions -->
-        <tr class="tr actions-columns-container">
-            <th
-                *ngFor="let column of actionColumns; let i = index"
-                [ngStyle]="{
-                    width: column.isAction ? column.width + 'px' : '0px',
-                    'min-width.px': column?.minWidth
-                        ? column.minWidth
-                        : 'unset',
-                    display: column.isAction ? 'flex' : 'none'
+            <div class="icon-container">
+              <svg-icon
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
                 }"
-                [ngClass]="{
-                    'column-unlocket': !locked
+                [src]="
+                  '../../../../../../assets/svg/truckassist-table/oss-head-icon.svg'
+                "
+              ></svg-icon>
+            </div>
+            <div class="icon-container">
+              <svg-icon
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
                 }"
+                [src]="
+                  '../../../../../../assets/svg/truckassist-table/money-head-icon.svg'
+                "
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accident Citation Icons -->
+        <div
+          *ngIf="column.ngTemplate === 'accident-citation'"
+          class="accident-citation-container"
+          (click)="sortHeaderClick(column)"
+          [ngClass]="{
+            'sort-active': column.sortDirection !== '' && column.sortDirection,
+            'th-title-locked-cursor': locked
+          }"
+        >
+          <div class="accident-citation-wrapper">
+            <div class="icon-container has-margin">
+              <svg-icon
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                [src]="
+                  '../../../../../../assets/svg/truckassist-table/accident-crash-vehicles-icon.svg'
+                "
+              ></svg-icon>
+            </div>
+            <div class="icon-container has-margin">
+              <svg-icon
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                [src]="
+                  '../../../../../../assets/svg/truckassist-table/accident-injured-icon.svg'
+                "
+              ></svg-icon>
+            </div>
+            <div class="icon-container has-margin">
+              <svg-icon
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                [src]="
+                  '../../../../../../assets/svg/truckassist-table/accident-rip-icon.svg'
+                "
+              ></svg-icon>
+            </div>
+            <div class="icon-container has-margin">
+              <svg-icon
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                [src]="
+                  '../../../../../../assets/svg/truckassist-table/accident-hook-icon.svg'
+                "
+              ></svg-icon>
+            </div>
+            <div class="icon-container">
+              <svg-icon
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                [src]="
+                  '../../../../../../assets/svg/truckassist-table/accident-hazmat-icon.svg'
+                "
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- Icons -->
+        <div
+          *ngIf="
+            column?.headIconStyle && column.ngTemplate !== 'applicant-progress'
+          "
+          [ngClass]="{ 'icon-hover': column.ngTemplate !== 'hire' }"
+          class="icons"
+        >
+          <svg-icon
+            [svgStyle]="{
+              'width.px': column.headIconStyle.width,
+              'height.px': column.headIconStyle.height
+            }"
+            [src]="
+              column.headIconStyle.imgPath ? column.headIconStyle.imgPath : ''
+            "
+          ></svg-icon>
+        </div>
+
+        <!-- Sort -->
+        <div
+          class="sort-indicator-container"
+          *ngIf="
+            column.sortable &&
+            column.sortDirection !== '' &&
+            column.sortDirection &&
+            locked &&
+            viewData.length > 1
+          "
+        >
+          <svg-icon
+            [svgStyle]="{
+              'width.px': 12,
+              'height.px': 12
+            }"
+            [src]="
+              column.sortDirection === 'asc'
+                ? 'assets/svg/truckassist-table/ascending-sort.svg'
+                : 'assets/svg/truckassist-table/descending-sort.svg'
+            "
+          ></svg-icon>
+        </div>
+
+        <!-- Pin System -->
+        <div
+          class="pin-remove-container"
+          *ngIf="
+            !locked &&
+            !rezaizeing &&
+            column.ngTemplate !== 'checkbox' &&
+            i !== 0 &&
+            i !== 1
+          "
+        >
+          <!-- Pin -->
+          <svg-icon
+            class="pin-icon"
+            (click)="onPinColumn(column)"
+            [svgStyle]="{
+              'width.px': 9,
+              'height.px': 12
+            }"
+            [src]="'assets/svg/truckassist-table/pin.svg'"
+            [ngClass]="{
+              pined: column.isPined,
+              hide: !column.isPined && reordering
+            }"
+          ></svg-icon>
+        </div>
+      </th>
+    </tr>
+
+    <!-- Border -->
+    <div class="not-pined-border"></div>
+
+    <!-- Not Pined -->
+    <tr
+      cdkDropListOrientation="horizontal"
+      cdkDropList
+      (cdkDropListDropped)="onReorder($event)"
+      class="tr not-pined-columns-container"
+      [ngStyle]="{ 'max-width.px': notPinedMaxWidth }"
+      id="scroll"
+    >
+      <div class="scroll-container">
+        <th
+          [resizeColumn]="column.resizable && !locked"
+          [index]="i"
+          [tableColumn]="column"
+          [tableSection]="'not-pined'"
+          (resizeing)="onResize($event)"
+          *ngFor="let column of notPinedColumns; let i = index"
+          cdkDrag
+          (cdkDragStarted)="reordering = true"
+          (cdkDragEnded)="reordering = false"
+          [cdkDragDisabled]="locked || rezaizeing || column.isAction"
+          cdkDragBoundary="tr"
+          [cdkDragPreviewClass]="'cdk-drag-preview'"
+          [ngStyle]="{
+            width: column.width + 'px',
+            'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+          }"
+          [ngClass]="{
+            'set-center':
+              column.ngTemplate === 'checkbox' || column.thSetCenter,
+            'column-unlocket': !locked,
+            'column-locked': locked,
+            'resize-hit-limit': resizeHitLimit === i && !resizeIsPined
+          }"
+        >
+          <!-- Title -->
+          <div
+            *ngIf="
+              column.ngTemplate !== 'checkbox' &&
+              column.name !== '' &&
+              column.ngTemplate !== 'applicant-progress' &&
+              column.ngTemplate !== 'sw-tw-total' &&
+              column.ngTemplate !== 'citation' &&
+              column.ngTemplate !== 'accident-citation'
+            "
+            class="th-title"
+            (click)="sortHeaderClick(column)"
+            [ngStyle]="{
+              'width.px':
+                column.resizable && !locked
+                  ? column.width - 55
+                  : column.width - 20
+            }"
+            [ngClass]="{
+              'sort-active':
+                column.sortDirection !== '' && column.sortDirection,
+              'th-title-locked-cursor': locked,
+              'set-center-th-title': column.setCenter
+            }"
+          >
+            {{ column.name }}
+          </div>
+
+          <!-- Special Title -->
+          <div
+            class="special-title"
+            *ngIf="column.ngTemplate === 'applicant-progress'"
+            (click)="sortHeaderClick(column)"
+            [ngStyle]="{
+              'min-width.px':
+                column.resizable && !locked ? column.width - 100 : column.width
+            }"
+            [ngClass]="{
+              'sort-active':
+                column.sortDirection !== '' && column.sortDirection,
+              'th-title-locked-cursor': locked
+            }"
+          >
+            <div
+              class="title"
+              *ngFor="let title of column.headTitle"
+              [ngStyle]="{
+                'width.px': title.width
+              }"
             >
-                <!-- Icons -->
-                <div
-                    *ngIf="column.isAction && column?.headIconStyle"
-                    class="icons"
-                >
-                    <svg-icon
-                        [svgStyle]="{
-                            'width.px': column.headIconStyle.width,
-                            'height.px': column.headIconStyle.height
-                        }"
-                        [src]="
-                            column.headIconStyle.imgPath
-                                ? column.headIconStyle.imgPath
-                                : ''
-                        "
-                    ></svg-icon>
-                </div>
-            </th>
-        </tr>
-    </thead>
+              {{ title.title }}
+            </div>
+          </div>
+
+          <!-- Sw Tw Title -->
+          <div
+            *ngIf="column.ngTemplate === 'sw-tw-total'"
+            class="sw-tw-title-container"
+            (click)="sortHeaderClick(column)"
+            [ngClass]="{
+              'sort-active':
+                column.sortDirection !== '' && column.sortDirection,
+              'th-title-locked-cursor': locked
+            }"
+          >
+            <div class="sw-tw-title">SW</div>
+            <div class="sw-tw-title">TW</div>
+            <div class="sw-tw-title">TOTAL</div>
+          </div>
+
+          <!-- Citation Icons -->
+          <div
+            *ngIf="column.ngTemplate === 'citation'"
+            class="citation-container"
+            (click)="sortHeaderClick(column)"
+            [ngClass]="{
+              'sort-active':
+                column.sortDirection !== '' && column.sortDirection,
+              'th-title-locked-cursor': locked
+            }"
+          >
+            <div class="citation-wrapper">
+              <div class="icon-container">
+                <svg-icon
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/cop-head-icon.svg'
+                  "
+                ></svg-icon>
+              </div>
+              <div class="icon-container">
+                <svg-icon
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/oss-head-icon.svg'
+                  "
+                ></svg-icon>
+              </div>
+              <div class="icon-container">
+                <svg-icon
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/money-head-icon.svg'
+                  "
+                ></svg-icon>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accident Citation Icons -->
+          <div
+            *ngIf="column.ngTemplate === 'accident-citation'"
+            class="accident-citation-container"
+            (click)="sortHeaderClick(column)"
+            [ngClass]="{
+              'sort-active':
+                column.sortDirection !== '' && column.sortDirection,
+              'th-title-locked-cursor': locked
+            }"
+          >
+            <div class="accident-citation-wrapper">
+              <div class="icon-container has-margin">
+                <svg-icon
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/accident-crash-vehicles-icon.svg'
+                  "
+                ></svg-icon>
+              </div>
+              <div class="icon-container has-margin">
+                <svg-icon
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/accident-injured-icon.svg'
+                  "
+                ></svg-icon>
+              </div>
+              <div class="icon-container has-margin">
+                <svg-icon
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/accident-rip-icon.svg'
+                  "
+                ></svg-icon>
+              </div>
+              <div class="icon-container has-margin">
+                <svg-icon
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/accident-hook-icon.svg'
+                  "
+                ></svg-icon>
+              </div>
+              <div class="icon-container">
+                <svg-icon
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  [src]="
+                    '../../../../../../assets/svg/truckassist-table/accident-hazmat-icon.svg'
+                  "
+                ></svg-icon>
+              </div>
+            </div>
+          </div>
+
+          <!-- Icons -->
+          <div
+            *ngIf="
+              column?.headIconStyle &&
+              column.ngTemplate !== 'applicant-progress'
+            "
+            class="icons"
+          >
+            <svg-icon
+              [svgStyle]="{
+                'width.px': column.headIconStyle.width,
+                'height.px': column.headIconStyle.height
+              }"
+              [src]="
+                column.headIconStyle.imgPath ? column.headIconStyle.imgPath : ''
+              "
+            ></svg-icon>
+          </div>
+
+          <!-- Sort -->
+          <div
+            class="sort-indicator-container"
+            *ngIf="
+              column.sortable &&
+              column.sortDirection !== '' &&
+              column.sortDirection &&
+              locked &&
+              viewData.length > 1
+            "
+          >
+            <svg-icon
+              [svgStyle]="{
+                'width.px': 12,
+                'height.px': 12
+              }"
+              [src]="
+                column.sortDirection === 'asc'
+                  ? 'assets/svg/truckassist-table/ascending-sort.svg'
+                  : 'assets/svg/truckassist-table/descending-sort.svg'
+              "
+            ></svg-icon>
+          </div>
+
+          <!-- Pin System -->
+          <div
+            class="pin-remove-container"
+            *ngIf="!locked && !rezaizeing && column.ngTemplate !== 'checkbox'"
+          >
+            <!-- Remove -->
+            <svg-icon
+              (click)="onRemoveColumn(column)"
+              *ngIf="!reordering"
+              class="x-icon"
+              [svgStyle]="{
+                'width.px': 10,
+                'height.px': 10
+              }"
+              [src]="'assets/svg/truckassist-table/x.svg'"
+            ></svg-icon>
+
+            <!-- Pin -->
+            <svg-icon
+              class="pin-icon"
+              (click)="onPinColumn(column)"
+              [svgStyle]="{
+                'width.px': 9,
+                'height.px': 12
+              }"
+              [src]="'assets/svg/truckassist-table/pin.svg'"
+              [ngClass]="{
+                pined: column.isPined,
+                hide: !column.isPined && reordering
+              }"
+            ></svg-icon>
+          </div>
+        </th>
+      </div>
+    </tr>
+
+    <!-- Border -->
+    <div class="not-pined-border" [ngStyle]="{ width: 3 + 'px' }"></div>
+
+    <!-- Actions -->
+    <tr class="tr actions-columns-container">
+      <th
+        *ngFor="let column of actionColumns; let i = index"
+        [ngStyle]="{
+          width: column.isAction ? column.width + 'px' : '0px',
+          'min-width.px': column?.minWidth ? column.minWidth : 'unset',
+          display: column.isAction ? 'flex' : 'none'
+        }"
+        [ngClass]="{
+          'column-unlocket': !locked
+        }"
+      >
+        <!-- Icons -->
+        <div *ngIf="column.isAction && column?.headIconStyle" class="icons">
+          <svg-icon
+            [svgStyle]="{
+              'width.px': column.headIconStyle.width,
+              'height.px': column.headIconStyle.height
+            }"
+            [src]="
+              column.headIconStyle.imgPath ? column.headIconStyle.imgPath : ''
+            "
+          ></svg-icon>
+        </div>
+      </th>
+    </tr>
+  </thead>
 </table>
 
 <!-- Select Rows Popover -->
 <ng-template #optionsPopover let-data="data" data-toggle="popover">
-    <div class="select-options-container">
-        <!-- Select All -->
-        <div
-            class="select-option"
-            (click)="onSelect('select')"
-            *ngIf="!mySelection.length"
-        >
-            <div class="text">Select All</div>
-            <div class="count">{{ viewData.length }}</div>
-        </div>
-
-        <!-- Deselect All -->
-        <div
-            class="select-option"
-            (click)="onSelect('deselect')"
-            *ngIf="mySelection.length === viewData.length"
-        >
-            <div class="text">Deselect All</div>
-            <div class="count">{{ viewData.length }}</div>
-        </div>
-
-        <!-- Select Remaining Or  Clear Selected -->
-        <div *ngIf="mySelection.length < viewData.length && mySelection.length">
-            <div class="select-option" (click)="onSelect('select')">
-                <div class="text">Select Remaining</div>
-                <div class="count">
-                    {{ viewData.length - mySelection.length }}
-                </div>
-            </div>
-
-            <div
-                class="select-option clear-selected"
-                (click)="onSelect('deselect')"
-            >
-                <div class="text">Clear Selected</div>
-                <div class="count">{{ mySelection.length }}</div>
-            </div>
-        </div>
+  <div class="select-options-container">
+    <!-- Select All -->
+    <div
+      class="select-option"
+      (click)="onSelect('select')"
+      *ngIf="!mySelection.length"
+    >
+      <div class="text">Select All</div>
+      <div class="count">{{ viewData.length }}</div>
     </div>
+
+    <!-- Deselect All -->
+    <div
+      class="select-option"
+      (click)="onSelect('deselect')"
+      *ngIf="mySelection.length === viewData.length"
+    >
+      <div class="text">Deselect All</div>
+      <div class="count">{{ viewData.length }}</div>
+    </div>
+
+    <!-- Select Remaining Or  Clear Selected -->
+    <div *ngIf="mySelection.length < viewData.length && mySelection.length">
+      <div class="select-option" (click)="onSelect('select')">
+        <div class="text">Select Remaining</div>
+        <div class="count">{{ viewData.length - mySelection.length }}</div>
+      </div>
+
+      <div class="select-option clear-selected" (click)="onSelect('deselect')">
+        <div class="text">Clear Selected</div>
+        <div class="count">{{ mySelection.length }}</div>
+      </div>
+    </div>
+  </div>
 </ng-template>

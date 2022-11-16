@@ -4,12 +4,12 @@ import { DriverMinimalResponse } from 'appcoretruckassist';
 import { RoadsideInspectionMinimalResponse } from '../../../../../../../../../appcoretruckassist/model/roadsideInspectionMinimalResponse';
 
 export interface RoadsideMinimalListState
-    extends EntityState<RoadsideInspectionMinimalResponse, number> {}
+  extends EntityState<RoadsideInspectionMinimalResponse, number> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'roadsideMinimalList' })
 export class RoadsideMinimalListStore extends EntityStore<RoadsideMinimalListState> {
-    constructor() {
-        super();
-    }
+  constructor() {
+    super();
+  }
 }

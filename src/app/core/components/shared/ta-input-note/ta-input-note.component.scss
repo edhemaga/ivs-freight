@@ -1,210 +1,210 @@
-@import 'src/theme/variables.scss';
+@import "src/theme/variables.scss";
 
 .note-container {
-    display: block;
+  display: block;
 
-    .note-header {
-        display: flex;
-        align-items: center;
-        line-height: 18px;
-        padding: 0 6px;
-        margin: 4px 0px;
-        height: 26px;
-        cursor: pointer;
+  .note-header {
+    display: flex;
+    align-items: center;
+    line-height: 18px;
+    padding: 0 6px;
+    margin: 4px 0px;
+    height: 26px;
+    cursor: pointer;
 
+    .note-label {
+      font-weight: 800;
+      font-size: 14px;
+      color: #919191;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      flex: 1;
+    }
+
+    .note_upper_hold {
+      display: flex;
+      align-items: center;
+
+      .note_tools_container {
+        margin-right: 7px;
+      }
+    }
+
+    .note-arrow {
+      transition: all 0.3s ease-in-out;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      position: relative;
+      left: 2px;
+    }
+    .rotate {
+      transform: rotate(180deg);
+      transition: all 0.3s ease-in-out;
+    }
+
+    &:hover {
+      .note-label {
+        color: #6c6c6c;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+
+    &.active {
+      .note-label {
+        color: #6c6c6c;
+      }
+
+      &:hover {
         .note-label {
-            font-weight: 800;
-            font-size: 14px;
-            color: #919191;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            flex: 1;
+          color: #3c3c3c;
+          transition: all 0.3s ease-in-out;
         }
+      }
+    }
+  }
 
-        .note_upper_hold {
-            display: flex;
-            align-items: center;
+  @keyframes growDown {
+    0% {
+      max-height: 0px;
+      overflow: hidden;
+    }
+    100% {
+      max-height: 600px;
+      overflow: auto;
+    }
+  }
 
-            .note_tools_container {
-                margin-right: 7px;
-            }
-        }
+  .note-body {
+    position: relative;
+    overflow: hidden;
+    padding: 0 6px;
+    cursor: text;
 
-        .note-arrow {
-            transition: all 0.3s ease-in-out;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            position: relative;
-            left: 2px;
-        }
-        .rotate {
-            transform: rotate(180deg);
-            transition: all 0.3s ease-in-out;
-        }
-
-        &:hover {
-            .note-label {
-                color: #6c6c6c;
-                transition: all 0.3s ease-in-out;
-            }
-        }
-
-        &.active {
-            .note-label {
-                color: #6c6c6c;
-            }
-
-            &:hover {
-                .note-label {
-                    color: #3c3c3c;
-                    transition: all 0.3s ease-in-out;
-                }
-            }
-        }
+    &.innactive {
+      height: 0px !important;
+      overflow: hidden !important;
+      opacity: 0 !important;
+      margin-top: 0px !important;
+      margin-bottom: 0px !important;
     }
 
-    @keyframes growDown {
-        0% {
-            max-height: 0px;
-            overflow: hidden;
-        }
-        100% {
-            max-height: 600px;
-            overflow: auto;
-        }
+    &.active {
+      overflow: visible !important;
+      opacity: 1 !important;
     }
 
-    .note-body {
+    .note-textarea {
+      overflow: auto;
+      line-height: 15px;
+      min-height: 15px;
+      padding-bottom: 12px;
+      padding-top: 5px;
+      max-height: 75px;
+      font-size: 12px;
+
+      width: 100%;
+      resize: none;
+      color: #6c6c6c;
+      border: none;
+      box-shadow: none;
+      outline: none;
+
+      scrollbar-width: none !important; /* Firefox */
+
+      &.details_textarea {
+        padding-left: 4px;
+        padding-bottom: 7px;
+        padding-right: 20px;
+      }
+
+      &::-webkit-scrollbar {
+        width: 3px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        border: 6px solid #e5e5e5;
+        border-radius: 1px;
+      }
+      &::-webkit-scrollbar-track {
+        padding: 0;
         position: relative;
-        overflow: hidden;
-        padding: 0 6px;
-        cursor: text;
+        right: 0;
+        top: 0;
+        background: transparent;
+      }
 
-        &.innactive {
-            height: 0px !important;
-            overflow: hidden !important;
-            opacity: 0 !important;
-            margin-top: 0px !important;
-            margin-bottom: 0px !important;
+      &::-webkit-input-placeholder {
+        color: #dadada !important;
+      }
+
+      &::-moz-placeholder {
+        color: #dadada !important;
+      }
+
+      &:-ms-input-placeholder {
+        color: #dadada !important;
+      }
+
+      &::-ms-input-placeholder {
+        color: #dadada !important;
+      }
+
+      &::placeholder {
+        color: #dadada !important;
+      }
+
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      span {
+        &::-moz-selection {
+          color: $bw6-2 !important;
+          background: rgb(108, 108, 108, 0.2) !important;
         }
 
-        &.active {
-            overflow: visible !important;
-            opacity: 1 !important;
+        &::selection {
+          color: $bw6-2 !important;
+          background: rgb(108, 108, 108, 0.2) !important;
         }
+      }
 
-        .note-textarea {
-            overflow: auto;
-            line-height: 15px;
-            min-height: 15px;
-            padding-bottom: 12px;
-            padding-top: 5px;
-            max-height: 75px;
-            font-size: 12px;
-
-            width: 100%;
-            resize: none;
-            color: #6c6c6c;
-            border: none;
-            box-shadow: none;
-            outline: none;
-
-            scrollbar-width: none !important; /* Firefox */
-
-            &.details_textarea {
-                padding-left: 4px;
-                padding-bottom: 7px;
-                padding-right: 20px;
-            }
-
-            &::-webkit-scrollbar {
-                width: 3px;
-            }
-            &::-webkit-scrollbar-thumb {
-                background-color: transparent;
-                border: 6px solid #e5e5e5;
-                border-radius: 1px;
-            }
-            &::-webkit-scrollbar-track {
-                padding: 0;
-                position: relative;
-                right: 0;
-                top: 0;
-                background: transparent;
-            }
-
-            &::-webkit-input-placeholder {
-                color: #dadada !important;
-            }
-
-            &::-moz-placeholder {
-                color: #dadada !important;
-            }
-
-            &:-ms-input-placeholder {
-                color: #dadada !important;
-            }
-
-            &::-ms-input-placeholder {
-                color: #dadada !important;
-            }
-
-            &::placeholder {
-                color: #dadada !important;
-            }
-
-            &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
-
-            &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
-
-            span {
-                &::-moz-selection {
-                    color: $bw6-2 !important;
-                    background: rgb(108, 108, 108, 0.2) !important;
-                }
-
-                &::selection {
-                    color: $bw6-2 !important;
-                    background: rgb(108, 108, 108, 0.2) !important;
-                }
-            }
-
-            &:empty:before {
-                content: attr(placeholder);
-                color: #aaaaaa;
-            }
-        }
-
-        .spinner {
-            display: flex;
-            position: absolute;
-            bottom: 1px;
-            right: 0;
-        }
+      &:empty:before {
+        content: attr(placeholder);
+        color: #aaaaaa;
+      }
     }
 
-    // Custom class
-    &.note-small {
-        .note-header {
-            padding: 0px;
-            .note-label {
-                font-size: 14px;
-                font-weight: 800;
-                color: #6c6c6c;
-            }
-        }
-        .note-body {
-            padding: 0px;
-        }
+    .spinner {
+      display: flex;
+      position: absolute;
+      bottom: 1px;
+      right: 0;
     }
+  }
+
+  // Custom class
+  &.note-small {
+    .note-header {
+      padding: 0px;
+      .note-label {
+        font-size: 14px;
+        font-weight: 800;
+        color: #6c6c6c;
+      }
+    }
+    .note-body {
+      padding: 0px;
+    }
+  }
 }

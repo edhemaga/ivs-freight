@@ -1,463 +1,394 @@
 <div class="container-fluid">
-    <div class="row">
-        <div
-            class="container-fluid d-flex flex-column justify-content-between mvr-authorization-container"
+  <div class="row">
+    <div
+      class="container-fluid d-flex flex-column justify-content-between mvr-authorization-container"
+    >
+      <div class="d-flex flex-column align-items-center">
+        <app-applicant-header [mode]="selectedMode"></app-applicant-header>
+
+        <h1 class="m-0 text-center title ta-font-bold">
+          Authorization to Obtain Motor Vehicle Record
+        </h1>
+
+        <h2
+          class="m-0 text-center subtitle ta-font-bold"
+          [ngStyle]="{
+            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+          }"
         >
-            <div class="d-flex flex-column align-items-center">
-                <app-applicant-header
-                    [mode]="selectedMode"
-                ></app-applicant-header>
+          The undersigned does hereby acknowledge and certify as follows
+        </h2>
 
-                <h1 class="m-0 text-center title ta-font-bold">
-                    Authorization to Obtain Motor Vehicle Record
-                </h1>
+        <form
+          class="d-flex flex-column justify-content-center align-items-center"
+          [formGroup]="mvrAuthorizationForm"
+        >
+          <!-- CHECKBOXES -->
 
-                <h2
-                    class="m-0 text-center subtitle ta-font-bold"
-                    [ngStyle]="{
-                        color:
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? '#919191'
-                                : '#6C6C6C'
-                    }"
-                >
-                    The undersigned does hereby acknowledge and certify as
-                    follows
-                </h2>
+          <div
+            class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
+          >
+            <app-ta-checkbox
+              formControlName="isConsentRelease"
+              [name]="'isConsentRelease'"
+              [label]="
+                '1. Certifies that the undersigned is an employee, or has applied to become an employee of the below named'
+              "
+              [customClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'applicant-disclosure-release-feedback'
+                  : 'disclosure-release'
+              "
+              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
+            >
+            </app-ta-checkbox>
 
-                <form
-                    class="d-flex flex-column justify-content-center align-items-center"
-                    [formGroup]="mvrAuthorizationForm"
-                >
-                    <!-- CHECKBOXES -->
+            <p
+              class="m-0 text-center ta-font-regular"
+              [ngStyle]="{
+                color:
+                  selectedMode !== 'FEEDBACK_MODE' &&
+                  mvrAuthorizationForm.get('isConsentRelease').value
+                    ? '#3c3c3c'
+                    : selectedMode === 'FEEDBACK_MODE'
+                    ? '#919191'
+                    : '#6c6c6c',
+                cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
+              }"
+              (click)="handleCheckboxParagraphClick('isConsentRelease')"
+            >
+              in a position which involves the operation of a motor vehicle and
+              the undersigned gives his or her consent to the release of their
+              driving record (MVR) for review.
+            </p>
+          </div>
 
-                    <div
-                        class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
-                    >
-                        <app-ta-checkbox
-                            formControlName="isConsentRelease"
-                            [name]="'isConsentRelease'"
-                            [label]="
-                                '1. Certifies that the undersigned is an employee, or has applied to become an employee of the below named'
-                            "
-                            [customClass]="
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? 'applicant-disclosure-release-feedback'
-                                    : 'disclosure-release'
-                            "
-                            [disabledStillCheckMark]="
-                                selectedMode === 'REVIEW_MODE'
-                            "
-                        >
-                        </app-ta-checkbox>
+          <div
+            class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
+          >
+            <app-ta-checkbox
+              formControlName="isPeriodicallyObtained"
+              [name]="'isPeriodicallyObtained'"
+              [label]="
+                '2. That the undersigned authorizes his or her driving record to be periodically obtained and reviewed for the'
+              "
+              [customClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'applicant-disclosure-release-feedback'
+                  : 'disclosure-release'
+              "
+              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
+            >
+            </app-ta-checkbox>
 
-                        <p
-                            class="m-0 text-center ta-font-regular"
-                            [ngStyle]="{
-                                color:
-                                    selectedMode !== 'FEEDBACK_MODE' &&
-                                    mvrAuthorizationForm.get('isConsentRelease')
-                                        .value
-                                        ? '#3c3c3c'
-                                        : selectedMode === 'FEEDBACK_MODE'
-                                        ? '#919191'
-                                        : '#6c6c6c',
-                                cursor:
-                                    selectedMode === 'REVIEW_MODE'
-                                        ? 'auto'
-                                        : 'pointer'
-                            }"
-                            (click)="
-                                handleCheckboxParagraphClick('isConsentRelease')
-                            "
-                        >
-                            in a position which involves the operation of a
-                            motor vehicle and the undersigned gives his or her
-                            consent to the release of their driving record (MVR)
-                            for review.
-                        </p>
-                    </div>
+            <p
+              class="m-0 text-center ta-font-regular"
+              [ngStyle]="{
+                color:
+                  selectedMode !== 'FEEDBACK_MODE' &&
+                  mvrAuthorizationForm.get('isPeriodicallyObtained').value
+                    ? '#3c3c3c'
+                    : selectedMode === 'FEEDBACK_MODE'
+                    ? '#919191'
+                    : '#6c6c6c',
+                cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
+              }"
+              (click)="handleCheckboxParagraphClick('isPeriodicallyObtained')"
+            >
+              purpose of initial and continued employment.
+            </p>
+          </div>
 
-                    <div
-                        class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
-                    >
-                        <app-ta-checkbox
-                            formControlName="isPeriodicallyObtained"
-                            [name]="'isPeriodicallyObtained'"
-                            [label]="
-                                '2. That the undersigned authorizes his or her driving record to be periodically obtained and reviewed for the'
-                            "
-                            [customClass]="
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? 'applicant-disclosure-release-feedback'
-                                    : 'disclosure-release'
-                            "
-                            [disabledStillCheckMark]="
-                                selectedMode === 'REVIEW_MODE'
-                            "
-                        >
-                        </app-ta-checkbox>
+          <div
+            class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
+          >
+            <app-ta-checkbox
+              formControlName="isInformationCorrect"
+              [name]="'isInformationCorrect'"
+              [label]="
+                '3. That all information presented in this form is true and correct. The undersigned makes this certification and'
+              "
+              [customClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'applicant-disclosure-release-feedback'
+                  : 'disclosure-release'
+              "
+              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
+            >
+            </app-ta-checkbox>
 
-                        <p
-                            class="m-0 text-center ta-font-regular"
-                            [ngStyle]="{
-                                color:
-                                    selectedMode !== 'FEEDBACK_MODE' &&
-                                    mvrAuthorizationForm.get(
-                                        'isPeriodicallyObtained'
-                                    ).value
-                                        ? '#3c3c3c'
-                                        : selectedMode === 'FEEDBACK_MODE'
-                                        ? '#919191'
-                                        : '#6c6c6c',
-                                cursor:
-                                    selectedMode === 'REVIEW_MODE'
-                                        ? 'auto'
-                                        : 'pointer'
-                            }"
-                            (click)="
-                                handleCheckboxParagraphClick(
-                                    'isPeriodicallyObtained'
-                                )
-                            "
-                        >
-                            purpose of initial and continued employment.
-                        </p>
-                    </div>
+            <p
+              class="m-0 text-center ta-font-regular"
+              [ngStyle]="{
+                color:
+                  selectedMode !== 'FEEDBACK_MODE' &&
+                  mvrAuthorizationForm.get('isInformationCorrect').value
+                    ? '#3c3c3c'
+                    : selectedMode === 'FEEDBACK_MODE'
+                    ? '#919191'
+                    : '#6c6c6c',
+                cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
+              }"
+              (click)="handleCheckboxParagraphClick('isInformationCorrect')"
+            >
+              affirmation under penalty of perjury and understands that
+              knowingly making a false statement or representation on this form
+              is a criminal violation.
+            </p>
+          </div>
 
-                    <div
-                        class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
-                    >
-                        <app-ta-checkbox
-                            formControlName="isInformationCorrect"
-                            [name]="'isInformationCorrect'"
-                            [label]="
-                                '3. That all information presented in this form is true and correct. The undersigned makes this certification and'
-                            "
-                            [customClass]="
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? 'applicant-disclosure-release-feedback'
-                                    : 'disclosure-release'
-                            "
-                            [disabledStillCheckMark]="
-                                selectedMode === 'REVIEW_MODE'
-                            "
-                        >
-                        </app-ta-checkbox>
+          <!-- LICENSE -->
 
-                        <p
-                            class="m-0 text-center ta-font-regular"
-                            [ngStyle]="{
-                                color:
-                                    selectedMode !== 'FEEDBACK_MODE' &&
-                                    mvrAuthorizationForm.get(
-                                        'isInformationCorrect'
-                                    ).value
-                                        ? '#3c3c3c'
-                                        : selectedMode === 'FEEDBACK_MODE'
-                                        ? '#919191'
-                                        : '#6c6c6c',
-                                cursor:
-                                    selectedMode === 'REVIEW_MODE'
-                                        ? 'auto'
-                                        : 'pointer'
-                            }"
-                            (click)="
-                                handleCheckboxParagraphClick(
-                                    'isInformationCorrect'
-                                )
-                            "
-                        >
-                            affirmation under penalty of perjury and understands
-                            that knowingly making a false statement or
-                            representation on this form is a criminal violation.
-                        </p>
-                    </div>
-
-                    <!-- LICENSE -->
-
-                    <div
-                        class="d-flex flex-column justify-content-center license-view-container"
-                        *ngIf="lastValidLicense.license"
-                        [ngStyle]="{
-                            'margin-bottom':
-                                selectedMode === 'APPLICANT_MODE'
-                                    ? '32px'
-                                    : '22px'
-                        }"
-                    >
-                        <div
-                            class="d-flex align-items-center"
-                            [ngClass]="
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? 'title-container title-container-feedback'
-                                    : 'title-container'
-                            "
-                        >
-                            <div
-                                class="d-flex align-items-center driver-title-box"
-                            >
-                                <p class="m-0 ta-font-bold">DRIVER NAME</p>
-                            </div>
-                            <div
-                                class="d-flex align-items-center license-title-box"
-                            >
-                                <p class="m-0 ta-font-bold">LICENSE #</p>
-                            </div>
-                            <div
-                                class="d-flex align-items-center state-title-box"
-                            >
-                                <p class="m-0 ta-font-bold">STATE</p>
-                            </div>
-                            <div
-                                class="d-flex align-items-center class-title-box"
-                            >
-                                <p class="m-0 ta-font-bold">CLASS</p>
-                            </div>
-                            <div
-                                class="d-flex align-items-center date-title-box"
-                            >
-                                <p class="m-0 ta-font-bold">EXP. DATE</p>
-                            </div>
-                        </div>
-
-                        <div
-                            class="d-flex align-items-center"
-                            [ngClass]="
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? 'license-info-container license-info-container-feedback'
-                                    : 'license-info-container'
-                            "
-                        >
-                            <div class="d-flex align-items-center driver-box">
-                                <p class="m-0 ta-font-regular">
-                                    {{ lastValidLicense?.name }}
-                                </p>
-                            </div>
-                            <div class="d-flex align-items-center license-box">
-                                <p class="m-0 ta-font-regular">
-                                    {{ lastValidLicense?.license }}
-                                </p>
-                            </div>
-                            <div class="d-flex align-items-center state-box">
-                                <p class="m-0 ta-font-regular">
-                                    {{ lastValidLicense?.state }}
-                                </p>
-                            </div>
-                            <div class="d-flex align-items-center class-box">
-                                <p class="m-0 ta-font-regular">
-                                    {{ lastValidLicense?.classType }}
-                                </p>
-                            </div>
-
-                            <div class="d-flex align-items-center date-box">
-                                <p class="m-0 ta-font-regular">
-                                    {{ lastValidLicense?.expDate }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- DONT HAVE MVR CHECKBOX -->
-
-                    <div
-                        class="d-flex align-items-center justify-content-center"
-                        *ngIf="
-                            selectedMode === 'APPLICANT_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE' ||
-                            (selectedMode === 'REVIEW_MODE' &&
-                                dontHaveMvrForm.get('dontHaveMvr').value)
-                        "
-                        [ngStyle]="{
-                            'margin-bottom': !dontHaveMvrForm.get('dontHaveMvr')
-                                .value
-                                ? '22px'
-                                : selectedMode === 'REVIEW_MODE' &&
-                                  dontHaveMvrForm.get('dontHaveMvr').value
-                                ? '12px'
-                                : '0'
-                        }"
-                        [formGroup]="dontHaveMvrForm"
-                    >
-                        <app-ta-checkbox
-                            formControlName="dontHaveMvr"
-                            [name]="'dontHaveMvr'"
-                            [label]="
-                                'Dont have MVR? Request a driving record from your prospective employer'
-                            "
-                            [customClass]="
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? 'applicant-feedback'
-                                    : 'bold-12'
-                            "
-                        >
-                        </app-ta-checkbox>
-                    </div>
-
-                    <!-- REQUESTED MVR -->
-
-                    <div
-                        class="d-flex align-items-center justify-content-center requested-mvr-feedback-box"
-                        *ngIf="
-                            selectedMode === 'REVIEW_MODE' &&
-                            dontHaveMvrForm.get('dontHaveMvr').value
-                        "
-                    >
-                        <p class="m-0 ta-font-semi-bold">
-                            Driver requested MVR from prospective employer
-                        </p>
-                    </div>
-
-                    <!-- FILES CONTAINER -->
-
-                    <div
-                        class="d-flex flex-column files-container"
-                        *ngIf="!dontHaveMvrForm.get('dontHaveMvr').value"
-                        [formGroup]="mvrAuthorizationForm"
-                    >
-                        <div class="d-flex align-items-center files-header">
-                            <div
-                                class="d-flex align-items-center justify-content-center counter-container"
-                            >
-                                <p class="m-0 ta-font-extra-bold">
-                                    {{ documents.length }}
-                                </p>
-                            </div>
-                            <div
-                                class="d-flex align-items-center document-title-container"
-                            >
-                                <p
-                                    class="m-0 ta-font-extra-bold documents-title"
-                                >
-                                    Documents
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="line-container">
-                            <app-ta-upload-files
-                                *ngIf="
-                                    selectedMode === 'APPLICANT_MODE' ||
-                                    selectedMode === 'FEEDBACK_MODE'
-                                "
-                                [files]="documents"
-                                [size]="'medium'"
-                                [hasNumberOfPages]="true"
-                                (onFileEvent)="onFilesAction($event)"
-                            ></app-ta-upload-files>
-
-                            <div
-                                class="d-flex review-documents-container"
-                                *ngIf="selectedMode === 'REVIEW_MODE'"
-                            ></div>
-
-                            <!-- REVIEW AND FEEDBACK -->
-
-                            <div
-                                class="review-feedback-container"
-                                *ngIf="
-                                    selectedMode === 'REVIEW_MODE' ||
-                                    selectedMode === 'FEEDBACK_MODE'
-                                "
-                            >
-                                <app-applicant-review-feedback
-                                    formControlName="firstRowReview"
-                                    [displayAnnotationButton]="
-                                        openAnnotationArray[0]
-                                            .displayAnnotationButton
-                                    "
-                                    [displayAnnotationTextArea]="
-                                        openAnnotationArray[0]
-                                            .displayAnnotationTextArea
-                                    "
-                                    [lineIndex]="0"
-                                    [isFeedback]="
-                                        selectedMode === 'FEEDBACK_MODE'
-                                    "
-                                    [feedbackText]="
-                                        'Check the routing number one more time (one number missing)!!!'
-                                    "
-                                    (annotationBtnClickEvent)="
-                                        getAnnotationBtnClickValue($event)
-                                    "
-                                ></app-applicant-review-feedback>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- LICENSE CHECK CHECKBOX -->
-
-                    <div
-                        class="d-flex align-items-center justify-content-center license-check-container"
-                        [ngStyle]="{
-                            'margin-top': !dontHaveMvrForm.get('dontHaveMvr')
-                                .value
-                                ? '22px'
-                                : '0'
-                        }"
-                    >
-                        <app-ta-checkbox
-                            formControlName="licenseCheck"
-                            [name]="'licenseCheck'"
-                            [label]="
-                                'I further certify that the above license is the only one I hold.'
-                            "
-                            [customClass]="
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? 'applicant-feedback'
-                                    : 'bold-12'
-                            "
-                            [disabledStillCheckMark]="
-                                selectedMode === 'REVIEW_MODE'
-                            "
-                        >
-                        </app-ta-checkbox>
-                    </div>
-
-                    <!-- SIGNATURE PAD -->
-
-                    <div
-                        class="d-flex signature-pad-container"
-                        *ngIf="selectedMode === 'APPLICANT_MODE'"
-                    >
-                        <app-applicant-signature-pad
-                            (signatureEmitter)="onSignatureAction($event)"
-                        ></app-applicant-signature-pad>
-                    </div>
-
-                    <div
-                        class="d-flex justify-content-center align-items-center signature-image-container"
-                        *ngIf="selectedMode !== 'APPLICANT_MODE'"
-                    >
-                        <img src="" alt="signature" />
-                    </div>
-                </form>
+          <div
+            class="d-flex flex-column justify-content-center license-view-container"
+            *ngIf="lastValidLicense.license"
+            [ngStyle]="{
+              'margin-bottom':
+                selectedMode === 'APPLICANT_MODE' ? '32px' : '22px'
+            }"
+          >
+            <div
+              class="d-flex align-items-center"
+              [ngClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'title-container title-container-feedback'
+                  : 'title-container'
+              "
+            >
+              <div class="d-flex align-items-center driver-title-box">
+                <p class="m-0 ta-font-bold">DRIVER NAME</p>
+              </div>
+              <div class="d-flex align-items-center license-title-box">
+                <p class="m-0 ta-font-bold">LICENSE #</p>
+              </div>
+              <div class="d-flex align-items-center state-title-box">
+                <p class="m-0 ta-font-bold">STATE</p>
+              </div>
+              <div class="d-flex align-items-center class-title-box">
+                <p class="m-0 ta-font-bold">CLASS</p>
+              </div>
+              <div class="d-flex align-items-center date-title-box">
+                <p class="m-0 ta-font-bold">EXP. DATE</p>
+              </div>
             </div>
 
-            <!-- FOOTER -->
+            <div
+              class="d-flex align-items-center"
+              [ngClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'license-info-container license-info-container-feedback'
+                  : 'license-info-container'
+              "
+            >
+              <div class="d-flex align-items-center driver-box">
+                <p class="m-0 ta-font-regular">
+                  {{ lastValidLicense?.name }}
+                </p>
+              </div>
+              <div class="d-flex align-items-center license-box">
+                <p class="m-0 ta-font-regular">
+                  {{ lastValidLicense?.license }}
+                </p>
+              </div>
+              <div class="d-flex align-items-center state-box">
+                <p class="m-0 ta-font-regular">
+                  {{ lastValidLicense?.state }}
+                </p>
+              </div>
+              <div class="d-flex align-items-center class-box">
+                <p class="m-0 ta-font-regular">
+                  {{ lastValidLicense?.classType }}
+                </p>
+              </div>
 
-            <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
-        </div>
+              <div class="d-flex align-items-center date-box">
+                <p class="m-0 ta-font-regular">
+                  {{ lastValidLicense?.expDate }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- DONT HAVE MVR CHECKBOX -->
+
+          <div
+            class="d-flex align-items-center justify-content-center"
+            *ngIf="
+              selectedMode === 'APPLICANT_MODE' ||
+              selectedMode === 'FEEDBACK_MODE' ||
+              (selectedMode === 'REVIEW_MODE' &&
+                dontHaveMvrForm.get('dontHaveMvr').value)
+            "
+            [ngStyle]="{
+              'margin-bottom': !dontHaveMvrForm.get('dontHaveMvr').value
+                ? '22px'
+                : selectedMode === 'REVIEW_MODE' &&
+                  dontHaveMvrForm.get('dontHaveMvr').value
+                ? '12px'
+                : '0'
+            }"
+            [formGroup]="dontHaveMvrForm"
+          >
+            <app-ta-checkbox
+              formControlName="dontHaveMvr"
+              [name]="'dontHaveMvr'"
+              [label]="
+                'Dont have MVR? Request a driving record from your prospective employer'
+              "
+              [customClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'applicant-feedback'
+                  : 'bold-12'
+              "
+            >
+            </app-ta-checkbox>
+          </div>
+
+          <!-- REQUESTED MVR -->
+
+          <div
+            class="d-flex align-items-center justify-content-center requested-mvr-feedback-box"
+            *ngIf="
+              selectedMode === 'REVIEW_MODE' &&
+              dontHaveMvrForm.get('dontHaveMvr').value
+            "
+          >
+            <p class="m-0 ta-font-semi-bold">
+              Driver requested MVR from prospective employer
+            </p>
+          </div>
+
+          <!-- FILES CONTAINER -->
+
+          <div
+            class="d-flex flex-column files-container"
+            *ngIf="!dontHaveMvrForm.get('dontHaveMvr').value"
+            [formGroup]="mvrAuthorizationForm"
+          >
+            <div class="d-flex align-items-center files-header">
+              <div
+                class="d-flex align-items-center justify-content-center counter-container"
+              >
+                <p class="m-0 ta-font-extra-bold">{{ documents.length }}</p>
+              </div>
+              <div class="d-flex align-items-center document-title-container">
+                <p class="m-0 ta-font-extra-bold documents-title">Documents</p>
+              </div>
+            </div>
+
+            <div class="line-container">
+              <app-ta-upload-files
+                *ngIf="
+                  selectedMode === 'APPLICANT_MODE' ||
+                  selectedMode === 'FEEDBACK_MODE'
+                "
+                [files]="documents"
+                [size]="'medium'"
+                [hasNumberOfPages]="true"
+                (onFileEvent)="onFilesAction($event)"
+              ></app-ta-upload-files>
+
+              <div
+                class="d-flex review-documents-container"
+                *ngIf="selectedMode === 'REVIEW_MODE'"
+              ></div>
+
+              <!-- REVIEW AND FEEDBACK -->
+
+              <div
+                class="review-feedback-container"
+                *ngIf="
+                  selectedMode === 'REVIEW_MODE' ||
+                  selectedMode === 'FEEDBACK_MODE'
+                "
+              >
+                <app-applicant-review-feedback
+                  formControlName="firstRowReview"
+                  [displayAnnotationButton]="
+                    openAnnotationArray[0].displayAnnotationButton
+                  "
+                  [displayAnnotationTextArea]="
+                    openAnnotationArray[0].displayAnnotationTextArea
+                  "
+                  [lineIndex]="0"
+                  [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                  [feedbackText]="
+                    'Check the routing number one more time (one number missing)!!!'
+                  "
+                  (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+                ></app-applicant-review-feedback>
+              </div>
+            </div>
+          </div>
+
+          <!-- LICENSE CHECK CHECKBOX -->
+
+          <div
+            class="d-flex align-items-center justify-content-center license-check-container"
+            [ngStyle]="{
+              'margin-top': !dontHaveMvrForm.get('dontHaveMvr').value
+                ? '22px'
+                : '0'
+            }"
+          >
+            <app-ta-checkbox
+              formControlName="licenseCheck"
+              [name]="'licenseCheck'"
+              [label]="
+                'I further certify that the above license is the only one I hold.'
+              "
+              [customClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'applicant-feedback'
+                  : 'bold-12'
+              "
+              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
+            >
+            </app-ta-checkbox>
+          </div>
+
+          <!-- SIGNATURE PAD -->
+
+          <div
+            class="d-flex signature-pad-container"
+            *ngIf="selectedMode === 'APPLICANT_MODE'"
+          >
+            <app-applicant-signature-pad
+              (signatureEmitter)="onSignatureAction($event)"
+            ></app-applicant-signature-pad>
+          </div>
+
+          <div
+            class="d-flex justify-content-center align-items-center signature-image-container"
+            *ngIf="selectedMode !== 'APPLICANT_MODE'"
+          >
+            <img src="" alt="signature" />
+          </div>
+        </form>
+      </div>
+
+      <!-- FOOTER -->
+
+      <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
     </div>
+  </div>
 </div>
 
 <!-- NEXT BTN -->
 
 <div
-    class="d-flex justify-content-center align-items-center next-btn-container"
+  class="d-flex justify-content-center align-items-center next-btn-container"
 >
-    <app-applicant-next-back-btn
-        [nextStep]="true"
-        [lastStep]="true"
-        [filledCorrectly]="
-            selectedMode === 'APPLICANT_MODE' &&
-            mvrAuthorizationForm.valid &&
-            signature
-        "
-        [hasIncorrectFields]="
-            selectedMode === 'REVIEW_MODE' && hasIncorrectFields
-        "
-        [mode]="selectedMode"
-        (stepEvent)="onStepAction($event)"
-    ></app-applicant-next-back-btn>
+  <app-applicant-next-back-btn
+    [nextStep]="true"
+    [lastStep]="true"
+    [filledCorrectly]="
+      selectedMode === 'APPLICANT_MODE' &&
+      mvrAuthorizationForm.valid &&
+      signature
+    "
+    [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && hasIncorrectFields"
+    [mode]="selectedMode"
+    (stepEvent)="onStepAction($event)"
+  ></app-applicant-next-back-btn>
 </div>

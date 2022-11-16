@@ -1,4 +1,4 @@
 export interface IdNameList {
-    id: number;
-    name: string;
+  id: number;
+  name: string;
 }

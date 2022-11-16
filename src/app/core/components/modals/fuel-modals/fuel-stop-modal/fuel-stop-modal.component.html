@@ -1,161 +1,151 @@
 <app-ta-modal
-    [modalTitle]="
-        editData?.type !== 'edit' ? 'Add Fuel Stop' : 'Edit Fuel Stop'
-    "
-    [editData]="editData"
-    [editName]="fuelStopName"
-    [disableDelete]="true"
-    [isModalValid]="fuelStopForm.valid && isFormDirty"
-    (action)="onModalAction($event)"
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Fuel Stop' : 'Edit Fuel Stop'"
+  [editData]="editData"
+  [editName]="fuelStopName"
+  [disableDelete]="true"
+  [isModalValid]="fuelStopForm.valid && isFormDirty"
+  (action)="onModalAction($event)"
 >
-    <form
-        origin
-        [formGroup]="fuelStopForm"
-        class="form-container form-container-without-mb"
-    >
-        <div class="row">
-            <div class="col-7">
-                <app-ta-input
-                    *ngIf="fuelStopForm.get('businessName').value"
-                    formControlName="businessName"
-                    [inputConfig]="{
-                        name: 'Business Name',
-                        type: 'text',
-                        label: 'Fuel Stop Name',
-                        textTransform: 'uppercase',
-                        minLength: 2,
-                        maxLength: 64,
-                        isRequired: true
-                    }"
-                    (clear)="clearNewFuelStop()"
-                ></app-ta-input>
-                <app-ta-input-dropdown
-                    *ngIf="!fuelStopForm.get('businessName').value"
-                    formControlName="fuelStopFranchiseId"
-                    [template]="'text-counter'"
-                    [inputConfig]="{
-                        name: 'Input Dropdown Fuel Stop',
-                        type: 'text',
-                        label: 'Fuel Stop Name',
-                        isDropdown: true,
-                        minLength: 2,
-                        maxLength: 64,
-                        textTransform: 'uppercase',
-                        isRequired: true,
-                        dropdownWidthClass: 'w-col-256',
-                        isDisabled:
-                            selectedFuelStop && editData?.type === 'edit'
-                    }"
-                    [canAddNew]="true"
-                    [options]="fuelStops"
-                    [activeItem]="selectedFuelStop"
-                    (selectedItem)="onSelectDropdown($event, 'fuel-stop')"
-                    (pagination)="paginationPage($event)"
-                    (saveItem)="onSaveNewFuelStop($event)"
-                ></app-ta-input-dropdown>
-            </div>
-            <div class="col-4">
-                <app-ta-input
-                    formControlName="store"
-                    [inputConfig]="{
-                        name: 'fuel-store',
-                        type: 'text',
-                        label: 'Store No.',
-                        textTransform: 'uppercase',
-                        minLength: 2,
-                        maxLength: 32,
-                        isRequired: selectedFuelStop,
-                        isDisabled:
-                            !selectedFuelStop ||
-                            (editData?.type === 'edit' && !companyId)
-                    }"
-                ></app-ta-input>
-            </div>
-            <div class="col-1 no-p-left">
-                <svg-icon
-                    class="fuelstop-star"
-                    [class.active]="isFavouriteFuelStop"
-                    src="assets/svg/common/ic_star.svg"
-                    (click)="favouriteFuelStop()"
-                ></svg-icon>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <app-ta-input
-                    formControlName="phone"
-                    [inputConfig]="{
-                        name: 'Phone',
-                        type: 'text',
-                        label: 'Phone',
-                        placeholderIcon: 'phone',
-                        mask: '(000) 000-0000',
-                        maxLength: 14,
-                        isRequired: true,
-                        isDisabled:
-                            selectedFuelStop &&
-                            editData?.type === 'edit' &&
-                            !companyId
-                    }"
-                ></app-ta-input>
-            </div>
-            <div class="col-6">
-                <app-ta-input
-                    formControlName="fax"
-                    [inputConfig]="{
-                        name: 'Fax',
-                        type: 'text',
-                        label: 'Fax',
-                        mask: '(000) 000-0000',
-                        placeholderIcon: 'fax',
-                        isDisabled:
-                            selectedFuelStop &&
-                            editData?.type === 'edit' &&
-                            !companyId
-                    }"
-                ></app-ta-input>
-            </div>
-        </div>
-        <div class="row last-row">
-            <div class="col-12">
-                <app-input-address-dropdown
-                    formControlName="address"
-                    [inputConfig]="{
-                        name: 'Address',
-                        type: 'text',
-                        label: 'Address, City, State Zip',
-                        isRequired: true,
-                        placeholderIcon: 'address',
-                        textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-456',
-                        minLength: 6,
-                        maxLength: 256,
-                        isDisabled:
-                            selectedFuelStop &&
-                            editData?.type === 'edit' &&
-                            !companyId
-                    }"
-                    [placeholderType]="'longAddress'"
-                    [activeAddress]="selectedAddress"
-                    (selectedAddress)="onHandleAddress($event)"
-                ></app-input-address-dropdown>
-            </div>
-        </div>
-        <!-- Note -->
-        <app-ta-input-note
-            formControlName="note"
-            [isVisibleNote]="
-                fuelStopForm.get('note').value &&
-                fuelStopForm.get('note').value != 'null'
-                    ? fuelStopForm.get('note').value
-                    : false
-            "
-            [note]="
-                fuelStopForm.get('note').value &&
-                fuelStopForm.get('note').value != 'null'
-                    ? fuelStopForm.get('note').value
-                    : ''
-            "
-        ></app-ta-input-note>
-    </form>
+  <form
+    origin
+    [formGroup]="fuelStopForm"
+    class="form-container form-container-without-mb"
+  >
+    <div class="row">
+      <div class="col-7">
+        <app-ta-input
+          *ngIf="fuelStopForm.get('businessName').value"
+          formControlName="businessName"
+          [inputConfig]="{
+            name: 'Business Name',
+            type: 'text',
+            label: 'Fuel Stop Name',
+            textTransform: 'uppercase',
+            minLength: 2,
+            maxLength: 64,
+            isRequired: true
+          }"
+          (clear)="clearNewFuelStop()"
+        ></app-ta-input>
+        <app-ta-input-dropdown
+          *ngIf="!fuelStopForm.get('businessName').value"
+          formControlName="fuelStopFranchiseId"
+          [template]="'text-counter'"
+          [inputConfig]="{
+            name: 'Input Dropdown Fuel Stop',
+            type: 'text',
+            label: 'Fuel Stop Name',
+            isDropdown: true,
+            minLength: 2,
+            maxLength: 64,
+            textTransform: 'uppercase',
+            isRequired: true,
+            dropdownWidthClass: 'w-col-256',
+            isDisabled: selectedFuelStop && editData?.type === 'edit'
+          }"
+          [canAddNew]="true"
+          [options]="fuelStops"
+          [activeItem]="selectedFuelStop"
+          (selectedItem)="onSelectDropdown($event, 'fuel-stop')"
+          (pagination)="paginationPage($event)"
+          (saveItem)="onSaveNewFuelStop($event)"
+        ></app-ta-input-dropdown>
+      </div>
+      <div class="col-4">
+        <app-ta-input
+          formControlName="store"
+          [inputConfig]="{
+            name: 'fuel-store',
+            type: 'text',
+            label: 'Store No.',
+            textTransform: 'uppercase',
+            minLength: 2,
+            maxLength: 32,
+            isRequired: selectedFuelStop,
+            isDisabled:
+              !selectedFuelStop || (editData?.type === 'edit' && !companyId)
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-1 no-p-left">
+        <svg-icon
+          class="fuelstop-star"
+          [class.active]="isFavouriteFuelStop"
+          src="assets/svg/common/ic_star.svg"
+          (click)="favouriteFuelStop()"
+        ></svg-icon>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <app-ta-input
+          formControlName="phone"
+          [inputConfig]="{
+            name: 'Phone',
+            type: 'text',
+            label: 'Phone',
+            placeholderIcon: 'phone',
+            mask: '(000) 000-0000',
+            maxLength: 14,
+            isRequired: true,
+            isDisabled:
+              selectedFuelStop && editData?.type === 'edit' && !companyId
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-6">
+        <app-ta-input
+          formControlName="fax"
+          [inputConfig]="{
+            name: 'Fax',
+            type: 'text',
+            label: 'Fax',
+            mask: '(000) 000-0000',
+            placeholderIcon: 'fax',
+            isDisabled:
+              selectedFuelStop && editData?.type === 'edit' && !companyId
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row last-row">
+      <div class="col-12">
+        <app-input-address-dropdown
+          formControlName="address"
+          [inputConfig]="{
+            name: 'Address',
+            type: 'text',
+            label: 'Address, City, State Zip',
+            isRequired: true,
+            placeholderIcon: 'address',
+            textTransform: 'capitalize',
+            dropdownWidthClass: 'w-col-456',
+            minLength: 6,
+            maxLength: 256,
+            isDisabled:
+              selectedFuelStop && editData?.type === 'edit' && !companyId
+          }"
+          [placeholderType]="'longAddress'"
+          [activeAddress]="selectedAddress"
+          (selectedAddress)="onHandleAddress($event)"
+        ></app-input-address-dropdown>
+      </div>
+    </div>
+    <!-- Note -->
+    <app-ta-input-note
+      formControlName="note"
+      [isVisibleNote]="
+        fuelStopForm.get('note').value &&
+        fuelStopForm.get('note').value != 'null'
+          ? fuelStopForm.get('note').value
+          : false
+      "
+      [note]="
+        fuelStopForm.get('note').value &&
+        fuelStopForm.get('note').value != 'null'
+          ? fuelStopForm.get('note').value
+          : ''
+      "
+    ></app-ta-input-note>
+  </form>
 </app-ta-modal>

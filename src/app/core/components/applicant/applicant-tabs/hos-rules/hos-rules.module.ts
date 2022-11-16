@@ -8,12 +8,7 @@ import { HosRulesRoutingModule } from './hos-rules-routing.module';
 import { ApplicantModule } from '../../applicant.module';
 
 @NgModule({
-    declarations: [HosRulesComponent],
-    imports: [
-        CommonModule,
-        SharedModule,
-        HosRulesRoutingModule,
-        ApplicantModule,
-    ],
+  declarations: [HosRulesComponent],
+  imports: [CommonModule, SharedModule, HosRulesRoutingModule, ApplicantModule],
 })
 export class HosRulesModule {}

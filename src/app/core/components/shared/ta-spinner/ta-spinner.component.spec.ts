@@ -6,22 +6,23 @@ import { DebugElement } from '@angular/core';
 import { TaSpinnerComponent } from './ta-spinner.component';
 
 describe('TaSpinnerComponent', () => {
-    let component: TaSpinnerComponent;
-    let fixture: ComponentFixture<TaSpinnerComponent>;
+  let component: TaSpinnerComponent;
+  let fixture: ComponentFixture<TaSpinnerComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [TaSpinnerComponent],
-        }).compileComponents();
-    }));
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ TaSpinnerComponent ]
+    })
+    .compileComponents();
+  }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(TaSpinnerComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TaSpinnerComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

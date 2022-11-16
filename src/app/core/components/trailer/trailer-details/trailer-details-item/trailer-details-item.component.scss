@@ -1,260 +1,260 @@
-@import '../trailer-details.component.scss';
+@import "../trailer-details.component.scss";
 @keyframes change {
-    from {
-        color: #6c6c6c;
-    }
-    to {
-        color: #3551b7;
-    }
+  from {
+    color: #6c6c6c;
+  }
+  to {
+    color: #3551b7;
+  }
 }
 @keyframes changeSVG {
-    from {
-        fill: #6c6c6c;
-    }
-    to {
-        fill: #3551b7;
-    }
+  from {
+    fill: #6c6c6c;
+  }
+  to {
+    fill: #3551b7;
+  }
 }
 app-trailer-details-item {
-    .owner-container {
-        padding: 0 10px;
-        margin-top: -4px;
-        .owner-items-name {
-            height: 22px;
-            text-transform: uppercase;
-            .firm-name {
-                font-size: $font-size18;
-                font-weight: $font-medium;
-                color: $color-gray-dark;
-                height: 19px;
-                &::-moz-selection {
-                    color: $color-gray-dark;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-                &::selection {
-                    color: $color-gray-dark;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-            }
+  .owner-container {
+    padding: 0 10px;
+    margin-top: -4px;
+    .owner-items-name {
+      height: 22px;
+      text-transform: uppercase;
+      .firm-name {
+        font-size: $font-size18;
+        font-weight: $font-medium;
+        color: $color-gray-dark;
+        height: 19px;
+        &::-moz-selection {
+          color: $color-gray-dark;
+          background: rgb(108, 108, 108, 0.2);
         }
-
-        .icon-show {
-            display: flex;
-            align-items: flex-end;
-            height: 18px;
-            justify-content: center;
-            margin-top: 10px;
-            cursor: pointer;
-            .arrow-down-employment {
-                svg {
-                    path {
-                        fill: #aaaaaa;
-                        &:hover {
-                            fill: #6c6c6c;
-                        }
-                    }
-                }
-            }
+        &::selection {
+          color: $color-gray-dark;
+          background: rgb(108, 108, 108, 0.2);
         }
-        .transform-arrow {
-            bottom: 0 !important;
-            svg {
-                transform: rotate(180deg);
-                transition: all 0.3s ease-in-out;
-                path {
-                    fill: #536bc2 !important;
-                }
-            }
-            .icon-show {
-                justify-content: center !important;
-                margin-top: 0 !important;
-            }
-        }
+      }
     }
-    .owner-history-container {
-        padding: 0 4px;
-        .status-container {
-            padding-top: 0 !important;
-        }
-        .status-header {
-            padding: 0 6px;
-            margin-bottom: 6px;
-        }
-        .status-items {
-            // padding: 0 6px;
-            margin-top: 8px;
-            &:last-child {
-                .divider {
-                    visibility: hidden;
-                }
-            }
-        }
-        .item-wrapper {
-            grid-template-columns: 122px 131px 75px !important;
-            .employment {
-                font-weight: $font-semibold !important;
-                width: 155px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-        }
-    }
-    .card-note {
-        padding-left: 8px;
-        padding-right: 5px;
-        .note-body {
-            padding-left: 4px !important;
-        }
-        .note-textarea {
-            color: #6c6c6c !important;
-            margin-bottom: 0 !important;
-            &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
 
-            &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
-
-            span {
-                &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-            }
-
-            span[style*='color: rgb(83, 107, 194)'],
-            span[style*='color: rgb(83, 107, 194)'] span {
-                &::-moz-selection {
-                    color: $bw6-2 !important;
-                    background: rgb(83, 107, 194, 0.2) !important;
-                }
-
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(83, 107, 194, 0.2) !important;
-                }
-            }
-
-            span[style*='color: rgb(38, 166, 144)'],
-            span[style*='color: rgb(38, 166, 144)'] span {
-                &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(38, 166, 144, 0.2) !important;
-                }
-
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(38, 166, 144, 0.2) !important;
-                }
-            }
-
-            span[style*='color: rgb(239, 83, 80)'],
-            span[style*='color: rgb(239, 83, 80)'] span {
-                &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(239, 83, 80, 0.2) !important;
-                }
-
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(239, 83, 80, 0.2) !important;
-                }
-            }
-
-            span[style*='color: rgb(255, 167, 38)'],
-            span[style*='color: rgb(255, 167, 38)'] span {
-                &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(255, 167, 38, 0.2) !important;
-                }
-
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(255, 167, 38, 0.2) !important;
-                }
-            }
-
-            span[style*='color: rgb(83, 107, 194)'],
-            span[style*='color: rgb(83, 107, 194)'] span {
-                &::-moz-selection {
-                    color: $bw6-2 !important;
-                    background: rgb(83, 107, 194, 0.2) !important;
-                }
-
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(83, 107, 194, 0.2) !important;
-                }
-            }
-
-            span[style*='color: rgb(38, 166, 144)'],
-            span[style*='color: rgb(38, 166, 144)'] span {
-                &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(38, 166, 144, 0.2) !important;
-                }
-
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(38, 166, 144, 0.2) !important;
-                }
-            }
-
-            span[style*='color: rgb(239, 83, 80)'],
-            span[style*='color: rgb(239, 83, 80)'] span {
-                &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(239, 83, 80, 0.2) !important;
-                }
-
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(239, 83, 80, 0.2) !important;
-                }
-            }
-
-            span[style*='color: rgb(255, 167, 38)'],
-            span[style*='color: rgb(255, 167, 38)'] span {
-                &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(255, 167, 38, 0.2) !important;
-                }
-
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(255, 167, 38, 0.2) !important;
-                }
-            }
-        }
-    }
-    .card-icon {
-        display: none;
-        position: relative;
-        margin-left: 6px;
-        height: 18px;
+    .icon-show {
+      display: flex;
+      align-items: flex-end;
+      height: 18px;
+      justify-content: center;
+      margin-top: 10px;
+      cursor: pointer;
+      .arrow-down-employment {
         svg {
+          path {
+            fill: #aaaaaa;
             &:hover {
-                path {
-                    fill: #6c6c6c;
-                }
+              fill: #6c6c6c;
             }
+          }
         }
+      }
     }
-    .details-header-data-item {
-        &:hover {
-            .card-icon {
-                display: flex;
-                cursor: pointer;
-            }
+    .transform-arrow {
+      bottom: 0 !important;
+      svg {
+        transform: rotate(180deg);
+        transition: all 0.3s ease-in-out;
+        path {
+          fill: #536bc2 !important;
         }
+      }
+      .icon-show {
+        justify-content: center !important;
+        margin-top: 0 !important;
+      }
     }
+  }
+  .owner-history-container {
+    padding: 0 4px;
+    .status-container {
+      padding-top: 0 !important;
+    }
+    .status-header {
+      padding: 0 6px;
+      margin-bottom: 6px;
+    }
+    .status-items {
+      // padding: 0 6px;
+      margin-top: 8px;
+      &:last-child {
+        .divider {
+          visibility: hidden;
+        }
+      }
+    }
+    .item-wrapper {
+      grid-template-columns: 122px 131px 75px !important;
+      .employment {
+        font-weight: $font-semibold !important;
+        width: 155px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+  .card-note {
+    padding-left: 8px;
+    padding-right: 5px;
+    .note-body {
+      padding-left: 4px !important;
+    }
+    .note-textarea {
+      color: #6c6c6c !important;
+      margin-bottom: 0 !important;
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      span {
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+      }
+
+      span[style*="color: rgb(83, 107, 194)"],
+      span[style*="color: rgb(83, 107, 194)"] span {
+        &::-moz-selection {
+          color: $bw6-2 !important;
+          background: rgb(83, 107, 194, 0.2) !important;
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(83, 107, 194, 0.2) !important;
+        }
+      }
+
+      span[style*="color: rgb(38, 166, 144)"],
+      span[style*="color: rgb(38, 166, 144)"] span {
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(38, 166, 144, 0.2) !important;
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(38, 166, 144, 0.2) !important;
+        }
+      }
+
+      span[style*="color: rgb(239, 83, 80)"],
+      span[style*="color: rgb(239, 83, 80)"] span {
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(239, 83, 80, 0.2) !important;
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(239, 83, 80, 0.2) !important;
+        }
+      }
+
+      span[style*="color: rgb(255, 167, 38)"],
+      span[style*="color: rgb(255, 167, 38)"] span {
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(255, 167, 38, 0.2) !important;
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(255, 167, 38, 0.2) !important;
+        }
+      }
+
+      span[style*="color: rgb(83, 107, 194)"],
+      span[style*="color: rgb(83, 107, 194)"] span {
+        &::-moz-selection {
+          color: $bw6-2 !important;
+          background: rgb(83, 107, 194, 0.2) !important;
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(83, 107, 194, 0.2) !important;
+        }
+      }
+
+      span[style*="color: rgb(38, 166, 144)"],
+      span[style*="color: rgb(38, 166, 144)"] span {
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(38, 166, 144, 0.2) !important;
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(38, 166, 144, 0.2) !important;
+        }
+      }
+
+      span[style*="color: rgb(239, 83, 80)"],
+      span[style*="color: rgb(239, 83, 80)"] span {
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(239, 83, 80, 0.2) !important;
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(239, 83, 80, 0.2) !important;
+        }
+      }
+
+      span[style*="color: rgb(255, 167, 38)"],
+      span[style*="color: rgb(255, 167, 38)"] span {
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(255, 167, 38, 0.2) !important;
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(255, 167, 38, 0.2) !important;
+        }
+      }
+    }
+  }
+  .card-icon {
+    display: none;
+    position: relative;
+    margin-left: 6px;
+    height: 18px;
+    svg {
+      &:hover {
+        path {
+          fill: #6c6c6c;
+        }
+      }
+    }
+  }
+  .details-header-data-item {
+    &:hover {
+      .card-icon {
+        display: flex;
+        cursor: pointer;
+      }
+    }
+  }
 }

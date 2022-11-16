@@ -1,9 +1,9 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import {
-    DriverResponse,
-    GetTestModalResponse,
-    TestResponse,
-    TestService,
+  DriverResponse,
+  GetTestModalResponse,
+  TestResponse,
+  TestService,
 } from 'appcoretruckassist';
 import { Observable, Subject, tap } from 'rxjs';
 import { DriverTService } from './driver.service';
@@ -16,32 +16,29 @@ import { EditTestCommand } from 'appcoretruckassist/model/editTestCommand';
 import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class TestTService implements OnDestroy {
-    private destroy$ = new Subject<void>();
-    constructor(
-        private drugService: TestService,
-        private driverService: DriverTService,
-        private driverStore: DriversActiveStore,
-        private tableService: TruckassistTableService,
-        private driverItemStore: DriversItemStore,
-        private dlStore: DriversDetailsListStore
-    ) {}
+  private destroy$ = new Subject<void>();
+  constructor(
+    private drugService: TestService,
+    private driverService: DriverTService,
+    private driverStore: DriversActiveStore,
+    private tableService: TruckassistTableService,
+    private driverItemStore: DriversItemStore,
+    private dlStore: DriversDetailsListStore
+  ) {}
 
-    /* Observable<CreateTestResponse> */
-    public addTest(data: CreateTestCommand): Observable<any> {
-        const sortedParams = getFunctionParams(
-            this.drugService.apiTestPost,
-            data
-        );
-        return this.drugService.apiTestPost(...sortedParams).pipe(
-            tap((res: any) => {
-                const subDriver = this.driverService
-                    .getDriverById(data.driverId)
-                    .subscribe({
-                        next: (driver: DriverResponse | any) => {
-                            /*  this.driverStore.remove(({ id }) => id === data.driverId);
+  /* Observable<CreateTestResponse> */
+  public addTest(data: CreateTestCommand): Observable<any> {
+    const sortedParams = getFunctionParams(this.drugService.apiTestPost, data);
+    return this.drugService.apiTestPost(...sortedParams).pipe(
+      tap((res: any) => {
+        const subDriver = this.driverService
+          .getDriverById(data.driverId)
+          .subscribe({
+            next: (driver: DriverResponse | any) => {
+              /*  this.driverStore.remove(({ id }) => id === data.driverId);
 
               driver = {
                 ...driver,
@@ -55,105 +52,86 @@ export class TestTService implements OnDestroy {
                 data: driver,
                 id: driver.id,
               }); */
-                            this.dlStore.update(driver.id, {
-                                tests: driver.tests,
-                            });
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: driver,
-                                id: driver.id,
-                            });
+              this.dlStore.update(driver.id, { tests: driver.tests });
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                data: driver,
+                id: driver.id,
+              });
 
-                            subDriver.unsubscribe();
-                        },
-                    });
-            })
-        );
-    }
+              subDriver.unsubscribe();
+            },
+          });
+      })
+    );
+  }
 
-    public updateTest(data: EditTestCommand): Observable<object> {
-        const sortedParams = getFunctionParams(
-            this.drugService.apiTestPut,
-            data
-        );
-        return this.drugService.apiTestPut(...sortedParams).pipe(
-            tap((res: any) => {
-                let driverId = this.driverItemStore.getValue().ids[0];
-                const subDriver = this.driverService
-                    .getDriverById(driverId)
-                    .subscribe({
-                        next: (driver: DriverResponse | any) => {
-                            this.driverStore.remove(
-                                ({ id }) => id === driverId
-                            );
+  public updateTest(data: EditTestCommand): Observable<object> {
+    const sortedParams = getFunctionParams(this.drugService.apiTestPut, data);
+    return this.drugService.apiTestPut(...sortedParams).pipe(
+      tap((res: any) => {
+        let driverId = this.driverItemStore.getValue().ids[0];
+        const subDriver = this.driverService.getDriverById(driverId).subscribe({
+          next: (driver: DriverResponse | any) => {
+            this.driverStore.remove(({ id }) => id === driverId);
 
-                            driver = {
-                                ...driver,
-                                fullName:
-                                    driver.firstName + ' ' + driver.lastName,
-                            };
+            driver = {
+              ...driver,
+              fullName: driver.firstName + ' ' + driver.lastName,
+            };
 
-                            this.driverStore.add(driver);
-                            this.dlStore.update(driver.id, {
-                                tests: driver.tests,
-                            });
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: driver,
-                                id: driverId,
-                            });
+            this.driverStore.add(driver);
+            this.dlStore.update(driver.id, { tests: driver.tests });
+            this.tableService.sendActionAnimation({
+              animation: 'update',
+              data: driver,
+              id: driverId,
+            });
 
-                            subDriver.unsubscribe();
-                        },
-                    });
-            })
-        );
-    }
+            subDriver.unsubscribe();
+          },
+        });
+      })
+    );
+  }
 
-    public deleteTestById(id: number): Observable<any> {
-        return this.drugService.apiTestIdDelete(id).pipe(
-            tap((res: any) => {
-                let driverId = this.driverItemStore.getValue().ids[0];
-                const subDriver = this.driverService
-                    .getDriverById(driverId)
-                    .subscribe({
-                        next: (driver: DriverResponse | any) => {
-                            this.driverStore.remove(
-                                ({ id }) => id === driverId
-                            );
+  public deleteTestById(id: number): Observable<any> {
+    return this.drugService.apiTestIdDelete(id).pipe(
+      tap((res: any) => {
+        let driverId = this.driverItemStore.getValue().ids[0];
+        const subDriver = this.driverService.getDriverById(driverId).subscribe({
+          next: (driver: DriverResponse | any) => {
+            this.driverStore.remove(({ id }) => id === driverId);
 
-                            driver = {
-                                ...driver,
-                                fullName:
-                                    driver.firstName + ' ' + driver.lastName,
-                            };
+            driver = {
+              ...driver,
+              fullName: driver.firstName + ' ' + driver.lastName,
+            };
 
-                            this.driverStore.add(driver);
-                            this.dlStore.update(driver.id, {
-                                tests: driver.tests,
-                            });
-                            this.tableService.sendActionAnimation({
-                                animation: 'delete',
-                                data: driver,
-                                id: driverId,
-                            });
+            this.driverStore.add(driver);
+            this.dlStore.update(driver.id, { tests: driver.tests });
+            this.tableService.sendActionAnimation({
+              animation: 'delete',
+              data: driver,
+              id: driverId,
+            });
 
-                            subDriver.unsubscribe();
-                        },
-                    });
-            })
-        );
-    }
+            subDriver.unsubscribe();
+          },
+        });
+      })
+    );
+  }
 
-    public getTestById(id: number): Observable<TestResponse> {
-        return this.drugService.apiTestIdGet(id);
-    }
+  public getTestById(id: number): Observable<TestResponse> {
+    return this.drugService.apiTestIdGet(id);
+  }
 
-    public getTestDropdowns(): Observable<GetTestModalResponse> {
-        return this.drugService.apiTestModalGet();
-    }
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
+  public getTestDropdowns(): Observable<GetTestModalResponse> {
+    return this.drugService.apiTestModalGet();
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

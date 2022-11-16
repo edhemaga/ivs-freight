@@ -1,36 +1,36 @@
-@import './ta-input.colors.scss';
+@import "./ta-input.colors.scss";
 // -------------------- Input Required Check --------------------
 .input-required-check {
-    position: absolute;
-    right: 6px;
-    width: 14px;
-    height: 10px;
-    display: inline-block;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  position: absolute;
+  right: 6px;
+  width: 14px;
+  height: 10px;
+  display: inline-block;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
-    svg {
-        path {
-            fill: $input-required-check-normal;
-        }
+  svg {
+    path {
+      fill: $input-required-check-normal;
     }
+  }
 
-    //------------------------- Custom class -------------------------
-    &.input-32 {
-        top: 3.5px;
-    }
+  //------------------------- Custom class -------------------------
+  &.input-32 {
+    top: 3.5px;
+  }
 
-    &.input-30 {
-        top: 2px;
-    }
+  &.input-30 {
+    top: 2px;
+  }
 
-    &.line-input-26 {
-        top: 2px;
-    }
+  &.line-input-26 {
+    top: 2px;
+  }
 
-    &.line-input-26-in-card {
-        top: 1px;
-    }
+  &.line-input-26-in-card {
+    top: 1px;
+  }
 }

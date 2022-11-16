@@ -3,38 +3,32 @@
         <div class="details"></div>
     </div>
     <div class="col-9">
-        <div *ngFor="let item of card; let indx = index" class="card-frame">
+        <div *ngFor="let item of card; let indx=index" class="card-frame">
             <div class="card-holder-frame" [class.active]="item.checked">
                 <div class="card-holder">
                     <div class="check-holder">
                         <label class="container1">
-                            <input
-                                (change)="changeChatBox($event, indx)"
-                                [checked]="item.checked"
-                                type="checkbox"
-                            />
+                            <input (change)="changeChatBox($event, indx)" [checked]="item.checked" type="checkbox">
                             <span class="checkmark"></span>
-                        </label>
-                        <div class="check-title">{{ item.title }}</div>
+                        </label>                       
+                         <div class="check-title">{{item.title}}</div>
                     </div>
                     <div class="dropdown">
-                        <svg-icon
-                            src="assets/svg/truckassist-table/dropdown/dropdown-select.svg"
-                        ></svg-icon>
-                    </div>
+                        <svg-icon src="assets/svg/truckassist-table/dropdown/dropdown-select.svg"></svg-icon>
+                    </div>    
                 </div>
                 <div class="card-holder padding-between">
-                    <div class="name">{{ item.name }}</div>
-                    <div class="name miles">{{ item.miles }} miles</div>
+                    <div class="name">{{item.name}}</div>
+                    <div class="name miles">{{item.miles}} miles</div>
                 </div>
                 <div class="card-holder">
                     <div class="check-holder">
                         <div class="count-box">1</div>
-                        <div class="name name-padding">{{ item.pickup }}</div>
+                        <div class="name name-padding">{{item.pickup}}</div>
                     </div>
                     <div class="check-holder">
                         <div class="count-box different-bcg">4</div>
-                        <div class="name name-padding">{{ item.delivery }}</div>
+                        <div class="name name-padding">{{item.delivery}}</div>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-<div
+ <div
     #t2="ngbPopover"
     [ngbPopover]="customPopover"
     [placement]="placement"
@@ -10,10 +10,10 @@
     (hidden)="onFilterClose()"
     (shown)="onFilterShown()"
     [container]="'body'"
->
+  >
     <ng-content select="[mainContent]"></ng-content>
-</div>
-<!--- comment -->
-<ng-template #customPopover let-data="data">
+  </div>
+  <!--- comment -->
+  <ng-template #customPopover let-data="data">
     <ng-content select="[popoverContent]"></ng-content>
-</ng-template>
+  </ng-template>

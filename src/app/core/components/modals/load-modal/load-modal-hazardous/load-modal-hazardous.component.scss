@@ -6,303 +6,303 @@ $white: #ffffff;
 $yellow: #ffcb86;
 
 .load-m-hazardous-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding-bottom: 0px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-bottom: 0px;
 
-    overflow: hidden;
-    overflow-y: scroll !important;
-    scrollbar-width: none !important; /* Firefox */
+  overflow: hidden;
+  overflow-y: scroll !important;
+  scrollbar-width: none !important; /* Firefox */
 
-    &::-webkit-scrollbar {
-        width: 3px;
-    }
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
 
-    &::-webkit-scrollbar-thumb {
-        background-color: transparent;
-        border: 6px solid transparent;
-        border-radius: 1px;
-    }
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border: 6px solid transparent;
+    border-radius: 1px;
+  }
 
-    &::-webkit-scrollbar-track {
-        padding: 0;
-        position: relative;
-        right: 0;
-        top: 0;
-        background: transparent;
-    }
+  &::-webkit-scrollbar-track {
+    padding: 0;
+    position: relative;
+    right: 0;
+    top: 0;
+    background: transparent;
+  }
 
-    &::-moz-selection {
+  &::-moz-selection {
+    background-color: $container-color-20;
+    color: $container-color;
+  }
+
+  &-title {
+    height: 34px;
+    padding: 6px 12px;
+    border-radius: 2px;
+    background-color: $container-background-color;
+    color: $container-color;
+    display: grid;
+    grid-template-columns: 1fr 22px;
+    align-items: center;
+    text-align: center;
+
+    .load-m-hazardous-title {
+      margin: 0;
+      padding: 0;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 18px;
+
+      &::-moz-selection {
         background-color: $container-color-20;
         color: $container-color;
+      }
+
+      &::selection {
+        background-color: $container-color-20;
+        color: $container-color;
+      }
     }
 
-    &-title {
-        height: 34px;
-        padding: 6px 12px;
-        border-radius: 2px;
-        background-color: $container-background-color;
-        color: $container-color;
-        display: grid;
-        grid-template-columns: 1fr 22px;
-        align-items: center;
-        text-align: center;
+    .load-m-hazardous-title-close {
+      line-height: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
 
-        .load-m-hazardous-title {
+      &:hover {
+        svg {
+          path {
+            fill: $container-x-close !important;
+          }
+        }
+      }
+    }
+
+    // Container Classes
+    &.segregation-title-container,
+    &.additional-title-container {
+      margin: 10px 0px 16px 0px;
+    }
+
+    &.compatibility-title-container {
+      margin: 10px 0px 20px 0px;
+    }
+  }
+
+  &-explanations {
+    margin-top: 12px;
+
+    .load-m-hazardous-explanation {
+      margin-bottom: 12px;
+
+      // Main
+      &-main,
+      &-main-segregation-table {
+        display: grid;
+        grid-template-columns: 26px 1fr;
+        grid-template-rows: auto;
+        -moz-column-gap: 6px;
+        column-gap: 6px;
+        align-items: center;
+        margin-bottom: 4px;
+
+        &-type,
+        &-tableContext,
+        &-empty {
+          border-radius: 2px;
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          background-color: $container-background-color;
+
+          width: 100%;
+          height: 100%;
+          padding: 10px 0px;
+          padding-left: 1px;
+
+          p {
             margin: 0;
             padding: 0;
-            font-weight: 700;
-            font-size: 14px;
-            line-height: 18px;
+            color: $container-color;
+            font-size: 12px;
+            line-height: 15px;
+            font-weight: 600;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+          }
+        }
+
+        &-tableContext {
+          padding: 5px 0px;
+          padding-left: 1px;
+        }
+
+        &-title {
+          border-radius: 2px;
+          background-color: $container-background-color;
+
+          width: 100%;
+          height: 100%;
+          padding: 10px 12px;
+
+          &-no-mb {
+            margin-bottom: 0px !important;
+          }
+
+          p {
+            margin: 0;
+            padding: 0;
+            color: $container-color;
+            font-size: 12px;
+            line-height: 15px;
+            font-weight: 400;
 
             &::-moz-selection {
-                background-color: $container-color-20;
-                color: $container-color;
+              color: $container-color;
+              background-color: $container-color-20;
             }
 
             &::selection {
-                background-color: $container-color-20;
-                color: $container-color;
+              color: $container-color;
+              background-color: $container-color-20;
             }
+          }
         }
 
-        .load-m-hazardous-title-close {
-            line-height: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
+        // Custom Class For Explanation
+        &-no-mb {
+          margin-bottom: 0px !important;
+        }
+      }
 
-            &:hover {
-                svg {
-                    path {
-                        fill: $container-x-close !important;
-                    }
-                }
+      // Segregation
+      &-main-segregation-table {
+        grid-template-columns: 26px 30px 1fr;
+
+        .load-m-hazardous-explanation-main-tableContext {
+          svg-icon {
+            width: 20px;
+            height: 18px;
+
+            svg {
+              width: 100%;
+              height: 100%;
             }
+          }
+
+          .tableContext-text {
+            color: $white;
+            background-color: $yellow;
+            width: 20px;
+            height: 18px;
+            border-radius: 2px;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 2px 6px;
+            text-align: center;
+          }
+
+          &.custom-hazardous-padding-top {
+            padding: 9px 0px !important;
+            padding-left: 1px !important;
+          }
+        }
+      }
+
+      // Sub Main
+      &-subMain {
+        display: grid;
+        grid-template-columns: repeat(2, 26px) 1fr;
+        grid-template-rows: auto;
+        -moz-column-gap: 6px;
+        column-gap: 6px;
+        align-items: center;
+        margin-bottom: 4px;
+
+        &-type,
+        &-empty {
+          border-radius: 2px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: $container-background-color;
+
+          width: 100%;
+          height: 100%;
+          padding-left: 2px;
+
+          p {
+            margin: 0;
+            padding: 0;
+            color: $container-color;
+            font-size: 12px;
+            font-weight: 600;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+          }
         }
 
-        // Container Classes
-        &.segregation-title-container,
-        &.additional-title-container {
-            margin: 10px 0px 16px 0px;
-        }
+        &-title {
+          border-radius: 2px;
+          background-color: $container-background-color;
 
-        &.compatibility-title-container {
-            margin: 10px 0px 20px 0px;
+          width: 100%;
+          height: 100%;
+          padding: 9px 12px;
+
+          p {
+            margin: 0;
+            padding: 0;
+            color: $container-color;
+            font-size: 12px;
+            line-height: 15px;
+            font-weight: 400;
+            &::-moz-selection {
+              color: $container-color;
+              background-color: $container-color-20;
+            }
+
+            &::selection {
+              color: $container-color;
+              background-color: $container-color-20;
+            }
+          }
         }
+      }
+
+      // Custom Class For Explanation
+      &-no-mb {
+        margin-bottom: 0px !important;
+      }
     }
 
-    &-explanations {
-        margin-top: 12px;
-
-        .load-m-hazardous-explanation {
-            margin-bottom: 12px;
-
-            // Main
-            &-main,
-            &-main-segregation-table {
-                display: grid;
-                grid-template-columns: 26px 1fr;
-                grid-template-rows: auto;
-                -moz-column-gap: 6px;
-                column-gap: 6px;
-                align-items: center;
-                margin-bottom: 4px;
-
-                &-type,
-                &-tableContext,
-                &-empty {
-                    border-radius: 2px;
-                    display: flex;
-                    align-items: flex-start;
-                    justify-content: center;
-                    background-color: $container-background-color;
-
-                    width: 100%;
-                    height: 100%;
-                    padding: 10px 0px;
-                    padding-left: 1px;
-
-                    p {
-                        margin: 0;
-                        padding: 0;
-                        color: $container-color;
-                        font-size: 12px;
-                        line-height: 15px;
-                        font-weight: 600;
-                        -webkit-user-select: none;
-                        -moz-user-select: none;
-                        -ms-user-select: none;
-                        user-select: none;
-                    }
-                }
-
-                &-tableContext {
-                    padding: 5px 0px;
-                    padding-left: 1px;
-                }
-
-                &-title {
-                    border-radius: 2px;
-                    background-color: $container-background-color;
-
-                    width: 100%;
-                    height: 100%;
-                    padding: 10px 12px;
-
-                    &-no-mb {
-                        margin-bottom: 0px !important;
-                    }
-
-                    p {
-                        margin: 0;
-                        padding: 0;
-                        color: $container-color;
-                        font-size: 12px;
-                        line-height: 15px;
-                        font-weight: 400;
-
-                        &::-moz-selection {
-                            color: $container-color;
-                            background-color: $container-color-20;
-                        }
-
-                        &::selection {
-                            color: $container-color;
-                            background-color: $container-color-20;
-                        }
-                    }
-                }
-
-                // Custom Class For Explanation
-                &-no-mb {
-                    margin-bottom: 0px !important;
-                }
-            }
-
-            // Segregation
-            &-main-segregation-table {
-                grid-template-columns: 26px 30px 1fr;
-
-                .load-m-hazardous-explanation-main-tableContext {
-                    svg-icon {
-                        width: 20px;
-                        height: 18px;
-
-                        svg {
-                            width: 100%;
-                            height: 100%;
-                        }
-                    }
-
-                    .tableContext-text {
-                        color: $white;
-                        background-color: $yellow;
-                        width: 20px;
-                        height: 18px;
-                        border-radius: 2px;
-                        font-size: 14px;
-                        font-weight: 700;
-                        padding: 2px 6px;
-                        text-align: center;
-                    }
-
-                    &.custom-hazardous-padding-top {
-                        padding: 9px 0px !important;
-                        padding-left: 1px !important;
-                    }
-                }
-            }
-
-            // Sub Main
-            &-subMain {
-                display: grid;
-                grid-template-columns: repeat(2, 26px) 1fr;
-                grid-template-rows: auto;
-                -moz-column-gap: 6px;
-                column-gap: 6px;
-                align-items: center;
-                margin-bottom: 4px;
-
-                &-type,
-                &-empty {
-                    border-radius: 2px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: $container-background-color;
-
-                    width: 100%;
-                    height: 100%;
-                    padding-left: 2px;
-
-                    p {
-                        margin: 0;
-                        padding: 0;
-                        color: $container-color;
-                        font-size: 12px;
-                        font-weight: 600;
-                        -webkit-user-select: none;
-                        -moz-user-select: none;
-                        -ms-user-select: none;
-                        user-select: none;
-                    }
-                }
-
-                &-title {
-                    border-radius: 2px;
-                    background-color: $container-background-color;
-
-                    width: 100%;
-                    height: 100%;
-                    padding: 9px 12px;
-
-                    p {
-                        margin: 0;
-                        padding: 0;
-                        color: $container-color;
-                        font-size: 12px;
-                        line-height: 15px;
-                        font-weight: 400;
-                        &::-moz-selection {
-                            color: $container-color;
-                            background-color: $container-color-20;
-                        }
-
-                        &::selection {
-                            color: $container-color;
-                            background-color: $container-color-20;
-                        }
-                    }
-                }
-            }
-
-            // Custom Class For Explanation
-            &-no-mb {
-                margin-bottom: 0px !important;
-            }
-        }
-
-        // Custom Class For Explanations
-        &-mt-33 {
-            margin-top: 33px !important;
-        }
-
-        &-mt-26 {
-            margin-top: 26px !important;
-        }
-
-        &-mt-0 {
-            margin-top: 0px !important;
-        }
+    // Custom Class For Explanations
+    &-mt-33 {
+      margin-top: 33px !important;
     }
 
-    .load-m-hazardous-segregation-table,
-    .load-m-hazardous-compatibility-table {
-        align-self: center;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
+    &-mt-26 {
+      margin-top: 26px !important;
     }
+
+    &-mt-0 {
+      margin-top: 0px !important;
+    }
+  }
+
+  .load-m-hazardous-segregation-table,
+  .load-m-hazardous-compatibility-table {
+    align-self: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 }

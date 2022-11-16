@@ -1,1558 +1,1371 @@
 <div
-    class="user-icon"
-    app-autoclose-popover
-    [customClass]="'filterpopovermain'"
-    [placement]="'bottom-left'"
-    autoClose="outside"
-    (closeFilter)="onFilterClose()"
-    (openFilter)="onFilterShown()"
-    [ngClass]="{
-        'active-options': activeFilter,
-        'clear-colors': hoverClose,
-        'filter-active-colors':
-            filterActiveArray.length > 0 ||
-            selectedTimeValue != '' ||
-            rangeValue > 0 ||
-            totalFiltersNum > 0 ||
-            longVal != 0 ||
-            maxValueSet != maxValueRange ||
-            minValueSet != minValueRange ||
-            singleFormActive
-    }"
+  class="user-icon"
+  app-autoclose-popover
+  [customClass]="'filterpopovermain'"
+  [placement]="'bottom-left'"
+  autoClose="outside"
+  (closeFilter)="onFilterClose()"
+  (openFilter)="onFilterShown()"
+  [ngClass]="{
+    'active-options': activeFilter,
+    'clear-colors': hoverClose,
+    'filter-active-colors':
+      filterActiveArray.length > 0 ||
+      selectedTimeValue != '' ||
+      rangeValue > 0 ||
+      totalFiltersNum > 0 ||
+      longVal != 0 ||
+      maxValueSet != maxValueRange ||
+      minValueSet != minValueRange ||
+      singleFormActive
+  }"
 >
-    <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
+  <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
+  <div mainContent 
+    ngbTooltip
+    mainTooltip="{{ !hoverClose ? totalFiltersNum > 0  ? filterTitle + ' ' + '</br>' + totalFiltersNum + ' Selected' : filterTitle  : 'Clear ' + filterTitle }}"
+    position="bottom"
+    tooltipBackground= "{{ !hoverClose ? '#424242' : '#EF5350' }}"
+    tooltipTextAlign="center"
+    class="main-icon-holder"
+  >
+    <svg-icon [src]="icon | taSvg: 'common'"></svg-icon>
+    <div *ngIf="filterActiveArray.length > 0" class="active-filter-num">
+      {{ filterActiveArray.length }}
+    </div>
+    <div *ngIf=" totalFiltersNum > 0 " class="active-filter-num">
+      {{totalFiltersNum}}
+    </div>
     <div
-        mainContent
-        ngbTooltip
-        mainTooltip="{{
-            !hoverClose
-                ? totalFiltersNum > 0
-                    ? filterTitle +
-                      ' ' +
-                      '</br>' +
-                      totalFiltersNum +
-                      ' Selected'
-                    : filterTitle
-                : 'Clear ' + filterTitle
-        }}"
-        position="bottom"
-        tooltipBackground="{{ !hoverClose ? '#424242' : '#EF5350' }}"
-        tooltipTextAlign="center"
-        class="main-icon-holder"
+      *ngIf="
+        filterActiveArray.length > 0 ||
+        selectedTimeValue != '' ||
+        totalFiltersNum > 0 ||
+        rangeValue > 0 ||
+        moneyFilterStatus ||
+        longVal != 0 ||
+        maxValueSet != maxValueRange ||
+        minValueSet != minValueRange
+      "
+      class="active-filter-num clear-filter"
+      (mouseenter)="hoverClose = true"
+      (mouseleave)="hoverClose = false"
+      (click)="clearAll($event, true)"
     >
-        <svg-icon [src]="icon | taSvg: 'common'"></svg-icon>
-        <div *ngIf="filterActiveArray.length > 0" class="active-filter-num">
-            {{ filterActiveArray.length }}
-        </div>
-        <div *ngIf="totalFiltersNum > 0" class="active-filter-num">
-            {{ totalFiltersNum }}
-        </div>
-        <div
-            *ngIf="
-                filterActiveArray.length > 0 ||
-                selectedTimeValue != '' ||
-                totalFiltersNum > 0 ||
-                rangeValue > 0 ||
-                moneyFilterStatus ||
-                longVal != 0 ||
-                maxValueSet != maxValueRange ||
-                minValueSet != minValueRange
-            "
-            class="active-filter-num clear-filter"
-            (mouseenter)="hoverClose = true"
-            (mouseleave)="hoverClose = false"
-            (click)="clearAll($event, true)"
-        >
-            <svg-icon
-                src="assets/svg/common/ic_cancel_violation.svg"
-            ></svg-icon>
-        </div>
+      <svg-icon src="assets/svg/common/ic_cancel_violation.svg"></svg-icon>
     </div>
-    <div popoverContent class="main-popover-body">
+  </div>
+  <div popoverContent class="main-popover-body">
+    <div
+      *ngIf="defFilterHolder"
+      class="filter-holder"
+      [class.state-filter]="type == 'stateFilter'"
+      [class.department-filter]="noLeftIcon"
+      [class.status-filter]="type == 'statusFilter'"
+      [class.pm-filter]="leftSideIcon"
+      [class.truck-icon-holder]="largeLeftIcon"
+    >
+      <div class="filter-header filter-text-part" 
+      >
+        <div class="user-filter-box" *ngIf="type != 'stateFilter'">
+          {{ selectedUser.length }}
+        </div>
+        <div class="user-filter-box" *ngIf="type == 'stateFilter'">
+          {{ canadaSelectedStates.length + usaSelectedStates.length }}
+        </div>
+        <div class="user-title-text counter-padd-title">{{ filterTitle }}</div>
         <div
-            *ngIf="defFilterHolder"
-            class="filter-holder"
-            [class.state-filter]="type == 'stateFilter'"
-            [class.department-filter]="noLeftIcon"
-            [class.status-filter]="type == 'statusFilter'"
-            [class.pm-filter]="leftSideIcon"
-            [class.truck-icon-holder]="largeLeftIcon"
+          class="search-icon-holder"
+          *ngIf="searchState"
+          (click)="showSearch()"
         >
-            <div class="filter-header filter-text-part">
-                <div class="user-filter-box" *ngIf="type != 'stateFilter'">
-                    {{ selectedUser.length }}
-                </div>
-                <div class="user-filter-box" *ngIf="type == 'stateFilter'">
-                    {{ canadaSelectedStates.length + usaSelectedStates.length }}
-                </div>
-                <div class="user-title-text counter-padd-title">
-                    {{ filterTitle }}
-                </div>
-                <div
-                    class="search-icon-holder"
-                    *ngIf="searchState"
-                    (click)="showSearch()"
-                >
-                    <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
-                </div>
-            </div>
-            <div
-                class="filter-header search-input-header"
-                [class.hidenClass]="!expandSearch"
-                [formGroup]="searchForm"
-            >
-                <app-ta-input
-                    class="input-form-holder"
-                    formControlName="search"
-                    [inputConfig]="{
-                        name: 'search',
-                        type: 'text',
-                        label: 'Search ' + filterTitle.split(' ')[0] + ' ',
-                        placeholderIcon: 'ic_search',
-                        customClass: 'filter-search-input line-input-26',
-                        placeholderInsteadOfLabel: true,
-                        blackInput: true
-                    }"
-                ></app-ta-input>
+          <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+        </div>
+      </div>
+      <div
+        class="filter-header search-input-header" [class.hidenClass]="!expandSearch"    
+        [formGroup]="searchForm"
+      >
+        <app-ta-input
+          class="input-form-holder"
+          formControlName="search"
+          [inputConfig]="{
+            name: 'search',
+            type: 'text',
+            label: 'Search ' + filterTitle.split(' ')[0] + ' ',
+            placeholderIcon: 'ic_search',
+            customClass: 'filter-search-input line-input-26',
+            placeholderInsteadOfLabel: true,
+            blackInput: true
+          }"
+        ></app-ta-input>
 
-                <div
-                    *ngIf="searchInputValue.length == 0"
-                    ngbTooltip
-                    mainTooltip="Close"
-                    position="top"
-                    tooltipBackground="#6C6C6C"
-                    (click)="showSearch('hide')"
-                    class="close-input-search"
-                >
-                    <svg-icon
-                        src="assets/svg/truckassist-table/x.svg"
-                    ></svg-icon>
-                </div>
-            </div>
-            <div class="border-filter"></div>
-            <div class="selected-user-holder" *ngIf="type != 'stateFilter'">
-                <div
-                    *ngFor="let item of selectedUser; let indx = index"
-                    class="user-main-holder"
-                    [@inOutAnimation]="'in'"
-                    (click)="removeFromSelectedUser(item, indx)"
-                >
-                    <div class="user-profile-img" *ngIf="type == 'userFilter'">
-                        <app-profile-images
-                            *ngIf="!item.avatar"
-                            [indx]="indx"
-                            [size]="'small'"
-                            [type]="'user'"
-                            [name]="item.name"
-                        ></app-profile-images>
-                        <div
-                            class="user_avatar"
-                            *ngIf="item.avatar"
-                            [ngStyle]="
-                                item.avatar && {
-                                    'background-image':
-                                        'url(' + item.avatar + ')'
-                                }
-                            "
-                        ></div>
-                    </div>
-                    <div
-                        class="user-profile-img"
-                        *ngIf="type == 'driverFilter'"
-                    >
-                        <app-profile-images
-                            *ngIf="!item.avatar"
-                            [indx]="indx"
-                            [size]="'small'"
-                            [type]="'driver'"
-                            [name]="item.name"
-                        >
-                        </app-profile-images>
-                        <div
-                            class="user_avatar driver_avatar"
-                            *ngIf="item.avatar"
-                            [ngStyle]="
-                                item.avatar && {
-                                    'background-image':
-                                        'url(' + item.avatar + ')'
-                                }
-                            "
-                        ></div>
-                    </div>
-                    <div
-                        class="user-profile-img"
-                        *ngIf="type == 'statusFilter'"
-                    >
-                        <div
-                            class="status-circle"
-                            [ngStyle]="{ backgroundColor: item.color }"
-                        ></div>
-                    </div>
-                    <div
-                        class="user-profile-img selected-filter-icon"
-                        *ngIf="leftSideIcon"
-                    >
-                        <svg-icon
-                            src="{{
-                                item.activeIcon ? item.activeIcon : item.icon
-                            }}"
-                        ></svg-icon>
-                    </div>
-                    <div class="selected-user-frame">
-                        <div class="selected-name-text">
-                            <span> {{ item.name }} </span>
-                        </div>
-                        <div class="selected-icon">
-                            <svg-icon
-                                src="assets/svg/common/ic_confirm.svg"
-                            ></svg-icon>
-                        </div>
-                        <div
-                            (click)="removeFromSelectedUser(item, indx)"
-                            class="icon-delete"
-                        >
-                            <div class="icon-delete-hold"></div>
-                            <svg-icon
-                                src="assets/svg/truckassist-table/x.svg"
-                            ></svg-icon>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="selected-user-holder" *ngIf="type == 'stateFilter'">
-                <div
-                    class="states-selected usa-selected-holder"
-                    *ngIf="usaSelectedStates.length > 0"
-                    [@stateHeader]="'in'"
-                >
-                    <div class="state-name-holder">UNITED STATES</div>
-                    <div
-                        *ngFor="let item of usaSelectedStates; let indx = index"
-                        class="user-main-holder holder-bottom-margin"
-                        [@inOutAnimation]="'in'"
-                        (click)="removeFromSelectedUser(item, indx)"
-                    >
-                        <div
-                            class="user-profile-img active state-border-radius"
-                        >
-                            <div class="state-short-holder">
-                                {{ item.short }}
-                            </div>
-                        </div>
-                        <div class="selected-user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
-                            <div class="selected-icon">
-                                <svg-icon
-                                    src="assets/svg/common/ic_confirm.svg"
-                                ></svg-icon>
-                            </div>
-                            <div class="icon-delete">
-                                <svg-icon
-                                    src="assets/svg/truckassist-table/x.svg"
-                                ></svg-icon>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    class="states-selected"
-                    *ngIf="canadaSelectedStates.length > 0"
-                    [@stateHeader]="'in'"
-                >
-                    <div class="state-name-holder">CANADA</div>
-                    <div
-                        *ngFor="
-                            let item of canadaSelectedStates;
-                            let indx = index
-                        "
-                        class="user-main-holder"
-                        (click)="removeFromSelectedUser(item, indx, 'canada')"
-                    >
-                        <div class="user-profile-img active">
-                            <div class="state-short-holder">
-                                {{ item.short }}
-                            </div>
-                        </div>
-                        <div class="selected-user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
-                            <div class="selected-icon">
-                                <svg-icon
-                                    src="assets/svg/common/ic_confirm.svg"
-                                ></svg-icon>
-                            </div>
-                            <div class="icon-delete">
-                                <svg-icon
-                                    src="assets/svg/truckassist-table/x.svg"
-                                ></svg-icon>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    *ngIf="
-                        canadaSelectedStates.length > 0 ||
-                        usaSelectedStates.length > 0
-                    "
-                    class="border-filter border-thrird-margin"
-                ></div>
-            </div>
-            <div
-                *ngIf="selectedUser.length > 0"
-                class="border-filter border-thrird-margin"
-            ></div>
-            <div class="user-holder" *ngIf="type == 'userFilter'">
-                <div
-                    *ngFor="let item of unselectedUser; let indx = index"
-                    class="user-frame-holder"
-                >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder"
-                    >
-                        <div class="user-profile-img">
-                            <app-profile-images
-                                *ngIf="!item.avatar"
-                                [indx]="indx"
-                                [size]="'small'"
-                                [type]="'user'"
-                                [name]="item.name"
-                            >
-                            </app-profile-images>
-                            <div
-                                class="user_avatar"
-                                *ngIf="item.avatar"
-                                [ngStyle]="
-                                    item.avatar && {
-                                        'background-image':
-                                            'url(' + item.avatar + ')'
-                                    }
-                                "
-                            ></div>
-                        </div>
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-holder" *ngIf="type == 'departmentFilter'">
-                <div
-                    *ngFor="let item of departmentArray; let indx = index"
-                    class="user-frame-holder"
-                >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder"
-                    >
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <div class="selected-name-text">
-                                    <span> {{ item.name }} </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-holder" *ngIf="type == 'statusFilter'">
-                <div
-                    class="status-data-main-holder"
-                    *ngIf="subType == 'pendingStatus' || subType == 'all'"
-                >
-                    <div
-                        *ngFor="
-                            let item of pendingStatusArray;
-                            let indx = index
-                        "
-                        class="user-frame-holder"
-                    >
-                        <div
-                            [@inOutAnimation]="'in'"
-                            *ngIf="!item.hidden && !item.isSelected"
-                            (click)="addToSelectedUser(item, indx, 'pending')"
-                            class="user-main-holder"
-                        >
-                            <div
-                                class="user-profile-img"
-                                *ngIf="type == 'statusFilter'"
-                            >
-                                <div
-                                    class="status-circle"
-                                    [ngStyle]="{ backgroundColor: item.color }"
-                                ></div>
-                            </div>
-                            <div class="user-frame">
-                                <div class="selected-name-text">
-                                    <span> {{ item.name }} </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="border-filter" *ngIf="subType == 'all'"></div>
-                <div
-                    class="status-data-main-holder"
-                    *ngIf="subType == 'activeStatus' || subType == 'all'"
-                >
-                    <div
-                        *ngFor="let item of activeStatusArray; let indx = index"
-                        class="user-frame-holder"
-                    >
-                        <div
-                            [@inOutAnimation]="'in'"
-                            *ngIf="!item.hidden && !item.isSelected"
-                            (click)="addToSelectedUser(item, indx, 'active')"
-                            class="user-main-holder"
-                        >
-                            <div
-                                class="user-profile-img"
-                                [ngStyle]="{ backgroundColor: item.color }"
-                            ></div>
-                            <div class="user-frame">
-                                <div class="selected-name-text">
-                                    <span> {{ item.name }} </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="border-filter" *ngIf="subType == 'all'"></div>
-                <div
-                    class="status-data-main-holder"
-                    *ngIf="subType == 'closedStatus' || subType == 'all'"
-                >
-                    <div
-                        *ngFor="let item of closedStatusArray; let indx = index"
-                        class="user-frame-holder"
-                    >
-                        <div
-                            [@inOutAnimation]="'in'"
-                            *ngIf="!item.hidden && !item.isSelected"
-                            (click)="addToSelectedUser(item, indx, 'closed')"
-                            class="user-main-holder"
-                        >
-                            <div
-                                class="user-profile-img"
-                                [ngStyle]="{ backgroundColor: item.color }"
-                            ></div>
-                            <div class="user-frame">
-                                <div class="selected-name-text">
-                                    <span> {{ item.name }} </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-holder" *ngIf="type == 'pmFilter'">
-                <div
-                    *ngFor="let item of pmFilterArray; let indx = index"
-                    class="user-frame-holder"
-                >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder"
-                    >
-                        <div class="user-profile-img">
-                            <svg-icon src="{{ item.icon }}"></svg-icon>
-                        </div>
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-holder" *ngIf="type == 'categoryFuelFilter'">
-                <div
-                    *ngFor="let item of categoryFuelArray; let indx = index"
-                    class="user-frame-holder"
-                >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder"
-                    >
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-holder" *ngIf="type == 'categoryRepairFilter'">
-                <div
-                    *ngFor="let item of categoryRepairArray; let indx = index"
-                    class="user-frame-holder"
-                >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder"
-                    >
-                        <div class="user-profile-img">
-                            <svg-icon src="{{ item.icon }}"></svg-icon>
-                        </div>
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-holder" *ngIf="type == 'truckFilter'">
-                <div
-                    *ngFor="let item of truckArray; let indx = index"
-                    class="user-frame-holder"
-                >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder"
-                    >
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-holder" *ngIf="type == 'trailerFilter'">
-                <div
-                    *ngFor="let item of trailerArray; let indx = index"
-                    class="user-frame-holder"
-                >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder"
-                    >
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-holder" *ngIf="type == 'fuelStopFilter'">
-                <div
-                    *ngFor="let item of fuelStopArray; let indx = index"
-                    class="user-frame-holder"
-                >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder"
-                    >
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-holder" *ngIf="type == 'brokerFilter'">
-                <div
-                    *ngFor="let item of brokerArray; let indx = index"
-                    class="user-frame-holder"
-                >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder"
-                    >
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-holder" *ngIf="type == 'driverFilter'">
-                <div
-                    *ngFor="let item of driverArray; let indx = index"
-                    class="user-frame-holder"
-                >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder"
-                    >
-                        <div class="user-profile-img">
-                            <app-profile-images
-                                *ngIf="!item.avatar"
-                                [indx]="indx"
-                                [size]="'small'"
-                                [type]="'driver'"
-                                [name]="item.name"
-                            >
-                            </app-profile-images>
-                            <div
-                                class="user_avatar driver_avatar"
-                                *ngIf="item.avatar"
-                                [ngStyle]="
-                                    item.avatar && {
-                                        'background-image':
-                                            'url(' + item.avatar + ')'
-                                    }
-                                "
-                            ></div>
-                        </div>
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-holder" *ngIf="type == 'truckTypeFilter'">
-                <div
-                    *ngFor="let item of truckTypeArray; let indx = index"
-                    class="user-frame-holder"
-                >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder"
-                    >
-                        <div class="type-icon">
-                            <svg-icon src="{{ item.icon }}"></svg-icon>
-                        </div>
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-holder" *ngIf="type == 'trailerTypeFilter'">
-                <div
-                    *ngFor="let item of trailerTypeArray; let indx = index"
-                    class="user-frame-holder"
-                >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder"
-                    >
-                        <div class="type-icon">
-                            <svg-icon src="{{ item.icon }}"></svg-icon>
-                        </div>
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-holder" *ngIf="type == 'stateFilter'">
-                <div class="state-name-holder sticky-head-title">
-                    UNITED STATES
-                </div>
-                <div
-                    *ngFor="let item of usaStates; let indx = index"
-                    class="user-frame-holder"
-                >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder state-main-holder"
-                    >
-                        <div class="user-profile-img">
-                            <div class="state-short-holder">
-                                {{ item.short }}
-                            </div>
-                        </div>
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="state-name-holder canada-sticky-head-title">
-                    CANADA
-                </div>
-                <div
-                    *ngFor="let item of canadaStates; let indx = index"
-                    class="user-frame-holder"
-                >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx, 'canada')"
-                        class="user-main-holder state-main-holder"
-                    >
-                        <div class="user-profile-img">
-                            <div class="state-short-holder">
-                                {{ item.short }}
-                            </div>
-                        </div>
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div
-                class="border-filter"
-                *ngIf="
-                    !legendView && pmFilterArray.length > selectedUser.length
-                "
-            ></div>
-            <div class="buttons-holder" *ngIf="!legendView">
-                <div
-                    (click)="clearAll($event)"
-                    class="button-clear"
-                    [class.active]="
-                        selectedUser.length > 0 ||
-                        filterActiveArray.length > 0 ||
-                        canadaSelectedStates.length > 0 ||
-                        usaSelectedStates.length > 0
-                    "
-                >
-                    Clear All
-                </div>
-                <div
-                    (click)="setFilterValue($event)"
-                    class="button-set"
-                    [class.active]="
-                        (selectedUser.length > 0 ||
-                            filterActiveArray.length > 0 ||
-                            canadaSelectedStates.length > 0 ||
-                            usaSelectedStates.length > 0) &&
-                        setButtonAvailable
-                    "
-                >
-                    Set
-                </div>
-            </div>
+        <div
+          *ngIf="searchInputValue.length == 0"
+          ngbTooltip
+          mainTooltip="Close"
+          position="top"
+          tooltipBackground="#6C6C6C"
+          (click)="showSearch('hide')"
+          class="close-input-search"
+        >
+          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
         </div>
-        <div *ngIf="type == 'timeFilter'" class="time-filter-holder">
-            <div class="time-header">Time Filter</div>
-            <div class="border-filter"></div>
-            <div class="time-items-holder">
-                <div
-                    class="time-items"
-                    [class.active]="selectedTimeValue == 'Today'"
-                    (click)="setTimeValue('Today')"
-                >
-                    Today
-                    <div class="selected-icon">
-                        <svg-icon
-                            src="assets/svg/common/ic_confirm.svg"
-                        ></svg-icon>
-                    </div>
-                    <div class="icon-delete">
-                        <svg-icon
-                            src="assets/svg/truckassist-table/x.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
-                <div
-                    class="time-items"
-                    [class.active]="selectedTimeValue == 'Yesterday'"
-                    (click)="setTimeValue('Yesterday')"
-                >
-                    Yesterday
-                    <div class="selected-icon">
-                        <svg-icon
-                            src="assets/svg/common/ic_confirm.svg"
-                        ></svg-icon>
-                    </div>
-                    <div class="icon-delete">
-                        <svg-icon
-                            src="assets/svg/truckassist-table/x.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
+      </div>
+      <div class="border-filter"></div>
+      <div class="selected-user-holder" *ngIf="type != 'stateFilter'">
+        <div
+          *ngFor="let item of selectedUser; let indx = index"
+          class="user-main-holder"
+          [@inOutAnimation]="'in'"
+          (click)="removeFromSelectedUser(item, indx)"
+        >
+          <div class="user-profile-img" *ngIf="type == 'userFilter'">
+            <app-profile-images *ngIf="!item.avatar"
+              [indx]="indx"
+              [size]="'small'"
+              [type]="'user'"
+              [name]="item.name"
+            ></app-profile-images>
+            <div
+              class="user_avatar"
+              *ngIf="item.avatar"
+              [ngStyle]="item.avatar && { 'background-image': 'url(' + item.avatar + ')' }"
+            ></div>
+          </div>
+          <div class="user-profile-img" *ngIf="type == 'driverFilter'">
+            <app-profile-images *ngIf="!item.avatar"
+              [indx]="indx"
+              [size]="'small'"
+              [type]="'driver'"
+              [name]="item.name"
+            >
+            </app-profile-images>
+            <div
+              class="user_avatar driver_avatar"
+              *ngIf="item.avatar"
+              [ngStyle]="item.avatar && { 'background-image': 'url(' + item.avatar + ')' }"
+            ></div>
+          </div>
+          <div class="user-profile-img" *ngIf="type == 'statusFilter'">
+            <div
+              class="status-circle"
+              [ngStyle]="{ backgroundColor: item.color }"
+            ></div>
+          </div>
+          <div
+            class="user-profile-img selected-filter-icon"
+            *ngIf="leftSideIcon"
+          >
+            <svg-icon src="{{ item.activeIcon ? item.activeIcon : item.icon }}"></svg-icon>
+          </div>
+          <div class="selected-user-frame">
+            <div class="selected-name-text">
+              <span> {{ item.name }} </span> 
             </div>
-            <div class="border-filter time-data-border"></div>
-            <div class="time-items-holder">
-                <div
-                    class="time-items"
-                    [class.active]="selectedTimeValue == 'This week'"
-                    (click)="setTimeValue('This week')"
-                >
-                    This week
-                    <div class="selected-icon">
-                        <svg-icon
-                            src="assets/svg/common/ic_confirm.svg"
-                        ></svg-icon>
-                    </div>
-                    <div class="icon-delete">
-                        <svg-icon
-                            src="assets/svg/truckassist-table/x.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
-                <div
-                    class="time-items"
-                    [class.active]="selectedTimeValue == 'Last week'"
-                    (click)="setTimeValue('Last week')"
-                >
-                    Last week
-                    <div class="selected-icon">
-                        <svg-icon
-                            src="assets/svg/common/ic_confirm.svg"
-                        ></svg-icon>
-                    </div>
-                    <div class="icon-delete">
-                        <svg-icon
-                            src="assets/svg/truckassist-table/x.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
-                <div
-                    class="time-items"
-                    [class.active]="selectedTimeValue == '1 week'"
-                    (click)="setTimeValue('1 week')"
-                >
-                    1 week
-                    <div class="selected-icon">
-                        <svg-icon
-                            src="assets/svg/common/ic_confirm.svg"
-                        ></svg-icon>
-                    </div>
-                    <div class="icon-delete">
-                        <svg-icon
-                            src="assets/svg/truckassist-table/x.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
+            <div class="selected-icon">
+              <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
             </div>
-            <div class="border-filter time-data-border"></div>
-            <div class="time-items-holder">
-                <div
-                    class="time-items"
-                    [class.active]="selectedTimeValue == 'This month'"
-                    (click)="setTimeValue('This month')"
-                >
-                    This month
-                    <div class="selected-icon">
-                        <svg-icon
-                            src="assets/svg/common/ic_confirm.svg"
-                        ></svg-icon>
-                    </div>
-                    <div class="icon-delete">
-                        <svg-icon
-                            src="assets/svg/truckassist-table/x.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
-                <div
-                    class="time-items"
-                    [class.active]="selectedTimeValue == 'Last month'"
-                    (click)="setTimeValue('Last month')"
-                >
-                    Last month
-                    <div class="selected-icon">
-                        <svg-icon
-                            src="assets/svg/common/ic_confirm.svg"
-                        ></svg-icon>
-                    </div>
-                    <div class="icon-delete">
-                        <svg-icon
-                            src="assets/svg/truckassist-table/x.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
-                <div
-                    class="time-items"
-                    [class.active]="selectedTimeValue == '1 month'"
-                    (click)="setTimeValue('1 month')"
-                >
-                    1 month
-                    <div class="selected-icon">
-                        <svg-icon
-                            src="assets/svg/common/ic_confirm.svg"
-                        ></svg-icon>
-                    </div>
-                    <div class="icon-delete">
-                        <svg-icon
-                            src="assets/svg/truckassist-table/x.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
-                <div
-                    class="time-items"
-                    [class.active]="selectedTimeValue == '3 months'"
-                    (click)="setTimeValue('3 months')"
-                >
-                    3 months
-                    <div class="selected-icon">
-                        <svg-icon
-                            src="assets/svg/common/ic_confirm.svg"
-                        ></svg-icon>
-                    </div>
-                    <div class="icon-delete">
-                        <svg-icon
-                            src="assets/svg/truckassist-table/x.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
+            <div
+              (click)="removeFromSelectedUser(item, indx)"
+              class="icon-delete"
+            >
+              <div class="icon-delete-hold"></div>
+              <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
             </div>
-            <div class="border-filter time-data-border"></div>
-            <div class="time-items-holder">
-                <div
-                    class="time-items"
-                    [class.active]="selectedTimeValue == 'This quarter'"
-                    (click)="setTimeValue('This quarter')"
-                >
-                    This quarter
-                    <div class="selected-icon">
-                        <svg-icon
-                            src="assets/svg/common/ic_confirm.svg"
-                        ></svg-icon>
-                    </div>
-                    <div class="icon-delete">
-                        <svg-icon
-                            src="assets/svg/truckassist-table/x.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
-                <div
-                    class="time-items"
-                    [class.active]="selectedTimeValue == 'Last quarter'"
-                    (click)="setTimeValue('Last quarter')"
-                >
-                    Last quarter
-                    <div class="selected-icon">
-                        <svg-icon
-                            src="assets/svg/common/ic_confirm.svg"
-                        ></svg-icon>
-                    </div>
-                    <div class="icon-delete">
-                        <svg-icon
-                            src="assets/svg/truckassist-table/x.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
+          </div>
+        </div>
+      </div>
+      <div class="selected-user-holder" *ngIf="type == 'stateFilter'">
+        <div
+          class="states-selected usa-selected-holder"
+          *ngIf="usaSelectedStates.length > 0"
+          [@stateHeader]="'in'"
+        >
+          <div class="state-name-holder">UNITED STATES</div>
+          <div
+            *ngFor="let item of usaSelectedStates; let indx = index"
+            class="user-main-holder holder-bottom-margin"
+            [@inOutAnimation]="'in'"
+            (click)="removeFromSelectedUser(item, indx)"
+          >
+            <div class="user-profile-img active state-border-radius">
+              <div class="state-short-holder">{{ item.short }}</div>
             </div>
-            <div class="border-filter time-data-border"></div>
-            <div class="time-items-holder">
-                <div
-                    class="time-items"
-                    [class.active]="selectedTimeValue == 'This year'"
-                    (click)="setTimeValue('This year')"
-                >
-                    This year
-                    <div class="selected-icon">
-                        <svg-icon
-                            src="assets/svg/common/ic_confirm.svg"
-                        ></svg-icon>
-                    </div>
-                    <div class="icon-delete">
-                        <svg-icon
-                            src="assets/svg/truckassist-table/x.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
-                <div
-                    class="time-items"
-                    [class.active]="selectedTimeValue == '1 year'"
-                    (click)="setTimeValue('1 year')"
-                >
-                    1 year
-                    <div class="selected-icon">
-                        <svg-icon
-                            src="assets/svg/common/ic_confirm.svg"
-                        ></svg-icon>
-                    </div>
-                    <div class="icon-delete">
-                        <svg-icon
-                            src="assets/svg/truckassist-table/x.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
-                <div
-                    class="time-items"
-                    [class.active]="selectedTimeValue == lastYear"
-                    (click)="setTimeValue(lastYear)"
-                >
-                    {{ lastYear }}
-                    <div class="selected-icon">
-                        <svg-icon
-                            src="assets/svg/common/ic_confirm.svg"
-                        ></svg-icon>
-                    </div>
-                    <div class="icon-delete">
-                        <svg-icon
-                            src="assets/svg/truckassist-table/x.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
-                <div
-                    class="time-items"
-                    [class.active]="selectedTimeValue == last2Years"
-                    (click)="setTimeValue(last2Years)"
-                >
-                    {{ last2Years }}
-                    <div class="selected-icon">
-                        <svg-icon
-                            src="assets/svg/common/ic_confirm.svg"
-                        ></svg-icon>
-                    </div>
-                    <div class="icon-delete">
-                        <svg-icon
-                            src="assets/svg/truckassist-table/x.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
+            <div class="selected-user-frame">
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
+              <div class="selected-icon">
+                <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+              </div>
+              <div
+                class="icon-delete"
+              >
+                <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+              </div>
             </div>
-            <div class="border-filter time-data-border"></div>
-            <div class="time-items-holder">
-                <div
-                    class="time-items"
-                    [class.active]="selectedTimeValue == 'Custom'"
-                    (click)="setTimeValue('Custom')"
-                >
-                    Custom
-                    <div class="selected-icon">
-                        <svg-icon
-                            src="assets/svg/common/ic_confirm.svg"
-                        ></svg-icon>
-                    </div>
-                    <div class="icon-delete">
-                        <svg-icon
-                            src="assets/svg/truckassist-table/x.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
+          </div>
+        </div>
+        <div class="states-selected" 
+          *ngIf="canadaSelectedStates.length > 0"
+          [@stateHeader]="'in'"
+        >
+          <div class="state-name-holder">CANADA</div>
+          <div
+            *ngFor="let item of canadaSelectedStates; let indx = index"
+            class="user-main-holder"
+            (click)="removeFromSelectedUser(item, indx, 'canada')"
+          >
+            <div class="user-profile-img active">
+              <div class="state-short-holder">{{ item.short }}</div>
             </div>
-            <div class="border-filter time-data-border"></div>
-            <div class="buttons-holder">
-                <div
-                    (click)="clearAll($event)"
-                    class="button-clear"
-                    [class.active]="
-                        selectedTimeValue != filterActiveTime ||
-                        selectedTimeValue != ''
-                    "
-                >
-                    Clear
-                </div>
-                <div
-                    (click)="setFilterValue($event)"
-                    class="button-set"
-                    [class.active]="selectedTimeValue != filterActiveTime"
-                >
-                    Set
-                </div>
+            <div class="selected-user-frame">
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
+              <div class="selected-icon">
+                <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+              </div>
+              <div
+                class="icon-delete"
+              >
+                <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+              </div>
             </div>
+          </div>
         </div>
         <div
-            *ngIf="moneyFilter"
-            class="filter-holder money-filter"
-            [class.multiMoneyForm]="subType == 'all'"
-            [formGroup]="moneyForm"
+          *ngIf="
+            canadaSelectedStates.length > 0 || usaSelectedStates.length > 0
+          "
+          class="border-filter border-thrird-margin"
+        ></div>
+      </div>
+      <div
+        *ngIf="selectedUser.length > 0"
+        class="border-filter border-thrird-margin"
+      ></div>
+      <div class="user-holder" *ngIf="type == 'userFilter'">
+        <div
+          *ngFor="let item of unselectedUser; let indx = index"
+          class="user-frame-holder"
         >
-            <div class="filter-header">
-                <div class="user-title-text">Money Filter</div>
+          <div
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
+            (click)="addToSelectedUser(item, indx)"
+            class="user-main-holder"
+          >
+            <div class="user-profile-img">
+              <app-profile-images *ngIf="!item.avatar"
+                [indx]="indx"
+                [size]="'small'"
+                [type]="'user'"
+                [name]="item.name"
+              >
+              </app-profile-images>
+              <div
+                class="user_avatar"
+                *ngIf="item.avatar"
+                [ngStyle]="item.avatar && { 'background-image': 'url(' + item.avatar + ')' }"
+              ></div>
             </div>
-            <div class="border-filter money-top-border-magin"></div>
-            <div class="single-form-holder" *ngIf="subType != 'all'">
-                <div class="money-main-holder single-money-main">
-                    <div class="money-value-holder">
-                        <app-ta-input
-                            formControlName="singleFrom"
-                            [inputConfig]="{
-                                name: 'singleFrom',
-                                type: 'number',
-                                label: 'From',
-                                placeholderIcon: 'dollar',
-                                customClass: 'line-input-26'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                    <div
-                        class="money-value-holder"
-                        [class.errorForm]="singleFormError"
-                    >
-                        <app-ta-input
-                            formControlName="singleTo"
-                            [inputConfig]="{
-                                name: 'singleTo',
-                                type: 'number',
-                                label: 'To',
-                                placeholderIcon: 'dollar',
-                                customClass: 'line-input-26'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                </div>
+            <div class="user-frame">
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
             </div>
-            <div class="multi-form-holder" *ngIf="subType == 'all'">
-                <div class="form-header" [class.hiddenFormTitle]="!showPart1">
-                    <div class="form-name" *ngIf="!fuelType">
-                        Invoice Ageing
-                    </div>
-                    <div class="form-name" *ngIf="fuelType">Last Price</div>
-                    <div
-                        class="clear-money-form"
-                        *ngIf="
-                            moneyForm.value.multiFromFirstFrom &&
-                            moneyForm.value.multiFromFirstTo
-                        "
-                        (click)="clearForm('multiFromFirst')"
-                    >
-                        CLEAR
-                    </div>
-                    <div
-                        class="hide-money-form"
-                        [ngClass]="{
-                            svg_rotate: !showPart1,
-                            rotate_back: showPart1
-                        }"
-                        (click)="hideFormPart('part1')"
-                    >
-                        <svg-icon
-                            src="assets/svg/common/calendar/arrow-left.svg"
-                        ></svg-icon>
-                    </div>
+          </div>
+        </div>
+      </div>
+      <div class="user-holder" *ngIf="type == 'departmentFilter'">
+        <div
+          *ngFor="let item of departmentArray; let indx = index"
+          class="user-frame-holder"
+        >
+          <div
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
+            (click)="addToSelectedUser(item, indx)"
+            class="user-main-holder"
+          >
+            <div class="user-frame">
+              <div class="selected-name-text">
+                <div class="selected-name-text">
+                  <span> {{ item.name }} </span>
                 </div>
-                <div
-                    class="money-main-holder"
-                    [@closeForm]="showPart1 ? 'true' : 'false'"
-                >
-                    <div class="money-value-holder">
-                        <app-ta-input
-                            formControlName="multiFromFirstFrom"
-                            [inputConfig]="{
-                                name: 'multiFromFirstFrom',
-                                type: 'number',
-                                label: 'From',
-                                placeholderIcon: 'dollar',
-                                customClass: 'line-input-26'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                    <div
-                        class="money-value-holder"
-                        [class.errorForm]="multiFormFirstError"
-                    >
-                        <app-ta-input
-                            formControlName="multiFromFirstTo"
-                            [inputConfig]="{
-                                name: 'multiFromFirstTo',
-                                type: 'number',
-                                label: 'To',
-                                placeholderIcon: 'dollar',
-                                customClass: 'line-input-26'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                </div>
-                <div
-                    class="border-filter money-bottom-border-magin form-border"
-                    [class.hiddenFormBorder]="!showPart1"
-                ></div>
-                <div class="form-header" [class.hiddenFormTitle]="!showPart2">
-                    <div class="form-name" *ngIf="!fuelType">
-                        Available Credit
-                    </div>
-                    <div class="form-name" *ngIf="fuelType">
-                        Price Per Gallon
-                    </div>
-                    <div
-                        class="clear-money-form"
-                        *ngIf="
-                            moneyForm.value.multiFormSecondFrom &&
-                            moneyForm.value.multiFormSecondTo
-                        "
-                        (click)="clearForm('multiFormSecond')"
-                    >
-                        CLEAR
-                    </div>
-                    <div
-                        class="hide-money-form"
-                        [ngClass]="{
-                            svg_rotate: !showPart2,
-                            rotate_back: showPart2
-                        }"
-                        (click)="hideFormPart('part2')"
-                    >
-                        <svg-icon
-                            src="assets/svg/common/calendar/arrow-left.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
-                <div
-                    class="money-main-holder"
-                    [@closeForm]="showPart2 ? 'true' : 'false'"
-                >
-                    <div class="money-value-holder">
-                        <app-ta-input
-                            formControlName="multiFormSecondFrom"
-                            [inputConfig]="{
-                                name: 'multiFormSecondFrom',
-                                type: 'number',
-                                label: 'From',
-                                placeholderIcon: 'dollar',
-                                customClass: 'line-input-26'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                    <div
-                        class="money-value-holder"
-                        [class.errorForm]="multiFormSecondError"
-                    >
-                        <app-ta-input
-                            formControlName="multiFormSecondTo"
-                            [inputConfig]="{
-                                name: 'multiFormSecondTo',
-                                type: 'number',
-                                label: 'To',
-                                placeholderIcon: 'dollar',
-                                customClass: 'line-input-26'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                </div>
-                <div
-                    class="border-filter money-bottom-border-magin form-border"
-                    [class.hiddenFormBorder]="!showPart2"
-                ></div>
-                <div class="form-header" [class.hiddenFormTitle]="!showPart3">
-                    <div class="form-name" *ngIf="!fuelType">Revenue</div>
-                    <div class="form-name" *ngIf="fuelType">Total Cost</div>
-                    <div
-                        class="clear-money-form"
-                        *ngIf="
-                            moneyForm.value.multiFormThirdFrom &&
-                            moneyForm.value.multiFormThirdTo
-                        "
-                        (click)="clearForm('multiFormThird')"
-                    >
-                        CLEAR
-                    </div>
-                    <div
-                        class="hide-money-form"
-                        [ngClass]="{
-                            svg_rotate: !showPart3,
-                            rotate_back: showPart3
-                        }"
-                        (click)="hideFormPart('part3')"
-                    >
-                        <svg-icon
-                            src="assets/svg/common/calendar/arrow-left.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
-                <div
-                    class="money-main-holder"
-                    [@closeForm]="showPart3 ? 'true' : 'false'"
-                >
-                    <div class="money-value-holder">
-                        <app-ta-input
-                            formControlName="multiFormThirdFrom"
-                            [inputConfig]="{
-                                name: 'multiFormThirdFrom',
-                                type: 'number',
-                                label: 'From',
-                                placeholderIcon: 'dollar',
-                                customClass: 'line-input-26'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                    <div
-                        class="money-value-holder"
-                        [class.errorForm]="multiFormThirdError"
-                    >
-                        <app-ta-input
-                            formControlName="multiFormThirdTo"
-                            [inputConfig]="{
-                                name: 'multiFormThirdTo',
-                                type: 'number',
-                                label: 'To',
-                                placeholderIcon: 'dollar',
-                                customClass: 'line-input-26'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                </div>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="user-holder" *ngIf="type == 'statusFilter'">
+        <div
+          class="status-data-main-holder"
+          *ngIf="subType == 'pendingStatus' || subType == 'all'"
+        >
+          <div
+            *ngFor="let item of pendingStatusArray; let indx = index"
+            class="user-frame-holder"
+          >
             <div
-                class="border-filter money-bottom-border-magin form-border"
-                [class.hiddenFormBorder]="!showPart3"
-            ></div>
-            <div class="buttons-holder" *ngIf="subType == 'all'">
+              [@inOutAnimation]="'in'"  
+              *ngIf="!item.hidden && !item.isSelected"
+              (click)="addToSelectedUser(item, indx, 'pending')"
+              class="user-main-holder"
+            >
+              <div class="user-profile-img" *ngIf="type == 'statusFilter'">
                 <div
-                    (click)="clearAll($event)"
-                    class="button-clear"
-                    [class.active]="moneyFilterStatus"
-                >
-                    Clear All
+                  class="status-circle"
+                  [ngStyle]="{ backgroundColor: item.color }"
+                ></div>
+              </div>
+              <div class="user-frame">
+                <div class="selected-name-text">
+                  <span> {{ item.name }} </span>
                 </div>
-                <div
-                    (click)="setFilterValue($event)"
-                    class="button-set"
-                    [class.active]="moneyFilterStatus && setButtonAvailable"
-                >
-                    Set
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="border-filter" *ngIf="subType == 'all'"></div>
+        <div
+          class="status-data-main-holder"
+          *ngIf="subType == 'activeStatus' || subType == 'all'"
+        >
+          <div
+            *ngFor="let item of activeStatusArray; let indx = index"
+            class="user-frame-holder"
+          >
+            <div
+              [@inOutAnimation]="'in'"
+              *ngIf="!item.hidden && !item.isSelected"
+              (click)="addToSelectedUser(item, indx, 'active')"
+              class="user-main-holder"
+            >
+              <div
+                class="user-profile-img"
+                [ngStyle]="{ backgroundColor: item.color }"
+              ></div>
+              <div class="user-frame">
+                <div class="selected-name-text">
+                  <span>  {{ item.name }} </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="border-filter" *ngIf="subType == 'all'"></div>
+        <div
+          class="status-data-main-holder"
+          *ngIf="subType == 'closedStatus' || subType == 'all'"
+        >
+          <div
+            *ngFor="let item of closedStatusArray; let indx = index"
+            class="user-frame-holder"
+          >
+            <div
+              [@inOutAnimation]="'in'"
+              *ngIf="!item.hidden && !item.isSelected"
+              (click)="addToSelectedUser(item, indx, 'closed')"
+              class="user-main-holder"
+            >
+              <div
+                class="user-profile-img"
+                [ngStyle]="{ backgroundColor: item.color }"
+              ></div>
+              <div class="user-frame">
+                <div class="selected-name-text">
+                  <span> {{ item.name }} </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="user-holder" *ngIf="type == 'pmFilter'">
+        <div
+          *ngFor="let item of pmFilterArray; let indx = index"
+          class="user-frame-holder"
+        >
+          <div
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
+            (click)="addToSelectedUser(item, indx)"
+            class="user-main-holder"
+          >
+            <div class="user-profile-img">
+              <svg-icon src="{{ item.icon }}"></svg-icon>
+            </div>
+            <div class="user-frame">
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="user-holder" *ngIf="type == 'categoryFuelFilter'">
+        <div
+          *ngFor="let item of categoryFuelArray; let indx = index"
+          class="user-frame-holder"
+        >
+          <div
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
+            (click)="addToSelectedUser(item, indx)"
+            class="user-main-holder"
+          >
+            <div class="user-frame">
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="user-holder" *ngIf="type == 'categoryRepairFilter'">
+        <div
+          *ngFor="let item of categoryRepairArray; let indx = index"
+          class="user-frame-holder"
+        >
+          <div
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
+            (click)="addToSelectedUser(item, indx)"
+            class="user-main-holder"
+          >
+            <div class="user-profile-img">
+              <svg-icon src="{{ item.icon }}"></svg-icon>
+            </div>
+            <div class="user-frame">
+              <div class="selected-name-text">
+                  <span> {{ item.name }} </span>
                 </div>
             </div>
-            <div class="buttons-holder" *ngIf="subType != 'all'">
-                <div
-                    (click)="clearAll($event)"
-                    class="button-clear"
-                    [class.active]="moneyFilterStatus"
-                >
-                    Clear All
-                </div>
-                <div
-                    (click)="setFilterValue($event)"
-                    class="button-set"
-                    [class.active]="
-                        moneyFilterStatus &&
-                        setButtonAvailable &&
-                        !singleFormError
-                    "
-                >
-                    Set
-                </div>
+          </div>
+        </div>
+      </div>
+      <div class="user-holder" *ngIf="type == 'truckFilter'">
+        <div
+          *ngFor="let item of truckArray; let indx = index"
+          class="user-frame-holder"
+        >
+          <div
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
+            (click)="addToSelectedUser(item, indx)"
+            class="user-main-holder"
+          >
+            <div class="user-frame">
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="user-holder" *ngIf="type == 'trailerFilter'">
+        <div
+          *ngFor="let item of trailerArray; let indx = index"
+          class="user-frame-holder"
+        >
+          <div
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
+            (click)="addToSelectedUser(item, indx)"
+            class="user-main-holder"
+          >
+            <div class="user-frame">
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="user-holder" *ngIf="type == 'fuelStopFilter'">
+        <div
+          *ngFor="let item of fuelStopArray; let indx = index"
+          class="user-frame-holder"
+        >
+          <div
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
+            (click)="addToSelectedUser(item, indx)"
+            class="user-main-holder"
+          >
+            <div class="user-frame">
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="user-holder" *ngIf="type == 'brokerFilter'">
+        <div
+          *ngFor="let item of brokerArray; let indx = index"
+          class="user-frame-holder"
+        >
+          <div
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
+            (click)="addToSelectedUser(item, indx)"
+            class="user-main-holder"
+          >
+            <div class="user-frame">
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="user-holder" *ngIf="type == 'driverFilter'">
+        <div
+          *ngFor="let item of driverArray; let indx = index"
+          class="user-frame-holder"
+        >
+          <div
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
+            (click)="addToSelectedUser(item, indx)"
+            class="user-main-holder"
+          >
+            <div class="user-profile-img">
+              <app-profile-images *ngIf="!item.avatar"
+                [indx]="indx"
+                [size]="'small'"
+                [type]="'driver'"
+                [name]="item.name"
+              >
+              </app-profile-images>
+              <div
+                class="user_avatar driver_avatar"
+                *ngIf="item.avatar"
+                [ngStyle]="item.avatar && { 'background-image': 'url(' + item.avatar + ')' }"
+              ></div>
+            </div>
+            <div class="user-frame">
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="user-holder" *ngIf="type == 'truckTypeFilter'">
+        <div
+          *ngFor="let item of truckTypeArray; let indx = index"
+          class="user-frame-holder"
+        >
+          <div
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
+            (click)="addToSelectedUser(item, indx)"
+            class="user-main-holder"
+          >
+            <div class="type-icon">
+              <svg-icon src="{{ item.icon }}"></svg-icon>
+            </div>
+            <div class="user-frame">
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="user-holder" *ngIf="type == 'trailerTypeFilter'">
+        <div
+          *ngFor="let item of trailerTypeArray; let indx = index"
+          class="user-frame-holder"
+        >
+          <div
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
+            (click)="addToSelectedUser(item, indx)"
+            class="user-main-holder"
+          >
+            <div class="type-icon">
+              <svg-icon src="{{ item.icon }}"></svg-icon>
+            </div>
+            <div class="user-frame">
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="user-holder" *ngIf="type == 'stateFilter'">
+        <div class="state-name-holder sticky-head-title">UNITED STATES</div>
+        <div
+          *ngFor="let item of usaStates; let indx = index"
+          class="user-frame-holder"
+        >
+          <div
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
+            (click)="addToSelectedUser(item, indx)"
+            class="user-main-holder state-main-holder"
+          >
+            <div class="user-profile-img">
+              <div class="state-short-holder">{{ item.short }}</div>
+            </div>
+            <div class="user-frame">
+              <div class="selected-name-text">
+                <span> {{ item.name }} </span> 
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="state-name-holder canada-sticky-head-title">CANADA</div>
+        <div
+          *ngFor="let item of canadaStates; let indx = index"
+          class="user-frame-holder"
+        >
+          <div
+            [@inOutAnimation]="'in'"
+            *ngIf="!item.hidden && !item.isSelected"
+            (click)="addToSelectedUser(item, indx, 'canada')"
+            class="user-main-holder state-main-holder"
+          >
+            <div class="user-profile-img">
+              <div class="state-short-holder">{{ item.short }}</div>
+            </div>
+            <div class="user-frame">
+              <div class="selected-name-text">
+               <span> {{ item.name }} </span> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="border-filter"
+        *ngIf="!legendView && pmFilterArray.length > selectedUser.length"
+      ></div>
+      <div class="buttons-holder" *ngIf="!legendView">
+        <div
+          (click)="clearAll($event)"
+          class="button-clear"
+          [class.active]="
+            selectedUser.length > 0 ||
+            filterActiveArray.length > 0 ||
+            canadaSelectedStates.length > 0 ||
+            usaSelectedStates.length > 0
+          "
+        >
+          Clear All
         </div>
         <div
-            *ngIf="swipeFilter"
-            class="filter-holder swipe-filter"
-            [formGroup]="sliderForm"
+          (click)="setFilterValue($event)"
+          class="button-set"
+          [class.active]="
+            (selectedUser.length > 0 ||
+              filterActiveArray.length > 0 ||
+              canadaSelectedStates.length > 0 ||
+              usaSelectedStates.length > 0) &&
+            setButtonAvailable
+          "
         >
-            <div class="filter-header">
-                <div class="user-title-text">{{ filterTitle }}</div>
-            </div>
-            <div class="border-filter top-border-margin"></div>
-            <div
-                class="filter-middle-holder"
-                [class.emptySliderState]="rangeValue == 0"
-            >
-                <app-ta-ngx-slider
-                    [sliderOptions]="sliderData"
-                    [startedValue]="rangeValue"
-                    [customClass]="'custom-slider-filter'"
-                    [sliderTemplate]="'commission'"
-                    (onUserValueChange)="setRangeValue($event)"
-                ></app-ta-ngx-slider>
-            </div>
-            <div class="border-filter bottom-border-margin"></div>
-            <div class="buttons-holder">
-                <div
-                    (click)="clearAll($event)"
-                    class="button-clear"
-                    [class.active]="
-                        rangeValue != swipeActiveRange || rangeValue > 0
-                    "
-                >
-                    Clear All
-                </div>
-                <div
-                    (click)="setFilterValue($event)"
-                    class="button-set"
-                    [class.active]="rangeValue != swipeActiveRange"
-                >
-                    Set
-                </div>
-            </div>
+          Set
         </div>
-        <div *ngIf="locationDefType" class="filter-holder location-filter">
-            <div class="filter-header">
-                <div class="user-title-text">{{ filterTitle }}</div>
-            </div>
-            <div class="border-filter top-border-margin"></div>
-            <div
-                class="filter-middle-holder location-middle-padding"
-                [formGroup]="locationForm"
-                *ngIf="type == 'locationFilter'"
-            >
-                <app-input-address-dropdown
-                    formControlName="address"
-                    [inputConfig]="{
-                        name: 'Address',
-                        type: 'text',
-                        label: 'Location',
-                        placeholderIcon: 'address',
-                        placeholder: 'Location',
-                        textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-288',
-                        minLength: 6,
-                        maxLength: 256,
-                        placeholderInsteadOfLabel: true,
-                        customClass: 'line-input-26'
-                    }"
-                    [placeholderType]="'shortAddress'"
-                    (incorrectEvent)="incorrectInput($event, 0, 18)"
-                    [activeAddress]="selectedAddress"
-                    (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-                ></app-input-address-dropdown>
-            </div>
-            <div
-                class="filter-middle-holder location-slider-middle-padding"
-                *ngIf="type == 'locationFilter'"
-            >
-                <app-ta-ngx-slider
-                    [sliderOptions]="locationSliderData"
-                    [startedValue]="locationRange"
-                    [customClass]="'custom-slider-filter'"
-                    (onUserValueChange)="setRangeValue($event)"
-                ></app-ta-ngx-slider>
-            </div>
-            <div
-                class="mainMilesHolder"
-                *ngIf="type == 'payFilter' || type == 'milesFilter'"
-                [formGroup]="rangeForm"
-            >
-                <div class="money-main-holder payPadding">
-                    <div class="money-value-holder">
-                        <app-ta-input
-                            formControlName="rangeFrom"
-                            [inputConfig]="{
-                                name: 'rangeFrom',
-                                type: 'text',
-                                label: 'From',
-                                placeholderIcon:
-                                    type == 'payFilter' ? 'dollar' : 'mileage',
-                                customClass: 'line-input-26'.concat(
-                                    '' +
-                                        this.rangeForm.get('rangeFrom').value ==
-                                        minValueRange
-                                        ? ' discolor-placeholder'
-                                        : '' + ''
-                                ),
-                                thousandSeparator: true,
-                                blackInput: true
-                            }"
-                        ></app-ta-input>
-                    </div>
-                    <div
-                        class="money-value-holder"
-                        [class.errorForm]="singleFormError"
-                    >
-                        <app-ta-input
-                            formControlName="rangeTo"
-                            [inputConfig]="{
-                                name: 'rangeTo',
-                                type: 'text',
-                                label: 'To',
-                                placeholderIcon:
-                                    type == 'payFilter' ? 'dollar' : 'mileage',
-                                customClass: 'line-input-26'.concat(
-                                    '' + this.rangeForm.get('rangeTo').value ==
-                                        maxValueRange
-                                        ? ' discolor-placeholder'
-                                        : '' + ''
-                                ),
-                                thousandSeparator: true,
-                                blackInput: true
-                            }"
-                        ></app-ta-input>
-                    </div>
-                </div>
-                <div
-                    class="filter-middle-holder slider-two-holder"
-                    [class.closePointers]="
-                        (rangeDiffNum < 670 && type != 'payFilter') ||
-                        (rangeDiffNum < 2600 && type == 'payFilter')
-                    "
-                >
-                    <app-ta-ngx-slider
-                        [sliderOptions]="
-                            type == 'payFilter'
-                                ? paySliderData
-                                : milesSliderData
-                        "
-                        [startedValue]="rangeValue"
-                        [customClass]="'custom-slider-filter'"
-                        (onUserValueChange)="setMinValueRange($event)"
-                        (onUserHighValueChange)="setMaxValueRange($event)"
-                        [sliderTemplate]="'range-slider'"
-                        [customFormControlName]="sliderControl"
-                        [minValue]="minValueDragged"
-                        [maxValue]="maxValueDragged"
-                    ></app-ta-ngx-slider>
-                </div>
-            </div>
-            <div class="border-filter bottom-border-margin"></div>
-            <div class="buttons-holder" *ngIf="type != 'locationFilter'">
-                <div
-                    (click)="clearAll($event)"
-                    class="button-clear"
-                    [class.active]="
-                        rangeForm.get('rangeTo').value != maxValueRange ||
-                        rangeForm.get('rangeFrom').value != minValueRange
-                    "
-                >
-                    Clear All
-                </div>
-                <div
-                    (click)="setFilterValue($event)"
-                    class="button-set"
-                    [class.active]="
-                        rangeForm.get('rangeTo').value != maxValueSet ||
-                        (rangeForm.get('rangeFrom').value &&
-                            rangeForm.get('rangeFrom').value != minValueSet)
-                    "
-                >
-                    Set
-                </div>
-            </div>
-            <div class="buttons-holder" *ngIf="type == 'locationFilter'">
-                <div
-                    (click)="clearAll($event)"
-                    class="button-clear"
-                    [class.active]="
-                        longVal != 0 || latVal != 0 || locationRange != 50
-                    "
-                >
-                    Clear All
-                </div>
-                <div
-                    (click)="setFilterValue($event)"
-                    class="button-set"
-                    [class.active]="
-                        longValueSet != longVal ||
-                        latValSet != latVal ||
-                        (locationRange != locationRangeSet &&
-                            longVal != 0 &&
-                            latVal != 0)
-                    "
-                >
-                    Set
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+    <div *ngIf="type == 'timeFilter'" class="time-filter-holder">
+      <div class="time-header">Time Filter</div>
+      <div class="border-filter"></div>
+      <div class="time-items-holder">
+        <div
+          class="time-items"
+          [class.active]="selectedTimeValue == 'Today'"
+          (click)="setTimeValue('Today')"
+        >
+          Today
+          <div class="selected-icon">
+            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+          </div>
+          <div
+            class="icon-delete"
+          >
+            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+          </div>
+        </div>
+        <div
+          class="time-items"
+          [class.active]="selectedTimeValue == 'Yesterday'"
+          (click)="setTimeValue('Yesterday')"
+        >
+          Yesterday
+          <div class="selected-icon">
+            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+          </div>
+          <div
+            class="icon-delete"
+          >
+            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+          </div>
+        </div>
+      </div>
+      <div class="border-filter time-data-border"></div>
+      <div class="time-items-holder">
+        <div
+          class="time-items"
+          [class.active]="selectedTimeValue == 'This week'"
+          (click)="setTimeValue('This week')"
+        >
+          This week
+          <div class="selected-icon">
+            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+          </div>
+          <div
+            class="icon-delete"
+          >
+            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+          </div>
+        </div>
+        <div
+          class="time-items"
+          [class.active]="selectedTimeValue == 'Last week'"
+          (click)="setTimeValue('Last week')"
+        >
+          Last week
+          <div class="selected-icon">
+            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+          </div>
+          <div
+            class="icon-delete"
+          >
+            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+          </div>
+        </div>
+        <div
+          class="time-items"
+          [class.active]="selectedTimeValue == '1 week'"
+          (click)="setTimeValue('1 week')"
+        >
+          1 week
+          <div class="selected-icon">
+            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+          </div>
+          <div
+            class="icon-delete"
+          >
+            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+          </div>
+        </div>
+      </div>
+      <div class="border-filter time-data-border"></div>
+      <div class="time-items-holder">
+        <div
+          class="time-items"
+          [class.active]="selectedTimeValue == 'This month'"
+          (click)="setTimeValue('This month')"
+        >
+          This month
+          <div class="selected-icon">
+            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+          </div>
+          <div
+            class="icon-delete"
+          >
+            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+          </div>
+        </div>
+        <div
+          class="time-items"
+          [class.active]="selectedTimeValue == 'Last month'"
+          (click)="setTimeValue('Last month')"
+        >
+          Last month
+          <div class="selected-icon">
+            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+          </div>
+          <div
+            class="icon-delete"
+          >
+            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+          </div>
+        </div>
+        <div
+          class="time-items"
+          [class.active]="selectedTimeValue == '1 month'"
+          (click)="setTimeValue('1 month')"
+        >
+          1 month
+          <div class="selected-icon">
+            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+          </div>
+          <div
+            class="icon-delete"
+          >
+            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+          </div>
+        </div>
+        <div
+          class="time-items"
+          [class.active]="selectedTimeValue == '3 months'"
+          (click)="setTimeValue('3 months')"
+        >
+          3 months
+          <div class="selected-icon">
+            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+          </div>
+          <div
+            class="icon-delete"
+          >
+            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+          </div>
+        </div>
+      </div>
+      <div class="border-filter time-data-border"></div>
+      <div class="time-items-holder">
+        <div
+          class="time-items"
+          [class.active]="selectedTimeValue == 'This quarter'"
+          (click)="setTimeValue('This quarter')"
+        >
+          This quarter
+          <div class="selected-icon">
+            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+          </div>
+          <div
+            class="icon-delete"
+          >
+            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+          </div>
+        </div>
+        <div
+          class="time-items"
+          [class.active]="selectedTimeValue == 'Last quarter'"
+          (click)="setTimeValue('Last quarter')"
+        >
+          Last quarter
+          <div class="selected-icon">
+            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+          </div>
+          <div
+            class="icon-delete"
+          >
+            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+          </div>
+        </div>
+      </div>
+      <div class="border-filter time-data-border"></div>
+      <div class="time-items-holder">
+        <div
+          class="time-items"
+          [class.active]="selectedTimeValue == 'This year'"
+          (click)="setTimeValue('This year')"
+        >
+          This year
+          <div class="selected-icon">
+            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+          </div>
+          <div
+            class="icon-delete"
+          >
+            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+          </div>
+        </div>
+        <div
+          class="time-items"
+          [class.active]="selectedTimeValue == '1 year'"
+          (click)="setTimeValue('1 year')"
+        >
+          1 year
+          <div class="selected-icon">
+            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+          </div>
+          <div
+            class="icon-delete"
+          >
+            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+          </div>
+        </div>
+        <div
+          class="time-items"
+          [class.active]="selectedTimeValue == lastYear"
+          (click)="setTimeValue(lastYear)"
+        >
+          {{lastYear}}
+          <div class="selected-icon">
+            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+          </div>
+          <div
+            class="icon-delete"
+          >
+            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+          </div>
+        </div>
+        <div
+          class="time-items"
+          [class.active]="selectedTimeValue == last2Years"
+          (click)="setTimeValue(last2Years)"
+        >
+          {{last2Years}}
+          <div class="selected-icon">
+            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+          </div>
+          <div
+            class="icon-delete"
+          >
+            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+          </div>
+        </div>
+      </div>
+      <div class="border-filter time-data-border"></div>
+      <div class="time-items-holder">
+        <div
+          class="time-items"
+          [class.active]="selectedTimeValue == 'Custom'"
+          (click)="setTimeValue('Custom')"
+        >
+          Custom
+          <div class="selected-icon">
+            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+          </div>
+          <div
+            class="icon-delete"
+          >
+            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+          </div>
+        </div>
+      </div>
+      <div class="border-filter time-data-border"></div>
+      <div class="buttons-holder">
+        <div
+          (click)="clearAll($event)"
+          class="button-clear"
+          [class.active]="selectedTimeValue != filterActiveTime || selectedTimeValue != '' "
+        >
+          Clear
+        </div>
+        <div
+          (click)="setFilterValue($event)"
+          class="button-set"
+          [class.active]="selectedTimeValue != filterActiveTime"
+        >
+          Set
+        </div>
+      </div>
+    </div>
+    <div
+      *ngIf="moneyFilter"
+      class="filter-holder money-filter"
+      [class.multiMoneyForm]="subType == 'all'"
+      [formGroup]="moneyForm"
+    >
+      <div class="filter-header">
+        <div class="user-title-text">Money Filter</div>
+      </div>
+      <div class="border-filter money-top-border-magin"></div>
+      <div class="single-form-holder" *ngIf="subType != 'all'">
+        <div class="money-main-holder single-money-main">
+          <div class="money-value-holder">
+            <app-ta-input
+              formControlName="singleFrom"
+              [inputConfig]="{
+                name: 'singleFrom',
+                type: 'number',
+                label: 'From',
+                placeholderIcon: 'dollar',
+                customClass: 'line-input-26'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="money-value-holder" [class.errorForm]="singleFormError">
+            <app-ta-input
+              formControlName="singleTo"
+              [inputConfig]="{
+                name: 'singleTo',
+                type: 'number',
+                label: 'To',
+                placeholderIcon: 'dollar',
+                customClass: 'line-input-26'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+      </div>
+      <div class="multi-form-holder" *ngIf="subType == 'all'">
+        <div class="form-header" [class.hiddenFormTitle]="!showPart1">
+          <div class="form-name" *ngIf="!fuelType">Invoice Ageing</div>
+          <div class="form-name" *ngIf="fuelType">Last Price</div>
+          <div
+            class="clear-money-form"
+            *ngIf="
+              moneyForm.value.multiFromFirstFrom &&
+              moneyForm.value.multiFromFirstTo
+            "
+            (click)="clearForm('multiFromFirst')"
+          >
+            CLEAR
+          </div>
+          <div
+            class="hide-money-form"
+            [ngClass]="{ svg_rotate: !showPart1, rotate_back: showPart1 }"
+            (click)="hideFormPart('part1')"
+          >
+            <svg-icon
+              src="assets/svg/common/calendar/arrow-left.svg"
+            ></svg-icon>
+          </div>
+        </div>
+        <div
+          class="money-main-holder"
+          [@closeForm]="showPart1 ? 'true' : 'false'"
+        >
+          <div class="money-value-holder">
+            <app-ta-input
+              formControlName="multiFromFirstFrom"
+              [inputConfig]="{
+                name: 'multiFromFirstFrom',
+                type: 'number',
+                label: 'From',
+                placeholderIcon: 'dollar',
+                customClass: 'line-input-26'
+              }"
+            ></app-ta-input>
+          </div>
+          <div
+            class="money-value-holder"
+            [class.errorForm]="multiFormFirstError"
+          >
+            <app-ta-input
+              formControlName="multiFromFirstTo"
+              [inputConfig]="{
+                name: 'multiFromFirstTo',
+                type: 'number',
+                label: 'To',
+                placeholderIcon: 'dollar',
+                customClass: 'line-input-26'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div
+          class="border-filter money-bottom-border-magin form-border"
+          [class.hiddenFormBorder]="!showPart1"
+        ></div>
+        <div class="form-header" [class.hiddenFormTitle]="!showPart2">
+          <div class="form-name" *ngIf="!fuelType">Available Credit</div>
+          <div class="form-name" *ngIf="fuelType">Price Per Gallon</div>
+          <div
+            class="clear-money-form"
+            *ngIf="
+              moneyForm.value.multiFormSecondFrom &&
+              moneyForm.value.multiFormSecondTo
+            "
+            (click)="clearForm('multiFormSecond')"
+          >
+            CLEAR
+          </div>
+          <div
+            class="hide-money-form"
+            [ngClass]="{ svg_rotate: !showPart2, rotate_back: showPart2 }"
+            (click)="hideFormPart('part2')"
+          >
+            <svg-icon
+              src="assets/svg/common/calendar/arrow-left.svg"
+            ></svg-icon>
+          </div>
+        </div>
+        <div
+          class="money-main-holder"
+          [@closeForm]="showPart2 ? 'true' : 'false'"
+        >
+          <div class="money-value-holder">
+            <app-ta-input
+              formControlName="multiFormSecondFrom"
+              [inputConfig]="{
+                name: 'multiFormSecondFrom',
+                type: 'number',
+                label: 'From',
+                placeholderIcon: 'dollar',
+                customClass: 'line-input-26'
+              }"
+            ></app-ta-input>
+          </div>
+          <div
+            class="money-value-holder"
+            [class.errorForm]="multiFormSecondError"
+          >
+            <app-ta-input
+              formControlName="multiFormSecondTo"
+              [inputConfig]="{
+                name: 'multiFormSecondTo',
+                type: 'number',
+                label: 'To',
+                placeholderIcon: 'dollar',
+                customClass: 'line-input-26'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div
+          class="border-filter money-bottom-border-magin form-border"
+          [class.hiddenFormBorder]="!showPart2"
+        ></div>
+        <div class="form-header" [class.hiddenFormTitle]="!showPart3">
+          <div class="form-name" *ngIf="!fuelType">Revenue</div>
+          <div class="form-name" *ngIf="fuelType">Total Cost</div>
+          <div
+            class="clear-money-form"
+            *ngIf="
+              moneyForm.value.multiFormThirdFrom &&
+              moneyForm.value.multiFormThirdTo
+            "
+            (click)="clearForm('multiFormThird')"
+          >
+            CLEAR
+          </div>
+          <div
+            class="hide-money-form"
+            [ngClass]="{ svg_rotate: !showPart3, rotate_back: showPart3 }"
+            (click)="hideFormPart('part3')"
+          >
+            <svg-icon
+              src="assets/svg/common/calendar/arrow-left.svg"
+            ></svg-icon>
+          </div>
+        </div>
+        <div
+          class="money-main-holder"
+          [@closeForm]="showPart3 ? 'true' : 'false'"
+        >
+          <div class="money-value-holder">
+            <app-ta-input
+              formControlName="multiFormThirdFrom"
+              [inputConfig]="{
+                name: 'multiFormThirdFrom',
+                type: 'number',
+                label: 'From',
+                placeholderIcon: 'dollar',
+                customClass: 'line-input-26'
+              }"
+            ></app-ta-input>
+          </div>
+          <div
+            class="money-value-holder"
+            [class.errorForm]="multiFormThirdError"
+          >
+            <app-ta-input
+              formControlName="multiFormThirdTo"
+              [inputConfig]="{
+                name: 'multiFormThirdTo',
+                type: 'number',
+                label: 'To',
+                placeholderIcon: 'dollar',
+                customClass: 'line-input-26'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+      </div>
+      <div
+        class="border-filter money-bottom-border-magin form-border"
+        [class.hiddenFormBorder]="!showPart3"
+      ></div>
+      <div class="buttons-holder" *ngIf="subType == 'all'">
+        <div
+          (click)="clearAll($event)"
+          class="button-clear"
+          [class.active]="moneyFilterStatus"
+        >
+          Clear All
+        </div>
+        <div
+          (click)="setFilterValue($event)"
+          class="button-set"
+          [class.active]="moneyFilterStatus && setButtonAvailable"
+        >
+          Set
+        </div>
+      </div>
+      <div class="buttons-holder" *ngIf="subType != 'all'">
+        <div
+          (click)="clearAll($event)"
+          class="button-clear"
+          [class.active]="moneyFilterStatus"
+        >
+          Clear All
+        </div>
+        <div
+          (click)="setFilterValue($event)"
+          class="button-set"
+          [class.active]="moneyFilterStatus && setButtonAvailable && !singleFormError"
+        >
+          Set
+        </div>
+      </div>
+    </div>
+    <div
+      *ngIf="swipeFilter"
+      class="filter-holder swipe-filter"
+      [formGroup]="sliderForm"
+    >
+      <div class="filter-header">
+        <div class="user-title-text">{{ filterTitle }}</div>
+      </div>
+      <div class="border-filter top-border-margin"></div>
+      <div
+        class="filter-middle-holder"
+        [class.emptySliderState]="rangeValue == 0"
+      >
+        <app-ta-ngx-slider
+          [sliderOptions]="sliderData"
+          [startedValue]="rangeValue"
+          [customClass]="'custom-slider-filter'"
+          [sliderTemplate]="'commission'"
+          (onUserValueChange)="setRangeValue($event)"
+        ></app-ta-ngx-slider>
+      </div>
+      <div class="border-filter bottom-border-margin"></div>
+      <div class="buttons-holder">
+        <div
+          (click)="clearAll($event)"
+          class="button-clear"
+          [class.active]="rangeValue != swipeActiveRange || rangeValue > 0"
+        >
+          Clear All
+        </div>
+        <div
+          (click)="setFilterValue($event)"
+          class="button-set"
+          [class.active]="rangeValue != swipeActiveRange"
+        >
+          Set
+        </div>
+      </div>
+    </div>
+    <div *ngIf="locationDefType" class="filter-holder location-filter">
+      <div class="filter-header">
+        <div class="user-title-text">{{ filterTitle }}</div>
+      </div>
+      <div class="border-filter top-border-margin"></div>
+      <div
+        class="filter-middle-holder location-middle-padding"
+        [formGroup]="locationForm"
+        *ngIf="type == 'locationFilter'"
+      >
+          <app-input-address-dropdown
+          formControlName="address"
+            [inputConfig]="{
+              name: 'Address',
+              type: 'text',
+              label: 'Location',
+              placeholderIcon: 'address',
+              placeholder: 'Location',
+              textTransform: 'capitalize',
+              dropdownWidthClass: 'w-col-288',
+              minLength: 6,
+              maxLength: 256,
+              placeholderInsteadOfLabel: true,
+              customClass: 'line-input-26'
+            }"
+            [placeholderType]="'shortAddress'"
+            (incorrectEvent)="incorrectInput($event, 0, 18)"
+            [activeAddress]="selectedAddress"
+            (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+          ></app-input-address-dropdown>
+      </div>
+      <div class="filter-middle-holder location-slider-middle-padding" *ngIf="type == 'locationFilter'">
+        <app-ta-ngx-slider
+          [sliderOptions]="locationSliderData"
+          [startedValue]="locationRange"
+          [customClass]="'custom-slider-filter'"
+          (onUserValueChange)="setRangeValue($event)"
+        ></app-ta-ngx-slider>
+      </div>
+      <div class="mainMilesHolder" *ngIf="type == 'payFilter' || type == 'milesFilter'" [formGroup]="rangeForm">
+        <div class="money-main-holder payPadding">
+          <div class="money-value-holder">
+            <app-ta-input
+              formControlName="rangeFrom"
+              [inputConfig]="{
+                name: 'rangeFrom',
+                type: 'text',
+                label: 'From',
+                placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
+                customClass: 'line-input-26'.concat(''+ this.rangeForm.get('rangeFrom').value == minValueRange ? ' discolor-placeholder' : '' +''),
+                thousandSeparator: true,
+                blackInput: true
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="money-value-holder" [class.errorForm]="singleFormError">
+            <app-ta-input
+              formControlName="rangeTo"
+              [inputConfig]="{
+                name: 'rangeTo',
+                type: 'text',
+                label: 'To',
+                placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
+                customClass: 'line-input-26'.concat(''+ this.rangeForm.get('rangeTo').value == maxValueRange ? ' discolor-placeholder' : '' +''),
+                thousandSeparator: true,
+                blackInput: true
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="filter-middle-holder slider-two-holder" [class.closePointers]=" ( rangeDiffNum < 670 && type != 'payFilter' ) || ( rangeDiffNum < 2600 && type == 'payFilter' ) "> 
+          <app-ta-ngx-slider
+            [sliderOptions]="
+              type == 'payFilter' ? paySliderData : milesSliderData
+            "
+            [startedValue]="rangeValue"
+            [customClass]="'custom-slider-filter'"
+            (onUserValueChange)="setMinValueRange($event)"
+            (onUserHighValueChange)="setMaxValueRange($event)"
+            [sliderTemplate]="'range-slider'"
+            [customFormControlName]="sliderControl"
+            [minValue]="minValueDragged"
+            [maxValue]="maxValueDragged"
+          ></app-ta-ngx-slider>
+          
+        </div>
+      </div>
+      <div class="border-filter bottom-border-margin"></div>
+      <div class="buttons-holder" *ngIf="type != 'locationFilter'">
+        <div
+          (click)="clearAll($event)"
+          class="button-clear"
+          [class.active]="rangeForm.get('rangeTo').value != maxValueRange || rangeForm.get('rangeFrom').value != minValueRange"
+        >
+          Clear All
+        </div>
+        <div
+          (click)="setFilterValue($event)"
+          class="button-set"
+          [class.active]="rangeForm.get('rangeTo').value != maxValueSet || ( rangeForm.get('rangeFrom').value && rangeForm.get('rangeFrom').value != minValueSet )"
+        >
+          Set
+        </div>
+      </div>
+      <div class="buttons-holder" *ngIf="type == 'locationFilter'">
+        <div
+          (click)="clearAll($event)"
+          class="button-clear"
+          [class.active]=" longVal != 0 || latVal != 0 || locationRange != 50"
+        >
+          Clear All
+        </div>
+        <div
+          (click)="setFilterValue($event)"
+          class="button-set"
+          [class.active]="longValueSet != longVal || latValSet != latVal || ( locationRange != locationRangeSet && longVal != 0 && latVal != 0 ) "
+        >
+          Set
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+
+

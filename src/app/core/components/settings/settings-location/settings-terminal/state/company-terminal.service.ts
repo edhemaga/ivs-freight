@@ -4,21 +4,17 @@ import { TerminalService } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class CompanyTerminalService {
-    constructor(private terminalService: TerminalService) {}
+  constructor(private terminalService: TerminalService) {}
 
-    // Get Parking List
-    public getTerminalList(
-        pageIndex?: number,
-        pageSize?: number,
-        count?: number
-    ): Observable<ParkingListResponse> {
-        return this.terminalService.apiTerminalListGet(
-            pageIndex,
-            pageSize,
-            count
-        );
-    }
+  // Get Parking List
+  public getTerminalList(
+    pageIndex?: number,
+    pageSize?: number,
+    count?: number
+  ): Observable<ParkingListResponse> {
+    return this.terminalService.apiTerminalListGet(pageIndex, pageSize, count);
+  }
 }

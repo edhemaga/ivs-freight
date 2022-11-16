@@ -4,7 +4,10 @@ import { SettingsIntegrationComponent } from './settings-integration.component';
 import { SettingsIntegrationRoutes } from './settings-integration.routing';
 
 @NgModule({
-    imports: [CommonModule, SettingsIntegrationRoutes],
-    declarations: [SettingsIntegrationComponent],
+  imports: [
+    CommonModule,
+    SettingsIntegrationRoutes
+  ],
+  declarations: [SettingsIntegrationComponent]
 })
-export class SettingsIntegrationModule {}
+export class SettingsIntegrationModule { }

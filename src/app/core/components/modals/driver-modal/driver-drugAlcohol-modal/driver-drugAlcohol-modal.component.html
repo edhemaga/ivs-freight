@@ -1,131 +1,129 @@
 <app-ta-modal
-    [modalTitle]="editData?.type !== 'edit-drug' ? 'Add Test' : 'Edit Test'"
-    [editData]="editData"
-    [editName]="modalName"
-    [isModalValid]="drugForm.valid && isFormDirty"
-    [specificCaseModalName]="true"
-    (action)="onModalAction($event)"
+  [modalTitle]="editData?.type !== 'edit-drug' ? 'Add Test' : 'Edit Test'"
+  [editData]="editData"
+  [editName]="modalName"
+  [isModalValid]="drugForm.valid && isFormDirty"
+  [specificCaseModalName]="true"
+  (action)="onModalAction($event)"
 >
-    <form
-        origin
-        [formGroup]="drugForm"
-        class="form-container form-container-without-mb"
-    >
-        <div *ngIf="!editData" class="row first-row">
-            <div class="col-12">
-                <app-ta-input-dropdown
-                    formControlName="driver"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Driver',
-                        isRequired: true,
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-456',
-                        autoFocus: !editData
-                    }"
-                    [options]="labelsDrivers"
-                    [activeItem]="selectedDriver"
-                    (selectedItem)="onSelectDropdown($event, 'driver')"
-                ></app-ta-input-dropdown>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <app-ta-input
-                    formControlName="testingDate"
-                    [inputConfig]="{
-                        name: 'datepicker',
-                        type: 'text',
-                        label: 'Issue Date',
-                        isDropdown: true,
-                        placeholderIcon: 'date',
-                        isRequired: true,
-                        customClass: 'datetimeclass',
-                        autoFocus: editData && editData?.type !== 'edit-drug'
-                    }"
-                ></app-ta-input>
-            </div>
-            <div class="col-6">
-                <app-ta-input-dropdown
-                    formControlName="testType"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Type',
-                        isRequired: true,
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-228'
-                    }"
-                    [options]="testTypes"
-                    [activeItem]="selectedTestType"
-                    (selectedItem)="onSelectDropdown($event, 'test')"
-                ></app-ta-input-dropdown>
-            </div>
-        </div>
+  <form
+    origin
+    [formGroup]="drugForm"
+    class="form-container form-container-without-mb"
+  >
+    <div *ngIf="!editData" class="row first-row">
+      <div class="col-12">
+        <app-ta-input-dropdown
+          formControlName="driver"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Driver',
+            isRequired: true,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-456',
+            autoFocus: !editData
+          }"
+          [options]="labelsDrivers"
+          [activeItem]="selectedDriver"
+          (selectedItem)="onSelectDropdown($event, 'driver')"
+        ></app-ta-input-dropdown>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <app-ta-input
+          formControlName="testingDate"
+          [inputConfig]="{
+            name: 'datepicker',
+            type: 'text',
+            label: 'Issue Date',
+            isDropdown: true,
+            placeholderIcon: 'date',
+            isRequired: true,
+            customClass: 'datetimeclass',
+            autoFocus: editData && editData?.type !== 'edit-drug'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-6">
+        <app-ta-input-dropdown
+          formControlName="testType"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Type',
+            isRequired: true,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-228'
+          }"
+          [options]="testTypes"
+          [activeItem]="selectedTestType"
+          (selectedItem)="onSelectDropdown($event, 'test')"
+        ></app-ta-input-dropdown>
+      </div>
+    </div>
 
-        <div class="row last-row">
-            <div class="col-6">
-                <app-ta-input-dropdown
-                    formControlName="testReasonId"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Reason',
-                        isRequired: true,
-                        isDropdown: true,
-                        isDisabled: !drugForm.get('testType').value,
-                        dropdownWidthClass: 'w-col-216'
-                    }"
-                    [options]="reasons"
-                    [activeItem]="selectedReasonType"
-                    (selectedItem)="onSelectDropdown($event, 'reason')"
-                ></app-ta-input-dropdown>
-            </div>
-            <div class="col-6">
-                <app-ta-input-dropdown
-                    formControlName="result"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Results',
-                        isRequired: true,
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-228'
-                    }"
-                    [options]="testResults"
-                    [activeItem]="selectedTestResult"
-                    (selectedItem)="onSelectDropdown($event, 'result')"
-                ></app-ta-input-dropdown>
-            </div>
-        </div>
+    <div class="row last-row">
+      <div class="col-6">
+        <app-ta-input-dropdown
+          formControlName="testReasonId"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Reason',
+            isRequired: true,
+            isDropdown: true,
+            isDisabled: !drugForm.get('testType').value,
+            dropdownWidthClass: 'w-col-216'
+          }"
+          [options]="reasons"
+          [activeItem]="selectedReasonType"
+          (selectedItem)="onSelectDropdown($event, 'reason')"
+        ></app-ta-input-dropdown>
+      </div>
+      <div class="col-6">
+        <app-ta-input-dropdown
+          formControlName="result"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Results',
+            isRequired: true,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-228'
+          }"
+          [options]="testResults"
+          [activeItem]="selectedTestResult"
+          (selectedItem)="onSelectDropdown($event, 'result')"
+        ></app-ta-input-dropdown>
+      </div>
+    </div>
 
-        <div class="ta-card-body-overflow-none">
-            <app-ta-custom-card
-                [hasCounter]="documents.length ? documents.length : 0"
-                [cardName]="'Documents'"
-                [isCardOpen]="documents.length > 0"
-            >
-                <app-ta-upload-files
-                    [files]="documents"
-                    (onFileEvent)="onFilesEvent($event)"
-                ></app-ta-upload-files>
-            </app-ta-custom-card>
-        </div>
-        <app-ta-input-note
-            formControlName="note"
-            [isVisibleNote]="
-                drugForm.get('note').value &&
-                drugForm.get('note').value != 'null'
-                    ? drugForm.get('note').value
-                    : false
-            "
-            [note]="
-                drugForm.get('note').value &&
-                drugForm.get('note').value != 'null'
-                    ? drugForm.get('note').value
-                    : ''
-            "
-        ></app-ta-input-note>
-    </form>
+    <div class="ta-card-body-overflow-none">
+      <app-ta-custom-card
+        [hasCounter]="documents.length ? documents.length : 0"
+        [cardName]="'Documents'"
+        [isCardOpen]="documents.length > 0"
+      >
+        <app-ta-upload-files
+          [files]="documents"
+          (onFileEvent)="onFilesEvent($event)"
+        ></app-ta-upload-files>
+      </app-ta-custom-card>
+    </div>
+    <app-ta-input-note
+      formControlName="note"
+      [isVisibleNote]="
+        drugForm.get('note').value && drugForm.get('note').value != 'null'
+          ? drugForm.get('note').value
+          : false
+      "
+      [note]="
+        drugForm.get('note').value && drugForm.get('note').value != 'null'
+          ? drugForm.get('note').value
+          : ''
+      "
+    ></app-ta-input-note>
+  </form>
 </app-ta-modal>

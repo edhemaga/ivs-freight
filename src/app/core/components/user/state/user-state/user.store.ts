@@ -7,11 +7,11 @@ export interface UserState extends EntityState<CompanyUserResponse, number> {}
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'user' })
 export class UserStore extends EntityStore<UserState> {
-    constructor() {
-        super();
-    }
+  constructor() {
+    super();
+  }
 
-    // akitaPreAddEntity(book: any) {
-
-    // }
+  // akitaPreAddEntity(book: any) {
+    
+  // }
 }

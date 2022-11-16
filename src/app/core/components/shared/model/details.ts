@@ -1,3 +1,3 @@
 export class Details {
-    street: string;
+  street: string;
 }

@@ -1,4 +1,4 @@
-.dashboard-container {
+.dashboard-container{
     width: 100%;
     padding-right: 18px;
     display: flex;
@@ -6,29 +6,29 @@
     align-items: flex-start;
     flex-direction: column;
 
-    app-dashboard-performance {
+    app-dashboard-performance{
         width: 100%;
     }
 
-    app-dashboard-top-driver {
+    app-dashboard-top-driver{
         width: 100%;
     }
 
-    app-dashboard-pickup-by-state {
+    app-dashboard-pickup-by-state{
         width: 100%;
     }
 
-    app-dashboard-map {
+    app-dashboard-map{
         width: 100%;
     }
 }
-.dahsboard_charts_holder {
+.dahsboard_charts_holder{
     background-color: #fff;
     padding: 12px 12px 14px 12px;
     margin-bottom: 18px;
 
-    .dashboard_chart_title {
-        color: #aaaaaa;
+    .dashboard_chart_title{
+        color: #AAAAAA;
 
         font-size: 18px;
         font-weight: 700;
@@ -38,42 +38,42 @@
             background: #91919133;
             color: #919191;
         }
-        &::selection {
+          &::selection {
             background: #91919133;
             color: #919191;
         }
     }
 
-    .dashboard_chart_data {
+    .dashboard_chart_data{
         display: flex;
         margin-top: 12px;
 
-        .chart_data_inner {
+        .chart_data_inner{
             display: flex;
             justify-content: center;
             align-items: center;
 
-            &.separate_inner {
+            &.separate_inner{
                 margin-right: 22px;
             }
 
-            .chart_data_text {
-                color: #6c6c6c;
+            .chart_data_text{
+                color: #6C6C6C;
                 font-size: 11px;
                 line-height: 14px;
                 font-weight: 500;
                 padding-left: 4px;
-            }
+           }
 
-            .chart_data_icon {
-                svg-icon {
-                    svg {
+           .chart_data_icon{
+                svg-icon{
+                    svg{
                         display: flex;
                         width: 10px;
                         height: 10px;
                     }
                 }
-            }
+           }
         }
     }
 }

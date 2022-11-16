@@ -5,7 +5,7 @@ import { PMRoutingModule } from './repair-routing.module';
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
 
 @NgModule({
-    declarations: [PmTruckTrailerComponent],
-    imports: [CommonModule, PMRoutingModule, TruckassistTableModule],
+  declarations: [PmTruckTrailerComponent],
+  imports: [CommonModule, PMRoutingModule, TruckassistTableModule],
 })
 export class PmTruckTrailerModule {}

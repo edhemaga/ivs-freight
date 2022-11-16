@@ -1,16 +1,11 @@
 <div class="calendar_days">
-    <!-- [class.current_day]="day == currentDay && year == currentYear && currentMonth == selectedMonth"  CHECK FOR LATER-->
-    <div
-        (click)="day && chooseDay(day)"
-        *ngFor="let day of days"
-        [class.selected_day]="
-            day == selectedDay &&
-            selectedMonthFromInput == selMonth &&
-            selectedYearFromInput == selectedYear
-        "
-        [class.empty_day]="!day"
-        class="calendar_day"
-    >
-        <span>{{ day }}</span>
-    </div>
+  <!-- [class.current_day]="day == currentDay && year == currentYear && currentMonth == selectedMonth"  CHECK FOR LATER-->
+  <div (click)="day && chooseDay(day)"
+       *ngFor="let day of days"
+       [class.selected_day]="day == selectedDay && selectedMonthFromInput == selMonth && selectedYearFromInput == selectedYear"
+       [class.empty_day]="!day"
+       class="calendar_day"
+  >
+    <span>{{day}}</span>
+  </div>
 </div>

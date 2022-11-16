@@ -1,808 +1,759 @@
 <app-ta-modal
-    [customClass]="'modal-container-sph-applicant'"
-    [disableFooter]="true"
+  [customClass]="'modal-container-sph-applicant'"
+  [disableFooter]="true"
 >
-    <div origin class="d-flex flex-column open-modal-container">
-        <!-- STEP 1 -->
+  <div origin class="d-flex flex-column open-modal-container">
+    <!-- STEP 1 -->
 
-        <div class="d-flex flex-column align-items-center step-one-container">
-            <h1 class="step-title text-center ta-font-bold">
-                Safety Performance History
-            </h1>
+    <div class="d-flex flex-column align-items-center step-one-container">
+      <h1 class="step-title text-center ta-font-bold">
+        Safety Performance History
+      </h1>
 
-            <!-- INFO SECTION -->
+      <!-- INFO SECTION -->
 
-            <div class="d-flex justify-content-center text-center info-section">
-                <p class="m-0 ta-font-regular">
-                    Employment & D/A Verification Part 391.23(2)(3) of the
-                    Federal Motor Carrier Safety Regulations states that past
-                    employer’s must respond to present inquiries into a drivers
-                    past performance history in a timely manner.<br /><br />
-                    Failure to do so will result in reporting to the Department
-                    of Transportation Please use the JD Freight, Inc
-                    verification forms for this request.
-                </p>
+      <div class="d-flex justify-content-center text-center info-section">
+        <p class="m-0 ta-font-regular">
+          Employment & D/A Verification Part 391.23(2)(3) of the Federal Motor
+          Carrier Safety Regulations states that past employer’s must respond to
+          present inquiries into a drivers past performance history in a timely
+          manner.<br /><br />
+          Failure to do so will result in reporting to the Department of
+          Transportation Please use the JD Freight, Inc verification forms for
+          this request.
+        </p>
+      </div>
+
+      <!-- COMPLETED BY PROSPECTIVE EMPLOYER -->
+
+      <h5 class="m-0 step-subtitle ta-font-bold">
+        Completed by prospective employer
+      </h5>
+
+      <div
+        class="d-flex flex-column employer-container"
+        [formGroup]="prospectiveEmployerForm"
+      >
+        <!-- TO PREVIOUS EMPLOYER -->
+
+        <div class="d-flex">
+          <div class="group prev-employer-group">
+            <app-ta-input
+              formControlName="toPreviousEmployer"
+              [inputConfig]="{
+                name: 'Previous Employer',
+                type: 'text',
+                label: 'To Previous employer',
+                textTransform: 'capitalize',
+                isDisabled: true
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <div class="group phone-group">
+            <app-ta-input
+              formControlName="phone"
+              [inputConfig]="{
+                name: 'Phone',
+                type: 'text',
+                label: 'Phone',
+                placeholderIcon: 'phone',
+                mask: '(000) 000-0000',
+                maxLength: 14,
+                isDisabled: true
+              }"
+            ></app-ta-input>
+          </div>
+
+          <div class="group email-group">
+            <app-ta-input
+              formControlName="email"
+              [inputConfig]="{
+                name: 'Email',
+                type: 'text',
+                label: 'Email',
+                placeholderIcon: 'email',
+                isDisabled: true
+              }"
+            ></app-ta-input>
+          </div>
+
+          <div class="group fax-group">
+            <app-ta-input
+              formControlName="fax"
+              [inputConfig]="{
+                name: 'Fax',
+                type: 'text',
+                label: 'Fax',
+                mask: '(000) 000-0000',
+                placeholderIcon: 'fax',
+                isDisabled: true
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <div class="group address-group">
+            <app-input-address-dropdown
+              formControlName="address"
+              [inputConfig]="{
+                name: 'Address',
+                type: 'text',
+                label: 'Address, City, State Zip',
+                placeholderIcon: 'address',
+                textTransform: 'capitalize',
+                dropdownWidthClass: 'w-col-480',
+                minLength: 6,
+                maxLength: 256,
+                isDisabled: true
+              }"
+              [placeholderType]="'longAddress'"
+            ></app-input-address-dropdown>
+          </div>
+          <div class="group address-unit-group">
+            <app-ta-input
+              formControlName="addressUnit"
+              [inputConfig]="{
+                name: 'address-unit',
+                type: 'text',
+                label: 'Unit No.',
+                textTransform: 'uppercase',
+                minLength: 1,
+                maxLength: 10,
+                isDisabled: true
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+
+        <!-- PREVIOUS EMPLOYER NAME, SSN, DOB-->
+
+        <div
+          class="d-flex flex-column justify-content-center prev-employer-box"
+        >
+          <div class="d-flex align-items-center title-container">
+            <div class="d-flex align-items-center name-title-box">
+              <p class="m-0 ta-font-bold">APPLICANT NAME</p>
             </div>
+            <div class="d-flex align-items-center ssn-title-box">
+              <p class="m-0 ta-font-bold">SSN</p>
+            </div>
+            <div class="d-flex align-items-center dob-title-box">
+              <p class="m-0 ta-font-bold">DOB</p>
+            </div>
+          </div>
 
-            <!-- COMPLETED BY PROSPECTIVE EMPLOYER -->
+          <div
+            class="d-flex align-items-center prev-employer-info-container"
+          ></div>
+        </div>
+      </div>
+    </div>
 
-            <h5 class="m-0 step-subtitle ta-font-bold">
-                Completed by prospective employer
-            </h5>
+    <!-- STEP 2 -->
+
+    <div class="d-flex flex-column align-items-center step-two-container">
+      <h1 class="step-title text-center ta-font-bold">Accident history</h1>
+
+      <h5 class="m-0 step-subtitle ta-font-bold">
+        To be completed by previous employer
+      </h5>
+
+      <!-- INFO SECTION -->
+
+      <div class="d-flex justify-content-center text-center info-section">
+        <p class="m-0 ta-font-regular">
+          Please take a moment and complete the information requested below. We
+          would appreciate your prompt response. As you are aware, after October
+          29, 2004, failures to respond within 30 days to investigative request
+          for safety performance history will result in a complaint notification
+          being filed with the Federal Motor Carrier Safety Administration using
+          the complaint process specified 386.12.
+        </p>
+      </div>
+
+      <!-- FORM SECTION -->
+
+      <div class="d-flex flex-column form-section">
+        <!-- QUESTIONS CONTAINER -->
+
+        <form [formGroup]="accidentHistoryForm">
+          <div class="d-flex flex-column questions-container">
+            <!-- QUESTION CONTAINER -->
 
             <div
-                class="d-flex flex-column employer-container"
-                [formGroup]="prospectiveEmployerForm"
+              class="d-flex align-items-center question-container"
+              *ngFor="
+                let question of questions | slice: 0:2;
+                let i = index;
+                trackBy: trackByIdentity
+              "
             >
-                <!-- TO PREVIOUS EMPLOYER -->
-
-                <div class="d-flex">
-                    <div class="group prev-employer-group">
-                        <app-ta-input
-                            formControlName="toPreviousEmployer"
-                            [inputConfig]="{
-                                name: 'Previous Employer',
-                                type: 'text',
-                                label: 'To Previous employer',
-                                textTransform: 'capitalize',
-                                isDisabled: true
-                            }"
-                        ></app-ta-input>
-                    </div>
-                </div>
-
-                <div class="d-flex">
-                    <div class="group phone-group">
-                        <app-ta-input
-                            formControlName="phone"
-                            [inputConfig]="{
-                                name: 'Phone',
-                                type: 'text',
-                                label: 'Phone',
-                                placeholderIcon: 'phone',
-                                mask: '(000) 000-0000',
-                                maxLength: 14,
-                                isDisabled: true
-                            }"
-                        ></app-ta-input>
-                    </div>
-
-                    <div class="group email-group">
-                        <app-ta-input
-                            formControlName="email"
-                            [inputConfig]="{
-                                name: 'Email',
-                                type: 'text',
-                                label: 'Email',
-                                placeholderIcon: 'email',
-                                isDisabled: true
-                            }"
-                        ></app-ta-input>
-                    </div>
-
-                    <div class="group fax-group">
-                        <app-ta-input
-                            formControlName="fax"
-                            [inputConfig]="{
-                                name: 'Fax',
-                                type: 'text',
-                                label: 'Fax',
-                                mask: '(000) 000-0000',
-                                placeholderIcon: 'fax',
-                                isDisabled: true
-                            }"
-                        ></app-ta-input>
-                    </div>
-                </div>
-
-                <div class="d-flex">
-                    <div class="group address-group">
-                        <app-input-address-dropdown
-                            formControlName="address"
-                            [inputConfig]="{
-                                name: 'Address',
-                                type: 'text',
-                                label: 'Address, City, State Zip',
-                                placeholderIcon: 'address',
-                                textTransform: 'capitalize',
-                                dropdownWidthClass: 'w-col-480',
-                                minLength: 6,
-                                maxLength: 256,
-                                isDisabled: true
-                            }"
-                            [placeholderType]="'longAddress'"
-                        ></app-input-address-dropdown>
-                    </div>
-                    <div class="group address-unit-group">
-                        <app-ta-input
-                            formControlName="addressUnit"
-                            [inputConfig]="{
-                                name: 'address-unit',
-                                type: 'text',
-                                label: 'Unit No.',
-                                textTransform: 'uppercase',
-                                minLength: 1,
-                                maxLength: 10,
-                                isDisabled: true
-                            }"
-                        ></app-ta-input>
-                    </div>
-                </div>
-
-                <!-- PREVIOUS EMPLOYER NAME, SSN, DOB-->
-
+              <div class="d-flex flex-column align-items-center w-100">
                 <div
-                    class="d-flex flex-column justify-content-center prev-employer-box"
+                  class="d-flex align-items-center justify-content-between w-100"
                 >
-                    <div class="d-flex align-items-center title-container">
-                        <div class="d-flex align-items-center name-title-box">
-                            <p class="m-0 ta-font-bold">APPLICANT NAME</p>
-                        </div>
-                        <div class="d-flex align-items-center ssn-title-box">
-                            <p class="m-0 ta-font-bold">SSN</p>
-                        </div>
-                        <div class="d-flex align-items-center dob-title-box">
-                            <p class="m-0 ta-font-bold">DOB</p>
-                        </div>
-                    </div>
-
-                    <div
-                        class="d-flex align-items-center prev-employer-info-container"
-                    ></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- STEP 2 -->
-
-        <div class="d-flex flex-column align-items-center step-two-container">
-            <h1 class="step-title text-center ta-font-bold">
-                Accident history
-            </h1>
-
-            <h5 class="m-0 step-subtitle ta-font-bold">
-                To be completed by previous employer
-            </h5>
-
-            <!-- INFO SECTION -->
-
-            <div class="d-flex justify-content-center text-center info-section">
-                <p class="m-0 ta-font-regular">
-                    Please take a moment and complete the information requested
-                    below. We would appreciate your prompt response. As you are
-                    aware, after October 29, 2004, failures to respond within 30
-                    days to investigative request for safety performance history
-                    will result in a complaint notification being filed with the
-                    Federal Motor Carrier Safety Administration using the
-                    complaint process specified 386.12.
-                </p>
-            </div>
-
-            <!-- FORM SECTION -->
-
-            <div class="d-flex flex-column form-section">
-                <!-- QUESTIONS CONTAINER -->
-
-                <form [formGroup]="accidentHistoryForm">
-                    <div class="d-flex flex-column questions-container">
-                        <!-- QUESTION CONTAINER -->
-
-                        <div
-                            class="d-flex align-items-center question-container"
-                            *ngFor="
-                                let question of questions | slice: 0:2;
-                                let i = index;
-                                trackBy: trackByIdentity
-                            "
-                        >
-                            <div
-                                class="d-flex flex-column align-items-center w-100"
-                            >
-                                <div
-                                    class="d-flex align-items-center justify-content-between w-100"
-                                >
-                                    <div Class=" title-box">
-                                        <p class="m-0 ta-font-regular">
-                                            {{ question.title }}
-                                            <span class="required-star">*</span>
-                                        </p>
-                                    </div>
-
-                                    <div class="radios-box">
-                                        <app-ta-input-radiobuttons
-                                            [buttons]="question.answerChoices"
-                                            (changedValue)="
-                                                handleInputSelect($event)
-                                            "
-                                        ></app-ta-input-radiobuttons>
-                                    </div>
-                                </div>
-
-                                <!-- DATE EXPLAIN  -->
-
-                                <div
-                                    class="d-flex"
-                                    *ngIf="i === 0"
-                                    [ngStyle]="{
-                                        margin:
-                                            accidentHistoryForm.get(
-                                                'applicantWorkForCompany'
-                                            ).value === 'YES'
-                                                ? '22px auto 10px auto'
-                                                : '0 auto'
-                                    }"
-                                >
-                                    <div
-                                        class="d-flex"
-                                        *ngIf="
-                                            accidentHistoryForm.get(
-                                                'applicantWorkForCompany'
-                                            ).value === 'YES'
-                                        "
-                                    >
-                                        <div class="date-group">
-                                            <app-ta-input
-                                                formControlName="applicantWorkForCompanyBeforeExplain"
-                                                [inputConfig]="{
-                                                    name: 'datepicker',
-                                                    type: 'text',
-                                                    label: 'From',
-                                                    placeholderIcon: 'date',
-                                                    isRequired: true,
-                                                    customClass: 'datetimeclass'
-                                                }"
-                                            ></app-ta-input>
-                                        </div>
-                                        <div class="date-group">
-                                            <app-ta-input
-                                                formControlName="applicantWorkForCompanyToExplain"
-                                                [inputConfig]="{
-                                                    name: 'datepicker',
-                                                    type: 'text',
-                                                    label: 'To',
-                                                    placeholderIcon: 'date',
-                                                    isRequired: true,
-                                                    customClass: 'datetimeclass'
-                                                }"
-                                            ></app-ta-input>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- VEHICLE EXPLAIN -->
-
-                                <div
-                                    class="d-flex"
-                                    *ngIf="i === 1"
-                                    [ngStyle]="{
-                                        margin:
-                                            accidentHistoryForm.get(
-                                                question.formControlName
-                                            ).value === 'YES'
-                                                ? '22px auto 10px auto'
-                                                : '0 auto 32px auto'
-                                    }"
-                                >
-                                    <div
-                                        class="d-flex"
-                                        *ngIf="
-                                            accidentHistoryForm.get(
-                                                question.formControlName
-                                            ).value === 'YES'
-                                        "
-                                    >
-                                        <div
-                                            class="d-flex align-items-center explain-container"
-                                        >
-                                            <!-- VEHICLE TYPE -->
-
-                                            <div class="group">
-                                                <app-ta-input-dropdown
-                                                    formControlName="vehicleType"
-                                                    [template]="
-                                                        'svgtext-template'
-                                                    "
-                                                    [inputConfig]="{
-                                                        name: 'Input Dropdown',
-                                                        type: 'text',
-                                                        label: 'Vehicle type',
-                                                        isRequired: true,
-                                                        isDropdown: true,
-                                                        dropdownWidthClass:
-                                                            'w-col-302',
-                                                        dropdownImageInput: {
-                                                            withText: true,
-                                                            svg: true,
-                                                            image: false,
-                                                            url: selectedVehicleType?.logoName,
-                                                            template: 'truck',
-                                                            class: selectedVehicleType?.name
-                                                                ?.trim()
-                                                                .replace(
-                                                                    ' ',
-                                                                    ''
-                                                                )
-                                                                .toLowerCase()
-                                                        },
-                                                        customClass:
-                                                            'truck-trailer-dropdown'
-                                                    }"
-                                                    [options]="vehicleType"
-                                                ></app-ta-input-dropdown>
-                                            </div>
-
-                                            <!-- TRAILER TYPE -->
-
-                                            <div class="group">
-                                                <app-ta-input-dropdown
-                                                    formControlName="trailerType"
-                                                    [template]="
-                                                        'svgtext-template'
-                                                    "
-                                                    [inputConfig]="{
-                                                        name: 'Input Dropdown',
-                                                        type: 'text',
-                                                        label: 'Trailer type',
-                                                        isRequired: true,
-                                                        isDropdown: true,
-                                                        dropdownWidthClass:
-                                                            'w-col-302',
-                                                        customClass:
-                                                            'truck-trailer-dropdown',
-                                                        dropdownImageInput: {
-                                                            withText: true,
-                                                            svg: true,
-                                                            image: false,
-                                                            url: selectedTrailerType?.logoName,
-                                                            template: 'trailer',
-                                                            class: selectedTrailerType?.name
-                                                                ?.toLowerCase()
-                                                                .includes(
-                                                                    'liquid'
-                                                                )
-                                                                ? 'tanker-liquid'
-                                                                : selectedTrailerType?.name
-                                                                      ?.toLowerCase()
-                                                                      .includes(
-                                                                          'rgn'
-                                                                      )
-                                                                ? 'low-boy-rgn'
-                                                                : selectedTrailerType?.name
-                                                                      ?.toLowerCase()
-                                                                      .includes(
-                                                                          'dry-bulk'
-                                                                      )
-                                                                ? 'tanker-dry-bulk'
-                                                                : selectedTrailerType?.name
-                                                                      ?.trim()
-                                                                      .replace(
-                                                                          ' ',
-                                                                          ''
-                                                                      )
-                                                                      .toLowerCase()
-                                                        }
-                                                    }"
-                                                    [options]="trailerType"
-                                                ></app-ta-input-dropdown>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- REASON FOR LEAVING -->
-
-                    <div class="reason-group">
-                        <app-ta-input-dropdown
-                            formControlName="reasonForLeaving"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Reason for leaving',
-                                isRequired: true,
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-616'
-                            }"
-                            [options]="reasonsForLeaving"
-                        ></app-ta-input-dropdown>
-                    </div>
-
-                    <!-- APPLICANT CONSIDERED QUESTION -->
-
-                    <div
-                        class="d-flex align-items-center justify-content-between consider-question-container"
-                    >
-                        <div Class=" title-box">
-                            <p class="m-0 ta-font-regular">
-                                {{ questions[2].title }}
-                                <span class="required-star">*</span>
-                            </p>
-                        </div>
-
-                        <div class="radios-box">
-                            <app-ta-input-radiobuttons
-                                [buttons]="questions[2].answerChoices"
-                            ></app-ta-input-radiobuttons>
-                        </div>
-                    </div>
-
-                    <div
-                        class="d-flex justify-content-center align-items-center no-safety-checkbox-container"
-                    >
-                        <app-ta-checkbox
-                            formControlName="noSafetyPerformance"
-                            [name]="'noSafetyPerformance'"
-                            [label]="
-                                'Check here, if there is no safety performance history to report'
-                            "
-                            [customClass]="'bold-12'"
-                        >
-                        </app-ta-checkbox>
-                    </div>
-
-                    <div class="d-flex flex-column step-form">
-                        <!-- DATE, LOCATION -->
-
-                        <div class="d-flex">
-                            <div class="group date-group">
-                                <app-ta-input
-                                    formControlName="accidentDate"
-                                    [inputConfig]="{
-                                        name: 'datepicker',
-                                        type: 'text',
-                                        label: 'Date',
-                                        placeholderIcon: 'date',
-                                        isRequired: true,
-                                        customClass: 'datetimeclass'
-                                    }"
-                                ></app-ta-input>
-                            </div>
-                            <div class="group location-group">
-                                <app-input-address-dropdown
-                                    formControlName="accidentLocation"
-                                    [inputConfig]="{
-                                        name: 'Address',
-                                        type: 'text',
-                                        label: 'Location',
-                                        placeholderIcon: 'address',
-                                        textTransform: 'capitalize',
-                                        dropdownWidthClass: 'w-col-445',
-                                        minLength: 6,
-                                        maxLength: 256
-                                    }"
-                                    [placeholderType]="'shortAddress'"
-                                ></app-input-address-dropdown>
-                            </div>
-                        </div>
-
-                        <!-- DESCRIPTION -->
-
-                        <div class="d-flex">
-                            <div class="group description-group">
-                                <app-ta-input
-                                    formControlName="accidentDescription"
-                                    [inputConfig]="{
-                                        name: 'Description',
-                                        type: 'text',
-                                        label: 'Description',
-                                        minLength: 2,
-                                        maxLength: 160,
-                                        textTransform: 'capitalize',
-                                        isRequired: true
-                                    }"
-                                ></app-ta-input>
-                            </div>
-                        </div>
-
-                        <!-- HAZMAT SPILL, INJURIES, FATALITIES -->
-
-                        <div
-                            class="d-flex hazmat-injuries-fatalities-container"
-                        >
-                            <div
-                                class="d-flex align-items-center justify-content-between group hazmat-spill-group"
-                            >
-                                <div class="title-box">
-                                    <p class="m-0 ta-font-regular">
-                                        Hazmat spill
-                                        <span class="required-star">*</span>
-                                    </p>
-                                </div>
-                                <div class="radios-box">
-                                    <app-ta-input-radiobuttons
-                                        [buttons]="hazmatAnswerChoices"
-                                    ></app-ta-input-radiobuttons>
-                                </div>
-                            </div>
-
-                            <div
-                                class="d-flex align-items-center fatalities-injuries-group"
-                            >
-                                <div
-                                    class="d-flex align-items-center injuries-group"
-                                >
-                                    <app-ta-input-arrows
-                                        formControlName="injuries"
-                                        [inputConfig]="{
-                                            name: 'FatalInjuries',
-                                            type: 'text',
-                                            blackInput: true,
-                                            hideRequiredCheck: true,
-                                            hideClear: true,
-                                            hideErrorMessage: true,
-                                            textAlign: 'center'
-                                        }"
-                                        [name]="'Injuries #'"
-                                        [type]="'applicant'"
-                                        [elementOrder]="1"
-                                        [minimum]="0"
-                                    ></app-ta-input-arrows>
-                                </div>
-                                <div
-                                    class="d-flex align-items-center fatalities-group"
-                                >
-                                    <app-ta-input-arrows
-                                        formControlName="fatalities"
-                                        [inputConfig]="{
-                                            name: 'FatalInjuries',
-                                            type: 'text',
-                                            blackInput: true,
-                                            hideRequiredCheck: true,
-                                            hideClear: true,
-                                            hideErrorMessage: true,
-                                            textAlign: 'center'
-                                        }"
-                                        [name]="'Fatalities #'"
-                                        [type]="'applicant'"
-                                        [elementOrder]="2"
-                                        [minimum]="0"
-                                    ></app-ta-input-arrows>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- BTN CONTAINER -->
-
-                        <div
-                            class="d-flex justify-content-center align-items-center btn-container"
-                        >
-                            <button
-                                type="button"
-                                class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
-                            >
-                                <svg-icon
-                                    class="plus-icon"
-                                    src="assets/svg/common/ic_plus.svg
-                "
-                                    [svgStyle]="{
-                                        'width.px': 18,
-                                        'height.px': 18
-                                    }"
-                                ></svg-icon>
-
-                                Add Another Accident
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- STEP 3 -->
-
-        <div class="d-flex flex-column align-items-center step-three-container">
-            <h1 class="step-title text-center ta-font-bold">
-                Drug & alcohol testing history
-            </h1>
-
-            <h5 class="m-0 step-subtitle ta-font-bold">
-                To be completed by previous employer
-            </h5>
-
-            <!-- INFO SECTION -->
-
-            <div class="d-flex justify-content-center text-center info-section">
-                <p class="m-0 ta-font-regular">
-                    Please take a moment and complete the information requested
-                    below. We would appreciate your prompt response. As you are
-                    aware, after October 29, 2004, failures to respond within 30
-                    days to investigative request for safety performance history
-                    will result in a complaint notification being filed with the
-                    Federal Motor Carrier Safety Administration using the
-                    complaint process specified 386.12.
-                </p>
-            </div>
-
-            <!-- NOT SUBJECT CHECKBOX -->
-
-            <form [formGroup]="drugAndAlcoholTestingHistoryForm">
-                <div
-                    class="d-flex flex-column align-items-center justify-content-center checkbox-container"
-                >
-                    <app-ta-checkbox
-                        formControlName="applicantNotSubject"
-                        [name]="'applicantNotSubject'"
-                        [label]="
-                            'Please check here if applicant was not subject to Department of Transportation (DOT) testing'
-                        "
-                        [customClass]="'bold-12'"
-                    >
-                    </app-ta-checkbox>
-
-                    <p
-                        class="m-0 text-center ta-font-bold"
-                        [ngStyle]="{
-                            color: drugAndAlcoholTestingHistoryForm.get(
-                                'applicantNotSubject'
-                            ).value
-                                ? '#6c6c6c'
-                                : '#919191'
-                        }"
-                        (click)="handleCheckboxParagraphClick()"
-                    >
-                        requirements while employed by you.
+                  <div Class=" title-box">
+                    <p class="m-0 ta-font-regular">
+                      {{ question.title }}
+                      <span class="required-star">*</span>
                     </p>
+                  </div>
+
+                  <div class="radios-box">
+                    <app-ta-input-radiobuttons
+                      [buttons]="question.answerChoices"
+                      (changedValue)="handleInputSelect($event)"
+                    ></app-ta-input-radiobuttons>
+                  </div>
                 </div>
+
+                <!-- DATE EXPLAIN  -->
 
                 <div
-                    class="d-flex flex-column justify-content-center align-items-center"
-                    *ngIf="
-                        !drugAndAlcoholTestingHistoryForm.get(
-                            'applicantNotSubject'
-                        ).value
-                    "
+                  class="d-flex"
+                  *ngIf="i === 0"
+                  [ngStyle]="{
+                    margin:
+                      accidentHistoryForm.get('applicantWorkForCompany')
+                        .value === 'YES'
+                        ? '22px auto 10px auto'
+                        : '0 auto'
+                  }"
                 >
-                    <!-- DATE OF EMPLOYMENT -->
-
-                    <div class="d-flex align-items-center date-container">
-                        <p class="m-0 ta-font-regular">Dates of employment</p>
-                        <div class="date-group">
-                            <app-ta-input
-                                formControlName="employmentFromDate"
-                                [inputConfig]="{
-                                    name: 'datepicker',
-                                    type: 'text',
-                                    label: 'From',
-                                    placeholderIcon: 'date',
-                                    isRequired: true,
-                                    customClass: 'datetimeclass'
-                                }"
-                            ></app-ta-input>
-                        </div>
-                        <div class="date-group">
-                            <app-ta-input
-                                formControlName="employmentToDate"
-                                [inputConfig]="{
-                                    name: 'datepicker',
-                                    type: 'text',
-                                    label: 'To',
-                                    placeholderIcon: 'date',
-                                    isRequired: true,
-                                    customClass: 'datetimeclass'
-                                }"
-                            ></app-ta-input>
-                        </div>
+                  <div
+                    class="d-flex"
+                    *ngIf="
+                      accidentHistoryForm.get('applicantWorkForCompany')
+                        .value === 'YES'
+                    "
+                  >
+                    <div class="date-group">
+                      <app-ta-input
+                        formControlName="applicantWorkForCompanyBeforeExplain"
+                        [inputConfig]="{
+                          name: 'datepicker',
+                          type: 'text',
+                          label: 'From',
+                          placeholderIcon: 'date',
+                          isRequired: true,
+                          customClass: 'datetimeclass'
+                        }"
+                      ></app-ta-input>
                     </div>
-
-                    <!-- QUESTIONS -->
-
-                    <div
-                        class="d-flex flex-column align-items-center questions-container"
-                    >
-                        <div
-                            class="d-flex align-items-center justify-content-between question-container"
-                            *ngFor="
-                                let question of drugAndAlcoholQuestions
-                                    | slice: 0:5;
-                                let i = index;
-                                trackBy: trackByIdentity
-                            "
-                        >
-                            <div [ngClass]="['title-box' + i, 'title-box']">
-                                <p class="m-0 ta-font-regular">
-                                    {{ question.title }}
-                                    <span class="required-star">*</span>
-                                </p>
-                            </div>
-
-                            <div class="radios-box">
-                                <app-ta-input-radiobuttons
-                                    [buttons]="question.answerChoices"
-                                ></app-ta-input-radiobuttons>
-                            </div>
-                        </div>
+                    <div class="date-group">
+                      <app-ta-input
+                        formControlName="applicantWorkForCompanyToExplain"
+                        [inputConfig]="{
+                          name: 'datepicker',
+                          type: 'text',
+                          label: 'To',
+                          placeholderIcon: 'date',
+                          isRequired: true,
+                          customClass: 'datetimeclass'
+                        }"
+                      ></app-ta-input>
                     </div>
-
-                    <!-- NAME OF SAP, PHONE -->
-
-                    <div class="d-flex align-items-center sap-phone-container">
-                        <div class="sap-group">
-                            <app-ta-input
-                                formControlName="sapName"
-                                [inputConfig]="{
-                                    name: 'Name of SAP',
-                                    type: 'text',
-                                    label: 'Name of SAP',
-                                    isRequired: true,
-                                    textTransform: 'capitalize'
-                                }"
-                            ></app-ta-input>
-                        </div>
-                        <div class="phone-group">
-                            <app-ta-input
-                                formControlName="phone"
-                                [inputConfig]="{
-                                    name: 'Phone',
-                                    type: 'text',
-                                    label: 'Phone',
-                                    isRequired: true,
-                                    placeholderIcon: 'phone',
-                                    mask: '(000) 000-0000',
-                                    maxLength: 14
-                                }"
-                            ></app-ta-input>
-                        </div>
-                    </div>
-
-                    <!-- ADDRESS, ADDRESS UNIT -->
-
-                    <div class="d-flex align-items-center address-container">
-                        <div class="address-group">
-                            <app-input-address-dropdown
-                                formControlName="address"
-                                [inputConfig]="{
-                                    name: 'Address',
-                                    type: 'text',
-                                    label: 'Address, City, State Zip',
-                                    isRequired: true,
-                                    placeholderIcon: 'address',
-                                    textTransform: 'capitalize',
-                                    dropdownWidthClass: 'w-col-445',
-                                    minLength: 6,
-                                    maxLength: 256
-                                }"
-                                [placeholderType]="'longAddress'"
-                            ></app-input-address-dropdown>
-                        </div>
-                        <div class="address-unit-group">
-                            <app-ta-input
-                                formControlName="addressUnit"
-                                [inputConfig]="{
-                                    name: 'address-unit',
-                                    type: 'text',
-                                    label: 'Unit No.',
-                                    textTransform: 'uppercase',
-                                    minLength: 1,
-                                    maxLength: 10
-                                }"
-                            ></app-ta-input>
-                        </div>
-                    </div>
-
-                    <!-- SAP QUESTION -->
-
-                    <div
-                        class="d-flex align-items-center justify-content-between sap-question-container"
-                    >
-                        <div Class=" title-box">
-                            <p class="m-0 ta-font-regular">
-                                {{ drugAndAlcoholQuestions[5].title }}
-                                <span class="required-star">*</span>
-                            </p>
-                        </div>
-
-                        <div class="radios-box">
-                            <app-ta-input-radiobuttons
-                                [buttons]="
-                                    drugAndAlcoholQuestions[5].answerChoices
-                                "
-                            ></app-ta-input-radiobuttons>
-                        </div>
-                    </div>
+                  </div>
                 </div>
-            </form>
-        </div>
+
+                <!-- VEHICLE EXPLAIN -->
+
+                <div
+                  class="d-flex"
+                  *ngIf="i === 1"
+                  [ngStyle]="{
+                    margin:
+                      accidentHistoryForm.get(question.formControlName)
+                        .value === 'YES'
+                        ? '22px auto 10px auto'
+                        : '0 auto 32px auto'
+                  }"
+                >
+                  <div
+                    class="d-flex"
+                    *ngIf="
+                      accidentHistoryForm.get(question.formControlName)
+                        .value === 'YES'
+                    "
+                  >
+                    <div class="d-flex align-items-center explain-container">
+                      <!-- VEHICLE TYPE -->
+
+                      <div class="group">
+                        <app-ta-input-dropdown
+                          formControlName="vehicleType"
+                          [template]="'svgtext-template'"
+                          [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            label: 'Vehicle type',
+                            isRequired: true,
+                            isDropdown: true,
+                            dropdownWidthClass: 'w-col-302',
+                            dropdownImageInput: {
+                              withText: true,
+                              svg: true,
+                              image: false,
+                              url: selectedVehicleType?.logoName,
+                              template: 'truck',
+                              class: selectedVehicleType?.name
+                                ?.trim()
+                                .replace(' ', '')
+                                .toLowerCase()
+                            },
+                            customClass: 'truck-trailer-dropdown'
+                          }"
+                          [options]="vehicleType"
+                        ></app-ta-input-dropdown>
+                      </div>
+
+                      <!-- TRAILER TYPE -->
+
+                      <div class="group">
+                        <app-ta-input-dropdown
+                          formControlName="trailerType"
+                          [template]="'svgtext-template'"
+                          [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            label: 'Trailer type',
+                            isRequired: true,
+                            isDropdown: true,
+                            dropdownWidthClass: 'w-col-302',
+                            customClass: 'truck-trailer-dropdown',
+                            dropdownImageInput: {
+                              withText: true,
+                              svg: true,
+                              image: false,
+                              url: selectedTrailerType?.logoName,
+                              template: 'trailer',
+                              class: selectedTrailerType?.name
+                                ?.toLowerCase()
+                                .includes('liquid')
+                                ? 'tanker-liquid'
+                                : selectedTrailerType?.name
+                                    ?.toLowerCase()
+                                    .includes('rgn')
+                                ? 'low-boy-rgn'
+                                : selectedTrailerType?.name
+                                    ?.toLowerCase()
+                                    .includes('dry-bulk')
+                                ? 'tanker-dry-bulk'
+                                : selectedTrailerType?.name
+                                    ?.trim()
+                                    .replace(' ', '')
+                                    .toLowerCase()
+                            }
+                          }"
+                          [options]="trailerType"
+                        ></app-ta-input-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- REASON FOR LEAVING -->
+
+          <div class="reason-group">
+            <app-ta-input-dropdown
+              formControlName="reasonForLeaving"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Reason for leaving',
+                isRequired: true,
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-616'
+              }"
+              [options]="reasonsForLeaving"
+            ></app-ta-input-dropdown>
+          </div>
+
+          <!-- APPLICANT CONSIDERED QUESTION -->
+
+          <div
+            class="d-flex align-items-center justify-content-between consider-question-container"
+          >
+            <div Class=" title-box">
+              <p class="m-0 ta-font-regular">
+                {{ questions[2].title }}
+                <span class="required-star">*</span>
+              </p>
+            </div>
+
+            <div class="radios-box">
+              <app-ta-input-radiobuttons
+                [buttons]="questions[2].answerChoices"
+              ></app-ta-input-radiobuttons>
+            </div>
+          </div>
+
+          <div
+            class="d-flex justify-content-center align-items-center no-safety-checkbox-container"
+          >
+            <app-ta-checkbox
+              formControlName="noSafetyPerformance"
+              [name]="'noSafetyPerformance'"
+              [label]="
+                'Check here, if there is no safety performance history to report'
+              "
+              [customClass]="'bold-12'"
+            >
+            </app-ta-checkbox>
+          </div>
+
+          <div class="d-flex flex-column step-form">
+            <!-- DATE, LOCATION -->
+
+            <div class="d-flex">
+              <div class="group date-group">
+                <app-ta-input
+                  formControlName="accidentDate"
+                  [inputConfig]="{
+                    name: 'datepicker',
+                    type: 'text',
+                    label: 'Date',
+                    placeholderIcon: 'date',
+                    isRequired: true,
+                    customClass: 'datetimeclass'
+                  }"
+                ></app-ta-input>
+              </div>
+              <div class="group location-group">
+                <app-input-address-dropdown
+                  formControlName="accidentLocation"
+                  [inputConfig]="{
+                    name: 'Address',
+                    type: 'text',
+                    label: 'Location',
+                    placeholderIcon: 'address',
+                    textTransform: 'capitalize',
+                    dropdownWidthClass: 'w-col-445',
+                    minLength: 6,
+                    maxLength: 256
+                  }"
+                  [placeholderType]="'shortAddress'"
+                ></app-input-address-dropdown>
+              </div>
+            </div>
+
+            <!-- DESCRIPTION -->
+
+            <div class="d-flex">
+              <div class="group description-group">
+                <app-ta-input
+                  formControlName="accidentDescription"
+                  [inputConfig]="{
+                    name: 'Description',
+                    type: 'text',
+                    label: 'Description',
+                    minLength: 2,
+                    maxLength: 160,
+                    textTransform: 'capitalize',
+                    isRequired: true
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
+
+            <!-- HAZMAT SPILL, INJURIES, FATALITIES -->
+
+            <div class="d-flex hazmat-injuries-fatalities-container">
+              <div
+                class="d-flex align-items-center justify-content-between group hazmat-spill-group"
+              >
+                <div class="title-box">
+                  <p class="m-0 ta-font-regular">
+                    Hazmat spill <span class="required-star">*</span>
+                  </p>
+                </div>
+                <div class="radios-box">
+                  <app-ta-input-radiobuttons
+                    [buttons]="hazmatAnswerChoices"
+                  ></app-ta-input-radiobuttons>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-center fatalities-injuries-group">
+                <div class="d-flex align-items-center injuries-group">
+                  <app-ta-input-arrows
+                    formControlName="injuries"
+                    [inputConfig]="{
+                      name: 'FatalInjuries',
+                      type: 'text',
+                      blackInput: true,
+                      hideRequiredCheck: true,
+                      hideClear: true,
+                      hideErrorMessage: true,
+                      textAlign: 'center'
+                    }"
+                    [name]="'Injuries #'"
+                    [type]="'applicant'"
+                    [elementOrder]="1"
+                    [minimum]="0"
+                  ></app-ta-input-arrows>
+                </div>
+                <div class="d-flex align-items-center fatalities-group">
+                  <app-ta-input-arrows
+                    formControlName="fatalities"
+                    [inputConfig]="{
+                      name: 'FatalInjuries',
+                      type: 'text',
+                      blackInput: true,
+                      hideRequiredCheck: true,
+                      hideClear: true,
+                      hideErrorMessage: true,
+                      textAlign: 'center'
+                    }"
+                    [name]="'Fatalities #'"
+                    [type]="'applicant'"
+                    [elementOrder]="2"
+                    [minimum]="0"
+                  ></app-ta-input-arrows>
+                </div>
+              </div>
+            </div>
+
+            <!-- BTN CONTAINER -->
+
+            <div
+              class="d-flex justify-content-center align-items-center btn-container"
+            >
+              <button
+                type="button"
+                class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
+              >
+                <svg-icon
+                  class="plus-icon"
+                  src="assets/svg/common/ic_plus.svg
+                "
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                ></svg-icon>
+
+                Add Another Accident
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
+
+    <!-- STEP 3 -->
+
+    <div class="d-flex flex-column align-items-center step-three-container">
+      <h1 class="step-title text-center ta-font-bold">
+        Drug & alcohol testing history
+      </h1>
+
+      <h5 class="m-0 step-subtitle ta-font-bold">
+        To be completed by previous employer
+      </h5>
+
+      <!-- INFO SECTION -->
+
+      <div class="d-flex justify-content-center text-center info-section">
+        <p class="m-0 ta-font-regular">
+          Please take a moment and complete the information requested below. We
+          would appreciate your prompt response. As you are aware, after October
+          29, 2004, failures to respond within 30 days to investigative request
+          for safety performance history will result in a complaint notification
+          being filed with the Federal Motor Carrier Safety Administration using
+          the complaint process specified 386.12.
+        </p>
+      </div>
+
+      <!-- NOT SUBJECT CHECKBOX -->
+
+      <form [formGroup]="drugAndAlcoholTestingHistoryForm">
+        <div
+          class="d-flex flex-column align-items-center justify-content-center checkbox-container"
+        >
+          <app-ta-checkbox
+            formControlName="applicantNotSubject"
+            [name]="'applicantNotSubject'"
+            [label]="
+              'Please check here if applicant was not subject to Department of Transportation (DOT) testing'
+            "
+            [customClass]="'bold-12'"
+          >
+          </app-ta-checkbox>
+
+          <p
+            class="m-0 text-center ta-font-bold"
+            [ngStyle]="{
+              color: drugAndAlcoholTestingHistoryForm.get('applicantNotSubject')
+                .value
+                ? '#6c6c6c'
+                : '#919191'
+            }"
+            (click)="handleCheckboxParagraphClick()"
+          >
+            requirements while employed by you.
+          </p>
+        </div>
+
+        <div
+          class="d-flex flex-column justify-content-center align-items-center"
+          *ngIf="
+            !drugAndAlcoholTestingHistoryForm.get('applicantNotSubject').value
+          "
+        >
+          <!-- DATE OF EMPLOYMENT -->
+
+          <div class="d-flex align-items-center date-container">
+            <p class="m-0 ta-font-regular">Dates of employment</p>
+            <div class="date-group">
+              <app-ta-input
+                formControlName="employmentFromDate"
+                [inputConfig]="{
+                  name: 'datepicker',
+                  type: 'text',
+                  label: 'From',
+                  placeholderIcon: 'date',
+                  isRequired: true,
+                  customClass: 'datetimeclass'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="date-group">
+              <app-ta-input
+                formControlName="employmentToDate"
+                [inputConfig]="{
+                  name: 'datepicker',
+                  type: 'text',
+                  label: 'To',
+                  placeholderIcon: 'date',
+                  isRequired: true,
+                  customClass: 'datetimeclass'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+
+          <!-- QUESTIONS -->
+
+          <div
+            class="d-flex flex-column align-items-center questions-container"
+          >
+            <div
+              class="d-flex align-items-center justify-content-between question-container"
+              *ngFor="
+                let question of drugAndAlcoholQuestions | slice: 0:5;
+                let i = index;
+                trackBy: trackByIdentity
+              "
+            >
+              <div [ngClass]="['title-box' + i, 'title-box']">
+                <p class="m-0 ta-font-regular">
+                  {{ question.title }}
+                  <span class="required-star">*</span>
+                </p>
+              </div>
+
+              <div class="radios-box">
+                <app-ta-input-radiobuttons
+                  [buttons]="question.answerChoices"
+                ></app-ta-input-radiobuttons>
+              </div>
+            </div>
+          </div>
+
+          <!-- NAME OF SAP, PHONE -->
+
+          <div class="d-flex align-items-center sap-phone-container">
+            <div class="sap-group">
+              <app-ta-input
+                formControlName="sapName"
+                [inputConfig]="{
+                  name: 'Name of SAP',
+                  type: 'text',
+                  label: 'Name of SAP',
+                  isRequired: true,
+                  textTransform: 'capitalize'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="phone-group">
+              <app-ta-input
+                formControlName="phone"
+                [inputConfig]="{
+                  name: 'Phone',
+                  type: 'text',
+                  label: 'Phone',
+                  isRequired: true,
+                  placeholderIcon: 'phone',
+                  mask: '(000) 000-0000',
+                  maxLength: 14
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+
+          <!-- ADDRESS, ADDRESS UNIT -->
+
+          <div class="d-flex align-items-center address-container">
+            <div class="address-group">
+              <app-input-address-dropdown
+                formControlName="address"
+                [inputConfig]="{
+                  name: 'Address',
+                  type: 'text',
+                  label: 'Address, City, State Zip',
+                  isRequired: true,
+                  placeholderIcon: 'address',
+                  textTransform: 'capitalize',
+                  dropdownWidthClass: 'w-col-445',
+                  minLength: 6,
+                  maxLength: 256
+                }"
+                [placeholderType]="'longAddress'"
+              ></app-input-address-dropdown>
+            </div>
+            <div class="address-unit-group">
+              <app-ta-input
+                formControlName="addressUnit"
+                [inputConfig]="{
+                  name: 'address-unit',
+                  type: 'text',
+                  label: 'Unit No.',
+                  textTransform: 'uppercase',
+                  minLength: 1,
+                  maxLength: 10
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+
+          <!-- SAP QUESTION -->
+
+          <div
+            class="d-flex align-items-center justify-content-between sap-question-container"
+          >
+            <div Class=" title-box">
+              <p class="m-0 ta-font-regular">
+                {{ drugAndAlcoholQuestions[5].title }}
+                <span class="required-star">*</span>
+              </p>
+            </div>
+
+            <div class="radios-box">
+              <app-ta-input-radiobuttons
+                [buttons]="drugAndAlcoholQuestions[5].answerChoices"
+              ></app-ta-input-radiobuttons>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </app-ta-modal>

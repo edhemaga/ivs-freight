@@ -12,23 +12,23 @@ import { DriverCdlModalComponent } from '../../modals/driver-modal/driver-cdl-mo
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-    declarations: [
-        DriverDetailsComponent,
-        DriverDetailsItemComponent,
-        DriverDetailsCardComponent,
-        // ModalsA
-        DriverCdlModalComponent,
-        DriverDrugAlcoholModalComponent,
-        DriverMedicalModalComponent,
-        DriverMvrModalComponent,
-    ],
-    exports: [DriverDetailsCardComponent, SharedModule],
+  declarations: [
+    DriverDetailsComponent,
+    DriverDetailsItemComponent,
+    DriverDetailsCardComponent,
+    // ModalsA
+    DriverCdlModalComponent,
+    DriverDrugAlcoholModalComponent,
+    DriverMedicalModalComponent,
+    DriverMvrModalComponent,
+  ],
+  exports: [DriverDetailsCardComponent, SharedModule],
 
-    imports: [
-        CommonModule,
-        DriverDetailsRoutes,
-        SharedModule,
-        TruckassistProgressExpirationModule,
-    ],
+  imports: [
+    CommonModule,
+    DriverDetailsRoutes,
+    SharedModule,
+    TruckassistProgressExpirationModule,
+  ],
 })
 export class DriverDetailsModule {}

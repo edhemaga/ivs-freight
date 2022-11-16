@@ -1,1242 +1,1242 @@
-@import 'src/theme/variables';
+@import "src/theme/variables";
 
 //------------------------ Form Container Classes ---------------------------------------------------
 .form-container {
+  margin-top: 26px;
+
+  // Specific Classes to add on settings/location/modals
+  &.form-container-mt-12 {
+    margin-top: 12px !important;
+  }
+
+  &.row-settings-location-additional {
+    margin-top: 26px !important;
+    margin-bottom: 10px !important;
+  }
+
+  label {
+    &.control-label {
+      margin-bottom: 20px;
+    }
+  }
+
+  .row {
+    margin-bottom: 32px !important;
+
+    & > * {
+      padding: 0px;
+    }
+  }
+
+  .first-row {
     margin-top: 26px;
+  }
 
-    // Specific Classes to add on settings/location/modals
-    &.form-container-mt-12 {
-        margin-top: 12px !important;
+  // If has something below row
+  .last-row {
+    margin-bottom: 22px !important;
+  }
+
+  .dropdown-row {
+    margin-bottom: 28px !important;
+  }
+
+  // Custom
+  .row-mt-12 {
+    margin-top: 12px !important;
+  }
+
+  .row-mt-8 {
+    margin-top: 8px !important;
+  }
+
+  .row-mt-20 {
+    margin-top: 20px !important;
+  }
+
+  .row-mb-10 {
+    margin-bottom: 10px !important;
+  }
+
+  .row-mb-8 {
+    margin-bottom: 8px !important;
+  }
+
+  .row-mb-26 {
+    margin-bottom: 26px !important;
+  }
+
+  .row-mb-12 {
+    margin-bottom: 12px !important;
+  }
+
+  .row-mb-22 {
+    margin-bottom: 22px !important;
+  }
+
+  .row-no-m {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+  }
+
+  .row-no-mb {
+    margin-bottom: 0px !important;
+  }
+
+  .row-mb-modal-upload {
+    margin-bottom: 12px !important;
+  }
+
+  // If modal buttons directly below row
+  .last-modal-row {
+    margin-bottom: 20px !important;
+  }
+
+  .no-p-left {
+    padding-left: 0px !important;
+  }
+
+  .no-p-right {
+    padding-right: 0px !important;
+  }
+
+  .divider {
+    height: 2px;
+    content: "";
+    border-radius: 1px;
+    background-color: #f3f3f3;
+
+    &.divider-second {
+      margin-top: 3px;
+    }
+  }
+
+  //------------------------ TABS ---------------------------------------------------
+  &.tab-2 {
+    margin-top: 12px;
+  }
+
+  .animation-three-tabs {
+    position: relative;
+    display: grid;
+    grid-template-rows: 100%;
+    grid-template-columns: repeat(3, 100%);
+    transition: all 0.3s;
+  }
+
+  .animation-two-tabs {
+    position: relative;
+    display: grid;
+    grid-template-rows: 100%;
+    grid-template-columns: repeat(2, 100%);
+  }
+
+  //------------------------ Different Form Container Views ---------------------------------------------------
+
+  &.form-container-with-inputs {
+    margin-bottom: 22px !important;
+  }
+
+  &.form-container-with-card {
+    margin-bottom: 12px !important;
+  }
+
+  &.form-container-without-mb {
+    margin-bottom: 0px !important;
+  }
+
+  //------------------------------------------------ Custom Schedule Of Inputs ------------------------------------------------------
+
+  //---------------- Bank Inputs ----------------
+  .custom-bank-row {
+    display: grid;
+    grid-template-columns: 164px 113px 155px;
+    align-items: center;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    margin-bottom: 32px;
+
+    &.custom-bank-row-driver {
+      grid-template-columns: 184px 160px 248px;
+      margin-bottom: 0px;
     }
 
-    &.row-settings-location-additional {
-        margin-top: 26px !important;
-        margin-bottom: 10px !important;
+    &.custom-bank-row-repair-shop {
+      margin-bottom: 0px !important;
+    }
+  }
+
+  //---------------- Driver Modal ------------------------------------
+  .driver-modal-first-row {
+    display: grid;
+    grid-template-columns: repeat(2, 216px) 160px;
+    align-items: center;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .driver-modal-second-row {
+    display: grid;
+    grid-template-columns: 170px 262px 160px;
+    align-items: center;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .driver-twic-mvr-row {
+    display: grid;
+    grid-template-columns: 59px 251px 1fr;
+    align-items: center;
+    -moz-column-gap: 22px;
+    column-gap: 22px;
+    padding-left: 6px;
+
+    &.extended {
+      grid-template-columns: 59px 143px 116px 1fr;
+      -moz-column-gap: 12px;
+      column-gap: 12px;
     }
 
-    label {
-        &.control-label {
-            margin-bottom: 20px;
+    .ta-checkbox-container {
+      top: 2px !important;
+    }
+  }
+
+  // Driver Notification
+  .driver-notification {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    padding-left: 6px;
+
+    p {
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: #6c6c6c;
+      margin-right: 10px;
+
+      &::-moz-selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+      }
+    }
+
+    &-general {
+      margin-top: 20px;
+    }
+  }
+
+  //---------------- Custom Checkbox Card With Content In ----------------
+  .custom-checkbox-card {
+    display: block;
+
+    .checkbox-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 4px;
+      line-height: 18px;
+
+      &.pointer {
+        cursor: pointer;
+
+        &:hover {
+          transition: all 0.3s ease-in-out;
+          .ta-checkbox-label {
+            color: #3c3c3c !important;
+          }
+
+          .checkbox-card-header-arrow {
+            svg {
+              path {
+                fill: #aaaaaa !important;
+              }
+            }
+          }
         }
-    }
+      }
 
-    .row {
-        margin-bottom: 32px !important;
-
-        & > * {
-            padding: 0px;
-        }
-    }
-
-    .first-row {
-        margin-top: 26px;
-    }
-
-    // If has something below row
-    .last-row {
-        margin-bottom: 22px !important;
-    }
-
-    .dropdown-row {
-        margin-bottom: 28px !important;
-    }
-
-    // Custom
-    .row-mt-12 {
-        margin-top: 12px !important;
-    }
-
-    .row-mt-8 {
-        margin-top: 8px !important;
-    }
-
-    .row-mt-20 {
-        margin-top: 20px !important;
-    }
-
-    .row-mb-10 {
-        margin-bottom: 10px !important;
-    }
-
-    .row-mb-8 {
-        margin-bottom: 8px !important;
-    }
-
-    .row-mb-26 {
-        margin-bottom: 26px !important;
-    }
-
-    .row-mb-12 {
-        margin-bottom: 12px !important;
-    }
-
-    .row-mb-22 {
-        margin-bottom: 22px !important;
-    }
-
-    .row-no-m {
-        margin-top: 0px !important;
-        margin-bottom: 0px !important;
-    }
-
-    .row-no-mb {
-        margin-bottom: 0px !important;
-    }
-
-    .row-mb-modal-upload {
-        margin-bottom: 12px !important;
-    }
-
-    // If modal buttons directly below row
-    .last-modal-row {
-        margin-bottom: 20px !important;
-    }
-
-    .no-p-left {
-        padding-left: 0px !important;
-    }
-
-    .no-p-right {
-        padding-right: 0px !important;
-    }
-
-    .divider {
-        height: 2px;
-        content: '';
-        border-radius: 1px;
-        background-color: #f3f3f3;
-
-        &.divider-second {
-            margin-top: 3px;
-        }
-    }
-
-    //------------------------ TABS ---------------------------------------------------
-    &.tab-2 {
-        margin-top: 12px;
-    }
-
-    .animation-three-tabs {
-        position: relative;
-        display: grid;
-        grid-template-rows: 100%;
-        grid-template-columns: repeat(3, 100%);
-        transition: all 0.3s;
-    }
-
-    .animation-two-tabs {
-        position: relative;
-        display: grid;
-        grid-template-rows: 100%;
-        grid-template-columns: repeat(2, 100%);
-    }
-
-    //------------------------ Different Form Container Views ---------------------------------------------------
-
-    &.form-container-with-inputs {
-        margin-bottom: 22px !important;
-    }
-
-    &.form-container-with-card {
-        margin-bottom: 12px !important;
-    }
-
-    &.form-container-without-mb {
-        margin-bottom: 0px !important;
-    }
-
-    //------------------------------------------------ Custom Schedule Of Inputs ------------------------------------------------------
-
-    //---------------- Bank Inputs ----------------
-    .custom-bank-row {
-        display: grid;
-        grid-template-columns: 164px 113px 155px;
-        align-items: center;
-        -moz-column-gap: 12px;
-        column-gap: 12px;
-        margin-bottom: 32px;
-
-        &.custom-bank-row-driver {
-            grid-template-columns: 184px 160px 248px;
-            margin-bottom: 0px;
-        }
-
-        &.custom-bank-row-repair-shop {
-            margin-bottom: 0px !important;
-        }
-    }
-
-    //---------------- Driver Modal ------------------------------------
-    .driver-modal-first-row {
-        display: grid;
-        grid-template-columns: repeat(2, 216px) 160px;
-        align-items: center;
-        -moz-column-gap: 12px;
-        column-gap: 12px;
-        margin-bottom: 32px;
-    }
-
-    .driver-modal-second-row {
-        display: grid;
-        grid-template-columns: 170px 262px 160px;
-        align-items: center;
-        -moz-column-gap: 12px;
-        column-gap: 12px;
-        margin-bottom: 32px;
-    }
-
-    .driver-twic-mvr-row {
-        display: grid;
-        grid-template-columns: 59px 251px 1fr;
-        align-items: center;
-        -moz-column-gap: 22px;
-        column-gap: 22px;
-        padding-left: 6px;
-
-        &.extended {
-            grid-template-columns: 59px 143px 116px 1fr;
-            -moz-column-gap: 12px;
-            column-gap: 12px;
-        }
-
-        .ta-checkbox-container {
-            top: 2px !important;
-        }
-    }
-
-    // Driver Notification
-    .driver-notification {
+      .grouping-checkboxes {
         display: flex;
+        align-items: center;
         gap: 22px;
-        align-items: center;
-        padding-left: 6px;
+      }
 
-        p {
-            margin: 0;
-            padding: 0;
-            font-size: 14px;
-            font-weight: 600;
-            color: #6c6c6c;
-            margin-right: 10px;
-
-            &::-moz-selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-
-            &::selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
+      .checkbox-card-header-arrow {
+        svg {
+          transform: rotate(0deg);
+          transition: all 0.3s ease-in-out;
+          opacity: 0;
+          path {
+            fill: #b7b7b7;
+          }
         }
 
-        &-general {
-            margin-top: 20px;
-        }
-    }
-
-    //---------------- Custom Checkbox Card With Content In ----------------
-    .custom-checkbox-card {
-        display: block;
-
-        .checkbox-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 7px 4px;
-            line-height: 18px;
-
-            &.pointer {
-                cursor: pointer;
-
-                &:hover {
-                    transition: all 0.3s ease-in-out;
-                    .ta-checkbox-label {
-                        color: #3c3c3c !important;
-                    }
-
-                    .checkbox-card-header-arrow {
-                        svg {
-                            path {
-                                fill: #aaaaaa !important;
-                            }
-                        }
-                    }
-                }
-            }
-
-            .grouping-checkboxes {
-                display: flex;
-                align-items: center;
-                gap: 22px;
-            }
-
-            .checkbox-card-header-arrow {
-                svg {
-                    transform: rotate(0deg);
-                    transition: all 0.3s ease-in-out;
-                    opacity: 0;
-                    path {
-                        fill: #b7b7b7;
-                    }
-                }
-
-                &.visible {
-                    svg {
-                        transform: rotate(180deg);
-                        transition: all 0.3s ease-in-out;
-                        opacity: 1;
-                    }
-                }
-
-                &.rotate {
-                    svg {
-                        transform: rotate(0deg);
-                    }
-                }
-            }
-        }
-
-        .checkbox-card-body {
-            max-height: 0;
-            transition: all 0.3s ease-out;
-
-            &.active {
-                max-height: 600px;
-                margin-top: 12px;
-            }
-
-            &.active-20 {
-                max-height: 600px;
-                margin-top: 20px;
-            }
-
-            .animation-checkbox-card-tabs {
-                position: relative;
-                transform: translate(20%);
-                opacity: 0;
-                height: 0px;
-                transition: all 0.3s ease-in-out;
-
-                &.fade-checkbox-inputs {
-                    transform: translate(0);
-                    opacity: 1;
-                    height: 26px;
-                    margin-top: 26px;
-                    margin-bottom: 22px;
-                    transition: all 0.3s ease-in-out;
-
-                    // Override global class
-                    .row {
-                        margin-bottom: 0px !important;
-                    }
-                }
-            }
-
-            // Truck Modal
-            .animation-checkbox-card-tabs-truckModal {
-                height: 90px;
-                transition: all 0.3s ease-in-out;
-            }
-        }
-    }
-
-    //---------------- Pay Type DRIVER ----------------
-    .custom-row-paytype-driver {
-        display: grid;
-        grid-template-columns: repeat(2, 167px) 98px 105px;
-        align-items: center;
-        -moz-column-gap: 22px;
-        column-gap: 22px;
-        padding-left: 6px;
-        margin-bottom: 32px;
-
-        &.custom-row-paytype-driver-disabled {
-            grid-template-columns: repeat(2, 167px) 119px 107px;
-            -moz-column-gap: 12px;
-            column-gap: 12px;
-        }
-
-        &.fleet-type {
-            grid-template-columns: 1fr 414px;
-        }
-    }
-
-    //---------------- PayType Commission ----------------
-    .paytype-commission {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: 22px;
-        grid-column-gap: 22px;
-        -moz-column-gap: 22px;
-        align-items: center;
-        column-gap: 22px;
-        padding-left: 6px;
-        padding-right: 1px;
-        margin-bottom: 30px;
-
-        .paytype-field {
-            height: 20px;
-        }
-
-        &.paytype-commission-single {
-            grid-template-columns: 1fr;
-            margin-bottom: 40px;
-        }
-    }
-
-    //---------------- PayType Per Mile ----------------
-    .paytype-permile {
-        padding-left: 6px;
-        max-height: 0px;
-        overflow: hidden;
-        transition: all 0.3s ease-in-out;
-        margin-bottom: 30px;
-
-        &.active {
-            max-height: 600px !important;
-            margin-top: 32px;
-            overflow: visible;
+        &.visible {
+          svg {
+            transform: rotate(180deg);
             transition: all 0.3s ease-in-out;
+            opacity: 1;
+          }
         }
 
-        .permile-fields {
-            display: grid;
-            grid-template-columns: auto repeat(3, 177px);
-            grid-template-rows: 26px;
-            align-items: center;
-            -moz-column-gap: 12px;
-            column-gap: 12px;
-
-            margin-bottom: 32px;
-
-            p {
-                margin: 0;
-                font-size: 14px;
-                font-weight: 600;
-                color: #6c6c6c;
-
-                &::-moz-selection {
-                    color: #6c6c6c;
-                    background-color: rgb(108, 108, 108, 0.2);
-                }
-
-                &::selection {
-                    color: #6c6c6c;
-                    background-color: rgb(108, 108, 108, 0.2);
-                }
-            }
-
-            &.permile-fields-same-rate {
-                grid-template-columns: auto repeat(2, 265px);
-            }
+        &.rotate {
+          svg {
+            transform: rotate(0deg);
+          }
         }
+      }
     }
 
-    //---------------- Emergency Contact ----------------
-    .emergency-contact {
-        display: grid;
-        grid-template-columns: 214px 190px 188px;
-        -moz-column-gap: 12px;
-        column-gap: 12px;
+    .checkbox-card-body {
+      max-height: 0;
+      transition: all 0.3s ease-out;
+
+      &.active {
+        max-height: 600px;
+        margin-top: 12px;
+      }
+
+      &.active-20 {
+        max-height: 600px;
+        margin-top: 20px;
+      }
+
+      .animation-checkbox-card-tabs {
+        position: relative;
+        transform: translate(20%);
+        opacity: 0;
+        height: 0px;
+        transition: all 0.3s ease-in-out;
+
+        &.fade-checkbox-inputs {
+          transform: translate(0);
+          opacity: 1;
+          height: 26px;
+          margin-top: 26px;
+          margin-bottom: 22px;
+          transition: all 0.3s ease-in-out;
+
+          // Override global class
+          .row {
+            margin-bottom: 0px !important;
+          }
+        }
+      }
+
+      // Truck Modal
+      .animation-checkbox-card-tabs-truckModal {
+        height: 90px;
+        transition: all 0.3s ease-in-out;
+      }
     }
+  }
+
+  //---------------- Pay Type DRIVER ----------------
+  .custom-row-paytype-driver {
+    display: grid;
+    grid-template-columns: repeat(2, 167px) 98px 105px;
+    align-items: center;
+    -moz-column-gap: 22px;
+    column-gap: 22px;
+    padding-left: 6px;
+    margin-bottom: 32px;
+
+    &.custom-row-paytype-driver-disabled {
+      grid-template-columns: repeat(2, 167px) 119px 107px;
+      -moz-column-gap: 12px;
+      column-gap: 12px;
+    }
+
+    &.fleet-type {
+      grid-template-columns: 1fr 414px;
+    }
+  }
+
+  //---------------- PayType Commission ----------------
+  .paytype-commission {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 22px;
+    grid-column-gap: 22px;
+    -moz-column-gap: 22px;
+    align-items: center;
+    column-gap: 22px;
+    padding-left: 6px;
+    padding-right: 1px;
+    margin-bottom: 30px;
+
+    .paytype-field {
+      height: 20px;
+    }
+
+    &.paytype-commission-single {
+      grid-template-columns: 1fr;
+      margin-bottom: 40px;
+    }
+  }
+
+  //---------------- PayType Per Mile ----------------
+  .paytype-permile {
+    padding-left: 6px;
+    max-height: 0px;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 30px;
+
+    &.active {
+      max-height: 600px !important;
+      margin-top: 32px;
+      overflow: visible;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .permile-fields {
+      display: grid;
+      grid-template-columns: auto repeat(3, 177px);
+      grid-template-rows: 26px;
+      align-items: center;
+      -moz-column-gap: 12px;
+      column-gap: 12px;
+
+      margin-bottom: 32px;
+
+      p {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: #6c6c6c;
+
+        &::-moz-selection {
+          color: #6c6c6c;
+          background-color: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: #6c6c6c;
+          background-color: rgb(108, 108, 108, 0.2);
+        }
+      }
+
+      &.permile-fields-same-rate {
+        grid-template-columns: auto repeat(2, 265px);
+      }
+    }
+  }
+
+  //---------------- Emergency Contact ----------------
+  .emergency-contact {
+    display: grid;
+    grid-template-columns: 214px 190px 188px;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+  }
 }
 
 //---------------- Model Color Year Length ----------------
 .custom-model-color-year-length {
-    display: grid;
-    grid-template-columns: 109px 72px 133px 106px;
-    align-items: center;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
+  display: grid;
+  grid-template-columns: 109px 72px 133px 106px;
+  align-items: center;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
 }
 
 //---------------- Broker Billing ----------------
 .broker-billing {
-    display: grid;
-    grid-template-columns: 1fr 214px 176px;
-    align-items: center;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    padding-left: 6px;
+  display: grid;
+  grid-template-columns: 1fr 214px 176px;
+  align-items: center;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  padding-left: 6px;
 
-    &.row-gap {
-        row-gap: 26px;
-    }
+  &.row-gap {
+    row-gap: 26px;
+  }
 
-    .broker-billing-field {
-        height: 26px;
-        &.credit {
-            display: flex;
-            align-items: center;
-            p {
-                margin: 0;
-                margin-right: 6px;
-                font-size: 14px;
-                font-weight: 500;
-                color: #6c6c6c;
-                position: relative;
-                top: 1px;
-                -webkit-user-select: none;
-                -moz-user-select: none;
-                -ms-user-select: none;
-                user-select: none;
-            }
-        }
+  .broker-billing-field {
+    height: 26px;
+    &.credit {
+      display: flex;
+      align-items: center;
+      p {
+        margin: 0;
+        margin-right: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #6c6c6c;
+        position: relative;
+        top: 1px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
     }
+  }
 }
 //---------------- Shipper Work Hours ----------------
 .shipper-work-hours {
-    display: grid;
-    grid-template-columns: 112px 90px 186px 186px;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    align-items: center;
-    margin-left: 6px;
+  display: grid;
+  grid-template-columns: 112px 90px 186px 186px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  align-items: center;
+  margin-left: 6px;
 
-    .shipper-work-hours-field {
-        &.appointment {
-            background-color: #cccccc;
-            color: #ffffff;
-            border-radius: 2px;
-            border: 2px solid #f3f3f3;
-            font-size: 12px;
-            font-weight: 600;
-            padding: 2px 12px;
-            transition: all 0.3s ease-in-out;
-            cursor: pointer;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+  .shipper-work-hours-field {
+    &.appointment {
+      background-color: #cccccc;
+      color: #ffffff;
+      border-radius: 2px;
+      border: 2px solid #f3f3f3;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 12px;
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
 
-            &.active {
-                background-color: #6d82c7;
-                transition: all 0.3s ease-in-out;
-            }
-        }
+      &.active {
+        background-color: #6d82c7;
+        transition: all 0.3s ease-in-out;
+      }
     }
+  }
 }
 
 //---------------- Truck Modal Additional Page ----------------
 .truck-additional-two-columns {
-    display: grid;
-    grid-template-columns: 196px 248px;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    align-items: center;
-    margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 196px 248px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  align-items: center;
+  margin-bottom: 32px;
 }
 
 .truck-additional-three-columns {
-    display: grid;
-    grid-template-columns: 164px repeat(2, 134px);
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    align-items: center;
-    margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 164px repeat(2, 134px);
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  align-items: center;
+  margin-bottom: 32px;
 
-    .double-bank-checkbox {
-        margin-left: 10px;
-    }
+  .double-bank-checkbox {
+    margin-left: 10px;
+  }
 }
 
 .truck-additional-fifth-columns {
-    display: grid;
-    grid-template-columns: 107px 101px 70px 48px;
-    -moz-column-gap: 22px;
-    column-gap: 22px;
-    align-items: center;
-    padding: 0 6px;
-    margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 107px 101px 70px 48px;
+  -moz-column-gap: 22px;
+  column-gap: 22px;
+  align-items: center;
+  padding: 0 6px;
+  margin-bottom: 32px;
 }
 
 //---------------- Trailer --------------------------------------
 .trailer-modal-first-row {
-    display: grid;
-    grid-template-columns: 110px 334px;
-    align-items: center;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 110px 334px;
+  align-items: center;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin-bottom: 32px;
 }
 
 .trailer-modal-insurance-fhwa {
-    display: grid;
-    grid-template-columns: 196px 1fr;
-    align-items: center;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
+  display: grid;
+  grid-template-columns: 196px 1fr;
+  align-items: center;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
 }
 
 //---------------- Phone, Phone Extension, Email ----------------
 .phone-extension-medium-modal {
+  display: grid;
+  grid-template-columns: 258px 1fr;
+  align-items: center;
+  grid-template-rows: 26px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin: 32px 0px;
+
+  .phone-extension {
     display: grid;
-    grid-template-columns: 258px 1fr;
+    grid-template-columns: 232px 26px;
     align-items: center;
-    grid-template-rows: 26px;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    margin: 32px 0px;
+    -moz-column-gap: 2px;
+    column-gap: 2px;
 
-    .phone-extension {
-        display: grid;
-        grid-template-columns: 232px 26px;
-        align-items: center;
-        -moz-column-gap: 2px;
-        column-gap: 2px;
+    .extension-field {
+      background: #f3f3f3;
+      border-radius: 2px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1px 0px;
+      position: relative;
 
-        .extension-field {
-            background: #f3f3f3;
-            border-radius: 2px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1px 0px;
-            position: relative;
-
-            svg-icon {
-                svg {
-                    position: relative;
-                    bottom: 0.5px;
-                    width: 17px;
-                    height: 18px;
-                    path {
-                        fill: #b7b7b7;
-                    }
-                }
-            }
-
-            &:hover {
-                background-color: #eeeeee;
-                transition: all 0.3s ease-in-out;
-                svg-icon {
-                    svg {
-                        path {
-                            fill: #919191;
-                        }
-                    }
-                }
-            }
+      svg-icon {
+        svg {
+          position: relative;
+          bottom: 0.5px;
+          width: 17px;
+          height: 18px;
+          path {
+            fill: #b7b7b7;
+          }
         }
+      }
 
-        &.active-phone-ext {
-            grid-template-columns: 172px 86px;
-        }
-    }
-}
-//---------------- Phone, Phone Extension, Email User Modal----------------
-.phone-ext-email-small-modal {
-    display: grid;
-    grid-template-columns: 180px 1fr;
-    grid-template-rows: 26px;
-    align-items: center;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    margin: 32px 0px;
-    margin-bottom: 22px;
-
-    &.phone-ext-email-small-modal-my-20 {
-        margin: 20px 0px !important;
-    }
-
-    &.phone-ext-email-mt20-mb-32 {
-        margin-top: 20px !important;
-        margin-bottom: 32px !important;
-    }
-
-    &.phone-ext-email-small-modal-my-32 {
-        margin: 32px 0px !important;
-    }
-
-    .phone-extension {
-        display: grid;
-        grid-template-columns: 152px 26px;
-        align-items: center;
-        -moz-column-gap: 2px;
-        column-gap: 2px;
-
-        .extension-field {
-            background: #f3f3f3;
-            border-radius: 2px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1px 0px;
-            position: relative;
-
-            svg {
-                position: relative;
-                bottom: 0.5px;
-                width: 17px;
-                height: 18px;
-                path {
-                    fill: #b7b7b7;
-                }
+      &:hover {
+        background-color: #eeeeee;
+        transition: all 0.3s ease-in-out;
+        svg-icon {
+          svg {
+            path {
+              fill: #919191;
             }
-
-            &:hover {
-                background-color: #eeeeee;
-                transition: all 0.3s ease-in-out;
-                svg {
-                    path {
-                        fill: #919191;
-                    }
-                }
-            }
+          }
         }
+      }
     }
 
     &.active-phone-ext {
-        grid-template-columns: 1fr 214px;
-        .phone-extension {
-            grid-template-columns: 142px 86px;
-        }
+      grid-template-columns: 172px 86px;
     }
+  }
+}
+//---------------- Phone, Phone Extension, Email User Modal----------------
+.phone-ext-email-small-modal {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  grid-template-rows: 26px;
+  align-items: center;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin: 32px 0px;
+  margin-bottom: 22px;
+
+  &.phone-ext-email-small-modal-my-20 {
+    margin: 20px 0px !important;
+  }
+
+  &.phone-ext-email-mt20-mb-32 {
+    margin-top: 20px !important;
+    margin-bottom: 32px !important;
+  }
+
+  &.phone-ext-email-small-modal-my-32 {
+    margin: 32px 0px !important;
+  }
+
+  .phone-extension {
+    display: grid;
+    grid-template-columns: 152px 26px;
+    align-items: center;
+    -moz-column-gap: 2px;
+    column-gap: 2px;
+
+    .extension-field {
+      background: #f3f3f3;
+      border-radius: 2px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1px 0px;
+      position: relative;
+
+      svg {
+        position: relative;
+        bottom: 0.5px;
+        width: 17px;
+        height: 18px;
+        path {
+          fill: #b7b7b7;
+        }
+      }
+
+      &:hover {
+        background-color: #eeeeee;
+        transition: all 0.3s ease-in-out;
+        svg {
+          path {
+            fill: #919191;
+          }
+        }
+      }
+    }
+  }
+
+  &.active-phone-ext {
+    grid-template-columns: 1fr 214px;
+    .phone-extension {
+      grid-template-columns: 142px 86px;
+    }
+  }
 }
 
 //---------------- Gate, Security Camera ----------------
 .parking-gate-securityCamera {
-    display: grid;
-    grid-template-columns: 140px 1fr;
-    grid-template-rows: 26px;
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  grid-template-rows: 26px;
+  align-items: center;
+  padding-left: 6px;
+
+  .gate-field,
+  .camera-field {
+    display: flex;
     align-items: center;
-    padding-left: 6px;
+    gap: 8px;
 
-    .gate-field,
-    .camera-field {
-        display: flex;
-        align-items: center;
-        gap: 8px;
+    p {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 500;
+      color: #919191;
 
-        p {
-            margin: 0;
-            font-size: 14px;
-            font-weight: 500;
-            color: #919191;
+      &::-moz-selection {
+        background-color: rgb(145, 145, 145, 0.2);
+        color: #919191;
+      }
 
-            &::-moz-selection {
-                background-color: rgb(145, 145, 145, 0.2);
-                color: #919191;
-            }
-
-            &::selection {
-                background-color: rgb(145, 145, 145, 0.2);
-                color: #919191;
-            }
-        }
+      &::selection {
+        background-color: rgb(145, 145, 145, 0.2);
+        color: #919191;
+      }
     }
+  }
 
-    &-location-terminal {
-        margin-bottom: 22px;
-    }
+  &-location-terminal {
+    margin-bottom: 22px;
+  }
 }
 //---------------- Repair Shop Services ----------------
 .repair-shop-services,
 .violation-special-checks {
-    display: grid;
-    grid-template-columns: repeat(4, 105px);
-    grid-template-rows: repeat(2, 26px);
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    row-gap: 6px;
-    align-items: center;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  display: grid;
+  grid-template-columns: repeat(4, 105px);
+  grid-template-rows: repeat(2, 26px);
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  row-gap: 6px;
+  align-items: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
-    .repair-shop-service,
-    .violation-special-check {
-        background-color: #f3f3f3;
-        color: #b7b7b7;
+  .repair-shop-service,
+  .violation-special-check {
+    background-color: #f3f3f3;
+    color: #b7b7b7;
+    width: 100%;
+    height: 100%;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    p {
+      margin: 0;
+      line-height: 15px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    svg-icon {
+      height: 19px;
+      width: 18px;
+      line-height: 18px;
+      svg {
         width: 100%;
         height: 100%;
-        border-radius: 2px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-
-        p {
-            margin: 0;
-            line-height: 15px;
-            font-size: 12px;
-            font-weight: 600;
+        path {
+          fill: #b7b7b7;
         }
-
-        svg-icon {
-            height: 19px;
-            width: 18px;
-            line-height: 18px;
-            svg {
-                width: 100%;
-                height: 100%;
-                path {
-                    fill: #b7b7b7;
-                }
-            }
-        }
-
-        &:hover {
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-        }
-
-        &.active {
-            background-color: #e0eaf8;
-            color: #536bc2;
-
-            svg-icon {
-                svg {
-                    path {
-                        fill: #6d82c7;
-                    }
-                }
-            }
-        }
+      }
     }
+
+    &:hover {
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+    }
+
+    &.active {
+      background-color: #e0eaf8;
+      color: #536bc2;
+
+      svg-icon {
+        svg {
+          path {
+            fill: #6d82c7;
+          }
+        }
+      }
+    }
+  }
 }
 
 .violation-special-checks {
-    grid-template-columns: repeat(5, 158px);
-    align-items: center;
+  grid-template-columns: repeat(5, 158px);
+  align-items: center;
 }
 
 //---------------- Company IRP, IFTA, TOLL, SCAC  ----------------
 .company-irp-ifta-toll-scac {
-    display: grid;
-    grid-template-columns: 130px 170px 150px 130px;
-    grid-template-rows: 26px;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    align-items: center;
-    margin: 32px 0px;
+  display: grid;
+  grid-template-columns: 130px 170px 150px 130px;
+  grid-template-rows: 26px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  align-items: center;
+  margin: 32px 0px;
 }
 //---------------- Preferred Load Company Additional  ----------------
 .preferred-load-fleet-type-additional {
-    display: grid;
-    grid-template-columns: 243px 1fr;
-    margin: 32px 0px;
-    padding-left: 6px;
+  display: grid;
+  grid-template-columns: 243px 1fr;
+  margin: 32px 0px;
+  padding-left: 6px;
+  align-items: center;
+  -moz-column-gap: 22px;
+  column-gap: 22px;
+
+  .preffered-field {
+    display: flex;
     align-items: center;
-    -moz-column-gap: 22px;
-    column-gap: 22px;
+    gap: 6px;
 
-    .preffered-field {
-        display: flex;
-        align-items: center;
-        gap: 6px;
+    .r-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: #919191;
 
-        .r-text {
-            font-size: 14px;
-            font-weight: 500;
-            color: #919191;
+      &::-moz-selection {
+        color: #919191;
+        background-color: rgb(145, 145, 145, 0.2);
+      }
 
-            &::-moz-selection {
-                color: #919191;
-                background-color: rgb(145, 145, 145, 0.2);
-            }
-
-            &::selection {
-                color: #919191;
-                background-color: rgb(145, 145, 145, 0.2);
-            }
-        }
+      &::selection {
+        color: #919191;
+        background-color: rgb(145, 145, 145, 0.2);
+      }
     }
+  }
 
-    .preffered-field-second {
-        display: grid;
-        grid-template-columns: 74px 265px;
-        -moz-column-gap: 6px;
-        column-gap: 6px;
-        align-items: center;
-    }
+  .preffered-field-second {
+    display: grid;
+    grid-template-columns: 74px 265px;
+    -moz-column-gap: 6px;
+    column-gap: 6px;
+    align-items: center;
+  }
 }
 //---------------- Violation Report, Inspection Level, HM Inspection Type  ----------------
 .violation-modal-row-1 {
-    display: grid;
-    grid-template-columns: 292px repeat(2, 260px);
-    grid-template-rows: 26px;
-    align-items: center;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    margin: 0;
-    margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 292px repeat(2, 260px);
+  grid-template-rows: 26px;
+  align-items: center;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin: 0;
+  margin-bottom: 32px;
 }
 .violation-modal-row-2 {
-    display: grid;
-    grid-template-columns: 274px 60px repeat(3, 150px);
-    grid-template-rows: 26px;
-    align-items: center;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    &-2 {
-        margin-bottom: 22px;
-    }
+  display: grid;
+  grid-template-columns: 274px 60px repeat(3, 150px);
+  grid-template-rows: 26px;
+  align-items: center;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  &-2 {
+    margin-bottom: 22px;
+  }
 }
 .violation-modal-row-3,
 .violation-modal-row-4 {
-    display: grid;
-    grid-template-columns: 320px 210px 120px 150px;
-    grid-template-rows: 26px;
-    align-items: center;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
+  display: grid;
+  grid-template-columns: 320px 210px 120px 150px;
+  grid-template-rows: 26px;
+  align-items: center;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
 }
 .violation-modal-row-5,
 .violation-modal-row-6 {
-    display: grid;
-    grid-template-columns: 100px 178px 138px 110px 60px 190px;
-    grid-template-rows: 26px;
-    align-items: center;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
+  display: grid;
+  grid-template-columns: 100px 178px 138px 110px 60px 190px;
+  grid-template-rows: 26px;
+  align-items: center;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
 }
 .violation-modal-autority-details-row {
-    display: grid;
-    grid-template-columns: 452px 200px 160px;
-    grid-template-rows: 26px;
-    align-items: center;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 452px 200px 160px;
+  grid-template-rows: 26px;
+  align-items: center;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin-bottom: 32px;
 
-    &-second {
-        margin-bottom: 0px;
-    }
+  &-second {
+    margin-bottom: 0px;
+  }
 }
 .violation-modal-location-shipping-row-3 {
-    display: grid;
-    grid-template-columns: 272px 210px 330px;
-    grid-template-rows: 26px;
-    align-items: center;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
+  display: grid;
+  grid-template-columns: 272px 210px 330px;
+  grid-template-rows: 26px;
+  align-items: center;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
 }
 
 //---------------- Accident Report, Federally, Recordable  ----------------
 .report-federally-recordable {
-    display: grid;
-    grid-template-columns: 292px repeat(2, 260px);
-    grid-template-rows: 26px;
-    align-items: center;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 292px repeat(2, 260px);
+  grid-template-rows: 26px;
+  align-items: center;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin-bottom: 32px;
 }
 
 //---------------- Injury, fatality, towing, hazmat, vehicle number ----------------
 .inj-fat-tow-hazmat-vehNumber {
-    display: grid;
-    grid-template-columns: repeat(5, 157px);
-    align-items: center;
-    grid-template-rows: 26px;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: repeat(5, 157px);
+  align-items: center;
+  grid-template-rows: 26px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin-bottom: 32px;
 }
 
 //---------------- Repair Modal Bill ----------------
 .repair-modal-bill-first-row {
-    display: grid;
-    grid-template-columns: 114px 129px 125px 145px 125px;
-    align-items: center;
-    grid-template-rows: 26px;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 114px 129px 125px 145px 125px;
+  align-items: center;
+  grid-template-rows: 26px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin-bottom: 32px;
 }
 
 //---------------- Load FTL Page ----------------
 .load-ftl-first-row {
-    display: grid;
-    grid-template-columns: 140px repeat(2, 220px) 226px;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    align-items: center;
-    margin-top: 26px;
-    margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 140px repeat(2, 220px) 226px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  align-items: center;
+  margin-top: 26px;
+  margin-bottom: 32px;
 }
 
 .load-ftl-second-row {
-    display: grid;
-    grid-template-columns: 397px 114px 178px 117px;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    align-items: center;
-    margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 397px 114px 178px 117px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  align-items: center;
+  margin-bottom: 32px;
 }
 
 .load-ftl-third-row {
-    display: grid;
-    grid-template-columns: 439px 391px;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    align-items: center;
-    margin-bottom: 22px;
+  display: grid;
+  grid-template-columns: 439px 391px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  align-items: center;
+  margin-bottom: 22px;
 }
 
 .load-requirements-load {
-    display: grid;
-    grid-template-columns: repeat(2, 164px) 107px 117px 88px 66px 1fr;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    align-items: center;
+  display: grid;
+  grid-template-columns: repeat(2, 164px) 107px 117px 88px 66px 1fr;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  align-items: center;
 }
 
 .stop-load-first-row {
-    display: grid;
-    grid-template-columns: 134px 696px;
-    align-items: center;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 134px 696px;
+  align-items: center;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin-bottom: 32px;
 }
 
 .stop-load-second-row {
+  display: grid;
+  grid-template-columns: 202px 106px repeat(2, 172px);
+  align-items: center;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin-bottom: 22px;
+
+  .date-range {
     display: grid;
-    grid-template-columns: 202px 106px repeat(2, 172px);
+    grid-template-columns: 172px 26px;
+    align-items: center;
+    -moz-column-gap: 4px;
+    column-gap: 4px;
+
+    .billing-plus {
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f3f3f3;
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+      border-radius: 2px;
+
+      &.billing-date-range {
+        .billing-date-range-plus {
+          svg {
+            #plus {
+              fill: #b7b7b7;
+            }
+          }
+        }
+
+        &:hover {
+          background-color: #b7b7b7;
+
+          .billing-date-range-plus {
+            svg {
+              #plus {
+                fill: #ffffff;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.date-range-active {
+    grid-template-columns: 356px 106px repeat(2, 172px);
     align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
-    margin-bottom: 22px;
 
     .date-range {
-        display: grid;
-        grid-template-columns: 172px 26px;
-        align-items: center;
-        -moz-column-gap: 4px;
-        column-gap: 4px;
-
-        .billing-plus {
-            width: 26px;
-            height: 26px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f3f3f3;
-            transition: all 0.3s ease-in-out;
-            cursor: pointer;
-            border-radius: 2px;
-
-            &.billing-date-range {
-                .billing-date-range-plus {
-                    svg {
-                        #plus {
-                            fill: #b7b7b7;
-                        }
-                    }
-                }
-
-                &:hover {
-                    background-color: #b7b7b7;
-
-                    .billing-date-range-plus {
-                        svg {
-                            #plus {
-                                fill: #ffffff;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+      grid-template-columns: repeat(2, 172px);
+      align-items: center;
+      -moz-column-gap: 12px;
+      column-gap: 12px;
     }
-
-    &.date-range-active {
-        grid-template-columns: 356px 106px repeat(2, 172px);
-        align-items: center;
-        -moz-column-gap: 12px;
-        column-gap: 12px;
-
-        .date-range {
-            grid-template-columns: repeat(2, 172px);
-            align-items: center;
-            -moz-column-gap: 12px;
-            column-gap: 12px;
-        }
-    }
+  }
 }
 
 .billing-payment-load {
-    display: grid;
-    grid-template-columns: repeat(6, max-content);
-    column-gap: 12px;
-    row-gap: 26px;
+  display: grid;
+  grid-template-columns: repeat(6, max-content);
+  column-gap: 12px;
+  row-gap: 26px;
 
-    .billing-plus {
-        width: 26px;
-        height: 26px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #f3f3f3;
-        transition: all 0.3s ease-in-out;
-        cursor: pointer;
-        border-radius: 2px;
+  .billing-plus {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f3f3;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    border-radius: 2px;
 
-        svg-icon {
-            width: 16px;
-            height: 18px;
-            line-height: 16px;
-        }
-
-        &.billing-adjusted {
-            .billing-adjusted-plus {
-                svg {
-                    #plus {
-                        fill: #ffa726;
-                    }
-                }
-            }
-
-            &:hover {
-                background-color: #ffa726;
-
-                .billing-adjusted-plus {
-                    svg {
-                        #plus {
-                            fill: #ffffff;
-                        }
-                    }
-                }
-            }
-        }
-
-        &.billing-additional {
-            .billing-additional-plus {
-                svg {
-                    #plus {
-                        fill: #536bc2;
-                    }
-                }
-            }
-
-            &:hover {
-                background-color: #536bc2;
-
-                .billing-additional-plus {
-                    svg {
-                        #plus {
-                            fill: #ffffff;
-                        }
-                    }
-                }
-            }
-        }
-
-        &.billing-advance {
-            .billing-advance-plus {
-                svg {
-                    #plus {
-                        fill: #26a690;
-                    }
-                }
-            }
-
-            &:hover {
-                background-color: #26a690;
-
-                .billing-advance-plus {
-                    svg {
-                        #plus {
-                            fill: #ffffff;
-                        }
-                    }
-                }
-            }
-        }
+    svg-icon {
+      width: 16px;
+      height: 18px;
+      line-height: 16px;
     }
+
+    &.billing-adjusted {
+      .billing-adjusted-plus {
+        svg {
+          #plus {
+            fill: #ffa726;
+          }
+        }
+      }
+
+      &:hover {
+        background-color: #ffa726;
+
+        .billing-adjusted-plus {
+          svg {
+            #plus {
+              fill: #ffffff;
+            }
+          }
+        }
+      }
+    }
+
+    &.billing-additional {
+      .billing-additional-plus {
+        svg {
+          #plus {
+            fill: #536bc2;
+          }
+        }
+      }
+
+      &:hover {
+        background-color: #536bc2;
+
+        .billing-additional-plus {
+          svg {
+            #plus {
+              fill: #ffffff;
+            }
+          }
+        }
+      }
+    }
+
+    &.billing-advance {
+      .billing-advance-plus {
+        svg {
+          #plus {
+            fill: #26a690;
+          }
+        }
+      }
+
+      &:hover {
+        background-color: #26a690;
+
+        .billing-advance-plus {
+          svg {
+            #plus {
+              fill: #ffffff;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 //---------------- Company Insurance Policy -------------------
 .insurance-policy-rating {
-    display: grid;
-    grid-template-columns: 150px 204px 78px;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    align-items: center;
-    margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 150px 204px 78px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  align-items: center;
+  margin-bottom: 32px;
 }
 
 //---------------- Profile Update Old Password ----------------
 .profile-update-old-password-row {
-    display: grid;
-    grid-template-columns: 352px 1fr;
+  display: grid;
+  grid-template-columns: 352px 1fr;
+  align-items: center;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  margin-bottom: 22px;
+  position: relative;
+
+  .old-password-message {
+    font-size: 11px;
+    font-weight: 600;
+    color: #aaaaaa;
+    position: absolute;
+    top: 27px;
+    left: 6px;
+    p {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    &::-moz-selection {
+      background-color: rgb(170, 170, 170, 0.2);
+      color: #aaaaaa;
+    }
+
+    &::selection {
+      background-color: rgb(170, 170, 170, 0.2);
+      color: #aaaaaa;
+    }
+  }
+
+  .old-password-checkmark {
+    width: 100%;
+    height: 100%;
+    background-color: #f3f3f3;
+    border-radius: 2px;
+    display: flex;
     align-items: center;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    margin-bottom: 22px;
-    position: relative;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    padding: 5px 15px;
 
-    .old-password-message {
-        font-size: 11px;
-        font-weight: 600;
-        color: #aaaaaa;
-        position: absolute;
-        top: 27px;
-        left: 6px;
-        p {
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        &::-moz-selection {
-            background-color: rgb(170, 170, 170, 0.2);
-            color: #aaaaaa;
-        }
-
-        &::selection {
-            background-color: rgb(170, 170, 170, 0.2);
-            color: #aaaaaa;
-        }
+    p {
+      margin: 0;
+      padding: 0;
+      color: #aaaaaa;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
     }
 
-    .old-password-checkmark {
-        width: 100%;
-        height: 100%;
-        background-color: #f3f3f3;
-        border-radius: 2px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        cursor: pointer;
-        padding: 5px 15px;
+    &.valid {
+      background-color: #3074d3;
+      transition: all 0.3s ease-in-out;
 
-        p {
-            margin: 0;
-            padding: 0;
-            color: #aaaaaa;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
+      p {
+        color: #ffffff;
+      }
 
-        &.valid {
-            background-color: #3074d3;
-            transition: all 0.3s ease-in-out;
-
-            p {
-                color: #ffffff;
-            }
-
-            &:hover {
-                background-color: #255bb9;
-            }
-        }
+      &:hover {
+        background-color: #255bb9;
+      }
     }
+  }
 }
 //---------------- Location Parking Financial Card ----------------
 .location-parking-financial-card {
-    display: grid;
-    grid-template-columns: repeat(3, 144px);
-    grid-template-rows: 26px;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, 144px);
+  grid-template-rows: 26px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
 }
 
 // ------------------------------------------------ end ------------------------------------------------

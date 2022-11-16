@@ -1,54 +1,54 @@
 <div class="search-chips-container">
+  <div
+    class="search-container"
+    [ngClass]="{ 'search-input-active': openSearch }"
+  >
+    <!-- Icon -->
+    <div class="icon-container" (click)="toggleSearch()">
+      <svg-icon
+        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+        [src]="'assets/svg/truckassist-search/new-search-icon.svg'"
+      ></svg-icon>
+    </div>
+
+    <!-- Serach Input -->
+    <div class="search-input">
+      <input
+        *ngIf="openSearch"
+        [disabled]="chips.length >= 3"
+        id="table-search"
+        type="text"
+        (keyup)="onTyping($event)"
+        (keyup.enter)="onEnter()"
+        autofocus
+        [(ngModel)]="searchText"
+        placeholder="Find {{
+          selectedTabData?.gridNameTitle
+            ? selectedTabData.gridNameTitle
+            : 'No Tab Name'
+        }}"
+      />
+    </div>
+  </div>
+
+  <div class="chips-container" *ngIf="chips.length">
     <div
-        class="search-container"
-        [ngClass]="{ 'search-input-active': openSearch }"
+      class="chip"
+      *ngFor="let chip of chips; let i = index"
+      [ngClass]="{
+        'first-chip-animation': i === 0 && chips[0].canDoAnimation,
+        'second-chip-animation': i === 1 && chips[1].canDoAnimation,
+        'third-chip-animation': i === 2 && chips[2].canDoAnimation
+      }"
+      [ngStyle]="{ background: chip.color }"
     >
-        <!-- Icon -->
-        <div class="icon-container" (click)="toggleSearch()">
-            <svg-icon
-                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                [src]="'assets/svg/truckassist-search/new-search-icon.svg'"
-            ></svg-icon>
-        </div>
-
-        <!-- Serach Input -->
-        <div class="search-input">
-            <input
-                *ngIf="openSearch"
-                [disabled]="chips.length >= 3"
-                id="table-search"
-                type="text"
-                (keyup)="onTyping($event)"
-                (keyup.enter)="onEnter()"
-                autofocus
-                [(ngModel)]="searchText"
-                placeholder="Find {{
-                    selectedTabData?.gridNameTitle
-                        ? selectedTabData.gridNameTitle
-                        : 'No Tab Name'
-                }}"
-            />
-        </div>
+      {{ chip.searchText }}
+      <div class="delete-chip" (click)="onDeleteChip(i)">
+        <svg-icon
+          [svgStyle]="{ 'width.px': 6, 'height.px': 6 }"
+          [src]="'assets/svg/truckassist-table/x.svg'"
+        ></svg-icon>
+      </div>
     </div>
-
-    <div class="chips-container" *ngIf="chips.length">
-        <div
-            class="chip"
-            *ngFor="let chip of chips; let i = index"
-            [ngClass]="{
-                'first-chip-animation': i === 0 && chips[0].canDoAnimation,
-                'second-chip-animation': i === 1 && chips[1].canDoAnimation,
-                'third-chip-animation': i === 2 && chips[2].canDoAnimation
-            }"
-            [ngStyle]="{ background: chip.color }"
-        >
-            {{ chip.searchText }}
-            <div class="delete-chip" (click)="onDeleteChip(i)">
-                <svg-icon
-                    [svgStyle]="{ 'width.px': 6, 'height.px': 6 }"
-                    [src]="'assets/svg/truckassist-table/x.svg'"
-                ></svg-icon>
-            </div>
-        </div>
-    </div>
+  </div>
 </div>

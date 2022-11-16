@@ -1,55 +1,53 @@
 <div
-    class="ta-input-arrows-container"
-    [ngClass]="{
-        applicant: type === 'applicant',
-        'disabled-arrow': disabledArrow
-    }"
+  class="ta-input-arrows-container"
+  [ngClass]="{
+    applicant: type === 'applicant',
+    'disabled-arrow': disabledArrow
+  }"
 >
-    <p
-        class="m-0 ta-font-regular"
-        [ngStyle]="{
-            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6c6c6c'
-        }"
-        [ngClass]="{
-            'ta-font-medium': type === 'truck-modal' || 'driver-modal'
-        }"
-    >
-        {{ name }} <span *ngIf="required">*</span>
-    </p>
+  <p
+    class="m-0 ta-font-regular"
+    [ngStyle]="{
+      color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6c6c6c'
+    }"
+    [ngClass]="{ 'ta-font-medium': type === 'truck-modal' || 'driver-modal' }"
+  >
+    {{ name }} <span *ngIf="required">*</span>
+  </p>
 
-    <div class="d-flex align-items-center btn-container">
-        <svg-icon
-            class="minus-icon minus-icon-{{ elementOrder }}"
-            src="
+  <div class="d-flex align-items-center btn-container">
+    <svg-icon
+      class="minus-icon minus-icon-{{ elementOrder }}"
+      src="
           assets/svg/common/ic_pm_decrement.svg"
-            [svgStyle]="{
-                'width.px': 18,
-                'height.px': 18
-            }"
-        ></svg-icon>
+      [svgStyle]="{
+        'width.px': 18,
+        'height.px': 18
+      }"
+    ></svg-icon>
 
-        <svg-icon
-            class="plus-icon plus-icon-{{ elementOrder }}"
-            src="
+    <svg-icon
+      class="plus-icon plus-icon-{{ elementOrder }}"
+      src="
           assets/svg/common/ic_pm_increment.svg"
-            [svgStyle]="{
-                'width.px': 18,
-                'height.px': 18
-            }"
-        ></svg-icon>
-    </div>
+      [svgStyle]="{
+        'width.px': 18,
+        'height.px': 18
+      }"
+    ></svg-icon>
+  </div>
 
-    <div
-        class="d-flex align-items-center justify-content-center"
-        [ngClass]="{
-            'input-container': type === 'applicant',
-            'driver-mvr-container': type === 'driver-modal',
-            'truck-fhwa-container': type === 'truck-modal'
-        }"
-    >
-        <app-ta-input
-            [formControl]="getSuperControl"
-            [inputConfig]="inputConfig"
-        ></app-ta-input>
-    </div>
+  <div
+    class="d-flex align-items-center justify-content-center"
+    [ngClass]="{
+      'input-container': type === 'applicant',
+      'driver-mvr-container': type === 'driver-modal',
+      'truck-fhwa-container': type === 'truck-modal'
+    }"
+  >
+    <app-ta-input
+      [formControl]="getSuperControl"
+      [inputConfig]="inputConfig"
+    ></app-ta-input>
+  </div>
 </div>

@@ -15,747 +15,706 @@ import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import {
-    closeAnimationAction,
-    tableSearch,
+  closeAnimationAction,
+  tableSearch,
 } from '../../../utils/methods.globals';
 import { getTrailerColumnDefinition } from '../../../../../assets/utils/settings/trailer-columns';
 import {
-    Confirmation,
-    ConfirmationModalComponent,
+  Confirmation,
+  ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 @Component({
-    selector: 'app-trailer-table',
-    templateUrl: './trailer-table.component.html',
-    styleUrls: ['./trailer-table.component.scss'],
-    providers: [TaThousandSeparatorPipe],
+  selector: 'app-trailer-table',
+  templateUrl: './trailer-table.component.html',
+  styleUrls: ['./trailer-table.component.scss'],
+  providers: [TaThousandSeparatorPipe],
 })
 export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
-    private destroy$ = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
-    tableOptions: any = {};
-    tableData: any[] = [];
-    viewData: any[] = [];
-    columns: any[] = [];
-    selectedTab = 'active';
-    activeViewMode: string = 'List';
-    tableContainerWidth: number = 0;
-    resizeObserver: ResizeObserver;
-    public trailerActive: TrailerActiveState[] = [];
-    public trailerInactive: TrailerInactiveState[] = [];
-    backFilterQuery = {
-        active: 1,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
+  tableOptions: any = {};
+  tableData: any[] = [];
+  viewData: any[] = [];
+  columns: any[] = [];
+  selectedTab = 'active';
+  activeViewMode: string = 'List';
+  tableContainerWidth: number = 0;
+  resizeObserver: ResizeObserver;
+  public trailerActive: TrailerActiveState[] = [];
+  public trailerInactive: TrailerInactiveState[] = [];
+  backFilterQuery = {
+    active: 1,
+    pageIndex: 1,
+    pageSize: 25,
+    companyId: undefined,
+    sort: undefined,
+    searchOne: undefined,
+    searchTwo: undefined,
+    searchThree: undefined,
+  };
 
-    constructor(
-        private modalService: ModalService,
-        private tableService: TruckassistTableService,
-        private trailerActiveQuery: TrailerActiveQuery,
-        private trailerInactiveQuery: TrailerInactiveQuery,
-        private trailerService: TrailerTService,
-        private notificationService: NotificationService,
-        private thousandSeparator: TaThousandSeparatorPipe,
-        private confirmationService: ConfirmationService
-    ) {}
+  constructor(
+    private modalService: ModalService,
+    private tableService: TruckassistTableService,
+    private trailerActiveQuery: TrailerActiveQuery,
+    private trailerInactiveQuery: TrailerInactiveQuery,
+    private trailerService: TrailerTService,
+    private notificationService: NotificationService,
+    private thousandSeparator: TaThousandSeparatorPipe,
+    private confirmationService: ConfirmationService
+  ) {}
 
-    ngOnInit(): void {
-        this.sendTrailerData();
+  ngOnInit(): void {
+    this.sendTrailerData();
 
-        // Confirmation Subscribe
-        this.confirmationService.confirmationData$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: Confirmation) => {
-                    switch (res.type) {
-                        case 'delete': {
-                            this.deleteTrailerById(res.id);
-                            break;
-                        }
-                        case 'activate': {
-                            this.changeTrailerStatus(res.id);
-                            break;
-                        }
-                        case 'deactivate': {
-                            this.changeTrailerStatus(res.id);
-                            break;
-                        }
-                        case 'multiple delete': {
-                            this.multipleDeleteTrailers(res.array);
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
-                },
-            });
-
-        // Reset Columns
-        this.tableService.currentResetColumns
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: boolean) => {
-                if (response) {
-                    this.sendTrailerData();
-                }
-            });
-
-        // Resize
-        this.tableService.currentColumnWidth
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
-                if (response?.event?.width) {
-                    this.columns = this.columns.map((c) => {
-                        if (
-                            c.title ===
-                            response.columns[response.event.index].title
-                        ) {
-                            c.width = response.event.width;
-                        }
-
-                        return c;
-                    });
-                }
-            });
-
-        // Toaggle Columns
-        this.tableService.currentToaggleColumn
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
-                if (response?.column) {
-                    this.columns = this.columns.map((c) => {
-                        if (c.field === response.column.field) {
-                            c.hidden = response.column.hidden;
-                        }
-
-                        return c;
-                    });
-                }
-            });
-
-        // Trailer Actions
-        this.tableService.currentActionAnimation
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                // Add Trailer ACtive
-                if (res.animation === 'add') {
-                    this.viewData.push(this.mapTrailerData(res.data));
-
-                    this.viewData = this.viewData.map((trailer: any) => {
-                        if (trailer.id === res.id) {
-                            trailer.actionAnimation = 'add';
-                        }
-
-                        return trailer;
-                    });
-
-                    this.updateDataCount();
-
-                    const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
-
-                        clearInterval(inetval);
-                    }, 2300);
-                }
-                // Add Trailer Inactive
-                else if (
-                    res.animation === 'add' &&
-                    this.selectedTab === 'inactive'
-                ) {
-                    this.updateDataCount();
-                }
-                // Update Trailer
-                else if (res.animation === 'update') {
-                    this.viewData = this.viewData.map((trailer: any) => {
-                        if (trailer.id === res.id) {
-                            trailer = this.mapTrailerData(res.data);
-                            trailer.actionAnimation = 'update';
-                        }
-
-                        return trailer;
-                    });
-
-                    const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
-
-                        clearInterval(inetval);
-                    }, 1000);
-                }
-                // Update Trailer Status
-                else if (res.animation === 'update-status') {
-                    let trailerIndex: number;
-
-                    this.viewData = this.viewData.map(
-                        (trailer: any, index: number) => {
-                            if (trailer.id === res.id) {
-                                trailer.actionAnimation =
-                                    this.selectedTab === 'active'
-                                        ? 'deactivate'
-                                        : 'activate';
-                                trailerIndex = index;
-                            }
-
-                            return trailer;
-                        }
-                    );
-
-                    this.updateDataCount();
-
-                    const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
-
-                        this.viewData.splice(trailerIndex, 1);
-                        clearInterval(inetval);
-                    }, 900);
-                }
-            });
-
-        // Delete Selected Rows
-        this.tableService.currentDeleteSelectedRows
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any[]) => {
-                if (response.length) {
-                    let mappedRes = response.map((item) => {
-                        return {
-                            id: item.id,
-                            data: {
-                                ...item.tableData,
-                                number: item.tableData?.trailerNumber,
-                                avatar: `assets/svg/common/trailers/${item.tableData?.trailerType?.logoName}`,
-                            },
-                        };
-                    });
-                    this.modalService.openModal(
-                        ConfirmationModalComponent,
-                        { size: 'small' },
-                        {
-                            data: null,
-                            array: mappedRes,
-                            template: 'trailer',
-                            type: 'multiple delete',
-                            svg: true,
-                        }
-                    );
-                }
-            });
-
-        // Search
-        this.tableService.currentSearchTableData
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                if (res) {
-                    this.backFilterQuery.active =
-                        this.selectedTab === 'active' ? 1 : 0;
-
-                    this.backFilterQuery.pageIndex = 1;
-
-                    const searchEvent = tableSearch(res, this.backFilterQuery);
-
-                    if (searchEvent) {
-                        if (searchEvent.action === 'api') {
-                            this.trailerBackFilter(searchEvent.query, true);
-                        } else if (searchEvent.action === 'store') {
-                            this.sendTrailerData();
-                        }
-                    }
-                }
-            });
-    }
-
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-        }, 10);
-    }
-
-    observTableContainer() {
-        this.resizeObserver = new ResizeObserver((entries) => {
-            entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
-            });
-        });
-
-        this.resizeObserver.observe(document.querySelector('.table-container'));
-    }
-
-    public initTableOptions(): void {
-        this.tableOptions = {
-            toolbarActions: {
-                viewModeOptions: [
-                    { name: 'List', active: this.activeViewMode === 'List' },
-                    { name: 'Card', active: this.activeViewMode === 'Card' },
-                ],
-            },
-            actions: [
-                {
-                    title: 'Edit Trailer',
-                    name: 'edit-trailer',
-                    class: 'regular-text',
-                    contentType: 'edit',
-                },
-                {
-                    title: 'Add Registration',
-                    name: 'add-registration',
-                    class: 'regular-text',
-                    contentType: 'add',
-                },
-                {
-                    title: 'Add Inspection',
-                    name: 'add-inspection',
-                    class: 'regular-text',
-                    contentType: 'add',
-                },
-                {
-                    title:
-                        this.selectedTab === 'active'
-                            ? 'Deactivate'
-                            : 'Activate',
-                    reverseTitle: 'Deactivate',
-                    name: 'activate-item',
-                    class: 'regular-text',
-                    contentType: 'activate',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'trailer',
-                    text: 'Are you sure you want to delete trailer(s)?',
-                    class: 'delete-text',
-                    contentType: 'delete',
-                },
-            ],
-        };
-    }
-
-    sendTrailerData() {
-        this.initTableOptions();
-
-        const trailerCount = JSON.parse(
-            localStorage.getItem('trailerTableCount')
-        );
-
-        const truckActiveData =
-            this.selectedTab === 'active' ? this.getTabData('active') : [];
-
-        const truckInactiveData =
-            this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
-
-        this.tableData = [
-            {
-                title: 'Active',
-                field: 'active',
-                length: trailerCount.active,
-                data: truckActiveData,
-                extended: false,
-                gridNameTitle: 'Trailer',
-                stateName: 'trailers',
-                tableConfiguration: 'TRAILER',
-                isActive: this.selectedTab === 'active',
-                gridColumns: this.getGridColumns('TRAILER'),
-            },
-            {
-                title: 'Inactive',
-                field: 'inactive',
-                length: trailerCount.inactive,
-                data: truckInactiveData,
-                extended: false,
-                gridNameTitle: 'Trailer',
-                stateName: 'trailers',
-                tableConfiguration: 'TRAILER',
-                isActive: this.selectedTab === 'inactive',
-                gridColumns: this.getGridColumns('TRAILER'),
-            },
-        ];
-
-        const td = this.tableData.find((t) => t.field === this.selectedTab);
-
-        this.setTrailerData(td);
-    }
-
-    private getGridColumns(configType: string): any[] {
-        const tableColumnsConfig = JSON.parse(
-            localStorage.getItem(`table-${configType}-Configuration`)
-        );
-
-        return tableColumnsConfig
-            ? tableColumnsConfig
-            : getTrailerColumnDefinition();
-    }
-
-    setTrailerData(td: any) {
-        this.columns = td.gridColumns;
-
-        if (td.data.length) {
-            this.viewData = td.data;
-
-            this.viewData = this.viewData.map((data) => {
-                return this.mapTrailerData(data);
-            });
-        } else {
-            this.viewData = [];
-        }
-    }
-
-    mapTrailerData(data: any) {
-        return {
-            ...data,
-            isSelected: false,
-            textMake: data?.trailerMake?.name ? data.trailerMake.name : '',
-            textAxies: data?.axles ? data?.axles : '',
-            textTireSize: data?.tireSize?.name ? data.tireSize.name : '',
-            textReeferUnit: data?.reeferUnit?.name ? data.reeferUnit.name : '',
-            textInsPolicy: data?.insurancePolicy ? data.insurancePolicy : '',
-            trailerTypeIcon: data.trailerType.logoName,
-            trailerTypeClass: data.trailerType.logoName.replace('.svg', ''),
-            textEmptyWeight: data?.emptyWeight
-                ? this.thousandSeparator.transform(data.emptyWeight) + ' lbs.'
-                : '',
-            textMileage: data?.mileage
-                ? this.thousandSeparator.transform(data.mileage) + ' mi'
-                : '',
-            textModel: data?.model ? data?.model : '',
-            ownerName: data?.owner?.name ? data.owner.name : '',
-            textColor: data?.color?.code ? data.color.code : '',
-            colorName: data?.color?.name ? data.color.name : '',
-            svgIcon: data?.trailerType?.name
-                ? data.trailerType.name
-                : '' /* Treba da bude svg ne text */,
-            textLength: data?.trailerLength?.name
-                ? data.trailerLength.name
-                : '',
-            textLicPlate: data?.licensePlate
-                ? data.licensePlate
-                : data?.registrations?.length
-                ? data.registrations[0].licensePlate
-                : '',
-            textInspectionData: {
-                start: data?.fhwaInspection
-                    ? data.fhwaInspection
-                    : data?.inspections?.length
-                    ? data.inspections[0].issueDate
-                    : null,
-                end: null,
-            },
-        };
-    }
-
-    updateDataCount() {
-        const truckCount = JSON.parse(
-            localStorage.getItem('trailerTableCount')
-        );
-
-        this.tableData[0].length = truckCount.active;
-        this.tableData[1].length = truckCount.inactive;
-    }
-
-    getTabData(dataType: string) {
-        if (dataType === 'active') {
-            this.trailerActive = this.trailerActiveQuery.getAll();
-
-            return this.trailerActive?.length ? this.trailerActive : [];
-        } else if (dataType === 'inactive') {
-            this.trailerInactive = this.trailerInactiveQuery.getAll();
-
-            return this.trailerInactive?.length ? this.trailerInactive : [];
-        }
-    }
-
-    trailerBackFilter(
-        filter: {
-            active: number;
-            pageIndex: number;
-            pageSize: number;
-            companyId: number | undefined;
-            sort: string | undefined;
-            searchOne: string | undefined;
-            searchTwo: string | undefined;
-            searchThree: string | undefined;
-        },
-        isSearch?: boolean,
-        isShowMore?: boolean
-    ) {
-        this.trailerService
-            .getTrailers(
-                filter.active,
-                filter.pageIndex,
-                filter.pageSize,
-                filter.companyId,
-                filter.sort,
-                filter.searchOne,
-                filter.searchTwo,
-                filter.searchThree
-            )
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((trailer: TrailerListResponse) => {
-                if (!isShowMore) {
-                    this.viewData = trailer.pagination.data;
-
-                    this.viewData = this.viewData.map((data: any) => {
-                        return this.mapTrailerData(data);
-                    });
-
-                    if (isSearch) {
-                        this.tableData[
-                            this.selectedTab === 'active' ? 0 : 1
-                        ].length = trailer.pagination.count;
-                    }
-                } else {
-                    let newData = [...this.viewData];
-
-                    trailer.pagination.data.map((data: any) => {
-                        newData.push(this.mapTrailerData(data));
-                    });
-
-                    this.viewData = [...newData];
-                }
-            });
-    }
-
-    onToolBarAction(event: any) {
-        if (event.action === 'open-modal') {
-            this.modalService.openModal(TrailerModalComponent, {
-                size: 'small',
-            });
-        } else if (event.action === 'tab-selected') {
-            this.selectedTab = event.tabData.field;
-
-            this.backFilterQuery.pageIndex = 1;
-
-            this.sendTrailerData();
-        } else if (event.action === 'view-mode') {
-            this.activeViewMode = event.mode;
-        }
-    }
-
-    onTableHeadActions(event: any) {
-        if (event.action === 'sort') {
-            if (event.direction) {
-                this.backFilterQuery.active =
-                    this.selectedTab === 'active' ? 1 : 0;
-                this.backFilterQuery.sort = event.direction;
-                this.backFilterQuery.pageIndex = 1;
-
-                this.trailerBackFilter(this.backFilterQuery);
-            } else {
-                this.sendTrailerData();
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: Confirmation) => {
+          switch (res.type) {
+            case 'delete': {
+              this.deleteTrailerById(res.id);
+              break;
             }
-        }
-    }
-
-    public onTableBodyActions(event: any) {
-        const mappedEvent = {
-            ...event,
-            data: {
-                ...event.data,
-                number: event.data?.trailerNumber,
-                avatar: `assets/svg/common/trailers/${event.data?.trailerType?.logoName}`,
-            },
-        };
-
-        switch (event.type) {
-            case 'show-more': {
-                this.backFilterQuery.pageIndex++;
-                this.trailerBackFilter(this.backFilterQuery, false, true);
-                break;
+            case 'activate': {
+              this.changeTrailerStatus(res.id);
+              break;
             }
-            case 'edit-trailer': {
-                this.modalService.openModal(
-                    TrailerModalComponent,
-                    { size: 'small' },
-                    {
-                        ...event,
-                        type: 'edit',
-                        disableButton: true,
-                        tabSelected: this.selectedTab,
-                    }
-                );
-                break;
+            case 'deactivate': {
+              this.changeTrailerStatus(res.id);
+              break;
             }
-            case 'add-registration': {
-                this.modalService.openModal(
-                    TtRegistrationModalComponent,
-                    { size: 'small' },
-                    {
-                        ...event,
-                        modal: 'trailer',
-                        tabSelected: this.selectedTab,
-                    }
-                );
-                break;
-            }
-            case 'add-inspection': {
-                this.modalService.openModal(
-                    TtFhwaInspectionModalComponent,
-                    { size: 'small' },
-                    {
-                        ...event,
-                        modal: 'trailer',
-                        tabSelected: this.selectedTab,
-                    }
-                );
-                break;
-            }
-            case 'activate-item': {
-                this.modalService.openModal(
-                    ConfirmationModalComponent,
-                    { size: 'small' },
-                    {
-                        ...mappedEvent,
-                        template: 'trailer',
-                        type:
-                            event.data.status === 1 ? 'deactivate' : 'activate',
-                        svg: true,
-                    }
-                );
-                break;
-            }
-            case 'delete-item': {
-                this.modalService.openModal(
-                    ConfirmationModalComponent,
-                    { size: 'small' },
-                    {
-                        ...mappedEvent,
-                        template: 'trailer',
-                        type: 'delete',
-                        svg: true,
-                    }
-                );
-                break;
+            case 'multiple delete': {
+              this.multipleDeleteTrailers(res.array);
+              break;
             }
             default: {
-                break;
+              break;
             }
+          }
+        },
+      });
+
+    // Reset Columns
+    this.tableService.currentResetColumns
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: boolean) => {
+        if (response) {
+          this.sendTrailerData();
         }
+      });
+
+    // Resize
+    this.tableService.currentColumnWidth
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response?.event?.width) {
+          this.columns = this.columns.map((c) => {
+            if (c.title === response.columns[response.event.index].title) {
+              c.width = response.event.width;
+            }
+
+            return c;
+          });
+        }
+      });
+
+    // Toaggle Columns
+    this.tableService.currentToaggleColumn
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response?.column) {
+          this.columns = this.columns.map((c) => {
+            if (c.field === response.column.field) {
+              c.hidden = response.column.hidden;
+            }
+
+            return c;
+          });
+        }
+      });
+
+    // Trailer Actions
+    this.tableService.currentActionAnimation
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        // Add Trailer ACtive
+        if (res.animation === 'add') {
+          this.viewData.push(this.mapTrailerData(res.data));
+
+          this.viewData = this.viewData.map((trailer: any) => {
+            if (trailer.id === res.id) {
+              trailer.actionAnimation = 'add';
+            }
+
+            return trailer;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 2300);
+        } 
+        // Add Trailer Inactive
+        else if (res.animation === 'add' && this.selectedTab === 'inactive') {
+          this.updateDataCount();
+        } 
+        // Update Trailer
+        else if (res.animation === 'update') {
+          this.viewData = this.viewData.map((trailer: any) => {
+            if (trailer.id === res.id) {
+              trailer = this.mapTrailerData(res.data);
+              trailer.actionAnimation = 'update';
+            }
+
+            return trailer;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        } 
+        // Update Trailer Status
+        else if (res.animation === 'update-status') {
+          let trailerIndex: number;
+
+          this.viewData = this.viewData.map((trailer: any, index: number) => {
+            if (trailer.id === res.id) {
+              trailer.actionAnimation = this.selectedTab === 'active' ? 'deactivate' : 'activate';
+              trailerIndex = index;
+            }
+
+            return trailer;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(trailerIndex, 1);
+            clearInterval(inetval);
+          }, 900);
+        }
+      });
+
+    // Delete Selected Rows
+    this.tableService.currentDeleteSelectedRows
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any[]) => {
+        if (response.length) {
+          let mappedRes = response.map((item) => {
+            return {
+              id: item.id,
+              data: {
+                ...item.tableData,
+                number: item.tableData?.trailerNumber,
+                avatar: `assets/svg/common/trailers/${item.tableData?.trailerType?.logoName}`,
+              },
+            };
+          });
+          this.modalService.openModal(
+            ConfirmationModalComponent,
+            { size: 'small' },
+            {
+              data: null,
+              array: mappedRes,
+              template: 'trailer',
+              type: 'multiple delete',
+              svg: true,
+            }
+          );
+        }
+      });
+
+    // Search
+    this.tableService.currentSearchTableData
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (res) {
+          this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+
+          this.backFilterQuery.pageIndex = 1;
+
+          const searchEvent = tableSearch(res, this.backFilterQuery);
+
+          if (searchEvent) {
+            if (searchEvent.action === 'api') {
+              this.trailerBackFilter(searchEvent.query, true);
+            } else if (searchEvent.action === 'store') {
+              this.sendTrailerData();
+            }
+          }
+        }
+      });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.observTableContainer();
+    }, 10);
+  }
+
+  observTableContainer() {
+    this.resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        this.tableContainerWidth = entry.contentRect.width;
+      });
+    });
+
+    this.resizeObserver.observe(document.querySelector('.table-container'));
+  }
+
+  public initTableOptions(): void {
+    this.tableOptions = {
+      toolbarActions: {
+        viewModeOptions: [
+          { name: 'List', active: this.activeViewMode === 'List' },
+          { name: 'Card', active: this.activeViewMode === 'Card' },
+        ],
+      },
+      actions: [
+        {
+          title: 'Edit Trailer',
+          name: 'edit-trailer',
+          class: 'regular-text',
+          contentType: 'edit',
+        },
+        {
+          title: 'Add Registration',
+          name: 'add-registration',
+          class: 'regular-text',
+          contentType: 'add',
+        },
+        {
+          title: 'Add Inspection',
+          name: 'add-inspection',
+          class: 'regular-text',
+          contentType: 'add',
+        },
+        {
+          title: this.selectedTab === 'active' ? 'Deactivate' : 'Activate',
+          reverseTitle: 'Deactivate',
+          name: 'activate-item',
+          class: 'regular-text',
+          contentType: 'activate',
+        },
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'trailer',
+          text: 'Are you sure you want to delete trailer(s)?',
+          class: 'delete-text',
+          contentType: 'delete',
+        },
+      ],
+    };
+  }
+
+  sendTrailerData() {
+    this.initTableOptions();
+
+    const trailerCount = JSON.parse(localStorage.getItem('trailerTableCount'));
+
+    const truckActiveData =
+      this.selectedTab === 'active' ? this.getTabData('active') : [];
+
+    const truckInactiveData =
+      this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
+
+    this.tableData = [
+      {
+        title: 'Active',
+        field: 'active',
+        length: trailerCount.active,
+        data: truckActiveData,
+        extended: false,
+        gridNameTitle: 'Trailer',
+        stateName: 'trailers',
+        tableConfiguration: 'TRAILER',
+        isActive: this.selectedTab === 'active',
+        gridColumns: this.getGridColumns('TRAILER'),
+      },
+      {
+        title: 'Inactive',
+        field: 'inactive',
+        length: trailerCount.inactive,
+        data: truckInactiveData,
+        extended: false,
+        gridNameTitle: 'Trailer',
+        stateName: 'trailers',
+        tableConfiguration: 'TRAILER',
+        isActive: this.selectedTab === 'inactive',
+        gridColumns: this.getGridColumns('TRAILER'),
+      },
+    ];
+
+    const td = this.tableData.find((t) => t.field === this.selectedTab);
+
+    this.setTrailerData(td);
+  }
+
+  private getGridColumns(configType: string): any[] {
+    const tableColumnsConfig = JSON.parse(
+      localStorage.getItem(`table-${configType}-Configuration`)
+    );
+
+    return tableColumnsConfig
+    ? tableColumnsConfig
+    : getTrailerColumnDefinition();
+  }
+
+  setTrailerData(td: any) {
+    this.columns = td.gridColumns;
+
+    if (td.data.length) {
+      this.viewData = td.data;
+
+      this.viewData = this.viewData.map((data) => {
+        return this.mapTrailerData(data);
+      });
+    } else {
+      this.viewData = [];
     }
+  }
 
-    private changeTrailerStatus(id: number) {
-        this.trailerService
-            .changeTrailerStatus(id, this.selectedTab)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.notificationService.success(
-                        'Trailer successfully changed status',
-                        'Success:'
-                    );
-                },
-                error: () => {
-                    this.notificationService.error(
-                        `Trailer with id: ${id}, status couldn't be changed`,
-                        'Error:'
-                    );
-                },
-            });
+  mapTrailerData(data: any) {
+    return {
+      ...data,
+      isSelected: false,
+      textMake: data?.trailerMake?.name ? data.trailerMake.name : '',
+      textAxies: data?.axles ? data?.axles : '',
+      textTireSize: data?.tireSize?.name ? data.tireSize.name : '',
+      textReeferUnit: data?.reeferUnit?.name ? data.reeferUnit.name : '',
+      textInsPolicy: data?.insurancePolicy ? data.insurancePolicy : '',
+      trailerTypeIcon: data.trailerType.logoName,
+      trailerTypeClass: data.trailerType.logoName.replace('.svg', ''),
+      textEmptyWeight: data?.emptyWeight
+        ? this.thousandSeparator.transform(data.emptyWeight) + ' lbs.'
+        : '',
+      textMileage: data?.mileage
+        ? this.thousandSeparator.transform(data.mileage) + ' mi'
+        : '',
+      textModel: data?.model ? data?.model : '',
+      ownerName: data?.owner?.name ? data.owner.name : '',
+      textColor: data?.color?.code ? data.color.code : '',
+      colorName: data?.color?.name ? data.color.name : '',
+      svgIcon: data?.trailerType?.name
+        ? data.trailerType.name
+        : '' /* Treba da bude svg ne text */,
+      textLength: data?.trailerLength?.name ? data.trailerLength.name : '',
+      textLicPlate: data?.licensePlate
+        ? data.licensePlate
+        : data?.registrations?.length
+        ? data.registrations[0].licensePlate
+        : '',
+      textInspectionData: {
+        start: data?.fhwaInspection
+          ? data.fhwaInspection
+          : data?.inspections?.length
+          ? data.inspections[0].issueDate
+          : null,
+        end: null,
+      },
+    };
+  }
+
+  updateDataCount() {
+    const truckCount = JSON.parse(localStorage.getItem('trailerTableCount'));
+
+    this.tableData[0].length = truckCount.active;
+    this.tableData[1].length = truckCount.inactive;
+  }
+
+  getTabData(dataType: string) {
+    if (dataType === 'active') {
+      this.trailerActive = this.trailerActiveQuery.getAll();
+
+      return this.trailerActive?.length ? this.trailerActive : [];
+    } else if (dataType === 'inactive') {
+      this.trailerInactive = this.trailerInactiveQuery.getAll();
+
+      return this.trailerInactive?.length ? this.trailerInactive : [];
     }
+  }
 
-    private deleteTrailerById(id: number) {
-        this.trailerService
-            .deleteTrailerById(id, this.selectedTab)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.notificationService.success(
-                        'Trailer successfully deleted',
-                        'Success:'
-                    );
+  trailerBackFilter(
+    filter: {
+      active: number;
+      pageIndex: number;
+      pageSize: number;
+      companyId: number | undefined;
+      sort: string | undefined;
+      searchOne: string | undefined;
+      searchTwo: string | undefined;
+      searchThree: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
+    this.trailerService
+      .getTrailers(
+        filter.active,
+        filter.pageIndex,
+        filter.pageSize,
+        filter.companyId,
+        filter.sort,
+        filter.searchOne,
+        filter.searchTwo,
+        filter.searchThree
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((trailer: TrailerListResponse) => {
+        if (!isShowMore) {
+          this.viewData = trailer.pagination.data;
 
-                    this.viewData = this.viewData.map((trailer: any) => {
-                        if (trailer.id === id) {
-                            trailer.actionAnimation = 'delete';
-                        }
+          this.viewData = this.viewData.map((data: any) => {
+            return this.mapTrailerData(data);
+          });
 
-                        return trailer;
-                    });
+          if (isSearch) {
+            this.tableData[this.selectedTab === 'active' ? 0 : 1].length =
+              trailer.pagination.count;
+          }
+        } else {
+          let newData = [...this.viewData];
 
-                    this.updateDataCount();
+          trailer.pagination.data.map((data: any) => {
+            newData.push(this.mapTrailerData(data));
+          });
 
-                    const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            true,
-                            this.viewData
-                        );
+          this.viewData = [...newData];
+        }
+      });
+  }
 
-                        clearInterval(inetval);
-                    }, 900);
-                },
-                error: () => {
-                    this.notificationService.error(
-                        `Trailer with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
-                },
-            });
+  onToolBarAction(event: any) {
+    if (event.action === 'open-modal') {
+      this.modalService.openModal(TrailerModalComponent, {
+        size: 'small',
+      });
+    } else if (event.action === 'tab-selected') {
+      this.selectedTab = event.tabData.field;
+
+      this.backFilterQuery.pageIndex = 1;
+
+      this.sendTrailerData();
+    } else if (event.action === 'view-mode') {
+      this.activeViewMode = event.mode;
     }
+  }
 
-    private multipleDeleteTrailers(response: any[]) {
-        this.trailerService
-            .deleteTrailerList(response)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-                let trailerNumber = '';
-                let trailersText = 'Trailer ';
+  onTableHeadActions(event: any) {
+    if (event.action === 'sort') {
+      if (event.direction) {
+        this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+        this.backFilterQuery.sort = event.direction;
+        this.backFilterQuery.pageIndex = 1;
 
-                this.viewData = this.viewData.map((trailer: any) => {
-                    response.map((id: any) => {
-                        if (trailer.id === id) {
-                            trailer.actionAnimation = 'delete-multiple';
-
-                            if (trailerNumber == '') {
-                                trailerNumber = trailer.trailerNumber;
-                            } else {
-                                trailerNumber =
-                                    trailerNumber +
-                                    ', ' +
-                                    trailer.trailerNumber;
-                                trailersText = 'Trailers ';
-                            }
-                        }
-                    });
-
-                    return trailer;
-                });
-
-                this.updateDataCount();
-
-                this.notificationService.success(
-                    `${trailersText} "${trailerNumber}" deleted`,
-                    'Success'
-                );
-
-                trailerNumber = '';
-                const inetval = setInterval(() => {
-                    this.viewData = closeAnimationAction(true, this.viewData);
-
-                    clearInterval(inetval);
-                }, 900);
-
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
-            });
+        this.trailerBackFilter(this.backFilterQuery);
+      } else {
+        this.sendTrailerData();
+      }
     }
+  }
 
-    ngOnDestroy(): void {
-        this.tableService.sendActionAnimation({});
-        this.resizeObserver.unobserve(
-            document.querySelector('.table-container')
+  public onTableBodyActions(event: any) {
+    const mappedEvent = {
+      ...event,
+      data: {
+        ...event.data,
+        number: event.data?.trailerNumber,
+        avatar: `assets/svg/common/trailers/${event.data?.trailerType?.logoName}`,
+      },
+    };
+    
+    switch (event.type) {
+      case 'show-more': {
+        this.backFilterQuery.pageIndex++;
+        this.trailerBackFilter(this.backFilterQuery, false, true);
+        break;
+      }
+      case 'edit-trailer': {
+        this.modalService.openModal(
+          TrailerModalComponent,
+          { size: 'small' },
+          {
+            ...event,
+            type: 'edit',
+            disableButton: true,
+            tabSelected: this.selectedTab,
+          }
         );
-        this.resizeObserver.disconnect();
-        this.destroy$.next();
-        this.destroy$.complete();
+        break;
+      }
+      case 'add-registration': {
+        this.modalService.openModal(
+          TtRegistrationModalComponent,
+          { size: 'small' },
+          {
+            ...event,
+            modal: 'trailer',
+            tabSelected: this.selectedTab,
+          }
+        );
+        break;
+      }
+      case 'add-inspection': {
+        this.modalService.openModal(
+          TtFhwaInspectionModalComponent,
+          { size: 'small' },
+          {
+            ...event,
+            modal: 'trailer',
+            tabSelected: this.selectedTab,
+          }
+        );
+        break;
+      }
+      case 'activate-item': {
+        this.modalService.openModal(
+          ConfirmationModalComponent,
+          { size: 'small' },
+          {
+            ...mappedEvent,
+            template: 'trailer',
+            type: event.data.status === 1 ? 'deactivate' : 'activate',
+            svg: true,
+          }
+        );
+        break;
+      }
+      case 'delete-item': {
+        this.modalService.openModal(
+          ConfirmationModalComponent,
+          { size: 'small' },
+          {
+            ...mappedEvent,
+            template: 'trailer',
+            type: 'delete',
+            svg: true,
+          }
+        );
+        break;
+      }
+      default: {
+        break;
+      }
     }
+  }
+
+  private changeTrailerStatus(id: number) {
+    this.trailerService
+      .changeTrailerStatus(id, this.selectedTab)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Trailer successfully changed status',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `Trailer with id: ${id}, status couldn't be changed`,
+            'Error:'
+          );
+        },
+      });
+  }
+
+  private deleteTrailerById(id: number) {
+    this.trailerService
+      .deleteTrailerById(id, this.selectedTab)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Trailer successfully deleted',
+            'Success:'
+          );
+
+          this.viewData = this.viewData.map((trailer: any) => {
+            if (trailer.id === id) {
+              trailer.actionAnimation = 'delete';
+            }
+
+            return trailer;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(true, this.viewData);
+
+            clearInterval(inetval);
+          }, 900);
+        },
+        error: () => {
+          this.notificationService.error(
+            `Trailer with id: ${id} couldn't be deleted`,
+            'Error:'
+          );
+        },
+      });
+  }
+
+  private multipleDeleteTrailers(response: any[]) {
+    this.trailerService
+      .deleteTrailerList(response)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        let trailerNumber = '';
+        let trailersText = 'Trailer ';
+
+        this.viewData = this.viewData.map((trailer: any) => {
+          response.map((id: any) => {
+            if (trailer.id === id) {
+              trailer.actionAnimation = 'delete-multiple';
+
+              if (trailerNumber == '') {
+                trailerNumber = trailer.trailerNumber;
+              } else {
+                trailerNumber = trailerNumber + ', ' + trailer.trailerNumber;
+                trailersText = 'Trailers ';
+              }
+            }
+          });
+
+          return trailer;
+        });
+
+        this.updateDataCount();
+
+        this.notificationService.success(
+          `${trailersText} "${trailerNumber}" deleted`,
+          'Success'
+        );
+
+        trailerNumber = '';
+        const inetval = setInterval(() => {
+          this.viewData = closeAnimationAction(true, this.viewData);
+
+          clearInterval(inetval);
+        }, 900);
+
+        this.tableService.sendRowsSelected([]);
+        this.tableService.sendResetSelectedColumns(true);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
+    this.resizeObserver.unobserve(document.querySelector('.table-container'));
+    this.resizeObserver.disconnect();
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -1,41 +1,41 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 export interface ILoadStatus {
-    id: number;
-    name: string;
-    active: boolean;
-    color: string;
+  id: number;
+  name: string;
+  active: boolean;
+  color: string;
 }
 
 @Component({
-    selector: 'app-load-modal-statuses',
-    templateUrl: './load-modal-statuses.component.html',
-    styleUrls: ['./load-modal-statuses.component.scss'],
+  selector: 'app-load-modal-statuses',
+  templateUrl: './load-modal-statuses.component.html',
+  styleUrls: ['./load-modal-statuses.component.scss'],
 })
 export class LoadModalStatusesComponent implements OnInit {
-    @Input() mode: 'Create' | 'Edit';
-    @Input() active: ILoadStatus;
-    @Input() statuses: ILoadStatus[];
-    @Output() selected: EventEmitter<ILoadStatus[]> = new EventEmitter<
-        ILoadStatus[]
-    >();
+  @Input() mode: 'Create' | 'Edit';
+  @Input() active: ILoadStatus;
+  @Input() statuses: ILoadStatus[];
+  @Output() selected: EventEmitter<ILoadStatus[]> = new EventEmitter<
+    ILoadStatus[]
+  >();
 
-    constructor() {}
+  constructor() {}
 
-    ngOnInit() {}
+  ngOnInit() {}
 
-    public identity(index: number, item: any): number {
-        return item.id;
-    }
+  public identity(index: number, item: any): number {
+    return item.id;
+  }
 
-    public onSelectLoadStatus(status: ILoadStatus) {
-        this.statuses = this.statuses.map((item) => {
-            return {
-                ...item,
-                active: item.id === status.id,
-            };
-        });
-        this.active = status;
-        this.selected.emit(this.statuses);
-    }
+  public onSelectLoadStatus(status: ILoadStatus) {
+    this.statuses = this.statuses.map((item) => {
+      return {
+        ...item,
+        active: item.id === status.id,
+      };
+    });
+    this.active = status;
+    this.selected.emit(this.statuses);
+  }
 }

@@ -1,266 +1,261 @@
 .load_count_main {
-    .load-count {
-        height: 22px;
+  .load-count {
+    height: 22px;
+    width: 22px;
+    min-width: 22px;
+    line-height: 21px;
+    border-radius: 3px;
+    text-align: center;
+    color: #fff;
+    font-weight: 600;
+    margin-right: 0;
+    margin-left: 0.2rem;
+    font-size: 14px;
+    cursor: pointer;
+
+    svg-icon {
+      svg {
         width: 22px;
-        min-width: 22px;
-        line-height: 21px;
-        border-radius: 3px;
-        text-align: center;
-        color: #fff;
-        font-weight: 600;
-        margin-right: 0;
-        margin-left: 0.2rem;
-        font-size: 14px;
-        cursor: pointer;
+        height: 22px;
 
-        svg-icon {
-            svg {
-                width: 22px;
-                height: 22px;
+        path, rect {
+          fill: #24C1A180;
+          transition: fill 0.2s ease-out;
+        }
+      }
+    }
 
-                path,
-                rect {
-                    fill: #24c1a180;
-                    transition: fill 0.2s ease-out;
-                }
-            }
+    &.repair_item {
+      margin-right: 0.2rem;
+      margin-left: 0;
+      line-height: 23px;
+      background-color: #207E4C80;
+
+      &.revised_item {
+        background-color: #B7B7B780;
+      }
+
+      &.tonu_item {
+        background-color: #FF5D5D80;
+      }
+    }
+  }
+
+  &.deport_item {
+    .load-count {
+      svg-icon {
+        svg {
+          width: 22px;
+          height: 22px;
+
+          path, rect {
+            fill: #FF5D5D80;
+            transition: fill 0.2s ease-out;
+          }
+        }
+      }
+    }
+  }
+
+  &:hover {
+    .load-count {
+      svg-icon {
+        svg {
+          path, rect {
+            fill: #24C1A1;
+          }
+        }
+      }
+
+      &.repair_item {
+        background-color: #207E4C;
+
+        &.revised_item {
+          background-color: #B7B7B7;
         }
 
-        &.repair_item {
-            margin-right: 0.2rem;
-            margin-left: 0;
-            line-height: 23px;
-            background-color: #207e4c80;
-
-            &.revised_item {
-                background-color: #b7b7b780;
-            }
-
-            &.tonu_item {
-                background-color: #ff5d5d80;
-            }
+        &.tonu_item {
+          background-color: #FF5D5D;
         }
+      }
     }
 
     &.deport_item {
-        .load-count {
-            svg-icon {
-                svg {
-                    width: 22px;
-                    height: 22px;
-
-                    path,
-                    rect {
-                        fill: #ff5d5d80;
-                        transition: fill 0.2s ease-out;
-                    }
-                }
+      .load-count {
+        svg-icon {
+          svg {
+            path, rect {
+              fill: #FF5D5D !important;
             }
+          }
         }
+      }
     }
 
-    &:hover {
-        .load-count {
-            svg-icon {
-                svg {
-                    path,
-                    rect {
-                        fill: #24c1a1;
-                    }
-                }
-            }
+    // .status_4000, .status_3200, .status_3 {
+    //   color: #207e4c !important;
+    // }
 
-            &.repair_item {
-                background-color: #207e4c;
+    // .status_7000, .status_4070, .status_9000,.status_5, .status_8, .status_4 {
+    //   color: #ae3232 !important;
+    // }
 
-                &.revised_item {
-                    background-color: #b7b7b7;
-                }
+    // .status_8000, .status_5000, .status_5100 {
+    //   color: #ff5d5d !important;
+    // }
 
-                &.tonu_item {
-                    background-color: #ff5d5d;
-                }
-            }
-        }
+    // .status_2000, .status_2 {
+    //   color: #497BDC !important;
+    // }
 
-        &.deport_item {
-            .load-count {
-                svg-icon {
-                    svg {
-                        path,
-                        rect {
-                            fill: #ff5d5d !important;
-                        }
-                    }
-                }
-            }
-        }
+    // .status_6000, .status_5200, .status_6 {
+    //   color: #F99E00 !important;
+    // }
 
-        // .status_4000, .status_3200, .status_3 {
-        //   color: #207e4c !important;
-        // }
+    // .status_3100, .status_5100 {
+    //   color: #B7B7B7 !important;
+    // }
 
-        // .status_7000, .status_4070, .status_9000,.status_5, .status_8, .status_4 {
-        //   color: #ae3232 !important;
-        // }
+    // .status_3000 {
+    //   color: #24c1a1 !important;
+    // }
 
-        // .status_8000, .status_5000, .status_5100 {
-        //   color: #ff5d5d !important;
-        // }
+    // .status_1000 {
+    //   color: #5AE99D !important;
+    // }
 
-        // .status_2000, .status_2 {
-        //   color: #497BDC !important;
-        // }
+    // .status_1000.load_table {
+    //   color: #BFB580 !important;
+    // }
 
-        // .status_6000, .status_5200, .status_6 {
-        //   color: #F99E00 !important;
-        // }
+    // .status_0,
+    // .status_1 {
+    //   color: #202020 !important;
+    // }
+  }
 
-        // .status_3100, .status_5100 {
-        //   color: #B7B7B7 !important;
-        // }
+  .tonu_status_add {
+    position: absolute;
+    left: 50%;
+    width: 134px;
 
-        // .status_3000 {
-        //   color: #24c1a1 !important;
-        // }
+    background-color: #fff;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
 
-        // .status_1000 {
-        //   color: #5AE99D !important;
-        // }
+    transform: translateX(-50%);
+    overflow: hidden;
 
-        // .status_1000.load_table {
-        //   color: #BFB580 !important;
-        // }
+    span {
+      font-size: 10px;
+      font-weight: 700;
+      color: #919191;
+      text-align: left;
 
-        // .status_0,
-        // .status_1 {
-        //   color: #202020 !important;
-        // }
+      span {
+        color: #FF5D5Db3;
+      }
+
+      &.tony_title {
+        display: block;
+        padding: 0 10px;
+      }
     }
 
-    .tonu_status_add {
-        position: absolute;
-        left: 50%;
-        width: 134px;
+    .input_hold {
+      position: relative;
+      padding: 0 3px 3px 3px;
 
-        background-color: #fff;
-        box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+      input {
+        width: 100%;
+        height: 32px;
+        border: none;
+        padding: 0 50px 0 5px;
+
+        background-color: #707070;
         border-radius: 3px;
+        color: #fff;
+        font-size: 15px;
 
-        transform: translateX(-50%);
-        overflow: hidden;
+        outline: none;
+        text-align: left !important;
+      }
 
-        span {
-            font-size: 10px;
-            font-weight: 700;
-            color: #919191;
-            text-align: left;
+      .picker_handlers {
+        position: absolute;
+        right: 4px;
+        top: 50%;
+        width: 24px;
+        height: 24px;
 
-            span {
-                color: #ff5d5db3;
-            }
+        transform: translateY(-50%);
 
-            &.tony_title {
-                display: block;
-                padding: 0 10px;
-            }
+        border: none;
+        background-color: transparent;
+
+        &.accept_item {
+          right: 26px;
         }
 
-        .input_hold {
-            position: relative;
-            padding: 0 3px 3px 3px;
+        svg-icon {
+          display: flex;
+          height: 16px;
+          width: 16px;
 
-            input {
-                width: 100%;
-                height: 32px;
-                border: none;
-                padding: 0 50px 0 5px;
-
-                background-color: #707070;
-                border-radius: 3px;
-                color: #fff;
-                font-size: 15px;
-
-                outline: none;
-                text-align: left !important;
+          svg {
+            path, rect {
+              fill: #B7B7B7;
             }
+          }
 
-            .picker_handlers {
-                position: absolute;
-                right: 4px;
-                top: 50%;
-                width: 24px;
-                height: 24px;
-
-                transform: translateY(-50%);
-
-                border: none;
-                background-color: transparent;
-
-                &.accept_item {
-                    right: 26px;
-                }
-
-                svg-icon {
-                    display: flex;
-                    height: 16px;
-                    width: 16px;
-
-                    svg {
-                        path,
-                        rect {
-                            fill: #b7b7b7;
-                        }
-                    }
-
-                    &:hover {
-                        svg {
-                            path,
-                            rect {
-                                fill: #fff;
-                            }
-                        }
-                    }
-                }
+          &:hover {
+            svg {
+              path, rect {
+                fill: #fff;
+              }
             }
+          }
         }
+      }
     }
+  }
+
 }
 
 .status-select-wrapper {
-    display: flex;
-    align-items: center;
-    height: 36px;
+  display: flex;
+  align-items: center;
+  height: 36px;
 }
 
 .status_select_custom {
-    display: flex;
-    flex-wrap: nowrap;
-    //align-items: flex-start;
-    width: 134px;
-    height: 32px;
-    align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+  //align-items: flex-start;
+  width: 134px;
+  height: 32px;
+  align-items: center;
 
-    &.new_load_table_hold {
-        .load-count {
-            position: absolute;
-            left: 5px;
-        }
-
-        .custom-status-item {
-            &.has_tr {
-                padding-left: 20px !important;
-            }
-        }
+  &.new_load_table_hold {
+    .load-count {
+      position: absolute;
+      left: 5px;
     }
+
+    .custom-status-item {
+      &.has_tr {
+        padding-left: 20px !important;
+      }
+    }
+  }
 }
 
 .load {
-    .revised_item {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 30px;
-        height: 26px;
-    }
+  .revised_item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 26px;
+  }
 }

@@ -6,12 +6,10 @@ import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @NgModule({
-    declarations: [TrailerTableComponent],
-    imports: [
-        CommonModule,
-        TrailerRoutingModule,
-        TruckassistTableModule,
-        AngularSvgIconModule,
-    ],
+  declarations: [
+    TrailerTableComponent,
+    
+  ],
+  imports: [CommonModule, TrailerRoutingModule, TruckassistTableModule, AngularSvgIconModule,],
 })
 export class TrailerModule {}

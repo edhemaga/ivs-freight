@@ -1,506 +1,506 @@
-@import '../../settings.global.scss';
+@import "../../settings.global.scss";
 @keyframes change {
-    from {
-        color: #6c6c6c;
-    }
-    to {
-        color: #3551b7;
-    }
+  from {
+    color: #6c6c6c;
+  }
+  to {
+    color: #3551b7;
+  }
 }
 @keyframes changeSVG {
-    from {
-        fill: #6c6c6c;
-    }
-    to {
-        fill: #3551b7;
-    }
+  from {
+    fill: #6c6c6c;
+  }
+  to {
+    fill: #3551b7;
+  }
 }
 
 .dropInputCompany {
-    width: 512px;
+  width: 512px;
 }
 
 .additional-template-data {
-    display: grid;
-    grid-template-columns: repeat(3, 130px);
-    column-gap: 64px;
-    row-gap: 12px;
-    padding-left: 10px;
-    .additional-template-item {
-        display: flex;
-        flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(3, 130px);
+  column-gap: 64px;
+  row-gap: 12px;
+  padding-left: 10px;
+  .additional-template-item {
+    display: flex;
+    flex-direction: column;
+  }
+  .additional-template-value-name {
+    font-size: 12px;
+    font-weight: $settings-font-semibold;
+    color: $settings-gray-dark;
+    &::-moz-selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
     }
-    .additional-template-value-name {
-        font-size: 12px;
-        font-weight: $settings-font-semibold;
+    &::selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
+  .additional-template-value {
+    font-size: 14px;
+    font-weight: 400;
+    color: $settings-gray-dark;
+    &::-moz-selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    span {
+      &::-moz-selection {
         color: $settings-gray-dark;
-        &::-moz-selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
-        &::selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
-    }
-    .additional-template-value {
-        font-size: 14px;
-        font-weight: 400;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
         color: $settings-gray-dark;
-        &::-moz-selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
-        &::selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
-        span {
-            &::-moz-selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
+  }
 }
 .bank-card-template-data {
-    display: grid;
-    grid-template-columns: 72px 160px 65px 50px;
-    row-gap: 12px;
-    column-gap: 65px;
-    padding-left: 10px;
-    .bank-card-name-header {
-        font-size: 12px;
-        font-weight: $settings-font-semibold;
-        color: $settings-gray-dark;
-        &::-moz-selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
-        &::selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
+  display: grid;
+  grid-template-columns: 72px 160px 65px 50px;
+  row-gap: 12px;
+  column-gap: 65px;
+  padding-left: 10px;
+  .bank-card-name-header {
+    font-size: 12px;
+    font-weight: $settings-font-semibold;
+    color: $settings-gray-dark;
+    &::-moz-selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
     }
-    .bank-card-template-item {
-        display: flex;
-        flex-direction: column;
+    &::selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
     }
+  }
+  .bank-card-template-item {
+    display: flex;
+    flex-direction: column;
+  }
 }
 .bank-card-template-data-body {
+  display: grid;
+  grid-template-columns: 72px 160px 65px 50px;
+  row-gap: 12px;
+  column-gap: 65px;
+  padding-left: 10px;
+  .bank-card-template-item-body {
     display: grid;
-    grid-template-columns: 72px 160px 65px 50px;
+    grid-template-columns: 106px 194px 98px 50px;
     row-gap: 12px;
-    column-gap: 65px;
-    padding-left: 10px;
-    .bank-card-template-item-body {
+    column-gap: 31px;
+    .item-body-nick-name {
+      font-size: 14px;
+      font-weight: 400;
+      color: $settings-gray-dark;
+      &::-moz-selection {
+        color: $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+    }
+    .item-body-cvc {
+      &::-moz-selection {
+        color: $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+    }
+    .item-body-icon-text {
+      display: flex;
+      align-items: center;
+      .svg-bank {
+        margin-right: 6px;
+      }
+    }
+  }
+}
+.settings-general {
+  width: 100%;
+  display: grid;
+  grid-template-rows: 32px auto;
+  row-gap: 12px;
+
+  .settings-body {
+    // Basic Info & Logo
+    background-color: $settings-background;
+    border-radius: 3px;
+    .basic-details {
+      width: 100%;
+      height: 256px;
+      margin-bottom: 15px;
+      border-radius: 3px;
+      .basic-header {
+        width: 100%;
+        height: 111px;
+        display: flex;
+        flex-direction: column;
+        user-select: none;
+        background-color: $settings-background;
+        padding: 12px;
+        border-radius: 3px;
+        .basic-header-logo-top {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          height: 22px;
+          width: 100%;
+          margin-bottom: 8px;
+
+          .basic-logo-text {
+            font-size: 10px;
+            font-style: italic;
+            color: $settings-white-dark;
+            position: relative;
+            bottom: 1px;
+          }
+
+          .basic-logo-edit {
+            width: 22px;
+            height: 22px;
+            display: none;
+            margin-left: 6px;
+            svg {
+              width: 100%;
+              height: 100%;
+              #Rectangle_3879 {
+                fill: $settings-white-light-2;
+              }
+              #Path_7775 {
+                fill: $settings-white-dark-2;
+              }
+              #Path_7776 {
+                fill: $settings-white-dark-2;
+              }
+            }
+
+            &:hover {
+              transition: $settings-transition;
+              cursor: pointer;
+              svg {
+                #Rectangle_3879 {
+                  fill: $settings-gray;
+                }
+                #Path_7775 {
+                  fill: $settings-background;
+                }
+                #Path_7776 {
+                  fill: $settings-background;
+                }
+              }
+            }
+          }
+
+          &:hover {
+            .basic-logo-edit {
+              transition: $settings-transition;
+              display: inline-block;
+            }
+          }
+        }
+
+        .basic-logo {
+          max-width: 346px;
+          max-height: 110px;
+        }
+      }
+
+      .basic-middle {
         display: grid;
-        grid-template-columns: 106px 194px 98px 50px;
+        grid-template-columns: 162px 292px;
         row-gap: 12px;
-        column-gap: 31px;
-        .item-body-nick-name {
+        padding: 12px 0px;
+        padding-left: 16px;
+        background-color: $settings-background;
+        .basic-data {
+          display: flex;
+          align-items: center;
+
+          p::selection {
+            color: $settings-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+          }
+
+          &:nth-child(1) {
+            grid-column: 1 / -1;
+          }
+          .basic-data-value {
             font-size: 14px;
             font-weight: 400;
             color: $settings-gray-dark;
-            &::-moz-selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
+          }
+          .basic-data-svg {
+            margin-right: 6px;
+            position: relative;
+            bottom: 1px;
+          }
         }
-        .item-body-cvc {
-            &::-moz-selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
-        .item-body-icon-text {
-            display: flex;
-            align-items: center;
-            .svg-bank {
-                margin-right: 6px;
-            }
-        }
-    }
-}
-.settings-general {
-    width: 100%;
-    display: grid;
-    grid-template-rows: 32px auto;
-    row-gap: 12px;
+      }
 
-    .settings-body {
-        // Basic Info & Logo
+      .basic-bottom {
+        display: grid;
+        grid-template-columns: repeat(3, 180px);
+        -moz-column-gap: 12px;
+        column-gap: 12px;
+        padding-left: 12px;
+        padding-bottom: 12px;
         background-color: $settings-background;
-        border-radius: 3px;
-        .basic-details {
-            width: 100%;
-            height: 256px;
-            margin-bottom: 15px;
-            border-radius: 3px;
-            .basic-header {
-                width: 100%;
-                height: 111px;
-                display: flex;
-                flex-direction: column;
-                user-select: none;
-                background-color: $settings-background;
-                padding: 12px;
-                border-radius: 3px;
-                .basic-header-logo-top {
-                    display: flex;
-                    align-items: center;
-                    justify-content: flex-end;
-                    height: 22px;
-                    width: 100%;
-                    margin-bottom: 8px;
+        .basic-bottom-card {
+          background-color: #f9f9f9;
+          color: $settings-gray-dark;
+          border-radius: 2px;
+          height: 30px;
+          padding: 0px 6px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
 
-                    .basic-logo-text {
-                        font-size: 10px;
-                        font-style: italic;
-                        color: $settings-white-dark;
-                        position: relative;
-                        bottom: 1px;
-                    }
+          .bottom-card-left {
+            font-size: 12px;
+            font-weight: $settings-font-semibold;
+            color: $settings-gray-dark;
+            user-select: none;
+          }
 
-                    .basic-logo-edit {
-                        width: 22px;
-                        height: 22px;
-                        display: none;
-                        margin-left: 6px;
-                        svg {
-                            width: 100%;
-                            height: 100%;
-                            #Rectangle_3879 {
-                                fill: $settings-white-light-2;
-                            }
-                            #Path_7775 {
-                                fill: $settings-white-dark-2;
-                            }
-                            #Path_7776 {
-                                fill: $settings-white-dark-2;
-                            }
-                        }
+          .bottom-card-right {
+            font-size: 18px;
+            font-weight: $settings-font-medium;
+            color: $settings-gray-dark;
 
-                        &:hover {
-                            transition: $settings-transition;
-                            cursor: pointer;
-                            svg {
-                                #Rectangle_3879 {
-                                    fill: $settings-gray;
-                                }
-                                #Path_7775 {
-                                    fill: $settings-background;
-                                }
-                                #Path_7776 {
-                                    fill: $settings-background;
-                                }
-                            }
-                        }
-                    }
-
-                    &:hover {
-                        .basic-logo-edit {
-                            transition: $settings-transition;
-                            display: inline-block;
-                        }
-                    }
-                }
-
-                .basic-logo {
-                    max-width: 346px;
-                    max-height: 110px;
-                }
+            &::selection {
+              color: $settings-gray-dark;
+              background: rgb(183, 183, 183, 0.2);
             }
-
-            .basic-middle {
-                display: grid;
-                grid-template-columns: 162px 292px;
-                row-gap: 12px;
-                padding: 12px 0px;
-                padding-left: 16px;
-                background-color: $settings-background;
-                .basic-data {
-                    display: flex;
-                    align-items: center;
-
-                    p::selection {
-                        color: $settings-gray-dark;
-                        background: rgb(183, 183, 183, 0.2);
-                    }
-
-                    &:nth-child(1) {
-                        grid-column: 1 / -1;
-                    }
-                    .basic-data-value {
-                        font-size: 14px;
-                        font-weight: 400;
-                        color: $settings-gray-dark;
-                    }
-                    .basic-data-svg {
-                        margin-right: 6px;
-                        position: relative;
-                        bottom: 1px;
-                    }
-                }
-            }
-
-            .basic-bottom {
-                display: grid;
-                grid-template-columns: repeat(3, 180px);
-                -moz-column-gap: 12px;
-                column-gap: 12px;
-                padding-left: 12px;
-                padding-bottom: 12px;
-                background-color: $settings-background;
-                .basic-bottom-card {
-                    background-color: #f9f9f9;
-                    color: $settings-gray-dark;
-                    border-radius: 2px;
-                    height: 30px;
-                    padding: 0px 6px;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-
-                    .bottom-card-left {
-                        font-size: 12px;
-                        font-weight: $settings-font-semibold;
-                        color: $settings-gray-dark;
-                        user-select: none;
-                    }
-
-                    .bottom-card-right {
-                        font-size: 18px;
-                        font-weight: $settings-font-medium;
-                        color: $settings-gray-dark;
-
-                        &::selection {
-                            color: $settings-gray-dark;
-                            background: rgb(183, 183, 183, 0.2);
-                        }
-                    }
-                }
-            }
+          }
         }
+      }
     }
+  }
 }
 .cards-custom {
-    padding: 0 6px;
-    .ta-card-header {
-        padding: 0 6px !important;
-    }
+  padding: 0 6px;
+  .ta-card-header {
+    padding: 0 6px !important;
+  }
 }
 .show-hide {
-    display: flex;
-    align-items: center;
-    .hidden-svg-eye {
-        cursor: pointer;
-        svg {
-            &:hover {
-                path {
-                    fill: #6c6c6c;
-                }
-            }
+  display: flex;
+  align-items: center;
+  .hidden-svg-eye {
+    cursor: pointer;
+    svg {
+      &:hover {
+        path {
+          fill: #6c6c6c;
         }
-        margin-left: 6px;
+      }
     }
+    margin-left: 6px;
+  }
+  .copy-icon {
+    margin-left: 6px;
+    display: none;
+    cursor: pointer;
+    svg {
+      &:hover {
+        path {
+          fill: #6c6c6c;
+        }
+      }
+    }
+  }
+  &:hover {
     .copy-icon {
-        margin-left: 6px;
-        display: none;
-        cursor: pointer;
-        svg {
-            &:hover {
-                path {
-                    fill: #6c6c6c;
-                }
-            }
-        }
+      display: flex;
     }
-    &:hover {
-        .copy-icon {
-            display: flex;
-        }
-    }
+  }
 }
 .department-template-data {
-    display: grid;
-    grid-template-columns: 105px 123px 89px 60px;
-    grid-column-gap: 15px;
-    column-gap: 15px;
-    grid-auto-flow: column;
-    padding: 0 10px;
-    padding-bottom: 6px;
-    .department-header-name {
-        font-size: 12px;
-        font-weight: $settings-font-semibold;
-        color: #6c6c6c;
-        &::-moz-selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
-        &::selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
+  display: grid;
+  grid-template-columns: 105px 123px 89px 60px;
+  grid-column-gap: 15px;
+  column-gap: 15px;
+  grid-auto-flow: column;
+  padding: 0 10px;
+  padding-bottom: 6px;
+  .department-header-name {
+    font-size: 12px;
+    font-weight: $settings-font-semibold;
+    color: #6c6c6c;
+    &::-moz-selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
     }
+    &::selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
 }
 .department-template-body {
-    display: grid;
-    padding: 0 10px;
-    grid-template-columns: 105px 122px 90px 60px;
-    column-gap: 15px;
-    padding-bottom: 6px;
-    .body-value-department {
-        font-size: 14px;
-        font-weight: $settings-font-semibold;
-        color: #6c6c6c;
-        &::-moz-selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
-        &::selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
+  display: grid;
+  padding: 0 10px;
+  grid-template-columns: 105px 122px 90px 60px;
+  column-gap: 15px;
+  padding-bottom: 6px;
+  .body-value-department {
+    font-size: 14px;
+    font-weight: $settings-font-semibold;
+    color: #6c6c6c;
+    &::-moz-selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
     }
-    .body-value {
-        font-size: 14px;
-        font-weight: 400;
-        color: #6c6c6c;
-        white-space: nowrap;
-        &::-moz-selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
-        &::selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
+    &::selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
     }
-    .body-value-email {
-        font-size: 14px;
-        font-weight: 400;
-        color: #6c6c6c;
-        white-space: nowrap;
-        &::-moz-selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
-        &::selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
+  }
+  .body-value {
+    font-size: 14px;
+    font-weight: 400;
+    color: #6c6c6c;
+    white-space: nowrap;
+    &::-moz-selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
     }
+    &::selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
+  .body-value-email {
+    font-size: 14px;
+    font-weight: 400;
+    color: #6c6c6c;
+    white-space: nowrap;
+    &::-moz-selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
 }
 
 .current-active-item-company {
-    width: 512px;
-    max-width: 512px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    justify-content: space-between;
-    border-radius: 2px;
-    padding: 4px 5px;
+  width: 512px;
+  max-width: 512px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: space-between;
+  border-radius: 2px;
+  padding: 4px 5px;
+  cursor: pointer;
+
+  .current-active-name {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 24px;
+    color: #6c6c6c;
+    padding-left: 7px;
     cursor: pointer;
+    &::-moz-selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
+
+  .arrow-down {
+    display: flex;
+  }
+
+  &:hover {
+    // background-color: #f3f3f3;
+    // transition: all 0.3s ease-in-out;
 
     .current-active-name {
-        font-size: 14px;
-        font-weight: 800;
-        line-height: 24px;
-        color: #6c6c6c;
-        padding-left: 7px;
-        cursor: pointer;
-        &::-moz-selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
-        &::selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
+      color: #3c3c3c;
     }
 
-    .arrow-down {
-        display: flex;
-    }
-
-    &:hover {
-        // background-color: #f3f3f3;
-        // transition: all 0.3s ease-in-out;
-
-        .current-active-name {
-            color: #3c3c3c;
+    .current-active-owner {
+      svg {
+        path {
+          fill: #536bc2;
         }
-
-        .current-active-owner {
-            svg {
-                path {
-                    fill: #536bc2;
-                }
-            }
-        }
+      }
     }
+  }
 }
 .bank-logo-settings {
-    svg {
-        path {
-            fill: #cccccc !important;
-        }
-        &:hover {
-            path {
-                fill: #6c6c6c !important;
-            }
-        }
+  svg {
+    path {
+      fill: #cccccc !important;
     }
+    &:hover {
+      path {
+        fill: #6c6c6c !important;
+      }
+    }
+  }
 }
 .division-name-wrapper {
-    display: flex;
-    align-items: center;
-    .division-company {
-        background-color: #f3f3f3;
-        border-radius: 2px;
-        color: #919191;
-        font-size: 11px;
-        font-weight: 800;
-        margin-left: 6px;
-        line-height: 18px;
-        padding: 0 6px;
-    }
+  display: flex;
+  align-items: center;
+  .division-company {
+    background-color: #f3f3f3;
+    border-radius: 2px;
+    color: #919191;
+    font-size: 11px;
+    font-weight: 800;
+    margin-left: 6px;
+    line-height: 18px;
+    padding: 0 6px;
+  }
 }
 .company-logo-img {
-    width: 100%;
-    height: 100%;
-    max-width: 346px;
-    max-height: 110px;
-    position: absolute;
-    background-size: cover;
+  width: 100%;
+  height: 100%;
+  max-width: 346px;
+  max-height: 110px;
+  position: absolute;
+  background-size: cover;
 }
 .first-element-company {
-    margin-top: 8px;
+  margin-top: 8px;
 }
 .no-company-logo {
-    // font-size: 48px;
-    position: absolute;
-    // margin-top: 30px;
-    font-weight: 900;
-    color: #b7b7b7;
-    white-space: nowrap;
-    max-width: 550px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+  // font-size: 48px;
+  position: absolute;
+  // margin-top: 30px;
+  font-weight: 900;
+  color: #b7b7b7;
+  white-space: nowrap;
+  max-width: 550px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }

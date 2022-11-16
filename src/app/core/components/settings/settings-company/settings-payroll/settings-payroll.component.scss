@@ -1,19 +1,19 @@
-@import '../../settings.global.scss';
+@import "../../settings.global.scss";
 
 .settings-payroll {
-    width: 100%;
-    display: grid;
-    grid-template-rows: 32px auto;
-    row-gap: 12px;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 32px auto;
+  row-gap: 12px;
 }
 .cards-custom-payroll {
-    padding: 2px 0px;
+  padding: 2px 0px;
+  padding-left: 6px;
+  padding-right: 6px;
+  background-color: $settings-background;
+  border-radius: 3px;
+  
+  .ta-card-header{
     padding-left: 6px;
-    padding-right: 6px;
-    background-color: $settings-background;
-    border-radius: 3px;
-
-    .ta-card-header {
-        padding-left: 6px;
-    }
+  }
 }

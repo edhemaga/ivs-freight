@@ -4,7 +4,7 @@ import { LoadTemplateState, LoadTemplateStore } from './load-template.store';
 
 @Injectable({ providedIn: 'root' })
 export class LoadTemplateQuery extends QueryEntity<LoadTemplateState> {
-    constructor(protected loadTemplateStore: LoadTemplateStore) {
-        super(loadTemplateStore);
-    }
+  constructor(protected loadTemplateStore: LoadTemplateStore) {
+    super(loadTemplateStore);
+  }
 }

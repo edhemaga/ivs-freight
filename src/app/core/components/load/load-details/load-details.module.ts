@@ -10,18 +10,18 @@ import { LoadDetailsItemComponent } from './load-details-item/load-details-item.
 import { LoadCardViewComponent } from '../load-card-view/load-card-view.component';
 
 @NgModule({
-    declarations: [
-        LoadDetailsComponent,
-        LoadDetailsItemComponent,
-        LoadCardViewComponent,
-    ],
-    exports: [LoadCardViewComponent, SharedModule],
+  declarations: [
+    LoadDetailsComponent,
+    LoadDetailsItemComponent,
+    LoadCardViewComponent,
+  ],
+  exports: [LoadCardViewComponent, SharedModule],
 
-    imports: [
-        CommonModule,
-        LoadDetailsRoutes,
-        SharedModule,
-        TruckassistProgressExpirationModule,
-    ],
+  imports: [
+    CommonModule,
+    LoadDetailsRoutes,
+    SharedModule,
+    TruckassistProgressExpirationModule,
+  ],
 })
 export class LoadDetailsModule {}

@@ -1,29 +1,29 @@
-@import '../navigation.design.scss';
+@import "../navigation.design.scss";
 .parent {
-    position: relative;
-    left: -20px;
-    // bottom: 3px;
+  position: relative;
+  left: -20px;
+  // bottom: 3px;
+  transition: all 0.3s ease-in-out;
+
+  .subroute-card {
+    // box-shadow: $nav-boxshadow;
+    // border-radius: 3px;
+    // height: auto;
+    // width: 184px;
+    // position: absolute;
+    // left: 7px;
+    // z-index: -1;
+    // transition: all 0.3s ease-in-out;
+
+    box-shadow: $nav-boxshadow;
+    // border-radius: 3px;
+    border-radius: 5px;
+    height: auto;
+    width: 174px;
+    position: absolute;
+    z-index: 99999999999999;
+    left: 15px;
+    z-index: -1;
     transition: all 0.3s ease-in-out;
-
-    .subroute-card {
-        // box-shadow: $nav-boxshadow;
-        // border-radius: 3px;
-        // height: auto;
-        // width: 184px;
-        // position: absolute;
-        // left: 7px;
-        // z-index: -1;
-        // transition: all 0.3s ease-in-out;
-
-        box-shadow: $nav-boxshadow;
-        // border-radius: 3px;
-        border-radius: 5px;
-        height: auto;
-        width: 174px;
-        position: absolute;
-        z-index: 99999999999999;
-        left: 15px;
-        z-index: -1;
-        transition: all 0.3s ease-in-out;
-    }
+  }
 }

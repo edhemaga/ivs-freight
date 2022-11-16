@@ -8,70 +8,70 @@ import { TerminalResolver } from './settings-location/settings-terminal/state/co
 import { companyRepairShopResolver } from './settings-location/settings-repair-shop/state/company-repairshop.resolver';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: SettingsComponent,
-        children: [
-            { path: '', redirectTo: 'company', pathMatch: 'full' },
-            {
-                path: 'company',
-                loadChildren: () =>
-                    import('./settings-company/settings-company.module').then(
-                        (m) => m.SettingsCompanyModule
-                    ),
-                resolve: {
-                    company: companySettingsResolver,
-                    parking: ParkingResolver,
-                    office: cOfficeResolver,
-                    terminal: TerminalResolver,
-                    companyrepairshop: companyRepairShopResolver,
-                },
-                data: { title: 'Company' },
-            },
-            {
-                path: 'location',
-                loadChildren: () =>
-                    import('./settings-location/settings-location.module').then(
-                        (m) => m.SettingsLocationModule
-                    ),
-                resolve: {
-                    parking: ParkingResolver,
-                    office: cOfficeResolver,
-                    terminal: TerminalResolver,
-                    companyrepairshop: companyRepairShopResolver,
-                },
-                data: { title: 'Location' },
-            },
-            {
-                path: 'document',
-                loadChildren: () =>
-                    import('./settings-document/settings-document.module').then(
-                        (m) => m.SettingsDocumentModule
-                    ),
-                data: { title: 'Document' },
-            },
-            {
-                path: 'billing',
-                loadChildren: () =>
-                    import('./settings-billing/settings-billing.module').then(
-                        (m) => m.SettingsBillingModule
-                    ),
-                data: { title: 'Billing' },
-            },
-            {
-                path: 'integration',
-                loadChildren: () =>
-                    import(
-                        './settings-integration/settings-integration.module'
-                    ).then((m) => m.SettingsIntegrationModule),
-                data: { title: 'Integration' },
-            },
-        ],
-    },
+  {
+    path: '',
+    component: SettingsComponent,
+    children: [
+      { path: '', redirectTo: 'company', pathMatch: 'full' },
+      {
+        path: 'company',
+        loadChildren: () =>
+          import('./settings-company/settings-company.module').then(
+            (m) => m.SettingsCompanyModule
+          ),
+        resolve: {
+          company: companySettingsResolver,
+          parking: ParkingResolver,
+          office: cOfficeResolver,
+          terminal: TerminalResolver,
+          companyrepairshop: companyRepairShopResolver,
+        },
+        data: { title: 'Company' },
+      },
+      {
+        path: 'location',
+        loadChildren: () =>
+          import('./settings-location/settings-location.module').then(
+            (m) => m.SettingsLocationModule
+          ),
+        resolve: {
+          parking: ParkingResolver,
+          office: cOfficeResolver,
+          terminal: TerminalResolver,
+          companyrepairshop: companyRepairShopResolver,
+        },
+        data: { title: 'Location' },
+      },
+      {
+        path: 'document',
+        loadChildren: () =>
+          import('./settings-document/settings-document.module').then(
+            (m) => m.SettingsDocumentModule
+          ),
+        data: { title: 'Document' },
+      },
+      {
+        path: 'billing',
+        loadChildren: () =>
+          import('./settings-billing/settings-billing.module').then(
+            (m) => m.SettingsBillingModule
+          ),
+        data: { title: 'Billing' },
+      },
+      {
+        path: 'integration',
+        loadChildren: () =>
+          import('./settings-integration/settings-integration.module').then(
+            (m) => m.SettingsIntegrationModule
+          ),
+        data: { title: 'Integration' },
+      },
+    ],
+  },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule],
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
 export class SettingsRoutingModule {}

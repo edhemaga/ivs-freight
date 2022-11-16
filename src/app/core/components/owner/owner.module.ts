@@ -6,7 +6,7 @@ import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-
 import { OwnerCardComponent } from './owner-card/owner-card.component';
 
 @NgModule({
-    declarations: [OwnerTableComponent, OwnerCardComponent],
-    imports: [CommonModule, OwnerRoutingModule, TruckassistTableModule],
+  declarations: [OwnerTableComponent, OwnerCardComponent],
+  imports: [CommonModule, OwnerRoutingModule, TruckassistTableModule],
 })
 export class OwnerModule {}

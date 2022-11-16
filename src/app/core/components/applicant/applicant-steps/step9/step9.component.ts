@@ -12,133 +12,130 @@ import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import {
-    ApplicantResponse,
-    DriverRightsFeedbackResponse,
-    UpdateDriverRightsCommand,
+  ApplicantResponse,
+  DriverRightsFeedbackResponse,
+  UpdateDriverRightsCommand,
 } from 'appcoretruckassist/model/models';
 
 @Component({
-    selector: 'app-step9',
-    templateUrl: './step9.component.html',
-    styleUrls: ['./step9.component.scss'],
+  selector: 'app-step9',
+  templateUrl: './step9.component.html',
+  styleUrls: ['./step9.component.scss'],
 })
 export class Step9Component implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
-    public applicantId: number;
+  public applicantId: number;
 
-    public driverRightsForm: FormGroup;
+  public driverRightsForm: FormGroup;
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private inputService: TaInputService,
-        private router: Router,
-        private applicantStore: ApplicantStore,
-        private applicantQuery: ApplicantQuery,
-        private applicantActionsService: ApplicantActionsService
-    ) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private router: Router,
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery,
+    private applicantActionsService: ApplicantActionsService
+  ) {}
 
-    ngOnInit(): void {
-        this.createForm();
+  ngOnInit(): void {
+    this.createForm();
 
-        this.getStepValuesFromStore();
-    }
+    this.getStepValuesFromStore();
+  }
 
-    public createForm(): void {
-        this.driverRightsForm = this.formBuilder.group({
-            understandYourRights: [false, Validators.requiredTrue],
-        });
-    }
+  public createForm(): void {
+    this.driverRightsForm = this.formBuilder.group({
+      understandYourRights: [false, Validators.requiredTrue],
+    });
+  }
 
-    public getStepValuesFromStore(): void {
-        this.applicantQuery.applicant$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: ApplicantResponse) => {
-                this.applicantId = res.id;
+  public getStepValuesFromStore(): void {
+    this.applicantQuery.applicant$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
 
-                if (res.driverRight) {
-                    this.patchStepValues(res.driverRight);
-                }
-            });
-    }
-
-    public patchStepValues(stepValues: DriverRightsFeedbackResponse): void {
-        const { understandDriverRights } = stepValues;
-
-        this.driverRightsForm
-            .get('understandYourRights')
-            .patchValue(understandDriverRights);
-    }
-
-    public onStepAction(event: any): void {
-        if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
-                this.onSubmit();
-            }
-
-            if (this.selectedMode === SelectedMode.REVIEW) {
-                this.onSubmitReview();
-            }
+        if (res.driverRight) {
+          this.patchStepValues(res.driverRight);
         }
+      });
+  }
 
-        if (event.action === 'back-step') {
-            this.router.navigate([`/application/${this.applicantId}/8`]);
-        }
+  public patchStepValues(stepValues: DriverRightsFeedbackResponse): void {
+    const { understandDriverRights } = stepValues;
+
+    this.driverRightsForm
+      .get('understandYourRights')
+      .patchValue(understandDriverRights);
+  }
+
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+      if (
+        this.selectedMode === SelectedMode.APPLICANT ||
+        this.selectedMode === SelectedMode.FEEDBACK
+      ) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
 
-    public onSubmit(): void {
-        if (this.driverRightsForm.invalid) {
-            this.inputService.markInvalid(this.driverRightsForm);
-            return;
-        }
+    if (event.action === 'back-step') {
+      this.router.navigate([`/application/${this.applicantId}/8`]);
+    }
+  }
 
-        const { understandYourRights } = this.driverRightsForm.value;
+  public onSubmit(): void {
+    if (this.driverRightsForm.invalid) {
+      this.inputService.markInvalid(this.driverRightsForm);
+      return;
+    }
 
-        const saveData: UpdateDriverRightsCommand = {
-            understandDriverRights: understandYourRights,
-            applicantId: this.applicantId,
-        };
+    const { understandYourRights } = this.driverRightsForm.value;
 
-        this.applicantActionsService
-            .updateDriverRights(saveData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.router.navigate([
-                        `/application/${this.applicantId}/10`,
-                    ]);
+    const saveData: UpdateDriverRightsCommand = {
+      understandDriverRights: understandYourRights,
+      applicantId: this.applicantId,
+    };
 
-                    this.applicantStore.update((store) => {
-                        return {
-                            ...store,
-                            applicant: {
-                                ...store.applicant,
-                                driverRight: {
-                                    ...store.applicant.driverRight,
-                                    understandDriverRights:
-                                        saveData.understandDriverRights,
-                                },
-                            },
-                        };
-                    });
+    this.applicantActionsService
+      .updateDriverRights(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/10`]);
+
+          this.applicantStore.update((store) => {
+            return {
+              ...store,
+              applicant: {
+                ...store.applicant,
+                driverRight: {
+                  ...store.applicant.driverRight,
+                  understandDriverRights: saveData.understandDriverRights,
                 },
-                error: (err) => {
-                    console.log(err);
-                },
-            });
-    }
+              },
+            };
+          });
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
 
-    public onSubmitReview(): void {
-        this.router.navigate([`/application/${this.applicantId}/10`]);
-    }
+  public onSubmitReview(): void {
+    this.router.navigate([`/application/${this.applicantId}/10`]);
+  }
 
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -1,27 +1,27 @@
-@import './ta-input.colors.scss';
+@import "./ta-input.colors.scss";
 
 .placeholder-text {
-    position: absolute;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  position: absolute;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
+  svg {
+    text {
+      fill: $input-placeholder-text-normal;
+    }
+  }
+
+  &.focused {
     svg {
-        text {
-            fill: $input-placeholder-text-normal;
-        }
+      text {
+        fill: $input-placeholder-text-focus;
+      }
     }
+  }
 
-    &.focused {
-        svg {
-            text {
-                fill: $input-placeholder-text-focus;
-            }
-        }
-    }
-
-    &.line-input-26 {
-        top: 1.5px;
-    }
+  &.line-input-26 {
+    top: 1.5px;
+  }
 }

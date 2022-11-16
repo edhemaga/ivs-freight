@@ -1,1320 +1,1290 @@
 .ta-input-dropdown {
-    .arrow {
-        display: none !important;
-    }
+  .arrow {
+    display: none !important;
+  }
 
-    .popover-body {
-        // ---------------------------------------- DROPDOWN ----------------------------------------
-        .dropdown-options {
-            position: relative;
-            top: 4px;
+  .popover-body {
+    // ---------------------------------------- DROPDOWN ----------------------------------------
+    .dropdown-options {
+      position: relative;
+      top: 4px;
+      left: 0px;
+      z-index: 1000;
+      max-height: 198px;
+      width: 100%;
+      background-color: #ffffff;
+      border-radius: 2px;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.15) !important;
+      padding: 2px;
+      overflow: hidden;
+
+      &.scroll {
+        transition: all 0.3s ease-in-out;
+        overflow-y: scroll !important;
+        scrollbar-width: none !important; /* Firefox */
+
+        &::-webkit-scrollbar {
+          width: 3px;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: transparent;
+          border: 6px solid #e5e5e5;
+          border-radius: 1px;
+        }
+        &::-webkit-scrollbar-track {
+          padding: 0;
+          position: relative;
+          right: 0;
+          top: 0;
+          background: transparent;
+        }
+      }
+
+      //------------------------ Default Template ------------------------
+      .dropdown-option {
+        padding: 3px 4px;
+        height: 26px;
+        font-size: 14px;
+        font-weight: 400;
+        border-radius: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background-color: #ffffff;
+        color: #6c6c6c;
+
+        &.dropdown-option-hovered {
+          background-color: #f3f3f3;
+          color: #3c3c3c;
+          border-radius: 2px;
+          cursor: pointer;
+
+          .svg-template-logo,
+          .svg-template-grayscale {
+            svg {
+              -webkit-filter: grayscale(0);
+              filter: grayscale(0);
+            }
+          }
+
+          .svgtext-template-logo {
+            &.hide-hover-icons {
+              visibility: visible !important;
+              opacity: 1 !important;
+              transform: translateX(0px) !important;
+            }
+          }
+
+          .svgtext-template-text {
+            &.move-hover-text {
+              transform: translateX(0px) !important;
+            }
+          }
+        }
+
+        &:hover {
+          background-color: #f3f3f3;
+          color: #3c3c3c;
+          border-radius: 2px;
+          cursor: pointer;
+
+          .svg-template-logo,
+          .svg-template-grayscale {
+            svg {
+              -webkit-filter: grayscale(0);
+              filter: grayscale(0);
+            }
+          }
+        }
+
+        &.disabled {
+          color: #aaaaaa;
+          font-style: italic;
+        }
+
+        &.no-result {
+          height: 18px;
+          font-size: 11px;
+          font-weight: 600;
+          padding: 1.5px 4px;
+          color: #b7b7b7;
+
+          &:hover {
+            background-color: transparent !important;
+            color: #b7b7b7 !important;
+            transition: all 0.3s ease-in-out;
+            cursor: auto;
+          }
+        }
+
+        &.add-new {
+          color: #536bc2;
+          font-weight: 600;
+          transition: all 0.3s ease-in-out;
+          position: relative;
+
+          &:hover {
+            color: #3551b7;
+          }
+
+          .labels-template-text {
+            color: #536bc2;
+            font-weight: 600 !important;
+            transition: all 0.3s ease-in-out;
+          }
+
+          &-divider {
+            &::after {
+              content: "";
+              position: absolute;
+              bottom: 0;
+              left: 0px;
+              height: 2px;
+              width: 100%;
+              background-color: #f3f3f3;
+              border-radius: 1px;
+            }
+          }
+        }
+
+        &.active-repair-truck-trailer {
+          color: #536bc2;
+          position: relative;
+
+          &:hover {
+            color: #3551b7;
+            transition: all 0.3s ease-in-out;
+          }
+
+          // Higlight text
+          .highlight-text-45632 {
+            background-color: transparent;
+
+            &:hover {
+              color: #3551b7 !important;
+              transition: all 0.3s ease-in-out;
+            }
+          }
+
+          &::after {
+            display: none;
+          }
+        }
+
+        &.active,
+        &.active-label {
+          color: #536bc2;
+          position: relative;
+
+          &:hover {
+            color: #3551b7;
+            transition: all 0.3s ease-in-out;
+          }
+
+          // Higlight text
+          .highlight-text-45632 {
+            background-color: transparent;
+
+            &:hover {
+              color: #3551b7 !important;
+              transition: all 0.3s ease-in-out;
+            }
+          }
+
+          &::after {
+            display: inline-block;
+            position: absolute;
+            right: 4px;
+            top: 2.5px;
+            content: url("../../assets/svg/common/ic_confirm.svg");
+            width: 14px;
+            height: 10px;
+          }
+        }
+
+        &.active-label {
+          &::after {
+            right: 35px;
+          }
+        }
+
+        &.last-active {
+          position: relative;
+          &::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
             left: 0px;
-            z-index: 1000;
-            max-height: 198px;
+            height: 2px;
             width: 100%;
-            background-color: #ffffff;
-            border-radius: 2px;
-            box-shadow: 0 0 4px rgba(0, 0, 0, 0.15) !important;
-            padding: 2px;
-            overflow: hidden;
+            background-color: #f3f3f3;
+            border-radius: 1px;
+          }
+        }
 
-            &.scroll {
-                transition: all 0.3s ease-in-out;
-                overflow-y: scroll !important;
-                scrollbar-width: none !important; /* Firefox */
+        // Higlight text
+        .highlight-text-45632 {
+          font-weight: 700;
+          background-color: transparent;
 
-                &::-webkit-scrollbar {
-                    width: 3px;
-                }
-                &::-webkit-scrollbar-thumb {
-                    background-color: transparent;
-                    border: 6px solid #e5e5e5;
-                    border-radius: 1px;
-                }
-                &::-webkit-scrollbar-track {
-                    padding: 0;
-                    position: relative;
-                    right: 0;
-                    top: 0;
-                    background: transparent;
-                }
+          &:hover {
+            color: #3c3c3c;
+            transition: all 0.3s ease-in-out;
+          }
+        }
+
+        //------------------------ Trucks, Trailers, Colors Template  ------------------------
+        &.svg-text-template {
+          display: flex;
+          align-items: center;
+
+          .svgtext-template-logo {
+            height: auto;
+            transition: all 0.3s ease-in-out;
+            margin-right: 6px;
+
+            &.hide-hover-icons {
+              visibility: none;
+              opacity: 0;
+              transform: translateX(-30px);
             }
 
-            //------------------------ Default Template ------------------------
-            .dropdown-option {
-                padding: 3px 4px;
-                height: 26px;
+            &.no-svg {
+              margin-right: 0px !important;
+            }
+
+            &.hazardous-svg {
+              line-height: 14px;
+            }
+          }
+
+          .svgtext-template-text {
+            position: relative;
+
+            &.truck-text {
+              top: 1px;
+            }
+
+            &.move-hover-text {
+              transition: all 0.3s ease-in-out;
+              transform: translateX(-60px);
+            }
+          }
+
+          .colors {
+            height: 18px;
+            width: 18px;
+          }
+
+          &:hover {
+            .svgtext-template-logo {
+              &.hide-hover-icons {
+                visibility: visible;
+                opacity: 1;
+                transform: translateX(0px);
+              }
+            }
+
+            .svgtext-template-text {
+              &.move-hover-text {
+                transform: translateX(0px);
+              }
+            }
+          }
+        }
+
+        //------------------------ Labels Template ------------------------
+        &.labels-template {
+          display: flex;
+          align-items: center;
+
+          .labels-template-left-side {
+            display: flex;
+            align-items: center;
+
+            .labels-template-logo {
+              svg {
+                width: 18px;
+                height: 18px;
+              }
+            }
+
+            .labels-template-vertical-divider {
+              width: 1px;
+              height: 15px;
+              background-color: #dadada;
+              content: "";
+              margin: 0 6px;
+            }
+          }
+
+          .labels-template-right-side {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .labels-template-text {
+              margin-right: 28px;
+              font-size: 14px;
+              font-weight: 400;
+              line-height: 18px;
+            }
+
+            .labels-template-counter {
+              width: 22px;
+              height: 16px;
+              border-radius: 20px;
+              background-color: #b7b7b7;
+              color: #ffffff;
+              text-align: center;
+              font-size: 11px;
+              font-weight: 500;
+              padding: 0 4.5px;
+            }
+          }
+
+          &:hover {
+            background-color: #f3f3f3;
+
+            .labels-template-text {
+              color: #3c3c3c;
+
+              &.add-new {
+                color: #3551b7;
+              }
+            }
+
+            .labels-template-counter {
+              background-color: #919191;
+            }
+          }
+        }
+
+        //------------------------ Details Template ------------------------
+        &.details-template {
+          display: flex;
+          align-items: center;
+          .details-template-text {
+            &.active {
+              color: #536bc2;
+
+              &:hover {
+                color: #3551b7;
+                transition: all 0.3s ease-in-out;
+              }
+            }
+          }
+          .details-template-logo {
+            margin-left: 6px;
+            line-height: 15px;
+          }
+        }
+
+        //------------------------ Text Counter Template ------------------------
+
+        &-text-counter {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          .option-counter {
+            min-width: 22px;
+            height: 16px;
+            border-radius: 20px;
+            background-color: #b7b7b7;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 500;
+            text-align: center;
+            padding: 0 4.5px;
+          }
+
+          &.active {
+            &::after {
+              right: 35px;
+              top: 3.5px;
+            }
+          }
+
+          &:hover {
+            .option-counter {
+              background-color: #919191;
+              color: #ffffff;
+            }
+          }
+        }
+
+        //------------------------ SVG Template ------------------------
+        .svg-template-logo {
+          height: 18px;
+
+          svg {
+            -webkit-filter: grayscale(100%);
+            filter: grayscale(100%);
+          }
+
+          &.active {
+            position: relative;
+            // SVG COLORIZED
+            svg {
+              -webkit-filter: grayscale(0);
+              filter: grayscale(0);
+              transition: all 0.3s ease-in-out;
+            }
+          }
+        }
+
+        &.routing_dropdown {
+          font-size: 11px;
+          height: 22px;
+        }
+      }
+
+      //------------------------ Load Dispatcher Template ------------------------
+      .load-dispatcher-template {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      //------------------------ Load Dispatches TTD Template ------------------------
+      .load-dispatches-ttd-template {
+        display: grid;
+        grid-template-columns: repeat(3, 128px);
+        align-items: center;
+
+        .load-dispatches-driver {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+
+          .load-dispatch-driver,
+          .load-dispatch-truck,
+          .load-dispatch-trailer {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100px;
+          }
+        }
+      }
+
+      //------------------------ Load Broker Template ------------------------
+      .load-broker-template {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        .load-broker-status {
+          position: relative;
+          bottom: 1px;
+
+          &.dnu-status {
+            svg {
+              #Path_36450 {
+                fill: #b7b7b7;
+              }
+            }
+          }
+
+          &.low-status {
+            svg {
+              #Path_33564 {
+                fill: #e57373;
+              }
+            }
+          }
+
+          &.medium-status {
+            svg {
+              #Path_33564 {
+                fill: #ffb74d;
+              }
+            }
+          }
+        }
+      }
+
+      //------------------------ Load Shipper Contact Template -----------------------
+      .load-shipper-template {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        align-items: center;
+        padding-right: 25px;
+      }
+
+      //------------------------ Custom width dependent on 'col' bootstrap ------------------------
+
+      &.w-col-709 {
+        width: 709px;
+      }
+
+      &.w-col-696 {
+        width: 696px;
+      }
+
+      &.w-col-686 {
+        width: 686px;
+      }
+
+      &.w-col-629 {
+        width: 629px;
+      }
+
+      &.w-col-616 {
+        width: 616px;
+      }
+
+      &.w-col-582 {
+        width: 582px;
+      }
+
+      &.w-col-557 {
+        width: 557px;
+      }
+
+      &.w-col-510 {
+        width: 510px;
+      }
+
+      &.w-col-503 {
+        width: 503px;
+      }
+
+      &.w-col-501 {
+        width: 501px;
+      }
+
+      &.w-col-481 {
+        width: 481px;
+      }
+
+      &.w-col-480 {
+        width: 480px;
+      }
+
+      &.w-col-477 {
+        width: 477px;
+      }
+
+      &.w-col-456 {
+        width: 456px;
+      }
+
+      &.w-col-455 {
+        width: 455px;
+      }
+
+      &.w-col-452 {
+        width: 452px;
+      }
+
+      &.w-col-445 {
+        width: 445px;
+      }
+
+      &.w-col-442 {
+        width: 442px;
+      }
+
+      &.w-col-439 {
+        width: 439px;
+      }
+
+      &.w-col-431 {
+        width: 431px;
+      }
+
+      &.w-col-429 {
+        width: 429px;
+      }
+
+      &.w-col-422 {
+        width: 422px;
+      }
+
+      &.w-col-418 {
+        width: 418px;
+      }
+
+      &.w-col-416 {
+        width: 416px;
+      }
+
+      &.w-col-414 {
+        width: 414px;
+      }
+
+      &.w-col-412 {
+        width: 412px;
+      }
+
+      &.w-col-407 {
+        width: 407px;
+      }
+
+      &.w-col-405 {
+        width: 405px;
+      }
+
+      &.w-col-403 {
+        width: 403px;
+      }
+
+      &.w-col-402 {
+        width: 402px;
+      }
+
+      &.w-col-397 {
+        width: 397px;
+      }
+
+      &.w-col-391 {
+        width: 391px;
+      }
+
+      &.w-col-376 {
+        width: 376px;
+      }
+
+      &.w-col-366 {
+        width: 366px;
+      }
+
+      &.w-col-348 {
+        width: 348px;
+      }
+
+      &.w-col-334 {
+        width: 334px;
+      }
+
+      &.w-col-332 {
+        width: 332px;
+      }
+
+      &.w-col-310 {
+        width: 310px;
+      }
+
+      &.w-col-308 {
+        width: 308px;
+      }
+
+      &.w-col-297 {
+        width: 297px;
+      }
+
+      &.w-col-296 {
+        width: 296px;
+      }
+
+      &.w-col-291 {
+        width: 291px;
+      }
+
+      &.w-col-288 {
+        width: 288px;
+      }
+
+      &.w-col-280 {
+        width: 280px;
+      }
+
+      &.w-col-275 {
+        width: 275px;
+      }
+
+      &.w-col-273 {
+        width: 273px;
+      }
+
+      &.w-col-256 {
+        width: 256px;
+      }
+
+      &.w-col-251 {
+        width: 251px;
+      }
+
+      &.w-col-248 {
+        width: 248px;
+      }
+
+      &.w-col-246 {
+        width: 246px;
+      }
+
+      &.w-col-245 {
+        width: 245px;
+      }
+
+      &.w-col-242 {
+        width: 242px;
+      }
+
+      &.w-col-234 {
+        width: 234px;
+      }
+
+      &.w-col-231 {
+        width: 231px;
+      }
+
+      &.w-col-229 {
+        width: 229px;
+      }
+
+      &.w-col-228 {
+        width: 228px;
+      }
+
+      &.w-col-227 {
+        width: 227px;
+      }
+
+      &.w-col-226 {
+        width: 226px;
+      }
+
+      &.w-col-220 {
+        width: 220px;
+      }
+
+      &.w-col-216 {
+        width: 216px;
+      }
+
+      &.w-col-211 {
+        width: 211px;
+      }
+
+      &.w-col-201 {
+        width: 201px;
+      }
+
+      &.w-col-196 {
+        width: 196px;
+      }
+
+      &.w-col-192 {
+        width: 192px;
+      }
+
+      &.w-col-189 {
+        width: 189px;
+      }
+
+      &.w-col-188 {
+        width: 188px;
+      }
+
+      &.w-col-184 {
+        width: 184px;
+      }
+
+      &.w-col-182 {
+        width: 182px;
+      }
+
+      &.w-col-178 {
+        width: 178px;
+      }
+
+      &.w-col-177 {
+        width: 117px;
+      }
+
+      &.w-col-176 {
+        width: 176px;
+      }
+
+      &.w-col-174 {
+        width: 174px;
+      }
+
+      &.w-col-168 {
+        width: 168px;
+      }
+
+      &.w-col-167 {
+        width: 166px;
+      }
+
+      &.w-col-166 {
+        width: 166px;
+      }
+
+      &.w-col-165 {
+        width: 165px;
+        max-height: 304px;
+      }
+
+      &.w-col-164 {
+        width: 164px;
+        max-height: 304px;
+      }
+
+      &.w-col-163 {
+        width: 163px;
+      }
+
+      &.w-col-156 {
+        width: 156px;
+      }
+
+      &.w-col-148 {
+        width: 148px;
+      }
+
+      &.w-col-145 {
+        width: 145px;
+      }
+
+      &.w-col-140 {
+        width: 140px;
+      }
+
+      &.w-col-139 {
+        width: 139px;
+      }
+
+      &.w-col-138 {
+        width: 138px;
+      }
+
+      &.w-col-136 {
+        width: 136px;
+      }
+
+      &.w-col-134 {
+        width: 134px;
+      }
+
+      &.w-col-130 {
+        width: 130px;
+      }
+
+      &.w-col-129 {
+        width: 129px;
+      }
+
+      &.w-col-128 {
+        width: 128px;
+      }
+
+      &.w-col-126 {
+        width: 126px;
+      }
+
+      &.w-col-120 {
+        width: 120px;
+      }
+
+      &.w-col-118 {
+        width: 118px;
+      }
+
+      &.w-col-114 {
+        width: 114px;
+      }
+
+      &.w-col-109 {
+        width: 109px;
+      }
+
+      &.w-col-108 {
+        width: 108px;
+      }
+
+      &.w-col-107 {
+        width: 107px;
+      }
+
+      &.w-col-106 {
+        width: 106px;
+      }
+
+      &.w-col-101 {
+        width: 101px;
+      }
+
+      &.w-col-100 {
+        width: 100px;
+      }
+
+      &.w-col-92 {
+        width: 92px;
+      }
+
+      &.w-col-88 {
+        width: 88px;
+      }
+
+      &.w-col-78 {
+        width: 78px;
+      }
+
+      &.w-col-73 {
+        width: 73px;
+      }
+
+      &.w-col-71 {
+        width: 71px;
+      }
+
+      &.w-col-70 {
+        width: 70px;
+      }
+
+      &.w-col-69 {
+        width: 69px;
+      }
+
+      &.w-col-68 {
+        width: 68px;
+      }
+
+      &.w-col-66 {
+        width: 66px;
+      }
+
+      &.w-col-302 {
+        width: 302px;
+      }
+
+      // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------
+      &.dropdown-options-groups {
+        max-height: 198px;
+        overflow-y: scroll;
+
+        .dropdown-groups,
+        .load-broker-contact-groups {
+          display: flex;
+          flex-direction: column;
+          padding: 0px 4px;
+          padding-top: 8px;
+          position: relative;
+
+          &::after {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            bottom: -3px;
+            height: 2px;
+            width: 96%;
+            background-color: #f3f3f3;
+          }
+
+          &:last-child {
+            &::after {
+              display: none !important;
+            }
+          }
+
+          p {
+            margin: 0;
+          }
+
+          &.last-group {
+            padding-bottom: 8px;
+          }
+
+          .dropdown-group-header {
+            font-size: 11px;
+            color: #cccccc;
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 14px;
+            padding: 0 6px;
+            margin-bottom: 8px;
+
+            &::-moz-selection {
+              background-color: rgb(204, 204, 204, 0.2) !important;
+              color: #cccccc !important;
+            }
+
+            &::selection {
+              background-color: rgb(204, 204, 204, 0.2) !important;
+              color: #cccccc !important;
+            }
+
+            &::-moz-selection {
+              background-color: rgb(204, 204, 204, 0.2) !important;
+              color: #cccccc !important;
+            }
+          }
+
+          .dropdown-subgroup-options {
+            display: flex;
+            align-items: center;
+            padding: 4px 6px;
+            height: 26px;
+            border-radius: 2px;
+
+            &:hover {
+              background-color: #f3f3f3;
+              cursor: pointer;
+              transition: all 0.3s ease-in-out;
+
+              .dropdown-subgroup-text {
                 font-size: 14px;
                 font-weight: 400;
-                border-radius: 2px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                background-color: #ffffff;
-                color: #6c6c6c;
+                color: #3c3c3c;
+                transition: all 0.3s ease-in-out;
 
-                &.dropdown-option-hovered {
-                    background-color: #f3f3f3;
-                    color: #3c3c3c;
-                    border-radius: 2px;
-                    cursor: pointer;
-
-                    .svg-template-logo,
-                    .svg-template-grayscale {
-                        svg {
-                            -webkit-filter: grayscale(0);
-                            filter: grayscale(0);
-                        }
-                    }
-
-                    .svgtext-template-logo {
-                        &.hide-hover-icons {
-                            visibility: visible !important;
-                            opacity: 1 !important;
-                            transform: translateX(0px) !important;
-                        }
-                    }
-
-                    .svgtext-template-text {
-                        &.move-hover-text {
-                            transform: translateX(0px) !important;
-                        }
-                    }
+                &::-moz-selection {
+                  background-color: rgb(60, 60, 60, 0.2) !important;
+                  color: #3c3c3c !important;
                 }
+
+                &::selection {
+                  background-color: rgb(60, 60, 60, 0.2) !important;
+                  color: #3c3c3c !important;
+                }
+
+                &::-moz-selection {
+                  background-color: rgb(60, 60, 60, 0.2) !important;
+                  color: #3c3c3c !important;
+                }
+
+                &.active {
+                  // Higlight text
+                  .highlight-text-45632 {
+                    background-color: transparent;
+
+                    &:hover {
+                      color: #3551b7 !important;
+                      transition: all 0.3s ease-in-out;
+                    }
+                  }
+                }
+              }
+            }
+
+            &.no-result {
+              height: 18px;
+              padding: 0px !important;
+              &:hover {
+                background-color: transparent !important;
+              }
+            }
+
+            .dropdown-subgroup-image {
+              width: 16px;
+              height: 16px;
+              border-radius: 50%;
+              -o-object-fit: fill;
+              object-fit: fill;
+              margin-right: 4px;
+            }
+
+            .dropdown-subgroup-text {
+              font-size: 14px;
+              font-weight: 400;
+              color: #6c6c6c;
+              display: block;
+              width: 100%;
+
+              // Higlight text
+              .highlight-text-45632 {
+                font-weight: 700;
+                background-color: transparent;
 
                 &:hover {
-                    background-color: #f3f3f3;
-                    color: #3c3c3c;
-                    border-radius: 2px;
-                    cursor: pointer;
+                  color: #3c3c3c;
+                  transition: all 0.3s ease-in-out;
+                }
+              }
 
-                    .svg-template-logo,
-                    .svg-template-grayscale {
-                        svg {
-                            -webkit-filter: grayscale(0);
-                            filter: grayscale(0);
-                        }
-                    }
+              &.active {
+                color: #536bc2;
+                position: relative;
+
+                &:hover {
+                  color: #3551b7;
+                  transition: all 0.3s ease-in-out;
                 }
 
-                &.disabled {
-                    color: #aaaaaa;
-                    font-style: italic;
+                &::after {
+                  position: absolute;
+                  right: -16px;
+                  content: url("../..//assets/svg/common/ic_confirm.svg");
+                  width: 14px;
+                  height: 10px;
                 }
+              }
 
-                &.no-result {
-                    height: 18px;
-                    font-size: 11px;
-                    font-weight: 600;
-                    padding: 1.5px 4px;
-                    color: #b7b7b7;
+              &.no-result {
+                height: 20px;
+                font-size: 11px;
+                font-weight: 600;
+                padding: 1.5px 4px;
+                color: #b7b7b7;
 
-                    &:hover {
-                        background-color: transparent !important;
-                        color: #b7b7b7 !important;
-                        transition: all 0.3s ease-in-out;
-                        cursor: auto;
-                    }
+                &:hover {
+                  background-color: transparent !important;
+                  color: #b7b7b7 !important;
+                  transition: all 0.3s ease-in-out;
+                  cursor: auto;
                 }
+              }
+            }
+          }
+        }
 
-                &.add-new {
-                    color: #536bc2;
-                    font-weight: 600;
-                    transition: all 0.3s ease-in-out;
-                    position: relative;
+        // Override groups classes for load-broker-contact-template
+        .load-broker-contact-groups {
+          padding: 4px 2px;
+          padding-bottom: 0px;
+          margin: 0;
+          position: relative;
 
-                    &:hover {
-                        color: #3551b7;
-                    }
+          &::after {
+            bottom: -1px;
+            width: 99%;
+          }
 
-                    .labels-template-text {
-                        color: #536bc2;
-                        font-weight: 600 !important;
-                        transition: all 0.3s ease-in-out;
-                    }
+          &.last-group {
+            padding-bottom: 4px;
+          }
 
-                    &-divider {
-                        &::after {
-                            content: '';
-                            position: absolute;
-                            bottom: 0;
-                            left: 0px;
-                            height: 2px;
-                            width: 100%;
-                            background-color: #f3f3f3;
-                            border-radius: 1px;
-                        }
-                    }
-                }
+          .dropdown-group-header {
+            padding: 0px;
+            padding-left: 4px;
+            margin: 0px;
+            margin-bottom: 4px;
+            color: #6c6c6c;
+            text-transform: capitalize;
+          }
 
-                &.active-repair-truck-trailer {
-                    color: #536bc2;
-                    position: relative;
+          .dropdown-subgroup-options {
+            display: grid;
+            grid-template-columns: repeat(3, 118px);
+            align-items: center;
+            padding: 0px;
+            padding-left: 4px;
+            margin-bottom: 2px;
 
-                    &:hover {
-                        color: #3551b7;
-                        transition: all 0.3s ease-in-out;
-                    }
+            .dropdown-subgroup-text {
+              &.active-without-check {
+                color: #536bc2;
+                position: relative;
 
-                    // Higlight text
-                    .highlight-text-45632 {
-                        background-color: transparent;
-
-                        &:hover {
-                            color: #3551b7 !important;
-                            transition: all 0.3s ease-in-out;
-                        }
-                    }
-
-                    &::after {
-                        display: none;
-                    }
-                }
-
-                &.active,
-                &.active-label {
-                    color: #536bc2;
-                    position: relative;
-
-                    &:hover {
-                        color: #3551b7;
-                        transition: all 0.3s ease-in-out;
-                    }
-
-                    // Higlight text
-                    .highlight-text-45632 {
-                        background-color: transparent;
-
-                        &:hover {
-                            color: #3551b7 !important;
-                            transition: all 0.3s ease-in-out;
-                        }
-                    }
-
-                    &::after {
-                        display: inline-block;
-                        position: absolute;
-                        right: 4px;
-                        top: 2.5px;
-                        content: url('../../assets/svg/common/ic_confirm.svg');
-                        width: 14px;
-                        height: 10px;
-                    }
-                }
-
-                &.active-label {
-                    &::after {
-                        right: 35px;
-                    }
-                }
-
-                &.last-active {
-                    position: relative;
-                    &::before {
-                        content: '';
-                        position: absolute;
-                        bottom: 0;
-                        left: 0px;
-                        height: 2px;
-                        width: 100%;
-                        background-color: #f3f3f3;
-                        border-radius: 1px;
-                    }
+                &:hover {
+                  color: #3551b7;
+                  transition: all 0.3s ease-in-out;
                 }
 
                 // Higlight text
                 .highlight-text-45632 {
-                    font-weight: 700;
-                    background-color: transparent;
+                  background-color: transparent;
 
-                    &:hover {
-                        color: #3c3c3c;
-                        transition: all 0.3s ease-in-out;
-                    }
+                  &:hover {
+                    color: #3551b7 !important;
+                    transition: all 0.3s ease-in-out;
+                  }
                 }
-
-                //------------------------ Trucks, Trailers, Colors Template  ------------------------
-                &.svg-text-template {
-                    display: flex;
-                    align-items: center;
-
-                    .svgtext-template-logo {
-                        height: auto;
-                        transition: all 0.3s ease-in-out;
-                        margin-right: 6px;
-
-                        &.hide-hover-icons {
-                            visibility: none;
-                            opacity: 0;
-                            transform: translateX(-30px);
-                        }
-
-                        &.no-svg {
-                            margin-right: 0px !important;
-                        }
-
-                        &.hazardous-svg {
-                            line-height: 14px;
-                        }
-                    }
-
-                    .svgtext-template-text {
-                        position: relative;
-
-                        &.truck-text {
-                            top: 1px;
-                        }
-
-                        &.move-hover-text {
-                            transition: all 0.3s ease-in-out;
-                            transform: translateX(-60px);
-                        }
-                    }
-
-                    .colors {
-                        height: 18px;
-                        width: 18px;
-                    }
-
-                    &:hover {
-                        .svgtext-template-logo {
-                            &.hide-hover-icons {
-                                visibility: visible;
-                                opacity: 1;
-                                transform: translateX(0px);
-                            }
-                        }
-
-                        .svgtext-template-text {
-                            &.move-hover-text {
-                                transform: translateX(0px);
-                            }
-                        }
-                    }
-                }
-
-                //------------------------ Labels Template ------------------------
-                &.labels-template {
-                    display: flex;
-                    align-items: center;
-
-                    .labels-template-left-side {
-                        display: flex;
-                        align-items: center;
-
-                        .labels-template-logo {
-                            svg {
-                                width: 18px;
-                                height: 18px;
-                            }
-                        }
-
-                        .labels-template-vertical-divider {
-                            width: 1px;
-                            height: 15px;
-                            background-color: #dadada;
-                            content: '';
-                            margin: 0 6px;
-                        }
-                    }
-
-                    .labels-template-right-side {
-                        flex: 1;
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-
-                        .labels-template-text {
-                            margin-right: 28px;
-                            font-size: 14px;
-                            font-weight: 400;
-                            line-height: 18px;
-                        }
-
-                        .labels-template-counter {
-                            width: 22px;
-                            height: 16px;
-                            border-radius: 20px;
-                            background-color: #b7b7b7;
-                            color: #ffffff;
-                            text-align: center;
-                            font-size: 11px;
-                            font-weight: 500;
-                            padding: 0 4.5px;
-                        }
-                    }
-
-                    &:hover {
-                        background-color: #f3f3f3;
-
-                        .labels-template-text {
-                            color: #3c3c3c;
-
-                            &.add-new {
-                                color: #3551b7;
-                            }
-                        }
-
-                        .labels-template-counter {
-                            background-color: #919191;
-                        }
-                    }
-                }
-
-                //------------------------ Details Template ------------------------
-                &.details-template {
-                    display: flex;
-                    align-items: center;
-                    .details-template-text {
-                        &.active {
-                            color: #536bc2;
-
-                            &:hover {
-                                color: #3551b7;
-                                transition: all 0.3s ease-in-out;
-                            }
-                        }
-                    }
-                    .details-template-logo {
-                        margin-left: 6px;
-                        line-height: 15px;
-                    }
-                }
-
-                //------------------------ Text Counter Template ------------------------
-
-                &-text-counter {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-
-                    .option-counter {
-                        min-width: 22px;
-                        height: 16px;
-                        border-radius: 20px;
-                        background-color: #b7b7b7;
-                        color: #ffffff;
-                        font-size: 11px;
-                        font-weight: 500;
-                        text-align: center;
-                        padding: 0 4.5px;
-                    }
-
-                    &.active {
-                        &::after {
-                            right: 35px;
-                            top: 3.5px;
-                        }
-                    }
-
-                    &:hover {
-                        .option-counter {
-                            background-color: #919191;
-                            color: #ffffff;
-                        }
-                    }
-                }
-
-                //------------------------ SVG Template ------------------------
-                .svg-template-logo {
-                    height: 18px;
-
-                    svg {
-                        -webkit-filter: grayscale(100%);
-                        filter: grayscale(100%);
-                    }
-
-                    &.active {
-                        position: relative;
-                        // SVG COLORIZED
-                        svg {
-                            -webkit-filter: grayscale(0);
-                            filter: grayscale(0);
-                            transition: all 0.3s ease-in-out;
-                        }
-                    }
-                }
-
-                &.routing_dropdown {
-                    font-size: 11px;
-                    height: 22px;
-                }
+              }
             }
-
-            //------------------------ Load Dispatcher Template ------------------------
-            .load-dispatcher-template {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-            }
-
-            //------------------------ Load Dispatches TTD Template ------------------------
-            .load-dispatches-ttd-template {
-                display: grid;
-                grid-template-columns: repeat(3, 128px);
-                align-items: center;
-
-                .load-dispatches-driver {
-                    display: flex;
-                    align-items: center;
-                    gap: 6px;
-
-                    .load-dispatch-driver,
-                    .load-dispatch-truck,
-                    .load-dispatch-trailer {
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                        width: 100px;
-                    }
-                }
-            }
-
-            //------------------------ Load Broker Template ------------------------
-            .load-broker-template {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-
-                .load-broker-status {
-                    position: relative;
-                    bottom: 1px;
-
-                    &.dnu-status {
-                        svg {
-                            #Path_36450 {
-                                fill: #b7b7b7;
-                            }
-                        }
-                    }
-
-                    &.low-status {
-                        svg {
-                            #Path_33564 {
-                                fill: #e57373;
-                            }
-                        }
-                    }
-
-                    &.medium-status {
-                        svg {
-                            #Path_33564 {
-                                fill: #ffb74d;
-                            }
-                        }
-                    }
-                }
-            }
-
-            //------------------------ Load Shipper Contact Template -----------------------
-            .load-shipper-template {
-                display: grid;
-                grid-template-columns: 300px 1fr;
-                align-items: center;
-                padding-right: 25px;
-            }
-
-            //------------------------ Custom width dependent on 'col' bootstrap ------------------------
-
-            &.w-col-709 {
-                width: 709px;
-            }
-
-            &.w-col-696 {
-                width: 696px;
-            }
-
-            &.w-col-686 {
-                width: 686px;
-            }
-
-            &.w-col-629 {
-                width: 629px;
-            }
-
-            &.w-col-616 {
-                width: 616px;
-            }
-
-            &.w-col-582 {
-                width: 582px;
-            }
-
-            &.w-col-557 {
-                width: 557px;
-            }
-
-            &.w-col-510 {
-                width: 510px;
-            }
-
-            &.w-col-503 {
-                width: 503px;
-            }
-
-            &.w-col-501 {
-                width: 501px;
-            }
-
-            &.w-col-481 {
-                width: 481px;
-            }
-
-            &.w-col-480 {
-                width: 480px;
-            }
-
-            &.w-col-477 {
-                width: 477px;
-            }
-
-            &.w-col-456 {
-                width: 456px;
-            }
-
-            &.w-col-455 {
-                width: 455px;
-            }
-
-            &.w-col-452 {
-                width: 452px;
-            }
-
-            &.w-col-445 {
-                width: 445px;
-            }
-
-            &.w-col-442 {
-                width: 442px;
-            }
-
-            &.w-col-439 {
-                width: 439px;
-            }
-
-            &.w-col-431 {
-                width: 431px;
-            }
-
-            &.w-col-429 {
-                width: 429px;
-            }
-
-            &.w-col-422 {
-                width: 422px;
-            }
-
-            &.w-col-418 {
-                width: 418px;
-            }
-
-            &.w-col-416 {
-                width: 416px;
-            }
-
-            &.w-col-414 {
-                width: 414px;
-            }
-
-            &.w-col-412 {
-                width: 412px;
-            }
-
-            &.w-col-407 {
-                width: 407px;
-            }
-
-            &.w-col-405 {
-                width: 405px;
-            }
-
-            &.w-col-403 {
-                width: 403px;
-            }
-
-            &.w-col-402 {
-                width: 402px;
-            }
-
-            &.w-col-397 {
-                width: 397px;
-            }
-
-            &.w-col-391 {
-                width: 391px;
-            }
-
-            &.w-col-376 {
-                width: 376px;
-            }
-
-            &.w-col-366 {
-                width: 366px;
-            }
-
-            &.w-col-348 {
-                width: 348px;
-            }
-
-            &.w-col-334 {
-                width: 334px;
-            }
-
-            &.w-col-332 {
-                width: 332px;
-            }
-
-            &.w-col-310 {
-                width: 310px;
-            }
-
-            &.w-col-308 {
-                width: 308px;
-            }
-
-            &.w-col-297 {
-                width: 297px;
-            }
-
-            &.w-col-296 {
-                width: 296px;
-            }
-
-            &.w-col-291 {
-                width: 291px;
-            }
-
-            &.w-col-288 {
-                width: 288px;
-            }
-
-            &.w-col-280 {
-                width: 280px;
-            }
-
-            &.w-col-275 {
-                width: 275px;
-            }
-
-            &.w-col-273 {
-                width: 273px;
-            }
-
-            &.w-col-256 {
-                width: 256px;
-            }
-
-            &.w-col-251 {
-                width: 251px;
-            }
-
-            &.w-col-248 {
-                width: 248px;
-            }
-
-            &.w-col-246 {
-                width: 246px;
-            }
-
-            &.w-col-245 {
-                width: 245px;
-            }
-
-            &.w-col-242 {
-                width: 242px;
-            }
-
-            &.w-col-234 {
-                width: 234px;
-            }
-
-            &.w-col-231 {
-                width: 231px;
-            }
-
-            &.w-col-229 {
-                width: 229px;
-            }
-
-            &.w-col-228 {
-                width: 228px;
-            }
-
-            &.w-col-227 {
-                width: 227px;
-            }
-
-            &.w-col-226 {
-                width: 226px;
-            }
-
-            &.w-col-220 {
-                width: 220px;
-            }
-
-            &.w-col-216 {
-                width: 216px;
-            }
-
-            &.w-col-211 {
-                width: 211px;
-            }
-
-            &.w-col-201 {
-                width: 201px;
-            }
-
-            &.w-col-196 {
-                width: 196px;
-            }
-
-            &.w-col-192 {
-                width: 192px;
-            }
-
-            &.w-col-189 {
-                width: 189px;
-            }
-
-            &.w-col-188 {
-                width: 188px;
-            }
-
-            &.w-col-184 {
-                width: 184px;
-            }
-
-            &.w-col-182 {
-                width: 182px;
-            }
-
-            &.w-col-178 {
-                width: 178px;
-            }
-
-            &.w-col-177 {
-                width: 117px;
-            }
-
-            &.w-col-176 {
-                width: 176px;
-            }
-
-            &.w-col-174 {
-                width: 174px;
-            }
-
-            &.w-col-168 {
-                width: 168px;
-            }
-
-            &.w-col-167 {
-                width: 166px;
-            }
-
-            &.w-col-166 {
-                width: 166px;
-            }
-
-            &.w-col-165 {
-                width: 165px;
-                max-height: 304px;
-            }
-
-            &.w-col-164 {
-                width: 164px;
-                max-height: 304px;
-            }
-
-            &.w-col-163 {
-                width: 163px;
-            }
-
-            &.w-col-156 {
-                width: 156px;
-            }
-
-            &.w-col-148 {
-                width: 148px;
-            }
-
-            &.w-col-145 {
-                width: 145px;
-            }
-
-            &.w-col-140 {
-                width: 140px;
-            }
-
-            &.w-col-139 {
-                width: 139px;
-            }
-
-            &.w-col-138 {
-                width: 138px;
-            }
-
-            &.w-col-136 {
-                width: 136px;
-            }
-
-            &.w-col-134 {
-                width: 134px;
-            }
-
-            &.w-col-130 {
-                width: 130px;
-            }
-
-            &.w-col-129 {
-                width: 129px;
-            }
-
-            &.w-col-128 {
-                width: 128px;
-            }
-
-            &.w-col-126 {
-                width: 126px;
-            }
-
-            &.w-col-120 {
-                width: 120px;
-            }
-
-            &.w-col-118 {
-                width: 118px;
-            }
-
-            &.w-col-114 {
-                width: 114px;
-            }
-
-            &.w-col-109 {
-                width: 109px;
-            }
-
-            &.w-col-108 {
-                width: 108px;
-            }
-
-            &.w-col-107 {
-                width: 107px;
-            }
-
-            &.w-col-106 {
-                width: 106px;
-            }
-
-            &.w-col-101 {
-                width: 101px;
-            }
-
-            &.w-col-100 {
-                width: 100px;
-            }
-
-            &.w-col-92 {
-                width: 92px;
-            }
-
-            &.w-col-88 {
-                width: 88px;
-            }
-
-            &.w-col-78 {
-                width: 78px;
-            }
-
-            &.w-col-73 {
-                width: 73px;
-            }
-
-            &.w-col-71 {
-                width: 71px;
-            }
-
-            &.w-col-70 {
-                width: 70px;
-            }
-
-            &.w-col-69 {
-                width: 69px;
-            }
-
-            &.w-col-68 {
-                width: 68px;
-            }
-
-            &.w-col-66 {
-                width: 66px;
-            }
-
-            &.w-col-302 {
-                width: 302px;
-            }
-
-            // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------
-            &.dropdown-options-groups {
-                max-height: 198px;
-                overflow-y: scroll;
-
-                .dropdown-groups,
-                .load-broker-contact-groups {
-                    display: flex;
-                    flex-direction: column;
-                    padding: 0px 4px;
-                    padding-top: 8px;
-                    position: relative;
-
-                    &::after {
-                        content: '';
-                        display: inline-block;
-                        position: absolute;
-                        bottom: -3px;
-                        height: 2px;
-                        width: 96%;
-                        background-color: #f3f3f3;
-                    }
-
-                    &:last-child {
-                        &::after {
-                            display: none !important;
-                        }
-                    }
-
-                    p {
-                        margin: 0;
-                    }
-
-                    &.last-group {
-                        padding-bottom: 8px;
-                    }
-
-                    .dropdown-group-header {
-                        font-size: 11px;
-                        color: #cccccc;
-                        font-weight: 700;
-                        text-transform: uppercase;
-                        line-height: 14px;
-                        padding: 0 6px;
-                        margin-bottom: 8px;
-
-                        &::-moz-selection {
-                            background-color: rgb(
-                                204,
-                                204,
-                                204,
-                                0.2
-                            ) !important;
-                            color: #cccccc !important;
-                        }
-
-                        &::selection {
-                            background-color: rgb(
-                                204,
-                                204,
-                                204,
-                                0.2
-                            ) !important;
-                            color: #cccccc !important;
-                        }
-
-                        &::-moz-selection {
-                            background-color: rgb(
-                                204,
-                                204,
-                                204,
-                                0.2
-                            ) !important;
-                            color: #cccccc !important;
-                        }
-                    }
-
-                    .dropdown-subgroup-options {
-                        display: flex;
-                        align-items: center;
-                        padding: 4px 6px;
-                        height: 26px;
-                        border-radius: 2px;
-
-                        &:hover {
-                            background-color: #f3f3f3;
-                            cursor: pointer;
-                            transition: all 0.3s ease-in-out;
-
-                            .dropdown-subgroup-text {
-                                font-size: 14px;
-                                font-weight: 400;
-                                color: #3c3c3c;
-                                transition: all 0.3s ease-in-out;
-
-                                &::-moz-selection {
-                                    background-color: rgb(
-                                        60,
-                                        60,
-                                        60,
-                                        0.2
-                                    ) !important;
-                                    color: #3c3c3c !important;
-                                }
-
-                                &::selection {
-                                    background-color: rgb(
-                                        60,
-                                        60,
-                                        60,
-                                        0.2
-                                    ) !important;
-                                    color: #3c3c3c !important;
-                                }
-
-                                &::-moz-selection {
-                                    background-color: rgb(
-                                        60,
-                                        60,
-                                        60,
-                                        0.2
-                                    ) !important;
-                                    color: #3c3c3c !important;
-                                }
-
-                                &.active {
-                                    // Higlight text
-                                    .highlight-text-45632 {
-                                        background-color: transparent;
-
-                                        &:hover {
-                                            color: #3551b7 !important;
-                                            transition: all 0.3s ease-in-out;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        &.no-result {
-                            height: 18px;
-                            padding: 0px !important;
-                            &:hover {
-                                background-color: transparent !important;
-                            }
-                        }
-
-                        .dropdown-subgroup-image {
-                            width: 16px;
-                            height: 16px;
-                            border-radius: 50%;
-                            -o-object-fit: fill;
-                            object-fit: fill;
-                            margin-right: 4px;
-                        }
-
-                        .dropdown-subgroup-text {
-                            font-size: 14px;
-                            font-weight: 400;
-                            color: #6c6c6c;
-                            display: block;
-                            width: 100%;
-
-                            // Higlight text
-                            .highlight-text-45632 {
-                                font-weight: 700;
-                                background-color: transparent;
-
-                                &:hover {
-                                    color: #3c3c3c;
-                                    transition: all 0.3s ease-in-out;
-                                }
-                            }
-
-                            &.active {
-                                color: #536bc2;
-                                position: relative;
-
-                                &:hover {
-                                    color: #3551b7;
-                                    transition: all 0.3s ease-in-out;
-                                }
-
-                                &::after {
-                                    position: absolute;
-                                    right: -16px;
-                                    content: url('../..//assets/svg/common/ic_confirm.svg');
-                                    width: 14px;
-                                    height: 10px;
-                                }
-                            }
-
-                            &.no-result {
-                                height: 20px;
-                                font-size: 11px;
-                                font-weight: 600;
-                                padding: 1.5px 4px;
-                                color: #b7b7b7;
-
-                                &:hover {
-                                    background-color: transparent !important;
-                                    color: #b7b7b7 !important;
-                                    transition: all 0.3s ease-in-out;
-                                    cursor: auto;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // Override groups classes for load-broker-contact-template
-                .load-broker-contact-groups {
-                    padding: 4px 2px;
-                    padding-bottom: 0px;
-                    margin: 0;
-                    position: relative;
-
-                    &::after {
-                        bottom: -1px;
-                        width: 99%;
-                    }
-
-                    &.last-group {
-                        padding-bottom: 4px;
-                    }
-
-                    .dropdown-group-header {
-                        padding: 0px;
-                        padding-left: 4px;
-                        margin: 0px;
-                        margin-bottom: 4px;
-                        color: #6c6c6c;
-                        text-transform: capitalize;
-                    }
-
-                    .dropdown-subgroup-options {
-                        display: grid;
-                        grid-template-columns: repeat(3, 118px);
-                        align-items: center;
-                        padding: 0px;
-                        padding-left: 4px;
-                        margin-bottom: 2px;
-
-                        .dropdown-subgroup-text {
-                            &.active-without-check {
-                                color: #536bc2;
-                                position: relative;
-
-                                &:hover {
-                                    color: #3551b7;
-                                    transition: all 0.3s ease-in-out;
-                                }
-
-                                // Higlight text
-                                .highlight-text-45632 {
-                                    background-color: transparent;
-
-                                    &:hover {
-                                        color: #3551b7 !important;
-                                        transition: all 0.3s ease-in-out;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+          }
         }
+      }
     }
+  }
 }
 
 // PM Repair Modal popover
 .ta-dropdown-popover {
-    z-index: 999999;
-    .arrow {
-        display: none !important;
-    }
+  z-index: 999999;
+  .arrow {
+    display: none !important;
+  }
 
-    .popover-body {
-        z-index: 99999999;
-        .options {
-            position: relative;
-            top: 3px;
-            z-index: 1000;
-            max-height: 198px;
-            width: 100%;
-            background-color: #ffffff;
-            border-radius: 2px;
-            box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
-            padding: 2px;
-            overflow: hidden;
+  .popover-body {
+    z-index: 99999999;
+    .options {
+      position: relative;
+      top: 3px;
+      z-index: 1000;
+      max-height: 198px;
+      width: 100%;
+      background-color: #ffffff;
+      border-radius: 2px;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+      padding: 2px;
+      overflow: hidden;
 
-            &.scroll {
-                transition: all 0.3s ease-in-out;
-                overflow-y: scroll !important;
-                scrollbar-width: none !important; /* Firefox */
+      &.scroll {
+        transition: all 0.3s ease-in-out;
+        overflow-y: scroll !important;
+        scrollbar-width: none !important; /* Firefox */
 
-                &::-webkit-scrollbar {
-                    width: 3px;
-                }
-                &::-webkit-scrollbar-thumb {
-                    background-color: transparent;
-                    border: 6px solid #e5e5e5;
-                    border-radius: 1px;
-                }
-                &::-webkit-scrollbar-track {
-                    padding: 0;
-                    position: relative;
-                    right: 0;
-                    top: 0;
-                    background: transparent;
-                }
-            }
-
-            .option {
-                position: relative;
-                padding: 3px;
-                height: 26px;
-                font-size: 14px;
-                line-height: 18px;
-                font-weight: 400;
-                border-radius: 2px;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                background-color: #ffffff;
-                color: #6c6c6c;
-                display: flex;
-                gap: 4px;
-
-                &::-moz-selection {
-                    color: #6c6c6c;
-                    background-color: rgb(108, 108, 108, 0.2);
-                }
-
-                &:nth-last-child(1) {
-                    margin-bottom: 0px;
-                }
-
-                &:hover {
-                    background-color: #f3f3f3;
-                    color: #3c3c3c;
-                    border-radius: 2px;
-                    cursor: pointer;
-                }
-
-                &.add-option {
-                    color: #536bc2;
-                    font-weight: 600;
-
-                    &::after {
-                        content: '';
-                        height: 2px;
-                        width: 100%;
-                        background-color: #f3f3f3;
-                        border-radius: 1px;
-                        position: absolute;
-                        bottom: 0px;
-                        left: 0px;
-                    }
-                }
-            }
+        &::-webkit-scrollbar {
+          width: 3px;
         }
+        &::-webkit-scrollbar-thumb {
+          background-color: transparent;
+          border: 6px solid #e5e5e5;
+          border-radius: 1px;
+        }
+        &::-webkit-scrollbar-track {
+          padding: 0;
+          position: relative;
+          right: 0;
+          top: 0;
+          background: transparent;
+        }
+      }
+
+      .option {
+        position: relative;
+        padding: 3px;
+        height: 26px;
+        font-size: 14px;
+        line-height: 18px;
+        font-weight: 400;
+        border-radius: 2px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        background-color: #ffffff;
+        color: #6c6c6c;
+        display: flex;
+        gap: 4px;
+
+        &::-moz-selection {
+          color: #6c6c6c;
+          background-color: rgb(108, 108, 108, 0.2);
+        }
+
+        &:nth-last-child(1) {
+          margin-bottom: 0px;
+        }
+
+        &:hover {
+          background-color: #f3f3f3;
+          color: #3c3c3c;
+          border-radius: 2px;
+          cursor: pointer;
+        }
+
+        &.add-option {
+          color: #536bc2;
+          font-weight: 600;
+
+          &::after {
+            content: "";
+            height: 2px;
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 1px;
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+          }
+        }
+      }
     }
+  }
 }

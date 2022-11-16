@@ -1,76 +1,66 @@
 <button
-    (click)="setResizeGpsMain(rowIndex)"
-    *ngIf="!note_expanded"
-    class="custom-rounded-btn note-btn"
+  (click)="setResizeGpsMain(rowIndex)"
+  *ngIf="!note_expanded"
+  class="custom-rounded-btn note-btn"
 >
-    <svg-icon
-        *ngIf="note && !openedAll"
-        [src]="'assets/img/svgs/table/note.svg'"
-        [svgStyle]="{ 'width.px': '16', 'height.px': '18' }"
-        class="normal-icon"
-    ></svg-icon>
-    <svg-icon
-        *ngIf="!note && !openedAll"
-        [src]="'assets/img/svgs/table/note-empty.svg'"
-        [svgStyle]="{ 'width.px': '16', 'height.px': '18' }"
-        class="empty-icon"
-    ></svg-icon>
-    <svg-icon
-        *ngIf="openedAll"
-        [src]="'assets/img/svgs/table/note_all_expanded.svg'"
-        [svgStyle]="{ 'width.px': '16', 'height.px': '18' }"
-        class="all-expanded-icon"
-    ></svg-icon>
+  <svg-icon
+    *ngIf="note && !openedAll"
+    [src]="'assets/img/svgs/table/note.svg'"
+    [svgStyle]="{ 'width.px': '16', 'height.px': '18' }"
+    class="normal-icon"
+  ></svg-icon>
+  <svg-icon
+    *ngIf="!note && !openedAll"
+    [src]="'assets/img/svgs/table/note-empty.svg'"
+    [svgStyle]="{ 'width.px': '16', 'height.px': '18' }"
+    class="empty-icon"
+  ></svg-icon>
+  <svg-icon
+    *ngIf="openedAll"
+    [src]="'assets/img/svgs/table/note_all_expanded.svg'"
+    [svgStyle]="{ 'width.px': '16', 'height.px': '18' }"
+    class="all-expanded-icon"
+  ></svg-icon>
 </button>
 <div [class.hidden]="!note_expanded" class="kendo-editor-note-wrapper">
+  <div [class.expanded]="isExpanded" class="k-widget k-editor custom_editor custom_editor">
     <div
-        [class.expanded]="isExpanded"
-        class="k-widget k-editor custom_editor custom_editor"
+      (blur)="prepareForTextRange()"
+      (focus)="checkFocus($event)"
+      (input)="valueChange($event.target.innerHTML)"
+      (keypress)="checkNoteSize()"
+      [class.not_expanded]="!isExpanded"
+      [class.openedAll]="openedAll"
+      [innerHTML]="note | safeHtml"
+      class="editor"
+      contenteditable="true"
+      id="main_editor"
+    ></div>
+    <app-ta-note-container
+      [isExpanded]="isExpanded"
+      [range]="range"
+      [selectedEditor]="selectedEditor"
+      [selectionTaken]="selectionTaken"
+      [value]="value"
+    ></app-ta-note-container>
+    <span
+      (click)="saveNote()"
+      *ngIf="buttonsExpanded"
+      appTooltip="Save"
+      class="save-note-check"
+      position="bottom-right"
     >
-        <div
-            (blur)="prepareForTextRange()"
-            (focus)="checkFocus($event)"
-            (input)="valueChange($event.target.innerHTML)"
-            (keypress)="checkNoteSize()"
-            [class.not_expanded]="!isExpanded"
-            [class.openedAll]="openedAll"
-            [innerHTML]="note | safeHtml"
-            class="editor"
-            contenteditable="true"
-            id="main_editor"
-        ></div>
-        <app-ta-note-container
-            [isExpanded]="isExpanded"
-            [range]="range"
-            [selectedEditor]="selectedEditor"
-            [selectionTaken]="selectionTaken"
-            [value]="value"
-        ></app-ta-note-container>
-        <span
-            (click)="saveNote()"
-            *ngIf="buttonsExpanded"
-            appTooltip="Save"
-            class="save-note-check"
-            position="bottom-right"
-        >
-            <svg-icon
-                [svgStyle]="{ 'width.px': '15', 'height.px': '12' }"
-                name="note-check"
-            ></svg-icon>
-        </span>
-        <span
-            (click)="closeNote()"
-            *ngIf="buttonsExpanded"
-            appTooltip="Cancel"
-            class="save-note-check close_note"
-            position="bottom-right"
-            tooltipBackground="#707070"
-        >
-            <svg-icon
-                [svgStyle]="{ 'width.px': '28', 'height.px': '28' }"
-                name="note-close"
-            >
-            </svg-icon>
-        </span>
-    </div>
+      <svg-icon [svgStyle]="{ 'width.px': '15', 'height.px': '12' }" name="note-check"></svg-icon>
+    </span>
+    <span
+      (click)="closeNote()"
+      *ngIf="buttonsExpanded"
+      appTooltip="Cancel"
+      class="save-note-check close_note"
+      position="bottom-right"
+      tooltipBackground="#707070"
+    >
+      <svg-icon [svgStyle]="{ 'width.px': '28', 'height.px': '28' }" name="note-close"> </svg-icon>
+    </span>
+  </div>
 </div>

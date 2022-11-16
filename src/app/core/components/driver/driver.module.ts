@@ -8,15 +8,15 @@ import { DriverCardComponent } from './driver-card/driver-card.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { DriverDetailsModule } from './driver-details/driver-details.module';
 @NgModule({
-    declarations: [DriverTableComponent, DriverCardComponent],
+  declarations: [DriverTableComponent, DriverCardComponent],
 
-    imports: [
-        CommonModule,
-        DriverRoutingModule,
-        DriverDetailsModule,
-        TruckassistTableModule,
-        AngularSvgIconModule,
-        SharedModule,
-    ],
+  imports: [
+    CommonModule,
+    DriverRoutingModule,
+    DriverDetailsModule,
+    TruckassistTableModule,
+    AngularSvgIconModule,
+    SharedModule,
+  ],
 })
 export class DriverModule {}

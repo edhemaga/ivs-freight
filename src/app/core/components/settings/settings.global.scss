@@ -39,402 +39,402 @@ $settings-box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
 
 // Default settings
 p {
-    margin: 0;
+  margin: 0;
 }
 
 // Settings root
 .settings {
-    width: 1440px;
-    display: grid;
-    grid-template-rows: 32px 1fr;
-    row-gap: 12px;
+  width: 1440px;
+  display: grid;
+  grid-template-rows: 32px 1fr;
+  row-gap: 12px;
 
-    .settings-col-1 {
-        grid-template-rows: 1 / 2;
-    }
-    .settings-col-2 {
-        grid-template-rows: 2 / -1;
-    }
+  .settings-col-1 {
+    grid-template-rows: 1 / 2;
+  }
+  .settings-col-2 {
+    grid-template-rows: 2 / -1;
+  }
 }
 
 // Progress bar settings
 .settings-progress-container {
-    padding: 0 11px;
-    padding-bottom: 16px;
-    padding-top: 7px;
-    .table-progress-cotnainer {
-        display: flex !important;
-        flex-direction: column !important;
+  padding: 0 11px;
+  padding-bottom: 16px;
+  padding-top: 7px;
+  .table-progress-cotnainer {
+    display: flex !important;
+    flex-direction: column !important;
 
-        .table-progress {
-            order: 1 !important;
-            width: 100% !important;
-            height: 8px !important;
-        }
-
-        .table-progress-panel {
-            order: -1 !important;
-            display: flex !important;
-            justify-content: space-between !important;
-            color: #6c6c6c !important;
-
-            .progress-text {
-                margin: 2px 0px !important;
-            }
-        }
+    .table-progress {
+      order: 1 !important;
+      width: 100% !important;
+      height: 8px !important;
     }
+
+    .table-progress-panel {
+      order: -1 !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      color: #6c6c6c !important;
+
+      .progress-text {
+        margin: 2px 0px !important;
+      }
+    }
+  }
 }
 
 // Settings Header global
 .settings-header {
-    width: 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  .no-factoring-data {
+    justify-content: flex-end !important;
+  }
+  .settings-name {
     height: 100%;
+    flex: 1;
+    padding: 6px 12px;
+    color: $settings-gray;
+    background-color: $settings-background;
+    font-weight: $settings-font-extrabold;
+    border-radius: $settings-borderRadius;
+    user-select: none;
+  }
+
+  // Multiple buttons container
+  .settings-header-buttons {
+    width: 68px;
+    height: 32px;
+    user-select: none;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #ffffff;
-    .no-factoring-data {
-        justify-content: flex-end !important;
-    }
-    .settings-name {
-        height: 100%;
-        flex: 1;
-        padding: 6px 12px;
-        color: $settings-gray;
-        background-color: $settings-background;
-        font-weight: $settings-font-extrabold;
-        border-radius: $settings-borderRadius;
-        user-select: none;
+    background-color: $settings-background;
+  }
+
+  // Single Button
+  .settings-header-button {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    background: $settings-background;
+    border-radius: 0 3px 3px 0;
+    position: relative;
+
+    .settings-edit-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      &:hover {
+        transform: $settings-transition;
+        cursor: pointer;
+        svg {
+          path {
+            fill: $settings-gray-dark;
+          }
+        }
+      }
     }
 
-    // Multiple buttons container
-    .settings-header-buttons {
-        width: 68px;
-        height: 32px;
-        user-select: none;
+    .settings-plus-button {
+      position: absolute;
+      top: 48%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      svg {
+        path {
+          fill: $settings-blue-dark;
+        }
+      }
+      &:hover {
+        transform: $settings-transition;
+        background-color: #6d82c7;
+        width: 28px;
+        height: 28px;
+        justify-content: center;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        background-color: $settings-background;
+        border-radius: 2px;
+        cursor: pointer;
+        svg {
+          path {
+            fill: $settings-background;
+          }
+        }
+      }
     }
 
-    // Single Button
-    .settings-header-button {
-        width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        background: $settings-background;
-        border-radius: 0 3px 3px 0;
-        position: relative;
-
-        .settings-edit-button {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            &:hover {
-                transform: $settings-transition;
-                cursor: pointer;
-                svg {
-                    path {
-                        fill: $settings-gray-dark;
-                    }
-                }
-            }
+    .settings-trash-button {
+      position: absolute;
+      top: 48%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      &:hover {
+        transform: $settings-transition;
+        cursor: pointer;
+        svg {
+          path {
+            fill: $settings-red-dark;
+          }
         }
-
-        .settings-plus-button {
-            position: absolute;
-            top: 48%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            svg {
-                path {
-                    fill: $settings-blue-dark;
-                }
-            }
-            &:hover {
-                transform: $settings-transition;
-                background-color: #6d82c7;
-                width: 28px;
-                height: 28px;
-                justify-content: center;
-                display: flex;
-                align-items: center;
-                border-radius: 2px;
-                cursor: pointer;
-                svg {
-                    path {
-                        fill: $settings-background;
-                    }
-                }
-            }
-        }
-
-        .settings-trash-button {
-            position: absolute;
-            top: 48%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            &:hover {
-                transform: $settings-transition;
-                cursor: pointer;
-                svg {
-                    path {
-                        fill: $settings-red-dark;
-                    }
-                }
-            }
-        }
+      }
     }
+  }
 }
 // Settings Body
 
 .settings-body {
-    // background-color: $settings-background;
-    border-radius: 3px;
-    .card-container-cmp {
-        padding: 0 6px;
-    }
-    .name-dots {
-        padding-left: 6px !important;
-    }
-    .card-name-cmp {
-        font-weight: 600 !important;
-        text-transform: uppercase;
-    }
-    .drop-comm {
-        position: relative;
-        left: 4px;
-        top: 5px;
-    }
-    .ta-card-header {
-        padding-right: 4px !important;
-    }
-    .settings-body-items {
-        display: flex;
-        flex-direction: column;
-        padding-top: 12px;
-        padding-bottom: 16px;
-        padding-left: 10px;
-        .single-item {
-            display: flex;
-            align-items: center;
-            height: 18px;
-            margin-bottom: 12px;
-            svg {
-                path {
-                    fill: #aaaaaa;
-                }
-                &:hover {
-                    path {
-                        fill: $settings-gray-dark;
-                    }
-                }
-            }
-            span {
-                font-size: 14px;
-                font-weight: 400;
-                color: $settings-gray-dark;
-                &::-moz-selection {
-                    color: $settings-gray-dark;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-                &::selection {
-                    color: $settings-gray-dark;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-            }
+  // background-color: $settings-background;
+  border-radius: 3px;
+  .card-container-cmp {
+    padding: 0 6px;
+  }
+  .name-dots {
+    padding-left: 6px !important;
+  }
+  .card-name-cmp {
+    font-weight: 600 !important;
+    text-transform: uppercase;
+  }
+  .drop-comm {
+    position: relative;
+    left: 4px;
+    top: 5px;
+  }
+  .ta-card-header {
+    padding-right: 4px !important;
+  }
+  .settings-body-items {
+    display: flex;
+    flex-direction: column;
+    padding-top: 12px;
+    padding-bottom: 16px;
+    padding-left: 10px;
+    .single-item {
+      display: flex;
+      align-items: center;
+      height: 18px;
+      margin-bottom: 12px;
+      svg {
+        path {
+          fill: #aaaaaa;
         }
+        &:hover {
+          path {
+            fill: $settings-gray-dark;
+          }
+        }
+      }
+      span {
+        font-size: 14px;
+        font-weight: 400;
+        color: $settings-gray-dark;
+        &::-moz-selection {
+          color: $settings-gray-dark;
+          background: rgb(108, 108, 108, 0.2);
+        }
+        &::selection {
+          color: $settings-gray-dark;
+          background: rgb(108, 108, 108, 0.2);
+        }
+      }
     }
-    .settings-line {
-        margin: 0;
-        height: 2px;
-        width: 100%;
-        border-radius: 1px;
-        background-color: $settings-white-light-2;
-    }
+  }
+  .settings-line {
+    margin: 0;
+    height: 2px;
+    width: 100%;
+    border-radius: 1px;
+    background-color: $settings-white-light-2;
+  }
 }
 .border-left {
-    border: none;
-    height: 24px;
-    border-left: 2px solid $settings-white-light-2;
+  border: none;
+  height: 24px;
+  border-left: 2px solid $settings-white-light-2;
 }
 // Office Template
 .office-template-data {
-    display: grid;
-    grid-template-columns: 170px 152px;
-    row-gap: 12px;
-    padding-left: 10px;
-    column-gap: 50px;
-    .office-template-item {
-        display: flex;
-        align-items: center;
+  display: grid;
+  grid-template-columns: 170px 152px;
+  row-gap: 12px;
+  padding-left: 10px;
+  column-gap: 50px;
+  .office-template-item {
+    display: flex;
+    align-items: center;
 
-        .office-template-value {
-            margin-left: 6px;
-            &::-moz-selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
+    .office-template-value {
+      margin-left: 6px;
+      &::-moz-selection {
+        color: $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
+  }
 
-    .office-template-email {
-        grid-column: 1 / -1;
-    }
+  .office-template-email {
+    grid-column: 1 / -1;
+  }
 }
 
 // Parking Template
 .parking-template-data {
-    display: grid;
-    grid-template-columns: 170px 152px;
-    grid-row-gap: 6px;
-    row-gap: 6px;
-    padding-left: 10px;
-    margin-top: -6px;
-    column-gap: 50px;
-    .parking-template-item {
-        display: flex;
-        align-items: center;
+  display: grid;
+  grid-template-columns: 170px 152px;
+  grid-row-gap: 6px;
+  row-gap: 6px;
+  padding-left: 10px;
+  margin-top: -6px;
+  column-gap: 50px;
+  .parking-template-item {
+    display: flex;
+    align-items: center;
 
-        .parking-template-number {
-            font-size: 17px;
-            font-weight: $settings-font-semibold;
-            color: $settings-gray-dark;
-            user-select: none;
-            white-space: nowrap;
-        }
-
-        .parking-template-text {
-            color: $settings-gray-dark;
-            margin-left: 7px;
-            white-space: nowrap;
-            &::-moz-selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
-
-            &.cross-out {
-                text-decoration: line-through;
-                color: $settings-white-dark;
-                &::-moz-selection {
-                    color: $settings-white-dark !important;
-                    background: rgb(183, 183, 183, 0.2) !important;
-                }
-                &::selection {
-                    color: $settings-white-dark !important;
-                    background: rgb(183, 183, 183, 0.2) !important;
-                }
-            }
-        }
-
-        .parking-template-svg {
-            user-select: none;
-            &.disabled {
-                svg {
-                    path {
-                        fill: $settings-white-dark-2;
-                    }
-                }
-            }
-        }
+    .parking-template-number {
+      font-size: 17px;
+      font-weight: $settings-font-semibold;
+      color: $settings-gray-dark;
+      user-select: none;
+      white-space: nowrap;
     }
-    .parking-template-email {
-        grid-column: 1 / -1;
+
+    .parking-template-text {
+      color: $settings-gray-dark;
+      margin-left: 7px;
+      white-space: nowrap;
+      &::-moz-selection {
+        color: $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &.cross-out {
+        text-decoration: line-through;
+        color: $settings-white-dark;
+        &::-moz-selection {
+          color: $settings-white-dark !important;
+          background: rgb(183, 183, 183, 0.2) !important;
+        }
+        &::selection {
+          color: $settings-white-dark !important;
+          background: rgb(183, 183, 183, 0.2) !important;
+        }
+      }
     }
+
+    .parking-template-svg {
+      user-select: none;
+      &.disabled {
+        svg {
+          path {
+            fill: $settings-white-dark-2;
+          }
+        }
+      }
+    }
+  }
+  .parking-template-email {
+    grid-column: 1 / -1;
+  }
 }
 .payroll-template-data {
-    display: grid;
-    column-gap: 20px;
-    row-gap: 12px;
-    padding: 0 10px;
-    .payroll-template-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        .payroll-name {
-            font-size: 14px;
-            font-weight: $settings-font-medium;
-            color: $settings-gray-dark;
-            &::-moz-selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
-        .payroll-value {
-            font-size: 14px;
-            font-weight: $settings-font-semibold;
-            color: $settings-gray-dark;
-            &::-moz-selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
+  display: grid;
+  column-gap: 20px;
+  row-gap: 12px;
+  padding: 0 10px;
+  .payroll-template-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .payroll-name {
+      font-size: 14px;
+      font-weight: $settings-font-medium;
+      color: $settings-gray-dark;
+      &::-moz-selection {
+        color: $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
+    .payroll-value {
+      font-size: 14px;
+      font-weight: $settings-font-semibold;
+      color: $settings-gray-dark;
+      &::-moz-selection {
+        color: $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+    }
+  }
 }
 .no-divider {
-    padding-bottom: 16px;
+  padding-bottom: 16px;
 }
 .copied {
-    .basic-data-value {
+  .basic-data-value {
+    animation-duration: 1500ms;
+    animation-name: change;
+  }
+  .insurance-value {
+    animation-duration: 1500ms;
+    animation-name: change;
+  }
+  .body-value {
+    animation-duration: 1500ms;
+    animation-name: change;
+  }
+  .body-value-email {
+    animation-duration: 1500ms;
+    animation-name: change;
+  }
+  .additional-template-value {
+    animation-duration: 1500ms;
+    animation-name: change;
+  }
+  .parking-template-text {
+    animation-duration: 1500ms;
+    animation-name: change;
+  }
+  .office-template-value {
+    animation-duration: 1500ms;
+    animation-name: change;
+  }
+  .copy-icon {
+    svg {
+      path {
         animation-duration: 1500ms;
-        animation-name: change;
-    }
-    .insurance-value {
-        animation-duration: 1500ms;
-        animation-name: change;
-    }
-    .body-value {
-        animation-duration: 1500ms;
-        animation-name: change;
-    }
-    .body-value-email {
-        animation-duration: 1500ms;
-        animation-name: change;
-    }
-    .additional-template-value {
-        animation-duration: 1500ms;
-        animation-name: change;
-    }
-    .parking-template-text {
-        animation-duration: 1500ms;
-        animation-name: change;
-    }
-    .office-template-value {
-        animation-duration: 1500ms;
-        animation-name: change;
-    }
-    .copy-icon {
-        svg {
-            path {
-                animation-duration: 1500ms;
-                animation-name: changeSVG;
-                &:hover {
-                    animation-duration: 1500ms;
-                    animation-name: changeSVG;
-                }
-            }
+        animation-name: changeSVG;
+        &:hover {
+          animation-duration: 1500ms;
+          animation-name: changeSVG;
         }
+      }
     }
+  }
 }
 .company-icons {
-    margin-right: 6px;
+  margin-right: 6px;
 }

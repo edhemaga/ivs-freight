@@ -1,501 +1,501 @@
 @import 'src/theme/variables.scss';
 
 .step-container {
-    padding-top: 22px;
+  padding-top: 22px;
 
-    .step-title {
-        color: $ta-blue;
-        font-size: 32px;
-        height: 39px;
-        margin-bottom: 12px !important;
+  .step-title {
+    color: $ta-blue;
+    font-size: 32px;
+    height: 39px;
+    margin-bottom: 12px !important;
 
-        &::-moz-selection {
-            color: $ta-blue;
-            background: rgb(83, 107, 194, 0.2);
-        }
-
-        &::selection {
-            color: $ta-blue;
-            background: rgb(83, 107, 194, 0.2);
-        }
+    &::-moz-selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
     }
 
-    .step-subtitle {
-        font-size: 14px;
-        height: 18px;
+    &::selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
+    }
+  }
+
+  .step-subtitle {
+    font-size: 14px;
+    height: 18px;
+    color: $bw6-2;
+    text-transform: uppercase;
+    margin-bottom: 22px !important;
+
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
+
+  .info-section {
+    width: 820px;
+    margin-bottom: 32px;
+
+    p {
+      color: $bw6-2;
+      font-size: 14px;
+      line-height: 22px;
+
+      &::-moz-selection {
         color: $bw6-2;
-        text-transform: uppercase;
-        margin-bottom: 22px !important;
+        background: rgb(108, 108, 108, 0.2);
+      }
 
-        &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-        }
-
-        &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-        }
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
+  }
 
-    .info-section {
-        width: 820px;
-        margin-bottom: 32px;
+  .form-section {
+    .questions-container {
+      width: 616px;
+      position: relative;
 
-        p {
+      .warning-container {
+        position: absolute;
+        top: 0;
+        right: -372px;
+        width: 360px;
+        padding: 12px;
+        border-radius: 3px;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+
+        .warning-header {
+          border-bottom: 0.2px solid $ta-light-grey-4;
+          padding-bottom: 6px;
+          margin-bottom: 22px;
+
+          .icon {
+            margin-right: 6px;
+
+            svg {
+              path {
+                fill: $ta-red;
+              }
+            }
+          }
+
+          .warning-title {
             color: $bw6-2;
-            font-size: 14px;
-            line-height: 22px;
+            font-size: 18px;
 
             &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
             }
 
             &::selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+          }
+
+          .close-icon {
+            cursor: pointer;
+          }
+        }
+
+        .warning-body {
+          p {
+            color: $bw6-2;
+
+            &::-moz-selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+
+            &:nth-child(1) {
+              font-size: 14px;
+              margin-bottom: 22px !important;
+              width: 267px;
+            }
+
+            &:nth-child(2) {
+              font-size: 14px;
+              margin-bottom: 2px !important;
+            }
+
+            &:nth-child(3) {
+              font-size: 11px;
+              margin-bottom: 22px !important;
+            }
+          }
+        }
+
+        .warning-footer {
+          padding-top: 12px;
+          border-top: 0.2px solid $ta-light-grey-4;
+
+          .warning-btn {
+            width: 162px;
+            height: 32px;
+            font-size: 14px;
+            border-radius: 2px;
+            border: none;
+            outline: none;
+          }
+
+          .no-btn {
+            margin-right: 12px;
+            background: $ta-light-grey-4;
+            color: $bw5;
+          }
+
+          .yes-btn {
+            background: $ta-red;
+            color: $white;
+          }
+        }
+      }
+
+      .question-container {
+        width: 616px;
+        margin-bottom: 22px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .title-box {
+          p {
+            color: $bw6-2;
+            font-size: 14px;
+            line-height: 18px;
+
+            &::-moz-selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+
+            .required-star {
+              color: $progress-danger;
+
+              &::-moz-selection {
                 color: $bw6-2;
                 background: rgb(108, 108, 108, 0.2);
-            }
-        }
-    }
+              }
 
-    .form-section {
-        .questions-container {
-            width: 616px;
-            position: relative;
-
-            .warning-container {
-                position: absolute;
-                top: 0;
-                right: -372px;
-                width: 360px;
-                padding: 12px;
-                border-radius: 3px;
-                box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
-
-                .warning-header {
-                    border-bottom: 0.2px solid $ta-light-grey-4;
-                    padding-bottom: 6px;
-                    margin-bottom: 22px;
-
-                    .icon {
-                        margin-right: 6px;
-
-                        svg {
-                            path {
-                                fill: $ta-red;
-                            }
-                        }
-                    }
-
-                    .warning-title {
-                        color: $bw6-2;
-                        font-size: 18px;
-
-                        &::-moz-selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
-                        }
-
-                        &::selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
-                        }
-                    }
-
-                    .close-icon {
-                        cursor: pointer;
-                    }
-                }
-
-                .warning-body {
-                    p {
-                        color: $bw6-2;
-
-                        &::-moz-selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
-                        }
-
-                        &::selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
-                        }
-
-                        &:nth-child(1) {
-                            font-size: 14px;
-                            margin-bottom: 22px !important;
-                            width: 267px;
-                        }
-
-                        &:nth-child(2) {
-                            font-size: 14px;
-                            margin-bottom: 2px !important;
-                        }
-
-                        &:nth-child(3) {
-                            font-size: 11px;
-                            margin-bottom: 22px !important;
-                        }
-                    }
-                }
-
-                .warning-footer {
-                    padding-top: 12px;
-                    border-top: 0.2px solid $ta-light-grey-4;
-
-                    .warning-btn {
-                        width: 162px;
-                        height: 32px;
-                        font-size: 14px;
-                        border-radius: 2px;
-                        border: none;
-                        outline: none;
-                    }
-
-                    .no-btn {
-                        margin-right: 12px;
-                        background: $ta-light-grey-4;
-                        color: $bw5;
-                    }
-
-                    .yes-btn {
-                        background: $ta-red;
-                        color: $white;
-                    }
-                }
-            }
-
-            .question-container {
-                width: 616px;
-                margin-bottom: 22px;
-
-                &:last-child {
-                    margin-bottom: 0;
-                }
-
-                .title-box {
-                    p {
-                        color: $bw6-2;
-                        font-size: 14px;
-                        line-height: 18px;
-
-                        &::-moz-selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
-                        }
-
-                        &::selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
-                        }
-
-                        .required-star {
-                            color: $progress-danger;
-
-                            &::-moz-selection {
-                                color: $bw6-2;
-                                background: rgb(108, 108, 108, 0.2);
-                            }
-
-                            &::selection {
-                                color: $bw6-2;
-                                background: rgb(108, 108, 108, 0.2);
-                            }
-                        }
-                    }
-                }
-
-                .radios-box {
-                    width: 86px;
-
-                    .ta-input-radiobutons {
-                        width: 100%;
-                    }
-                }
-
-                .date-group {
-                    width: 302px;
-                    margin-right: 12px;
-
-                    &:last-child {
-                        margin-right: 0;
-                    }
-                }
-
-                .explain-container {
-                    width: 616px;
-                    margin-bottom: 32px;
-
-                    .group {
-                        width: 302px;
-                        margin-right: 12px;
-
-                        &:last-child {
-                            margin-right: 0;
-                        }
-                    }
-                }
-            }
-        }
-
-        .reason-group {
-            width: 616px;
-            margin-bottom: 22px;
-        }
-
-        .consider-question-container {
-            width: 616px;
-            margin-bottom: 12px;
-
-            .title-box {
-                p {
-                    color: $bw6-2;
-                    font-size: 14px;
-                    line-height: 18px;
-
-                    &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
-                    }
-
-                    &::selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
-                    }
-
-                    .required-star {
-                        color: $progress-danger;
-
-                        &::-moz-selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
-                        }
-
-                        &::selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
-                        }
-                    }
-                }
-            }
-
-            .radios-box {
-                width: 86px;
-
-                .ta-input-radiobutons {
-                    width: 100%;
-                }
-            }
-        }
-
-        .no-safety-checkbox-container {
-            margin-bottom: 32px;
-        }
-
-        .accident-view-container {
-            width: 616px;
-            margin-bottom: 32px;
-
-            .title-container {
-                width: 100%;
-                margin-bottom: 6px;
-                padding-left: 6px;
-
-                .date-title-box,
-                .state-title-box,
-                .fatalities-title-box,
-                .injuries-title-box,
-                .hazmat-title-box,
-                .description-title-box {
-                    p {
-                        color: $bw5;
-                        font-size: 12px;
-
-                        &::-moz-selection {
-                            color: $bw5;
-                            background: rgb(145, 145, 145, 0.2);
-                        }
-
-                        &::selection {
-                            color: $bw5;
-                            background: rgb(145, 145, 145, 0.2);
-                        }
-
-                        span {
-                            color: $progress-danger;
-
-                            &::-moz-selection {
-                                color: $bw5;
-                                background: rgb(145, 145, 145, 0.2);
-                            }
-
-                            &::selection {
-                                color: $bw5;
-                                background: rgb(145, 145, 145, 0.2);
-                            }
-                        }
-                    }
-
-                    &.date-title-box {
-                        width: 43px;
-                        margin-right: 51px;
-                    }
-
-                    &.state-title-box {
-                        width: 48px;
-                        margin-right: 18px;
-                    }
-
-                    &.fatalities-title-box {
-                        width: 26px;
-                        margin-right: 26px;
-                    }
-
-                    &.injuries-title-box {
-                        width: 23px;
-                        margin-right: 29px;
-                    }
-
-                    &.hazmat-title-box {
-                        width: 60px;
-                        margin-right: 18px;
-                    }
-
-                    &.description-title-box {
-                        width: 96px;
-                    }
-                }
-            }
-
-            .accident-info-container {
-                width: 100%;
-                height: 26px;
-                padding: 4px 6px;
-                background-color: $ta-light-grey-4;
-                border-radius: 2px;
-                margin-bottom: 2px;
+              &::selection {
                 color: $bw6-2;
-                font-size: 14px;
-                transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
-
-                &:hover {
-                    background: $bw2;
-                    color: $ta-light-grey-3;
-                }
-
-                &:hover .btn-container {
-                    opacity: 1;
-                    visibility: visible !important;
-                }
-
-                p {
-                    &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
-                    }
-
-                    &::selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
-                    }
-                }
-
-                .date-box,
-                .state-box,
-                .fatalities-box,
-                .injuries-box,
-                .hazmat-box,
-                .description-box {
-                    &.date-box {
-                        width: 71px;
-                        margin-right: 18px;
-                    }
-
-                    &.state-box {
-                        width: 41px;
-                        margin-right: 24px;
-                        padding-left: 6px;
-                        text-transform: uppercase;
-                    }
-
-                    &.fatalities-box {
-                        width: 28px;
-                        margin-right: 24px;
-                        padding-left: 6px;
-                    }
-
-                    &.injuries-box {
-                        width: 28px;
-                        margin-right: 24px;
-                        padding-left: 6px;
-                    }
-
-                    &.hazmat-box {
-                        width: 54px;
-                        margin-right: 24px;
-                        padding-left: 6px;
-                        text-transform: capitalize;
-                    }
-
-                    &.description-box {
-                        width: 207px;
-                        margin-right: 19px;
-                        padding-left: 6px;
-                    }
-                }
-
-                .btn-container {
-                    width: 42px;
-                    visibility: hidden !important;
-                    opacity: 0;
-                    transition: opacity 0.2s ease-in-out;
-
-                    .edit-icon,
-                    .delete-icon {
-                        cursor: pointer;
-
-                        &:hover {
-                            svg {
-                                path {
-                                    transition: fill 0.2s ease-in-out;
-                                    fill: $bw6-2;
-                                }
-                            }
-                        }
-
-                        svg {
-                            path {
-                                fill: $bw4;
-                            }
-                        }
-                    }
-
-                    .edit-icon {
-                        margin-right: 6px;
-                    }
-                }
+                background: rgb(108, 108, 108, 0.2);
+              }
             }
-
-            .accident-view-form {
-                margin: 32px auto 0 auto;
-            }
+          }
         }
+
+        .radios-box {
+          width: 86px;
+
+          .ta-input-radiobutons {
+            width: 100%;
+          }
+        }
+
+        .date-group {
+          width: 302px;
+          margin-right: 12px;
+
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+
+        .explain-container {
+          width: 616px;
+          margin-bottom: 32px;
+
+          .group {
+            width: 302px;
+            margin-right: 12px;
+
+            &:last-child {
+              margin-right: 0;
+            }
+          }
+        }
+      }
     }
+
+    .reason-group {
+      width: 616px;
+      margin-bottom: 22px;
+    }
+
+    .consider-question-container {
+      width: 616px;
+      margin-bottom: 12px;
+
+      .title-box {
+        p {
+          color: $bw6-2;
+          font-size: 14px;
+          line-height: 18px;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          .required-star {
+            color: $progress-danger;
+
+            &::-moz-selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+          }
+        }
+      }
+
+      .radios-box {
+        width: 86px;
+
+        .ta-input-radiobutons {
+          width: 100%;
+        }
+      }
+    }
+
+    .no-safety-checkbox-container {
+      margin-bottom: 32px;
+    }
+
+    .accident-view-container {
+      width: 616px;
+      margin-bottom: 32px;
+
+      .title-container {
+        width: 100%;
+        margin-bottom: 6px;
+        padding-left: 6px;
+
+        .date-title-box,
+        .state-title-box,
+        .fatalities-title-box,
+        .injuries-title-box,
+        .hazmat-title-box,
+        .description-title-box {
+          p {
+            color: $bw5;
+            font-size: 12px;
+
+            &::-moz-selection {
+              color: $bw5;
+              background: rgb(145, 145, 145, 0.2);
+            }
+
+            &::selection {
+              color: $bw5;
+              background: rgb(145, 145, 145, 0.2);
+            }
+
+            span {
+              color: $progress-danger;
+
+              &::-moz-selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
+
+              &::selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
+            }
+          }
+
+          &.date-title-box {
+            width: 43px;
+            margin-right: 51px;
+          }
+
+          &.state-title-box {
+            width: 48px;
+            margin-right: 18px;
+          }
+
+          &.fatalities-title-box {
+            width: 26px;
+            margin-right: 26px;
+          }
+
+          &.injuries-title-box {
+            width: 23px;
+            margin-right: 29px;
+          }
+
+          &.hazmat-title-box {
+            width: 60px;
+            margin-right: 18px;
+          }
+
+          &.description-title-box {
+            width: 96px;
+          }
+        }
+      }
+
+      .accident-info-container {
+        width: 100%;
+        height: 26px;
+        padding: 4px 6px;
+        background-color: $ta-light-grey-4;
+        border-radius: 2px;
+        margin-bottom: 2px;
+        color: $bw6-2;
+        font-size: 14px;
+        transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+        &:hover {
+          background: $bw2;
+          color: $ta-light-grey-3;
+        }
+
+        &:hover .btn-container {
+          opacity: 1;
+          visibility: visible !important;
+        }
+
+        p {
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+        }
+
+        .date-box,
+        .state-box,
+        .fatalities-box,
+        .injuries-box,
+        .hazmat-box,
+        .description-box {
+          &.date-box {
+            width: 71px;
+            margin-right: 18px;
+          }
+
+          &.state-box {
+            width: 41px;
+            margin-right: 24px;
+            padding-left: 6px;
+            text-transform: uppercase;
+          }
+
+          &.fatalities-box {
+            width: 28px;
+            margin-right: 24px;
+            padding-left: 6px;
+          }
+
+          &.injuries-box {
+            width: 28px;
+            margin-right: 24px;
+            padding-left: 6px;
+          }
+
+          &.hazmat-box {
+            width: 54px;
+            margin-right: 24px;
+            padding-left: 6px;
+            text-transform: capitalize;
+          }
+
+          &.description-box {
+            width: 207px;
+            margin-right: 19px;
+            padding-left: 6px;
+          }
+        }
+
+        .btn-container {
+          width: 42px;
+          visibility: hidden !important;
+          opacity: 0;
+          transition: opacity 0.2s ease-in-out;
+
+          .edit-icon,
+          .delete-icon {
+            cursor: pointer;
+
+            &:hover {
+              svg {
+                path {
+                  transition: fill 0.2s ease-in-out;
+                  fill: $bw6-2;
+                }
+              }
+            }
+
+            svg {
+              path {
+                fill: $bw4;
+              }
+            }
+          }
+
+          .edit-icon {
+            margin-right: 6px;
+          }
+        }
+      }
+
+      .accident-view-form {
+        margin: 32px auto 0 auto;
+      }
+    }
+  }
 }
 
 .next-btn-container {
-    position: absolute;
-    top: 50%;
-    bottom: 50%;
-    transform: translate(0, -50%);
-    right: 42px;
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  right: 42px;
 }
 
 .back-btn-container {
-    position: absolute;
-    top: 50%;
-    bottom: 50%;
-    transform: translate(0, -50%);
-    left: 42px;
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  left: 42px;
 }

@@ -6,326 +6,325 @@ import { SettingsInsurancePolicyModalComponent } from '../../settings-company/co
 import { SettingsFactoringModalComponent } from '../../settings-company/company-modals/settings-factoring-modal/settings-factoring-modal.component';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import {
-    CompanyModalResponse,
-    CompanyResponse,
-    CompanyService,
-    CreateDivisionCompanyCommand,
-    CreateInsurancePolicyCommand,
-    CreateResponse,
-    InsurancePolicyModalResponse,
-    UpdateCompanyCommand,
-    UpdateDivisionCompanyCommand,
-    UpdateFactoringCompanyCommand,
-    UpdateInsurancePolicyCommand,
+  CompanyModalResponse,
+  CompanyResponse,
+  CompanyService,
+  CreateDivisionCompanyCommand,
+  CreateInsurancePolicyCommand,
+  CreateResponse,
+  InsurancePolicyModalResponse,
+  UpdateCompanyCommand,
+  UpdateDivisionCompanyCommand,
+  UpdateFactoringCompanyCommand,
+  UpdateInsurancePolicyCommand,
 } from 'appcoretruckassist';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { CompanyStore } from './company-settings.store';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsCompanyService implements OnDestroy {
-    private destroy$ = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
-    constructor(
-        private modalService: ModalService,
-        private settingService: CompanyService,
-        private tableService: TruckassistTableService,
-        private companyStore: CompanyStore
-    ) {}
+  constructor(
+    private modalService: ModalService,
+    private settingService: CompanyService,
+    private tableService: TruckassistTableService,
+    private companyStore: CompanyStore
+  ) {}
 
-    /**
-     * Open Modal
-     * @param type - is modal active
-     * @param modalName - modal name
-     * @param action - type of tab-switcher to be active
-     */
-    public onModalAction(data: {
-        modalName: string;
-        type?: string;
-        company?: any;
-    }) {
-        switch (data.modalName) {
-            case 'basic': {
-                this.modalService.openModal(
-                    SettingsBasicModalComponent,
-                    {
-                        size: 'medium',
-                    },
-                    {
-                        type: data.type,
-                        company: data.company,
-                    }
-                );
-                break;
-            }
-            case 'insurance-policy': {
-                this.modalService.openModal(
-                    SettingsInsurancePolicyModalComponent,
-                    {
-                        size: 'small',
-                    },
-                    {
-                        type: data.type,
-                        company: data.company,
-                    }
-                );
-                break;
-            }
-            case 'factoring': {
-                this.modalService.openModal(
-                    SettingsFactoringModalComponent,
-                    {
-                        size: 'small',
-                    },
-                    {
-                        type: data.type,
-                        company: data.company,
-                    }
-                );
-                break;
-            }
-            default:
-                break;
-        }
-    }
-
-    // Main Company
-    public updateCompany(data: UpdateCompanyCommand): Observable<object> {
-        return this.settingService.apiCompanyPut(data).pipe(
-            tap((res: any) => {
-                const companySub = this.getCompany()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (company: CompanyResponse | any) => {
-                            this.companyStore.add(company);
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: company,
-                                id: company.id,
-                            });
-
-                            companySub.unsubscribe();
-                        },
-                    });
-            })
+  /**
+   * Open Modal
+   * @param type - is modal active
+   * @param modalName - modal name
+   * @param action - type of tab-switcher to be active
+   */
+  public onModalAction(data: {
+    modalName: string;
+    type?: string;
+    company?: any;
+  }) {
+    switch (data.modalName) {
+      case 'basic': {
+        this.modalService.openModal(
+          SettingsBasicModalComponent,
+          {
+            size: 'medium',
+          },
+          {
+            type: data.type,
+            company: data.company,
+          }
         );
-    }
-
-    public getCompany(): Observable<CompanyResponse> {
-        return this.settingService.apiCompanyGet();
-    }
-
-    public getCompanyModal(): Observable<CompanyModalResponse> {
-        return this.settingService.apiCompanyModalGet();
-    }
-
-    // Division Company
-    public addCompanyDivision(
-        data: CreateDivisionCompanyCommand
-    ): Observable<CreateResponse> {
-        return this.settingService.apiCompanyDivisionPost(data).pipe(
-            tap((res: any) => {
-                const companySub = this.getCompany()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (company: CompanyResponse | any) => {
-                            const companiesCount = JSON.parse(
-                                localStorage.getItem('companiesCount')
-                            );
-
-                            companiesCount.numberOfCompany++;
-                            localStorage.setItem(
-                                'companiesCount',
-                                JSON.stringify({
-                                    numberOfCompany:
-                                        companiesCount.numberOfCompany,
-                                })
-                            );
-                            this.companyStore.add(company);
-                            this.tableService.sendActionAnimation({
-                                animation: 'add',
-                                data: company,
-                                id: company.id,
-                            });
-
-                            companySub.unsubscribe();
-                        },
-                    });
-            })
+        break;
+      }
+      case 'insurance-policy': {
+        this.modalService.openModal(
+          SettingsInsurancePolicyModalComponent,
+          {
+            size: 'small',
+          },
+          {
+            type: data.type,
+            company: data.company,
+          }
         );
-    }
-
-    public updateCompanyDivision(
-        data: UpdateDivisionCompanyCommand
-    ): Observable<object> {
-        return this.settingService.apiCompanyDivisionPut(data).pipe(
-            tap((res: any) => {
-                const companySub = this.getCompany()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (company: CompanyResponse | any) => {
-                            this.companyStore.add(company);
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: company,
-                                id: company.id,
-                            });
-
-                            companySub.unsubscribe();
-                        },
-                    });
-            })
+        break;
+      }
+      case 'factoring': {
+        this.modalService.openModal(
+          SettingsFactoringModalComponent,
+          {
+            size: 'small',
+          },
+          {
+            type: data.type,
+            company: data.company,
+          }
         );
+        break;
+      }
+      default:
+        break;
     }
+  }
 
-    public getCompanyDivisionById(id: number): Observable<CompanyResponse> {
-        return this.settingService.apiCompanyDivisionIdGet(id);
-    }
+  // Main Company
+  public updateCompany(data: UpdateCompanyCommand): Observable<object> {
+    return this.settingService.apiCompanyPut(data).pipe(
+      tap((res: any) => {
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              this.companyStore.add(company);
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                data: company,
+                id: company.id,
+              });
 
-    public deleteCompanyDivisionById(id: number): Observable<any> {
-        return this.settingService.apiCompanyDivisionIdDelete(id).pipe(
-            tap((res: any) => {
-                const companySub = this.getCompany()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (company: CompanyResponse | any) => {
-                            const companiesCount = JSON.parse(
-                                localStorage.getItem('companiesCount')
-                            );
+              companySub.unsubscribe();
+            },
+          });
+      })
+    );
+  }
 
-                            companiesCount.numberOfCompany--;
-                            this.tableService.sendActionAnimation({
-                                animation: 'delete',
-                                data: company,
-                                id: company.id,
-                            });
+  public getCompany(): Observable<CompanyResponse> {
+    return this.settingService.apiCompanyGet();
+  }
 
-                            companySub.unsubscribe();
-                        },
-                    });
-            })
-        );
-    }
+  public getCompanyModal(): Observable<CompanyModalResponse> {
+    return this.settingService.apiCompanyModalGet();
+  }
 
-    // Insurance Policy
-    public getInsurancePolicyModal(): Observable<InsurancePolicyModalResponse> {
-        return this.settingService.apiCompanyInsurancepolicyModalGet();
-    }
+  // Division Company
+  public addCompanyDivision(
+    data: CreateDivisionCompanyCommand
+  ): Observable<CreateResponse> {
+    return this.settingService.apiCompanyDivisionPost(data).pipe(
+      tap((res: any) => {
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              const companiesCount = JSON.parse(
+                localStorage.getItem('companiesCount')
+              );
 
-    public deleteInsurancePolicyById(id: number): Observable<any> {
-        return this.settingService.apiCompanyInsurancepolicyIdDelete(id).pipe(
-            tap((res: any) => {
-                const companySub = this.getCompany()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (company: CompanyResponse | any) => {
-                            this.tableService.sendActionAnimation({
-                                animation: 'delete',
-                                data: company,
-                                id: company.id,
-                            });
+              companiesCount.numberOfCompany++;
+              localStorage.setItem(
+                'companiesCount',
+                JSON.stringify({
+                  numberOfCompany: companiesCount.numberOfCompany,
+                })
+              );
+              this.companyStore.add(company);
+              this.tableService.sendActionAnimation({
+                animation: 'add',
+                data: company,
+                id: company.id,
+              });
 
-                            companySub.unsubscribe();
-                        },
-                    });
-            })
-        );
-    }
+              companySub.unsubscribe();
+            },
+          });
+      })
+    );
+  }
 
-    public addInsurancePolicy(
-        data: CreateInsurancePolicyCommand
-    ): Observable<CreateResponse> {
-        return this.settingService.apiCompanyInsurancepolicyPost(data).pipe(
-            tap((res: any) => {
-                const companySub = this.getCompany()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (company: CompanyResponse | any) => {
-                            this.companyStore.add(company);
-                            this.tableService.sendActionAnimation({
-                                animation: 'add',
-                                data: company,
-                                id: company.id,
-                            });
+  public updateCompanyDivision(
+    data: UpdateDivisionCompanyCommand
+  ): Observable<object> {
+    return this.settingService.apiCompanyDivisionPut(data).pipe(
+      tap((res: any) => {
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              this.companyStore.add(company);
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                data: company,
+                id: company.id,
+              });
 
-                            companySub.unsubscribe();
-                        },
-                    });
-            })
-        );
-    }
+              companySub.unsubscribe();
+            },
+          });
+      })
+    );
+  }
 
-    public updateInsurancePolicy(
-        data: UpdateInsurancePolicyCommand
-    ): Observable<object> {
-        return this.settingService.apiCompanyInsurancepolicyPut(data).pipe(
-            tap((res: any) => {
-                const companySub = this.getCompany()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (company: CompanyResponse | any) => {
-                            this.companyStore.add(company);
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: company,
-                                id: company.id,
-                            });
+  public getCompanyDivisionById(id: number): Observable<CompanyResponse> {
+    return this.settingService.apiCompanyDivisionIdGet(id);
+  }
 
-                            companySub.unsubscribe();
-                        },
-                    });
-            })
-        );
-    }
+  public deleteCompanyDivisionById(id: number): Observable<any> {
+    return this.settingService.apiCompanyDivisionIdDelete(id).pipe(
+      tap((res: any) => {
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              const companiesCount = JSON.parse(
+                localStorage.getItem('companiesCount')
+              );
 
-    public getInsurancePolicyById(id: number): Observable<object> {
-        return this.settingService.apiCompanyInsurancepolicyIdGet(id);
-    }
+              companiesCount.numberOfCompany--;
+              this.tableService.sendActionAnimation({
+                animation: 'delete',
+                data: company,
+                id: company.id,
+              });
 
-    // Factoring Company
-    public updateFactoringCompany(
-        data: UpdateFactoringCompanyCommand
-    ): Observable<object> {
-        return this.settingService.apiCompanyFactoringcompanyPut(data).pipe(
-            tap((res: any) => {
-                const companySub = this.getCompany()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (company: CompanyResponse | any) => {
-                            this.companyStore.add(company);
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: company,
-                                id: company.id,
-                            });
+              companySub.unsubscribe();
+            },
+          });
+      })
+    );
+  }
 
-                            companySub.unsubscribe();
-                        },
-                    });
-            })
-        );
-    }
+  // Insurance Policy
+  public getInsurancePolicyModal(): Observable<InsurancePolicyModalResponse> {
+    return this.settingService.apiCompanyInsurancepolicyModalGet();
+  }
 
-    public deleteFactoringCompanyById(id: number): Observable<any> {
-        return this.settingService.apiCompanyFactoringcompanyIdDelete(id).pipe(
-            tap((res: any) => {
-                const companySub = this.getCompany()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (company: CompanyResponse | any) => {
-                            this.tableService.sendActionAnimation({
-                                animation: 'delete',
-                                data: company,
-                                id: company.id,
-                            });
+  public deleteInsurancePolicyById(id: number): Observable<any> {
+    return this.settingService.apiCompanyInsurancepolicyIdDelete(id).pipe(
+      tap((res: any) => {
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              this.tableService.sendActionAnimation({
+                animation: 'delete',
+                data: company,
+                id: company.id,
+              });
 
-                            companySub.unsubscribe();
-                        },
-                    });
-            })
-        );
-    }
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
+              companySub.unsubscribe();
+            },
+          });
+      })
+    );
+  }
+
+  public addInsurancePolicy(
+    data: CreateInsurancePolicyCommand
+  ): Observable<CreateResponse> {
+    return this.settingService.apiCompanyInsurancepolicyPost(data).pipe(
+      tap((res: any) => {
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              this.companyStore.add(company);
+              this.tableService.sendActionAnimation({
+                animation: 'add',
+                data: company,
+                id: company.id,
+              });
+
+              companySub.unsubscribe();
+            },
+          });
+      })
+    );
+  }
+
+  public updateInsurancePolicy(
+    data: UpdateInsurancePolicyCommand
+  ): Observable<object> {
+    return this.settingService.apiCompanyInsurancepolicyPut(data).pipe(
+      tap((res: any) => {
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              this.companyStore.add(company);
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                data: company,
+                id: company.id,
+              });
+
+              companySub.unsubscribe();
+            },
+          });
+      })
+    );
+  }
+
+  public getInsurancePolicyById(id: number): Observable<object> {
+    return this.settingService.apiCompanyInsurancepolicyIdGet(id);
+  }
+
+  // Factoring Company
+  public updateFactoringCompany(
+    data: UpdateFactoringCompanyCommand
+  ): Observable<object> {
+    return this.settingService.apiCompanyFactoringcompanyPut(data).pipe(
+      tap((res: any) => {
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              this.companyStore.add(company);
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                data: company,
+                id: company.id,
+              });
+
+              companySub.unsubscribe();
+            },
+          });
+      })
+    );
+  }
+
+  public deleteFactoringCompanyById(id: number): Observable<any> {
+    return this.settingService.apiCompanyFactoringcompanyIdDelete(id).pipe(
+      tap((res: any) => {
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              this.tableService.sendActionAnimation({
+                animation: 'delete',
+                data: company,
+                id: company.id,
+              });
+
+              companySub.unsubscribe();
+            },
+          });
+      })
+    );
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -6,22 +6,23 @@ import { DebugElement } from '@angular/core';
 import { SettingsFactoringModalComponent } from './settings-factoring-modal.component';
 
 describe('SettingsFactoringModalComponent', () => {
-    let component: SettingsFactoringModalComponent;
-    let fixture: ComponentFixture<SettingsFactoringModalComponent>;
+  let component: SettingsFactoringModalComponent;
+  let fixture: ComponentFixture<SettingsFactoringModalComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [SettingsFactoringModalComponent],
-        }).compileComponents();
-    }));
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ SettingsFactoringModalComponent ]
+    })
+    .compileComponents();
+  }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(SettingsFactoringModalComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(SettingsFactoringModalComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

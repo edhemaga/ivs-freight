@@ -1,113 +1,113 @@
 .ta-input-dropdown-label {
-    .arrow {
-        display: none !important;
-    }
+  .arrow {
+    display: none !important;
+  }
 
-    .popover-body {
-        .ta-label-options {
-            position: relative;
-            top: 4px;
-            left: 0px;
-            z-index: 1000;
-            max-height: 198px;
-            width: 100%;
-            background-color: #ffffff;
-            border-radius: 2px;
-            box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
-            padding: 2px;
-            overflow: hidden;
+  .popover-body {
+    .ta-label-options {
+      position: relative;
+      top: 4px;
+      left: 0px;
+      z-index: 1000;
+      max-height: 198px;
+      width: 100%;
+      background-color: #ffffff;
+      border-radius: 2px;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+      padding: 2px;
+      overflow: hidden;
 
-            &.scroll {
-                transition: all 0.3s ease-in-out;
-                overflow-y: scroll !important;
-                scrollbar-width: none !important; /* Firefox */
+      &.scroll {
+        transition: all 0.3s ease-in-out;
+        overflow-y: scroll !important;
+        scrollbar-width: none !important; /* Firefox */
 
-                &::-webkit-scrollbar {
-                    width: 3px;
-                }
-                &::-webkit-scrollbar-thumb {
-                    background-color: transparent;
-                    border: 6px solid #e5e5e5;
-                    border-radius: 1px;
-                }
-                &::-webkit-scrollbar-track {
-                    padding: 0;
-                    position: relative;
-                    right: 0;
-                    top: 0;
-                    background: transparent;
-                }
-            }
-
-            .ta-label-option {
-                padding: 3px 4px;
-                height: 26px;
-                font-size: 14px;
-                font-weight: 400;
-                border-radius: 2px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                background-color: #ffffff;
-                color: #6c6c6c;
-                display: flex;
-                align-items: center;
-
-                p {
-                    margin: 0;
-                    padding: 0;
-                }
-
-                &:hover {
-                    background-color: #f3f3f3;
-                    color: #3c3c3c;
-                    border-radius: 2px;
-                    cursor: pointer;
-
-                    .ta-label-vertical-divider {
-                        background-color: #b7b7b7;
-                    }
-                }
-
-                .ta-label-option-svg {
-                    width: 18px;
-                    height: 18px;
-                    line-height: 18px;
-
-                    svg {
-                        width: 100%;
-                        height: 100%;
-                    }
-                }
-
-                .ta-label-vertical-divider {
-                    width: 1px;
-                    height: 14px;
-                    background-color: #f3f3f3;
-                    content: '';
-                    margin: 0 6px;
-                }
-
-                .ta-label-option-name {
-                    margin-right: 28px;
-                    font-size: 14px;
-                    font-weight: 400;
-                    line-height: 18px;
-                }
-
-                .ta-label-option-count {
-                    width: 22px;
-                    height: 16px;
-                    border-radius: 20px;
-                    background-color: #b7b7b7;
-                    color: #ffffff;
-                    text-align: center;
-                    font-size: 11px;
-                    font-weight: 500;
-                    padding: 0 4.5px;
-                    margin-top: 1px;
-                }
-            }
+        &::-webkit-scrollbar {
+          width: 3px;
         }
+        &::-webkit-scrollbar-thumb {
+          background-color: transparent;
+          border: 6px solid #e5e5e5;
+          border-radius: 1px;
+        }
+        &::-webkit-scrollbar-track {
+          padding: 0;
+          position: relative;
+          right: 0;
+          top: 0;
+          background: transparent;
+        }
+      }
+
+      .ta-label-option {
+        padding: 3px 4px;
+        height: 26px;
+        font-size: 14px;
+        font-weight: 400;
+        border-radius: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background-color: #ffffff;
+        color: #6c6c6c;
+        display: flex;
+        align-items: center;
+
+        p {
+          margin: 0;
+          padding: 0;
+        }
+
+        &:hover {
+          background-color: #f3f3f3;
+          color: #3c3c3c;
+          border-radius: 2px;
+          cursor: pointer;
+
+          .ta-label-vertical-divider {
+            background-color: #b7b7b7;
+          }
+        }
+
+        .ta-label-option-svg {
+          width: 18px;
+          height: 18px;
+          line-height: 18px;
+
+          svg {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .ta-label-vertical-divider {
+          width: 1px;
+          height: 14px;
+          background-color: #f3f3f3;
+          content: "";
+          margin: 0 6px;
+        }
+
+        .ta-label-option-name {
+          margin-right: 28px;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 18px;
+        }
+
+        .ta-label-option-count {
+          width: 22px;
+          height: 16px;
+          border-radius: 20px;
+          background-color: #b7b7b7;
+          color: #ffffff;
+          text-align: center;
+          font-size: 11px;
+          font-weight: 500;
+          padding: 0 4.5px;
+          margin-top: 1px;
+        }
+      }
     }
+  }
 }

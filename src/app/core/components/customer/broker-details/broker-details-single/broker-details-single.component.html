@@ -1,329 +1,264 @@
 <div class="repair-component">
-    <div *ngFor="let broker of brokerData; trackBy: identity">
-        <div [ngSwitch]="broker?.template">
-            <div *ngSwitchCase="'general'">
-                <app-broker-card-view [broker]="broker.data">
-                </app-broker-card-view>
+  <div *ngFor="let broker of brokerData; trackBy: identity">
+    <div [ngSwitch]="broker?.template">
+      <div *ngSwitchCase="'general'">
+        <app-broker-card-view [broker]="broker.data"> </app-broker-card-view>
+      </div>
+      <div *ngSwitchCase="'load'" class="load">
+        <div
+          class="broker-details-table-container"
+          *ngIf="broker.data.loads.length"
+        >
+          <div class="t-headear-broker">
+            <div class="t-head-items">
+              <span class="name">LOAD</span>
+              <span class="name-bottom">REF #</span>
             </div>
-            <div *ngSwitchCase="'load'" class="load">
-                <div
-                    class="broker-details-table-container"
-                    *ngIf="broker.data.loads.length"
-                >
-                    <div class="t-headear-broker">
-                        <div class="t-head-items">
-                            <span class="name">LOAD</span>
-                            <span class="name-bottom">REF #</span>
-                        </div>
-                        <div class="t-head-items">
-                            <span class="name">TRUCK</span>
-                            <span class="name-bottom">TRAILER</span>
-                        </div>
-                        <div class="t-head-items">
-                            <span class="name">DISPATCHER</span>
-                            <span class="name-bottom">DRIVER</span>
-                        </div>
-                        <div class="t-head-items single-status">
-                            <span class="name">STATUS</span>
-                        </div>
-                        <div class="t-head-items">
-                            <span class="name">PICKUP</span>
-                            <span class="name-bottom">DELIVERY</span>
-                        </div>
-                        <div class="t-head-items">
-                            <span class="name">REVENUE</span>
-                            <span class="name-bottom miles-broker-name"
-                                >MILES</span
-                            >
-                        </div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="t-body-wrapper">
-                        <div
-                            class="t-body-broker"
-                            *ngFor="
-                                let loads of broker?.data.loads;
-                                trackBy: identity
-                            "
-                        >
-                            <div class="t-body-broker-items">
-                                <div class="t-body-items">
-                                    <span class="load-name space-text">{{
-                                        loads.id
-                                    }}</span>
-                                    <span class="default-name">{{
-                                        loads.referenceNumber
-                                    }}</span>
-                                </div>
-                                <div class="t-body-items">
-                                    <span class="default-name space-text">{{
-                                        loads?.dispatch.truck?.truckNumber
-                                    }}</span>
-                                    <span class="default-name">{{
-                                        loads?.dispatch.trailer?.trailerNumber
-                                    }}</span>
-                                </div>
-                                <div class="t-body-items">
-                                    <span class="default-name space-text">{{
-                                        loads?.dispatcher?.fullName
-                                    }}</span>
-                                    <span class="default-name"
-                                        >{{
-                                            loads?.dispatch.driver?.firstName
-                                                .length > 6
-                                                ? loads?.dispatch.driver
-                                                      ?.firstName[0] + '.'
-                                                : loads?.dispatch.driver
-                                                      ?.firstName
-                                        }}
-                                        {{
-                                            loads?.dispatch.driver?.lastName
-                                        }}</span
-                                    >
-                                </div>
-                                <div class="status-wrapper-broker">
-                                    <span class="assigned">{{
-                                        loads.status.name
-                                    }}</span>
-                                    <span class="time"
-                                        ><span
-                                            class="hours"
-                                            *ngIf="
-                                                loads?.lastStatusPassed?.days >
-                                                0
-                                            "
-                                            >{{
-                                                loads?.lastStatusPassed?.days
-                                            }}
-                                            d</span
-                                        >
-                                        <span
-                                            class="hours"
-                                            *ngIf="
-                                                loads?.lastStatusPassed?.hours >
-                                                0
-                                            "
-                                        >
-                                            {{
-                                                loads?.lastStatusPassed?.hours
-                                            }}
-                                            h
-                                        </span>
-                                        <span
-                                            class="hours"
-                                            *ngIf="
-                                                loads?.lastStatusPassed?.days <=
-                                                0
-                                            "
-                                            >{{
-                                                loads?.lastStatusPassed?.minutes
-                                            }}
-                                            min</span
-                                        >
-                                        ago</span
-                                    >
-                                </div>
-                                <div class="pickup-wrapper">
-                                    <div class="pickup-item">
-                                        <div class="counter-green">
-                                            {{ stopsDataPickup.stopOrder }}
-                                        </div>
-                                        <div class="pickup-text">
-                                            <span class="name"
-                                                >{{
-                                                    stopsDataPickup.addressCity
-                                                }},
-                                                {{
-                                                    stopsDataPickup.addressShortState
-                                                }}</span
-                                            >
-                                            <span class="date">{{
-                                                stopsDataPickup.date
-                                                    | formatDateP
-                                            }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="pickup-item">
-                                        <div class="counter-red">
-                                            {{ stopsDataDelivery.stopOrder }}
-                                        </div>
-                                        <div class="pickup-text">
-                                            <span class="name"
-                                                >{{
-                                                    stopsDataDelivery.addressCity
-                                                }},
-                                                {{
-                                                    stopsDataDelivery.addressShortState
-                                                }}</span
-                                            >
-                                            <span class="date">{{
-                                                stopsDataDelivery.date
-                                                    | formatDateP
-                                            }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="t-body-items">
-                                    <span
-                                        class="load-name space-text load-total-rate"
-                                        >{{
-                                            loads.totalRate | formatCurrency
-                                        }}</span
-                                    >
-                                    <span class="default-name load-total-rate"
-                                        >{{ loads.totalMiles }} mi</span
-                                    >
-                                </div>
-                                <div class="dots-vertical">
-                                    <app-details-page-dropdown
-                                        [options]="dotsData.actions"
-                                        [customClassDropDown]="
-                                            'drop-down-details-single'
-                                        "
-                                    >
-                                    </app-details-page-dropdown>
-                                </div>
-                            </div>
-                            <div class="divider"></div>
-                        </div>
-                    </div>
+            <div class="t-head-items">
+              <span class="name">TRUCK</span>
+              <span class="name-bottom">TRAILER</span>
+            </div>
+            <div class="t-head-items">
+              <span class="name">DISPATCHER</span>
+              <span class="name-bottom">DRIVER</span>
+            </div>
+            <div class="t-head-items single-status">
+              <span class="name">STATUS</span>
+            </div>
+            <div class="t-head-items">
+              <span class="name">PICKUP</span>
+              <span class="name-bottom">DELIVERY</span>
+            </div>
+            <div class="t-head-items">
+              <span class="name">REVENUE</span>
+              <span class="name-bottom miles-broker-name">MILES</span>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="t-body-wrapper">
+            <div
+              class="t-body-broker"
+              *ngFor="let loads of broker?.data.loads; trackBy: identity"
+            >
+              <div class="t-body-broker-items">
+                <div class="t-body-items">
+                  <span class="load-name space-text">{{ loads.id }}</span>
+                  <span class="default-name">{{ loads.referenceNumber }}</span>
                 </div>
-            </div>
-            <div *ngSwitchCase="'contact'" class="contact">
-                <div *ngIf="brokerContacts.length" class="contact-wrapper">
-                    <app-ta-custom-card
-                        *ngFor="
-                            let brokerContact of brokerContacts;
-                            let i = index;
-                            trackBy: identity
-                        "
-                        [bodyTemplate]="'card'"
-                        [hasDivider]="i > 0 ? true : false"
-                        [cardName]="brokerContact.department.name"
-                        [isCardOpen]="true"
-                        class="shipper-contact-container"
+                <div class="t-body-items">
+                  <span class="default-name space-text">{{
+                    loads?.dispatch.truck?.truckNumber
+                  }}</span>
+                  <span class="default-name">{{
+                    loads?.dispatch.trailer?.trailerNumber
+                  }}</span>
+                </div>
+                <div class="t-body-items">
+                  <span class="default-name space-text">{{
+                    loads?.dispatcher?.fullName
+                  }}</span>
+                  <span class="default-name"
+                    >{{
+                      loads?.dispatch.driver?.firstName.length > 6
+                        ? loads?.dispatch.driver?.firstName[0] + "."
+                        : loads?.dispatch.driver?.firstName
+                    }}
+                    {{ loads?.dispatch.driver?.lastName }}</span
+                  >
+                </div>
+                <div class="status-wrapper-broker">
+                  <span class="assigned">{{ loads.status.name }}</span>
+                  <span class="time"
+                    ><span
+                      class="hours"
+                      *ngIf="loads?.lastStatusPassed?.days > 0"
+                      >{{ loads?.lastStatusPassed?.days }} d</span
                     >
-                        <div
-                            *ngIf="brokerContact"
-                            class="parking-template-data"
-                        >
-                            <div
-                                class="parking-template-item parking-template-email parking-name"
-                            >
-                                <span class="parking-template-name">{{
-                                    brokerContact.contactName
-                                }}</span>
-                                <div class="svg-wrapper">
-                                    <span
-                                        ngbTooltip
-                                        mainTooltip="Edit"
-                                        position="top"
-                                        tooltipBackground="#6C6C6C"
-                                    >
-                                        <svg-icon
-                                            src="ic_pen.svg"
-                                            class="svg-icon-edit"
-                                        ></svg-icon>
-                                    </span>
-                                    <span
-                                        ngbTooltip
-                                        mainTooltip="Delete"
-                                        position="top"
-                                        tooltipBackground="#6C6C6C"
-                                    >
-                                        <svg-icon
-                                            src="assets/svg/common/ic_trash.svg"
-                                            class="svg-icon-trash"
-                                        ></svg-icon>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="parking-template-item">
-                                <svg-icon
-                                    src="assets/svg/common/ic_phone.svg"
-                                ></svg-icon>
-                                <span class="parking-template-text">{{
-                                    brokerContact.phone | formatPhoneP
-                                }}</span>
-                            </div>
-                            <div class="parking-template-item">
-                                <div
-                                    *ngIf="brokerContact.extensionPhone"
-                                    class="parking-template-item"
-                                >
-                                    <svg-icon
-                                        src="assets/svg/common/ic_phone-extension.svg"
-                                    ></svg-icon>
-                                    <span class="parking-template-text">{{
-                                        brokerContact.extensionPhone
-                                    }}</span>
-                                </div>
-                            </div>
-                            <div
-                                class="parking-template-item parking-template-email"
-                            >
-                                <svg-icon
-                                    src="assets/svg/common/ic_email.svg"
-                                ></svg-icon>
-                                <span class="parking-template-text">{{
-                                    brokerContact.email
-                                }}</span>
-                            </div>
-                        </div>
-                        <!-- <div class="divider"></div> -->
-                    </app-ta-custom-card>
-                </div>
-            </div>
-
-            <div *ngSwitchCase="'review'">
-                <div class="likes-count-container">
-                    <div class="likes-item">
-                        <div class="ic-counter">
-                            <svg-icon
-                                class="like"
-                                src="assets/svg/common/ic_dislike.svg"
-                            ></svg-icon>
-                            <app-ta-counter
-                                [countBackgroud]="'#F3F3F3'"
-                                [countColor]="'#919191'"
-                                [countHeight]="'24px'"
-                                [countWidth]="'24px'"
-                                [count]="brokerLikes"
-                            >
-                            </app-ta-counter>
-                        </div>
-                        <div class="border-vertical"></div>
-                        <div class="ic-counter">
-                            <app-ta-counter
-                                [countBackgroud]="'#F3F3F3'"
-                                [countColor]="'#919191'"
-                                [countHeight]="'24px'"
-                                [countWidth]="'24px'"
-                                [count]="brokerDislike"
-                            >
-                            </app-ta-counter>
-                            <svg-icon
-                                class="dislike"
-                                src="assets/svg/common/ic_dislike.svg"
-                            ></svg-icon>
-                        </div>
-                    </div>
-                </div>
-                <div class="review-container">
-                    <div
-                        *ngIf="!reviewsRepair.length"
-                        class="no-reviews-details"
+                    <span
+                      class="hours"
+                      *ngIf="loads?.lastStatusPassed?.hours > 0"
                     >
-                        No review
-                    </div>
-                    <app-ta-user-review
-                        *ngIf="reviewsRepair.length"
-                        [reviewData]="reviewsRepair"
-                        [isNewReview]="reviewsRepair[0].isNewReview"
-                        (changeReviewsEvent)="changeReviewsEvent($event)"
-                    ></app-ta-user-review>
+                      {{ loads?.lastStatusPassed?.hours }} h
+                    </span>
+                    <span
+                      class="hours"
+                      *ngIf="loads?.lastStatusPassed?.days <= 0"
+                      >{{ loads?.lastStatusPassed?.minutes }} min</span
+                    >
+                    ago</span
+                  >
                 </div>
+                <div class="pickup-wrapper">
+                  <div class="pickup-item">
+                    <div class="counter-green">
+                      {{ stopsDataPickup.stopOrder }}
+                    </div>
+                    <div class="pickup-text">
+                      <span class="name"
+                        >{{ stopsDataPickup.addressCity }},
+                        {{ stopsDataPickup.addressShortState }}</span
+                      >
+                      <span class="date">{{
+                        stopsDataPickup.date | formatDateP
+                      }}</span>
+                    </div>
+                  </div>
+                  <div class="pickup-item">
+                    <div class="counter-red">
+                      {{ stopsDataDelivery.stopOrder }}
+                    </div>
+                    <div class="pickup-text">
+                      <span class="name"
+                        >{{ stopsDataDelivery.addressCity }},
+                        {{ stopsDataDelivery.addressShortState }}</span
+                      >
+                      <span class="date">{{
+                        stopsDataDelivery.date | formatDateP
+                      }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="t-body-items">
+                  <span class="load-name space-text load-total-rate">{{
+                    loads.totalRate | formatCurrency
+                  }}</span>
+                  <span class="default-name load-total-rate"
+                    >{{ loads.totalMiles }} mi</span
+                  >
+                </div>
+                <div class="dots-vertical">
+                  <app-details-page-dropdown
+                    [options]="dotsData.actions"
+                    [customClassDropDown]="'drop-down-details-single'"
+                  >
+                  </app-details-page-dropdown>
+                </div>
+              </div>
+              <div class="divider"></div>
             </div>
+          </div>
         </div>
+      </div>
+      <div *ngSwitchCase="'contact'" class="contact">
+        <div *ngIf="brokerContacts.length" class="contact-wrapper">
+          <app-ta-custom-card
+            *ngFor="
+              let brokerContact of brokerContacts;
+              let i = index;
+              trackBy: identity
+            "
+            [bodyTemplate]="'card'"
+            [hasDivider]="i > 0 ? true : false"
+            [cardName]="brokerContact.department.name"
+            [isCardOpen]="true"
+            class="shipper-contact-container"
+          >
+            <div *ngIf="brokerContact" class="parking-template-data">
+              <div
+                class="parking-template-item parking-template-email parking-name"
+              >
+                <span class="parking-template-name">{{
+                  brokerContact.contactName
+                }}</span>
+                <div class="svg-wrapper">
+                  <span
+                    ngbTooltip
+                    mainTooltip="Edit"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                  >
+                    <svg-icon src="ic_pen.svg" class="svg-icon-edit"></svg-icon>
+                  </span>
+                  <span
+                    ngbTooltip
+                    mainTooltip="Delete"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                  >
+                    <svg-icon
+                      src="assets/svg/common/ic_trash.svg"
+                      class="svg-icon-trash"
+                    ></svg-icon>
+                  </span>
+                </div>
+              </div>
+              <div class="parking-template-item">
+                <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+                <span class="parking-template-text">{{
+                  brokerContact.phone | formatPhoneP
+                }}</span>
+              </div>
+              <div class="parking-template-item">
+                <div
+                  *ngIf="brokerContact.extensionPhone"
+                  class="parking-template-item"
+                >
+                  <svg-icon
+                    src="assets/svg/common/ic_phone-extension.svg"
+                  ></svg-icon>
+                  <span class="parking-template-text">{{
+                    brokerContact.extensionPhone
+                  }}</span>
+                </div>
+              </div>
+              <div class="parking-template-item parking-template-email">
+                <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+                <span class="parking-template-text">{{
+                  brokerContact.email
+                }}</span>
+              </div>
+            </div>
+            <!-- <div class="divider"></div> -->
+          </app-ta-custom-card>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="'review'">
+        <div class="likes-count-container">
+          <div class="likes-item">
+            <div class="ic-counter">
+              <svg-icon
+                class="like"
+                src="assets/svg/common/ic_dislike.svg"
+              ></svg-icon>
+              <app-ta-counter
+                [countBackgroud]="'#F3F3F3'"
+                [countColor]="'#919191'"
+                [countHeight]="'24px'"
+                [countWidth]="'24px'"
+                [count]="brokerLikes"
+              >
+              </app-ta-counter>
+            </div>
+            <div class="border-vertical"></div>
+            <div class="ic-counter">
+              <app-ta-counter
+                [countBackgroud]="'#F3F3F3'"
+                [countColor]="'#919191'"
+                [countHeight]="'24px'"
+                [countWidth]="'24px'"
+                [count]="brokerDislike"
+              >
+              </app-ta-counter>
+              <svg-icon
+                class="dislike"
+                src="assets/svg/common/ic_dislike.svg"
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+        <div class="review-container">
+          <div *ngIf="!reviewsRepair.length" class="no-reviews-details">
+            No review
+          </div>
+          <app-ta-user-review
+            *ngIf="reviewsRepair.length"
+            [reviewData]="reviewsRepair"
+            [isNewReview]="reviewsRepair[0].isNewReview"
+            (changeReviewsEvent)="changeReviewsEvent($event)"
+          ></app-ta-user-review>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

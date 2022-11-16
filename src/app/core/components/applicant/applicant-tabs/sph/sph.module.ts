@@ -9,7 +9,7 @@ import { SphRoutingModule } from './sph-routing.module';
 import { ApplicantModule } from './../../applicant.module';
 
 @NgModule({
-    declarations: [SphComponent, SphModalComponent],
-    imports: [CommonModule, SharedModule, SphRoutingModule, ApplicantModule],
+  declarations: [SphComponent, SphModalComponent],
+  imports: [CommonModule, SharedModule, SphRoutingModule, ApplicantModule],
 })
 export class SphModule {}

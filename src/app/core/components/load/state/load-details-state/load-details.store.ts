@@ -7,7 +7,7 @@ export interface LoadItemState extends EntityState<LoadResponse, number> {}
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'loadItem' })
 export class LoadItemStore extends EntityStore<LoadItemState> {
-    constructor() {
-        super();
-    }
+  constructor() {
+    super();
+  }
 }

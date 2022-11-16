@@ -1,308 +1,308 @@
-@import '../../app/core/components/shared/ta-input/scss/ta-input.clear.scss';
-@import '../../app/core/components/shared/ta-input/scss/ta-input.colors.scss';
+@import "../../app/core/components/shared/ta-input/scss/ta-input.clear.scss";
+@import "../../app/core/components/shared/ta-input/scss/ta-input.colors.scss";
 .multiselect-dropdown {
-    display: flex;
-    flex-direction: column;
-    justify-items: center;
-    border-radius: 2px;
-    background-color: $input-background-color-normal;
-    position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  border-radius: 2px;
+  background-color: $input-background-color-normal;
+  position: relative;
 
-    .multiselect-label {
-        position: absolute;
-        top: -17px;
-        left: 6px;
-        font-size: 11px;
-        font-weight: 600;
-        transition: all 0.3s ease-in-out;
-        color: $input-text-color-normal;
-        -webkit-user-select: auto !important;
-        -moz-user-select: auto !important;
-        -ms-user-select: auto !important;
-        user-select: auto !important;
-        pointer-events: all !important;
+  .multiselect-label {
+    position: absolute;
+    top: -17px;
+    left: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+    color: $input-text-color-normal;
+    -webkit-user-select: auto !important;
+    -moz-user-select: auto !important;
+    -ms-user-select: auto !important;
+    user-select: auto !important;
+    pointer-events: all !important;
 
-        &::-moz-selection {
-            background-color: rgba(47, 47, 47, 0.2);
-            color: $input-text-color-normal;
-        }
-
-        &::selection {
-            background-color: rgba(47, 47, 47, 0.2);
-            color: $input-text-color-normal;
-        }
-
-        .required-label-multiselect {
-            color: $input-label-required-star;
-        }
+    &::-moz-selection {
+      background-color: rgba(47, 47, 47, 0.2);
+      color: $input-text-color-normal;
     }
 
-    .multiselect-arrow {
-        position: absolute;
-        top: 2px;
-        right: 4px;
-        svg {
-            transform: rotate(0deg);
-            transition: all 0.3s ease-in-out;
-        }
-
-        &:hover {
-            transition: all 0.3s ease-in-out;
-            svg {
-                path {
-                    fill: $input-text-color-normal !important;
-                }
-            }
-        }
-
-        &.valid {
-            svg {
-                path {
-                    fill: $input-blue-color-3;
-                }
-            }
-        }
-
-        &.disabled {
-            svg {
-                path {
-                    fill: #b7b7b7 !important;
-                }
-            }
-        }
+    &::selection {
+      background-color: rgba(47, 47, 47, 0.2);
+      color: $input-text-color-normal;
     }
 
-    .multiselect-items {
-        display: grid;
-        width: 95%;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: 22px;
-        gap: 4px;
-        padding: 4px;
+    .required-label-multiselect {
+      color: $input-label-required-star;
+    }
+  }
 
-        &.multiselect-3-columns {
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .multiselect-item {
-            width: 100%;
-            height: 22px;
-            border-radius: 1px;
-            background-color: #f9f9f9;
-            color: $input-text-color-normal;
-            padding: 2px 4px;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 18px;
-            position: relative;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-
-            &-clear {
-                position: absolute;
-                right: 4px;
-                top: 1px;
-                border-radius: 1px;
-                display: none;
-                transition: all 0.3s ease-in-out;
-                z-index: 10;
-                cursor: pointer;
-
-                svg {
-                    width: 14px !important;
-                    height: 14px !important;
-                    overflow: visible;
-                    path {
-                        fill: #f9f9f9;
-                    }
-                    rect {
-                        transition: transform 0.3s;
-                        transform: scale(1);
-                        transform-origin: center;
-                        fill: $input-gray-color-4;
-                    }
-                }
-
-                &:hover {
-                    svg {
-                        overflow: visible;
-                        rect {
-                            transform: scale(1.2);
-                            transform-origin: center;
-                            transition: transform 0.3s;
-                            fill: $input-text-color-normal !important;
-                        }
-                    }
-                }
-            }
-
-            &:hover {
-                .multiselect-item-clear {
-                    display: inline-block;
-                }
-            }
-        }
+  .multiselect-arrow {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    svg {
+      transform: rotate(0deg);
+      transition: all 0.3s ease-in-out;
     }
 
-    // multiselect dropdown hover
     &:hover {
-        background-color: $input-white-color-2;
-        .multiselect-arrow {
-            cursor: pointer;
-            &.valid {
-                svg {
-                    path {
-                        fill: $input-blue-color-2;
-                    }
-                }
-            }
+      transition: all 0.3s ease-in-out;
+      svg {
+        path {
+          fill: $input-text-color-normal !important;
         }
-
-        // Ovveride input clear class
-        .input-clear-multiselect {
-            top: auto !important;
-            bottom: 2px !important;
-            display: inline-block !important;
-
-            &:hover {
-                .input-clear-x {
-                    svg {
-                        path {
-                            fill: $input-white-color-2 !important;
-                        }
-                    }
-                    &:hover {
-                        svg {
-                            rect {
-                                fill: $input-text-color-normal !important;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        .multiselect-items {
-            .multiselect-item {
-                color: $input-black-color-1;
-            }
-        }
-        // Ovveride input class
-        .input-custom-group .input-control {
-            background-color: $input-white-color-2 !important;
-        }
+      }
     }
 
-    // Focused Multiple Dropdowns
-    &.focus {
-        background-color: $input-blue-color-1;
-        transition: all 0.3s ease-in-out;
-        .multiselect-arrow {
-            svg {
-                transform: rotate(180deg);
-                transition: all 0.3s ease-in-out;
-                path {
-                    fill: $input-white-color-3 !important;
-                }
-            }
+    &.valid {
+      svg {
+        path {
+          fill: $input-blue-color-3;
         }
-
-        // Ovveride input clear class
-        .input-clear-multiselect {
-            top: auto !important;
-            bottom: 2px !important;
-            display: inline-block !important;
-
-            &:hover {
-                .input-clear-x {
-                    svg {
-                        path {
-                            fill: $input-blue-color-1 !important;
-                        }
-                    }
-                    &:hover {
-                        svg {
-                            rect {
-                                fill: $input-blue-color-4 !important;
-                            }
-                        }
-                    }
-
-                    &:hover {
-                        svg {
-                            rect {
-                                fill: $input-white-color-3 !important;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        .multiselect-items {
-            .multiselect-item {
-                background-color: $input-blue-color-2;
-                color: $input-white-color-1;
-
-                &-clear {
-                    svg {
-                        path {
-                            fill: $input-blue-color-1;
-                        }
-                        rect {
-                            fill: $input-blue-color-4;
-                        }
-                    }
-
-                    &:hover {
-                        svg {
-                            rect {
-                                fill: $input-white-color-3 !important;
-                            }
-                        }
-                    }
-                }
-
-                &:hover {
-                    background-color: #3551b7;
-                    transition: all 0.3s ease-in-out;
-
-                    .multiselect-item-clear {
-                        display: inline-block;
-                    }
-                }
-            }
-        }
-
-        &:hover {
-            background-color: $input-blue-color-1 !important;
-            .multiselect-items {
-                .multiselect-item {
-                    color: $input-white-color-1 !important;
-                }
-            }
-
-            // Ovveride input class
-            .input-custom-group .input-control {
-                transition: all 0.3s ease-in-out;
-                background-color: $input-blue-color-1 !important;
-            }
-        }
+      }
     }
 
     &.disabled {
-        background-color: $input-background-color-disabled !important;
-        color: $input-text-color-filled-disabled !important;
-
-        .multiselect-items {
-            .multiselect-item {
-                background-color: #ffffff !important;
-            }
+      svg {
+        path {
+          fill: #b7b7b7 !important;
         }
+      }
     }
+  }
+
+  .multiselect-items {
+    display: grid;
+    width: 95%;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 22px;
+    gap: 4px;
+    padding: 4px;
+
+    &.multiselect-3-columns {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .multiselect-item {
+      width: 100%;
+      height: 22px;
+      border-radius: 1px;
+      background-color: #f9f9f9;
+      color: $input-text-color-normal;
+      padding: 2px 4px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 18px;
+      position: relative;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+      &-clear {
+        position: absolute;
+        right: 4px;
+        top: 1px;
+        border-radius: 1px;
+        display: none;
+        transition: all 0.3s ease-in-out;
+        z-index: 10;
+        cursor: pointer;
+
+        svg {
+          width: 14px !important;
+          height: 14px !important;
+          overflow: visible;
+          path {
+            fill: #f9f9f9;
+          }
+          rect {
+            transition: transform 0.3s;
+            transform: scale(1);
+            transform-origin: center;
+            fill: $input-gray-color-4;
+          }
+        }
+
+        &:hover {
+          svg {
+            overflow: visible;
+            rect {
+              transform: scale(1.2);
+              transform-origin: center;
+              transition: transform 0.3s;
+              fill: $input-text-color-normal !important;
+            }
+          }
+        }
+      }
+
+      &:hover {
+        .multiselect-item-clear {
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  // multiselect dropdown hover
+  &:hover {
+    background-color: $input-white-color-2;
+    .multiselect-arrow {
+      cursor: pointer;
+      &.valid {
+        svg {
+          path {
+            fill: $input-blue-color-2;
+          }
+        }
+      }
+    }
+
+    // Ovveride input clear class
+    .input-clear-multiselect {
+      top: auto !important;
+      bottom: 2px !important;
+      display: inline-block !important;
+
+      &:hover {
+        .input-clear-x {
+          svg {
+            path {
+              fill: $input-white-color-2 !important;
+            }
+          }
+          &:hover {
+            svg {
+              rect {
+                fill: $input-text-color-normal !important;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .multiselect-items {
+      .multiselect-item {
+        color: $input-black-color-1;
+      }
+    }
+    // Ovveride input class
+    .input-custom-group .input-control {
+      background-color: $input-white-color-2 !important;
+    }
+  }
+
+  // Focused Multiple Dropdowns
+  &.focus {
+    background-color: $input-blue-color-1;
+    transition: all 0.3s ease-in-out;
+    .multiselect-arrow {
+      svg {
+        transform: rotate(180deg);
+        transition: all 0.3s ease-in-out;
+        path {
+          fill: $input-white-color-3 !important;
+        }
+      }
+    }
+
+    // Ovveride input clear class
+    .input-clear-multiselect {
+      top: auto !important;
+      bottom: 2px !important;
+      display: inline-block !important;
+
+      &:hover {
+        .input-clear-x {
+          svg {
+            path {
+              fill: $input-blue-color-1 !important;
+            }
+          }
+          &:hover {
+            svg {
+              rect {
+                fill: $input-blue-color-4 !important;
+              }
+            }
+          }
+
+          &:hover {
+            svg {
+              rect {
+                fill: $input-white-color-3 !important;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .multiselect-items {
+      .multiselect-item {
+        background-color: $input-blue-color-2;
+        color: $input-white-color-1;
+
+        &-clear {
+          svg {
+            path {
+              fill: $input-blue-color-1;
+            }
+            rect {
+              fill: $input-blue-color-4;
+            }
+          }
+
+          &:hover {
+            svg {
+              rect {
+                fill: $input-white-color-3 !important;
+              }
+            }
+          }
+        }
+
+        &:hover {
+          background-color: #3551b7;
+          transition: all 0.3s ease-in-out;
+
+          .multiselect-item-clear {
+            display: inline-block;
+          }
+        }
+      }
+    }
+
+    &:hover {
+      background-color: $input-blue-color-1 !important;
+      .multiselect-items {
+        .multiselect-item {
+          color: $input-white-color-1 !important;
+        }
+      }
+
+      // Ovveride input class
+      .input-custom-group .input-control {
+        transition: all 0.3s ease-in-out;
+        background-color: $input-blue-color-1 !important;
+      }
+    }
+  }
+
+  &.disabled {
+    background-color: $input-background-color-disabled !important;
+    color: $input-text-color-filled-disabled !important;
+
+    .multiselect-items {
+      .multiselect-item {
+        background-color: #ffffff !important;
+      }
+    }
+  }
 }

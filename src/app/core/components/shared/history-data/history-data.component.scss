@@ -1,254 +1,254 @@
 @import '../../../../../theme/variables.scss';
 
 .truckassist-history-data-panel {
-    user-select: none;
+  user-select: none;
 
-    .truckassist-data-form {
-        .truckassist-data-form-item {
-            min-height: 22px;
-            border: 0 !important;
+  .truckassist-data-form {
+    .truckassist-data-form-item {
+      min-height: 22px;
+      border: 0 !important;
 
-            padding: 0 !important;
-            margin-bottom: 4px;
+      padding: 0 !important;
+      margin-bottom: 4px;
 
-            .row-container {
-                margin-bottom: 2px !important;
+      .row-container {
+        margin-bottom: 2px !important;
+      }
+
+      .header-panel {
+        margin-bottom: 6px !important;
+      }
+
+      .header-label {
+        margin-bottom: 6px !important;
+      }
+
+      .row-item {
+        background-color: #f7f7f7;
+        padding: 0 6px;
+        height: 24px;
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 136px;
+
+        &.hover-disable {
+          &:hover {
+            background-color: #f7f7f7;
+
+            .date-span {
+              color: #919191 !important;
             }
-
-            .header-panel {
-                margin-bottom: 6px !important;
-            }
-
-            .header-label {
-                margin-bottom: 6px !important;
-            }
-
-            .row-item {
-                background-color: #f7f7f7;
-                padding: 0 6px;
-                height: 24px;
-                border-radius: 3px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                width: 136px;
-
-                &.hover-disable {
-                    &:hover {
-                        background-color: #f7f7f7;
-
-                        .date-span {
-                            color: #919191 !important;
-                        }
-                    }
-                }
-
-                .date-span {
-                    font-size: 12px !important;
-                }
-
-                &:hover {
-                    background-color: #b7b7b7;
-
-                    .date-span {
-                        color: #ffffff !important;
-                    }
-                }
-
-                &.row-item-edit {
-                    background-color: #919191;
-
-                    &:hover {
-                        background-color: #919191;
-                    }
-                }
-
-                &.item-left {
-                    margin-right: 6px;
-                }
-            }
-
-            .action-btn {
-                opacity: 1 !important;
-                border-radius: 50%;
-                background-color: transparent !important;
-                box-shadow: none;
-                border: 0;
-                padding: 0;
-                display: flex;
-                align-items: center;
-                float: right;
-                cursor: pointer !important;
-                transition: $transition;
-                // margin-right: 6px !important;
-                height: 24px;
-
-                svg-icon {
-                    display: flex;
-                    align-items: center;
-                    height: 24px;
-
-                    svg {
-                        &:hover {
-                            .a,
-                            path {
-                                fill: #ffffff !important;
-                                opacity: 0.7;
-                                stroke: none !important;
-                            }
-                        }
-
-                        .a,
-                        path {
-                            fill: #ffffff !important;
-                            opacity: 0.7;
-                            stroke: none !important;
-                        }
-                    }
-                }
-
-                &:hover {
-                    svg-icon {
-                        display: flex;
-                        align-items: center;
-                        height: 24px;
-
-                        svg {
-                            &:hover {
-                                .a,
-                                path {
-                                    opacity: 1;
-                                    stroke: none !important;
-                                }
-                            }
-
-                            .a,
-                            path {
-                                opacity: 1;
-                                stroke: none !important;
-                            }
-                        }
-                    }
-                }
-
-                &.action-btn-right {
-                    margin-right: 6px !important;
-                }
-
-                &.close-btn {
-                    margin-right: 0 !important;
-                }
-
-                &.remove-btn {
-                    margin-right: 0 !important;
-
-                    svg-icon {
-                        display: flex;
-                        align-items: center;
-                        height: 24px;
-
-                        svg {
-                            &:hover {
-                                .a,
-                                path {
-                                    opacity: 0.7;
-                                    fill: $trash-icon-color !important;
-                                    stroke: none !important;
-                                }
-                            }
-
-                            .a,
-                            path {
-                                opacity: 0.7;
-                                fill: $trash-icon-color !important;
-                                stroke: none !important;
-                            }
-                        }
-                    }
-
-                    &:hover {
-                        svg-icon {
-                            display: flex;
-                            align-items: center;
-                            height: 24px;
-
-                            svg {
-                                &:hover {
-                                    .a,
-                                    path {
-                                        opacity: 1;
-                                        stroke: none !important;
-                                    }
-                                }
-
-                                .a,
-                                path {
-                                    opacity: 1;
-                                    stroke: none !important;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            .history-delete-container {
-                width: 24px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
+          }
         }
+
+        .date-span {
+          font-size: 12px !important;
+        }
+
+        &:hover {
+          background-color: #b7b7b7;
+
+          .date-span {
+            color: #ffffff !important;
+          }
+        }
+
+        &.row-item-edit {
+          background-color: #919191;
+
+          &:hover {
+            background-color: #919191;
+          }
+        }
+
+        &.item-left {
+          margin-right: 6px;
+        }
+      }
+
+      .action-btn {
+        opacity: 1 !important;
+        border-radius: 50%;
+        background-color: transparent !important;
+        box-shadow: none;
+        border: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        float: right;
+        cursor: pointer !important;
+        transition: $transition;
+        // margin-right: 6px !important;
+        height: 24px;
+
+        svg-icon {
+          display: flex;
+          align-items: center;
+          height: 24px;
+
+          svg {
+            &:hover {
+              .a,
+              path {
+                fill: #ffffff !important;
+                opacity: 0.7;
+                stroke: none !important;
+              }
+            }
+
+            .a,
+            path {
+              fill: #ffffff !important;
+              opacity: 0.7;
+              stroke: none !important;
+            }
+          }
+        }
+
+        &:hover {
+          svg-icon {
+            display: flex;
+            align-items: center;
+            height: 24px;
+
+            svg {
+              &:hover {
+                .a,
+                path {
+                  opacity: 1;
+                  stroke: none !important;
+                }
+              }
+
+              .a,
+              path {
+                opacity: 1;
+                stroke: none !important;
+              }
+            }
+          }
+        }
+
+        &.action-btn-right {
+          margin-right: 6px !important;
+        }
+
+        &.close-btn {
+          margin-right: 0 !important;
+        }
+
+        &.remove-btn {
+          margin-right: 0 !important;
+
+          svg-icon {
+            display: flex;
+            align-items: center;
+            height: 24px;
+
+            svg {
+              &:hover {
+                .a,
+                path {
+                  opacity: 0.7;
+                  fill: $trash-icon-color !important;
+                  stroke: none !important;
+                }
+              }
+
+              .a,
+              path {
+                opacity: 0.7;
+                fill: $trash-icon-color !important;
+                stroke: none !important;
+              }
+            }
+          }
+
+          &:hover {
+            svg-icon {
+              display: flex;
+              align-items: center;
+              height: 24px;
+
+              svg {
+                &:hover {
+                  .a,
+                  path {
+                    opacity: 1;
+                    stroke: none !important;
+                  }
+                }
+
+                .a,
+                path {
+                  opacity: 1;
+                  stroke: none !important;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .history-delete-container {
+        width: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
+  }
 }
 
 ::ng-deep.custom-datepicker {
-    width: auto !important;
+  width: auto !important;
 
-    .k-dateinput,
-    .k-picker-wrap {
-        height: 20px !important;
-        width: 70px !important;
-        border: none !important;
+  .k-dateinput,
+  .k-picker-wrap {
+    height: 20px !important;
+    width: 70px !important;
+    border: none !important;
+  }
+
+  .k-input {
+    font-size: 12px !important;
+    top: 0 !important;
+    height: 20px !important;
+    width: 70px !important;
+    color: #ffffff !important;
+
+    &::selection {
+      background-color: #ffffff20;
     }
+  }
 
-    .k-input {
-        font-size: 12px !important;
-        top: 0 !important;
-        height: 20px !important;
-        width: 70px !important;
-        color: #ffffff !important;
-
-        &::selection {
-            background-color: #ffffff20;
-        }
-    }
-
-    .k-select {
-        display: none !important;
-    }
+  .k-select {
+    display: none !important;
+  }
 }
 
 .popup-delete-history-item {
-    &:after {
-        @include triangletop;
-        left: 110px;
-        top: -5.5px;
-        content: '';
-    }
+  &:after {
+    @include triangletop;
+    left: 110px;
+    top: -5.5px;
+    content: '';
+  }
 
-    position: absolute;
-    margin: -10px 0 0 0;
-    visibility: hidden;
-    opacity: 0;
-    right: 140px;
-    transition: 0.3s;
-    z-index: 100;
+  position: absolute;
+  margin: -10px 0 0 0;
+  visibility: hidden;
+  opacity: 0;
+  right: 140px;
+  transition: 0.3s;
+  z-index: 100;
 }
 
 .animation-dropdown-dialog-delete-history {
-    margin: 33px 0 0 0 !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    transition: 0.3s;
+  margin: 33px 0 0 0 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transition: 0.3s;
 }

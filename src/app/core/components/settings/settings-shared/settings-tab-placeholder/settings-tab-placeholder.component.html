@@ -1,56 +1,60 @@
 <div class="tab-placeholder">
-    <div class="tab-placeholder-top">
-        <div class="d-flex align-items-center">
-            <p class="tab-placeholder-name">{{ name }}</p>
-            <svg-icon
-                class="tab-placeholder-svg"
-                *ngIf="companyOwnedSVG"
-                src="{{ companyOwnedSVG }}"
-                [appTooltip]="'Company Owned'"
-                position="bottom-right"
-                tooltipBackground="#6C6C6C"
-                tooltipColor="#FFFFFF"
-                zIndex="900"
-                [borderRadius]="'2px'"
-                [fontWeight]="'bold'"
-                [fontSize]="'11px'"
-            ></svg-icon>
-        </div>
-        <div class="tab-placeholder-actions">
-            <svg-icon
-                *ngIf="hasAttachment"
-                class="action-attachment"
-                src="assets/svg/common/ic_attachment.svg"
-            ></svg-icon>
-            <svg-icon
-                *ngIf="hasNote"
-                class="action-notes"
-                src="assets/svg/common/ic_note.svg"
-            ></svg-icon>
-            <svg-icon
-                *ngIf="hasDots"
-                class="action-dots"
-                src="assets/svg/common/ic_dots.svg"
-                (click)="onAction()"
-            ></svg-icon>
-        </div>
+  <div class="tab-placeholder-top">
+    <div class="d-flex align-items-center">
+      <p class="tab-placeholder-name">{{ name }}</p>
+      <svg-icon
+        class="tab-placeholder-svg"
+        *ngIf="companyOwnedSVG"
+        src="{{ companyOwnedSVG }}"
+        [appTooltip]="'Company Owned'"
+        position="bottom-right"
+        tooltipBackground="#6C6C6C"
+        tooltipColor="#FFFFFF"
+        zIndex="900"
+        [borderRadius]="'2px'"
+        [fontWeight]="'bold'"
+        [fontSize]="'11px'"
+      ></svg-icon>
     </div>
-    <div class="tab-placeholder-bottom">
-        <div class="tab-placeholder-item first" *ngIf="phone">
-            <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-            <p>{{ phone }}</p>
-        </div>
-        <div class="tab-placeholder-item" *ngIf="email">
-            <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-            <p>{{ email }}</p>
-        </div>
-        <div class="tab-placeholder-item">
-            <svg-icon
-                class="tab-placeholder-item-address-svg"
-                src="assets/svg/common/ic_address.svg"
-            ></svg-icon>
-            <p class="tab-placeholder-item-address-text">{{ address }}</p>
-        </div>
+    <div class="tab-placeholder-actions">
+      <svg-icon
+        *ngIf="hasAttachment"
+        class="action-attachment"
+        src="assets/svg/common/ic_attachment.svg"
+      ></svg-icon>
+      <svg-icon
+        *ngIf="hasNote"
+        class="action-notes"
+        src="assets/svg/common/ic_note.svg"
+      ></svg-icon>
+      <svg-icon
+        *ngIf="hasDots"
+        class="action-dots"
+        src="assets/svg/common/ic_dots.svg"
+        (click)="onAction()"
+      ></svg-icon>
     </div>
-    <div class="tab-placeholder-settings-line"></div>
+  </div>
+  <div class="tab-placeholder-bottom">
+    <div class="tab-placeholder-item first" *ngIf="phone">
+      <svg-icon
+        src="assets/svg/common/ic_phone.svg"
+      ></svg-icon>
+      <p>{{ phone }}</p>
+    </div>
+    <div class="tab-placeholder-item" *ngIf="email">
+      <svg-icon
+        src="assets/svg/common/ic_email.svg"
+      ></svg-icon>
+      <p>{{ email }}</p>
+    </div>
+    <div class="tab-placeholder-item">
+      <svg-icon
+        class="tab-placeholder-item-address-svg"
+        src="assets/svg/common/ic_address.svg"
+      ></svg-icon>
+      <p class="tab-placeholder-item-address-text">{{ address }}</p>
+    </div>
+  </div>
+  <div class="tab-placeholder-settings-line"></div>
 </div>

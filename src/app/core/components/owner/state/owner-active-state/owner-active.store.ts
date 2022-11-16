@@ -7,7 +7,7 @@ export interface OwnerActiveState extends EntityState<OwnerResponse, number> {}
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'ownerActive' })
 export class OwnerActiveStore extends EntityStore<OwnerActiveState> {
-    constructor() {
-        super();
-    }
+  constructor() {
+    super();
+  }
 }

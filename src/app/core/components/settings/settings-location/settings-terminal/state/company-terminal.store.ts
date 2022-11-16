@@ -7,7 +7,7 @@ export interface TerminalState extends EntityState<TerminalResponse, number> {}
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'terminalStore' })
 export class TerminalStore extends EntityStore<TerminalState> {
-    constructor() {
-        super();
-    }
+  constructor() {
+    super();
+  }
 }

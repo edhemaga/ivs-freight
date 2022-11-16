@@ -1,9 +1,9 @@
 import {
-    Component,
-    OnDestroy,
-    OnInit,
-    QueryList,
-    ViewChildren,
+  Component,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChildren,
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,8 +13,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import {
-    convertDateFromBackend,
-    convertDateToBackend,
+  convertDateFromBackend,
+  convertDateToBackend,
 } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -28,748 +28,720 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { LicenseModel } from '../../state/model/cdl-information';
 import { AnswerChoices } from '../../state/model/applicant-question.model';
 import {
-    ApplicantModalResponse,
-    ApplicantResponse,
-    CdlEndorsementResponse,
-    CdlRestrictionResponse,
-    CountryType,
-    CreateApplicantCdlReviewCommand,
-    EnumValue,
+  ApplicantModalResponse,
+  ApplicantResponse,
+  CdlEndorsementResponse,
+  CdlRestrictionResponse,
+  CountryType,
+  CreateApplicantCdlReviewCommand,
+  EnumValue,
 } from 'appcoretruckassist/model/models';
 
 @Component({
-    selector: 'app-step3',
-    templateUrl: './step3.component.html',
-    styleUrls: ['./step3.component.scss'],
+  selector: 'app-step3',
+  templateUrl: './step3.component.html',
+  styleUrls: ['./step3.component.scss'],
 })
 export class Step3Component implements OnInit, OnDestroy {
-    @ViewChildren('cmp') set content(content: QueryList<any>) {
-        if (content) {
-            const radioButtonsArray = content.toArray();
+  @ViewChildren('cmp') set content(content: QueryList<any>) {
+    if (content) {
+      const radioButtonsArray = content.toArray();
 
-            this.permitRadios = radioButtonsArray[0]
-                ? radioButtonsArray[0].buttons
-                : null;
+      this.permitRadios = radioButtonsArray[0]
+        ? radioButtonsArray[0].buttons
+        : null;
+    }
+  }
+
+  private destroy$ = new Subject<void>();
+
+  public selectedMode: string = SelectedMode.APPLICANT;
+
+  public permitForm: FormGroup;
+  public licenseForm: FormGroup;
+
+  public formStatus: string = 'INVALID';
+  public markFormInvalid: boolean;
+
+  public licenseArray: LicenseModel[] = [];
+
+  public lastLicenseCard: any;
+
+  public applicantId: number;
+
+  public selectedLicenseIndex: number;
+  public helperIndex: number = 2;
+
+  public isEditing: boolean = false;
+  public isReviewingCard: boolean = false;
+
+  public formValuesToPatch: any;
+  public previousFormValuesOnEdit: any;
+
+  public canadaStates: any[] = [];
+  public usStates: any[] = [];
+
+  public countryTypes: EnumValue[] = [];
+  public stateTypes: any[] = [];
+  public classTypes: EnumValue[] = [];
+  public restrictionsList: CdlRestrictionResponse[] = [];
+  public endorsmentsList: CdlEndorsementResponse[] = [];
+
+  public permitRadios: any;
+
+  public answerChoices: AnswerChoices[] = [
+    {
+      id: 1,
+      label: 'YES',
+      value: 'permitYes',
+      name: 'permitYes',
+      checked: false,
+    },
+    {
+      id: 2,
+      label: 'NO',
+      value: 'permitNo',
+      name: 'permitNo',
+      checked: false,
+    },
+  ];
+
+  public openAnnotationArray: {
+    lineIndex?: number;
+    lineInputs?: boolean[];
+    displayAnnotationButton?: boolean;
+    displayAnnotationTextArea?: boolean;
+  }[] = [
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {
+      lineIndex: 14,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+  ];
+  public hasIncorrectFields: boolean = false;
+  public cardsWithIncorrectFields: boolean = false;
+  public previousFormValuesOnReview: any;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private router: Router,
+    private applicantActionsService: ApplicantActionsService,
+    private applicantStore: ApplicantStore,
+    private applicantQuery: ApplicantQuery
+  ) {}
+
+  ngOnInit(): void {
+    this.createForm();
+
+    this.getStepValuesFromStore();
+
+    this.getDropdownLists();
+  }
+
+  public trackByIdentity = (index: number, item: any): number => index;
+
+  private createForm(): void {
+    this.licenseForm = this.formBuilder.group({
+      cardReview1: [null],
+      cardReview2: [null],
+      cardReview3: [null],
+      cardReview4: [null],
+      cardReview5: [null],
+      cardReview6: [null],
+      cardReview7: [null],
+      cardReview8: [null],
+      cardReview9: [null],
+      cardReview10: [null],
+    });
+
+    this.permitForm = this.formBuilder.group({
+      permit: [null, Validators.required],
+      permitExplain: [null],
+      fifthRowReview: [null],
+    });
+  }
+
+  public getStepValuesFromStore(): void {
+    this.applicantQuery.applicant$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: ApplicantResponse) => {
+        this.applicantId = res.id;
+
+        if (res.cdlInformation) {
+          this.patchStepValues(res.cdlInformation);
         }
+      });
+  }
+
+  public patchStepValues(stepValues: any /* CdlFeedbackResponse */): void {
+    console.log('stepValues', stepValues);
+    const { cdlDenied, cdlDeniedExplanation, licences } = stepValues;
+
+    const lastItemInLicenseArray = licences[licences.length - 1];
+
+    const restOfTheItemsInLicenseArray = [...licences];
+
+    restOfTheItemsInLicenseArray.pop();
+
+    const filteredLicenseArray = restOfTheItemsInLicenseArray.map((item) => {
+      return {
+        isEditingLicense: false,
+        licenseNumber: item.licenseNumber,
+        country: item.country.name,
+        state: item.state.stateShortName,
+        classType: item.class.name,
+        expDate: convertDateFromBackend(item.expDate).replace(/-/g, '/'),
+        restrictions: item.cdlRestrictions,
+        endorsments: item.cdlEndorsements,
+        licenseReview: item.licenseReview ? item.licenseReview : null,
+      };
+    });
+
+    const filteredLastItemInLicenseArray = {
+      isEditingLicense: false,
+      licenseNumber: lastItemInLicenseArray.licenseNumber,
+      country: lastItemInLicenseArray.country.name,
+      state: lastItemInLicenseArray.state.stateShortName,
+      classType: lastItemInLicenseArray.class.name,
+      expDate: convertDateFromBackend(lastItemInLicenseArray.expDate).replace(
+        /-/g,
+        '/'
+      ),
+      restrictions: lastItemInLicenseArray.cdlRestrictions,
+      endorsments: lastItemInLicenseArray.cdlEndorsements,
+      licenseReview: lastItemInLicenseArray.licenseReview
+        ? lastItemInLicenseArray.licenseReview
+        : null,
+    };
+
+    this.licenseArray = [...filteredLicenseArray];
+
+    this.formValuesToPatch = filteredLastItemInLicenseArray;
+    this.previousFormValuesOnReview = filteredLastItemInLicenseArray;
+    this.previousFormValuesOnEdit = this.licenseArray.length
+      ? filteredLastItemInLicenseArray
+      : {
+          licenseNumber: null,
+          country: null,
+          state: null,
+          classType: null,
+          expDate: null,
+        };
+
+    for (let i = 0; i < filteredLicenseArray.length; i++) {
+      const firstEmptyObjectInList = this.openAnnotationArray.find(
+        (item) => Object.keys(item).length === 0
+      );
+
+      const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+        firstEmptyObjectInList
+      );
+
+      this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+        lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+        lineInputs: [false],
+        displayAnnotationButton: false,
+        displayAnnotationTextArea: false,
+      };
     }
 
-    private destroy$ = new Subject<void>();
+    this.permitForm.patchValue({
+      permit: cdlDenied,
+      permitExplain: cdlDeniedExplanation,
+    });
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    setTimeout(() => {
+      const permitValue = this.permitForm.get('permit').value;
 
-    public permitForm: FormGroup;
-    public licenseForm: FormGroup;
+      if (permitValue) {
+        this.permitRadios[0].checked = true;
+      } else {
+        this.permitRadios[1].checked = true;
+      }
+    }, 100);
+  }
 
-    public formStatus: string = 'INVALID';
-    public markFormInvalid: boolean;
+  public handleInputSelect(event: any, action: string): void {
+    switch (action) {
+      case InputSwitchActions.PERMIT:
+        const selectedCheckbox = event.find(
+          (radio: { checked: boolean }) => radio.checked
+        );
 
-    public licenseArray: LicenseModel[] = [];
+        if (selectedCheckbox.label === 'YES') {
+          this.permitForm.get('permit').patchValue(true);
 
-    public lastLicenseCard: any;
+          this.inputService.changeValidators(
+            this.permitForm.get('permitExplain')
+          );
+        } else {
+          this.permitForm.get('permit').patchValue(false);
 
-    public applicantId: number;
+          this.inputService.changeValidators(
+            this.permitForm.get('permitExplain'),
+            false
+          );
+        }
 
-    public selectedLicenseIndex: number;
-    public helperIndex: number = 2;
+        break;
+      default:
+        break;
+    }
+  }
 
-    public isEditing: boolean = false;
-    public isReviewingCard: boolean = false;
-
-    public formValuesToPatch: any;
-    public previousFormValuesOnEdit: any;
-
-    public canadaStates: any[] = [];
-    public usStates: any[] = [];
-
-    public countryTypes: EnumValue[] = [];
-    public stateTypes: any[] = [];
-    public classTypes: EnumValue[] = [];
-    public restrictionsList: CdlRestrictionResponse[] = [];
-    public endorsmentsList: CdlEndorsementResponse[] = [];
-
-    public permitRadios: any;
-
-    public answerChoices: AnswerChoices[] = [
-        {
-            id: 1,
-            label: 'YES',
-            value: 'permitYes',
-            name: 'permitYes',
-            checked: false,
-        },
-        {
-            id: 2,
-            label: 'NO',
-            value: 'permitNo',
-            name: 'permitNo',
-            checked: false,
-        },
-    ];
-
-    public openAnnotationArray: {
-        lineIndex?: number;
-        lineInputs?: boolean[];
-        displayAnnotationButton?: boolean;
-        displayAnnotationTextArea?: boolean;
-    }[] = [
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {
-            lineIndex: 14,
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-    ];
-    public hasIncorrectFields: boolean = false;
-    public cardsWithIncorrectFields: boolean = false;
-    public previousFormValuesOnReview: any;
-
-    constructor(
-        private formBuilder: FormBuilder,
-        private inputService: TaInputService,
-        private router: Router,
-        private applicantActionsService: ApplicantActionsService,
-        private applicantStore: ApplicantStore,
-        private applicantQuery: ApplicantQuery
-    ) {}
-
-    ngOnInit(): void {
-        this.createForm();
-
-        this.getStepValuesFromStore();
-
-        this.getDropdownLists();
+  public onDeleteLicense(index: number): void {
+    if (this.isEditing) {
+      return;
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    this.licenseArray.splice(index, 1);
+  }
 
-    private createForm(): void {
-        this.licenseForm = this.formBuilder.group({
-            cardReview1: [null],
-            cardReview2: [null],
-            cardReview3: [null],
-            cardReview4: [null],
-            cardReview5: [null],
-            cardReview6: [null],
-            cardReview7: [null],
-            cardReview8: [null],
-            cardReview9: [null],
-            cardReview10: [null],
+  public onEditLicense(index: number): void {
+    if (this.isEditing) {
+      return;
+    }
+
+    this.helperIndex = index;
+    this.selectedLicenseIndex = index;
+
+    this.isEditing = true;
+    this.licenseArray[index].isEditingLicense = true;
+
+    const selectedLicense = this.licenseArray[index];
+
+    this.formValuesToPatch = selectedLicense;
+  }
+
+  public getLicenseFormValues(event: any): void {
+    this.licenseArray = [...this.licenseArray, event];
+
+    this.helperIndex = 2;
+
+    const firstEmptyObjectInList = this.openAnnotationArray.find(
+      (item) => Object.keys(item).length === 0
+    );
+
+    const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+      firstEmptyObjectInList
+    );
+
+    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+      lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    };
+  }
+
+  public cancelLicenseEditing(event: any): void {
+    this.isEditing = false;
+    this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
+
+    this.helperIndex = 2;
+    this.selectedLicenseIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
+  }
+
+  public saveEditedLicense(event: any): void {
+    this.isEditing = false;
+    this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
+
+    this.licenseArray[this.selectedLicenseIndex] = event;
+
+    this.helperIndex = 2;
+    this.selectedLicenseIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnEdit;
+  }
+
+  public onGetFormStatus(status: string): void {
+    this.formStatus = status;
+  }
+
+  public onMarkInvalidEmit(event: any): void {
+    if (!event) {
+      this.markFormInvalid = false;
+    }
+  }
+
+  public onGetLastFormValues(event: any): void {
+    this.lastLicenseCard = event;
+  }
+
+  public onHasIncorrectFields(event: any): void {
+    if (event) {
+      this.hasIncorrectFields = true;
+    } else {
+      this.hasIncorrectFields = false;
+    }
+  }
+
+  public onGetOpenAnnotationArrayValues(event: any): void {
+    this.previousFormValuesOnReview.licenseReview = {
+      isLicenseNumberValid: !event[0].lineInputs[0],
+      isCountryValid: !event[0].lineInputs[1],
+      isStateValid: !event[1].lineInputs[0],
+      isClassValid: !event[1].lineInputs[1],
+      isExpDateValid: !event[1].lineInputs[2],
+      isRestrictionsValid: !event[2].lineInputs[0],
+      isEndorsmentsValid: !event[3].lineInputs[0],
+    };
+  }
+
+  public onGetCardOpenAnnotationArrayValues(event: any): void {
+    this.isReviewingCard = false;
+
+    this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
+
+    this.licenseArray[this.selectedLicenseIndex].licenseReview = {
+      isLicenseNumberValid: !event[0].lineInputs[0],
+      isCountryValid: !event[0].lineInputs[1],
+      isStateValid: !event[1].lineInputs[0],
+      isClassValid: !event[1].lineInputs[1],
+      isExpDateValid: !event[1].lineInputs[2],
+      isRestrictionsValid: !event[2].lineInputs[0],
+      isEndorsmentsValid: !event[3].lineInputs[0],
+    };
+
+    const hasInvalidFields = JSON.stringify(
+      this.licenseArray[this.selectedLicenseIndex].licenseReview
+    );
+
+    if (hasInvalidFields.includes('false')) {
+      this.openAnnotationArray[
+        this.selectedLicenseIndex
+      ].displayAnnotationButton = true;
+
+      this.openAnnotationArray[this.selectedLicenseIndex].lineInputs[0] = true;
+
+      this.cardsWithIncorrectFields = true;
+    } else {
+      this.openAnnotationArray[
+        this.selectedLicenseIndex
+      ].displayAnnotationButton = false;
+
+      this.hasIncorrectFields = false;
+    }
+
+    this.helperIndex = 2;
+    this.selectedLicenseIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnReview;
+  }
+
+  public cancelLicenseReview(event: any): void {
+    this.isReviewingCard = false;
+
+    this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
+
+    this.helperIndex = 2;
+    this.selectedLicenseIndex = -1;
+
+    this.formValuesToPatch = this.previousFormValuesOnReview;
+  }
+
+  public getDropdownLists(): void {
+    this.applicantQuery.applicantDropdownLists$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: ApplicantModalResponse) => {
+        this.countryTypes = res.countryTypes;
+
+        this.usStates = res.usStates.map((item) => {
+          return {
+            id: item.id,
+            name: item.stateShortName,
+            stateName: item.stateName,
+          };
         });
 
-        this.permitForm = this.formBuilder.group({
-            permit: [null, Validators.required],
-            permitExplain: [null],
-            fifthRowReview: [null],
-        });
-    }
-
-    public getStepValuesFromStore(): void {
-        this.applicantQuery.applicant$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: ApplicantResponse) => {
-                this.applicantId = res.id;
-
-                if (res.cdlInformation) {
-                    this.patchStepValues(res.cdlInformation);
-                }
-            });
-    }
-
-    public patchStepValues(stepValues: any /* CdlFeedbackResponse */): void {
-        console.log('stepValues', stepValues);
-        const { cdlDenied, cdlDeniedExplanation, licences } = stepValues;
-
-        const lastItemInLicenseArray = licences[licences.length - 1];
-
-        const restOfTheItemsInLicenseArray = [...licences];
-
-        restOfTheItemsInLicenseArray.pop();
-
-        const filteredLicenseArray = restOfTheItemsInLicenseArray.map(
-            (item) => {
-                return {
-                    isEditingLicense: false,
-                    licenseNumber: item.licenseNumber,
-                    country: item.country.name,
-                    state: item.state.stateShortName,
-                    classType: item.class.name,
-                    expDate: convertDateFromBackend(item.expDate).replace(
-                        /-/g,
-                        '/'
-                    ),
-                    restrictions: item.cdlRestrictions,
-                    endorsments: item.cdlEndorsements,
-                    licenseReview: item.licenseReview
-                        ? item.licenseReview
-                        : null,
-                };
-            }
-        );
-
-        const filteredLastItemInLicenseArray = {
-            isEditingLicense: false,
-            licenseNumber: lastItemInLicenseArray.licenseNumber,
-            country: lastItemInLicenseArray.country.name,
-            state: lastItemInLicenseArray.state.stateShortName,
-            classType: lastItemInLicenseArray.class.name,
-            expDate: convertDateFromBackend(
-                lastItemInLicenseArray.expDate
-            ).replace(/-/g, '/'),
-            restrictions: lastItemInLicenseArray.cdlRestrictions,
-            endorsments: lastItemInLicenseArray.cdlEndorsements,
-            licenseReview: lastItemInLicenseArray.licenseReview
-                ? lastItemInLicenseArray.licenseReview
-                : null,
-        };
-
-        this.licenseArray = [...filteredLicenseArray];
-
-        this.formValuesToPatch = filteredLastItemInLicenseArray;
-        this.previousFormValuesOnReview = filteredLastItemInLicenseArray;
-        this.previousFormValuesOnEdit = this.licenseArray.length
-            ? filteredLastItemInLicenseArray
-            : {
-                  licenseNumber: null,
-                  country: null,
-                  state: null,
-                  classType: null,
-                  expDate: null,
-              };
-
-        for (let i = 0; i < filteredLicenseArray.length; i++) {
-            const firstEmptyObjectInList = this.openAnnotationArray.find(
-                (item) => Object.keys(item).length === 0
-            );
-
-            const indexOfFirstEmptyObjectInList =
-                this.openAnnotationArray.indexOf(firstEmptyObjectInList);
-
-            this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-                lineIndex: this.openAnnotationArray.indexOf(
-                    firstEmptyObjectInList
-                ),
-                lineInputs: [false],
-                displayAnnotationButton: false,
-                displayAnnotationTextArea: false,
-            };
-        }
-
-        this.permitForm.patchValue({
-            permit: cdlDenied,
-            permitExplain: cdlDeniedExplanation,
+        this.canadaStates = res.canadaStates.map((item) => {
+          return {
+            id: item.id,
+            name: item.stateShortName,
+            stateName: item.stateName,
+          };
         });
 
-        setTimeout(() => {
-            const permitValue = this.permitForm.get('permit').value;
+        this.classTypes = res.classTypes;
 
-            if (permitValue) {
-                this.permitRadios[0].checked = true;
-            } else {
-                this.permitRadios[1].checked = true;
-            }
-        }, 100);
-    }
+        this.restrictionsList = res.restrictions;
+        this.endorsmentsList = res.endorsements;
+      });
+  }
 
-    public handleInputSelect(event: any, action: string): void {
-        switch (action) {
-            case InputSwitchActions.PERMIT:
-                const selectedCheckbox = event.find(
-                    (radio: { checked: boolean }) => radio.checked
-                );
+  public incorrectInput(
+    event: any,
+    inputIndex: number,
+    lineIndex: number,
+    type?: string
+  ): void {
+    const selectedInputsLine = this.openAnnotationArray.find(
+      (item) => item.lineIndex === lineIndex
+    );
 
-                if (selectedCheckbox.label === 'YES') {
-                    this.permitForm.get('permit').patchValue(true);
+    if (type === 'card') {
+      if (selectedInputsLine.displayAnnotationButton) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+        selectedInputsLine.displayAnnotationButton = false;
+      }
 
-                    this.inputService.changeValidators(
-                        this.permitForm.get('permitExplain')
-                    );
-                } else {
-                    this.permitForm.get('permit').patchValue(false);
+      if (selectedInputsLine.displayAnnotationTextArea) {
+        selectedInputsLine.displayAnnotationButton = false;
+        selectedInputsLine.displayAnnotationTextArea = false;
+      }
 
-                    this.inputService.changeValidators(
-                        this.permitForm.get('permitExplain'),
-                        false
-                    );
-                }
+      Object.keys(this.licenseArray[lineIndex].licenseReview).forEach((key) => {
+        this.licenseArray[lineIndex].licenseReview[key] = true;
+      });
 
-                break;
-            default:
-                break;
+      const inputFieldsArray = JSON.stringify(
+        this.openAnnotationArray
+          .filter((item) => Object.keys(item).length !== 0)
+          .map((item) => item.lineInputs)
+      );
+
+      if (inputFieldsArray.includes('true')) {
+        this.cardsWithIncorrectFields = true;
+      } else {
+        this.cardsWithIncorrectFields = false;
+      }
+    } else {
+      if (event) {
+        selectedInputsLine.lineInputs[inputIndex] = true;
+
+        if (!selectedInputsLine.displayAnnotationTextArea) {
+          selectedInputsLine.displayAnnotationButton = true;
+          selectedInputsLine.displayAnnotationTextArea = false;
         }
-    }
+      }
 
-    public onDeleteLicense(index: number): void {
-        if (this.isEditing) {
-            return;
-        }
+      if (!event) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
 
-        this.licenseArray.splice(index, 1);
-    }
+        const lineInputItems = selectedInputsLine.lineInputs;
+        const isAnyInputInLineIncorrect =
+          anyInputInLineIncorrect(lineInputItems);
 
-    public onEditLicense(index: number): void {
-        if (this.isEditing) {
-            return;
-        }
-
-        this.helperIndex = index;
-        this.selectedLicenseIndex = index;
-
-        this.isEditing = true;
-        this.licenseArray[index].isEditingLicense = true;
-
-        const selectedLicense = this.licenseArray[index];
-
-        this.formValuesToPatch = selectedLicense;
-    }
-
-    public getLicenseFormValues(event: any): void {
-        this.licenseArray = [...this.licenseArray, event];
-
-        this.helperIndex = 2;
-
-        const firstEmptyObjectInList = this.openAnnotationArray.find(
-            (item) => Object.keys(item).length === 0
-        );
-
-        const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
-            firstEmptyObjectInList
-        );
-
-        this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-            lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        };
-    }
-
-    public cancelLicenseEditing(event: any): void {
-        this.isEditing = false;
-        this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
-
-        this.helperIndex = 2;
-        this.selectedLicenseIndex = -1;
-
-        this.formValuesToPatch = this.previousFormValuesOnEdit;
-    }
-
-    public saveEditedLicense(event: any): void {
-        this.isEditing = false;
-        this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
-
-        this.licenseArray[this.selectedLicenseIndex] = event;
-
-        this.helperIndex = 2;
-        this.selectedLicenseIndex = -1;
-
-        this.formValuesToPatch = this.previousFormValuesOnEdit;
-    }
-
-    public onGetFormStatus(status: string): void {
-        this.formStatus = status;
-    }
-
-    public onMarkInvalidEmit(event: any): void {
-        if (!event) {
-            this.markFormInvalid = false;
-        }
-    }
-
-    public onGetLastFormValues(event: any): void {
-        this.lastLicenseCard = event;
-    }
-
-    public onHasIncorrectFields(event: any): void {
-        if (event) {
-            this.hasIncorrectFields = true;
-        } else {
-            this.hasIncorrectFields = false;
-        }
-    }
-
-    public onGetOpenAnnotationArrayValues(event: any): void {
-        this.previousFormValuesOnReview.licenseReview = {
-            isLicenseNumberValid: !event[0].lineInputs[0],
-            isCountryValid: !event[0].lineInputs[1],
-            isStateValid: !event[1].lineInputs[0],
-            isClassValid: !event[1].lineInputs[1],
-            isExpDateValid: !event[1].lineInputs[2],
-            isRestrictionsValid: !event[2].lineInputs[0],
-            isEndorsmentsValid: !event[3].lineInputs[0],
-        };
-    }
-
-    public onGetCardOpenAnnotationArrayValues(event: any): void {
-        this.isReviewingCard = false;
-
-        this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
-
-        this.licenseArray[this.selectedLicenseIndex].licenseReview = {
-            isLicenseNumberValid: !event[0].lineInputs[0],
-            isCountryValid: !event[0].lineInputs[1],
-            isStateValid: !event[1].lineInputs[0],
-            isClassValid: !event[1].lineInputs[1],
-            isExpDateValid: !event[1].lineInputs[2],
-            isRestrictionsValid: !event[2].lineInputs[0],
-            isEndorsmentsValid: !event[3].lineInputs[0],
-        };
-
-        const hasInvalidFields = JSON.stringify(
-            this.licenseArray[this.selectedLicenseIndex].licenseReview
-        );
-
-        if (hasInvalidFields.includes('false')) {
-            this.openAnnotationArray[
-                this.selectedLicenseIndex
-            ].displayAnnotationButton = true;
-
-            this.openAnnotationArray[this.selectedLicenseIndex].lineInputs[0] =
-                true;
-
-            this.cardsWithIncorrectFields = true;
-        } else {
-            this.openAnnotationArray[
-                this.selectedLicenseIndex
-            ].displayAnnotationButton = false;
-
-            this.hasIncorrectFields = false;
+        if (!isAnyInputInLineIncorrect) {
+          selectedInputsLine.displayAnnotationButton = false;
+          selectedInputsLine.displayAnnotationTextArea = false;
         }
 
-        this.helperIndex = 2;
-        this.selectedLicenseIndex = -1;
+        if (lineIndex === 14) {
+          this.permitForm.get('fifthRowReview').patchValue(null);
+        }
+      }
+    }
+  }
 
-        this.formValuesToPatch = this.previousFormValuesOnReview;
+  public getAnnotationBtnClickValue(event: any): void {
+    if (event.type === 'open') {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        true;
+    } else {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        false;
+    }
+  }
+
+  public onCardReview(index: number) {
+    if (this.isReviewingCard) {
+      return;
     }
 
-    public cancelLicenseReview(event: any): void {
-        this.isReviewingCard = false;
+    this.helperIndex = index;
+    this.selectedLicenseIndex = index;
 
-        this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
+    this.licenseArray[index].isEditingLicense = true;
 
-        this.helperIndex = 2;
-        this.selectedLicenseIndex = -1;
+    this.isReviewingCard = true;
 
-        this.formValuesToPatch = this.previousFormValuesOnReview;
+    const selectedLicense = this.licenseArray[index];
+
+    this.formValuesToPatch = selectedLicense;
+  }
+
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
 
-    public getDropdownLists(): void {
-        this.applicantQuery.applicantDropdownLists$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: ApplicantModalResponse) => {
-                this.countryTypes = res.countryTypes;
+    if (event.action === 'back-step') {
+      this.router.navigate([`/application/${this.applicantId}/2`]);
+    }
+  }
 
-                this.usStates = res.usStates.map((item) => {
-                    return {
-                        id: item.id,
-                        name: item.stateShortName,
-                        stateName: item.stateName,
-                    };
-                });
-
-                this.canadaStates = res.canadaStates.map((item) => {
-                    return {
-                        id: item.id,
-                        name: item.stateShortName,
-                        stateName: item.stateName,
-                    };
-                });
-
-                this.classTypes = res.classTypes;
-
-                this.restrictionsList = res.restrictions;
-                this.endorsmentsList = res.endorsements;
-            });
+  public onSubmit(): void {
+    if (this.permitForm.invalid) {
+      this.inputService.markInvalid(this.permitForm);
+      return;
     }
 
-    public incorrectInput(
-        event: any,
-        inputIndex: number,
-        lineIndex: number,
-        type?: string
-    ): void {
-        const selectedInputsLine = this.openAnnotationArray.find(
-            (item) => item.lineIndex === lineIndex
-        );
-
-        if (type === 'card') {
-            if (selectedInputsLine.displayAnnotationButton) {
-                selectedInputsLine.lineInputs[inputIndex] = false;
-                selectedInputsLine.displayAnnotationButton = false;
-            }
-
-            if (selectedInputsLine.displayAnnotationTextArea) {
-                selectedInputsLine.displayAnnotationButton = false;
-                selectedInputsLine.displayAnnotationTextArea = false;
-            }
-
-            Object.keys(this.licenseArray[lineIndex].licenseReview).forEach(
-                (key) => {
-                    this.licenseArray[lineIndex].licenseReview[key] = true;
-                }
-            );
-
-            const inputFieldsArray = JSON.stringify(
-                this.openAnnotationArray
-                    .filter((item) => Object.keys(item).length !== 0)
-                    .map((item) => item.lineInputs)
-            );
-
-            if (inputFieldsArray.includes('true')) {
-                this.cardsWithIncorrectFields = true;
-            } else {
-                this.cardsWithIncorrectFields = false;
-            }
-        } else {
-            if (event) {
-                selectedInputsLine.lineInputs[inputIndex] = true;
-
-                if (!selectedInputsLine.displayAnnotationTextArea) {
-                    selectedInputsLine.displayAnnotationButton = true;
-                    selectedInputsLine.displayAnnotationTextArea = false;
-                }
-            }
-
-            if (!event) {
-                selectedInputsLine.lineInputs[inputIndex] = false;
-
-                const lineInputItems = selectedInputsLine.lineInputs;
-                const isAnyInputInLineIncorrect =
-                    anyInputInLineIncorrect(lineInputItems);
-
-                if (!isAnyInputInLineIncorrect) {
-                    selectedInputsLine.displayAnnotationButton = false;
-                    selectedInputsLine.displayAnnotationTextArea = false;
-                }
-
-                if (lineIndex === 14) {
-                    this.permitForm.get('fifthRowReview').patchValue(null);
-                }
-            }
-        }
+    if (this.formStatus === 'INVALID') {
+      this.markFormInvalid = true;
+      return;
     }
 
-    public getAnnotationBtnClickValue(event: any): void {
-        if (event.type === 'open') {
-            this.openAnnotationArray[event.lineIndex].displayAnnotationButton =
-                false;
-            this.openAnnotationArray[
-                event.lineIndex
-            ].displayAnnotationTextArea = true;
-        } else {
-            this.openAnnotationArray[event.lineIndex].displayAnnotationButton =
-                true;
-            this.openAnnotationArray[
-                event.lineIndex
-            ].displayAnnotationTextArea = false;
-        }
-    }
+    const { permit, permitExplain } = this.permitForm.value;
 
-    public onCardReview(index: number) {
-        if (this.isReviewingCard) {
-            return;
-        }
+    const filteredLicenseArray = this.licenseArray.map((item) => {
+      const filteredStateType = this.usStates.find(
+        (stateItem) => stateItem.name === item.state
+      );
 
-        this.helperIndex = index;
-        this.selectedLicenseIndex = index;
+      const stateId = filteredStateType
+        ? filteredStateType.id
+        : this.canadaStates.find((stateItem) => stateItem.name === item.state)
+            .id;
 
-        this.licenseArray[index].isEditingLicense = true;
+      return {
+        licenseNumber: item.licenseNumber,
+        country: item.country as CountryType,
+        stateId,
+        class: item.classType,
+        expDate: convertDateToBackend(item.expDate),
+        restrictions: item.restrictions.map((item) => item.id),
+        endorsements: item.endorsments.map((item) => item.id),
+      };
+    });
 
-        this.isReviewingCard = true;
+    const filteredStateType = this.usStates.find(
+      (stateItem) => stateItem.name === this.lastLicenseCard.state
+    );
 
-        const selectedLicense = this.licenseArray[index];
+    const filteredLastLicenseCardStateId = filteredStateType
+      ? filteredStateType.id
+      : this.canadaStates.find(
+          (stateItem) => stateItem.name === this.lastLicenseCard.state
+        ).id;
 
-        this.formValuesToPatch = selectedLicense;
-    }
+    const filteredLastLicenseCard = {
+      licenseNumber: this.lastLicenseCard.licenseNumber,
+      country: this.lastLicenseCard.country as CountryType,
+      stateId: filteredLastLicenseCardStateId,
+      class: this.lastLicenseCard.classType,
+      expDate: convertDateToBackend(this.lastLicenseCard.expDate),
+      restrictions: this.lastLicenseCard.restrictions.map((item) => item.id),
+      endorsements: this.lastLicenseCard.endorsments.map((item) => item.id),
+    };
 
-    public onStepAction(event: any): void {
-        if (event.action === 'next-step') {
-            if (this.selectedMode === SelectedMode.APPLICANT) {
-                this.onSubmit();
-            }
+    const saveData: any = {
+      applicantId: this.applicantId,
+      cdlDenied: permit,
+      cdlDeniedExplanation: permitExplain,
+      licences: [...filteredLicenseArray, filteredLastLicenseCard],
+    };
 
-            if (this.selectedMode === SelectedMode.REVIEW) {
-                this.onSubmitReview();
-            }
-        }
+    const storeLicenceItems = saveData.licences.map((item) => {
+      const filteredUsStateType = this.usStates.find(
+        (stateItem) => stateItem.id === item.stateId
+      );
 
-        if (event.action === 'back-step') {
-            this.router.navigate([`/application/${this.applicantId}/2`]);
-        }
-    }
+      const filteredStateType = filteredUsStateType
+        ? filteredUsStateType
+        : this.canadaStates.find((stateItem) => stateItem.id === item.stateId);
 
-    public onSubmit(): void {
-        if (this.permitForm.invalid) {
-            this.inputService.markInvalid(this.permitForm);
-            return;
-        }
+      return {
+        licenseNumber: item.licenseNumber,
+        country: this.countryTypes.find(
+          (countryItem) => countryItem.name === item.country
+        ),
+        state: {
+          countryType: this.countryTypes.find(
+            (countryItem) => countryItem.name === item.country
+          ),
+          id: filteredStateType.id,
+          stateName: filteredStateType.stateName,
+          stateShortName: filteredStateType.name,
+        },
+        class: this.classTypes.find(
+          (classItem) => classItem.name === item.class
+        ),
+        expDate: item.expDate,
+        cdlRestrictions: this.restrictionsList.filter((resItem) =>
+          item.restrictions.includes(resItem.id)
+        ),
+        cdlEndorsements: this.endorsmentsList.filter((endItem) =>
+          item.endorsements.includes(endItem.id)
+        ),
+      };
+    });
 
-        if (this.formStatus === 'INVALID') {
-            this.markFormInvalid = true;
-            return;
-        }
+    this.applicantActionsService
+      .createCdlInformation(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/4`]);
 
-        const { permit, permitExplain } = this.permitForm.value;
-
-        const filteredLicenseArray = this.licenseArray.map((item) => {
-            const filteredStateType = this.usStates.find(
-                (stateItem) => stateItem.name === item.state
-            );
-
-            const stateId = filteredStateType
-                ? filteredStateType.id
-                : this.canadaStates.find(
-                      (stateItem) => stateItem.name === item.state
-                  ).id;
-
+          this.applicantStore.update((store) => {
             return {
-                licenseNumber: item.licenseNumber,
-                country: item.country as CountryType,
-                stateId,
-                class: item.classType,
-                expDate: convertDateToBackend(item.expDate),
-                restrictions: item.restrictions.map((item) => item.id),
-                endorsements: item.endorsments.map((item) => item.id),
+              ...store,
+              applicant: {
+                ...store.applicant,
+                cdlInformation: {
+                  ...store.applicant.cdlInformation,
+                  cdlDenied: saveData.cdlDenied,
+                  cdlDeniedExplanation: saveData.cdlDeniedExplanation,
+                  licences: storeLicenceItems,
+                },
+              },
             };
-        });
+          });
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
 
-        const filteredStateType = this.usStates.find(
-            (stateItem) => stateItem.name === this.lastLicenseCard.state
-        );
+  public onSubmitReview(): void {
+    const lastItemReview = this.previousFormValuesOnReview.licenseReview;
 
-        const filteredLastLicenseCardStateId = filteredStateType
-            ? filteredStateType.id
-            : this.canadaStates.find(
-                  (stateItem) => stateItem.name === this.lastLicenseCard.state
-              ).id;
+    const lastReviewedItemInLicenseArray = {
+      isLicenseNumberValid: lastItemReview
+        ? lastItemReview.isLicenseNumberValid
+        : true,
+      licenseCountryMessage: this.lastLicenseCard.firstRowReview,
+      isExpDateValid: lastItemReview ? lastItemReview.isExpDateValid : true,
+      stateClassExpDateMessage: this.lastLicenseCard.secondRowReview,
+    };
 
-        const filteredLastLicenseCard = {
-            licenseNumber: this.lastLicenseCard.licenseNumber,
-            country: this.lastLicenseCard.country as CountryType,
-            stateId: filteredLastLicenseCardStateId,
-            class: this.lastLicenseCard.classType,
-            expDate: convertDateToBackend(this.lastLicenseCard.expDate),
-            restrictions: this.lastLicenseCard.restrictions.map(
-                (item) => item.id
-            ),
-            endorsements: this.lastLicenseCard.endorsments.map(
-                (item) => item.id
-            ),
-        };
+    const saveData: CreateApplicantCdlReviewCommand = {
+      applicantId: this.applicantId,
+      isCdlDeniedExplanationValid: !this.openAnnotationArray[14].lineInputs[0],
+      cdlDeniedExplanationMessage: this.permitForm.get('fifthRowReview').value,
+      licenceReviews: [lastReviewedItemInLicenseArray],
+    };
 
-        const saveData: any = {
-            applicantId: this.applicantId,
-            cdlDenied: permit,
-            cdlDeniedExplanation: permitExplain,
-            licences: [...filteredLicenseArray, filteredLastLicenseCard],
-        };
+    console.log('save', saveData);
+  }
 
-        const storeLicenceItems = saveData.licences.map((item) => {
-            const filteredUsStateType = this.usStates.find(
-                (stateItem) => stateItem.id === item.stateId
-            );
-
-            const filteredStateType = filteredUsStateType
-                ? filteredUsStateType
-                : this.canadaStates.find(
-                      (stateItem) => stateItem.id === item.stateId
-                  );
-
-            return {
-                licenseNumber: item.licenseNumber,
-                country: this.countryTypes.find(
-                    (countryItem) => countryItem.name === item.country
-                ),
-                state: {
-                    countryType: this.countryTypes.find(
-                        (countryItem) => countryItem.name === item.country
-                    ),
-                    id: filteredStateType.id,
-                    stateName: filteredStateType.stateName,
-                    stateShortName: filteredStateType.name,
-                },
-                class: this.classTypes.find(
-                    (classItem) => classItem.name === item.class
-                ),
-                expDate: item.expDate,
-                cdlRestrictions: this.restrictionsList.filter((resItem) =>
-                    item.restrictions.includes(resItem.id)
-                ),
-                cdlEndorsements: this.endorsmentsList.filter((endItem) =>
-                    item.endorsements.includes(endItem.id)
-                ),
-            };
-        });
-
-        this.applicantActionsService
-            .createCdlInformation(saveData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.router.navigate([
-                        `/application/${this.applicantId}/4`,
-                    ]);
-
-                    this.applicantStore.update((store) => {
-                        return {
-                            ...store,
-                            applicant: {
-                                ...store.applicant,
-                                cdlInformation: {
-                                    ...store.applicant.cdlInformation,
-                                    cdlDenied: saveData.cdlDenied,
-                                    cdlDeniedExplanation:
-                                        saveData.cdlDeniedExplanation,
-                                    licences: storeLicenceItems,
-                                },
-                            },
-                        };
-                    });
-                },
-                error: (err) => {
-                    console.log(err);
-                },
-            });
-    }
-
-    public onSubmitReview(): void {
-        const lastItemReview = this.previousFormValuesOnReview.licenseReview;
-
-        const lastReviewedItemInLicenseArray = {
-            isLicenseNumberValid: lastItemReview
-                ? lastItemReview.isLicenseNumberValid
-                : true,
-            licenseCountryMessage: this.lastLicenseCard.firstRowReview,
-            isExpDateValid: lastItemReview
-                ? lastItemReview.isExpDateValid
-                : true,
-            stateClassExpDateMessage: this.lastLicenseCard.secondRowReview,
-        };
-
-        const saveData: CreateApplicantCdlReviewCommand = {
-            applicantId: this.applicantId,
-            isCdlDeniedExplanationValid:
-                !this.openAnnotationArray[14].lineInputs[0],
-            cdlDeniedExplanationMessage:
-                this.permitForm.get('fifthRowReview').value,
-            licenceReviews: [lastReviewedItemInLicenseArray],
-        };
-
-        console.log('save', saveData);
-    }
-
-    ngOnDestroy(): void {}
+  ngOnDestroy(): void {}
 }

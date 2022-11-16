@@ -6,22 +6,23 @@ import { DebugElement } from '@angular/core';
 import { SettingsOfficeComponent } from './settings-office.component';
 
 describe('SettingsOfficeComponent', () => {
-    let component: SettingsOfficeComponent;
-    let fixture: ComponentFixture<SettingsOfficeComponent>;
+  let component: SettingsOfficeComponent;
+  let fixture: ComponentFixture<SettingsOfficeComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [SettingsOfficeComponent],
-        }).compileComponents();
-    }));
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ SettingsOfficeComponent ]
+    })
+    .compileComponents();
+  }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(SettingsOfficeComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(SettingsOfficeComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

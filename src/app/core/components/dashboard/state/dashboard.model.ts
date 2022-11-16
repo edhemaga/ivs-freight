@@ -6,5 +6,6 @@ export class DashboardStats {
 }
 
 export interface IDashboard {
-    statistic: DashboardStats[];
+    statistic: DashboardStats[]
 }
+  

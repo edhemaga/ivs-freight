@@ -1,125 +1,117 @@
 <div class="container-fluid">
-    <div class="row">
-        <div
-            class="login-container container-fluid d-flex flex-column justify-content-between"
-        >
-            <div class="d-flex flex-column align-items-center">
-                <svg-icon
-                    class="login-logo"
-                    src="assets/svg/authentication/ta-logo.svg"
-                    [svgStyle]="{ 'width.px': '264', 'height.px': '86' }"
-                ></svg-icon>
+  <div class="row">
+    <div
+      class="login-container container-fluid d-flex flex-column justify-content-between"
+    >
+      <div class="d-flex flex-column align-items-center">
+        <svg-icon
+          class="login-logo"
+          src="assets/svg/authentication/ta-logo.svg"
+          [svgStyle]="{ 'width.px': '264', 'height.px': '86' }"
+        ></svg-icon>
 
-                <div class="login-text d-flex flex-column align-items-center">
-                    <h1 class="m-0 text-center">
-                        Welcome to <span>TruckAssist</span>
-                    </h1>
+        <div class="login-text d-flex flex-column align-items-center">
+          <h1 class="m-0 text-center">Welcome to <span>TruckAssist</span></h1>
 
-                    <h2 class="m-0 text-center">
-                        To Sign In please enter your email and password
-                    </h2>
-                </div>
-
-                <!-- FORM SECTION -->
-
-                <form (keydown)="onKeyDown($event)" [formGroup]="loginForm">
-                    <div class="d-flex">
-                        <div class="email-group">
-                            <app-ta-input
-                                formControlName="email"
-                                [inputConfig]="{
-                                    name: 'Email',
-                                    type: 'email',
-                                    label: 'Email',
-                                    placeholderIcon: 'email',
-                                    isRequired: true,
-                                    autocomplete: 'off',
-                                    autoFocus: true,
-                                    minLength: 5,
-                                    maxLength: 64,
-                                    textTransform: 'lowercase'
-                                }"
-                            ></app-ta-input>
-                        </div>
-                    </div>
-                    <div class="d-flex">
-                        <div class="password-group">
-                            <app-ta-input
-                                formControlName="password"
-                                [inputConfig]="{
-                                    name: 'Password',
-                                    type: 'password',
-                                    label: 'Password',
-                                    placeholderIcon: 'password',
-                                    isRequired: true,
-                                    autocomplete: 'off',
-                                    minLength: 8,
-                                    maxLength: 64
-                                }"
-                            ></app-ta-input>
-                        </div>
-                    </div>
-
-                    <!-- FORGOT PASSWORD BTN -->
-
-                    <div class="d-flex">
-                        <button
-                            class="forgot-password-btn align-self-start"
-                            type="button"
-                            [routerLink]="['/auth/forgot-password']"
-                        >
-                            Forgot password?
-                        </button>
-                    </div>
-
-                    <!-- SIGNED IN CHECKBOX -->
-
-                    <div
-                        class="d-flex justify-content-center align-items-center"
-                    >
-                        <app-ta-checkbox
-                            formControlName="staySignedIn"
-                            [label]="'Stay Signed In'"
-                            customClass="medium"
-                        ></app-ta-checkbox>
-                    </div>
-                </form>
-
-                <!-- SIGN IN BTN -->
-
-                <button
-                    class="d-flex justify-content-center align-items-center submit-btn"
-                    (click)="userLogin()"
-                    type="submit"
-                    [ngClass]="{
-                        disabled: loginForm.invalid
-                    }"
-                >
-                    Sign In
-                </button>
-
-                <!-- SIGN UP BTN -->
-
-                <button
-                    type="button"
-                    [routerLink]="['/auth/register']"
-                    class="sign-up-btn"
-                >
-                    Don't have account? <span>Sign up</span>
-                </button>
-            </div>
-
-            <!-- COPYRIGHT -->
-
-            <div class="row">
-                <div
-                    class="d-flex justify-content-center align-items-center copyright"
-                >
-                    <p class="m-0">
-                        Copyright © TruckAssist {{ copyrightYear }}.
-                    </p>
-                </div>
-            </div>
+          <h2 class="m-0 text-center">
+            To Sign In please enter your email and password
+          </h2>
         </div>
+
+        <!-- FORM SECTION -->
+
+        <form (keydown)="onKeyDown($event)" [formGroup]="loginForm">
+          <div class="d-flex">
+            <div class="email-group">
+              <app-ta-input
+                formControlName="email"
+                [inputConfig]="{
+                  name: 'Email',
+                  type: 'email',
+                  label: 'Email',
+                  placeholderIcon: 'email',
+                  isRequired: true,
+                  autocomplete: 'off',
+                  autoFocus: true,
+                  minLength: 5,
+                  maxLength: 64,
+                  textTransform: 'lowercase'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+          <div class="d-flex">
+            <div class="password-group">
+              <app-ta-input
+                formControlName="password"
+                [inputConfig]="{
+                  name: 'Password',
+                  type: 'password',
+                  label: 'Password',
+                  placeholderIcon: 'password',
+                  isRequired: true,
+                  autocomplete: 'off',
+                  minLength: 8,
+                  maxLength: 64
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+
+          <!-- FORGOT PASSWORD BTN -->
+
+          <div class="d-flex">
+            <button
+              class="forgot-password-btn align-self-start"
+              type="button"
+              [routerLink]="['/auth/forgot-password']"
+            >
+              Forgot password?
+            </button>
+          </div>
+
+          <!-- SIGNED IN CHECKBOX -->
+
+          <div class="d-flex justify-content-center align-items-center">
+            <app-ta-checkbox
+              formControlName="staySignedIn"
+              [label]="'Stay Signed In'"
+              customClass="medium"
+            ></app-ta-checkbox>
+          </div>
+        </form>
+
+        <!-- SIGN IN BTN -->
+
+        <button
+          class="d-flex justify-content-center align-items-center submit-btn"
+          (click)="userLogin()"
+          type="submit"
+          [ngClass]="{
+            disabled: loginForm.invalid
+          }"
+        >
+          Sign In
+        </button>
+
+        <!-- SIGN UP BTN -->
+
+        <button
+          type="button"
+          [routerLink]="['/auth/register']"
+          class="sign-up-btn"
+        >
+          Don't have account? <span>Sign up</span>
+        </button>
+      </div>
+
+      <!-- COPYRIGHT -->
+
+      <div class="row">
+        <div class="d-flex justify-content-center align-items-center copyright">
+          <p class="m-0">Copyright © TruckAssist {{ copyrightYear }}.</p>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

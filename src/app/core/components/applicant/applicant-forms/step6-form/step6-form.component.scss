@@ -1,191 +1,191 @@
 @import 'src/theme/variables.scss';
 
 .step-form {
-    .line-container {
-        position: relative;
+  .line-container {
+    position: relative;
 
-        .review-feedback-container {
-            position: absolute;
-            top: 0;
-            right: -435px;
-            width: 429px;
+    .review-feedback-container {
+      position: absolute;
+      top: 0;
+      right: -435px;
+      width: 429px;
+    }
+  }
+
+  .group {
+    margin-right: 12px;
+
+    &:last-child {
+      margin-right: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .name-group {
+    width: 207px;
+    margin-bottom: 22px;
+  }
+
+  .phone-group {
+    width: 219px;
+    margin-bottom: 22px;
+  }
+
+  .relationship-group {
+    width: 166px;
+    margin-bottom: 22px;
+    margin-right: 0;
+  }
+
+  .btn-container {
+    .add-btn {
+      height: 26px;
+      padding: 4px 8px;
+      line-height: 18px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      border-radius: 2px;
+      color: $ta-blue;
+      background: $ta-gray-01;
+      transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+      &:hover {
+        color: $white;
+        background: $ta-blue;
+      }
+
+      &:hover .plus-icon {
+        svg {
+          path {
+            fill: $white;
+          }
         }
-    }
+      }
 
-    .group {
-        margin-right: 12px;
+      &.disabled {
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
 
-        &:last-child {
-            margin-right: 0;
-            margin-bottom: 0;
+        cursor: auto;
+        background: $ta-light-grey-4;
+        color: $bw4;
+
+        .plus-icon {
+          svg {
+            path {
+              fill: $ta-light-grey-6;
+            }
+          }
         }
-    }
 
-    .name-group {
-        width: 207px;
-        margin-bottom: 22px;
-    }
+        &:hover {
+          background: $ta-light-grey-4 !important;
+          color: $bw4 !important;
+        }
+      }
 
-    .phone-group {
-        width: 219px;
-        margin-bottom: 22px;
-    }
+      .plus-icon {
+        margin-right: 6px;
 
-    .relationship-group {
-        width: 166px;
-        margin-bottom: 22px;
-        margin-right: 0;
+        svg {
+          path {
+            transition: fill 0.2s ease-in-out;
+            fill: $ta-light-blue;
+          }
+        }
+      }
     }
 
     .btn-container {
-        .add-btn {
-            height: 26px;
-            padding: 4px 8px;
-            line-height: 18px;
-            border: none;
-            outline: none;
-            font-size: 14px;
-            border-radius: 2px;
-            color: $ta-blue;
-            background: $ta-gray-01;
-            transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+      margin-bottom: 32px;
 
-            &:hover {
-                color: $white;
-                background: $ta-blue;
-            }
+      .add-btn {
+        height: 26px;
+        padding: 4px 8px;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        border-radius: 2px;
+        color: $ta-blue;
+        background: $ta-gray-01;
+        transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
 
-            &:hover .plus-icon {
-                svg {
-                    path {
-                        fill: $white;
-                    }
-                }
-            }
-
-            &.disabled {
-                -webkit-user-select: none !important;
-                -moz-user-select: none !important;
-                -ms-user-select: none !important;
-                user-select: none !important;
-
-                cursor: auto;
-                background: $ta-light-grey-4;
-                color: $bw4;
-
-                .plus-icon {
-                    svg {
-                        path {
-                            fill: $ta-light-grey-6;
-                        }
-                    }
-                }
-
-                &:hover {
-                    background: $ta-light-grey-4 !important;
-                    color: $bw4 !important;
-                }
-            }
-
-            .plus-icon {
-                margin-right: 6px;
-
-                svg {
-                    path {
-                        transition: fill 0.2s ease-in-out;
-                        fill: $ta-light-blue;
-                    }
-                }
-            }
+        &:hover {
+          color: $white;
+          background: $ta-blue;
         }
 
-        .btn-container {
-            margin-bottom: 32px;
-
-            .add-btn {
-                height: 26px;
-                padding: 4px 8px;
-                border: none;
-                outline: none;
-                font-size: 14px;
-                border-radius: 2px;
-                color: $ta-blue;
-                background: $ta-gray-01;
-                transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
-
-                &:hover {
-                    color: $white;
-                    background: $ta-blue;
-                }
-
-                &:hover .plus-icon {
-                    svg {
-                        path {
-                            fill: $white;
-                        }
-                    }
-                }
-
-                &.disabled {
-                    -webkit-user-select: none !important;
-                    -moz-user-select: none !important;
-                    -ms-user-select: none !important;
-                    user-select: none !important;
-
-                    cursor: auto;
-                    background: $ta-light-grey-4;
-                    color: $bw4;
-
-                    .plus-icon {
-                        svg {
-                            path {
-                                fill: $ta-light-grey-6;
-                            }
-                        }
-                    }
-
-                    &:hover {
-                        background: $ta-light-grey-4 !important;
-                        color: $bw4 !important;
-                    }
-                }
-
-                .plus-icon {
-                    margin-right: 6px;
-
-                    svg {
-                        path {
-                            transition: fill 0.2s ease-in-out;
-                            fill: $ta-light-blue;
-                        }
-                    }
-                }
+        &:hover .plus-icon {
+          svg {
+            path {
+              fill: $white;
             }
-
-            .cancel-btn {
-                width: 150px;
-                height: 32px;
-                margin-right: 22px;
-                color: $bw5;
-                background: $ta-light-grey-4;
-                transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
-
-                &:hover {
-                    background: $bw6-2;
-                    color: $white;
-                }
-            }
-
-            .save-btn {
-                width: 150px;
-                height: 32px;
-                color: $white;
-                background: $ta-light-blue;
-
-                &:hover {
-                    background-color: $ta-blue;
-                }
-            }
+          }
         }
+
+        &.disabled {
+          -webkit-user-select: none !important;
+          -moz-user-select: none !important;
+          -ms-user-select: none !important;
+          user-select: none !important;
+
+          cursor: auto;
+          background: $ta-light-grey-4;
+          color: $bw4;
+
+          .plus-icon {
+            svg {
+              path {
+                fill: $ta-light-grey-6;
+              }
+            }
+          }
+
+          &:hover {
+            background: $ta-light-grey-4 !important;
+            color: $bw4 !important;
+          }
+        }
+
+        .plus-icon {
+          margin-right: 6px;
+
+          svg {
+            path {
+              transition: fill 0.2s ease-in-out;
+              fill: $ta-light-blue;
+            }
+          }
+        }
+      }
+
+      .cancel-btn {
+        width: 150px;
+        height: 32px;
+        margin-right: 22px;
+        color: $bw5;
+        background: $ta-light-grey-4;
+        transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
+
+        &:hover {
+          background: $bw6-2;
+          color: $white;
+        }
+      }
+
+      .save-btn {
+        width: 150px;
+        height: 32px;
+        color: $white;
+        background: $ta-light-blue;
+
+        &:hover {
+          background-color: $ta-blue;
+        }
+      }
     }
+  }
 }

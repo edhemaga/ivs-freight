@@ -1,87 +1,93 @@
-.overlay-container {
+.overlay-container{
+
     .toast-bottom-left {
         bottom: 12px;
         left: 72px;
-    }
+      }
 
     .toast-bottom-left-login {
-        bottom: 12px;
-        left: 12px;
-    }
-
+      bottom: 12px;
+      left: 12px;
+    }  
+      
     .toast-error {
+        
         background-image: none;
 
-        .main-toast-holder {
-            background-color: #ef5350;
+        .main-toast-holder{
+          background-color: #EF5350;
         }
 
-        &:hover {
-            .main-toast-holder {
-                background-color: #f44336;
-            }
+        &:hover{
+          .main-toast-holder{
+            background-color: #F44336;
+          }
+         
         }
 
-        .closeToastrBtn {
-            &:hover {
-                background-color: #c3362b;
-            }
+        .closeToastrBtn{
+          &:hover{
+            background-color: #C3362B;
+          }
         }
-    }
-
+      }
+     
     .toast-success {
+       
         background-image: none;
 
-        .main-toast-holder {
-            background-color: #26a690;
+        .main-toast-holder{
+          background-color: #26A690;
         }
 
-        &:hover {
-            .main-toast-holder {
-                background-color: #00967e;
-            }
+        &:hover{
+          .main-toast-holder{
+            background-color: #00967E;
+          }
         }
 
-        .closeToastrBtn {
-            &:hover {
-                background-color: #007865;
-            }
+        .closeToastrBtn{
+          &:hover{
+            background-color: #007865;
+          }
         }
-    }
+      }  
 
     .toast-info {
-        background-color: #aaaaaa;
+        background-color: #AAAAAA;
         background-image: none;
-    }
-
+      }
+     
     .toast-warning {
         background-image: none;
 
-        .main-toast-holder {
-            background-color: #ffa726;
+        .main-toast-holder{
+          background-color: #FFA726;
         }
 
-        .closeToastrBtn {
-            &:hover {
-                background-color: #f39c1a;
-            }
+        .closeToastrBtn{
+          &:hover{
+            background-color: #f39c1a;
+          }
         }
-    }
+       
+      } 
+    
+  .pausedAnimation{
+    -webkit-animation-play-state:paused;
+    -moz-animation-play-state:paused;
+    -o-animation-play-state:paused; 
+    animation-play-state:paused;
+  }
 
-    .pausedAnimation {
-        -webkit-animation-play-state: paused;
-        -moz-animation-play-state: paused;
-        -o-animation-play-state: paused;
-        animation-play-state: paused;
-    }
+  .showRetry{
+      .retryButton{
+          display: flex !important;
+      }
 
-    .showRetry {
-        .retryButton {
-            display: flex !important;
-        }
+      .toast-message{
+          width: 80% !important;
+      }
+  }
 
-        .toast-message {
-            width: 80% !important;
-        }
-    }
 }

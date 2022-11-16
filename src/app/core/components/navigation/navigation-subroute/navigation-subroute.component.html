@@ -1,21 +1,21 @@
 <div class="subroutes-container">
-    <div
-        [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
-        *ngFor="let item of subroute.route; trackBy: identity"
-        class="subroutes"
-        [ngClass]="{
-            'new-magic-line-selected': isActiveRouteOnReload(item.route)
-        }"
-        [routerLink]="item.route"
-        routerLinkActive="subroute-active"
-        (click)="onSubrouteAction(item)"
-    >
-        <svg-icon
-            class="subroutes-active-checkpoint"
-            src="assets/svg/common/ic_confirm.svg"
-        ></svg-icon>
-        <p class="subroutes-item">{{ item.name }}</p>
-    </div>
+  <div
+    [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+    *ngFor="let item of subroute.route; trackBy: identity"
+    class="subroutes"
+    [ngClass]="{
+      'new-magic-line-selected': isActiveRouteOnReload(item.route)
+    }"
+    [routerLink]="item.route"
+    routerLinkActive="subroute-active"
+    (click)="onSubrouteAction(item)"
+  >
+    <svg-icon
+      class="subroutes-active-checkpoint"
+      src="assets/svg/common/ic_confirm.svg"
+    ></svg-icon>
+    <p class="subroutes-item">{{ item.name }}</p>
+  </div>
 
-    <div class="new-magic-line"></div>
+  <div class="new-magic-line"></div>
 </div>

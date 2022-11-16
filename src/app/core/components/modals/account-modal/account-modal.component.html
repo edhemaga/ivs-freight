@@ -1,138 +1,136 @@
 <app-ta-modal
-    [modalTitle]="editData?.type !== 'edit' ? 'Add Account' : 'Edit Account'"
-    [editData]="editData"
-    [editName]="editData?.data?.name"
-    [isModalValid]="accountForm.valid && isFormDirty"
-    (action)="onModalAction($event)"
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Account' : 'Edit Account'"
+  [editData]="editData"
+  [editName]="editData?.data?.name"
+  [isModalValid]="accountForm.valid && isFormDirty"
+  (action)="onModalAction($event)"
 >
-    <form
-        origin
-        [formGroup]="accountForm"
-        class="form-container form-container-without-mb"
-    >
-        <div class="row">
-            <div class="col-12">
-                <app-ta-input
-                    formControlName="name"
-                    [inputConfig]="{
-                        name: 'Account Name',
-                        type: 'text',
-                        label: 'Account Name',
-                        isRequired: true,
-                        maxLength: 23,
-                        textTransform: 'capitalize',
-                        autoFocus: editData?.type !== 'edit'
-                    }"
-                ></app-ta-input>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <app-ta-input-dropdown-label
-                    formControlName="companyAccountLabelId"
-                    [inputConfig]="{
-                        name: 'Input Dropdown Label',
-                        type: 'text',
-                        label: 'Label',
-                        placeholderIcon: 'ic_dynamic_label',
-                        dropdownLabel: true,
-                        dropdownWidthClass: 'w-col-456',
-                        textTransform: 'lowercase',
-                        blackInput: true,
-                        minLength: 1,
-                        maxLength: 32,
-                        commands: {
-                            active: false,
-                            type: 'confirm-cancel',
-                            firstCommand: {
-                                popup: {
-                                    name: 'Confirm',
-                                    backgroundColor: '#536BC2'
-                                },
-                                name: 'confirm',
-                                svg: 'assets/svg/ic_spec-confirm.svg'
-                            },
-                            secondCommand: {
-                                popup: {
-                                    name: 'Cancel',
-                                    backgroundColor: '#6c6c6c'
-                                },
-                                name: 'cancel',
-                                svg: 'assets/svg/ic_x.svg'
-                            }
-                        }
-                    }"
-                    [colors]="colors"
-                    [options]="accountLabels"
-                    [selectedLabel]="selectedAccountLabel"
-                    [selectedLabelColor]="selectedAccountColor"
-                    (pickExistLabel)="onPickExistLabel($event)"
-                    (pickColorLabel)="onSelectColorLabel($event)"
-                    (editModeLabel)="companyAccountLabelMode($event)"
-                    (saveLabel)="onSaveLabel($event)"
-                >
-                </app-ta-input-dropdown-label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <app-ta-input
-                    formControlName="username"
-                    [inputConfig]="{
-                        name: 'Username',
-                        type: 'text',
-                        label: 'Username',
-                        placeholderIcon: 'username',
-                        isRequired: true,
-                        minLength: 2,
-                        maxLength: 30
-                    }"
-                ></app-ta-input>
-            </div>
-            <div class="col-6">
-                <app-ta-input
-                    formControlName="password"
-                    [inputConfig]="{
-                        name: 'Password',
-                        type: 'password',
-                        label: 'Password',
-                        placeholderIcon: 'password',
-                        isRequired: true,
-                        minLength: 8,
-                        maxLength: 64
-                    }"
-                ></app-ta-input>
-            </div>
-        </div>
-        <div class="row last-row">
-            <div class="col-12">
-                <app-ta-input
-                    formControlName="url"
-                    [inputConfig]="{
-                        name: 'Url',
-                        type: 'text',
-                        label: 'Hyperlink',
-                        placeholderIcon: 'hyperlink',
-                        minLength: 4,
-                        maxLength: 255
-                    }"
-                ></app-ta-input>
-            </div>
-        </div>
-        <app-ta-input-note
-            formControlName="note"
-            [isVisibleNote]="
-                accountForm.get('note').value &&
-                accountForm.get('note').value != 'null'
-                    ? accountForm.get('note').value
-                    : false
-            "
-            [note]="
-                accountForm.get('note').value &&
-                accountForm.get('note').value != 'null'
-                    ? accountForm.get('note').value
-                    : ''
-            "
-        ></app-ta-input-note>
-    </form>
+  <form
+    origin
+    [formGroup]="accountForm"
+    class="form-container form-container-without-mb"
+  >
+    <div class="row">
+      <div class="col-12">
+        <app-ta-input
+          formControlName="name"
+          [inputConfig]="{
+            name: 'Account Name',
+            type: 'text',
+            label: 'Account Name',
+            isRequired: true,
+            maxLength: 23,
+            textTransform: 'capitalize',
+            autoFocus: editData?.type !== 'edit'
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <app-ta-input-dropdown-label
+          formControlName="companyAccountLabelId"
+          [inputConfig]="{
+            name: 'Input Dropdown Label',
+            type: 'text',
+            label: 'Label',
+            placeholderIcon: 'ic_dynamic_label',
+            dropdownLabel: true,
+            dropdownWidthClass: 'w-col-456',
+            textTransform: 'lowercase',
+            blackInput: true,
+            minLength: 1,
+            maxLength: 32,
+            commands: {
+              active: false,
+              type: 'confirm-cancel',
+              firstCommand: {
+                popup: {
+                  name: 'Confirm',
+                  backgroundColor: '#536BC2'
+                },
+                name: 'confirm',
+                svg: 'assets/svg/ic_spec-confirm.svg'
+              },
+              secondCommand: {
+                popup: {
+                  name: 'Cancel',
+                  backgroundColor: '#6c6c6c'
+                },
+                name: 'cancel',
+                svg: 'assets/svg/ic_x.svg'
+              }
+            }
+          }"
+          [colors]="colors"
+          [options]="accountLabels"
+          [selectedLabel]="selectedAccountLabel"
+          [selectedLabelColor]="selectedAccountColor"
+          (pickExistLabel)="onPickExistLabel($event)"
+          (pickColorLabel)="onSelectColorLabel($event)"
+          (editModeLabel)="companyAccountLabelMode($event)"
+          (saveLabel)="onSaveLabel($event)"
+        >
+        </app-ta-input-dropdown-label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <app-ta-input
+          formControlName="username"
+          [inputConfig]="{
+            name: 'Username',
+            type: 'text',
+            label: 'Username',
+            placeholderIcon: 'username',
+            isRequired: true,
+            minLength: 2,
+            maxLength: 30
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-6">
+        <app-ta-input
+          formControlName="password"
+          [inputConfig]="{
+            name: 'Password',
+            type: 'password',
+            label: 'Password',
+            placeholderIcon: 'password',
+            isRequired: true,
+            minLength: 8,
+            maxLength: 64
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row last-row">
+      <div class="col-12">
+        <app-ta-input
+          formControlName="url"
+          [inputConfig]="{
+            name: 'Url',
+            type: 'text',
+            label: 'Hyperlink',
+            placeholderIcon: 'hyperlink',
+            minLength: 4,
+            maxLength: 255
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <app-ta-input-note
+      formControlName="note"
+      [isVisibleNote]="
+        accountForm.get('note').value && accountForm.get('note').value != 'null'
+          ? accountForm.get('note').value
+          : false
+      "
+      [note]="
+        accountForm.get('note').value && accountForm.get('note').value != 'null'
+          ? accountForm.get('note').value
+          : ''
+      "
+    ></app-ta-input-note>
+  </form>
 </app-ta-modal>

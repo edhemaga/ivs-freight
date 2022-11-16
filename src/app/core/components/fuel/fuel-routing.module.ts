@@ -4,25 +4,25 @@ import { FuelTableComponent } from './fuel-table/fuel-table.component';
 import { FuelItemResolver } from './state/fuel-details-state/fuel-details.resolver';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: FuelTableComponent,
-        data: { title: 'Fuel' },
+  {
+    path: '',
+    component: FuelTableComponent,
+    data: { title: 'Fuel' },
+  },
+  {
+    path: ':id/details',
+    loadChildren: () =>
+      import('./fuel-details/fuel-details.module').then(
+        (m) => m.FuelDetailsModule
+      ),
+    resolve: {
+      fuelSingle: FuelItemResolver,
     },
-    {
-        path: ':id/details',
-        loadChildren: () =>
-            import('./fuel-details/fuel-details.module').then(
-                (m) => m.FuelDetailsModule
-            ),
-        resolve: {
-            fuelSingle: FuelItemResolver,
-        },
-    },
+  },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule],
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
 export class FuelRoutingModule {}

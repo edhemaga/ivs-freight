@@ -1,325 +1,325 @@
-@import '../../settings.global.scss';
-@import 'src/theme/variables.scss';
+@import "../../settings.global.scss";
+@import "src/theme/variables.scss";
 @keyframes change {
-    from {
-        color: #6c6c6c;
-    }
-    to {
-        color: #3551b7;
-    }
+  from {
+    color: #6c6c6c;
+  }
+  to {
+    color: #3551b7;
+  }
 }
 @keyframes changeSVG {
-    from {
-        fill: #6c6c6c;
-    }
-    to {
-        fill: #3551b7;
-    }
+  from {
+    fill: #6c6c6c;
+  }
+  to {
+    fill: #3551b7;
+  }
 }
 .settings-insurancepolicy {
-    width: 100%;
-    display: grid;
-    grid-template-rows: 32px auto;
-    row-gap: 12px;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 32px auto;
+  row-gap: 12px;
 }
 .settings-insuarnce {
-    .settings-progress-container {
-        padding-bottom: 0px !important;
-    }
+  .settings-progress-container {
+    padding-bottom: 0px !important;
+  }
 }
 .single-item-address {
-    max-width: 310px;
-    white-space: pre-wrap;
-    position: relative;
-    // top: 12px;
+  max-width: 310px;
+  white-space: pre-wrap;
+  position: relative;
+  // top: 12px;
 }
 .insuarance-card-top-container {
-    padding: 0 10px;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+  .number-of-policy {
+    font-size: 14px;
+    font-weight: 700;
+    color: $settings-gray-dark;
+    &::-moz-selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+      color: $settings-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
+  .name-div-wrapper {
     display: flex;
-    flex-direction: column;
-    padding-bottom: 10px;
-    .number-of-policy {
-        font-size: 14px;
-        font-weight: 700;
+    align-items: center;
+    .insurer-name {
+      font-size: 18px;
+      font-weight: $settings-font-medium;
+      color: $settings-gray-dark;
+
+      &::-moz-selection {
         color: $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: $settings-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+      }
+    }
+    .rating {
+      background-color: #f3f3f3;
+      padding: 2.5px 6px;
+      margin-left: 6px;
+      border-radius: 2px;
+      .rating-value {
+        font-size: 12px;
+        font-weight: 700;
+        color: #919191;
         &::-moz-selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
+          color: $settings-gray-dark;
+          background: rgb(145, 145, 145, 0.2);
         }
         &::selection {
-            color: $settings-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
+          color: $settings-gray-dark;
+          background: rgb(145, 145, 145, 0.2);
         }
+      }
     }
-    .name-div-wrapper {
-        display: flex;
-        align-items: center;
-        .insurer-name {
-            font-size: 18px;
-            font-weight: $settings-font-medium;
-            color: $settings-gray-dark;
-
-            &::-moz-selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
-        .rating {
-            background-color: #f3f3f3;
-            padding: 2.5px 6px;
-            margin-left: 6px;
-            border-radius: 2px;
-            .rating-value {
-                font-size: 12px;
-                font-weight: 700;
-                color: #919191;
-                &::-moz-selection {
-                    color: $settings-gray-dark;
-                    background: rgb(145, 145, 145, 0.2);
-                }
-                &::selection {
-                    color: $settings-gray-dark;
-                    background: rgb(145, 145, 145, 0.2);
-                }
-            }
-        }
-    }
+  }
 }
 
 .policy-company-wrapper {
-    display: flex;
-    align-items: center;
-    .insurance-copy {
-        cursor: pointer;
+  display: flex;
+  align-items: center;
+  .insurance-copy {
+    cursor: pointer;
 
-        margin-left: 6px;
-        display: none;
-        svg {
-            &:hover {
-                path {
-                    fill: #6c6c6c;
-                }
-            }
+    margin-left: 6px;
+    display: none;
+    svg {
+      &:hover {
+        path {
+          fill: #6c6c6c;
         }
+      }
     }
-    &:hover {
-        .insurance-copy {
-            display: flex;
-        }
+  }
+  &:hover {
+    .insurance-copy {
+      display: flex;
     }
+  }
 }
 .copied {
-    .number-of-policy {
+  .number-of-policy {
+    animation-duration: 1500ms;
+    animation-name: change;
+  }
+  .insurance-copy {
+    svg {
+      path {
         animation-duration: 1500ms;
-        animation-name: change;
-    }
-    .insurance-copy {
-        svg {
-            path {
-                animation-duration: 1500ms;
-                animation-name: changeSVG;
-                &:hover {
-                    animation-duration: 1500ms;
-                    animation-name: changeSVG;
-                }
-            }
+        animation-name: changeSVG;
+        &:hover {
+          animation-duration: 1500ms;
+          animation-name: changeSVG;
         }
+      }
     }
+  }
 }
 .copy-icon {
-    margin-left: 1px !important;
+  margin-left: 1px !important;
 }
 .details-document-container {
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 13px;
+  width: 100%;
+  .icon-counter-wrapper {
+    display: flex;
     align-items: center;
-    flex-direction: column;
-    margin-bottom: 13px;
-    width: 100%;
-    .icon-counter-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 3px;
-        padding-left: 2px;
-        padding-right: 6px;
+    justify-content: space-between;
+    margin-top: 3px;
+    padding-left: 2px;
+    padding-right: 6px;
+  }
+  .counter-text-wrapper {
+    display: flex;
+    align-items: center;
+    .details-document-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: #6c6c6c;
+      margin-left: 4px;
+      &::-moz-selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
-    .counter-text-wrapper {
-        display: flex;
-        align-items: center;
-        .details-document-name {
-            font-size: 14px;
-            font-weight: 800;
-            color: #6c6c6c;
-            margin-left: 4px;
-            &::-moz-selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
+  }
+  svg {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    &:hover {
+      path {
+        stroke: rgb(66, 157, 209);
+      }
     }
-    svg {
-        width: 18px;
-        height: 18px;
-        cursor: pointer;
-        &:hover {
-            path {
-                stroke: rgb(66, 157, 209);
-            }
-        }
-    }
+  }
 }
 .card-pdf {
-    padding: 0 10px;
-    margin-bottom: 16px;
-    padding-bottom: 16px;
+  padding: 0 10px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
 }
 .body-show {
-    margin-top: 12px !important;
+  margin-top: 12px !important;
 }
 .card-note {
-    margin-left: 6px;
-    .note-body {
-        padding: 0 4px !important;
+  margin-left: 6px;
+  .note-body {
+    padding: 0 4px !important;
+  }
+  .note-textarea {
+    color: #6c6c6c !important;
+    margin-bottom: -10px !important;
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
     }
-    .note-textarea {
-        color: #6c6c6c !important;
-        margin-bottom: -10px !important;
-        &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-        }
 
-        &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-        }
-
-        span {
-            &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
-
-            &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
-
-        span[style*='color: rgb(83, 107, 194)'],
-        span[style*='color: rgb(83, 107, 194)'] span {
-            &::-moz-selection {
-                color: $bw6-2 !important;
-                background: rgb(83, 107, 194, 0.2) !important;
-            }
-
-            &::selection {
-                color: $bw6-2;
-                background: rgb(83, 107, 194, 0.2) !important;
-            }
-        }
-
-        span[style*='color: rgb(38, 166, 144)'],
-        span[style*='color: rgb(38, 166, 144)'] span {
-            &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(38, 166, 144, 0.2) !important;
-            }
-
-            &::selection {
-                color: $bw6-2;
-                background: rgb(38, 166, 144, 0.2) !important;
-            }
-        }
-
-        span[style*='color: rgb(239, 83, 80)'],
-        span[style*='color: rgb(239, 83, 80)'] span {
-            &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(239, 83, 80, 0.2) !important;
-            }
-
-            &::selection {
-                color: $bw6-2;
-                background: rgb(239, 83, 80, 0.2) !important;
-            }
-        }
-
-        span[style*='color: rgb(255, 167, 38)'],
-        span[style*='color: rgb(255, 167, 38)'] span {
-            &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(255, 167, 38, 0.2) !important;
-            }
-
-            &::selection {
-                color: $bw6-2;
-                background: rgb(255, 167, 38, 0.2) !important;
-            }
-        }
-
-        span[style*='color: rgb(83, 107, 194)'],
-        span[style*='color: rgb(83, 107, 194)'] span {
-            &::-moz-selection {
-                color: $bw6-2 !important;
-                background: rgb(83, 107, 194, 0.2) !important;
-            }
-
-            &::selection {
-                color: $bw6-2;
-                background: rgb(83, 107, 194, 0.2) !important;
-            }
-        }
-
-        span[style*='color: rgb(38, 166, 144)'],
-        span[style*='color: rgb(38, 166, 144)'] span {
-            &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(38, 166, 144, 0.2) !important;
-            }
-
-            &::selection {
-                color: $bw6-2;
-                background: rgb(38, 166, 144, 0.2) !important;
-            }
-        }
-
-        span[style*='color: rgb(239, 83, 80)'],
-        span[style*='color: rgb(239, 83, 80)'] span {
-            &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(239, 83, 80, 0.2) !important;
-            }
-
-            &::selection {
-                color: $bw6-2;
-                background: rgb(239, 83, 80, 0.2) !important;
-            }
-        }
-
-        span[style*='color: rgb(255, 167, 38)'],
-        span[style*='color: rgb(255, 167, 38)'] span {
-            &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(255, 167, 38, 0.2) !important;
-            }
-
-            &::selection {
-                color: $bw6-2;
-                background: rgb(255, 167, 38, 0.2) !important;
-            }
-        }
+    &::selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
     }
+
+    span {
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+    }
+
+    span[style*="color: rgb(83, 107, 194)"],
+    span[style*="color: rgb(83, 107, 194)"] span {
+      &::-moz-selection {
+        color: $bw6-2 !important;
+        background: rgb(83, 107, 194, 0.2) !important;
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(83, 107, 194, 0.2) !important;
+      }
+    }
+
+    span[style*="color: rgb(38, 166, 144)"],
+    span[style*="color: rgb(38, 166, 144)"] span {
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(38, 166, 144, 0.2) !important;
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(38, 166, 144, 0.2) !important;
+      }
+    }
+
+    span[style*="color: rgb(239, 83, 80)"],
+    span[style*="color: rgb(239, 83, 80)"] span {
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(239, 83, 80, 0.2) !important;
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(239, 83, 80, 0.2) !important;
+      }
+    }
+
+    span[style*="color: rgb(255, 167, 38)"],
+    span[style*="color: rgb(255, 167, 38)"] span {
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(255, 167, 38, 0.2) !important;
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(255, 167, 38, 0.2) !important;
+      }
+    }
+
+    span[style*="color: rgb(83, 107, 194)"],
+    span[style*="color: rgb(83, 107, 194)"] span {
+      &::-moz-selection {
+        color: $bw6-2 !important;
+        background: rgb(83, 107, 194, 0.2) !important;
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(83, 107, 194, 0.2) !important;
+      }
+    }
+
+    span[style*="color: rgb(38, 166, 144)"],
+    span[style*="color: rgb(38, 166, 144)"] span {
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(38, 166, 144, 0.2) !important;
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(38, 166, 144, 0.2) !important;
+      }
+    }
+
+    span[style*="color: rgb(239, 83, 80)"],
+    span[style*="color: rgb(239, 83, 80)"] span {
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(239, 83, 80, 0.2) !important;
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(239, 83, 80, 0.2) !important;
+      }
+    }
+
+    span[style*="color: rgb(255, 167, 38)"],
+    span[style*="color: rgb(255, 167, 38)"] span {
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(255, 167, 38, 0.2) !important;
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(255, 167, 38, 0.2) !important;
+      }
+    }
+  }
 }
 app-settings-insurancepolicy {
-    .settings-body {
-        max-width: 400px;
-    }
+  .settings-body {
+    max-width: 400px;
+  }
 }

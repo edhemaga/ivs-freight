@@ -1,141 +1,141 @@
 .address_holder {
-    display: flex;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  width: 100%;
 
-    .main_address_holder {
-        position: relative;
-        flex: 1;
-        &.input_for_routing {
-            .input-clear {
-                display: none !important;
-            }
+  .main_address_holder {
+    position: relative;
+    flex: 1;
+    &.input_for_routing {
+      .input-clear {
+        display: none !important;
+      }
 
-            .input-dropdown-arrow {
-                display: none !important;
-            }
+      .input-dropdown-arrow {
+        display: none !important;
+      }
 
-            input {
-                height: 22px !important;
-                font-size: 11px !important;
-                line-height: 14px !important;
-                padding-right: 64px !important;
-            }
+      input {
+        height: 22px !important;
+        font-size: 11px !important;
+        line-height: 14px !important;
+        padding-right: 64px !important;
+      }
 
-            label {
-                font-size: 11px !important;
-                line-height: 14px !important;
-            }
+      label {
+        font-size: 11px !important;
+        line-height: 14px !important;
+      }
+    }
+    &.not_expanded {
+      input {
+        background-color: #fff !important;
+        cursor: pointer;
+      }
+      &:hover {
+        input {
+          background-color: #f3f3f3 !important;
         }
-        &.not_expanded {
-            input {
-                background-color: #fff !important;
-                cursor: pointer;
-            }
-            &:hover {
-                input {
-                    background-color: #f3f3f3 !important;
-                }
-            }
-        }
-        &.expanded_address {
-            input {
-                background-color: #6c6c6c !important;
-                color: #fff !important;
-            }
+      }
+    }
+    &.expanded_address {
+      input {
+        background-color: #6c6c6c !important;
+        color: #fff !important;
+      }
 
-            .valid-focus-out-filled {
-                background-color: #6c6c6c !important;
-                color: #fff !important;
-            }
-        }
-
-        .stop_hold {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            position: absolute;
-            right: 2px;
-            top: 2px;
-
-            width: 62px;
-            height: 18px;
-
-            background-color: #b7b7b7;
-            color: #fff;
-            border-radius: 1px;
-            cursor: pointer;
-            user-select: none;
-
-            &:hover {
-                background-color: #919191;
-            }
-        }
+      .valid-focus-out-filled{
+        background-color: #6c6c6c !important;
+        color: #fff !important;
+      }
     }
 
-    .ta-input-commands {
+    .stop_hold{
         display: flex;
+        justify-content: center;
         align-items: center;
 
-        .main-commands {
-            margin-left: 6px;
-            .ta-input-command-svg-first {
-                svg {
-                    rect {
-                        fill: #e2e2e2;
-                    }
+        position: absolute;
+        right: 2px;
+        top: 2px;
 
-                    path {
-                        fill: #fff;
-                    }
-                }
+        width: 62px;
+        height: 18px;
 
-                &.allow_confirm {
-                    svg {
-                        rect {
-                            fill: #b7b7b7;
-                        }
-                    }
+        background-color: #B7B7B7;
+        color: #fff;
+        border-radius: 1px;
+        cursor: pointer;
+        user-select: none;
 
-                    &:hover {
-                        rect {
-                            fill: #6c6c6c;
-                        }
-                    }
-                }
-            }
-
-            .ta-input-command-svg-second {
-                svg {
-                    rect {
-                        fill: #b7b7b7;
-                    }
-
-                    path {
-                        fill: #fff;
-                    }
-                }
-
-                &:hover {
-                    rect {
-                        fill: #6c6c6c;
-                    }
-                }
-            }
-
-            &:hover {
-                &:hover {
-                    svg {
-                        overflow: visible;
-                        rect {
-                            transform: scale(1.2);
-                            transform-origin: center;
-                            transition: transform 0.3s;
-                        }
-                    }
-                }
-            }
+        &:hover{
+            background-color: #919191;
         }
     }
+  }
+
+  .ta-input-commands {
+    display: flex;
+    align-items: center;
+
+    .main-commands {
+      margin-left: 6px;
+      .ta-input-command-svg-first {
+        svg {
+          rect {
+            fill: #e2e2e2;
+          }
+
+          path {
+            fill: #fff;
+          }
+        }
+
+        &.allow_confirm {
+          svg {
+            rect {
+              fill: #b7b7b7;
+            }
+          }
+
+          &:hover {
+            rect {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+
+      .ta-input-command-svg-second {
+        svg {
+          rect {
+            fill: #b7b7b7;
+          }
+
+          path {
+            fill: #fff;
+          }
+        }
+
+        &:hover {
+          rect {
+            fill: #6c6c6c;
+          }
+        }
+      }
+
+      &:hover {
+        &:hover {
+          svg {
+            overflow: visible;
+            rect {
+              transform: scale(1.2);
+              transform-origin: center;
+              transition: transform 0.3s;
+            }
+          }
+        }
+      }
+    }
+  }
 }

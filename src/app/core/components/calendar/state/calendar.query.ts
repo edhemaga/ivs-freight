@@ -5,10 +5,11 @@ import { combineLatest } from 'rxjs';
 import { CalendarState, CalendarStore } from './calendar.store';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root'
 })
 export class CalendarQuery extends QueryEntity<CalendarState> {
-    constructor(protected store: CalendarStore) {
-        super(store);
-    }
+
+  constructor(protected store: CalendarStore) {
+    super(store);
+  }
 }

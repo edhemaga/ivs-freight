@@ -1,11 +1,11 @@
 <div>
-    <div class="parent">
-        <div
-            [style.height.px]="
-                contentHeight | dynamicNavHeight: isNavigationCardActive
-            "
-            [ngClass]="{ 'subroute-card': isNavigationCardActive }"
-        ></div>
-    </div>
-    <ng-content></ng-content>
+  <div class="parent">
+    <div
+      [style.height.px]="
+        contentHeight | dynamicNavHeight: isNavigationCardActive
+      "
+      [ngClass]="{ 'subroute-card': isNavigationCardActive }"
+    ></div>
+  </div>
+  <ng-content></ng-content>
 </div>

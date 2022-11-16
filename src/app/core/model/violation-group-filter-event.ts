@@ -1,8 +1,8 @@
 export interface ViolationGroupFilterEvent {
-    violationGroupFilter: number[];
-    active: boolean;
+  violationGroupFilter: number[];
+  active: boolean;
 }
 
 export interface ViolationGroupFilterSummaryEvent {
-    selectedTypeId: number;
+  selectedTypeId: number;
 }

@@ -10,14 +10,14 @@ export function createInitialState(): CalendarState {
         statistic: {
             todayObject: null,
             mtdObject: [],
-            ytdObject: [],
-            allTimeObject: [],
-        },
+            ytdObject: [], 
+            allTimeObject: []
+        }
     };
-}
+  }
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 @StoreConfig({ name: 'calendar' })
 export class CalendarStore extends EntityStore<CalendarState> {

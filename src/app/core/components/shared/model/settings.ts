@@ -1,3 +1,3 @@
 export class Settings {
-    email: string;
+  email: string;
 }

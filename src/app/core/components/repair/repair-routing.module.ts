@@ -5,29 +5,29 @@ import { RepairTableComponent } from './repair-table/repair-table.component';
 import { RepairDResolver } from './state/details-state/repair-d.resolver';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: RepairTableComponent,
-        data: { title: 'Repair' },
-    },
-    {
-        path: ':id/shop-details',
-        loadChildren: () =>
-            import('./shop-repair-details/shop-repair-details.module').then(
-                (m) => m.ShopRepairDetailsModule
-            ),
-        resolve: { repairShopResolve: RepairDResolver },
-        data: { title: 'Shop Repair Details' },
-    },
-    {
-        path: 'card',
-        component: RepairCardComponent,
-        data: { title: 'Repear cards' },
-    },
+  {
+    path: '',
+    component: RepairTableComponent,
+    data: { title: 'Repair' },
+  },
+  {
+    path: ':id/shop-details',
+    loadChildren: () =>
+      import('./shop-repair-details/shop-repair-details.module').then(
+        (m) => m.ShopRepairDetailsModule
+      ),
+    resolve: { repairShopResolve: RepairDResolver },
+    data: { title: 'Shop Repair Details' },
+  },
+  {
+    path: 'card',
+    component: RepairCardComponent,
+    data: { title: 'Repear cards' },
+  },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule],
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
 export class RepairRoutingModule {}

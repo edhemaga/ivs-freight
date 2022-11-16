@@ -15,15 +15,15 @@ import { TruckassistSearchModule } from '../shared/truckassist-search/truckassis
 FullCalendarModule.registerPlugins([dayGridPlugin, interactionPlugin]);
 
 @NgModule({
-    declarations: [CalendarComponent, CalendarMonthComponent],
-    imports: [
-        CommonModule,
-        CalendarRoutingModule,
-        FormsModule,
-        ReactiveFormsModule,
-        SharedModule,
-        FullCalendarModule,
-        TruckassistSearchModule,
-    ],
+  declarations: [CalendarComponent, CalendarMonthComponent],
+  imports: [
+    CommonModule,
+    CalendarRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SharedModule,
+    FullCalendarModule,
+    TruckassistSearchModule,
+  ],
 })
 export class CalendarModule {}

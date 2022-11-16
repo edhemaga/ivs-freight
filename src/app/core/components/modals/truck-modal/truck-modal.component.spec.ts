@@ -6,22 +6,23 @@ import { DebugElement } from '@angular/core';
 import { TruckModalComponent } from './truck-modal.component';
 
 describe('TruckModalComponent', () => {
-    let component: TruckModalComponent;
-    let fixture: ComponentFixture<TruckModalComponent>;
+  let component: TruckModalComponent;
+  let fixture: ComponentFixture<TruckModalComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [TruckModalComponent],
-        }).compileComponents();
-    }));
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ TruckModalComponent ]
+    })
+    .compileComponents();
+  }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(TruckModalComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TruckModalComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

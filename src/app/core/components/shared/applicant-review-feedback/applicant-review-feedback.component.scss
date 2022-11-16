@@ -1,128 +1,128 @@
 @import 'src/theme/variables.scss';
 
 .review-container {
-    .pen-icon {
-        cursor: pointer;
-        visibility: none;
-        opacity: 0;
-        transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  .pen-icon {
+    cursor: pointer;
+    visibility: none;
+    opacity: 0;
+    transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out;
 
-        &.display-icon {
-            visibility: visible;
-            opacity: 1;
+    &.display-icon {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    &:hover {
+      svg {
+        path {
+          fill: $white;
         }
 
-        &:hover {
-            svg {
-                path {
-                    fill: $white;
-                }
-
-                rect {
-                    fill: $bw6-2;
-                }
-            }
+        rect {
+          fill: $bw6-2;
         }
+      }
+    }
 
+    svg {
+      path {
+        transition: fill 0.2s ease-in-out;
+        fill: $ta-light-grey-2;
+      }
+
+      rect {
+        transition: fill 0.2s ease-in-out;
+        fill: $ta-light-grey-4;
+      }
+    }
+  }
+
+  .annotation-group {
+    width: 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: width 0.1s ease-in-out, visibility 0.1s ease-in-out,
+      opacity 0.1s ease-in-out;
+
+    &.display-annotation {
+      visibility: visible;
+      opacity: 1;
+      width: 397px;
+    }
+  }
+
+  .close-icon-container {
+    .close-icon {
+      cursor: pointer;
+      margin-left: 6px;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
+
+      &.display-icon {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      &:hover {
         svg {
-            path {
-                transition: fill 0.2s ease-in-out;
-                fill: $ta-light-grey-2;
-            }
+          path {
+            fill: $white;
+          }
 
-            rect {
-                transition: fill 0.2s ease-in-out;
-                fill: $ta-light-grey-4;
-            }
+          rect {
+            fill: $bw6-2;
+          }
         }
-    }
+      }
 
-    .annotation-group {
-        width: 0;
-        visibility: hidden;
-        opacity: 0;
-        transition: width 0.1s ease-in-out, visibility 0.1s ease-in-out,
-            opacity 0.1s ease-in-out;
-
-        &.display-annotation {
-            visibility: visible;
-            opacity: 1;
-            width: 397px;
+      svg {
+        path {
+          transition: fill 0.2s ease-in-out;
+          fill: $ta-light-grey-2;
         }
-    }
 
-    .close-icon-container {
-        .close-icon {
-            cursor: pointer;
-            margin-left: 6px;
-            visibility: hidden;
-            opacity: 0;
-            transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
-
-            &.display-icon {
-                visibility: visible;
-                opacity: 1;
-            }
-
-            &:hover {
-                svg {
-                    path {
-                        fill: $white;
-                    }
-
-                    rect {
-                        fill: $bw6-2;
-                    }
-                }
-            }
-
-            svg {
-                path {
-                    transition: fill 0.2s ease-in-out;
-                    fill: $ta-light-grey-2;
-                }
-
-                rect {
-                    transition: fill 0.2s ease-in-out;
-                    fill: $ta-light-grey-4;
-                }
-            }
+        rect {
+          transition: fill 0.2s ease-in-out;
+          fill: $ta-light-grey-4;
         }
+      }
     }
+  }
 }
 
 .feedback-container {
-    .feedback-text-container {
-        width: 397px;
-        max-height: 45px;
-        padding: 4px 6px;
-        border-radius: 2px;
-        background: $ta-light-grey-4;
-        transition: background 0.3s ease-in-out;
+  .feedback-text-container {
+    width: 397px;
+    max-height: 45px;
+    padding: 4px 6px;
+    border-radius: 2px;
+    background: $ta-light-grey-4;
+    transition: background 0.3s ease-in-out;
 
-        &:hover {
-            background: $bw2;
-        }
-
-        &:hover p {
-            color: $ta-light-grey-3;
-        }
-
-        p {
-            font-size: 14px;
-            line-height: 18px;
-            color: $bw6-2;
-            transition: color 0.3s ease-in-out;
-
-            &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
-
-            &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
+    &:hover {
+      background: $bw2;
     }
+
+    &:hover p {
+      color: $ta-light-grey-3;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 18px;
+      color: $bw6-2;
+      transition: color 0.3s ease-in-out;
+
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+    }
+  }
 }

@@ -6,22 +6,23 @@ import { DebugElement } from '@angular/core';
 import { OwnerModalComponent } from './owner-modal.component';
 
 describe('OwnerModalComponent', () => {
-    let component: OwnerModalComponent;
-    let fixture: ComponentFixture<OwnerModalComponent>;
+  let component: OwnerModalComponent;
+  let fixture: ComponentFixture<OwnerModalComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [OwnerModalComponent],
-        }).compileComponents();
-    }));
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ OwnerModalComponent ]
+    })
+    .compileComponents();
+  }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(OwnerModalComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(OwnerModalComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

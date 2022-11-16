@@ -4,7 +4,7 @@ import { TruckActiveState, TruckActiveStore } from './truck-active.store';
 
 @Injectable({ providedIn: 'root' })
 export class TruckActiveQuery extends QueryEntity<TruckActiveState> {
-    constructor(protected truckStore: TruckActiveStore) {
-        super(truckStore);
-    }
+  constructor(protected truckStore: TruckActiveStore) {
+    super(truckStore);
+  }
 }

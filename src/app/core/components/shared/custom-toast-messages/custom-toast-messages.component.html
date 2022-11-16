@@ -1,60 +1,23 @@
-<div
-    class="main-toast-holder"
-    [class.movedLeft]="leftSideMove"
-    [ngClass]="{ retryClass: retryStarted || retryBtnHovered }"
->
-    <div class="main-messages-holder">
+<div class="main-toast-holder" [class.movedLeft]="leftSideMove" [ngClass]="{ 'retryClass': retryStarted || retryBtnHovered }" >
+    <div class="main-messages-holder" >
         <div class="toast-title">
-            <span
-                *ngIf="
-                    toastrType == 'toast-success' &&
-                    !retryBtnHovered &&
-                    !retryStarted
-                "
-                >{{ actionTitle }} {{ actionType }}</span
-            >
-            <span
-                *ngIf="
-                    toastrType == 'toast-error' &&
-                    !retryBtnHovered &&
-                    !retryStarted
-                "
-                >FAILED TO {{ actionTitle }} {{ actionType }}</span
-            >
-            <span *ngIf="retryBtnHovered && !retryStarted"
-                >RETRY TO {{ actionTitle }} {{ actionType }}</span
-            >
-            <span *ngIf="retryStarted"
-                >RETRY TO {{ actionTitle }} {{ actionType }}</span
-            >
-            {{ mainTitle }}
+            <span *ngIf="toastrType == 'toast-success' && !retryBtnHovered && !retryStarted">{{actionTitle}} {{actionType}}</span>
+            <span *ngIf="toastrType == 'toast-error' && !retryBtnHovered && !retryStarted">FAILED TO {{actionTitle}} {{actionType}}</span>
+            <span *ngIf="retryBtnHovered && !retryStarted">RETRY TO {{actionTitle}} {{actionType}}</span>
+            <span *ngIf="retryStarted">RETRY TO {{actionTitle}} {{actionType}}</span>
+            {{mainTitle}}
         </div>
-        <div
-            class="toast-message"
-            [class.errorMessage]="toastrType == 'toast-error'"
-        >
-            {{ message }}
-        </div>
+        <div class="toast-message" [class.errorMessage]="toastrType == 'toast-error'">{{message}}</div>
     </div>
-    <div class="buttons_holder">
-        <div
-            *ngIf="!retryStarted && toastrType == 'toast-error'"
-            class="closeToastrBtn retryButton"
-            (click)="clickOnRetry()"
-            (mouseenter)="retryBtnHovered = true"
-            (mouseleave)="retryBtnHovered = false"
-        >
+    <div class="buttons_holder" >
+        <div *ngIf="!retryStarted && toastrType == 'toast-error' " class="closeToastrBtn retryButton" (click)="clickOnRetry()" (mouseenter)="retryBtnHovered = true"  (mouseleave)="retryBtnHovered = false">
             <svg-icon src="assets/svg/common/ic_retry_white.svg"></svg-icon>
         </div>
-        <div
-            *ngIf="!retryStarted"
-            class="closeToastrBtn closeIcon"
-            (click)="closeToast()"
-        >
+        <div *ngIf="!retryStarted" class="closeToastrBtn closeIcon" (click)="closeToast()">
             <svg-icon src="assets/svg/common/ic_x.svg"></svg-icon>
         </div>
         <div *ngIf="retryStarted" class="closeToastrBtn">
             <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
         </div>
-    </div>
+    </div>    
 </div>

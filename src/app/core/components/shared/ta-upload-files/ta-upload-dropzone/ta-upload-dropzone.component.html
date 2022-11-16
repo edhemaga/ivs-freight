@@ -1,91 +1,77 @@
 <!-- Dropzone -->
 <div class="ta-upload-dropzone" *ngIf="!unSupporetedType">
-    <label for="pdf" class="ta-upload-dropzone-label">
-        <svg-icon
-            class="ta-upload-dropzone-area"
-            [class.expand]="dropZoneConfig.globalDropZone"
-            [src]="dropZoneConfig.dropZoneSvg"
-        ></svg-icon>
-        <div
-            class="ta-upload-dropzone-text"
-            [class.expand]="dropZoneConfig.globalDropZone"
-        >
-            <!-- Files -->
-            <span
-                *ngIf="dropZoneConfig.dropZoneType === 'files'"
-                [ngClass]="{
-                    'ta-upload-dropzone-text-big': dropZoneConfig.globalDropZone
-                }"
-            >
-                {{
-                    !textChangeOverModal
-                        ? 'DRAG FILES HERE'
-                        : "DROP IT LIKE IT'S HOT"
-                }}
-            </span>
-            <!-- Media -->
-            <span
-                *ngIf="dropZoneConfig.dropZoneType === 'media'"
-                [ngClass]="{
-                    'ta-upload-dropzone-text-big': dropZoneConfig.globalDropZone
-                }"
-            >
-                {{
-                    !textChangeOverModal
-                        ? 'DRAG MEDIA HERE'
-                        : "DROP IT LIKE IT'S HOT"
-                }}
-            </span>
-            <!-- IMAGE -->
-            <span
-                *ngIf="dropZoneConfig.dropZoneType === 'image'"
-                [ngClass]="{
-                    'ta-upload-dropzone-text-big': dropZoneConfig.globalDropZone
-                }"
-            >
-                {{
-                    !textChangeOverModal
-                        ? 'DRAG IMAGE HERE'
-                        : "DROP IT LIKE IT'S HOT"
-                }}
-            </span>
-            <span
-                *ngIf="!dropZoneConfig.globalDropZone"
-                class="ta-upload-dropzone-text-small"
-                >OR CLICK TO ADD</span
-            >
-        </div>
-    </label>
-    <input
-        id="pdf"
-        type="file"
-        [accept]="dropZoneConfig.dropZoneAvailableFiles"
-        [multiple]="dropZoneConfig.multiple"
-        (change)="onFileUpload($event.target.files)"
-    />
+  <label for="pdf" class="ta-upload-dropzone-label">
+    <svg-icon
+      class="ta-upload-dropzone-area"
+      [class.expand]="dropZoneConfig.globalDropZone"
+      [src]="dropZoneConfig.dropZoneSvg"
+    ></svg-icon>
+    <div
+      class="ta-upload-dropzone-text"
+      [class.expand]="dropZoneConfig.globalDropZone"
+    >
+      <!-- Files -->
+      <span
+        *ngIf="dropZoneConfig.dropZoneType === 'files'"
+        [ngClass]="{
+          'ta-upload-dropzone-text-big': dropZoneConfig.globalDropZone
+        }"
+      >
+        {{ !textChangeOverModal ? "DRAG FILES HERE" : "DROP IT LIKE IT'S HOT" }}
+      </span>
+      <!-- Media -->
+      <span
+        *ngIf="dropZoneConfig.dropZoneType === 'media'"
+        [ngClass]="{
+          'ta-upload-dropzone-text-big': dropZoneConfig.globalDropZone
+        }"
+      >
+        {{ !textChangeOverModal ? "DRAG MEDIA HERE" : "DROP IT LIKE IT'S HOT" }}
+      </span>
+      <!-- IMAGE -->
+      <span
+        *ngIf="dropZoneConfig.dropZoneType === 'image'"
+        [ngClass]="{
+          'ta-upload-dropzone-text-big': dropZoneConfig.globalDropZone
+        }"
+      >
+        {{ !textChangeOverModal ? "DRAG IMAGE HERE" : "DROP IT LIKE IT'S HOT" }}
+      </span>
+      <span
+        *ngIf="!dropZoneConfig.globalDropZone"
+        class="ta-upload-dropzone-text-small"
+        >OR CLICK TO ADD</span
+      >
+    </div>
+  </label>
+  <input
+    id="pdf"
+    type="file"
+    [accept]="dropZoneConfig.dropZoneAvailableFiles"
+    [multiple]="dropZoneConfig.multiple"
+    (change)="onFileUpload($event.target.files)"
+  />
 </div>
 <!-- Dropzone Unsupported -->
 <div class="ta-upload-dropzone-unsupported" *ngIf="unSupporetedType">
-    <svg-icon
-        class="cancel-unsupported-zone"
-        src="assets/svg/common/ic_x.svg"
-        (click)="unSupporetedType = false"
-    ></svg-icon>
-    <label for="pdf" class="ta-upload-dropzone-label">
-        <div class="ta-upload-dropzone-text">
-            <span class="ta-upload-dropzone-text-big"
-                >UNSUPPORTED FILE TYPE</span
-            >
-            <span class="ta-upload-dropzone-text-small"
-                >WE CURRENTLY SUPPORT THESE FORMATS</span
-            >
-            <div class="supported-extensions">
-                <span
-                    class="extension extension-{{ ext }}"
-                    *ngFor="let ext of supportedExtensions"
-                    >{{ ext }}</span
-                >
-            </div>
-        </div>
-    </label>
+  <svg-icon
+    class="cancel-unsupported-zone"
+    src="assets/svg/common/ic_x.svg"
+    (click)="unSupporetedType = false"
+  ></svg-icon>
+  <label for="pdf" class="ta-upload-dropzone-label">
+    <div class="ta-upload-dropzone-text">
+      <span class="ta-upload-dropzone-text-big">UNSUPPORTED FILE TYPE</span>
+      <span class="ta-upload-dropzone-text-small"
+        >WE CURRENTLY SUPPORT THESE FORMATS</span
+      >
+      <div class="supported-extensions">
+        <span
+          class="extension extension-{{ ext }}"
+          *ngFor="let ext of supportedExtensions"
+          >{{ ext }}</span
+        >
+      </div>
+    </div>
+  </label>
 </div>

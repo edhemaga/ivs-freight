@@ -16,218 +16,210 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { ApplicantResponse } from 'appcoretruckassist';
 
 @Component({
-    selector: 'app-mvr-authorization',
-    templateUrl: './mvr-authorization.component.html',
-    styleUrls: ['./mvr-authorization.component.scss'],
+  selector: 'app-mvr-authorization',
+  templateUrl: './mvr-authorization.component.html',
+  styleUrls: ['./mvr-authorization.component.scss'],
 })
 export class MvrAuthorizationComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
-    public mvrAuthorizationForm: FormGroup;
-    public dontHaveMvrForm: FormGroup;
+  public mvrAuthorizationForm: FormGroup;
+  public dontHaveMvrForm: FormGroup;
 
-    public lastValidLicense: any;
+  public lastValidLicense: any;
 
-    public documents: any[] = [];
+  public documents: any[] = [];
 
-    public signature: any;
+  public signature: any;
 
-    public openAnnotationArray: {
-        lineIndex?: number;
-        lineInputs?: boolean[];
-        displayAnnotationButton?: boolean;
-        displayAnnotationTextArea?: boolean;
-    }[] = [
-        {
-            lineIndex: 0,
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-    ];
-    public hasIncorrectFields: boolean = false;
+  public openAnnotationArray: {
+    lineIndex?: number;
+    lineInputs?: boolean[];
+    displayAnnotationButton?: boolean;
+    displayAnnotationTextArea?: boolean;
+  }[] = [
+    {
+      lineIndex: 0,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+  ];
+  public hasIncorrectFields: boolean = false;
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private inputService: TaInputService,
-        private applicantQuery: ApplicantQuery
-    ) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private applicantQuery: ApplicantQuery
+  ) {}
 
-    ngOnInit(): void {
-        this.createForm();
+  ngOnInit(): void {
+    this.createForm();
 
-        this.getStepValuesFromStore();
+    this.getStepValuesFromStore();
+  }
+
+  private createForm(): void {
+    this.mvrAuthorizationForm = this.formBuilder.group({
+      isConsentRelease: [false, Validators.requiredTrue],
+      isPeriodicallyObtained: [false, Validators.requiredTrue],
+      isInformationCorrect: [false, Validators.requiredTrue],
+      licenseCheck: [false, Validators.requiredTrue],
+
+      firstRowReview: [null],
+    });
+
+    this.dontHaveMvrForm = this.formBuilder.group({
+      dontHaveMvr: [false],
+    });
+  }
+
+  public getStepValuesFromStore(): void {
+    this.applicantQuery.applicant$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: ApplicantResponse) => {
+        const personalInfo = res.personalInfo;
+        const cdlInformation = res.cdlInformation;
+
+        const lastLicenseAdded: any =
+          cdlInformation?.licences[cdlInformation.licences.length - 1];
+
+        this.lastValidLicense = {
+          license: lastLicenseAdded?.licenseNumber,
+          state: lastLicenseAdded?.state?.stateShortName,
+          classType: lastLicenseAdded?.class?.name,
+          expDate: convertDateFromBackend(lastLicenseAdded?.expDate),
+        };
+
+        this.lastValidLicense.name = personalInfo?.fullName;
+      });
+  }
+
+  public handleCheckboxParagraphClick(type: string): void {
+    if (
+      this.selectedMode === SelectedMode.FEEDBACK ||
+      this.selectedMode === SelectedMode.REVIEW
+    ) {
+      return;
     }
 
-    private createForm(): void {
-        this.mvrAuthorizationForm = this.formBuilder.group({
-            isConsentRelease: [false, Validators.requiredTrue],
-            isPeriodicallyObtained: [false, Validators.requiredTrue],
-            isInformationCorrect: [false, Validators.requiredTrue],
-            licenseCheck: [false, Validators.requiredTrue],
-
-            firstRowReview: [null],
+    switch (type) {
+      case InputSwitchActions.CONSENT_RELEASE:
+        this.mvrAuthorizationForm.patchValue({
+          isConsentRelease:
+            !this.mvrAuthorizationForm.get('isConsentRelease').value,
         });
 
-        this.dontHaveMvrForm = this.formBuilder.group({
-            dontHaveMvr: [false],
+        break;
+      case InputSwitchActions.PERIODICALLY_OBTAINED:
+        this.mvrAuthorizationForm.patchValue({
+          isPeriodicallyObtained: !this.mvrAuthorizationForm.get(
+            'isPeriodicallyObtained'
+          ).value,
         });
+
+        break;
+      case InputSwitchActions.INFORMATION_CORRECT:
+        this.mvrAuthorizationForm.patchValue({
+          isInformationCorrect: !this.mvrAuthorizationForm.get(
+            'isInformationCorrect'
+          ).value,
+        });
+
+        break;
+      default:
+        break;
+    }
+  }
+
+  public onSignatureAction(event: any): void {
+    this.signature = event;
+  }
+
+  public onFilesAction(event: any): void {
+    this.documents = event.files;
+  }
+
+  public incorrectInput(
+    event: any,
+    inputIndex: number,
+    lineIndex: number
+  ): void {
+    const selectedInputsLine = this.openAnnotationArray.find(
+      (item) => item.lineIndex === lineIndex
+    );
+
+    if (event) {
+      selectedInputsLine.lineInputs[inputIndex] = true;
+
+      if (!selectedInputsLine.displayAnnotationTextArea) {
+        selectedInputsLine.displayAnnotationButton = true;
+        selectedInputsLine.displayAnnotationTextArea = false;
+      }
     }
 
-    public getStepValuesFromStore(): void {
-        this.applicantQuery.applicant$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: ApplicantResponse) => {
-                const personalInfo = res.personalInfo;
-                const cdlInformation = res.cdlInformation;
+    if (!event) {
+      selectedInputsLine.lineInputs[inputIndex] = false;
 
-                const lastLicenseAdded: any =
-                    cdlInformation?.licences[
-                        cdlInformation.licences.length - 1
-                    ];
+      const lineInputItems = selectedInputsLine.lineInputs;
+      const isAnyInputInLineIncorrect = anyInputInLineIncorrect(lineInputItems);
 
-                this.lastValidLicense = {
-                    license: lastLicenseAdded?.licenseNumber,
-                    state: lastLicenseAdded?.state?.stateShortName,
-                    classType: lastLicenseAdded?.class?.name,
-                    expDate: convertDateFromBackend(lastLicenseAdded?.expDate),
-                };
-
-                this.lastValidLicense.name = personalInfo?.fullName;
-            });
+      if (!isAnyInputInLineIncorrect) {
+        selectedInputsLine.displayAnnotationButton = false;
+        selectedInputsLine.displayAnnotationTextArea = false;
+      }
     }
 
-    public handleCheckboxParagraphClick(type: string): void {
-        if (
-            this.selectedMode === SelectedMode.FEEDBACK ||
-            this.selectedMode === SelectedMode.REVIEW
-        ) {
-            return;
-        }
+    const inputFieldsArray = JSON.stringify(
+      this.openAnnotationArray
+        .filter((item) => Object.keys(item).length !== 0)
+        .map((item) => item.lineInputs)
+    );
 
-        switch (type) {
-            case InputSwitchActions.CONSENT_RELEASE:
-                this.mvrAuthorizationForm.patchValue({
-                    isConsentRelease:
-                        !this.mvrAuthorizationForm.get('isConsentRelease')
-                            .value,
-                });
-
-                break;
-            case InputSwitchActions.PERIODICALLY_OBTAINED:
-                this.mvrAuthorizationForm.patchValue({
-                    isPeriodicallyObtained: !this.mvrAuthorizationForm.get(
-                        'isPeriodicallyObtained'
-                    ).value,
-                });
-
-                break;
-            case InputSwitchActions.INFORMATION_CORRECT:
-                this.mvrAuthorizationForm.patchValue({
-                    isInformationCorrect: !this.mvrAuthorizationForm.get(
-                        'isInformationCorrect'
-                    ).value,
-                });
-
-                break;
-            default:
-                break;
-        }
+    if (inputFieldsArray.includes('true')) {
+      this.hasIncorrectFields = true;
+    } else {
+      this.hasIncorrectFields = false;
     }
+  }
 
-    public onSignatureAction(event: any): void {
-        this.signature = event;
+  public getAnnotationBtnClickValue(event: any): void {
+    if (event.type === 'open') {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        true;
+    } else {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        false;
     }
+  }
 
-    public onFilesAction(event: any): void {
-        this.documents = event.files;
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+      if (this.selectedMode === SelectedMode.APPLICANT) {
+        this.onSubmit();
+      }
+
+      if (this.selectedMode === SelectedMode.REVIEW) {
+        this.onSubmitReview();
+      }
     }
+  }
 
-    public incorrectInput(
-        event: any,
-        inputIndex: number,
-        lineIndex: number
-    ): void {
-        const selectedInputsLine = this.openAnnotationArray.find(
-            (item) => item.lineIndex === lineIndex
-        );
-
-        if (event) {
-            selectedInputsLine.lineInputs[inputIndex] = true;
-
-            if (!selectedInputsLine.displayAnnotationTextArea) {
-                selectedInputsLine.displayAnnotationButton = true;
-                selectedInputsLine.displayAnnotationTextArea = false;
-            }
-        }
-
-        if (!event) {
-            selectedInputsLine.lineInputs[inputIndex] = false;
-
-            const lineInputItems = selectedInputsLine.lineInputs;
-            const isAnyInputInLineIncorrect =
-                anyInputInLineIncorrect(lineInputItems);
-
-            if (!isAnyInputInLineIncorrect) {
-                selectedInputsLine.displayAnnotationButton = false;
-                selectedInputsLine.displayAnnotationTextArea = false;
-            }
-        }
-
-        const inputFieldsArray = JSON.stringify(
-            this.openAnnotationArray
-                .filter((item) => Object.keys(item).length !== 0)
-                .map((item) => item.lineInputs)
-        );
-
-        if (inputFieldsArray.includes('true')) {
-            this.hasIncorrectFields = true;
-        } else {
-            this.hasIncorrectFields = false;
-        }
+  public onSubmit(): void {
+    if (this.mvrAuthorizationForm.invalid) {
+      this.inputService.markInvalid(this.mvrAuthorizationForm);
+      return;
     }
+  }
 
-    public getAnnotationBtnClickValue(event: any): void {
-        if (event.type === 'open') {
-            this.openAnnotationArray[event.lineIndex].displayAnnotationButton =
-                false;
-            this.openAnnotationArray[
-                event.lineIndex
-            ].displayAnnotationTextArea = true;
-        } else {
-            this.openAnnotationArray[event.lineIndex].displayAnnotationButton =
-                true;
-            this.openAnnotationArray[
-                event.lineIndex
-            ].displayAnnotationTextArea = false;
-        }
-    }
+  public onSubmitReview(): void {}
 
-    public onStepAction(event: any): void {
-        if (event.action === 'next-step') {
-            if (this.selectedMode === SelectedMode.APPLICANT) {
-                this.onSubmit();
-            }
-
-            if (this.selectedMode === SelectedMode.REVIEW) {
-                this.onSubmitReview();
-            }
-        }
-    }
-
-    public onSubmit(): void {
-        if (this.mvrAuthorizationForm.invalid) {
-            this.inputService.markInvalid(this.mvrAuthorizationForm);
-            return;
-        }
-    }
-
-    public onSubmitReview(): void {}
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

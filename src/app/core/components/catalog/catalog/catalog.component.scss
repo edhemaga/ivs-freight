@@ -1,8 +1,8 @@
-.catalog {
+.catalog{
     background-color: #000;
     position: absolute;
     flex-wrap: wrap;
-    .catalog-items {
+    .catalog-items{
         flex: 0 0 20%;
         min-height: 200px;
         justify-content: center;
@@ -11,14 +11,14 @@
         flex-direction: column;
         border: 1px solid #fff;
 
-        span {
+        span{
             color: #fff;
             font-size: 12px;
             text-align: center;
         }
 
-        svg-icon {
-            svg {
+        svg-icon{
+            svg{
                 max-width: 200px;
             }
         }
