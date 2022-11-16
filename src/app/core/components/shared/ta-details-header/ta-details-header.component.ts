@@ -1,12 +1,10 @@
-import { ActivatedRoute, Router } from '@angular/router';
-import { OnChanges, SimpleChanges } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import {
     Component,
     Input,
     OnInit,
     Output,
     EventEmitter,
-    ViewEncapsulation,
 } from '@angular/core';
 
 @Component({

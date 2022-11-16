@@ -10,7 +10,7 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { SharedService } from '../../../services/shared/shared.service';
 import { AfterViewInit } from '@angular/core';
 

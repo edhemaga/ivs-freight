@@ -2,7 +2,6 @@ import {
     phoneFaxRegex,
     addressValidation,
     vinNumberValidation,
-    descriptionValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';

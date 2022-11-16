@@ -1,4 +1,3 @@
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -9,8 +8,8 @@ import {
     SimpleChanges,
     ViewEncapsulation,
 } from '@angular/core';
-import { RepairListResponse, RepairShopResponse } from 'appcoretruckassist';
-import { Subject, takeUntil, forkJoin } from 'rxjs';
+import { RepairShopResponse } from 'appcoretruckassist';
+import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
 import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';

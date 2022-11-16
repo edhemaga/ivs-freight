@@ -11,7 +11,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
 import * as AppConst from 'src/app/const';
 import { MapsService } from '../../../services/shared/maps.service';
-import { UpdatedData } from '../model/shared/enums';
 
 @Component({
     selector: 'app-maps',
