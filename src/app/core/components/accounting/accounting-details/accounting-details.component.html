@@ -1,15 +1,21 @@
-<div class="acounting_details">
-  
-</div>
-
+<div class="acounting_details"></div>
 
 <!-- Popover for Toogle -->
 <ng-template #checkboxPopover let-data="data">
-  <div class="checkbox_pop">
-    <div class="top-header">Are you sure?</div>
-    <div class="modal-footer">
-      <button (click)="toggleCheckbox()" class="cancel-btn" type="button">No</button>
-      <button (click)="acceptCheckbox()" class="save-btn" ngbAutofocus type="button">Yes</button>
+    <div class="checkbox_pop">
+        <div class="top-header">Are you sure?</div>
+        <div class="modal-footer">
+            <button (click)="toggleCheckbox()" class="cancel-btn" type="button">
+                No
+            </button>
+            <button
+                (click)="acceptCheckbox()"
+                class="save-btn"
+                ngbAutofocus
+                type="button"
+            >
+                Yes
+            </button>
+        </div>
     </div>
-  </div>
 </ng-template>
