@@ -1,292 +1,316 @@
 <div class="d-flex flex-column align-items-center step-container">
-  <h1 class="step-title text-center ta-font-bold">
-    Safety Performance History
-  </h1>
+    <h1 class="step-title text-center ta-font-bold">
+        Safety Performance History
+    </h1>
 
-  <!-- INFO SECTION -->
+    <!-- INFO SECTION -->
 
-  <div class="d-flex justify-content-center text-center info-section">
-    <p class="m-0 ta-font-regular">
-      Employment & D/A Verification Part 391.23(2)(3) of the Federal Motor
-      Carrier Safety Regulations states that past employer’s must respond to
-      present inquiries into a drivers past performance history in a timely
-      manner.<br /><br />
-      Failure to do so will result in reporting to the Department of
-      Transportation Please use the JD Freight, Inc verification forms for this
-      request.
-    </p>
-  </div>
-
-  <!-- COMPLETED BY PROSPECTIVE EMPLOYER -->
-
-  <h5 class="m-0 step-subtitle ta-font-bold">
-    Completed by prospective employer
-  </h5>
-
-  <div class="d-flex flex-column justify-content-center employer-container">
-    <!-- PROSPECTIVE EMPLOYER -->
-
-    <div class="d-flex flex-column justify-content-center to-prev-employer-box">
-      <h3 class="m-0 ta-font-bold">To previous employer</h3>
-      <div class="d-flex align-items-center info-box">
+    <div class="d-flex justify-content-center text-center info-section">
         <p class="m-0 ta-font-regular">
-          {{ completedByProspectiveEmployderCard?.employerName }}
+            Employment & D/A Verification Part 391.23(2)(3) of the Federal Motor
+            Carrier Safety Regulations states that past employer’s must respond
+            to present inquiries into a drivers past performance history in a
+            timely manner.<br /><br />
+            Failure to do so will result in reporting to the Department of
+            Transportation Please use the JD Freight, Inc verification forms for
+            this request.
         </p>
-      </div>
-    </div>
-    <div class="d-flex align-items-center">
-      <!-- PHONE -->
-
-      <div class="d-flex flex-column justify-content-center phone-box">
-        <h3 class="m-0 ta-font-bold">phone</h3>
-        <div class="d-flex align-items-center info-box">
-          <svg-icon
-            class="icon"
-            src="assets/svg/common/ic_phone.svg"
-            [svgStyle]="{
-              'width.px': 18,
-              'height.px': 18
-            }"
-          ></svg-icon>
-
-          <div class="pipe"></div>
-
-          <p class="m-0 ta-font-regular">
-            {{ completedByProspectiveEmployderCard?.employerPhone }}
-          </p>
-        </div>
-      </div>
-
-      <!-- EMAIL -->
-
-      <div class="d-flex flex-column justify-content-center email-box">
-        <h3 class="m-0 ta-font-bold">email</h3>
-        <div class="d-flex align-items-center info-box">
-          <svg-icon
-            class="icon"
-            src="assets/svg/common/ic_email.svg"
-            [svgStyle]="{
-              'width.px': 18,
-              'height.px': 18
-            }"
-          ></svg-icon>
-
-          <div class="pipe"></div>
-
-          <p class="m-0 ta-font-regular">
-            {{ completedByProspectiveEmployderCard?.employerEmail }}
-          </p>
-        </div>
-      </div>
-
-      <!-- FAX -->
-
-      <div class="d-flex flex-column justify-content-center fax-box">
-        <h3 class="m-0 ta-font-bold">fax</h3>
-        <div class="d-flex align-items-center info-box">
-          <svg-icon
-            class="icon"
-            src="assets/svg/common/ic_fax.svg"
-            [svgStyle]="{
-              'width.px': 18,
-              'height.px': 18
-            }"
-          ></svg-icon>
-
-          <div class="pipe"></div>
-
-          <p class="m-0 ta-font-regular">
-            {{ completedByProspectiveEmployderCard?.employerFax }}
-          </p>
-        </div>
-      </div>
     </div>
 
-    <div class="d-flex align-items-center">
-      <!-- ADDRESS -->
+    <!-- COMPLETED BY PROSPECTIVE EMPLOYER -->
 
-      <div class="d-flex flex-column justify-content-center address-box">
-        <h3 class="m-0 ta-font-bold">address, city, state zip</h3>
-        <div class="d-flex align-items-center info-box">
-          <svg-icon
-            class="icon"
-            src="assets/svg/applicant/location.svg"
-            [svgStyle]="{
-              'width.px': 18,
-              'height.px': 18
-            }"
-          ></svg-icon>
+    <h5 class="m-0 step-subtitle ta-font-bold">
+        Completed by prospective employer
+    </h5>
 
-          <div class="pipe"></div>
+    <div class="d-flex flex-column justify-content-center employer-container">
+        <!-- PROSPECTIVE EMPLOYER -->
 
-          <p class="m-0 ta-font-regular">
-            {{ completedByProspectiveEmployderCard?.employerAddress.address }}
-          </p>
-        </div>
-      </div>
-
-      <!-- ADDRESS UNIT-->
-
-      <div class="d-flex flex-column justify-content-center address-unit-box">
-        <h3 class="m-0 ta-font-bold">unit #</h3>
-        <div class="d-flex align-items-center info-box">
-          <p class="m-0 ta-font-regular">
-            {{
-              completedByProspectiveEmployderCard?.employerAddress.addressUnit
-            }}
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="d-flex align-items-center">
-      <!-- PREVIOUS EMPLOYER NAME, SSN, DOB-->
-
-      <div class="d-flex flex-column justify-content-center prev-employer-box">
-        <div class="d-flex align-items-center title-container">
-          <div class="d-flex align-items-center name-title-box">
-            <p class="m-0 ta-font-bold">PREVIOUS EMPLOYEE NAME</p>
-          </div>
-          <div class="d-flex align-items-center ssn-title-box">
-            <p class="m-0 ta-font-bold">SSN</p>
-          </div>
-          <div class="d-flex align-items-center dob-title-box">
-            <p class="m-0 ta-font-bold">DOB</p>
-          </div>
-        </div>
-
-        <div class="d-flex align-items-center prev-employer-info-container">
-          <div class="d-flex align-items-center driver-box">
-            <p class="m-0 ta-font-regular">
-              {{ completedByProspectiveEmployderCard?.employeeName }}
-            </p>
-          </div>
-          <div class="d-flex align-items-center ssn-box">
-            <p class="m-0 ta-font-regular">
-              {{ completedByProspectiveEmployderCard?.employeeSsn }}
-            </p>
-          </div>
-          <div class="d-flex align-items-center date-box">
-            <p class="m-0 ta-font-regular">
-              {{ completedByProspectiveEmployderCard?.employeeDoB }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- COMPLETED BY DRIVER -->
-
-  <h5 class="m-0 step-subtitle ta-font-bold">Completed by driver</h5>
-
-  <div class="d-flex flex-column justify-content-center driver-container">
-    <div class="d-flex align-items-center">
-      <!-- DATE FROM, DATE TO, VEHICLE OPERATED -->
-
-      <div class="d-flex flex-column justify-content-center date-vehicle-box">
-        <div class="d-flex align-items-center title-container">
-          <div class="d-flex align-items-center date-from-title-box">
-            <p class="m-0 ta-font-bold">DATE FROM</p>
-          </div>
-          <div class="d-flex align-items-center date-to-title-box">
-            <p class="m-0 ta-font-bold">DATE TO</p>
-          </div>
-          <div class="d-flex align-items-center vehicle-title-box">
-            <p class="m-0 ta-font-bold">VEHICLE OPERATED</p>
-          </div>
-        </div>
-
-        <div class="d-flex align-items-center date-vehicle-info-container">
-          <div class="d-flex align-items-center">
-            <svg-icon
-              class="icon"
-              src="assets/svg/common/ic_date.svg"
-              [svgStyle]="{
-                'width.px': 18,
-                'height.px': 18
-              }"
-            ></svg-icon>
-
-            <div class="pipe"></div>
-
-            <div class="d-flex align-items-center date-from-box">
-              <p class="m-0 ta-font-regular">
-                {{ completedByDriverCard?.dateFrom }}
-              </p>
+        <div
+            class="d-flex flex-column justify-content-center to-prev-employer-box"
+        >
+            <h3 class="m-0 ta-font-bold">To previous employer</h3>
+            <div class="d-flex align-items-center info-box">
+                <p class="m-0 ta-font-regular">
+                    {{ completedByProspectiveEmployderCard?.employerName }}
+                </p>
             </div>
-          </div>
-          <div class="d-flex align-items-center">
-            <svg-icon
-              class="icon"
-              src="assets/svg/common/ic_date.svg"
-              [svgStyle]="{
-                'width.px': 18,
-                'height.px': 18
-              }"
-            ></svg-icon>
-
-            <div class="pipe"></div>
-
-            <div class="d-flex align-items-center date-to-box">
-              <p class="m-0 ta-font-regular">
-                {{ completedByDriverCard?.dateTo }}
-              </p>
-            </div>
-          </div>
-          <div class="d-flex align-items-center">
-            <svg-icon
-              class="truck-icon"
-              [src]="
-                'assets/svg/truckassist-table/truck/' +
-                completedByDriverCard?.vehicleType.logoName
-              "
-              [svgStyle]="{
-                'width.px': '34.03',
-                'height.px': '14.54'
-              }"
-            ></svg-icon>
-
-            <div class="d-flex align-items-center">
-              <p class="m-0 ta-font-regular">
-                {{ completedByDriverCard?.vehicleType.name }}
-              </p>
-            </div>
-          </div>
         </div>
-      </div>
+        <div class="d-flex align-items-center">
+            <!-- PHONE -->
+
+            <div class="d-flex flex-column justify-content-center phone-box">
+                <h3 class="m-0 ta-font-bold">phone</h3>
+                <div class="d-flex align-items-center info-box">
+                    <svg-icon
+                        class="icon"
+                        src="assets/svg/common/ic_phone.svg"
+                        [svgStyle]="{
+                            'width.px': 18,
+                            'height.px': 18
+                        }"
+                    ></svg-icon>
+
+                    <div class="pipe"></div>
+
+                    <p class="m-0 ta-font-regular">
+                        {{ completedByProspectiveEmployderCard?.employerPhone }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- EMAIL -->
+
+            <div class="d-flex flex-column justify-content-center email-box">
+                <h3 class="m-0 ta-font-bold">email</h3>
+                <div class="d-flex align-items-center info-box">
+                    <svg-icon
+                        class="icon"
+                        src="assets/svg/common/ic_email.svg"
+                        [svgStyle]="{
+                            'width.px': 18,
+                            'height.px': 18
+                        }"
+                    ></svg-icon>
+
+                    <div class="pipe"></div>
+
+                    <p class="m-0 ta-font-regular">
+                        {{ completedByProspectiveEmployderCard?.employerEmail }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- FAX -->
+
+            <div class="d-flex flex-column justify-content-center fax-box">
+                <h3 class="m-0 ta-font-bold">fax</h3>
+                <div class="d-flex align-items-center info-box">
+                    <svg-icon
+                        class="icon"
+                        src="assets/svg/common/ic_fax.svg"
+                        [svgStyle]="{
+                            'width.px': 18,
+                            'height.px': 18
+                        }"
+                    ></svg-icon>
+
+                    <div class="pipe"></div>
+
+                    <p class="m-0 ta-font-regular">
+                        {{ completedByProspectiveEmployderCard?.employerFax }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <!-- ADDRESS -->
+
+            <div class="d-flex flex-column justify-content-center address-box">
+                <h3 class="m-0 ta-font-bold">address, city, state zip</h3>
+                <div class="d-flex align-items-center info-box">
+                    <svg-icon
+                        class="icon"
+                        src="assets/svg/applicant/location.svg"
+                        [svgStyle]="{
+                            'width.px': 18,
+                            'height.px': 18
+                        }"
+                    ></svg-icon>
+
+                    <div class="pipe"></div>
+
+                    <p class="m-0 ta-font-regular">
+                        {{
+                            completedByProspectiveEmployderCard?.employerAddress
+                                .address
+                        }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- ADDRESS UNIT-->
+
+            <div
+                class="d-flex flex-column justify-content-center address-unit-box"
+            >
+                <h3 class="m-0 ta-font-bold">unit #</h3>
+                <div class="d-flex align-items-center info-box">
+                    <p class="m-0 ta-font-regular">
+                        {{
+                            completedByProspectiveEmployderCard?.employerAddress
+                                .addressUnit
+                        }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <!-- PREVIOUS EMPLOYER NAME, SSN, DOB-->
+
+            <div
+                class="d-flex flex-column justify-content-center prev-employer-box"
+            >
+                <div class="d-flex align-items-center title-container">
+                    <div class="d-flex align-items-center name-title-box">
+                        <p class="m-0 ta-font-bold">PREVIOUS EMPLOYEE NAME</p>
+                    </div>
+                    <div class="d-flex align-items-center ssn-title-box">
+                        <p class="m-0 ta-font-bold">SSN</p>
+                    </div>
+                    <div class="d-flex align-items-center dob-title-box">
+                        <p class="m-0 ta-font-bold">DOB</p>
+                    </div>
+                </div>
+
+                <div
+                    class="d-flex align-items-center prev-employer-info-container"
+                >
+                    <div class="d-flex align-items-center driver-box">
+                        <p class="m-0 ta-font-regular">
+                            {{
+                                completedByProspectiveEmployderCard?.employeeName
+                            }}
+                        </p>
+                    </div>
+                    <div class="d-flex align-items-center ssn-box">
+                        <p class="m-0 ta-font-regular">
+                            {{
+                                completedByProspectiveEmployderCard?.employeeSsn
+                            }}
+                        </p>
+                    </div>
+                    <div class="d-flex align-items-center date-box">
+                        <p class="m-0 ta-font-regular">
+                            {{
+                                completedByProspectiveEmployderCard?.employeeDoB
+                            }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="d-flex align-items-center">
-      <!-- REASON FOR LEAVING YOUR COMPANY -->
+    <!-- COMPLETED BY DRIVER -->
 
-      <div class="d-flex flex-column justify-content-center reason-box">
-        <div class="d-flex align-items-center title-container">
-          <div class="d-flex align-items-center reason-title-box">
-            <p class="m-0 ta-font-bold">REASON FOR LEAVING YOUR COMPANY</p>
-          </div>
+    <h5 class="m-0 step-subtitle ta-font-bold">Completed by driver</h5>
+
+    <div class="d-flex flex-column justify-content-center driver-container">
+        <div class="d-flex align-items-center">
+            <!-- DATE FROM, DATE TO, VEHICLE OPERATED -->
+
+            <div
+                class="d-flex flex-column justify-content-center date-vehicle-box"
+            >
+                <div class="d-flex align-items-center title-container">
+                    <div class="d-flex align-items-center date-from-title-box">
+                        <p class="m-0 ta-font-bold">DATE FROM</p>
+                    </div>
+                    <div class="d-flex align-items-center date-to-title-box">
+                        <p class="m-0 ta-font-bold">DATE TO</p>
+                    </div>
+                    <div class="d-flex align-items-center vehicle-title-box">
+                        <p class="m-0 ta-font-bold">VEHICLE OPERATED</p>
+                    </div>
+                </div>
+
+                <div
+                    class="d-flex align-items-center date-vehicle-info-container"
+                >
+                    <div class="d-flex align-items-center">
+                        <svg-icon
+                            class="icon"
+                            src="assets/svg/common/ic_date.svg"
+                            [svgStyle]="{
+                                'width.px': 18,
+                                'height.px': 18
+                            }"
+                        ></svg-icon>
+
+                        <div class="pipe"></div>
+
+                        <div class="d-flex align-items-center date-from-box">
+                            <p class="m-0 ta-font-regular">
+                                {{ completedByDriverCard?.dateFrom }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <svg-icon
+                            class="icon"
+                            src="assets/svg/common/ic_date.svg"
+                            [svgStyle]="{
+                                'width.px': 18,
+                                'height.px': 18
+                            }"
+                        ></svg-icon>
+
+                        <div class="pipe"></div>
+
+                        <div class="d-flex align-items-center date-to-box">
+                            <p class="m-0 ta-font-regular">
+                                {{ completedByDriverCard?.dateTo }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <svg-icon
+                            class="truck-icon"
+                            [src]="
+                                'assets/svg/truckassist-table/truck/' +
+                                completedByDriverCard?.vehicleType.logoName
+                            "
+                            [svgStyle]="{
+                                'width.px': '34.03',
+                                'height.px': '14.54'
+                            }"
+                        ></svg-icon>
+
+                        <div class="d-flex align-items-center">
+                            <p class="m-0 ta-font-regular">
+                                {{ completedByDriverCard?.vehicleType.name }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="d-flex align-items-center reason-info-container">
-          <div class="d-flex align-items-center">
-            <p class="m-0 ta-font-regular">
-              {{ completedByDriverCard?.reasonForLeaving.name }}
-            </p>
-          </div>
+        <div class="d-flex align-items-center">
+            <!-- REASON FOR LEAVING YOUR COMPANY -->
+
+            <div class="d-flex flex-column justify-content-center reason-box">
+                <div class="d-flex align-items-center title-container">
+                    <div class="d-flex align-items-center reason-title-box">
+                        <p class="m-0 ta-font-bold">
+                            REASON FOR LEAVING YOUR COMPANY
+                        </p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center reason-info-container">
+                    <div class="d-flex align-items-center">
+                        <p class="m-0 ta-font-regular">
+                            {{ completedByDriverCard?.reasonForLeaving.name }}
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <!-- START BTN -->
+    <!-- START BTN -->
 
-  <div class="d-flex justify-content-center btn-container">
-    <button
-      type="button"
-      class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn"
-      (click)="onGetStarted()"
-    >
-      Let's Get Started
-    </button>
-  </div>
+    <div class="d-flex justify-content-center btn-container">
+        <button
+            type="button"
+            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn"
+            (click)="onGetStarted()"
+        >
+            Let's Get Started
+        </button>
+    </div>
 </div>

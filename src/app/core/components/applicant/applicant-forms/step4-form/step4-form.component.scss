@@ -1,254 +1,254 @@
 @import 'src/theme/variables.scss';
 
 .step-form {
-  .line-container {
-    position: relative;
-
-    .review-feedback-container {
-      position: absolute;
-      top: 0;
-      right: -435px;
-      width: 429px;
-    }
-  }
-
-  .group {
-    margin-bottom: 22px;
-    margin-right: 12px;
-
-    &:last-child {
-      margin-right: 0;
-      margin-bottom: 0;
-    }
-  }
-
-  .location-group {
-    width: 445px;
-  }
-
-  .date-group {
-    width: 159px;
-    margin-right: 0 !important;
-  }
-
-  .fatalities-injuries-group {
-    margin-bottom: 32px;
-
-    .fatalities-group {
-      width: 178px;
-      margin-right: 12px;
-
-      p {
-        width: 77px;
-        font-size: 14px;
-        color: $bw6-2;
-        margin-right: 12px !important;
-      }
-    }
-
-    .injuries-group {
-      width: 159px;
-
-      p {
-        width: 65px;
-        font-size: 14px;
-        color: $bw6-2;
-        margin-right: 12px !important;
-      }
-    }
-  }
-
-  .hazmat-spill-group {
-    width: 194px;
-    height: 26px;
-    margin-bottom: 32px;
-
-    .title-box {
-      p {
-        font-size: 14px;
-        user-select: none !important;
-      }
-    }
-
-    .radios-box {
-      width: 86px;
-
-      .ta-input-radiobutons {
-        width: 100%;
-
-        .radio-button {
-          padding-left: 0;
-        }
-      }
-    }
-  }
-
-  .truck-type-group {
-    width: 231px;
-    margin-bottom: 0;
-  }
-
-  .description-group {
-    width: 373px;
-    margin-bottom: 0;
-    margin-right: 0;
-  }
-
-  .btn-container {
-    margin-top: 25px;
-
-    .add-btn {
-      position: relative;
-      bottom: 1px;
-      height: 26px;
-      line-height: 18px;
-      padding: 4px 8px;
-      border: none;
-      outline: none;
-      font-size: 14px;
-      border-radius: 2px;
-      color: $ta-blue;
-      background: $ta-gray-01;
-      transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
-
-      -webkit-user-select: none !important;
-      -moz-user-select: none !important;
-      -ms-user-select: none !important;
-      user-select: none !important;
-
-      &:hover {
-        color: $white;
-        background: $ta-blue;
-      }
-
-      &:hover .plus-icon {
-        svg {
-          path {
-            fill: $white;
-          }
-        }
-      }
-
-      &.disabled {
-        cursor: auto;
-        background: $ta-light-grey-4;
-        color: $bw4;
-
-        .plus-icon {
-          svg {
-            path {
-              fill: $ta-light-grey-6;
-            }
-          }
-        }
-
-        &:hover {
-          background: $ta-light-grey-4 !important;
-          color: $bw4 !important;
-        }
-      }
-
-      .plus-icon {
-        margin-right: 6px;
-
-        svg {
-          path {
-            transition: fill 0.2s ease-in-out;
-            fill: $ta-light-blue;
-          }
-        }
-      }
-    }
-
-    .btn-container-inside {
-      margin-bottom: 32px;
-
-      .add-btn {
+    .line-container {
         position: relative;
-        bottom: 1px;
-        height: 26px;
-        padding: 4px 8px;
-        border: none;
-        outline: none;
-        font-size: 14px;
-        border-radius: 2px;
-        color: $ta-blue;
-        background: $ta-gray-01;
-        transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
 
-        -webkit-user-select: none !important;
-        -moz-user-select: none !important;
-        -ms-user-select: none !important;
-        user-select: none !important;
-
-        &:hover {
-          color: $white;
-          background: $ta-blue;
+        .review-feedback-container {
+            position: absolute;
+            top: 0;
+            right: -435px;
+            width: 429px;
         }
-
-        &:hover .plus-icon {
-          svg {
-            path {
-              fill: $white;
-            }
-          }
-        }
-
-        &.disabled {
-          cursor: auto;
-          background: $ta-light-grey-4;
-          color: $bw4;
-
-          .plus-icon {
-            svg {
-              path {
-                fill: $ta-light-grey-6;
-              }
-            }
-          }
-
-          &:hover {
-            background: $ta-light-grey-4 !important;
-            color: $bw4 !important;
-          }
-        }
-
-        .plus-icon {
-          margin-right: 6px;
-
-          svg {
-            path {
-              transition: fill 0.2s ease-in-out;
-              fill: $ta-light-blue;
-            }
-          }
-        }
-      }
-
-      .cancel-btn {
-        width: 150px;
-        height: 32px;
-        margin-right: 22px;
-        color: $bw5;
-        background: $ta-light-grey-4;
-        transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
-
-        &:hover {
-          background: $bw6-2;
-          color: $white;
-        }
-      }
-
-      .save-btn {
-        width: 150px;
-        height: 32px;
-        color: $white;
-        background: $ta-light-blue;
-
-        &:hover {
-          background-color: $ta-blue;
-        }
-      }
     }
-  }
+
+    .group {
+        margin-bottom: 22px;
+        margin-right: 12px;
+
+        &:last-child {
+            margin-right: 0;
+            margin-bottom: 0;
+        }
+    }
+
+    .location-group {
+        width: 445px;
+    }
+
+    .date-group {
+        width: 159px;
+        margin-right: 0 !important;
+    }
+
+    .fatalities-injuries-group {
+        margin-bottom: 32px;
+
+        .fatalities-group {
+            width: 178px;
+            margin-right: 12px;
+
+            p {
+                width: 77px;
+                font-size: 14px;
+                color: $bw6-2;
+                margin-right: 12px !important;
+            }
+        }
+
+        .injuries-group {
+            width: 159px;
+
+            p {
+                width: 65px;
+                font-size: 14px;
+                color: $bw6-2;
+                margin-right: 12px !important;
+            }
+        }
+    }
+
+    .hazmat-spill-group {
+        width: 194px;
+        height: 26px;
+        margin-bottom: 32px;
+
+        .title-box {
+            p {
+                font-size: 14px;
+                user-select: none !important;
+            }
+        }
+
+        .radios-box {
+            width: 86px;
+
+            .ta-input-radiobutons {
+                width: 100%;
+
+                .radio-button {
+                    padding-left: 0;
+                }
+            }
+        }
+    }
+
+    .truck-type-group {
+        width: 231px;
+        margin-bottom: 0;
+    }
+
+    .description-group {
+        width: 373px;
+        margin-bottom: 0;
+        margin-right: 0;
+    }
+
+    .btn-container {
+        margin-top: 25px;
+
+        .add-btn {
+            position: relative;
+            bottom: 1px;
+            height: 26px;
+            line-height: 18px;
+            padding: 4px 8px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            border-radius: 2px;
+            color: $ta-blue;
+            background: $ta-gray-01;
+            transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+
+            &:hover {
+                color: $white;
+                background: $ta-blue;
+            }
+
+            &:hover .plus-icon {
+                svg {
+                    path {
+                        fill: $white;
+                    }
+                }
+            }
+
+            &.disabled {
+                cursor: auto;
+                background: $ta-light-grey-4;
+                color: $bw4;
+
+                .plus-icon {
+                    svg {
+                        path {
+                            fill: $ta-light-grey-6;
+                        }
+                    }
+                }
+
+                &:hover {
+                    background: $ta-light-grey-4 !important;
+                    color: $bw4 !important;
+                }
+            }
+
+            .plus-icon {
+                margin-right: 6px;
+
+                svg {
+                    path {
+                        transition: fill 0.2s ease-in-out;
+                        fill: $ta-light-blue;
+                    }
+                }
+            }
+        }
+
+        .btn-container-inside {
+            margin-bottom: 32px;
+
+            .add-btn {
+                position: relative;
+                bottom: 1px;
+                height: 26px;
+                padding: 4px 8px;
+                border: none;
+                outline: none;
+                font-size: 14px;
+                border-radius: 2px;
+                color: $ta-blue;
+                background: $ta-gray-01;
+                transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+                -webkit-user-select: none !important;
+                -moz-user-select: none !important;
+                -ms-user-select: none !important;
+                user-select: none !important;
+
+                &:hover {
+                    color: $white;
+                    background: $ta-blue;
+                }
+
+                &:hover .plus-icon {
+                    svg {
+                        path {
+                            fill: $white;
+                        }
+                    }
+                }
+
+                &.disabled {
+                    cursor: auto;
+                    background: $ta-light-grey-4;
+                    color: $bw4;
+
+                    .plus-icon {
+                        svg {
+                            path {
+                                fill: $ta-light-grey-6;
+                            }
+                        }
+                    }
+
+                    &:hover {
+                        background: $ta-light-grey-4 !important;
+                        color: $bw4 !important;
+                    }
+                }
+
+                .plus-icon {
+                    margin-right: 6px;
+
+                    svg {
+                        path {
+                            transition: fill 0.2s ease-in-out;
+                            fill: $ta-light-blue;
+                        }
+                    }
+                }
+            }
+
+            .cancel-btn {
+                width: 150px;
+                height: 32px;
+                margin-right: 22px;
+                color: $bw5;
+                background: $ta-light-grey-4;
+                transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
+
+                &:hover {
+                    background: $bw6-2;
+                    color: $white;
+                }
+            }
+
+            .save-btn {
+                width: 150px;
+                height: 32px;
+                color: $white;
+                background: $ta-light-blue;
+
+                &:hover {
+                    background-color: $ta-blue;
+                }
+            }
+        }
+    }
 }

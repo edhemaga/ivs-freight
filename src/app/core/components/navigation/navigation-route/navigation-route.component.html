@@ -1,45 +1,50 @@
 <div
-  *ngIf="isNavItemHovered && isActiveSubroute && !route.isRouteActive"
-  class="nav-item-hover"
+    *ngIf="isNavItemHovered && isActiveSubroute && !route.isRouteActive"
+    class="nav-item-hover"
 ></div>
 
 <div
-  class="nav-item"
-  [ngClass]="{
-    'nav-item-active': route.isRouteActive || route.isSubrouteActive,
-    'nav-width': isNavigationHovered
-  }"
-  (mouseenter)="onNavItemHover(true)"
-  (mouseleave)="onNavItemHover(false)"
-  (click)="onRouteAction()"
->
-  <div
+    class="nav-item"
     [ngClass]="{
-      'nav-item-active-box':
-        (route.isRouteActive || route.isSubrouteActive) && !isNavigationHovered
+        'nav-item-active': route.isRouteActive || route.isSubrouteActive,
+        'nav-width': isNavigationHovered
     }"
-  ></div>
+    (mouseenter)="onNavItemHover(true)"
+    (mouseleave)="onNavItemHover(false)"
+    (click)="onRouteAction()"
+>
+    <div
+        [ngClass]="{
+            'nav-item-active-box':
+                (route.isRouteActive || route.isSubrouteActive) &&
+                !isNavigationHovered
+        }"
+    ></div>
 
-  <svg-icon
-    class="nav-item-img nav-item-img-active"
-    src="{{ route.image }}"
-  ></svg-icon>
-
-  <div
-    class="nav-item-rightSide"
-    [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
-  >
-    <p *ngIf="isNavigationHovered" class="nav-item-name nav-item-name-active">
-      {{ route.name }}
-    </p>
     <svg-icon
-      class="nav-item-arrow nav-item-arrow-active"
-      [ngClass]="{
-        'nav-item-arrow-rotate': route.isRouteActive && !route.isSubrouteActive,
-        'nav-item-arrow-first': route.id === 3
-      }"
-      *ngIf="route.arrow && isNavigationHovered"
-      src="{{ route.arrow }}"
+        class="nav-item-img nav-item-img-active"
+        src="{{ route.image }}"
     ></svg-icon>
-  </div>
+
+    <div
+        class="nav-item-rightSide"
+        [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+    >
+        <p
+            *ngIf="isNavigationHovered"
+            class="nav-item-name nav-item-name-active"
+        >
+            {{ route.name }}
+        </p>
+        <svg-icon
+            class="nav-item-arrow nav-item-arrow-active"
+            [ngClass]="{
+                'nav-item-arrow-rotate':
+                    route.isRouteActive && !route.isSubrouteActive,
+                'nav-item-arrow-first': route.id === 3
+            }"
+            *ngIf="route.arrow && isNavigationHovered"
+            src="{{ route.arrow }}"
+        ></svg-icon>
+    </div>
 </div>

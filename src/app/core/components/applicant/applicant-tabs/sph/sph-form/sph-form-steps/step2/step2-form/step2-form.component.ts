@@ -1,14 +1,14 @@
 import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild,
-  OnChanges,
+    AfterViewInit,
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    SimpleChanges,
+    ViewChild,
+    OnChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -17,8 +17,8 @@ import { Subscription, Subject, takeUntil } from 'rxjs';
 import { isFormValueEqual } from '../../../../../../state/utils/utils';
 
 import {
-  addressValidation,
-  descriptionValidation,
+    addressValidation,
+    descriptionValidation,
 } from '../../../../../../../shared/ta-input/ta-input.regex-validations';
 
 import { TaInputService } from '../../../../../../../shared/ta-input/ta-input.service';
@@ -32,286 +32,291 @@ import { InputSwitchActions } from '../../../../../../state/enum/input-switch-ac
 import { AddressEntity } from 'appcoretruckassist';
 
 @Component({
-  selector: 'app-sph-step2-form',
-  templateUrl: './step2-form.component.html',
-  styleUrls: ['./step2-form.component.scss'],
+    selector: 'app-sph-step2-form',
+    templateUrl: './step2-form.component.html',
+    styleUrls: ['./step2-form.component.scss'],
 })
 export class SphStep2FormComponent
-  implements OnInit, AfterViewInit, OnDestroy, OnChanges
+    implements OnInit, AfterViewInit, OnDestroy, OnChanges
 {
-  private destroy$ = new Subject<void>();
-  @ViewChild(TaInputRadiobuttonsComponent)
-  component: TaInputRadiobuttonsComponent;
+    private destroy$ = new Subject<void>();
+    @ViewChild(TaInputRadiobuttonsComponent)
+    component: TaInputRadiobuttonsComponent;
 
-  @Input() isEditing: boolean;
-  @Input() formValuesToPatch?: any;
-  @Input() markFormInvalid?: boolean;
+    @Input() isEditing: boolean;
+    @Input() formValuesToPatch?: any;
+    @Input() markFormInvalid?: boolean;
 
-  @Output() formValuesEmitter = new EventEmitter<any>();
-  @Output() cancelFormEditingEmitter = new EventEmitter<any>();
-  @Output() saveFormEditingEmitter = new EventEmitter<any>();
-  @Output() formStatusEmitter = new EventEmitter<any>();
-  @Output() markInvalidEmitter = new EventEmitter<any>();
-  @Output() lastFormValuesEmitter = new EventEmitter<any>();
+    @Output() formValuesEmitter = new EventEmitter<any>();
+    @Output() cancelFormEditingEmitter = new EventEmitter<any>();
+    @Output() saveFormEditingEmitter = new EventEmitter<any>();
+    @Output() formStatusEmitter = new EventEmitter<any>();
+    @Output() markInvalidEmitter = new EventEmitter<any>();
+    @Output() lastFormValuesEmitter = new EventEmitter<any>();
 
-  public accidentForm: FormGroup;
+    public accidentForm: FormGroup;
 
-  public accidentArray: SphFormAccidentModel[] = [];
+    public accidentArray: SphFormAccidentModel[] = [];
 
-  public isAccidentEdited?: boolean;
+    public isAccidentEdited?: boolean;
 
-  public editingCardAddress: any;
+    public editingCardAddress: any;
 
-  public subscription: Subscription;
+    public subscription: Subscription;
 
-  public selectedAddress: AddressEntity = null;
+    public selectedAddress: AddressEntity = null;
 
-  public hazmatSpillRadios: any;
+    public hazmatSpillRadios: any;
 
-  public hazmatAnswerChoices: AnswerChoices[] = [
-    {
-      id: 7,
-      label: 'YES',
-      value: 'hazmatYes',
-      name: 'hazmatYes',
-      checked: false,
-    },
-    {
-      id: 8,
-      label: 'NO',
-      value: 'hazmatNo',
-      name: 'hazmatNo',
-      checked: false,
-    },
-  ];
+    public hazmatAnswerChoices: AnswerChoices[] = [
+        {
+            id: 7,
+            label: 'YES',
+            value: 'hazmatYes',
+            name: 'hazmatYes',
+            checked: false,
+        },
+        {
+            id: 8,
+            label: 'NO',
+            value: 'hazmatNo',
+            name: 'hazmatNo',
+            checked: false,
+        },
+    ];
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private inputService: TaInputService,
-    private formService: FormService
-  ) {}
+    constructor(
+        private formBuilder: FormBuilder,
+        private inputService: TaInputService,
+        private formService: FormService
+    ) {}
 
-  ngOnInit(): void {
-    this.createForm();
-  }
-
-  ngAfterViewInit(): void {
-    this.hazmatSpillRadios = this.component.buttons;
-
-    this.accidentForm.statusChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.formStatusEmitter.emit(res);
-      });
-
-    this.accidentForm.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        res.accidentLocation = this.selectedAddress;
-
-        this.lastFormValuesEmitter.emit(res);
-      });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (
-      changes.markFormInvalid?.previousValue !==
-      changes.markFormInvalid?.currentValue
-    ) {
-      this.inputService.markInvalid(this.accidentForm);
-
-      this.markInvalidEmitter.emit(false);
+    ngOnInit(): void {
+        this.createForm();
     }
 
-    if (
-      changes.formValuesToPatch?.previousValue !==
-      changes.formValuesToPatch?.currentValue
-    ) {
-      setTimeout(() => {
-        this.patchForm(changes.formValuesToPatch.currentValue);
+    ngAfterViewInit(): void {
+        this.hazmatSpillRadios = this.component.buttons;
 
-        this.startValueChangesMonitoring();
-      }, 50);
+        this.accidentForm.statusChanges
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.formStatusEmitter.emit(res);
+            });
+
+        this.accidentForm.valueChanges
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                res.accidentLocation = this.selectedAddress;
+
+                this.lastFormValuesEmitter.emit(res);
+            });
     }
-  }
 
-  private createForm(): void {
-    this.accidentForm = this.formBuilder.group({
-      accidentDate: [null, Validators.required],
-      accidentLocation: [null, [Validators.required, ...addressValidation]],
-      accidentDescription: [
-        null,
-        [Validators.required, ...descriptionValidation],
-      ],
-      hazmatSpill: [null, Validators.required],
-      injuries: [0],
-      fatalities: [0],
-    });
-  }
+    ngOnChanges(changes: SimpleChanges): void {
+        if (
+            changes.markFormInvalid?.previousValue !==
+            changes.markFormInvalid?.currentValue
+        ) {
+            this.inputService.markInvalid(this.accidentForm);
 
-  public patchForm(formValue: any): void {
-    this.accidentForm.patchValue({
-      accidentDate: formValue.accidentDate,
-      accidentLocation: formValue.accidentLocation.address,
-      accidentDescription: formValue.accidentDescription,
-      hazmatSpill: formValue.hazmatSpill,
-      fatalities: formValue.fatalities,
-      injuries: formValue.injuries,
-    });
-
-    setTimeout(() => {
-      this.selectedAddress = formValue.accidentLocation;
-
-      const hazmatSpillValue = this.accidentForm.get('hazmatSpill').value;
-
-      if (hazmatSpillValue) {
-        this.hazmatSpillRadios[0].checked = true;
-      } else {
-        this.hazmatSpillRadios[1].checked = true;
-
-        if (hazmatSpillValue === null) {
-          this.hazmatSpillRadios[0].checked = false;
-          this.hazmatSpillRadios[1].checked = false;
-        }
-      }
-    }, 50);
-  }
-
-  public startValueChangesMonitoring(): void {
-    this.subscription = this.accidentForm.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((updatedFormValues) => {
-        const {
-          accidentLocation,
-          accidentState,
-          isEditingAccident,
-          ...previousFormValues
-        } = this.formValuesToPatch;
-
-        previousFormValues.accidentLocation = accidentLocation?.address;
-
-        updatedFormValues.accidentLocation = this.selectedAddress?.address;
-
-        this.editingCardAddress = accidentLocation;
-
-        if (isFormValueEqual(previousFormValues, updatedFormValues)) {
-          this.isAccidentEdited = false;
-        } else {
-          this.isAccidentEdited = true;
-        }
-      });
-  }
-
-  public handleInputSelect(event: any, action: string): void {
-    switch (action) {
-      case InputSwitchActions.ADDRESS:
-        this.selectedAddress = event.address;
-
-        if (!event.valid) {
-          this.accidentForm
-            .get('accidentLocation')
-            .setErrors({ invalid: true });
+            this.markInvalidEmitter.emit(false);
         }
 
-        break;
-      case InputSwitchActions.HAZMAT_SPILL:
-        const selectedHazmatCheckbox = event.find(
-          (radio: { checked: boolean }) => radio.checked
-        );
+        if (
+            changes.formValuesToPatch?.previousValue !==
+            changes.formValuesToPatch?.currentValue
+        ) {
+            setTimeout(() => {
+                this.patchForm(changes.formValuesToPatch.currentValue);
 
-        if (selectedHazmatCheckbox.label === 'YES') {
-          this.accidentForm.get('hazmatSpill').patchValue(true);
-        } else {
-          this.accidentForm.get('hazmatSpill').patchValue(false);
+                this.startValueChangesMonitoring();
+            }, 50);
+        }
+    }
+
+    private createForm(): void {
+        this.accidentForm = this.formBuilder.group({
+            accidentDate: [null, Validators.required],
+            accidentLocation: [
+                null,
+                [Validators.required, ...addressValidation],
+            ],
+            accidentDescription: [
+                null,
+                [Validators.required, ...descriptionValidation],
+            ],
+            hazmatSpill: [null, Validators.required],
+            injuries: [0],
+            fatalities: [0],
+        });
+    }
+
+    public patchForm(formValue: any): void {
+        this.accidentForm.patchValue({
+            accidentDate: formValue.accidentDate,
+            accidentLocation: formValue.accidentLocation.address,
+            accidentDescription: formValue.accidentDescription,
+            hazmatSpill: formValue.hazmatSpill,
+            fatalities: formValue.fatalities,
+            injuries: formValue.injuries,
+        });
+
+        setTimeout(() => {
+            this.selectedAddress = formValue.accidentLocation;
+
+            const hazmatSpillValue = this.accidentForm.get('hazmatSpill').value;
+
+            if (hazmatSpillValue) {
+                this.hazmatSpillRadios[0].checked = true;
+            } else {
+                this.hazmatSpillRadios[1].checked = true;
+
+                if (hazmatSpillValue === null) {
+                    this.hazmatSpillRadios[0].checked = false;
+                    this.hazmatSpillRadios[1].checked = false;
+                }
+            }
+        }, 50);
+    }
+
+    public startValueChangesMonitoring(): void {
+        this.subscription = this.accidentForm.valueChanges
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((updatedFormValues) => {
+                const {
+                    accidentLocation,
+                    accidentState,
+                    isEditingAccident,
+                    ...previousFormValues
+                } = this.formValuesToPatch;
+
+                previousFormValues.accidentLocation = accidentLocation?.address;
+
+                updatedFormValues.accidentLocation =
+                    this.selectedAddress?.address;
+
+                this.editingCardAddress = accidentLocation;
+
+                if (isFormValueEqual(previousFormValues, updatedFormValues)) {
+                    this.isAccidentEdited = false;
+                } else {
+                    this.isAccidentEdited = true;
+                }
+            });
+    }
+
+    public handleInputSelect(event: any, action: string): void {
+        switch (action) {
+            case InputSwitchActions.ADDRESS:
+                this.selectedAddress = event.address;
+
+                if (!event.valid) {
+                    this.accidentForm
+                        .get('accidentLocation')
+                        .setErrors({ invalid: true });
+                }
+
+                break;
+            case InputSwitchActions.HAZMAT_SPILL:
+                const selectedHazmatCheckbox = event.find(
+                    (radio: { checked: boolean }) => radio.checked
+                );
+
+                if (selectedHazmatCheckbox.label === 'YES') {
+                    this.accidentForm.get('hazmatSpill').patchValue(true);
+                } else {
+                    this.accidentForm.get('hazmatSpill').patchValue(false);
+                }
+
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    public onAddAnotherAccident(): void {
+        if (this.accidentForm.invalid) {
+            this.inputService.markInvalid(this.accidentForm);
+            return;
         }
 
-        break;
+        const { accidentLocation, ...registerForm } = this.accidentForm.value;
 
-      default:
-        break;
-    }
-  }
+        const saveData: SphFormAccidentModel = {
+            ...registerForm,
+            accidentLocation: this.selectedAddress,
+            accidentState: this.selectedAddress.stateShortName,
+            isEditingAccident: false,
+        };
 
-  public onAddAnotherAccident(): void {
-    if (this.accidentForm.invalid) {
-      this.inputService.markInvalid(this.accidentForm);
-      return;
-    }
+        this.formValuesEmitter.emit(saveData);
 
-    const { accidentLocation, ...registerForm } = this.accidentForm.value;
+        this.hazmatSpillRadios[0].checked = false;
+        this.hazmatSpillRadios[1].checked = false;
 
-    const saveData: SphFormAccidentModel = {
-      ...registerForm,
-      accidentLocation: this.selectedAddress,
-      accidentState: this.selectedAddress.stateShortName,
-      isEditingAccident: false,
-    };
+        this.selectedAddress = null;
 
-    this.formValuesEmitter.emit(saveData);
+        this.formService.resetForm(this.accidentForm);
 
-    this.hazmatSpillRadios[0].checked = false;
-    this.hazmatSpillRadios[1].checked = false;
-
-    this.selectedAddress = null;
-
-    this.formService.resetForm(this.accidentForm);
-
-    this.accidentForm.patchValue({
-      fatalities: 0,
-      injuries: 0,
-    });
-  }
-
-  public onSaveEditedAccident(): void {
-    if (this.accidentForm.invalid) {
-      this.inputService.markInvalid(this.accidentForm);
-      return;
+        this.accidentForm.patchValue({
+            fatalities: 0,
+            injuries: 0,
+        });
     }
 
-    if (!this.isAccidentEdited) {
-      return;
+    public onSaveEditedAccident(): void {
+        if (this.accidentForm.invalid) {
+            this.inputService.markInvalid(this.accidentForm);
+            return;
+        }
+
+        if (!this.isAccidentEdited) {
+            return;
+        }
+
+        const { address, accidentState, ...registerForm } =
+            this.accidentForm.value;
+
+        const saveData: SphFormAccidentModel = {
+            ...registerForm,
+            accidentLocation: this.selectedAddress
+                ? this.selectedAddress
+                : this.editingCardAddress,
+            accidentState: this.selectedAddress
+                ? this.selectedAddress.state
+                : this.editingCardAddress.state,
+            isEditingAccident: false,
+        };
+
+        this.hazmatSpillRadios[0].checked = false;
+        this.hazmatSpillRadios[1].checked = false;
+
+        this.selectedAddress = null;
+
+        this.saveFormEditingEmitter.emit(saveData);
+
+        this.isAccidentEdited = false;
+
+        this.subscription.unsubscribe();
     }
 
-    const { address, accidentState, ...registerForm } = this.accidentForm.value;
+    public onCancelEditAccident(): void {
+        this.cancelFormEditingEmitter.emit(1);
 
-    const saveData: SphFormAccidentModel = {
-      ...registerForm,
-      accidentLocation: this.selectedAddress
-        ? this.selectedAddress
-        : this.editingCardAddress,
-      accidentState: this.selectedAddress
-        ? this.selectedAddress.state
-        : this.editingCardAddress.state,
-      isEditingAccident: false,
-    };
+        this.isAccidentEdited = false;
 
-    this.hazmatSpillRadios[0].checked = false;
-    this.hazmatSpillRadios[1].checked = false;
+        this.hazmatSpillRadios[0].checked = false;
+        this.hazmatSpillRadios[1].checked = false;
 
-    this.selectedAddress = null;
+        this.selectedAddress = null;
 
-    this.saveFormEditingEmitter.emit(saveData);
+        this.subscription.unsubscribe();
+    }
 
-    this.isAccidentEdited = false;
-
-    this.subscription.unsubscribe();
-  }
-
-  public onCancelEditAccident(): void {
-    this.cancelFormEditingEmitter.emit(1);
-
-    this.isAccidentEdited = false;
-
-    this.hazmatSpillRadios[0].checked = false;
-    this.hazmatSpillRadios[1].checked = false;
-
-    this.selectedAddress = null;
-
-    this.subscription.unsubscribe();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 }

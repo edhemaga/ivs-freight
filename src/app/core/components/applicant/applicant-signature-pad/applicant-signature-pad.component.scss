@@ -1,69 +1,69 @@
 @import 'src/theme/variables.scss';
 
 app-applicant-signature-pad {
-  .signature-pad-canvas {
-    border: none !important;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    background: $ta-light-grey-2;
-  }
+    .signature-pad-canvas {
+        border: none !important;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        background: $ta-light-grey-2;
+    }
 }
 
 .signature-pad-bottom-container {
-  padding: 5px 0;
-  height: 28px;
-  background: $ta-light-grey-5;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
+    padding: 5px 0;
+    height: 28px;
+    background: $ta-light-grey-5;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
 
-  p {
-    height: 15px;
-    font-size: 12px;
-    color: $bw6-2;
-    margin-left: 176px !important;
-    user-select: none;
-  }
-
-  .btn-container {
-    height: 18px;
-    margin-left: auto;
-    margin-right: 6px;
-
-    .undo-icon,
-    .confirm-icon,
-    .clear-icon {
-      cursor: pointer;
-
-      &:hover {
-        svg {
-          rect {
-            fill: $bw6-2;
-          }
-        }
-      }
-
-      svg {
-        rect {
-          transition: fill 0.3s ease-in-out;
-          fill: $bw4;
-        }
-
-        path {
-          fill: $white;
-        }
-      }
-
-      &.confirm-icon,
-      &.undo-icon {
-        margin-right: 4px;
-      }
+    p {
+        height: 15px;
+        font-size: 12px;
+        color: $bw6-2;
+        margin-left: 176px !important;
+        user-select: none;
     }
-  }
+
+    .btn-container {
+        height: 18px;
+        margin-left: auto;
+        margin-right: 6px;
+
+        .undo-icon,
+        .confirm-icon,
+        .clear-icon {
+            cursor: pointer;
+
+            &:hover {
+                svg {
+                    rect {
+                        fill: $bw6-2;
+                    }
+                }
+            }
+
+            svg {
+                rect {
+                    transition: fill 0.3s ease-in-out;
+                    fill: $bw4;
+                }
+
+                path {
+                    fill: $white;
+                }
+            }
+
+            &.confirm-icon,
+            &.undo-icon {
+                margin-right: 4px;
+            }
+        }
+    }
 }
 
 .signature-image-container {
-  img {
-    padding: 6px;
-    border-bottom: 0.1px solid $ta-light-grey-2;
-  }
+    img {
+        padding: 6px;
+        border-bottom: 0.1px solid $ta-light-grey-2;
+    }
 }

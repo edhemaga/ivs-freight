@@ -1,85 +1,87 @@
 <div class="container-fluid">
-  <div class="row">
-    <div
-      class="container-fluid d-flex flex-column justify-content-between applicant-container"
-    >
-      <div class="d-flex flex-column justify-content-center">
-        <app-applicant-header [mode]="selectedMode"></app-applicant-header>
+    <div class="row">
+        <div
+            class="container-fluid d-flex flex-column justify-content-between applicant-container"
+        >
+            <div class="d-flex flex-column justify-content-center">
+                <app-applicant-header
+                    [mode]="selectedMode"
+                ></app-applicant-header>
 
-        <div class="d-flex justify-content-center step-progress-bar">
-          <div
-            *ngFor="
-              let menuItem of menuItems;
-              index as i;
-              trackBy: trackByIdentity
-            "
-            class="text-center step"
-            [routerLinkActive]="
-              (selectedMode === 'REVIEW_MODE' &&
-                isStepReviewedArray[i].isReviewed &&
-                !isStepReviewedArray[i].hasIncorrectAnswer) ||
-              (selectedMode === 'REVIEW_MODE' &&
-                !isStepReviewedArray[i].isReviewed &&
-                !isStepReviewedArray[i].hasIncorrectAnswer)
-                ? 'step-active-review'
-                : selectedMode === 'REVIEW_MODE' &&
-                  isStepReviewedArray[i].isReviewed &&
-                  isStepReviewedArray[i].hasIncorrectAnswer
-                ? 'step-active-review-incorrect'
-                : selectedMode === 'FEEDBACK_MODE' &&
-                  !feedbackStoreArr[i].hasIncorrectAnswer
-                ? 'step-active-feedback'
-                : selectedMode === 'FEEDBACK_MODE' &&
-                  feedbackStoreArr[i].hasIncorrectAnswer
-                ? 'step-active-feedback-incorrect'
-                : 'step-active'
-            "
-            [ngClass]="{
-              disabled: !isStepCompletedArray[i].isCompleted,
-              'completed-step':
-                selectedMode === 'APPLICANT_MODE' &&
-                isStepCompletedArray[i].isCompleted,
-              'completed-step-review':
-                selectedMode === 'REVIEW_MODE' &&
-                isStepReviewedArray[i].isReviewed &&
-                !isStepReviewedArray[i].hasIncorrectAnswer,
-              'completed-step-review-incorrect':
-                selectedMode === 'REVIEW_MODE' &&
-                isStepReviewedArray[i].isReviewed &&
-                isStepReviewedArray[i].hasIncorrectAnswer,
-              'completed-step-feedback':
-                selectedMode === 'FEEDBACK_MODE' &&
-                !feedbackStoreArr[i].hasIncorrectAnswer,
-              'completed-step-feedback-incorrect':
-                selectedMode === 'FEEDBACK_MODE' &&
-                feedbackStoreArr[i].hasIncorrectAnswer,
-              'completed-step-feedback-sent-to-review':
-                selectedMode === 'FEEDBACK_MODE' &&
-                feedbackStoreArr[i].sentToReview
-            }"
-          >
-            <div
-              class="d-inline-flex justify-content-center align-items-center bullet"
-              [class]="menuItem.class"
-              [routerLink]="menuItem.route"
-            >
-              <p class="m-0 ta-font-semi-bold">
-                {{ menuItem.route }}
-              </p>
+                <div class="d-flex justify-content-center step-progress-bar">
+                    <div
+                        *ngFor="
+                            let menuItem of menuItems;
+                            index as i;
+                            trackBy: trackByIdentity
+                        "
+                        class="text-center step"
+                        [routerLinkActive]="
+                            (selectedMode === 'REVIEW_MODE' &&
+                                isStepReviewedArray[i].isReviewed &&
+                                !isStepReviewedArray[i].hasIncorrectAnswer) ||
+                            (selectedMode === 'REVIEW_MODE' &&
+                                !isStepReviewedArray[i].isReviewed &&
+                                !isStepReviewedArray[i].hasIncorrectAnswer)
+                                ? 'step-active-review'
+                                : selectedMode === 'REVIEW_MODE' &&
+                                  isStepReviewedArray[i].isReviewed &&
+                                  isStepReviewedArray[i].hasIncorrectAnswer
+                                ? 'step-active-review-incorrect'
+                                : selectedMode === 'FEEDBACK_MODE' &&
+                                  !feedbackStoreArr[i].hasIncorrectAnswer
+                                ? 'step-active-feedback'
+                                : selectedMode === 'FEEDBACK_MODE' &&
+                                  feedbackStoreArr[i].hasIncorrectAnswer
+                                ? 'step-active-feedback-incorrect'
+                                : 'step-active'
+                        "
+                        [ngClass]="{
+                            disabled: !isStepCompletedArray[i].isCompleted,
+                            'completed-step':
+                                selectedMode === 'APPLICANT_MODE' &&
+                                isStepCompletedArray[i].isCompleted,
+                            'completed-step-review':
+                                selectedMode === 'REVIEW_MODE' &&
+                                isStepReviewedArray[i].isReviewed &&
+                                !isStepReviewedArray[i].hasIncorrectAnswer,
+                            'completed-step-review-incorrect':
+                                selectedMode === 'REVIEW_MODE' &&
+                                isStepReviewedArray[i].isReviewed &&
+                                isStepReviewedArray[i].hasIncorrectAnswer,
+                            'completed-step-feedback':
+                                selectedMode === 'FEEDBACK_MODE' &&
+                                !feedbackStoreArr[i].hasIncorrectAnswer,
+                            'completed-step-feedback-incorrect':
+                                selectedMode === 'FEEDBACK_MODE' &&
+                                feedbackStoreArr[i].hasIncorrectAnswer,
+                            'completed-step-feedback-sent-to-review':
+                                selectedMode === 'FEEDBACK_MODE' &&
+                                feedbackStoreArr[i].sentToReview
+                        }"
+                    >
+                        <div
+                            class="d-inline-flex justify-content-center align-items-center bullet"
+                            [class]="menuItem.class"
+                            [routerLink]="menuItem.route"
+                        >
+                            <p class="m-0 ta-font-semi-bold">
+                                {{ menuItem.route }}
+                            </p>
+                        </div>
+                        <p
+                            class="m-0 step-text ta-font-regular"
+                            [routerLink]="menuItem.route"
+                        >
+                            {{ menuItem.title }}
+                        </p>
+                    </div>
+                </div>
+
+                <router-outlet></router-outlet>
             </div>
-            <p
-              class="m-0 step-text ta-font-regular"
-              [routerLink]="menuItem.route"
-            >
-              {{ menuItem.title }}
-            </p>
-          </div>
+
+            <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
         </div>
-
-        <router-outlet></router-outlet>
-      </div>
-
-      <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
     </div>
-  </div>
 </div>
