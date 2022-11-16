@@ -30,6 +30,9 @@
                 ],
                 "@angular-eslint/no-empty-lifecycle-method": ["off"],
                 "@angular-eslint/no-host-metadata-property": ["off"],
+                "@angular-eslint/no-output-rename": ["off"],
+                "@angular-eslint/no-output-on-prefix": ["off"],
+                "@angular-eslint/no-output-native": ["off"],
                 "no-unused-vars": [
                   "warn",
                   {

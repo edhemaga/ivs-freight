@@ -9,7 +9,9 @@
         "test": "ng test",
         "dev": "lite-server",
         "svg:preview": "node src/app/svg-definitions/svg-converter.js",
-        "format": "npx prettier \"src/**/*.{js,ts,html,scss}\" --write"
+        "lint": "npx eslint \"src/**/*.{ts,tsx,html}\" --quiet --fix",
+        "format": "npx prettier \"src/**/*.{js,ts,html,scss}\" --write",
+        "prepare": "husky install"
     },
     "private": true,
     "dependencies": {
@@ -101,6 +103,8 @@
         "@typescript-eslint/parser": "4.28.2",
         "@angular-eslint/eslint-plugin": "12.7.0",
         "@angular-eslint/eslint-plugin-template": "12.7.0",
+        "@angular-eslint/schematics": "12.7.0",
+        "@angular-eslint/template-parser": "12.7.0",
         "@angular/cli": "~12.2.5",
         "@angular/compiler-cli": "~12.2.16",
         "@types/croppie": "^2.5.1",
