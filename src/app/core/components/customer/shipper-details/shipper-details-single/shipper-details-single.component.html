@@ -65,11 +65,12 @@
                   <span class="hours" *ngIf="loads?.wait.hours > 0"
                     >{{ loads?.wait.hours }} h</span
                   >
-                  <span class="hours" *ngIf="loads?.wait.hours <= 0 && loads?.wait.days <= 0">{{
-                    loads?.wait.minutes
-                  }} min</span>
-                  </span
-                >
+                  <span
+                    class="hours"
+                    *ngIf="loads?.wait.hours <= 0 && loads?.wait.days <= 0"
+                    >{{ loads?.wait.minutes }} min</span
+                  >
+                </span>
               </div>
             </div>
             <div class="divider"></div>

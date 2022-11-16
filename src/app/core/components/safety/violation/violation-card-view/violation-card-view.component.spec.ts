@@ -8,9 +8,8 @@ describe('ViolationCardViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ViolationCardViewComponent ]
-    })
-    .compileComponents();
+      declarations: [ViolationCardViewComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

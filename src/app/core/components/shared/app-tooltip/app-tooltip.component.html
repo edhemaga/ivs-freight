@@ -2,8 +2,15 @@
 <ng-template>
   <div
     class="tooltip-holder"
-    [style]="'background-color: '+tooltipBackground+'; color: '+tooltipColor+'; text-align: '+tooltipTextAlign+' '"
+    [style]="
+      'background-color: ' +
+      tooltipBackground +
+      '; color: ' +
+      tooltipColor +
+      '; text-align: ' +
+      tooltipTextAlign +
+      ' '
+    "
     [innerHTML]="mainTooltip"
-  >
-  </div>
+  ></div>
 </ng-template>

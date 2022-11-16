@@ -8,9 +8,8 @@ describe('DashboardTopDriverComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DashboardTopDriverComponent ]
-    })
-    .compileComponents();
+      declarations: [DashboardTopDriverComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

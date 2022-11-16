@@ -44,7 +44,10 @@ export class ShipperTService implements OnDestroy {
 
   // Create Shipper -- CreateShipperCommand
   public addShipper(data: any): Observable<CreateResponse> {
-    const sortedParams = getFunctionParams(this.shipperService.apiShipperPost, data);
+    const sortedParams = getFunctionParams(
+      this.shipperService.apiShipperPost,
+      data
+    );
     return this.shipperService.apiShipperPost(data).pipe(
       tap((res: any) => {
         const subShipper = this.getShipperById(res.id)
@@ -83,7 +86,10 @@ export class ShipperTService implements OnDestroy {
 
   // Update Shipper -- UpdateShipperCommand
   public updateShipper(data: any): Observable<any> {
-    const sortedParams = getFunctionParams(this.shipperService.apiShipperPut, data);
+    const sortedParams = getFunctionParams(
+      this.shipperService.apiShipperPut,
+      data
+    );
     return this.shipperService.apiShipperPut(...sortedParams).pipe(
       tap(() => {
         const subShipper = this.getShipperById(data.id)

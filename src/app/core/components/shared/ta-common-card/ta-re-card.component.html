@@ -6,18 +6,22 @@
     [tooltipBackground]="isCardOpen ? 'rgba(0,0,0,0)' : '#6C6C6C'"
     class="tooltipClose"
   >
-    <div class="name-dots disable-selection"
-    [ngStyle]="{'padding':paddingDots}"
+    <div
+      class="name-dots disable-selection"
+      [ngStyle]="{ padding: paddingDots }"
     >
-      <div class="text-icon-common" (click)="toggleCard($event)" [ngClass]="{ copied: copiedCommon }">
-        <div  class="content-wrapper">
+      <div
+        class="text-icon-common"
+        (click)="toggleCard($event)"
+        [ngClass]="{ copied: copiedCommon }"
+      >
+        <div class="content-wrapper">
           <span
             ngbTooltip
             [mainTooltip]="stateTooltipName"
             position="top"
             tooltipBackground="#6C6C6C"
             class="tooltipShortName"
-
           >
             <div
               *ngIf="shortName"
@@ -51,11 +55,18 @@
             <span
               [ngClass]="{ 'card-close-title': !isCardOpen }"
               class="open-name"
-              *ngIf="!isCardOpen && expDateClose || testDate"
-              ><span *ngIf="!isDeactivated && !testDate">Expired on {{ expDateClose }}</span> <span *ngIf="isDeactivated && !testDate">Voided on {{ voidedDate }}</span>
-              <span *ngIf="testDate && !isCardOpen">{{testDate}}</span>
+              *ngIf="(!isCardOpen && expDateClose) || testDate"
+              ><span *ngIf="!isDeactivated && !testDate"
+                >Expired on {{ expDateClose }}</span
+              >
+              <span *ngIf="isDeactivated && !testDate"
+                >Voided on {{ voidedDate }}</span
+              >
+              <span *ngIf="testDate && !isCardOpen">{{ testDate }}</span>
             </span>
-            <span *ngIf="cardSecondName" class="second-name"> {{cardSecondName}}</span>
+            <span *ngIf="cardSecondName" class="second-name">
+              {{ cardSecondName }}</span
+            >
           </span>
           <span
             *ngIf="hasCopyIcon"
@@ -63,45 +74,51 @@
             [mainTooltip]="copiedCommon ? 'Copied' : 'Copy'"
             position="top"
             [autoClose]="false"
-            (click)="copyText(cardNameCommon,$event)"
+            (click)="copyText(cardNameCommon, $event)"
             [tooltipBackground]="copiedCommon ? '#536BC2' : '#6c6c6c'"
           >
             <svg-icon
               *ngIf="isCardOpen && hasCopyIcon"
-              (mouseleave)=" copiedCommon=false"
+              (mouseleave)="copiedCommon = false"
               class="card-icon-common"
               src="assets/svg/common/ic_copy.svg"
             ></svg-icon>
           </span>
           <span
-          *ngIf="settingsIcon && isCardOpen"
-          ngbTooltip
-          [mainTooltip]="'Company Owned'"
-          position="bottom"
-          [tooltipBackground]="'#6c6c6c'"
-        >
-          <svg-icon
             *ngIf="settingsIcon && isCardOpen"
-            src="{{ settingsIcon }}"
-            class="settings-icon"
+            ngbTooltip
+            [mainTooltip]="'Company Owned'"
+            position="bottom"
+            [tooltipBackground]="'#6c6c6c'"
           >
-          </svg-icon>
+            <svg-icon
+              *ngIf="settingsIcon && isCardOpen"
+              src="{{ settingsIcon }}"
+              class="settings-icon"
+            >
+            </svg-icon>
           </span>
         </div>
       </div>
-      <div *ngIf="haveDots" (click)="clickedCardName(cardNameCurrent)" class="dots-common-cards">
-      <app-details-page-dropdown
-        [options]="options.actions"
-        [id]="optionsId"
-        (click)="sendData(data)"
-        [placement]="setPositionDrop? 'bottom-right left auto' : 'right-top right auto'"
-        [leftIcon]="setPositionDrop? false : true"
-        (dropDownActions)="dropAct($event)"
-        [customClassDropDown]="'drop-down-details-single'"
-        (click)="toggleDropdown()"
+      <div
+        *ngIf="haveDots"
+        (click)="clickedCardName(cardNameCurrent)"
+        class="dots-common-cards"
       >
-      </app-details-page-dropdown>
-    </div>
+        <app-details-page-dropdown
+          [options]="options.actions"
+          [id]="optionsId"
+          (click)="sendData(data)"
+          [placement]="
+            setPositionDrop ? 'bottom-right left auto' : 'right-top right auto'
+          "
+          [leftIcon]="setPositionDrop ? false : true"
+          (dropDownActions)="dropAct($event)"
+          [customClassDropDown]="'drop-down-details-single'"
+          (click)="toggleDropdown()"
+        >
+        </app-details-page-dropdown>
+      </div>
     </div>
   </div>
   <div
@@ -113,12 +130,16 @@
       <ng-content></ng-content>
     </div>
   </div>
-  <div class="card-footer-cmp" [ngClass]="{'hide-padding':resPage}" *ngIf="isCardOpen && hasFooter">
+  <div
+    class="card-footer-cmp"
+    [ngClass]="{ 'hide-padding': resPage }"
+    *ngIf="isCardOpen && hasFooter"
+  >
     <div class="icon-counter">
       <svg-icon
         *ngIf="!resPage"
         class="note-icon"
-        src="{{noteIcons}}"
+        src="{{ noteIcons }}"
       ></svg-icon>
       <svg-icon
         *ngIf="!resPage && cardDocumentCounter"

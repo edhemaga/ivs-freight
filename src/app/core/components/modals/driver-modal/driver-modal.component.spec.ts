@@ -11,9 +11,8 @@ describe('DriverModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DriverModalComponent ]
-    })
-    .compileComponents();
+      declarations: [DriverModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,11 +1,17 @@
-import { Component, ElementRef, Input, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { settings_card_animation } from '../settings-animation/settings-card.animation';
 
 @Component({
   selector: 'app-settings-card',
   templateUrl: './settings-card.component.html',
   styleUrls: ['./settings-card.component.scss'],
-  animations: [settings_card_animation('openCloseBodyCard')]
+  animations: [settings_card_animation('openCloseBodyCard')],
 })
 export class SettingsCardComponent {
   @Input() cardTemplate: string = null;
@@ -32,14 +38,14 @@ export class SettingsCardComponent {
     let hiddenCharacter = '';
 
     for (let i = 0; i < numberOfCharacterToHide; i++) {
-      hiddenCharacter += "*";
+      hiddenCharacter += '*';
     }
     return hiddenCharacter + lastFourCharaters;
   }
 
   public showHideValue(value: string) {
     this.isAccountVisible = !this.isAccountVisible;
-    
+
     if (!this.isAccountVisible) {
       this.accountText = this.hiddenPassword(value, 4);
       return;
@@ -48,13 +54,12 @@ export class SettingsCardComponent {
   }
 
   public onCardOpen() {
-    if(this.data?.name !== 'Fuel Station') {
-      this.isCardOpen = !this.isCardOpen
+    if (this.data?.name !== 'Fuel Station') {
+      this.isCardOpen = !this.isCardOpen;
     }
   }
 
   public identity(index: number, item: any): number {
     return item.id;
   }
-
 }

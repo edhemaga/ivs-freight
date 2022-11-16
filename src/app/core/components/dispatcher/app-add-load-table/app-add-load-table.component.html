@@ -1,6 +1,8 @@
 <div cdkDrag class="modal-container assing_load_table">
   <div cdkDragHandle class="modal-header">
-    <h5 class="modal-title">Assign Load to #{{inputData.data.truckNumber}}</h5>
+    <h5 class="modal-title">
+      Assign Load to #{{ inputData.data.truckNumber }}
+    </h5>
     <i
       (click)="closeModal()"
       class="fal fa-times cursor-pointer fs-24 icon-hover-primary"
@@ -10,66 +12,92 @@
     <div class="card no-border-radius mb-0">
       <div class="card-body p-0">
         <div class="table-responsive">
-          <app-no-empty-status *ngIf="!dispatchLoadsData.length" [isAssignLoads]="true"></app-no-empty-status>
-          <table *ngIf="dispatchLoadsData.length" class="table table-hover mb-0">
+          <app-no-empty-status
+            *ngIf="!dispatchLoadsData.length"
+            [isAssignLoads]="true"
+          ></app-no-empty-status>
+          <table
+            *ngIf="dispatchLoadsData.length"
+            class="table table-hover mb-0"
+          >
             <thead>
-            <tr class="text-nowrap no-hover">
-              <th class="text-center">#</th>
-              <th>Broker name</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th class="text-right refNmbr">Ref#</th>
-              <th>Pickup</th>
-              <th>Delivery</th>
-              <th>Miles</th>
-              <th class="text-center" style="width: auto !important;">Total rate</th>
-            </tr>
+              <tr class="text-nowrap no-hover">
+                <th class="text-center">#</th>
+                <th>Broker name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th class="text-right refNmbr">Ref#</th>
+                <th>Pickup</th>
+                <th>Delivery</th>
+                <th>Miles</th>
+                <th class="text-center" style="width: auto !important">
+                  Total rate
+                </th>
+              </tr>
             </thead>
             <tbody>
-            <tr (click)="showMaps(load)" *ngFor="let load of dispatchLoadsData; let indx = index"
+              <tr
+                (click)="showMaps(load)"
+                *ngFor="let load of dispatchLoadsData; let indx = index"
                 [class.active]="selectedLoad == load.id"
-                class="cursor-pointer">
-              <td class="text-center">
-                <div class="">{{indx + 1}}</div>
-              </td>
-              <td>{{load.brokerName}}</td>
-              <td>{{load.pickupDateTime | date : 'MM/LL/yy'}}</td>
-              <td>{{load.pickupDateTime | date : 'hh:mm aa'}}</td>
-              <td class="text-right">
-                <div class="refNmbr">{{load.brokerLoadNumber}}</div>
-              </td>
-              <td>
-                <div class="d-flex">
-                  <div *ngIf="load.pickupCount" class="load-count count_item">
-                    <svg-icon *ngIf="load.pickupCount < 10"
-                              src="assets/img/svg_numbers/svg_num_box_{{load.pickupCount}}.svg"></svg-icon>
-                    <svg-icon *ngIf="load.pickupCount > 9" src="assets/img/svg_numbers/svg_num_over.svg"></svg-icon>
+                class="cursor-pointer"
+              >
+                <td class="text-center">
+                  <div class="">{{ indx + 1 }}</div>
+                </td>
+                <td>{{ load.brokerName }}</td>
+                <td>{{ load.pickupDateTime | date: "MM/LL/yy" }}</td>
+                <td>{{ load.pickupDateTime | date: "hh:mm aa" }}</td>
+                <td class="text-right">
+                  <div class="refNmbr">{{ load.brokerLoadNumber }}</div>
+                </td>
+                <td>
+                  <div class="d-flex">
+                    <div *ngIf="load.pickupCount" class="load-count count_item">
+                      <svg-icon
+                        *ngIf="load.pickupCount < 10"
+                        src="assets/img/svg_numbers/svg_num_box_{{
+                          load.pickupCount
+                        }}.svg"
+                      ></svg-icon>
+                      <svg-icon
+                        *ngIf="load.pickupCount > 9"
+                        src="assets/img/svg_numbers/svg_num_over.svg"
+                      ></svg-icon>
+                    </div>
+                    {{ load.pickupLocation.city }},
+                    {{ load.pickupLocation.stateShortName }}
                   </div>
-                  {{ load.pickupLocation.city}}, {{ load.pickupLocation.stateShortName}}
-                </div>
-              </td>
-              <td>
-                <div class="d-flex count_item delivery_items">
-                  <div *ngIf="load.deliveryCount" class="load-count">
-                    <svg-icon *ngIf="load.deliveryCount < 10"
-                              src="assets/img/svg_numbers/svg_num_box_{{load.deliveryCount}}.svg"></svg-icon>
-                    <svg-icon *ngIf="load.deliveryCount > 9" src="assets/img/svg_numbers/svg_num_over.svg"></svg-icon>
+                </td>
+                <td>
+                  <div class="d-flex count_item delivery_items">
+                    <div *ngIf="load.deliveryCount" class="load-count">
+                      <svg-icon
+                        *ngIf="load.deliveryCount < 10"
+                        src="assets/img/svg_numbers/svg_num_box_{{
+                          load.deliveryCount
+                        }}.svg"
+                      ></svg-icon>
+                      <svg-icon
+                        *ngIf="load.deliveryCount > 9"
+                        src="assets/img/svg_numbers/svg_num_over.svg"
+                      ></svg-icon>
+                    </div>
+                    {{ load.deliveryLocation.city }},
+                    {{ load.deliveryLocation.stateShortName }}
                   </div>
-                  {{ load.deliveryLocation.city}}, {{ load.deliveryLocation.stateShortName}}
-                </div>
-              </td>
-              <td>{{ load.mileage }}</td>
-              <td class="text-center" style="width: auto !important;">{{ load.total | currency }}</td>
-            </tr>
+                </td>
+                <td>{{ load.mileage }}</td>
+                <td class="text-center" style="width: auto !important">
+                  {{ load.total | currency }}
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
-    <div
-      *ngIf="selectedLoad"
-      [@pickupAnimation]
-      class="assign_load_map_holder">
+    <div *ngIf="selectedLoad" [@pickupAnimation] class="assign_load_map_holder">
       <agm-map
         (mapReady)="getMapInstance($event)"
         [clickableIcons]="false"
@@ -172,7 +200,7 @@
       </agm-map>
       <div class="mileage-container">
         <div *ngIf="legMilage.length > 0" class="mileage_table">
-          <div class="total_item">Total: {{distance}} mi</div>
+          <div class="total_item">Total: {{ distance }} mi</div>
           <div class="mileage_table_head pr-2">
             <div class="milage_table_col"><span>#</span>Stops</div>
             <div class="milage_table_col">Leg</div>
@@ -181,23 +209,41 @@
           <div class="mileage_table_body">
             <div
               *ngFor="let dataItem of legMilage; let rowIndex = index"
-              [ngClass]="{'milage_table_row pr-2': true, 'active': activatedLoadMap == rowIndex, pickupRow: dataItem.type == 'pickup', deliveryRow: dataItem.type == 'delivery' }">
+              [ngClass]="{
+                'milage_table_row pr-2': true,
+                active: activatedLoadMap == rowIndex,
+                pickupRow: dataItem.type == 'pickup',
+                deliveryRow: dataItem.type == 'delivery'
+              }"
+            >
               <!-- Stops -->
               <div class="milage_table_col">
-                        <span *ngIf="dataItem.startAddress !== null" class="pl-2 address_titles">
-                            <span>{{rowIndex + 1}}</span>{{ dataItem.startAddress }}
-                        </span>
-                <span *ngIf="dataItem.endAddress !== null" class="pl-2 address_titles">
-                            <span>{{rowIndex + 1}}</span>{{ dataItem.endAddress }}
-                        </span>
+                <span
+                  *ngIf="dataItem.startAddress !== null"
+                  class="pl-2 address_titles"
+                >
+                  <span>{{ rowIndex + 1 }}</span
+                  >{{ dataItem.startAddress }}
+                </span>
+                <span
+                  *ngIf="dataItem.endAddress !== null"
+                  class="pl-2 address_titles"
+                >
+                  <span>{{ rowIndex + 1 }}</span
+                  >{{ dataItem.endAddress }}
+                </span>
               </div>
               <!-- Leg Miles -->
               <div class="milage_table_col">
-                <span *ngIf="dataItem.distance !== null">{{ dataItem.distance }}</span>
+                <span *ngIf="dataItem.distance !== null">{{
+                  dataItem.distance
+                }}</span>
               </div>
               <!-- Total Miles -->
               <div class="milage_table_col mileage_total_col">
-                <span *ngIf="dataItem.mileageSumString !== null">{{ dataItem.mileageSumString }}</span>
+                <span *ngIf="dataItem.mileageSumString !== null">{{
+                  dataItem.mileageSumString
+                }}</span>
               </div>
             </div>
           </div>
@@ -206,13 +252,25 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button (click)="closeModal()" class="cancel-btn" type="button">Cancel</button>
-    <button (click)="addLoad()" *ngIf="addButton" [disabled]="selectedLoad.length === 0" class="save-btn" type="button">
+    <button (click)="closeModal()" class="cancel-btn" type="button">
+      Cancel
+    </button>
+    <button
+      (click)="addLoad()"
+      *ngIf="addButton"
+      [disabled]="selectedLoad.length === 0"
+      class="save-btn"
+      type="button"
+    >
       Assign Load
     </button>
-    <button *ngIf="!addButton" [disabled]="selectedLoad.length === 0" class="save-btn" type="button">
+    <button
+      *ngIf="!addButton"
+      [disabled]="selectedLoad.length === 0"
+      class="save-btn"
+      type="button"
+    >
       Save Changes
     </button>
   </div>
 </div>
-

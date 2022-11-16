@@ -1,11 +1,22 @@
 @import "../../../../../assets/scss/details_page_ske.scss";
 
-  .note-item {
-    .note-body {
-      margin-left: 4px;
+.note-item {
+  .note-body {
+    margin-left: 4px;
+  }
+  .note-textarea {
+    color: #6c6c6c !important;
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
     }
-    .note-textarea {
-      color: #6c6c6c !important;
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+
+    span {
       &::-moz-selection {
         color: $bw6-2;
         background: rgb(108, 108, 108, 0.2);
@@ -15,217 +26,205 @@
         color: $bw6-2;
         background: rgb(108, 108, 108, 0.2);
       }
+    }
 
-      span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
-        }
+    span[style*="color: rgb(83, 107, 194)"],
+    span[style*="color: rgb(83, 107, 194)"] span {
+      &::-moz-selection {
+        color: $bw6-2 !important;
+        background: rgb(83, 107, 194, 0.2) !important;
       }
 
-      span[style*="color: rgb(83, 107, 194)"],
-      span[style*="color: rgb(83, 107, 194)"] span {
-        &::-moz-selection {
-          color: $bw6-2 !important;
-          background: rgb(83, 107, 194, 0.2) !important;
-        }
+      &::selection {
+        color: $bw6-2;
+        background: rgb(83, 107, 194, 0.2) !important;
+      }
+    }
 
-        &::selection {
-          color: $bw6-2;
-          background: rgb(83, 107, 194, 0.2) !important;
-        }
+    span[style*="color: rgb(38, 166, 144)"],
+    span[style*="color: rgb(38, 166, 144)"] span {
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(38, 166, 144, 0.2) !important;
       }
 
-      span[style*="color: rgb(38, 166, 144)"],
-      span[style*="color: rgb(38, 166, 144)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(38, 166, 144, 0.2) !important;
-        }
+      &::selection {
+        color: $bw6-2;
+        background: rgb(38, 166, 144, 0.2) !important;
+      }
+    }
 
-        &::selection {
-          color: $bw6-2;
-          background: rgb(38, 166, 144, 0.2) !important;
-        }
+    span[style*="color: rgb(239, 83, 80)"],
+    span[style*="color: rgb(239, 83, 80)"] span {
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(239, 83, 80, 0.2) !important;
       }
 
-      span[style*="color: rgb(239, 83, 80)"],
-      span[style*="color: rgb(239, 83, 80)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(239, 83, 80, 0.2) !important;
-        }
+      &::selection {
+        color: $bw6-2;
+        background: rgb(239, 83, 80, 0.2) !important;
+      }
+    }
 
-        &::selection {
-          color: $bw6-2;
-          background: rgb(239, 83, 80, 0.2) !important;
-        }
+    span[style*="color: rgb(255, 167, 38)"],
+    span[style*="color: rgb(255, 167, 38)"] span {
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(255, 167, 38, 0.2) !important;
       }
 
-      span[style*="color: rgb(255, 167, 38)"],
-      span[style*="color: rgb(255, 167, 38)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(255, 167, 38, 0.2) !important;
-        }
+      &::selection {
+        color: $bw6-2;
+        background: rgb(255, 167, 38, 0.2) !important;
+      }
+    }
 
-        &::selection {
-          color: $bw6-2;
-          background: rgb(255, 167, 38, 0.2) !important;
-        }
+    span[style*="color: rgb(83, 107, 194)"],
+    span[style*="color: rgb(83, 107, 194)"] span {
+      &::-moz-selection {
+        color: $bw6-2 !important;
+        background: rgb(83, 107, 194, 0.2) !important;
       }
 
-      span[style*="color: rgb(83, 107, 194)"],
-      span[style*="color: rgb(83, 107, 194)"] span {
-        &::-moz-selection {
-          color: $bw6-2 !important;
-          background: rgb(83, 107, 194, 0.2) !important;
-        }
+      &::selection {
+        color: $bw6-2;
+        background: rgb(83, 107, 194, 0.2) !important;
+      }
+    }
 
-        &::selection {
-          color: $bw6-2;
-          background: rgb(83, 107, 194, 0.2) !important;
-        }
+    span[style*="color: rgb(38, 166, 144)"],
+    span[style*="color: rgb(38, 166, 144)"] span {
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(38, 166, 144, 0.2) !important;
       }
 
-      span[style*="color: rgb(38, 166, 144)"],
-      span[style*="color: rgb(38, 166, 144)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(38, 166, 144, 0.2) !important;
-        }
+      &::selection {
+        color: $bw6-2;
+        background: rgb(38, 166, 144, 0.2) !important;
+      }
+    }
 
-        &::selection {
-          color: $bw6-2;
-          background: rgb(38, 166, 144, 0.2) !important;
-        }
+    span[style*="color: rgb(239, 83, 80)"],
+    span[style*="color: rgb(239, 83, 80)"] span {
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(239, 83, 80, 0.2) !important;
       }
 
-      span[style*="color: rgb(239, 83, 80)"],
-      span[style*="color: rgb(239, 83, 80)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(239, 83, 80, 0.2) !important;
-        }
+      &::selection {
+        color: $bw6-2;
+        background: rgb(239, 83, 80, 0.2) !important;
+      }
+    }
 
-        &::selection {
-          color: $bw6-2;
-          background: rgb(239, 83, 80, 0.2) !important;
-        }
+    span[style*="color: rgb(255, 167, 38)"],
+    span[style*="color: rgb(255, 167, 38)"] span {
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(255, 167, 38, 0.2) !important;
       }
 
-      span[style*="color: rgb(255, 167, 38)"],
-      span[style*="color: rgb(255, 167, 38)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(255, 167, 38, 0.2) !important;
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(255, 167, 38, 0.2) !important;
-        }
+      &::selection {
+        color: $bw6-2;
+        background: rgb(255, 167, 38, 0.2) !important;
       }
     }
   }
+}
 
-  .carousel-buttons-control {
-    &.prev {
-      left: -2px !important;
-    }
-
-    &.next {
-      right: -2px !important;
-    }
+.carousel-buttons-control {
+  &.prev {
+    left: -2px !important;
   }
-  .additional-container {
-    padding: 0 10px;
-    display: grid;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    .addres-wrapper {
-      padding-bottom: 9px;
-      .address-icon {
-        display: none;
-        position: relative;
-        margin-left: 6px;
-        bottom: 4px;
-        height: 18px;
-        svg {
-          fill: #aaaaaa;
-          &:hover {
-            path {
-              fill: #6c6c6c;
-            }
-          }
-        }
-      }
-      .addres-name {
-        font-size: $font-size12;
-        font-weight: $font-semibold;
-        color: #6c6c6c;
-        &::-moz-selection {
-          color: #6c6c6c;
-          background: rgb(108, 108, 108, 0.2);
-        }
-        &::selection {
-          color: #6c6c6c;
-          background: rgb(108, 108, 108, 0.2);
-        }
-      }
-      .addres-value {
-        font-size: $font-size14;
-        font-weight: 400;
-        color: #6c6c6c;
-        white-space: pre-line;
-        max-width: 340px;
-        &::-moz-selection {
-          color: #6c6c6c;
-          background: rgb(108, 108, 108, 0.2);
-        }
-        &::selection {
-          color: #6c6c6c;
-          background: rgb(108, 108, 108, 0.2);
-        }
-      }
 
-      .addres-value-icon {
-        display: flex;
-        align-items: flex-start;
+  &.next {
+    right: -2px !important;
+  }
+}
+.additional-container {
+  padding: 0 10px;
+  display: grid;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  .addres-wrapper {
+    padding-bottom: 9px;
+    .address-icon {
+      display: none;
+      position: relative;
+      margin-left: 6px;
+      bottom: 4px;
+      height: 18px;
+      svg {
+        fill: #aaaaaa;
         &:hover {
-          cursor: pointer;
-          .address-icon {
-            display: block;
-          }
-          .addres-value {
-            color: #3c3c3c;
+          path {
+            fill: #6c6c6c;
           }
         }
       }
     }
-  }
+    .addres-name {
+      font-size: $font-size12;
+      font-weight: $font-semibold;
+      color: #6c6c6c;
+      &::-moz-selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+      }
+    }
+    .addres-value {
+      font-size: $font-size14;
+      font-weight: 400;
+      color: #6c6c6c;
+      white-space: pre-line;
+      max-width: 340px;
+      &::-moz-selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+      }
+    }
 
-  .status-header {
-    padding-left: 6px;
-    padding-right: 6px;
-    margin-bottom: 6px;
-  }
-  .status-items {
-    padding: 0 5px;
-    margin-top: 8px;
-    .item-wrapper {
-      grid-template-columns: 113px 137px 79px !important;
-      grid-template-rows: 18px;
-      &:last-child {
-        .divider-employment {
-          visibility: hidden;
+    .addres-value-icon {
+      display: flex;
+      align-items: flex-start;
+      &:hover {
+        cursor: pointer;
+        .address-icon {
+          display: block;
+        }
+        .addres-value {
+          color: #3c3c3c;
         }
       }
     }
   }
+}
 
+.status-header {
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-bottom: 6px;
+}
+.status-items {
+  padding: 0 5px;
+  margin-top: 8px;
+  .item-wrapper {
+    grid-template-columns: 113px 137px 79px !important;
+    grid-template-rows: 18px;
+    &:last-child {
+      .divider-employment {
+        visibility: hidden;
+      }
+    }
+  }
+}

@@ -131,7 +131,7 @@ export class SettingsInsurancepolicyComponent implements OnChanges, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'View Details',
@@ -140,7 +140,7 @@ export class SettingsInsurancepolicyComponent implements OnChanges, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Delete',

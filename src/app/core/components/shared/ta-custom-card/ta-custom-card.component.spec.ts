@@ -11,9 +11,8 @@ describe('TaCustomCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaCustomCardComponent ]
-    })
-    .compileComponents();
+      declarations: [TaCustomCardComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

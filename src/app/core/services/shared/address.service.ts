@@ -18,6 +18,10 @@ export class AddressService implements OnDestroy {
   }
 
   public getAddresses(addressData, layers, closedBorder) {
-    return this.geoService.apiGeolocationAutocompleteGet(addressData, layers, closedBorder);
+    return this.geoService.apiGeolocationAutocompleteGet(
+      addressData,
+      layers,
+      closedBorder
+    );
   }
 }

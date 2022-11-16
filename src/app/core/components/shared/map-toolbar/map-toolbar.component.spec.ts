@@ -8,9 +8,8 @@ describe('MapToolbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MapToolbarComponent ]
-    })
-    .compileComponents();
+      declarations: [MapToolbarComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

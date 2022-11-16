@@ -1,12 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-status-switcher',
   templateUrl: './status-switcher.component.html',
-  styleUrls: ['./status-switcher.component.scss']
+  styleUrls: ['./status-switcher.component.scss'],
 })
 export class StatusSwitcherComponent implements OnInit {
-
   @Input() data: any;
   @Input() changeToRoutingStyle: boolean;
   @Input() changeToGpsStyle: boolean;
@@ -15,12 +14,10 @@ export class StatusSwitcherComponent implements OnInit {
   @Input() customClass: string = null;
   @Output() switchClicked = new EventEmitter<any>();
 
-
   numberOfTabs: number;
   checked: boolean;
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
     let count = 0;
@@ -41,5 +38,4 @@ export class StatusSwitcherComponent implements OnInit {
     this.data[clickedKey].checked = true;
     this.switchClicked.emit(this.data);
   }
-
 }

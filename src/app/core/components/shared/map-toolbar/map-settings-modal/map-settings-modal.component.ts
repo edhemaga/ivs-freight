@@ -161,7 +161,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
 
     const newData: UpdateMapCommand = {
       id: id,
-      name: form.mapName
+      name: form.mapName,
     };
 
     this.routingService
@@ -175,10 +175,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
           );
         },
         error: () => {
-          this.notificationService.error(
-            "Can't update map.",
-            'Error'
-          );
+          this.notificationService.error("Can't update map.", 'Error');
         },
       });
   }
@@ -190,7 +187,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: any) => {
           this.mapSettingsForm.patchValue({
-            mapName: res.name
+            mapName: res.name,
           });
           console.log('getMapById', res);
         },
@@ -220,7 +217,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
         checked: false,
       },
     ];
-  
+
     this.addressTabs = [
       {
         id: 1,
@@ -233,7 +230,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
         checked: false,
       },
     ];
-  
+
     this.borderTabs = [
       {
         id: 1,

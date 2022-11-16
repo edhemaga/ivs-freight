@@ -309,7 +309,13 @@
             [ngClass]="{ valid: isModalValid }"
             type="button"
           >
-            {{ setMapRouteSpinnerVisibility ? "Saving" : editData.id ? 'Save Changes' : "Create" }}
+            {{
+              setMapRouteSpinnerVisibility
+                ? "Saving"
+                : editData.id
+                ? "Save Changes"
+                : "Create"
+            }}
             <div *ngIf="setMapRouteSpinnerVisibility" class="modal-spinner">
               <app-ta-spinner
                 [size]="'small'"

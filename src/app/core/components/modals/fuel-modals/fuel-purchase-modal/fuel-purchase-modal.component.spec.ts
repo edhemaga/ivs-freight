@@ -11,9 +11,8 @@ describe('FuelPurchaseModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FuelPurchaseModalComponent ]
-    })
-    .compileComponents();
+      declarations: [FuelPurchaseModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

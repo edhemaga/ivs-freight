@@ -54,7 +54,10 @@ export class RepairTService implements OnDestroy {
   // <----------------------- Repair Truck And Trailer -------------------->
   //CreateRepairCommand
   public addRepair(data: any): Observable<CreateResponse> {
-    const sortedParams = getFunctionParams(this.repairService.apiRepairPost, data);
+    const sortedParams = getFunctionParams(
+      this.repairService.apiRepairPost,
+      data
+    );
     return this.repairService.apiRepairPost(...sortedParams).pipe(
       tap((res: any) => {
         const subShop = this.getRepairShopById(data.repairShopId)
@@ -109,7 +112,10 @@ export class RepairTService implements OnDestroy {
 
   //UpdateRepairCommand
   public updateRepair(data: any): Observable<object> {
-    const sortedParams = getFunctionParams(this.repairService.apiRepairPut, data);
+    const sortedParams = getFunctionParams(
+      this.repairService.apiRepairPut,
+      data
+    );
     return this.repairService.apiRepairPut(...sortedParams).pipe(
       tap(() => {
         const subShop = this.getRepairShopById(data.repairShopId)
@@ -262,10 +268,11 @@ export class RepairTService implements OnDestroy {
 
   // <----------------------- Repair Shop -------------------->
   //CreateRepairShopCommand
-  public addRepairShop(
-    data: any
-  ): Observable<CreateResponse> {
-    const sortedParams = getFunctionParams(this.shopServices.apiRepairshopPost, data);
+  public addRepairShop(data: any): Observable<CreateResponse> {
+    const sortedParams = getFunctionParams(
+      this.shopServices.apiRepairshopPost,
+      data
+    );
     return this.shopServices.apiRepairshopPost(...sortedParams).pipe(
       tap((res: any) => {
         const subShop = this.getRepairShopById(res.id)
@@ -299,7 +306,10 @@ export class RepairTService implements OnDestroy {
 
   //UpdateRepairShopCommand
   public updateRepairShop(data: any): Observable<object> {
-    const sortedParams = getFunctionParams(this.shopServices.apiRepairshopPut, data);
+    const sortedParams = getFunctionParams(
+      this.shopServices.apiRepairshopPut,
+      data
+    );
     return this.shopServices.apiRepairshopPut(...sortedParams).pipe(
       tap(() => {
         const subShop = this.getRepairShopById(data.id)

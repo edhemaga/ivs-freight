@@ -20,15 +20,15 @@ import { BrokerDetailsModule } from './broker-details/broker-details.module';
 @NgModule({
   declarations: [CustomerTableComponent, BrokerCardComponent],
   imports: [
-    CommonModule, 
-    TruckassistTableModule, 
-    CustomerRoutingModule, 
+    CommonModule,
+    TruckassistTableModule,
+    CustomerRoutingModule,
     ShipperDetailsModule,
     BrokerDetailsModule,
-    AngularSvgIconModule, 
+    AngularSvgIconModule,
     SharedModule,
-    AgmCoreModule, 
-    AgmSnazzyInfoWindowModule, 
+    AgmCoreModule,
+    AgmSnazzyInfoWindowModule,
   ],
 })
 export class CustomerModule {}

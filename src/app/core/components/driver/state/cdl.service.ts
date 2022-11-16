@@ -37,7 +37,7 @@ export class CdlTService implements OnDestroy {
   /* Observable<CreateCdlResponse> */
   public addCdl(data: /* CreateCdlCommand */ any): Observable<any> {
     const sortedParams = getFunctionParams(this.cdlService.apiCdlPost, data);
-    
+
     return this.cdlService.apiCdlPost(...sortedParams).pipe(
       tap((res: CreateResponse) => {
         const subDriver = this.driverService
@@ -75,7 +75,7 @@ export class CdlTService implements OnDestroy {
     );
   }
 
-  public updateCdl(data: any): Observable<any> { 
+  public updateCdl(data: any): Observable<any> {
     const sortedParams = getFunctionParams(this.cdlService.apiCdlPut, data);
     return this.cdlService.apiCdlPut(...sortedParams).pipe(
       tap((res: any) => {

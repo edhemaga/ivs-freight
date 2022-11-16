@@ -42,7 +42,10 @@ export class BrokerTService implements OnDestroy {
 
   // Add Broker -- CreateBrokerCommand
   public addBroker(data: any): Observable<CreateResponse> {
-    const sortedParams = getFunctionParams(this.brokerService.apiBrokerPost, data);
+    const sortedParams = getFunctionParams(
+      this.brokerService.apiBrokerPost,
+      data
+    );
     return this.brokerService.apiBrokerPost(...sortedParams).pipe(
       tap((res: any) => {
         const subBroker = this.getBrokerById(res.id).subscribe({
@@ -79,7 +82,10 @@ export class BrokerTService implements OnDestroy {
 
   // Update Broker -- UpdateBrokerCommand
   public updateBroker(data: any): Observable<any> {
-    const sortedParams = getFunctionParams(this.brokerService.apiBrokerPut, data);
+    const sortedParams = getFunctionParams(
+      this.brokerService.apiBrokerPut,
+      data
+    );
     return this.brokerService.apiBrokerPut(...sortedParams).pipe(
       tap(() => {
         const subBroker = this.getBrokerById(data.id).subscribe({

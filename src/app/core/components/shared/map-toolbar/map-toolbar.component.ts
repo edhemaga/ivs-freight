@@ -428,11 +428,14 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onShowMapSettings(mapSettingsPopup: any) {
-    this.modalService.openModal(MapSettingsModalComponent, { size: 'small' },
-    {
-      ...this.activeTableData,
-      type: 'edit',
-    });
+    this.modalService.openModal(
+      MapSettingsModalComponent,
+      { size: 'small' },
+      {
+        ...this.activeTableData,
+        type: 'edit',
+      }
+    );
     // this.mapSettingsPopup = mapSettingsPopup;
 
     // if (mapSettingsPopup.isOpen()) {

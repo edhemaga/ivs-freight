@@ -11,9 +11,8 @@ describe('SettingsPayrollComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsPayrollComponent ]
-    })
-    .compileComponents();
+      declarations: [SettingsPayrollComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -11,9 +11,8 @@ describe('TaInputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaInputComponent ]
-    })
-    .compileComponents();
+      declarations: [TaInputComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

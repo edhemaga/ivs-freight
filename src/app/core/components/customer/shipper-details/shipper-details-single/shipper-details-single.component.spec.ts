@@ -8,9 +8,8 @@ describe('ShipperDetailsSingleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ShipperDetailsSingleComponent ]
-    })
-    .compileComponents();
+      declarations: [ShipperDetailsSingleComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

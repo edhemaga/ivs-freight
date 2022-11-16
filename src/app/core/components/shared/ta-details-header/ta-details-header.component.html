@@ -36,7 +36,13 @@
 
     <div class="icon-right">
       <div *ngIf="isInactive" class="inactive-status">INACTIVE</div>
-      <div *ngIf="showRepairHeaderOpen" [ngClass]="{'open-status':repairIsOpen}" class="inactive-status">{{repairIsOpen?'OPEN':'CLOSED'}}</div>
+      <div
+        *ngIf="showRepairHeaderOpen"
+        [ngClass]="{ 'open-status': repairIsOpen }"
+        class="inactive-status"
+      >
+        {{ repairIsOpen ? "OPEN" : "CLOSED" }}
+      </div>
       <app-details-page-dropdown
         (click)="toggleDropdownActions()"
         [customClassDropDown]="'drop-down-header'"
@@ -76,7 +82,7 @@
         [ngClass]="{ 'has-counter-header': counterData }"
       >
         <app-ta-counter
-          *ngIf="(!danger && counterData ) || counterData == 0 && !hideCounter "
+          *ngIf="(!danger && counterData) || (counterData == 0 && !hideCounter)"
           [countBackgroud]="'#F3F3F3'"
           [countColor]="'#919191'"
           [countHeight]="'24px'"
@@ -90,7 +96,12 @@
           src="assets/svg/common/ic_danger.svg"
         ></svg-icon>
         <div class="header-text-arrow-down">
-          <p [ngClass]="{'pl-6-header':loadNames}" class="header-name disable-selection">{{ headerText }}</p>
+          <p
+            [ngClass]="{ 'pl-6-header': loadNames }"
+            class="header-name disable-selection"
+          >
+            {{ headerText }}
+          </p>
           <svg-icon
             *ngIf="hasArrowDown"
             class="arrow-down-header"
@@ -99,18 +110,21 @@
         </div>
         <div *ngIf="secondNameHeader" class="header-text-arrow-down">
           <div class="second-counter">
-          <app-ta-counter
-          
-          [countBackgroud]="'#F3F3F3'"
-          [countColor]="'#919191'"
-          [countHeight]="'24px'"
-          [countWidth]="'24px'"
-          [count]="countViolation"
-        >
-        </app-ta-counter>
-      </div>
-          <p [ngClass]="{'pl-6-header':loadNames}" class="header-name disable-selection second-name-header-l">{{ secondNameHeader }}</p>
-         
+            <app-ta-counter
+              [countBackgroud]="'#F3F3F3'"
+              [countColor]="'#919191'"
+              [countHeight]="'24px'"
+              [countWidth]="'24px'"
+              [count]="countViolation"
+            >
+            </app-ta-counter>
+          </div>
+          <p
+            [ngClass]="{ 'pl-6-header': loadNames }"
+            class="header-name disable-selection second-name-header-l"
+          >
+            {{ secondNameHeader }}
+          </p>
         </div>
         <div *ngIf="hasIcon" class="repair-header-icons">
           <span

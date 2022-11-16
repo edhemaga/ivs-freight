@@ -176,7 +176,9 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
     this.documents = event.files;
     switch (event.action) {
       case 'add': {
-        this.fhwaInspectionForm.get('files').patchValue(JSON.stringify(event.files));
+        this.fhwaInspectionForm
+          .get('files')
+          .patchValue(JSON.stringify(event.files));
         break;
       }
       case 'delete': {

@@ -26,7 +26,7 @@ export class AppInterceptor implements HttpInterceptor {
           }, timeOutValue);
         }
 
-        return next.handle(httpRequest)
+        return next.handle(httpRequest);
       }),
       tap({
         complete: () => {

@@ -1,4 +1,4 @@
-export function getTruckColumnDefinition() {  
+export function getTruckColumnDefinition() {
   return [
     {
       ngTemplate: 'checkbox',
@@ -250,7 +250,7 @@ export function getTruckColumnDefinition() {
       classField: 'truckTypeClass',
       svgDimensions: {
         width: 42,
-        height: 18
+        height: 18,
       },
       class: 'type-icon',
     },
@@ -614,7 +614,7 @@ export function getTruckColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'note',
@@ -638,7 +638,7 @@ export function getTruckColumnDefinition() {
       disabled: false,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'actions',
@@ -662,7 +662,7 @@ export function getTruckColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
   ];
 }

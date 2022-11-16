@@ -11,9 +11,8 @@ describe('SettingsToolbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsToolbarComponent ]
-    })
-    .compileComponents();
+      declarations: [SettingsToolbarComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

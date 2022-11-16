@@ -14,7 +14,7 @@ import {
 import calendarJson from '../../../../../assets/calendarjson/calendar.json';
 import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
-import moment from "moment";
+import moment from 'moment';
 
 @Component({
   selector: 'app-custom-datetime-pickers',
@@ -138,12 +138,12 @@ export class CustomDatetimePickersComponent implements OnInit {
     this.changeOpened();
   }
 
-  public setTimeValue(){
-    const dateInputArray = moment(this.dateTime).format("H/m/A").split("/");
+  public setTimeValue() {
+    const dateInputArray = moment(this.dateTime).format('H/m/A').split('/');
     console.log(dateInputArray);
     this.scrollTypes.hourScroll = dateInputArray[0];
     this.scrollTypes.minutesScroll = dateInputArray[1];
-    this.scrollTypes.pmAmScroll = dateInputArray[2] == "AM" ? 0 : 1;
+    this.scrollTypes.pmAmScroll = dateInputArray[2] == 'AM' ? 0 : 1;
   }
 
   public setListPreview(value: string): void {
@@ -490,19 +490,21 @@ export class CustomDatetimePickersComponent implements OnInit {
     this.outputType[4] = this.timeOfDay[this.scrollTypes.pmAmScroll];
 
     this.selectedDateTime = this.createStringFromOutput();
-  
-    let currentDate=moment().format('MM/DD/YYYY');
-    console.log(currentDate + " " + this.selectedDateTime);
-    
-    this.calendarService.dateChanged.next(new Date(currentDate + " " + this.selectedDateTime));
+
+    let currentDate = moment().format('MM/DD/YYYY');
+    console.log(currentDate + ' ' + this.selectedDateTime);
+
+    this.calendarService.dateChanged.next(
+      new Date(currentDate + ' ' + this.selectedDateTime)
+    );
     //this.dropdown.close();
 
     this.closePopover.emit();
   }
 
-  setDefaultTime(){
-    let currentDate=moment().format('MM/DD/YYYY');
-    this.calendarService.dateChanged.next(new Date(currentDate + " 08:00"));
+  setDefaultTime() {
+    let currentDate = moment().format('MM/DD/YYYY');
+    this.calendarService.dateChanged.next(new Date(currentDate + ' 08:00'));
 
     this.closePopover.emit();
   }
@@ -666,7 +668,7 @@ export class CustomDatetimePickersComponent implements OnInit {
     }
   }
 
-  ngOnDestroy(){
-    this.listPreview = "full_list";
+  ngOnDestroy() {
+    this.listPreview = 'full_list';
   }
 }

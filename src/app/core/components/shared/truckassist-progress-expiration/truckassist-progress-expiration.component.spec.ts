@@ -8,9 +8,8 @@ describe('TruckassistProgressExpirationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TruckassistProgressExpirationComponent ]
-    })
-    .compileComponents();
+      declarations: [TruckassistProgressExpirationComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

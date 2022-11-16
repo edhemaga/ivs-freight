@@ -299,8 +299,8 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     return tableColumnsConfig
-        ? tableColumnsConfig
-        : getToolsAccountsColumnDefinition();
+      ? tableColumnsConfig
+      : getToolsAccountsColumnDefinition();
   }
 
   setAccountData(td: any) {

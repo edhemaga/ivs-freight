@@ -8,9 +8,8 @@ describe('DashboardMapComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DashboardMapComponent ]
-    })
-    .compileComponents();
+      declarations: [DashboardMapComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

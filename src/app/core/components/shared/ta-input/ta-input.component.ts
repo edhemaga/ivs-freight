@@ -63,7 +63,8 @@ export class TaInputComponent
   @Output('commandEvent') commandEvent: EventEmitter<any> =
     new EventEmitter<any>();
 
-  @Output('clear') clearInputEvent: EventEmitter<boolean> = new EventEmitter<any>();
+  @Output('clear') clearInputEvent: EventEmitter<boolean> =
+    new EventEmitter<any>();
 
   public focusInput: boolean = false;
   public touchedInput: boolean = false;
@@ -445,7 +446,7 @@ export class TaInputComponent
       }
 
       this.inputService.onClearInput$.next(true);
-      this.clearInputEvent.emit(true)
+      this.clearInputEvent.emit(true);
     }
   }
 
@@ -1851,7 +1852,7 @@ export class TaInputComponent
   }
 
   setDateTimeModel(direction: string) {
-    if(this.selectionInput == -1) this.selectionInput = 0;
+    if (this.selectionInput == -1) this.selectionInput = 0;
     if (this.inputConfig.name === 'datepicker') {
       if (direction == 'up') {
         if (this.selectionInput == 0) {

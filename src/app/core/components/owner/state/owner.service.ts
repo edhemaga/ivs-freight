@@ -31,7 +31,10 @@ export class OwnerTService {
 
   // Add Owner -- CreateOwnerCommand
   public addOwner(data: any): Observable<CreateResponse> {
-    const sortedParams = getFunctionParams(this.ownerService.apiOwnerPost, data);
+    const sortedParams = getFunctionParams(
+      this.ownerService.apiOwnerPost,
+      data
+    );
     return this.ownerService.apiOwnerPost(...sortedParams).pipe(
       tap((res: any) => {
         const subOwner = this.getOwnerById(res.id).subscribe({

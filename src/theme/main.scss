@@ -1,4 +1,4 @@
-@import 'src/theme/variables';
+@import "src/theme/variables";
 * {
   font-family: $main-font, $fallback-font;
 }
@@ -14,7 +14,8 @@ p {
 }
 
 .payment-type {
-  &.col-12, &.col-6 {
+  &.col-12,
+  &.col-6 {
     padding-left: 6px;
     padding-right: 6px;
   }
@@ -25,7 +26,6 @@ p {
     display: none;
   }
 }
-
 
 ::ng-deep .tooltip {
   .arrow::before {
@@ -67,9 +67,9 @@ p {
 }
 
 .note-label-wrapper {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   font-weight: 600;
-  color: #6C6C6C;
+  color: #6c6c6c;
   margin: 0 -12px;
   padding: 0 12px;
   transition: 0.3s;
@@ -80,9 +80,9 @@ p {
 }
 
 .dropzone-label-wrapper {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   font-weight: 700;
-  color: #6C6C6C;
+  color: #6c6c6c;
   margin: 0 -16px;
   padding: 6px 18px;
   transition: all 0.3s ease-in-out;
@@ -90,7 +90,6 @@ p {
   height: 30px;
   user-select: none;
 }
-
 
 textarea.input-custom-textarea.form-textarea {
   font-size: 12px;
@@ -151,8 +150,6 @@ textarea.input-custom-textarea.form-textarea {
   transform: rotate(180deg);
   transition: 0.3s all;
 }
-
-
 
 .notifications-holder {
   margin-bottom: 28px;

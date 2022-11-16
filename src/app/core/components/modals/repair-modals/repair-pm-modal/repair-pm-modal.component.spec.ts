@@ -11,9 +11,8 @@ describe('RepairPmModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RepairPmModalComponent ]
-    })
-    .compileComponents();
+      declarations: [RepairPmModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -8,9 +8,8 @@ describe('NavigationUserProfileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NavigationUserProfileComponent ]
-    })
-    .compileComponents();
+      declarations: [NavigationUserProfileComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

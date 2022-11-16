@@ -8,9 +8,8 @@ describe('SphFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SphFormComponent ]
-    })
-    .compileComponents();
+      declarations: [SphFormComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -17,11 +17,10 @@
     }
   }
 
-  &:hover{
-
+  &:hover {
     background-color: #42424220;
 
-    .main-icon-holder{
+    .main-icon-holder {
       svg-icon {
         svg {
           path {
@@ -32,7 +31,7 @@
     }
   }
 
-  .main-icon-holder{
+  .main-icon-holder {
     svg-icon {
       svg {
         path {
@@ -45,7 +44,7 @@
   &.active-options {
     background-color: #42424220;
 
-    .main-icon-holder{
+    .main-icon-holder {
       svg-icon {
         svg {
           path {
@@ -69,13 +68,13 @@
   }
 
   &.filter-active-colors {
-    background-color: #3074D320;
+    background-color: #3074d320;
 
-    .main-icon-holder{
+    .main-icon-holder {
       svg-icon {
         svg {
           path {
-            fill: #3074D3 !important;
+            fill: #3074d3 !important;
           }
         }
       }
@@ -98,7 +97,7 @@
       font-weight: 700;
 
       border-radius: 100%;
-      background-color: #3074D3;
+      background-color: #3074d3;
       border: 2px solid #fff;
 
       user-select: none;
@@ -106,7 +105,7 @@
 
     .clear-filter {
       display: none;
-      background-color: #EF5350 !important;
+      background-color: #ef5350 !important;
       svg-icon {
         svg {
           height: 6px !important;
@@ -122,22 +121,22 @@
       }
 
       &:hover {
-        background-color: #F44336 !important;
+        background-color: #f44336 !important;
 
-        .clear-colors{
-          background-color: #EF5350;
+        .clear-colors {
+          background-color: #ef5350;
         }
       }
     }
 
     &:hover {
-      background-color: #3074D3 !important;
+      background-color: #3074d3 !important;
       transition: 0.2s all;
-      .main-icon-holder{
+      .main-icon-holder {
         svg-icon {
           svg {
             path {
-              fill: #FFFFFF !important;
+              fill: #ffffff !important;
             }
           }
         }
@@ -155,10 +154,10 @@
   }
 
   &.clear-colors {
-    background-color: #EF5350 !important;
+    background-color: #ef5350 !important;
 
-    &:hover{
-      background-color: #EF5350 !important;
+    &:hover {
+      background-color: #ef5350 !important;
     }
   }
 }
@@ -185,20 +184,18 @@
     justify-content: flex-start;
     align-items: center;
     user-select: none;
-    
 
-    &.activeHeader{
-      
+    &.activeHeader {
       display: flex;
 
       animation-name: showHeaderAnimation;
       animation-delay: 0s;
       animation-duration: 0.2s;
       animation-iteration-count: 1;
-      animation-fill-mode: forwards; 
+      animation-fill-mode: forwards;
     }
 
-    &.inactiveHeader{
+    &.inactiveHeader {
       display: flex;
 
       animation-name: hideHeaderAnimation;
@@ -219,7 +216,7 @@
 
     @keyframes hideHeaderAnimation {
       from {
-       right: 0px;
+        right: 0px;
       }
       to {
         right: 300px;
@@ -236,7 +233,7 @@
       align-items: center;
       font-size: 14px;
       font-weight: 800;
-      color: #FFF;
+      color: #fff;
       line-height: 24px;
     }
 
@@ -251,7 +248,7 @@
       padding-left: 2px;
       box-sizing: border-box;
 
-      &.counter-padd-title{
+      &.counter-padd-title {
         padding-left: 4.5px;
         line-height: 26px;
       }
@@ -338,7 +335,7 @@
         }
       }
 
-      &.activeSearch{
+      &.activeSearch {
         display: flex;
 
         animation-name: showAnimationClass;
@@ -348,7 +345,7 @@
         animation-fill-mode: forwards;
       }
 
-      &.inactiveSearch{
+      &.inactiveSearch {
         display: flex;
 
         animation-name: hideAnimation;
@@ -383,14 +380,13 @@
         }
       }
 
-
-      &:hover{
-        .close-input-search{
+      &:hover {
+        .close-input-search {
           display: flex !important;
         }
       }
 
-      &.hidenClass{
+      &.hidenClass {
         display: none;
       }
     }
@@ -407,11 +403,11 @@
       display: none;
       justify-content: center;
       align-items: center;
-      
+
       line-height: 26px;
       border-radius: 1px;
 
-      background-color: #B7B7B7;
+      background-color: #b7b7b7;
 
       svg-icon {
         svg {
@@ -420,7 +416,7 @@
           height: 9.63px;
 
           path {
-            fill: #EEEEEE;
+            fill: #eeeeee;
           }
         }
       }
@@ -517,7 +513,6 @@
     box-sizing: border-box;
     transition: all 0.2s linear;
 
-    
     .user-main-holder {
       position: relative;
       width: 100%;
@@ -528,18 +523,16 @@
         cursor: pointer;
         background-color: #1d1d1d;
 
-        .user-profile-img{
-          
+        .user-profile-img {
           svg-icon {
             svg {
               path {
-                fill: #DADADA;
+                fill: #dadada;
               }
             }
           }
-
         }
-        
+
         .selected-icon {
           display: none;
         }
@@ -549,12 +542,12 @@
         }
       }
 
-      &.removeClass{
+      &.removeClass {
         scale: (0.7);
         height: 0px;
         background-color: #000000;
         opacity: 0;
-        pointer-events: none;  
+        pointer-events: none;
       }
 
       .user-profile-img {
@@ -566,7 +559,7 @@
         height: 26px;
         width: 18px;
 
-        .user_avatar{
+        .user_avatar {
           width: 18px;
           height: 18px;
 
@@ -575,13 +568,12 @@
           background-size: cover;
           border-radius: 100%;
 
-          &.driver_avatar{
+          &.driver_avatar {
             height: 18px;
             width: 15px;
 
             border-radius: 2px;
           }
-
         }
       }
     }
@@ -616,10 +608,10 @@
           svg {
             display: flex;
             width: 12.74px !important;
-            height: 9.85px !important; 
+            height: 9.85px !important;
 
             path {
-              fill: #6F9EE0 !important;
+              fill: #6f9ee0 !important;
             }
           }
         }
@@ -635,7 +627,7 @@
         align-items: center;
         top: 2.5px;
         right: 4px;
-        
+
         border-radius: 1px;
         transition: all 0.2s ease-in-out;
         svg-icon {
@@ -645,18 +637,17 @@
             height: 10.63px !important;
 
             path {
-              fill: #E57373 !important;
+              fill: #e57373 !important;
             }
           }
         }
 
         &:hover {
-          
           //top: 3px;
           svg-icon {
             svg {
               path {
-                fill: #E57373 !important;
+                fill: #e57373 !important;
               }
             }
           }
@@ -664,7 +655,6 @@
       }
 
       &:hover {
-        
       }
 
       &::-moz-selection {
@@ -711,7 +701,7 @@
 
     &::-webkit-scrollbar-thumb {
       //background-color: #aaaaaa !important;
-      border: 4px solid #dadada !important; 
+      border: 4px solid #dadada !important;
       border-radius: 1px;
     }
 
@@ -738,7 +728,7 @@
           .user-profile-img {
             svg {
               path {
-                fill: #DADADA;
+                fill: #dadada;
               }
             }
           }
@@ -783,7 +773,7 @@
         display: flex;
         align-items: center;
 
-        .user_avatar{
+        .user_avatar {
           width: 18px;
           height: 18px;
 
@@ -792,24 +782,22 @@
           background-size: cover;
           border-radius: 100%;
 
-          &.driver_avatar{
+          &.driver_avatar {
             height: 18px;
             width: 15px;
 
             border-radius: 2px;
           }
-
         }
       }
 
-      &.hidenItem{
+      &.hidenItem {
         scale: (0.7);
         height: 0px;
         background-color: #000000;
         opacity: 0;
         pointer-events: none;
       }
-
     }
   }
 
@@ -861,13 +849,13 @@
       line-height: 28px;
 
       &.active {
-        background-color: #6F9EE0;
+        background-color: #6f9ee0;
         color: #ffffff;
         cursor: pointer;
 
         &:hover {
           cursor: pointer;
-          background-color: #98B9EA;
+          background-color: #98b9ea;
           color: #fff;
         }
       }
@@ -881,14 +869,12 @@
     width: 90%;
     line-height: 26px;
 
-    
-
-      span{
-        width: 99%;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
+    span {
+      width: 99%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
   }
 }
 
@@ -945,7 +931,7 @@
           width: 16.65px;
 
           path {
-            fill: #AAAAAA ;
+            fill: #aaaaaa;
           }
         }
       }
@@ -963,7 +949,7 @@
       width: 16.65px;
 
       path {
-        fill: #AAAAAA;
+        fill: #aaaaaa;
       }
     }
   }
@@ -993,7 +979,7 @@
         width: 42px;
 
         path {
-          fill: #DADADA;
+          fill: #dadada;
         }
       }
     }
@@ -1055,10 +1041,9 @@
   .filter-header {
     padding-left: 3px;
 
-    .user-title-text{
+    .user-title-text {
       padding-left: 0px;
     }
-
   }
 
   .money-main-holder {
@@ -1095,7 +1080,7 @@
       }
     }
 
-    .closedForm{
+    .closedForm {
       height: 0px;
     }
 
@@ -1140,13 +1125,13 @@
     padding-left: 4px;
     margin-bottom: 4px;
     transition: all 0.52s ease-in;
-    
+
     .form-name {
       padding-left: 2px;
       line-height: 18px;
       font-size: 14px;
       font-weight: 800;
-      color: #FFF;
+      color: #fff;
     }
 
     .hide-money-form {
@@ -1197,7 +1182,7 @@
     width: 54px;
 
     color: #fff;
-    
+
     font-size: 11px;
     font-weight: bold;
 
@@ -1231,7 +1216,7 @@
     color: #aaaaaa;
   }
 
-  .sticky-head-title{
+  .sticky-head-title {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
@@ -1241,7 +1226,7 @@
     z-index: 2;
   }
 
-  .canada-sticky-head-title{
+  .canada-sticky-head-title {
     padding-top: 10px;
   }
 
@@ -1434,11 +1419,11 @@
     padding-top: 10px;
     width: 100%;
 
-    &.location-middle-padding{
+    &.location-middle-padding {
       padding-top: 16px;
     }
 
-    &.location-slider-middle-padding{
+    &.location-slider-middle-padding {
       padding-top: 12px;
 
       .ta-ngx-slider,
@@ -1493,7 +1478,7 @@
           }
         }
 
-        .ngx-slider-combined{
+        .ngx-slider-combined {
           //display: none !important;
           opacity: 0 !important;
           width: 0px !important;
@@ -1503,11 +1488,10 @@
     }
 
     &.slider-two-holder {
-
       padding-top: 22px;
       padding-left: 4px;
       padding-right: 4px;
- 
+
       .ta-ngx-slider,
       .custom-slider-commission {
         .ngx-slider-pointer {
@@ -1524,41 +1508,38 @@
           }
         }
 
-        .ngx-slider-pointer-min{
+        .ngx-slider-pointer-min {
           background-color: #fff !important;
           border-radius: 2px !important;
           box-shadow: 0px 0px 4px rgb(0 0 0 / 15%) !important;
         }
-        
-        .ngx-slider-pointer-max{
+
+        .ngx-slider-pointer-max {
           background-color: #fff !important;
           border-radius: 2px !important;
           box-shadow: 0px 0px 4px rgb(0 0 0 / 15%) !important;
         }
       }
-      
     }
 
-    &.closePointers{
-
+    &.closePointers {
       .ta-ngx-slider,
-      .custom-slider-commission { 
-
-        .ngx-slider-pointer-min{
-          box-shadow: 0.3px -0.49px 4.4px rgb(0 0 0 / 30%) !important; 
+      .custom-slider-commission {
+        .ngx-slider-pointer-min {
+          box-shadow: 0.3px -0.49px 4.4px rgb(0 0 0 / 30%) !important;
         }
-        
-        .ngx-slider-pointer-max{
+
+        .ngx-slider-pointer-max {
           box-shadow: 0.3px -0.49px 4.4px rgb(0 0 0 / 30%) !important;
         }
       }
     }
   }
 
-  .mainMilesHolder{
+  .mainMilesHolder {
     width: 100%;
   }
-  
+
   .money-main-holder {
     display: flex;
     justify-content: space-between;
@@ -1569,16 +1550,15 @@
     &.payPadding {
       padding-top: 15px;
 
-      .milesInputHolder{
+      .milesInputHolder {
         width: 141px;
         height: 41px;
-        
-        .milesInput{
+
+        .milesInput {
           width: 90px;
           outline: none;
         }
       }
-      
     }
 
     .money-value-holder {
@@ -1607,7 +1587,6 @@
         font-size: 11px;
         color: #ef5350;
       }
-
     }
 
     .errorForm {
@@ -1643,7 +1622,7 @@
     box-sizing: border-box;
     font-size: 14px;
     font-weight: 800;
-    color: #FFF;
+    color: #fff;
     line-height: 18px;
     user-select: none;
 
@@ -1716,14 +1695,14 @@
       box-sizing: border-box;
       font-size: 14px;
       font-weight: 400;
-      color: #FFF;
+      color: #fff;
       line-height: 26px;
       margin-bottom: 4px;
 
       &:hover {
         cursor: pointer;
         background-color: #1d1d1d;
-        color: #FFF !important;
+        color: #fff !important;
       }
 
       &::-moz-selection {
@@ -1752,7 +1731,7 @@
             height: 9.85px !important;
 
             path {
-              fill: #6F9EE0 !important;
+              fill: #6f9ee0 !important;
             }
           }
         }
@@ -1767,7 +1746,7 @@
         align-items: center;
         top: 2.5px;
         right: 4px;
-        
+
         transition: all 0.2s ease-in-out;
 
         svg-icon {
@@ -1777,18 +1756,18 @@
             height: 10.63px !important;
 
             path {
-              fill: #E57373 !important;
+              fill: #e57373 !important;
             }
           }
         }
 
         &:hover {
           //top: 3px;
-          
+
           svg-icon {
             svg {
               path {
-                fill: #E57373 !important;
+                fill: #e57373 !important;
               }
             }
           }
@@ -1797,7 +1776,7 @@
     }
 
     .active {
-      color: #FFF !important;
+      color: #fff !important;
       font-weight: 700;
 
       .selected-icon {
@@ -1805,7 +1784,7 @@
       }
 
       &:hover {
-        color: #FFF !important;
+        color: #fff !important;
 
         .selected-icon {
           display: none;
@@ -1867,7 +1846,7 @@
       line-height: 28px;
 
       &.active {
-        background-color: #6F9EE0;
+        background-color: #6f9ee0;
         color: #ffffff;
         cursor: pointer;
 
@@ -2277,7 +2256,7 @@
   z-index: 1071;
 }
 
-.main-popover-body{
+.main-popover-body {
   position: relative;
   left: -10px;
 }
@@ -2285,4 +2264,3 @@
 .popover {
   background-color: transparent;
 }
-

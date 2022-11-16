@@ -11,9 +11,8 @@ describe('SettingsTerminalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsTerminalComponent ]
-    })
-    .compileComponents();
+      declarations: [SettingsTerminalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

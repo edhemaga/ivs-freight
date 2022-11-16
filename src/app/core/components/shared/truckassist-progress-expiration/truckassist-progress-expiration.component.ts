@@ -1,9 +1,9 @@
 import {
-  ChangeDetectionStrategy, 
-  Component, 
-  Input, 
-  OnInit, 
-  SimpleChanges
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  SimpleChanges,
 } from '@angular/core';
 import moment from 'moment';
 
@@ -20,10 +20,10 @@ export class TruckassistProgressExpirationComponent implements OnInit {
   @Input() customText: string = 'Expires';
   @Input() bigProgressBar: boolean = true;
   hasStartDate: boolean = false;
-  _startDate: any= null;
+  _startDate: any = null;
   @Input('startDate') set startDate(value: any) {
-      this.hasStartDate = !!value;
-      this._startDate= value ? value : new Date();
+    this.hasStartDate = !!value;
+    this._startDate = value ? value : new Date();
   }
   totalDays: any;
   expire: any;
@@ -59,7 +59,7 @@ export class TruckassistProgressExpirationComponent implements OnInit {
     if (!changes?.startDate?.firstChange && changes?.startDate) {
       this._startDate = changes.startDate.currentValue;
     }
-    
+
     this.loadData();
   }
 
@@ -107,7 +107,7 @@ export class TruckassistProgressExpirationComponent implements OnInit {
     }
 
     this.daysDiff = this.expire;
-    if ( this.expire >= 1000 ) {
+    if (this.expire >= 1000) {
       this.daysDiff = this.expire.toLocaleString('en-US');
     }
 
@@ -116,7 +116,9 @@ export class TruckassistProgressExpirationComponent implements OnInit {
 
     this.progressBarLength = this.setProgressbarColorToDo();
 
-    this.progresDay = new Intl.NumberFormat('en-us', {minimumFractionDigits: 0}).format(this.expire);
+    this.progresDay = new Intl.NumberFormat('en-us', {
+      minimumFractionDigits: 0,
+    }).format(this.expire);
   }
 
   calculateProgress() {
@@ -128,10 +130,11 @@ export class TruckassistProgressExpirationComponent implements OnInit {
           ? (this.expire / this.totalDays) * 100
           : (this.expire / 365) * 100;
       } else {
-        if ( this.timeDifference > 0 ) {
-          var daysProgress = this.totalDays !== undefined
-          ? (1 / this.totalDays) * 100
-          : (1 / 365) * 100;
+        if (this.timeDifference > 0) {
+          var daysProgress =
+            this.totalDays !== undefined
+              ? (1 / this.totalDays) * 100
+              : (1 / 365) * 100;
 
           return daysProgress / (24 / this.timeDifference);
         } else {
@@ -164,7 +167,7 @@ export class TruckassistProgressExpirationComponent implements OnInit {
       }
     }
   }
-  
+
   setProgressbarColorToDo() {
     if (this.negative) {
       return 'progress-short';

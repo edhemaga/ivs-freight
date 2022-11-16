@@ -1,15 +1,15 @@
-.details-dropdown-popover{
+.details-dropdown-popover {
   background-color: transparent;
 }
 
-.details-dropdown-container{
+.details-dropdown-container {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 26px;
   height: 26px;
   border-radius: 2px;
-  
+
   .dropdown-dots {
     cursor: pointer;
     svg {
@@ -19,7 +19,7 @@
       transform: rotate(0deg);
       fill: #919191;
       transition: transform 0.1s ease;
-      path{
+      path {
         fill: #919191;
       }
     }
@@ -30,80 +30,74 @@
     background-color: #42424220;
     .dropdown-dots {
       svg {
-          path {
-            fill: #424242 !important;
-          }
+        path {
+          fill: #424242 !important;
+        }
       }
     }
-
   }
 
-  &.active-drop{
+  &.active-drop {
     background-color: #42424220;
-    
-    &.rightRotation{
+
+    &.rightRotation {
       .dropdown-dots {
         cursor: pointer;
         svg {
           transform: rotate(-90deg);
-            path {
-              fill: #424242;
-            }
+          path {
+            fill: #424242;
+          }
         }
       }
     }
 
-    &.leftRotation{
+    &.leftRotation {
       .dropdown-dots {
         cursor: pointer;
         svg {
           transform: rotate(90deg);
-            path {
-              fill: #424242;
-            }
+          path {
+            fill: #424242;
+          }
         }
       }
     }
 
-    
-
-    &:hover{
+    &:hover {
       background-color: #424242;
       svg {
         path {
-          fill: #DADADA !important;
+          fill: #dadada !important;
         }
-    }
+      }
     }
   }
-
 }
 
 @keyframes scaleItem {
-
   0% {
     opacity: 0;
   }
   100% {
     opacity: 1;
   }
- 
 }
 
-.dropdown-main-popover-body{
+.dropdown-main-popover-body {
   background-color: transparent;
   transition: transform 0.1s ease;
-  animation: scaleItem 0.3s; 
+  animation: scaleItem 0.3s;
   margin-top: 4px;
 }
 
 .details-dropdown-body {
   padding: 4px 4px 0.1px 4px;
-  
-  background-color: #2F2F2F;
+
+  background-color: #2f2f2f;
   border-radius: 3px;
-  
-  .action-holder{
+
+  .action-holder {
     position: relative;
 
     display: flex;
@@ -115,7 +109,7 @@
     border-radius: 2px;
     user-select: none;
 
-    .actionTitle{
+    .actionTitle {
       flex: 1;
       display: flex;
       align-items: center;
@@ -123,10 +117,10 @@
       margin-left: 5px;
       line-height: 18px;
       font-size: 14px;
-      color: #FFFFFF;
+      color: #ffffff;
     }
 
-    .action-select-holder{
+    .action-select-holder {
       position: relative;
 
       display: flex;
@@ -136,66 +130,65 @@
       min-height: 26px;
     }
 
-    .actionIcon{
+    .actionIcon {
       display: flex;
       align-items: center;
       height: 18px;
       width: 18px;
       margin-right: 5px;
-     
+
       svg-icon {
         display: flex;
         align-items: center;
         transform: rotate(0deg);
         transition: all 0.1s ease-in;
         svg {
-
-          rect{
+          rect {
             fill: transparent;
 
             height: 17.1px;
             width: 17.1px;
           }
-          
-          path{
+
+          path {
             height: 17.1px;
             width: 17.1px;
-            fill:#AAAAAA;
+            fill: #aaaaaa;
           }
         }
       }
 
-      &.redIcon{
+      &.redIcon {
         svg-icon {
           svg {
-            path{
-              fill: #E57373;
+            path {
+              fill: #e57373;
             }
           }
         }
       }
 
-      &.blueIcon{
+      &.blueIcon {
         svg-icon {
           svg {
-            path{
-              fill: #6F9EE0;
+            path {
+              fill: #6f9ee0;
             }
           }
         }
       }
 
-      &.greenIcon{
+      &.greenIcon {
         svg-icon {
           svg {
-            path{
-              fill: #4DB6A2;
+            path {
+              fill: #4db6a2;
             }
           }
         }
       }
-      
-      &.arrowIcon{
+
+      &.arrowIcon {
         justify-content: right;
         svg-icon {
           display: flex;
@@ -203,115 +196,109 @@
           svg {
             height: 14px;
             width: 14px;
-            rect{
+            rect {
               height: 14px;
               width: 14px;
             }
-            
-            path{
+
+            path {
               height: 14px;
               width: 14px;
             }
           }
         }
       }
-
     }
 
-    &.leftIcon{
-      
-      .actionTitle{
+    &.leftIcon {
+      .actionTitle {
         margin-right: 22px;
         margin-left: 30px;
       }
 
-      .actionIcon{
+      .actionIcon {
         position: absolute;
         left: 0px;
         margin: 0px 5px;
       }
-
     }
 
-    &:hover{
+    &:hover {
       cursor: pointer;
-      background-color: #1D1D1D;
+      background-color: #1d1d1d;
 
-      &.disabledAction{
-
-        &.disabledActionMain{
+      &.disabledAction {
+        &.disabledActionMain {
           background-color: transparent;
         }
 
-        &.subTypeHolder{
+        &.subTypeHolder {
           cursor: pointer !important;
           //background-color: #1D1D1D;
         }
-        
       }
 
-      .hoveredSubtype{
-        background-color: #AAAAAA10 !important;
+      .hoveredSubtype {
+        background-color: #aaaaaa10 !important;
       }
 
-      .actionTitle{
+      .actionTitle {
         color: #fff;
       }
 
-      .actionIcon{
+      .actionIcon {
         svg-icon {
           svg {
-            path{
-              fill: #DADADA;
+            path {
+              fill: #dadada;
             }
           }
         }
       }
 
-      .redIcon{
+      .redIcon {
         svg-icon {
           svg {
-            path{
-              fill: #EF9A9A;
+            path {
+              fill: #ef9a9a;
             }
           }
         }
       }
 
-      .blueIcon{
+      .blueIcon {
         svg-icon {
           svg {
-            path{
-              fill: #98B9EA;
+            path {
+              fill: #98b9ea;
             }
           }
         }
       }
 
-      .greenIcon{
+      .greenIcon {
         svg-icon {
           svg {
-            path{
-              fill: #80CBBA;
+            path {
+              fill: #80cbba;
             }
           }
         }
       }
-      
     }
   }
 
-  .subTypeHolder{
+  .subTypeHolder {
     height: auto;
     min-height: 26px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
-    .subtype-holder{
+
+    .subtype-holder {
       padding: 10px 4px 0px 4px;
 
-      .subtypeTitle{
+      .subtypeTitle {
         padding-right: 7px;
         color: #fff;
         font-size: 14px;
@@ -319,120 +306,111 @@
         line-height: 26px;
         margin-bottom: 4px;
         border-radius: 2px;
-        &:hover{
-
-          background-color: #1D1D1D;
+        &:hover {
+          background-color: #1d1d1d;
           cursor: pointer;
-          color: #CCCCCC;
+          color: #cccccc;
         }
-
       }
-
     }
 
-    &.leftIcon{
-      .actionIcon{
+    &.leftIcon {
+      .actionIcon {
         position: absolute;
         left: 0px;
         margin: 0px 4px;
       }
     }
-    
   }
 
-  .openedSubtype{
-    background-color: #AAAAAA10;
+  .openedSubtype {
+    background-color: #aaaaaa10;
     border-radius: 2px;
     transition: all 0.1s ease-in;
-    .action-select-holder{
+    .action-select-holder {
       height: 26px;
 
-      .actionTitle{
+      .actionTitle {
         font-weight: 700;
         //transition: all 0.3s ease-in;
       }
-  
-      .actionIcon{
-        svg-icon{
+
+      .actionIcon {
+        svg-icon {
           transform: rotate(180deg);
-          svg{
+          svg {
             path {
-              fill: #AAAAAA;
+              fill: #aaaaaa;
             }
           }
         }
       }
-    
     }
 
-    &:hover{
-      background-color: #AAAAAA10;
-      
-      .actionTitle{
-        color: #FFFFFF;
+    &:hover {
+      background-color: #aaaaaa10;
+
+      .actionTitle {
+        color: #ffffff;
       }
     }
 
-    .action-select-holder{
-      &:hover{
-        background-color: #1D1D1D;
+    .action-select-holder {
+      &:hover {
+        background-color: #1d1d1d;
       }
     }
-
   }
 
-  .hoveredSubtype{
+  .hoveredSubtype {
     background-color: transparent !important;
     transition: all 0.1s ease-in;
   }
 
-  .border-holder{
+  .border-holder {
     display: flex;
     justify-content: center;
 
-    .action-border-line{
+    .action-border-line {
       height: 1px;
       width: calc(100% - 8px);
       margin-bottom: 4px;
-  
-      background-color: #AAAAAA20;
+
+      background-color: #aaaaaa20;
       border-radius: 1px;
     }
   }
 
-  .disabledAction{
-
-    .actionTitle{
-      color: #6C6C6C;
+  .disabledAction {
+    .actionTitle {
+      color: #6c6c6c;
     }
 
-    .actionIcon{
+    .actionIcon {
       svg-icon {
         svg {
-          path{
-            fill: #AAAAAA40;
+          path {
+            fill: #aaaaaa40;
           }
         }
       }
     }
 
-    &.openedSubtype
-    {
-      background-color: #AAAAAA10;
+    &.openedSubtype {
+      background-color: #aaaaaa10;
     }
 
-    &.subTypeHolder{
-
-      .subtypeTitle{ 
-        color: #6C6C6C !important;
+    &.subTypeHolder {
+      .subtypeTitle {
+        color: #6c6c6c !important;
         cursor: auto !important;
       }
 
-      .actionIcon{
-        svg-icon{
-          svg{
+      .actionIcon {
+        svg-icon {
+          svg {
             path {
-              fill: #AAAAAA40 !important;
+              fill: #aaaaaa40 !important;
             }
           }
         }
@@ -440,56 +418,53 @@
       cursor: auto !important;
     }
 
-    .redIcon{
+    .redIcon {
       svg-icon {
         svg {
-          path{
-            fill: #E5737340 !important;
+          path {
+            fill: #e5737340 !important;
           }
         }
       }
     }
 
-    .blueIcon{
+    .blueIcon {
       svg-icon {
         svg {
-          path{
-            fill: #6F9EE040 !important;
+          path {
+            fill: #6f9ee040 !important;
           }
         }
       }
     }
 
-    .greenIcon{
+    .greenIcon {
       svg-icon {
         svg {
-          path{
-            fill: #4DB6A240 !important;
+          path {
+            fill: #4db6a240 !important;
           }
         }
       }
     }
 
-    &:hover{
-      .actionTitle{
-        color: #6C6C6C;
+    &:hover {
+      .actionTitle {
+        color: #6c6c6c;
       }
-  
-      .actionIcon{
+
+      .actionIcon {
         svg-icon {
           svg {
-            path{
-              fill: #AAAAAA40;
+            path {
+              fill: #aaaaaa40;
             }
           }
         }
       }
-
     }
     cursor: auto !important;
   }
-  
-
 }
 .divider-drop-down {
   width: 100%;
@@ -498,27 +473,26 @@
   background-color: #aaaaaa;
 }
 
-.bs-popover-right{
-  .dropdown-main-popover-body{
+.bs-popover-right {
+  .dropdown-main-popover-body {
     margin-left: 4px;
   }
 }
 
-.bs-popover-top{
-  .dropdown-main-popover-body{
+.bs-popover-top {
+  .dropdown-main-popover-body {
     margin-bottom: 4px;
   }
 }
 
-.bs-popover-bottom{
-  .dropdown-main-popover-body{
+.bs-popover-bottom {
+  .dropdown-main-popover-body {
     margin-top: 4px;
   }
 }
 
-.bs-popover-left{
-  .dropdown-main-popover-body{
+.bs-popover-left {
+  .dropdown-main-popover-body {
     margin-right: 4px;
   }
 }
-  

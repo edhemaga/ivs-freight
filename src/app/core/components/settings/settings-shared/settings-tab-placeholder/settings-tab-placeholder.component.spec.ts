@@ -11,9 +11,8 @@ describe('SettingsTabPlaceholderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsTabPlaceholderComponent ]
-    })
-    .compileComponents();
+      declarations: [SettingsTabPlaceholderComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

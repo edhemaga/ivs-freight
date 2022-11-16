@@ -1,11 +1,10 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'hosTime',
 })
 export class HosTimePipe implements PipeTransform {
-  constructor() {
-  }
+  constructor() {}
 
   transform(data: any) {
     if (data.length === 0) {

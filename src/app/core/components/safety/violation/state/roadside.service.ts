@@ -23,7 +23,7 @@ export class RoadsideService {
     sort?: string,
     search?: string,
     search1?: string,
-    search2?: string,
+    search2?: string
   ): Observable<RoadsideInspectionListResponse> {
     return this.roadsideServis.apiViolationListGet(
       active,

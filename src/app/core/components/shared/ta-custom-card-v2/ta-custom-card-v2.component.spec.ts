@@ -8,9 +8,8 @@ describe('TaCustomCardV2Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TaCustomCardV2Component ]
-    })
-    .compileComponents();
+      declarations: [TaCustomCardV2Component],
+    }).compileComponents();
   });
 
   beforeEach(() => {

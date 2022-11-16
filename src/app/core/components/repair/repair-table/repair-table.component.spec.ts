@@ -8,9 +8,8 @@ describe('RepairTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RepairTableComponent ]
-    })
-    .compileComponents();
+      declarations: [RepairTableComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

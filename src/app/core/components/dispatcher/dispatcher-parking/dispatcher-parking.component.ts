@@ -4,598 +4,595 @@ import { DispatcherStoreService } from '../state/dispatcher.service';
 @Component({
   selector: 'app-dispatcher-parking',
   templateUrl: './dispatcher-parking.component.html',
-  styleUrls: ['./dispatcher-parking.component.scss']
+  styleUrls: ['./dispatcher-parking.component.scss'],
 })
 export class DispatcherParkingComponent implements OnInit {
-
-  constructor(public dispatcherStoreService: DispatcherStoreService) { }
+  constructor(public dispatcherStoreService: DispatcherStoreService) {}
 
   parkingData: any = [
     {
-      parkingName: "Grant Park South Parking",
+      parkingName: 'Grant Park South Parking',
       open: true,
       count: 10,
       bigSlots: [
         {
-          parkingNumb: "182",
+          parkingNumb: '182',
           truckNumber: null,
           trailerNumber: null,
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "183",
+          parkingNumb: '183',
           truckNumber: null,
-          trailerNumber: "c45465",
-          trailer_color: "5ba160",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          trailerNumber: 'c45465',
+          trailer_color: '5ba160',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "184",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          trailer_color: "e94949",
-          truck_color: "5ba160",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '184',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          trailer_color: 'e94949',
+          truck_color: '5ba160',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "185",
-          truckNumber: "6541",
+          parkingNumb: '185',
+          truckNumber: '6541',
           trailerNumber: null,
-          truck_color: "ffaf47",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          truck_color: 'ffaf47',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "186",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          trailer_color: "e94c4c",
-          truck_color: "e94949",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '186',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          trailer_color: 'e94c4c',
+          truck_color: 'e94949',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "187",
+          parkingNumb: '187',
           truckNumber: null,
-          trailerNumber: "c45465",
-          trailer_color: "5673aa",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          trailerNumber: 'c45465',
+          trailer_color: '5673aa',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "188",
-          truckNumber: null,
-          trailerNumber: null,
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
-        },
-        {
-          parkingNumb: "189",
-          truckNumber: null,
-          trailerNumber: "c45465",
-          trailer_color: "81ccff",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
-        },
-        {
-          parkingNumb: "190",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          trailer_color: "668888",
-          truck_color: "eec860",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
-        },
-        {
-          parkingNumb: "191",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          trailer_color: "547556",
-          truck_color: "508181",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
-        },
-        {
-          parkingNumb: "192",
-          truckNumber: "6541",
-          trailerNumber: null,
-          truck_color: "668888",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
-        },
-        {
-          parkingNumb: "193",
-          truckNumber: null,
-          trailerNumber: "c45465",
-          trailer_color: "e94c4c",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
-        },
-        {
-          parkingNumb: "194",
+          parkingNumb: '188',
           truckNumber: null,
           trailerNumber: null,
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
+          parkingNumb: '189',
+          truckNumber: null,
+          trailerNumber: 'c45465',
+          trailer_color: '81ccff',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
+        },
+        {
+          parkingNumb: '190',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          trailer_color: '668888',
+          truck_color: 'eec860',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
+        },
+        {
+          parkingNumb: '191',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          trailer_color: '547556',
+          truck_color: '508181',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
+        },
+        {
+          parkingNumb: '192',
+          truckNumber: '6541',
           trailerNumber: null,
-          truck_color: "90659b",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          truck_color: '668888',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          trailer_color: "47b5ff",
-          truck_color: "78c7fc",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
-        }
+          parkingNumb: '193',
+          truckNumber: null,
+          trailerNumber: 'c45465',
+          trailer_color: 'e94c4c',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
+        },
+        {
+          parkingNumb: '194',
+          truckNumber: null,
+          trailerNumber: null,
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
+        },
+        {
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: null,
+          truck_color: '90659b',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
+        },
+        {
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          trailer_color: '47b5ff',
+          truck_color: '78c7fc',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
+        },
       ],
       smallSlots: [
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
-        }
-      ]
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
+        },
+      ],
     },
     {
-      parkingName: "Grant Park South Parking",
+      parkingName: 'Grant Park South Parking',
       count: 76,
       bigSlots: [
         {
-          parkingNumb: "182",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '182',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "183",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '183',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "184",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '184',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "185",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '185',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "186",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '186',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "187",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '187',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "188",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '188',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "189",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '189',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "190",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '190',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "191",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '191',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "192",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '192',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "193",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '193',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "194",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '194',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
-        }
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
+        },
       ],
       smallSlots: [
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
-        }
-      ]
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
+        },
+      ],
     },
     {
-      parkingName: "North Parking 1996",
+      parkingName: 'North Parking 1996',
       count: 9,
       bigSlots: [
         {
-          parkingNumb: "182",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '182',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "183",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '183',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "184",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '184',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "185",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '185',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "186",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '186',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "187",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '187',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "188",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '188',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "189",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '189',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "190",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '190',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "191",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '191',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "192",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '192',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "193",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '193',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "194",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '194',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
-        }
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
+        },
       ],
       smallSlots: [
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
         },
         {
-          parkingNumb: "195",
-          truckNumber: "6541",
-          trailerNumber: "c45465",
-          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>'
-        }
-      ]
-    }
-  ]
+          parkingNumb: '195',
+          truckNumber: '6541',
+          trailerNumber: 'c45465',
+          note: '<span style="font-weight: bold;">Test <span style="color: rgb(255, 80, 80);">color sentence </span><span style="color: rgb(86, 115, 170);">different</span></span>',
+        },
+      ],
+    },
+  ];
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

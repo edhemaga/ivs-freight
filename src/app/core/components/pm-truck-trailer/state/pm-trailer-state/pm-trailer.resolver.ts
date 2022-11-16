@@ -16,13 +16,13 @@ export class pmTrailerResolver implements Resolve<PmTrailerState> {
   ) {}
   resolve(): Observable<PmTrailerState | boolean> {
     return this.pmService
-    .getPMTrailerUnitList(undefined, undefined, 1, 25)
-    .pipe(
-      catchError(() => {
-        return of('No pm trailers data...');
-      }),
-      tap((pmTrailerPagination: PMTrailerUnitListResponse) => {
-        /* localStorage.setItem(
+      .getPMTrailerUnitList(undefined, undefined, 1, 25)
+      .pipe(
+        catchError(() => {
+          return of('No pm trailers data...');
+        }),
+        tap((pmTrailerPagination: PMTrailerUnitListResponse) => {
+          /* localStorage.setItem(
           'pmTrailerTableCount',
           JSON.stringify({
             pmTrailer: pmTrailerPagination.pagination.count,
@@ -30,7 +30,7 @@ export class pmTrailerResolver implements Resolve<PmTrailerState> {
         );
         
         this.pmTrailerStore.set(pmTrailerPagination.pagination.data); */
-      })
-    );
+        })
+      );
   }
 }

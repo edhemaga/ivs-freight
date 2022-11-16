@@ -65,7 +65,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
       issueDate: [null, Validators.required],
       expDate: [null, Validators.required],
       note: [null],
-      files: [null]
+      files: [null],
     });
 
     this.formService.checkFormChange(this.registrationForm);
@@ -118,7 +118,9 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     this.documents = event.files;
     switch (event.action) {
       case 'add': {
-        this.registrationForm.get('files').patchValue(JSON.stringify(event.files));
+        this.registrationForm
+          .get('files')
+          .patchValue(JSON.stringify(event.files));
         break;
       }
       case 'delete': {
@@ -182,9 +184,10 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
       issueDate: convertDateToBackend(issueDate),
       expDate: convertDateToBackend(expDate),
       stateId: this.selectedStateType ? this.selectedStateType.id : null,
-      trailerId: this.editData.modal === 'trailer' ? this.editData.id : undefined,
+      trailerId:
+        this.editData.modal === 'trailer' ? this.editData.id : undefined,
       truckId: this.editData.modal === 'truck' ? this.editData.id : undefined,
-      files: documents
+      files: documents,
     };
 
     this.commonTruckTrailerService

@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import moment from 'moment';
 import { card_component_animation } from '../animations/card-component.animations';
 import { Clipboard } from '@angular/cdk/clipboard';
@@ -52,7 +46,10 @@ export class TaReCardComponent implements OnInit {
   public data: any;
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
-  constructor(private clipboard: Clipboard, private DetailsDataService: DetailsDataService) {}
+  constructor(
+    private clipboard: Clipboard,
+    private DetailsDataService: DetailsDataService
+  ) {}
 
   ngOnInit(): void {
     this.CloseCard();
@@ -104,54 +101,53 @@ export class TaReCardComponent implements OnInit {
     this.clipboard.copy(val);
   }
 
-  toggleDropdown(){
+  toggleDropdown() {
     let currentDate = moment().format('MM/DD/YYYY');
-    if ( this.cardNameCurrent == 'registration' ) {
+    if (this.cardNameCurrent == 'registration') {
       let expDate = moment(this.mainData?.expDate).format('MM/DD/YYYY');
-      
-      this.options.actions.map((action,index)=>{
-        if ( currentDate > expDate ) {
-          if ( index == 3 ) {
+
+      this.options.actions.map((action, index) => {
+        if (currentDate > expDate) {
+          if (index == 3) {
             action.disabled = false;
-          } else if ( index == 4 ) {
+          } else if (index == 4) {
             action.disabled = true;
-          } else if ( index == 9 ) {
+          } else if (index == 9) {
             action.hide = true;
           }
         } else {
-          if ( index == 3 ) {
+          if (index == 3) {
             action.disabled = true;
-          } else if ( index == 4 ) {
+          } else if (index == 4) {
             action.disabled = false;
-          } else if ( index == 9 ) {
+          } else if (index == 9) {
             action.hide = false;
           }
         }
-      })
-    } else if ( this.cardNameCurrent == 'truckRegistration' ) {
+      });
+    } else if (this.cardNameCurrent == 'truckRegistration') {
       let expDate = moment(this.mainData?.expDate).format('MM/DD/YYYY');
-      this.options.actions.map((action,index)=>{
-        if ( currentDate > expDate ) {
-          if ( index == 3 ) {
+      this.options.actions.map((action, index) => {
+        if (currentDate > expDate) {
+          if (index == 3) {
             action.disabled = false;
-          } else if ( index == 4 ) {
+          } else if (index == 4) {
             action.disabled = true;
-          } else if ( index == 9 ) {
+          } else if (index == 9) {
             action.hide = true;
           }
         } else {
-          if ( index == 3 ) {
+          if (index == 3) {
             action.disabled = true;
-          } else if ( index == 4 ) {
+          } else if (index == 4) {
             action.disabled = false;
-          } else if ( index == 9 ) {
+          } else if (index == 9) {
             action.hide = false;
           }
         }
-      })
-    } else if ( this.cardNameCurrent == 'cdl' ) {
-      console.log('--cdl card opened--')
+      });
+    } else if (this.cardNameCurrent == 'cdl') {
+      console.log('--cdl card opened--');
     }
-    
   }
 }

@@ -11,9 +11,8 @@ describe('TaSpinnerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaSpinnerComponent ]
-    })
-    .compileComponents();
+      declarations: [TaSpinnerComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

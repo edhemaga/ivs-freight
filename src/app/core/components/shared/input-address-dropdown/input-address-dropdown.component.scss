@@ -44,33 +44,33 @@
         color: #fff !important;
       }
 
-      .valid-focus-out-filled{
+      .valid-focus-out-filled {
         background-color: #6c6c6c !important;
         color: #fff !important;
       }
     }
 
-    .stop_hold{
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    .stop_hold {
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-        position: absolute;
-        right: 2px;
-        top: 2px;
+      position: absolute;
+      right: 2px;
+      top: 2px;
 
-        width: 62px;
-        height: 18px;
+      width: 62px;
+      height: 18px;
 
-        background-color: #B7B7B7;
-        color: #fff;
-        border-radius: 1px;
-        cursor: pointer;
-        user-select: none;
+      background-color: #b7b7b7;
+      color: #fff;
+      border-radius: 1px;
+      cursor: pointer;
+      user-select: none;
 
-        &:hover{
-            background-color: #919191;
-        }
+      &:hover {
+        background-color: #919191;
+      }
     }
   }
 

@@ -1,4 +1,4 @@
-export function getToolsAccountsColumnDefinition() {  
+export function getToolsAccountsColumnDefinition() {
   return [
     {
       ngTemplate: 'checkbox',
@@ -176,7 +176,7 @@ export function getToolsAccountsColumnDefinition() {
       disabled: true,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'actions',
@@ -199,7 +199,7 @@ export function getToolsAccountsColumnDefinition() {
       disabled: false,
       export: false,
       resizable: true,
-      isAction: true
+      isAction: true,
     },
   ];
 }

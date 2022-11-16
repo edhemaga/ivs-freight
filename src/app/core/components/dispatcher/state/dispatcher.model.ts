@@ -1,14 +1,14 @@
-import { DispatchBoardResponse, DispatchResponse } from "appcoretruckassist";
+import { DispatchBoardResponse, DispatchResponse } from 'appcoretruckassist';
 
 export interface IDispatcher {
-    modal: any[],
-    dispatchList: any[]
+  modal: any[];
+  dispatchList: any[];
 }
 
-interface DispatchBoardLResponse extends DispatchResponse{
-    isPhone?: boolean
+interface DispatchBoardLResponse extends DispatchResponse {
+  isPhone?: boolean;
 }
 
-export interface DispatchBoardLocalResponse extends DispatchBoardResponse { 
-   dispatches?: DispatchBoardLResponse[];
+export interface DispatchBoardLocalResponse extends DispatchBoardResponse {
+  dispatches?: DispatchBoardLResponse[];
 }

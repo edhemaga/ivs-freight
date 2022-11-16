@@ -1,5 +1,5 @@
-import {ServerResponseList} from './shared/response';
-import {Enums} from './shared/enums';
+import { ServerResponseList } from './shared/response';
+import { Enums } from './shared/enums';
 
 export class DispatchLoad {
   id: number;

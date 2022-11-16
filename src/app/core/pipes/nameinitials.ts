@@ -1,11 +1,10 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'nameInitials',
 })
 export class NameInitialsPipe implements PipeTransform {
-  constructor() {
-  }
+  constructor() {}
 
   transform(fullName: any) {
     if (fullName !== null && fullName !== undefined) {

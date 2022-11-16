@@ -1,13 +1,12 @@
 <div class="truckassist-history-data-panel">
   <div class="truckassist-data-form">
-    <div *ngFor="let gi of items; let i = index" class="container truckassist-data-form-item p-0">
+    <div
+      *ngFor="let gi of items; let i = index"
+      class="container truckassist-data-form-item p-0"
+    >
       <div *ngIf="i === 0" class="row header-panel m-0">
-        <div class="col-sm p-0 ta-font-bold">
-          Start Date
-        </div>
-        <div class="col-sm p-0 ta-font-bold">
-          End Date
-        </div>
+        <div class="col-sm p-0 ta-font-bold">Start Date</div>
+        <div class="col-sm p-0 ta-font-bold">End Date</div>
         <div class="col-auto history-delete-container p-0"></div>
       </div>
       <div *ngIf="gi.header" class="row m-0">
@@ -16,8 +15,8 @@
         </div>
       </div>
       <div
-        (mouseout)="item.showDelete = false;"
-        (mouseover)="item.showDelete = true;"
+        (mouseout)="item.showDelete = false"
+        (mouseover)="item.showDelete = true"
         *ngFor="let item of gi.data; let j = index"
         class="row m-0 row-container"
       >
@@ -27,11 +26,17 @@
           class="col-auto p-0"
         >
           <div
-            [ngClass]="{ 'row-item-edit': item.editStartDate, 'hover-disable': !status }"
+            [ngClass]="{
+              'row-item-edit': item.editStartDate,
+              'hover-disable': !status
+            }"
             class="row-item item-left"
           >
-            <span [class]="{ 'd-none': item.editStartDate }" class="date-span ta-font-regular">
-              {{ item.startDate | date: 'shortDate' }}</span
+            <span
+              [class]="{ 'd-none': item.editStartDate }"
+              class="date-span ta-font-regular"
+            >
+              {{ item.startDate | date: "shortDate" }}</span
             >
             <!-- <kendo-datepicker
               #startDate
@@ -91,7 +96,8 @@
               <button
                 (click)="editStartDate(i, j)"
                 [class]="{
-                  'd-none': !item.showStartDateAction || item.editStartDate || !status
+                  'd-none':
+                    !item.showStartDateAction || item.editStartDate || !status
                 }"
                 appTooltip="Edit"
                 class="action-btn action-btn-left"
@@ -113,11 +119,17 @@
           class="col-auto p-0"
         >
           <div
-            [ngClass]="{ 'row-item-edit': item.editEndDate, 'hover-disable': !status }"
+            [ngClass]="{
+              'row-item-edit': item.editEndDate,
+              'hover-disable': !status
+            }"
             class="row-item"
           >
-            <span [class]="{ 'd-none': item.editEndDate }" class="date-span ta-font-regular">
-              {{ item.endDate | date: 'shortDate' }}</span
+            <span
+              [class]="{ 'd-none': item.editEndDate }"
+              class="date-span ta-font-regular"
+            >
+              {{ item.endDate | date: "shortDate" }}</span
             >
             <!-- <kendo-datepicker
               #endDate
@@ -137,7 +149,10 @@
             <div class="row-tools">
               <button
                 (click)="item.editEndDate = false"
-                [class]="{ 'd-none': !item.editEndDate || !status, 'custom-datepicker': true }"
+                [class]="{
+                  'd-none': !item.editEndDate || !status,
+                  'custom-datepicker': true
+                }"
                 appTooltip="Cancel"
                 class="action-btn close-btn"
                 position="bottom-right"
@@ -151,7 +166,10 @@
               </button>
               <button
                 (click)="saveData(i, j, false)"
-                [class]="{ 'd-none': !item.editEndDate || !status, 'custom-datepicker': true }"
+                [class]="{
+                  'd-none': !item.editEndDate || !status,
+                  'custom-datepicker': true
+                }"
                 appTooltip="Save"
                 class="action-btn"
                 position="bottom-right"
@@ -166,7 +184,8 @@
               <button
                 (click)="editEndDate(i, j)"
                 [class]="{
-                  'd-none': !item.showEndDateAction || item.editEndDate || !status
+                  'd-none':
+                    !item.showEndDateAction || item.editEndDate || !status
                 }"
                 appTooltip="Edit"
                 class="action-btn"
@@ -201,7 +220,11 @@
           >
             <svg-icon
               [src]="'assets/img/svgs/table/element-trash.svg'"
-              [svgStyle]="{ 'width.px': '12.83', 'height.px': '14', fill: 'rgb(255, 93, 93)' }"
+              [svgStyle]="{
+                'width.px': '12.83',
+                'height.px': '14',
+                fill: 'rgb(255, 93, 93)'
+              }"
             ></svg-icon>
             <div
               [ngClass]="{

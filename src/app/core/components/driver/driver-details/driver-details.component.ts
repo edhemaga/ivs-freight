@@ -313,7 +313,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           disabled: data.status == 0 ? true : false,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Send Message',
@@ -327,24 +327,31 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           svg: 'assets/svg/common/dropdown-arrow.svg',
           disabled: data.status == 0 ? true : false,
           subType: [
-              { subName :'CDL', actionName: 'CDL'}, 
-              { subName : 'Test (Drug, Alcohol)', actionName: 'Drug & Alcohol Test'}, 
-              { subName : 'Medical Exam', actionName: 'Medical'}, 
-              { subName: 'MVR', actionName: 'MVR'}]
+            { subName: 'CDL', actionName: 'CDL' },
+            {
+              subName: 'Test (Drug, Alcohol)',
+              actionName: 'Drug & Alcohol Test',
+            },
+            { subName: 'Medical Exam', actionName: 'Medical' },
+            { subName: 'MVR', actionName: 'MVR' },
+          ],
         },
         {
           title: 'Request',
           svg: 'assets/svg/common/dropdown-arrow.svg',
           disabled: data.status == 0 ? true : false,
           subType: [
-            { subName :'Background Check', actionName: 'Background Check'},
-            { subName :'Medical Exam', actionName: 'Medical'},
-            { subName :'Test (Drug, Alcohol)', actionName: 'Drug & Alcohol Test'},
-            { subName :'MVR', actionName: 'MVR'}
-          ]
+            { subName: 'Background Check', actionName: 'Background Check' },
+            { subName: 'Medical Exam', actionName: 'Medical' },
+            {
+              subName: 'Test (Drug, Alcohol)',
+              actionName: 'Drug & Alcohol Test',
+            },
+            { subName: 'MVR', actionName: 'MVR' },
+          ],
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Share',

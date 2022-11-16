@@ -16,7 +16,7 @@ import { TaSpinnerModule } from '../ta-spinner/ta-spinner.module';
     PipesModule,
     AngularSvgIconModule,
     AppTooltipeModule,
-    TaSpinnerModule
+    TaSpinnerModule,
   ],
   exports: [TaNoteComponent, TaNoteContainerComponent],
 })

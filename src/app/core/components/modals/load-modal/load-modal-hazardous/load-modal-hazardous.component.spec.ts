@@ -11,9 +11,8 @@ describe('LoadModalHazardousComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoadModalHazardousComponent ]
-    })
-    .compileComponents();
+      declarations: [LoadModalHazardousComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

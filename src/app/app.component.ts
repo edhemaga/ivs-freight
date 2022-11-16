@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     public titleService: Title,
     private activatedRoute: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.router.events

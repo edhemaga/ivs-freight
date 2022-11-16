@@ -87,8 +87,8 @@
       align-items: center;
       position: relative;
 
-      &:hover{
-        .delete-chip{
+      &:hover {
+        .delete-chip {
           opacity: 1;
           transition: 0.25s;
         }
@@ -109,15 +109,15 @@
         opacity: 0;
         transition: background 0.25s, opacity 0.25s;
 
-        &:hover{
-          background: #EF5350;
+        &:hover {
+          background: #ef5350;
           transition: 0.25s;
         }
-        svg-icon{
+        svg-icon {
           display: flex;
-          svg{
-            path{
-              fill: #FFFFFF;
+          svg {
+            path {
+              fill: #ffffff;
             }
           }
         }

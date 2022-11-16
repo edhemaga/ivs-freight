@@ -8,9 +8,8 @@ describe('MvrAuthorizationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MvrAuthorizationComponent ]
-    })
-    .compileComponents();
+      declarations: [MvrAuthorizationComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

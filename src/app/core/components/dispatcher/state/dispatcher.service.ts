@@ -34,7 +34,7 @@ export class DispatcherStoreService {
     return this.dispatchService.apiDispatchBoardListGet();
   }
 
-  getDispatchBoardByDispatcherList(id: number){
+  getDispatchBoardByDispatcherList(id: number) {
     return this.dispatchService.apiDispatchBoardIdGet(id);
   }
 
@@ -47,10 +47,11 @@ export class DispatcherStoreService {
   }
 
   getDispatchBoardByDispatcherListAndUpdate(id: number) {
-    this.getDispatchBoardByDispatcherList(id)
-    .subscribe((result: DispatchBoardResponse) => {
-      this.dispatchByDispatcher = [result];
-    });
+    this.getDispatchBoardByDispatcherList(id).subscribe(
+      (result: DispatchBoardResponse) => {
+        this.dispatchByDispatcher = [result];
+      }
+    );
   }
 
   getDispatchboardById(id: number) {
@@ -65,7 +66,7 @@ export class DispatcherStoreService {
     return this.dispatchService.apiDispatchReorderPut(reorder);
   }
 
-  switchDispathboard(swithcData: SwitchDispatchesCommand){
+  switchDispathboard(swithcData: SwitchDispatchesCommand) {
     return this.dispatchService.apiDispatchSwitchPut(swithcData);
   }
 
@@ -90,26 +91,28 @@ export class DispatcherStoreService {
       );
   }
 
-  updateDispatchboardRowById(id: number, dispatch_id: number){
-    return this.getDispatchBoardRowById(id).pipe(
-      flatMap((response) => {
-        if (!response.truck && !response.trailer && !response.driver) {
-          return this.deleteDispatchboard(response.id);
-        }
+  updateDispatchboardRowById(id: number, dispatch_id: number) {
+    return this.getDispatchBoardRowById(id)
+      .pipe(
+        flatMap((response) => {
+          if (!response.truck && !response.trailer && !response.driver) {
+            return this.deleteDispatchboard(response.id);
+          }
 
-        return of(response);
-      })
-    ).pipe(
-      delay(300),
-      map((res) => {
-        if (res.id) this.dispatchBoardItem = { id: dispatch_id, item: res };
-        else
-          this.dispatchBoardItem = {
-            id: dispatch_id,
-            item: { id: id },
-          };
-      })
-    );
+          return of(response);
+        })
+      )
+      .pipe(
+        delay(300),
+        map((res) => {
+          if (res.id) this.dispatchBoardItem = { id: dispatch_id, item: res };
+          else
+            this.dispatchBoardItem = {
+              id: dispatch_id,
+              item: { id: id },
+            };
+        })
+      );
   }
 
   updateDispatchBoard(updateData: UpdateDispatchCommand, dispatch_id: number) {
@@ -196,7 +199,7 @@ export class DispatcherStoreService {
         ...store.dispatchList,
         pagination: {
           ...store.dispatchList.pagination,
-          data: dispatch
+          data: dispatch,
         },
       },
     }));
@@ -212,8 +215,8 @@ export class DispatcherStoreService {
 
   async updateCountList(id: number, type: string, value: string) {
     const dss = await this.dispatcherStore.getValue();
-    const dispatchData = JSON.parse(JSON.stringify(dss.dispatchList))
-  
+    const dispatchData = JSON.parse(JSON.stringify(dss.dispatchList));
+
     this.dispatcherStore.update((store) => ({
       ...store,
       dispatchList: {

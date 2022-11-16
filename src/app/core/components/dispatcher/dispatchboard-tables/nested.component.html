@@ -1,11 +1,9 @@
 <gridster [options]="options" style="height: 300px">
   <gridster-item [item]="item" *ngFor="let item of dashboard">
     <gridster [options]="options2">
-        <gridster-item [item]="item" *ngFor="let item of dashboard2">
-          <div class="button-holder">
-            test
-          </div>
-        </gridster-item>
-      </gridster>
+      <gridster-item [item]="item" *ngFor="let item of dashboard2">
+        <div class="button-holder">test</div>
+      </gridster-item>
+    </gridster>
   </gridster-item>
 </gridster>

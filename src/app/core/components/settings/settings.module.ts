@@ -9,7 +9,12 @@ import { SettingsComponent } from './settings.component';
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
 
 @NgModule({
-  imports: [CommonModule, SettingsRoutingModule, SharedModule, TruckassistTableModule],
+  imports: [
+    CommonModule,
+    SettingsRoutingModule,
+    SharedModule,
+    TruckassistTableModule,
+  ],
   declarations: [
     SettingsComponent,
     SettingsToolbarComponent,

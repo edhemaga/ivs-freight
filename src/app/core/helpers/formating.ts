@@ -30,9 +30,9 @@ export function formatSSNfield(value: string): string {
 export function numberWithCommas(x: any, formatedValue: boolean): string {
   return formatedValue
     ? Number(x.replace(',', ''))
-      .toFixed(2)
-      .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+        .toFixed(2)
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     : x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 

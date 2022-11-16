@@ -245,7 +245,7 @@ export class RoutingStateService implements OnDestroy {
       })
     );
   }
-  
+
   deleteStopById(stopId: number, routeId: number): Observable<any> {
     console.log('deleteStopById', stopId, routeId);
     return this.stopService.apiStopIdDelete(stopId).pipe(
@@ -270,14 +270,7 @@ export class RoutingStateService implements OnDestroy {
     hazMat?: boolean
   ) {
     return this.routingService
-      .apiRoutingGet(
-        locations,
-        truckId,
-        trailerId,
-        height,
-        loadWeight,
-        hazMat
-      )
+      .apiRoutingGet(locations, truckId, trailerId, height, loadWeight, hazMat)
       .pipe(
         tap(() => {
           console.log('getRouteShape', locations);

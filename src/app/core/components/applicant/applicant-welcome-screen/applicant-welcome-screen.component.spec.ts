@@ -8,9 +8,8 @@ describe('ApplicantWelcomeScreenComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ApplicantWelcomeScreenComponent ]
-    })
-    .compileComponents();
+      declarations: [ApplicantWelcomeScreenComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

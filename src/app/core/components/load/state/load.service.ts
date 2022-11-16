@@ -54,7 +54,7 @@ export class LoadTService {
       status,
       dispatcherId,
       dispatchId,
-      brokerId,
+      brokerId
       //dateFrom,
       // dateTo,
       // revenueFrom,

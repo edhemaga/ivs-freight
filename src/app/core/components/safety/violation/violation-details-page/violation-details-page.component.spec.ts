@@ -8,9 +8,8 @@ describe('ViolationDetailsPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ViolationDetailsPageComponent ]
-    })
-    .compileComponents();
+      declarations: [ViolationDetailsPageComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

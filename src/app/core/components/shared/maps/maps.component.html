@@ -221,7 +221,11 @@
                 <ng-template>
                   <div class="marker-container marker-icon">
                     <svg
-                      [tooltipBackground]="route.stops[j].stopColor ? route.stops[j].stopColor : routeColors[0]"
+                      [tooltipBackground]="
+                        route.stops[j].stopColor
+                          ? route.stops[j].stopColor
+                          : routeColors[0]
+                      "
                       xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
                       width="34"
@@ -256,7 +260,11 @@
                           cy="4"
                           r="4"
                           transform="translate(1113 983)"
-                          [ngStyle]="{ fill: route.stops[j].stopColor ? route.stops[j].stopColor : routeColors[0] }"
+                          [ngStyle]="{
+                            fill: route.stops[j].stopColor
+                              ? route.stops[j].stopColor
+                              : routeColors[0]
+                          }"
                         />
                         <circle
                           id="Ellipse_6246"
@@ -295,7 +303,11 @@
                           cy="9"
                           r="9"
                           transform="translate(638 2292)"
-                          [ngStyle]="{ fill: route.stops[j].stopColor ? route.stops[j].stopColor : routeColors[0] }"
+                          [ngStyle]="{
+                            fill: route.stops[j].stopColor
+                              ? route.stops[j].stopColor
+                              : routeColors[0]
+                          }"
                         />
                         <text
                           y="-8%"
@@ -318,7 +330,9 @@
                     class="stop-picker-address smaller-marker-address"
                     [ngClass]="{ 'small-marker-tooltip': !route.isFocused }"
                     [ngStyle]="{
-                      backgroundColor: route.stops[j].stopColor ? route.stops[j].stopColor : routeColors[0],
+                      backgroundColor: route.stops[j].stopColor
+                        ? route.stops[j].stopColor
+                        : routeColors[0],
                       visibility:
                         focusedRouteIndex == i &&
                         stopPickerLocation.editIndex == j
@@ -350,7 +364,9 @@
               [renderOptions]="{
                 preserveViewport: true,
                 polylineOptions: {
-                  strokeColor: route.routeColor ? route.routeColor : routeColors[0],
+                  strokeColor: route.routeColor
+                    ? route.routeColor
+                    : routeColors[0],
                   strokeWeight: 6,
                   zIndex: 1
                 },

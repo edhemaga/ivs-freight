@@ -11,9 +11,8 @@ describe('BrokerModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BrokerModalComponent ]
-    })
-    .compileComponents();
+      declarations: [BrokerModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

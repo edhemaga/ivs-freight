@@ -252,13 +252,18 @@ export class TruckassistTableBodyComponent
   }
 
   onHorizontalScroll(scrollEvent: any) {
-    if(scrollEvent.eventAction === 'scrolling'){
-      document.querySelectorAll('#table-not-pined-scroll-container').forEach((el) => {
-        el.scrollLeft = scrollEvent.scrollPosition;
-      })
-  
+    if (scrollEvent.eventAction === 'scrolling') {
+      document
+        .querySelectorAll('#table-not-pined-scroll-container')
+        .forEach((el) => {
+          el.scrollLeft = scrollEvent.scrollPosition;
+        });
+
       this.tableService.sendScroll(scrollEvent.scrollPosition);
-    }else if(scrollEvent.eventAction === 'isScrollShowing' && this.showScrollSectionBorder !== scrollEvent.isScrollBarShowing){
+    } else if (
+      scrollEvent.eventAction === 'isScrollShowing' &&
+      this.showScrollSectionBorder !== scrollEvent.isScrollBarShowing
+    ) {
       this.showScrollSectionBorder = scrollEvent.isScrollBarShowing;
 
       this.changeDetectorRef.detectChanges();
@@ -514,7 +519,7 @@ export class TruckassistTableBodyComponent
     this.destroy$.complete();
     this.tableService.sendRowsSelected([]);
 
-    console.log('Poziva se ngOnDestroy table body')
+    console.log('Poziva se ngOnDestroy table body');
   }
 
   // --------------------------------TODO---------------------------------

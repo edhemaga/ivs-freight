@@ -232,53 +232,59 @@ export class SettingsCompanyService implements OnDestroy {
   }
 
   //CreateInsurancePolicyCommand
-  public addInsurancePolicy(
-    data: any
-  ): Observable<CreateResponse> {
-    const sortedParams = getFunctionParams(this.settingService.apiCompanyInsurancepolicyPost, data);
-    return this.settingService.apiCompanyInsurancepolicyPost(...sortedParams).pipe(
-      tap((res: any) => {
-        const companySub = this.getCompany()
-          .pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: (company: CompanyResponse | any) => {
-              this.companyStore.add(company);
-              this.tableService.sendActionAnimation({
-                animation: 'add',
-                data: company,
-                id: company.id,
-              });
-
-              companySub.unsubscribe();
-            },
-          });
-      })
+  public addInsurancePolicy(data: any): Observable<CreateResponse> {
+    const sortedParams = getFunctionParams(
+      this.settingService.apiCompanyInsurancepolicyPost,
+      data
     );
+    return this.settingService
+      .apiCompanyInsurancepolicyPost(...sortedParams)
+      .pipe(
+        tap((res: any) => {
+          const companySub = this.getCompany()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+              next: (company: CompanyResponse | any) => {
+                this.companyStore.add(company);
+                this.tableService.sendActionAnimation({
+                  animation: 'add',
+                  data: company,
+                  id: company.id,
+                });
+
+                companySub.unsubscribe();
+              },
+            });
+        })
+      );
   }
 
   //UpdateInsurancePolicyCommand
-  public updateInsurancePolicy(
-    data: any
-  ): Observable<object> {
-    const sortedParams = getFunctionParams(this.settingService.apiCompanyInsurancepolicyPut, data);
-    return this.settingService.apiCompanyInsurancepolicyPut(...sortedParams).pipe(
-      tap((res: any) => {
-        const companySub = this.getCompany()
-          .pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: (company: CompanyResponse | any) => {
-              this.companyStore.add(company);
-              this.tableService.sendActionAnimation({
-                animation: 'update',
-                data: company,
-                id: company.id,
-              });
-
-              companySub.unsubscribe();
-            },
-          });
-      })
+  public updateInsurancePolicy(data: any): Observable<object> {
+    const sortedParams = getFunctionParams(
+      this.settingService.apiCompanyInsurancepolicyPut,
+      data
     );
+    return this.settingService
+      .apiCompanyInsurancepolicyPut(...sortedParams)
+      .pipe(
+        tap((res: any) => {
+          const companySub = this.getCompany()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+              next: (company: CompanyResponse | any) => {
+                this.companyStore.add(company);
+                this.tableService.sendActionAnimation({
+                  animation: 'update',
+                  data: company,
+                  id: company.id,
+                });
+
+                companySub.unsubscribe();
+              },
+            });
+        })
+      );
   }
 
   public getInsurancePolicyById(id: number): Observable<object> {

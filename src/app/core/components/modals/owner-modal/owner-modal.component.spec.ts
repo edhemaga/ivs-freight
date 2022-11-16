@@ -11,9 +11,8 @@ describe('OwnerModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OwnerModalComponent ]
-    })
-    .compileComponents();
+      declarations: [OwnerModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

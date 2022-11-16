@@ -11,9 +11,8 @@ describe('ConfirmationModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConfirmationModalComponent ]
-    })
-    .compileComponents();
+      declarations: [ConfirmationModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

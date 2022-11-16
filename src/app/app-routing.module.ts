@@ -360,9 +360,9 @@ const routes: Routes = [
   {
     path: 'accounting',
     loadChildren: () =>
-      import(
-        './core/components/accounting/accounting.module'
-      ).then((m) => m.AccountingModule),
+      import('./core/components/accounting/accounting.module').then(
+        (m) => m.AccountingModule
+      ),
     canActivate: [AuthGuard],
   },
   {

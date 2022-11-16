@@ -74,7 +74,7 @@ import { ByteConvertPipe } from './byte-convert.pipe';
     LoadStopTimeDatePipe,
     ActiveLoadStatusPipe,
     UrlExtensionPipe,
-    ByteConvertPipe
+    ByteConvertPipe,
   ],
   imports: [CommonModule],
   exports: [
@@ -113,7 +113,7 @@ import { ByteConvertPipe } from './byte-convert.pipe';
     LoadStopTimeDatePipe,
     ActiveLoadStatusPipe,
     UrlExtensionPipe,
-    ByteConvertPipe
+    ByteConvertPipe,
   ],
   providers: [
     DatePipe,

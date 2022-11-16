@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {CalendarDatesMainComponent} from './calendar-dates-main.component';
+import { CalendarDatesMainComponent } from './calendar-dates-main.component';
 
 describe('CalendarDatesMainComponent', () => {
   let component: CalendarDatesMainComponent;
@@ -8,9 +8,8 @@ describe('CalendarDatesMainComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CalendarDatesMainComponent]
-    })
-      .compileComponents();
+      declarations: [CalendarDatesMainComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

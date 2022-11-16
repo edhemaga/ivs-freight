@@ -8,9 +8,8 @@ describe('BrokerCardViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BrokerCardViewComponent ]
-    })
-    .compileComponents();
+      declarations: [BrokerCardViewComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

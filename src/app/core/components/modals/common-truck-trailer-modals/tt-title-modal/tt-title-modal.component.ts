@@ -3,10 +3,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
-import {
-  TitleModalResponse,
-  TitleResponse,
-} from 'appcoretruckassist';
+import { TitleModalResponse, TitleResponse } from 'appcoretruckassist';
 
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../../services/notification/notification.service';
@@ -64,7 +61,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
       purchaseDate: [null, Validators.required],
       issueDate: [null, Validators.required],
       note: [null],
-      files: [null]
+      files: [null],
     });
 
     this.formService.checkFormChange(this.ttTitleForm);
@@ -146,7 +143,8 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
       issueDate: convertDateToBackend(issueDate),
       purchaseDate: convertDateToBackend(purchaseDate),
       stateId: this.selectedStateType ? this.selectedStateType.id : null,
-      trailerId: this.editData.modal === 'trailer' ? this.editData.id : undefined,
+      trailerId:
+        this.editData.modal === 'trailer' ? this.editData.id : undefined,
       truckId: this.editData.modal === 'truck' ? this.editData.id : undefined,
       files: documents,
     };

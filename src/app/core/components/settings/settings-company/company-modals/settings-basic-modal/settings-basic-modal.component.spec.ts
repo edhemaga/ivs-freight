@@ -11,9 +11,8 @@ describe('SettingsBasicModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsBasicModalComponent ]
-    })
-    .compileComponents();
+      declarations: [SettingsBasicModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

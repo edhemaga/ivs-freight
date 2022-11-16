@@ -1,4 +1,4 @@
-@import 'src/theme/variables.scss';
+@import "src/theme/variables.scss";
 
 .sph-form-container {
   min-height: 100vh;
@@ -79,7 +79,7 @@
 
       .bullet-1::after,
       .bullet-2::after {
-        content: '';
+        content: "";
         position: absolute;
         bottom: 19px;
         right: -81px;
@@ -92,7 +92,7 @@
       .bullet-1::before,
       .bullet-2::before,
       .bullet-3::before {
-        content: '';
+        content: "";
         display: none;
         visibility: hidden;
         user-select: none;

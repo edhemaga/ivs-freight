@@ -37,28 +37,28 @@ export class TruckassistTableToolbarComponent
       svgPath: 'assets/svg/truckassist-table/lock.svg',
       width: 14,
       height: 16,
-      show: true
+      show: true,
     },
     {
       text: 'Import',
       svgPath: 'assets/svg/truckassist-table/import.svg',
       width: 16,
       height: 16,
-      show: true
+      show: true,
     },
     {
       text: 'Export',
       svgPath: 'assets/svg/truckassist-table/export.svg',
       width: 16,
       height: 16,
-      show: true
+      show: true,
     },
     {
       text: 'Reset Columns',
       svgPath: 'assets/svg/truckassist-table/new-reset-icon.svg',
       width: 16,
       height: 16,
-      show: true
+      show: true,
     },
     {
       text: 'Columns',
@@ -71,7 +71,7 @@ export class TruckassistTableToolbarComponent
         width: 6,
         height: 8,
       },
-      show: true
+      show: true,
     },
   ];
   tableRowsSelected: any[] = [];

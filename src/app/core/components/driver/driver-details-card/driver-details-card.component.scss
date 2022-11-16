@@ -1,190 +1,190 @@
 @import "../driver-details/driver-details-item/driver-details-item.component.scss";
 
 .driver-container {
-    margin-left: 16px;
-    .driver-personal {
-        display: grid;
-        grid-template-columns: 74px 280px;
-        -moz-column-gap: 22px;
-        column-gap: 22px;
-        margin-top: 12px;
+  margin-left: 16px;
+  .driver-personal {
+    display: grid;
+    grid-template-columns: 74px 280px;
+    -moz-column-gap: 22px;
+    column-gap: 22px;
+    margin-top: 12px;
 
-        .driver-avatar {
-            display: flex;
-            flex-direction: column;
-            position: relative;
+    .driver-avatar {
+      display: flex;
+      flex-direction: column;
+      position: relative;
 
-            .driver-avatar-svg {
-                height: 82px;
-                width: 74px;
-                border-radius: 2px;
-                -o-object-fit: fill;
-                object-fit: fill;
-                user-select: none;
-            }
+      .driver-avatar-svg {
+        height: 82px;
+        width: 74px;
+        border-radius: 2px;
+        -o-object-fit: fill;
+        object-fit: fill;
+        user-select: none;
+      }
 
-            .driver-avatar-owner {
-                position: absolute;
-                right: -8px;
-                bottom: 2px;
-            }
-        }
+      .driver-avatar-owner {
+        position: absolute;
+        right: -8px;
+        bottom: 2px;
+      }
+    }
+  }
+
+  .driver-information {
+    display: flex;
+    height: 80px;
+    margin-top: 2px;
+    flex-direction: column;
+
+    // Ovveride email information-item
+    .information-item-email {
+      margin: 7px 0px;
     }
 
-    .driver-information {
-        display: flex;
-        height: 80px;
-        margin-top: 2px;
-        flex-direction: column;
-
-        // Ovveride email information-item
-        .information-item-email {
-            margin: 7px 0px;
+    .information-item {
+      display: flex;
+      align-items: center;
+      height: 18px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      .card-icon {
+        display: none;
+        position: relative;
+        margin-left: 6px;
+        bottom: 1px;
+        height: 18px;
+        svg {
+          &:hover {
+            path {
+              fill: #6c6c6c;
+            }
+          }
         }
-
-        .information-item {
-            display: flex;
-            align-items: center;
-            height: 18px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            .card-icon {
-                display: none;
-                position: relative;
-                margin-left: 6px;
-                bottom: 1px;
-                height: 18px;
-                svg {
-                    &:hover {
-                        path {
-                            fill: #6c6c6c;
-                        }
-                    }
-                }
-            }
-            .information-value {
-                font-size: 14px;
-                font-weight: 400;
-                color: #6c6c6c;
-                line-height: 17px;
-                width: fit-content;
-                &::-moz-selection {
-                    color: #6c6c6c;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-                &::selection {
-                    color: #6c6c6c;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-                &:hover {
-                    color: #3c3c3c;
-                }
-            }
-            .ssn {
-                font-size: 18px !important;
-            }
-
-            .information-svg {
-                margin-right: 6px;
-                svg {
-                    display: flex;
-                }
-            }
-
-            .information-email-value {
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: nowrap;
-            }
-
-            .information-address-svg {
-                position: relative;
-                bottom: 11px;
-                left: 2px;
-                margin-right: 10px;
-            }
-            &:hover {
-                .card-icon {
-                    display: flex;
-                }
-                .information-value {
-                    color: #3c3c3c;
-                }
-            }
+      }
+      .information-value {
+        font-size: 14px;
+        font-weight: 400;
+        color: #6c6c6c;
+        line-height: 17px;
+        width: fit-content;
+        &::-moz-selection {
+          color: #6c6c6c;
+          background: rgb(108, 108, 108, 0.2);
         }
+        &::selection {
+          color: #6c6c6c;
+          background: rgb(108, 108, 108, 0.2);
+        }
+        &:hover {
+          color: #3c3c3c;
+        }
+      }
+      .ssn {
+        font-size: 18px !important;
+      }
+
+      .information-svg {
+        margin-right: 6px;
+        svg {
+          display: flex;
+        }
+      }
+
+      .information-email-value {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .information-address-svg {
+        position: relative;
+        bottom: 11px;
+        left: 2px;
+        margin-right: 10px;
+      }
+      &:hover {
+        .card-icon {
+          display: flex;
+        }
+        .information-value {
+          color: #3c3c3c;
+        }
+      }
     }
+  }
 }
 .custom-card-single {
-    background-color: #ffffff;
-    border-radius: 3px;
-    padding-left: 4px;
-    padding-top: 1px;
-    padding-right: 5px;
-    padding-bottom: 1px;
-    max-width: 440px;
-    margin-top: 8px;
+  background-color: #ffffff;
+  border-radius: 3px;
+  padding-left: 4px;
+  padding-top: 1px;
+  padding-right: 5px;
+  padding-bottom: 1px;
+  max-width: 440px;
+  margin-top: 8px;
 }
 .wrapper-additional-cards {
-    max-height: calc(77vh - 74px);
-    min-height: calc(20vh - 10px);
-    display: grid;
-    -ms-overflow-style: none; /* for Internet Explorer, Edge */
-    scrollbar-width: none; /* for Firefox */
-    overflow-y: scroll;
-    &::-webkit-scrollbar {
-        display: none;
-    }
-    .card-footer-cmp {
-        padding-bottom: 0 !important;
-    }
+  max-height: calc(77vh - 74px);
+  min-height: calc(20vh - 10px);
+  display: grid;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  .card-footer-cmp {
+    padding-bottom: 0 !important;
+  }
 }
 .cards-item-wrapper-1 {
-    overflow: hidden;
-    height: calc(100vh -62px);
+  overflow: hidden;
+  height: calc(100vh -62px);
 }
 .details-cards {
-    background-color: #ffffff;
-    width: 440px;
-    padding: 9px 6px;
+  background-color: #ffffff;
+  width: 440px;
+  padding: 9px 6px;
 }
 .owner-name {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 .tooltip-copy {
-    width: 12%;
+  width: 12%;
 }
 .tooltip-ein {
-    width: 17%;
+  width: 17%;
 }
 
 .inactive-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 16px;
-    background-color: #f3f3f3;
-    border-radius: 2px;
-    font-size: 11px;
-    font-weight: 800;
-    position: relative;
-    left: 77px;
-    color: $color-gray-dark;
-    width: 60px;
-    height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 16px;
+  background-color: #f3f3f3;
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 800;
+  position: relative;
+  left: 77px;
+  color: $color-gray-dark;
+  width: 60px;
+  height: 18px;
 }
 .bind-heigth {
-    max-height: fit-content !important;
+  max-height: fit-content !important;
 }
 .activate-button-card {
-    width: 398px !important;
+  width: 398px !important;
 }
 
 .container-value {
-    margin-left: 6px;
-    line-height: 20px !important;
+  margin-left: 6px;
+  line-height: 20px !important;
 }
 .commsion-solo {
-    font-size: 18px !important;
-    font-weight: 500 !important;
-    color: #6c6c6c;
+  font-size: 18px !important;
+  font-weight: 500 !important;
+  color: #6c6c6c;
 }

@@ -11,9 +11,8 @@ describe('FuelStopModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FuelStopModalComponent ]
-    })
-    .compileComponents();
+      declarations: [FuelStopModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

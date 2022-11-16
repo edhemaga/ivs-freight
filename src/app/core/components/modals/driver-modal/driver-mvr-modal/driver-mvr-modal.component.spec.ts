@@ -11,9 +11,8 @@ describe('DriverMvrModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DriverMvrModalComponent ]
-    })
-    .compileComponents();
+      declarations: [DriverMvrModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -15,9 +15,7 @@ export class UserResolver implements Resolve<UserState> {
     private userStore: UserStore
   ) {}
   resolve(): Observable<UserState | boolean> {
-    return this.userService
-    .getUsers(1, 1, 25)
-    .pipe(
+    return this.userService.getUsers(1, 1, 25).pipe(
       catchError(() => {
         return of('No user data...');
       }),
@@ -28,7 +26,7 @@ export class UserResolver implements Resolve<UserState> {
             users: userPagination.activeCount,
           })
         );
-        
+
         this.userStore.set(userPagination.pagination.data);
       })
     );

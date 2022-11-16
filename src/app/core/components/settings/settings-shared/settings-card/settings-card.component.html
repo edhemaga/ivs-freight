@@ -27,7 +27,7 @@
       <svg-icon
         *ngIf="data?.name !== 'Fuel Station'"
         class="settings-card-arrow"
-        [ngClass]="{ 'rotate': isCardOpen }"
+        [ngClass]="{ rotate: isCardOpen }"
         src="assets/svg/common/ic_arrow-down.svg"
       ></svg-icon>
     </div>
@@ -35,7 +35,7 @@
   <div
     [@openCloseBodyCard]="isCardOpen ? 'true' : 'false'"
     class="settings-card-body"
-    [ngClass]="{'no-line': !hasLine }"
+    [ngClass]="{ 'no-line': !hasLine }"
   >
     <div [ngSwitch]="cardTemplate">
       <!-- Common Template -->
@@ -53,11 +53,7 @@
         <div class="settings-template">
           <div
             class="settings-template-data"
-            *ngFor="
-              let item of data;
-              let ind = index;
-              trackBy: identity
-            "
+            *ngFor="let item of data; let ind = index; trackBy: identity"
           >
             <p class="settings-template-name bank">{{ item.name }}</p>
 
@@ -72,7 +68,9 @@
             </p>
 
             <div *ngIf="ind === 2" class="settings-template-eye">
-              <p class="hidden-text-eye"> {{accountText ? accountText : hiddenPassword(item.value, 4)}} </p>
+              <p class="hidden-text-eye">
+                {{ accountText ? accountText : hiddenPassword(item.value, 4) }}
+              </p>
               <svg-icon
                 (click)="showHideValue(item.value)"
                 class="hidden-svg-eye"
@@ -90,21 +88,12 @@
       <div *ngSwitchCase="'bankCardTemplate'">
         <div class="bankcard-template">
           <div class="bankcard-template-header">
-            <p
-              *ngFor="
-                let item of bankCardHeaders;
-                trackBy: identity
-              "
-            >
+            <p *ngFor="let item of bankCardHeaders; trackBy: identity">
               {{ item }}
             </p>
           </div>
           <div
-            *ngFor="
-              let item of data;
-              let ind = index;
-              trackBy: identity
-            "
+            *ngFor="let item of data; let ind = index; trackBy: identity"
             class="bankcard-template-data"
             [ngClass]="{ first: ind === 0 }"
           >

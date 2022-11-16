@@ -1,4 +1,4 @@
-import {ServerResponse, ServerResponseList} from './response';
+import { ServerResponse, ServerResponseList } from './response';
 
 export interface Enums {
   id: any;

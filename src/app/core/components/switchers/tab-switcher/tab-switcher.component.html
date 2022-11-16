@@ -1,13 +1,29 @@
-<fieldset  class=" multiswitch ta-switch-wrapper ta-tab-switch {{customClass}}">
+<fieldset
+  class=" multiswitch ta-switch-wrapper ta-tab-switch {{ customClass }}"
+>
   <div class="slide-container">
-    <ng-container *ngFor="let tab of tabs; let i = index; trackBy:identity">
+    <ng-container *ngFor="let tab of tabs; let i = index; trackBy: identity">
       <ng-container *ngIf="activeTab == tab.id">
-        <input (change)="handleChange(tab)" checked class="ta-radio-button" id="{{ tab.id }}" name="account"
-               type="radio">
-        <label class="ta-radio-button checked-label" for="{{ tab.id }}">{{ tab.name }}</label>
+        <input
+          (change)="handleChange(tab)"
+          checked
+          class="ta-radio-button"
+          id="{{ tab.id }}"
+          name="account"
+          type="radio"
+        />
+        <label class="ta-radio-button checked-label" for="{{ tab.id }}">{{
+          tab.name
+        }}</label>
       </ng-container>
       <ng-container *ngIf="activeTab !== tab.id">
-        <input (change)="handleChange(tab)" class="ta-radio-button" id="{{ tab.id }}" name="account" type="radio">
+        <input
+          (change)="handleChange(tab)"
+          class="ta-radio-button"
+          id="{{ tab.id }}"
+          name="account"
+          type="radio"
+        />
         <label class="ta-radio-button" for="{{ tab.id }}">{{ tab.name }}</label>
       </ng-container>
     </ng-container>

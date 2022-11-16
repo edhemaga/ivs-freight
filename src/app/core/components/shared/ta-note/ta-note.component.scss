@@ -93,11 +93,11 @@
     }
   }
 
-  .spinner{
+  .spinner {
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
     width: 18px;
     height: 18px;
   }
@@ -331,7 +331,8 @@
         }
       }
 
-      span[style*="color: rgb(83, 107, 194)"], span[style*="color: rgb(83, 107, 194)"] span {
+      span[style*="color: rgb(83, 107, 194)"],
+      span[style*="color: rgb(83, 107, 194)"] span {
         &::-moz-selection {
           color: $bw6-2 !important;
           background: rgb(83, 107, 194, 0.2) !important;
@@ -343,7 +344,8 @@
         }
       }
 
-      span[style*="color: rgb(38, 166, 144)"], span[style*="color: rgb(38, 166, 144)"] span {
+      span[style*="color: rgb(38, 166, 144)"],
+      span[style*="color: rgb(38, 166, 144)"] span {
         &::-moz-selection {
           color: $bw6-2;
           background: rgb(38, 166, 144, 0.2) !important;
@@ -355,7 +357,8 @@
         }
       }
 
-      span[style*="color: rgb(239, 83, 80)"], span[style*="color: rgb(239, 83, 80)"] span {
+      span[style*="color: rgb(239, 83, 80)"],
+      span[style*="color: rgb(239, 83, 80)"] span {
         &::-moz-selection {
           color: $bw6-2;
           background: rgb(239, 83, 80, 0.2) !important;
@@ -367,7 +370,8 @@
         }
       }
 
-      span[style*="color: rgb(255, 167, 38)"], span[style*="color: rgb(255, 167, 38)"] span {
+      span[style*="color: rgb(255, 167, 38)"],
+      span[style*="color: rgb(255, 167, 38)"] span {
         &::-moz-selection {
           color: $bw6-2;
           background: rgb(255, 167, 38, 0.2) !important;
@@ -406,11 +410,11 @@
       }
     }
 
-    .spinner{
+    .spinner {
       position: absolute;
       right: 2px;
       bottom: 6px;
-      
+
       width: 18px;
       height: 18px;
     }

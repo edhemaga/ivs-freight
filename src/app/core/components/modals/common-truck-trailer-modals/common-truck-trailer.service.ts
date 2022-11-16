@@ -57,12 +57,12 @@ export class CommonTruckTrailerService {
 
   // Registration
   //CreateRegistrationCommand
-  public addRegistration(
-    data: any,
-    tabSelected?: string
-  ): Observable<any> {
-    const sortedParams = getFunctionParams(this.registrationService.apiRegistrationPost, data);
-    console.log(sortedParams, 'sortedParams')
+  public addRegistration(data: any, tabSelected?: string): Observable<any> {
+    const sortedParams = getFunctionParams(
+      this.registrationService.apiRegistrationPost,
+      data
+    );
+    console.log(sortedParams, 'sortedParams');
     return this.registrationService.apiRegistrationPost(...sortedParams).pipe(
       tap(() => {
         // Truck Add Registration
@@ -137,7 +137,10 @@ export class CommonTruckTrailerService {
     data: any,
     tabSelected?: string
   ): Observable<object> {
-    const sortedParams = getFunctionParams(this.registrationService.apiRegistrationPut, data);
+    const sortedParams = getFunctionParams(
+      this.registrationService.apiRegistrationPut,
+      data
+    );
     return this.registrationService.apiRegistrationPut(...sortedParams).pipe(
       tap(() => {
         this.updateDataAnimation(tabSelected);
@@ -181,11 +184,11 @@ export class CommonTruckTrailerService {
   }
 
   //CreateInspectionCommand
-  public addInspection(
-    data: any,
-    tabSelected?: string
-  ): Observable<any> {
-    const sortedParams = getFunctionParams(this.inspectionService.apiInspectionPost, data);
+  public addInspection(data: any, tabSelected?: string): Observable<any> {
+    const sortedParams = getFunctionParams(
+      this.inspectionService.apiInspectionPost,
+      data
+    );
     return this.inspectionService.apiInspectionPost(...sortedParams).pipe(
       tap(() => {
         // Truck Add Inspection
@@ -253,11 +256,11 @@ export class CommonTruckTrailerService {
   }
 
   //UpdateInspectionCommand
-  public updateInspection(
-    data: any,
-    tabSelected?: string
-  ): Observable<object> {
-    const sortedParams = getFunctionParams(this.inspectionService.apiInspectionPut, data);
+  public updateInspection(data: any, tabSelected?: string): Observable<object> {
+    const sortedParams = getFunctionParams(
+      this.inspectionService.apiInspectionPut,
+      data
+    );
     return this.inspectionService.apiInspectionPut(...sortedParams).pipe(
       tap(() => {
         this.updateDataAnimation(tabSelected);
@@ -279,11 +282,11 @@ export class CommonTruckTrailerService {
   }
 
   //CreateTitleCommand
-  public addTitle(
-    data: any,
-    tabSelected?: string
-  ): Observable<any> {
-    const sortedParams = getFunctionParams(this.titleService.apiTitlePost, data);
+  public addTitle(data: any, tabSelected?: string): Observable<any> {
+    const sortedParams = getFunctionParams(
+      this.titleService.apiTitlePost,
+      data
+    );
     return this.titleService.apiTitlePost(...sortedParams).pipe(
       tap(() => {
         // Truck Add Inspection
@@ -349,10 +352,7 @@ export class CommonTruckTrailerService {
   }
 
   //UpdateTitleCommand
-  public updateTitle(
-    data: any,
-    tabSelected?: string
-  ): Observable<object> {
+  public updateTitle(data: any, tabSelected?: string): Observable<object> {
     const sortedParams = getFunctionParams(this.titleService.apiTitlePut, data);
     return this.titleService.apiTitlePut(...sortedParams).pipe(
       tap(() => {

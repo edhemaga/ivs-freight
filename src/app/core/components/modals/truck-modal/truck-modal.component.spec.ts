@@ -11,9 +11,8 @@ describe('TruckModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TruckModalComponent ]
-    })
-    .compileComponents();
+      declarations: [TruckModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

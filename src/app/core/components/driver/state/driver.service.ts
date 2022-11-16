@@ -92,8 +92,11 @@ export class DriverTService {
   /* Observable<CreateDriverResponse> */
   // Create Driver
   public addDriver(data: any /*CreateDriverCommand*/): Observable<any> {
-    console.log(data, 'addriver data')
-    const sortedParams = getFunctionParams(this.driverService.apiDriverPost, data);
+    console.log(data, 'addriver data');
+    const sortedParams = getFunctionParams(
+      this.driverService.apiDriverPost,
+      data
+    );
     return this.driverService.apiDriverPost(...sortedParams).pipe(
       tap((res: any) => {
         const subDriver = this.getDriverById(res.id)
@@ -258,7 +261,10 @@ export class DriverTService {
 
   /*UpdateDriverCommand*/
   public updateDriver(data: any): Observable<object> {
-    const sortedParams = getFunctionParams(this.driverService.apiDriverPut, data);
+    const sortedParams = getFunctionParams(
+      this.driverService.apiDriverPut,
+      data
+    );
     return this.driverService.apiDriverPut(...sortedParams).pipe(
       tap((res: any) => {
         const subDriver = this.getDriverById(data.id)

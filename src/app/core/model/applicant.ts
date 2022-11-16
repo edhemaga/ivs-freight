@@ -1,5 +1,5 @@
 export interface ApplicantData {
-  id: string,
+  id: string;
   active: boolean;
   name: string;
   dob: string;
@@ -47,5 +47,3 @@ export interface IApplicant {
   address: string;
   addressUnit: string;
 }
-
-

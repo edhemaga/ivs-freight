@@ -71,7 +71,6 @@
   }
 
   .settings-card-body {
-   
     // Common template
     .settings-template {
       display: grid;
@@ -110,7 +109,7 @@
           .hidden-text-eye {
             margin-right: 6px;
             display: flex;
-          
+
             &::selection {
               color: $settings-gray-dark;
               background: rgb(183, 183, 183, 0.2);

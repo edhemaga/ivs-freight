@@ -11,7 +11,7 @@ export const input_note_animation = (type: string) =>
     state(
       'true',
       style({
-        height: "*"
+        height: '*',
       })
     ),
     state('false', style({ height: '0px' })),

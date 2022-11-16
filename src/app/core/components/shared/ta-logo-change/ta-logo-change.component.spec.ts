@@ -11,9 +11,8 @@ describe('TaLogoChangeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaLogoChangeComponent ]
-    })
-    .compileComponents();
+      declarations: [TaLogoChangeComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

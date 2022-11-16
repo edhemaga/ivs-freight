@@ -1,13 +1,12 @@
-import {DriverTabData} from 'src/app/core/model/driver';
-import {Component, Input, OnInit} from '@angular/core';
+import { DriverTabData } from 'src/app/core/model/driver';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-accounting-index',
   templateUrl: './accounting-index.component.html',
-  styleUrls: ['./accounting-index.component.scss']
+  styleUrls: ['./accounting-index.component.scss'],
 })
 export class AccountingIndexComponent implements OnInit {
-
   @Input() inputData: any;
   public tableOptions: any;
   public accountingColumns: any[] = [];
@@ -26,7 +25,7 @@ export class AccountingIndexComponent implements OnInit {
       extended: false,
       hideLength: false,
       gridColumns: [],
-      extendedGridColumns: []
+      extendedGridColumns: [],
     },
     {
       title: 'Fuel',
@@ -35,7 +34,7 @@ export class AccountingIndexComponent implements OnInit {
       extended: false,
       hideLength: false,
       gridColumns: [],
-      extendedGridColumns: []
+      extendedGridColumns: [],
     },
     {
       title: 'Ledger',
@@ -44,7 +43,7 @@ export class AccountingIndexComponent implements OnInit {
       extended: false,
       hideLength: false,
       gridColumns: [],
-      extendedGridColumns: []
+      extendedGridColumns: [],
     },
     {
       title: 'IFTA',
@@ -53,7 +52,7 @@ export class AccountingIndexComponent implements OnInit {
       extended: false,
       hideLength: false,
       gridColumns: [],
-      extendedGridColumns: []
+      extendedGridColumns: [],
     },
     {
       title: 'Tax',
@@ -62,16 +61,13 @@ export class AccountingIndexComponent implements OnInit {
       extended: false,
       hideLength: false,
       gridColumns: [],
-      extendedGridColumns: []
-    }
+      extendedGridColumns: [],
+    },
   ];
 
-  constructor(
-  ) {
-  }
+  constructor() {}
 
   ngOnInit(): void {
-
     // this.getDrivers();
   }
 
@@ -87,10 +83,7 @@ export class AccountingIndexComponent implements OnInit {
     console.log(e);
   }
 
-  public getDrivers(): void {
-  }
+  public getDrivers(): void {}
 
-  ngOnDestroy(): void {
-  }
-
+  ngOnDestroy(): void {}
 }

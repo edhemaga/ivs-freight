@@ -375,7 +375,10 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     this.DetailsDataService.setNewData(
       this.scene.children[mainIndx].children[indx]
     );
-    console.log(this.scene.children[mainIndx].children[indx], this.scene.children[mainIndx].children[indx]);
+    console.log(
+      this.scene.children[mainIndx].children[indx],
+      this.scene.children[mainIndx].children[indx]
+    );
     this.scene.children[mainIndx].children[indx]['commentActive'] =
       !this.scene.children[mainIndx].children[indx]['commentActive'];
   }
@@ -383,7 +386,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
   toggleFiles(e: Event, mainIndx: number, indx: number) {
     e.preventDefault();
     e.stopPropagation();
-    
+
     this.scene.children[mainIndx].children[indx]['filesActive'] =
       !this.scene.children[mainIndx].children[indx]['filesActive'];
   }
@@ -433,7 +436,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
 
   log(...params) {
     console.log(...params);
-    this.DetailsDataService.setNewData(params[1]['payload'])
+    this.DetailsDataService.setNewData(params[1]['payload']);
   }
 
   ngAfterViewInit(): void {
@@ -464,7 +467,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'View Details',
@@ -505,7 +508,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
           greenIcon: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Share',
@@ -520,7 +523,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Delete',
@@ -561,21 +564,19 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
         }
       );
     } else if (event.type === 'add-comment') {
-      if ( event.data.commentActive ) {
+      if (event.data.commentActive) {
         event.data.commentActive = false;
       } else {
         event.data.commentActive = true;
       }
-    } else if ( event.type === 'link' ) {
-
+    } else if (event.type === 'link') {
       let url: string = '';
       if (!/^http[s]?:\/\//.test(event.data.url)) {
-          url += 'http://';
+        url += 'http://';
       }
 
       url += event.data.url;
       window.open(url, '_blank');
-     
     } else {
       this.modalService.openModal(
         TaskModalComponent,
@@ -688,49 +689,46 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
   }
 
   setIndex(mainIndx, indx) {
-    if(!this.newComment) {
+    if (!this.newComment) {
       this.currentHoldIndex = mainIndx;
       this.currentChildIndex = indx;
     }
   }
 
-  toggleDropdownActions(data){
-
+  toggleDropdownActions(data) {
     let newTitle = '';
     let newIcon = '';
     let newName = '';
-    
+
     let messageStatus = true;
     let linkStatus = true;
 
-    this.DetailsDataService.setNewData(data); 
+    this.DetailsDataService.setNewData(data);
 
-    if ( data.todoUsers.length == 0 || data.departments.length == 0 ) {
+    if (data.todoUsers.length == 0 || data.departments.length == 0) {
       messageStatus = false;
     }
-    
-    if ( !data.url ) {
+
+    if (!data.url) {
       linkStatus = false;
     }
 
-    if ( data.status.name == "Todo" ) {
+    if (data.status.name == 'Todo') {
       newTitle = 'Mark as Ongoing';
       newIcon = 'assets/svg/detail-cards/refresh.svg';
       newName = 'mark-as-ongoing';
-    } 
-    else {
+    } else {
       newTitle = 'Mark as To-Do';
       newIcon = 'assets/svg/common/ic_time.svg';
       newName = 'mark-as-done';
     }
-    
+
     this.dropdownOptions.actions.map((action, index) => {
-      if ( index == 6 ){
+      if (index == 6) {
         action.title = newTitle;
         action.svg = newIcon;
-      } else if ( index == 7 ) {
-
-        if ( data.status.name == 'Done' ) {
+      } else if (index == 7) {
+        if (data.status.name == 'Done') {
           action.title = 'Mark as Ongoing';
           action.svg = 'assets/svg/detail-cards/refresh.svg';
           action.greenIcon = false;
@@ -741,24 +739,22 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
           action.greenIcon = true;
           action.name = 'mark-as-done';
         }
-        
-      } else if ( index == 3 ) {
-        if ( !messageStatus ) {
+      } else if (index == 3) {
+        if (!messageStatus) {
           action.disabled = true;
         } else {
           action.disabled = false;
         }
-      } else if ( index == 4 ) {
-        if ( !linkStatus ) {
+      } else if (index == 4) {
+        if (!linkStatus) {
           action.disabled = true;
-          action.title = 'No Link'
+          action.title = 'No Link';
         } else {
           action.disabled = false;
-          action.title = 'Go to Link'
+          action.title = 'Go to Link';
         }
       }
-      
-    })
+    });
   }
 
   ngOnDestroy(): void {

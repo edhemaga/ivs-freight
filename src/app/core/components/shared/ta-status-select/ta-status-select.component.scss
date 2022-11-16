@@ -18,8 +18,9 @@
         width: 22px;
         height: 22px;
 
-        path, rect {
-          fill: #24C1A180;
+        path,
+        rect {
+          fill: #24c1a180;
           transition: fill 0.2s ease-out;
         }
       }
@@ -29,14 +30,14 @@
       margin-right: 0.2rem;
       margin-left: 0;
       line-height: 23px;
-      background-color: #207E4C80;
+      background-color: #207e4c80;
 
       &.revised_item {
-        background-color: #B7B7B780;
+        background-color: #b7b7b780;
       }
 
       &.tonu_item {
-        background-color: #FF5D5D80;
+        background-color: #ff5d5d80;
       }
     }
   }
@@ -48,8 +49,9 @@
           width: 22px;
           height: 22px;
 
-          path, rect {
-            fill: #FF5D5D80;
+          path,
+          rect {
+            fill: #ff5d5d80;
             transition: fill 0.2s ease-out;
           }
         }
@@ -61,21 +63,22 @@
     .load-count {
       svg-icon {
         svg {
-          path, rect {
-            fill: #24C1A1;
+          path,
+          rect {
+            fill: #24c1a1;
           }
         }
       }
 
       &.repair_item {
-        background-color: #207E4C;
+        background-color: #207e4c;
 
         &.revised_item {
-          background-color: #B7B7B7;
+          background-color: #b7b7b7;
         }
 
         &.tonu_item {
-          background-color: #FF5D5D;
+          background-color: #ff5d5d;
         }
       }
     }
@@ -84,8 +87,9 @@
       .load-count {
         svg-icon {
           svg {
-            path, rect {
-              fill: #FF5D5D !important;
+            path,
+            rect {
+              fill: #ff5d5d !important;
             }
           }
         }
@@ -153,7 +157,7 @@
       text-align: left;
 
       span {
-        color: #FF5D5Db3;
+        color: #ff5d5db3;
       }
 
       &.tony_title {
@@ -203,14 +207,16 @@
           width: 16px;
 
           svg {
-            path, rect {
-              fill: #B7B7B7;
+            path,
+            rect {
+              fill: #b7b7b7;
             }
           }
 
           &:hover {
             svg {
-              path, rect {
+              path,
+              rect {
                 fill: #fff;
               }
             }
@@ -219,7 +225,6 @@
       }
     }
   }
-
 }
 
 .status-select-wrapper {

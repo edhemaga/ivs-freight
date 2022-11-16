@@ -238,13 +238,14 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
           svg: 'assets/svg/common/dropdown-arrow.svg',
           disabled: data.status == 0 ? true : false,
           subType: [
-              { subName :'Registration', actionName: 'Registration'}, 
-              { subName : 'FHWA Inspection', actionName: 'FHWA Inspection'}, 
-              { subName : 'Title', actionName: 'Title'}, 
-              { subName: 'Lease / Rent', actionName: 'Lease / Purchase'}],
+            { subName: 'Registration', actionName: 'Registration' },
+            { subName: 'FHWA Inspection', actionName: 'FHWA Inspection' },
+            { subName: 'Title', actionName: 'Title' },
+            { subName: 'Lease / Rent', actionName: 'Lease / Purchase' },
+          ],
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Share',
@@ -259,7 +260,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: data.status == 0 ? 'Activate' : 'Deactivate',

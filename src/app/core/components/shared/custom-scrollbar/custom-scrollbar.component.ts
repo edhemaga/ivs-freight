@@ -25,7 +25,6 @@ export class CustomScrollbarComponent
   @ViewChild('bar', { static: false }) private bar: ElementRef;
   @Output() scrollEvent: EventEmitter<any> = new EventEmitter();
   @Input() scrollBarOptions: any;
-  
 
   scrollTop: number = 5;
   showScrollbar: boolean = false;
@@ -107,7 +106,7 @@ export class CustomScrollbarComponent
               this.bar.nativeElement.style.transform = `translateX(${offsetBar}px)`;
               this.scrollEvent.emit({
                 eventAction: 'scrolling',
-                scrollPosition: offsetBar * this.tableScrollRatioFull
+                scrollPosition: offsetBar * this.tableScrollRatioFull,
               });
             }
           }
@@ -175,7 +174,7 @@ export class CustomScrollbarComponent
 
       // Table Scroll
       if (this.scrollBarOptions.showHorizontalScrollBar) {
-        const scrollWrapper =  document.querySelector('.not-pined-columns');
+        const scrollWrapper = document.querySelector('.not-pined-columns');
 
         const tableFullWidth = scrollWrapper.scrollWidth;
         const tableVisibleWidth = scrollWrapper.getBoundingClientRect().width;
@@ -194,7 +193,7 @@ export class CustomScrollbarComponent
 
         this.scrollEvent.emit({
           eventAction: 'isScrollShowing',
-          isScrollBarShowing: this.showScrollbar
+          isScrollBarShowing: this.showScrollbar,
         });
       }
       // Regular Scroll

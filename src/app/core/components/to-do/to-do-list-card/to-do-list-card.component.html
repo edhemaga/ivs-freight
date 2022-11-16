@@ -235,9 +235,13 @@
                       <div
                         class="icon-box"
                         ngbTooltip
-                        [mainTooltip]="item.files?.length ? 'Documents' : 'No Documents'"
+                        [mainTooltip]="
+                          item.files?.length ? 'Documents' : 'No Documents'
+                        "
                         position="bottom"
-                        (mousedown)="item.files?.length ? toggleFiles($event, i, j) : ''"
+                        (mousedown)="
+                          item.files?.length ? toggleFiles($event, i, j) : ''
+                        "
                         tooltipBackground="#6C6C6C"
                         [class.blue-icons]="item.filesActive"
                         [class.lighter-icon]="!item.files?.length"

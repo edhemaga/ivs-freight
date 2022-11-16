@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { CreateTableConfigCommand, TableConfigResponse, TableConfigService, TableType } from 'appcoretruckassist';
+import {
+  CreateTableConfigCommand,
+  TableConfigResponse,
+  TableConfigService,
+  TableType,
+} from 'appcoretruckassist';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -21,7 +26,7 @@ export class TruckassistTableService {
   /* Set Column Table Width */
   private columnWidth = new BehaviorSubject<any>([]);
   public currentColumnWidth = this.columnWidth.asObservable();
-  
+
   /* Set Table Selection */
   public rowsSelected = new BehaviorSubject<any>([]);
   public currentRowsSelected = this.rowsSelected.asObservable();
@@ -63,19 +68,21 @@ export class TruckassistTableService {
   public currentSearchTableData = this.searchTableData.asObservable();
 
   constructor(private tableColumnsConfigService: TableConfigService) {}
-  
+
   // ------------------------------ Table Back Service Methods --------------------------------
 
-  sendTableConfig(tableConfig: CreateTableConfigCommand): Observable<object>{
+  sendTableConfig(tableConfig: CreateTableConfigCommand): Observable<object> {
     return this.tableColumnsConfigService.apiTableconfigPost(tableConfig);
   }
 
-  getTableConfig(tableType: TableType): Observable<TableConfigResponse>{
+  getTableConfig(tableType: TableType): Observable<TableConfigResponse> {
     return this.tableColumnsConfigService.apiTableconfigTableTypeGet(tableType);
   }
 
-  deleteTableConfig(tableType: TableType): Observable<TableConfigResponse>{
-    return this.tableColumnsConfigService.apiTableconfigTableTypeDelete(tableType);
+  deleteTableConfig(tableType: TableType): Observable<TableConfigResponse> {
+    return this.tableColumnsConfigService.apiTableconfigTableTypeDelete(
+      tableType
+    );
   }
 
   // ------------------------------ Table Custom Service Methods --------------------------------

@@ -8,9 +8,8 @@ describe('PasswordChangedPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PasswordChangedPageComponent ]
-    })
-    .compileComponents();
+      declarations: [PasswordChangedPageComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,5 +1,5 @@
 // REPAIRS TRUCK COLUMN DEFINITION
-export function getRepairTruckColumnDefinition() {  
+export function getRepairTruckColumnDefinition() {
   return [
     {
       ngTemplate: 'checkbox',
@@ -216,7 +216,7 @@ export function getRepairTruckColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'note',
@@ -239,7 +239,7 @@ export function getRepairTruckColumnDefinition() {
       disabled: false,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'actions',
@@ -262,7 +262,7 @@ export function getRepairTruckColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
   ];
 }
@@ -485,7 +485,7 @@ export function getRepairTrailerColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'note',
@@ -508,7 +508,7 @@ export function getRepairTrailerColumnDefinition() {
       disabled: false,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'actions',
@@ -531,7 +531,7 @@ export function getRepairTrailerColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
   ];
 }
@@ -765,8 +765,7 @@ export function getRepairsShopColumnDefinition() {
       headIconStyle: {
         width: 18,
         height: 18,
-        imgPath:
-          'assets/svg/truckassist-table/attachment-icon.svg',
+        imgPath: 'assets/svg/truckassist-table/attachment-icon.svg',
       },
       hidden: false,
       width: 40,
@@ -784,7 +783,7 @@ export function getRepairsShopColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'note',
@@ -807,7 +806,7 @@ export function getRepairsShopColumnDefinition() {
       disabled: false,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'actions',
@@ -830,8 +829,7 @@ export function getRepairsShopColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
   ];
 }
-

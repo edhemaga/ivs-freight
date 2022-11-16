@@ -1,987 +1,995 @@
 @import "../../../../../theme/variables.scss";
 
 :root {
-    --route-color-1: #3074D3;
-    --route-color-2: #FFA726;
-    --route-color-3: #EF5350;
-    --route-color-4: #26A690;
-    --route-color-5: #AB47BC;
-    --route-color-6: #38BDEB;
-    --route-color-7: #F276EF;
-    --route-color-8: #8D6E63;
-  }
+  --route-color-1: #3074d3;
+  --route-color-2: #ffa726;
+  --route-color-3: #ef5350;
+  --route-color-4: #26a690;
+  --route-color-5: #ab47bc;
+  --route-color-6: #38bdeb;
+  --route-color-7: #f276ef;
+  --route-color-8: #8d6e63;
+}
 
 .table-container {
-    width: calc(100% - 74px);
-    position: absolute;
+  width: calc(100% - 74px);
+  position: absolute;
+  top: 0;
+
+  .table-toolbar-container {
+    padding-right: 2px;
+  }
+
+  .customer-map-container {
+    position: fixed;
+    left: 0;
     top: 0;
+    width: 100vw;
+    height: 100vh;
+    padding-left: 56px;
+    z-index: 1;
 
-    .table-toolbar-container {
-        padding-right: 2px;
-    }
+    .route-card-container {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      width: 100%;
 
-    .customer-map-container {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100vw;
-        height: 100vh;
-        padding-left: 56px;
-        z-index: 1;
+      padding: 62px 0px 18px 74px;
 
-        .route-card-container {
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100vh;
-            width: 100%;
+      overflow-y: auto;
+      pointer-events: none;
 
-            padding: 62px 0px 18px 74px;
+      z-index: 2;
 
-            overflow-y: auto;
-            pointer-events: none;
+      &:last-child {
+        margin-bottom: 0px;
+      }
 
-            z-index: 2;
+      .route-card-scroll {
+        width: fit-content;
+        max-height: 100%;
+        padding-right: 15px;
 
-            &:last-child {
-                margin-bottom: 0px;
-            }
+        overflow-y: auto;
+        pointer-events: all;
 
-            .route-card-scroll {
-                width: fit-content;
-                max-height: 100%;
-                padding-right: 15px;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
 
-                overflow-y: auto;
-                pointer-events: all;
-
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-
-                &::-webkit-scrollbar {
-                    display: none;
-                }
-                
-                &.cdk-drop-list-receiving, &.cdk-drop-list-dragging {
-                    height: 100%;
-
-                    .route-info-card {
-                        top: 0px !important;
-                        left: 0px !important;
-                    }
-                }
-            }
-
-            .route-free-drag-area {
-                position: absolute;
-                right: 0;
-                top: 62px;
-                width: calc( 100% - 390px );
-                height: calc( 100% - 62px );
-
-                pointer-events: none;
-                overflow: hidden;
-
-                &.cdk-drop-list-receiving, &.cdk-drop-list-dragging {
-                    pointer-events: all;
-
-                    .cdk-drag-preview {
-                        position: relative !important;
-                    }
-                }
-
-                .route-info-card {
-                    position: absolute !important;
-                }
-            }
+        &::-webkit-scrollbar {
+          display: none;
         }
+
+        &.cdk-drop-list-receiving,
+        &.cdk-drop-list-dragging {
+          height: 100%;
+
+          .route-info-card {
+            top: 0px !important;
+            left: 0px !important;
+          }
+        }
+      }
+
+      .route-free-drag-area {
+        position: absolute;
+        right: 0;
+        top: 62px;
+        width: calc(100% - 390px);
+        height: calc(100% - 62px);
+
+        pointer-events: none;
+        overflow: hidden;
+
+        &.cdk-drop-list-receiving,
+        &.cdk-drop-list-dragging {
+          pointer-events: all;
+
+          .cdk-drag-preview {
+            position: relative !important;
+          }
+        }
+
+        .route-info-card {
+          position: absolute !important;
+        }
+      }
     }
+  }
 }
 
 .routing-container {
-    .marker-container {
-        top: -25px!important;
-    
-        &.circle-marker {
-            top: 0px!important;
-            left: 50%;
-            cursor: pointer;
-            transform: translateX(-50%);
-        }
-    
-        &.stop-picker-icon {
-            top: -36px !important;
-            transform: translateX(-22px);
-        }
-    }
-    
-    .si-pointer-bottom, .si-close-button {
-        display: none!important;
+  .marker-container {
+    top: -25px !important;
+
+    &.circle-marker {
+      top: 0px !important;
+      left: 50%;
+      cursor: pointer;
+      transform: translateX(-50%);
     }
 
-    .marker-icon {
-        transition: none !important;
-
-        svg {
-            outline: none;
-        }
-
-        &.selected-marker {
-            transform: translate(-50%, -35%) scale(2) !important;
-        }
+    &.stop-picker-icon {
+      top: -36px !important;
+      transform: translateX(-22px);
     }
+  }
+
+  .si-pointer-bottom,
+  .si-close-button {
+    display: none !important;
+  }
+
+  .marker-icon {
+    transition: none !important;
+
+    svg {
+      outline: none;
+    }
+
+    &.selected-marker {
+      transform: translate(-50%, -35%) scale(2) !important;
+    }
+  }
 }
 
 .route-info-card .cdk-drop-list-dragging + .selected-route {
-    opacity: 0.7;
+  opacity: 0.7;
 }
 
 .route-info-card {
-    position: relative;
-    width: fit-content;
-    padding: 4px 14px 4px 4px;
-    background: #fff;
-    border-radius: 3px;
-    margin-bottom: 8px;
-    max-height: 500px;
-    max-width: 500px;
+  position: relative;
+  width: fit-content;
+  padding: 4px 14px 4px 4px;
+  background: #fff;
+  border-radius: 3px;
+  margin-bottom: 8px;
+  max-height: 500px;
+  max-width: 500px;
 
-    transition: width 0.2s, height 0.2s, padding-right 0.2s, max-height 0.2s;
+  transition: width 0.2s, height 0.2s, padding-right 0.2s, max-height 0.2s;
 
-    pointer-events: all;
-    cursor: pointer;
+  pointer-events: all;
+  cursor: pointer;
 
-    z-index: 1;
+  z-index: 1;
 
-    .cdk-drop-list-dragging .selected-route {
-        opacity: 0.2;
+  .cdk-drop-list-dragging .selected-route {
+    opacity: 0.2;
+  }
+
+  &.route-hidden {
+    max-height: 30px;
+    overflow: hidden;
+
+    .route-type-text {
+      background: #cccccc !important;
+    }
+  }
+
+  &.expanded-card {
+    max-width: 802px;
+
+    .route-card-row .route-row-location.add-new-stop .input-custom-group {
+      grid-template-columns: 88% 1fr !important;
     }
 
-    &.route-hidden {
-        max-height: 30px;
-        overflow: hidden;
+    .route-card-row
+      .route-row-location.add-new-stop.full-address
+      .input-custom-group {
+      grid-template-columns: 90% 1fr !important;
+    }
+  }
 
-        .route-type-text {
-            background: #CCCCCC !important;
-        }
+  .route-info-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 18px;
+    margin: 2px 4px 0px 2px;
+
+    .header-content-container {
+      display: flex;
+      width: 100%;
+      max-width: calc(100% - 34px);
     }
 
-    &.expanded-card {
-        max-width: 802px;
+    .show-more {
+      margin-left: 12px;
 
-        .route-card-row .route-row-location.add-new-stop .input-custom-group {
-            grid-template-columns: 88% 1fr !important;
+      .dropdown-dots {
+        svg {
+          path {
+            fill: #aaaaaa;
+          }
         }
+      }
 
-        .route-card-row .route-row-location.add-new-stop.full-address .input-custom-group {
-            grid-template-columns: 90% 1fr !important;
-        }
-    }
+      .svg-text-dropdown {
+        &:hover {
+          background-color: #f3f3f3;
 
-    .route-info-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 18px;
-        margin: 2px 4px 0px 2px;
+          .dropdown-content-text-details {
+            color: #3c3c3c;
+          }
 
-        .header-content-container {
-            display: flex;
-            width: 100%;
-            max-width: calc( 100% - 34px );
-        }
-
-        .show-more {
-            margin-left: 12px;
-
-            .dropdown-dots {
-                svg {
-                    path {
-                        fill: #AAAAAA;
-                    }
-                }
-            }
-
-            .svg-text-dropdown {
-                &:hover {
-                    background-color: #F3F3F3;
-
-                    .dropdown-content-text-details {
-                        color: #3C3C3C;
-                    }
-
-                    .action-svg {
-                        svg {
-                            path {
-                                fill: #6C6C6C;
-                            }
-                        }
-                    }
-                }
-            }
-
-            &:hover, &.active-drop {
-                .dropdown-dots {
-                    svg {
-                        path {
-                            fill: #6C6C6C;
-                        }
-                    }
-                }
-            }
-        }
-
-        .route-card-svg {
-            position: relative;
-            display: flex;
-            width: 18px;
-            height: 18px;
-            cursor: grab;
-
-            //background-image: url('../../../../../assets/svg/common/ic_route_card.svg');
-            background-repeat: no-repeat;
-
-            z-index: 2;
-
-            svg-icon {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-                &.svg-hover {
-                    svg {
-                        path {
-                            fill: #6C6C6C;
-                        }
-                    }
-                }
-            }
-
-            &:hover {
-                svg {
-                    #Drag {
-                        opacity: 1;
-                    }
-                }
-            }
-        }
-
-        .route-card-icon {
-            display: flex;
-
+          .action-svg {
             svg {
-                path {
-                    fill: #AAAAAA;
-                }
+              path {
+                fill: #6c6c6c;
+              }
             }
+          }
         }
+      }
 
-        .marker-info-text {
-            &:hover {
-                color: #ED445E;
-                cursor: pointer;
+      &:hover,
+      &.active-drop {
+        .dropdown-dots {
+          svg {
+            path {
+              fill: #6c6c6c;
             }
+          }
         }
-
-        .route-type-text {
-            font-size: 11px;
-            line-height: 14px;
-            background: #919191;
-            color: #fff;
-            padding: 2px 6px;
-            border-radius: 2px;
-            user-select: none;
-            margin-left: 6px;
-            min-width: fit-content;
-        }
-
-        .route-card-header-divider {
-            width: 2px;
-            height: 18px;
-            background: #F3F3F3;
-            border-radius: 1px;
-
-            margin: 0px 7px;
-        }
+      }
     }
+
+    .route-card-svg {
+      position: relative;
+      display: flex;
+      width: 18px;
+      height: 18px;
+      cursor: grab;
+
+      //background-image: url('../../../../../assets/svg/common/ic_route_card.svg');
+      background-repeat: no-repeat;
+
+      z-index: 2;
+
+      svg-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &.svg-hover {
+          svg {
+            path {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+
+      &:hover {
+        svg {
+          #Drag {
+            opacity: 1;
+          }
+        }
+      }
+    }
+
+    .route-card-icon {
+      display: flex;
+
+      svg {
+        path {
+          fill: #aaaaaa;
+        }
+      }
+    }
+
+    .marker-info-text {
+      &:hover {
+        color: #ed445e;
+        cursor: pointer;
+      }
+    }
+
+    .route-type-text {
+      font-size: 11px;
+      line-height: 14px;
+      background: #919191;
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 2px;
+      user-select: none;
+      margin-left: 6px;
+      min-width: fit-content;
+    }
+
+    .route-card-header-divider {
+      width: 2px;
+      height: 18px;
+      background: #f3f3f3;
+      border-radius: 1px;
+
+      margin: 0px 7px;
+    }
+  }
 }
 
 .route-card-content {
-    position: relative;
-    display: grid;
-    margin-top: 8px;
+  position: relative;
+  display: grid;
+  margin-top: 8px;
 
-    .empty-miles {
-        position: absolute;
-        left: 2px;
-        top: 26px;
-        width: 18px;
-        height: 66px;
+  .empty-miles {
+    position: absolute;
+    left: 2px;
+    top: 26px;
+    width: 18px;
+    height: 66px;
 
-        background: #F27B8E;
-        opacity: 0.2;
-        border-radius: 2px;
-    }
+    background: #f27b8e;
+    opacity: 0.2;
+    border-radius: 2px;
+  }
 }
 
 .route-card-row {
-    position: relative;
-    top: 0px;
-    display: flex;
-    align-items: center;
-    height: 22px;
-    padding: 4px;
-    margin-bottom: 2px;
-    border-radius: 2px;
+  position: relative;
+  top: 0px;
+  display: flex;
+  align-items: center;
+  height: 22px;
+  padding: 4px;
+  margin-bottom: 2px;
+  border-radius: 2px;
 
-    z-index: 2;
+  z-index: 2;
+
+  &.focused-route {
+    .focused-route-number-background {
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: none;
+      height: 100%;
+      width: 22px;
+
+      border-radius: 2px 0px 0px 2px;
+    }
+  }
+
+  &.selected-stop {
+    background: #f3f3f3;
+
+    .focused-route-number-background {
+      display: flex;
+    }
+  }
+
+  &:hover {
+    background: #00000012;
+    cursor: grab;
 
     &.focused-route {
-        .focused-route-number-background {
-            position: absolute;
-            left: 0;
-            top: 0;
-            display: none;
-            height: 100%;
-            width: 22px;
+      background: #00000012;
 
-            border-radius: 2px 0px 0px 2px;
-        }
-    }
-
-    &.selected-stop {
-        background: #F3F3F3;
-
-        .focused-route-number-background {
-            display: flex;
-        }
-    }
-
-    &:hover {
-        background: #00000012;
-        cursor: grab;
-
-        &.focused-route {
-            background: #00000012;
-
-            .delete-button {
-                svg {
-                    path {
-                        fill: #FFF;
-                    }
-                }
-
-                &:hover {
-                    svg {
-                        path {
-                            fill: #FFFFFF;
-                        }
-                    }
-                }
-            }
-
-            .focused-route-number-background {
-                display: flex;
-            }
-        }
-
-        .delete-button {
-            display: flex;
-
-            &.drag-arrows {
-                display: none!important;
-            }
-        }
-
-        .route-row-number {
-            display: none;
-        }
-
-        .route-row-location {
-            &.add-new-stop {
-                label {
-                    color: #6C6C6C !important;
-                }
-            }
-        }
-
-        .loaded-stop-background {
-            //display: none;
-        }
-    }
-
-    &:last-child {
-        padding-right: 0px;
-
-        .route-row-number {
-            margin-right: 9px;
+      .delete-button {
+        svg {
+          path {
+            fill: #fff;
+          }
         }
 
         &:hover {
-            cursor: pointer;
-
-            .plus-button {
-                display: flex;
+          svg {
+            path {
+              fill: #ffffff;
             }
-
-            .route-row-number {
-                display: none;
-            }
+          }
         }
+      }
+
+      .focused-route-number-background {
+        display: flex;
+      }
     }
 
     .delete-button {
-        position: relative;
+      display: flex;
 
-        display: none;
-        margin-right: 16px;
-        cursor: pointer;
-        height: 14px;
-        width: 14px;
-
-        z-index: 2;
-
-        &.plus-button {
-            margin-right: 9px;
-
-            &.route-color-1 {
-                path {
-                    fill: var(--route-color-1);
-                }
-            }
-            &.route-color-2 {
-                path {
-                    fill: var(--route-color-2);
-                }
-            }
-            &.route-color-3 {
-                path {
-                    fill: var(--route-color-3);
-                }
-            }
-            &.route-color-4 {
-                path {
-                    fill: var(--route-color-4);
-                }
-            }
-            &.route-color-5 {
-                path {
-                    fill: var(--route-color-5);
-                }
-            }
-            &.route-color-6 {
-                path {
-                    fill: var(--route-color-6);
-                }
-            }
-            &.route-color-7 {
-                path {
-                    fill: var(--route-color-7);
-                }
-            }
-            &.route-color-8 {
-                path {
-                    fill: var(--route-color-8);
-                }
-            }
-        }
-
-        svg {
-            path {
-                fill: #919191;
-            }
-        }
-
-        &:hover {
-            svg {
-                path {
-                    fill: #6C6C6C;
-                }
-            }
-        }
-    }
-
-    .delete-stop-text {
-        position: relative;
-        top: 0px;
-        left: -7px;
-        //display: none;
-        justify-content: center;
-        align-items: center;
-
-        width: 0px;
-        min-width: 0px;
-        //width: 50px;
-        //min-width: 50px;
-        height: 18px;
-        padding: 2px 6px;
-        //background: #EF5350;
-        background: #424242;
-        border-radius: 1px;
-
-        font-size: 11px;
-        line-height: 14px;
-        color: #fff;
-        font-weight: 700;
-
-        opacity: 0;
-        overflow: hidden;
-        transition: all 0.2s ease-in-out;
+      &.drag-arrows {
+        display: none !important;
+      }
     }
 
     .route-row-number {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 14px;
-        min-width: 14px;
-        margin-right: 16px;
-
-        user-select: none;
-
-        z-index: 2;
+      display: none;
     }
 
     .route-row-location {
-        position: relative;
-        top: 0px;
-        width: 140px;
-        min-width: 140px;
-        margin-right: 18px;
-
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        transition: width 0.2s ease-in-out, min-width 0.2s ease-in-out, top 0.2s ease-in-out;
-
-        &.full-address {
-            width: 220px;
-            min-width: 220px;
+      &.add-new-stop {
+        label {
+          color: #6c6c6c !important;
         }
-
-        &.add-new-stop {
-            width: 100%;
-            margin-right: 0px;
-            overflow: visible;
-
-            label {
-                color: #B7B7B7 !important;
-            }
-        }
+      }
     }
 
-    .route-row-leg {
-        width: 44px;
-        text-align: right;
-        margin-right: 18px;
+    .loaded-stop-background {
+      //display: none;
+    }
+  }
 
-        &.shorter-leg-text {
-            width: 40px;
+  &:last-child {
+    padding-right: 0px;
+
+    .route-row-number {
+      margin-right: 9px;
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      .plus-button {
+        display: flex;
+      }
+
+      .route-row-number {
+        display: none;
+      }
+    }
+  }
+
+  .delete-button {
+    position: relative;
+
+    display: none;
+    margin-right: 16px;
+    cursor: pointer;
+    height: 14px;
+    width: 14px;
+
+    z-index: 2;
+
+    &.plus-button {
+      margin-right: 9px;
+
+      &.route-color-1 {
+        path {
+          fill: var(--route-color-1);
         }
-    }
-
-    .route-row-total {
-        width: 46px;
-        text-align: right;
-        white-space: nowrap;
-        margin-right: 16px;
-
-        &:last-child {
-            margin-right: 0px;
+      }
+      &.route-color-2 {
+        path {
+          fill: var(--route-color-2);
         }
+      }
+      &.route-color-3 {
+        path {
+          fill: var(--route-color-3);
+        }
+      }
+      &.route-color-4 {
+        path {
+          fill: var(--route-color-4);
+        }
+      }
+      &.route-color-5 {
+        path {
+          fill: var(--route-color-5);
+        }
+      }
+      &.route-color-6 {
+        path {
+          fill: var(--route-color-6);
+        }
+      }
+      &.route-color-7 {
+        path {
+          fill: var(--route-color-7);
+        }
+      }
+      &.route-color-8 {
+        path {
+          fill: var(--route-color-8);
+        }
+      }
     }
 
-    .marker-like-text {
-        color: #424242;
+    svg {
+      path {
+        fill: #919191;
+      }
     }
+
+    &:hover {
+      svg {
+        path {
+          fill: #6c6c6c;
+        }
+      }
+    }
+  }
+
+  .delete-stop-text {
+    position: relative;
+    top: 0px;
+    left: -7px;
+    //display: none;
+    justify-content: center;
+    align-items: center;
+
+    width: 0px;
+    min-width: 0px;
+    //width: 50px;
+    //min-width: 50px;
+    height: 18px;
+    padding: 2px 6px;
+    //background: #EF5350;
+    background: #424242;
+    border-radius: 1px;
+
+    font-size: 11px;
+    line-height: 14px;
+    color: #fff;
+    font-weight: 700;
+
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .route-row-number {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 14px;
+    min-width: 14px;
+    margin-right: 16px;
+
+    user-select: none;
+
+    z-index: 2;
+  }
+
+  .route-row-location {
+    position: relative;
+    top: 0px;
+    width: 140px;
+    min-width: 140px;
+    margin-right: 18px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: width 0.2s ease-in-out, min-width 0.2s ease-in-out,
+      top 0.2s ease-in-out;
+
+    &.full-address {
+      width: 220px;
+      min-width: 220px;
+    }
+
+    &.add-new-stop {
+      width: 100%;
+      margin-right: 0px;
+      overflow: visible;
+
+      label {
+        color: #b7b7b7 !important;
+      }
+    }
+  }
+
+  .route-row-leg {
+    width: 44px;
+    text-align: right;
+    margin-right: 18px;
+
+    &.shorter-leg-text {
+      width: 40px;
+    }
+  }
+
+  .route-row-total {
+    width: 46px;
+    text-align: right;
+    white-space: nowrap;
+    margin-right: 16px;
+
+    &:last-child {
+      margin-right: 0px;
+    }
+  }
+
+  .marker-like-text {
+    color: #424242;
+  }
 }
 
 .cdk-drag-preview {
-    box-sizing: border-box;
-    background-color: #fff;
-    border-radius: 4px;
-    box-shadow: $box-shadow;
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: $box-shadow;
 
-    &.route-info-card {
-        top: 0px !important;
-        left: 0px !important;
+  &.route-info-card {
+    top: 0px !important;
+    left: 0px !important;
 
-        .route-card-svg {
-            svg {
-                g {
-                    opacity: 1;
-                }
-            }
+    .route-card-svg {
+      svg {
+        g {
+          opacity: 1;
         }
-    }
-
-    &.route-card-row {
-        .delete-button {
-            display: none!important;
-
-            &.drag-arrows {
-                display: flex!important;
-            }
-
-            &.plus-button {
-                display: flex!important;
-                opacity: 0;
-            }
-        }
-
-        .route-row-number {
-            display: none;
-        }
-
-        .focused-route-number-background {
-            display: flex;
-
-            &.route-color-1 {
-                background-color: var(--route-color-1) !important;
-            }
-            &.route-color-2 {
-                background-color: var(--route-color-2) !important;
-            }
-            &.route-color-3 {
-                background-color: var(--route-color-3) !important;
-            }
-            &.route-color-4 {
-                background-color: var(--route-color-4) !important;
-            }
-            &.route-color-5 {
-                background-color: var(--route-color-5) !important;
-            }
-            &.route-color-6 {
-                background-color: var(--route-color-6) !important;
-            }
-            &.route-color-7 {
-                background-color: var(--route-color-7) !important;
-            }
-            &.route-color-8 {
-                background-color: var(--route-color-8) !important;
-            }
-        }
+      }
     }
   }
 
-  .cdk-drag-placeholder {
-    background: #DADADACC;
-
+  &.route-card-row {
     .delete-button {
-        display: none!important;
+      display: none !important;
+
+      &.drag-arrows {
+        display: flex !important;
+      }
+
+      &.plus-button {
+        display: flex !important;
+        opacity: 0;
+      }
     }
 
-    div {
-        opacity: 0;
+    .route-row-number {
+      display: none;
+    }
+
+    .focused-route-number-background {
+      display: flex;
+
+      &.route-color-1 {
+        background-color: var(--route-color-1) !important;
+      }
+      &.route-color-2 {
+        background-color: var(--route-color-2) !important;
+      }
+      &.route-color-3 {
+        background-color: var(--route-color-3) !important;
+      }
+      &.route-color-4 {
+        background-color: var(--route-color-4) !important;
+      }
+      &.route-color-5 {
+        background-color: var(--route-color-5) !important;
+      }
+      &.route-color-6 {
+        background-color: var(--route-color-6) !important;
+      }
+      &.route-color-7 {
+        background-color: var(--route-color-7) !important;
+      }
+      &.route-color-8 {
+        background-color: var(--route-color-8) !important;
+      }
     }
   }
+}
+
+.cdk-drag-placeholder {
+  background: #dadadacc;
+
+  .delete-button {
+    display: none !important;
+  }
+
+  div {
+    opacity: 0;
+  }
+}
 
 .pink-text {
-    color: #F27B8E !important;
+  color: #f27b8e !important;
 
-    &::-moz-selection {
-        color: #F27B8E !important;
-        background: #F27B8E33 !important;
-      }
-    &::selection {
-        color: #F27B8E;
-        background: #F27B8E33 !important;
-    }
+  &::-moz-selection {
+    color: #f27b8e !important;
+    background: #f27b8e33 !important;
+  }
+  &::selection {
+    color: #f27b8e;
+    background: #f27b8e33 !important;
+  }
 }
 
 .gray-text {
-    color: #B7B7B7 !important;
+  color: #b7b7b7 !important;
 
-    &::-moz-selection {
-        color: #B7B7B7 !important;
-        background: #B7B7B733 !important;
-      }
-    &::selection {
-        color: #B7B7B7 !important;
-        background: #B7B7B733 !important;
-    }
+  &::-moz-selection {
+    color: #b7b7b7 !important;
+    background: #b7b7b733 !important;
+  }
+  &::selection {
+    color: #b7b7b7 !important;
+    background: #b7b7b733 !important;
+  }
 }
 
 .route-card-resize-button {
-    position: absolute;
-    top: 50%;
-    right: 0px;
+  position: absolute;
+  top: 50%;
+  right: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 26px;
+  height: 26px;
+
+  background: $white;
+
+  cursor: pointer;
+  transform: translate(50%, -50%);
+  border-radius: 50%;
+  box-shadow: $box-shadow;
+  z-index: 1;
+
+  &:hover {
+    svg {
+      path {
+        fill: $bw6-2;
+      }
+    }
+  }
+
+  .map-list-resize-svg {
+    display: inline-flex;
+    transition: all 0.2s ease-in-out;
+    transform: rotate(270deg);
+
+    &.rotate {
+      transform: rotate(90deg);
+    }
+  }
+}
+
+.cdk-drop-list-dragging,
+.cdk-drop-list-receiving {
+  .route-info-card {
+    cursor: grabbing !important;
+
+    div {
+      cursor: grabbing !important;
+    }
+  }
+
+  .route-card-row {
+    cursor: grabbing;
+
+    .focused-route-number-background {
+      display: none !important;
+    }
+  }
+}
+
+.selected-route {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+
+  width: 22px;
+  height: calc(100% - 8px);
+
+  background-color: #596fe8;
+
+  border-radius: 2px;
+
+  z-index: 1;
+}
+
+.stop-picker-window {
+  position: absolute;
+  top: -27px;
+  left: 91px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 70px;
+  height: 26px;
+  padding: 4px;
+
+  background: #2f2f2f;
+  border-radius: 3px;
+  box-shadow: $box-shadow;
+
+  pointer-events: all;
+
+  .stop-picker-button {
     display: flex;
     justify-content: center;
     align-items: center;
 
-    width: 26px;
-    height: 26px;
+    width: 62px;
+    height: 18px;
 
-    background: $white;
-
-    cursor: pointer;
-    transform: translate(50%, -50%);
-    border-radius: 50%;
-    box-shadow: $box-shadow;
-    z-index: 1;
-
-    &:hover {
-        svg {
-            path {
-                fill: $bw6-2;
-            }
-        }
-    }
-
-    .map-list-resize-svg {
-        display: inline-flex;
-        transition: all 0.2s ease-in-out;
-        transform: rotate(270deg);
-
-        &.rotate {
-            transform: rotate(90deg);
-        }
-    }
-}
-
-.cdk-drop-list-dragging, .cdk-drop-list-receiving {
-    .route-info-card {
-        cursor: grabbing !important;
-
-        div {
-            cursor: grabbing !important;
-        }
-    }
-
-    .route-card-row {
-        cursor: grabbing;
-
-        .focused-route-number-background {
-            display: none!important;
-        }
-    }
-}
-
-.selected-route {
-    position: absolute;
-    left: 4px;
-    top: 4px;
-
-    width: 22px;
-    height: calc( 100% - 8px );
-
-    background-color: #596FE8;
+    background: #6c6c6c;
 
     border-radius: 2px;
+    cursor: pointer;
 
-    z-index: 1;
-}
+    transition: all 0.15s;
 
-.stop-picker-window {
-    position: absolute;
-    top: -27px;
-    left: 91px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    width: 70px;
-    height: 26px;
-    padding: 4px;
-
-    background: #2F2F2F;
-    border-radius: 3px;
-    box-shadow: $box-shadow;
-
-    pointer-events: all;
-
-    .stop-picker-button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        width: 62px;
-        height: 18px;
-
-        background: #6C6C6C;
-
-        border-radius: 2px;
-        cursor: pointer;
-
-        transition: all 0.15s;
-
-        .stop-picker-button-text {
-            color: #fff;
-            font-size: 11px;
-            font-weight: 600;
-            line-height: 14px;
-            text-transform: uppercase;
-        }
-
-        &.empty-button {
-            margin-left: 2px;
-        }
-
-        &.loaded-button {
-            margin-right: 2px;
-        }
-
-        &:hover {
-            //width: 66px;
-            //height: 22px;
-            margin-left: 0px;
-            margin-right: 0px;
-
-            background: #1D1D1D;
-        }
-
-        &.active {
-            background: #919191;
-        }
+    .stop-picker-button-text {
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 14px;
+      text-transform: uppercase;
     }
+
+    &.empty-button {
+      margin-left: 2px;
+    }
+
+    &.loaded-button {
+      margin-right: 2px;
+    }
+
+    &:hover {
+      //width: 66px;
+      //height: 22px;
+      margin-left: 0px;
+      margin-right: 0px;
+
+      background: #1d1d1d;
+    }
+
+    &.active {
+      background: #919191;
+    }
+  }
 }
 
 .stop-picker-address {
-    position: absolute;
-    top: -25px;
-    left: calc( 50% - 5px );
+  position: absolute;
+  top: -25px;
+  left: calc(50% - 5px);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 22px;
+  padding: 2px 6px;
+
+  border-radius: 2px;
+
+  pointer-events: all;
+
+  transform: translateX(26px);
+
+  &.smaller-marker-address {
+    top: -17px;
+
+    transform: translateX(20px);
+  }
+
+  &.stop-picker-delete {
+    top: 2px;
+    left: calc(100% + 30px);
 
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    height: 18px;
+    width: 0px;
+    padding: 0px;
+
+    background: #ef5350 !important;
+    transform: translateX(-26px);
+    transition: 0.2s ease-in-out;
+  }
+
+  &.small-marker-tooltip {
+    top: -3px;
+
+    transform: translateX(15px);
+  }
+
+  .stop-picker-address-text {
+    display: -webkit-box;
+
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 22px;
+    color: #fff;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+
+  .delete-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 2px;
 
     height: 22px;
-    padding: 2px 6px;
+    width: 22px;
 
     border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
 
-    pointer-events: all;
+    svg {
+      transition: all 0.15s ease-in-out;
 
-    transform: translateX(26px);
-
-    &.smaller-marker-address {
-        top: -17px;
-
-        transform: translateX(20px);
+      path {
+        fill: rgb(255, 255, 255, 0.7);
+      }
     }
 
-    &.stop-picker-delete {
-        top: 2px;
-        left: calc( 100% + 30px );
-        
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 18px;
-        width: 0px;
-        padding: 0px;
+    &:hover {
+      background: rgb(255, 255, 255, 0.2);
 
-        background: #EF5350 !important;
-        transform: translateX(-26px);
-        transition: 0.2s ease-in-out;
-    }
-
-    &.small-marker-tooltip {
-        top: -3px;
-
-        transform: translateX(15px);
-    }
-
-    .stop-picker-address-text {
-        display: -webkit-box;
-
-        font-size: 11px;
-        font-weight: 700;
-        line-height: 22px;
-        color: #fff;
-
-        text-overflow: ellipsis;
-        overflow: hidden;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-    }
-
-    .delete-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-left: 2px;
-
-        height: 22px;
-        width: 22px;
-
-        border-radius: 2px;
-        cursor: pointer;
-        transition: all 0.15s ease-in-out;
-
-        svg {
-            transition: all 0.15s ease-in-out;
-            
-            path {
-                fill: rgb(255, 255, 255, 0.7);
-            }
+      svg {
+        path {
+          fill: rgb(255, 255, 255);
         }
-
-        &:hover {
-            background: rgb(255, 255, 255, 0.2);
-
-            svg {
-                path {
-                    fill: rgb(255, 255, 255);
-                }
-            }
-        }
+      }
     }
+  }
 }
 
 .stop-picker-cursor {
-    position: absolute;
-    top: 0px;
-    left: 0px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
 
-    z-index: 999;
+  z-index: 999;
 }
 
 .header-properties-container {
-    display: flex;
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .route-name {
+  position: relative;
+  display: flex;
+  min-width: fit-content;
+
+  .route-name-tooltip {
     position: relative;
-    display: flex;
-    min-width: fit-content;
+    left: 0px;
+    top: 0px;
 
-    .route-name-tooltip {
-        position: relative;
-        left: 0px;
-        top: 0px;
+    width: 0px;
+    height: 18px;
+    margin-left: 12px;
 
-        width: 0px;
-        height: 18px;
-        margin-left: 12px;
+    background-color: #616161;
+    font-size: 11px;
+    line-height: 18px;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
 
-        background-color: #616161;
-        font-size: 11px;
-        line-height: 18px;
-        font-weight: 700;
-        color: #fff;
-        text-align: center;
+    border-radius: 2px;
 
-        border-radius: 2px;
-
-        opacity: 0;
-        overflow: hidden;
-        transition: all 0.2s ease-in-out;
-    }
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+  }
 }
 
-.route-card-scroll.cdk-drop-list-dragging .route-info-card:not(.cdk-drag-placeholder) {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+.route-card-scroll.cdk-drop-list-dragging
+  .route-info-card:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.route-free-drag-area
-.cdk-drag-placeholder {
+.route-free-drag-area .cdk-drag-placeholder {
   opacity: 0;
   display: none;
 }
@@ -991,61 +999,61 @@
 }
 
 .stop-picker-marker-animation {
-    animation-duration: 200ms;
-    animation-name: stop-picker-animation;
+  animation-duration: 200ms;
+  animation-name: stop-picker-animation;
 }
 
 .stop-picker-marker-animation-backwards {
-    animation-duration: 200ms;
-    animation-name: stop-picker-animation-backwards;
+  animation-duration: 200ms;
+  animation-name: stop-picker-animation-backwards;
 }
 
 @-webkit-keyframes stop-picker-animation {
-    from {
-      transform: translate(-22px, 5px) scale(0.7);
-    }
-    to {
-      transform: translate(-22px, 0px) scale(1);
-    }
+  from {
+    transform: translate(-22px, 5px) scale(0.7);
+  }
+  to {
+    transform: translate(-22px, 0px) scale(1);
+  }
 }
-  
+
 @keyframes stop-picker-animation {
-    from {
-      transform: translate(-22px, 5px) scale(0.7);
-    }
-    to {
-      transform: translate(-22px, 0px) scale(1);
-    }
+  from {
+    transform: translate(-22px, 5px) scale(0.7);
+  }
+  to {
+    transform: translate(-22px, 0px) scale(1);
+  }
 }
 
 @-webkit-keyframes stop-picker-animation-backwards {
-    from {
-      transform: translate(-22px, 0px) scale(1);
-    }
-    to {
-      transform: translate(-22px, 5px) scale(0.7);
-    }
+  from {
+    transform: translate(-22px, 0px) scale(1);
+  }
+  to {
+    transform: translate(-22px, 5px) scale(0.7);
+  }
 }
-  
+
 @keyframes stop-picker-animation-backwards {
-    from {
-      transform: translate(-22px, 0px) scale(1);
-    }
-    to {
-      transform: translate(-22px, 5px) scale(0.7);
-    }
+  from {
+    transform: translate(-22px, 0px) scale(1);
+  }
+  to {
+    transform: translate(-22px, 5px) scale(0.7);
+  }
 }
 
 .loaded-stop-background {
-    position: absolute;
-    left: 2px;
-    top: 2px;
+  position: absolute;
+  left: 2px;
+  top: 2px;
 
-    height: 24px;
-    width: 18px;
+  height: 24px;
+  width: 18px;
 
-    background: rgb(48, 116, 211, 0.2);
+  background: rgb(48, 116, 211, 0.2);
 
-    pointer-events: none;
-    z-index: 999;
+  pointer-events: none;
+  z-index: 999;
 }

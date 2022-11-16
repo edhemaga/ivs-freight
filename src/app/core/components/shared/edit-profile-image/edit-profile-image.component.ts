@@ -1,12 +1,19 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 /* import {CroppieDirective} from "angular-croppie-module"; */
-import {Options} from 'ng5-slider';
+import { Options } from 'ng5-slider';
 /* import Croppie from 'croppie'; */
 
 @Component({
   selector: 'app-edit-profile-image',
   templateUrl: './edit-profile-image.component.html',
-  styleUrls: ['./edit-profile-image.component.scss']
+  styleUrls: ['./edit-profile-image.component.scss'],
 })
 export class EditProfileImageComponent {
   @Input() src: string;
@@ -48,11 +55,9 @@ export class EditProfileImageComponent {
   avatarError = false;
   showUploadZone = true;
 
-  constructor() {
-  }
+  constructor() {}
 
-  public ngAfterViewInit() {
-  }
+  public ngAfterViewInit() {}
 
   onSelect(event: any) {
     this.files.push(...event.addedFiles);
@@ -61,7 +66,7 @@ export class EditProfileImageComponent {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-     /*  this.croppieDirective.croppie.bind({
+      /*  this.croppieDirective.croppie.bind({
         url: reader.result as string,
         points: [188, 101, 260, 191],
         zoom: this.scale,
@@ -76,7 +81,7 @@ export class EditProfileImageComponent {
 
   public zooming(event: any) {
     this.scale = event ? event : 0.1;
-   /*  this.croppieDirective.croppie.setZoom(this.scale); */
+    /*  this.croppieDirective.croppie.setZoom(this.scale); */
   }
 
   public saveImage() {
@@ -97,5 +102,4 @@ export class EditProfileImageComponent {
   public editProfileImage() {
     this.showUploadZone = true;
   }
-
 }

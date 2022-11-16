@@ -80,7 +80,7 @@ export class CustomerTableComponent
     private notificationService: NotificationService,
     private thousandSeparator: TaThousandSeparatorPipe,
     private reviewRatingService: ReviewsRatingService,
-    private DetailsDataService: DetailsDataService,
+    private DetailsDataService: DetailsDataService
   ) {}
 
   ngOnInit(): void {

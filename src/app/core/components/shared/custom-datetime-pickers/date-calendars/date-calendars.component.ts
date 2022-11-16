@@ -128,7 +128,7 @@ export class DateCalendarsComponent implements OnInit {
   public setListPreview(): void {
     if (this.listPreview === 'full_list') {
       this.setListPreviewValue.emit('month_list');
-      console.log("CLICK ON SET PREVIEW --------------");
+      console.log('CLICK ON SET PREVIEW --------------');
       console.log(Math.floor(this.activeIndex / 12));
       this.calendarService.setAutoIndex = Math.floor(this.activeIndex / 12);
     }

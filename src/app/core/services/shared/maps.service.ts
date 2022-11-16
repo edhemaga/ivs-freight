@@ -9,7 +9,7 @@ import { Observable, tap } from 'rxjs';
 declare var google: any;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MapsService implements OnDestroy {
   private destroy$ = new Subject<void>();
@@ -17,17 +17,17 @@ export class MapsService implements OnDestroy {
   public mapCircle: any = {
     lat: 41.860119,
     lng: -87.660156,
-    radius: 160934.4 // 100 miles
+    radius: 160934.4, // 100 miles
   };
 
   sortCategory: any = {};
   sortCategoryChange: Subject<any> = new Subject<any>();
 
-  constructor(private mapService: MapService) { 
+  constructor(private mapService: MapService) {
     this.sortCategoryChange
       .pipe(takeUntil(this.destroy$))
       .subscribe((category) => {
-        this.sortCategory = category
+        this.sortCategory = category;
       });
   }
 
@@ -37,22 +37,25 @@ export class MapsService implements OnDestroy {
   }
 
   getMeters(miles) {
-    return miles*1609.344;
+    return miles * 1609.344;
   }
 
   getMiles(meters) {
-    return meters*0.000621371192;
+    return meters * 0.000621371192;
   }
 
-  getDistanceBetween(lat1,long1,lat2,long2){
-    var from = new google.maps.LatLng(lat1,long1);
-    var to = new google.maps.LatLng(lat2,long2);
+  getDistanceBetween(lat1, long1, lat2, long2) {
+    var from = new google.maps.LatLng(lat1, long1);
+    var to = new google.maps.LatLng(lat2, long2);
 
-    var distanceBetween = google.maps.geometry.spherical.computeDistanceBetween(from,to);
+    var distanceBetween = google.maps.geometry.spherical.computeDistanceBetween(
+      from,
+      to
+    );
 
-    if(distanceBetween <= this.mapCircle.radius){    
+    if (distanceBetween <= this.mapCircle.radius) {
       return [true, distanceBetween];
-    }else{
+    } else {
       return [false, distanceBetween];
     }
   }
