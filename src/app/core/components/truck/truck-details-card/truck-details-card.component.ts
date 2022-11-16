@@ -15,13 +15,34 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { TrucksMinimalListQuery } from '../state/truck-details-minima-list-state/truck-details-minimal.query';
 import { TruckTService } from '../state/truck.service';
+import { animate, style, transition, trigger, state, keyframes } from '@angular/animations';
 
 @Component({
   selector: 'app-truck-details-card',
   templateUrl: './truck-details-card.component.html',
   styleUrls: ['./truck-details-card.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  animations: [card_component_animation('showHideCardBody')],
+  animations: [card_component_animation('showHideCardBody'), 
+  trigger('ownerDetailsAnimation', [
+    state(
+      'true',
+      style({
+        height: '*',
+        overflow: 'hidden',
+        opacity: 1,
+      })
+    ),
+    state(
+      'false',
+      style({
+        height: '0px',
+        overflow: 'hidden',
+        opacity: 0,
+      })
+    ),
+    transition('false <=> true', [animate('0.2s ease')]),
+    transition('true <=> false', [animate('0.2s ease')]), 
+  ]),],
 })
 export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('revenueChart', { static: false }) public revenueChart: any;

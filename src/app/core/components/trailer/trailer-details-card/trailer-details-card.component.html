@@ -210,7 +210,7 @@
           <div class="owner-items-name">
             <span class="firm-name">{{ trailer.owner.name }}</span>
           </div>
-          <div [@showHideCardBody]="toggleOwner ? 'true' : 'false'">
+          <div [@ownerDetailsAnimation]="toggleOwner ? 'true' : 'false'">
             <div class="wrapper-owner-items">
               <div class="owner-items">
                 <svg-icon

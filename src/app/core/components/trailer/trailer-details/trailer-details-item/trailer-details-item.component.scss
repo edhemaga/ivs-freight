@@ -47,6 +47,7 @@ app-trailer-details-item {
       cursor: pointer;
       .arrow-down-employment {
         svg {
+          transition: all 0.2s ease;
           path {
             fill: #aaaaaa;
             &:hover {
@@ -60,7 +61,7 @@ app-trailer-details-item {
       bottom: 0 !important;
       svg {
         transform: rotate(180deg);
-        transition: all 0.3s ease-in-out;
+        transition: all 0.2s ease;
         path {
           fill: #536bc2 !important;
         }

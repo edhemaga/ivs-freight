@@ -198,6 +198,7 @@ app-truck-details-card {
         .single-icon-wrapper {
             justify-content: center;
             margin-top: 10px !important;
+            
             svg {
                 transform: rotate(180deg);
                 path {
@@ -211,10 +212,12 @@ app-truck-details-card {
     }
     .single-icon-wrapper {
         padding: 0 10px;
+        
         cursor: pointer;
         .icon-rotate {
             cursor: pointer;
             svg {
+              transition: 0.2s ease all;
                 &:hover {
                     path {
                         fill: #6c6c6c;
