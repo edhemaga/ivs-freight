@@ -362,18 +362,12 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const fuelCount = JSON.parse(localStorage.getItem('fuelTableCount'));
 
-        console.log('Fuel Transactions Data');
-        console.log(this.fuelTransactionList);
-
-        console.log('Fuel Stops Data');
-        console.log(this.fuelStopList);
-
         this.tableData = [
             {
                 title: 'Transactions',
                 field: 'active',
                 length: fuelCount.fuelTransactions,
-                data: [{}],
+                data: this.fuelTransactionList,
                 gridNameTitle: 'Fuel',
                 tableConfiguration: 'FUEL_TRANSACTION',
                 isActive: this.selectedTab === 'active',
@@ -383,7 +377,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 title: 'Stop',
                 field: 'inactive',
                 length: fuelCount.fuelStops,
-                data: [{}],
+                data: this.fuelStopList,
                 gridNameTitle: 'Fuel',
                 tableConfiguration: 'FUEL_STOP',
                 isActive: this.selectedTab === 'inactive',
@@ -406,6 +400,9 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 data.isSelected = false;
                 return data;
             });
+
+            console.log('Fuel Data');
+            console.log(this.viewData);
         } else {
             this.viewData = [];
         }

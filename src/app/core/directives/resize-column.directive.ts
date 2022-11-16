@@ -1,3 +1,4 @@
+import { OnDestroy } from '@angular/core';
 import {
     Directive,
     OnInit,
@@ -13,7 +14,7 @@ import {
 @Directive({
     selector: '[resizeColumn]',
 })
-export class ResizeColumnDirective implements OnInit, OnChanges {
+export class ResizeColumnDirective implements OnInit, OnChanges, OnDestroy {
     @Output() resizeing: EventEmitter<any> = new EventEmitter();
     @Input('resizeColumn') canDoResize: boolean;
     @Input() index: number;
@@ -57,14 +58,15 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
         this.resizer = this.renderer.createElement('div');
         this.renderer.addClass(this.resizer, 'resise-btn');
         this.renderer.appendChild(this.column, this.resizer);
-        this.renderer.listen(this.resizer, 'mousedown', this.onMouseDown);
+        /* this.renderer.listen(this.resizer, 'mousedown', this.onMouseDown);
         this.renderer.listen('document', 'mousemove', this.onMouseMove);
-        this.renderer.listen('document', 'mouseup', this.onMouseUp);
+        this.renderer.listen('document', 'mouseup', this.onMouseUp); */
     }
 
     removeResizer() {
         this.renderer.removeClass(this.resizer, 'resise-btn');
         this.renderer.removeChild(this.column, this.resizer);
+        this.renderer.destroy();
     }
 
     onMouseDown = (event: MouseEvent) => {
@@ -135,4 +137,13 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
             window.getSelection().removeAllRanges();
         }
     };
+
+    ngOnDestroy(): void {
+        console.log('Poziva se ngOnDestroy');
+       /*  document.removeEventListener('mouseup', this.onMouseUpHandler);
+        document.removeEventListener('mousemove', this.onMouseMoveHandler);
+        window.removeEventListener('resize', this.onResizeHandler);
+        this.destroy$.next();
+        this.destroy$.complete(); */
+    }
 }
