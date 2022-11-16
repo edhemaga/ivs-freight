@@ -75,13 +75,10 @@
                         [label]="
                             'Hereby authorize my previous employer to release and forward the information requested'
                         "
-                        [customClass]="
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? 'applicant-feedback'
-                                : 'bold-12'
-                        "
+                        [customClass]="'bold-12'"
                         [disabledStillCheckMark]="
-                            selectedMode === 'REVIEW_MODE'
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
                         "
                     >
                     </app-ta-checkbox>
@@ -129,20 +126,12 @@
 
                 <!-- SIGNATURE PAD -->
 
-                <div
-                    class="d-flex signature-pad-container"
-                    *ngIf="selectedMode === 'APPLICANT_MODE'"
-                >
+                <div class="d-flex signature-pad-container">
                     <app-applicant-signature-pad
+                        [mode]="selectedMode"
+                        [signatureImgSrc]="signatureImgSrc"
                         (signatureEmitter)="onSignatureAction($event)"
                     ></app-applicant-signature-pad>
-                </div>
-
-                <div
-                    class="d-flex justify-content-center align-items-center signature-image-container"
-                    *ngIf="selectedMode !== 'APPLICANT_MODE'"
-                >
-                    <img src="" alt="signature" />
                 </div>
 
                 <!-- UNDERSTOOD CHECKBOX -->
@@ -157,13 +146,10 @@
                         [label]="
                             'Please confirm that you have read and understood the content of this notice'
                         "
-                        [customClass]="
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? 'applicant-feedback'
-                                : 'bold-12'
-                        "
+                        [customClass]="'bold-12'"
                         [disabledStillCheckMark]="
-                            selectedMode === 'REVIEW_MODE'
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
                         "
                     >
                     </app-ta-checkbox>
