@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { FuelStopResponse } from './../../../../../../appcoretruckassist/model/fuelStopResponse';
 import { Injectable } from '@angular/core';
 import {
@@ -6,20 +7,21 @@ import {
   FuelTransactionListResponse,
 } from 'appcoretruckassist';
 
-import { Observable } from 'rxjs';
 import { GetFuelStopModalResponse } from '../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
 import { CreateResponse } from '../../../../../../appcoretruckassist/model/createResponse';
-import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 import { EditFuelStopCommand } from '../../../../../../appcoretruckassist/model/editFuelStopCommand';
 import { AddFuelStopCommand } from '../../../../../../appcoretruckassist/model/addFuelStopCommand';
 import { UpdateFuelStopCommand } from '../../../../../../appcoretruckassist/model/updateFuelStopCommand';
 import { FuelStore } from './fule-state/fuel-state.store';
+import { GetFuelModalResponse } from '../../../../../../appcoretruckassist/model/getFuelModalResponse';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FuelTService {
   constructor(private fuelService: FuelService, private fuelStore: FuelStore) {}
+
+  // **************** FUEL TRANSACTION ****************
 
   // Get Fuel Transactions
   getFuelTransactionsList(
@@ -44,6 +46,21 @@ export class FuelTService {
     );
   }
 
+  set updateStoreFuelTransactionsList(data: FuelTransactionListResponse) {
+    this.fuelStore.update((store) => {
+      return {
+        ...store,
+        fuelTransactions: data,
+      };
+    });
+  }
+
+  public getFuelTransactionModalDropdowns(): Observable<GetFuelModalResponse> {
+    return this.fuelService.apiFuelModalGet();
+  }
+
+  // **************** FUEL STOP ****************
+
   // Get Fule Stops
   getFuelStopsList(
     pageIndex?: number,
@@ -63,15 +80,6 @@ export class FuelTService {
       search1,
       search2
     );
-  }
-
-  set updateStoreFuelTransactionsList(data: FuelTransactionListResponse) {
-    this.fuelStore.update((store) => {
-      return {
-        ...store,
-        fuelTransactions: data,
-      };
-    });
   }
 
   set updateStoreFuelStopList(data: FuelStopListResponse) {

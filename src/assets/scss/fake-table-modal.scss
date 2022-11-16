@@ -367,6 +367,11 @@
         }
         .fuel-subtotal {
           justify-self: flex-end;
+
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
         }
 
         &-transfer-svg {

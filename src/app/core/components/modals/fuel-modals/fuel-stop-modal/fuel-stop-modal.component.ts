@@ -59,12 +59,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     this.getModalDropdowns();
 
     if (this.editData?.type === 'edit') {
-      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-      this.editData = {
-        ...this.editData,
-        id: 2,
-      };
-
       this.getFuelStopById(this.editData.id);
     }
 
